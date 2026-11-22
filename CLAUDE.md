@@ -40,6 +40,18 @@ The authoritative list is `ProjectLayoutSlots` in the root rulebook. The univers
 
 Two containers deliberately carry no rulebook and are flagged `IsIntentionalException`: `toy-rulebooks/naked-claude-vs-effortless-claude/` (an experiment tree) and `toy-rulebooks/volunteer-shift-scheduler-demo/` (a scaffold consuming its sibling's rulebook).
 
+## The explainer is on every project (2026-11-22)
+
+Every project's `effortless.json` carries a `rulebooktoexplainerdag` step (`rulebook-to-explainer-dag`), the repo's most
+particular differentiator: hover a derived value for its rule and its witnessed values down to ground truth. A React app
+names it with `-p react=true` (it writes `explainer-dag/`: `shim.tsx` over `vendor/`, the names the apps always imported:
+`DagCell`, `DagToggle`, `FieldDag`...); every other project writes the static explainer to `/explainer`
+(`explainer/rulebook-explainer-dag/pages/index.html`, which opens from the file system). A file over 5 MB (the PKO one is 21 MB)
+is generated, not committed (`/explainer/` in the project's `.gitignore`). `rulebook-to-react-explainer-dag` is retired: it is one
+call to the new tool with `react=true`. `python3 scripts/migrate-explainer-step.py [--write --generate]` puts any project on it.
+The `rulebook-to-rulespeak` steps are unchanged: that tool is now a call to `rulebook-to-documentation` and still writes
+`rulespeak/rulespeak.html` (with "Docs" wording and a note that RuleSpeak® is coming).
+
 ## Consistency governance
 
 Inconsistency is pruned by working `ConsistencyFindings` to zero — not by editing prose. When you discover a repeatable trap, the fix goes to a place the whole team sees: a rule row + finding rows in the root rulebook, a guard in code, or this file. When you fix a finding, mark its `Status` `fixed` (never delete witnessed rows); when a rule was wrong, correct the rule and record that as a `cr-15` finding. Re-run `python3 scripts/scan-project-slots.py effortless-rulebook/effortless-rulebook.json .` after moving or creating projects; it refreshes `ProjectSlotWitnesses`, preserves finding history, and exits nonzero on malformed or ambiguous project artifacts.
