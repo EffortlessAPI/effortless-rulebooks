@@ -14,7 +14,7 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-banking-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true -p pk_type=string",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.10.19.2040",
+      "LastVersionUsed": "v2026.11.17.1626",
       "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -55,8 +55,16 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-banking-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.10.05.1648",
+      "LastVersionUsed": "v2026.11.22.1404",
       "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-08-30-1537-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoexplainerdag",
+      "RelativePath": "/explainer",
+      "CommandLine": "rulebook-to-explainer-dag -i ../effortless-rulebook/effortless-banking-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.22.1423"
     },
     {
       "IsSSoTTranspiler": false,
@@ -64,7 +72,7 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i effortless-banking-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.10.19.1709",
+      "LastVersionUsed": "v2026.11.22.0226",
       "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-07-0138-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -73,7 +81,7 @@
       "RelativePath": "/cobol",
       "CommandLine": "rulebook-to-cobol -i ../effortless-rulebook/effortless-banking-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.10.19.2037",
+      "LastVersionUsed": "v2026.11.15.1842",
       "LastUrl": "https://effortless-rulebook-to-cobol-v2026-10-19-2037-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],

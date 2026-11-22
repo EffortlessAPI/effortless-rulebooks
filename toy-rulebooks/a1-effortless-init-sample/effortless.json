@@ -14,7 +14,7 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "compile-rulebook -i effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.14.2215",
+      "LastVersionUsed": "v2026.11.15.1822",
       "LastUrl": "https://effortless-compile-rulebook-v2026-09-14-2215-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -23,7 +23,7 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i effortless-rulebook.json -p rulebookPath=effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.17.2059",
+      "LastVersionUsed": "v2026.11.22.0226",
       "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-17-2059-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -32,7 +32,7 @@
       "RelativePath": "/go",
       "CommandLine": "rulebook-to-go -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.14.2221",
+      "LastVersionUsed": "v2026.11.15.1837",
       "LastUrl": "https://effortless-rulebook-to-go-v2026-09-14-2221-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -41,7 +41,7 @@
       "RelativePath": "/postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.27.1534",
+      "LastVersionUsed": "v2026.11.17.1626",
       "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-27-1534-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -50,7 +50,7 @@
       "RelativePath": "/owl",
       "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.14.2309",
+      "LastVersionUsed": "v2026.11.17.1018",
       "LastUrl": "https://effortless-rulebook-to-owl-v2026-07-08-0207-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -59,7 +59,7 @@
       "RelativePath": "/entity-framework",
       "CommandLine": "rulebook-to-entity-framework -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.14.2203",
+      "LastVersionUsed": "v2026.11.15.1832",
       "LastUrl": "https://effortless-rulebook-to-entity-fr-v2026-09-13-0144-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -68,7 +68,7 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.17.2011",
+      "LastVersionUsed": "v2026.11.22.1404",
       "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-09-13-1044-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -77,7 +77,7 @@
       "RelativePath": "/xlsx",
       "CommandLine": "rulebook-to-xlsx -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.17.1646",
+      "LastVersionUsed": "v2026.11.15.1835",
       "LastUrl": "https://effortless-rulebook-to-xlsx-v2026-09-12-2358-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -86,7 +86,7 @@
       "RelativePath": "/python",
       "CommandLine": "rulebook-to-python -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.14.2218",
+      "LastVersionUsed": "v2026.11.15.1825",
       "LastUrl": "https://effortless-rulebook-to-python-v2026-09-13-0308-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -95,8 +95,16 @@
       "RelativePath": "/typescript",
       "CommandLine": "rulebook-to-typescript -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.14.2224",
+      "LastVersionUsed": "v2026.11.15.1827",
       "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-09-13-0311-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoexplainerdag",
+      "RelativePath": "/explainer",
+      "CommandLine": "rulebook-to-explainer-dag -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.22.1423"
     }
   ],
   "ShowHidden": false,

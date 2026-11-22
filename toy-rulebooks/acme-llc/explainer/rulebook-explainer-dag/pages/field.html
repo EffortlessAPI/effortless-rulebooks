@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explainer DAG — Field</title>
+  <link rel="stylesheet" href="../dag.css">
+</head>
+<body>
+  <div id="effortless-explainer-outlet"></div>
+  <script src="../embedded-graph.js"></script>
+  <script src="../dag-resolver.js"></script>
+  <script src="../routing.js"></script>
+  <script src="../explainer-dag.js"></script>
+  <script>
+    var lang = new URLSearchParams(location.search).get("lang") || "en";
+    document.documentElement.lang = lang;
+    document.documentElement.dir = EffortlessExplainer.rightToLeft(lang) ? "rtl" : "ltr";
+    // Opened as the file it is (…/rulebook-explainer-dag/pages/index.html#/dag/Table/Field):
+    // this page draws every explainer page itself, by hash, and Home goes back to the
+    // app page the person came from. Served by a host's own /dag route instead: the
+    // host's paths.
+    var own = /\/pages\/(index|table|field)\.html$/.test(location.pathname);
+    EffortlessExplainer.init(own
+      ? { mode: "hash", ownPage: true, lang: lang, homePath: EffortlessExplainerRouting.rememberedHome() || "/" }
+      : { mode: "path", lang: lang, indexPath: "/dag", fieldPath: "/dag/:table/:field", tablePath: "/dag/:table" });
+  </script>
+</body>
+</html>

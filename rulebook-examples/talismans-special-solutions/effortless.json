@@ -23,7 +23,7 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/talismans-special-solutions-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.12.2340",
+      "LastVersionUsed": "v2026.11.17.1626",
       "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-12-2340-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "_LocalDevUrl": "http://localhost:30038",
       "_ClosureNote": "The Postgres transpiler emits the transitive-closure views. postgres-bootstrap/03-create-views.sql (committed) contains both vw_step_precedence_closure and vw_roles_closure as WITH RECURSIVE views with is_inferred/hop_distance columns, and the committed SQL is what the demo runs against — closure is present out of the box. (_LocalDevUrl is an optional pointer for running the transpiler locally during tool development; it is not needed to build or run this demo.)",
@@ -59,7 +59,7 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.12.2353",
+      "LastVersionUsed": "v2026.11.22.1404",
       "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-09-12-2353-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -71,12 +71,11 @@
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "rulebooktoreactexplainerdag",
+      "Name": "rulebooktoexplainerdag",
       "RelativePath": "/app/frontend/src",
-      "CommandLine": "https://effortless-rulebook-to-react-exp-v2026-06-11-1530-cmvbd4phczmeg.7pktzg2z971j0.cpln.app -i ../../../effortless-rulebook/talismans-special-solutions-rulebook.json",
+      "CommandLine": "rulebook-to-explainer-dag -i ../../../effortless-rulebook/talismans-special-solutions-rulebook.json -p react=true",
       "IsDisabled": false,
-      "_HeadPointerNote": "Pinned to the explicit v2026.06.11.1530 cpln URL (NOT the bare tool name) because [latest] still resolves to the older v2026.06.10.1301 — the publish on 2026-06-11 built+activated v1530 but the HeadVersion pointer did not flip to it. v1530 is the version carrying the hovercard portal/edge-clamp fix (DagHoverCard renders via createPortal to document.body, fixed-positioned + four-edge viewport-clamped). Re-point CommandLine back to the bare 'rulebook-to-react-explainer-dag' once [latest] correctly advances to v1530 or newer.",
-      "Description": "Generate the self-contained React Explainer DAG module (app/frontend/src/explainer-dag/) — embedded rulebook + dagResolver + DagCell/DagToggle/FieldChip/FieldDag — the canonical, fully-generated provenance visualizer. Replaces the former hand-written explain-dag/ module."
+      "LastVersionUsed": "v2026.11.22.1423"
     },
     {
       "IsSSoTTranspiler": false,
@@ -100,7 +99,7 @@
       "RelativePath": "/effortless-python",
       "CommandLine": "rulebook-to-python -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.13.0308",
+      "LastVersionUsed": "v2026.11.15.1825",
       "LastUrl": "https://effortless-rulebook-to-python-v2026-09-13-0308-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Commercial Python transpiler. Compiles this domain to 100%; the open-source bus tool cannot and is disabled above."
     },
@@ -110,7 +109,7 @@
       "RelativePath": "/effortless-golang",
       "CommandLine": "rulebook-to-go -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.13.0108",
+      "LastVersionUsed": "v2026.11.15.1837",
       "LastUrl": "https://effortless-rulebook-to-go-v2026-09-13-0108-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Commercial rulebook-to-go: compiles the rulebook to a native Go calculation module (erb_sdk.go + main.go + go.mod + erb_closure.go). The open-source httplocalhost4242ossrulebooktogolang above stays disabled — it cannot compile this domain."
     },
@@ -120,7 +119,7 @@
       "RelativePath": "/effortless-entity-framework",
       "CommandLine": "rulebook-to-entity-framework -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.13.0144",
+      "LastVersionUsed": "v2026.11.15.1832",
       "LastUrl": "https://effortless-rulebook-to-entity-fr-v2026-09-13-0144-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -129,7 +128,7 @@
       "RelativePath": "/effortless-typescript",
       "CommandLine": "rulebook-to-typescript -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.13.0311",
+      "LastVersionUsed": "v2026.11.15.1827",
       "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-09-13-0311-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
@@ -138,7 +137,7 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i talismans-special-solutions-rulebook.json -p rulebookPath=talismans-special-solutions-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.09.10.1047",
+      "LastVersionUsed": "v2026.11.22.0226",
       "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-10-1047-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],

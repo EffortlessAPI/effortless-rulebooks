@@ -1,0 +1,628 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "ACME Corporation",
+  "Description": "CRUD starter template — clients, projects, employees, roles. The \"starter-sized\" demo for new authors.",
+  "Client": {
+    "Description": "Table: Client",
+    "schema": [
+      {
+        "name": "ClientId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Customer",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Identifier for the customers."
+      },
+      {
+        "name": "EmailAddress",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Thec ustomers email address"
+      },
+      {
+        "name": "FirstName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "First Name of the customer - used to make the full name"
+      },
+      {
+        "name": "LastName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Last Name of the customer - used to make the full name"
+      },
+      {
+        "name": "FullName",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "The client's full name, written first name then last name (FirstName & \" \" & LastName).",
+        "formula": "={{FirstName}} & \" \" & {{LastName}}",
+        "important": true,
+        "explanation_rich": "**The smallest possible calculated field.** `FullName` is just `FirstName & \" \" & LastName` — but the point is that it lives in the rulebook, not in application code. Every substrate (Postgres view, Python class, Excel cell, OWL ontology) computes the same value the same way. Edit a customer's first name and *every* substrate sees the new full name on the next read."
+      }
+    ],
+    "data": [
+      {
+        "ClientId": "cust0001",
+        "EmailAddress": "larry.smith@email.com",
+        "LastName": "Smith",
+        "Customer": "CUST0001",
+        "FirstName": "Bob",
+        "FullName": "Bob Smith"
+      },
+      {
+        "ClientId": "cust0002",
+        "EmailAddress": "john.doe@email.com",
+        "LastName": "Doe",
+        "Customer": "CUST0002",
+        "FirstName": "John",
+        "FullName": "John Doe"
+      },
+      {
+        "ClientId": "cust0003",
+        "EmailAddress": "emily.jones@email.com",
+        "LastName": "Jones",
+        "Customer": "CUST0003",
+        "FirstName": "Emily",
+        "FullName": "Emily Jones"
+      }
+    ]
+  },
+  "Projects": {
+    "Description": "Table: Projects",
+    "important": true,
+    "summary_rich": "The **work in flight**. Each project has a *type* (Internal, ClientFacing, Research, Compliance) and may require manager sign-off depending on that type. Approval is wired through the DAG, not by hand — set `ApprovedBy` to an employee whose role is a manager, and the project clears.",
+    "important_fields": [
+      "Name",
+      "ProjectTypeName",
+      "ApprovedByName",
+      "DueDate"
+    ],
+    "schema": [
+      {
+        "name": "ProjectId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "ProjectType",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "TypesOfProject",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Projects"
+      },
+      {
+        "name": "ProjectTypeName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(TypesOfProject!{{Name}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))"
+      },
+      {
+        "name": "ProjectTypeDescription",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(TypesOfProject!{{Description}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))"
+      },
+      {
+        "name": "ProjectTypeRequiresManagerApproval",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(TypesOfProject!{{RequiresManagerApproval}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))",
+        "important": true,
+        "explanation_rich": "**Some project types demand a manager.** Compliance and ClientFacing projects can't go live until someone with manager authority signs off; Internal and Research can. This field is the gate: it looks the project's type up in `TypesOfProject` and reads the `RequiresManagerApproval` flag. Worked example: the *GDPR Compliance Audit* is type `Compliance`, so this evaluates to `TRUE` and the project shows the ⚠ until an approver lands."
+      },
+      {
+        "name": "DueDate",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "IsApproved",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whether the project is validly approved. True when the project's type doesn't require manager approval, OR the person in ApprovedBy holds a manager role.",
+        "formula": "=OR(NOT({{ProjectTypeRequiresManagerApproval}}), {{ApprovedByRoleIsManager}})",
+        "important": true,
+        "explanation_rich": "**The verdict the database computes for you.** `IsApproved` is not typed in by a human — it is derived: a project clears if its *type* doesn't require manager sign-off, or if the employee in `ApprovedBy` holds a role flagged `IsManager`. Both operands are themselves derived (`ProjectTypeRequiresManagerApproval` walks project→type; `ApprovedByRoleIsManager` walks project→approver→role). Set one foreign key — `ApprovedBy` — and the whole approval judgment follows from the rulebook, in every substrate. The app never runs this check; it reads the answer."
+      },
+      {
+        "name": "ApprovedBy",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Employees",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Projects"
+      },
+      {
+        "name": "ApprovedByRoleIsManager",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Employees!{{RoleIsManager}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))",
+        "important": true,
+        "explanation_rich": "**Only a manager can sign off on a manager-gated project.** When a project is assigned an approver, this field looks the employee up in `Employees` and pulls their role's `IsManager` flag. Worked example: *Customer Portal Redesign* is approved-by **Priya Patel** (role: Analyst, `IsManager=false`) — so this resolves to `FALSE` and the project stays pending. Reassign approval to **Sarah Chen** (ProjectManager) and the same field flips to `TRUE` *the same instant* the rulebook recomputes."
+      },
+      {
+        "name": "ApprovedByName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Employees!{{Name}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
+      },
+      {
+        "name": "ApprovedByEmailAddress",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Employees!{{EmailAddress}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
+      },
+      {
+        "name": "ApprovedByPhoneNumber",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Employees!{{PhoneNumber}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "ProjectId": "internal-tools-dashboard",
+        "Name": "Internal Tools Dashboard",
+        "IsApproved": true,
+        "ApprovedBy": "sarah-chen",
+        "ApprovedByEmailAddress": "sarah.chen@acmecorp.example",
+        "ProjectTypeName": "Internal",
+        "Description": "Build internal analytics dashboard for team productivity metrics",
+        "ApprovedByPhoneNumber": "555-0101",
+        "DueDate": "2026-06-15",
+        "ApprovedByName": "Sarah Chen",
+        "ApprovedByRoleIsManager": true,
+        "ProjectTypeRequiresManagerApproval": false,
+        "ProjectType": "internal",
+        "ProjectTypeDescription": "An internal project that is not publicly accessible"
+      },
+      {
+        "ProjectId": "customer-portal-redesign",
+        "Name": "Customer Portal Redesign",
+        "ApprovedBy": "priya-patel",
+        "ApprovedByEmailAddress": "priya.patel@acmecorp.example",
+        "ProjectTypeName": "ClientFacing",
+        "Description": "Complete redesign of customer-facing portal with modern UX",
+        "ApprovedByPhoneNumber": "555-0103",
+        "DueDate": "2026-08-01",
+        "ApprovedByName": "Priya Patel",
+        "ApprovedByRoleIsManager": false,
+        "ProjectTypeRequiresManagerApproval": true,
+        "ProjectType": "clientfacing",
+        "ProjectTypeDescription": "Open, public facing communication",
+        "IsApproved": false
+      },
+      {
+        "ProjectId": "gdpr-compliance-audit",
+        "Name": "GDPR Compliance Audit",
+        "IsApproved": true,
+        "ApprovedBy": "mike-johnson",
+        "ApprovedByEmailAddress": "mike.johnson@acmecorp.example",
+        "ProjectTypeName": "Compliance",
+        "Description": "Annual compliance audit and documentation update",
+        "ApprovedByPhoneNumber": "555-0102",
+        "DueDate": "2026-04-30",
+        "ApprovedByName": "Mike Johnson",
+        "ApprovedByRoleIsManager": true,
+        "ProjectTypeRequiresManagerApproval": true,
+        "ProjectType": "compliance",
+        "ProjectTypeDescription": ""
+      }
+    ]
+  },
+  "Employees": {
+    "Description": "Table: Employees",
+    "important": true,
+    "summary_rich": "The **cast** of ACME. Each employee holds a single role; only roles flagged `IsManager` can approve manager-gated projects. Promote someone into a manager role and the approval rule fires on every pending project they touch.",
+    "important_fields": [
+      "Name",
+      "RoleName",
+      "EmailAddress"
+    ],
+    "schema": [
+      {
+        "name": "EmployeeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "EmailAddress",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "PhoneNumber",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Role",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Roles",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Employees"
+      },
+      {
+        "name": "RoleName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Roles!{{Name}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "RoleDescription",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Roles!{{Description}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "Projects",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Projects",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "ApprovedBy"
+      },
+      {
+        "name": "RoleIsManager",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Roles!{{IsManager}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "EmployeeId": "sarah-chen",
+        "Projects": "internal-tools-dashboard",
+        "RoleIsManager": true,
+        "PhoneNumber": "555-0101",
+        "RoleDescription": "The project Manager makes sure that the developers do what the analysts ask for",
+        "RoleName": "ProjectManager",
+        "Name": "Sarah Chen",
+        "Role": "projectmanager",
+        "EmailAddress": "sarah.chen@acmecorp.example"
+      },
+      {
+        "EmployeeId": "mike-johnson",
+        "Projects": "gdpr-compliance-audit",
+        "RoleIsManager": true,
+        "PhoneNumber": "555-0102",
+        "RoleDescription": "Developers handle the implementation and are responsible for making the final product do what is expected",
+        "RoleName": "Developer",
+        "Name": "Mike Johnson",
+        "Role": "developer",
+        "EmailAddress": "mike.johnson@acmecorp.example"
+      },
+      {
+        "EmployeeId": "priya-patel",
+        "Projects": "customer-portal-redesign",
+        "RoleIsManager": false,
+        "PhoneNumber": "555-0103",
+        "RoleDescription": "The business analysis know what the customer's want.",
+        "RoleName": "Analyst",
+        "Name": "Priya Patel",
+        "Role": "analyst",
+        "EmailAddress": "priya.patel@acmecorp.example"
+      }
+    ]
+  },
+  "Roles": {
+    "Description": "Table: Roles",
+    "schema": [
+      {
+        "name": "RoleId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "IsManager",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Employees",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Employees",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "Role"
+      },
+      {
+        "name": "CountOfEmployees",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(Employees!{{Role}}, Roles!{{RoleId}})"
+      }
+    ],
+    "data": [
+      {
+        "RoleId": "developer",
+        "IsManager": true,
+        "Name": "Developer",
+        "CountOfEmployees": 1,
+        "Employees": "mike-johnson",
+        "Description": "Developers handle the implementation and are responsible for making the final product do what is expected"
+      },
+      {
+        "RoleId": "projectmanager",
+        "IsManager": true,
+        "Name": "ProjectManager",
+        "CountOfEmployees": 1,
+        "Employees": "sarah-chen",
+        "Description": "The project Manager makes sure that the developers do what the analysts ask for"
+      },
+      {
+        "RoleId": "analyst",
+        "Name": "Analyst",
+        "CountOfEmployees": 1,
+        "Employees": "priya-patel",
+        "Description": "The business analysis know what the customer's want.",
+        "IsManager": false
+      }
+    ]
+  },
+  "TypesOfProject": {
+    "Description": "Table: TypesOfProject",
+    "schema": [
+      {
+        "name": "TypesOfProjectId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "RequiresManagerApproval",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Projects",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Projects",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "ProjectType"
+      },
+      {
+        "name": "CountOfProjects",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}})"
+      }
+    ],
+    "data": [
+      {
+        "TypesOfProjectId": "internal",
+        "Name": "Internal",
+        "CountOfProjects": 1,
+        "Description": "An internal project that is not publicly accessible",
+        "Projects": "internal-tools-dashboard",
+        "RequiresManagerApproval": false
+      },
+      {
+        "TypesOfProjectId": "clientfacing",
+        "Name": "ClientFacing",
+        "CountOfProjects": 1,
+        "RequiresManagerApproval": true,
+        "Description": "Open, public facing communication",
+        "Projects": "customer-portal-redesign"
+      },
+      {
+        "TypesOfProjectId": "research",
+        "Name": "Research",
+        "CountOfProjects": 0,
+        "Description": "",
+        "RequiresManagerApproval": false,
+        "Projects": ""
+      },
+      {
+        "TypesOfProjectId": "compliance",
+        "Name": "Compliance",
+        "CountOfProjects": 1,
+        "RequiresManagerApproval": true,
+        "Projects": "gdpr-compliance-audit",
+        "Description": ""
+      }
+    ]
+  },
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "A small services shop — clients, projects, approval rules.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "skyline",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#1f3a5f\", \"accent\": \"#f0b21f\", \"ink\": \"#0d1a2e\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "ACME Corporation is a tiny professional-services firm — three clients, three employees, three projects, and a handful of project types. The interesting thing isn't the data, it's the **wiring**: some project types (Compliance, ClientFacing) require manager sign-off, and only employees in a manager role can sign. The rulebook encodes that workflow as a DAG of calculated fields, so the same business rule fires identically in Postgres, Python, Excel, and OWL — without a single line of application code.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Approve a Compliance project.** Open *GDPR Compliance Audit*, set `ApprovedBy` to Mike Johnson (a ProjectManager), and watch `ApprovedByRoleIsManager` flip to TRUE and the project clear.\", \"**Promote an Analyst into a ProjectManager role.** Edit Priya Patel's role and watch every project that names her re-evaluate the approval rule.\", \"**Add a new project type that requires manager approval.** Insert a row in `TypesOfProject` with `RequiresManagerApproval = TRUE`; every project of that type instantly inherits the requirement through the lookup chain.\", \"**Read the same answer in two substrates.** Ask *\\\"how many projects are awaiting approval?\\\"* in the Postgres view, then ask the same question of the Python module — same number, no glue code.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Projects\", \"ids\": [\"internal-tools-dashboard\", \"customer-portal-redesign\", \"gdpr-compliance-audit\"]}, {\"entity\": \"Employees\", \"ids\": [\"sarah-chen\", \"mike-johnson\", \"priya-patel\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Three projects in motion, one awaiting a manager. Sarah and Mike can sign; Priya is one promotion away from being able to.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"source_base_id\": \"appzkcmBFPWFGBtRo\", \"table_count\": 5, \"tool_version\": \"2.0.0\", \"field_type_mapping\": \"checkbox→boolean, number→number/integer, multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated\", \"export_mode\": \"schema_first_type_mapping\", \"type_inference\": {\"enabled\": true, \"priority\": \"airtable_metadata (NO COERCION) → formula_analysis → reference_resolution → data_analysis (last-resort inference; build SHOULD FAIL rather than silently use this)\", \"airtable_type_mapping\": \"checkbox→boolean, singleLineText→string, multilineText→string, number→number/integer, datetime→datetime, singleSelect→string, email→string, url→string, phoneNumber→string\", \"data_coercion_hierarchy\": \"Only invoked when Airtable schema is unavailable (which SHOULD make the build fail). Coercion order: datetime → number → integer → boolean → base64 → json → string\", \"nullable_support\": true, \"error_value_handling\": \"#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL\"}}"
+      }
+    ]
+  }
+}
