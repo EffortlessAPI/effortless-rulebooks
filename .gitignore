@@ -99,3 +99,9 @@ erb_test
 
 # Generated PKO orchestration report — 270MB, exceeds GitHub's 100MB limit; regenerate locally
 rulebook-examples/procedural-knowledge-ontology/orchestration-report.html
+
+# Raw datasets of 94-95 MB (GitHub refuses a file over 100 MB). Downloaded when needed from the
+# download_url in the folder's candidate.json; scripts/tests/test_no_large_files.py keeps any
+# file over 50 MB out of the repository.
+rulebook-examples/simpsons-paradox/data/loop-88-candidates/rdatasets-nflverse-passing/pbp_2023.csv
+rulebook-examples/simpsons-paradox/data/loop-88-candidates/rdatasets-owid-covid-data/data.csv

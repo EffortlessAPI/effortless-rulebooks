@@ -77,3 +77,17 @@ Each `staged-study.json` fully describes one control study ready for rulebook in
 - `needs-data`    — structure is right but data must be fetched/computed
 - `staged`        — staged-study.json complete, ready for injection
 - `injected`      — already in rulebook
+
+## Raw files that are not kept here
+
+Two candidates' raw downloads are 94 and 95 MB each, close to the 100 MB at which GitHub refuses a push.
+They were removed from the repository on 2026-11-22 and are ignored if downloaded again:
+
+| Candidate | File | From |
+|---|---|---|
+| `rdatasets-nflverse-passing` | `pbp_2023.csv` (NFL play-by-play, 2023) | nflverse, https://github.com/nflverse/nflreadr |
+| `rdatasets-owid-covid-data` | `data.csv` (Our World in Data COVID-19) | https://covid.ourworldindata.org/data/owid-covid-data.csv |
+
+Nothing reads them after intake: `inject-loop-88.py` reads each candidate's `staged-study.json`.
+`rdatasets-nflverse-passing` has its staged study; `rdatasets-owid-covid-data` was never staged, so
+encoding it starts with downloading the file again. Older commits still hold both files.
