@@ -221,7 +221,13 @@
    SAFETY ring) and scrolls internally — so even a tall card placed near the top
    or bottom edge stays fully on-screen instead of running off it. */
 .dag-hovercard-shell-fixed .dag-hovercard {
-  max-height: calc(var(--dag-card-maxh, 80vh) - 30px);
+  /* Sizes are what the person sees; the card's own zoom (bigger text on a tablet and up) multiplies them. */
+  zoom: var(--dag-card-zoom, 1);
+  width: calc(var(--dag-card-w, 360px) / var(--dag-card-zoom, 1));
+  height: calc(var(--dag-card-h) / var(--dag-card-zoom, 1));
+  box-sizing: border-box;
+  max-width: calc((100vw - 24px) / var(--dag-card-zoom, 1));
+  max-height: calc((var(--dag-card-maxh, 80vh) - 30px) / var(--dag-card-zoom, 1));
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -248,6 +254,16 @@
 .dag-hovercard-lookup { border-inline-start-color: var(--dag-lookup); }
 
 .dag-hovercard > * { display: block; }
+/* The grip that resizes the card: a tablet and up only (a phone's card is full-size already). It sits in the card's
+   bottom-right corner and stays there as the card scrolls. */
+.dag-hovercard > .dag-hovercard-grip { display: none; }
+@media (min-width: 768px) {
+  .dag-hovercard > .dag-hovercard-grip {
+    display: block; position: sticky; bottom: 0; width: 20px; height: 20px; margin: -20px -16px -12px auto;
+    cursor: nwse-resize; touch-action: none; border-bottom-right-radius: 8px;
+    background: linear-gradient(135deg, transparent 0 52%, #9aa0aa 52% 58%, transparent 58% 70%, #9aa0aa 70% 76%, transparent 76% 88%, #9aa0aa 88% 94%, transparent 94%);
+  }
+}
 .dag-hovercard-head {
   display: flex !important;
   align-items: center;

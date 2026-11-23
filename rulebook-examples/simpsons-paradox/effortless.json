@@ -77,7 +77,7 @@
       "RelativePath": "/app/frontend/public",
       "CommandLine": "rulebook-to-explainer-dag -i ../../../effortless-rulebook/simpsons-paradox-rulebook.json -o rulebook-explainer-dag",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1803"
+      "LastVersionUsed": "v2026.11.22.1838"
     },
     {
       "IsSSoTTranspiler": false,

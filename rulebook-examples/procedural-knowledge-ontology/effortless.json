@@ -55,7 +55,7 @@
       "RelativePath": "/explainer",
       "CommandLine": "rulebook-to-explainer-dag -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1803"
+      "LastVersionUsed": "v2026.11.22.1838"
     },
     {
       "IsSSoTTranspiler": false,

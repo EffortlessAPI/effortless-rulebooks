@@ -53,7 +53,7 @@
       "RelativePath": "/explainer",
       "CommandLine": "rulebook-to-explainer-dag -i ../effortless-rulebook/acme-corporation-rulebook.json -p languages=all",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1803"
+      "LastVersionUsed": "v2026.11.22.1838"
     },
     {
       "IsSSoTTranspiler": false,

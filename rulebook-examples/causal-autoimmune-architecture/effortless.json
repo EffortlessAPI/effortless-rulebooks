@@ -89,7 +89,7 @@
       "RelativePath": "/admin-app/client/public",
       "CommandLine": "rulebook-to-explainer-dag -i ../../../effortless-rulebook/effortless-rulebook.json -o explainer-dag",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1803"
+      "LastVersionUsed": "v2026.11.22.1838"
     },
     {
       "IsSSoTTranspiler": false,

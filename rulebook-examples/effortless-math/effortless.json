@@ -62,7 +62,7 @@
       "RelativePath": "/app/frontend/public",
       "CommandLine": "rulebook-to-explainer-dag -i ../../../effortless-rulebook/effortless-math-rulebook.json -o rulebook-explainer-dag -p languages=all",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1803",
+      "LastVersionUsed": "v2026.11.22.1838",
       "Description": "Generate an ExplainDAG projection."
     },
     {

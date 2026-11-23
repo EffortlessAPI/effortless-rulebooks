@@ -3105,25 +3105,30 @@
     };
   }
   // null when the person has never set one. A stored value that is not a size is an error: it says which key.
-  function modalSize() {
+  function readSize(key) {
     let raw = null;
-    try { raw = localStorage.getItem(MODAL_SIZE_KEY); } catch { /* no storage: the default stands */ }
+    try { raw = localStorage.getItem(key); } catch { /* no storage: the default stands */ }
     if (raw === null) return null;
     let v;
     try { v = JSON.parse(raw); } catch { v = null; }
     if (!v || !Number.isFinite(v.w) || !Number.isFinite(v.h)) {
-      throw new Error(`${MODAL_SIZE_KEY} holds ${JSON.stringify(raw)}, not {"w": <px>, "h": <px>}; clear that key in localStorage or call EffortlessExplainer.resetModalSize()`);
+      throw new Error(`${key} holds ${JSON.stringify(raw)}, not {"w": <px>, "h": <px>}; clear that key in localStorage or call EffortlessExplainer.reset${key.includes("card") ? "Card" : "Modal"}Size()`);
     }
-    return clampModalSize(v);   // shrunk to fit a smaller window for now; the stored choice itself is untouched
+    return v;
   }
+  function writeSize(key, size) {
+    try { localStorage.setItem(key, JSON.stringify(size)); } catch { /* no storage: this page only */ }
+  }
+  function clearSize(key) {
+    try { localStorage.removeItem(key); } catch { /* no storage */ }
+  }
+  function modalSize() { const v = readSize(MODAL_SIZE_KEY); return v && clampModalSize(v); }   // shrunk to fit a smaller window for now; the stored choice itself is untouched
   function setModalSize(size) {
     const kept = clampModalSize(size);
-    try { localStorage.setItem(MODAL_SIZE_KEY, JSON.stringify(kept)); } catch { /* no storage: this page only */ }
+    writeSize(MODAL_SIZE_KEY, kept);
     return kept;
   }
-  function resetModalSize() {
-    try { localStorage.removeItem(MODAL_SIZE_KEY); } catch { /* no storage */ }
-  }
+  function resetModalSize() { clearSize(MODAL_SIZE_KEY); }
   function resizedModalSize(start, dx, dy) {
     return clampModalSize({ w: start.w + 2 * dx, h: start.h + 2 * dy });
   }
@@ -3196,24 +3201,101 @@
   }
   function scheduleHoverClose() {
     cancelHoverClose();
+    if (cardResizing) return;   // the pointer is on the grip, dragging
     hoverCloseTimer = setTimeout(() => { removeHoverCard(); hoverCloseTimer = null; }, CLOSE_DELAY_MS);
+  }
+  // The card's size: bigger by default on a tablet and up (text zoomed with it), the person's to
+  // change by dragging the grip in its bottom-right corner, and remembered. Sizes are what the
+  // person sees (screen px); the zoom is applied to the card in dag.css through --dag-card-zoom.
+  const CARD_SIZE_KEY = "effortless-explainer-card-size";
+  const CARD_MIN = { w: 280, h: 160 };
+  function cardDefaultSize(vw) {
+    if (vw >= 1200) return { w: 560, zoom: 1.3 };
+    if (vw >= 768) return { w: 480, zoom: 1.2 };
+    return { w: CARD_W, zoom: 1 };
+  }
+  function cardSizeApplies() { return window.innerWidth >= MODAL_RESIZABLE_FROM; }
+  function clampCardSize(size, room) {
+    const max = room || { w: window.innerWidth - 2 * MARGIN, h: window.innerHeight - 2 * MARGIN };
+    return {
+      w: Math.round(Math.min(Math.max(CARD_MIN.w, max.w), Math.max(CARD_MIN.w, size.w))),
+      h: Math.round(Math.min(Math.max(CARD_MIN.h, max.h), Math.max(CARD_MIN.h, size.h))),
+    };
+  }
+  function cardSize() { const v = readSize(CARD_SIZE_KEY); return v && clampCardSize(v); }
+  function setCardSize(size) {
+    const kept = clampCardSize(size);
+    writeSize(CARD_SIZE_KEY, kept);
+    return kept;
+  }
+  function resetCardSize() { clearSize(CARD_SIZE_KEY); }
+  // The grip moves the card's right and bottom edges: its top-left corner is where it was placed.
+  function resizedCardSize(start, dx, dy, room) { return clampCardSize({ w: start.w + dx, h: start.h + dy }, room); }
+  function currentCardSize() {
+    const d = cardDefaultSize(window.innerWidth);
+    const mine = cardSizeApplies() ? cardSize() : null;
+    return { w: mine ? mine.w : d.w, h: mine ? mine.h : null, zoom: d.zoom };
   }
   function positionHoverCard(shell, anchor) {
     const vw = window.innerWidth, vh = window.innerHeight;
-    const cardW = Math.min(CARD_W, vw - 2 * MARGIN);
+    const size = currentCardSize();
+    const cardW = Math.min(size.w, vw - 2 * MARGIN);
+    const cardH = size.h || EST_CARD_H;
     const cardLeft = Math.min(Math.max(anchor.right - cardW, MARGIN), vw - cardW - MARGIN);
     const spaceBelow = vh - anchor.bottom - GAP - MARGIN;
     const spaceAbove = anchor.top - GAP - MARGIN;
-    const placeBelow = spaceBelow >= EST_CARD_H || spaceBelow >= spaceAbove;
-    const maxH = Math.max(120, placeBelow ? spaceBelow : spaceAbove);
-    let cardTop = placeBelow ? anchor.bottom + GAP : anchor.top - GAP - Math.min(EST_CARD_H, maxH);
-    cardTop = Math.min(Math.max(cardTop, MARGIN), vh - MARGIN - Math.min(EST_CARD_H, maxH));
+    const placeBelow = spaceBelow >= cardH || spaceBelow >= spaceAbove;
+    let maxH = Math.max(120, placeBelow ? spaceBelow : spaceAbove);
+    if (size.h) maxH = Math.max(maxH, Math.min(size.h + 2 * SAFETY, vh - 2 * MARGIN));   // a size the person chose is not squeezed by where the cell is
+    let cardTop = placeBelow ? anchor.bottom + GAP : anchor.top - GAP - Math.min(cardH, maxH);
+    cardTop = Math.min(Math.max(cardTop, MARGIN), vh - MARGIN - Math.min(cardH, maxH));
     shell.style.position = "fixed";
     shell.style.left = `${cardLeft - SAFETY}px`;
     shell.style.top = `${cardTop - SAFETY}px`;
     shell.style.setProperty("--dag-card-maxh", `${Math.round(maxH)}px`);
+    shell.style.setProperty("--dag-card-zoom", String(size.zoom));
+    shell.style.setProperty("--dag-card-w", `${Math.round(cardW)}px`);
+    if (size.h) shell.style.setProperty("--dag-card-h", `${Math.round(size.h)}px`);
   }
-
+  let cardResizing = false;
+  function wireCardGrip(shell) {
+    const grip = shell.querySelector(".dag-hovercard-grip");
+    const card = shell.querySelector(".dag-hovercard");
+    if (!grip || !card) return;
+    grip.addEventListener("dblclick", () => {
+      resetCardSize();
+      shell.style.setProperty("--dag-card-w", `${cardDefaultSize(window.innerWidth).w}px`);
+      shell.style.removeProperty("--dag-card-h");
+    });
+    grip.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      cancelHoverClose();
+      cardResizing = true;
+      const box = card.getBoundingClientRect();
+      const start = { w: box.width, h: box.height, x: e.clientX, y: e.clientY };
+      const room = { w: window.innerWidth - box.left - MARGIN, h: window.innerHeight - box.top - MARGIN };
+      try { grip.setPointerCapture(e.pointerId); } catch { /* a synthetic event has no pointer to capture */ }
+      let size = null;
+      const move = (m) => {
+        size = resizedCardSize(start, m.clientX - start.x, m.clientY - start.y, room);
+        shell.style.setProperty("--dag-card-w", `${size.w}px`);
+        shell.style.setProperty("--dag-card-h", `${size.h}px`);
+        shell.style.setProperty("--dag-card-maxh", `${size.h + 2 * SAFETY}px`);
+      };
+      const done = () => {
+        grip.removeEventListener("pointermove", move);
+        grip.removeEventListener("pointerup", done);
+        grip.removeEventListener("pointercancel", done);
+        cardResizing = false;
+        if (size) setCardSize(size);
+        if (!shell.matches(":hover")) scheduleHoverClose();
+      };
+      grip.addEventListener("pointermove", move);
+      grip.addEventListener("pointerup", done);
+      grip.addEventListener("pointercancel", done);
+    });
+  }
   function hoverDialectHtml(dag, mode, elems, rowId) {
     // Raw / relationship cells have no rule to narrate.
     if (dag.type === "raw") {
@@ -3287,6 +3369,7 @@
       inputsHtml +
       `<span class="dag-hovercard-foot">${selfLink("dag-hovercard-open", `${esc(tt("hoverOpenPage"))} ${onward()}`)}` +
       `<span class="dag-hovercard-hint">${esc(tt("hoverHint"))}</span></span>` +
+      `<span class="dag-hovercard-grip" role="separator" aria-label="${esc(tt("modalResize"))}" title="${esc(tt("modalResize"))}"></span>` +
       `</span>`;
   }
 
@@ -3307,6 +3390,7 @@
     // Any link out of a cell's popup opens that page on the cell's row.
     if (rowId != null && rowId !== "") shell.querySelectorAll("a[href]").forEach((a) => a.addEventListener("click", () => setWitnessRow(table, rowId), true));
     wireWitness(shell);
+    wireCardGrip(shell);
 
     wireRefLinks(shell);
     shell.querySelectorAll("[data-table-link]").forEach((a) => {
@@ -3885,6 +3969,7 @@
     closeModal,
     modalBack,
     modalSize, setModalSize, resetModalSize, resizedModalSize, modalSizeApplies,
+    cardDefaultSize, cardSize, setCardSize, resetCardSize, resizedCardSize, cardSizeApplies, positionHoverCard, hoverCardHtml,
     setGlyphsOn,
     mountToggle,
     cornerHtml,

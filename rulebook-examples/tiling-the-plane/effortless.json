@@ -33,7 +33,7 @@
       "RelativePath": "/web/src",
       "CommandLine": "rulebook-to-explainer-dag -i ../../effortless-rulebook/tiling-the-plane-rulebook.json -p react=true -p languages=all",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1803"
+      "LastVersionUsed": "v2026.11.22.1838"
     },
     {
       "IsSSoTTranspiler": false,
