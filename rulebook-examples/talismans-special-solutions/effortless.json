@@ -75,7 +75,7 @@
       "RelativePath": "/app/frontend/src",
       "CommandLine": "rulebook-to-explainer-dag -i ../../../effortless-rulebook/talismans-special-solutions-rulebook.json -p react=true -p languages=all",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1618"
+      "LastVersionUsed": "v2026.11.22.1803"
     },
     {
       "IsSSoTTranspiler": false,

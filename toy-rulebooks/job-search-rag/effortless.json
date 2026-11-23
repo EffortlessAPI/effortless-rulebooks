@@ -56,7 +56,7 @@
       "RelativePath": "/explainer",
       "CommandLine": "rulebook-to-explainer-dag -i ../effortless-rulebook/job-search-rag-rulebook.json -p languages=all",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1618"
+      "LastVersionUsed": "v2026.11.22.1803"
     },
     {
       "IsSSoTTranspiler": false,

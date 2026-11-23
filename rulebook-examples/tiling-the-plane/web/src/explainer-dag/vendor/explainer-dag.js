@@ -55,6 +55,7 @@
       provOffTitle: "Show ƒ provenance glyphs on cells with explorable provenance.",
       downloadXlsx: "Download workbook", downloadXlsxTitle: "Download the rulebook as an Excel workbook (.xlsx)",
       gearShowAs: "Show as", gearLanguage: "Language",
+      modalResize: "Drag to resize (double-click to reset)",
       navSearch: "Filter tables and fields…",
       navDerivedOnly: "Derived only",
       navNoMatch: "Nothing matches.",
@@ -168,6 +169,7 @@
       provOffTitle: "由来を確認できるセルに ƒ バッジを表示します。",
       downloadXlsx: "ワークブックをダウンロード", downloadXlsxTitle: "ルールブックをExcelワークブック（.xlsx）としてダウンロードします",
       gearShowAs: "表示形式", gearLanguage: "言語",
+      modalResize: "ドラッグでサイズ変更（ダブルクリックで元に戻す）",
       navSearch: "テーブルとフィールドを絞り込む…",
       navDerivedOnly: "導出のみ",
       navNoMatch: "一致するものがありません。",
@@ -279,6 +281,7 @@
       provOffTitle: "ƒ-Herkunftssymbole an Zellen mit nachvollziehbarer Herkunft anzeigen.",
       downloadXlsx: "Arbeitsmappe laden", downloadXlsxTitle: "Das Regelbuch als Excel-Arbeitsmappe (.xlsx) herunterladen",
       gearShowAs: "Darstellung", gearLanguage: "Sprache",
+      modalResize: "Ziehen zum Ändern der Größe (Doppelklick setzt zurück)",
       navSearch: "Tabellen und Felder filtern…",
       navDerivedOnly: "Nur abgeleitete",
       navNoMatch: "Keine Treffer.",
@@ -394,6 +397,7 @@
       provOffTitle: "Mostrar los glifos ƒ de procedencia en las celdas con procedencia explorable.",
       downloadXlsx: "Descargar libro", downloadXlsxTitle: "Descargar el libro de reglas como libro de Excel (.xlsx)",
       gearShowAs: "Mostrar como", gearLanguage: "Idioma",
+      modalResize: "Arrastra para cambiar el tamaño (doble clic para restablecer)",
       navSearch: "Filtrar tablas y campos…",
       navDerivedOnly: "Solo derivados",
       navNoMatch: "Nada coincide.",
@@ -509,6 +513,7 @@
       provOffTitle: "Afficher les glyphes ƒ de provenance sur les cellules dont la provenance est explorable.",
       downloadXlsx: "Télécharger le classeur", downloadXlsxTitle: "Télécharger le livre de règles au format classeur Excel (.xlsx)",
       gearShowAs: "Afficher en", gearLanguage: "Langue",
+      modalResize: "Faites glisser pour redimensionner (double-clic pour réinitialiser)",
       navSearch: "Filtrer les tables et les champs…",
       navDerivedOnly: "Dérivés seulement",
       navNoMatch: "Aucun résultat.",
@@ -624,6 +629,7 @@
       provOffTitle: "Mostrar os glifos ƒ de proveniência nas células com proveniência explorável.",
       downloadXlsx: "Baixar planilha", downloadXlsxTitle: "Baixar o livro de regras como planilha do Excel (.xlsx)",
       gearShowAs: "Mostrar como", gearLanguage: "Idioma",
+      modalResize: "Arraste para redimensionar (clique duas vezes para redefinir)",
       navSearch: "Filtrar tabelas e campos…",
       navDerivedOnly: "Somente derivados",
       navNoMatch: "Nada corresponde.",
@@ -739,6 +745,7 @@
       provOffTitle: "Mostra i glifi ƒ di provenienza sulle celle con provenienza esplorabile.",
       downloadXlsx: "Scarica la cartella", downloadXlsxTitle: "Scarica il libro delle regole come cartella di lavoro Excel (.xlsx)",
       gearShowAs: "Mostra come", gearLanguage: "Lingua",
+      modalResize: "Trascina per ridimensionare (doppio clic per ripristinare)",
       navSearch: "Filtra tabelle e campi…",
       navDerivedOnly: "Solo derivati",
       navNoMatch: "Nessun risultato.",
@@ -854,6 +861,7 @@
       provOffTitle: "ƒ-herkomstsymbolen tonen op cellen met verkenbare herkomst.",
       downloadXlsx: "Werkmap downloaden", downloadXlsxTitle: "Het regelboek downloaden als Excel-werkmap (.xlsx)",
       gearShowAs: "Weergeven als", gearLanguage: "Taal",
+      modalResize: "Sleep om het formaat te wijzigen (dubbelklik om te herstellen)",
       navSearch: "Tabellen en velden filteren…",
       navDerivedOnly: "Alleen afgeleide",
       navNoMatch: "Niets gevonden.",
@@ -969,6 +977,7 @@
       provOffTitle: "Показывать значки происхождения ƒ на ячейках, происхождение которых можно изучить.",
       downloadXlsx: "Скачать книгу", downloadXlsxTitle: "Скачать свод правил как книгу Excel (.xlsx)",
       gearShowAs: "Показывать как", gearLanguage: "Язык",
+      modalResize: "Перетащите, чтобы изменить размер (двойной щелчок — сбросить)",
       navSearch: "Фильтр таблиц и полей…",
       navDerivedOnly: "Только производные",
       navNoMatch: "Ничего не найдено.",
@@ -1082,6 +1091,7 @@
       provOffTitle: "在可追溯来源的单元格上显示 ƒ 溯源标记。",
       downloadXlsx: "下载工作簿", downloadXlsxTitle: "将规则手册下载为 Excel 工作簿（.xlsx）",
       gearShowAs: "显示方式", gearLanguage: "语言",
+      modalResize: "拖动调整大小（双击恢复默认）",
       navSearch: "筛选表和字段…",
       navDerivedOnly: "仅派生",
       navNoMatch: "没有匹配项。",
@@ -1193,6 +1203,7 @@
       provOffTitle: "जिन सेल की उत्पत्ति देखी जा सकती है, उन पर ƒ उत्पत्ति चिह्न दिखाएँ।",
       downloadXlsx: "वर्कबुक डाउनलोड करें", downloadXlsxTitle: "नियम-पुस्तिका को Excel वर्कबुक (.xlsx) के रूप में डाउनलोड करें",
       gearShowAs: "ऐसे दिखाएँ", gearLanguage: "भाषा",
+      modalResize: "आकार बदलने के लिए खींचें (रीसेट के लिए डबल-क्लिक करें)",
       navSearch: "तालिकाएँ और फ़ील्ड फ़िल्टर करें…",
       navDerivedOnly: "केवल व्युत्पन्न",
       navNoMatch: "कुछ भी मेल नहीं खाता।",
@@ -1308,6 +1319,7 @@
       provOffTitle: "إظهار رموز ƒ على الخلايا التي يمكن استكشاف مصدرها.",
       downloadXlsx: "تنزيل المصنّف", downloadXlsxTitle: "تنزيل دفتر القواعد في صورة مصنّف Excel (.xlsx)",
       gearShowAs: "العرض", gearLanguage: "اللغة",
+      modalResize: "اسحب لتغيير الحجم (انقر مرتين لإعادة الضبط)",
       navSearch: "تصفية الجداول والحقول…",
       navDerivedOnly: "المشتقة فقط",
       navNoMatch: "لا توجد نتائج.",
@@ -1421,6 +1433,7 @@
       provOffTitle: "Tampilkan tanda asal-usul ƒ pada sel yang asal-usulnya dapat ditelusuri.",
       downloadXlsx: "Unduh buku kerja", downloadXlsxTitle: "Unduh buku aturan sebagai buku kerja Excel (.xlsx)",
       gearShowAs: "Tampilkan sebagai", gearLanguage: "Bahasa",
+      modalResize: "Seret untuk mengubah ukuran (klik dua kali untuk mengatur ulang)",
       navSearch: "Saring tabel dan kolom…",
       navDerivedOnly: "Hanya turunan",
       navNoMatch: "Tidak ada yang cocok.",
@@ -1536,6 +1549,7 @@
       provOffTitle: "출처를 살펴볼 수 있는 셀에 ƒ 출처 표시를 나타냅니다.",
       downloadXlsx: "통합 문서 내려받기", downloadXlsxTitle: "룰북을 Excel 통합 문서(.xlsx)로 내려받기",
       gearShowAs: "표시 방식", gearLanguage: "언어",
+      modalResize: "드래그하여 크기 조절 (두 번 클릭하면 초기화)",
       navSearch: "테이블과 필드 필터…",
       navDerivedOnly: "파생만",
       navNoMatch: "일치하는 항목이 없습니다.",
@@ -1649,6 +1663,7 @@
       provOffTitle: "İncelenebilir kökeni olan hücrelerde ƒ köken simgelerini göster.",
       downloadXlsx: "Çalışma kitabını indir", downloadXlsxTitle: "Kural kitabını Excel çalışma kitabı (.xlsx) olarak indir",
       gearShowAs: "Şöyle göster", gearLanguage: "Dil",
+      modalResize: "Yeniden boyutlandırmak için sürükleyin (sıfırlamak için çift tıklayın)",
       navSearch: "Tabloları ve alanları süz…",
       navDerivedOnly: "Yalnızca türetilmiş",
       navNoMatch: "Eşleşen yok.",
@@ -1762,6 +1777,7 @@
       provOffTitle: "Hiện ký hiệu nguồn gốc ƒ trên những ô có nguồn gốc xem được.",
       downloadXlsx: "Tải sổ làm việc", downloadXlsxTitle: "Tải bộ quy tắc về dưới dạng sổ làm việc Excel (.xlsx)",
       gearShowAs: "Hiển thị dạng", gearLanguage: "Ngôn ngữ",
+      modalResize: "Kéo để đổi kích thước (nhấp đúp để đặt lại)",
       navSearch: "Lọc bảng và trường…",
       navDerivedOnly: "Chỉ trường suy ra",
       navNoMatch: "Không có kết quả.",
@@ -3064,11 +3080,82 @@
     modal.id = "effortless-explainer-modal";
     speaks(modal).className = "dag-modal hidden";
     modal.innerHTML =
-      '<div class="dag-modal-backdrop"></div><div class="dag-modal-panel"><button type="button" class="dag-modal-close">×</button><div id="effortless-explainer-modal-body"></div></div>';
+      '<div class="dag-modal-backdrop"></div><div class="dag-modal-panel"><button type="button" class="dag-modal-close">×</button><div id="effortless-explainer-modal-body"></div>' +
+      `<div class="dag-modal-grip" role="separator" aria-label="${esc(tt("modalResize"))}" title="${esc(tt("modalResize"))}"></div></div>`;
     document.body.appendChild(modal);
     modal.querySelector(".dag-modal-backdrop").onclick = closeModal;
     modal.querySelector(".dag-modal-close").onclick = closeModal;
+    wireModalGrip(modal.querySelector(".dag-modal-panel"), modal.querySelector(".dag-modal-grip"));
     return modal;
+  }
+
+  // The popup's size: bigger by default on a tablet and up (dag.css), and the person's to change by
+  // dragging the grip in its corner. The choice is remembered. The popup is centred, so the grip
+  // moves both edges and the corner stays under the pointer.
+  const MODAL_SIZE_KEY = "effortless-explainer-modal-size";
+  const MODAL_MIN = { w: 360, h: 280 };
+  const MODAL_MARGIN = 16;          // what a remembered size always leaves of the window
+  const MODAL_RESIZABLE_FROM = 768; // a phone's popup is full width: nothing to resize
+  function clampModalSize(size) {
+    const maxW = Math.max(MODAL_MIN.w, window.innerWidth - MODAL_MARGIN);
+    const maxH = Math.max(MODAL_MIN.h, window.innerHeight - MODAL_MARGIN);
+    return {
+      w: Math.round(Math.min(maxW, Math.max(MODAL_MIN.w, size.w))),
+      h: Math.round(Math.min(maxH, Math.max(MODAL_MIN.h, size.h))),
+    };
+  }
+  // null when the person has never set one. A stored value that is not a size is an error: it says which key.
+  function modalSize() {
+    let raw = null;
+    try { raw = localStorage.getItem(MODAL_SIZE_KEY); } catch { /* no storage: the default stands */ }
+    if (raw === null) return null;
+    let v;
+    try { v = JSON.parse(raw); } catch { v = null; }
+    if (!v || !Number.isFinite(v.w) || !Number.isFinite(v.h)) {
+      throw new Error(`${MODAL_SIZE_KEY} holds ${JSON.stringify(raw)}, not {"w": <px>, "h": <px>}; clear that key in localStorage or call EffortlessExplainer.resetModalSize()`);
+    }
+    return clampModalSize(v);   // shrunk to fit a smaller window for now; the stored choice itself is untouched
+  }
+  function setModalSize(size) {
+    const kept = clampModalSize(size);
+    try { localStorage.setItem(MODAL_SIZE_KEY, JSON.stringify(kept)); } catch { /* no storage: this page only */ }
+    return kept;
+  }
+  function resetModalSize() {
+    try { localStorage.removeItem(MODAL_SIZE_KEY); } catch { /* no storage */ }
+  }
+  function resizedModalSize(start, dx, dy) {
+    return clampModalSize({ w: start.w + 2 * dx, h: start.h + 2 * dy });
+  }
+  function modalSizeApplies() { return window.innerWidth >= MODAL_RESIZABLE_FROM; }
+  function applyModalSize(panel, size) {
+    const s = size && modalSizeApplies() ? size : null;
+    panel.style.width = s ? s.w + "px" : "";
+    panel.style.height = s ? s.h + "px" : "";
+    panel.style.maxWidth = s ? "none" : "";
+    panel.style.maxHeight = s ? "none" : "";
+  }
+  function wireModalGrip(panel, grip) {
+    applyModalSize(panel, modalSize());
+    window.addEventListener("resize", () => applyModalSize(panel, modalSize()));
+    grip.addEventListener("dblclick", () => { resetModalSize(); applyModalSize(panel, null); });   // back to the default
+    grip.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      const box = panel.getBoundingClientRect();
+      const start = { w: box.width, h: box.height, x: e.clientX, y: e.clientY };
+      try { grip.setPointerCapture(e.pointerId); } catch { /* a synthetic event has no pointer to capture */ }
+      let size = null;
+      const move = (m) => { size = resizedModalSize(start, m.clientX - start.x, m.clientY - start.y); applyModalSize(panel, size); };
+      const done = () => {
+        grip.removeEventListener("pointermove", move);
+        grip.removeEventListener("pointerup", done);
+        grip.removeEventListener("pointercancel", done);
+        if (size) setModalSize(size);
+      };
+      grip.addEventListener("pointermove", move);
+      grip.addEventListener("pointerup", done);
+      grip.addEventListener("pointercancel", done);
+    });
   }
   // What the modal has shown since it opened, so its Back button steps back
   // through that and never through the host page's history.
@@ -3797,6 +3884,7 @@
     openModal,
     closeModal,
     modalBack,
+    modalSize, setModalSize, resetModalSize, resizedModalSize, modalSizeApplies,
     setGlyphsOn,
     mountToggle,
     cornerHtml,
