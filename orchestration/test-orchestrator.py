@@ -1205,8 +1205,7 @@ def grade_substrate(substrate_name: str, all_answer_keys: dict, rulebook: dict) 
 
                 # If the expected value is null/empty, the substrate isn't on
                 # the hook for it. Compare normally — compare_values will pass.
-                passed = compare_values(expected_val, actual_val, col_datatypes.get(col))
-
+passed = record_present and compare_values(expected_val, actual_val, col_datatypes.get(col))
                 if passed:
                     entity_result["fields_passed"] += 1
                     entity_result["by_class"][field_class]["passed"] += 1
