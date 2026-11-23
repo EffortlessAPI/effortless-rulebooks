@@ -38,6 +38,8 @@ The authoritative list is `ProjectLayoutSlots` in the root rulebook. The univers
 
 `rulebook-examples/` and `toy-rulebooks/` are two physical folders for one concept. They are all project rows: `Area` records the witnessed folder and `Kind` (root | toy | example) is the **declared** classification, a statement of intent that a file count cannot change. `IsFullyImplemented` and `ReadinessState` are derived from slot witnesses against the declared kind; `IsMisfiled` means the folder disagrees with the declaration. To re-classify a project, change its `Kind` and move the folder.
 
+**Every folder directly under either area is a project and needs three rows** in the root rulebook: `RulebookDomains`, its `ProjectLaunchProfiles` row, and that profile's primary `ProjectLocalServices` row. Without them `scripts/scan-project-slots.py` refuses to run at all (found on 2026-11-22 with its last witnesses dated 2026-09-05: two folders and one launch profile were missing); `python3 scripts/tests/test_scan_project_slots.py` says so without running the scan. The one folder that is not a project is `assets/` (the images the areas' READMEs show; `NOT_PROJECTS` in the scan).
+
 Two containers deliberately carry no rulebook and are flagged `IsIntentionalException`: `toy-rulebooks/naked-claude-vs-effortless-claude/` (an experiment tree) and `toy-rulebooks/volunteer-shift-scheduler-demo/` (a scaffold consuming its sibling's rulebook).
 
 ## The explainer is on every project (2026-11-22)

@@ -5582,6 +5582,40 @@
         "ParentDomainId": null,
         "ProgressionNote": null,
         "Project": "erb-001"
+      },
+      {
+        "DomainId": "domain-a1-effortless-init-sample",
+        "Area": "toy-rulebooks",
+        "Kind": "toy",
+        "IsIntentionalException": false,
+        "Name": "Effortless Init Sample",
+        "DomainName": "Effortless Init Sample",
+        "RelativePath": "toy-rulebooks/a1-effortless-init-sample/",
+        "RulebookPath": "toy-rulebooks/a1-effortless-init-sample/effortless-rulebook/effortless-rulebook.json",
+        "ComplexityLevel": "minimal",
+        "TableCount": "1",
+        "KeyFeatures": "single-entity, calculated-field, starter",
+        "Purpose": "What `effortless -init` writes: the HelloWhos starter rulebook (one table, one calculated field), built by ten tools.",
+        "ParentDomainId": null,
+        "ProgressionNote": "The starting point of every project: the starter rulebook before anything in it is replaced.",
+        "Project": "erb-001"
+      },
+      {
+        "DomainId": "domain-rulebook-compiler",
+        "Area": "toy-rulebooks",
+        "Kind": "toy",
+        "IsIntentionalException": false,
+        "Name": "Rulebook Compiler",
+        "DomainName": "Rulebook Compiler",
+        "RelativePath": "toy-rulebooks/rulebook-compiler/",
+        "RulebookPath": "toy-rulebooks/rulebook-compiler/effortless-rulebook/effortless-rulebook.json",
+        "ComplexityLevel": "minimal",
+        "TableCount": "2",
+        "KeyFeatures": "lookup, compile-rulebook, xlsx",
+        "Purpose": "The starter rulebook plus a second table whose lookup reads the first: the smallest input for compile-rulebook, with its Excel export.",
+        "ParentDomainId": null,
+        "ProgressionNote": null,
+        "Project": "erb-001"
       }
     ]
   },
@@ -6434,6 +6468,45 @@
         "HasCompleteInstructions": true,
         "HasPrimaryService": true,
         "IsLaunchContractComplete": true
+      },
+      {
+        "ProjectLaunchProfileId": "launch-domain-a1-effortless-init-sample",
+        "Domain": "domain-a1-effortless-init-sample",
+        "WorkingDirectory": "toy-rulebooks/a1-effortless-init-sample",
+        "StartCommand": "./start.sh",
+        "ExperienceDescription": "Authoritative Effortless rulebook",
+        "PrerequisiteNotes": "Python 3, lsof, and the named authoritative artifact are required.",
+        "ExperienceKind": "rulebook",
+        "IsStartRequired": true,
+        "RequiresLocalUrl": true,
+        "Name": "domain-a1-effortless-init-sample launch",
+        "LocalServices": "domain-a1-effortless-init-sample:primary"
+      },
+      {
+        "ProjectLaunchProfileId": "launch-domain-rulebook-compiler",
+        "Domain": "domain-rulebook-compiler",
+        "WorkingDirectory": "toy-rulebooks/rulebook-compiler",
+        "StartCommand": "./start.sh",
+        "ExperienceDescription": "Authoritative Effortless rulebook",
+        "PrerequisiteNotes": "Python 3, lsof, and the named authoritative artifact are required.",
+        "ExperienceKind": "rulebook",
+        "IsStartRequired": true,
+        "RequiresLocalUrl": true,
+        "Name": "domain-rulebook-compiler launch",
+        "LocalServices": "domain-rulebook-compiler:primary"
+      },
+      {
+        "ProjectLaunchProfileId": "launch-domain-cmcc-core-r0",
+        "Domain": "domain-cmcc-core-r0",
+        "WorkingDirectory": "rulebook-examples/cmcc-core-r0",
+        "StartCommand": "./start.sh",
+        "ExperienceDescription": "CMCC-Core Representation Theorem conformance-matrix explorer",
+        "PrerequisiteNotes": "Python 3, npm, psql and lsof are required; the launcher dies if the project database has no vw_* views.",
+        "ExperienceKind": "web",
+        "IsStartRequired": true,
+        "RequiresLocalUrl": true,
+        "Name": "domain-cmcc-core-r0 launch",
+        "LocalServices": "domain-cmcc-core-r0:primary"
       }
     ]
   },
@@ -7059,6 +7132,36 @@
         "HasHealthUrl": true,
         "IsHttpService": true,
         "IsComplete": true
+      },
+      {
+        "ProjectLocalServiceId": "domain-a1-effortless-init-sample:primary",
+        "LaunchProfile": "launch-domain-a1-effortless-init-sample",
+        "ServiceRole": "primary",
+        "LocalUrl": "http://localhost:43208/effortless-rulebook.json",
+        "HealthUrl": "http://localhost:43208/effortless-rulebook.json",
+        "SortOrder": 1,
+        "IsPrimaryFlag": 1,
+        "Name": "launch-domain-a1-effortless-init-sample primary"
+      },
+      {
+        "ProjectLocalServiceId": "domain-rulebook-compiler:primary",
+        "LaunchProfile": "launch-domain-rulebook-compiler",
+        "ServiceRole": "primary",
+        "LocalUrl": "http://localhost:43209/effortless-rulebook.json",
+        "HealthUrl": "http://localhost:43209/effortless-rulebook.json",
+        "SortOrder": 1,
+        "IsPrimaryFlag": 1,
+        "Name": "launch-domain-rulebook-compiler primary"
+      },
+      {
+        "ProjectLocalServiceId": "domain-cmcc-core-r0:primary",
+        "LaunchProfile": "launch-domain-cmcc-core-r0",
+        "ServiceRole": "primary",
+        "LocalUrl": "http://localhost:43106",
+        "HealthUrl": "http://localhost:43306/api/views",
+        "SortOrder": 1,
+        "IsPrimaryFlag": 1,
+        "Name": "launch-domain-cmcc-core-r0 primary"
       }
     ]
   },

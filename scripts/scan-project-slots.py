@@ -968,6 +968,11 @@ def ensure_slot_model(rulebook: OrderedDict[str, Any], repo_root: Path) -> None:
     )
 
 
+# Folders directly under an area that are not projects: `assets/` holds the images the area's
+# READMEs show. Every other folder there is a project and must be in the rulebook.
+NOT_PROJECTS = {"assets"}
+
+
 def modeled_project_directories(
     rulebook: OrderedDict[str, Any],
     repo_root: Path,
@@ -979,7 +984,7 @@ def modeled_project_directories(
         discovered.update(
             f"domain-{path.name}"
             for path in area_path.iterdir()
-            if path.is_dir() and not path.name.startswith(".")
+            if path.is_dir() and not path.name.startswith(".") and path.name not in NOT_PROJECTS
         )
 
     rows = rulebook["RulebookDomains"]["data"]
@@ -987,7 +992,9 @@ def modeled_project_directories(
     require(
         discovered == modeled,
         "RulebookDomains/filesystem mismatch: "
-        f"unmodeled={sorted(discovered - modeled)} missing={sorted(modeled - discovered)}",
+        f"unmodeled={sorted(discovered - modeled)} missing={sorted(modeled - discovered)}. "
+        "A project folder needs three rows: RulebookDomains, its ProjectLaunchProfiles row, and that "
+        "profile's primary ProjectLocalServices row (a folder that is not a project goes in NOT_PROJECTS).",
     )
 
     result: list[tuple[dict[str, Any], Path, str]] = []
