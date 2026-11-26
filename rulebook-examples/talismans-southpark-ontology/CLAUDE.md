@@ -68,6 +68,13 @@ proves the rulebook file's own candidates are exactly its output. Anything that 
 removes a thing, a literal fact, a property or a property axiom must call `syncCandidates`
 afterwards (the admin's write path and the Add fact form do).
 
+## This rulebook is also the definition of the ontology form
+
+`orchestration/ontology_form.py` (the tools `oss-rulebook-to-ontology-rulebook` and `oss-ontology-rulebook-to-rulebook`)
+reads the model tables here (`Graphs`, `Rules`, `FiringKinds`, `Things`, `Portraits`, `PortraitAliases`, `Properties`,
+`PropertyAxioms`, `Statements`, `Firings`, `DisjointChecks`) as the shape any rulebook is written into. After changing
+any of their fields, run `python3 ../../scripts/tests/test_ontology_form.py` from here.
+
 ## Formula traps found here (all three engines must agree)
 
 - **Arithmetic on a blank, and a lookup through an empty link.** Postgres, TypeScript and
