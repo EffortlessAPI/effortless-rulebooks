@@ -127,3 +127,24 @@ def run_injector(relative_script: str, extra_inputs: dict | None = None) -> None
     (output_dir / "effortless-overwrite-modes.json").write_text(
         json.dumps(OVERWRITE_MODES, indent=2) + "\n", encoding="utf-8"
     )
+
+
+def run_rulebook_transform(transform, output_suffix: str) -> None:
+    """Run a rulebook -> rulebook tool under the CLI's script contract.
+
+    ``transform`` takes the parsed rulebook the step sent with ``-i`` and returns
+    the new document; it is written to the output FileSet as
+    ``<input stem><output_suffix>``, never under the input's own name, so the CLI
+    treats it as a generated file beside the step and not as an in-place upsert of
+    the rulebook. Any failure inside ``transform`` raises and fails the step.
+    """
+    _assert_oss_prefixed()
+    input_dir = _require_dir("EFFORTLESS_INPUT_DIR")
+    output_dir = _require_dir("EFFORTLESS_OUTPUT_DIR")
+    rulebook = _rulebook_from(input_dir, set())
+    document = transform(json.loads(rulebook.read_text(encoding="utf-8")))
+    target = output_dir / f"{rulebook.stem}{output_suffix}"
+    target.write_text(json.dumps(document, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    (output_dir / "effortless-overwrite-modes.json").write_text(
+        json.dumps(OVERWRITE_MODES, indent=2) + "\n", encoding="utf-8"
+    )

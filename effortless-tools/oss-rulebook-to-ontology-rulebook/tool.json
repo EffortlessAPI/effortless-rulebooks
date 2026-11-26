@@ -1,0 +1,10 @@
+{
+  "name": "oss-rulebook-to-ontology-rulebook",
+  "runtime": "script",
+  "entry": "transpiler.py",
+  "description": "Inject any rulebook into the South Park ontology form: tables become classes, records individuals, fields properties, cells statements; formulas outside the rule vocabulary ride along verbatim. oss-ontology-rulebook-to-rulebook gives the same rulebook back.",
+  "tags": [
+    "oss",
+    "ontology"
+  ]
+}
