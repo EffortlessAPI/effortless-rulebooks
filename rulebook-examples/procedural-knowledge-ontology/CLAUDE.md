@@ -374,7 +374,7 @@ PKO was created by Valentina Anita Carriero, Mario Scrocca, Ilaria Baroni, Anton
 
 ## Local transpiler bus (`127.0.0.1:4242`)
 
-> **All 11 local transpilers are hosted by the effortless CLI itself.** Once you
+> **All 13 local transpilers are hosted by the effortless CLI itself.** Once you
 > run `./start.sh` from the repo root (or `effortless serve -port 4242` there),
 > every tool under `effortless-tools/<name>/` — `oss-rulebook-to-python`,
 > `oss-rulebook-to-golang`, `oss-rulebook-to-cobol`, `oss-rulebook-to-owl`, and
