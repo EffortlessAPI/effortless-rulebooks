@@ -22,7 +22,7 @@
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
       "RelativePath": "/effortless-postgres",
-      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/simpsons-paradox-rulebook.json -p memoize_repeated_calls=true",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/simpsons-paradox-rulebook.json -p memoize_repeated_calls=true -p database=erb_simpsons_paradox",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.11.17.1626",
       "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
@@ -32,7 +32,7 @@
       "IsSSoTTranspiler": false,
       "Name": "init-db",
       "RelativePath": "/effortless-postgres",
-      "CommandLine": "-exec ./reset-rulebook-db.sh",
+      "CommandLine": "-exec ../../../scripts/reset-project-db.py",
       "IsDisabled": false
     },
     {

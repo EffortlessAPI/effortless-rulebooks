@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en" data-lang="en" class="show-english show-desc show-consumers">
+<html lang="en" data-lang="en" class="show-english show-desc show-consumers show-data">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Star Trek — RuleSpeak®</title>
+<title>Star Trek — Docs</title>
 <style>
 
 :root{
@@ -19,6 +19,10 @@ body{margin:0;font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,
 a{color:var(--calc);text-decoration:none}
 a:hover{text-decoration:underline}
 code{font:0.85em ui-monospace,SFMono-Regular,Menlo,monospace;background:#f3f3f7;padding:1px 5px;border-radius:4px}
+/* A right-to-left language (dir=rtl on its .lang-doc): the layout mirrors by
+   itself, because every side below is inline-start / inline-end. Formulas and
+   code are left-to-right text whatever surrounds them. */
+code,.fx{direction:ltr;unicode-bidi:isolate}
 
 /* ── One language visible at a time; <html data-lang> picks it (rules per
       language are appended at render time). ─────────────────────────────── */
@@ -32,6 +36,7 @@ html.show-formula   .elem-formula{display:block}
 html.show-desc      .elem-desc{display:block}
 html.show-inputs    .elem-inputs{display:block}
 html.show-consumers .elem-consumers{display:block}
+html.show-data      .elem-data{display:block}
 
 /* ── Sticky top bar — brand · breadcrumb · language · gear ───────────────── */
 .topbar{position:sticky;top:0;z-index:40;height:var(--bar-h);
@@ -42,7 +47,7 @@ html.show-consumers .elem-consumers{display:block}
 .topbar-brand{font-weight:800;font-size:15px;color:var(--ink);white-space:nowrap;flex:none}
 .topbar-brand:hover{text-decoration:none}
 .topbar-tag{font-size:11px;font-weight:700;color:var(--calc);background:var(--calc-bg);
-  padding:1px 7px;border-radius:999px;margin-left:4px;vertical-align:middle}
+  padding:1px 7px;border-radius:999px;margin-inline-start:4px;vertical-align:middle}
 .crumb{flex:1;min-width:0;display:flex;align-items:center;gap:7px;
   font-size:13px;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .crumb-entity{font-weight:700;color:var(--ink)}
@@ -81,7 +86,7 @@ html.show-consumers .elem-consumers{display:block}
 .doc-header-inner{max-width:960px;margin:0 auto;padding:18px 24px}
 .doc-title{margin:0;font-size:24px;font-weight:800}
 .doc-title-sub{font-size:13px;font-weight:600;color:var(--calc);background:var(--calc-bg);
-  padding:2px 8px;border-radius:999px;vertical-align:middle;margin-left:6px}
+  padding:2px 8px;border-radius:999px;vertical-align:middle;margin-inline-start:6px}
 .doc-lede{margin:6px 0 0;font-style:italic;color:var(--muted)}
 .doc-note{margin:8px 0 12px;color:var(--muted);font-size:13px;max-width:70ch}
 .narr-hint{margin:8px 0 0;font-size:12px;color:var(--muted);max-width:78ch}
@@ -90,18 +95,18 @@ html.show-consumers .elem-consumers{display:block}
 .toc-title{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 8px}
 .toc-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
 .toc-list a{font-weight:600}
-.toc-meta{font-size:12px;color:var(--muted);margin-left:6px}
+.toc-meta{font-size:12px;color:var(--muted);margin-inline-start:6px}
 
 .entity{max-width:960px;margin:34px auto 0;padding:0 24px;scroll-margin-top:calc(var(--bar-h) + 14px)}
 .entity-head{border-bottom:2px solid var(--line);padding-bottom:8px;margin-bottom:14px}
 .entity-title{margin:0;font-size:21px;font-weight:800}
 .entity-synopsis{margin:4px 0 0;color:var(--muted);max-width:74ch}
 
-.field{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--rel);
+.field{background:var(--card);border:1px solid var(--line);border-inline-start:4px solid var(--rel);
   border-radius:10px;padding:14px 16px;margin:0 0 12px;scroll-margin-top:calc(var(--bar-h) + 14px)}
-.field.tone-raw{border-left-color:var(--raw)} .field.tone-calc{border-left-color:var(--calc)}
-.field.tone-agg{border-left-color:var(--agg)} .field.tone-lookup{border-left-color:var(--lookup)}
-.field.tone-rel{border-left-color:var(--rel)}
+.field.tone-raw{border-inline-start-color:var(--raw)} .field.tone-calc{border-inline-start-color:var(--calc)}
+.field.tone-agg{border-inline-start-color:var(--agg)} .field.tone-lookup{border-inline-start-color:var(--lookup)}
+.field.tone-rel{border-inline-start-color:var(--rel)}
 .field-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .field-glyph{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;
   border-radius:6px;font-weight:700;color:#fff;font-size:13px}
@@ -131,12 +136,12 @@ html.show-consumers .elem-consumers{display:block}
 .ref{border-bottom:1px dashed var(--calc);font-weight:600}
 
 .rt-headline{margin:0 0 4px}
-.rt-priority{margin:4px 0;padding-left:22px}
+.rt-priority{margin:4px 0;padding-inline-start:22px}
 .rt-priority>li{margin:2px 0}
 .rt-value{font-weight:700;color:var(--calc)}
 .rt-otherwise{color:var(--muted);font-style:italic}
 .rt-group-label{font-weight:600}
-.rt-group{margin:2px 0 6px;padding-left:20px}
+.rt-group{margin:2px 0 6px;padding-inline-start:20px}
 
 .gt{margin-top:8px}
 .gt-body{margin:0;color:var(--muted)}
@@ -145,41 +150,44 @@ html.show-consumers .elem-consumers{display:block}
 .prov{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
 .prov>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
 .prov>summary::-webkit-details-marker{display:none}
-.prov>summary::before{content:'▸';display:inline-block;margin-right:6px;color:var(--muted);transition:transform .1s}
+.prov>summary::before{content:'▸';display:inline-block;margin-inline-end:6px;color:var(--muted);transition:transform .1s}
 .prov[open]>summary::before{transform:rotate(90deg)}
-.count{font-size:11px;font-weight:700;background:#eee;color:#555;padding:1px 7px;border-radius:999px;margin-left:4px}
+.count{font-size:11px;font-weight:700;background:#eee;color:#555;padding:1px 7px;border-radius:999px;margin-inline-start:4px}
 .count-muted{background:#f5f5f5;color:#999}
-.prov-hint{font-size:12px;font-weight:400;color:var(--muted);margin-left:6px}
+.prov-hint{font-size:12px;font-weight:400;color:var(--muted);margin-inline-start:6px}
 .prov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:8px}
 .prov-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.input{display:block;border:1px solid var(--line);border-left:3px solid var(--rel);border-radius:8px;
+.input{display:block;border:1px solid var(--line);border-inline-start:3px solid var(--rel);border-radius:8px;
   padding:8px 10px;background:#fcfcfe}
-.input.tone-raw{border-left-color:var(--raw)} .input.tone-calc{border-left-color:var(--calc)}
-.input.tone-agg{border-left-color:var(--agg)} .input.tone-lookup{border-left-color:var(--lookup)}
-.input.tone-rel{border-left-color:var(--rel)}
+.input.tone-raw{border-inline-start-color:var(--raw)} .input.tone-calc{border-inline-start-color:var(--calc)}
+.input.tone-agg{border-inline-start-color:var(--agg)} .input.tone-lookup{border-inline-start-color:var(--lookup)}
+.input.tone-rel{border-inline-start-color:var(--rel)}
 .input:hover{background:#f4f3fb;text-decoration:none}
 .input-static{cursor:default}
 span.input-static:hover{background:#fcfcfe}
 .input-head{display:flex;align-items:center;gap:6px}
 .input-glyph{font-size:12px;color:var(--muted)}
 .input-name{font-weight:700;color:var(--ink)}
-.input-table{font-size:11px;color:var(--muted);margin-left:auto}
+.input-table{font-size:11px;color:var(--muted);margin-inline-start:auto}
 
-/* ── 6 Example Data (optional section) ─────────────────────────────────── */
-.sample-data{max-width:1040px;margin:32px auto 8px;padding:0 20px}
-.sample-title{font-size:20px;margin:0 0 6px}
-.sample-note{color:var(--muted);font-size:13px;margin:0 0 16px;max-width:70ch}
-.sample-entity{font-size:15px;margin:20px 0 8px;color:var(--raw)}
+/* ── Example data (per entity, collapsible; gear switch: data) ─────────── */
+.entity-data{margin:14px 0 4px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.entity-data>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
+.entity-data>summary::-webkit-details-marker{display:none}
+.entity-data>summary::before{content:'▸';display:inline-block;margin-inline-end:6px;color:var(--muted);transition:transform .1s}
+.entity-data[open]>summary::before{transform:rotate(90deg)}
+.entity-data .sample-scroll{margin-top:10px}
+.sample-note{max-width:960px;margin:16px auto 0;padding:0 24px;color:var(--muted);font-size:13px}
 .sample-scroll{overflow-x:auto}
 .sample-table{border-collapse:collapse;font-size:13px;background:var(--card);
   border:1px solid var(--line);border-radius:6px}
 .sample-table th,.sample-table td{padding:6px 12px;border-bottom:1px solid var(--line);
-  text-align:left;vertical-align:top;white-space:nowrap}
+  text-align:start;vertical-align:top;white-space:nowrap}
 .sample-table thead th{background:#f5f5fa;font-weight:600;color:var(--ink)}
 .sample-table tbody tr:last-child td{border-bottom:none}
 .sample-table th.sample-derived{background:var(--calc-bg);color:var(--calc)}
 .sample-table td.sample-derived{color:var(--calc)}
-.sample-fx{margin-left:4px;opacity:.75}
+.sample-fx{margin-inline-start:4px;opacity:.75}
 .sample-legend{color:var(--muted);font-size:12px;margin-top:12px}
 .input-en{display:block;margin-top:3px;font-size:13px;color:var(--muted)}
 .ref-pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;
@@ -190,7 +198,7 @@ span.input-static:hover{background:#fcfcfe}
 .ref-pill-tbl{font-weight:400;color:var(--muted)}
 
 .field-note{margin:8px 0 0;font-size:13px;font-style:italic;color:var(--muted);
-  border-left:2px solid var(--line);padding-left:10px}
+  border-inline-start:2px solid var(--line);padding-inline-start:10px}
 
 .doc-footer{max-width:960px;margin:40px auto;padding:18px 24px;border-top:1px solid var(--line);
   color:var(--muted);font-size:13px}
@@ -202,6 +210,79 @@ span.input-static:hover{background:#fcfcfe}
 :target{animation:flash 1.2s ease}
 @keyframes flash{0%{background:var(--calc-bg)}100%{background:var(--card)}}
 
+/* ── Navigator: left nav, overview views, field tabs, graph ─────────────────
+   Big rulebooks were a single long page. Now (from nine entities up) the page shows the overview,
+   or ONE entity at a time, with a nav that is always on screen. Logical properties throughout. */
+.docgrid{max-width:1320px;margin:18px auto 0;padding:0 24px;display:grid;
+  grid-template-columns:290px minmax(0,1fr);gap:0 30px;align-items:start}
+.docmain{min-width:0}
+.docmain .entity,.docmain .ov{max-width:900px;margin-inline:0;padding:0}
+.sidenav{position:sticky;top:calc(var(--bar-h) + 12px);max-height:calc(100vh - var(--bar-h) - 24px);
+  display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;background:#fff;
+  font-size:13px;overflow:hidden}
+.sn-head{padding:10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.sn-index{font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:var(--calc);
+  display:flex;justify-content:space-between}
+.sn-q,.ov-q,.tab-q{width:100%;padding:6px 9px;border:1px solid #d0d7de;border-radius:6px;font:inherit;background:#fff;color:inherit}
+.sn-q:focus,.ov-q:focus,.tab-q:focus{outline:2px solid var(--calc);border-color:transparent}
+.sn-body{overflow:auto;padding:6px 6px 12px;overscroll-behavior:contain}
+.sn-foot{border-top:1px solid var(--line);padding:8px 10px}
+.sn-foot button{all:unset;cursor:pointer;color:var(--calc);font-size:12px}
+.sn-empty{padding:10px;color:var(--muted)}
+.sn-group{margin:2px 0}
+.sn-gtitle{display:flex;justify-content:space-between;gap:8px;padding:5px 6px;cursor:pointer;list-style:none;
+  font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#555;border-radius:5px}
+.sn-gtitle::-webkit-details-marker{display:none}
+.sn-gtitle::before{content:'▸';color:#999;margin-inline-end:6px;display:inline-block;transition:transform .1s}
+.sn-group[open]>.sn-gtitle::before{transform:rotate(90deg)}
+.sn-gtitle:hover{background:#eef0f4}
+.sn-gtitle span:nth-of-type(1){flex:1}
+.sn-n{font-weight:600;color:#888;letter-spacing:0;text-transform:none}
+.sn-group.has-current>.sn-gtitle{color:var(--calc)}
+.sn-t{display:flex;justify-content:space-between;gap:6px;padding:4px 8px;border-radius:6px;color:#222;font-weight:600}
+.sn-t:hover{background:#eef0f4;text-decoration:none}
+.sn-t.is-current{background:var(--calc-bg);color:var(--calc)}
+.sn-t b{font-size:10px;font-weight:700;color:var(--calc);background:var(--calc-bg);border-radius:999px;padding:1px 6px}
+.sn-fields{list-style:none;margin:2px 0 6px 10px;padding:0 0 0 6px;border-inline-start:2px solid var(--line)}
+.sn-f{display:flex;align-items:center;gap:6px;padding:2px 6px;border-radius:5px;color:#444;font-size:12px}
+.sn-f:hover{background:#eef0f4;text-decoration:none}
+.sn-f i{flex:none;width:14px;text-align:center;font-family:Georgia,serif;color:var(--rel)}
+.sn-f.tone-raw i{color:var(--raw)} .sn-f.tone-calc i{color:var(--calc)} .sn-f.tone-agg i{color:var(--agg)} .sn-f.tone-lookup i{color:var(--lookup)}
+.tabs{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.tab{display:inline-flex;gap:6px;align-items:center;padding:5px 11px;border:1px solid transparent;border-radius:999px;
+  background:transparent;font:600 12px/1 inherit;color:#555;cursor:pointer}
+.tab:hover{background:#eef0f4}
+.tab.is-active{background:var(--calc-bg);color:var(--calc);border-color:var(--calc)}
+.tab i{font-style:normal;font-size:11px;opacity:.7}
+.tabs .tab-q,.tabs .ov-q{margin-inline-start:auto;width:15em;max-width:100%}
+.field[hidden]{display:none}
+.ov-group{border:1px solid var(--line);border-radius:10px;background:#fff;padding:2px 10px 12px;margin-bottom:12px}
+.ov-gtitle{display:flex;justify-content:space-between;padding:5px 2px;cursor:pointer;list-style:none;font-weight:700;
+  font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#555}
+.ov-gtitle::-webkit-details-marker{display:none}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-top:6px}
+.ov-card{display:flex;flex-direction:column;gap:2px;padding:9px 12px;border:1px solid var(--line);
+  border-inline-start:4px solid var(--calc);border-radius:8px;background:#fff;color:var(--ink)}
+.ov-card:hover{text-decoration:none;box-shadow:0 3px 10px rgba(90,58,160,.14)}
+.ov-card b{font-size:14px}.ov-card span{font-size:12px;color:var(--muted)}
+.ov-list{width:100%;border-collapse:collapse;font-size:13px}
+.ov-list td{padding:6px 8px;border-bottom:1px solid #eee}
+.ov-list a{font-weight:700}
+.ov-n{color:#777;text-align:end;white-space:nowrap}
+.ov-hint{color:var(--muted);margin:0 0 6px}
+.ov-graph{overflow:auto;padding:4px 0}
+.dgraph{display:block;max-width:none;font:600 12px -apple-system,system-ui,sans-serif}
+.dgraph .ge{fill:none;stroke:#b4bac6;stroke-width:1.4}.dgraph .ge:hover{stroke:var(--calc);stroke-width:2.2}
+.dgraph .ga{fill:#b4bac6}
+.dgraph .gn rect{fill:#fff;stroke:#c5cad6;stroke-width:1.3}.dgraph .gn.has rect{fill:var(--calc-bg);stroke:var(--calc)}
+.dgraph .gn text{fill:#222;pointer-events:none}.dgraph .gn:hover rect{stroke-width:2.4}
+.lang-doc.paged .toc{display:none}
+.lang-doc.paged .docmain .entity{display:none}
+.lang-doc.paged .docmain .entity.is-on{display:block}
+.lang-doc.paged .ov[hidden],.lang-doc .ov[hidden]{display:none}
+@media (max-width:900px){.docgrid{display:block}.sidenav{display:none}}
+
+
 html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 </style>
 <script>
@@ -209,7 +290,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 (function(){
   var LANGS=['en'];
   var DEFAULT_LANG='en';
-  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers','data'];
   var root=document.documentElement;
 
   var lang=null;
@@ -229,10 +310,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 </script>
 </head>
 <body>
-<div class="lang-doc" data-lang="en" lang="en">
+<div class="lang-doc" data-lang="en" lang="en" dir="ltr">
 <div class="topbar">
   <div class="topbar-inner">
-    <a class="topbar-brand" href="#en-top">📘 Star Trek <span class="topbar-tag">RuleSpeak®</span></a>
+    <a class="topbar-brand" href="#en-top">📘 Star Trek <span class="topbar-tag">Docs</span></a>
     <nav class="crumb" aria-label="You are reading">
       <span class="crumb-entity"></span>
       <span class="crumb-sep" hidden>›</span>
@@ -244,7 +325,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <p class="gear-pop-title">Show in this document</p>
     <label class="gear-opt" title="The declarative business rule (only if / must / priority)">
       <input type="checkbox" data-elem="rulespeak">
-      <span class="gear-opt-label">RuleSpeak®</span>
+      <span class="gear-opt-label">Docs</span>
       <span class="gear-opt-hint">The declarative business rule (only if / must / priority)</span>
     </label>
     <label class="gear-opt" title="The formula read aloud as a plain sentence">
@@ -272,25 +353,31 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="gear-opt-label">Links to consumers</span>
       <span class="gear-opt-hint">The rules that read this one (its DAG consumers / downstream)</span>
     </label>
+    <label class="gear-opt" title="The first rows of each entity's data, computed columns included">
+      <input type="checkbox" data-elem="data" checked>
+      <span class="gear-opt-label">Example data</span>
+      <span class="gear-opt-hint">The first rows of each entity's data, computed columns included</span>
+    </label>
     <button type="button" class="gear-reset">Reset to defaults</button>
   </div>
 </div>
 <header class="doc-header" id="en-top">
+  <script type="application/json" class="nav-texts">{"search":"Filter tables and fields…","empty":"Nothing matches.","other":"Other","all":"All","derived":"Derived","stored":"Stored","rels":"Relationships","groups":"Groups","list":"A–Z","graph":"Graph","graphHint":"Each box is a table; a line runs from a table to the table it refers to. Click a table to open it.","fields":"Filter fields…","showAll":"Show everything on one page","showOne":"Show one table at a time","tocTitle":"Entities"}</script>
   <div class="doc-header-inner">
-    <h1 class="doc-title">📘 Star Trek <span class="doc-title-sub">RuleSpeak®</span></h1>
+    <h1 class="doc-title">📘 Star Trek <span class="doc-title-sub">Docs</span></h1>
     <p class="doc-lede">Aggregations over nested series → seasons → episodes (avg rating roll-ups). The canonical aggregation demo.</p>
     <p class="doc-note">Declarative business rules rendered from the rulebook — the single source of truth. Every statement below is the plain-language reading of a formula; nothing here is hand-authored prose.</p>
-    <p class="narr-hint">Use the <button type="button" class="gear-inline gear-open-inline">⚙︎ options</button> in the top-right corner to turn each part of the documentation on or off — RuleSpeak®, the literal reading, the raw formula, the author's description, and the links to a rule's inputs and consumers. Your choices are remembered.</p>
+    <p class="narr-hint">Use the <button type="button" class="gear-inline gear-open-inline">⚙︎ options</button> in the top-right corner to turn each part of the documentation on or off — Docs, the literal reading, the raw formula, the author's description, and the links to a rule's inputs and consumers. Your choices are remembered.</p>
   </div>
 </header>
 <nav class="toc">
   <h2 class="toc-title">Entities</h2>
   <ul class="toc-list">
-    <li><a href="#en-t-series">Sery</a> <span class="toc-meta">6 rules · 2 links</span></li>
+    <li><a href="#en-t-series">Series</a> <span class="toc-meta">8 rules · 2 links</span></li>
     <li><a href="#en-t-seasons">Season</a> <span class="toc-meta">5 rules · 2 links</span></li>
     <li><a href="#en-t-episodes">Episode</a> <span class="toc-meta">4 rules · 2 links</span></li>
     <li><a href="#en-t-crewtypes">Crew Type</a> <span class="toc-meta">0 rules · 0 links</span></li>
-    <li><a href="#en-t-people">People</a> <span class="toc-meta">0 rules · 1 links</span></li>
+    <li><a href="#en-t-people">Person</a> <span class="toc-meta">0 rules · 1 links</span></li>
     <li><a href="#en-t-movies">Movy</a> <span class="toc-meta">2 rules · 1 links</span></li>
     <li><a href="#en-t-crewassignments">Crew Assignment</a> <span class="toc-meta">4 rules · 3 links</span></li>
     <li><a href="#en-t-ratings">Rating</a> <span class="toc-meta">5 rules · 2 links</span></li>
@@ -298,12 +385,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <li><a href="#en-t-erbcustomizations">ERB Customization</a> <span class="toc-meta">0 rules · 0 links</span></li>
   </ul>
 </nav>
-<section class="entity" id="en-t-series" data-entity="Sery">
+<section class="entity" id="en-t-series" data-entity="Series" data-links="en-t-seasons en-t-ratings" data-rules="8">
   <header class="entity-head">
-    <h2 class="entity-title">Sery</h2>
-    <p class="entity-synopsis">A sery is identified by its <a class="ref" href="#en-f-series-name">name</a> and is related to optionally a <a class="ref" href="#en-t-ratings">rating</a> (its <a class="ref" href="#en-f-series-seriesratings">series ratings</a>).</p>
+    <h2 class="entity-title">Series</h2>
+    <p class="entity-synopsis">A series is identified by its <a class="ref" href="#en-f-series-name">name</a> and is related to optionally a <a class="ref" href="#en-t-ratings">rating</a> (its <a class="ref" href="#en-f-series-seriesratings">series ratings</a>).</p>
   </header>
-  <article class="field tone-calc" id="en-f-series-name" data-entity="Sery" data-field="Name">
+  <article class="field tone-calc" id="en-f-series-name" data-entity="Series" data-field="Name">
     <div class="field-head">
       <span class="field-glyph" title="Calculated">ƒ</span>
       <span class="field-name">Name</span>
@@ -314,8 +401,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
-        <p class="view-body">A sery's <a class="ref" href="#en-f-series-name">name</a> is computed as the <a class="ref" href="#en-f-series-seriesnumber">series number</a>, followed by a hyphen, followed by the <a class="ref" href="#en-f-series-showcode">show code</a>.</p>
+        <span class="view-label">In Docs</span>
+        <p class="view-body">A series's <a class="ref" href="#en-f-series-name">name</a> is computed as the <a class="ref" href="#en-f-series-seriesnumber">series number</a>, followed by a hyphen, followed by the <a class="ref" href="#en-f-series-showcode">show code</a>.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
@@ -330,11 +417,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-raw" href="#en-f-series-seriesnumber">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Series Number</span><span class="input-table">Sery</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Series Number</span><span class="input-table">Series</span></span>
           <span class="input-en muted">Ground truth · integer</span>
         </a>
         <a class="input tone-raw" href="#en-f-series-showcode">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Show Code</span><span class="input-table">Sery</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Show Code</span><span class="input-table">Series</span></span>
           <span class="input-en muted">Ground truth · string</span>
         </a>
       </div>
@@ -350,12 +437,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#en-f-series-seriesnumber">● Series Number <span class="ref-pill-tbl">Sery</span></a>
-        <a class="ref-pill tone-raw" href="#en-f-series-showcode">● Show Code <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-series-seriesnumber">● Series Number <span class="ref-pill-tbl">Series</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-series-showcode">● Show Code <span class="ref-pill-tbl">Series</span></a>
       </div>
     </details>
     </article>
-  <article class="field tone-raw" id="en-f-series-seriesnumber" data-entity="Sery" data-field="Series Number">
+  <article class="field tone-raw" id="en-f-series-seriesnumber" data-entity="Series" data-field="Series Number">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Series Number</span>
@@ -365,14 +452,14 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-calc" href="#en-f-series-name">ƒ Name <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-series-name">ƒ Name <span class="ref-pill-tbl">Series</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-ratings-seriesname">Series Name <span class="ref-pill-tbl">Rating</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-ratings-displayname">Display Name <span class="ref-pill-tbl">Rating</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-ratings-name">Name <span class="ref-pill-tbl">Rating</span></a>
       </div>
     </details>
     </article>
-  <article class="field tone-raw" id="en-f-series-showcode" data-entity="Sery" data-field="Show Code">
+  <article class="field tone-raw" id="en-f-series-showcode" data-entity="Series" data-field="Show Code">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Show Code</span>
@@ -382,14 +469,14 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-calc" href="#en-f-series-name">ƒ Name <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-series-name">ƒ Name <span class="ref-pill-tbl">Series</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-ratings-seriesname">Series Name <span class="ref-pill-tbl">Rating</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-ratings-displayname">Display Name <span class="ref-pill-tbl">Rating</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-ratings-name">Name <span class="ref-pill-tbl">Rating</span></a>
       </div>
     </details>
     </article>
-  <article class="field tone-raw" id="en-f-series-title" data-entity="Sery" data-field="Title">
+  <article class="field tone-raw" id="en-f-series-title" data-entity="Series" data-field="Title">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Title</span>
@@ -403,7 +490,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     </article>
-  <article class="field tone-raw" id="en-f-series-description" data-entity="Sery" data-field="Description">
+  <article class="field tone-raw" id="en-f-series-description" data-entity="Series" data-field="Description">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
@@ -417,7 +504,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     </article>
-  <article class="field tone-raw" id="en-f-series-network" data-entity="Sery" data-field="Network">
+  <article class="field tone-raw" id="en-f-series-network" data-entity="Series" data-field="Network">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Network</span>
@@ -431,7 +518,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     </article>
-  <article class="field tone-raw" id="en-f-series-premieredate" data-entity="Sery" data-field="Premiere Date">
+  <article class="field tone-raw" id="en-f-series-premieredate" data-entity="Series" data-field="Premiere Date">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Premiere Date</span>
@@ -439,7 +526,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">datetime</span>
     </div>
     </article>
-  <article class="field tone-raw" id="en-f-series-finaledate" data-entity="Sery" data-field="Finale Date">
+  <article class="field tone-raw" id="en-f-series-finaledate" data-entity="Series" data-field="Finale Date">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Finale Date</span>
@@ -447,7 +534,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">datetime</span>
     </div>
     </article>
-  <article class="field tone-agg" id="en-f-series-totalseasons" data-entity="Sery" data-field="Total Seasons">
+  <article class="field tone-agg" id="en-f-series-totalseasons" data-entity="Series" data-field="Total Seasons">
     <div class="field-head">
       <span class="field-glyph" title="Aggregation">Σ</span>
       <span class="field-name">Total Seasons</span>
@@ -458,8 +545,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
-        <p class="view-body">A sery's <a class="ref" href="#en-f-series-totalseasons">total seasons</a> is the number of <a class="ref" href="#en-t-seasons">seasons</a> related to the sery.</p>
+        <span class="view-label">In Docs</span>
+        <p class="view-body">A series's <a class="ref" href="#en-f-series-totalseasons">total seasons</a> is the number of <a class="ref" href="#en-t-seasons">seasons</a> related to the series.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
@@ -477,7 +564,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
           <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Series</span><span class="input-table">Season</span></span>
         </a>
         <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Sery</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Series</span></span>
           <span class="input-en muted">Ground truth · string</span>
         </span>
       </div>
@@ -486,11 +573,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-rel" href="#en-f-seasons-series">⇢ Series <span class="ref-pill-tbl">Season</span></a>
-        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Sery</span></span>
+        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Series</span></span>
       </div>
     </details>
     </article>
-  <article class="field tone-agg" id="en-f-series-totalepisodes" data-entity="Sery" data-field="Total Episodes">
+  <article class="field tone-agg" id="en-f-series-totalepisodes" data-entity="Series" data-field="Total Episodes">
     <div class="field-head">
       <span class="field-glyph" title="Aggregation">Σ</span>
       <span class="field-name">Total Episodes</span>
@@ -501,8 +588,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
-        <p class="view-body">A sery's <a class="ref" href="#en-f-series-totalepisodes">total episodes</a> is the total <a class="ref" href="#en-f-seasons-episodecount">episode count</a> across the <a class="ref" href="#en-t-seasons">seasons</a> related to the sery.</p>
+        <span class="view-label">In Docs</span>
+        <p class="view-body">A series's <a class="ref" href="#en-f-series-totalepisodes">total episodes</a> is the total <a class="ref" href="#en-f-seasons-episodecount">episode count</a> across the <a class="ref" href="#en-t-seasons">seasons</a> related to the series.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
@@ -524,7 +611,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
           <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Series</span><span class="input-table">Season</span></span>
         </a>
         <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Sery</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Series</span></span>
           <span class="input-en muted">Ground truth · string</span>
         </span>
       </div>
@@ -532,7 +619,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-consumers elem elem-consumers">
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-calc" href="#en-f-series-islongrunning">ƒ Is Long Running <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-series-islongrunning">ƒ Is Long Running <span class="ref-pill-tbl">Series</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -541,11 +628,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel" href="#en-f-episodes-season">⇢ Season <span class="ref-pill-tbl">Episode</span></a>
         <span class="ref-pill tone-raw">● Season ID <span class="ref-pill-tbl">Season</span></span>
         <a class="ref-pill tone-rel" href="#en-f-seasons-series">⇢ Series <span class="ref-pill-tbl">Season</span></a>
-        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Sery</span></span>
+        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Series</span></span>
       </div>
     </details>
     </article>
-  <article class="field tone-calc" id="en-f-series-islongrunning" data-entity="Sery" data-field="Is Long Running">
+  <article class="field tone-calc" id="en-f-series-islongrunning" data-entity="Series" data-field="Is Long Running">
     <div class="field-head">
       <span class="field-glyph" title="Calculated">ƒ</span>
       <span class="field-name">Is Long Running</span>
@@ -556,8 +643,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
-        <p class="view-body">A sery is considered long-running if the <a class="ref" href="#en-f-series-totalepisodes">total episodes</a> is greater than 50.</p>
+        <span class="view-label">In Docs</span>
+        <p class="view-body">A series is considered long-running if the <a class="ref" href="#en-f-series-totalepisodes">total episodes</a> is greater than 50.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
@@ -572,7 +659,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-agg" href="#en-f-series-totalepisodes">
-          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Total Episodes</span><span class="input-table">Sery</span></span>
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Total Episodes</span><span class="input-table">Series</span></span>
           <span class="input-en">Sum of episode count across all seasons whose series is serie ID.</span>
         </a>
       </div>
@@ -583,11 +670,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel" href="#en-f-episodes-season">⇢ Season <span class="ref-pill-tbl">Episode</span></a>
         <span class="ref-pill tone-raw">● Season ID <span class="ref-pill-tbl">Season</span></span>
         <a class="ref-pill tone-rel" href="#en-f-seasons-series">⇢ Series <span class="ref-pill-tbl">Season</span></a>
-        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Sery</span></span>
+        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Series</span></span>
       </div>
     </details>
     </article>
-  <article class="field tone-rel" id="en-f-series-seasons" data-entity="Sery" data-field="Seasons">
+  <article class="field tone-rel" id="en-f-series-seasons" data-entity="Series" data-field="Seasons">
     <div class="field-head">
       <span class="field-glyph" title="Relationship">⇢</span>
       <span class="field-name">Seasons</span>
@@ -599,7 +686,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-seasons-series">⇢ Series <span class="ref-pill-tbl">Season</span></a></p>
     </div>
     </article>
-  <article class="field tone-rel" id="en-f-series-seriesratings" data-entity="Sery" data-field="Series Ratings">
+  <article class="field tone-rel" id="en-f-series-seriesratings" data-entity="Series" data-field="Series Ratings">
     <div class="field-head">
       <span class="field-glyph" title="Relationship">⇢</span>
       <span class="field-name">Series Ratings</span>
@@ -611,19 +698,71 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-ratings-series">⇢ Series <span class="ref-pill-tbl">Rating</span></a></p>
     </div>
     </article>
-  <article class="field tone-agg" id="en-f-series-rating" data-entity="Sery" data-field="Rating">
+  <article class="field tone-agg" id="en-f-series-ratingcount" data-entity="Series" data-field="Rating Count">
     <div class="field-head">
       <span class="field-glyph" title="Aggregation">Σ</span>
-      <span class="field-name">Rating</span>
+      <span class="field-name">Rating Count</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-5</span>
+    </div>
+    <p class="field-note elem elem-desc">How many fan ratings this series has.</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In Docs</span>
+        <p class="view-body">A series's <a class="ref" href="#en-f-series-ratingcount">rating count</a> is the number of <a class="ref" href="#en-t-ratings">ratings</a> related to the series.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">Count of <a class="ref" href="#en-t-ratings">ratings</a> whose <a class="ref" href="#en-f-ratings-series">series</a> is serie ID.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#en-f-ratings-series">Series</a>, <span class="fx-chip">Serie ID</span>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#en-f-ratings-series">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Series</span><span class="input-table">Rating</span></span>
+        </a>
+        <span class="input input-static tone-raw">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Series</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </span>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-series-rating">ƒ Rating <span class="ref-pill-tbl">Series</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-series-isgood">Is Good <span class="ref-pill-tbl">Series</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-ratings-series">⇢ Series <span class="ref-pill-tbl">Rating</span></a>
+        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Series</span></span>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-agg" id="en-f-series-ratingtotal" data-entity="Series" data-field="Rating Total">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Rating Total</span>
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">number</span>
-      <span class="pill pill-dr">DR-5</span>
+      <span class="pill pill-dr">DR-6</span>
     </div>
+    <p class="field-note elem elem-desc">Sum of every fan rating attached to this series.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
-        <p class="view-body">A sery's <a class="ref" href="#en-f-series-rating">rating</a> is the total <a class="ref" href="#en-f-ratings-rating">rating</a> across the <a class="ref" href="#en-t-ratings">ratings</a> related to the sery.</p>
+        <span class="view-label">In Docs</span>
+        <p class="view-body">A series's <a class="ref" href="#en-f-series-ratingtotal">rating total</a> is the total <a class="ref" href="#en-f-ratings-rating">rating</a> across the <a class="ref" href="#en-t-ratings">ratings</a> related to the series.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
@@ -639,21 +778,22 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <div class="prov-grid">
         <a class="input tone-raw" href="#en-f-ratings-rating">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Rating</span><span class="input-table">Rating</span></span>
-          <span class="input-en muted">Ground truth · string</span>
+          <span class="input-en muted">Ground truth · integer</span>
         </a>
         <a class="input tone-rel" href="#en-f-ratings-series">
           <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Series</span><span class="input-table">Rating</span></span>
         </a>
         <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Sery</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Series</span></span>
           <span class="input-en muted">Ground truth · string</span>
         </span>
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-calc" href="#en-f-series-isgood">ƒ Is Good <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-series-rating">ƒ Rating <span class="ref-pill-tbl">Series</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-series-isgood">Is Good <span class="ref-pill-tbl">Series</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -661,23 +801,75 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#en-f-ratings-rating">● Rating <span class="ref-pill-tbl">Rating</span></a>
         <a class="ref-pill tone-rel" href="#en-f-ratings-series">⇢ Series <span class="ref-pill-tbl">Rating</span></a>
-        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Sery</span></span>
+        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Series</span></span>
       </div>
     </details>
     </article>
-  <article class="field tone-calc" id="en-f-series-isgood" data-entity="Sery" data-field="Is Good">
+  <article class="field tone-calc" id="en-f-series-rating" data-entity="Series" data-field="Rating">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Rating</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">number</span>
+      <span class="pill pill-dr">DR-7</span>
+    </div>
+    <p class="field-note elem elem-desc">The average fan rating: RatingTotal / RatingCount, and 0 for a series nobody has rated yet. It was =SUMIFS(...) until 2026-11-26, which made it the total, not the average this table and IsGood describe (TOS read 13 where the rulebook says 4.33).</p>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In Docs</span>
+        <div class="view-body"><p class="rt-headline">The series's <a class="ref" href="#en-f-series-rating">rating</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">0</span> <span class="rt-when">if the <a class="ref" href="#en-f-series-ratingcount">rating count</a> is 0</span></li><li><span class="rt-value">the <a class="ref" href="#en-f-series-ratingtotal">rating total</a> divided by the <a class="ref" href="#en-f-series-ratingcount">rating count</a></span> <span class="rt-when">in all other cases</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In plain words</span>
+        <p class="view-body">If <a class="ref" href="#en-f-series-ratingcount">rating count</a> equals 0 then 0, otherwise (<a class="ref" href="#en-f-series-ratingtotal">rating total</a> divided by <a class="ref" href="#en-f-series-ratingcount">rating count</a>).</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#en-f-series-ratingcount">Rating Count</a> = 0, 0, <a class="fx-chip" href="#en-f-series-ratingtotal">Rating Total</a> / <a class="fx-chip" href="#en-f-series-ratingcount">Rating Count</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#en-f-series-ratingcount">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Rating Count</span><span class="input-table">Series</span></span>
+          <span class="input-en">Count of ratings whose series is serie ID.</span>
+        </a>
+        <a class="input tone-agg" href="#en-f-series-ratingtotal">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Rating Total</span><span class="input-table">Series</span></span>
+          <span class="input-en">Sum of rating across all ratings whose series is serie ID.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#en-f-series-isgood">ƒ Is Good <span class="ref-pill-tbl">Series</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#en-f-ratings-series">⇢ Series <span class="ref-pill-tbl">Rating</span></a>
+        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Series</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-ratings-rating">● Rating <span class="ref-pill-tbl">Rating</span></a>
+      </div>
+    </details>
+    </article>
+  <article class="field tone-calc" id="en-f-series-isgood" data-entity="Series" data-field="Is Good">
     <div class="field-head">
       <span class="field-glyph" title="Calculated">ƒ</span>
       <span class="field-name">Is Good</span>
       <span class="pill pill-type">Calculated</span>
-      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-6</span>
+      <span class="pill pill-dr">DR-8</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
-        <p class="view-body">A sery is considered a good if the <a class="ref" href="#en-f-series-rating">rating</a> is at least 4.5.</p>
+        <span class="view-label">In Docs</span>
+        <p class="view-body">A series is considered a good if the <a class="ref" href="#en-f-series-rating">rating</a> is at least 4.5.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
@@ -691,23 +883,101 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-agg" href="#en-f-series-rating">
-          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Rating</span><span class="input-table">Sery</span></span>
-          <span class="input-en">Sum of rating across all ratings whose series is serie ID.</span>
+        <a class="input tone-calc" href="#en-f-series-rating">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Rating</span><span class="input-table">Series</span></span>
+          <span class="input-en">If rating count equals 0 then 0, otherwise (rating total divided by rating count).</span>
         </a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#en-f-ratings-rating">● Rating <span class="ref-pill-tbl">Rating</span></a>
         <a class="ref-pill tone-rel" href="#en-f-ratings-series">⇢ Series <span class="ref-pill-tbl">Rating</span></a>
-        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Sery</span></span>
+        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Series</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-ratings-rating">● Rating <span class="ref-pill-tbl">Rating</span></a>
       </div>
     </details>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Series Number</th>
+        <th>Show Code</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Network</th>
+        <th>Premiere Date</th>
+        <th>Finale Date</th>
+        <th class="sample-derived">Total Seasons<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Total Episodes<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Long Running<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Rating Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Rating Total<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Rating<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Good<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">1-TOS</td>
+          <td>1</td>
+          <td>TOS</td>
+          <td>Star Trek: The Original Series</td>
+          <td>The voyages of the starship Enterprise under Captain James T. Kirk.</td>
+          <td>NBC</td>
+          <td>1966-09-08</td>
+          <td>1969-06-03</td>
+          <td class="sample-derived">3</td>
+          <td class="sample-derived">76.0</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">3</td>
+          <td class="sample-derived">13.0</td>
+          <td class="sample-derived">4.333333333333333</td>
+          <td class="sample-derived">false</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">2-TNG</td>
+          <td>2</td>
+          <td>TNG</td>
+          <td>Star Trek: The Next Generation</td>
+          <td>The next generation of Starfleet explores the galaxy under Captain Jean-Luc Picard.</td>
+          <td>Syndication</td>
+          <td>1987-09-28</td>
+          <td>1994-05-23</td>
+          <td class="sample-derived">7</td>
+          <td class="sample-derived">178.0</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">5.0</td>
+          <td class="sample-derived">5.0</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">3-DS9</td>
+          <td>3</td>
+          <td>DS9</td>
+          <td>Star Trek: Deep Space Nine</td>
+          <td>A space station at the edge of the final frontier faces political intrigue and war.</td>
+          <td>Syndication</td>
+          <td>1993-01-03</td>
+          <td>—</td>
+          <td class="sample-derived">7</td>
+          <td class="sample-derived">176.0</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">0.0</td>
+          <td class="sample-derived">0.0</td>
+          <td class="sample-derived">false</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-seasons" data-entity="Season">
+<section class="entity" id="en-t-seasons" data-entity="Season" data-links="en-t-series en-t-episodes" data-rules="5">
   <header class="entity-head">
     <h2 class="entity-title">Season</h2>
     <p class="entity-synopsis">A season is identified by its <a class="ref" href="#en-f-seasons-name">name</a>.</p>
@@ -719,11 +989,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-7</span>
+      <span class="pill pill-dr">DR-9</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A season's <a class="ref" href="#en-f-seasons-name">name</a> is computed as the <a class="ref" href="#en-f-seasons-series">series</a>, followed by “-Season-”, followed by the <a class="ref" href="#en-f-seasons-seasonnumber">season number</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -763,19 +1033,19 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
     </div>
     <div class="gt">
-      <p class="gt-body">A pointer to <a href="#en-t-series">Sery</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
-      <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-series-seasons">⇢ Seasons <span class="ref-pill-tbl">Sery</span></a></p>
+      <p class="gt-body">A pointer to <a href="#en-t-series">Series</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-series-seasons">⇢ Seasons <span class="ref-pill-tbl">Series</span></a></p>
     </div>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">6 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-agg" href="#en-f-series-totalseasons">Σ Total Seasons <span class="ref-pill-tbl">Sery</span></a>
-        <a class="ref-pill tone-agg" href="#en-f-series-totalepisodes">Σ Total Episodes <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-series-totalseasons">Σ Total Seasons <span class="ref-pill-tbl">Series</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-series-totalepisodes">Σ Total Episodes <span class="ref-pill-tbl">Series</span></a>
         <a class="ref-pill tone-calc" href="#en-f-seasons-name">ƒ Name <span class="ref-pill-tbl">Season</span></a>
         <a class="ref-pill tone-lookup" href="#en-f-seasons-showtitle">↗ Show Title <span class="ref-pill-tbl">Season</span></a>
         <a class="ref-pill tone-lookup" href="#en-f-seasons-showdescription">↗ Show Description <span class="ref-pill-tbl">Season</span></a>
         <a class="ref-pill tone-lookup" href="#en-f-seasons-shownetwork">↗ Show Network <span class="ref-pill-tbl">Season</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-series-islongrunning">Is Long Running <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-series-islongrunning">Is Long Running <span class="ref-pill-tbl">Series</span></a>
       </div>
     </details>
     </article>
@@ -786,11 +1056,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-8</span>
+      <span class="pill pill-dr">DR-10</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A season's <a class="ref" href="#en-f-seasons-showtitle">show title</a> — taken from the linked <a class="ref" href="#en-f-seasons-series">series</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -806,14 +1076,14 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-raw" href="#en-f-series-title">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Title</span><span class="input-table">Sery</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Title</span><span class="input-table">Series</span></span>
           <span class="input-en muted">Ground truth · string</span>
         </a>
         <a class="input tone-rel" href="#en-f-seasons-series">
           <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Series</span><span class="input-table">Season</span></span>
         </a>
         <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Sery</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Series</span></span>
           <span class="input-en muted">Ground truth · string</span>
         </span>
       </div>
@@ -821,9 +1091,9 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#en-f-series-title">● Title <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-series-title">● Title <span class="ref-pill-tbl">Series</span></a>
         <a class="ref-pill tone-rel" href="#en-f-seasons-series">⇢ Series <span class="ref-pill-tbl">Season</span></a>
-        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Sery</span></span>
+        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Series</span></span>
       </div>
     </details>
     </article>
@@ -834,11 +1104,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-9</span>
+      <span class="pill pill-dr">DR-11</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A season's <a class="ref" href="#en-f-seasons-showdescription">show description</a> — taken from the linked <a class="ref" href="#en-f-seasons-series">series</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -854,14 +1124,14 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-raw" href="#en-f-series-description">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Description</span><span class="input-table">Sery</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Description</span><span class="input-table">Series</span></span>
           <span class="input-en muted">Ground truth · string</span>
         </a>
         <a class="input tone-rel" href="#en-f-seasons-series">
           <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Series</span><span class="input-table">Season</span></span>
         </a>
         <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Sery</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Series</span></span>
           <span class="input-en muted">Ground truth · string</span>
         </span>
       </div>
@@ -869,9 +1139,9 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#en-f-series-description">● Description <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-series-description">● Description <span class="ref-pill-tbl">Series</span></a>
         <a class="ref-pill tone-rel" href="#en-f-seasons-series">⇢ Series <span class="ref-pill-tbl">Season</span></a>
-        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Sery</span></span>
+        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Series</span></span>
       </div>
     </details>
     </article>
@@ -882,11 +1152,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-10</span>
+      <span class="pill pill-dr">DR-12</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A season's <a class="ref" href="#en-f-seasons-shownetwork">show network</a> — taken from the linked <a class="ref" href="#en-f-seasons-series">series</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -902,14 +1172,14 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-raw" href="#en-f-series-network">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Network</span><span class="input-table">Sery</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Network</span><span class="input-table">Series</span></span>
           <span class="input-en muted">Ground truth · string</span>
         </a>
         <a class="input tone-rel" href="#en-f-seasons-series">
           <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Series</span><span class="input-table">Season</span></span>
         </a>
         <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Sery</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Series</span></span>
           <span class="input-en muted">Ground truth · string</span>
         </span>
       </div>
@@ -917,9 +1187,9 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#en-f-series-network">● Network <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-series-network">● Network <span class="ref-pill-tbl">Series</span></a>
         <a class="ref-pill tone-rel" href="#en-f-seasons-series">⇢ Series <span class="ref-pill-tbl">Season</span></a>
-        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Sery</span></span>
+        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Series</span></span>
       </div>
     </details>
     </article>
@@ -990,11 +1260,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-11</span>
+      <span class="pill pill-dr">DR-13</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A season's <a class="ref" href="#en-f-seasons-episodecount">episode count</a> is the number of <a class="ref" href="#en-t-episodes">episodes</a> related to the season.</p>
       </div>
       <div class="view elem elem-english">
@@ -1021,8 +1291,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-consumers elem elem-consumers">
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-agg" href="#en-f-series-totalepisodes">Σ Total Episodes <span class="ref-pill-tbl">Sery</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-series-islongrunning">Is Long Running <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-series-totalepisodes">Σ Total Episodes <span class="ref-pill-tbl">Series</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-series-islongrunning">Is Long Running <span class="ref-pill-tbl">Series</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1052,8 +1322,70 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
     </div>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Show Title<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Show Description<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Show Network<span class="sample-fx">ƒ</span></th>
+        <th>Season Number</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Start Airdate</th>
+        <th>End Airdate</th>
+        <th class="sample-derived">Episode Count<span class="sample-fx">ƒ</span></th>
+        <th>Mock Data Notes</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">1-tos-Season-1</td>
+          <td class="sample-derived">Star Trek: The Original Series</td>
+          <td class="sample-derived">The voyages of the starship Enterprise under Captain James T. Kirk.</td>
+          <td class="sample-derived">NBC</td>
+          <td>1</td>
+          <td>The Original Series Season 1</td>
+          <td>Season 1 of Star Trek: The Original Series</td>
+          <td>1966-09-01</td>
+          <td>1967-09-01</td>
+          <td class="sample-derived">26</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">1-tos-Season-2</td>
+          <td class="sample-derived">Star Trek: The Original Series</td>
+          <td class="sample-derived">The voyages of the starship Enterprise under Captain James T. Kirk.</td>
+          <td class="sample-derived">NBC</td>
+          <td>2</td>
+          <td>The Original Series Season 2</td>
+          <td>Season 2 of Star Trek: The Original Series</td>
+          <td>1967-09-01</td>
+          <td>1968-08-31</td>
+          <td class="sample-derived">26</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">1-tos-Season-3</td>
+          <td class="sample-derived">Star Trek: The Original Series</td>
+          <td class="sample-derived">The voyages of the starship Enterprise under Captain James T. Kirk.</td>
+          <td class="sample-derived">NBC</td>
+          <td>3</td>
+          <td>The Original Series Season 3</td>
+          <td>Season 3 of Star Trek: The Original Series</td>
+          <td>1968-09-01</td>
+          <td>1969-09-01</td>
+          <td class="sample-derived">24</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-episodes" data-entity="Episode">
+<section class="entity" id="en-t-episodes" data-entity="Episode" data-links="en-t-seasons en-t-ratings" data-rules="4">
   <header class="entity-head">
     <h2 class="entity-title">Episode</h2>
     <p class="entity-synopsis">An episode is identified by its <a class="ref" href="#en-f-episodes-name">name</a> and is related to optionally a <a class="ref" href="#en-t-seasons">season</a>.</p>
@@ -1065,11 +1397,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-12</span>
+      <span class="pill pill-dr">DR-14</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An episode's <a class="ref" href="#en-f-episodes-name">name</a> is computed as the <a class="ref" href="#en-f-episodes-season">season</a>, followed by “-Episode-”, followed by “0”, followed by the <a class="ref" href="#en-f-episodes-episodenumber">episode number</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1128,10 +1460,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-lookup" href="#en-f-episodes-seasonnumber">↗ Season Number <span class="ref-pill-tbl">Episode</span></a>
         <a class="ref-pill tone-lookup" href="#en-f-episodes-seasontitle">↗ Season Title <span class="ref-pill-tbl">Episode</span></a>
         <a class="ref-pill tone-lookup" href="#en-f-episodes-seasondescription">↗ Season Description <span class="ref-pill-tbl">Episode</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-series-totalepisodes">Total Episodes <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-series-totalepisodes">Total Episodes <span class="ref-pill-tbl">Series</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-ratings-episodename">Episode Name <span class="ref-pill-tbl">Rating</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-ratings-episodeseasontitle">Episode Season Title <span class="ref-pill-tbl">Rating</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-series-islongrunning">Is Long Running <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-series-islongrunning">Is Long Running <span class="ref-pill-tbl">Series</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-ratings-displayname">Display Name <span class="ref-pill-tbl">Rating</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-ratings-name">Name <span class="ref-pill-tbl">Rating</span></a>
       </div>
@@ -1144,11 +1476,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-13</span>
+      <span class="pill pill-dr">DR-15</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An episode's <a class="ref" href="#en-f-episodes-seasonnumber">season number</a> — taken from the linked <a class="ref" href="#en-f-episodes-season">season</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1192,11 +1524,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-14</span>
+      <span class="pill pill-dr">DR-16</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An episode's <a class="ref" href="#en-f-episodes-seasontitle">season title</a> — taken from the linked <a class="ref" href="#en-f-episodes-season">season</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1246,11 +1578,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-15</span>
+      <span class="pill pill-dr">DR-17</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An episode's <a class="ref" href="#en-f-episodes-seasondescription">season description</a> — taken from the linked <a class="ref" href="#en-f-episodes-season">season</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1371,8 +1703,74 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
     </div>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Season Number<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Season Title<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Season Description<span class="sample-fx">ƒ</span></th>
+        <th>Episode Number</th>
+        <th>Description</th>
+        <th>Airdate</th>
+        <th>Writers</th>
+        <th>Director</th>
+        <th>Runtime Minutes</th>
+        <th>One Sentence Summary</th>
+        <th>Favorite Color</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">1-tos-season-1-Episode-01</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">The Original Series Season 1</td>
+          <td class="sample-derived">Season 1 of Star Trek: The Original Series</td>
+          <td>1</td>
+          <td>Episode 1 of season 1</td>
+          <td>1966-09-01</td>
+          <td>Story by Starfleet</td>
+          <td>Starfleet Director</td>
+          <td>48</td>
+          <td>An adventure on the USS Enterprise.</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">1-tos-season-1-Episode-02</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">The Original Series Season 1</td>
+          <td class="sample-derived">Season 1 of Star Trek: The Original Series</td>
+          <td>2</td>
+          <td>Episode 2 of season 1</td>
+          <td>1966-09-08</td>
+          <td>Story by Starfleet</td>
+          <td>Starfleet Director</td>
+          <td>48</td>
+          <td>An adventure on the USS Enterprise.</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">1-tos-season-1-Episode-03</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">The Original Series Season 1</td>
+          <td class="sample-derived">Season 1 of Star Trek: The Original Series</td>
+          <td>3</td>
+          <td>Episode 3 of season 1</td>
+          <td>1966-09-15</td>
+          <td>Story by Starfleet</td>
+          <td>Starfleet Director</td>
+          <td>48</td>
+          <td>An adventure on the USS Enterprise.</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-crewtypes" data-entity="Crew Type">
+<section class="entity" id="en-t-crewtypes" data-entity="Crew Type" data-links="" data-rules="0">
   <header class="entity-head">
     <h2 class="entity-title">Crew Type</h2>
     <p class="entity-synopsis">A crew type is identified by its <a class="ref" href="#en-f-crewtypes-name">name</a>.</p>
@@ -1400,13 +1798,38 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
     </div>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Actor</td>
+          <td>Performer in front of the camera</td>
+        </tr>
+        <tr>
+          <td>Director</td>
+          <td>Director of the production</td>
+        </tr>
+        <tr>
+          <td>Writer</td>
+          <td>Screenplay or story writer</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
 </section>
-<section class="entity" id="en-t-people" data-entity="People">
+<section class="entity" id="en-t-people" data-entity="Person" data-links="en-t-crewassignments" data-rules="0">
   <header class="entity-head">
-    <h2 class="entity-title">People</h2>
-    <p class="entity-synopsis">A people is identified by its <a class="ref" href="#en-f-people-name">name</a>.</p>
+    <h2 class="entity-title">Person</h2>
+    <p class="entity-synopsis">A person is identified by its <a class="ref" href="#en-f-people-name">name</a>.</p>
   </header>
-  <article class="field tone-raw" id="en-f-people-name" data-entity="People" data-field="Name">
+  <article class="field tone-raw" id="en-f-people-name" data-entity="Person" data-field="Name">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Name</span>
@@ -1421,7 +1844,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     </article>
-  <article class="field tone-raw" id="en-f-people-birthyear" data-entity="People" data-field="Birth Year">
+  <article class="field tone-raw" id="en-f-people-birthyear" data-entity="Person" data-field="Birth Year">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Birth Year</span>
@@ -1429,7 +1852,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
     </div>
     </article>
-  <article class="field tone-raw" id="en-f-people-nationality" data-entity="People" data-field="Nationality">
+  <article class="field tone-raw" id="en-f-people-nationality" data-entity="Person" data-field="Nationality">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Nationality</span>
@@ -1437,7 +1860,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
     </div>
     </article>
-  <article class="field tone-raw" id="en-f-people-bio" data-entity="People" data-field="Bio">
+  <article class="field tone-raw" id="en-f-people-bio" data-entity="Person" data-field="Bio">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Bio</span>
@@ -1445,7 +1868,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
     </div>
     </article>
-  <article class="field tone-rel" id="en-f-people-crewassignments" data-entity="People" data-field="Crew Assignments">
+  <article class="field tone-rel" id="en-f-people-crewassignments" data-entity="Person" data-field="Crew Assignments">
     <div class="field-head">
       <span class="field-glyph" title="Relationship">⇢</span>
       <span class="field-name">Crew Assignments</span>
@@ -1456,8 +1879,41 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <p class="gt-body">A pointer to <a href="#en-t-crewassignments">Crew Assignment</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Name</th>
+        <th>Birth Year</th>
+        <th>Nationality</th>
+        <th>Bio</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>William Shatner</td>
+          <td>1931</td>
+          <td>Canadian</td>
+          <td>Actor famous for playing Captain James T. Kirk</td>
+        </tr>
+        <tr>
+          <td>Leonard Nimoy</td>
+          <td>1931</td>
+          <td>American</td>
+          <td>Actor famous for playing Spock</td>
+        </tr>
+        <tr>
+          <td>Patrick Stewart</td>
+          <td>1940</td>
+          <td>British</td>
+          <td>Actor famous for playing Captain Jean-Luc Picard</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
 </section>
-<section class="entity" id="en-t-movies" data-entity="Movy">
+<section class="entity" id="en-t-movies" data-entity="Movy" data-links="en-t-crewassignments" data-rules="2">
   <header class="entity-head">
     <h2 class="entity-title">Movy</h2>
     <p class="entity-synopsis">A movy is identified by its <a class="ref" href="#en-f-movies-name">name</a>.</p>
@@ -1469,11 +1925,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-16</span>
+      <span class="pill pill-dr">DR-18</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A movy's <a class="ref" href="#en-f-movies-name">name</a> is computed as the <a class="ref" href="#en-f-movies-movienumber">movie number</a>, followed by a hyphen, followed by the <a class="ref" href="#en-f-movies-title">title</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1594,11 +2050,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-17</span>
+      <span class="pill pill-dr">DR-19</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A movy's <a class="ref" href="#en-f-movies-crewcount">crew count</a> is the number of <a class="ref" href="#en-t-crewassignments">crew assignments</a> related to the movy.</p>
       </div>
       <div class="view elem elem-english">
@@ -1638,11 +2094,69 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
     </div>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Movie Number</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Release Date</th>
+        <th>Runtime Minutes</th>
+        <th>Budget</th>
+        <th>Box Office</th>
+        <th class="sample-derived">Crew Count<span class="sample-fx">ƒ</span></th>
+        <th>Director Name</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">1-Star Trek: Generations</td>
+          <td>1</td>
+          <td>Star Trek: Generations</td>
+          <td>The seventh and final film of the original series cast, featuring the Next Generation crew</td>
+          <td>1994-11-18</td>
+          <td>118</td>
+          <td>40000000</td>
+          <td>118159941</td>
+          <td class="sample-derived">3</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">2-Star Trek: First Contact</td>
+          <td>2</td>
+          <td>Star Trek: First Contact</td>
+          <td>The Enterprise-E travels back in time to prevent a Borg invasion of Earth</td>
+          <td>1996-11-22</td>
+          <td>111</td>
+          <td>46000000</td>
+          <td>92262550</td>
+          <td class="sample-derived">1</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">3-Star Trek: Insurrection</td>
+          <td>3</td>
+          <td>Star Trek: Insurrection</td>
+          <td>The Enterprise-E crew fights to protect a peaceful planet from exploitation</td>
+          <td>1998-11-25</td>
+          <td>103</td>
+          <td>70000000</td>
+          <td>70252769</td>
+          <td class="sample-derived">0</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-crewassignments" data-entity="Crew Assignment">
+<section class="entity" id="en-t-crewassignments" data-entity="Crew Assignment" data-links="en-t-people en-t-movies en-t-crewtypes" data-rules="4">
   <header class="entity-head">
     <h2 class="entity-title">Crew Assignment</h2>
-    <p class="entity-synopsis">A crew assignment is identified by its <a class="ref" href="#en-f-crewassignments-name">name</a> and is related to optionally a <a class="ref" href="#en-t-people">people</a> (its <a class="ref" href="#en-f-crewassignments-person">person</a>); optionally a <a class="ref" href="#en-t-movies">movy</a> (its <a class="ref" href="#en-f-crewassignments-movie">movie</a>); and optionally a <a class="ref" href="#en-t-crewtypes">crew type</a>.</p>
+    <p class="entity-synopsis">A crew assignment is identified by its <a class="ref" href="#en-f-crewassignments-name">name</a> and is related to optionally a <a class="ref" href="#en-t-people">person</a>; optionally a <a class="ref" href="#en-t-movies">movy</a> (its <a class="ref" href="#en-f-crewassignments-movie">movie</a>); and optionally a <a class="ref" href="#en-t-crewtypes">crew type</a>.</p>
   </header>
   <article class="field tone-calc" id="en-f-crewassignments-name" data-entity="Crew Assignment" data-field="Name">
     <div class="field-head">
@@ -1651,11 +2165,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-18</span>
+      <span class="pill pill-dr">DR-20</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A crew assignment's <a class="ref" href="#en-f-crewassignments-name">name</a> is computed as the <a class="ref" href="#en-f-crewassignments-personname">person name</a>, followed by a hyphen, followed by the <a class="ref" href="#en-f-crewassignments-crewtypename">crew type name</a>, followed by a hyphen, followed by the <a class="ref" href="#en-f-crewassignments-movietitle">movie title</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1687,9 +2201,9 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">9</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#en-f-people-name">● Name <span class="ref-pill-tbl">People</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-people-name">● Name <span class="ref-pill-tbl">Person</span></a>
         <a class="ref-pill tone-rel" href="#en-f-crewassignments-person">⇢ Person <span class="ref-pill-tbl">Crew Assignment</span></a>
-        <span class="ref-pill tone-raw">● Person ID <span class="ref-pill-tbl">People</span></span>
+        <span class="ref-pill tone-raw">● Person ID <span class="ref-pill-tbl">Person</span></span>
         <a class="ref-pill tone-raw" href="#en-f-crewtypes-name">● Name <span class="ref-pill-tbl">Crew Type</span></a>
         <a class="ref-pill tone-rel" href="#en-f-crewassignments-crewtype">⇢ Crew Type <span class="ref-pill-tbl">Crew Assignment</span></a>
         <span class="ref-pill tone-raw">● Crew Type ID <span class="ref-pill-tbl">Crew Type</span></span>
@@ -1707,8 +2221,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
     </div>
     <div class="gt">
-      <p class="gt-body">A pointer to <a href="#en-t-people">People</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
-      <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-people-crewassignments">⇢ Crew Assignments <span class="ref-pill-tbl">People</span></a></p>
+      <p class="gt-body">A pointer to <a href="#en-t-people">Person</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-people-crewassignments">⇢ Crew Assignments <span class="ref-pill-tbl">Person</span></a></p>
     </div>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
@@ -1725,11 +2239,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-19</span>
+      <span class="pill pill-dr">DR-21</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A crew assignment's <a class="ref" href="#en-f-crewassignments-personname">person name</a> — taken from the linked <a class="ref" href="#en-f-crewassignments-person">person</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1745,14 +2259,14 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-raw" href="#en-f-people-name">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Name</span><span class="input-table">People</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Name</span><span class="input-table">Person</span></span>
           <span class="input-en muted">Ground truth · string</span>
         </a>
         <a class="input tone-rel" href="#en-f-crewassignments-person">
           <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Person</span><span class="input-table">Crew Assignment</span></span>
         </a>
         <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Person ID</span><span class="input-table">People</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Person ID</span><span class="input-table">Person</span></span>
           <span class="input-en muted">Ground truth · string</span>
         </span>
       </div>
@@ -1766,9 +2280,9 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#en-f-people-name">● Name <span class="ref-pill-tbl">People</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-people-name">● Name <span class="ref-pill-tbl">Person</span></a>
         <a class="ref-pill tone-rel" href="#en-f-crewassignments-person">⇢ Person <span class="ref-pill-tbl">Crew Assignment</span></a>
-        <span class="ref-pill tone-raw">● Person ID <span class="ref-pill-tbl">People</span></span>
+        <span class="ref-pill tone-raw">● Person ID <span class="ref-pill-tbl">Person</span></span>
       </div>
     </details>
     </article>
@@ -1799,11 +2313,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-20</span>
+      <span class="pill pill-dr">DR-22</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A crew assignment's <a class="ref" href="#en-f-crewassignments-movietitle">movie title</a> — taken from the linked <a class="ref" href="#en-f-crewassignments-movie">movie</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1871,11 +2385,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-21</span>
+      <span class="pill pill-dr">DR-23</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A crew assignment's <a class="ref" href="#en-f-crewassignments-crewtypename">crew type name</a> — taken from the linked <a class="ref" href="#en-f-crewassignments-crewtype">crew type</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1926,8 +2440,46 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
     </div>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Person Name<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Movie Title<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Crew Type Name<span class="sample-fx">ƒ</span></th>
+        <th>Notes</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">William Shatner-Actor-Star Trek: Generations</td>
+          <td class="sample-derived">William Shatner</td>
+          <td class="sample-derived">Star Trek: Generations</td>
+          <td class="sample-derived">Actor</td>
+          <td>Reprised role as Captain Kirk</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">Patrick Stewart-Actor-Star Trek: Generations</td>
+          <td class="sample-derived">Patrick Stewart</td>
+          <td class="sample-derived">Star Trek: Generations</td>
+          <td class="sample-derived">Actor</td>
+          <td>Captain Picard</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">Patrick Stewart-Actor-Star Trek: First Contact</td>
+          <td class="sample-derived">Patrick Stewart</td>
+          <td class="sample-derived">Star Trek: First Contact</td>
+          <td class="sample-derived">Actor</td>
+          <td>Captain Picard</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-ratings" data-entity="Rating">
+<section class="entity" id="en-t-ratings" data-entity="Rating" data-links="en-t-series en-t-episodes" data-rules="5">
   <header class="entity-head">
     <h2 class="entity-title">Rating</h2>
     <p class="entity-synopsis">A rating is identified by its <a class="ref" href="#en-f-ratings-name">name</a> and is related to optionally an <a class="ref" href="#en-t-episodes">episode</a>.</p>
@@ -1939,11 +2491,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-22</span>
+      <span class="pill pill-dr">DR-24</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A rating's <a class="ref" href="#en-f-ratings-name">name</a> is computed as the <a class="ref" href="#en-f-ratings-displayname">display name</a>, followed by a hyphen, followed by the <a class="ref" href="#en-f-ratings-usersname">users name</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1976,9 +2528,9 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-episodes-episodenumber">● Episode Number <span class="ref-pill-tbl">Episode</span></a>
         <a class="ref-pill tone-rel" href="#en-f-ratings-episode">⇢ Episode <span class="ref-pill-tbl">Rating</span></a>
         <span class="ref-pill tone-raw">● Episode ID <span class="ref-pill-tbl">Episode</span></span>
-        <a class="ref-pill tone-raw" href="#en-f-series-seriesnumber">● Series Number <span class="ref-pill-tbl">Sery</span></a>
-        <a class="ref-pill tone-raw" href="#en-f-series-showcode">● Show Code <span class="ref-pill-tbl">Sery</span></a>
-        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Sery</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-series-seriesnumber">● Series Number <span class="ref-pill-tbl">Series</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-series-showcode">● Show Code <span class="ref-pill-tbl">Series</span></a>
+        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Series</span></span>
         <a class="ref-pill tone-raw" href="#en-f-ratings-usersname">● Users Name <span class="ref-pill-tbl">Rating</span></a>
       </div>
     </details>
@@ -1990,11 +2542,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-23</span>
+      <span class="pill pill-dr">DR-25</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <div class="view-body"><p class="rt-headline">The rating's <a class="ref" href="#en-f-ratings-displayname">display name</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">“Episode: ”, followed by the <a class="ref" href="#en-f-ratings-episodename">episode name</a></span> <span class="rt-when">if the <a class="ref" href="#en-f-ratings-series">series</a> is blank</span></li><li><span class="rt-value">“Series: ”, followed by the <a class="ref" href="#en-f-ratings-seriesname">series name</a></span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
@@ -2036,9 +2588,9 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-episodes-episodenumber">● Episode Number <span class="ref-pill-tbl">Episode</span></a>
         <a class="ref-pill tone-rel" href="#en-f-ratings-episode">⇢ Episode <span class="ref-pill-tbl">Rating</span></a>
         <span class="ref-pill tone-raw">● Episode ID <span class="ref-pill-tbl">Episode</span></span>
-        <a class="ref-pill tone-raw" href="#en-f-series-seriesnumber">● Series Number <span class="ref-pill-tbl">Sery</span></a>
-        <a class="ref-pill tone-raw" href="#en-f-series-showcode">● Show Code <span class="ref-pill-tbl">Sery</span></a>
-        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Sery</span></span>
+        <a class="ref-pill tone-raw" href="#en-f-series-seriesnumber">● Series Number <span class="ref-pill-tbl">Series</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-series-showcode">● Show Code <span class="ref-pill-tbl">Series</span></a>
+        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Series</span></span>
       </div>
     </details>
     </article>
@@ -2046,14 +2598,15 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Rating</span>
-      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
-      <span class="pill pill-muted">string</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
     </div>
     <details class="prov prov-consumers elem elem-consumers" open>
-      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-agg" href="#en-f-series-rating">Σ Rating <span class="ref-pill-tbl">Sery</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-series-isgood">Is Good <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-series-ratingtotal">Σ Rating Total <span class="ref-pill-tbl">Series</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-series-rating">Rating <span class="ref-pill-tbl">Series</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-series-isgood">Is Good <span class="ref-pill-tbl">Series</span></a>
       </div>
     </details>
     </article>
@@ -2065,16 +2618,18 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
     </div>
     <div class="gt">
-      <p class="gt-body">A pointer to <a href="#en-t-series">Sery</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+      <p class="gt-body">A pointer to <a href="#en-t-series">Series</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
     <details class="prov prov-consumers elem elem-consumers" open>
-      <summary>Consumers <span class="count">3 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">4 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-agg" href="#en-f-series-rating">Σ Rating <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-series-ratingcount">Σ Rating Count <span class="ref-pill-tbl">Series</span></a>
+        <a class="ref-pill tone-agg" href="#en-f-series-ratingtotal">Σ Rating Total <span class="ref-pill-tbl">Series</span></a>
         <a class="ref-pill tone-calc" href="#en-f-ratings-displayname">ƒ Display Name <span class="ref-pill-tbl">Rating</span></a>
         <a class="ref-pill tone-lookup" href="#en-f-ratings-seriesname">↗ Series Name <span class="ref-pill-tbl">Rating</span></a>
-        <a class="ref-pill tone-rel faded" href="#en-f-series-isgood">Is Good <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-series-rating">Rating <span class="ref-pill-tbl">Series</span></a>
         <a class="ref-pill tone-rel faded" href="#en-f-ratings-name">Name <span class="ref-pill-tbl">Rating</span></a>
+        <a class="ref-pill tone-rel faded" href="#en-f-series-isgood">Is Good <span class="ref-pill-tbl">Series</span></a>
       </div>
     </details>
     </article>
@@ -2085,11 +2640,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-24</span>
+      <span class="pill pill-dr">DR-26</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A rating's <a class="ref" href="#en-f-ratings-seriesname">series name</a> — taken from the linked <a class="ref" href="#en-f-ratings-series">series</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2105,14 +2660,14 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-calc" href="#en-f-series-name">
-          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Name</span><span class="input-table">Sery</span></span>
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Name</span><span class="input-table">Series</span></span>
           <span class="input-en">(series number joined with &quot;-&quot;) joined with show code.</span>
         </a>
         <a class="input tone-rel" href="#en-f-ratings-series">
           <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Series</span><span class="input-table">Rating</span></span>
         </a>
         <span class="input input-static tone-raw">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Sery</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Serie ID</span><span class="input-table">Series</span></span>
           <span class="input-en muted">Ground truth · string</span>
         </span>
       </div>
@@ -2127,10 +2682,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">4</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#en-f-series-seriesnumber">● Series Number <span class="ref-pill-tbl">Sery</span></a>
-        <a class="ref-pill tone-raw" href="#en-f-series-showcode">● Show Code <span class="ref-pill-tbl">Sery</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-series-seriesnumber">● Series Number <span class="ref-pill-tbl">Series</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-series-showcode">● Show Code <span class="ref-pill-tbl">Series</span></a>
         <a class="ref-pill tone-rel" href="#en-f-ratings-series">⇢ Series <span class="ref-pill-tbl">Rating</span></a>
-        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Sery</span></span>
+        <span class="ref-pill tone-raw">● Serie ID <span class="ref-pill-tbl">Series</span></span>
       </div>
     </details>
     </article>
@@ -2162,11 +2717,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-25</span>
+      <span class="pill pill-dr">DR-27</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A rating's <a class="ref" href="#en-f-ratings-episodename">episode name</a> — taken from the linked <a class="ref" href="#en-f-ratings-episode">episode</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2218,11 +2773,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-26</span>
+      <span class="pill pill-dr">DR-28</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A rating's <a class="ref" href="#en-f-ratings-episodeseasontitle">episode season title</a> — taken from the linked <a class="ref" href="#en-f-ratings-episode">episode</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2307,8 +2862,70 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">datetime</span>
     </div>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Display Name<span class="sample-fx">ƒ</span></th>
+        <th>Rating</th>
+        <th class="sample-derived">Series Name<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Episode Name<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Episode Season Title<span class="sample-fx">ƒ</span></th>
+        <th>Users Name</th>
+        <th>Email Address</th>
+        <th>Phone Nmber</th>
+        <th>Notes</th>
+        <th>Created At</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">Series: 1-TOS-Riley Shaw</td>
+          <td class="sample-derived">Series: 1-TOS</td>
+          <td>5</td>
+          <td class="sample-derived">1-TOS</td>
+          <td class="sample-derived">-Episode-0</td>
+          <td class="sample-derived">—</td>
+          <td>Riley Shaw</td>
+          <td>riley.shaw@example.com</td>
+          <td>555-0107</td>
+          <td>—</td>
+          <td>2026-01-12T19:46:59Z</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">Series: 1-TOS-Alex Mercer</td>
+          <td class="sample-derived">Series: 1-TOS</td>
+          <td>5</td>
+          <td class="sample-derived">1-TOS</td>
+          <td class="sample-derived">-Episode-0</td>
+          <td class="sample-derived">—</td>
+          <td>Alex Mercer</td>
+          <td>alex.mercer@example.com</td>
+          <td>555-0101</td>
+          <td>—</td>
+          <td>2026-01-12T19:46:59Z</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">Series: 1-TOS-Drew Patel</td>
+          <td class="sample-derived">Series: 1-TOS</td>
+          <td>3</td>
+          <td class="sample-derived">1-TOS</td>
+          <td class="sample-derived">-Episode-0</td>
+          <td class="sample-derived">—</td>
+          <td>Drew Patel</td>
+          <td>drew.patel@example.com</td>
+          <td>555-0108</td>
+          <td>—</td>
+          <td>2026-01-12T19:46:59Z</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-erbversions" data-entity="ERB Version">
+<section class="entity" id="en-t-erbversions" data-entity="ERB Version" data-links="" data-rules="0">
   <header class="entity-head">
     <h2 class="entity-title">ERB Version</h2>
     <p class="entity-synopsis">An ERB version is identified by its <a class="ref" href="#en-f-erbversions-name">name</a>.</p>
@@ -2353,8 +2970,45 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
     </div>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Name</th>
+        <th>Message</th>
+        <th>Notes</th>
+        <th>Commit Date</th>
+        <th>Is Published</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>v2026-01-16T20:44:58.844Z</td>
+          <td>Initial demo</td>
+          <td>—</td>
+          <td>2026-01-16</td>
+          <td>true</td>
+        </tr>
+        <tr>
+          <td>v2026-01-16T20:47:35.227Z</td>
+          <td>We added a one sentence summary to episodes.</td>
+          <td>—</td>
+          <td>2026-01-16</td>
+          <td>true</td>
+        </tr>
+        <tr>
+          <td>v2026-01-16T20:49:06.117Z</td>
+          <td>Added Favorite Color</td>
+          <td>—</td>
+          <td>2026-01-16</td>
+          <td>true</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
 </section>
-<section class="entity" id="en-t-erbcustomizations" data-entity="ERB Customization">
+<section class="entity" id="en-t-erbcustomizations" data-entity="ERB Customization" data-links="" data-rules="0">
   <header class="entity-head">
     <h2 class="entity-title">ERB Customization</h2>
     <p class="entity-synopsis">An ERB customization is identified by its <a class="ref" href="#en-f-erbcustomizations-name">name</a>.</p>
@@ -2399,9 +3053,175 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
     </div>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Name</th>
+        <th>Title</th>
+        <th>SQL Code</th>
+        <th>SQL Target</th>
+        <th>Customization Type</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>03a-customize-schema.sql</td>
+          <td>Customize Schema</td>
+          <td>-- ============================================================================
+-- CUSTOMIZE SCHEMA - User-defined tables and schema modifications
+-- ============================================================================
+-- This file is for YOUR custom schema changes that should persist across
+-- regeneration of the base ERB files.
+--
+-- USE THIS FILE FOR:
+--   - Additional tables not defined in the rulebook
+--   - Extra columns on existing tables (ALTER TABLE)
+--   - Custom indexes for performance tuning
+--   - Custom constraints or triggers
+--
+-- IMPORTANT:
+--   - This file runs AFTER 01-drop-and-create-tables.sql
+--   - The base tables already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- EXAMPLES:
+--
+--   -- Add a custom table
+--   CREATE TABLE IF NOT EXISTS audit_log (
+--       audit_log_id    TEXT PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
+--       table_name      TEXT NOT NULL,
+--       record_id       TEXT NOT NULL,
+--       action          TEXT NOT NULL,
+--       changed_at      TIMESTAMPTZ DEFAULT NOW()
+--   );
+--
+--   -- Add a column to an existing table
+--   ALTER TABLE erb_versions ADD COLUMN IF NOT EXISTS custom_field TEXT;
+--
+--   -- Add an index for performance
+--   CREATE INDEX IF NOT EXISTS idx_custom ON some_table(some_column);
+--
+-- ============================================================================
+
+-- Your custom schema changes go here:
+</td>
+          <td>Postgres</td>
+          <td>Schema</td>
+        </tr>
+        <tr>
+          <td>03b-customize-functions.sql</td>
+          <td>Customize Functions</td>
+          <td>-- ============================================================================
+-- CUSTOMIZE FUNCTIONS - User-defined calculation functions
+-- ============================================================================
+-- This file is for YOUR custom PostgreSQL functions that should persist
+-- across regeneration of the base ERB files.
+--
+-- USE THIS FILE FOR:
+--   - Additional calc_* functions for computed fields
+--   - Helper functions for complex business logic
+--   - Utility functions for data transformation
+--   - Trigger functions for custom automation
+--
+-- IMPORTANT:
+--   - This file runs AFTER 02-create-functions.sql
+--   - Base ERB calc functions already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--   - Functions defined here can be used in 03b-customize-views.sql
+--
+-- ERB FUNCTION NAMING CONVENTIONS:
+--   - calc_tablename_fieldname() - Returns a computed value for a view field
+--   - Helper functions can use any naming convention
+--
+-- EXAMPLES:
+--
+--   -- Custom calculation function for a view field
+--   CREATE OR REPLACE FUNCTION calc_orders_total_with_tax(p_order_id TEXT)
+--   RETURNS NUMERIC AS $$
+--   BEGIN
+--       RETURN (SELECT subtotal * 1.08 FROM orders WHERE order_id = p_order_id);
+--   END;
+--   $$ LANGUAGE plpgsql STABLE;
+--
+--   -- Utility function
+--   CREATE OR REPLACE FUNCTION format_currency(p_amount NUMERIC)
+--   RETURNS TEXT AS $$
+--   BEGIN
+--       RETURN '$' || TO_CHAR(p_amount, 'FM999,999,990.00');
+--   END;
+--   $$ LANGUAGE plpgsql IMMUTABLE;
+--
+-- ============================================================================
+
+-- Your custom functions go here:
+</td>
+          <td>Postgres</td>
+          <td>Functions</td>
+        </tr>
+        <tr>
+          <td>03c-customize-views.sql</td>
+          <td>Customize Views</td>
+          <td>-- ============================================================================
+-- CUSTOMIZE VIEWS - User-defined views and view extensions
+-- ============================================================================
+-- This file is for YOUR custom views that should persist across
+-- regeneration of the base ERB files.
+--
+-- USE THIS FILE FOR:
+--   - Additional views not defined in the rulebook
+--   - Specialized views for reporting or dashboards
+--   - Views that combine data from multiple base views
+--   - Materialized views for performance optimization
+--
+-- IMPORTANT:
+--   - This file runs AFTER 03-create-views.sql
+--   - All base vw_* views already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--   - If you need to EXTEND a base view, create a new view that selects from it
+--
+-- ERB VIEW PATTERN:
+--   - Base views (vw_*) contain all denormalized data + calculated fields
+--   - READ from views, WRITE to base tables
+--   - Never JOIN in application code - extend views instead
+--
+-- EXAMPLES:
+--
+--   -- Custom reporting view
+--   CREATE OR REPLACE VIEW vw_monthly_summary AS
+--   SELECT
+--       DATE_TRUNC('month', created_at) AS month,
+--       COUNT(*) AS record_count,
+--       SUM(amount) AS total_amount
+--   FROM vw_orders
+--   GROUP BY DATE_TRUNC('month', created_at);
+--
+--   -- Extended view with additional computed fields
+--   CREATE OR REPLACE VIEW vw_orders_extended AS
+--   SELECT
+--       o.*,
+--       calc_orders_total_with_tax(o.order_id) AS total_with_tax
+--   FROM vw_orders o;
+--
+--   -- Materialized view for heavy queries
+--   CREATE MATERIALIZED VIEW IF NOT EXISTS mv_dashboard_stats AS
+--   SELECT ... FROM vw_orders ...;
+--
+-- ============================================================================
+
+-- Your custom views go here:
+</td>
+          <td>Postgres</td>
+          <td>Views</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
 </section>
 <footer class="doc-footer">
-  <p>Rendered from the rulebook by the shared <b>RuleSpeak®</b> engine (<code>rulebook-rulespeak-core</code>). The same engine narrates the React Explainer DAG, so every narration mode reads identically across both.</p>
+  <p class="doc-footer-soon"><b>RuleSpeak&#174;</b> — the declarative business-rule notation created by <b>Ronald G. Ross</b>, following the conventions of <b>SBVR</b> — is coming soon. Until then this page shows the regular documentation. <a href="https://www.RonRoss.info" target="_blank" rel="noopener">www.RonRoss.info</a></p>
+  <p>Rendered from the rulebook by the shared <b>Docs</b> engine (<code>rulebook-rulespeak-core</code>). The same engine narrates the React Explainer DAG, so every narration mode reads identically across both.</p>
   <p class="doc-footer-legend"><span class="chip chip-raw">● Ground truth</span> <span class="chip chip-calc">ƒ Calculated</span> <span class="chip chip-agg">Σ Aggregation</span> <span class="chip chip-lookup">↗ Lookup</span> <span class="chip chip-rel">⇢ Relationship</span></p>
 </footer>
 </div>
@@ -2409,8 +3229,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 
 (function(){
   var LANGS=['en'];
-  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
-  var DEFAULTS={'rulespeak':false,'english':true,'formula':false,'desc':true,'inputs':false,'consumers':true};
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers','data'];
+  var DEFAULTS={'rulespeak':false,'english':true,'formula':false,'desc':true,'inputs':false,'consumers':true,'data':true};
   var root=document.documentElement;
 
   // ── Language switching. All .lang-select controls stay in sync; the choice
@@ -2512,8 +3332,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
   var barH=parseInt(getComputedStyle(root).getPropertyValue('--bar-h'),10)||48;
   function update(){
     var line=barH+18, curF=null, curE=null;
-    for(var i=0;i<fields.length;i++){ if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
-    for(var j=0;j<entities.length;j++){ if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
+    for(var i=0;i<fields.length;i++){ if(!fields[i].offsetParent) continue; if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
+    for(var j=0;j<entities.length;j++){ if(!entities[j].offsetParent) continue; if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
     if(curF){
       var fEnt=curF.getAttribute('data-entity');
       var eName=curE?curE.getAttribute('data-entity'):fEnt;
@@ -2527,6 +3347,237 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
   window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('resize',onScroll,{passive:true});
   rebindSpy();
+})();
+
+
+(function(){
+  // ── Navigator ──────────────────────────────────────────────────────────────
+  //  From nine entities up, the page shows an overview or ONE entity at a time, with a nav that is
+  //  always on screen: grouped tables, a filter, the current entity's fields, tabs over its fields and
+  //  an overview as groups / A-Z / a graph. Smaller rulebooks keep the single page. Everything is read
+  //  from what the page already says (the entities, their fields, data-links, data-rules); the words
+  //  come from the language's data-nav. A person can always switch to everything on one page.
+  var MIN=9;
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;'); }
+  function leading(n){
+    var h=String(n).replace(/^[^A-Za-z0-9]+/,'').split(/[\s_-]+/)[0];
+    var m=/^(?:[A-Z]+(?=[A-Z][a-z])|[A-Z][a-z0-9]*|[A-Z]+[0-9]*|[a-z0-9]+)/.exec(h);
+    return m?m[0]:h;
+  }
+  function singular(w){ return w.length>3 ? w.replace(/ies$/i,'y').replace(/s$/i,'') : w; }
+
+  // Families: tables sharing a leading word; a stray joins the family most of its neighbours are in.
+  function groupsOf(ents,T){
+    var names=ents.map(function(e){return e.name;});
+    var by={};
+    ents.forEach(function(e){ var k=singular(leading(e.name)).toLowerCase(); (by[k]=by[k]||{words:[],members:[]}); by[k].words.push(leading(e.name)); by[k].members.push(e); });
+    var fam={},label={};
+    Object.keys(by).forEach(function(k){
+      if(by[k].members.length<2||k.length<3) return;
+      label[k]=by[k].words.slice().sort(function(a,b){return a.length-b.length||a.localeCompare(b);})[0];
+      by[k].members.forEach(function(e){ fam[e.id]=k; });
+    });
+    if(!Object.keys(fam).length) return [{key:'',label:null,items:ents}];
+    var byId={}; ents.forEach(function(e){ byId[e.id]=e; });
+    var nb={}; ents.forEach(function(e){ nb[e.id]=[]; });
+    ents.forEach(function(e){ e.links.forEach(function(t){ if(byId[t]){ nb[e.id].push(t); nb[t].push(e.id); } }); });
+    var groups={};
+    function put(k,e){ (groups[k]=groups[k]||[]).push(e); }
+    ents.forEach(function(e){
+      if(fam[e.id]){ put(fam[e.id],e); return; }
+      var tally={}; nb[e.id].forEach(function(t){ if(fam[t]) tally[fam[t]]=(tally[fam[t]]||0)+1; });
+      var best='',bn=0; Object.keys(tally).sort().forEach(function(k){ if(tally[k]>bn){ best=k; bn=tally[k]; } });
+      put(best,e);
+    });
+    var out=Object.keys(groups).filter(function(k){return k!=='';}).sort(function(a,b){return label[a].localeCompare(label[b]);})
+      .map(function(k){ return {key:k,label:label[k],items:groups[k]}; });
+    if(groups['']) out.push({key:'',label:T.other,items:groups['']});
+    return out;
+  }
+
+  // The graph: a box per table, a line per relationship; what a table points at is to its left.
+  function graphSvg(ents,T){
+    var set={}; ents.forEach(function(e){ set[e.id]=e; });
+    var out={},depth={},vis={};
+    ents.forEach(function(e){ out[e.id]=e.links.filter(function(t){return set[t]&&t!==e.id;}); });
+    function d(id){ if(depth[id]!=null) return depth[id]; if(vis[id]) return 0; vis[id]=1; var x=0; out[id].forEach(function(t){ x=Math.max(x,1+d(t)); }); vis[id]=0; depth[id]=x; return x; }
+    ents.forEach(function(e){ d(e.id); });
+    var maxD=0; ents.forEach(function(e){ maxD=Math.max(maxD,depth[e.id]); });
+    var by=[]; for(var i=0;i<=maxD;i++) by.push([]);
+    ents.slice().sort(function(a,b){return a.name.localeCompare(b.name);}).forEach(function(e){ by[depth[e.id]].push(e); });
+    var layers=by.filter(function(l){return l.length;});
+    var BW=164,BH=30,GX=96,GY=14,pos={};
+    layers.forEach(function(layer,li){
+      if(li>0){
+        var bary=function(e){ var ps=out[e.id].concat(ents.filter(function(o){return out[o.id].indexOf(e.id)>=0;}).map(function(o){return o.id;})).filter(function(t){return pos[t];}).map(function(t){return pos[t].row;}); return ps.length?ps.reduce(function(a,b){return a+b;},0)/ps.length:1e9; };
+        layer.sort(function(a,b){return bary(a)-bary(b)||a.name.localeCompare(b.name);});
+      }
+      layer.forEach(function(e,ri){ pos[e.id]={row:ri,x:li*(BW+GX),y:ri*(BH+GY)}; });
+    });
+    var rows=1; layers.forEach(function(l){rows=Math.max(rows,l.length);});
+    var W=layers.length*(BW+GX)-GX,H=rows*(BH+GY)-GY,s='';
+    ents.forEach(function(e){ out[e.id].forEach(function(t){
+      var a=pos[e.id],b=pos[t],x1=a.x,y1=a.y+BH/2,x2=b.x+BW,y2=b.y+BH/2,dx=Math.max(24,(x1-x2)/2);
+      s+='<path class=\'ge\' d=\'M'+x1+','+y1+' C'+(x1-dx)+','+y1+' '+(x2+dx)+','+y2+' '+x2+','+y2+'\' marker-end=\'url(#dga)\'/>';
+    }); });
+    ents.forEach(function(e){
+      var p=pos[e.id],lab=e.name.length>22?e.name.slice(0,21)+'…':e.name;
+      s+='<g class=\'gn'+(e.rules?' has':'')+'\' transform=\'translate('+p.x+','+p.y+')\'><a href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><rect width=\''+BW+'\' height=\''+BH+'\' rx=\'6\'/><text x=\''+(BW/2)+'\' y=\''+(BH/2+4)+'\' text-anchor=\'middle\'>'+esc(lab)+'</text><title>'+esc(e.name)+'</title></a></g>';
+    });
+    return '<svg class=\'dgraph\' viewBox=\'-4 -4 '+(W+8)+' '+(H+8)+'\' width=\''+(W+8)+'\' height=\''+(H+8)+'\'><defs><marker id=\'dga\' viewBox=\'0 0 8 8\' refX=\'7\' refY=\'4\' markerWidth=\'7\' markerHeight=\'7\' orient=\'auto\'><path d=\'M0,0 L8,4 L0,8 z\' class=\'ga\'/></marker></defs>'+s+'</svg>';
+  }
+
+  function setup(doc){
+    var T={}; var tx=doc.querySelector('.nav-texts'); try{ T=JSON.parse((tx&&tx.textContent)||'{}'); }catch(e){ return; }
+    var sections=Array.prototype.slice.call(doc.querySelectorAll('.entity[id]'));
+    if(sections.length<MIN) return;
+    var ents=sections.map(function(el){
+      var fs=Array.prototype.slice.call(el.querySelectorAll('.field[data-field]')).map(function(f){
+        var tone=(f.className.match(/tone-(\w+)/)||[])[1]||'rel';
+        return {id:f.id,name:f.getAttribute('data-field'),tone:tone,glyph:(f.querySelector('.field-glyph')||{}).textContent||''};
+      });
+      return {id:el.id,name:el.getAttribute('data-entity'),el:el,links:(el.getAttribute('data-links')||'').split(' ').filter(Boolean),rules:parseInt(el.getAttribute('data-rules')||'0',10),fields:fs};
+    });
+    var byId={}; ents.forEach(function(e){ byId[e.id]=e; });
+    var groups=groupsOf(ents,T);
+    var q='',view='groups',tab='all',fq='',closed={};
+
+    // Layout: nav | main (overview + the entities).
+    var toc=doc.querySelector('.toc'),header=doc.querySelector('.doc-header');
+    var grid=document.createElement('div'); grid.className='docgrid';
+    var nav=document.createElement('nav'); nav.className='sidenav'; nav.setAttribute('aria-label',T.tocTitle||'');
+    var main=document.createElement('div'); main.className='docmain';
+    var ov=document.createElement('section'); ov.className='ov';
+    main.appendChild(ov);
+    sections.forEach(function(el){ main.appendChild(el); });
+    grid.appendChild(nav); grid.appendChild(main);
+    (header||toc).insertAdjacentElement('afterend',grid);
+    var footer=doc.querySelector('.doc-footer'); if(footer) grid.insertAdjacentElement('afterend',footer);
+    doc.classList.add('paged');
+
+    function matches(e){
+      var t=q.trim().toLowerCase(); if(!t) return {ok:true,fs:[]};
+      if(e.name.toLowerCase().indexOf(t)>=0) return {ok:true,fs:[]};
+      var hit=e.fields.filter(function(f){return f.name.toLowerCase().indexOf(t)>=0;});
+      return hit.length?{ok:true,fs:hit}:{ok:false,fs:[]};
+    }
+    var cur=null,curField=null;
+    function navBody(){
+      var filtering=!!q.trim(),html='';
+      groups.forEach(function(g){
+        var rows=g.items.map(function(e){
+          var m=matches(e); if(!m.ok) return '';
+          var here=cur===e,shown=here?e.fields:m.fs.slice(0,8);
+          var r='<div><a class=\'sn-t'+(here?' is-current':'')+'\' href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><span>'+esc(e.name)+'</span>'+(e.rules?'<b>ƒ '+e.rules+'</b>':'')+'</a>';
+          if(shown.length) r+='<ul class=\'sn-fields\'>'+shown.map(function(f){ return '<li><a class=\'sn-f tone-'+esc(f.tone)+'\' href=\'#'+esc(f.id)+'\' data-go=\''+esc(f.id)+'\'><i>'+esc(f.glyph)+'</i><span>'+esc(f.name)+'</span></a></li>'; }).join('')+'</ul>';
+          return r+'</div>';
+        }).filter(Boolean);
+        if(!rows.length) return;
+        if(g.label==null){ html+=rows.join(''); return; }
+        var has=cur&&g.items.indexOf(cur)>=0,open=filtering||has||(groups.length<=3&&closed[g.key]!==true)||closed[g.key]===false;
+        html+='<details class=\'sn-group'+(has?' has-current':'')+'\' data-g=\''+esc(g.key)+'\''+(open?' open':'')+'><summary class=\'sn-gtitle\'><span>'+esc(g.label)+'</span><span class=\'sn-n\'>'+rows.length+'</span></summary>'+rows.join('')+'</details>';
+      });
+      return html||'<p class=\'sn-empty\'>'+esc(T.empty)+'</p>';
+    }
+    function drawNav(keepFocus){
+      var body=nav.querySelector('.sn-body'),top=body?body.scrollTop:0;
+      if(!nav.firstChild){
+        nav.innerHTML='<div class=\'sn-head\'><a class=\'sn-index\' href=\'#\' data-go=\'\'><span>▦ '+esc(T.tocTitle)+'</span><span class=\'sn-n\'>'+ents.length+'</span></a><input type=\'search\' class=\'sn-q\' placeholder=\''+esc(T.search)+'\' aria-label=\''+esc(T.search)+'\'></div><div class=\'sn-body\'></div><div class=\'sn-foot\'><button type=\'button\' class=\'sn-all\'></button></div>';
+        nav.querySelector('.sn-q').addEventListener('input',function(){ q=this.value; drawNav(true); drawOverview(); });
+        nav.querySelector('.sn-all').addEventListener('click',function(){ var on=!doc.classList.contains('paged'); setPaged(on); });
+        nav.addEventListener('click',go);
+        nav.addEventListener('toggle',function(ev){ var d=ev.target; if(d&&d.getAttribute&&d.getAttribute('data-g')!=null) closed[d.getAttribute('data-g')]=!d.open; },true);
+        body=nav.querySelector('.sn-body');
+      }
+      body.innerHTML=navBody(); body.scrollTop=top;
+      nav.querySelector('.sn-all').textContent=doc.classList.contains('paged')?T.showAll:T.showOne;
+      var c=body.querySelector('.sn-f.is-current,.sn-t.is-current'); if(c&&!keepFocus&&c.scrollIntoView) c.scrollIntoView({block:'nearest'});
+    }
+    function go(ev){
+      var a=ev.target.closest&&ev.target.closest('[data-go]'); if(!a||ev.metaKey||ev.ctrlKey||ev.shiftKey) return;
+      ev.preventDefault();
+      var id=a.getAttribute('data-go');
+      location.hash=id?'#'+id:'#'+doc.getAttribute('data-lang')+'-top';
+    }
+
+    // Overview: groups, A-Z or the graph, narrowed by the filter.
+    function drawOverview(){
+      var shown=ents.filter(function(e){return matches(e).ok;});
+      var h='<div class=\'tabs\' role=\'tablist\'>'+[['groups',T.groups],['list',T.list],['graph',T.graph]].map(function(v){
+        return '<button type=\'button\' role=\'tab\' class=\'tab'+(view===v[0]?' is-active':'')+'\' data-view=\''+v[0]+'\' aria-selected=\''+(view===v[0])+'\'>'+esc(v[1])+'</button>'; }).join('')+
+        '<input type=\'search\' class=\'ov-q\' placeholder=\''+esc(T.search)+'\' aria-label=\''+esc(T.search)+'\' value=\''+esc(q)+'\'></div>';
+      if(!shown.length) h+='<p class=\'sn-empty\'>'+esc(T.empty)+'</p>';
+      else if(view==='list'){
+        h+='<table class=\'ov-list\'><tbody>'+shown.slice().sort(function(a,b){return a.name.localeCompare(b.name);}).map(function(e){
+          return '<tr><td><a href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'>'+esc(e.name)+'</a></td><td class=\'ov-n\'>'+e.fields.length+'</td><td class=\'ov-n\'>ƒ '+e.rules+'</td><td class=\'ov-n\'>⇢ '+e.links.length+'</td></tr>'; }).join('')+'</tbody></table>';
+      } else {
+        var set={}; shown.forEach(function(e){set[e.id]=1;});
+        var gs=groupsOf(shown,T);
+        if(view==='graph') h+='<p class=\'ov-hint\'>'+esc(T.graphHint)+'</p>';
+        gs.forEach(function(g){
+          var inner=view==='graph'
+            ? '<div class=\'ov-graph\'>'+graphSvg(g.items,T)+'</div>'
+            : '<div class=\'ov-grid\'>'+g.items.map(function(e){ return '<a class=\'ov-card\' href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><b>'+esc(e.name)+'</b><span>'+e.fields.length+' · ƒ '+e.rules+' · ⇢ '+e.links.length+'</span></a>'; }).join('')+'</div>';
+          h+=g.label==null?inner:'<details class=\'ov-group\' open><summary class=\'ov-gtitle\'><span>'+esc(g.label)+'</span><span class=\'sn-n\'>'+g.items.length+'</span></summary>'+inner+'</details>';
+        });
+      }
+      ov.innerHTML=h;
+      ov.querySelectorAll('[data-view]').forEach(function(b){ b.addEventListener('click',function(){ view=b.getAttribute('data-view'); drawOverview(); }); });
+      var oq=ov.querySelector('.ov-q'); oq.addEventListener('input',function(){ q=oq.value; var nq=nav.querySelector('.sn-q'); if(nq) nq.value=q; drawNav(true); drawOverview(); var n=ov.querySelector('.ov-q'); n.focus(); n.setSelectionRange(q.length,q.length); });
+      ov.addEventListener('click',go);
+    }
+
+    // Tabs over an entity's fields.
+    function addTabs(e){
+      if(e.el.querySelector('.tabs')) return;
+      var kinds={all:e.fields.length,derived:0,stored:0,rels:0};
+      e.fields.forEach(function(f){ if(f.tone==='rel') kinds.rels++; else if(f.tone==='raw') kinds.stored++; else kinds.derived++; });
+      var tabs=[['all',T.all],['derived',T.derived],['stored',T.stored],['rels',T.rels]].filter(function(t){return t[0]==='all'||kinds[t[0]];});
+      var bar=document.createElement('div'); bar.className='tabs'; bar.setAttribute('role','tablist');
+      bar.innerHTML=tabs.map(function(t){ return '<button type=\'button\' role=\'tab\' class=\'tab'+(tab===t[0]?' is-active':'')+'\' data-tab=\''+t[0]+'\'>'+esc(t[1])+' <i>'+kinds[t[0]]+'</i></button>'; }).join('')+'<input type=\'search\' class=\'tab-q\' placeholder=\''+esc(T.fields)+'\' aria-label=\''+esc(T.fields)+'\'>';
+      var head=e.el.querySelector('.entity-head'); head.insertAdjacentElement('afterend',bar);
+      var apply=function(){
+        var t=fq.trim().toLowerCase();
+        e.el.querySelectorAll('.field[data-field]').forEach(function(f){
+          var tone=(f.className.match(/tone-(\w+)/)||[])[1]||'rel';
+          var kind=tone==='rel'?'rels':tone==='raw'?'stored':'derived';
+          f.hidden=!((tab==='all'||tab===kind)&&(!t||(f.getAttribute('data-field')||'').toLowerCase().indexOf(t)>=0));
+        });
+        bar.querySelectorAll('.tab').forEach(function(b){ var on=b.getAttribute('data-tab')===tab; b.classList.toggle('is-active',on); });
+      };
+      bar.querySelectorAll('.tab').forEach(function(b){ b.addEventListener('click',function(){ tab=b.getAttribute('data-tab'); ents.forEach(function(x){ if(x.apply) x.apply(); }); }); });
+      var inp=bar.querySelector('.tab-q'); inp.addEventListener('input',function(){ fq=inp.value; ents.forEach(function(x){ if(x.apply&&x!==e){ var o=x.el.querySelector('.tab-q'); if(o) o.value=fq; } if(x.apply) x.apply(); }); });
+      e.apply=apply; apply();
+    }
+    ents.forEach(addTabs);
+
+    // Which entity is on screen follows the address.
+    var first=true;
+    function show(){
+      var id=(location.hash||'').replace(/^#/,''),target=id?document.getElementById(id):null;
+      var ent=null;
+      if(target&&doc.contains(target)){ var s=target.closest?target.closest('.entity'):null; ent=s?byId[s.id]:null; }
+      cur=ent;
+      sections.forEach(function(el){ el.classList.toggle('is-on',!!ent&&el===ent.el); });
+      ov.hidden=!!ent&&doc.classList.contains('paged');
+      if(!ent) drawOverview();
+      drawNav();
+      if(!doc.classList.contains('paged')) return;
+      if(ent&&target&&target!==ent.el){ var hid=target.hidden; if(hid){ tab='all'; fq=''; ents.forEach(function(x){ if(x.apply) x.apply(); }); } target.scrollIntoView(); }
+      else if(!first){ var m=doc.querySelector('.docgrid'); window.scrollTo(0,m?m.getBoundingClientRect().top+window.pageYOffset-60:0); }
+    }
+    function setPaged(on){
+      doc.classList.toggle('paged',on);
+      try{ localStorage.setItem('docs.paged',on?'1':'0'); }catch(e){}
+      show();
+    }
+    var saved=null; try{ saved=localStorage.getItem('docs.paged'); }catch(e){}
+    if(saved==='0') doc.classList.remove('paged');
+    window.addEventListener('hashchange',function(){ if(doc.getAttribute('data-lang')===document.documentElement.getAttribute('data-lang')) show(); });
+    show(); first=false;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.lang-doc'),setup);
+
 })();
 
 </script>

@@ -109,11 +109,28 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelatedTo": "Ratings"
       },
       {
-        "name": "Rating",
+        "name": "RatingCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(Ratings!{{Series}}, Series!{{SerieId}})",
+        "Description": "How many fan ratings this series has."
+      },
+      {
+        "name": "RatingTotal",
         "datatype": "number",
         "type": "aggregation",
         "nullable": true,
-        "formula": "=SUMIFS(Ratings!{{Rating}}, Ratings!{{Series}}, Series!{{SerieId}})"
+        "formula": "=SUMIFS(Ratings!{{Rating}}, Ratings!{{Series}}, Series!{{SerieId}})",
+        "Description": "Sum of every fan rating attached to this series."
+      },
+      {
+        "name": "Rating",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF({{RatingCount}} = 0, 0, {{RatingTotal}} / {{RatingCount}})",
+        "Description": "The average fan rating: RatingTotal / RatingCount, and 0 for a series nobody has rated yet. It was =SUMIFS(...) until 2026-11-26, which made it the total, not the average this table and IsGood describe (TOS read 13 where the rulebook says 4.33)."
       },
       {
         "name": "IsGood",
@@ -13993,7 +14010,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       },
       {
         "name": "Rating",
-        "datatype": "string",
+        "datatype": "integer",
         "type": "raw",
         "nullable": true
       },
@@ -14434,7 +14451,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ERBCustomizationId": "03b-customize-functions-sql",
         "Name": "03b-customize-functions.sql",
         "Title": "Customize Functions",
-        "SQLCode": "-- ============================================================================\n-- CUSTOMIZE FUNCTIONS - User-defined calculation functions\n-- ============================================================================\n-- This file is for YOUR custom PostgreSQL functions that should persist\n-- across regeneration of the base ERB files.\n--\n-- USE THIS FILE FOR:\n--   - Additional calc_* functions for computed fields\n--   - Helper functions for complex business logic\n--   - Utility functions for data transformation\n--   - Trigger functions for custom automation\n--\n-- IMPORTANT:\n--   - This file runs AFTER 02-create-functions.sql\n--   - Base ERB calc functions already exist when this runs\n--   - This file will NOT be overwritten by ERB regeneration\n--   - Functions defined here can be used in 03b-customize-views.sql\n--\n-- ERB FUNCTION NAMING CONVENTIONS:\n--   - calc_tablename_fieldname() - Returns a computed value for a view field\n--   - Helper functions can use any naming convention\n--\n-- EXAMPLES:\n--\n--   -- Custom calculation function for a view field\n--   CREATE OR REPLACE FUNCTION calc_orders_total_with_tax(p_order_id TEXT)\n--   RETURNS NUMERIC AS $$\n--   BEGIN\n--       RETURN (SELECT subtotal * 1.08 FROM orders WHERE order_id = p_order_id);\n--   END;\n--   $$ LANGUAGE plpgsql STABLE;\n--\n--   -- Utility function\n--   CREATE OR REPLACE FUNCTION format_currency(p_amount NUMERIC)\n--   RETURNS TEXT AS $$\n--   BEGIN\n--       RETURN '$' || TO_CHAR(p_amount, 'FM999,999,990.00');\n--   END;\n--   $$ LANGUAGE plpgsql IMMUTABLE;\n--\n-- ============================================================================\n\n-- Your custom functions go here:\n\nCREATE OR REPLACE FUNCTION public.calc_series_rating(p_serie_id text)\n RETURNS numeric\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COALESCE(COUNT(rating), 0) FROM ratings WHERE series = p_serie_id));\nEND;\n$function$\n",
+        "SQLCode": "-- ============================================================================\n-- CUSTOMIZE FUNCTIONS - User-defined calculation functions\n-- ============================================================================\n-- This file is for YOUR custom PostgreSQL functions that should persist\n-- across regeneration of the base ERB files.\n--\n-- USE THIS FILE FOR:\n--   - Additional calc_* functions for computed fields\n--   - Helper functions for complex business logic\n--   - Utility functions for data transformation\n--   - Trigger functions for custom automation\n--\n-- IMPORTANT:\n--   - This file runs AFTER 02-create-functions.sql\n--   - Base ERB calc functions already exist when this runs\n--   - This file will NOT be overwritten by ERB regeneration\n--   - Functions defined here can be used in 03b-customize-views.sql\n--\n-- ERB FUNCTION NAMING CONVENTIONS:\n--   - calc_tablename_fieldname() - Returns a computed value for a view field\n--   - Helper functions can use any naming convention\n--\n-- EXAMPLES:\n--\n--   -- Custom calculation function for a view field\n--   CREATE OR REPLACE FUNCTION calc_orders_total_with_tax(p_order_id TEXT)\n--   RETURNS NUMERIC AS $$\n--   BEGIN\n--       RETURN (SELECT subtotal * 1.08 FROM orders WHERE order_id = p_order_id);\n--   END;\n--   $$ LANGUAGE plpgsql STABLE;\n--\n--   -- Utility function\n--   CREATE OR REPLACE FUNCTION format_currency(p_amount NUMERIC)\n--   RETURNS TEXT AS $$\n--   BEGIN\n--       RETURN '$' || TO_CHAR(p_amount, 'FM999,999,990.00');\n--   END;\n--   $$ LANGUAGE plpgsql IMMUTABLE;\n--\n-- ============================================================================\n\n-- Your custom functions go here:\n",
         "SQLTarget": "Postgres",
         "CustomizationType": "Functions"
       },
@@ -14678,11 +14695,31 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "A series's rating is the total rating across the ratings related to the series.",
+        "rule": "A series's rating count is the number of ratings related to the series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "A series's rating total is the total rating across the ratings related to the series.",
         "mechanical": false,
         "refs": [
           {
@@ -14702,6 +14739,43 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         ],
         "structure": null
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "The series's rating is determined by the following priority:\n1. 0, if the rating count is 0;\n2. in all other cases, the rating total divided by the rating count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The series's rating is determined by the following priority:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "the rating count is 0"
+              }
+            },
+            {
+              "value": "the rating total divided by the rating count",
+              "when": null
+            }
+          ],
+          "children": null
+        }
       },
       "Series.IsGood": {
         "table": "Series",
@@ -15314,11 +15388,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total episodes أكبر من 50"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "حقل «rating» في سجل «series» هو مجموع قيم حقل «rating» عبر سجلات «ratings» المرتبطة بسجل «series».",
+        "rule": "حقل «rating count» في سجل «series» هو عدد سجلات «ratings» المرتبطة بسجل «series».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "عدد سجلات «ratings» التي يتحقق فيها أنّ حقل «series» يساوي serie ID"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "حقل «rating total» في سجل «series» هو مجموع قيم حقل «rating» عبر سجلات «ratings» المرتبطة بسجل «series».",
         "mechanical": false,
         "refs": [
           {
@@ -15339,6 +15434,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "مجموع «rating» في جميع سجلات «ratings» التي يتحقق فيها أنّ حقل «series» يساوي serie ID"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "حقل «rating» في سجل «series» يتحدد وفق ترتيب الأولوية الآتي:\n1. 0، إذا تحقق أنّ حقل «rating count» يساوي 0؛\n2. حقل «rating total» مقسومًا على حقل «rating count»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «rating» في سجل «series» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «rating count» يساوي 0"
+              }
+            },
+            {
+              "value": "حقل «rating total» مقسومًا على حقل «rating count»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ rating count يساوي 0 فالناتج 0، وإلا فالناتج (rating total تقسيم rating count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -15972,11 +16105,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total Episodes größer als 50 ist"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "Ein Series: Rating ist die Gesamtsumme von Rating über die mit dem Series verbundenen Ratings.",
+        "rule": "Ein Series: Rating Count ist die Anzahl der mit dem Series verbundenen Ratings.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Anzahl der Ratings, deren Series ist Serie ID"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "Ein Series: Rating Total ist die Gesamtsumme von Rating über die mit dem Series verbundenen Ratings.",
         "mechanical": false,
         "refs": [
           {
@@ -15997,6 +16151,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Summe von Rating über alle Ratings, deren Series ist Serie ID"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "Das Feld „Rating“ des Series wird nach folgender Priorität bestimmt:\n1. 0, wenn der Rating Count 0 ist;\n2. andernfalls der Rating Total geteilt durch der Rating Count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Rating“ des Series wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "der Rating Count 0 ist"
+              }
+            },
+            {
+              "value": "der Rating Total geteilt durch der Rating Count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Rating Count gleich 0 ist, dann 0, andernfalls (Rating Total geteilt durch Rating Count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -16630,11 +16822,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total episodes es mayor que 50"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "Un series: rating es el total de rating entre los ratings relacionados con el series.",
+        "rule": "Un series: rating count es el número de ratings relacionados con el series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Recuento de ratings cuyo series es serie ID"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "Un series: rating total es el total de rating entre los ratings relacionados con el series.",
         "mechanical": false,
         "refs": [
           {
@@ -16655,6 +16868,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Suma de rating entre todos los ratings cuyo series es serie ID"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "El campo «rating» del series se determina según la siguiente prioridad:\n1. 0, si el rating count es 0;\n2. en todos los demás casos, el rating total dividido por el rating count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «rating» del series se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "el rating count es 0"
+              }
+            },
+            {
+              "value": "el rating total dividido por el rating count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si rating count es igual a 0, entonces 0, de lo contrario (rating total dividido por rating count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -17288,11 +17539,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total episodes est supérieur à 50"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "Un series : rating est le total de rating sur les ratings liés à le series.",
+        "rule": "Un series : rating count est le nombre de ratings liés à le series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Décompte des ratings dont series est serie ID"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "Un series : rating total est le total de rating sur les ratings liés à le series.",
         "mechanical": false,
         "refs": [
           {
@@ -17313,6 +17585,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Somme de rating sur tous les ratings dont series est serie ID"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "Le champ « rating » du series est déterminé selon la priorité suivante :\n1. 0, si le rating count est 0 ;\n2. dans tous les autres cas, le rating total divisé par le rating count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « rating » du series est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "le rating count est 0"
+              }
+            },
+            {
+              "value": "le rating total divisé par le rating count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si rating count est égal à 0, alors 0, sinon (rating total divisé par rating count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -17946,11 +18256,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total episodes 50 से अधिक है"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "series का “rating” series से संबंधित “ratings” पर कुल “rating” है।",
+        "rule": "series का “rating count” series से संबंधित “ratings” की संख्या है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन “ratings” की संख्या, जिनका series serie ID है"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "series का “rating total” series से संबंधित “ratings” पर कुल “rating” है।",
         "mechanical": false,
         "refs": [
           {
@@ -17971,6 +18302,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "उन सभी “ratings” पर योग rating, जिनका series serie ID है"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "Series का “rating” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. 0, यदि rating count 0 है;\n2. अन्य सभी स्थितियों में, rating total भाग rating count।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Series का “rating” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "rating count 0 है"
+              }
+            },
+            {
+              "value": "rating total भाग rating count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि rating count 0 के बराबर है, तो 0, अन्यथा (rating total भाग rating count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -18604,11 +18973,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total episodes lebih dari 50"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "Untuk setiap series, rating adalah nilai total rating pada seluruh ratings yang terkait dengan series tersebut.",
+        "rule": "Untuk setiap series, rating count adalah jumlah ratings yang terkait dengan series tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Jumlah ratings dengan syarat series adalah serie ID"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "Untuk setiap series, rating total adalah nilai total rating pada seluruh ratings yang terkait dengan series tersebut.",
         "mechanical": false,
         "refs": [
           {
@@ -18629,6 +19019,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Total rating pada semua ratings dengan syarat series adalah serie ID"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "Untuk setiap series, rating ditentukan menurut urutan prioritas berikut:\n1. 0, jika rating count adalah 0;\n2. dalam semua kasus lainnya, rating total dibagi rating count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap series, rating ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "rating count adalah 0"
+              }
+            },
+            {
+              "value": "rating total dibagi rating count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika rating count sama dengan 0 maka 0, selain itu (rating total dibagi rating count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -19262,11 +19690,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total episodes è maggiore di 50"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "Un series: rating è il totale di rating tra i ratings collegati a il series.",
+        "rule": "Un series: rating count è il numero di ratings collegati a il series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Conteggio dei ratings il cui series è serie ID"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "Un series: rating total è il totale di rating tra i ratings collegati a il series.",
         "mechanical": false,
         "refs": [
           {
@@ -19287,6 +19736,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Somma di rating su tutti i ratings il cui series è serie ID"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "Il campo “rating” del series è determinato secondo la seguente priorità:\n1. 0, se il rating count è 0;\n2. in tutti gli altri casi, il rating total diviso il rating count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “rating” del series è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "il rating count è 0"
+              }
+            },
+            {
+              "value": "il rating total diviso il rating count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se rating count è uguale a 0, allora 0, altrimenti (rating total diviso rating count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -19920,11 +20407,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total episodes が 50 より大きい"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "seriesの「rating」は seriesに関連する「ratings」全体での「rating」の合計 です。",
+        "rule": "seriesの「rating count」は seriesに関連する「ratings」の件数 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Series が serie ID である「ratings」の件数"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "seriesの「rating total」は seriesに関連する「ratings」全体での「rating」の合計 です。",
         "mechanical": false,
         "refs": [
           {
@@ -19945,6 +20453,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Series が serie ID であるすべての「ratings」にわたる rating の合計"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "Seriesの「rating」は、次の優先順位で決まります:\n1. rating count が 0 である場合は 0;\n2. それ以外の場合は rating total わる rating count。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Seriesの「rating」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "rating count が 0 である"
+              }
+            },
+            {
+              "value": "rating total わる rating count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Rating count が 0 と等しいなら 0、そうでなければ (rating total わる rating count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -20578,11 +21124,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total episodes 값이 50보다 큼"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "‘series’ 레코드의 ‘rating’ 값은 해당 ‘series’ 레코드에 연결된 모든 ‘ratings’ 레코드의 총 ‘rating’입니다.",
+        "rule": "‘series’ 레코드의 ‘rating count’ 값은 해당 ‘series’ 레코드에 연결된 ‘ratings’ 레코드의 개수입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(series 값이 serie ID임)에 맞는 ratings 레코드의 개수"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "‘series’ 레코드의 ‘rating total’ 값은 해당 ‘series’ 레코드에 연결된 모든 ‘ratings’ 레코드의 총 ‘rating’입니다.",
         "mechanical": false,
         "refs": [
           {
@@ -20603,6 +21170,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "조건(series 값이 serie ID임)에 맞는 모든 ratings 레코드의 rating 합계"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "‘series’ 레코드의 ‘rating’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘rating count’ 값이 0인 경우: 0\n2. 그 밖의 경우: ‘rating total’ 나누기 ‘rating count’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘series’ 레코드의 ‘rating’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "‘rating count’ 값이 0인 경우"
+              }
+            },
+            {
+              "value": "‘rating total’ 나누기 ‘rating count’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(rating count 값이 0 값과 같음)이 성립하면 0, 그렇지 않으면 (rating total 나누기 rating count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -21236,11 +21841,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total episodes is groter dan 50"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "Een series: rating is het totaal van rating over de ratings gekoppeld aan de series.",
+        "rule": "Een series: rating count is het aantal ratings dat is gekoppeld aan de series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Aantal ratings waarvan series is serie ID"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "Een series: rating total is het totaal van rating over de ratings gekoppeld aan de series.",
         "mechanical": false,
         "refs": [
           {
@@ -21261,6 +21887,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Som van rating over alle ratings waarvan series is serie ID"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "Het veld ‘rating’ van de series wordt bepaald volgens de volgende prioriteit:\n1. 0, als de rating count 0 is;\n2. in alle andere gevallen de rating total gedeeld door de rating count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘rating’ van de series wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "de rating count 0 is"
+              }
+            },
+            {
+              "value": "de rating total gedeeld door de rating count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als rating count is gelijk aan 0, dan 0, anders (rating total gedeeld door rating count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -21894,11 +22558,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total episodes é maior que 50"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "Um series: rating é o total de rating entre os ratings relacionados a o series.",
+        "rule": "Um series: rating count é o número de ratings relacionados a o series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Contagem de ratings cujo series é serie ID"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "Um series: rating total é o total de rating entre os ratings relacionados a o series.",
         "mechanical": false,
         "refs": [
           {
@@ -21919,6 +22604,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Soma de rating entre todos os ratings cujo series é serie ID"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "O campo “rating” do series é determinado pela seguinte prioridade:\n1. 0, se o rating count é 0;\n2. em todos os outros casos, o rating total dividido por o rating count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “rating” do series é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "o rating count é 0"
+              }
+            },
+            {
+              "value": "o rating total dividido por o rating count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se rating count é igual a 0, então 0, caso contrário (rating total dividido por rating count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -22552,11 +23275,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total episodes больше 50"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "Series: «rating» — это сумма «rating» по записям «ratings», связанным с series.",
+        "rule": "Series: «rating count» — это число записей «ratings», связанных с series.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Число «ratings», у которых series равно serie ID"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "Series: «rating total» — это сумма «rating» по записям «ratings», связанным с series.",
         "mechanical": false,
         "refs": [
           {
@@ -22577,6 +23321,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Сумма rating по всем «ratings», у которых series равно serie ID"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "Поле «rating» (Series) определяется по следующему приоритету:\n1. 0, если rating count равно 0;\n2. во всех остальных случаях — rating total разделить на rating count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «rating» (Series) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "rating count равно 0"
+              }
+            },
+            {
+              "value": "rating total разделить на rating count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если rating count равно 0, то 0, иначе (rating total разделить на rating count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -23210,11 +23992,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total episodes, 50 değerinden büyük"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "“series” kaydının “rating” alanı, “series” kaydıyla ilişkili “ratings” kayıtları üzerinden hesaplanan toplam “rating” değeri olarak belirlenir.",
+        "rule": "“series” kaydının “rating count” alanı, “series” kaydıyla ilişkili “ratings” kayıtlarının sayısı olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Series değeri serie ID olan ratings kayıtlarının sayısı"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "“series” kaydının “rating total” alanı, “series” kaydıyla ilişkili “ratings” kayıtları üzerinden hesaplanan toplam “rating” değeri olarak belirlenir.",
         "mechanical": false,
         "refs": [
           {
@@ -23235,6 +24038,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Series değeri serie ID olan tüm ratings kayıtlarındaki rating değerlerinin toplamı"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "“series” kaydının “rating” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “rating count” alanı 0 değerine eşit ise 0;\n2. diğer tüm durumlarda “rating total” alanı bölü “rating count” alanı.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“series” kaydının “rating” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "“rating count” alanı 0 değerine eşit"
+              }
+            },
+            {
+              "value": "“rating total” alanı bölü “rating count” alanı",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Rating count, 0 değerine eşit ise 0, aksi takdirde (rating total bölü rating count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -23868,11 +24709,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total episodes lớn hơn 50"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "Trường “rating” của mỗi series là giá trị tổng cộng của trường “rating” trên các ratings liên quan đến series đó.",
+        "rule": "Trường “rating count” của mỗi series là số lượng ratings liên quan đến series đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Số lượng ratings có series là serie ID"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "Trường “rating total” của mỗi series là giá trị tổng cộng của trường “rating” trên các ratings liên quan đến series đó.",
         "mechanical": false,
         "refs": [
           {
@@ -23893,6 +24755,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Tổng rating trên tất cả ratings có series là serie ID"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "Trường “rating” của mỗi series được xác định theo thứ tự ưu tiên sau:\n1. 0, nếu rating count là 0;\n2. trong mọi trường hợp còn lại, rating total chia cho rating count.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “rating” của mỗi series được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "rating count là 0"
+              }
+            },
+            {
+              "value": "rating total chia cho rating count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu rating count bằng 0 thì 0, nếu không thì (rating total chia cho rating count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -24526,11 +25426,32 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total episodes大于50"
       },
-      "Series.Rating": {
+      "Series.RatingCount": {
         "table": "Series",
-        "field": "Rating",
+        "field": "RatingCount",
         "kind": "rollup",
-        "rule": "series的“rating”为 与series相关的所有“ratings”的“rating”的总和。",
+        "rule": "series的“rating count”为 与series相关的“ratings”的数量。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Ratings",
+            "field": "Series",
+            "label": "series"
+          },
+          {
+            "table": "Series",
+            "field": "SerieId",
+            "label": "serie ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Series为serie ID的“ratings”的数量"
+      },
+      "Series.RatingTotal": {
+        "table": "Series",
+        "field": "RatingTotal",
+        "kind": "rollup",
+        "rule": "series的“rating total”为 与series相关的所有“ratings”的“rating”的总和。",
         "mechanical": false,
         "refs": [
           {
@@ -24551,6 +25472,44 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "所有series为serie ID的“ratings”的rating的总和"
+      },
+      "Series.Rating": {
+        "table": "Series",
+        "field": "Rating",
+        "kind": "formula",
+        "rule": "Series的“rating”按以下优先级确定:\n1. 当rating count为0时,取 0;\n2. 其余情况取 rating total除以rating count。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Series",
+            "field": "RatingCount",
+            "label": "rating count"
+          },
+          {
+            "table": "Series",
+            "field": "RatingTotal",
+            "label": "rating total"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Series的“rating”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "0",
+              "when": {
+                "kind": "leaf",
+                "text": "rating count为0"
+              }
+            },
+            {
+              "value": "rating total除以rating count",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若rating count等于0,则0,否则(rating total除以rating count)"
       },
       "Series.IsGood": {
         "table": "Series",
@@ -25098,4 +26057,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "ERBCustomizations": "ERB customization"
     }
   }
-} };
+}, stamp: "c16c8ed774aafb21" };

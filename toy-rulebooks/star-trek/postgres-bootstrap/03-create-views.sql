@@ -40,7 +40,9 @@ SELECT
   calc_series_is_long_running(t.serie_id) AS is_long_running,
   calc_series_seasons(t.serie_id) AS seasons,
   calc_series_series_ratings(t.serie_id) AS series_ratings,
-  calc_series_rating(t.serie_id) AS rating,
+  calc_series_rating_count(t.serie_id) AS rating_count,                         -- How many fan ratings this series has.
+  calc_series_rating_total(t.serie_id) AS rating_total,                         -- Sum of every fan rating attached to this series.
+  calc_series_rating(t.serie_id) AS rating,                                     -- The average fan rating: RatingTotal / RatingCount, and 0 for a series nobody has rated yet. It was =SUMIFS(...) until 2026-11-26, which made it the total, not the average this table and IsGood describe (TOS read 13 where the rulebook says 4.33).
   calc_series_is_good(t.serie_id) AS is_good
 FROM series t;
 

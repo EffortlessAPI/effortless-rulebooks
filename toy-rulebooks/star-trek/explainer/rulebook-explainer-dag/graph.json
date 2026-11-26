@@ -108,11 +108,28 @@
         "RelatedTo": "Ratings"
       },
       {
-        "name": "Rating",
+        "name": "RatingCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(Ratings!{{Series}}, Series!{{SerieId}})",
+        "Description": "How many fan ratings this series has."
+      },
+      {
+        "name": "RatingTotal",
         "datatype": "number",
         "type": "aggregation",
         "nullable": true,
-        "formula": "=SUMIFS(Ratings!{{Rating}}, Ratings!{{Series}}, Series!{{SerieId}})"
+        "formula": "=SUMIFS(Ratings!{{Rating}}, Ratings!{{Series}}, Series!{{SerieId}})",
+        "Description": "Sum of every fan rating attached to this series."
+      },
+      {
+        "name": "Rating",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF({{RatingCount}} = 0, 0, {{RatingTotal}} / {{RatingCount}})",
+        "Description": "The average fan rating: RatingTotal / RatingCount, and 0 for a series nobody has rated yet. It was =SUMIFS(...) until 2026-11-26, which made it the total, not the average this table and IsGood describe (TOS read 13 where the rulebook says 4.33)."
       },
       {
         "name": "IsGood",
@@ -13992,7 +14009,7 @@
       },
       {
         "name": "Rating",
-        "datatype": "string",
+        "datatype": "integer",
         "type": "raw",
         "nullable": true
       },
@@ -14433,7 +14450,7 @@
         "ERBCustomizationId": "03b-customize-functions-sql",
         "Name": "03b-customize-functions.sql",
         "Title": "Customize Functions",
-        "SQLCode": "-- ============================================================================\n-- CUSTOMIZE FUNCTIONS - User-defined calculation functions\n-- ============================================================================\n-- This file is for YOUR custom PostgreSQL functions that should persist\n-- across regeneration of the base ERB files.\n--\n-- USE THIS FILE FOR:\n--   - Additional calc_* functions for computed fields\n--   - Helper functions for complex business logic\n--   - Utility functions for data transformation\n--   - Trigger functions for custom automation\n--\n-- IMPORTANT:\n--   - This file runs AFTER 02-create-functions.sql\n--   - Base ERB calc functions already exist when this runs\n--   - This file will NOT be overwritten by ERB regeneration\n--   - Functions defined here can be used in 03b-customize-views.sql\n--\n-- ERB FUNCTION NAMING CONVENTIONS:\n--   - calc_tablename_fieldname() - Returns a computed value for a view field\n--   - Helper functions can use any naming convention\n--\n-- EXAMPLES:\n--\n--   -- Custom calculation function for a view field\n--   CREATE OR REPLACE FUNCTION calc_orders_total_with_tax(p_order_id TEXT)\n--   RETURNS NUMERIC AS $$\n--   BEGIN\n--       RETURN (SELECT subtotal * 1.08 FROM orders WHERE order_id = p_order_id);\n--   END;\n--   $$ LANGUAGE plpgsql STABLE;\n--\n--   -- Utility function\n--   CREATE OR REPLACE FUNCTION format_currency(p_amount NUMERIC)\n--   RETURNS TEXT AS $$\n--   BEGIN\n--       RETURN '$' || TO_CHAR(p_amount, 'FM999,999,990.00');\n--   END;\n--   $$ LANGUAGE plpgsql IMMUTABLE;\n--\n-- ============================================================================\n\n-- Your custom functions go here:\n\nCREATE OR REPLACE FUNCTION public.calc_series_rating(p_serie_id text)\n RETURNS numeric\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COALESCE(COUNT(rating), 0) FROM ratings WHERE series = p_serie_id));\nEND;\n$function$\n",
+        "SQLCode": "-- ============================================================================\n-- CUSTOMIZE FUNCTIONS - User-defined calculation functions\n-- ============================================================================\n-- This file is for YOUR custom PostgreSQL functions that should persist\n-- across regeneration of the base ERB files.\n--\n-- USE THIS FILE FOR:\n--   - Additional calc_* functions for computed fields\n--   - Helper functions for complex business logic\n--   - Utility functions for data transformation\n--   - Trigger functions for custom automation\n--\n-- IMPORTANT:\n--   - This file runs AFTER 02-create-functions.sql\n--   - Base ERB calc functions already exist when this runs\n--   - This file will NOT be overwritten by ERB regeneration\n--   - Functions defined here can be used in 03b-customize-views.sql\n--\n-- ERB FUNCTION NAMING CONVENTIONS:\n--   - calc_tablename_fieldname() - Returns a computed value for a view field\n--   - Helper functions can use any naming convention\n--\n-- EXAMPLES:\n--\n--   -- Custom calculation function for a view field\n--   CREATE OR REPLACE FUNCTION calc_orders_total_with_tax(p_order_id TEXT)\n--   RETURNS NUMERIC AS $$\n--   BEGIN\n--       RETURN (SELECT subtotal * 1.08 FROM orders WHERE order_id = p_order_id);\n--   END;\n--   $$ LANGUAGE plpgsql STABLE;\n--\n--   -- Utility function\n--   CREATE OR REPLACE FUNCTION format_currency(p_amount NUMERIC)\n--   RETURNS TEXT AS $$\n--   BEGIN\n--       RETURN '$' || TO_CHAR(p_amount, 'FM999,999,990.00');\n--   END;\n--   $$ LANGUAGE plpgsql IMMUTABLE;\n--\n-- ============================================================================\n\n-- Your custom functions go here:\n",
         "SQLTarget": "Postgres",
         "CustomizationType": "Functions"
       },

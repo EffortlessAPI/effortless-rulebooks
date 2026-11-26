@@ -1,4 +1,8 @@
 {
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
   "SSoTmeProjectId": "db8a3de1-1a27-47d0-9a1b-53dc225fe08f",
   "Name": "DEMO: StarTrek TV Shows",
   "Description": "A hierarchical media catalog demonstrating multi-level aggregations and polymorphic relationships.",
@@ -13,17 +17,17 @@
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/star-trek-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/star-trek-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true -p database=erb_star_trek",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.11.17.1626",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-11-17-1626-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate Postgres schema + seed data from the rulebook"
     },
     {
       "IsSSoTTranspiler": false,
       "Name": "execute",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "-exec ./reset-rulebook-db.sh",
+      "CommandLine": "-exec ../../../scripts/reset-project-db.py",
       "IsDisabled": false
     },
     {
@@ -48,7 +52,7 @@
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/star-trek-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.11.22.1524",
-      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-09-11-0137-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-11-22-1524-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -56,7 +60,8 @@
       "RelativePath": "/explainer",
       "CommandLine": "rulebook-to-explainer-dag -i ../effortless-rulebook/star-trek-rulebook.json -p languages=all",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1838"
+      "LastVersionUsed": "v2026.11.24.1636",
+      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-11-24-1636-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -64,12 +69,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i star-trek-rulebook.json -p rulebookPath=star-trek-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.0226",
-      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-10-1047-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.11.23.0835",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-11-23-0835-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
-  ],
-  "ShowHidden": false,
-  "ShowAllFiles": false,
-  "CurrentPath": null,
-  "SSoTmeProjectFiles": null
+  ]
 }

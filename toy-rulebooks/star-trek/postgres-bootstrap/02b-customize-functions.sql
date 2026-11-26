@@ -1,6 +1,9 @@
 -- ============================================================================
--- SOURCE: ERBCustomizations table, record: 03b-customize-functions.sql
--- If you see SQL errors below, check this customization in Airtable
+-- SEEDED FROM: rulebook table ERBCustomizations, row "03b-customize-functions.sql" (SQLCode).
+-- A COPY OF THE ROW. Do not edit. Dev's reset runs this file; a stage runs the
+-- row (update-effortless-schema.sql), so an edit made here never reaches one.
+-- Edit the row, then delete this file: it is written once and never
+-- overwritten, so Dev keeps running the old copy until it is reseeded.
 -- ============================================================================
 
 -- ============================================================================
@@ -46,13 +49,3 @@
 -- ============================================================================
 
 -- Your custom functions go here:
-
-CREATE OR REPLACE FUNCTION public.calc_series_rating(p_serie_id text)
- RETURNS numeric
- LANGUAGE plpgsql
- STABLE SECURITY DEFINER
-AS $function$
-BEGIN
-  RETURN ((SELECT COALESCE(COUNT(rating), 0) FROM ratings WHERE series = p_serie_id));
-END;
-$function$

@@ -13,7 +13,7 @@
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/tiling-the-plane-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/tiling-the-plane-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true -p database=erb_tiling_the_plane",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.11.17.1626",
       "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
@@ -23,7 +23,7 @@
       "IsSSoTTranspiler": false,
       "Name": "initdb",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "-exec ./reset-rulebook-db.sh",
+      "CommandLine": "-exec ../../../scripts/reset-project-db.py",
       "IsDisabled": false,
       "Description": "Drop + recreate the local Postgres DB and run all NN[b]?-*.sql in lex order."
     },

@@ -16,11 +16,26 @@ Two independent defects made 6 of 38 projects fail the 2026-09-09 baseline with
    the executable bit. The affected scripts were committed 100644 while the
    identical blob is 100755 in every project that works.
 
-Both are fixed here. The bit is set in the index as well as on disk, so a fresh
-clone gets it — the CLI's clean-and-recreate pass still drops it on disk during a
-build, which is a CLI defect (cr-20-02) this cannot fix, but a `git checkout`
-restores it and the corpus runner's own db phase calls `bash` on the script
-directly and is unaffected either way.
+3. WRONG DATABASE (2026-11-26). rulebook-to-postgres bakes `-p database=<name>`
+   into the generated script's default connection and uses `demo` when the
+   step does not pass it. No project passed it, so every plain `effortless
+   build` reset a shared `demo` database while the app and the corpus runner
+   read `erb_<slug>` (erb_project.db_name): the build was green and the app
+   never saw the rulebook change. Each project's rulebook-to-postgres step now
+   names its own database. Guarded by
+   scripts/tests/test_build_resets_project_database.py.
+
+4. THE BIT AGAIN (2026-11-26). Fix 2 set the bit in git, but every build that
+   changes the script's content regenerates it without the bit (cr-20-02, a
+   CLI defect), so the step failed again on the very next such build, stopped
+   the build there, and the build still exited 0. The step no longer runs the
+   generated script at all: it runs scripts/reset-project-db.py, committed
+   executable and never regenerated, which hands the work to
+   erb_project.reset_db (`bash reset-rulebook-db.sh <url>`, the same code the
+   corpus runner uses). Fix 1's RelativePath still matters: it is where that
+   script starts looking for its project.
+
+All four are fixed here. Guarded by scripts/tests/test_build_resets_project_database.py.
 
 Usage:
     python3 scripts/fix-db-reset-step.py            # report only
@@ -31,16 +46,34 @@ from __future__ import annotations
 
 import argparse
 import json
-import subprocess
+import os
+import re
 import sys
 from collections import OrderedDict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from erb_project import postgres_output_dir  # noqa: E402
+from erb_project import db_name, postgres_output_dir  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RESET = "reset-rulebook-db.sh"
+SHARED = REPO_ROOT / "scripts" / "reset-project-db.py"
+
+
+def is_database_step(step: dict) -> bool:
+    """An enabled `-exec` step that resets the project database, in either the
+    old form (the generated reset-rulebook-db.sh) or the current one."""
+    line = step.get("CommandLine", "")
+    return (line.startswith("-exec") and not step.get("IsDisabled")
+            and (RESET in line or SHARED.name in line))
+
+
+def database_step_command(project_dir: Path, relative_path: str) -> str:
+    """`-exec <path to scripts/reset-project-db.py>` relative to the step's
+    working directory. Relative because the CLI re-parses a token starting
+    with `/` as one of its own options."""
+    cwd = project_dir / relative_path.lstrip("/")
+    return f"-exec {os.path.relpath(SHARED, cwd)}"
 
 
 def manifests() -> list[Path]:
@@ -50,12 +83,29 @@ def manifests() -> list[Path]:
     return [p for p in paths if p.is_file()]
 
 
+DATABASE_PARAM = re.compile(r"(?<!\S)-p\s+database=(\S+)")
+
+
+def database_param(command_line: str) -> str | None:
+    """The database a rulebook-to-postgres command line names, or None."""
+    m = DATABASE_PARAM.search(command_line)
+    return m.group(1) if m else None
+
+
+def with_database(command_line: str, database: str) -> str:
+    """The command line naming `database`: an existing `-p database=` is
+    replaced in place, a missing one is appended."""
+    if DATABASE_PARAM.search(command_line):
+        return DATABASE_PARAM.sub(f"-p database={database}", command_line, count=1)
+    return f"{command_line} -p database={database}"
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--write", action="store_true")
     args = ap.parse_args()
 
-    repointed, chmodded, ok = [], [], 0
+    repointed, ok = [], 0
     for path in manifests():
         project = path.parent.name
         manifest = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=OrderedDict)
@@ -63,9 +113,7 @@ def main() -> None:
         if transpilers is None:
             raise SystemExit(f"{path} has no ProjectTranspilers key — refusing to guess at its shape.")
 
-        steps = [t for t in transpilers
-                 if RESET in t.get("CommandLine", "") and t.get("CommandLine", "").startswith("-exec")
-                 and not t.get("IsDisabled")]
+        steps = [t for t in transpilers if is_database_step(t)]
         if not steps:
             continue
 
@@ -76,30 +124,35 @@ def main() -> None:
         want = "/" + output_dir.relative_to(path.parent).as_posix()
 
         changed = False
+        database = db_name(project)
+        for step in transpilers:
+            line = step.get("CommandLine", "")
+            if not line.startswith("rulebook-to-postgres") or step.get("IsDisabled"):
+                continue
+            if database_param(line) != database:
+                print(f"  {project}: rulebook-to-postgres resets {database_param(line) or 'demo'!r} -> {database!r}")
+                step["CommandLine"] = with_database(line, database)
+                changed = True
         for step in steps:
             if step.get("RelativePath") != want:
                 print(f"  {project}: RelativePath {step.get('RelativePath')!r} -> {want!r}")
                 step["RelativePath"] = want
+                changed = True
+            command = database_step_command(path.parent, want)
+            if step["CommandLine"] != command:
+                print(f"  {project}: {step['CommandLine']!r} -> {command!r}")
+                step["CommandLine"] = command
                 changed = True
         if changed:
             repointed.append(project)
             if args.write:
                 path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
-        script = output_dir / RESET
-        if script.is_file() and not script.stat().st_mode & 0o111:
-            chmodded.append(project)
-            print(f"  {project}: {script.relative_to(REPO_ROOT)} is not executable")
-            if args.write:
-                script.chmod(script.stat().st_mode | 0o755)
-                # Record the bit in the index too, so a fresh clone gets it.
-                subprocess.run(["git", "update-index", "--chmod=+x", str(script.relative_to(REPO_ROOT))],
-                               cwd=REPO_ROOT, capture_output=True)
-        if not changed and project not in chmodded:
+        if not changed:
             ok += 1
 
     verb = "fixed" if args.write else "would fix"
-    print(f"\n{verb}: {len(repointed)} RelativePath(s), {len(chmodded)} executable bit(s); {ok} already correct")
+    print(f"\n{verb}: {len(repointed)} manifest(s); {ok} already correct")
     if not args.write:
         print("Dry run — pass --write to apply.")
 
