@@ -255,6 +255,26 @@ RETURNS INTEGER AS $$
   SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_graphs_max_listed_sort_order(p_graph_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_graphs_max_sort_order
+-- Field: Graphs.MaxSortOrder
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_graphs_max_sort_order(p_graph_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(MAX((sort_order)::numeric), 0) FROM statements WHERE graph = p_graph_id))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_graphs_next_candidate_sort_order
+-- Field: Graphs.NextCandidateSortOrder
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_graphs_next_candidate_sort_order(p_graph_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_graphs_max_sort_order(p_graph_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
 -- calc_rules_name
 -- Field: Rules.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -330,6 +350,135 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_firing_kinds_name(p_firing_kind_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(wording, '') FROM firing_kinds WHERE firing_kind_id = p_firing_kind_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_things_portrait_name
+-- Field: Things.PortraitName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: DisplayName from related Portraits
+
+
+CREATE OR REPLACE FUNCTION calc_things_portrait_name(p_thing_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT display_name::text FROM portraits WHERE portrait_id = (SELECT portrait FROM things WHERE thing_id = p_thing_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_things_portrait_page
+-- Field: Things.PortraitPage
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Page from related Portraits
+
+
+CREATE OR REPLACE FUNCTION calc_things_portrait_page(p_thing_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT page::text FROM portraits WHERE portrait_id = (SELECT portrait FROM things WHERE thing_id = p_thing_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_things_portrait_image
+-- Field: Things.PortraitImage
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Image from related Portraits
+
+
+CREATE OR REPLACE FUNCTION calc_things_portrait_image(p_thing_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT image::text FROM portraits WHERE portrait_id = (SELECT portrait FROM things WHERE thing_id = p_thing_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_things_portrait_crop
+-- Field: Things.PortraitCrop
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Crop from related Portraits
+
+
+CREATE OR REPLACE FUNCTION calc_things_portrait_crop(p_thing_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT crop::text FROM portraits WHERE portrait_id = (SELECT portrait FROM things WHERE thing_id = p_thing_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_things_portrait_width
+-- Field: Things.PortraitWidth
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Lookup: Width from related Portraits
+
+
+CREATE OR REPLACE FUNCTION calc_things_portrait_width(p_thing_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT width::integer FROM portraits WHERE portrait_id = (SELECT portrait FROM things WHERE thing_id = p_thing_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_things_portrait_height
+-- Field: Things.PortraitHeight
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Lookup: Height from related Portraits
+
+
+CREATE OR REPLACE FUNCTION calc_things_portrait_height(p_thing_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT height::integer FROM portraits WHERE portrait_id = (SELECT portrait FROM things WHERE thing_id = p_thing_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_portraits_display_name
+-- Helper function: Get DisplayName from Portraits by PortraitId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_portraits_display_name(p_portrait_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT display_name FROM portraits WHERE portrait_id = p_portrait_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_portraits_page
+-- Helper function: Get Page from Portraits by PortraitId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_portraits_page(p_portrait_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT page FROM portraits WHERE portrait_id = p_portrait_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_portraits_image
+-- Helper function: Get Image from Portraits by PortraitId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_portraits_image(p_portrait_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT image FROM portraits WHERE portrait_id = p_portrait_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_portraits_crop
+-- Helper function: Get Crop from Portraits by PortraitId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_portraits_crop(p_portrait_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT crop FROM portraits WHERE portrait_id = p_portrait_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_portraits_width
+-- Helper function: Get Width from Portraits by PortraitId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_portraits_width(p_portrait_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT width FROM portraits WHERE portrait_id = p_portrait_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_portraits_height
+-- Helper function: Get Height from Portraits by PortraitId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_portraits_height(p_portrait_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT height FROM portraits WHERE portrait_id = p_portrait_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_portraits_sort_order
+-- Helper function: Get SortOrder from Portraits by PortraitId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_portraits_sort_order(p_portrait_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT sort_order FROM portraits WHERE portrait_id = p_portrait_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_things_name
@@ -419,7 +568,82 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_things_node_kind(p_thing_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN COALESCE((SELECT NULLIF(kind, '') FROM things WHERE thing_id = p_thing_id), '') = 'class' THEN ('class')::text ELSE (CASE WHEN COALESCE((calc_things_count_as_place(p_thing_id))::NUMERIC, 0) > 0 THEN ('place')::text ELSE ('person')::text END)::text END)::text;
+  SELECT (CASE WHEN (((SELECT NULLIF(kind, '') FROM things WHERE thing_id = p_thing_id)) IS NULL OR ((SELECT NULLIF(kind, '') FROM things WHERE thing_id = p_thing_id))::text = '') THEN ('')::text ELSE (CASE WHEN COALESCE((SELECT NULLIF(kind, '') FROM things WHERE thing_id = p_thing_id), '') = 'class' THEN ('class')::text ELSE (CASE WHEN COALESCE((calc_things_count_as_place(p_thing_id))::NUMERIC, 0) > 0 THEN ('place')::text ELSE ('person')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_portraits_name
+-- Field: Portraits.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_portraits_name(p_portrait_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(display_name, '') FROM portraits WHERE portrait_id = p_portrait_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_portrait_aliases_name
+-- Field: PortraitAliases.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_portrait_aliases_name(p_portrait_alias_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(portrait_alias_id, '') FROM portrait_aliases WHERE portrait_alias_id = p_portrait_alias_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- get_things_label
+-- Helper function: Get Label from Things by ThingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_things_label(p_thing_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label FROM things WHERE thing_id = p_thing_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_things_kind
+-- Helper function: Get Kind from Things by ThingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_things_kind(p_thing_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT kind FROM things WHERE thing_id = p_thing_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_things_sort_order
+-- Helper function: Get SortOrder from Things by ThingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_things_sort_order(p_thing_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT sort_order FROM things WHERE thing_id = p_thing_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_properties_name
+-- Field: Properties.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_properties_name(p_property_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(label, '') FROM properties WHERE property_id = p_property_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- get_firing_kinds_wording
+-- Helper function: Get Wording from FiringKinds by FiringKindId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_firing_kinds_wording(p_firing_kind_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT wording FROM firing_kinds WHERE firing_kind_id = p_firing_kind_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_firing_kinds_sort_order
+-- Helper function: Get SortOrder from FiringKinds by FiringKindId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_firing_kinds_sort_order(p_firing_kind_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT sort_order FROM firing_kinds WHERE firing_kind_id = p_firing_kind_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_properties_label
@@ -530,95 +754,14 @@ RETURNS INTEGER AS $$
   SELECT (SELECT record_order FROM properties WHERE property_id = p_property_id);
 $$ LANGUAGE sql STABLE;
 
--- get_things_label
--- Helper function: Get Label from Things by ThingId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_things_label(p_thing_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT label FROM things WHERE thing_id = p_thing_id);
-$$ LANGUAGE sql STABLE;
-
--- get_things_kind
--- Helper function: Get Kind from Things by ThingId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_things_kind(p_thing_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT kind FROM things WHERE thing_id = p_thing_id);
-$$ LANGUAGE sql STABLE;
-
--- get_things_sort_order
--- Helper function: Get SortOrder from Things by ThingId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_things_sort_order(p_thing_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT (SELECT sort_order FROM things WHERE thing_id = p_thing_id);
-$$ LANGUAGE sql STABLE;
-
--- get_things_portrait_name
--- Helper function: Get PortraitName from Things by ThingId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_things_portrait_name(p_thing_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT portrait_name FROM things WHERE thing_id = p_thing_id);
-$$ LANGUAGE sql STABLE;
-
--- get_things_portrait_page
--- Helper function: Get PortraitPage from Things by ThingId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_things_portrait_page(p_thing_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT portrait_page FROM things WHERE thing_id = p_thing_id);
-$$ LANGUAGE sql STABLE;
-
--- get_things_portrait_image
--- Helper function: Get PortraitImage from Things by ThingId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_things_portrait_image(p_thing_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT portrait_image FROM things WHERE thing_id = p_thing_id);
-$$ LANGUAGE sql STABLE;
-
--- get_things_portrait_crop
--- Helper function: Get PortraitCrop from Things by ThingId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_things_portrait_crop(p_thing_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT portrait_crop FROM things WHERE thing_id = p_thing_id);
-$$ LANGUAGE sql STABLE;
-
--- get_things_portrait_width
--- Helper function: Get PortraitWidth from Things by ThingId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_things_portrait_width(p_thing_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT (SELECT portrait_width FROM things WHERE thing_id = p_thing_id);
-$$ LANGUAGE sql STABLE;
-
--- get_things_portrait_height
--- Helper function: Get PortraitHeight from Things by ThingId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_things_portrait_height(p_thing_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT (SELECT portrait_height FROM things WHERE thing_id = p_thing_id);
-$$ LANGUAGE sql STABLE;
-
--- calc_properties_name
--- Field: Properties.Name
+-- calc_property_axioms_name
+-- Field: PropertyAxioms.Name
 -- Type: calculated | DataType: string | Returns: TEXT
 
 
-CREATE OR REPLACE FUNCTION calc_properties_name(p_property_id TEXT)
+CREATE OR REPLACE FUNCTION calc_property_axioms_name(p_property_axiom_id TEXT)
 RETURNS TEXT AS $$
-  SELECT ((SELECT NULLIF(label, '') FROM properties WHERE property_id = p_property_id))::text;
+  SELECT ((SELECT NULLIF(property_axiom_id, '') FROM property_axioms WHERE property_axiom_id = p_property_axiom_id))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_subject_label
@@ -1090,14 +1233,34 @@ RETURNS INTEGER AS $$
   SELECT (CASE WHEN (COALESCE(calc_statements_holds(p_statement_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(property, '') FROM statements WHERE statement_id = p_statement_id), '') = 'attends', FALSE)) THEN (1)::text ELSE (0)::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_statements_first_pre_chain_order_key
+-- Field: Statements.FirstPreChainOrderKey
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_statements_first_pre_chain_order_key(p_statement_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(MIN((calc_firings_pre_chain_order_key(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id AND calc_firings_pre_chain_fired_unit(firing_id) = 1))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_statements_snap_position
+-- Field: Statements.SnapPosition
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_statements_snap_position(p_statement_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN calc_statements_is_in_effect(p_statement_id) THEN ((SELECT sort_order FROM statements WHERE statement_id = p_statement_id))::text ELSE (CASE WHEN calc_statements_holds_before_chain(p_statement_id) THEN ((COALESCE(100000, 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_statements_first_pre_chain_order_key(p_statement_id)) AS v OFFSET 0) __safe_numeric), 0)))::text ELSE (0)::text END)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_statements_first_fired_order_key
 -- Field: Statements.FirstFiredOrderKey
--- Type: aggregation | DataType: integer | Returns: INTEGER
+-- Type: aggregation | DataType: number | Returns: NUMERIC
 
 
 CREATE OR REPLACE FUNCTION calc_statements_first_fired_order_key(p_statement_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(MIN((calc_firings_order_key(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id AND calc_firings_fired_unit(firing_id) = 1))::integer;
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(MIN((calc_firings_order_key(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id AND calc_firings_fired_unit(firing_id) = 1))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_count_of_chosen_firings
@@ -1282,12 +1445,12 @@ $$ LANGUAGE sql STABLE;
 
 -- calc_firings_target_first_fired_order_key
 -- Field: Firings.TargetFirstFiredOrderKey
--- Type: lookup | DataType: integer | Returns: INTEGER
+-- Type: lookup | DataType: number | Returns: NUMERIC
 -- Lookup: FirstFiredOrderKey from related Statements
 
 
 CREATE OR REPLACE FUNCTION calc_firings_target_first_fired_order_key(p_firing_id TEXT)
-RETURNS INTEGER AS $$
+RETURNS NUMERIC AS $$
   SELECT calc_statements_first_fired_order_key((SELECT target FROM firings WHERE firing_id = p_firing_id));
 $$ LANGUAGE sql STABLE;
 
@@ -1401,33 +1564,37 @@ RETURNS INTEGER AS $$
   SELECT (SELECT sort_order::integer FROM statements WHERE statement_id = (SELECT first FROM firings WHERE firing_id = p_firing_id));
 $$ LANGUAGE sql STABLE;
 
--- calc_firings_second_sort_order
--- Field: Firings.SecondSortOrder
--- Type: lookup | DataType: integer | Returns: INTEGER
--- Lookup: SortOrder from related Statements
+-- calc_firings_second_is_in_effect
+-- Field: Firings.SecondIsInEffect
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsInEffect from related Statements
 
 
-CREATE OR REPLACE FUNCTION calc_firings_second_sort_order(p_firing_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT (SELECT sort_order::integer FROM statements WHERE statement_id = (SELECT second FROM firings WHERE firing_id = p_firing_id));
+CREATE OR REPLACE FUNCTION calc_firings_second_is_in_effect(p_firing_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_statements_is_in_effect((SELECT second FROM firings WHERE firing_id = p_firing_id));
 $$ LANGUAGE sql STABLE;
 
--- get_firing_kinds_wording
--- Helper function: Get Wording from FiringKinds by FiringKindId
--- Used for join-free cross-table references in aggregations
+-- calc_firings_first_snap_position
+-- Field: Firings.FirstSnapPosition
+-- Type: lookup | DataType: number | Returns: NUMERIC
+-- Lookup: SnapPosition from related Statements
 
-CREATE OR REPLACE FUNCTION get_firing_kinds_wording(p_firing_kind_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT wording FROM firing_kinds WHERE firing_kind_id = p_firing_kind_id);
+
+CREATE OR REPLACE FUNCTION calc_firings_first_snap_position(p_firing_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_statements_snap_position((SELECT first FROM firings WHERE firing_id = p_firing_id));
 $$ LANGUAGE sql STABLE;
 
--- get_firing_kinds_sort_order
--- Helper function: Get SortOrder from FiringKinds by FiringKindId
--- Used for join-free cross-table references in aggregations
+-- calc_firings_second_snap_position
+-- Field: Firings.SecondSnapPosition
+-- Type: lookup | DataType: number | Returns: NUMERIC
+-- Lookup: SnapPosition from related Statements
 
-CREATE OR REPLACE FUNCTION get_firing_kinds_sort_order(p_firing_kind_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT (SELECT sort_order FROM firing_kinds WHERE firing_kind_id = p_firing_kind_id);
+
+CREATE OR REPLACE FUNCTION calc_firings_second_snap_position(p_firing_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_statements_snap_position((SELECT second FROM firings WHERE firing_id = p_firing_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_statements_object_value
@@ -1543,14 +1710,44 @@ RETURNS INTEGER AS $$
   SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_inverse_fired_unit(p_firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_symmetric_fired_unit(p_firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_chain_fired_unit(p_firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_type_fired_unit(p_firing_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
--- calc_firings_order_key
--- Field: Firings.OrderKey
+-- calc_firings_pre_chain_fired_unit
+-- Field: Firings.PreChainFiredUnit
 -- Type: calculated | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_firings_order_key(p_firing_id TEXT)
+CREATE OR REPLACE FUNCTION calc_firings_pre_chain_fired_unit(p_firing_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_first_sort_order(p_firing_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(100000, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_kind_sort_order(p_firing_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(1000, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (((SELECT NULLIF(second, '') FROM firings WHERE firing_id = p_firing_id)) IS NULL OR ((SELECT NULLIF(second, '') FROM firings WHERE firing_id = p_firing_id))::text = '') THEN (0)::text ELSE (calc_firings_second_sort_order(p_firing_id))::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_inverse_fired_unit(p_firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_symmetric_fired_unit(p_firing_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_firings_pre_chain_order_key
+-- Field: Firings.PreChainOrderKey
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_firings_pre_chain_order_key(p_firing_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_first_sort_order(p_firing_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(10, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_kind_sort_order(p_firing_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_firings_round
+-- Field: Firings.Round
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_firings_round(p_firing_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN (COALESCE(COALESCE((SELECT NULLIF(kind, '') FROM firings WHERE firing_id = p_firing_id), '') = 'chain', FALSE) AND COALESCE(NOT (COALESCE((COALESCE(calc_firings_first_is_in_effect(p_firing_id), FALSE) AND COALESCE(calc_firings_second_is_in_effect(p_firing_id), FALSE)), FALSE)), FALSE)) THEN (2)::text ELSE (1)::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_firings_order_key
+-- Field: Firings.OrderKey
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_firings_order_key(p_firing_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_round(p_firing_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(1000000000000000, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_first_snap_position(p_firing_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(100000000, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_kind_sort_order(p_firing_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(10000000, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (((SELECT NULLIF(second, '') FROM firings WHERE firing_id = p_firing_id)) IS NULL OR ((SELECT NULLIF(second, '') FROM firings WHERE firing_id = p_firing_id))::text = '') THEN (0)::text ELSE (calc_firings_second_snap_position(p_firing_id))::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_firings_is_chosen
@@ -1838,6 +2035,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_page_texts_name(p_page_text_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(page_text_id, '') FROM page_texts WHERE page_text_id = p_page_text_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_engines_name
+-- Field: Engines.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_engines_name(p_engine_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(label, '') FROM engines WHERE engine_id = p_engine_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_rulebook_tools_name
+-- Field: RulebookTools.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_rulebook_tools_name(p_rulebook_tool_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(label, '') FROM rulebook_tools WHERE rulebook_tool_id = p_rulebook_tool_id))::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

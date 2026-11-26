@@ -1,2 +1,52 @@
 === Effortless OWL/SHACL Substrate Test Run ===
 
+======================================================================
+OWL Execution Substrate (effortless-owl) - SHACL Reasoning Test
+======================================================================
+
+Loading rulebook...
+Tables with computed columns: Graphs, Rules, FiringKinds, Things, Portraits, PortraitAliases, Properties, PropertyAxioms, Statements, Firings, DisjointChecks, Scenarios, ScenarioFactChanges, ScenarioRuleSettings, NodeLayouts, LayoutSlots, PageTexts, Engines, RulebookTools
+
+Loading ontology and data...
+   Loaded: /Users/eejai42/development/effortless-rulebooks/rulebook-examples/talismans-southpark-ontology/effortless-owl/src/ontology.owl
+   Loaded: /Users/eejai42/development/effortless-rulebooks/rulebook-examples/talismans-southpark-ontology/effortless-owl/src/individuals.ttl
+   Total triples: 12092
+
+Loading SHACL rules...
+   Loaded: /Users/eejai42/development/effortless-rulebooks/rulebook-examples/talismans-southpark-ontology/effortless-owl/src/rules.shacl.ttl (143 rules)
+
+Executing SHACL-AF rules in sh:order...
+   Completed 143 rules across 20 sh:order levels
+   Final triple count: 39754
+
+Extracting computed values...
+   Graphs: 1 records (15 computed fields)
+   Rules: 5 records (2 computed fields)
+   FiringKinds: 6 records (2 computed fields)
+   Things: 9 records (15 computed fields)
+   Portraits: 13 records (1 computed fields)
+   PortraitAliases: 32 records (1 computed fields)
+   Properties: 10 records (1 computed fields)
+   PropertyAxioms: 4 records (1 computed fields)
+   Statements: 270 records (50 computed fields)
+   Firings: 465 records (37 computed fields)
+   DisjointChecks: 42 records (8 computed fields)
+   Scenarios: 7 records (3 computed fields)
+   ScenarioFactChanges: 6 records (1 computed fields)
+   ScenarioRuleSettings: 10 records (1 computed fields)
+   NodeLayouts: 26 records (1 computed fields)
+   LayoutSlots: 8 records (1 computed fields)
+   PageTexts: 102 records (1 computed fields)
+   Engines: 3 records (1 computed fields)
+   RulebookTools: 8 records (1 computed fields)
+
+Total: 1027 records extracted
+Output: /Users/eejai42/development/effortless-rulebooks/rulebook-examples/talismans-southpark-ontology/testing/effortless-owl/test-answers/
+
+Description-logic check (ROBOT + HermiT)...
+   OWL 2 DL, consistent, every class can have a member
+
+======================================================================
+SHACL reasoning complete!
+======================================================================
+

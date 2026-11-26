@@ -1,6 +1,6 @@
 # 📘 Talisman's South Park ontology explainer — 文档
 
-_Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten facts, five rule switches, property wiring, provenance wording and current-value policy are rows, and every conclusion is a formula. The rules apply in three fixed strata (inverse and symmetric, then the property chain, then domain and range); property wiring that feeds an earlier stratum would need repeated rounds._
+_Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten facts, five rule switches, property wiring, provenance wording and current-value policy are rows, and every conclusion is a formula. The rules apply in three fixed strata (inverse and symmetric, then the property chain, then domain and range); property wiring that feeds an earlier stratum would need repeated rounds. Every fact that could hold over the cast is a candidate row; app/lib/candidates.mjs writes the candidates when a thing, value or property is added._
 
 > 由规则手册生成的声明式业务规则。以下每个语句表达业务领域中的一个真理——
 > 它既不是过程,也不是命令。规则手册中的公式是唯一的真实来源;
@@ -30,13 +30,15 @@ _Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten
 | Next Activation Seq | 按 max activation seq加1 计算。 | _Order 2. The activation number the next switched-on fact takes._ |
 | Max Listed Sort Order | Graph的“statements”中是“Listed Unit”的“sort order”的最大值。 | _Order 2. Highest list position among listed facts._ |
 | Next Listed Sort Order | 按 max listed sort order加1 计算。 | _Order 3. The list position a newly added fact takes._ |
+| Max Sort Order | 与graph相关的所有“statements”的“sort order”的最大值。 | _Order 1. Highest sort order of any fact, listed or candidate._ |
+| Next Candidate Sort Order | 按 max sort order加1 计算。 | _Order 2. The sort order a new candidate fact, or a fact removed from the list, takes._ |
 
 <details open>
 <summary>示例数据</summary>
 
-| Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 |
+| Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ | Max Sort Order ƒ | Next Candidate Sort Order ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 | 100269 | 100270 |
 
 _ƒ 表示计算列。_
 
@@ -67,7 +69,7 @@ _ƒ 表示计算列。_
 
 | 术语 | 描述 | 补充说明 |
 |------|-------------|-------------------|
-| **Firing Kind** | The ways a rule can apply. Domain and range belong to one rule but are worded apart. | — |
+| **Firing Kind** | The ways a rule can apply. Domain and range belong to one rule but are worded apart; 'disjoint' names the rule the disjointness checks answer to. | — |
 | Rule | 一个已定义的属性。 | _The rule switch this kind belongs to._ |
 | Wording | 一个已定义的属性。 | _How a conclusion card names the rule, as in 'Worked out by the inverse rule'._ |
 | Sort Order | 一个已定义的属性。 | _Order in which the page's reasoner tries the kinds for one fact._ |
@@ -93,12 +95,13 @@ _ƒ 表示计算列。_
 | Label | 一个已定义的属性。 | _The name the page shows._ |
 | Kind | 一个已定义的属性。 | _'individual' or 'class'._ |
 | Sort Order | 一个已定义的属性。 | _Position in the cast._ |
-| Portrait Name | 一个已定义的属性。 | _The name on the portrait's Fandom page._ |
-| Portrait Page | 一个已定义的属性。 | _The Fandom page credited for the portrait._ |
-| Portrait Image | 一个已定义的属性。 | _The original Fandom image._ |
-| Portrait Crop | 一个已定义的属性。 | _The portrait's crop as an SVG viewBox: x y width height._ |
-| Portrait Width | 一个已定义的属性。 | _The original image's width in pixels._ |
-| Portrait Height | 一个已定义的属性。 | _The original image's height in pixels._ |
+| Portrait | 一个已定义的属性。 | _The portrait drawn for this thing; set when its name matches a portrait alias._ |
+| Portrait Name | 所关联的“portrait”的“display name”。 | _Order 1. The name on the portrait's Fandom page._ |
+| Portrait Page | 取自所关联的“portrait”。 | _Order 1. The Fandom page credited for the portrait._ |
+| Portrait Image | 取自所关联的“portrait”。 | _Order 1. The original Fandom image._ |
+| Portrait Crop | 取自所关联的“portrait”。 | _Order 1. The portrait's crop as an SVG viewBox._ |
+| Portrait Width | 取自所关联的“portrait”。 | _Order 1. The original image's width in pixels._ |
+| Portrait Height | 取自所关联的“portrait”。 | _Order 1. The original image's height in pixels._ |
 | Name | 与 label 相同。 | _Order 1. The thing's name._ |
 | Node Key | 与 thing ID 相同。 | _Order 1. The key the graph draws this thing under._ |
 | Count of Children | 与thing相关的所有“statements”的“parent unit”的总和。 | _Order 17. People this thing is a parent of, stated or concluded._ |
@@ -107,12 +110,12 @@ _ƒ 表示计算列。_
 | Count As Subject | 与thing相关的所有“statements”的“holds unit”的总和。 | _Order 17. Holding facts about this thing._ |
 | Count As Object | 与thing相关的所有“statements”的“holds unit”的总和。 | _Order 17. Holding facts that point at this thing._ |
 | Is in Graph | 当以下至少一项成立:count as subject大于0或count as object大于0时为真。 | _Order 18. True when the graph draws this thing._ |
-| Node Kind | 按优先级确定:当kind为“class”时取 “class”; 当count as place大于0时取 “place”;其余情况取 “person”。 | _Order 18. How the graph draws the thing: a class, a place someone attends, or a person._ |
+| Node Kind | 按优先级确定:当kind为空时取 空字符串; 当kind为“class”时取 “class”; 当count as place大于0时取 “place”;其余情况取 “person”。 | _Order 18. How the graph draws the thing: a class, a place someone attends, or a person._ |
 
 <details open>
 <summary>示例数据</summary>
 
-| Label | Kind | Sort Order | Portrait Name | Portrait Page | Portrait Image | Portrait Crop | Portrait Width | Portrait Height | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
+| Label | Kind | Sort Order | Portrait Name ƒ | Portrait Page ƒ | Portrait Image ƒ | Portrait Crop ƒ | Portrait Width ƒ | Portrait Height ƒ | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Marvin | individual | 1 | Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | Marvin | Marvin | 1 | 0 | 0 | 1 | 0 | true | person |
 | Randy | individual | 2 | Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | Randy | Randy | 2 | 0 | 0 | 3 | 1 | true | person |
@@ -124,19 +127,59 @@ _ƒ 表示计算列。_
 
 | 术语 | 描述 | 补充说明 |
 |------|-------------|-------------------|
-| **Property** | The ten properties and the wiring every rule reads. | — |
+| **Portrait** | The page's Fandom portraits, including those for characters a reader may add. | — |
+| Display Name | 一个已定义的属性。 | _The name on the portrait's Fandom page._ |
+| Page | 一个已定义的属性。 | _The Fandom page credited for the portrait._ |
+| Image | 一个已定义的属性。 | _The original Fandom image._ |
+| Crop | 一个已定义的属性。 | _The crop as an SVG viewBox: x y width height._ |
+| Width | 一个已定义的属性。 | _The original image's width in pixels._ |
+| Height | 一个已定义的属性。 | _The original image's height in pixels._ |
+| Sort Order | 一个已定义的属性。 | _Position in the credits._ |
+| Name | 与 display name 相同。 | _Order 1. The portrait's name._ |
+
+<details open>
+<summary>示例数据</summary>
+
+| Display Name | Page | Image | Crop | Width | Height | Sort Order | Name ƒ |
+|---|---|---|---|---|---|---|---|
+| Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | 1 | Marvin Marsh |
+| Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | 2 | Randy Marsh |
+| Sharon Marsh | https://southpark.fandom.com/wiki/Sharon_Marsh | https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest | 20 -10 390 390 | 439 | 1049 | 3 | Sharon Marsh |
+
+_ƒ 表示计算列。_
+
+</details>
+
+| 术语 | 描述 | 补充说明 |
+|------|-------------|-------------------|
+| **Portrait Aliase** | The names a portrait answers to. A new thing whose name matches an alias gets that portrait. | — |
+| Portrait | 一个已定义的属性。 | _The portrait this name selects._ |
+| Name | 与 portrait alias ID 相同。 | _Order 1. The alias._ |
+
+<details open>
+<summary>示例数据</summary>
+
+| Name ƒ |
+|---|
+| marvin |
+| marvin marsh |
+| grandpa marsh |
+
+_ƒ 表示计算列。_
+
+</details>
+
+| 术语 | 描述 | 补充说明 |
+|------|-------------|-------------------|
+| **Property** | The ten properties, with what the symmetric, domain and range rules read. Axioms that relate one property to another (inverse, chain, disjoint) are rows of PropertyAxioms. | — |
 | Label | 一个已定义的属性。 | _The property's wording on the page._ |
 | Property Kind | 一个已定义的属性。 | _'object' links two things, 'datatype' links a thing to a value, 'type' states class membership._ |
 | Datatype | 一个已定义的属性。 | _The value's XML Schema datatype for a datatype property; blank otherwise._ |
 | Is User Addable | 当空字符串时为真。 | _Offered in the page's Add fact form._ |
 | Has One Current Value | 当空字符串时为真。 | _The page keeps one current value per person: switching a value on replaces the earlier one._ |
-| Inverse of | 一个已定义的属性。 | _The property the inverse rule derives from this one._ |
 | Is Symmetric | 当空字符串时为真。 | _The symmetric rule makes this link true in both directions._ |
-| Chain First | 一个已定义的属性。 | _First link of the property chain that derives this property._ |
-| Chain Second | 一个已定义的属性。 | _Second link of the property chain that derives this property._ |
 | Domain Class | 一个已定义的属性。 | _The class the domain rule gives this property's subject._ |
 | Range Class | 一个已定义的属性。 | _The class the range rule gives this property's object._ |
-| Disjoint With | 一个已定义的属性。 | _A property that may not link the same pair, in the same direction, as this one._ |
 | Sort Order | 一个已定义的属性。 | _Position in the Add fact form's property list._ |
 | Value Node Label | 一个已定义的属性。 | _The small label under a value node for this property: 'role value' or 'number value'._ |
 | Current Value Wording | 一个已定义的属性。 | _How the Add fact form names a replaced value, as in 'Stan now has grade level 5'._ |
@@ -153,6 +196,28 @@ _ƒ 表示计算列。_
 | is parent of | object | — | true | false | false | 1 | — | — | — | — | — | is parent of |
 | is child of | object | — | true | false | false | 2 | — | — | — | — | — | is child of |
 | is spouse of | object | — | true | false | true | 3 | — | — | — | — | — | is spouse of |
+
+_ƒ 表示计算列。_
+
+</details>
+
+| 术语 | 描述 | 补充说明 |
+|------|-------------|-------------------|
+| **Property Axiom** | Axioms that relate one property to others, as OWL states them: an inverse, a two-link chain, or a disjoint pair. The candidate generator reads these rows. | — |
+| Kind | 一个已定义的属性。 | _inverse, chain or disjoint._ |
+| Property | 一个已定义的属性。 | _The property the axiom is about: the one inverted, the one a chain derives, or the first of a disjoint pair._ |
+| First | 一个已定义的属性。 | _The inverse property, the chain's first link, or the other property of a disjoint pair._ |
+| Second | 一个已定义的属性。 | _The chain's second link._ |
+| Name | 与 property axiom ID 相同。 | _Order 1. The axiom's key._ |
+
+<details open>
+<summary>示例数据</summary>
+
+| Name ƒ |
+|---|
+| inverse:isParentOf |
+| disjoint:isParentOf~isSpouseOf |
+| inverse:isChildOf |
 
 _ƒ 表示计算列。_
 
@@ -209,6 +274,8 @@ _ƒ 表示计算列。_
 | Parent Unit | 按优先级确定:当以下全部成立:标志“holds”已设置且property为“isParentOf”时取 1;其余情况取 0。 | _Order 16. 1 for a holding parent link._ |
 | Grandparent Unit | 按优先级确定:当以下全部成立:标志“holds”已设置且property为“isGrandparentOf”时取 1;其余情况取 0。 | _Order 16. 1 for a holding grandparent link._ |
 | Place Unit | 按优先级确定:当以下全部成立:标志“holds”已设置且property为“attends”时取 1;其余情况取 0。 | _Order 16. 1 for a holding attends link._ |
+| First Pre Chain Order Key | Statement的“firings”中是“Pre Chain Fired Unit”的“pre chain order key”的最小值。 | _Order 7. Order key of the first inverse or symmetric application that concludes this fact._ |
+| Snap Position | 按优先级确定:当标志“in effect”已设置时取 sort order; 当标志“holds before chain”已设置时取 100000加first pre chain order key;其余情况取 0。 | _Order 8. Where the page's reasoner meets this fact as a premise: a stated fact at its list position, a fact concluded by the inverse or symmetric rule after every stated fact, in the order it was concluded; 0 for a fact that does not hold yet, so a link to no fact reads the same on every engine._ |
 | First Fired Order Key | Statement的“firings”中是“Fired Unit”的“order key”的最小值。 | _Order 15. Order key of the first rule application that concludes this fact, in the page reasoner's order._ |
 | Count of Chosen Firings | 与statement相关的所有“firings”的“chosen unit”的总和。 | _Order 20. Rule applications shown as this fact's conclusion card: one for a conclusion, zero otherwise._ |
 | Subject Node Key | 与 subject 相同。 | _Order 1. The graph node this fact starts from._ |
@@ -224,11 +291,11 @@ _ƒ 表示计算列。_
 <details open>
 <summary>示例数据</summary>
 
-| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 101 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 102 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
+| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Pre Chain Order Key ƒ | Snap Position ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 1.0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100001 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100002 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
 
 _ƒ 表示计算列。_
 
@@ -263,13 +330,18 @@ _ƒ 表示计算列。_
 | First Property Domain Class | 取自所关联的“first”。 | _Order 2. The premise property's domain class._ |
 | First Property Range Class | 取自所关联的“first”。 | _Order 2. The premise property's range class._ |
 | First Sort Order | 取自所关联的“first”。 | _Order 1. The premise's list position._ |
-| Second Sort Order | 取自所关联的“second”。 | _Order 1. The second premise's list position._ |
+| Second is in Effect | 当所关联的“second”是“In Effect”时为真。 | _Order 4. Whether the second premise is in effect._ |
+| First Snap Position | 取自所关联的“first”。 | _Order 9. Where the reasoner meets the premise._ |
+| Second Snap Position | 取自所关联的“second”。 | _Order 9. Where the reasoner meets the second premise._ |
 | Inverse Fired Unit | 按优先级确定:当以下全部成立:标志“rule enabled”已设置、kind为“inverse”,且标志“first is in effect”已设置时取 1;其余情况取 0。 | _Order 5. 1 when the inverse rule fires here._ |
 | Symmetric Fired Unit | 按优先级确定:当以下全部成立:标志“rule enabled”已设置、kind为“symmetric”,且标志“first is in effect”已设置时取 1;其余情况取 0。 | _Order 5. 1 when the symmetric rule fires here._ |
 | Chain Fired Unit | 按优先级确定:当以下全部成立:标志“rule enabled”已设置、kind为“chain”、标志“first holds before chain”已设置,且标志“second holds before chain”已设置时取 1;其余情况取 0。 | _Order 9. 1 when the property chain fires here._ |
 | Type Fired Unit | 按优先级确定:当以下全部成立:标志“rule enabled”已设置、以下至少一项成立:kind为“domain”或kind为“range”,且标志“first holds before typing”已设置时取 1;其余情况取 0。 | _Order 13. 1 when the domain or range rule fires here._ |
 | Fired Unit | 按 inverse fired unit加symmetric fired unit加chain fired unit加type fired unit 计算。 | _Order 14. 1 when this application fires._ |
-| Order Key | 按 first sort order乘100000加kind sort order乘1000加当second为空时为 0,其余情况为 second sort order 计算。 | _Order 2. The page reasoner's order: by premise, then rule kind, then second premise._ |
+| Pre Chain Fired Unit | 按 inverse fired unit加symmetric fired unit 计算。 | _Order 6. 1 when this is an inverse or symmetric application that fires._ |
+| Pre Chain Order Key | 按 first sort order乘10加kind sort order 计算。 | _Order 2. For an inverse or symmetric application: its place in the reasoner's first round._ |
+| Round | 按优先级确定:当以下全部成立:kind为“chain”且并非以下全部成立:标志“first is in effect”已设置且标志“second is in effect”已设置时取 2;其余情况取 1。 | _Order 5. The reasoner's round: 1 when every premise is a stated fact, 2 when the property chain reads a concluded fact._ |
+| Order Key | 按 round乘1000000000000000加first snap position乘100000000加kind sort order乘10000000加当second为空时为 0,其余情况为 second snap position 计算。 | _Order 10. The page reasoner's order: by round, then premise, then rule kind, then second premise._ |
 | Is Chosen | 当以下全部成立:fired unit为1、标志“target is conclusion”已设置,且order key为target first fired order key时为真。 | _Order 18. The application the conclusions panel shows for its fact: the first one in the reasoner's order._ |
 | Chosen Unit | 按优先级确定:当标志“chosen”已设置时取 1;其余情况取 0。 | _Order 19. 1 when this application is shown._ |
 | Card Text | 按优先级确定:当标志“chosen”已设置时取 “Worked out by the ”,接着是kind wording,接着是“ from “”,接着是first words,接着是“””,接着是当kind为“chain”时为 “ and “”,接着是second words,接着是“””,其余情况为 当kind为“domain”时为 “ and “”,接着是first property,接着是“ has domain ”,接着是first property domain class,接着是“””,其余情况为 “ and “”,接着是first property,接着是“ has range ”,接着是first property range class,接着是“””,接着是一个句点;其余情况取 空字符串。 ⚠︎ 机械 <!-- rulespeak:reword --> | _Order 19. The conclusion card's provenance line, in the page's wording._ |
@@ -278,11 +350,11 @@ _ƒ 表示计算列。_
 <details open>
 <summary>示例数据</summary>
 
-| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second Sort Order ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | — | 0 | 0 | 0 | 0 | 0 | 101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 101 | — | 0 | 0 | 0 | 0 | 0 | 10101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 102 | — | 0 | 0 | 0 | 0 | 0 | 10201000 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
+| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second is in Effect ƒ | First Snap Position ƒ | Second Snap Position ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Pre Chain Fired Unit ƒ | Pre Chain Order Key ƒ | Round ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | false | 1.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 11.0 | 1 | 1000000110000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 100001 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000011.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 100002 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000021.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
 
 _ƒ 表示计算列。_
 
@@ -455,11 +527,60 @@ _ƒ 表示计算列。_
 
 </details>
 
+| 术语 | 描述 | 补充说明 |
+|------|-------------|-------------------|
+| **Engine** | The execution engines the page can be computed by. Each is a build output of this rulebook. | — |
+| Label | 一个已定义的属性。 | _The engine's name in the switcher._ |
+| Substrate | 一个已定义的属性。 | _The conformance harness's name for this substrate._ |
+| Is Default | 当空字符串时为真。 | _The engine a new visitor starts on._ |
+| Description | 一个已定义的属性。 | _What computes the page on this engine._ |
+| Sort Order | 一个已定义的属性。 | _Position in the switcher._ |
+| Name | 与 label 相同。 | _Order 1. The engine's name._ |
+
+<details open>
+<summary>示例数据</summary>
+
+| Label | Substrate | Is Default | Description | Sort Order | Name ƒ |
+|---|---|---|---|---|---|
+| Postgres views | effortless-postgres | true | Every value is a column of a generated view; the database computes it when the page reads it. | 1 | Postgres views |
+| TypeScript | effortless-typescript | false | The generated TypeScript computes every field from the same rows, with no database. | 2 | TypeScript |
+| OWL and SHACL rules | effortless-owl | false | The generated ontology and SHACL rules, run over the same rows by a SPARQL engine. | 3 | OWL and SHACL rules |
+
+_ƒ 表示计算列。_
+
+</details>
+
+| 术语 | 描述 | 补充说明 |
+|------|-------------|-------------------|
+| **Rulebook Tool** | What each rulebook tool adds to the original explainer; the tools panel lists them. | — |
+| Label | 一个已定义的属性。 | _The tool's name._ |
+| Adds | 一个已定义的属性。 | _What it adds to the original explainer._ |
+| Href | 一个已定义的属性。 | _Where its link goes; 'editor' means the running rulebook editor._ |
+| Link Text | 一个已定义的属性。 | _The link's text._ |
+| Sort Order | 一个已定义的属性。 | _Position in the panel._ |
+| Name | 与 label 相同。 | _Order 1. The tool's name._ |
+
+<details open>
+<summary>示例数据</summary>
+
+| Label | Adds | Href | Link Text | Sort Order | Name ƒ |
+|---|---|---|---|---|---|
+| Interchangeable engines | The same page, computed by Postgres views, generated TypeScript or the generated OWL and SHACL rules. Switch with the control above; nothing else changes. | — | — | 1 | Interchangeable engines |
+| Conformance | Every engine's answers for the current facts, compared value by value with the conformance harness's own rule for when two values are equal. | — | — | 2 | Conformance |
+| Explainer | Hover a dotted value for its rule in plain words and its witness: the values it came from, down to the stated facts. | /rulebook-explainer-dag/pages/index.html | Open the explainer | 3 | Explainer |
+
+_ƒ 表示计算列。_
+
+</details>
+
 ## 2 事实类型
 
 - **firing kind**恰好引用一个**rule**
-- **property**可引用一个**property**
+- **thing**可引用一个**portrait**
+- **portrait aliase**恰好引用一个**portrait**
 - **property**可引用一个**thing**
+- **property axiom**恰好引用一个**firing kind**
+- **property axiom**恰好引用一个**property**
 - **statement**恰好引用一个**graph**
 - **statement**恰好引用一个**thing**
 - **statement**恰好引用一个**property**
@@ -489,7 +610,12 @@ _操作性规则陈述业务**强制**、**禁止**或**建议**的内容。结�
 - firing kind**必须**恰好引用一个“rule”。
 - firing kind**必须**具有wording且sort order。
 - thing**必须**具有label、kind,且sort order。
+- portrait**必须**具有display name、page、image、crop、width、height,且sort order。
+- portrait aliase**必须**恰好引用一个“portrait”。
 - property**必须**具有label、property kind,且sort order,并记录其是“User Addable”与否、其具有“One Current Value”与否,且其是“Symmetric”与否。
+- property axiom**必须**恰好引用一个“firing kind”作为其kind。
+- property axiom**必须**恰好引用一个“property”。
+- property axiom**必须**恰好引用一个“property”作为其first。
 - statement**必须**恰好引用一个“graph”。
 - statement**必须**恰好引用一个“thing”作为其subject。
 - statement**必须**恰好引用一个“property”。
@@ -514,6 +640,8 @@ _操作性规则陈述业务**强制**、**禁止**或**建议**的内容。结�
 - node layout**必须**具有layout、node key、x,且y。
 - layout slot**必须**具有sort order、x,且y。
 - page text**必须**具有text。
+- engine**必须**具有label、substrate、description,且sort order,并记录其是“Default”与否。
+- rulebook tool**必须**具有label、adds,且sort order。
 
 ## 4 定义性规则
 
@@ -537,116 +665,136 @@ _所有语句都表达业务领域中的真理;它们既不是过程,也不是�
 | **DR-11 Next Activation Seq** | graph的“next activation seq”按 max activation seq加1 计算。 |
 | **DR-12 Max Listed Sort Order** | graph的“max listed sort order”为 graph的“statements”中是“Listed Unit”的“sort order”的最大值。 |
 | **DR-13 Next Listed Sort Order** | graph的“next listed sort order”按 max listed sort order加1 计算。 |
-| **DR-14 Name** | rule的“name”与 label 相同。 |
-| **DR-15 Count of Firings** | rule的“count of firings”为 与rule相关的所有“firings”的“fired unit”的总和。 |
-| **DR-16 Name** | firing kind的“name”与 wording 相同。 |
-| **DR-17 Rule Enabled** | firing kind的“rule enabled”在所关联的“rule”是“Enabled”时为真。 |
-| **DR-18 Name** | thing的“name”与 label 相同。 |
-| **DR-19 Node Key** | thing的“node key”与 thing ID 相同。 |
-| **DR-20 Count of Children** | thing的“count of children”为 与thing相关的所有“statements”的“parent unit”的总和。 |
-| **DR-21 Count of Grandchildren** | thing的“count of grandchildren”为 与thing相关的所有“statements”的“grandparent unit”的总和。 |
-| **DR-22 Count As Place** | thing的“count as place”为 与thing相关的所有“statements”的“place unit”的总和。 |
-| **DR-23 Count As Subject** | thing的“count as subject”为 与thing相关的所有“statements”的“holds unit”的总和。 |
-| **DR-24 Count As Object** | thing的“count as object”为 与thing相关的所有“statements”的“holds unit”的总和。 |
-| **DR-25 Is in Graph** | 当以下至少一项成立:count as subject大于0或count as object大于0时,thing被视为“In Graph”。 |
-| **DR-26 Node Kind** | Thing的“node kind”按以下优先级确定:<br>1. 当kind为“class”时,取 “class”;<br>2. 当count as place大于0时,取 “place”;<br>3. 其余情况取 “person”。 |
-| **DR-27 Name** | property的“name”与 label 相同。 |
-| **DR-28 Subject Label** | statement的“subject label”——取自所关联的“subject”。 |
-| **DR-29 Property Label** | statement的“property label”——取自所关联的“property”。 |
-| **DR-30 Object Label** | statement的“object label”——取自所关联的“object thing”。 |
-| **DR-31 Property Datatype** | statement的“property datatype”——取自所关联的“property”。 |
-| **DR-32 Property Has One Current Value** | statement的“property has one current value”在所关联的“property”具有“One Current Value”时为真。 |
-| **DR-33 Property Domain Class** | statement的“property domain class”——取自所关联的“property”。 |
-| **DR-34 Property Range Class** | statement的“property range class”——取自所关联的“property”。 |
-| **DR-35 Literal Quote** | statement的“literal quote”——取自所关联的“graph”。 |
-| **DR-36 Literal Type Marker** | statement的“literal type marker”——取自所关联的“graph”。 |
-| **DR-37 Built in Source Text** | statement的“built in source text”——取自所关联的“graph”。 |
-| **DR-38 User Source Text** | statement的“user source text”——取自所关联的“graph”。 |
-| **DR-39 Next Fact Sort Order** | statement的“next fact sort order”——取自所关联的“graph”。 |
-| **DR-40 Is Literal** | 当object thing为空时,statement被视为“Literal”。 |
-| **DR-41 Object Text** | Statement的“object text”按以下优先级确定:<br>1. 当object thing为空时,取 object value;<br>2. 其余情况取 object label。 |
-| **DR-42 Name** | statement的“name”按 subject label,接着是一个空格,接着是property label,接着是一个空格,接着是object text 计算。 |
-| **DR-43 Words** | statement的“words”按 subject label,接着是一个空格,接着是property label,接着是一个空格,接着是当object thing为空时为 literal quote,接着是object value,接着是literal quote,接着是literal type marker,接着是property datatype,其余情况为 object label 计算。 ⚠︎ 机械 <!-- rulespeak:reword --> |
-| **DR-44 Source** | Statement的“source”按以下优先级确定:<br>1. 当标志“built in”已设置时,取 built in source text;<br>2. 其余情况取 user source text。 |
-| **DR-45 Subject Property Key** | statement的“subject property key”按 subject,接着是“|”,接着是property 计算。 |
-| **DR-46 Latest Sibling Activation Seq** | statement的“latest sibling activation seq”为 与statement相关的所有“statements”的“activation seq”的最大值。 |
-| **DR-47 Is in Effect** | 当以下全部成立:标志“stated”已设置且以下至少一项成立:标志“property has one current value”未设置或activation seq为latest sibling activation seq时,statement被视为“In Effect”。 |
-| **DR-48 Listed Unit** | Statement的“listed unit”按以下优先级确定:<br>1. 当标志“listed”已设置时,取 1;<br>2. 其余情况取 0。 |
-| **DR-49 In Effect Unit** | Statement的“in effect unit”按以下优先级确定:<br>1. 当标志“in effect”已设置时,取 1;<br>2. 其余情况取 0。 |
-| **DR-50 Listed Off Unit** | Statement的“listed off unit”按以下优先级确定:<br>1. 当以下全部成立:标志“listed”已设置且标志“in effect”未设置时,取 1;<br>2. 其余情况取 0。 |
-| **DR-51 Is Next to Add** | 当以下全部成立:listed off unit为1且sort order为next fact sort order时,statement被视为“Next to Add”。 |
-| **DR-52 Count of Inverse Firings** | statement的“count of inverse firings”为 与statement相关的所有“firings”的“inverse fired unit”的总和。 |
-| **DR-53 Count of Symmetric Firings** | statement的“count of symmetric firings”为 与statement相关的所有“firings”的“symmetric fired unit”的总和。 |
-| **DR-54 Holds Before Chain** | 当以下至少一项成立:标志“in effect”已设置、count of inverse firings大于0,或count of symmetric firings大于0时,statement被视为满足“Before Chain”。 |
-| **DR-55 Count of Chain Firings** | statement的“count of chain firings”为 与statement相关的所有“firings”的“chain fired unit”的总和。 |
-| **DR-56 Holds Before Typing** | 当以下至少一项成立:标志“holds before chain”已设置或count of chain firings大于0时,statement被视为满足“Before Typing”。 |
-| **DR-57 Count of Type Firings** | statement的“count of type firings”为 与statement相关的所有“firings”的“type fired unit”的总和。 |
-| **DR-58 Holds** | 当以下至少一项成立:标志“holds before typing”已设置或count of type firings大于0时,statement被视为满足“”。 |
-| **DR-59 Is Conclusion** | 当以下全部成立:标志“holds”已设置且标志“in effect”未设置时,statement被视为“Conclusion”。 |
-| **DR-60 Holds Unit** | Statement的“holds unit”按以下优先级确定:<br>1. 当标志“holds”已设置时,取 1;<br>2. 其余情况取 0。 |
-| **DR-61 Conclusion Unit** | Statement的“conclusion unit”按以下优先级确定:<br>1. 当标志“conclusion”已设置时,取 1;<br>2. 其余情况取 0。 |
-| **DR-62 Parent Unit** | Statement的“parent unit”按以下优先级确定:<br>1. 当以下全部成立:标志“holds”已设置且property为“isParentOf”时,取 1;<br>2. 其余情况取 0。 |
-| **DR-63 Grandparent Unit** | Statement的“grandparent unit”按以下优先级确定:<br>1. 当以下全部成立:标志“holds”已设置且property为“isGrandparentOf”时,取 1;<br>2. 其余情况取 0。 |
-| **DR-64 Place Unit** | Statement的“place unit”按以下优先级确定:<br>1. 当以下全部成立:标志“holds”已设置且property为“attends”时,取 1;<br>2. 其余情况取 0。 |
-| **DR-65 First Fired Order Key** | statement的“first fired order key”为 statement的“firings”中是“Fired Unit”的“order key”的最小值。 |
-| **DR-66 Count of Chosen Firings** | statement的“count of chosen firings”为 与statement相关的所有“firings”的“chosen unit”的总和。 |
-| **DR-67 Subject Node Key** | statement的“subject node key”与 subject 相同。 |
-| **DR-68 Object Node Key** | Statement的“object node key”按以下优先级确定:<br>1. 当object thing为空时,取 “literal|”,接着是object value,接着是“|”,接着是property datatype;<br>2. 其余情况取 object thing。 |
-| **DR-69 Subject Node Kind** | statement的“subject node kind”——取自所关联的“subject”。 |
-| **DR-70 Object Thing Node Kind** | statement的“object thing node kind”——取自所关联的“object thing”。 |
-| **DR-71 Object Node Kind** | Statement的“object node kind”按以下优先级确定:<br>1. 当object thing为空时,取 “value”;<br>2. 其余情况取 object thing node kind。 |
-| **DR-72 Object Value Node Label** | statement的“object value node label”——取自所关联的“property”。 |
-| **DR-73 Count of Violations As First** | statement的“count of violations as first”为 与statement相关的所有“disjoint checks”的“violation unit”的总和。 |
-| **DR-74 Count of Violations As Second** | statement的“count of violations as second”为 与statement相关的所有“disjoint checks”的“violation unit”的总和。 |
-| **DR-75 Is in Contradiction** | 当以下至少一项成立:count of violations as first大于0或count of violations as second大于0时,statement被视为“In Contradiction”。 |
-| **DR-76 Rule Enabled** | firing的“rule enabled”在所关联的“rule”是“Enabled”时为真。 |
-| **DR-77 Kind Wording** | firing的“kind wording”——取自所关联的“kind”。 |
-| **DR-78 Kind Sort Order** | firing的“kind sort order”——取自所关联的“kind”。 |
-| **DR-79 Target Name** | firing的“target name”——取自所关联的“target”。 |
-| **DR-80 Target Subject Label** | firing的“target subject label”——取自所关联的“target”。 |
-| **DR-81 Target Property Label** | firing的“target property label”——取自所关联的“target”。 |
-| **DR-82 Target Object Text** | firing的“target object text”——取自所关联的“target”。 |
-| **DR-83 Target is Conclusion** | firing的“target is conclusion”在所关联的“target”是“Conclusion”时为真。 |
-| **DR-84 Target Subject Node Key** | firing的“target subject node key”——取自所关联的“target”。 |
-| **DR-85 Target Object Node Key** | firing的“target object node key”——取自所关联的“target”。 |
-| **DR-86 Target First Fired Order Key** | firing的“target first fired order key”——取自所关联的“target”。 |
-| **DR-87 First Words** | firing的“first words”——取自所关联的“first”。 |
-| **DR-88 Second Words** | firing的“second words”——取自所关联的“second”。 |
-| **DR-89 First is in Effect** | firing的“first is in effect”在所关联的“first”是“In Effect”时为真。 |
-| **DR-90 First Holds Before Chain** | firing的“first holds before chain”在所关联的“first”是“Holds Before Chain”时为真。 |
-| **DR-91 Second Holds Before Chain** | firing的“second holds before chain”在所关联的“second”是“Holds Before Chain”时为真。 |
-| **DR-92 First Holds Before Typing** | firing的“first holds before typing”在所关联的“first”是“Holds Before Typing”时为真。 |
-| **DR-93 First Property** | firing的“first property”——取自所关联的“first”。 |
-| **DR-94 First Property Domain Class** | firing的“first property domain class”——取自所关联的“first”。 |
-| **DR-95 First Property Range Class** | firing的“first property range class”——取自所关联的“first”。 |
-| **DR-96 First Sort Order** | firing的“first sort order”——取自所关联的“first”。 |
-| **DR-97 Second Sort Order** | firing的“second sort order”——取自所关联的“second”。 |
-| **DR-98 Inverse Fired Unit** | Firing的“inverse fired unit”按以下优先级确定:<br>1. 当以下全部成立:标志“rule enabled”已设置、kind为“inverse”,且标志“first is in effect”已设置时,取 1;<br>2. 其余情况取 0。 |
-| **DR-99 Symmetric Fired Unit** | Firing的“symmetric fired unit”按以下优先级确定:<br>1. 当以下全部成立:标志“rule enabled”已设置、kind为“symmetric”,且标志“first is in effect”已设置时,取 1;<br>2. 其余情况取 0。 |
-| **DR-100 Chain Fired Unit** | Firing的“chain fired unit”按以下优先级确定:<br>1. 当以下全部成立:标志“rule enabled”已设置、kind为“chain”、标志“first holds before chain”已设置,且标志“second holds before chain”已设置时,取 1;<br>2. 其余情况取 0。 |
-| **DR-101 Type Fired Unit** | Firing的“type fired unit”按以下优先级确定:<br>1. 当以下全部成立:标志“rule enabled”已设置、以下至少一项成立:kind为“domain”或kind为“range”,且标志“first holds before typing”已设置时,取 1;<br>2. 其余情况取 0。 |
-| **DR-102 Fired Unit** | firing的“fired unit”按 inverse fired unit加symmetric fired unit加chain fired unit加type fired unit 计算。 |
-| **DR-103 Order Key** | firing的“order key”按 first sort order乘100000加kind sort order乘1000加当second为空时为 0,其余情况为 second sort order 计算。 |
-| **DR-104 Is Chosen** | 当以下全部成立:fired unit为1、标志“target is conclusion”已设置,且order key为target first fired order key时,firing被视为“Chosen”。 |
-| **DR-105 Chosen Unit** | Firing的“chosen unit”按以下优先级确定:<br>1. 当标志“chosen”已设置时,取 1;<br>2. 其余情况取 0。 |
-| **DR-106 Card Text** | Firing的“card text”按以下优先级确定:<br>1. 当标志“chosen”已设置时,取 “Worked out by the ”,接着是kind wording,接着是“ from “”,接着是first words,接着是“””,接着是当kind为“chain”时为 “ and “”,接着是second words,接着是“””,其余情况为 当kind为“domain”时为 “ and “”,接着是first property,接着是“ has domain ”,接着是first property domain class,接着是“””,其余情况为 “ and “”,接着是first property,接着是“ has range ”,接着是first property range class,接着是“””,接着是一个句点;<br>2. 其余情况取 空字符串。 ⚠︎ 机械 <!-- rulespeak:reword --> |
-| **DR-107 Name** | firing的“name”与 firing ID 相同。 |
-| **DR-108 Rule Enabled** | disjoint check的“rule enabled”在所关联的“rule”是“Enabled”时为真。 |
-| **DR-109 First Holds** | disjoint check的“first holds”在所关联的“first”是“Holds”时为真。 |
-| **DR-110 Second Holds** | disjoint check的“second holds”在所关联的“second”是“Holds”时为真。 |
-| **DR-111 Subject Label** | disjoint check的“subject label”——取自所关联的“first”。 |
-| **DR-112 Object Label** | disjoint check的“object label”——取自所关联的“first”。 |
-| **DR-113 Violation Unit** | Disjoint check的“violation unit”按以下优先级确定:<br>1. 当以下全部成立:标志“rule enabled”已设置、标志“first holds”已设置,且标志“second holds”已设置时,取 1;<br>2. 其余情况取 0。 |
-| **DR-114 Alarm Text** | Disjoint check的“alarm text”按以下优先级确定:<br>1. 当violation unit为1时,取 “Contradiction found. ”,接着是subject label,接着是“ is recorded as both parent and spouse of ”,接着是object label,接着是“. Check those facts and the selected disjoint rule.”;<br>2. 其余情况取 空字符串。 |
-| **DR-115 Name** | disjoint check的“name”与 disjoint check ID 相同。 |
-| **DR-116 Name** | scenario的“name”与 label 相同。 |
-| **DR-117 Graph Has Facts to Add** | scenario的“graph has facts to add”在所关联的“graph”具有“Facts to Add”时为真。 |
-| **DR-118 Is Available** | 当以下至少一项成立:fact baseline不为“next”或标志“graph has facts to add”已设置时,scenario被视为“Available”。 |
-| **DR-119 Name** | scenario fact change的“name”与 scenario fact change ID 相同。 |
-| **DR-120 Name** | scenario rule setting的“name”与 scenario rule setting ID 相同。 |
-| **DR-121 Name** | node layout的“name”与 node layout ID 相同。 |
-| **DR-122 Name** | layout slot的“name”与 layout slot ID 相同。 |
-| **DR-123 Name** | page text的“name”与 page text ID 相同。 |
+| **DR-14 Max Sort Order** | graph的“max sort order”为 与graph相关的所有“statements”的“sort order”的最大值。 |
+| **DR-15 Next Candidate Sort Order** | graph的“next candidate sort order”按 max sort order加1 计算。 |
+| **DR-16 Name** | rule的“name”与 label 相同。 |
+| **DR-17 Count of Firings** | rule的“count of firings”为 与rule相关的所有“firings”的“fired unit”的总和。 |
+| **DR-18 Name** | firing kind的“name”与 wording 相同。 |
+| **DR-19 Rule Enabled** | firing kind的“rule enabled”在所关联的“rule”是“Enabled”时为真。 |
+| **DR-20 Portrait Name** | thing的“portrait name”是所关联的“portrait”的“display name”。 |
+| **DR-21 Portrait Page** | thing的“portrait page”——取自所关联的“portrait”。 |
+| **DR-22 Portrait Image** | thing的“portrait image”——取自所关联的“portrait”。 |
+| **DR-23 Portrait Crop** | thing的“portrait crop”——取自所关联的“portrait”。 |
+| **DR-24 Portrait Width** | thing的“portrait width”——取自所关联的“portrait”。 |
+| **DR-25 Portrait Height** | thing的“portrait height”——取自所关联的“portrait”。 |
+| **DR-26 Name** | thing的“name”与 label 相同。 |
+| **DR-27 Node Key** | thing的“node key”与 thing ID 相同。 |
+| **DR-28 Count of Children** | thing的“count of children”为 与thing相关的所有“statements”的“parent unit”的总和。 |
+| **DR-29 Count of Grandchildren** | thing的“count of grandchildren”为 与thing相关的所有“statements”的“grandparent unit”的总和。 |
+| **DR-30 Count As Place** | thing的“count as place”为 与thing相关的所有“statements”的“place unit”的总和。 |
+| **DR-31 Count As Subject** | thing的“count as subject”为 与thing相关的所有“statements”的“holds unit”的总和。 |
+| **DR-32 Count As Object** | thing的“count as object”为 与thing相关的所有“statements”的“holds unit”的总和。 |
+| **DR-33 Is in Graph** | 当以下至少一项成立:count as subject大于0或count as object大于0时,thing被视为“In Graph”。 |
+| **DR-34 Node Kind** | Thing的“node kind”按以下优先级确定:<br>1. 当kind为空时,取 空字符串;<br>2. 当kind为“class”时,取 “class”;<br>3. 当count as place大于0时,取 “place”;<br>4. 其余情况取 “person”。 |
+| **DR-35 Name** | portrait的“name”与 display name 相同。 |
+| **DR-36 Name** | portrait aliase的“name”与 portrait alias ID 相同。 |
+| **DR-37 Name** | property的“name”与 label 相同。 |
+| **DR-38 Name** | property axiom的“name”与 property axiom ID 相同。 |
+| **DR-39 Subject Label** | statement的“subject label”——取自所关联的“subject”。 |
+| **DR-40 Property Label** | statement的“property label”——取自所关联的“property”。 |
+| **DR-41 Object Label** | statement的“object label”——取自所关联的“object thing”。 |
+| **DR-42 Property Datatype** | statement的“property datatype”——取自所关联的“property”。 |
+| **DR-43 Property Has One Current Value** | statement的“property has one current value”在所关联的“property”具有“One Current Value”时为真。 |
+| **DR-44 Property Domain Class** | statement的“property domain class”——取自所关联的“property”。 |
+| **DR-45 Property Range Class** | statement的“property range class”——取自所关联的“property”。 |
+| **DR-46 Literal Quote** | statement的“literal quote”——取自所关联的“graph”。 |
+| **DR-47 Literal Type Marker** | statement的“literal type marker”——取自所关联的“graph”。 |
+| **DR-48 Built in Source Text** | statement的“built in source text”——取自所关联的“graph”。 |
+| **DR-49 User Source Text** | statement的“user source text”——取自所关联的“graph”。 |
+| **DR-50 Next Fact Sort Order** | statement的“next fact sort order”——取自所关联的“graph”。 |
+| **DR-51 Is Literal** | 当object thing为空时,statement被视为“Literal”。 |
+| **DR-52 Object Text** | Statement的“object text”按以下优先级确定:<br>1. 当object thing为空时,取 object value;<br>2. 其余情况取 object label。 |
+| **DR-53 Name** | statement的“name”按 subject label,接着是一个空格,接着是property label,接着是一个空格,接着是object text 计算。 |
+| **DR-54 Words** | statement的“words”按 subject label,接着是一个空格,接着是property label,接着是一个空格,接着是当object thing为空时为 literal quote,接着是object value,接着是literal quote,接着是literal type marker,接着是property datatype,其余情况为 object label 计算。 ⚠︎ 机械 <!-- rulespeak:reword --> |
+| **DR-55 Source** | Statement的“source”按以下优先级确定:<br>1. 当标志“built in”已设置时,取 built in source text;<br>2. 其余情况取 user source text。 |
+| **DR-56 Subject Property Key** | statement的“subject property key”按 subject,接着是“|”,接着是property 计算。 |
+| **DR-57 Latest Sibling Activation Seq** | statement的“latest sibling activation seq”为 与statement相关的所有“statements”的“activation seq”的最大值。 |
+| **DR-58 Is in Effect** | 当以下全部成立:标志“stated”已设置且以下至少一项成立:标志“property has one current value”未设置或activation seq为latest sibling activation seq时,statement被视为“In Effect”。 |
+| **DR-59 Listed Unit** | Statement的“listed unit”按以下优先级确定:<br>1. 当标志“listed”已设置时,取 1;<br>2. 其余情况取 0。 |
+| **DR-60 In Effect Unit** | Statement的“in effect unit”按以下优先级确定:<br>1. 当标志“in effect”已设置时,取 1;<br>2. 其余情况取 0。 |
+| **DR-61 Listed Off Unit** | Statement的“listed off unit”按以下优先级确定:<br>1. 当以下全部成立:标志“listed”已设置且标志“in effect”未设置时,取 1;<br>2. 其余情况取 0。 |
+| **DR-62 Is Next to Add** | 当以下全部成立:listed off unit为1且sort order为next fact sort order时,statement被视为“Next to Add”。 |
+| **DR-63 Count of Inverse Firings** | statement的“count of inverse firings”为 与statement相关的所有“firings”的“inverse fired unit”的总和。 |
+| **DR-64 Count of Symmetric Firings** | statement的“count of symmetric firings”为 与statement相关的所有“firings”的“symmetric fired unit”的总和。 |
+| **DR-65 Holds Before Chain** | 当以下至少一项成立:标志“in effect”已设置、count of inverse firings大于0,或count of symmetric firings大于0时,statement被视为满足“Before Chain”。 |
+| **DR-66 Count of Chain Firings** | statement的“count of chain firings”为 与statement相关的所有“firings”的“chain fired unit”的总和。 |
+| **DR-67 Holds Before Typing** | 当以下至少一项成立:标志“holds before chain”已设置或count of chain firings大于0时,statement被视为满足“Before Typing”。 |
+| **DR-68 Count of Type Firings** | statement的“count of type firings”为 与statement相关的所有“firings”的“type fired unit”的总和。 |
+| **DR-69 Holds** | 当以下至少一项成立:标志“holds before typing”已设置或count of type firings大于0时,statement被视为满足“”。 |
+| **DR-70 Is Conclusion** | 当以下全部成立:标志“holds”已设置且标志“in effect”未设置时,statement被视为“Conclusion”。 |
+| **DR-71 Holds Unit** | Statement的“holds unit”按以下优先级确定:<br>1. 当标志“holds”已设置时,取 1;<br>2. 其余情况取 0。 |
+| **DR-72 Conclusion Unit** | Statement的“conclusion unit”按以下优先级确定:<br>1. 当标志“conclusion”已设置时,取 1;<br>2. 其余情况取 0。 |
+| **DR-73 Parent Unit** | Statement的“parent unit”按以下优先级确定:<br>1. 当以下全部成立:标志“holds”已设置且property为“isParentOf”时,取 1;<br>2. 其余情况取 0。 |
+| **DR-74 Grandparent Unit** | Statement的“grandparent unit”按以下优先级确定:<br>1. 当以下全部成立:标志“holds”已设置且property为“isGrandparentOf”时,取 1;<br>2. 其余情况取 0。 |
+| **DR-75 Place Unit** | Statement的“place unit”按以下优先级确定:<br>1. 当以下全部成立:标志“holds”已设置且property为“attends”时,取 1;<br>2. 其余情况取 0。 |
+| **DR-76 First Pre Chain Order Key** | statement的“first pre chain order key”为 statement的“firings”中是“Pre Chain Fired Unit”的“pre chain order key”的最小值。 |
+| **DR-77 Snap Position** | Statement的“snap position”按以下优先级确定:<br>1. 当标志“in effect”已设置时,取 sort order;<br>2. 当标志“holds before chain”已设置时,取 100000加first pre chain order key;<br>3. 其余情况取 0。 |
+| **DR-78 First Fired Order Key** | statement的“first fired order key”为 statement的“firings”中是“Fired Unit”的“order key”的最小值。 |
+| **DR-79 Count of Chosen Firings** | statement的“count of chosen firings”为 与statement相关的所有“firings”的“chosen unit”的总和。 |
+| **DR-80 Subject Node Key** | statement的“subject node key”与 subject 相同。 |
+| **DR-81 Object Node Key** | Statement的“object node key”按以下优先级确定:<br>1. 当object thing为空时,取 “literal|”,接着是object value,接着是“|”,接着是property datatype;<br>2. 其余情况取 object thing。 |
+| **DR-82 Subject Node Kind** | statement的“subject node kind”——取自所关联的“subject”。 |
+| **DR-83 Object Thing Node Kind** | statement的“object thing node kind”——取自所关联的“object thing”。 |
+| **DR-84 Object Node Kind** | Statement的“object node kind”按以下优先级确定:<br>1. 当object thing为空时,取 “value”;<br>2. 其余情况取 object thing node kind。 |
+| **DR-85 Object Value Node Label** | statement的“object value node label”——取自所关联的“property”。 |
+| **DR-86 Count of Violations As First** | statement的“count of violations as first”为 与statement相关的所有“disjoint checks”的“violation unit”的总和。 |
+| **DR-87 Count of Violations As Second** | statement的“count of violations as second”为 与statement相关的所有“disjoint checks”的“violation unit”的总和。 |
+| **DR-88 Is in Contradiction** | 当以下至少一项成立:count of violations as first大于0或count of violations as second大于0时,statement被视为“In Contradiction”。 |
+| **DR-89 Rule Enabled** | firing的“rule enabled”在所关联的“rule”是“Enabled”时为真。 |
+| **DR-90 Kind Wording** | firing的“kind wording”——取自所关联的“kind”。 |
+| **DR-91 Kind Sort Order** | firing的“kind sort order”——取自所关联的“kind”。 |
+| **DR-92 Target Name** | firing的“target name”——取自所关联的“target”。 |
+| **DR-93 Target Subject Label** | firing的“target subject label”——取自所关联的“target”。 |
+| **DR-94 Target Property Label** | firing的“target property label”——取自所关联的“target”。 |
+| **DR-95 Target Object Text** | firing的“target object text”——取自所关联的“target”。 |
+| **DR-96 Target is Conclusion** | firing的“target is conclusion”在所关联的“target”是“Conclusion”时为真。 |
+| **DR-97 Target Subject Node Key** | firing的“target subject node key”——取自所关联的“target”。 |
+| **DR-98 Target Object Node Key** | firing的“target object node key”——取自所关联的“target”。 |
+| **DR-99 Target First Fired Order Key** | firing的“target first fired order key”——取自所关联的“target”。 |
+| **DR-100 First Words** | firing的“first words”——取自所关联的“first”。 |
+| **DR-101 Second Words** | firing的“second words”——取自所关联的“second”。 |
+| **DR-102 First is in Effect** | firing的“first is in effect”在所关联的“first”是“In Effect”时为真。 |
+| **DR-103 First Holds Before Chain** | firing的“first holds before chain”在所关联的“first”是“Holds Before Chain”时为真。 |
+| **DR-104 Second Holds Before Chain** | firing的“second holds before chain”在所关联的“second”是“Holds Before Chain”时为真。 |
+| **DR-105 First Holds Before Typing** | firing的“first holds before typing”在所关联的“first”是“Holds Before Typing”时为真。 |
+| **DR-106 First Property** | firing的“first property”——取自所关联的“first”。 |
+| **DR-107 First Property Domain Class** | firing的“first property domain class”——取自所关联的“first”。 |
+| **DR-108 First Property Range Class** | firing的“first property range class”——取自所关联的“first”。 |
+| **DR-109 First Sort Order** | firing的“first sort order”——取自所关联的“first”。 |
+| **DR-110 Second is in Effect** | firing的“second is in effect”在所关联的“second”是“In Effect”时为真。 |
+| **DR-111 First Snap Position** | firing的“first snap position”——取自所关联的“first”。 |
+| **DR-112 Second Snap Position** | firing的“second snap position”——取自所关联的“second”。 |
+| **DR-113 Inverse Fired Unit** | Firing的“inverse fired unit”按以下优先级确定:<br>1. 当以下全部成立:标志“rule enabled”已设置、kind为“inverse”,且标志“first is in effect”已设置时,取 1;<br>2. 其余情况取 0。 |
+| **DR-114 Symmetric Fired Unit** | Firing的“symmetric fired unit”按以下优先级确定:<br>1. 当以下全部成立:标志“rule enabled”已设置、kind为“symmetric”,且标志“first is in effect”已设置时,取 1;<br>2. 其余情况取 0。 |
+| **DR-115 Chain Fired Unit** | Firing的“chain fired unit”按以下优先级确定:<br>1. 当以下全部成立:标志“rule enabled”已设置、kind为“chain”、标志“first holds before chain”已设置,且标志“second holds before chain”已设置时,取 1;<br>2. 其余情况取 0。 |
+| **DR-116 Type Fired Unit** | Firing的“type fired unit”按以下优先级确定:<br>1. 当以下全部成立:标志“rule enabled”已设置、以下至少一项成立:kind为“domain”或kind为“range”,且标志“first holds before typing”已设置时,取 1;<br>2. 其余情况取 0。 |
+| **DR-117 Fired Unit** | firing的“fired unit”按 inverse fired unit加symmetric fired unit加chain fired unit加type fired unit 计算。 |
+| **DR-118 Pre Chain Fired Unit** | firing的“pre chain fired unit”按 inverse fired unit加symmetric fired unit 计算。 |
+| **DR-119 Pre Chain Order Key** | firing的“pre chain order key”按 first sort order乘10加kind sort order 计算。 |
+| **DR-120 Round** | Firing的“round”按以下优先级确定:<br>1. 当以下全部成立:kind为“chain”且并非以下全部成立:标志“first is in effect”已设置且标志“second is in effect”已设置时,取 2;<br>2. 其余情况取 1。 |
+| **DR-121 Order Key** | firing的“order key”按 round乘1000000000000000加first snap position乘100000000加kind sort order乘10000000加当second为空时为 0,其余情况为 second snap position 计算。 |
+| **DR-122 Is Chosen** | 当以下全部成立:fired unit为1、标志“target is conclusion”已设置,且order key为target first fired order key时,firing被视为“Chosen”。 |
+| **DR-123 Chosen Unit** | Firing的“chosen unit”按以下优先级确定:<br>1. 当标志“chosen”已设置时,取 1;<br>2. 其余情况取 0。 |
+| **DR-124 Card Text** | Firing的“card text”按以下优先级确定:<br>1. 当标志“chosen”已设置时,取 “Worked out by the ”,接着是kind wording,接着是“ from “”,接着是first words,接着是“””,接着是当kind为“chain”时为 “ and “”,接着是second words,接着是“””,其余情况为 当kind为“domain”时为 “ and “”,接着是first property,接着是“ has domain ”,接着是first property domain class,接着是“””,其余情况为 “ and “”,接着是first property,接着是“ has range ”,接着是first property range class,接着是“””,接着是一个句点;<br>2. 其余情况取 空字符串。 ⚠︎ 机械 <!-- rulespeak:reword --> |
+| **DR-125 Name** | firing的“name”与 firing ID 相同。 |
+| **DR-126 Rule Enabled** | disjoint check的“rule enabled”在所关联的“rule”是“Enabled”时为真。 |
+| **DR-127 First Holds** | disjoint check的“first holds”在所关联的“first”是“Holds”时为真。 |
+| **DR-128 Second Holds** | disjoint check的“second holds”在所关联的“second”是“Holds”时为真。 |
+| **DR-129 Subject Label** | disjoint check的“subject label”——取自所关联的“first”。 |
+| **DR-130 Object Label** | disjoint check的“object label”——取自所关联的“first”。 |
+| **DR-131 Violation Unit** | Disjoint check的“violation unit”按以下优先级确定:<br>1. 当以下全部成立:标志“rule enabled”已设置、标志“first holds”已设置,且标志“second holds”已设置时,取 1;<br>2. 其余情况取 0。 |
+| **DR-132 Alarm Text** | Disjoint check的“alarm text”按以下优先级确定:<br>1. 当violation unit为1时,取 “Contradiction found. ”,接着是subject label,接着是“ is recorded as both parent and spouse of ”,接着是object label,接着是“. Check those facts and the selected disjoint rule.”;<br>2. 其余情况取 空字符串。 |
+| **DR-133 Name** | disjoint check的“name”与 disjoint check ID 相同。 |
+| **DR-134 Name** | scenario的“name”与 label 相同。 |
+| **DR-135 Graph Has Facts to Add** | scenario的“graph has facts to add”在所关联的“graph”具有“Facts to Add”时为真。 |
+| **DR-136 Is Available** | 当以下至少一项成立:fact baseline不为“next”或标志“graph has facts to add”已设置时,scenario被视为“Available”。 |
+| **DR-137 Name** | scenario fact change的“name”与 scenario fact change ID 相同。 |
+| **DR-138 Name** | scenario rule setting的“name”与 scenario rule setting ID 相同。 |
+| **DR-139 Name** | node layout的“name”与 node layout ID 相同。 |
+| **DR-140 Name** | layout slot的“name”与 layout slot ID 相同。 |
+| **DR-141 Name** | page text的“name”与 page text ID 相同。 |
+| **DR-142 Name** | engine的“name”与 label 相同。 |
+| **DR-143 Name** | rulebook tool的“name”与 label 相同。 |
 
 ## 5 到模式的可追溯性
 
@@ -668,10 +816,18 @@ _表达式列是规则在 文档 记法中的定义——
 | **Graphs.NextActivationSeq** | 公式 | `MaxActivationSeq + 1` |
 | **Graphs.MaxListedSortOrder** | 汇总 | `Max(Statements.SortOrder via Graph)` |
 | **Graphs.NextListedSortOrder** | 公式 | `MaxListedSortOrder + 1` |
+| **Graphs.MaxSortOrder** | 汇总 | `Max(Statements.SortOrder via Graph)` |
+| **Graphs.NextCandidateSortOrder** | 公式 | `MaxSortOrder + 1` |
 | **Rules.Name** | 公式 | `Label` |
 | **Rules.CountOfFirings** | 汇总 | `Sum(Firings.FiredUnit via Rule)` |
 | **FiringKinds.Name** | 公式 | `Wording` |
 | **FiringKinds.RuleEnabled** | 查找 | `Lookup(Rules.IsEnabled via Rule)` |
+| **Things.PortraitName** | 查找 | `Lookup(Portraits.DisplayName via Portrait)` |
+| **Things.PortraitPage** | 查找 | `Lookup(Portraits.Page via Portrait)` |
+| **Things.PortraitImage** | 查找 | `Lookup(Portraits.Image via Portrait)` |
+| **Things.PortraitCrop** | 查找 | `Lookup(Portraits.Crop via Portrait)` |
+| **Things.PortraitWidth** | 查找 | `Lookup(Portraits.Width via Portrait)` |
+| **Things.PortraitHeight** | 查找 | `Lookup(Portraits.Height via Portrait)` |
 | **Things.Name** | 公式 | `Label` |
 | **Things.NodeKey** | 公式 | `ThingId` |
 | **Things.CountOfChildren** | 汇总 | `Sum(Statements.ParentUnit via Subject)` |
@@ -680,8 +836,11 @@ _表达式列是规则在 文档 记法中的定义——
 | **Things.CountAsSubject** | 汇总 | `Sum(Statements.HoldsUnit via Subject)` |
 | **Things.CountAsObject** | 汇总 | `Sum(Statements.HoldsUnit via ObjectThing)` |
 | **Things.IsInGraph** | 公式 | `Or(CountAsSubject > 0, CountAsObject > 0)` |
-| **Things.NodeKind** | 公式 | `If(Kind = "class", "class", If(CountAsPlace > 0, "place", "person"))` |
+| **Things.NodeKind** | 公式 | `If(Kind = "", "", If(Kind = "class", "class", If(CountAsPlace > 0, "place", "person")))` |
+| **Portraits.Name** | 公式 | `DisplayName` |
+| **PortraitAliases.Name** | 公式 | `PortraitAliasId` |
 | **Properties.Name** | 公式 | `Label` |
+| **PropertyAxioms.Name** | 公式 | `PropertyAxiomId` |
 | **Statements.SubjectLabel** | 查找 | `Lookup(Things.Label via Subject)` |
 | **Statements.PropertyLabel** | 查找 | `Lookup(Properties.Label via Property)` |
 | **Statements.ObjectLabel** | 查找 | `Lookup(Things.Label via ObjectThing)` |
@@ -719,6 +878,8 @@ _表达式列是规则在 文档 记法中的定义——
 | **Statements.ParentUnit** | 公式 | `If(And(Holds, Property = "isParentOf"), 1, 0)` |
 | **Statements.GrandparentUnit** | 公式 | `If(And(Holds, Property = "isGrandparentOf"), 1, 0)` |
 | **Statements.PlaceUnit** | 公式 | `If(And(Holds, Property = "attends"), 1, 0)` |
+| **Statements.FirstPreChainOrderKey** | 汇总 | `Min(Firings.PreChainOrderKey via Target)` |
+| **Statements.SnapPosition** | 公式 | `If(IsInEffect, SortOrder, If(HoldsBeforeChain, 100000 + FirstPreChainOrderKey, 0))` |
 | **Statements.FirstFiredOrderKey** | 汇总 | `Min(Firings.OrderKey via Target)` |
 | **Statements.CountOfChosenFirings** | 汇总 | `Sum(Firings.ChosenUnit via Target)` |
 | **Statements.SubjectNodeKey** | 公式 | `Subject` |
@@ -751,13 +912,18 @@ _表达式列是规则在 文档 记法中的定义——
 | **Firings.FirstPropertyDomainClass** | 查找 | `Lookup(Statements.PropertyDomainClass via First)` |
 | **Firings.FirstPropertyRangeClass** | 查找 | `Lookup(Statements.PropertyRangeClass via First)` |
 | **Firings.FirstSortOrder** | 查找 | `Lookup(Statements.SortOrder via First)` |
-| **Firings.SecondSortOrder** | 查找 | `Lookup(Statements.SortOrder via Second)` |
+| **Firings.SecondIsInEffect** | 查找 | `Lookup(Statements.IsInEffect via Second)` |
+| **Firings.FirstSnapPosition** | 查找 | `Lookup(Statements.SnapPosition via First)` |
+| **Firings.SecondSnapPosition** | 查找 | `Lookup(Statements.SnapPosition via Second)` |
 | **Firings.InverseFiredUnit** | 公式 | `If(And(RuleEnabled, Kind = "inverse", FirstIsInEffect), 1, 0)` |
 | **Firings.SymmetricFiredUnit** | 公式 | `If(And(RuleEnabled, Kind = "symmetric", FirstIsInEffect), 1, 0)` |
 | **Firings.ChainFiredUnit** | 公式 | `If(And(RuleEnabled, Kind = "chain", FirstHoldsBeforeChain, SecondHoldsBeforeChain), 1, 0)` |
 | **Firings.TypeFiredUnit** | 公式 | `If(And(RuleEnabled, Or(Kind = "domain", Kind = "range"), FirstHoldsBeforeTyping), 1, 0)` |
 | **Firings.FiredUnit** | 公式 | `InverseFiredUnit + SymmetricFiredUnit + ChainFiredUnit + TypeFiredUnit` |
-| **Firings.OrderKey** | 公式 | `FirstSortOrder * 100000 + KindSortOrder * 1000 + If(Second = "", 0, SecondSortOrder)` |
+| **Firings.PreChainFiredUnit** | 公式 | `InverseFiredUnit + SymmetricFiredUnit` |
+| **Firings.PreChainOrderKey** | 公式 | `FirstSortOrder * 10 + KindSortOrder` |
+| **Firings.Round** | 公式 | `If(And(Kind = "chain", Not(And(FirstIsInEffect, SecondIsInEffect))), 2, 1)` |
+| **Firings.OrderKey** | 公式 | `Round * 1000000000000000 + FirstSnapPosition * 100000000 + KindSortOrder * 10000000 + If(Second = "", 0, SecondSnapPosition)` |
 | **Firings.IsChosen** | 公式 | `And(FiredUnit = 1, TargetIsConclusion, OrderKey = TargetFirstFiredOrderKey)` |
 | **Firings.ChosenUnit** | 公式 | `If(IsChosen, 1, 0)` |
 | **Firings.CardText** | 公式 | `If(IsChosen, Concat("Worked out by the ", KindWording, " from “", FirstWords, "”", If(Kind = "chain", Concat(" and “", SecondWords, "”"), If(Kind = "domain", Concat(" and “", FirstProperty, " has domain ", FirstPropertyDomainClass, "”"), If(Kind = "range", Concat(" and “", FirstProperty, " has range ", FirstPropertyRangeClass, "”"), ""))), "."), "")` |
@@ -778,6 +944,8 @@ _表达式列是规则在 文档 记法中的定义——
 | **NodeLayouts.Name** | 公式 | `NodeLayoutId` |
 | **LayoutSlots.Name** | 公式 | `LayoutSlotId` |
 | **PageTexts.Name** | 公式 | `PageTextId` |
+| **Engines.Name** | 公式 | `Label` |
+| **RulebookTools.Name** | 公式 | `Label` |
 
 ---
 

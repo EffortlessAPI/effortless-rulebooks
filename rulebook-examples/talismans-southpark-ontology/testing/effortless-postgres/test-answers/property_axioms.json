@@ -1,0 +1,34 @@
+[
+  {
+    "property_axiom_id": "chain:isGrandparentOf",
+    "kind": "chain",
+    "property": "isGrandparentOf",
+    "first": "isParentOf",
+    "second": "isParentOf",
+    "name": "chain:isGrandparentOf"
+  },
+  {
+    "property_axiom_id": "disjoint:isParentOf~isSpouseOf",
+    "kind": "disjoint",
+    "property": "isParentOf",
+    "first": "isSpouseOf",
+    "second": null,
+    "name": "disjoint:isParentOf~isSpouseOf"
+  },
+  {
+    "property_axiom_id": "inverse:isChildOf",
+    "kind": "inverse",
+    "property": "isChildOf",
+    "first": "isParentOf",
+    "second": null,
+    "name": "inverse:isChildOf"
+  },
+  {
+    "property_axiom_id": "inverse:isParentOf",
+    "kind": "inverse",
+    "property": "isParentOf",
+    "first": "isChildOf",
+    "second": null,
+    "name": "inverse:isParentOf"
+  }
+]

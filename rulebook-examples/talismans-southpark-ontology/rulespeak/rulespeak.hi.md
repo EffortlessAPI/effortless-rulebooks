@@ -1,6 +1,6 @@
 # 📘 Talisman's South Park ontology explainer — दस्तावेज़ीकरण
 
-_Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten facts, five rule switches, property wiring, provenance wording and current-value policy are rows, and every conclusion is a formula. The rules apply in three fixed strata (inverse and symmetric, then the property chain, then domain and range); property wiring that feeds an earlier stratum would need repeated rounds._
+_Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten facts, five rule switches, property wiring, provenance wording and current-value policy are rows, and every conclusion is a formula. The rules apply in three fixed strata (inverse and symmetric, then the property chain, then domain and range); property wiring that feeds an earlier stratum would need repeated rounds. Every fact that could hold over the cast is a candidate row; app/lib/candidates.mjs writes the candidates when a thing, value or property is added._
 
 > नियम-पुस्तिका से प्रस्तुत घोषणात्मक व्यावसायिक नियम। नीचे दिया गया हर कथन
 > व्यावसायिक क्षेत्र का सत्य व्यक्त करता है — यह न कोई प्रक्रिया है, न कोई आदेश।
@@ -31,13 +31,15 @@ _Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten
 | Next Activation Seq | max activation seq जोड़ 1 के रूप में गणना किया जाता है। | _Order 2. The activation number the next switched-on fact takes._ |
 | Max Listed Sort Order | Graph के उन “statements” पर अधिकतम “sort order”, जो “listed unit” हैं। | _Order 2. Highest list position among listed facts._ |
 | Next Listed Sort Order | max listed sort order जोड़ 1 के रूप में गणना किया जाता है। | _Order 3. The list position a newly added fact takes._ |
+| Max Sort Order | Graph से संबंधित “statements” पर अधिकतम “sort order”। | _Order 1. Highest sort order of any fact, listed or candidate._ |
+| Next Candidate Sort Order | max sort order जोड़ 1 के रूप में गणना किया जाता है। | _Order 2. The sort order a new candidate fact, or a fact removed from the list, takes._ |
 
 <details open>
 <summary>उदाहरण डेटा</summary>
 
-| Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 |
+| Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ | Max Sort Order ƒ | Next Candidate Sort Order ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 | 100269 | 100270 |
 
 _ƒ परिकलित स्तंभ को चिह्नित करता है।_
 
@@ -68,7 +70,7 @@ _ƒ परिकलित स्तंभ को चिह्नित करत
 
 | पद | विवरण | व्याख्यात्मक टिप्पणी |
 |------|-------------|-------------------|
-| **Firing Kind** | The ways a rule can apply. Domain and range belong to one rule but are worded apart. | — |
+| **Firing Kind** | The ways a rule can apply. Domain and range belong to one rule but are worded apart; 'disjoint' names the rule the disjointness checks answer to. | — |
 | Rule | एक परिभाषित विशेषता। | _The rule switch this kind belongs to._ |
 | Wording | एक परिभाषित विशेषता। | _How a conclusion card names the rule, as in 'Worked out by the inverse rule'._ |
 | Sort Order | एक परिभाषित विशेषता। | _Order in which the page's reasoner tries the kinds for one fact._ |
@@ -94,12 +96,13 @@ _ƒ परिकलित स्तंभ को चिह्नित करत
 | Label | एक परिभाषित विशेषता। | _The name the page shows._ |
 | Kind | एक परिभाषित विशेषता। | _'individual' or 'class'._ |
 | Sort Order | एक परिभाषित विशेषता। | _Position in the cast._ |
-| Portrait Name | एक परिभाषित विशेषता। | _The name on the portrait's Fandom page._ |
-| Portrait Page | एक परिभाषित विशेषता। | _The Fandom page credited for the portrait._ |
-| Portrait Image | एक परिभाषित विशेषता। | _The original Fandom image._ |
-| Portrait Crop | एक परिभाषित विशेषता। | _The portrait's crop as an SVG viewBox: x y width height._ |
-| Portrait Width | एक परिभाषित विशेषता। | _The original image's width in pixels._ |
-| Portrait Height | एक परिभाषित विशेषता। | _The original image's height in pixels._ |
+| Portrait | एक परिभाषित विशेषता। | _The portrait drawn for this thing; set when its name matches a portrait alias._ |
+| Portrait Name | thing के “portrait” का “display name”। | _Order 1. The name on the portrait's Fandom page._ |
+| Portrait Page | लिंक किए गए “portrait” से लिया जाता है। | _Order 1. The Fandom page credited for the portrait._ |
+| Portrait Image | लिंक किए गए “portrait” से लिया जाता है। | _Order 1. The original Fandom image._ |
+| Portrait Crop | लिंक किए गए “portrait” से लिया जाता है। | _Order 1. The portrait's crop as an SVG viewBox._ |
+| Portrait Width | लिंक किए गए “portrait” से लिया जाता है। | _Order 1. The original image's width in pixels._ |
+| Portrait Height | लिंक किए गए “portrait” से लिया जाता है। | _Order 1. The original image's height in pixels._ |
 | Name | उसके “label” के समान। | _Order 1. The thing's name._ |
 | Node Key | उसके “thing ID” के समान। | _Order 1. The key the graph draws this thing under._ |
 | Count of Children | Thing से संबंधित “statements” पर कुल “parent unit”। | _Order 17. People this thing is a parent of, stated or concluded._ |
@@ -108,12 +111,12 @@ _ƒ परिकलित स्तंभ को चिह्नित करत
 | Count As Subject | Thing से संबंधित “statements” पर कुल “holds unit”। | _Order 17. Holding facts about this thing._ |
 | Count As Object | Thing से संबंधित “statements” पर कुल “holds unit”। | _Order 17. Holding facts that point at this thing._ |
 | Is in Graph | तब सत्य, जब निम्नलिखित में से कम से कम एक सही है: count as subject 0 से अधिक है या count as object 0 से अधिक है। | _Order 18. True when the graph draws this thing._ |
-| Node Kind | प्राथमिकता से निर्धारित: “class”, यदि kind “class” है; “place”, यदि count as place 0 से अधिक है; अन्य सभी स्थितियों में, “person”। | _Order 18. How the graph draws the thing: a class, a place someone attends, or a person._ |
+| Node Kind | प्राथमिकता से निर्धारित: एक खाली स्ट्रिंग, यदि kind खाली है; “class”, यदि kind “class” है; “place”, यदि count as place 0 से अधिक है; अन्य सभी स्थितियों में, “person”। | _Order 18. How the graph draws the thing: a class, a place someone attends, or a person._ |
 
 <details open>
 <summary>उदाहरण डेटा</summary>
 
-| Label | Kind | Sort Order | Portrait Name | Portrait Page | Portrait Image | Portrait Crop | Portrait Width | Portrait Height | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
+| Label | Kind | Sort Order | Portrait Name ƒ | Portrait Page ƒ | Portrait Image ƒ | Portrait Crop ƒ | Portrait Width ƒ | Portrait Height ƒ | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Marvin | individual | 1 | Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | Marvin | Marvin | 1 | 0 | 0 | 1 | 0 | true | person |
 | Randy | individual | 2 | Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | Randy | Randy | 2 | 0 | 0 | 3 | 1 | true | person |
@@ -125,19 +128,59 @@ _ƒ परिकलित स्तंभ को चिह्नित करत
 
 | पद | विवरण | व्याख्यात्मक टिप्पणी |
 |------|-------------|-------------------|
-| **Property** | The ten properties and the wiring every rule reads. | — |
+| **Portrait** | The page's Fandom portraits, including those for characters a reader may add. | — |
+| Display Name | एक परिभाषित विशेषता। | _The name on the portrait's Fandom page._ |
+| Page | एक परिभाषित विशेषता। | _The Fandom page credited for the portrait._ |
+| Image | एक परिभाषित विशेषता। | _The original Fandom image._ |
+| Crop | एक परिभाषित विशेषता। | _The crop as an SVG viewBox: x y width height._ |
+| Width | एक परिभाषित विशेषता। | _The original image's width in pixels._ |
+| Height | एक परिभाषित विशेषता। | _The original image's height in pixels._ |
+| Sort Order | एक परिभाषित विशेषता। | _Position in the credits._ |
+| Name | उसके “display name” के समान। | _Order 1. The portrait's name._ |
+
+<details open>
+<summary>उदाहरण डेटा</summary>
+
+| Display Name | Page | Image | Crop | Width | Height | Sort Order | Name ƒ |
+|---|---|---|---|---|---|---|---|
+| Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | 1 | Marvin Marsh |
+| Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | 2 | Randy Marsh |
+| Sharon Marsh | https://southpark.fandom.com/wiki/Sharon_Marsh | https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest | 20 -10 390 390 | 439 | 1049 | 3 | Sharon Marsh |
+
+_ƒ परिकलित स्तंभ को चिह्नित करता है।_
+
+</details>
+
+| पद | विवरण | व्याख्यात्मक टिप्पणी |
+|------|-------------|-------------------|
+| **Portrait Aliase** | The names a portrait answers to. A new thing whose name matches an alias gets that portrait. | — |
+| Portrait | एक परिभाषित विशेषता। | _The portrait this name selects._ |
+| Name | उसके “portrait alias ID” के समान। | _Order 1. The alias._ |
+
+<details open>
+<summary>उदाहरण डेटा</summary>
+
+| Name ƒ |
+|---|
+| marvin |
+| marvin marsh |
+| grandpa marsh |
+
+_ƒ परिकलित स्तंभ को चिह्नित करता है।_
+
+</details>
+
+| पद | विवरण | व्याख्यात्मक टिप्पणी |
+|------|-------------|-------------------|
+| **Property** | The ten properties, with what the symmetric, domain and range rules read. Axioms that relate one property to another (inverse, chain, disjoint) are rows of PropertyAxioms. | — |
 | Label | एक परिभाषित विशेषता। | _The property's wording on the page._ |
 | Property Kind | एक परिभाषित विशेषता। | _'object' links two things, 'datatype' links a thing to a value, 'type' states class membership._ |
 | Datatype | एक परिभाषित विशेषता। | _The value's XML Schema datatype for a datatype property; blank otherwise._ |
 | Is User Addable | तब सत्य, जब एक खाली स्ट्रिंग। | _Offered in the page's Add fact form._ |
 | Has One Current Value | तब सत्य, जब एक खाली स्ट्रिंग। | _The page keeps one current value per person: switching a value on replaces the earlier one._ |
-| Inverse of | एक परिभाषित विशेषता। | _The property the inverse rule derives from this one._ |
 | Is Symmetric | तब सत्य, जब एक खाली स्ट्रिंग। | _The symmetric rule makes this link true in both directions._ |
-| Chain First | एक परिभाषित विशेषता। | _First link of the property chain that derives this property._ |
-| Chain Second | एक परिभाषित विशेषता। | _Second link of the property chain that derives this property._ |
 | Domain Class | एक परिभाषित विशेषता। | _The class the domain rule gives this property's subject._ |
 | Range Class | एक परिभाषित विशेषता। | _The class the range rule gives this property's object._ |
-| Disjoint With | एक परिभाषित विशेषता। | _A property that may not link the same pair, in the same direction, as this one._ |
 | Sort Order | एक परिभाषित विशेषता। | _Position in the Add fact form's property list._ |
 | Value Node Label | एक परिभाषित विशेषता। | _The small label under a value node for this property: 'role value' or 'number value'._ |
 | Current Value Wording | एक परिभाषित विशेषता। | _How the Add fact form names a replaced value, as in 'Stan now has grade level 5'._ |
@@ -154,6 +197,28 @@ _ƒ परिकलित स्तंभ को चिह्नित करत
 | is parent of | object | — | true | false | false | 1 | — | — | — | — | — | is parent of |
 | is child of | object | — | true | false | false | 2 | — | — | — | — | — | is child of |
 | is spouse of | object | — | true | false | true | 3 | — | — | — | — | — | is spouse of |
+
+_ƒ परिकलित स्तंभ को चिह्नित करता है।_
+
+</details>
+
+| पद | विवरण | व्याख्यात्मक टिप्पणी |
+|------|-------------|-------------------|
+| **Property Axiom** | Axioms that relate one property to others, as OWL states them: an inverse, a two-link chain, or a disjoint pair. The candidate generator reads these rows. | — |
+| Kind | एक परिभाषित विशेषता। | _inverse, chain or disjoint._ |
+| Property | एक परिभाषित विशेषता। | _The property the axiom is about: the one inverted, the one a chain derives, or the first of a disjoint pair._ |
+| First | एक परिभाषित विशेषता। | _The inverse property, the chain's first link, or the other property of a disjoint pair._ |
+| Second | एक परिभाषित विशेषता। | _The chain's second link._ |
+| Name | उसके “property axiom ID” के समान। | _Order 1. The axiom's key._ |
+
+<details open>
+<summary>उदाहरण डेटा</summary>
+
+| Name ƒ |
+|---|
+| inverse:isParentOf |
+| disjoint:isParentOf~isSpouseOf |
+| inverse:isChildOf |
 
 _ƒ परिकलित स्तंभ को चिह्नित करता है।_
 
@@ -210,6 +275,8 @@ _ƒ परिकलित स्तंभ को चिह्नित करत
 | Parent Unit | प्राथमिकता से निर्धारित: 1, यदि निम्नलिखित सभी सही हैं: “holds” ध्वज लगा हुआ है और property “isParentOf” है; अन्य सभी स्थितियों में, 0। | _Order 16. 1 for a holding parent link._ |
 | Grandparent Unit | प्राथमिकता से निर्धारित: 1, यदि निम्नलिखित सभी सही हैं: “holds” ध्वज लगा हुआ है और property “isGrandparentOf” है; अन्य सभी स्थितियों में, 0। | _Order 16. 1 for a holding grandparent link._ |
 | Place Unit | प्राथमिकता से निर्धारित: 1, यदि निम्नलिखित सभी सही हैं: “holds” ध्वज लगा हुआ है और property “attends” है; अन्य सभी स्थितियों में, 0। | _Order 16. 1 for a holding attends link._ |
+| First Pre Chain Order Key | Statement के उन “firings” पर न्यूनतम “pre chain order key”, जो “pre chain fired unit” हैं। | _Order 7. Order key of the first inverse or symmetric application that concludes this fact._ |
+| Snap Position | प्राथमिकता से निर्धारित: sort order, यदि “in effect” ध्वज लगा हुआ है; 100000 जोड़ first pre chain order key, यदि “holds before chain” ध्वज लगा हुआ है; अन्य सभी स्थितियों में, 0। | _Order 8. Where the page's reasoner meets this fact as a premise: a stated fact at its list position, a fact concluded by the inverse or symmetric rule after every stated fact, in the order it was concluded; 0 for a fact that does not hold yet, so a link to no fact reads the same on every engine._ |
 | First Fired Order Key | Statement के उन “firings” पर न्यूनतम “order key”, जो “fired unit” हैं। | _Order 15. Order key of the first rule application that concludes this fact, in the page reasoner's order._ |
 | Count of Chosen Firings | Statement से संबंधित “firings” पर कुल “chosen unit”। | _Order 20. Rule applications shown as this fact's conclusion card: one for a conclusion, zero otherwise._ |
 | Subject Node Key | उसके “subject” के समान। | _Order 1. The graph node this fact starts from._ |
@@ -225,11 +292,11 @@ _ƒ परिकलित स्तंभ को चिह्नित करत
 <details open>
 <summary>उदाहरण डेटा</summary>
 
-| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 101 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 102 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
+| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Pre Chain Order Key ƒ | Snap Position ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 1.0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100001 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100002 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
 
 _ƒ परिकलित स्तंभ को चिह्नित करता है।_
 
@@ -264,13 +331,18 @@ _ƒ परिकलित स्तंभ को चिह्नित करत
 | First Property Domain Class | लिंक किए गए “first” से लिया जाता है। | _Order 2. The premise property's domain class._ |
 | First Property Range Class | लिंक किए गए “first” से लिया जाता है। | _Order 2. The premise property's range class._ |
 | First Sort Order | लिंक किए गए “first” से लिया जाता है। | _Order 1. The premise's list position._ |
-| Second Sort Order | लिंक किए गए “second” से लिया जाता है। | _Order 1. The second premise's list position._ |
+| Second is in Effect | तब सत्य, जब firing के “second” का “in effect” है। | _Order 4. Whether the second premise is in effect._ |
+| First Snap Position | लिंक किए गए “first” से लिया जाता है। | _Order 9. Where the reasoner meets the premise._ |
+| Second Snap Position | लिंक किए गए “second” से लिया जाता है। | _Order 9. Where the reasoner meets the second premise._ |
 | Inverse Fired Unit | प्राथमिकता से निर्धारित: 1, यदि निम्नलिखित सभी सही हैं: “rule enabled” ध्वज लगा हुआ है, kind “inverse” है और “first is in effect” ध्वज लगा हुआ है; अन्य सभी स्थितियों में, 0। | _Order 5. 1 when the inverse rule fires here._ |
 | Symmetric Fired Unit | प्राथमिकता से निर्धारित: 1, यदि निम्नलिखित सभी सही हैं: “rule enabled” ध्वज लगा हुआ है, kind “symmetric” है और “first is in effect” ध्वज लगा हुआ है; अन्य सभी स्थितियों में, 0। | _Order 5. 1 when the symmetric rule fires here._ |
 | Chain Fired Unit | प्राथमिकता से निर्धारित: 1, यदि निम्नलिखित सभी सही हैं: “rule enabled” ध्वज लगा हुआ है, kind “chain” है, “first holds before chain” ध्वज लगा हुआ है और “second holds before chain” ध्वज लगा हुआ है; अन्य सभी स्थितियों में, 0। | _Order 9. 1 when the property chain fires here._ |
 | Type Fired Unit | प्राथमिकता से निर्धारित: 1, यदि निम्नलिखित सभी सही हैं: “rule enabled” ध्वज लगा हुआ है, निम्नलिखित में से कम से कम एक सही है: kind “domain” है या kind “range” है और “first holds before typing” ध्वज लगा हुआ है; अन्य सभी स्थितियों में, 0। | _Order 13. 1 when the domain or range rule fires here._ |
 | Fired Unit | inverse fired unit जोड़ symmetric fired unit जोड़ chain fired unit जोड़ type fired unit के रूप में गणना किया जाता है। | _Order 14. 1 when this application fires._ |
-| Order Key | first sort order गुणा 100000 जोड़ kind sort order गुणा 1000 जोड़ 0, यदि second खाली है; अन्य सभी स्थितियों में second sort order के रूप में गणना किया जाता है। | _Order 2. The page reasoner's order: by premise, then rule kind, then second premise._ |
+| Pre Chain Fired Unit | inverse fired unit जोड़ symmetric fired unit के रूप में गणना किया जाता है। | _Order 6. 1 when this is an inverse or symmetric application that fires._ |
+| Pre Chain Order Key | first sort order गुणा 10 जोड़ kind sort order के रूप में गणना किया जाता है। | _Order 2. For an inverse or symmetric application: its place in the reasoner's first round._ |
+| Round | प्राथमिकता से निर्धारित: 2, यदि निम्नलिखित सभी सही हैं: kind “chain” है और ऐसा नहीं है कि निम्नलिखित सभी सही हैं: “first is in effect” ध्वज लगा हुआ है और “second is in effect” ध्वज लगा हुआ है; अन्य सभी स्थितियों में, 1। | _Order 5. The reasoner's round: 1 when every premise is a stated fact, 2 when the property chain reads a concluded fact._ |
+| Order Key | round गुणा 1000000000000000 जोड़ first snap position गुणा 100000000 जोड़ kind sort order गुणा 10000000 जोड़ 0, यदि second खाली है; अन्य सभी स्थितियों में second snap position के रूप में गणना किया जाता है। | _Order 10. The page reasoner's order: by round, then premise, then rule kind, then second premise._ |
 | Is Chosen | तब सत्य, जब निम्नलिखित सभी सही हैं: fired unit 1 है, “target is conclusion” ध्वज लगा हुआ है और order key target first fired order key है। | _Order 18. The application the conclusions panel shows for its fact: the first one in the reasoner's order._ |
 | Chosen Unit | प्राथमिकता से निर्धारित: 1, यदि “chosen” ध्वज लगा हुआ है; अन्य सभी स्थितियों में, 0। | _Order 19. 1 when this application is shown._ |
 | Card Text | प्राथमिकता से निर्धारित: “Worked out by the ”, उसके बाद kind wording, उसके बाद “ from “”, उसके बाद first words, उसके बाद “””, उसके बाद “ and “”, उसके बाद second words, उसके बाद “””, यदि kind “chain” है; अन्य सभी स्थितियों में “ and “”, उसके बाद first property, उसके बाद “ has domain ”, उसके बाद first property domain class, उसके बाद “””, यदि kind “domain” है; अन्य सभी स्थितियों में “ and “”, उसके बाद first property, उसके बाद “ has range ”, उसके बाद first property range class, उसके बाद “””, उसके बाद एक बिंदु, यदि “chosen” ध्वज लगा हुआ है; अन्य सभी स्थितियों में, एक खाली स्ट्रिंग। ⚠︎ यांत्रिक <!-- rulespeak:reword --> | _Order 19. The conclusion card's provenance line, in the page's wording._ |
@@ -279,11 +351,11 @@ _ƒ परिकलित स्तंभ को चिह्नित करत
 <details open>
 <summary>उदाहरण डेटा</summary>
 
-| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second Sort Order ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | — | 0 | 0 | 0 | 0 | 0 | 101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 101 | — | 0 | 0 | 0 | 0 | 0 | 10101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 102 | — | 0 | 0 | 0 | 0 | 0 | 10201000 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
+| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second is in Effect ƒ | First Snap Position ƒ | Second Snap Position ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Pre Chain Fired Unit ƒ | Pre Chain Order Key ƒ | Round ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | false | 1.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 11.0 | 1 | 1000000110000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 100001 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000011.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 100002 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000021.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
 
 _ƒ परिकलित स्तंभ को चिह्नित करता है।_
 
@@ -456,11 +528,60 @@ _ƒ परिकलित स्तंभ को चिह्नित करत
 
 </details>
 
+| पद | विवरण | व्याख्यात्मक टिप्पणी |
+|------|-------------|-------------------|
+| **Engine** | The execution engines the page can be computed by. Each is a build output of this rulebook. | — |
+| Label | एक परिभाषित विशेषता। | _The engine's name in the switcher._ |
+| Substrate | एक परिभाषित विशेषता। | _The conformance harness's name for this substrate._ |
+| Is Default | तब सत्य, जब एक खाली स्ट्रिंग। | _The engine a new visitor starts on._ |
+| Description | एक परिभाषित विशेषता। | _What computes the page on this engine._ |
+| Sort Order | एक परिभाषित विशेषता। | _Position in the switcher._ |
+| Name | उसके “label” के समान। | _Order 1. The engine's name._ |
+
+<details open>
+<summary>उदाहरण डेटा</summary>
+
+| Label | Substrate | Is Default | Description | Sort Order | Name ƒ |
+|---|---|---|---|---|---|
+| Postgres views | effortless-postgres | true | Every value is a column of a generated view; the database computes it when the page reads it. | 1 | Postgres views |
+| TypeScript | effortless-typescript | false | The generated TypeScript computes every field from the same rows, with no database. | 2 | TypeScript |
+| OWL and SHACL rules | effortless-owl | false | The generated ontology and SHACL rules, run over the same rows by a SPARQL engine. | 3 | OWL and SHACL rules |
+
+_ƒ परिकलित स्तंभ को चिह्नित करता है।_
+
+</details>
+
+| पद | विवरण | व्याख्यात्मक टिप्पणी |
+|------|-------------|-------------------|
+| **Rulebook Tool** | What each rulebook tool adds to the original explainer; the tools panel lists them. | — |
+| Label | एक परिभाषित विशेषता। | _The tool's name._ |
+| Adds | एक परिभाषित विशेषता। | _What it adds to the original explainer._ |
+| Href | एक परिभाषित विशेषता। | _Where its link goes; 'editor' means the running rulebook editor._ |
+| Link Text | एक परिभाषित विशेषता। | _The link's text._ |
+| Sort Order | एक परिभाषित विशेषता। | _Position in the panel._ |
+| Name | उसके “label” के समान। | _Order 1. The tool's name._ |
+
+<details open>
+<summary>उदाहरण डेटा</summary>
+
+| Label | Adds | Href | Link Text | Sort Order | Name ƒ |
+|---|---|---|---|---|---|
+| Interchangeable engines | The same page, computed by Postgres views, generated TypeScript or the generated OWL and SHACL rules. Switch with the control above; nothing else changes. | — | — | 1 | Interchangeable engines |
+| Conformance | Every engine's answers for the current facts, compared value by value with the conformance harness's own rule for when two values are equal. | — | — | 2 | Conformance |
+| Explainer | Hover a dotted value for its rule in plain words and its witness: the values it came from, down to the stated facts. | /rulebook-explainer-dag/pages/index.html | Open the explainer | 3 | Explainer |
+
+_ƒ परिकलित स्तंभ को चिह्नित करता है।_
+
+</details>
+
 ## 2 तथ्य-प्रकार
 
 - **firing kind** ठीक एक **rule** का संदर्भ देता है
-- **property** एक **property** का संदर्भ दे सकता है
+- **thing** एक **portrait** का संदर्भ दे सकता है
+- **portrait aliase** ठीक एक **portrait** का संदर्भ देता है
 - **property** एक **thing** का संदर्भ दे सकता है
+- **property axiom** ठीक एक **firing kind** का संदर्भ देता है
+- **property axiom** ठीक एक **property** का संदर्भ देता है
 - **statement** ठीक एक **graph** का संदर्भ देता है
 - **statement** ठीक एक **thing** का संदर्भ देता है
 - **statement** ठीक एक **property** का संदर्भ देता है
@@ -491,7 +612,12 @@ _प्रवर्तनकारी नियम बताते हैं क
 - firing kind को ठीक एक “rule” का संदर्भ देना **अनिवार्य** है।
 - firing kind को wording और sort order रखना **अनिवार्य** है।
 - thing को label, kind और sort order रखना **अनिवार्य** है।
+- portrait को display name, page, image, crop, width, height और sort order रखना **अनिवार्य** है।
+- portrait aliase को ठीक एक “portrait” का संदर्भ देना **अनिवार्य** है।
 - property को label, property kind और sort order रखना, तथा यह कि वह “user addable” है या नहीं, यह कि वह “one current value” रखता है या नहीं और यह कि वह “symmetric” है या नहीं दर्ज करना **अनिवार्य** है।
+- property axiom को अपने “kind” के रूप में ठीक एक “firing kind” का संदर्भ देना **अनिवार्य** है।
+- property axiom को ठीक एक “property” का संदर्भ देना **अनिवार्य** है।
+- property axiom को अपने “first” के रूप में ठीक एक “property” का संदर्भ देना **अनिवार्य** है।
 - statement को ठीक एक “graph” का संदर्भ देना **अनिवार्य** है।
 - statement को अपने “subject” के रूप में ठीक एक “thing” का संदर्भ देना **अनिवार्य** है।
 - statement को ठीक एक “property” का संदर्भ देना **अनिवार्य** है।
@@ -516,6 +642,8 @@ _प्रवर्तनकारी नियम बताते हैं क
 - node layout को layout, node key, x और y रखना **अनिवार्य** है।
 - layout slot को sort order, x और y रखना **अनिवार्य** है।
 - page text को text रखना **अनिवार्य** है।
+- engine को label, substrate, description और sort order रखना, तथा यह कि वह “default” है या नहीं दर्ज करना **अनिवार्य** है।
+- rulebook tool को label, adds और sort order रखना **अनिवार्य** है।
 
 ## 4 परिभाषात्मक नियम
 
@@ -540,116 +668,136 @@ _सभी कथन व्यावसायिक क्षेत्र का
 | **DR-11 Next Activation Seq** | graph का “next activation seq” max activation seq जोड़ 1 के रूप में गणना किया जाता है। |
 | **DR-12 Max Listed Sort Order** | graph का “max listed sort order” graph के उन “statements” पर अधिकतम “sort order”, जो “listed unit” हैं है। |
 | **DR-13 Next Listed Sort Order** | graph का “next listed sort order” max listed sort order जोड़ 1 के रूप में गणना किया जाता है। |
-| **DR-14 Name** | rule का “name” उसके “label” के समान है। |
-| **DR-15 Count of Firings** | rule का “count of firings” rule से संबंधित “firings” पर कुल “fired unit” है। |
-| **DR-16 Name** | firing kind का “name” उसके “wording” के समान है। |
-| **DR-17 Rule Enabled** | firing kind का “rule enabled” तब सत्य होता है, जब लिंक किए गए “rule” का “enabled” है। |
-| **DR-18 Name** | thing का “name” उसके “label” के समान है। |
-| **DR-19 Node Key** | thing का “node key” उसके “thing ID” के समान है। |
-| **DR-20 Count of Children** | thing का “count of children” thing से संबंधित “statements” पर कुल “parent unit” है। |
-| **DR-21 Count of Grandchildren** | thing का “count of grandchildren” thing से संबंधित “statements” पर कुल “grandparent unit” है। |
-| **DR-22 Count As Place** | thing का “count as place” thing से संबंधित “statements” पर कुल “place unit” है। |
-| **DR-23 Count As Subject** | thing का “count as subject” thing से संबंधित “statements” पर कुल “holds unit” है। |
-| **DR-24 Count As Object** | thing का “count as object” thing से संबंधित “statements” पर कुल “holds unit” है। |
-| **DR-25 Is in Graph** | यदि निम्नलिखित में से कम से कम एक सही है: count as subject 0 से अधिक है या count as object 0 से अधिक है, तो thing “in graph” माना जाता है। |
-| **DR-26 Node Kind** | Thing का “node kind” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. “class”, यदि kind “class” है;<br>2. “place”, यदि count as place 0 से अधिक है;<br>3. अन्य सभी स्थितियों में, “person”। |
-| **DR-27 Name** | property का “name” उसके “label” के समान है। |
-| **DR-28 Subject Label** | statement का “subject label” — लिंक किए गए “subject” से लिया जाता है। |
-| **DR-29 Property Label** | statement का “property label” — लिंक किए गए “property” से लिया जाता है। |
-| **DR-30 Object Label** | statement का “object label” — लिंक किए गए “object thing” से लिया जाता है। |
-| **DR-31 Property Datatype** | statement का “property datatype” — लिंक किए गए “property” से लिया जाता है। |
-| **DR-32 Property Has One Current Value** | statement का “property has one current value” तब सत्य होता है, जब लिंक किए गए “property” का “one current value” रखता है। |
-| **DR-33 Property Domain Class** | statement का “property domain class” — लिंक किए गए “property” से लिया जाता है। |
-| **DR-34 Property Range Class** | statement का “property range class” — लिंक किए गए “property” से लिया जाता है। |
-| **DR-35 Literal Quote** | statement का “literal quote” — लिंक किए गए “graph” से लिया जाता है। |
-| **DR-36 Literal Type Marker** | statement का “literal type marker” — लिंक किए गए “graph” से लिया जाता है। |
-| **DR-37 Built in Source Text** | statement का “built in source text” — लिंक किए गए “graph” से लिया जाता है। |
-| **DR-38 User Source Text** | statement का “user source text” — लिंक किए गए “graph” से लिया जाता है। |
-| **DR-39 Next Fact Sort Order** | statement का “next fact sort order” — लिंक किए गए “graph” से लिया जाता है। |
-| **DR-40 Is Literal** | यदि object thing खाली है, तो statement “literal” माना जाता है। |
-| **DR-41 Object Text** | Statement का “object text” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. object value, यदि object thing खाली है;<br>2. अन्य सभी स्थितियों में, object label। |
-| **DR-42 Name** | statement का “name” subject label, उसके बाद एक रिक्त स्थान, उसके बाद property label, उसके बाद एक रिक्त स्थान, उसके बाद object text के रूप में गणना किया जाता है। |
-| **DR-43 Words** | statement का “words” subject label, उसके बाद एक रिक्त स्थान, उसके बाद property label, उसके बाद एक रिक्त स्थान, उसके बाद literal quote, उसके बाद object value, उसके बाद literal quote, उसके बाद literal type marker, उसके बाद property datatype, यदि object thing खाली है; अन्य सभी स्थितियों में object label के रूप में गणना किया जाता है। ⚠︎ यांत्रिक <!-- rulespeak:reword --> |
-| **DR-44 Source** | Statement का “source” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. built in source text, यदि “built in” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, user source text। |
-| **DR-45 Subject Property Key** | statement का “subject property key” subject, उसके बाद “|”, उसके बाद property के रूप में गणना किया जाता है। |
-| **DR-46 Latest Sibling Activation Seq** | statement का “latest sibling activation seq” statement से संबंधित “statements” पर अधिकतम “activation seq” है। |
-| **DR-47 Is in Effect** | यदि निम्नलिखित सभी सही हैं: “stated” ध्वज लगा हुआ है और निम्नलिखित में से कम से कम एक सही है: “property has one current value” ध्वज लगा हुआ नहीं है या activation seq latest sibling activation seq है, तो statement “in effect” माना जाता है। |
-| **DR-48 Listed Unit** | Statement का “listed unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि “listed” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
-| **DR-49 In Effect Unit** | Statement का “in effect unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि “in effect” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
-| **DR-50 Listed Off Unit** | Statement का “listed off unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “listed” ध्वज लगा हुआ है और “in effect” ध्वज लगा हुआ नहीं है;<br>2. अन्य सभी स्थितियों में, 0। |
-| **DR-51 Is Next to Add** | यदि निम्नलिखित सभी सही हैं: listed off unit 1 है और sort order next fact sort order है, तो statement “next to add” माना जाता है। |
-| **DR-52 Count of Inverse Firings** | statement का “count of inverse firings” statement से संबंधित “firings” पर कुल “inverse fired unit” है। |
-| **DR-53 Count of Symmetric Firings** | statement का “count of symmetric firings” statement से संबंधित “firings” पर कुल “symmetric fired unit” है। |
-| **DR-54 Holds Before Chain** | यदि निम्नलिखित में से कम से कम एक सही है: “in effect” ध्वज लगा हुआ है, count of inverse firings 0 से अधिक है या count of symmetric firings 0 से अधिक है, तो statement “before chain” की शर्त पूरी करने वाला माना जाता है। |
-| **DR-55 Count of Chain Firings** | statement का “count of chain firings” statement से संबंधित “firings” पर कुल “chain fired unit” है। |
-| **DR-56 Holds Before Typing** | यदि निम्नलिखित में से कम से कम एक सही है: “holds before chain” ध्वज लगा हुआ है या count of chain firings 0 से अधिक है, तो statement “before typing” की शर्त पूरी करने वाला माना जाता है। |
-| **DR-57 Count of Type Firings** | statement का “count of type firings” statement से संबंधित “firings” पर कुल “type fired unit” है। |
-| **DR-58 Holds** | यदि निम्नलिखित में से कम से कम एक सही है: “holds before typing” ध्वज लगा हुआ है या count of type firings 0 से अधिक है, तो statement “” की शर्त पूरी करने वाला माना जाता है। |
-| **DR-59 Is Conclusion** | यदि निम्नलिखित सभी सही हैं: “holds” ध्वज लगा हुआ है और “in effect” ध्वज लगा हुआ नहीं है, तो statement “conclusion” माना जाता है। |
-| **DR-60 Holds Unit** | Statement का “holds unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि “holds” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
-| **DR-61 Conclusion Unit** | Statement का “conclusion unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि “conclusion” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
-| **DR-62 Parent Unit** | Statement का “parent unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “holds” ध्वज लगा हुआ है और property “isParentOf” है;<br>2. अन्य सभी स्थितियों में, 0। |
-| **DR-63 Grandparent Unit** | Statement का “grandparent unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “holds” ध्वज लगा हुआ है और property “isGrandparentOf” है;<br>2. अन्य सभी स्थितियों में, 0। |
-| **DR-64 Place Unit** | Statement का “place unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “holds” ध्वज लगा हुआ है और property “attends” है;<br>2. अन्य सभी स्थितियों में, 0। |
-| **DR-65 First Fired Order Key** | statement का “first fired order key” statement के उन “firings” पर न्यूनतम “order key”, जो “fired unit” हैं है। |
-| **DR-66 Count of Chosen Firings** | statement का “count of chosen firings” statement से संबंधित “firings” पर कुल “chosen unit” है। |
-| **DR-67 Subject Node Key** | statement का “subject node key” उसके “subject” के समान है। |
-| **DR-68 Object Node Key** | Statement का “object node key” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. “literal|”, उसके बाद object value, उसके बाद “|”, उसके बाद property datatype, यदि object thing खाली है;<br>2. अन्य सभी स्थितियों में, object thing। |
-| **DR-69 Subject Node Kind** | statement का “subject node kind” — लिंक किए गए “subject” से लिया जाता है। |
-| **DR-70 Object Thing Node Kind** | statement का “object thing node kind” — लिंक किए गए “object thing” से लिया जाता है। |
-| **DR-71 Object Node Kind** | Statement का “object node kind” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. “value”, यदि object thing खाली है;<br>2. अन्य सभी स्थितियों में, object thing node kind। |
-| **DR-72 Object Value Node Label** | statement का “object value node label” — लिंक किए गए “property” से लिया जाता है। |
-| **DR-73 Count of Violations As First** | statement का “count of violations as first” statement से संबंधित “disjoint checks” पर कुल “violation unit” है। |
-| **DR-74 Count of Violations As Second** | statement का “count of violations as second” statement से संबंधित “disjoint checks” पर कुल “violation unit” है। |
-| **DR-75 Is in Contradiction** | यदि निम्नलिखित में से कम से कम एक सही है: count of violations as first 0 से अधिक है या count of violations as second 0 से अधिक है, तो statement “in contradiction” माना जाता है। |
-| **DR-76 Rule Enabled** | firing का “rule enabled” तब सत्य होता है, जब लिंक किए गए “rule” का “enabled” है। |
-| **DR-77 Kind Wording** | firing का “kind wording” — लिंक किए गए “kind” से लिया जाता है। |
-| **DR-78 Kind Sort Order** | firing का “kind sort order” — लिंक किए गए “kind” से लिया जाता है। |
-| **DR-79 Target Name** | firing का “target name” — लिंक किए गए “target” से लिया जाता है। |
-| **DR-80 Target Subject Label** | firing का “target subject label” — लिंक किए गए “target” से लिया जाता है। |
-| **DR-81 Target Property Label** | firing का “target property label” — लिंक किए गए “target” से लिया जाता है। |
-| **DR-82 Target Object Text** | firing का “target object text” — लिंक किए गए “target” से लिया जाता है। |
-| **DR-83 Target is Conclusion** | firing का “target is conclusion” तब सत्य होता है, जब लिंक किए गए “target” का “conclusion” है। |
-| **DR-84 Target Subject Node Key** | firing का “target subject node key” — लिंक किए गए “target” से लिया जाता है। |
-| **DR-85 Target Object Node Key** | firing का “target object node key” — लिंक किए गए “target” से लिया जाता है। |
-| **DR-86 Target First Fired Order Key** | firing का “target first fired order key” — लिंक किए गए “target” से लिया जाता है। |
-| **DR-87 First Words** | firing का “first words” — लिंक किए गए “first” से लिया जाता है। |
-| **DR-88 Second Words** | firing का “second words” — लिंक किए गए “second” से लिया जाता है। |
-| **DR-89 First is in Effect** | firing का “first is in effect” तब सत्य होता है, जब लिंक किए गए “first” का “in effect” है। |
-| **DR-90 First Holds Before Chain** | firing का “first holds before chain” तब सत्य होता है, जब लिंक किए गए “first” का “holds before chain” है। |
-| **DR-91 Second Holds Before Chain** | firing का “second holds before chain” तब सत्य होता है, जब लिंक किए गए “second” का “holds before chain” है। |
-| **DR-92 First Holds Before Typing** | firing का “first holds before typing” तब सत्य होता है, जब लिंक किए गए “first” का “holds before typing” है। |
-| **DR-93 First Property** | firing का “first property” — लिंक किए गए “first” से लिया जाता है। |
-| **DR-94 First Property Domain Class** | firing का “first property domain class” — लिंक किए गए “first” से लिया जाता है। |
-| **DR-95 First Property Range Class** | firing का “first property range class” — लिंक किए गए “first” से लिया जाता है। |
-| **DR-96 First Sort Order** | firing का “first sort order” — लिंक किए गए “first” से लिया जाता है। |
-| **DR-97 Second Sort Order** | firing का “second sort order” — लिंक किए गए “second” से लिया जाता है। |
-| **DR-98 Inverse Fired Unit** | Firing का “inverse fired unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “rule enabled” ध्वज लगा हुआ है, kind “inverse” है और “first is in effect” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
-| **DR-99 Symmetric Fired Unit** | Firing का “symmetric fired unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “rule enabled” ध्वज लगा हुआ है, kind “symmetric” है और “first is in effect” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
-| **DR-100 Chain Fired Unit** | Firing का “chain fired unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “rule enabled” ध्वज लगा हुआ है, kind “chain” है, “first holds before chain” ध्वज लगा हुआ है और “second holds before chain” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
-| **DR-101 Type Fired Unit** | Firing का “type fired unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “rule enabled” ध्वज लगा हुआ है, निम्नलिखित में से कम से कम एक सही है: kind “domain” है या kind “range” है और “first holds before typing” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
-| **DR-102 Fired Unit** | firing का “fired unit” inverse fired unit जोड़ symmetric fired unit जोड़ chain fired unit जोड़ type fired unit के रूप में गणना किया जाता है। |
-| **DR-103 Order Key** | firing का “order key” first sort order गुणा 100000 जोड़ kind sort order गुणा 1000 जोड़ 0, यदि second खाली है; अन्य सभी स्थितियों में second sort order के रूप में गणना किया जाता है। |
-| **DR-104 Is Chosen** | यदि निम्नलिखित सभी सही हैं: fired unit 1 है, “target is conclusion” ध्वज लगा हुआ है और order key target first fired order key है, तो firing “chosen” माना जाता है। |
-| **DR-105 Chosen Unit** | Firing का “chosen unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि “chosen” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
-| **DR-106 Card Text** | Firing का “card text” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. “Worked out by the ”, उसके बाद kind wording, उसके बाद “ from “”, उसके बाद first words, उसके बाद “””, उसके बाद “ and “”, उसके बाद second words, उसके बाद “””, यदि kind “chain” है; अन्य सभी स्थितियों में “ and “”, उसके बाद first property, उसके बाद “ has domain ”, उसके बाद first property domain class, उसके बाद “””, यदि kind “domain” है; अन्य सभी स्थितियों में “ and “”, उसके बाद first property, उसके बाद “ has range ”, उसके बाद first property range class, उसके बाद “””, उसके बाद एक बिंदु, यदि “chosen” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, एक खाली स्ट्रिंग। ⚠︎ यांत्रिक <!-- rulespeak:reword --> |
-| **DR-107 Name** | firing का “name” उसके “firing ID” के समान है। |
-| **DR-108 Rule Enabled** | disjoint check का “rule enabled” तब सत्य होता है, जब लिंक किए गए “rule” का “enabled” है। |
-| **DR-109 First Holds** | disjoint check का “first holds” तब सत्य होता है, जब लिंक किए गए “first” का “holds” है। |
-| **DR-110 Second Holds** | disjoint check का “second holds” तब सत्य होता है, जब लिंक किए गए “second” का “holds” है। |
-| **DR-111 Subject Label** | disjoint check का “subject label” — लिंक किए गए “first” से लिया जाता है। |
-| **DR-112 Object Label** | disjoint check का “object label” — लिंक किए गए “first” से लिया जाता है। |
-| **DR-113 Violation Unit** | Disjoint check का “violation unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “rule enabled” ध्वज लगा हुआ है, “first holds” ध्वज लगा हुआ है और “second holds” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
-| **DR-114 Alarm Text** | Disjoint check का “alarm text” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. “Contradiction found. ”, उसके बाद subject label, उसके बाद “ is recorded as both parent and spouse of ”, उसके बाद object label, उसके बाद “. Check those facts and the selected disjoint rule.”, यदि violation unit 1 है;<br>2. अन्य सभी स्थितियों में, एक खाली स्ट्रिंग। |
-| **DR-115 Name** | disjoint check का “name” उसके “disjoint check ID” के समान है। |
-| **DR-116 Name** | scenario का “name” उसके “label” के समान है। |
-| **DR-117 Graph Has Facts to Add** | scenario का “graph has facts to add” तब सत्य होता है, जब लिंक किए गए “graph” का “facts to add” रखता है। |
-| **DR-118 Is Available** | यदि निम्नलिखित में से कम से कम एक सही है: fact baseline “next” नहीं है या “graph has facts to add” ध्वज लगा हुआ है, तो scenario “available” माना जाता है। |
-| **DR-119 Name** | scenario fact change का “name” उसके “scenario fact change ID” के समान है। |
-| **DR-120 Name** | scenario rule setting का “name” उसके “scenario rule setting ID” के समान है। |
-| **DR-121 Name** | node layout का “name” उसके “node layout ID” के समान है। |
-| **DR-122 Name** | layout slot का “name” उसके “layout slot ID” के समान है। |
-| **DR-123 Name** | page text का “name” उसके “page text ID” के समान है। |
+| **DR-14 Max Sort Order** | graph का “max sort order” graph से संबंधित “statements” पर अधिकतम “sort order” है। |
+| **DR-15 Next Candidate Sort Order** | graph का “next candidate sort order” max sort order जोड़ 1 के रूप में गणना किया जाता है। |
+| **DR-16 Name** | rule का “name” उसके “label” के समान है। |
+| **DR-17 Count of Firings** | rule का “count of firings” rule से संबंधित “firings” पर कुल “fired unit” है। |
+| **DR-18 Name** | firing kind का “name” उसके “wording” के समान है। |
+| **DR-19 Rule Enabled** | firing kind का “rule enabled” तब सत्य होता है, जब लिंक किए गए “rule” का “enabled” है। |
+| **DR-20 Portrait Name** | thing का “portrait name” लिंक किए गए “portrait” का “display name” है। |
+| **DR-21 Portrait Page** | thing का “portrait page” — लिंक किए गए “portrait” से लिया जाता है। |
+| **DR-22 Portrait Image** | thing का “portrait image” — लिंक किए गए “portrait” से लिया जाता है। |
+| **DR-23 Portrait Crop** | thing का “portrait crop” — लिंक किए गए “portrait” से लिया जाता है। |
+| **DR-24 Portrait Width** | thing का “portrait width” — लिंक किए गए “portrait” से लिया जाता है। |
+| **DR-25 Portrait Height** | thing का “portrait height” — लिंक किए गए “portrait” से लिया जाता है। |
+| **DR-26 Name** | thing का “name” उसके “label” के समान है। |
+| **DR-27 Node Key** | thing का “node key” उसके “thing ID” के समान है। |
+| **DR-28 Count of Children** | thing का “count of children” thing से संबंधित “statements” पर कुल “parent unit” है। |
+| **DR-29 Count of Grandchildren** | thing का “count of grandchildren” thing से संबंधित “statements” पर कुल “grandparent unit” है। |
+| **DR-30 Count As Place** | thing का “count as place” thing से संबंधित “statements” पर कुल “place unit” है। |
+| **DR-31 Count As Subject** | thing का “count as subject” thing से संबंधित “statements” पर कुल “holds unit” है। |
+| **DR-32 Count As Object** | thing का “count as object” thing से संबंधित “statements” पर कुल “holds unit” है। |
+| **DR-33 Is in Graph** | यदि निम्नलिखित में से कम से कम एक सही है: count as subject 0 से अधिक है या count as object 0 से अधिक है, तो thing “in graph” माना जाता है। |
+| **DR-34 Node Kind** | Thing का “node kind” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. एक खाली स्ट्रिंग, यदि kind खाली है;<br>2. “class”, यदि kind “class” है;<br>3. “place”, यदि count as place 0 से अधिक है;<br>4. अन्य सभी स्थितियों में, “person”। |
+| **DR-35 Name** | portrait का “name” उसके “display name” के समान है। |
+| **DR-36 Name** | portrait aliase का “name” उसके “portrait alias ID” के समान है। |
+| **DR-37 Name** | property का “name” उसके “label” के समान है। |
+| **DR-38 Name** | property axiom का “name” उसके “property axiom ID” के समान है। |
+| **DR-39 Subject Label** | statement का “subject label” — लिंक किए गए “subject” से लिया जाता है। |
+| **DR-40 Property Label** | statement का “property label” — लिंक किए गए “property” से लिया जाता है। |
+| **DR-41 Object Label** | statement का “object label” — लिंक किए गए “object thing” से लिया जाता है। |
+| **DR-42 Property Datatype** | statement का “property datatype” — लिंक किए गए “property” से लिया जाता है। |
+| **DR-43 Property Has One Current Value** | statement का “property has one current value” तब सत्य होता है, जब लिंक किए गए “property” का “one current value” रखता है। |
+| **DR-44 Property Domain Class** | statement का “property domain class” — लिंक किए गए “property” से लिया जाता है। |
+| **DR-45 Property Range Class** | statement का “property range class” — लिंक किए गए “property” से लिया जाता है। |
+| **DR-46 Literal Quote** | statement का “literal quote” — लिंक किए गए “graph” से लिया जाता है। |
+| **DR-47 Literal Type Marker** | statement का “literal type marker” — लिंक किए गए “graph” से लिया जाता है। |
+| **DR-48 Built in Source Text** | statement का “built in source text” — लिंक किए गए “graph” से लिया जाता है। |
+| **DR-49 User Source Text** | statement का “user source text” — लिंक किए गए “graph” से लिया जाता है। |
+| **DR-50 Next Fact Sort Order** | statement का “next fact sort order” — लिंक किए गए “graph” से लिया जाता है। |
+| **DR-51 Is Literal** | यदि object thing खाली है, तो statement “literal” माना जाता है। |
+| **DR-52 Object Text** | Statement का “object text” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. object value, यदि object thing खाली है;<br>2. अन्य सभी स्थितियों में, object label। |
+| **DR-53 Name** | statement का “name” subject label, उसके बाद एक रिक्त स्थान, उसके बाद property label, उसके बाद एक रिक्त स्थान, उसके बाद object text के रूप में गणना किया जाता है। |
+| **DR-54 Words** | statement का “words” subject label, उसके बाद एक रिक्त स्थान, उसके बाद property label, उसके बाद एक रिक्त स्थान, उसके बाद literal quote, उसके बाद object value, उसके बाद literal quote, उसके बाद literal type marker, उसके बाद property datatype, यदि object thing खाली है; अन्य सभी स्थितियों में object label के रूप में गणना किया जाता है। ⚠︎ यांत्रिक <!-- rulespeak:reword --> |
+| **DR-55 Source** | Statement का “source” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. built in source text, यदि “built in” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, user source text। |
+| **DR-56 Subject Property Key** | statement का “subject property key” subject, उसके बाद “|”, उसके बाद property के रूप में गणना किया जाता है। |
+| **DR-57 Latest Sibling Activation Seq** | statement का “latest sibling activation seq” statement से संबंधित “statements” पर अधिकतम “activation seq” है। |
+| **DR-58 Is in Effect** | यदि निम्नलिखित सभी सही हैं: “stated” ध्वज लगा हुआ है और निम्नलिखित में से कम से कम एक सही है: “property has one current value” ध्वज लगा हुआ नहीं है या activation seq latest sibling activation seq है, तो statement “in effect” माना जाता है। |
+| **DR-59 Listed Unit** | Statement का “listed unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि “listed” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
+| **DR-60 In Effect Unit** | Statement का “in effect unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि “in effect” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
+| **DR-61 Listed Off Unit** | Statement का “listed off unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “listed” ध्वज लगा हुआ है और “in effect” ध्वज लगा हुआ नहीं है;<br>2. अन्य सभी स्थितियों में, 0। |
+| **DR-62 Is Next to Add** | यदि निम्नलिखित सभी सही हैं: listed off unit 1 है और sort order next fact sort order है, तो statement “next to add” माना जाता है। |
+| **DR-63 Count of Inverse Firings** | statement का “count of inverse firings” statement से संबंधित “firings” पर कुल “inverse fired unit” है। |
+| **DR-64 Count of Symmetric Firings** | statement का “count of symmetric firings” statement से संबंधित “firings” पर कुल “symmetric fired unit” है। |
+| **DR-65 Holds Before Chain** | यदि निम्नलिखित में से कम से कम एक सही है: “in effect” ध्वज लगा हुआ है, count of inverse firings 0 से अधिक है या count of symmetric firings 0 से अधिक है, तो statement “before chain” की शर्त पूरी करने वाला माना जाता है। |
+| **DR-66 Count of Chain Firings** | statement का “count of chain firings” statement से संबंधित “firings” पर कुल “chain fired unit” है। |
+| **DR-67 Holds Before Typing** | यदि निम्नलिखित में से कम से कम एक सही है: “holds before chain” ध्वज लगा हुआ है या count of chain firings 0 से अधिक है, तो statement “before typing” की शर्त पूरी करने वाला माना जाता है। |
+| **DR-68 Count of Type Firings** | statement का “count of type firings” statement से संबंधित “firings” पर कुल “type fired unit” है। |
+| **DR-69 Holds** | यदि निम्नलिखित में से कम से कम एक सही है: “holds before typing” ध्वज लगा हुआ है या count of type firings 0 से अधिक है, तो statement “” की शर्त पूरी करने वाला माना जाता है। |
+| **DR-70 Is Conclusion** | यदि निम्नलिखित सभी सही हैं: “holds” ध्वज लगा हुआ है और “in effect” ध्वज लगा हुआ नहीं है, तो statement “conclusion” माना जाता है। |
+| **DR-71 Holds Unit** | Statement का “holds unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि “holds” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
+| **DR-72 Conclusion Unit** | Statement का “conclusion unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि “conclusion” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
+| **DR-73 Parent Unit** | Statement का “parent unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “holds” ध्वज लगा हुआ है और property “isParentOf” है;<br>2. अन्य सभी स्थितियों में, 0। |
+| **DR-74 Grandparent Unit** | Statement का “grandparent unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “holds” ध्वज लगा हुआ है और property “isGrandparentOf” है;<br>2. अन्य सभी स्थितियों में, 0। |
+| **DR-75 Place Unit** | Statement का “place unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “holds” ध्वज लगा हुआ है और property “attends” है;<br>2. अन्य सभी स्थितियों में, 0। |
+| **DR-76 First Pre Chain Order Key** | statement का “first pre chain order key” statement के उन “firings” पर न्यूनतम “pre chain order key”, जो “pre chain fired unit” हैं है। |
+| **DR-77 Snap Position** | Statement का “snap position” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. sort order, यदि “in effect” ध्वज लगा हुआ है;<br>2. 100000 जोड़ first pre chain order key, यदि “holds before chain” ध्वज लगा हुआ है;<br>3. अन्य सभी स्थितियों में, 0। |
+| **DR-78 First Fired Order Key** | statement का “first fired order key” statement के उन “firings” पर न्यूनतम “order key”, जो “fired unit” हैं है। |
+| **DR-79 Count of Chosen Firings** | statement का “count of chosen firings” statement से संबंधित “firings” पर कुल “chosen unit” है। |
+| **DR-80 Subject Node Key** | statement का “subject node key” उसके “subject” के समान है। |
+| **DR-81 Object Node Key** | Statement का “object node key” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. “literal|”, उसके बाद object value, उसके बाद “|”, उसके बाद property datatype, यदि object thing खाली है;<br>2. अन्य सभी स्थितियों में, object thing। |
+| **DR-82 Subject Node Kind** | statement का “subject node kind” — लिंक किए गए “subject” से लिया जाता है। |
+| **DR-83 Object Thing Node Kind** | statement का “object thing node kind” — लिंक किए गए “object thing” से लिया जाता है। |
+| **DR-84 Object Node Kind** | Statement का “object node kind” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. “value”, यदि object thing खाली है;<br>2. अन्य सभी स्थितियों में, object thing node kind। |
+| **DR-85 Object Value Node Label** | statement का “object value node label” — लिंक किए गए “property” से लिया जाता है। |
+| **DR-86 Count of Violations As First** | statement का “count of violations as first” statement से संबंधित “disjoint checks” पर कुल “violation unit” है। |
+| **DR-87 Count of Violations As Second** | statement का “count of violations as second” statement से संबंधित “disjoint checks” पर कुल “violation unit” है। |
+| **DR-88 Is in Contradiction** | यदि निम्नलिखित में से कम से कम एक सही है: count of violations as first 0 से अधिक है या count of violations as second 0 से अधिक है, तो statement “in contradiction” माना जाता है। |
+| **DR-89 Rule Enabled** | firing का “rule enabled” तब सत्य होता है, जब लिंक किए गए “rule” का “enabled” है। |
+| **DR-90 Kind Wording** | firing का “kind wording” — लिंक किए गए “kind” से लिया जाता है। |
+| **DR-91 Kind Sort Order** | firing का “kind sort order” — लिंक किए गए “kind” से लिया जाता है। |
+| **DR-92 Target Name** | firing का “target name” — लिंक किए गए “target” से लिया जाता है। |
+| **DR-93 Target Subject Label** | firing का “target subject label” — लिंक किए गए “target” से लिया जाता है। |
+| **DR-94 Target Property Label** | firing का “target property label” — लिंक किए गए “target” से लिया जाता है। |
+| **DR-95 Target Object Text** | firing का “target object text” — लिंक किए गए “target” से लिया जाता है। |
+| **DR-96 Target is Conclusion** | firing का “target is conclusion” तब सत्य होता है, जब लिंक किए गए “target” का “conclusion” है। |
+| **DR-97 Target Subject Node Key** | firing का “target subject node key” — लिंक किए गए “target” से लिया जाता है। |
+| **DR-98 Target Object Node Key** | firing का “target object node key” — लिंक किए गए “target” से लिया जाता है। |
+| **DR-99 Target First Fired Order Key** | firing का “target first fired order key” — लिंक किए गए “target” से लिया जाता है। |
+| **DR-100 First Words** | firing का “first words” — लिंक किए गए “first” से लिया जाता है। |
+| **DR-101 Second Words** | firing का “second words” — लिंक किए गए “second” से लिया जाता है। |
+| **DR-102 First is in Effect** | firing का “first is in effect” तब सत्य होता है, जब लिंक किए गए “first” का “in effect” है। |
+| **DR-103 First Holds Before Chain** | firing का “first holds before chain” तब सत्य होता है, जब लिंक किए गए “first” का “holds before chain” है। |
+| **DR-104 Second Holds Before Chain** | firing का “second holds before chain” तब सत्य होता है, जब लिंक किए गए “second” का “holds before chain” है। |
+| **DR-105 First Holds Before Typing** | firing का “first holds before typing” तब सत्य होता है, जब लिंक किए गए “first” का “holds before typing” है। |
+| **DR-106 First Property** | firing का “first property” — लिंक किए गए “first” से लिया जाता है। |
+| **DR-107 First Property Domain Class** | firing का “first property domain class” — लिंक किए गए “first” से लिया जाता है। |
+| **DR-108 First Property Range Class** | firing का “first property range class” — लिंक किए गए “first” से लिया जाता है। |
+| **DR-109 First Sort Order** | firing का “first sort order” — लिंक किए गए “first” से लिया जाता है। |
+| **DR-110 Second is in Effect** | firing का “second is in effect” तब सत्य होता है, जब लिंक किए गए “second” का “in effect” है। |
+| **DR-111 First Snap Position** | firing का “first snap position” — लिंक किए गए “first” से लिया जाता है। |
+| **DR-112 Second Snap Position** | firing का “second snap position” — लिंक किए गए “second” से लिया जाता है। |
+| **DR-113 Inverse Fired Unit** | Firing का “inverse fired unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “rule enabled” ध्वज लगा हुआ है, kind “inverse” है और “first is in effect” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
+| **DR-114 Symmetric Fired Unit** | Firing का “symmetric fired unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “rule enabled” ध्वज लगा हुआ है, kind “symmetric” है और “first is in effect” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
+| **DR-115 Chain Fired Unit** | Firing का “chain fired unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “rule enabled” ध्वज लगा हुआ है, kind “chain” है, “first holds before chain” ध्वज लगा हुआ है और “second holds before chain” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
+| **DR-116 Type Fired Unit** | Firing का “type fired unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “rule enabled” ध्वज लगा हुआ है, निम्नलिखित में से कम से कम एक सही है: kind “domain” है या kind “range” है और “first holds before typing” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
+| **DR-117 Fired Unit** | firing का “fired unit” inverse fired unit जोड़ symmetric fired unit जोड़ chain fired unit जोड़ type fired unit के रूप में गणना किया जाता है। |
+| **DR-118 Pre Chain Fired Unit** | firing का “pre chain fired unit” inverse fired unit जोड़ symmetric fired unit के रूप में गणना किया जाता है। |
+| **DR-119 Pre Chain Order Key** | firing का “pre chain order key” first sort order गुणा 10 जोड़ kind sort order के रूप में गणना किया जाता है। |
+| **DR-120 Round** | Firing का “round” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 2, यदि निम्नलिखित सभी सही हैं: kind “chain” है और ऐसा नहीं है कि निम्नलिखित सभी सही हैं: “first is in effect” ध्वज लगा हुआ है और “second is in effect” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 1। |
+| **DR-121 Order Key** | firing का “order key” round गुणा 1000000000000000 जोड़ first snap position गुणा 100000000 जोड़ kind sort order गुणा 10000000 जोड़ 0, यदि second खाली है; अन्य सभी स्थितियों में second snap position के रूप में गणना किया जाता है। |
+| **DR-122 Is Chosen** | यदि निम्नलिखित सभी सही हैं: fired unit 1 है, “target is conclusion” ध्वज लगा हुआ है और order key target first fired order key है, तो firing “chosen” माना जाता है। |
+| **DR-123 Chosen Unit** | Firing का “chosen unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि “chosen” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
+| **DR-124 Card Text** | Firing का “card text” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. “Worked out by the ”, उसके बाद kind wording, उसके बाद “ from “”, उसके बाद first words, उसके बाद “””, उसके बाद “ and “”, उसके बाद second words, उसके बाद “””, यदि kind “chain” है; अन्य सभी स्थितियों में “ and “”, उसके बाद first property, उसके बाद “ has domain ”, उसके बाद first property domain class, उसके बाद “””, यदि kind “domain” है; अन्य सभी स्थितियों में “ and “”, उसके बाद first property, उसके बाद “ has range ”, उसके बाद first property range class, उसके बाद “””, उसके बाद एक बिंदु, यदि “chosen” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, एक खाली स्ट्रिंग। ⚠︎ यांत्रिक <!-- rulespeak:reword --> |
+| **DR-125 Name** | firing का “name” उसके “firing ID” के समान है। |
+| **DR-126 Rule Enabled** | disjoint check का “rule enabled” तब सत्य होता है, जब लिंक किए गए “rule” का “enabled” है। |
+| **DR-127 First Holds** | disjoint check का “first holds” तब सत्य होता है, जब लिंक किए गए “first” का “holds” है। |
+| **DR-128 Second Holds** | disjoint check का “second holds” तब सत्य होता है, जब लिंक किए गए “second” का “holds” है। |
+| **DR-129 Subject Label** | disjoint check का “subject label” — लिंक किए गए “first” से लिया जाता है। |
+| **DR-130 Object Label** | disjoint check का “object label” — लिंक किए गए “first” से लिया जाता है। |
+| **DR-131 Violation Unit** | Disjoint check का “violation unit” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. 1, यदि निम्नलिखित सभी सही हैं: “rule enabled” ध्वज लगा हुआ है, “first holds” ध्वज लगा हुआ है और “second holds” ध्वज लगा हुआ है;<br>2. अन्य सभी स्थितियों में, 0। |
+| **DR-132 Alarm Text** | Disjoint check का “alarm text” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:<br>1. “Contradiction found. ”, उसके बाद subject label, उसके बाद “ is recorded as both parent and spouse of ”, उसके बाद object label, उसके बाद “. Check those facts and the selected disjoint rule.”, यदि violation unit 1 है;<br>2. अन्य सभी स्थितियों में, एक खाली स्ट्रिंग। |
+| **DR-133 Name** | disjoint check का “name” उसके “disjoint check ID” के समान है। |
+| **DR-134 Name** | scenario का “name” उसके “label” के समान है। |
+| **DR-135 Graph Has Facts to Add** | scenario का “graph has facts to add” तब सत्य होता है, जब लिंक किए गए “graph” का “facts to add” रखता है। |
+| **DR-136 Is Available** | यदि निम्नलिखित में से कम से कम एक सही है: fact baseline “next” नहीं है या “graph has facts to add” ध्वज लगा हुआ है, तो scenario “available” माना जाता है। |
+| **DR-137 Name** | scenario fact change का “name” उसके “scenario fact change ID” के समान है। |
+| **DR-138 Name** | scenario rule setting का “name” उसके “scenario rule setting ID” के समान है। |
+| **DR-139 Name** | node layout का “name” उसके “node layout ID” के समान है। |
+| **DR-140 Name** | layout slot का “name” उसके “layout slot ID” के समान है। |
+| **DR-141 Name** | page text का “name” उसके “page text ID” के समान है। |
+| **DR-142 Name** | engine का “name” उसके “label” के समान है। |
+| **DR-143 Name** | rulebook tool का “name” उसके “label” के समान है। |
 
 ## 5 स्कीमा तक अनुरेखणीयता
 
@@ -671,10 +819,18 @@ _व्यंजक स्तंभ दस्तावेज़ीकरण स�
 | **Graphs.NextActivationSeq** | सूत्र | `MaxActivationSeq + 1` |
 | **Graphs.MaxListedSortOrder** | समुच्चय | `Max(Statements.SortOrder via Graph)` |
 | **Graphs.NextListedSortOrder** | सूत्र | `MaxListedSortOrder + 1` |
+| **Graphs.MaxSortOrder** | समुच्चय | `Max(Statements.SortOrder via Graph)` |
+| **Graphs.NextCandidateSortOrder** | सूत्र | `MaxSortOrder + 1` |
 | **Rules.Name** | सूत्र | `Label` |
 | **Rules.CountOfFirings** | समुच्चय | `Sum(Firings.FiredUnit via Rule)` |
 | **FiringKinds.Name** | सूत्र | `Wording` |
 | **FiringKinds.RuleEnabled** | संदर्भ-मान | `Lookup(Rules.IsEnabled via Rule)` |
+| **Things.PortraitName** | संदर्भ-मान | `Lookup(Portraits.DisplayName via Portrait)` |
+| **Things.PortraitPage** | संदर्भ-मान | `Lookup(Portraits.Page via Portrait)` |
+| **Things.PortraitImage** | संदर्भ-मान | `Lookup(Portraits.Image via Portrait)` |
+| **Things.PortraitCrop** | संदर्भ-मान | `Lookup(Portraits.Crop via Portrait)` |
+| **Things.PortraitWidth** | संदर्भ-मान | `Lookup(Portraits.Width via Portrait)` |
+| **Things.PortraitHeight** | संदर्भ-मान | `Lookup(Portraits.Height via Portrait)` |
 | **Things.Name** | सूत्र | `Label` |
 | **Things.NodeKey** | सूत्र | `ThingId` |
 | **Things.CountOfChildren** | समुच्चय | `Sum(Statements.ParentUnit via Subject)` |
@@ -683,8 +839,11 @@ _व्यंजक स्तंभ दस्तावेज़ीकरण स�
 | **Things.CountAsSubject** | समुच्चय | `Sum(Statements.HoldsUnit via Subject)` |
 | **Things.CountAsObject** | समुच्चय | `Sum(Statements.HoldsUnit via ObjectThing)` |
 | **Things.IsInGraph** | सूत्र | `Or(CountAsSubject > 0, CountAsObject > 0)` |
-| **Things.NodeKind** | सूत्र | `If(Kind = "class", "class", If(CountAsPlace > 0, "place", "person"))` |
+| **Things.NodeKind** | सूत्र | `If(Kind = "", "", If(Kind = "class", "class", If(CountAsPlace > 0, "place", "person")))` |
+| **Portraits.Name** | सूत्र | `DisplayName` |
+| **PortraitAliases.Name** | सूत्र | `PortraitAliasId` |
 | **Properties.Name** | सूत्र | `Label` |
+| **PropertyAxioms.Name** | सूत्र | `PropertyAxiomId` |
 | **Statements.SubjectLabel** | संदर्भ-मान | `Lookup(Things.Label via Subject)` |
 | **Statements.PropertyLabel** | संदर्भ-मान | `Lookup(Properties.Label via Property)` |
 | **Statements.ObjectLabel** | संदर्भ-मान | `Lookup(Things.Label via ObjectThing)` |
@@ -722,6 +881,8 @@ _व्यंजक स्तंभ दस्तावेज़ीकरण स�
 | **Statements.ParentUnit** | सूत्र | `If(And(Holds, Property = "isParentOf"), 1, 0)` |
 | **Statements.GrandparentUnit** | सूत्र | `If(And(Holds, Property = "isGrandparentOf"), 1, 0)` |
 | **Statements.PlaceUnit** | सूत्र | `If(And(Holds, Property = "attends"), 1, 0)` |
+| **Statements.FirstPreChainOrderKey** | समुच्चय | `Min(Firings.PreChainOrderKey via Target)` |
+| **Statements.SnapPosition** | सूत्र | `If(IsInEffect, SortOrder, If(HoldsBeforeChain, 100000 + FirstPreChainOrderKey, 0))` |
 | **Statements.FirstFiredOrderKey** | समुच्चय | `Min(Firings.OrderKey via Target)` |
 | **Statements.CountOfChosenFirings** | समुच्चय | `Sum(Firings.ChosenUnit via Target)` |
 | **Statements.SubjectNodeKey** | सूत्र | `Subject` |
@@ -754,13 +915,18 @@ _व्यंजक स्तंभ दस्तावेज़ीकरण स�
 | **Firings.FirstPropertyDomainClass** | संदर्भ-मान | `Lookup(Statements.PropertyDomainClass via First)` |
 | **Firings.FirstPropertyRangeClass** | संदर्भ-मान | `Lookup(Statements.PropertyRangeClass via First)` |
 | **Firings.FirstSortOrder** | संदर्भ-मान | `Lookup(Statements.SortOrder via First)` |
-| **Firings.SecondSortOrder** | संदर्भ-मान | `Lookup(Statements.SortOrder via Second)` |
+| **Firings.SecondIsInEffect** | संदर्भ-मान | `Lookup(Statements.IsInEffect via Second)` |
+| **Firings.FirstSnapPosition** | संदर्भ-मान | `Lookup(Statements.SnapPosition via First)` |
+| **Firings.SecondSnapPosition** | संदर्भ-मान | `Lookup(Statements.SnapPosition via Second)` |
 | **Firings.InverseFiredUnit** | सूत्र | `If(And(RuleEnabled, Kind = "inverse", FirstIsInEffect), 1, 0)` |
 | **Firings.SymmetricFiredUnit** | सूत्र | `If(And(RuleEnabled, Kind = "symmetric", FirstIsInEffect), 1, 0)` |
 | **Firings.ChainFiredUnit** | सूत्र | `If(And(RuleEnabled, Kind = "chain", FirstHoldsBeforeChain, SecondHoldsBeforeChain), 1, 0)` |
 | **Firings.TypeFiredUnit** | सूत्र | `If(And(RuleEnabled, Or(Kind = "domain", Kind = "range"), FirstHoldsBeforeTyping), 1, 0)` |
 | **Firings.FiredUnit** | सूत्र | `InverseFiredUnit + SymmetricFiredUnit + ChainFiredUnit + TypeFiredUnit` |
-| **Firings.OrderKey** | सूत्र | `FirstSortOrder * 100000 + KindSortOrder * 1000 + If(Second = "", 0, SecondSortOrder)` |
+| **Firings.PreChainFiredUnit** | सूत्र | `InverseFiredUnit + SymmetricFiredUnit` |
+| **Firings.PreChainOrderKey** | सूत्र | `FirstSortOrder * 10 + KindSortOrder` |
+| **Firings.Round** | सूत्र | `If(And(Kind = "chain", Not(And(FirstIsInEffect, SecondIsInEffect))), 2, 1)` |
+| **Firings.OrderKey** | सूत्र | `Round * 1000000000000000 + FirstSnapPosition * 100000000 + KindSortOrder * 10000000 + If(Second = "", 0, SecondSnapPosition)` |
 | **Firings.IsChosen** | सूत्र | `And(FiredUnit = 1, TargetIsConclusion, OrderKey = TargetFirstFiredOrderKey)` |
 | **Firings.ChosenUnit** | सूत्र | `If(IsChosen, 1, 0)` |
 | **Firings.CardText** | सूत्र | `If(IsChosen, Concat("Worked out by the ", KindWording, " from “", FirstWords, "”", If(Kind = "chain", Concat(" and “", SecondWords, "”"), If(Kind = "domain", Concat(" and “", FirstProperty, " has domain ", FirstPropertyDomainClass, "”"), If(Kind = "range", Concat(" and “", FirstProperty, " has range ", FirstPropertyRangeClass, "”"), ""))), "."), "")` |
@@ -781,6 +947,8 @@ _व्यंजक स्तंभ दस्तावेज़ीकरण स�
 | **NodeLayouts.Name** | सूत्र | `NodeLayoutId` |
 | **LayoutSlots.Name** | सूत्र | `LayoutSlotId` |
 | **PageTexts.Name** | सूत्र | `PageTextId` |
+| **Engines.Name** | सूत्र | `Label` |
+| **RulebookTools.Name** | सूत्र | `Label` |
 
 ---
 

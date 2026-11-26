@@ -1,7 +1,7 @@
 {
   "ShowHidden": false,
   "ShowAllFiles": false,
-  "CurrentPath": "",
+  "CurrentPath": "/effortless-rulebook",
   "SSoTmeProjectFiles": null,
   "SSoTmeProjectId": "06cb7b60-d048-4ad0-864b-ab86fc599fa9",
   "Name": "Talisman's South Park Ontology Explainer, with a rulebook underneath",
@@ -35,6 +35,16 @@
   "ProjectTranspilers": [
     {
       "IsSSoTTranspiler": false,
+      "Name": "compile-rulebook",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "compile-rulebook -i talismans-southpark-ontology-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.25.2214",
+      "LastUrl": "https://effortless-compile-rulebook-v2026-11-25-2214-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Bake every calculated, lookup and aggregation value into the hub's own data rows; the conformance harness reads its answer keys from them."
+    },
+    {
+      "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
@@ -42,6 +52,16 @@
       "LastVersionUsed": "v2026.11.17.1626",
       "LastUrl": "https://effortless-rulebook-to-postgres-v2026-11-17-1626-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Postgres schema, vw_* views and seed data from the rulebook."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktotypescript",
+      "RelativePath": "/effortless-typescript",
+      "CommandLine": "rulebook-to-typescript -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.15.1827",
+      "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-11-15-1827-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "TypeScript substrate: the app's TypeScript engine and the conformance harness run it."
     },
     {
       "IsSSoTTranspiler": false,
@@ -56,7 +76,7 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktoxlsx",
-      "RelativePath": "/xlsx",
+      "RelativePath": "/effortless-xlsx",
       "CommandLine": "rulebook-to-xlsx -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.11.15.1835",
@@ -66,12 +86,12 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktoowl",
-      "RelativePath": "/owl",
+      "RelativePath": "/effortless-owl",
       "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.11.25.2217",
       "LastUrl": "https://effortless-rulebook-to-owl-v2026-11-25-2217-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
-      "Description": "OWL ontology, individuals and SHACL rules."
+      "Description": "OWL ontology, individuals and SHACL rules: the app's OWL engine and the conformance harness run them."
     },
     {
       "IsSSoTTranspiler": false,
@@ -95,13 +115,23 @@
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "rulebooktotypescript",
+      "Name": "explainertypescript",
       "RelativePath": "/explainer/rulebook-explainer-dag/typescript",
       "CommandLine": "rulebook-to-typescript -i ../../../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.11.15.1827",
       "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-11-15-1827-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
-      "Description": "TypeScript substrate, written into the explainer's folder so the explainer computes each value's witness in the page."
+      "Description": "A second copy of the TypeScript substrate inside the explainer's folder, where the explainer looks for it to compute witnesses in the page."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "effortlessrulebookeditor",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "effortless-rulebook-editor -i talismans-southpark-ontology-rulebook.json -p rulebookPath=talismans-southpark-ontology-rulebook.json -p dockerfilePath=docker/Dockerfile",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.23.0835",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-11-23-0835-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "The generated rulebook editor: its own Postgres, API and admin UI in a container (./start.sh --editor)."
     },
     {
       "IsSSoTTranspiler": false,

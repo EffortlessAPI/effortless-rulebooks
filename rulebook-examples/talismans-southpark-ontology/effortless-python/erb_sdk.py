@@ -111,6 +111,14 @@ def calc_graphs_next_listed_sort_order(max_listed_sort_order):
     """
     return _erb.erb_integer(_erb.erb_add(max_listed_sort_order, 1))
 
+def calc_graphs_next_candidate_sort_order(max_sort_order):
+    """
+    Order 2. The sort order a new candidate fact, or a fact removed from the list, takes.
+    
+    Formula: ={{MaxSortOrder}} + 1
+    """
+    return _erb.erb_integer(_erb.erb_add(max_sort_order, 1))
+
 
 def compute_graphs_fields(record: dict) -> dict:
     """
@@ -151,6 +159,11 @@ def compute_graphs_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['next_listed_sort_order'] = None
         result.setdefault('_erb_errors', {})['next_listed_sort_order'] = str(_field_exc)
+    try:
+        result['next_candidate_sort_order'] = calc_graphs_next_candidate_sort_order(result.get('max_sort_order'))
+    except Exception as _field_exc:
+        result['next_candidate_sort_order'] = None
+        result.setdefault('_erb_errors', {})['next_candidate_sort_order'] = str(_field_exc)
 
     # Convert empty strings to None for string fields
     for key in ['name', 'conclusions_message']:
@@ -199,7 +212,7 @@ def compute_rules_fields(record: dict) -> dict:
 
 # =============================================================================
 # FIRINGKINDS
-# The ways a rule can apply. Domain and range belong to one rule but are worded apart.
+# The ways a rule can apply. Domain and range belong to one rule but are worded apart; 'disjoint' names the rule the disjointness checks answer to.
 # =============================================================================
 
 # Level 1
@@ -217,7 +230,7 @@ def compute_firing_kinds_fields(record: dict) -> dict:
     """
     Compute all calculated fields for FiringKinds.
     
-    The ways a rule can apply. Domain and range belong to one rule but are worded apart.
+    The ways a rule can apply. Domain and range belong to one rule but are worded apart; 'disjoint' names the rule the disjointness checks answer to.
     """
     result = dict(record)
 
@@ -270,9 +283,9 @@ def calc_things_node_kind(kind, count_as_place):
     """
     Order 18. How the graph draws the thing: a class, a place someone attends, or a person.
     
-    Formula: =IF({{Kind}} = "class", "class", IF({{CountAsPlace}} > 0, "place", "person"))
+    Formula: =IF({{Kind}} = "", "", IF({{Kind}} = "class", "class", IF({{CountAsPlace}} > 0, "place", "person")))
     """
-    return ('class' if _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(kind), 'class')) else ('place' if _erb.erb_bool3(_erb.erb_cmp(count_as_place, '>', 0)) else 'person'))
+    return ('' if _erb.erb_bool3((kind is None or kind == "")) else ('class' if _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(kind), 'class')) else ('place' if _erb.erb_bool3(_erb.erb_cmp(count_as_place, '>', 0)) else 'person')))
 
 
 def compute_things_fields(record: dict) -> dict:
@@ -313,8 +326,84 @@ def compute_things_fields(record: dict) -> dict:
     return result
 
 # =============================================================================
+# PORTRAITS
+# The page's Fandom portraits, including those for characters a reader may add.
+# =============================================================================
+
+# Level 1
+
+def calc_portraits_name(display_name):
+    """
+    Order 1. The portrait's name.
+    
+    Formula: ={{DisplayName}}
+    """
+    return display_name
+
+
+def compute_portraits_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for Portraits.
+    
+    The page's Fandom portraits, including those for characters a reader may add.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_portraits_name(result.get('display_name'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# PORTRAITALIASES
+# The names a portrait answers to. A new thing whose name matches an alias gets that portrait.
+# =============================================================================
+
+# Level 1
+
+def calc_portrait_aliases_name(portrait_alias_id):
+    """
+    Order 1. The alias.
+    
+    Formula: ={{PortraitAliasId}}
+    """
+    return portrait_alias_id
+
+
+def compute_portrait_aliases_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for PortraitAliases.
+    
+    The names a portrait answers to. A new thing whose name matches an alias gets that portrait.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_portrait_aliases_name(result.get('portrait_alias_id'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
 # PROPERTIES
-# The ten properties and the wiring every rule reads.
+# The ten properties, with what the symmetric, domain and range rules read. Axioms that relate one property to another (inverse, chain, disjoint) are rows of PropertyAxioms.
 # =============================================================================
 
 # Level 1
@@ -332,13 +421,51 @@ def compute_properties_fields(record: dict) -> dict:
     """
     Compute all calculated fields for Properties.
     
-    The ten properties and the wiring every rule reads.
+    The ten properties, with what the symmetric, domain and range rules read. Axioms that relate one property to another (inverse, chain, disjoint) are rows of PropertyAxioms.
     """
     result = dict(record)
 
     # Level 1 calculations
     try:
         result['name'] = calc_properties_name(result.get('label'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# PROPERTYAXIOMS
+# Axioms that relate one property to others, as OWL states them: an inverse, a two-link chain, or a disjoint pair. The candidate generator reads these rows.
+# =============================================================================
+
+# Level 1
+
+def calc_property_axioms_name(property_axiom_id):
+    """
+    Order 1. The axiom's key.
+    
+    Formula: ={{PropertyAxiomId}}
+    """
+    return property_axiom_id
+
+
+def compute_property_axioms_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for PropertyAxioms.
+    
+    Axioms that relate one property to others, as OWL states them: an inverse, a two-link chain, or a disjoint pair. The candidate generator reads these rows.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_property_axioms_name(result.get('property_axiom_id'))
     except Exception as _field_exc:
         result['name'] = None
         result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
@@ -496,6 +623,14 @@ def calc_statements_holds_before_typing(holds_before_chain, count_of_chain_firin
     Formula: =OR({{HoldsBeforeChain}}, {{CountOfChainFirings}} > 0)
     """
     return _erb.erb_or(_erb.erb_bool3(holds_before_chain), _erb.erb_bool3(_erb.erb_cmp(count_of_chain_firings, '>', 0)))
+
+def calc_statements_snap_position(is_in_effect, sort_order, holds_before_chain, first_pre_chain_order_key):
+    """
+    Order 8. Where the page's reasoner meets this fact as a premise: a stated fact at its list position, a fact concluded by the inverse or symmetric rule after every stated fact, in the order it was concluded; 0 for a fact that does not hold yet, so a link to no fact reads the same on every engine.
+    
+    Formula: =IF({{IsInEffect}}, {{SortOrder}}, IF({{HoldsBeforeChain}}, 100000 + {{FirstPreChainOrderKey}}, 0))
+    """
+    return (sort_order if _erb.erb_bool3(is_in_effect) else (_erb.erb_add(100000, first_pre_chain_order_key) if _erb.erb_bool3(holds_before_chain) else 0))
 
 # Level 4
 
@@ -658,6 +793,11 @@ def compute_statements_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['holds_before_typing'] = None
         result.setdefault('_erb_errors', {})['holds_before_typing'] = str(_field_exc)
+    try:
+        result['snap_position'] = calc_statements_snap_position(result.get('is_in_effect'), result.get('sort_order'), result.get('holds_before_chain'), result.get('first_pre_chain_order_key'))
+    except Exception as _field_exc:
+        result['snap_position'] = None
+        result.setdefault('_erb_errors', {})['snap_position'] = str(_field_exc)
 
     # Level 4 calculations
     try:
@@ -746,13 +886,21 @@ def calc_firings_type_fired_unit(rule_enabled, kind, first_holds_before_typing):
     """
     return _erb.erb_integer((1 if _erb.erb_bool3(_erb.erb_and(_erb.erb_bool3(rule_enabled), _erb.erb_bool3(_erb.erb_or(_erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(kind), 'domain')), _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(kind), 'range')))), _erb.erb_bool3(first_holds_before_typing))) else 0))
 
-def calc_firings_order_key(first_sort_order, kind_sort_order, second, second_sort_order):
+def calc_firings_pre_chain_order_key(first_sort_order, kind_sort_order):
     """
-    Order 2. The page reasoner's order: by premise, then rule kind, then second premise.
+    Order 2. For an inverse or symmetric application: its place in the reasoner's first round.
     
-    Formula: =({{FirstSortOrder}} * 100000) + ({{KindSortOrder}} * 1000) + IF({{Second}} = "", 0, {{SecondSortOrder}})
+    Formula: =({{FirstSortOrder}} * 10) + {{KindSortOrder}}
     """
-    return _erb.erb_integer(_erb.erb_add(_erb.erb_add(_erb.erb_mul(first_sort_order, 100000), _erb.erb_mul(kind_sort_order, 1000)), (0 if _erb.erb_bool3((second is None or second == "")) else second_sort_order)))
+    return _erb.erb_add(_erb.erb_mul(first_sort_order, 10), kind_sort_order)
+
+def calc_firings_round(kind, first_is_in_effect, second_is_in_effect):
+    """
+    Order 5. The reasoner's round: 1 when every premise is a stated fact, 2 when the property chain reads a concluded fact.
+    
+    Formula: =IF(AND({{Kind}} = "chain", NOT(AND({{FirstIsInEffect}}, {{SecondIsInEffect}}))), 2, 1)
+    """
+    return _erb.erb_integer((2 if _erb.erb_bool3(_erb.erb_and(_erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(kind), 'chain')), _erb.erb_bool3(_erb.erb_not(_erb.erb_bool3(_erb.erb_and(_erb.erb_bool3(first_is_in_effect), _erb.erb_bool3(second_is_in_effect))))))) else 1))
 
 def calc_firings_name(firing_id):
     """
@@ -771,6 +919,22 @@ def calc_firings_fired_unit(inverse_fired_unit, symmetric_fired_unit, chain_fire
     Formula: ={{InverseFiredUnit}} + {{SymmetricFiredUnit}} + {{ChainFiredUnit}} + {{TypeFiredUnit}}
     """
     return _erb.erb_integer(_erb.erb_add(_erb.erb_add(_erb.erb_add(inverse_fired_unit, symmetric_fired_unit), chain_fired_unit), type_fired_unit))
+
+def calc_firings_pre_chain_fired_unit(inverse_fired_unit, symmetric_fired_unit):
+    """
+    Order 6. 1 when this is an inverse or symmetric application that fires.
+    
+    Formula: ={{InverseFiredUnit}} + {{SymmetricFiredUnit}}
+    """
+    return _erb.erb_integer(_erb.erb_add(inverse_fired_unit, symmetric_fired_unit))
+
+def calc_firings_order_key(round, first_snap_position, kind_sort_order, second, second_snap_position):
+    """
+    Order 10. The page reasoner's order: by round, then premise, then rule kind, then second premise.
+    
+    Formula: =({{Round}} * 1000000000000000) + ({{FirstSnapPosition}} * 100000000) + ({{KindSortOrder}} * 10000000) + IF({{Second}} = "", 0, {{SecondSnapPosition}})
+    """
+    return _erb.erb_add(_erb.erb_add(_erb.erb_add(_erb.erb_mul(round, 1000000000000000), _erb.erb_mul(first_snap_position, 100000000)), _erb.erb_mul(kind_sort_order, 10000000)), (0 if _erb.erb_bool3((second is None or second == "")) else second_snap_position))
 
 # Level 3
 
@@ -831,10 +995,15 @@ def compute_firings_fields(record: dict) -> dict:
         result['type_fired_unit'] = None
         result.setdefault('_erb_errors', {})['type_fired_unit'] = str(_field_exc)
     try:
-        result['order_key'] = calc_firings_order_key(result.get('first_sort_order'), result.get('kind_sort_order'), result.get('second'), result.get('second_sort_order'))
+        result['pre_chain_order_key'] = calc_firings_pre_chain_order_key(result.get('first_sort_order'), result.get('kind_sort_order'))
     except Exception as _field_exc:
-        result['order_key'] = None
-        result.setdefault('_erb_errors', {})['order_key'] = str(_field_exc)
+        result['pre_chain_order_key'] = None
+        result.setdefault('_erb_errors', {})['pre_chain_order_key'] = str(_field_exc)
+    try:
+        result['round'] = calc_firings_round(result.get('kind'), result.get('first_is_in_effect'), result.get('second_is_in_effect'))
+    except Exception as _field_exc:
+        result['round'] = None
+        result.setdefault('_erb_errors', {})['round'] = str(_field_exc)
     try:
         result['name'] = calc_firings_name(result.get('firing_id'))
     except Exception as _field_exc:
@@ -847,6 +1016,16 @@ def compute_firings_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['fired_unit'] = None
         result.setdefault('_erb_errors', {})['fired_unit'] = str(_field_exc)
+    try:
+        result['pre_chain_fired_unit'] = calc_firings_pre_chain_fired_unit(result.get('inverse_fired_unit'), result.get('symmetric_fired_unit'))
+    except Exception as _field_exc:
+        result['pre_chain_fired_unit'] = None
+        result.setdefault('_erb_errors', {})['pre_chain_fired_unit'] = str(_field_exc)
+    try:
+        result['order_key'] = calc_firings_order_key(result.get('round'), result.get('first_snap_position'), result.get('kind_sort_order'), result.get('second'), result.get('second_snap_position'))
+    except Exception as _field_exc:
+        result['order_key'] = None
+        result.setdefault('_erb_errors', {})['order_key'] = str(_field_exc)
 
     # Level 3 calculations
     try:
@@ -1183,6 +1362,82 @@ def compute_page_texts_fields(record: dict) -> dict:
 
     return result
 
+# =============================================================================
+# ENGINES
+# The execution engines the page can be computed by. Each is a build output of this rulebook.
+# =============================================================================
+
+# Level 1
+
+def calc_engines_name(label):
+    """
+    Order 1. The engine's name.
+    
+    Formula: ={{Label}}
+    """
+    return label
+
+
+def compute_engines_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for Engines.
+    
+    The execution engines the page can be computed by. Each is a build output of this rulebook.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_engines_name(result.get('label'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# RULEBOOKTOOLS
+# What each rulebook tool adds to the original explainer; the tools panel lists them.
+# =============================================================================
+
+# Level 1
+
+def calc_rulebook_tools_name(label):
+    """
+    Order 1. The tool's name.
+    
+    Formula: ={{Label}}
+    """
+    return label
+
+
+def compute_rulebook_tools_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for RulebookTools.
+    
+    What each rulebook tool adds to the original explainer; the tools panel lists them.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_rulebook_tools_name(result.get('label'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
 
 # =============================================================================
 # DISPATCHER
@@ -1210,8 +1465,14 @@ _ERB_COMPUTE_BY_NAME = {
     'firing_kinds': compute_firing_kinds_fields,
     'Things': compute_things_fields,
     'things': compute_things_fields,
+    'Portraits': compute_portraits_fields,
+    'portraits': compute_portraits_fields,
+    'PortraitAliases': compute_portrait_aliases_fields,
+    'portrait_aliases': compute_portrait_aliases_fields,
     'Properties': compute_properties_fields,
     'properties': compute_properties_fields,
+    'PropertyAxioms': compute_property_axioms_fields,
+    'property_axioms': compute_property_axioms_fields,
     'Statements': compute_statements_fields,
     'statements': compute_statements_fields,
     'Firings': compute_firings_fields,
@@ -1230,6 +1491,10 @@ _ERB_COMPUTE_BY_NAME = {
     'layout_slots': compute_layout_slots_fields,
     'PageTexts': compute_page_texts_fields,
     'page_texts': compute_page_texts_fields,
+    'Engines': compute_engines_fields,
+    'engines': compute_engines_fields,
+    'RulebookTools': compute_rulebook_tools_fields,
+    'rulebook_tools': compute_rulebook_tools_fields,
 }
 
 
@@ -1239,7 +1504,7 @@ _ERB_COMPUTE_BY_NAME = {
 
 
 # calculated_field_count bounds the runner's passes over the dataset.
-CALCULATED_FIELD_COUNT = 58
+CALCULATED_FIELD_COUNT = 68
 
 # ERB_TABLES is every table, in rulebook order.
 ERB_TABLES = [
@@ -1252,9 +1517,9 @@ ERB_TABLES = [
      'aggregations': []},
     {'name': 'Graphs', 'file': 'graphs', 'rulebook_rows': 1,
      'compute': compute_graphs_fields,
-     'fields': ['graph_id', 'label', 'literal_quote', 'literal_type_marker', 'built_in_source_text', 'user_source_text', 'no_conclusions_text', 'name', 'count_of_stated_facts', 'count_of_conclusions', 'count_of_violations', 'is_consistent', 'conclusions_message', 'count_of_facts_to_add', 'has_facts_to_add', 'next_fact_sort_order', 'max_activation_seq', 'next_activation_seq', 'max_listed_sort_order', 'next_listed_sort_order'],
-     'datatypes': {'name': 'string', 'count_of_stated_facts': 'integer', 'count_of_conclusions': 'integer', 'count_of_violations': 'integer', 'is_consistent': 'boolean', 'conclusions_message': 'string', 'count_of_facts_to_add': 'integer', 'has_facts_to_add': 'boolean', 'next_fact_sort_order': 'integer', 'max_activation_seq': 'integer', 'next_activation_seq': 'integer', 'max_listed_sort_order': 'integer', 'next_listed_sort_order': 'integer'},
-     'calculated': {'name', 'is_consistent', 'conclusions_message', 'next_activation_seq', 'next_listed_sort_order', 'has_facts_to_add'},
+     'fields': ['graph_id', 'label', 'literal_quote', 'literal_type_marker', 'built_in_source_text', 'user_source_text', 'no_conclusions_text', 'name', 'count_of_stated_facts', 'count_of_conclusions', 'count_of_violations', 'is_consistent', 'conclusions_message', 'count_of_facts_to_add', 'has_facts_to_add', 'next_fact_sort_order', 'max_activation_seq', 'next_activation_seq', 'max_listed_sort_order', 'next_listed_sort_order', 'max_sort_order', 'next_candidate_sort_order'],
+     'datatypes': {'name': 'string', 'count_of_stated_facts': 'integer', 'count_of_conclusions': 'integer', 'count_of_violations': 'integer', 'is_consistent': 'boolean', 'conclusions_message': 'string', 'count_of_facts_to_add': 'integer', 'has_facts_to_add': 'boolean', 'next_fact_sort_order': 'integer', 'max_activation_seq': 'integer', 'next_activation_seq': 'integer', 'max_listed_sort_order': 'integer', 'next_listed_sort_order': 'integer', 'max_sort_order': 'integer', 'next_candidate_sort_order': 'integer'},
+     'calculated': {'has_facts_to_add', 'name', 'conclusions_message', 'next_listed_sort_order', 'next_activation_seq', 'is_consistent', 'next_candidate_sort_order'},
      'lookups': [],
      'aggregations': [
         {'field': 'count_of_stated_facts', 'op': 'SUM', 'table': 'statements', 'target': 'in_effect_unit', 'criteria': [('graph', 'raw_field', 'graph_id')], 'suffix': None},
@@ -1263,7 +1528,8 @@ ERB_TABLES = [
         {'field': 'count_of_facts_to_add', 'op': 'SUM', 'table': 'statements', 'target': 'listed_off_unit', 'criteria': [('graph', 'raw_field', 'graph_id')], 'suffix': None},
         {'field': 'next_fact_sort_order', 'op': 'MIN', 'table': 'statements', 'target': 'sort_order', 'criteria': [('graph', 'raw_field', 'graph_id'), ('listed_off_unit', 'literal', 1)], 'suffix': None, 'empty': 0},
         {'field': 'max_activation_seq', 'op': 'MAX', 'table': 'statements', 'target': 'activation_seq', 'criteria': [('graph', 'raw_field', 'graph_id')], 'suffix': None, 'empty': 0},
-        {'field': 'max_listed_sort_order', 'op': 'MAX', 'table': 'statements', 'target': 'sort_order', 'criteria': [('graph', 'raw_field', 'graph_id'), ('listed_unit', 'literal', 1)], 'suffix': None, 'empty': 0},]},
+        {'field': 'max_listed_sort_order', 'op': 'MAX', 'table': 'statements', 'target': 'sort_order', 'criteria': [('graph', 'raw_field', 'graph_id'), ('listed_unit', 'literal', 1)], 'suffix': None, 'empty': 0},
+        {'field': 'max_sort_order', 'op': 'MAX', 'table': 'statements', 'target': 'sort_order', 'criteria': [('graph', 'raw_field', 'graph_id')], 'suffix': None, 'empty': 0},]},
     {'name': 'Rules', 'file': 'rules', 'rulebook_rows': 5,
      'compute': compute_rules_fields,
      'fields': ['rule_id', 'label', 'explanation', 'is_enabled', 'sort_order', 'name', 'count_of_firings'],
@@ -1272,7 +1538,7 @@ ERB_TABLES = [
      'lookups': [],
      'aggregations': [
         {'field': 'count_of_firings', 'op': 'SUM', 'table': 'firings', 'target': 'fired_unit', 'criteria': [('rule', 'raw_field', 'rule_id')], 'suffix': None},]},
-    {'name': 'FiringKinds', 'file': 'firing_kinds', 'rulebook_rows': 5,
+    {'name': 'FiringKinds', 'file': 'firing_kinds', 'rulebook_rows': 6,
      'compute': compute_firing_kinds_fields,
      'fields': ['firing_kind_id', 'rule', 'wording', 'sort_order', 'name', 'rule_enabled'],
      'datatypes': {'name': 'string', 'rule_enabled': 'boolean'},
@@ -1282,28 +1548,55 @@ ERB_TABLES = [
      'aggregations': []},
     {'name': 'Things', 'file': 'things', 'rulebook_rows': 9,
      'compute': compute_things_fields,
-     'fields': ['thing_id', 'label', 'kind', 'sort_order', 'portrait_name', 'portrait_page', 'portrait_image', 'portrait_crop', 'portrait_width', 'portrait_height', 'name', 'node_key', 'count_of_children', 'count_of_grandchildren', 'count_as_place', 'count_as_subject', 'count_as_object', 'is_in_graph', 'node_kind'],
-     'datatypes': {'name': 'string', 'node_key': 'string', 'count_of_children': 'integer', 'count_of_grandchildren': 'integer', 'count_as_place': 'integer', 'count_as_subject': 'integer', 'count_as_object': 'integer', 'is_in_graph': 'boolean', 'node_kind': 'string'},
-     'calculated': {'name', 'is_in_graph', 'node_key', 'node_kind'},
-     'lookups': [],
+     'fields': ['thing_id', 'label', 'kind', 'sort_order', 'portrait', 'portrait_name', 'portrait_page', 'portrait_image', 'portrait_crop', 'portrait_width', 'portrait_height', 'name', 'node_key', 'count_of_children', 'count_of_grandchildren', 'count_as_place', 'count_as_subject', 'count_as_object', 'is_in_graph', 'node_kind'],
+     'datatypes': {'portrait_name': 'string', 'portrait_page': 'string', 'portrait_image': 'string', 'portrait_crop': 'string', 'portrait_width': 'integer', 'portrait_height': 'integer', 'name': 'string', 'node_key': 'string', 'count_of_children': 'integer', 'count_of_grandchildren': 'integer', 'count_as_place': 'integer', 'count_as_subject': 'integer', 'count_as_object': 'integer', 'is_in_graph': 'boolean', 'node_kind': 'string'},
+     'calculated': {'node_kind', 'name', 'node_key', 'is_in_graph'},
+     'lookups': [
+        {'field': 'portrait_name', 'target': 'portraits', 'return': 'display_name', 'key': 'portrait', 'match': 'portrait_id'},
+        {'field': 'portrait_page', 'target': 'portraits', 'return': 'page', 'key': 'portrait', 'match': 'portrait_id'},
+        {'field': 'portrait_image', 'target': 'portraits', 'return': 'image', 'key': 'portrait', 'match': 'portrait_id'},
+        {'field': 'portrait_crop', 'target': 'portraits', 'return': 'crop', 'key': 'portrait', 'match': 'portrait_id'},
+        {'field': 'portrait_width', 'target': 'portraits', 'return': 'width', 'key': 'portrait', 'match': 'portrait_id'},
+        {'field': 'portrait_height', 'target': 'portraits', 'return': 'height', 'key': 'portrait', 'match': 'portrait_id'},],
      'aggregations': [
         {'field': 'count_of_children', 'op': 'SUM', 'table': 'statements', 'target': 'parent_unit', 'criteria': [('subject', 'raw_field', 'thing_id')], 'suffix': None},
         {'field': 'count_of_grandchildren', 'op': 'SUM', 'table': 'statements', 'target': 'grandparent_unit', 'criteria': [('subject', 'raw_field', 'thing_id')], 'suffix': None},
         {'field': 'count_as_place', 'op': 'SUM', 'table': 'statements', 'target': 'place_unit', 'criteria': [('object_thing', 'raw_field', 'thing_id')], 'suffix': None},
         {'field': 'count_as_subject', 'op': 'SUM', 'table': 'statements', 'target': 'holds_unit', 'criteria': [('subject', 'raw_field', 'thing_id')], 'suffix': None},
         {'field': 'count_as_object', 'op': 'SUM', 'table': 'statements', 'target': 'holds_unit', 'criteria': [('object_thing', 'raw_field', 'thing_id')], 'suffix': None},]},
+    {'name': 'Portraits', 'file': 'portraits', 'rulebook_rows': 13,
+     'compute': compute_portraits_fields,
+     'fields': ['portrait_id', 'display_name', 'page', 'image', 'crop', 'width', 'height', 'sort_order', 'name'],
+     'datatypes': {'name': 'string'},
+     'calculated': {'name'},
+     'lookups': [],
+     'aggregations': []},
+    {'name': 'PortraitAliases', 'file': 'portrait_aliases', 'rulebook_rows': 32,
+     'compute': compute_portrait_aliases_fields,
+     'fields': ['portrait_alias_id', 'portrait', 'name'],
+     'datatypes': {'name': 'string'},
+     'calculated': {'name'},
+     'lookups': [],
+     'aggregations': []},
     {'name': 'Properties', 'file': 'properties', 'rulebook_rows': 10,
      'compute': compute_properties_fields,
-     'fields': ['property_id', 'label', 'property_kind', 'datatype', 'is_user_addable', 'has_one_current_value', 'inverse_of', 'is_symmetric', 'chain_first', 'chain_second', 'domain_class', 'range_class', 'disjoint_with', 'sort_order', 'value_node_label', 'current_value_wording', 'input_name', 'record_kind', 'record_order', 'name'],
+     'fields': ['property_id', 'label', 'property_kind', 'datatype', 'is_user_addable', 'has_one_current_value', 'is_symmetric', 'domain_class', 'range_class', 'sort_order', 'value_node_label', 'current_value_wording', 'input_name', 'record_kind', 'record_order', 'name'],
+     'datatypes': {'name': 'string'},
+     'calculated': {'name'},
+     'lookups': [],
+     'aggregations': []},
+    {'name': 'PropertyAxioms', 'file': 'property_axioms', 'rulebook_rows': 4,
+     'compute': compute_property_axioms_fields,
+     'fields': ['property_axiom_id', 'kind', 'property', 'first', 'second', 'name'],
      'datatypes': {'name': 'string'},
      'calculated': {'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'Statements', 'file': 'statements', 'rulebook_rows': 270,
      'compute': compute_statements_fields,
-     'fields': ['statement_id', 'graph', 'subject', 'property', 'object_thing', 'object_value', 'is_listed', 'is_built_in', 'is_detail', 'is_stated', 'activation_seq', 'sort_order', 'subject_label', 'property_label', 'object_label', 'property_datatype', 'property_has_one_current_value', 'property_domain_class', 'property_range_class', 'literal_quote', 'literal_type_marker', 'built_in_source_text', 'user_source_text', 'next_fact_sort_order', 'is_literal', 'object_text', 'name', 'words', 'source', 'subject_property_key', 'latest_sibling_activation_seq', 'is_in_effect', 'listed_unit', 'in_effect_unit', 'listed_off_unit', 'is_next_to_add', 'count_of_inverse_firings', 'count_of_symmetric_firings', 'holds_before_chain', 'count_of_chain_firings', 'holds_before_typing', 'count_of_type_firings', 'holds', 'is_conclusion', 'holds_unit', 'conclusion_unit', 'parent_unit', 'grandparent_unit', 'place_unit', 'first_fired_order_key', 'count_of_chosen_firings', 'subject_node_key', 'object_node_key', 'subject_node_kind', 'object_thing_node_kind', 'object_node_kind', 'object_value_node_label', 'count_of_violations_as_first', 'count_of_violations_as_second', 'is_in_contradiction'],
-     'datatypes': {'subject_label': 'string', 'property_label': 'string', 'object_label': 'string', 'property_datatype': 'string', 'property_has_one_current_value': 'boolean', 'property_domain_class': 'string', 'property_range_class': 'string', 'literal_quote': 'string', 'literal_type_marker': 'string', 'built_in_source_text': 'string', 'user_source_text': 'string', 'next_fact_sort_order': 'integer', 'is_literal': 'boolean', 'object_text': 'string', 'name': 'string', 'words': 'string', 'source': 'string', 'subject_property_key': 'string', 'latest_sibling_activation_seq': 'integer', 'is_in_effect': 'boolean', 'listed_unit': 'integer', 'in_effect_unit': 'integer', 'listed_off_unit': 'integer', 'is_next_to_add': 'boolean', 'count_of_inverse_firings': 'integer', 'count_of_symmetric_firings': 'integer', 'holds_before_chain': 'boolean', 'count_of_chain_firings': 'integer', 'holds_before_typing': 'boolean', 'count_of_type_firings': 'integer', 'holds': 'boolean', 'is_conclusion': 'boolean', 'holds_unit': 'integer', 'conclusion_unit': 'integer', 'parent_unit': 'integer', 'grandparent_unit': 'integer', 'place_unit': 'integer', 'first_fired_order_key': 'integer', 'count_of_chosen_firings': 'integer', 'subject_node_key': 'string', 'object_node_key': 'string', 'subject_node_kind': 'string', 'object_thing_node_kind': 'string', 'object_node_kind': 'string', 'object_value_node_label': 'string', 'count_of_violations_as_first': 'integer', 'count_of_violations_as_second': 'integer', 'is_in_contradiction': 'boolean'},
-     'calculated': {'in_effect_unit', 'grandparent_unit', 'is_literal', 'place_unit', 'words', 'is_in_effect', 'holds', 'object_node_key', 'subject_node_key', 'is_next_to_add', 'is_conclusion', 'holds_before_typing', 'subject_property_key', 'parent_unit', 'listed_unit', 'name', 'is_in_contradiction', 'listed_off_unit', 'conclusion_unit', 'source', 'holds_before_chain', 'holds_unit', 'object_text', 'object_node_kind'},
+     'fields': ['statement_id', 'graph', 'subject', 'property', 'object_thing', 'object_value', 'is_listed', 'is_built_in', 'is_detail', 'is_stated', 'activation_seq', 'sort_order', 'subject_label', 'property_label', 'object_label', 'property_datatype', 'property_has_one_current_value', 'property_domain_class', 'property_range_class', 'literal_quote', 'literal_type_marker', 'built_in_source_text', 'user_source_text', 'next_fact_sort_order', 'is_literal', 'object_text', 'name', 'words', 'source', 'subject_property_key', 'latest_sibling_activation_seq', 'is_in_effect', 'listed_unit', 'in_effect_unit', 'listed_off_unit', 'is_next_to_add', 'count_of_inverse_firings', 'count_of_symmetric_firings', 'holds_before_chain', 'count_of_chain_firings', 'holds_before_typing', 'count_of_type_firings', 'holds', 'is_conclusion', 'holds_unit', 'conclusion_unit', 'parent_unit', 'grandparent_unit', 'place_unit', 'first_pre_chain_order_key', 'snap_position', 'first_fired_order_key', 'count_of_chosen_firings', 'subject_node_key', 'object_node_key', 'subject_node_kind', 'object_thing_node_kind', 'object_node_kind', 'object_value_node_label', 'count_of_violations_as_first', 'count_of_violations_as_second', 'is_in_contradiction'],
+     'datatypes': {'subject_label': 'string', 'property_label': 'string', 'object_label': 'string', 'property_datatype': 'string', 'property_has_one_current_value': 'boolean', 'property_domain_class': 'string', 'property_range_class': 'string', 'literal_quote': 'string', 'literal_type_marker': 'string', 'built_in_source_text': 'string', 'user_source_text': 'string', 'next_fact_sort_order': 'integer', 'is_literal': 'boolean', 'object_text': 'string', 'name': 'string', 'words': 'string', 'source': 'string', 'subject_property_key': 'string', 'latest_sibling_activation_seq': 'integer', 'is_in_effect': 'boolean', 'listed_unit': 'integer', 'in_effect_unit': 'integer', 'listed_off_unit': 'integer', 'is_next_to_add': 'boolean', 'count_of_inverse_firings': 'integer', 'count_of_symmetric_firings': 'integer', 'holds_before_chain': 'boolean', 'count_of_chain_firings': 'integer', 'holds_before_typing': 'boolean', 'count_of_type_firings': 'integer', 'holds': 'boolean', 'is_conclusion': 'boolean', 'holds_unit': 'integer', 'conclusion_unit': 'integer', 'parent_unit': 'integer', 'grandparent_unit': 'integer', 'place_unit': 'integer', 'first_pre_chain_order_key': 'number', 'snap_position': 'number', 'first_fired_order_key': 'number', 'count_of_chosen_firings': 'integer', 'subject_node_key': 'string', 'object_node_key': 'string', 'subject_node_kind': 'string', 'object_thing_node_kind': 'string', 'object_node_kind': 'string', 'object_value_node_label': 'string', 'count_of_violations_as_first': 'integer', 'count_of_violations_as_second': 'integer', 'is_in_contradiction': 'boolean'},
+     'calculated': {'subject_node_key', 'is_next_to_add', 'place_unit', 'is_literal', 'holds_unit', 'holds_before_chain', 'snap_position', 'object_node_key', 'is_in_contradiction', 'subject_property_key', 'holds', 'is_in_effect', 'grandparent_unit', 'holds_before_typing', 'words', 'conclusion_unit', 'listed_unit', 'in_effect_unit', 'parent_unit', 'is_conclusion', 'name', 'listed_off_unit', 'object_text', 'source', 'object_node_kind'},
      'lookups': [
         {'field': 'subject_label', 'target': 'things', 'return': 'label', 'key': 'subject', 'match': 'thing_id'},
         {'field': 'property_label', 'target': 'properties', 'return': 'label', 'key': 'property', 'match': 'property_id'},
@@ -1326,15 +1619,16 @@ ERB_TABLES = [
         {'field': 'count_of_symmetric_firings', 'op': 'SUM', 'table': 'firings', 'target': 'symmetric_fired_unit', 'criteria': [('target', 'raw_field', 'statement_id')], 'suffix': None},
         {'field': 'count_of_chain_firings', 'op': 'SUM', 'table': 'firings', 'target': 'chain_fired_unit', 'criteria': [('target', 'raw_field', 'statement_id')], 'suffix': None},
         {'field': 'count_of_type_firings', 'op': 'SUM', 'table': 'firings', 'target': 'type_fired_unit', 'criteria': [('target', 'raw_field', 'statement_id')], 'suffix': None},
+        {'field': 'first_pre_chain_order_key', 'op': 'MIN', 'table': 'firings', 'target': 'pre_chain_order_key', 'criteria': [('target', 'raw_field', 'statement_id'), ('pre_chain_fired_unit', 'literal', 1)], 'suffix': None, 'empty': 0},
         {'field': 'first_fired_order_key', 'op': 'MIN', 'table': 'firings', 'target': 'order_key', 'criteria': [('target', 'raw_field', 'statement_id'), ('fired_unit', 'literal', 1)], 'suffix': None, 'empty': 0},
         {'field': 'count_of_chosen_firings', 'op': 'SUM', 'table': 'firings', 'target': 'chosen_unit', 'criteria': [('target', 'raw_field', 'statement_id')], 'suffix': None},
         {'field': 'count_of_violations_as_first', 'op': 'SUM', 'table': 'disjoint_checks', 'target': 'violation_unit', 'criteria': [('first', 'raw_field', 'statement_id')], 'suffix': None},
         {'field': 'count_of_violations_as_second', 'op': 'SUM', 'table': 'disjoint_checks', 'target': 'violation_unit', 'criteria': [('second', 'raw_field', 'statement_id')], 'suffix': None},]},
     {'name': 'Firings', 'file': 'firings', 'rulebook_rows': 465,
      'compute': compute_firings_fields,
-     'fields': ['firing_id', 'kind', 'rule', 'target', 'first', 'second', 'rule_enabled', 'kind_wording', 'kind_sort_order', 'target_name', 'target_subject_label', 'target_property_label', 'target_object_text', 'target_is_conclusion', 'target_subject_node_key', 'target_object_node_key', 'target_first_fired_order_key', 'first_words', 'second_words', 'first_is_in_effect', 'first_holds_before_chain', 'second_holds_before_chain', 'first_holds_before_typing', 'first_property', 'first_property_domain_class', 'first_property_range_class', 'first_sort_order', 'second_sort_order', 'inverse_fired_unit', 'symmetric_fired_unit', 'chain_fired_unit', 'type_fired_unit', 'fired_unit', 'order_key', 'is_chosen', 'chosen_unit', 'card_text', 'name'],
-     'datatypes': {'rule_enabled': 'boolean', 'kind_wording': 'string', 'kind_sort_order': 'integer', 'target_name': 'string', 'target_subject_label': 'string', 'target_property_label': 'string', 'target_object_text': 'string', 'target_is_conclusion': 'boolean', 'target_subject_node_key': 'string', 'target_object_node_key': 'string', 'target_first_fired_order_key': 'integer', 'first_words': 'string', 'second_words': 'string', 'first_is_in_effect': 'boolean', 'first_holds_before_chain': 'boolean', 'second_holds_before_chain': 'boolean', 'first_holds_before_typing': 'boolean', 'first_property': 'string', 'first_property_domain_class': 'string', 'first_property_range_class': 'string', 'first_sort_order': 'integer', 'second_sort_order': 'integer', 'inverse_fired_unit': 'integer', 'symmetric_fired_unit': 'integer', 'chain_fired_unit': 'integer', 'type_fired_unit': 'integer', 'fired_unit': 'integer', 'order_key': 'integer', 'is_chosen': 'boolean', 'chosen_unit': 'integer', 'card_text': 'string', 'name': 'string'},
-     'calculated': {'name', 'fired_unit', 'type_fired_unit', 'chain_fired_unit', 'is_chosen', 'order_key', 'chosen_unit', 'symmetric_fired_unit', 'inverse_fired_unit', 'card_text'},
+     'fields': ['firing_id', 'kind', 'rule', 'target', 'first', 'second', 'rule_enabled', 'kind_wording', 'kind_sort_order', 'target_name', 'target_subject_label', 'target_property_label', 'target_object_text', 'target_is_conclusion', 'target_subject_node_key', 'target_object_node_key', 'target_first_fired_order_key', 'first_words', 'second_words', 'first_is_in_effect', 'first_holds_before_chain', 'second_holds_before_chain', 'first_holds_before_typing', 'first_property', 'first_property_domain_class', 'first_property_range_class', 'first_sort_order', 'second_is_in_effect', 'first_snap_position', 'second_snap_position', 'inverse_fired_unit', 'symmetric_fired_unit', 'chain_fired_unit', 'type_fired_unit', 'fired_unit', 'pre_chain_fired_unit', 'pre_chain_order_key', 'round', 'order_key', 'is_chosen', 'chosen_unit', 'card_text', 'name'],
+     'datatypes': {'rule_enabled': 'boolean', 'kind_wording': 'string', 'kind_sort_order': 'integer', 'target_name': 'string', 'target_subject_label': 'string', 'target_property_label': 'string', 'target_object_text': 'string', 'target_is_conclusion': 'boolean', 'target_subject_node_key': 'string', 'target_object_node_key': 'string', 'target_first_fired_order_key': 'number', 'first_words': 'string', 'second_words': 'string', 'first_is_in_effect': 'boolean', 'first_holds_before_chain': 'boolean', 'second_holds_before_chain': 'boolean', 'first_holds_before_typing': 'boolean', 'first_property': 'string', 'first_property_domain_class': 'string', 'first_property_range_class': 'string', 'first_sort_order': 'integer', 'second_is_in_effect': 'boolean', 'first_snap_position': 'number', 'second_snap_position': 'number', 'inverse_fired_unit': 'integer', 'symmetric_fired_unit': 'integer', 'chain_fired_unit': 'integer', 'type_fired_unit': 'integer', 'fired_unit': 'integer', 'pre_chain_fired_unit': 'integer', 'pre_chain_order_key': 'number', 'round': 'integer', 'order_key': 'number', 'is_chosen': 'boolean', 'chosen_unit': 'integer', 'card_text': 'string', 'name': 'string'},
+     'calculated': {'inverse_fired_unit', 'order_key', 'round', 'pre_chain_order_key', 'fired_unit', 'chosen_unit', 'name', 'pre_chain_fired_unit', 'is_chosen', 'symmetric_fired_unit', 'card_text', 'type_fired_unit', 'chain_fired_unit'},
      'lookups': [
         {'field': 'rule_enabled', 'target': 'rules', 'return': 'is_enabled', 'key': 'rule', 'match': 'rule_id'},
         {'field': 'kind_wording', 'target': 'firing_kinds', 'return': 'wording', 'key': 'kind', 'match': 'firing_kind_id'},
@@ -1357,13 +1651,15 @@ ERB_TABLES = [
         {'field': 'first_property_domain_class', 'target': 'statements', 'return': 'property_domain_class', 'key': 'first', 'match': 'statement_id'},
         {'field': 'first_property_range_class', 'target': 'statements', 'return': 'property_range_class', 'key': 'first', 'match': 'statement_id'},
         {'field': 'first_sort_order', 'target': 'statements', 'return': 'sort_order', 'key': 'first', 'match': 'statement_id'},
-        {'field': 'second_sort_order', 'target': 'statements', 'return': 'sort_order', 'key': 'second', 'match': 'statement_id'},],
+        {'field': 'second_is_in_effect', 'target': 'statements', 'return': 'is_in_effect', 'key': 'second', 'match': 'statement_id'},
+        {'field': 'first_snap_position', 'target': 'statements', 'return': 'snap_position', 'key': 'first', 'match': 'statement_id'},
+        {'field': 'second_snap_position', 'target': 'statements', 'return': 'snap_position', 'key': 'second', 'match': 'statement_id'},],
      'aggregations': []},
     {'name': 'DisjointChecks', 'file': 'disjoint_checks', 'rulebook_rows': 42,
      'compute': compute_disjoint_checks_fields,
      'fields': ['disjoint_check_id', 'graph', 'rule', 'first', 'second', 'rule_enabled', 'first_holds', 'second_holds', 'subject_label', 'object_label', 'violation_unit', 'alarm_text', 'name'],
      'datatypes': {'rule_enabled': 'boolean', 'first_holds': 'boolean', 'second_holds': 'boolean', 'subject_label': 'string', 'object_label': 'string', 'violation_unit': 'integer', 'alarm_text': 'string', 'name': 'string'},
-     'calculated': {'name', 'violation_unit', 'alarm_text'},
+     'calculated': {'alarm_text', 'violation_unit', 'name'},
      'lookups': [
         {'field': 'rule_enabled', 'target': 'rules', 'return': 'is_enabled', 'key': 'rule', 'match': 'rule_id'},
         {'field': 'first_holds', 'target': 'statements', 'return': 'holds', 'key': 'first', 'match': 'statement_id'},
@@ -1375,7 +1671,7 @@ ERB_TABLES = [
      'compute': compute_scenarios_fields,
      'fields': ['scenario_id', 'graph', 'label', 'note', 'sort_order', 'button_group', 'is_primary', 'fact_baseline', 'layout', 'clears_selection', 'clears_form_message', 'name', 'graph_has_facts_to_add', 'is_available'],
      'datatypes': {'name': 'string', 'graph_has_facts_to_add': 'boolean', 'is_available': 'boolean'},
-     'calculated': {'name', 'is_available'},
+     'calculated': {'is_available', 'name'},
      'lookups': [
         {'field': 'graph_has_facts_to_add', 'target': 'graphs', 'return': 'has_facts_to_add', 'key': 'graph', 'match': 'graph_id'},],
      'aggregations': []},
@@ -1407,9 +1703,23 @@ ERB_TABLES = [
      'calculated': {'name'},
      'lookups': [],
      'aggregations': []},
-    {'name': 'PageTexts', 'file': 'page_texts', 'rulebook_rows': 67,
+    {'name': 'PageTexts', 'file': 'page_texts', 'rulebook_rows': 102,
      'compute': compute_page_texts_fields,
      'fields': ['page_text_id', 'text', 'name'],
+     'datatypes': {'name': 'string'},
+     'calculated': {'name'},
+     'lookups': [],
+     'aggregations': []},
+    {'name': 'Engines', 'file': 'engines', 'rulebook_rows': 3,
+     'compute': compute_engines_fields,
+     'fields': ['engine_id', 'label', 'substrate', 'is_default', 'description', 'sort_order', 'name'],
+     'datatypes': {'name': 'string'},
+     'calculated': {'name'},
+     'lookups': [],
+     'aggregations': []},
+    {'name': 'RulebookTools', 'file': 'rulebook_tools', 'rulebook_rows': 8,
+     'compute': compute_rulebook_tools_fields,
+     'fields': ['rulebook_tool_id', 'label', 'adds', 'href', 'link_text', 'sort_order', 'name'],
      'datatypes': {'name': 'string'},
      'calculated': {'name'},
      'lookups': [],

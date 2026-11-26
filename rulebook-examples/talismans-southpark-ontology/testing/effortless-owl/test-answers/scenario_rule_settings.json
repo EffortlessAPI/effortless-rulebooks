@@ -1,0 +1,72 @@
+[
+  {
+    "scenario_rule_setting_id": "reset-original:inverse",
+    "is_enabled": false,
+    "scenario": "reset-original",
+    "rule": "inverse",
+    "name": "reset-original:inverse"
+  },
+  {
+    "scenario_rule_setting_id": "reset-original:symmetric",
+    "is_enabled": false,
+    "scenario": "reset-original",
+    "rule": "symmetric",
+    "name": "reset-original:symmetric"
+  },
+  {
+    "scenario_rule_setting_id": "reset-original:chain",
+    "is_enabled": false,
+    "scenario": "reset-original",
+    "rule": "chain",
+    "name": "reset-original:chain"
+  },
+  {
+    "scenario_rule_setting_id": "reset-original:domain",
+    "is_enabled": false,
+    "scenario": "reset-original",
+    "rule": "domain",
+    "name": "reset-original:domain"
+  },
+  {
+    "scenario_rule_setting_id": "reset-original:disjoint",
+    "is_enabled": false,
+    "scenario": "reset-original",
+    "rule": "disjoint",
+    "name": "reset-original:disjoint"
+  },
+  {
+    "scenario_rule_setting_id": "grade-example:inverse",
+    "is_enabled": false,
+    "scenario": "grade-example",
+    "rule": "inverse",
+    "name": "grade-example:inverse"
+  },
+  {
+    "scenario_rule_setting_id": "grade-example:symmetric",
+    "is_enabled": false,
+    "scenario": "grade-example",
+    "rule": "symmetric",
+    "name": "grade-example:symmetric"
+  },
+  {
+    "scenario_rule_setting_id": "grade-example:chain",
+    "is_enabled": false,
+    "scenario": "grade-example",
+    "rule": "chain",
+    "name": "grade-example:chain"
+  },
+  {
+    "scenario_rule_setting_id": "grade-example:domain",
+    "is_enabled": true,
+    "scenario": "grade-example",
+    "rule": "domain",
+    "name": "grade-example:domain"
+  },
+  {
+    "scenario_rule_setting_id": "grade-example:disjoint",
+    "is_enabled": false,
+    "scenario": "grade-example",
+    "rule": "disjoint",
+    "name": "grade-example:disjoint"
+  }
+]

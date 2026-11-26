@@ -2,36 +2,41 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-11-26 07:20:49 UTC
+**Timestamp:** 2026-11-26 09:05:51 UTC
 
 ## Parsing Rulebook
 
-Found **14** tables in rulebook
+Found **19** tables in rulebook
 
 
-  - **Graphs** (20 fields, 1 records)
+  - **Graphs** (22 fields, 1 records)
   - **Rules** (7 fields, 5 records)
-  - **FiringKinds** (6 fields, 5 records)
-  - **Things** (19 fields, 9 records)
-  - **Properties** (20 fields, 10 records)
-  - **Statements** (60 fields, 270 records)
-  - **Firings** (38 fields, 465 records)
+  - **FiringKinds** (6 fields, 6 records)
+  - **Things** (20 fields, 9 records)
+  - **Portraits** (9 fields, 13 records)
+  - **PortraitAliases** (3 fields, 32 records)
+  - **Properties** (16 fields, 10 records)
+  - **PropertyAxioms** (6 fields, 4 records)
+  - **Statements** (62 fields, 270 records)
+  - **Firings** (43 fields, 465 records)
   - **DisjointChecks** (13 fields, 42 records)
   - **Scenarios** (14 fields, 7 records)
   - **ScenarioFactChanges** (9 fields, 6 records)
   - **ScenarioRuleSettings** (5 fields, 10 records)
   - **NodeLayouts** (6 fields, 26 records)
   - **LayoutSlots** (5 fields, 8 records)
-  - **PageTexts** (3 fields, 67 records)
+  - **PageTexts** (3 fields, 102 records)
+  - **Engines** (7 fields, 3 records)
+  - **RulebookTools** (7 fields, 8 records)
 
-Generated **14** table definitions with **76** raw fields (mode=drop-all)
-Generated **172** calculation functions
-Generated **14** views
-Enabled RLS on **14** tables
-Generated insert statements for **931** records
-Generated **14** table definitions with **76** raw fields (mode=drop-all)
-Generated **172** calculation functions
-Generated **14** views
+Generated **19** table definitions with **92** raw fields (mode=drop-all)
+Generated **193** calculation functions
+Generated **19** views
+Enabled RLS on **19** tables
+Generated insert statements for **1027** records
+Generated **19** table definitions with **92** raw fields (mode=drop-all)
+Generated **193** calculation functions
+Generated **19** views
 ## Script Generation Complete
 
 Generated files:

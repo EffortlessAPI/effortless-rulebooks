@@ -1,0 +1,47 @@
+[
+  {
+    "rule_id": "chain",
+    "label": "Property chain",
+    "explanation": "A parent of a parent is a grandparent.",
+    "is_enabled": false,
+    "sort_order": 3,
+    "name": null,
+    "count_of_firings": null
+  },
+  {
+    "rule_id": "disjoint",
+    "label": "Disjoint",
+    "explanation": "In this example, no person is both the parent and the spouse of the same person.",
+    "is_enabled": false,
+    "sort_order": 5,
+    "name": null,
+    "count_of_firings": null
+  },
+  {
+    "rule_id": "domain",
+    "label": "Domain and range",
+    "explanation": "An attends, has grade level or has role statement implies that its subject is a Person. The place attended is a School. This rule adds no role or grade value.",
+    "is_enabled": false,
+    "sort_order": 4,
+    "name": null,
+    "count_of_firings": null
+  },
+  {
+    "rule_id": "inverse",
+    "label": "Inverse",
+    "explanation": "A parent link also gives a child link between the same two people.",
+    "is_enabled": false,
+    "sort_order": 1,
+    "name": null,
+    "count_of_firings": null
+  },
+  {
+    "rule_id": "symmetric",
+    "label": "Symmetric",
+    "explanation": "A friend link or a spouse link is true for both people.",
+    "is_enabled": false,
+    "sort_order": 2,
+    "name": null,
+    "count_of_firings": null
+  }
+]

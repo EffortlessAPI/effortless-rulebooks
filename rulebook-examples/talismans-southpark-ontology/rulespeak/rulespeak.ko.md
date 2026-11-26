@@ -1,6 +1,6 @@
 # 📘 Talisman's South Park ontology explainer — 문서
 
-_Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten facts, five rule switches, property wiring, provenance wording and current-value policy are rows, and every conclusion is a formula. The rules apply in three fixed strata (inverse and symmetric, then the property chain, then domain and range); property wiring that feeds an earlier stratum would need repeated rounds._
+_Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten facts, five rule switches, property wiring, provenance wording and current-value policy are rows, and every conclusion is a formula. The rules apply in three fixed strata (inverse and symmetric, then the property chain, then domain and range); property wiring that feeds an earlier stratum would need repeated rounds. Every fact that could hold over the cast is a candidate row; app/lib/candidates.mjs writes the candidates when a thing, value or property is added._
 
 > 룰북에서 생성한 선언적 비즈니스 규칙입니다. 아래의 모든 문장은 비즈니스 영역에서
 > 성립하는 사실을 서술하며, 절차나 명령이 아닙니다. 룰북의 수식이 단일 진실 공급원이고,
@@ -30,13 +30,15 @@ _Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten
 | Next Activation Seq | 다음과 같이 계산됩니다: ‘max activation seq’ 더하기 1. | _Order 2. The activation number the next switched-on fact takes._ |
 | Max Listed Sort Order | 해당 ‘graph’ 레코드에 연결된 ‘statements’ 레코드 중 ‘listed unit’에 해당하는 것 전체의 최대 ‘sort order’. | _Order 2. Highest list position among listed facts._ |
 | Next Listed Sort Order | 다음과 같이 계산됩니다: ‘max listed sort order’ 더하기 1. | _Order 3. The list position a newly added fact takes._ |
+| Max Sort Order | 해당 ‘graph’ 레코드에 연결된 모든 ‘statements’ 레코드의 최대 ‘sort order’. | _Order 1. Highest sort order of any fact, listed or candidate._ |
+| Next Candidate Sort Order | 다음과 같이 계산됩니다: ‘max sort order’ 더하기 1. | _Order 2. The sort order a new candidate fact, or a fact removed from the list, takes._ |
 
 <details open>
 <summary>예시 데이터</summary>
 
-| Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 |
+| Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ | Max Sort Order ƒ | Next Candidate Sort Order ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 | 100269 | 100270 |
 
 _ƒ 표시는 계산된 열을 나타냅니다._
 
@@ -67,7 +69,7 @@ _ƒ 표시는 계산된 열을 나타냅니다._
 
 | 용어 | 설명 | 부연 설명 |
 |------|-------------|-------------------|
-| **Firing Kind** | The ways a rule can apply. Domain and range belong to one rule but are worded apart. | — |
+| **Firing Kind** | The ways a rule can apply. Domain and range belong to one rule but are worded apart; 'disjoint' names the rule the disjointness checks answer to. | — |
 | Rule | 정의된 속성입니다. | _The rule switch this kind belongs to._ |
 | Wording | 정의된 속성입니다. | _How a conclusion card names the rule, as in 'Worked out by the inverse rule'._ |
 | Sort Order | 정의된 속성입니다. | _Order in which the page's reasoner tries the kinds for one fact._ |
@@ -93,12 +95,13 @@ _ƒ 표시는 계산된 열을 나타냅니다._
 | Label | 정의된 속성입니다. | _The name the page shows._ |
 | Kind | 정의된 속성입니다. | _'individual' or 'class'._ |
 | Sort Order | 정의된 속성입니다. | _Position in the cast._ |
-| Portrait Name | 정의된 속성입니다. | _The name on the portrait's Fandom page._ |
-| Portrait Page | 정의된 속성입니다. | _The Fandom page credited for the portrait._ |
-| Portrait Image | 정의된 속성입니다. | _The original Fandom image._ |
-| Portrait Crop | 정의된 속성입니다. | _The portrait's crop as an SVG viewBox: x y width height._ |
-| Portrait Width | 정의된 속성입니다. | _The original image's width in pixels._ |
-| Portrait Height | 정의된 속성입니다. | _The original image's height in pixels._ |
+| Portrait | 정의된 속성입니다. | _The portrait drawn for this thing; set when its name matches a portrait alias._ |
+| Portrait Name | 연결된 ‘portrait’ 레코드의 ‘display name’ 값입니다. | _Order 1. The name on the portrait's Fandom page._ |
+| Portrait Page | 연결된 ‘portrait’ 레코드에서 가져온 값입니다. | _Order 1. The Fandom page credited for the portrait._ |
+| Portrait Image | 연결된 ‘portrait’ 레코드에서 가져온 값입니다. | _Order 1. The original Fandom image._ |
+| Portrait Crop | 연결된 ‘portrait’ 레코드에서 가져온 값입니다. | _Order 1. The portrait's crop as an SVG viewBox._ |
+| Portrait Width | 연결된 ‘portrait’ 레코드에서 가져온 값입니다. | _Order 1. The original image's width in pixels._ |
+| Portrait Height | 연결된 ‘portrait’ 레코드에서 가져온 값입니다. | _Order 1. The original image's height in pixels._ |
 | Name | 같은 레코드의 ‘label’ 값과 같습니다. | _Order 1. The thing's name._ |
 | Node Key | 같은 레코드의 ‘thing ID’ 값과 같습니다. | _Order 1. The key the graph draws this thing under._ |
 | Count of Children | 해당 ‘thing’ 레코드에 연결된 모든 ‘statements’ 레코드의 총 ‘parent unit’. | _Order 17. People this thing is a parent of, stated or concluded._ |
@@ -107,12 +110,12 @@ _ƒ 표시는 계산된 열을 나타냅니다._
 | Count As Subject | 해당 ‘thing’ 레코드에 연결된 모든 ‘statements’ 레코드의 총 ‘holds unit’. | _Order 17. Holding facts about this thing._ |
 | Count As Object | 해당 ‘thing’ 레코드에 연결된 모든 ‘statements’ 레코드의 총 ‘holds unit’. | _Order 17. Holding facts that point at this thing._ |
 | Is in Graph | 다음 중 하나 이상에 해당하는 경우(‘count as subject’ 값이 0보다 큰 경우 또는 ‘count as object’ 값이 0보다 큰 경우)에 참입니다. | _Order 18. True when the graph draws this thing._ |
-| Node Kind | 우선순위에 따라 결정됩니다: ‘kind’ 값이 “class”인 경우에는 “class”; ‘count as place’ 값이 0보다 큰 경우에는 “place”; 그 밖의 경우에는 “person”. | _Order 18. How the graph draws the thing: a class, a place someone attends, or a person._ |
+| Node Kind | 우선순위에 따라 결정됩니다: ‘kind’ 값이 비어 있는 경우에는 빈 문자열; ‘kind’ 값이 “class”인 경우에는 “class”; ‘count as place’ 값이 0보다 큰 경우에는 “place”; 그 밖의 경우에는 “person”. | _Order 18. How the graph draws the thing: a class, a place someone attends, or a person._ |
 
 <details open>
 <summary>예시 데이터</summary>
 
-| Label | Kind | Sort Order | Portrait Name | Portrait Page | Portrait Image | Portrait Crop | Portrait Width | Portrait Height | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
+| Label | Kind | Sort Order | Portrait Name ƒ | Portrait Page ƒ | Portrait Image ƒ | Portrait Crop ƒ | Portrait Width ƒ | Portrait Height ƒ | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Marvin | individual | 1 | Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | Marvin | Marvin | 1 | 0 | 0 | 1 | 0 | true | person |
 | Randy | individual | 2 | Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | Randy | Randy | 2 | 0 | 0 | 3 | 1 | true | person |
@@ -124,19 +127,59 @@ _ƒ 표시는 계산된 열을 나타냅니다._
 
 | 용어 | 설명 | 부연 설명 |
 |------|-------------|-------------------|
-| **Property** | The ten properties and the wiring every rule reads. | — |
+| **Portrait** | The page's Fandom portraits, including those for characters a reader may add. | — |
+| Display Name | 정의된 속성입니다. | _The name on the portrait's Fandom page._ |
+| Page | 정의된 속성입니다. | _The Fandom page credited for the portrait._ |
+| Image | 정의된 속성입니다. | _The original Fandom image._ |
+| Crop | 정의된 속성입니다. | _The crop as an SVG viewBox: x y width height._ |
+| Width | 정의된 속성입니다. | _The original image's width in pixels._ |
+| Height | 정의된 속성입니다. | _The original image's height in pixels._ |
+| Sort Order | 정의된 속성입니다. | _Position in the credits._ |
+| Name | 같은 레코드의 ‘display name’ 값과 같습니다. | _Order 1. The portrait's name._ |
+
+<details open>
+<summary>예시 데이터</summary>
+
+| Display Name | Page | Image | Crop | Width | Height | Sort Order | Name ƒ |
+|---|---|---|---|---|---|---|---|
+| Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | 1 | Marvin Marsh |
+| Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | 2 | Randy Marsh |
+| Sharon Marsh | https://southpark.fandom.com/wiki/Sharon_Marsh | https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest | 20 -10 390 390 | 439 | 1049 | 3 | Sharon Marsh |
+
+_ƒ 표시는 계산된 열을 나타냅니다._
+
+</details>
+
+| 용어 | 설명 | 부연 설명 |
+|------|-------------|-------------------|
+| **Portrait Aliase** | The names a portrait answers to. A new thing whose name matches an alias gets that portrait. | — |
+| Portrait | 정의된 속성입니다. | _The portrait this name selects._ |
+| Name | 같은 레코드의 ‘portrait alias ID’ 값과 같습니다. | _Order 1. The alias._ |
+
+<details open>
+<summary>예시 데이터</summary>
+
+| Name ƒ |
+|---|
+| marvin |
+| marvin marsh |
+| grandpa marsh |
+
+_ƒ 표시는 계산된 열을 나타냅니다._
+
+</details>
+
+| 용어 | 설명 | 부연 설명 |
+|------|-------------|-------------------|
+| **Property** | The ten properties, with what the symmetric, domain and range rules read. Axioms that relate one property to another (inverse, chain, disjoint) are rows of PropertyAxioms. | — |
 | Label | 정의된 속성입니다. | _The property's wording on the page._ |
 | Property Kind | 정의된 속성입니다. | _'object' links two things, 'datatype' links a thing to a value, 'type' states class membership._ |
 | Datatype | 정의된 속성입니다. | _The value's XML Schema datatype for a datatype property; blank otherwise._ |
 | Is User Addable | 빈 문자열에 참입니다. | _Offered in the page's Add fact form._ |
 | Has One Current Value | 빈 문자열에 참입니다. | _The page keeps one current value per person: switching a value on replaces the earlier one._ |
-| Inverse of | 정의된 속성입니다. | _The property the inverse rule derives from this one._ |
 | Is Symmetric | 빈 문자열에 참입니다. | _The symmetric rule makes this link true in both directions._ |
-| Chain First | 정의된 속성입니다. | _First link of the property chain that derives this property._ |
-| Chain Second | 정의된 속성입니다. | _Second link of the property chain that derives this property._ |
 | Domain Class | 정의된 속성입니다. | _The class the domain rule gives this property's subject._ |
 | Range Class | 정의된 속성입니다. | _The class the range rule gives this property's object._ |
-| Disjoint With | 정의된 속성입니다. | _A property that may not link the same pair, in the same direction, as this one._ |
 | Sort Order | 정의된 속성입니다. | _Position in the Add fact form's property list._ |
 | Value Node Label | 정의된 속성입니다. | _The small label under a value node for this property: 'role value' or 'number value'._ |
 | Current Value Wording | 정의된 속성입니다. | _How the Add fact form names a replaced value, as in 'Stan now has grade level 5'._ |
@@ -153,6 +196,28 @@ _ƒ 표시는 계산된 열을 나타냅니다._
 | is parent of | object | — | true | false | false | 1 | — | — | — | — | — | is parent of |
 | is child of | object | — | true | false | false | 2 | — | — | — | — | — | is child of |
 | is spouse of | object | — | true | false | true | 3 | — | — | — | — | — | is spouse of |
+
+_ƒ 표시는 계산된 열을 나타냅니다._
+
+</details>
+
+| 용어 | 설명 | 부연 설명 |
+|------|-------------|-------------------|
+| **Property Axiom** | Axioms that relate one property to others, as OWL states them: an inverse, a two-link chain, or a disjoint pair. The candidate generator reads these rows. | — |
+| Kind | 정의된 속성입니다. | _inverse, chain or disjoint._ |
+| Property | 정의된 속성입니다. | _The property the axiom is about: the one inverted, the one a chain derives, or the first of a disjoint pair._ |
+| First | 정의된 속성입니다. | _The inverse property, the chain's first link, or the other property of a disjoint pair._ |
+| Second | 정의된 속성입니다. | _The chain's second link._ |
+| Name | 같은 레코드의 ‘property axiom ID’ 값과 같습니다. | _Order 1. The axiom's key._ |
+
+<details open>
+<summary>예시 데이터</summary>
+
+| Name ƒ |
+|---|
+| inverse:isParentOf |
+| disjoint:isParentOf~isSpouseOf |
+| inverse:isChildOf |
 
 _ƒ 표시는 계산된 열을 나타냅니다._
 
@@ -209,6 +274,8 @@ _ƒ 표시는 계산된 열을 나타냅니다._
 | Parent Unit | 우선순위에 따라 결정됩니다: 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘property’ 값이 “isParentOf”인 경우)에는 1; 그 밖의 경우에는 0. | _Order 16. 1 for a holding parent link._ |
 | Grandparent Unit | 우선순위에 따라 결정됩니다: 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘property’ 값이 “isGrandparentOf”인 경우)에는 1; 그 밖의 경우에는 0. | _Order 16. 1 for a holding grandparent link._ |
 | Place Unit | 우선순위에 따라 결정됩니다: 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘property’ 값이 “attends”인 경우)에는 1; 그 밖의 경우에는 0. | _Order 16. 1 for a holding attends link._ |
+| First Pre Chain Order Key | 해당 ‘statement’ 레코드에 연결된 ‘firings’ 레코드 중 ‘pre chain fired unit’에 해당하는 것 전체의 최소 ‘pre chain order key’. | _Order 7. Order key of the first inverse or symmetric application that concludes this fact._ |
+| Snap Position | 우선순위에 따라 결정됩니다: ‘in effect’ 플래그가 설정된 경우에는 ‘sort order’; ‘holds before chain’ 플래그가 설정된 경우에는 100000 더하기 ‘first pre chain order key’; 그 밖의 경우에는 0. | _Order 8. Where the page's reasoner meets this fact as a premise: a stated fact at its list position, a fact concluded by the inverse or symmetric rule after every stated fact, in the order it was concluded; 0 for a fact that does not hold yet, so a link to no fact reads the same on every engine._ |
 | First Fired Order Key | 해당 ‘statement’ 레코드에 연결된 ‘firings’ 레코드 중 ‘fired unit’에 해당하는 것 전체의 최소 ‘order key’. | _Order 15. Order key of the first rule application that concludes this fact, in the page reasoner's order._ |
 | Count of Chosen Firings | 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘chosen unit’. | _Order 20. Rule applications shown as this fact's conclusion card: one for a conclusion, zero otherwise._ |
 | Subject Node Key | 같은 레코드의 ‘subject’ 값과 같습니다. | _Order 1. The graph node this fact starts from._ |
@@ -224,11 +291,11 @@ _ƒ 표시는 계산된 열을 나타냅니다._
 <details open>
 <summary>예시 데이터</summary>
 
-| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 101 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 102 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
+| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Pre Chain Order Key ƒ | Snap Position ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 1.0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100001 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100002 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
 
 _ƒ 표시는 계산된 열을 나타냅니다._
 
@@ -263,13 +330,18 @@ _ƒ 표시는 계산된 열을 나타냅니다._
 | First Property Domain Class | 연결된 ‘first’ 레코드에서 가져온 값입니다. | _Order 2. The premise property's domain class._ |
 | First Property Range Class | 연결된 ‘first’ 레코드에서 가져온 값입니다. | _Order 2. The premise property's range class._ |
 | First Sort Order | 연결된 ‘first’ 레코드에서 가져온 값입니다. | _Order 1. The premise's list position._ |
-| Second Sort Order | 연결된 ‘second’ 레코드에서 가져온 값입니다. | _Order 1. The second premise's list position._ |
+| Second is in Effect | 연결된 ‘second’ 레코드가 ‘in effect’에 해당하는 경우에 참입니다. | _Order 4. Whether the second premise is in effect._ |
+| First Snap Position | 연결된 ‘first’ 레코드에서 가져온 값입니다. | _Order 9. Where the reasoner meets the premise._ |
+| Second Snap Position | 연결된 ‘second’ 레코드에서 가져온 값입니다. | _Order 9. Where the reasoner meets the second premise._ |
 | Inverse Fired Unit | 우선순위에 따라 결정됩니다: 다음 모두에 해당하는 경우(‘rule enabled’ 플래그가 설정된 경우, ‘kind’ 값이 “inverse”인 경우 및 ‘first is in effect’ 플래그가 설정된 경우)에는 1; 그 밖의 경우에는 0. | _Order 5. 1 when the inverse rule fires here._ |
 | Symmetric Fired Unit | 우선순위에 따라 결정됩니다: 다음 모두에 해당하는 경우(‘rule enabled’ 플래그가 설정된 경우, ‘kind’ 값이 “symmetric”인 경우 및 ‘first is in effect’ 플래그가 설정된 경우)에는 1; 그 밖의 경우에는 0. | _Order 5. 1 when the symmetric rule fires here._ |
 | Chain Fired Unit | 우선순위에 따라 결정됩니다: 다음 모두에 해당하는 경우(‘rule enabled’ 플래그가 설정된 경우, ‘kind’ 값이 “chain”인 경우, ‘first holds before chain’ 플래그가 설정된 경우 및 ‘second holds before chain’ 플래그가 설정된 경우)에는 1; 그 밖의 경우에는 0. | _Order 9. 1 when the property chain fires here._ |
 | Type Fired Unit | 우선순위에 따라 결정됩니다: 다음 모두에 해당하는 경우(‘rule enabled’ 플래그가 설정된 경우, 다음 중 하나 이상에 해당하는 경우(‘kind’ 값이 “domain”인 경우 또는 ‘kind’ 값이 “range”인 경우) 및 ‘first holds before typing’ 플래그가 설정된 경우)에는 1; 그 밖의 경우에는 0. | _Order 13. 1 when the domain or range rule fires here._ |
 | Fired Unit | 다음과 같이 계산됩니다: ‘inverse fired unit’ 더하기 ‘symmetric fired unit’ 더하기 ‘chain fired unit’ 더하기 ‘type fired unit’. | _Order 14. 1 when this application fires._ |
-| Order Key | 다음과 같이 계산됩니다: ‘first sort order’ 곱하기 100000 더하기 ‘kind sort order’ 곱하기 1000 더하기 ‘second’ 값이 비어 있는 경우에는 0, 그 밖의 경우에는 ‘second sort order’. | _Order 2. The page reasoner's order: by premise, then rule kind, then second premise._ |
+| Pre Chain Fired Unit | 다음과 같이 계산됩니다: ‘inverse fired unit’ 더하기 ‘symmetric fired unit’. | _Order 6. 1 when this is an inverse or symmetric application that fires._ |
+| Pre Chain Order Key | 다음과 같이 계산됩니다: ‘first sort order’ 곱하기 10 더하기 ‘kind sort order’. | _Order 2. For an inverse or symmetric application: its place in the reasoner's first round._ |
+| Round | 우선순위에 따라 결정됩니다: 다음 모두에 해당하는 경우(‘kind’ 값이 “chain”인 경우 및 다음이 사실이 아닌 경우(다음 모두에 해당하는 경우(‘first is in effect’ 플래그가 설정된 경우 및 ‘second is in effect’ 플래그가 설정된 경우)))에는 2; 그 밖의 경우에는 1. | _Order 5. The reasoner's round: 1 when every premise is a stated fact, 2 when the property chain reads a concluded fact._ |
+| Order Key | 다음과 같이 계산됩니다: ‘round’ 곱하기 1000000000000000 더하기 ‘first snap position’ 곱하기 100000000 더하기 ‘kind sort order’ 곱하기 10000000 더하기 ‘second’ 값이 비어 있는 경우에는 0, 그 밖의 경우에는 ‘second snap position’. | _Order 10. The page reasoner's order: by round, then premise, then rule kind, then second premise._ |
 | Is Chosen | 다음 모두에 해당하는 경우(‘fired unit’ 값이 1인 경우, ‘target is conclusion’ 플래그가 설정된 경우 및 ‘order key’ 값이 ‘target first fired order key’인 경우)에 참입니다. | _Order 18. The application the conclusions panel shows for its fact: the first one in the reasoner's order._ |
 | Chosen Unit | 우선순위에 따라 결정됩니다: ‘chosen’ 플래그가 설정된 경우에는 1; 그 밖의 경우에는 0. | _Order 19. 1 when this application is shown._ |
 | Card Text | 우선순위에 따라 결정됩니다: ‘chosen’ 플래그가 설정된 경우에는 “Worked out by the ”, 이어서 ‘kind wording’, 이어서 “ from “”, 이어서 ‘first words’, 이어서 “””, 이어서 ‘kind’ 값이 “chain”인 경우에는 “ and “”, 이어서 ‘second words’, 이어서 “””, 그 밖의 경우에는 ‘kind’ 값이 “domain”인 경우에는 “ and “”, 이어서 ‘first property’, 이어서 “ has domain ”, 이어서 ‘first property domain class’, 이어서 “””, 그 밖의 경우에는 “ and “”, 이어서 ‘first property’, 이어서 “ has range ”, 이어서 ‘first property range class’, 이어서 “””, 이어서 마침표; 그 밖의 경우에는 빈 문자열. ⚠︎ 기계적 표현 <!-- rulespeak:reword --> | _Order 19. The conclusion card's provenance line, in the page's wording._ |
@@ -278,11 +350,11 @@ _ƒ 표시는 계산된 열을 나타냅니다._
 <details open>
 <summary>예시 데이터</summary>
 
-| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second Sort Order ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | — | 0 | 0 | 0 | 0 | 0 | 101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 101 | — | 0 | 0 | 0 | 0 | 0 | 10101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 102 | — | 0 | 0 | 0 | 0 | 0 | 10201000 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
+| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second is in Effect ƒ | First Snap Position ƒ | Second Snap Position ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Pre Chain Fired Unit ƒ | Pre Chain Order Key ƒ | Round ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | false | 1.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 11.0 | 1 | 1000000110000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 100001 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000011.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 100002 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000021.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
 
 _ƒ 표시는 계산된 열을 나타냅니다._
 
@@ -455,11 +527,60 @@ _ƒ 표시는 계산된 열을 나타냅니다._
 
 </details>
 
+| 용어 | 설명 | 부연 설명 |
+|------|-------------|-------------------|
+| **Engine** | The execution engines the page can be computed by. Each is a build output of this rulebook. | — |
+| Label | 정의된 속성입니다. | _The engine's name in the switcher._ |
+| Substrate | 정의된 속성입니다. | _The conformance harness's name for this substrate._ |
+| Is Default | 빈 문자열에 참입니다. | _The engine a new visitor starts on._ |
+| Description | 정의된 속성입니다. | _What computes the page on this engine._ |
+| Sort Order | 정의된 속성입니다. | _Position in the switcher._ |
+| Name | 같은 레코드의 ‘label’ 값과 같습니다. | _Order 1. The engine's name._ |
+
+<details open>
+<summary>예시 데이터</summary>
+
+| Label | Substrate | Is Default | Description | Sort Order | Name ƒ |
+|---|---|---|---|---|---|
+| Postgres views | effortless-postgres | true | Every value is a column of a generated view; the database computes it when the page reads it. | 1 | Postgres views |
+| TypeScript | effortless-typescript | false | The generated TypeScript computes every field from the same rows, with no database. | 2 | TypeScript |
+| OWL and SHACL rules | effortless-owl | false | The generated ontology and SHACL rules, run over the same rows by a SPARQL engine. | 3 | OWL and SHACL rules |
+
+_ƒ 표시는 계산된 열을 나타냅니다._
+
+</details>
+
+| 용어 | 설명 | 부연 설명 |
+|------|-------------|-------------------|
+| **Rulebook Tool** | What each rulebook tool adds to the original explainer; the tools panel lists them. | — |
+| Label | 정의된 속성입니다. | _The tool's name._ |
+| Adds | 정의된 속성입니다. | _What it adds to the original explainer._ |
+| Href | 정의된 속성입니다. | _Where its link goes; 'editor' means the running rulebook editor._ |
+| Link Text | 정의된 속성입니다. | _The link's text._ |
+| Sort Order | 정의된 속성입니다. | _Position in the panel._ |
+| Name | 같은 레코드의 ‘label’ 값과 같습니다. | _Order 1. The tool's name._ |
+
+<details open>
+<summary>예시 데이터</summary>
+
+| Label | Adds | Href | Link Text | Sort Order | Name ƒ |
+|---|---|---|---|---|---|
+| Interchangeable engines | The same page, computed by Postgres views, generated TypeScript or the generated OWL and SHACL rules. Switch with the control above; nothing else changes. | — | — | 1 | Interchangeable engines |
+| Conformance | Every engine's answers for the current facts, compared value by value with the conformance harness's own rule for when two values are equal. | — | — | 2 | Conformance |
+| Explainer | Hover a dotted value for its rule in plain words and its witness: the values it came from, down to the stated facts. | /rulebook-explainer-dag/pages/index.html | Open the explainer | 3 | Explainer |
+
+_ƒ 표시는 계산된 열을 나타냅니다._
+
+</details>
+
 ## 2 사실 유형
 
 - **firing kind** 레코드는 **rule** 레코드를 정확히 하나 참조합니다
-- **property** 레코드는 **property** 레코드를 하나 참조할 수 있습니다
+- **thing** 레코드는 **portrait** 레코드를 하나 참조할 수 있습니다
+- **portrait aliase** 레코드는 **portrait** 레코드를 정확히 하나 참조합니다
 - **property** 레코드는 **thing** 레코드를 하나 참조할 수 있습니다
+- **property axiom** 레코드는 **firing kind** 레코드를 정확히 하나 참조합니다
+- **property axiom** 레코드는 **property** 레코드를 정확히 하나 참조합니다
 - **statement** 레코드는 **graph** 레코드를 정확히 하나 참조합니다
 - **statement** 레코드는 **thing** 레코드를 정확히 하나 참조합니다
 - **statement** 레코드는 **property** 레코드를 정확히 하나 참조합니다
@@ -490,7 +611,12 @@ Constraints 테이블에서 도출되며, 각 의미적 규칙은 룰북이 이�
 - ‘firing kind’ 레코드는 ‘rule’ 레코드를 정확히 하나 참조**해야 합니다**.
 - ‘firing kind’ 레코드는 ‘wording’ 및 ‘sort order’ 값을 포함**해야 합니다**.
 - ‘thing’ 레코드는 ‘label’, ‘kind’ 및 ‘sort order’ 값을 포함**해야 합니다**.
+- ‘portrait’ 레코드는 ‘display name’, ‘page’, ‘image’, ‘crop’, ‘width’, ‘height’ 및 ‘sort order’ 값을 포함**해야 합니다**.
+- ‘portrait aliase’ 레코드는 ‘portrait’ 레코드를 정확히 하나 참조**해야 합니다**.
 - ‘property’ 레코드는 ‘label’, ‘property kind’ 및 ‘sort order’ 값을 포함하고, 해당 레코드가 ‘user addable’에 해당하는지 여부, 해당 레코드가 ‘one current value’ 항목이 있는지 여부 및 해당 레코드가 ‘symmetric’에 해당하는지 여부를 기록**해야 합니다**.
+- ‘property axiom’ 레코드는 ‘kind’ 필드를 통해 ‘firing kind’ 레코드를 정확히 하나 참조**해야 합니다**.
+- ‘property axiom’ 레코드는 ‘property’ 레코드를 정확히 하나 참조**해야 합니다**.
+- ‘property axiom’ 레코드는 ‘first’ 필드를 통해 ‘property’ 레코드를 정확히 하나 참조**해야 합니다**.
 - ‘statement’ 레코드는 ‘graph’ 레코드를 정확히 하나 참조**해야 합니다**.
 - ‘statement’ 레코드는 ‘subject’ 필드를 통해 ‘thing’ 레코드를 정확히 하나 참조**해야 합니다**.
 - ‘statement’ 레코드는 ‘property’ 레코드를 정확히 하나 참조**해야 합니다**.
@@ -515,6 +641,8 @@ Constraints 테이블에서 도출되며, 각 의미적 규칙은 룰북이 이�
 - ‘node layout’ 레코드는 ‘layout’, ‘node key’, ‘x’ 및 ‘y’ 값을 포함**해야 합니다**.
 - ‘layout slot’ 레코드는 ‘sort order’, ‘x’ 및 ‘y’ 값을 포함**해야 합니다**.
 - ‘page text’ 레코드는 ‘text’ 값을 포함**해야 합니다**.
+- ‘engine’ 레코드는 ‘label’, ‘substrate’, ‘description’ 및 ‘sort order’ 값을 포함하고, 해당 레코드가 ‘default’에 해당하는지 여부를 기록**해야 합니다**.
+- ‘rulebook tool’ 레코드는 ‘label’, ‘adds’ 및 ‘sort order’ 값을 포함**해야 합니다**.
 
 ## 4 정의 규칙
 
@@ -538,116 +666,136 @@ _모든 문장은 비즈니스 영역에서 성립하는 사실을 서술하며,
 | **DR-11 Next Activation Seq** | ‘graph’ 레코드의 ‘next activation seq’ 값은 다음과 같이 계산됩니다: ‘max activation seq’ 더하기 1. |
 | **DR-12 Max Listed Sort Order** | ‘graph’ 레코드의 ‘max listed sort order’ 값은 해당 ‘graph’ 레코드에 연결된 ‘statements’ 레코드 중 ‘listed unit’에 해당하는 것 전체의 최대 ‘sort order’입니다. |
 | **DR-13 Next Listed Sort Order** | ‘graph’ 레코드의 ‘next listed sort order’ 값은 다음과 같이 계산됩니다: ‘max listed sort order’ 더하기 1. |
-| **DR-14 Name** | ‘rule’ 레코드의 ‘name’ 값은 같은 레코드의 ‘label’ 값과 같습니다. |
-| **DR-15 Count of Firings** | ‘rule’ 레코드의 ‘count of firings’ 값은 해당 ‘rule’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘fired unit’입니다. |
-| **DR-16 Name** | ‘firing kind’ 레코드의 ‘name’ 값은 같은 레코드의 ‘wording’ 값과 같습니다. |
-| **DR-17 Rule Enabled** | ‘firing kind’ 레코드의 ‘rule enabled’ 값은 연결된 ‘rule’ 레코드가 ‘enabled’에 해당하는 경우에 참입니다. |
-| **DR-18 Name** | ‘thing’ 레코드의 ‘name’ 값은 같은 레코드의 ‘label’ 값과 같습니다. |
-| **DR-19 Node Key** | ‘thing’ 레코드의 ‘node key’ 값은 같은 레코드의 ‘thing ID’ 값과 같습니다. |
-| **DR-20 Count of Children** | ‘thing’ 레코드의 ‘count of children’ 값은 해당 ‘thing’ 레코드에 연결된 모든 ‘statements’ 레코드의 총 ‘parent unit’입니다. |
-| **DR-21 Count of Grandchildren** | ‘thing’ 레코드의 ‘count of grandchildren’ 값은 해당 ‘thing’ 레코드에 연결된 모든 ‘statements’ 레코드의 총 ‘grandparent unit’입니다. |
-| **DR-22 Count As Place** | ‘thing’ 레코드의 ‘count as place’ 값은 해당 ‘thing’ 레코드에 연결된 모든 ‘statements’ 레코드의 총 ‘place unit’입니다. |
-| **DR-23 Count As Subject** | ‘thing’ 레코드의 ‘count as subject’ 값은 해당 ‘thing’ 레코드에 연결된 모든 ‘statements’ 레코드의 총 ‘holds unit’입니다. |
-| **DR-24 Count As Object** | ‘thing’ 레코드의 ‘count as object’ 값은 해당 ‘thing’ 레코드에 연결된 모든 ‘statements’ 레코드의 총 ‘holds unit’입니다. |
-| **DR-25 Is in Graph** | 다음 중 하나 이상에 해당하는 경우(‘count as subject’ 값이 0보다 큰 경우 또는 ‘count as object’ 값이 0보다 큰 경우), ‘thing’ 레코드는 ‘in graph’에 해당하는 것으로 간주됩니다. |
-| **DR-26 Node Kind** | ‘thing’ 레코드의 ‘node kind’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘kind’ 값이 “class”인 경우: “class”<br>2. ‘count as place’ 값이 0보다 큰 경우: “place”<br>3. 그 밖의 경우: “person”. |
-| **DR-27 Name** | ‘property’ 레코드의 ‘name’ 값은 같은 레코드의 ‘label’ 값과 같습니다. |
-| **DR-28 Subject Label** | ‘statement’ 레코드의 ‘subject label’ 값은 연결된 ‘subject’ 레코드에서 가져옵니다. |
-| **DR-29 Property Label** | ‘statement’ 레코드의 ‘property label’ 값은 연결된 ‘property’ 레코드에서 가져옵니다. |
-| **DR-30 Object Label** | ‘statement’ 레코드의 ‘object label’ 값은 연결된 ‘object thing’ 레코드에서 가져옵니다. |
-| **DR-31 Property Datatype** | ‘statement’ 레코드의 ‘property datatype’ 값은 연결된 ‘property’ 레코드에서 가져옵니다. |
-| **DR-32 Property Has One Current Value** | ‘statement’ 레코드의 ‘property has one current value’ 값은 연결된 ‘property’ 레코드가 ‘one current value’ 항목이 있는 경우에 참입니다. |
-| **DR-33 Property Domain Class** | ‘statement’ 레코드의 ‘property domain class’ 값은 연결된 ‘property’ 레코드에서 가져옵니다. |
-| **DR-34 Property Range Class** | ‘statement’ 레코드의 ‘property range class’ 값은 연결된 ‘property’ 레코드에서 가져옵니다. |
-| **DR-35 Literal Quote** | ‘statement’ 레코드의 ‘literal quote’ 값은 연결된 ‘graph’ 레코드에서 가져옵니다. |
-| **DR-36 Literal Type Marker** | ‘statement’ 레코드의 ‘literal type marker’ 값은 연결된 ‘graph’ 레코드에서 가져옵니다. |
-| **DR-37 Built in Source Text** | ‘statement’ 레코드의 ‘built in source text’ 값은 연결된 ‘graph’ 레코드에서 가져옵니다. |
-| **DR-38 User Source Text** | ‘statement’ 레코드의 ‘user source text’ 값은 연결된 ‘graph’ 레코드에서 가져옵니다. |
-| **DR-39 Next Fact Sort Order** | ‘statement’ 레코드의 ‘next fact sort order’ 값은 연결된 ‘graph’ 레코드에서 가져옵니다. |
-| **DR-40 Is Literal** | ‘object thing’ 값이 비어 있는 경우, ‘statement’ 레코드는 ‘literal’에 해당하는 것으로 간주됩니다. |
-| **DR-41 Object Text** | ‘statement’ 레코드의 ‘object text’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘object thing’ 값이 비어 있는 경우: ‘object value’<br>2. 그 밖의 경우: ‘object label’. |
-| **DR-42 Name** | ‘statement’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘subject label’, 이어서 공백 한 칸, 이어서 ‘property label’, 이어서 공백 한 칸, 이어서 ‘object text’. |
-| **DR-43 Words** | ‘statement’ 레코드의 ‘words’ 값은 다음과 같이 계산됩니다: ‘subject label’, 이어서 공백 한 칸, 이어서 ‘property label’, 이어서 공백 한 칸, 이어서 ‘object thing’ 값이 비어 있는 경우에는 ‘literal quote’, 이어서 ‘object value’, 이어서 ‘literal quote’, 이어서 ‘literal type marker’, 이어서 ‘property datatype’, 그 밖의 경우에는 ‘object label’. ⚠︎ 기계적 표현 <!-- rulespeak:reword --> |
-| **DR-44 Source** | ‘statement’ 레코드의 ‘source’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘built in’ 플래그가 설정된 경우: ‘built in source text’<br>2. 그 밖의 경우: ‘user source text’. |
-| **DR-45 Subject Property Key** | ‘statement’ 레코드의 ‘subject property key’ 값은 다음과 같이 계산됩니다: ‘subject’, 이어서 “|”, 이어서 ‘property’. |
-| **DR-46 Latest Sibling Activation Seq** | ‘statement’ 레코드의 ‘latest sibling activation seq’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘statements’ 레코드의 최대 ‘activation seq’입니다. |
-| **DR-47 Is in Effect** | 다음 모두에 해당하는 경우(‘stated’ 플래그가 설정된 경우 및 다음 중 하나 이상에 해당하는 경우(‘property has one current value’ 플래그가 설정되지 않은 경우 또는 ‘activation seq’ 값이 ‘latest sibling activation seq’인 경우)), ‘statement’ 레코드는 ‘in effect’에 해당하는 것으로 간주됩니다. |
-| **DR-48 Listed Unit** | ‘statement’ 레코드의 ‘listed unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘listed’ 플래그가 설정된 경우: 1<br>2. 그 밖의 경우: 0. |
-| **DR-49 In Effect Unit** | ‘statement’ 레코드의 ‘in effect unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘in effect’ 플래그가 설정된 경우: 1<br>2. 그 밖의 경우: 0. |
-| **DR-50 Listed Off Unit** | ‘statement’ 레코드의 ‘listed off unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘listed’ 플래그가 설정된 경우 및 ‘in effect’ 플래그가 설정되지 않은 경우): 1<br>2. 그 밖의 경우: 0. |
-| **DR-51 Is Next to Add** | 다음 모두에 해당하는 경우(‘listed off unit’ 값이 1인 경우 및 ‘sort order’ 값이 ‘next fact sort order’인 경우), ‘statement’ 레코드는 ‘next to add’에 해당하는 것으로 간주됩니다. |
-| **DR-52 Count of Inverse Firings** | ‘statement’ 레코드의 ‘count of inverse firings’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘inverse fired unit’입니다. |
-| **DR-53 Count of Symmetric Firings** | ‘statement’ 레코드의 ‘count of symmetric firings’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘symmetric fired unit’입니다. |
-| **DR-54 Holds Before Chain** | 다음 중 하나 이상에 해당하는 경우(‘in effect’ 플래그가 설정된 경우, ‘count of inverse firings’ 값이 0보다 큰 경우 또는 ‘count of symmetric firings’ 값이 0보다 큰 경우), ‘statement’ 레코드는 ‘holds before chain’ 조건에 해당하는 것으로 간주됩니다. |
-| **DR-55 Count of Chain Firings** | ‘statement’ 레코드의 ‘count of chain firings’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘chain fired unit’입니다. |
-| **DR-56 Holds Before Typing** | 다음 중 하나 이상에 해당하는 경우(‘holds before chain’ 플래그가 설정된 경우 또는 ‘count of chain firings’ 값이 0보다 큰 경우), ‘statement’ 레코드는 ‘holds before typing’ 조건에 해당하는 것으로 간주됩니다. |
-| **DR-57 Count of Type Firings** | ‘statement’ 레코드의 ‘count of type firings’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘type fired unit’입니다. |
-| **DR-58 Holds** | 다음 중 하나 이상에 해당하는 경우(‘holds before typing’ 플래그가 설정된 경우 또는 ‘count of type firings’ 값이 0보다 큰 경우), ‘statement’ 레코드는 ‘holds’ 조건에 해당하는 것으로 간주됩니다. |
-| **DR-59 Is Conclusion** | 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘in effect’ 플래그가 설정되지 않은 경우), ‘statement’ 레코드는 ‘conclusion’에 해당하는 것으로 간주됩니다. |
-| **DR-60 Holds Unit** | ‘statement’ 레코드의 ‘holds unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘holds’ 플래그가 설정된 경우: 1<br>2. 그 밖의 경우: 0. |
-| **DR-61 Conclusion Unit** | ‘statement’ 레코드의 ‘conclusion unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘conclusion’ 플래그가 설정된 경우: 1<br>2. 그 밖의 경우: 0. |
-| **DR-62 Parent Unit** | ‘statement’ 레코드의 ‘parent unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘property’ 값이 “isParentOf”인 경우): 1<br>2. 그 밖의 경우: 0. |
-| **DR-63 Grandparent Unit** | ‘statement’ 레코드의 ‘grandparent unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘property’ 값이 “isGrandparentOf”인 경우): 1<br>2. 그 밖의 경우: 0. |
-| **DR-64 Place Unit** | ‘statement’ 레코드의 ‘place unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘property’ 값이 “attends”인 경우): 1<br>2. 그 밖의 경우: 0. |
-| **DR-65 First Fired Order Key** | ‘statement’ 레코드의 ‘first fired order key’ 값은 해당 ‘statement’ 레코드에 연결된 ‘firings’ 레코드 중 ‘fired unit’에 해당하는 것 전체의 최소 ‘order key’입니다. |
-| **DR-66 Count of Chosen Firings** | ‘statement’ 레코드의 ‘count of chosen firings’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘chosen unit’입니다. |
-| **DR-67 Subject Node Key** | ‘statement’ 레코드의 ‘subject node key’ 값은 같은 레코드의 ‘subject’ 값과 같습니다. |
-| **DR-68 Object Node Key** | ‘statement’ 레코드의 ‘object node key’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘object thing’ 값이 비어 있는 경우: “literal|”, 이어서 ‘object value’, 이어서 “|”, 이어서 ‘property datatype’<br>2. 그 밖의 경우: ‘object thing’. |
-| **DR-69 Subject Node Kind** | ‘statement’ 레코드의 ‘subject node kind’ 값은 연결된 ‘subject’ 레코드에서 가져옵니다. |
-| **DR-70 Object Thing Node Kind** | ‘statement’ 레코드의 ‘object thing node kind’ 값은 연결된 ‘object thing’ 레코드에서 가져옵니다. |
-| **DR-71 Object Node Kind** | ‘statement’ 레코드의 ‘object node kind’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘object thing’ 값이 비어 있는 경우: “value”<br>2. 그 밖의 경우: ‘object thing node kind’. |
-| **DR-72 Object Value Node Label** | ‘statement’ 레코드의 ‘object value node label’ 값은 연결된 ‘property’ 레코드에서 가져옵니다. |
-| **DR-73 Count of Violations As First** | ‘statement’ 레코드의 ‘count of violations as first’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘disjoint checks’ 레코드의 총 ‘violation unit’입니다. |
-| **DR-74 Count of Violations As Second** | ‘statement’ 레코드의 ‘count of violations as second’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘disjoint checks’ 레코드의 총 ‘violation unit’입니다. |
-| **DR-75 Is in Contradiction** | 다음 중 하나 이상에 해당하는 경우(‘count of violations as first’ 값이 0보다 큰 경우 또는 ‘count of violations as second’ 값이 0보다 큰 경우), ‘statement’ 레코드는 ‘in contradiction’에 해당하는 것으로 간주됩니다. |
-| **DR-76 Rule Enabled** | ‘firing’ 레코드의 ‘rule enabled’ 값은 연결된 ‘rule’ 레코드가 ‘enabled’에 해당하는 경우에 참입니다. |
-| **DR-77 Kind Wording** | ‘firing’ 레코드의 ‘kind wording’ 값은 연결된 ‘kind’ 레코드에서 가져옵니다. |
-| **DR-78 Kind Sort Order** | ‘firing’ 레코드의 ‘kind sort order’ 값은 연결된 ‘kind’ 레코드에서 가져옵니다. |
-| **DR-79 Target Name** | ‘firing’ 레코드의 ‘target name’ 값은 연결된 ‘target’ 레코드에서 가져옵니다. |
-| **DR-80 Target Subject Label** | ‘firing’ 레코드의 ‘target subject label’ 값은 연결된 ‘target’ 레코드에서 가져옵니다. |
-| **DR-81 Target Property Label** | ‘firing’ 레코드의 ‘target property label’ 값은 연결된 ‘target’ 레코드에서 가져옵니다. |
-| **DR-82 Target Object Text** | ‘firing’ 레코드의 ‘target object text’ 값은 연결된 ‘target’ 레코드에서 가져옵니다. |
-| **DR-83 Target is Conclusion** | ‘firing’ 레코드의 ‘target is conclusion’ 값은 연결된 ‘target’ 레코드가 ‘conclusion’에 해당하는 경우에 참입니다. |
-| **DR-84 Target Subject Node Key** | ‘firing’ 레코드의 ‘target subject node key’ 값은 연결된 ‘target’ 레코드에서 가져옵니다. |
-| **DR-85 Target Object Node Key** | ‘firing’ 레코드의 ‘target object node key’ 값은 연결된 ‘target’ 레코드에서 가져옵니다. |
-| **DR-86 Target First Fired Order Key** | ‘firing’ 레코드의 ‘target first fired order key’ 값은 연결된 ‘target’ 레코드에서 가져옵니다. |
-| **DR-87 First Words** | ‘firing’ 레코드의 ‘first words’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
-| **DR-88 Second Words** | ‘firing’ 레코드의 ‘second words’ 값은 연결된 ‘second’ 레코드에서 가져옵니다. |
-| **DR-89 First is in Effect** | ‘firing’ 레코드의 ‘first is in effect’ 값은 연결된 ‘first’ 레코드가 ‘in effect’에 해당하는 경우에 참입니다. |
-| **DR-90 First Holds Before Chain** | ‘firing’ 레코드의 ‘first holds before chain’ 값은 연결된 ‘first’ 레코드가 ‘holds before chain’에 해당하는 경우에 참입니다. |
-| **DR-91 Second Holds Before Chain** | ‘firing’ 레코드의 ‘second holds before chain’ 값은 연결된 ‘second’ 레코드가 ‘holds before chain’에 해당하는 경우에 참입니다. |
-| **DR-92 First Holds Before Typing** | ‘firing’ 레코드의 ‘first holds before typing’ 값은 연결된 ‘first’ 레코드가 ‘holds before typing’에 해당하는 경우에 참입니다. |
-| **DR-93 First Property** | ‘firing’ 레코드의 ‘first property’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
-| **DR-94 First Property Domain Class** | ‘firing’ 레코드의 ‘first property domain class’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
-| **DR-95 First Property Range Class** | ‘firing’ 레코드의 ‘first property range class’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
-| **DR-96 First Sort Order** | ‘firing’ 레코드의 ‘first sort order’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
-| **DR-97 Second Sort Order** | ‘firing’ 레코드의 ‘second sort order’ 값은 연결된 ‘second’ 레코드에서 가져옵니다. |
-| **DR-98 Inverse Fired Unit** | ‘firing’ 레코드의 ‘inverse fired unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘rule enabled’ 플래그가 설정된 경우, ‘kind’ 값이 “inverse”인 경우 및 ‘first is in effect’ 플래그가 설정된 경우): 1<br>2. 그 밖의 경우: 0. |
-| **DR-99 Symmetric Fired Unit** | ‘firing’ 레코드의 ‘symmetric fired unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘rule enabled’ 플래그가 설정된 경우, ‘kind’ 값이 “symmetric”인 경우 및 ‘first is in effect’ 플래그가 설정된 경우): 1<br>2. 그 밖의 경우: 0. |
-| **DR-100 Chain Fired Unit** | ‘firing’ 레코드의 ‘chain fired unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘rule enabled’ 플래그가 설정된 경우, ‘kind’ 값이 “chain”인 경우, ‘first holds before chain’ 플래그가 설정된 경우 및 ‘second holds before chain’ 플래그가 설정된 경우): 1<br>2. 그 밖의 경우: 0. |
-| **DR-101 Type Fired Unit** | ‘firing’ 레코드의 ‘type fired unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘rule enabled’ 플래그가 설정된 경우, 다음 중 하나 이상에 해당하는 경우(‘kind’ 값이 “domain”인 경우 또는 ‘kind’ 값이 “range”인 경우) 및 ‘first holds before typing’ 플래그가 설정된 경우): 1<br>2. 그 밖의 경우: 0. |
-| **DR-102 Fired Unit** | ‘firing’ 레코드의 ‘fired unit’ 값은 다음과 같이 계산됩니다: ‘inverse fired unit’ 더하기 ‘symmetric fired unit’ 더하기 ‘chain fired unit’ 더하기 ‘type fired unit’. |
-| **DR-103 Order Key** | ‘firing’ 레코드의 ‘order key’ 값은 다음과 같이 계산됩니다: ‘first sort order’ 곱하기 100000 더하기 ‘kind sort order’ 곱하기 1000 더하기 ‘second’ 값이 비어 있는 경우에는 0, 그 밖의 경우에는 ‘second sort order’. |
-| **DR-104 Is Chosen** | 다음 모두에 해당하는 경우(‘fired unit’ 값이 1인 경우, ‘target is conclusion’ 플래그가 설정된 경우 및 ‘order key’ 값이 ‘target first fired order key’인 경우), ‘firing’ 레코드는 ‘chosen’에 해당하는 것으로 간주됩니다. |
-| **DR-105 Chosen Unit** | ‘firing’ 레코드의 ‘chosen unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘chosen’ 플래그가 설정된 경우: 1<br>2. 그 밖의 경우: 0. |
-| **DR-106 Card Text** | ‘firing’ 레코드의 ‘card text’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘chosen’ 플래그가 설정된 경우: “Worked out by the ”, 이어서 ‘kind wording’, 이어서 “ from “”, 이어서 ‘first words’, 이어서 “””, 이어서 ‘kind’ 값이 “chain”인 경우에는 “ and “”, 이어서 ‘second words’, 이어서 “””, 그 밖의 경우에는 ‘kind’ 값이 “domain”인 경우에는 “ and “”, 이어서 ‘first property’, 이어서 “ has domain ”, 이어서 ‘first property domain class’, 이어서 “””, 그 밖의 경우에는 “ and “”, 이어서 ‘first property’, 이어서 “ has range ”, 이어서 ‘first property range class’, 이어서 “””, 이어서 마침표<br>2. 그 밖의 경우: 빈 문자열. ⚠︎ 기계적 표현 <!-- rulespeak:reword --> |
-| **DR-107 Name** | ‘firing’ 레코드의 ‘name’ 값은 같은 레코드의 ‘firing ID’ 값과 같습니다. |
-| **DR-108 Rule Enabled** | ‘disjoint check’ 레코드의 ‘rule enabled’ 값은 연결된 ‘rule’ 레코드가 ‘enabled’에 해당하는 경우에 참입니다. |
-| **DR-109 First Holds** | ‘disjoint check’ 레코드의 ‘first holds’ 값은 연결된 ‘first’ 레코드가 ‘holds’에 해당하는 경우에 참입니다. |
-| **DR-110 Second Holds** | ‘disjoint check’ 레코드의 ‘second holds’ 값은 연결된 ‘second’ 레코드가 ‘holds’에 해당하는 경우에 참입니다. |
-| **DR-111 Subject Label** | ‘disjoint check’ 레코드의 ‘subject label’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
-| **DR-112 Object Label** | ‘disjoint check’ 레코드의 ‘object label’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
-| **DR-113 Violation Unit** | ‘disjoint check’ 레코드의 ‘violation unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘rule enabled’ 플래그가 설정된 경우, ‘first holds’ 플래그가 설정된 경우 및 ‘second holds’ 플래그가 설정된 경우): 1<br>2. 그 밖의 경우: 0. |
-| **DR-114 Alarm Text** | ‘disjoint check’ 레코드의 ‘alarm text’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘violation unit’ 값이 1인 경우: “Contradiction found. ”, 이어서 ‘subject label’, 이어서 “ is recorded as both parent and spouse of ”, 이어서 ‘object label’, 이어서 “. Check those facts and the selected disjoint rule.”<br>2. 그 밖의 경우: 빈 문자열. |
-| **DR-115 Name** | ‘disjoint check’ 레코드의 ‘name’ 값은 같은 레코드의 ‘disjoint check ID’ 값과 같습니다. |
-| **DR-116 Name** | ‘scenario’ 레코드의 ‘name’ 값은 같은 레코드의 ‘label’ 값과 같습니다. |
-| **DR-117 Graph Has Facts to Add** | ‘scenario’ 레코드의 ‘graph has facts to add’ 값은 연결된 ‘graph’ 레코드가 ‘facts to add’ 항목이 있는 경우에 참입니다. |
-| **DR-118 Is Available** | 다음 중 하나 이상에 해당하는 경우(‘fact baseline’ 값이 “next” 이외의 값인 경우 또는 ‘graph has facts to add’ 플래그가 설정된 경우), ‘scenario’ 레코드는 ‘available’에 해당하는 것으로 간주됩니다. |
-| **DR-119 Name** | ‘scenario fact change’ 레코드의 ‘name’ 값은 같은 레코드의 ‘scenario fact change ID’ 값과 같습니다. |
-| **DR-120 Name** | ‘scenario rule setting’ 레코드의 ‘name’ 값은 같은 레코드의 ‘scenario rule setting ID’ 값과 같습니다. |
-| **DR-121 Name** | ‘node layout’ 레코드의 ‘name’ 값은 같은 레코드의 ‘node layout ID’ 값과 같습니다. |
-| **DR-122 Name** | ‘layout slot’ 레코드의 ‘name’ 값은 같은 레코드의 ‘layout slot ID’ 값과 같습니다. |
-| **DR-123 Name** | ‘page text’ 레코드의 ‘name’ 값은 같은 레코드의 ‘page text ID’ 값과 같습니다. |
+| **DR-14 Max Sort Order** | ‘graph’ 레코드의 ‘max sort order’ 값은 해당 ‘graph’ 레코드에 연결된 모든 ‘statements’ 레코드의 최대 ‘sort order’입니다. |
+| **DR-15 Next Candidate Sort Order** | ‘graph’ 레코드의 ‘next candidate sort order’ 값은 다음과 같이 계산됩니다: ‘max sort order’ 더하기 1. |
+| **DR-16 Name** | ‘rule’ 레코드의 ‘name’ 값은 같은 레코드의 ‘label’ 값과 같습니다. |
+| **DR-17 Count of Firings** | ‘rule’ 레코드의 ‘count of firings’ 값은 해당 ‘rule’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘fired unit’입니다. |
+| **DR-18 Name** | ‘firing kind’ 레코드의 ‘name’ 값은 같은 레코드의 ‘wording’ 값과 같습니다. |
+| **DR-19 Rule Enabled** | ‘firing kind’ 레코드의 ‘rule enabled’ 값은 연결된 ‘rule’ 레코드가 ‘enabled’에 해당하는 경우에 참입니다. |
+| **DR-20 Portrait Name** | ‘thing’ 레코드의 ‘portrait name’ 값은 연결된 ‘portrait’ 레코드의 ‘display name’ 값입니다. |
+| **DR-21 Portrait Page** | ‘thing’ 레코드의 ‘portrait page’ 값은 연결된 ‘portrait’ 레코드에서 가져옵니다. |
+| **DR-22 Portrait Image** | ‘thing’ 레코드의 ‘portrait image’ 값은 연결된 ‘portrait’ 레코드에서 가져옵니다. |
+| **DR-23 Portrait Crop** | ‘thing’ 레코드의 ‘portrait crop’ 값은 연결된 ‘portrait’ 레코드에서 가져옵니다. |
+| **DR-24 Portrait Width** | ‘thing’ 레코드의 ‘portrait width’ 값은 연결된 ‘portrait’ 레코드에서 가져옵니다. |
+| **DR-25 Portrait Height** | ‘thing’ 레코드의 ‘portrait height’ 값은 연결된 ‘portrait’ 레코드에서 가져옵니다. |
+| **DR-26 Name** | ‘thing’ 레코드의 ‘name’ 값은 같은 레코드의 ‘label’ 값과 같습니다. |
+| **DR-27 Node Key** | ‘thing’ 레코드의 ‘node key’ 값은 같은 레코드의 ‘thing ID’ 값과 같습니다. |
+| **DR-28 Count of Children** | ‘thing’ 레코드의 ‘count of children’ 값은 해당 ‘thing’ 레코드에 연결된 모든 ‘statements’ 레코드의 총 ‘parent unit’입니다. |
+| **DR-29 Count of Grandchildren** | ‘thing’ 레코드의 ‘count of grandchildren’ 값은 해당 ‘thing’ 레코드에 연결된 모든 ‘statements’ 레코드의 총 ‘grandparent unit’입니다. |
+| **DR-30 Count As Place** | ‘thing’ 레코드의 ‘count as place’ 값은 해당 ‘thing’ 레코드에 연결된 모든 ‘statements’ 레코드의 총 ‘place unit’입니다. |
+| **DR-31 Count As Subject** | ‘thing’ 레코드의 ‘count as subject’ 값은 해당 ‘thing’ 레코드에 연결된 모든 ‘statements’ 레코드의 총 ‘holds unit’입니다. |
+| **DR-32 Count As Object** | ‘thing’ 레코드의 ‘count as object’ 값은 해당 ‘thing’ 레코드에 연결된 모든 ‘statements’ 레코드의 총 ‘holds unit’입니다. |
+| **DR-33 Is in Graph** | 다음 중 하나 이상에 해당하는 경우(‘count as subject’ 값이 0보다 큰 경우 또는 ‘count as object’ 값이 0보다 큰 경우), ‘thing’ 레코드는 ‘in graph’에 해당하는 것으로 간주됩니다. |
+| **DR-34 Node Kind** | ‘thing’ 레코드의 ‘node kind’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘kind’ 값이 비어 있는 경우: 빈 문자열<br>2. ‘kind’ 값이 “class”인 경우: “class”<br>3. ‘count as place’ 값이 0보다 큰 경우: “place”<br>4. 그 밖의 경우: “person”. |
+| **DR-35 Name** | ‘portrait’ 레코드의 ‘name’ 값은 같은 레코드의 ‘display name’ 값과 같습니다. |
+| **DR-36 Name** | ‘portrait aliase’ 레코드의 ‘name’ 값은 같은 레코드의 ‘portrait alias ID’ 값과 같습니다. |
+| **DR-37 Name** | ‘property’ 레코드의 ‘name’ 값은 같은 레코드의 ‘label’ 값과 같습니다. |
+| **DR-38 Name** | ‘property axiom’ 레코드의 ‘name’ 값은 같은 레코드의 ‘property axiom ID’ 값과 같습니다. |
+| **DR-39 Subject Label** | ‘statement’ 레코드의 ‘subject label’ 값은 연결된 ‘subject’ 레코드에서 가져옵니다. |
+| **DR-40 Property Label** | ‘statement’ 레코드의 ‘property label’ 값은 연결된 ‘property’ 레코드에서 가져옵니다. |
+| **DR-41 Object Label** | ‘statement’ 레코드의 ‘object label’ 값은 연결된 ‘object thing’ 레코드에서 가져옵니다. |
+| **DR-42 Property Datatype** | ‘statement’ 레코드의 ‘property datatype’ 값은 연결된 ‘property’ 레코드에서 가져옵니다. |
+| **DR-43 Property Has One Current Value** | ‘statement’ 레코드의 ‘property has one current value’ 값은 연결된 ‘property’ 레코드가 ‘one current value’ 항목이 있는 경우에 참입니다. |
+| **DR-44 Property Domain Class** | ‘statement’ 레코드의 ‘property domain class’ 값은 연결된 ‘property’ 레코드에서 가져옵니다. |
+| **DR-45 Property Range Class** | ‘statement’ 레코드의 ‘property range class’ 값은 연결된 ‘property’ 레코드에서 가져옵니다. |
+| **DR-46 Literal Quote** | ‘statement’ 레코드의 ‘literal quote’ 값은 연결된 ‘graph’ 레코드에서 가져옵니다. |
+| **DR-47 Literal Type Marker** | ‘statement’ 레코드의 ‘literal type marker’ 값은 연결된 ‘graph’ 레코드에서 가져옵니다. |
+| **DR-48 Built in Source Text** | ‘statement’ 레코드의 ‘built in source text’ 값은 연결된 ‘graph’ 레코드에서 가져옵니다. |
+| **DR-49 User Source Text** | ‘statement’ 레코드의 ‘user source text’ 값은 연결된 ‘graph’ 레코드에서 가져옵니다. |
+| **DR-50 Next Fact Sort Order** | ‘statement’ 레코드의 ‘next fact sort order’ 값은 연결된 ‘graph’ 레코드에서 가져옵니다. |
+| **DR-51 Is Literal** | ‘object thing’ 값이 비어 있는 경우, ‘statement’ 레코드는 ‘literal’에 해당하는 것으로 간주됩니다. |
+| **DR-52 Object Text** | ‘statement’ 레코드의 ‘object text’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘object thing’ 값이 비어 있는 경우: ‘object value’<br>2. 그 밖의 경우: ‘object label’. |
+| **DR-53 Name** | ‘statement’ 레코드의 ‘name’ 값은 다음과 같이 계산됩니다: ‘subject label’, 이어서 공백 한 칸, 이어서 ‘property label’, 이어서 공백 한 칸, 이어서 ‘object text’. |
+| **DR-54 Words** | ‘statement’ 레코드의 ‘words’ 값은 다음과 같이 계산됩니다: ‘subject label’, 이어서 공백 한 칸, 이어서 ‘property label’, 이어서 공백 한 칸, 이어서 ‘object thing’ 값이 비어 있는 경우에는 ‘literal quote’, 이어서 ‘object value’, 이어서 ‘literal quote’, 이어서 ‘literal type marker’, 이어서 ‘property datatype’, 그 밖의 경우에는 ‘object label’. ⚠︎ 기계적 표현 <!-- rulespeak:reword --> |
+| **DR-55 Source** | ‘statement’ 레코드의 ‘source’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘built in’ 플래그가 설정된 경우: ‘built in source text’<br>2. 그 밖의 경우: ‘user source text’. |
+| **DR-56 Subject Property Key** | ‘statement’ 레코드의 ‘subject property key’ 값은 다음과 같이 계산됩니다: ‘subject’, 이어서 “|”, 이어서 ‘property’. |
+| **DR-57 Latest Sibling Activation Seq** | ‘statement’ 레코드의 ‘latest sibling activation seq’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘statements’ 레코드의 최대 ‘activation seq’입니다. |
+| **DR-58 Is in Effect** | 다음 모두에 해당하는 경우(‘stated’ 플래그가 설정된 경우 및 다음 중 하나 이상에 해당하는 경우(‘property has one current value’ 플래그가 설정되지 않은 경우 또는 ‘activation seq’ 값이 ‘latest sibling activation seq’인 경우)), ‘statement’ 레코드는 ‘in effect’에 해당하는 것으로 간주됩니다. |
+| **DR-59 Listed Unit** | ‘statement’ 레코드의 ‘listed unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘listed’ 플래그가 설정된 경우: 1<br>2. 그 밖의 경우: 0. |
+| **DR-60 In Effect Unit** | ‘statement’ 레코드의 ‘in effect unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘in effect’ 플래그가 설정된 경우: 1<br>2. 그 밖의 경우: 0. |
+| **DR-61 Listed Off Unit** | ‘statement’ 레코드의 ‘listed off unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘listed’ 플래그가 설정된 경우 및 ‘in effect’ 플래그가 설정되지 않은 경우): 1<br>2. 그 밖의 경우: 0. |
+| **DR-62 Is Next to Add** | 다음 모두에 해당하는 경우(‘listed off unit’ 값이 1인 경우 및 ‘sort order’ 값이 ‘next fact sort order’인 경우), ‘statement’ 레코드는 ‘next to add’에 해당하는 것으로 간주됩니다. |
+| **DR-63 Count of Inverse Firings** | ‘statement’ 레코드의 ‘count of inverse firings’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘inverse fired unit’입니다. |
+| **DR-64 Count of Symmetric Firings** | ‘statement’ 레코드의 ‘count of symmetric firings’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘symmetric fired unit’입니다. |
+| **DR-65 Holds Before Chain** | 다음 중 하나 이상에 해당하는 경우(‘in effect’ 플래그가 설정된 경우, ‘count of inverse firings’ 값이 0보다 큰 경우 또는 ‘count of symmetric firings’ 값이 0보다 큰 경우), ‘statement’ 레코드는 ‘holds before chain’ 조건에 해당하는 것으로 간주됩니다. |
+| **DR-66 Count of Chain Firings** | ‘statement’ 레코드의 ‘count of chain firings’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘chain fired unit’입니다. |
+| **DR-67 Holds Before Typing** | 다음 중 하나 이상에 해당하는 경우(‘holds before chain’ 플래그가 설정된 경우 또는 ‘count of chain firings’ 값이 0보다 큰 경우), ‘statement’ 레코드는 ‘holds before typing’ 조건에 해당하는 것으로 간주됩니다. |
+| **DR-68 Count of Type Firings** | ‘statement’ 레코드의 ‘count of type firings’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘type fired unit’입니다. |
+| **DR-69 Holds** | 다음 중 하나 이상에 해당하는 경우(‘holds before typing’ 플래그가 설정된 경우 또는 ‘count of type firings’ 값이 0보다 큰 경우), ‘statement’ 레코드는 ‘holds’ 조건에 해당하는 것으로 간주됩니다. |
+| **DR-70 Is Conclusion** | 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘in effect’ 플래그가 설정되지 않은 경우), ‘statement’ 레코드는 ‘conclusion’에 해당하는 것으로 간주됩니다. |
+| **DR-71 Holds Unit** | ‘statement’ 레코드의 ‘holds unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘holds’ 플래그가 설정된 경우: 1<br>2. 그 밖의 경우: 0. |
+| **DR-72 Conclusion Unit** | ‘statement’ 레코드의 ‘conclusion unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘conclusion’ 플래그가 설정된 경우: 1<br>2. 그 밖의 경우: 0. |
+| **DR-73 Parent Unit** | ‘statement’ 레코드의 ‘parent unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘property’ 값이 “isParentOf”인 경우): 1<br>2. 그 밖의 경우: 0. |
+| **DR-74 Grandparent Unit** | ‘statement’ 레코드의 ‘grandparent unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘property’ 값이 “isGrandparentOf”인 경우): 1<br>2. 그 밖의 경우: 0. |
+| **DR-75 Place Unit** | ‘statement’ 레코드의 ‘place unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘property’ 값이 “attends”인 경우): 1<br>2. 그 밖의 경우: 0. |
+| **DR-76 First Pre Chain Order Key** | ‘statement’ 레코드의 ‘first pre chain order key’ 값은 해당 ‘statement’ 레코드에 연결된 ‘firings’ 레코드 중 ‘pre chain fired unit’에 해당하는 것 전체의 최소 ‘pre chain order key’입니다. |
+| **DR-77 Snap Position** | ‘statement’ 레코드의 ‘snap position’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘in effect’ 플래그가 설정된 경우: ‘sort order’<br>2. ‘holds before chain’ 플래그가 설정된 경우: 100000 더하기 ‘first pre chain order key’<br>3. 그 밖의 경우: 0. |
+| **DR-78 First Fired Order Key** | ‘statement’ 레코드의 ‘first fired order key’ 값은 해당 ‘statement’ 레코드에 연결된 ‘firings’ 레코드 중 ‘fired unit’에 해당하는 것 전체의 최소 ‘order key’입니다. |
+| **DR-79 Count of Chosen Firings** | ‘statement’ 레코드의 ‘count of chosen firings’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘chosen unit’입니다. |
+| **DR-80 Subject Node Key** | ‘statement’ 레코드의 ‘subject node key’ 값은 같은 레코드의 ‘subject’ 값과 같습니다. |
+| **DR-81 Object Node Key** | ‘statement’ 레코드의 ‘object node key’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘object thing’ 값이 비어 있는 경우: “literal|”, 이어서 ‘object value’, 이어서 “|”, 이어서 ‘property datatype’<br>2. 그 밖의 경우: ‘object thing’. |
+| **DR-82 Subject Node Kind** | ‘statement’ 레코드의 ‘subject node kind’ 값은 연결된 ‘subject’ 레코드에서 가져옵니다. |
+| **DR-83 Object Thing Node Kind** | ‘statement’ 레코드의 ‘object thing node kind’ 값은 연결된 ‘object thing’ 레코드에서 가져옵니다. |
+| **DR-84 Object Node Kind** | ‘statement’ 레코드의 ‘object node kind’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘object thing’ 값이 비어 있는 경우: “value”<br>2. 그 밖의 경우: ‘object thing node kind’. |
+| **DR-85 Object Value Node Label** | ‘statement’ 레코드의 ‘object value node label’ 값은 연결된 ‘property’ 레코드에서 가져옵니다. |
+| **DR-86 Count of Violations As First** | ‘statement’ 레코드의 ‘count of violations as first’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘disjoint checks’ 레코드의 총 ‘violation unit’입니다. |
+| **DR-87 Count of Violations As Second** | ‘statement’ 레코드의 ‘count of violations as second’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘disjoint checks’ 레코드의 총 ‘violation unit’입니다. |
+| **DR-88 Is in Contradiction** | 다음 중 하나 이상에 해당하는 경우(‘count of violations as first’ 값이 0보다 큰 경우 또는 ‘count of violations as second’ 값이 0보다 큰 경우), ‘statement’ 레코드는 ‘in contradiction’에 해당하는 것으로 간주됩니다. |
+| **DR-89 Rule Enabled** | ‘firing’ 레코드의 ‘rule enabled’ 값은 연결된 ‘rule’ 레코드가 ‘enabled’에 해당하는 경우에 참입니다. |
+| **DR-90 Kind Wording** | ‘firing’ 레코드의 ‘kind wording’ 값은 연결된 ‘kind’ 레코드에서 가져옵니다. |
+| **DR-91 Kind Sort Order** | ‘firing’ 레코드의 ‘kind sort order’ 값은 연결된 ‘kind’ 레코드에서 가져옵니다. |
+| **DR-92 Target Name** | ‘firing’ 레코드의 ‘target name’ 값은 연결된 ‘target’ 레코드에서 가져옵니다. |
+| **DR-93 Target Subject Label** | ‘firing’ 레코드의 ‘target subject label’ 값은 연결된 ‘target’ 레코드에서 가져옵니다. |
+| **DR-94 Target Property Label** | ‘firing’ 레코드의 ‘target property label’ 값은 연결된 ‘target’ 레코드에서 가져옵니다. |
+| **DR-95 Target Object Text** | ‘firing’ 레코드의 ‘target object text’ 값은 연결된 ‘target’ 레코드에서 가져옵니다. |
+| **DR-96 Target is Conclusion** | ‘firing’ 레코드의 ‘target is conclusion’ 값은 연결된 ‘target’ 레코드가 ‘conclusion’에 해당하는 경우에 참입니다. |
+| **DR-97 Target Subject Node Key** | ‘firing’ 레코드의 ‘target subject node key’ 값은 연결된 ‘target’ 레코드에서 가져옵니다. |
+| **DR-98 Target Object Node Key** | ‘firing’ 레코드의 ‘target object node key’ 값은 연결된 ‘target’ 레코드에서 가져옵니다. |
+| **DR-99 Target First Fired Order Key** | ‘firing’ 레코드의 ‘target first fired order key’ 값은 연결된 ‘target’ 레코드에서 가져옵니다. |
+| **DR-100 First Words** | ‘firing’ 레코드의 ‘first words’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
+| **DR-101 Second Words** | ‘firing’ 레코드의 ‘second words’ 값은 연결된 ‘second’ 레코드에서 가져옵니다. |
+| **DR-102 First is in Effect** | ‘firing’ 레코드의 ‘first is in effect’ 값은 연결된 ‘first’ 레코드가 ‘in effect’에 해당하는 경우에 참입니다. |
+| **DR-103 First Holds Before Chain** | ‘firing’ 레코드의 ‘first holds before chain’ 값은 연결된 ‘first’ 레코드가 ‘holds before chain’에 해당하는 경우에 참입니다. |
+| **DR-104 Second Holds Before Chain** | ‘firing’ 레코드의 ‘second holds before chain’ 값은 연결된 ‘second’ 레코드가 ‘holds before chain’에 해당하는 경우에 참입니다. |
+| **DR-105 First Holds Before Typing** | ‘firing’ 레코드의 ‘first holds before typing’ 값은 연결된 ‘first’ 레코드가 ‘holds before typing’에 해당하는 경우에 참입니다. |
+| **DR-106 First Property** | ‘firing’ 레코드의 ‘first property’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
+| **DR-107 First Property Domain Class** | ‘firing’ 레코드의 ‘first property domain class’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
+| **DR-108 First Property Range Class** | ‘firing’ 레코드의 ‘first property range class’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
+| **DR-109 First Sort Order** | ‘firing’ 레코드의 ‘first sort order’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
+| **DR-110 Second is in Effect** | ‘firing’ 레코드의 ‘second is in effect’ 값은 연결된 ‘second’ 레코드가 ‘in effect’에 해당하는 경우에 참입니다. |
+| **DR-111 First Snap Position** | ‘firing’ 레코드의 ‘first snap position’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
+| **DR-112 Second Snap Position** | ‘firing’ 레코드의 ‘second snap position’ 값은 연결된 ‘second’ 레코드에서 가져옵니다. |
+| **DR-113 Inverse Fired Unit** | ‘firing’ 레코드의 ‘inverse fired unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘rule enabled’ 플래그가 설정된 경우, ‘kind’ 값이 “inverse”인 경우 및 ‘first is in effect’ 플래그가 설정된 경우): 1<br>2. 그 밖의 경우: 0. |
+| **DR-114 Symmetric Fired Unit** | ‘firing’ 레코드의 ‘symmetric fired unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘rule enabled’ 플래그가 설정된 경우, ‘kind’ 값이 “symmetric”인 경우 및 ‘first is in effect’ 플래그가 설정된 경우): 1<br>2. 그 밖의 경우: 0. |
+| **DR-115 Chain Fired Unit** | ‘firing’ 레코드의 ‘chain fired unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘rule enabled’ 플래그가 설정된 경우, ‘kind’ 값이 “chain”인 경우, ‘first holds before chain’ 플래그가 설정된 경우 및 ‘second holds before chain’ 플래그가 설정된 경우): 1<br>2. 그 밖의 경우: 0. |
+| **DR-116 Type Fired Unit** | ‘firing’ 레코드의 ‘type fired unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘rule enabled’ 플래그가 설정된 경우, 다음 중 하나 이상에 해당하는 경우(‘kind’ 값이 “domain”인 경우 또는 ‘kind’ 값이 “range”인 경우) 및 ‘first holds before typing’ 플래그가 설정된 경우): 1<br>2. 그 밖의 경우: 0. |
+| **DR-117 Fired Unit** | ‘firing’ 레코드의 ‘fired unit’ 값은 다음과 같이 계산됩니다: ‘inverse fired unit’ 더하기 ‘symmetric fired unit’ 더하기 ‘chain fired unit’ 더하기 ‘type fired unit’. |
+| **DR-118 Pre Chain Fired Unit** | ‘firing’ 레코드의 ‘pre chain fired unit’ 값은 다음과 같이 계산됩니다: ‘inverse fired unit’ 더하기 ‘symmetric fired unit’. |
+| **DR-119 Pre Chain Order Key** | ‘firing’ 레코드의 ‘pre chain order key’ 값은 다음과 같이 계산됩니다: ‘first sort order’ 곱하기 10 더하기 ‘kind sort order’. |
+| **DR-120 Round** | ‘firing’ 레코드의 ‘round’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘kind’ 값이 “chain”인 경우 및 다음이 사실이 아닌 경우(다음 모두에 해당하는 경우(‘first is in effect’ 플래그가 설정된 경우 및 ‘second is in effect’ 플래그가 설정된 경우))): 2<br>2. 그 밖의 경우: 1. |
+| **DR-121 Order Key** | ‘firing’ 레코드의 ‘order key’ 값은 다음과 같이 계산됩니다: ‘round’ 곱하기 1000000000000000 더하기 ‘first snap position’ 곱하기 100000000 더하기 ‘kind sort order’ 곱하기 10000000 더하기 ‘second’ 값이 비어 있는 경우에는 0, 그 밖의 경우에는 ‘second snap position’. |
+| **DR-122 Is Chosen** | 다음 모두에 해당하는 경우(‘fired unit’ 값이 1인 경우, ‘target is conclusion’ 플래그가 설정된 경우 및 ‘order key’ 값이 ‘target first fired order key’인 경우), ‘firing’ 레코드는 ‘chosen’에 해당하는 것으로 간주됩니다. |
+| **DR-123 Chosen Unit** | ‘firing’ 레코드의 ‘chosen unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘chosen’ 플래그가 설정된 경우: 1<br>2. 그 밖의 경우: 0. |
+| **DR-124 Card Text** | ‘firing’ 레코드의 ‘card text’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘chosen’ 플래그가 설정된 경우: “Worked out by the ”, 이어서 ‘kind wording’, 이어서 “ from “”, 이어서 ‘first words’, 이어서 “””, 이어서 ‘kind’ 값이 “chain”인 경우에는 “ and “”, 이어서 ‘second words’, 이어서 “””, 그 밖의 경우에는 ‘kind’ 값이 “domain”인 경우에는 “ and “”, 이어서 ‘first property’, 이어서 “ has domain ”, 이어서 ‘first property domain class’, 이어서 “””, 그 밖의 경우에는 “ and “”, 이어서 ‘first property’, 이어서 “ has range ”, 이어서 ‘first property range class’, 이어서 “””, 이어서 마침표<br>2. 그 밖의 경우: 빈 문자열. ⚠︎ 기계적 표현 <!-- rulespeak:reword --> |
+| **DR-125 Name** | ‘firing’ 레코드의 ‘name’ 값은 같은 레코드의 ‘firing ID’ 값과 같습니다. |
+| **DR-126 Rule Enabled** | ‘disjoint check’ 레코드의 ‘rule enabled’ 값은 연결된 ‘rule’ 레코드가 ‘enabled’에 해당하는 경우에 참입니다. |
+| **DR-127 First Holds** | ‘disjoint check’ 레코드의 ‘first holds’ 값은 연결된 ‘first’ 레코드가 ‘holds’에 해당하는 경우에 참입니다. |
+| **DR-128 Second Holds** | ‘disjoint check’ 레코드의 ‘second holds’ 값은 연결된 ‘second’ 레코드가 ‘holds’에 해당하는 경우에 참입니다. |
+| **DR-129 Subject Label** | ‘disjoint check’ 레코드의 ‘subject label’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
+| **DR-130 Object Label** | ‘disjoint check’ 레코드의 ‘object label’ 값은 연결된 ‘first’ 레코드에서 가져옵니다. |
+| **DR-131 Violation Unit** | ‘disjoint check’ 레코드의 ‘violation unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘rule enabled’ 플래그가 설정된 경우, ‘first holds’ 플래그가 설정된 경우 및 ‘second holds’ 플래그가 설정된 경우): 1<br>2. 그 밖의 경우: 0. |
+| **DR-132 Alarm Text** | ‘disjoint check’ 레코드의 ‘alarm text’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘violation unit’ 값이 1인 경우: “Contradiction found. ”, 이어서 ‘subject label’, 이어서 “ is recorded as both parent and spouse of ”, 이어서 ‘object label’, 이어서 “. Check those facts and the selected disjoint rule.”<br>2. 그 밖의 경우: 빈 문자열. |
+| **DR-133 Name** | ‘disjoint check’ 레코드의 ‘name’ 값은 같은 레코드의 ‘disjoint check ID’ 값과 같습니다. |
+| **DR-134 Name** | ‘scenario’ 레코드의 ‘name’ 값은 같은 레코드의 ‘label’ 값과 같습니다. |
+| **DR-135 Graph Has Facts to Add** | ‘scenario’ 레코드의 ‘graph has facts to add’ 값은 연결된 ‘graph’ 레코드가 ‘facts to add’ 항목이 있는 경우에 참입니다. |
+| **DR-136 Is Available** | 다음 중 하나 이상에 해당하는 경우(‘fact baseline’ 값이 “next” 이외의 값인 경우 또는 ‘graph has facts to add’ 플래그가 설정된 경우), ‘scenario’ 레코드는 ‘available’에 해당하는 것으로 간주됩니다. |
+| **DR-137 Name** | ‘scenario fact change’ 레코드의 ‘name’ 값은 같은 레코드의 ‘scenario fact change ID’ 값과 같습니다. |
+| **DR-138 Name** | ‘scenario rule setting’ 레코드의 ‘name’ 값은 같은 레코드의 ‘scenario rule setting ID’ 값과 같습니다. |
+| **DR-139 Name** | ‘node layout’ 레코드의 ‘name’ 값은 같은 레코드의 ‘node layout ID’ 값과 같습니다. |
+| **DR-140 Name** | ‘layout slot’ 레코드의 ‘name’ 값은 같은 레코드의 ‘layout slot ID’ 값과 같습니다. |
+| **DR-141 Name** | ‘page text’ 레코드의 ‘name’ 값은 같은 레코드의 ‘page text ID’ 값과 같습니다. |
+| **DR-142 Name** | ‘engine’ 레코드의 ‘name’ 값은 같은 레코드의 ‘label’ 값과 같습니다. |
+| **DR-143 Name** | ‘rulebook tool’ 레코드의 ‘name’ 값은 같은 레코드의 ‘label’ 값과 같습니다. |
 
 ## 5 스키마 추적성
 
@@ -669,10 +817,18 @@ _표현식 열은 문서 표기법으로 적은 규칙의 정의입니다.
 | **Graphs.NextActivationSeq** | 수식 | `MaxActivationSeq + 1` |
 | **Graphs.MaxListedSortOrder** | 집계 | `Max(Statements.SortOrder via Graph)` |
 | **Graphs.NextListedSortOrder** | 수식 | `MaxListedSortOrder + 1` |
+| **Graphs.MaxSortOrder** | 집계 | `Max(Statements.SortOrder via Graph)` |
+| **Graphs.NextCandidateSortOrder** | 수식 | `MaxSortOrder + 1` |
 | **Rules.Name** | 수식 | `Label` |
 | **Rules.CountOfFirings** | 집계 | `Sum(Firings.FiredUnit via Rule)` |
 | **FiringKinds.Name** | 수식 | `Wording` |
 | **FiringKinds.RuleEnabled** | 조회 | `Lookup(Rules.IsEnabled via Rule)` |
+| **Things.PortraitName** | 조회 | `Lookup(Portraits.DisplayName via Portrait)` |
+| **Things.PortraitPage** | 조회 | `Lookup(Portraits.Page via Portrait)` |
+| **Things.PortraitImage** | 조회 | `Lookup(Portraits.Image via Portrait)` |
+| **Things.PortraitCrop** | 조회 | `Lookup(Portraits.Crop via Portrait)` |
+| **Things.PortraitWidth** | 조회 | `Lookup(Portraits.Width via Portrait)` |
+| **Things.PortraitHeight** | 조회 | `Lookup(Portraits.Height via Portrait)` |
 | **Things.Name** | 수식 | `Label` |
 | **Things.NodeKey** | 수식 | `ThingId` |
 | **Things.CountOfChildren** | 집계 | `Sum(Statements.ParentUnit via Subject)` |
@@ -681,8 +837,11 @@ _표현식 열은 문서 표기법으로 적은 규칙의 정의입니다.
 | **Things.CountAsSubject** | 집계 | `Sum(Statements.HoldsUnit via Subject)` |
 | **Things.CountAsObject** | 집계 | `Sum(Statements.HoldsUnit via ObjectThing)` |
 | **Things.IsInGraph** | 수식 | `Or(CountAsSubject > 0, CountAsObject > 0)` |
-| **Things.NodeKind** | 수식 | `If(Kind = "class", "class", If(CountAsPlace > 0, "place", "person"))` |
+| **Things.NodeKind** | 수식 | `If(Kind = "", "", If(Kind = "class", "class", If(CountAsPlace > 0, "place", "person")))` |
+| **Portraits.Name** | 수식 | `DisplayName` |
+| **PortraitAliases.Name** | 수식 | `PortraitAliasId` |
 | **Properties.Name** | 수식 | `Label` |
+| **PropertyAxioms.Name** | 수식 | `PropertyAxiomId` |
 | **Statements.SubjectLabel** | 조회 | `Lookup(Things.Label via Subject)` |
 | **Statements.PropertyLabel** | 조회 | `Lookup(Properties.Label via Property)` |
 | **Statements.ObjectLabel** | 조회 | `Lookup(Things.Label via ObjectThing)` |
@@ -720,6 +879,8 @@ _표현식 열은 문서 표기법으로 적은 규칙의 정의입니다.
 | **Statements.ParentUnit** | 수식 | `If(And(Holds, Property = "isParentOf"), 1, 0)` |
 | **Statements.GrandparentUnit** | 수식 | `If(And(Holds, Property = "isGrandparentOf"), 1, 0)` |
 | **Statements.PlaceUnit** | 수식 | `If(And(Holds, Property = "attends"), 1, 0)` |
+| **Statements.FirstPreChainOrderKey** | 집계 | `Min(Firings.PreChainOrderKey via Target)` |
+| **Statements.SnapPosition** | 수식 | `If(IsInEffect, SortOrder, If(HoldsBeforeChain, 100000 + FirstPreChainOrderKey, 0))` |
 | **Statements.FirstFiredOrderKey** | 집계 | `Min(Firings.OrderKey via Target)` |
 | **Statements.CountOfChosenFirings** | 집계 | `Sum(Firings.ChosenUnit via Target)` |
 | **Statements.SubjectNodeKey** | 수식 | `Subject` |
@@ -752,13 +913,18 @@ _표현식 열은 문서 표기법으로 적은 규칙의 정의입니다.
 | **Firings.FirstPropertyDomainClass** | 조회 | `Lookup(Statements.PropertyDomainClass via First)` |
 | **Firings.FirstPropertyRangeClass** | 조회 | `Lookup(Statements.PropertyRangeClass via First)` |
 | **Firings.FirstSortOrder** | 조회 | `Lookup(Statements.SortOrder via First)` |
-| **Firings.SecondSortOrder** | 조회 | `Lookup(Statements.SortOrder via Second)` |
+| **Firings.SecondIsInEffect** | 조회 | `Lookup(Statements.IsInEffect via Second)` |
+| **Firings.FirstSnapPosition** | 조회 | `Lookup(Statements.SnapPosition via First)` |
+| **Firings.SecondSnapPosition** | 조회 | `Lookup(Statements.SnapPosition via Second)` |
 | **Firings.InverseFiredUnit** | 수식 | `If(And(RuleEnabled, Kind = "inverse", FirstIsInEffect), 1, 0)` |
 | **Firings.SymmetricFiredUnit** | 수식 | `If(And(RuleEnabled, Kind = "symmetric", FirstIsInEffect), 1, 0)` |
 | **Firings.ChainFiredUnit** | 수식 | `If(And(RuleEnabled, Kind = "chain", FirstHoldsBeforeChain, SecondHoldsBeforeChain), 1, 0)` |
 | **Firings.TypeFiredUnit** | 수식 | `If(And(RuleEnabled, Or(Kind = "domain", Kind = "range"), FirstHoldsBeforeTyping), 1, 0)` |
 | **Firings.FiredUnit** | 수식 | `InverseFiredUnit + SymmetricFiredUnit + ChainFiredUnit + TypeFiredUnit` |
-| **Firings.OrderKey** | 수식 | `FirstSortOrder * 100000 + KindSortOrder * 1000 + If(Second = "", 0, SecondSortOrder)` |
+| **Firings.PreChainFiredUnit** | 수식 | `InverseFiredUnit + SymmetricFiredUnit` |
+| **Firings.PreChainOrderKey** | 수식 | `FirstSortOrder * 10 + KindSortOrder` |
+| **Firings.Round** | 수식 | `If(And(Kind = "chain", Not(And(FirstIsInEffect, SecondIsInEffect))), 2, 1)` |
+| **Firings.OrderKey** | 수식 | `Round * 1000000000000000 + FirstSnapPosition * 100000000 + KindSortOrder * 10000000 + If(Second = "", 0, SecondSnapPosition)` |
 | **Firings.IsChosen** | 수식 | `And(FiredUnit = 1, TargetIsConclusion, OrderKey = TargetFirstFiredOrderKey)` |
 | **Firings.ChosenUnit** | 수식 | `If(IsChosen, 1, 0)` |
 | **Firings.CardText** | 수식 | `If(IsChosen, Concat("Worked out by the ", KindWording, " from “", FirstWords, "”", If(Kind = "chain", Concat(" and “", SecondWords, "”"), If(Kind = "domain", Concat(" and “", FirstProperty, " has domain ", FirstPropertyDomainClass, "”"), If(Kind = "range", Concat(" and “", FirstProperty, " has range ", FirstPropertyRangeClass, "”"), ""))), "."), "")` |
@@ -779,6 +945,8 @@ _표현식 열은 문서 표기법으로 적은 규칙의 정의입니다.
 | **NodeLayouts.Name** | 수식 | `NodeLayoutId` |
 | **LayoutSlots.Name** | 수식 | `LayoutSlotId` |
 | **PageTexts.Name** | 수식 | `PageTextId` |
+| **Engines.Name** | 수식 | `Label` |
+| **RulebookTools.Name** | 수식 | `Label` |
 
 ---
 

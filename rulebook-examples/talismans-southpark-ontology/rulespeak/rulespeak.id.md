@@ -1,6 +1,6 @@
 # 📘 Talisman's South Park ontology explainer — Dokumentasi
 
-_Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten facts, five rule switches, property wiring, provenance wording and current-value policy are rows, and every conclusion is a formula. The rules apply in three fixed strata (inverse and symmetric, then the property chain, then domain and range); property wiring that feeds an earlier stratum would need repeated rounds._
+_Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten facts, five rule switches, property wiring, provenance wording and current-value policy are rows, and every conclusion is a formula. The rules apply in three fixed strata (inverse and symmetric, then the property chain, then domain and range); property wiring that feeds an earlier stratum would need repeated rounds. Every fact that could hold over the cast is a candidate row; app/lib/candidates.mjs writes the candidates when a thing, value or property is added._
 
 > Aturan bisnis deklaratif yang disusun dari buku aturan. Setiap pernyataan
 > di bawah ini mengungkapkan kebenaran dalam domain bisnis — bukan prosedur
@@ -31,13 +31,15 @@ _Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten
 | Next Activation Seq | Dihitung sebagai max activation seq ditambah 1. | _Order 2. The activation number the next switched-on fact takes._ |
 | Max Listed Sort Order | Nilai maksimum sort order pada seluruh statements dari graph tersebut yang tergolong “listed unit”. | _Order 2. Highest list position among listed facts._ |
 | Next Listed Sort Order | Dihitung sebagai max listed sort order ditambah 1. | _Order 3. The list position a newly added fact takes._ |
+| Max Sort Order | Nilai maksimum sort order pada seluruh statements yang terkait dengan graph tersebut. | _Order 1. Highest sort order of any fact, listed or candidate._ |
+| Next Candidate Sort Order | Dihitung sebagai max sort order ditambah 1. | _Order 2. The sort order a new candidate fact, or a fact removed from the list, takes._ |
 
 <details open>
 <summary>Contoh data</summary>
 
-| Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 |
+| Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ | Max Sort Order ƒ | Next Candidate Sort Order ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 | 100269 | 100270 |
 
 _ƒ menandai kolom terhitung._
 
@@ -68,7 +70,7 @@ _ƒ menandai kolom terhitung._
 
 | Istilah | Deskripsi | Catatan Naratif |
 |------|-------------|-------------------|
-| **Firing Kind** | The ways a rule can apply. Domain and range belong to one rule but are worded apart. | — |
+| **Firing Kind** | The ways a rule can apply. Domain and range belong to one rule but are worded apart; 'disjoint' names the rule the disjointness checks answer to. | — |
 | Rule | Atribut terdefinisi. | _The rule switch this kind belongs to._ |
 | Wording | Atribut terdefinisi. | _How a conclusion card names the rule, as in 'Worked out by the inverse rule'._ |
 | Sort Order | Atribut terdefinisi. | _Order in which the page's reasoner tries the kinds for one fact._ |
@@ -94,12 +96,13 @@ _ƒ menandai kolom terhitung._
 | Label | Atribut terdefinisi. | _The name the page shows._ |
 | Kind | Atribut terdefinisi. | _'individual' or 'class'._ |
 | Sort Order | Atribut terdefinisi. | _Position in the cast._ |
-| Portrait Name | Atribut terdefinisi. | _The name on the portrait's Fandom page._ |
-| Portrait Page | Atribut terdefinisi. | _The Fandom page credited for the portrait._ |
-| Portrait Image | Atribut terdefinisi. | _The original Fandom image._ |
-| Portrait Crop | Atribut terdefinisi. | _The portrait's crop as an SVG viewBox: x y width height._ |
-| Portrait Width | Atribut terdefinisi. | _The original image's width in pixels._ |
-| Portrait Height | Atribut terdefinisi. | _The original image's height in pixels._ |
+| Portrait | Atribut terdefinisi. | _The portrait drawn for this thing; set when its name matches a portrait alias._ |
+| Portrait Name | Nilai display name dari portrait yang tertaut pada thing tersebut. | _Order 1. The name on the portrait's Fandom page._ |
+| Portrait Page | Diambil dari portrait yang tertaut. | _Order 1. The Fandom page credited for the portrait._ |
+| Portrait Image | Diambil dari portrait yang tertaut. | _Order 1. The original Fandom image._ |
+| Portrait Crop | Diambil dari portrait yang tertaut. | _Order 1. The portrait's crop as an SVG viewBox._ |
+| Portrait Width | Diambil dari portrait yang tertaut. | _Order 1. The original image's width in pixels._ |
+| Portrait Height | Diambil dari portrait yang tertaut. | _Order 1. The original image's height in pixels._ |
 | Name | Sama dengan label. | _Order 1. The thing's name._ |
 | Node Key | Sama dengan thing ID. | _Order 1. The key the graph draws this thing under._ |
 | Count of Children | Nilai total parent unit pada seluruh statements yang terkait dengan thing tersebut. | _Order 17. People this thing is a parent of, stated or concluded._ |
@@ -108,12 +111,12 @@ _ƒ menandai kolom terhitung._
 | Count As Subject | Nilai total holds unit pada seluruh statements yang terkait dengan thing tersebut. | _Order 17. Holding facts about this thing._ |
 | Count As Object | Nilai total holds unit pada seluruh statements yang terkait dengan thing tersebut. | _Order 17. Holding facts that point at this thing._ |
 | Is in Graph | Bernilai benar jika paling sedikit satu dari kondisi berikut terpenuhi: count as subject lebih dari 0 atau count as object lebih dari 0. | _Order 18. True when the graph draws this thing._ |
-| Node Kind | Ditentukan menurut prioritas: “class” jika kind adalah “class”; “place” jika count as place lebih dari 0; dalam semua kasus lainnya, “person”. | _Order 18. How the graph draws the thing: a class, a place someone attends, or a person._ |
+| Node Kind | Ditentukan menurut prioritas: teks kosong jika kind kosong; “class” jika kind adalah “class”; “place” jika count as place lebih dari 0; dalam semua kasus lainnya, “person”. | _Order 18. How the graph draws the thing: a class, a place someone attends, or a person._ |
 
 <details open>
 <summary>Contoh data</summary>
 
-| Label | Kind | Sort Order | Portrait Name | Portrait Page | Portrait Image | Portrait Crop | Portrait Width | Portrait Height | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
+| Label | Kind | Sort Order | Portrait Name ƒ | Portrait Page ƒ | Portrait Image ƒ | Portrait Crop ƒ | Portrait Width ƒ | Portrait Height ƒ | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Marvin | individual | 1 | Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | Marvin | Marvin | 1 | 0 | 0 | 1 | 0 | true | person |
 | Randy | individual | 2 | Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | Randy | Randy | 2 | 0 | 0 | 3 | 1 | true | person |
@@ -125,19 +128,59 @@ _ƒ menandai kolom terhitung._
 
 | Istilah | Deskripsi | Catatan Naratif |
 |------|-------------|-------------------|
-| **Property** | The ten properties and the wiring every rule reads. | — |
+| **Portrait** | The page's Fandom portraits, including those for characters a reader may add. | — |
+| Display Name | Atribut terdefinisi. | _The name on the portrait's Fandom page._ |
+| Page | Atribut terdefinisi. | _The Fandom page credited for the portrait._ |
+| Image | Atribut terdefinisi. | _The original Fandom image._ |
+| Crop | Atribut terdefinisi. | _The crop as an SVG viewBox: x y width height._ |
+| Width | Atribut terdefinisi. | _The original image's width in pixels._ |
+| Height | Atribut terdefinisi. | _The original image's height in pixels._ |
+| Sort Order | Atribut terdefinisi. | _Position in the credits._ |
+| Name | Sama dengan display name. | _Order 1. The portrait's name._ |
+
+<details open>
+<summary>Contoh data</summary>
+
+| Display Name | Page | Image | Crop | Width | Height | Sort Order | Name ƒ |
+|---|---|---|---|---|---|---|---|
+| Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | 1 | Marvin Marsh |
+| Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | 2 | Randy Marsh |
+| Sharon Marsh | https://southpark.fandom.com/wiki/Sharon_Marsh | https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest | 20 -10 390 390 | 439 | 1049 | 3 | Sharon Marsh |
+
+_ƒ menandai kolom terhitung._
+
+</details>
+
+| Istilah | Deskripsi | Catatan Naratif |
+|------|-------------|-------------------|
+| **Portrait Aliase** | The names a portrait answers to. A new thing whose name matches an alias gets that portrait. | — |
+| Portrait | Atribut terdefinisi. | _The portrait this name selects._ |
+| Name | Sama dengan portrait alias ID. | _Order 1. The alias._ |
+
+<details open>
+<summary>Contoh data</summary>
+
+| Name ƒ |
+|---|
+| marvin |
+| marvin marsh |
+| grandpa marsh |
+
+_ƒ menandai kolom terhitung._
+
+</details>
+
+| Istilah | Deskripsi | Catatan Naratif |
+|------|-------------|-------------------|
+| **Property** | The ten properties, with what the symmetric, domain and range rules read. Axioms that relate one property to another (inverse, chain, disjoint) are rows of PropertyAxioms. | — |
 | Label | Atribut terdefinisi. | _The property's wording on the page._ |
 | Property Kind | Atribut terdefinisi. | _'object' links two things, 'datatype' links a thing to a value, 'type' states class membership._ |
 | Datatype | Atribut terdefinisi. | _The value's XML Schema datatype for a datatype property; blank otherwise._ |
 | Is User Addable | Bernilai benar jika teks kosong. | _Offered in the page's Add fact form._ |
 | Has One Current Value | Bernilai benar jika teks kosong. | _The page keeps one current value per person: switching a value on replaces the earlier one._ |
-| Inverse of | Atribut terdefinisi. | _The property the inverse rule derives from this one._ |
 | Is Symmetric | Bernilai benar jika teks kosong. | _The symmetric rule makes this link true in both directions._ |
-| Chain First | Atribut terdefinisi. | _First link of the property chain that derives this property._ |
-| Chain Second | Atribut terdefinisi. | _Second link of the property chain that derives this property._ |
 | Domain Class | Atribut terdefinisi. | _The class the domain rule gives this property's subject._ |
 | Range Class | Atribut terdefinisi. | _The class the range rule gives this property's object._ |
-| Disjoint With | Atribut terdefinisi. | _A property that may not link the same pair, in the same direction, as this one._ |
 | Sort Order | Atribut terdefinisi. | _Position in the Add fact form's property list._ |
 | Value Node Label | Atribut terdefinisi. | _The small label under a value node for this property: 'role value' or 'number value'._ |
 | Current Value Wording | Atribut terdefinisi. | _How the Add fact form names a replaced value, as in 'Stan now has grade level 5'._ |
@@ -154,6 +197,28 @@ _ƒ menandai kolom terhitung._
 | is parent of | object | — | true | false | false | 1 | — | — | — | — | — | is parent of |
 | is child of | object | — | true | false | false | 2 | — | — | — | — | — | is child of |
 | is spouse of | object | — | true | false | true | 3 | — | — | — | — | — | is spouse of |
+
+_ƒ menandai kolom terhitung._
+
+</details>
+
+| Istilah | Deskripsi | Catatan Naratif |
+|------|-------------|-------------------|
+| **Property Axiom** | Axioms that relate one property to others, as OWL states them: an inverse, a two-link chain, or a disjoint pair. The candidate generator reads these rows. | — |
+| Kind | Atribut terdefinisi. | _inverse, chain or disjoint._ |
+| Property | Atribut terdefinisi. | _The property the axiom is about: the one inverted, the one a chain derives, or the first of a disjoint pair._ |
+| First | Atribut terdefinisi. | _The inverse property, the chain's first link, or the other property of a disjoint pair._ |
+| Second | Atribut terdefinisi. | _The chain's second link._ |
+| Name | Sama dengan property axiom ID. | _Order 1. The axiom's key._ |
+
+<details open>
+<summary>Contoh data</summary>
+
+| Name ƒ |
+|---|
+| inverse:isParentOf |
+| disjoint:isParentOf~isSpouseOf |
+| inverse:isChildOf |
 
 _ƒ menandai kolom terhitung._
 
@@ -210,6 +275,8 @@ _ƒ menandai kolom terhitung._
 | Parent Unit | Ditentukan menurut prioritas: 1 jika semua kondisi berikut terpenuhi: penanda “holds” aktif dan property adalah “isParentOf”; dalam semua kasus lainnya, 0. | _Order 16. 1 for a holding parent link._ |
 | Grandparent Unit | Ditentukan menurut prioritas: 1 jika semua kondisi berikut terpenuhi: penanda “holds” aktif dan property adalah “isGrandparentOf”; dalam semua kasus lainnya, 0. | _Order 16. 1 for a holding grandparent link._ |
 | Place Unit | Ditentukan menurut prioritas: 1 jika semua kondisi berikut terpenuhi: penanda “holds” aktif dan property adalah “attends”; dalam semua kasus lainnya, 0. | _Order 16. 1 for a holding attends link._ |
+| First Pre Chain Order Key | Nilai minimum pre chain order key pada seluruh firings dari statement tersebut yang tergolong “pre chain fired unit”. | _Order 7. Order key of the first inverse or symmetric application that concludes this fact._ |
+| Snap Position | Ditentukan menurut prioritas: sort order jika penanda “in effect” aktif; 100000 ditambah first pre chain order key jika penanda “holds before chain” aktif; dalam semua kasus lainnya, 0. | _Order 8. Where the page's reasoner meets this fact as a premise: a stated fact at its list position, a fact concluded by the inverse or symmetric rule after every stated fact, in the order it was concluded; 0 for a fact that does not hold yet, so a link to no fact reads the same on every engine._ |
 | First Fired Order Key | Nilai minimum order key pada seluruh firings dari statement tersebut yang tergolong “fired unit”. | _Order 15. Order key of the first rule application that concludes this fact, in the page reasoner's order._ |
 | Count of Chosen Firings | Nilai total chosen unit pada seluruh firings yang terkait dengan statement tersebut. | _Order 20. Rule applications shown as this fact's conclusion card: one for a conclusion, zero otherwise._ |
 | Subject Node Key | Sama dengan subject. | _Order 1. The graph node this fact starts from._ |
@@ -225,11 +292,11 @@ _ƒ menandai kolom terhitung._
 <details open>
 <summary>Contoh data</summary>
 
-| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 101 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 102 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
+| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Pre Chain Order Key ƒ | Snap Position ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 1.0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100001 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100002 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
 
 _ƒ menandai kolom terhitung._
 
@@ -264,13 +331,18 @@ _ƒ menandai kolom terhitung._
 | First Property Domain Class | Diambil dari first yang tertaut. | _Order 2. The premise property's domain class._ |
 | First Property Range Class | Diambil dari first yang tertaut. | _Order 2. The premise property's range class._ |
 | First Sort Order | Diambil dari first yang tertaut. | _Order 1. The premise's list position._ |
-| Second Sort Order | Diambil dari second yang tertaut. | _Order 1. The second premise's list position._ |
+| Second is in Effect | Bernilai benar jika second yang tertaut pada firing tersebut tergolong “in effect”. | _Order 4. Whether the second premise is in effect._ |
+| First Snap Position | Diambil dari first yang tertaut. | _Order 9. Where the reasoner meets the premise._ |
+| Second Snap Position | Diambil dari second yang tertaut. | _Order 9. Where the reasoner meets the second premise._ |
 | Inverse Fired Unit | Ditentukan menurut prioritas: 1 jika semua kondisi berikut terpenuhi: penanda “rule enabled” aktif, kind adalah “inverse”, dan penanda “first is in effect” aktif; dalam semua kasus lainnya, 0. | _Order 5. 1 when the inverse rule fires here._ |
 | Symmetric Fired Unit | Ditentukan menurut prioritas: 1 jika semua kondisi berikut terpenuhi: penanda “rule enabled” aktif, kind adalah “symmetric”, dan penanda “first is in effect” aktif; dalam semua kasus lainnya, 0. | _Order 5. 1 when the symmetric rule fires here._ |
 | Chain Fired Unit | Ditentukan menurut prioritas: 1 jika semua kondisi berikut terpenuhi: penanda “rule enabled” aktif, kind adalah “chain”, penanda “first holds before chain” aktif, dan penanda “second holds before chain” aktif; dalam semua kasus lainnya, 0. | _Order 9. 1 when the property chain fires here._ |
 | Type Fired Unit | Ditentukan menurut prioritas: 1 jika semua kondisi berikut terpenuhi: penanda “rule enabled” aktif; paling sedikit satu dari kondisi berikut terpenuhi: kind adalah “domain” atau kind adalah “range”; dan penanda “first holds before typing” aktif; dalam semua kasus lainnya, 0. | _Order 13. 1 when the domain or range rule fires here._ |
 | Fired Unit | Dihitung sebagai inverse fired unit ditambah symmetric fired unit ditambah chain fired unit ditambah type fired unit. | _Order 14. 1 when this application fires._ |
-| Order Key | Dihitung sebagai first sort order dikali 100000 ditambah kind sort order dikali 1000 ditambah 0 jika second kosong, dan dalam semua kasus lainnya second sort order. | _Order 2. The page reasoner's order: by premise, then rule kind, then second premise._ |
+| Pre Chain Fired Unit | Dihitung sebagai inverse fired unit ditambah symmetric fired unit. | _Order 6. 1 when this is an inverse or symmetric application that fires._ |
+| Pre Chain Order Key | Dihitung sebagai first sort order dikali 10 ditambah kind sort order. | _Order 2. For an inverse or symmetric application: its place in the reasoner's first round._ |
+| Round | Ditentukan menurut prioritas: 2 jika semua kondisi berikut terpenuhi: kind adalah “chain” dan tidak benar bahwa semua kondisi berikut terpenuhi: penanda “first is in effect” aktif dan penanda “second is in effect” aktif; dalam semua kasus lainnya, 1. | _Order 5. The reasoner's round: 1 when every premise is a stated fact, 2 when the property chain reads a concluded fact._ |
+| Order Key | Dihitung sebagai round dikali 1000000000000000 ditambah first snap position dikali 100000000 ditambah kind sort order dikali 10000000 ditambah 0 jika second kosong, dan dalam semua kasus lainnya second snap position. | _Order 10. The page reasoner's order: by round, then premise, then rule kind, then second premise._ |
 | Is Chosen | Bernilai benar jika semua kondisi berikut terpenuhi: fired unit adalah 1, penanda “target is conclusion” aktif, dan order key adalah target first fired order key. | _Order 18. The application the conclusions panel shows for its fact: the first one in the reasoner's order._ |
 | Chosen Unit | Ditentukan menurut prioritas: 1 jika penanda “chosen” aktif; dalam semua kasus lainnya, 0. | _Order 19. 1 when this application is shown._ |
 | Card Text | Ditentukan menurut prioritas: “Worked out by the ”, diikuti kind wording, diikuti “ from “”, diikuti first words, diikuti “””, diikuti “ and “”, diikuti second words, diikuti “”” jika kind adalah “chain”, dan dalam semua kasus lainnya “ and “”, diikuti first property, diikuti “ has domain ”, diikuti first property domain class, diikuti “”” jika kind adalah “domain”, dan dalam semua kasus lainnya “ and “”, diikuti first property, diikuti “ has range ”, diikuti first property range class, diikuti “””, diikuti tanda titik jika penanda “chosen” aktif; dalam semua kasus lainnya, teks kosong. ⚠︎ mekanis <!-- rulespeak:reword --> | _Order 19. The conclusion card's provenance line, in the page's wording._ |
@@ -279,11 +351,11 @@ _ƒ menandai kolom terhitung._
 <details open>
 <summary>Contoh data</summary>
 
-| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second Sort Order ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | — | 0 | 0 | 0 | 0 | 0 | 101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 101 | — | 0 | 0 | 0 | 0 | 0 | 10101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 102 | — | 0 | 0 | 0 | 0 | 0 | 10201000 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
+| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second is in Effect ƒ | First Snap Position ƒ | Second Snap Position ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Pre Chain Fired Unit ƒ | Pre Chain Order Key ƒ | Round ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | false | 1.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 11.0 | 1 | 1000000110000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 100001 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000011.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 100002 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000021.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
 
 _ƒ menandai kolom terhitung._
 
@@ -456,11 +528,60 @@ _ƒ menandai kolom terhitung._
 
 </details>
 
+| Istilah | Deskripsi | Catatan Naratif |
+|------|-------------|-------------------|
+| **Engine** | The execution engines the page can be computed by. Each is a build output of this rulebook. | — |
+| Label | Atribut terdefinisi. | _The engine's name in the switcher._ |
+| Substrate | Atribut terdefinisi. | _The conformance harness's name for this substrate._ |
+| Is Default | Bernilai benar jika teks kosong. | _The engine a new visitor starts on._ |
+| Description | Atribut terdefinisi. | _What computes the page on this engine._ |
+| Sort Order | Atribut terdefinisi. | _Position in the switcher._ |
+| Name | Sama dengan label. | _Order 1. The engine's name._ |
+
+<details open>
+<summary>Contoh data</summary>
+
+| Label | Substrate | Is Default | Description | Sort Order | Name ƒ |
+|---|---|---|---|---|---|
+| Postgres views | effortless-postgres | true | Every value is a column of a generated view; the database computes it when the page reads it. | 1 | Postgres views |
+| TypeScript | effortless-typescript | false | The generated TypeScript computes every field from the same rows, with no database. | 2 | TypeScript |
+| OWL and SHACL rules | effortless-owl | false | The generated ontology and SHACL rules, run over the same rows by a SPARQL engine. | 3 | OWL and SHACL rules |
+
+_ƒ menandai kolom terhitung._
+
+</details>
+
+| Istilah | Deskripsi | Catatan Naratif |
+|------|-------------|-------------------|
+| **Rulebook Tool** | What each rulebook tool adds to the original explainer; the tools panel lists them. | — |
+| Label | Atribut terdefinisi. | _The tool's name._ |
+| Adds | Atribut terdefinisi. | _What it adds to the original explainer._ |
+| Href | Atribut terdefinisi. | _Where its link goes; 'editor' means the running rulebook editor._ |
+| Link Text | Atribut terdefinisi. | _The link's text._ |
+| Sort Order | Atribut terdefinisi. | _Position in the panel._ |
+| Name | Sama dengan label. | _Order 1. The tool's name._ |
+
+<details open>
+<summary>Contoh data</summary>
+
+| Label | Adds | Href | Link Text | Sort Order | Name ƒ |
+|---|---|---|---|---|---|
+| Interchangeable engines | The same page, computed by Postgres views, generated TypeScript or the generated OWL and SHACL rules. Switch with the control above; nothing else changes. | — | — | 1 | Interchangeable engines |
+| Conformance | Every engine's answers for the current facts, compared value by value with the conformance harness's own rule for when two values are equal. | — | — | 2 | Conformance |
+| Explainer | Hover a dotted value for its rule in plain words and its witness: the values it came from, down to the stated facts. | /rulebook-explainer-dag/pages/index.html | Open the explainer | 3 | Explainer |
+
+_ƒ menandai kolom terhitung._
+
+</details>
+
 ## 2 Jenis Fakta
 
 - Setiap **firing kind** merujuk pada tepat satu **rule**
-- Setiap **property** dapat merujuk pada satu **property**
+- Setiap **thing** dapat merujuk pada satu **portrait**
+- Setiap **portrait aliase** merujuk pada tepat satu **portrait**
 - Setiap **property** dapat merujuk pada satu **thing**
+- Setiap **property axiom** merujuk pada tepat satu **firing kind**
+- Setiap **property axiom** merujuk pada tepat satu **property**
 - Setiap **statement** merujuk pada tepat satu **graph**
 - Setiap **statement** merujuk pada tepat satu **thing**
 - Setiap **statement** merujuk pada tepat satu **property**
@@ -491,7 +612,12 @@ dihitung oleh buku aturan (dirujuk silang sebagai DR-N dalam Aturan Definisional
 - Setiap firing kind **harus** merujuk pada tepat satu rule.
 - Setiap firing kind **harus** memiliki wording dan sort order.
 - Setiap thing **harus** memiliki label, kind, dan sort order.
+- Setiap portrait **harus** memiliki display name, page, image, crop, width, height, dan sort order.
+- Setiap portrait aliase **harus** merujuk pada tepat satu portrait.
 - Setiap property **harus** memiliki label, property kind, dan sort order, serta menyatakan apakah tergolong “user addable”, apakah memiliki “one current value”, dan apakah tergolong “symmetric”.
+- Setiap property axiom **harus** merujuk pada tepat satu firing kind sebagai kind.
+- Setiap property axiom **harus** merujuk pada tepat satu property.
+- Setiap property axiom **harus** merujuk pada tepat satu property sebagai first.
 - Setiap statement **harus** merujuk pada tepat satu graph.
 - Setiap statement **harus** merujuk pada tepat satu thing sebagai subject.
 - Setiap statement **harus** merujuk pada tepat satu property.
@@ -516,6 +642,8 @@ dihitung oleh buku aturan (dirujuk silang sebagai DR-N dalam Aturan Definisional
 - Setiap node layout **harus** memiliki layout, node key, x, dan y.
 - Setiap layout slot **harus** memiliki sort order, x, dan y.
 - Setiap page text **harus** memiliki text.
+- Setiap engine **harus** memiliki label, substrate, description, dan sort order, serta menyatakan apakah tergolong “default”.
+- Setiap rulebook tool **harus** memiliki label, adds, dan sort order.
 
 ## 4 Aturan Definisional
 
@@ -540,116 +668,136 @@ tetapi kaku — isyarat untuk penyuntingan ulang yang opsional, bukan suatu caca
 | **DR-11 Next Activation Seq** | Untuk setiap graph, next activation seq dihitung sebagai max activation seq ditambah 1. |
 | **DR-12 Max Listed Sort Order** | Untuk setiap graph, max listed sort order adalah nilai maksimum sort order pada seluruh statements dari graph tersebut yang tergolong “listed unit”. |
 | **DR-13 Next Listed Sort Order** | Untuk setiap graph, next listed sort order dihitung sebagai max listed sort order ditambah 1. |
-| **DR-14 Name** | Untuk setiap rule, name sama dengan label. |
-| **DR-15 Count of Firings** | Untuk setiap rule, count of firings adalah nilai total fired unit pada seluruh firings yang terkait dengan rule tersebut. |
-| **DR-16 Name** | Untuk setiap firing kind, name sama dengan wording. |
-| **DR-17 Rule Enabled** | Untuk setiap firing kind, rule enabled bernilai benar jika rule yang tertaut pada firing kind tersebut tergolong “enabled”. |
-| **DR-18 Name** | Untuk setiap thing, name sama dengan label. |
-| **DR-19 Node Key** | Untuk setiap thing, node key sama dengan thing ID. |
-| **DR-20 Count of Children** | Untuk setiap thing, count of children adalah nilai total parent unit pada seluruh statements yang terkait dengan thing tersebut. |
-| **DR-21 Count of Grandchildren** | Untuk setiap thing, count of grandchildren adalah nilai total grandparent unit pada seluruh statements yang terkait dengan thing tersebut. |
-| **DR-22 Count As Place** | Untuk setiap thing, count as place adalah nilai total place unit pada seluruh statements yang terkait dengan thing tersebut. |
-| **DR-23 Count As Subject** | Untuk setiap thing, count as subject adalah nilai total holds unit pada seluruh statements yang terkait dengan thing tersebut. |
-| **DR-24 Count As Object** | Untuk setiap thing, count as object adalah nilai total holds unit pada seluruh statements yang terkait dengan thing tersebut. |
-| **DR-25 Is in Graph** | Setiap thing dianggap “in graph” jika paling sedikit satu dari kondisi berikut terpenuhi: count as subject lebih dari 0 atau count as object lebih dari 0. |
-| **DR-26 Node Kind** | Untuk setiap thing, node kind ditentukan menurut urutan prioritas berikut:<br>1. “class”, jika kind adalah “class”;<br>2. “place”, jika count as place lebih dari 0;<br>3. dalam semua kasus lainnya, “person”. |
-| **DR-27 Name** | Untuk setiap property, name sama dengan label. |
-| **DR-28 Subject Label** | Untuk setiap statement, subject label diambil dari subject yang tertaut. |
-| **DR-29 Property Label** | Untuk setiap statement, property label diambil dari property yang tertaut. |
-| **DR-30 Object Label** | Untuk setiap statement, object label diambil dari object thing yang tertaut. |
-| **DR-31 Property Datatype** | Untuk setiap statement, property datatype diambil dari property yang tertaut. |
-| **DR-32 Property Has One Current Value** | Untuk setiap statement, property has one current value bernilai benar jika property yang tertaut pada statement tersebut memiliki “one current value”. |
-| **DR-33 Property Domain Class** | Untuk setiap statement, property domain class diambil dari property yang tertaut. |
-| **DR-34 Property Range Class** | Untuk setiap statement, property range class diambil dari property yang tertaut. |
-| **DR-35 Literal Quote** | Untuk setiap statement, literal quote diambil dari graph yang tertaut. |
-| **DR-36 Literal Type Marker** | Untuk setiap statement, literal type marker diambil dari graph yang tertaut. |
-| **DR-37 Built in Source Text** | Untuk setiap statement, built in source text diambil dari graph yang tertaut. |
-| **DR-38 User Source Text** | Untuk setiap statement, user source text diambil dari graph yang tertaut. |
-| **DR-39 Next Fact Sort Order** | Untuk setiap statement, next fact sort order diambil dari graph yang tertaut. |
-| **DR-40 Is Literal** | Setiap statement dianggap “literal” jika object thing kosong. |
-| **DR-41 Object Text** | Untuk setiap statement, object text ditentukan menurut urutan prioritas berikut:<br>1. object value, jika object thing kosong;<br>2. dalam semua kasus lainnya, object label. |
-| **DR-42 Name** | Untuk setiap statement, name dihitung sebagai subject label, diikuti spasi, diikuti property label, diikuti spasi, diikuti object text. |
-| **DR-43 Words** | Untuk setiap statement, words dihitung sebagai subject label, diikuti spasi, diikuti property label, diikuti spasi, diikuti literal quote, diikuti object value, diikuti literal quote, diikuti literal type marker, diikuti property datatype jika object thing kosong, dan dalam semua kasus lainnya object label. ⚠︎ mekanis <!-- rulespeak:reword --> |
-| **DR-44 Source** | Untuk setiap statement, source ditentukan menurut urutan prioritas berikut:<br>1. built in source text, jika penanda “built in” aktif;<br>2. dalam semua kasus lainnya, user source text. |
-| **DR-45 Subject Property Key** | Untuk setiap statement, subject property key dihitung sebagai subject, diikuti “|”, diikuti property. |
-| **DR-46 Latest Sibling Activation Seq** | Untuk setiap statement, latest sibling activation seq adalah nilai maksimum activation seq pada seluruh statements yang terkait dengan statement tersebut. |
-| **DR-47 Is in Effect** | Setiap statement dianggap “in effect” jika semua kondisi berikut terpenuhi: penanda “stated” aktif dan paling sedikit satu dari kondisi berikut terpenuhi: penanda “property has one current value” tidak aktif atau activation seq adalah latest sibling activation seq. |
-| **DR-48 Listed Unit** | Untuk setiap statement, listed unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika penanda “listed” aktif;<br>2. dalam semua kasus lainnya, 0. |
-| **DR-49 In Effect Unit** | Untuk setiap statement, in effect unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika penanda “in effect” aktif;<br>2. dalam semua kasus lainnya, 0. |
-| **DR-50 Listed Off Unit** | Untuk setiap statement, listed off unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “listed” aktif dan penanda “in effect” tidak aktif;<br>2. dalam semua kasus lainnya, 0. |
-| **DR-51 Is Next to Add** | Setiap statement dianggap “next to add” jika semua kondisi berikut terpenuhi: listed off unit adalah 1 dan sort order adalah next fact sort order. |
-| **DR-52 Count of Inverse Firings** | Untuk setiap statement, count of inverse firings adalah nilai total inverse fired unit pada seluruh firings yang terkait dengan statement tersebut. |
-| **DR-53 Count of Symmetric Firings** | Untuk setiap statement, count of symmetric firings adalah nilai total symmetric fired unit pada seluruh firings yang terkait dengan statement tersebut. |
-| **DR-54 Holds Before Chain** | Setiap statement dianggap memenuhi kondisi “holds before chain” jika paling sedikit satu dari kondisi berikut terpenuhi: penanda “in effect” aktif, count of inverse firings lebih dari 0, atau count of symmetric firings lebih dari 0. |
-| **DR-55 Count of Chain Firings** | Untuk setiap statement, count of chain firings adalah nilai total chain fired unit pada seluruh firings yang terkait dengan statement tersebut. |
-| **DR-56 Holds Before Typing** | Setiap statement dianggap memenuhi kondisi “holds before typing” jika paling sedikit satu dari kondisi berikut terpenuhi: penanda “holds before chain” aktif atau count of chain firings lebih dari 0. |
-| **DR-57 Count of Type Firings** | Untuk setiap statement, count of type firings adalah nilai total type fired unit pada seluruh firings yang terkait dengan statement tersebut. |
-| **DR-58 Holds** | Setiap statement dianggap memenuhi kondisi “holds” jika paling sedikit satu dari kondisi berikut terpenuhi: penanda “holds before typing” aktif atau count of type firings lebih dari 0. |
-| **DR-59 Is Conclusion** | Setiap statement dianggap “conclusion” jika semua kondisi berikut terpenuhi: penanda “holds” aktif dan penanda “in effect” tidak aktif. |
-| **DR-60 Holds Unit** | Untuk setiap statement, holds unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika penanda “holds” aktif;<br>2. dalam semua kasus lainnya, 0. |
-| **DR-61 Conclusion Unit** | Untuk setiap statement, conclusion unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika penanda “conclusion” aktif;<br>2. dalam semua kasus lainnya, 0. |
-| **DR-62 Parent Unit** | Untuk setiap statement, parent unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “holds” aktif dan property adalah “isParentOf”;<br>2. dalam semua kasus lainnya, 0. |
-| **DR-63 Grandparent Unit** | Untuk setiap statement, grandparent unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “holds” aktif dan property adalah “isGrandparentOf”;<br>2. dalam semua kasus lainnya, 0. |
-| **DR-64 Place Unit** | Untuk setiap statement, place unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “holds” aktif dan property adalah “attends”;<br>2. dalam semua kasus lainnya, 0. |
-| **DR-65 First Fired Order Key** | Untuk setiap statement, first fired order key adalah nilai minimum order key pada seluruh firings dari statement tersebut yang tergolong “fired unit”. |
-| **DR-66 Count of Chosen Firings** | Untuk setiap statement, count of chosen firings adalah nilai total chosen unit pada seluruh firings yang terkait dengan statement tersebut. |
-| **DR-67 Subject Node Key** | Untuk setiap statement, subject node key sama dengan subject. |
-| **DR-68 Object Node Key** | Untuk setiap statement, object node key ditentukan menurut urutan prioritas berikut:<br>1. “literal|”, diikuti object value, diikuti “|”, diikuti property datatype, jika object thing kosong;<br>2. dalam semua kasus lainnya, object thing. |
-| **DR-69 Subject Node Kind** | Untuk setiap statement, subject node kind diambil dari subject yang tertaut. |
-| **DR-70 Object Thing Node Kind** | Untuk setiap statement, object thing node kind diambil dari object thing yang tertaut. |
-| **DR-71 Object Node Kind** | Untuk setiap statement, object node kind ditentukan menurut urutan prioritas berikut:<br>1. “value”, jika object thing kosong;<br>2. dalam semua kasus lainnya, object thing node kind. |
-| **DR-72 Object Value Node Label** | Untuk setiap statement, object value node label diambil dari property yang tertaut. |
-| **DR-73 Count of Violations As First** | Untuk setiap statement, count of violations as first adalah nilai total violation unit pada seluruh disjoint checks yang terkait dengan statement tersebut. |
-| **DR-74 Count of Violations As Second** | Untuk setiap statement, count of violations as second adalah nilai total violation unit pada seluruh disjoint checks yang terkait dengan statement tersebut. |
-| **DR-75 Is in Contradiction** | Setiap statement dianggap “in contradiction” jika paling sedikit satu dari kondisi berikut terpenuhi: count of violations as first lebih dari 0 atau count of violations as second lebih dari 0. |
-| **DR-76 Rule Enabled** | Untuk setiap firing, rule enabled bernilai benar jika rule yang tertaut pada firing tersebut tergolong “enabled”. |
-| **DR-77 Kind Wording** | Untuk setiap firing, kind wording diambil dari kind yang tertaut. |
-| **DR-78 Kind Sort Order** | Untuk setiap firing, kind sort order diambil dari kind yang tertaut. |
-| **DR-79 Target Name** | Untuk setiap firing, target name diambil dari target yang tertaut. |
-| **DR-80 Target Subject Label** | Untuk setiap firing, target subject label diambil dari target yang tertaut. |
-| **DR-81 Target Property Label** | Untuk setiap firing, target property label diambil dari target yang tertaut. |
-| **DR-82 Target Object Text** | Untuk setiap firing, target object text diambil dari target yang tertaut. |
-| **DR-83 Target is Conclusion** | Untuk setiap firing, target is conclusion bernilai benar jika target yang tertaut pada firing tersebut tergolong “conclusion”. |
-| **DR-84 Target Subject Node Key** | Untuk setiap firing, target subject node key diambil dari target yang tertaut. |
-| **DR-85 Target Object Node Key** | Untuk setiap firing, target object node key diambil dari target yang tertaut. |
-| **DR-86 Target First Fired Order Key** | Untuk setiap firing, target first fired order key diambil dari target yang tertaut. |
-| **DR-87 First Words** | Untuk setiap firing, first words diambil dari first yang tertaut. |
-| **DR-88 Second Words** | Untuk setiap firing, second words diambil dari second yang tertaut. |
-| **DR-89 First is in Effect** | Untuk setiap firing, first is in effect bernilai benar jika first yang tertaut pada firing tersebut tergolong “in effect”. |
-| **DR-90 First Holds Before Chain** | Untuk setiap firing, first holds before chain bernilai benar jika first yang tertaut pada firing tersebut memenuhi kondisi “holds before chain”. |
-| **DR-91 Second Holds Before Chain** | Untuk setiap firing, second holds before chain bernilai benar jika second yang tertaut pada firing tersebut memenuhi kondisi “holds before chain”. |
-| **DR-92 First Holds Before Typing** | Untuk setiap firing, first holds before typing bernilai benar jika first yang tertaut pada firing tersebut memenuhi kondisi “holds before typing”. |
-| **DR-93 First Property** | Untuk setiap firing, first property diambil dari first yang tertaut. |
-| **DR-94 First Property Domain Class** | Untuk setiap firing, first property domain class diambil dari first yang tertaut. |
-| **DR-95 First Property Range Class** | Untuk setiap firing, first property range class diambil dari first yang tertaut. |
-| **DR-96 First Sort Order** | Untuk setiap firing, first sort order diambil dari first yang tertaut. |
-| **DR-97 Second Sort Order** | Untuk setiap firing, second sort order diambil dari second yang tertaut. |
-| **DR-98 Inverse Fired Unit** | Untuk setiap firing, inverse fired unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “rule enabled” aktif, kind adalah “inverse”, dan penanda “first is in effect” aktif;<br>2. dalam semua kasus lainnya, 0. |
-| **DR-99 Symmetric Fired Unit** | Untuk setiap firing, symmetric fired unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “rule enabled” aktif, kind adalah “symmetric”, dan penanda “first is in effect” aktif;<br>2. dalam semua kasus lainnya, 0. |
-| **DR-100 Chain Fired Unit** | Untuk setiap firing, chain fired unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “rule enabled” aktif, kind adalah “chain”, penanda “first holds before chain” aktif, dan penanda “second holds before chain” aktif;<br>2. dalam semua kasus lainnya, 0. |
-| **DR-101 Type Fired Unit** | Untuk setiap firing, type fired unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “rule enabled” aktif; paling sedikit satu dari kondisi berikut terpenuhi: kind adalah “domain” atau kind adalah “range”; dan penanda “first holds before typing” aktif;<br>2. dalam semua kasus lainnya, 0. |
-| **DR-102 Fired Unit** | Untuk setiap firing, fired unit dihitung sebagai inverse fired unit ditambah symmetric fired unit ditambah chain fired unit ditambah type fired unit. |
-| **DR-103 Order Key** | Untuk setiap firing, order key dihitung sebagai first sort order dikali 100000 ditambah kind sort order dikali 1000 ditambah 0 jika second kosong, dan dalam semua kasus lainnya second sort order. |
-| **DR-104 Is Chosen** | Setiap firing dianggap “chosen” jika semua kondisi berikut terpenuhi: fired unit adalah 1, penanda “target is conclusion” aktif, dan order key adalah target first fired order key. |
-| **DR-105 Chosen Unit** | Untuk setiap firing, chosen unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika penanda “chosen” aktif;<br>2. dalam semua kasus lainnya, 0. |
-| **DR-106 Card Text** | Untuk setiap firing, card text ditentukan menurut urutan prioritas berikut:<br>1. “Worked out by the ”, diikuti kind wording, diikuti “ from “”, diikuti first words, diikuti “””, diikuti “ and “”, diikuti second words, diikuti “”” jika kind adalah “chain”, dan dalam semua kasus lainnya “ and “”, diikuti first property, diikuti “ has domain ”, diikuti first property domain class, diikuti “”” jika kind adalah “domain”, dan dalam semua kasus lainnya “ and “”, diikuti first property, diikuti “ has range ”, diikuti first property range class, diikuti “””, diikuti tanda titik, jika penanda “chosen” aktif;<br>2. dalam semua kasus lainnya, teks kosong. ⚠︎ mekanis <!-- rulespeak:reword --> |
-| **DR-107 Name** | Untuk setiap firing, name sama dengan firing ID. |
-| **DR-108 Rule Enabled** | Untuk setiap disjoint check, rule enabled bernilai benar jika rule yang tertaut pada disjoint check tersebut tergolong “enabled”. |
-| **DR-109 First Holds** | Untuk setiap disjoint check, first holds bernilai benar jika first yang tertaut pada disjoint check tersebut memenuhi kondisi “holds”. |
-| **DR-110 Second Holds** | Untuk setiap disjoint check, second holds bernilai benar jika second yang tertaut pada disjoint check tersebut memenuhi kondisi “holds”. |
-| **DR-111 Subject Label** | Untuk setiap disjoint check, subject label diambil dari first yang tertaut. |
-| **DR-112 Object Label** | Untuk setiap disjoint check, object label diambil dari first yang tertaut. |
-| **DR-113 Violation Unit** | Untuk setiap disjoint check, violation unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “rule enabled” aktif, penanda “first holds” aktif, dan penanda “second holds” aktif;<br>2. dalam semua kasus lainnya, 0. |
-| **DR-114 Alarm Text** | Untuk setiap disjoint check, alarm text ditentukan menurut urutan prioritas berikut:<br>1. “Contradiction found. ”, diikuti subject label, diikuti “ is recorded as both parent and spouse of ”, diikuti object label, diikuti “. Check those facts and the selected disjoint rule.”, jika violation unit adalah 1;<br>2. dalam semua kasus lainnya, teks kosong. |
-| **DR-115 Name** | Untuk setiap disjoint check, name sama dengan disjoint check ID. |
-| **DR-116 Name** | Untuk setiap scenario, name sama dengan label. |
-| **DR-117 Graph Has Facts to Add** | Untuk setiap scenario, graph has facts to add bernilai benar jika graph yang tertaut pada scenario tersebut memiliki “facts to add”. |
-| **DR-118 Is Available** | Setiap scenario dianggap “available” jika paling sedikit satu dari kondisi berikut terpenuhi: fact baseline bukan “next” atau penanda “graph has facts to add” aktif. |
-| **DR-119 Name** | Untuk setiap scenario fact change, name sama dengan scenario fact change ID. |
-| **DR-120 Name** | Untuk setiap scenario rule setting, name sama dengan scenario rule setting ID. |
-| **DR-121 Name** | Untuk setiap node layout, name sama dengan node layout ID. |
-| **DR-122 Name** | Untuk setiap layout slot, name sama dengan layout slot ID. |
-| **DR-123 Name** | Untuk setiap page text, name sama dengan page text ID. |
+| **DR-14 Max Sort Order** | Untuk setiap graph, max sort order adalah nilai maksimum sort order pada seluruh statements yang terkait dengan graph tersebut. |
+| **DR-15 Next Candidate Sort Order** | Untuk setiap graph, next candidate sort order dihitung sebagai max sort order ditambah 1. |
+| **DR-16 Name** | Untuk setiap rule, name sama dengan label. |
+| **DR-17 Count of Firings** | Untuk setiap rule, count of firings adalah nilai total fired unit pada seluruh firings yang terkait dengan rule tersebut. |
+| **DR-18 Name** | Untuk setiap firing kind, name sama dengan wording. |
+| **DR-19 Rule Enabled** | Untuk setiap firing kind, rule enabled bernilai benar jika rule yang tertaut pada firing kind tersebut tergolong “enabled”. |
+| **DR-20 Portrait Name** | Untuk setiap thing, portrait name adalah display name dari portrait yang tertaut pada thing tersebut. |
+| **DR-21 Portrait Page** | Untuk setiap thing, portrait page diambil dari portrait yang tertaut. |
+| **DR-22 Portrait Image** | Untuk setiap thing, portrait image diambil dari portrait yang tertaut. |
+| **DR-23 Portrait Crop** | Untuk setiap thing, portrait crop diambil dari portrait yang tertaut. |
+| **DR-24 Portrait Width** | Untuk setiap thing, portrait width diambil dari portrait yang tertaut. |
+| **DR-25 Portrait Height** | Untuk setiap thing, portrait height diambil dari portrait yang tertaut. |
+| **DR-26 Name** | Untuk setiap thing, name sama dengan label. |
+| **DR-27 Node Key** | Untuk setiap thing, node key sama dengan thing ID. |
+| **DR-28 Count of Children** | Untuk setiap thing, count of children adalah nilai total parent unit pada seluruh statements yang terkait dengan thing tersebut. |
+| **DR-29 Count of Grandchildren** | Untuk setiap thing, count of grandchildren adalah nilai total grandparent unit pada seluruh statements yang terkait dengan thing tersebut. |
+| **DR-30 Count As Place** | Untuk setiap thing, count as place adalah nilai total place unit pada seluruh statements yang terkait dengan thing tersebut. |
+| **DR-31 Count As Subject** | Untuk setiap thing, count as subject adalah nilai total holds unit pada seluruh statements yang terkait dengan thing tersebut. |
+| **DR-32 Count As Object** | Untuk setiap thing, count as object adalah nilai total holds unit pada seluruh statements yang terkait dengan thing tersebut. |
+| **DR-33 Is in Graph** | Setiap thing dianggap “in graph” jika paling sedikit satu dari kondisi berikut terpenuhi: count as subject lebih dari 0 atau count as object lebih dari 0. |
+| **DR-34 Node Kind** | Untuk setiap thing, node kind ditentukan menurut urutan prioritas berikut:<br>1. teks kosong, jika kind kosong;<br>2. “class”, jika kind adalah “class”;<br>3. “place”, jika count as place lebih dari 0;<br>4. dalam semua kasus lainnya, “person”. |
+| **DR-35 Name** | Untuk setiap portrait, name sama dengan display name. |
+| **DR-36 Name** | Untuk setiap portrait aliase, name sama dengan portrait alias ID. |
+| **DR-37 Name** | Untuk setiap property, name sama dengan label. |
+| **DR-38 Name** | Untuk setiap property axiom, name sama dengan property axiom ID. |
+| **DR-39 Subject Label** | Untuk setiap statement, subject label diambil dari subject yang tertaut. |
+| **DR-40 Property Label** | Untuk setiap statement, property label diambil dari property yang tertaut. |
+| **DR-41 Object Label** | Untuk setiap statement, object label diambil dari object thing yang tertaut. |
+| **DR-42 Property Datatype** | Untuk setiap statement, property datatype diambil dari property yang tertaut. |
+| **DR-43 Property Has One Current Value** | Untuk setiap statement, property has one current value bernilai benar jika property yang tertaut pada statement tersebut memiliki “one current value”. |
+| **DR-44 Property Domain Class** | Untuk setiap statement, property domain class diambil dari property yang tertaut. |
+| **DR-45 Property Range Class** | Untuk setiap statement, property range class diambil dari property yang tertaut. |
+| **DR-46 Literal Quote** | Untuk setiap statement, literal quote diambil dari graph yang tertaut. |
+| **DR-47 Literal Type Marker** | Untuk setiap statement, literal type marker diambil dari graph yang tertaut. |
+| **DR-48 Built in Source Text** | Untuk setiap statement, built in source text diambil dari graph yang tertaut. |
+| **DR-49 User Source Text** | Untuk setiap statement, user source text diambil dari graph yang tertaut. |
+| **DR-50 Next Fact Sort Order** | Untuk setiap statement, next fact sort order diambil dari graph yang tertaut. |
+| **DR-51 Is Literal** | Setiap statement dianggap “literal” jika object thing kosong. |
+| **DR-52 Object Text** | Untuk setiap statement, object text ditentukan menurut urutan prioritas berikut:<br>1. object value, jika object thing kosong;<br>2. dalam semua kasus lainnya, object label. |
+| **DR-53 Name** | Untuk setiap statement, name dihitung sebagai subject label, diikuti spasi, diikuti property label, diikuti spasi, diikuti object text. |
+| **DR-54 Words** | Untuk setiap statement, words dihitung sebagai subject label, diikuti spasi, diikuti property label, diikuti spasi, diikuti literal quote, diikuti object value, diikuti literal quote, diikuti literal type marker, diikuti property datatype jika object thing kosong, dan dalam semua kasus lainnya object label. ⚠︎ mekanis <!-- rulespeak:reword --> |
+| **DR-55 Source** | Untuk setiap statement, source ditentukan menurut urutan prioritas berikut:<br>1. built in source text, jika penanda “built in” aktif;<br>2. dalam semua kasus lainnya, user source text. |
+| **DR-56 Subject Property Key** | Untuk setiap statement, subject property key dihitung sebagai subject, diikuti “|”, diikuti property. |
+| **DR-57 Latest Sibling Activation Seq** | Untuk setiap statement, latest sibling activation seq adalah nilai maksimum activation seq pada seluruh statements yang terkait dengan statement tersebut. |
+| **DR-58 Is in Effect** | Setiap statement dianggap “in effect” jika semua kondisi berikut terpenuhi: penanda “stated” aktif dan paling sedikit satu dari kondisi berikut terpenuhi: penanda “property has one current value” tidak aktif atau activation seq adalah latest sibling activation seq. |
+| **DR-59 Listed Unit** | Untuk setiap statement, listed unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika penanda “listed” aktif;<br>2. dalam semua kasus lainnya, 0. |
+| **DR-60 In Effect Unit** | Untuk setiap statement, in effect unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika penanda “in effect” aktif;<br>2. dalam semua kasus lainnya, 0. |
+| **DR-61 Listed Off Unit** | Untuk setiap statement, listed off unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “listed” aktif dan penanda “in effect” tidak aktif;<br>2. dalam semua kasus lainnya, 0. |
+| **DR-62 Is Next to Add** | Setiap statement dianggap “next to add” jika semua kondisi berikut terpenuhi: listed off unit adalah 1 dan sort order adalah next fact sort order. |
+| **DR-63 Count of Inverse Firings** | Untuk setiap statement, count of inverse firings adalah nilai total inverse fired unit pada seluruh firings yang terkait dengan statement tersebut. |
+| **DR-64 Count of Symmetric Firings** | Untuk setiap statement, count of symmetric firings adalah nilai total symmetric fired unit pada seluruh firings yang terkait dengan statement tersebut. |
+| **DR-65 Holds Before Chain** | Setiap statement dianggap memenuhi kondisi “holds before chain” jika paling sedikit satu dari kondisi berikut terpenuhi: penanda “in effect” aktif, count of inverse firings lebih dari 0, atau count of symmetric firings lebih dari 0. |
+| **DR-66 Count of Chain Firings** | Untuk setiap statement, count of chain firings adalah nilai total chain fired unit pada seluruh firings yang terkait dengan statement tersebut. |
+| **DR-67 Holds Before Typing** | Setiap statement dianggap memenuhi kondisi “holds before typing” jika paling sedikit satu dari kondisi berikut terpenuhi: penanda “holds before chain” aktif atau count of chain firings lebih dari 0. |
+| **DR-68 Count of Type Firings** | Untuk setiap statement, count of type firings adalah nilai total type fired unit pada seluruh firings yang terkait dengan statement tersebut. |
+| **DR-69 Holds** | Setiap statement dianggap memenuhi kondisi “holds” jika paling sedikit satu dari kondisi berikut terpenuhi: penanda “holds before typing” aktif atau count of type firings lebih dari 0. |
+| **DR-70 Is Conclusion** | Setiap statement dianggap “conclusion” jika semua kondisi berikut terpenuhi: penanda “holds” aktif dan penanda “in effect” tidak aktif. |
+| **DR-71 Holds Unit** | Untuk setiap statement, holds unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika penanda “holds” aktif;<br>2. dalam semua kasus lainnya, 0. |
+| **DR-72 Conclusion Unit** | Untuk setiap statement, conclusion unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika penanda “conclusion” aktif;<br>2. dalam semua kasus lainnya, 0. |
+| **DR-73 Parent Unit** | Untuk setiap statement, parent unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “holds” aktif dan property adalah “isParentOf”;<br>2. dalam semua kasus lainnya, 0. |
+| **DR-74 Grandparent Unit** | Untuk setiap statement, grandparent unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “holds” aktif dan property adalah “isGrandparentOf”;<br>2. dalam semua kasus lainnya, 0. |
+| **DR-75 Place Unit** | Untuk setiap statement, place unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “holds” aktif dan property adalah “attends”;<br>2. dalam semua kasus lainnya, 0. |
+| **DR-76 First Pre Chain Order Key** | Untuk setiap statement, first pre chain order key adalah nilai minimum pre chain order key pada seluruh firings dari statement tersebut yang tergolong “pre chain fired unit”. |
+| **DR-77 Snap Position** | Untuk setiap statement, snap position ditentukan menurut urutan prioritas berikut:<br>1. sort order, jika penanda “in effect” aktif;<br>2. 100000 ditambah first pre chain order key, jika penanda “holds before chain” aktif;<br>3. dalam semua kasus lainnya, 0. |
+| **DR-78 First Fired Order Key** | Untuk setiap statement, first fired order key adalah nilai minimum order key pada seluruh firings dari statement tersebut yang tergolong “fired unit”. |
+| **DR-79 Count of Chosen Firings** | Untuk setiap statement, count of chosen firings adalah nilai total chosen unit pada seluruh firings yang terkait dengan statement tersebut. |
+| **DR-80 Subject Node Key** | Untuk setiap statement, subject node key sama dengan subject. |
+| **DR-81 Object Node Key** | Untuk setiap statement, object node key ditentukan menurut urutan prioritas berikut:<br>1. “literal|”, diikuti object value, diikuti “|”, diikuti property datatype, jika object thing kosong;<br>2. dalam semua kasus lainnya, object thing. |
+| **DR-82 Subject Node Kind** | Untuk setiap statement, subject node kind diambil dari subject yang tertaut. |
+| **DR-83 Object Thing Node Kind** | Untuk setiap statement, object thing node kind diambil dari object thing yang tertaut. |
+| **DR-84 Object Node Kind** | Untuk setiap statement, object node kind ditentukan menurut urutan prioritas berikut:<br>1. “value”, jika object thing kosong;<br>2. dalam semua kasus lainnya, object thing node kind. |
+| **DR-85 Object Value Node Label** | Untuk setiap statement, object value node label diambil dari property yang tertaut. |
+| **DR-86 Count of Violations As First** | Untuk setiap statement, count of violations as first adalah nilai total violation unit pada seluruh disjoint checks yang terkait dengan statement tersebut. |
+| **DR-87 Count of Violations As Second** | Untuk setiap statement, count of violations as second adalah nilai total violation unit pada seluruh disjoint checks yang terkait dengan statement tersebut. |
+| **DR-88 Is in Contradiction** | Setiap statement dianggap “in contradiction” jika paling sedikit satu dari kondisi berikut terpenuhi: count of violations as first lebih dari 0 atau count of violations as second lebih dari 0. |
+| **DR-89 Rule Enabled** | Untuk setiap firing, rule enabled bernilai benar jika rule yang tertaut pada firing tersebut tergolong “enabled”. |
+| **DR-90 Kind Wording** | Untuk setiap firing, kind wording diambil dari kind yang tertaut. |
+| **DR-91 Kind Sort Order** | Untuk setiap firing, kind sort order diambil dari kind yang tertaut. |
+| **DR-92 Target Name** | Untuk setiap firing, target name diambil dari target yang tertaut. |
+| **DR-93 Target Subject Label** | Untuk setiap firing, target subject label diambil dari target yang tertaut. |
+| **DR-94 Target Property Label** | Untuk setiap firing, target property label diambil dari target yang tertaut. |
+| **DR-95 Target Object Text** | Untuk setiap firing, target object text diambil dari target yang tertaut. |
+| **DR-96 Target is Conclusion** | Untuk setiap firing, target is conclusion bernilai benar jika target yang tertaut pada firing tersebut tergolong “conclusion”. |
+| **DR-97 Target Subject Node Key** | Untuk setiap firing, target subject node key diambil dari target yang tertaut. |
+| **DR-98 Target Object Node Key** | Untuk setiap firing, target object node key diambil dari target yang tertaut. |
+| **DR-99 Target First Fired Order Key** | Untuk setiap firing, target first fired order key diambil dari target yang tertaut. |
+| **DR-100 First Words** | Untuk setiap firing, first words diambil dari first yang tertaut. |
+| **DR-101 Second Words** | Untuk setiap firing, second words diambil dari second yang tertaut. |
+| **DR-102 First is in Effect** | Untuk setiap firing, first is in effect bernilai benar jika first yang tertaut pada firing tersebut tergolong “in effect”. |
+| **DR-103 First Holds Before Chain** | Untuk setiap firing, first holds before chain bernilai benar jika first yang tertaut pada firing tersebut memenuhi kondisi “holds before chain”. |
+| **DR-104 Second Holds Before Chain** | Untuk setiap firing, second holds before chain bernilai benar jika second yang tertaut pada firing tersebut memenuhi kondisi “holds before chain”. |
+| **DR-105 First Holds Before Typing** | Untuk setiap firing, first holds before typing bernilai benar jika first yang tertaut pada firing tersebut memenuhi kondisi “holds before typing”. |
+| **DR-106 First Property** | Untuk setiap firing, first property diambil dari first yang tertaut. |
+| **DR-107 First Property Domain Class** | Untuk setiap firing, first property domain class diambil dari first yang tertaut. |
+| **DR-108 First Property Range Class** | Untuk setiap firing, first property range class diambil dari first yang tertaut. |
+| **DR-109 First Sort Order** | Untuk setiap firing, first sort order diambil dari first yang tertaut. |
+| **DR-110 Second is in Effect** | Untuk setiap firing, second is in effect bernilai benar jika second yang tertaut pada firing tersebut tergolong “in effect”. |
+| **DR-111 First Snap Position** | Untuk setiap firing, first snap position diambil dari first yang tertaut. |
+| **DR-112 Second Snap Position** | Untuk setiap firing, second snap position diambil dari second yang tertaut. |
+| **DR-113 Inverse Fired Unit** | Untuk setiap firing, inverse fired unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “rule enabled” aktif, kind adalah “inverse”, dan penanda “first is in effect” aktif;<br>2. dalam semua kasus lainnya, 0. |
+| **DR-114 Symmetric Fired Unit** | Untuk setiap firing, symmetric fired unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “rule enabled” aktif, kind adalah “symmetric”, dan penanda “first is in effect” aktif;<br>2. dalam semua kasus lainnya, 0. |
+| **DR-115 Chain Fired Unit** | Untuk setiap firing, chain fired unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “rule enabled” aktif, kind adalah “chain”, penanda “first holds before chain” aktif, dan penanda “second holds before chain” aktif;<br>2. dalam semua kasus lainnya, 0. |
+| **DR-116 Type Fired Unit** | Untuk setiap firing, type fired unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “rule enabled” aktif; paling sedikit satu dari kondisi berikut terpenuhi: kind adalah “domain” atau kind adalah “range”; dan penanda “first holds before typing” aktif;<br>2. dalam semua kasus lainnya, 0. |
+| **DR-117 Fired Unit** | Untuk setiap firing, fired unit dihitung sebagai inverse fired unit ditambah symmetric fired unit ditambah chain fired unit ditambah type fired unit. |
+| **DR-118 Pre Chain Fired Unit** | Untuk setiap firing, pre chain fired unit dihitung sebagai inverse fired unit ditambah symmetric fired unit. |
+| **DR-119 Pre Chain Order Key** | Untuk setiap firing, pre chain order key dihitung sebagai first sort order dikali 10 ditambah kind sort order. |
+| **DR-120 Round** | Untuk setiap firing, round ditentukan menurut urutan prioritas berikut:<br>1. 2, jika semua kondisi berikut terpenuhi: kind adalah “chain” dan tidak benar bahwa semua kondisi berikut terpenuhi: penanda “first is in effect” aktif dan penanda “second is in effect” aktif;<br>2. dalam semua kasus lainnya, 1. |
+| **DR-121 Order Key** | Untuk setiap firing, order key dihitung sebagai round dikali 1000000000000000 ditambah first snap position dikali 100000000 ditambah kind sort order dikali 10000000 ditambah 0 jika second kosong, dan dalam semua kasus lainnya second snap position. |
+| **DR-122 Is Chosen** | Setiap firing dianggap “chosen” jika semua kondisi berikut terpenuhi: fired unit adalah 1, penanda “target is conclusion” aktif, dan order key adalah target first fired order key. |
+| **DR-123 Chosen Unit** | Untuk setiap firing, chosen unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika penanda “chosen” aktif;<br>2. dalam semua kasus lainnya, 0. |
+| **DR-124 Card Text** | Untuk setiap firing, card text ditentukan menurut urutan prioritas berikut:<br>1. “Worked out by the ”, diikuti kind wording, diikuti “ from “”, diikuti first words, diikuti “””, diikuti “ and “”, diikuti second words, diikuti “”” jika kind adalah “chain”, dan dalam semua kasus lainnya “ and “”, diikuti first property, diikuti “ has domain ”, diikuti first property domain class, diikuti “”” jika kind adalah “domain”, dan dalam semua kasus lainnya “ and “”, diikuti first property, diikuti “ has range ”, diikuti first property range class, diikuti “””, diikuti tanda titik, jika penanda “chosen” aktif;<br>2. dalam semua kasus lainnya, teks kosong. ⚠︎ mekanis <!-- rulespeak:reword --> |
+| **DR-125 Name** | Untuk setiap firing, name sama dengan firing ID. |
+| **DR-126 Rule Enabled** | Untuk setiap disjoint check, rule enabled bernilai benar jika rule yang tertaut pada disjoint check tersebut tergolong “enabled”. |
+| **DR-127 First Holds** | Untuk setiap disjoint check, first holds bernilai benar jika first yang tertaut pada disjoint check tersebut memenuhi kondisi “holds”. |
+| **DR-128 Second Holds** | Untuk setiap disjoint check, second holds bernilai benar jika second yang tertaut pada disjoint check tersebut memenuhi kondisi “holds”. |
+| **DR-129 Subject Label** | Untuk setiap disjoint check, subject label diambil dari first yang tertaut. |
+| **DR-130 Object Label** | Untuk setiap disjoint check, object label diambil dari first yang tertaut. |
+| **DR-131 Violation Unit** | Untuk setiap disjoint check, violation unit ditentukan menurut urutan prioritas berikut:<br>1. 1, jika semua kondisi berikut terpenuhi: penanda “rule enabled” aktif, penanda “first holds” aktif, dan penanda “second holds” aktif;<br>2. dalam semua kasus lainnya, 0. |
+| **DR-132 Alarm Text** | Untuk setiap disjoint check, alarm text ditentukan menurut urutan prioritas berikut:<br>1. “Contradiction found. ”, diikuti subject label, diikuti “ is recorded as both parent and spouse of ”, diikuti object label, diikuti “. Check those facts and the selected disjoint rule.”, jika violation unit adalah 1;<br>2. dalam semua kasus lainnya, teks kosong. |
+| **DR-133 Name** | Untuk setiap disjoint check, name sama dengan disjoint check ID. |
+| **DR-134 Name** | Untuk setiap scenario, name sama dengan label. |
+| **DR-135 Graph Has Facts to Add** | Untuk setiap scenario, graph has facts to add bernilai benar jika graph yang tertaut pada scenario tersebut memiliki “facts to add”. |
+| **DR-136 Is Available** | Setiap scenario dianggap “available” jika paling sedikit satu dari kondisi berikut terpenuhi: fact baseline bukan “next” atau penanda “graph has facts to add” aktif. |
+| **DR-137 Name** | Untuk setiap scenario fact change, name sama dengan scenario fact change ID. |
+| **DR-138 Name** | Untuk setiap scenario rule setting, name sama dengan scenario rule setting ID. |
+| **DR-139 Name** | Untuk setiap node layout, name sama dengan node layout ID. |
+| **DR-140 Name** | Untuk setiap layout slot, name sama dengan layout slot ID. |
+| **DR-141 Name** | Untuk setiap page text, name sama dengan page text ID. |
+| **DR-142 Name** | Untuk setiap engine, name sama dengan label. |
+| **DR-143 Name** | Untuk setiap rulebook tool, name sama dengan label. |
 
 ## 5 Ketertelusuran ke Skema
 
@@ -671,10 +819,18 @@ logika yang sama dengan yang disimpan dalam buku aturan, ditulis untuk pembaca b
 | **Graphs.NextActivationSeq** | rumus | `MaxActivationSeq + 1` |
 | **Graphs.MaxListedSortOrder** | agregasi | `Max(Statements.SortOrder via Graph)` |
 | **Graphs.NextListedSortOrder** | rumus | `MaxListedSortOrder + 1` |
+| **Graphs.MaxSortOrder** | agregasi | `Max(Statements.SortOrder via Graph)` |
+| **Graphs.NextCandidateSortOrder** | rumus | `MaxSortOrder + 1` |
 | **Rules.Name** | rumus | `Label` |
 | **Rules.CountOfFirings** | agregasi | `Sum(Firings.FiredUnit via Rule)` |
 | **FiringKinds.Name** | rumus | `Wording` |
 | **FiringKinds.RuleEnabled** | pencarian | `Lookup(Rules.IsEnabled via Rule)` |
+| **Things.PortraitName** | pencarian | `Lookup(Portraits.DisplayName via Portrait)` |
+| **Things.PortraitPage** | pencarian | `Lookup(Portraits.Page via Portrait)` |
+| **Things.PortraitImage** | pencarian | `Lookup(Portraits.Image via Portrait)` |
+| **Things.PortraitCrop** | pencarian | `Lookup(Portraits.Crop via Portrait)` |
+| **Things.PortraitWidth** | pencarian | `Lookup(Portraits.Width via Portrait)` |
+| **Things.PortraitHeight** | pencarian | `Lookup(Portraits.Height via Portrait)` |
 | **Things.Name** | rumus | `Label` |
 | **Things.NodeKey** | rumus | `ThingId` |
 | **Things.CountOfChildren** | agregasi | `Sum(Statements.ParentUnit via Subject)` |
@@ -683,8 +839,11 @@ logika yang sama dengan yang disimpan dalam buku aturan, ditulis untuk pembaca b
 | **Things.CountAsSubject** | agregasi | `Sum(Statements.HoldsUnit via Subject)` |
 | **Things.CountAsObject** | agregasi | `Sum(Statements.HoldsUnit via ObjectThing)` |
 | **Things.IsInGraph** | rumus | `Or(CountAsSubject > 0, CountAsObject > 0)` |
-| **Things.NodeKind** | rumus | `If(Kind = "class", "class", If(CountAsPlace > 0, "place", "person"))` |
+| **Things.NodeKind** | rumus | `If(Kind = "", "", If(Kind = "class", "class", If(CountAsPlace > 0, "place", "person")))` |
+| **Portraits.Name** | rumus | `DisplayName` |
+| **PortraitAliases.Name** | rumus | `PortraitAliasId` |
 | **Properties.Name** | rumus | `Label` |
+| **PropertyAxioms.Name** | rumus | `PropertyAxiomId` |
 | **Statements.SubjectLabel** | pencarian | `Lookup(Things.Label via Subject)` |
 | **Statements.PropertyLabel** | pencarian | `Lookup(Properties.Label via Property)` |
 | **Statements.ObjectLabel** | pencarian | `Lookup(Things.Label via ObjectThing)` |
@@ -722,6 +881,8 @@ logika yang sama dengan yang disimpan dalam buku aturan, ditulis untuk pembaca b
 | **Statements.ParentUnit** | rumus | `If(And(Holds, Property = "isParentOf"), 1, 0)` |
 | **Statements.GrandparentUnit** | rumus | `If(And(Holds, Property = "isGrandparentOf"), 1, 0)` |
 | **Statements.PlaceUnit** | rumus | `If(And(Holds, Property = "attends"), 1, 0)` |
+| **Statements.FirstPreChainOrderKey** | agregasi | `Min(Firings.PreChainOrderKey via Target)` |
+| **Statements.SnapPosition** | rumus | `If(IsInEffect, SortOrder, If(HoldsBeforeChain, 100000 + FirstPreChainOrderKey, 0))` |
 | **Statements.FirstFiredOrderKey** | agregasi | `Min(Firings.OrderKey via Target)` |
 | **Statements.CountOfChosenFirings** | agregasi | `Sum(Firings.ChosenUnit via Target)` |
 | **Statements.SubjectNodeKey** | rumus | `Subject` |
@@ -754,13 +915,18 @@ logika yang sama dengan yang disimpan dalam buku aturan, ditulis untuk pembaca b
 | **Firings.FirstPropertyDomainClass** | pencarian | `Lookup(Statements.PropertyDomainClass via First)` |
 | **Firings.FirstPropertyRangeClass** | pencarian | `Lookup(Statements.PropertyRangeClass via First)` |
 | **Firings.FirstSortOrder** | pencarian | `Lookup(Statements.SortOrder via First)` |
-| **Firings.SecondSortOrder** | pencarian | `Lookup(Statements.SortOrder via Second)` |
+| **Firings.SecondIsInEffect** | pencarian | `Lookup(Statements.IsInEffect via Second)` |
+| **Firings.FirstSnapPosition** | pencarian | `Lookup(Statements.SnapPosition via First)` |
+| **Firings.SecondSnapPosition** | pencarian | `Lookup(Statements.SnapPosition via Second)` |
 | **Firings.InverseFiredUnit** | rumus | `If(And(RuleEnabled, Kind = "inverse", FirstIsInEffect), 1, 0)` |
 | **Firings.SymmetricFiredUnit** | rumus | `If(And(RuleEnabled, Kind = "symmetric", FirstIsInEffect), 1, 0)` |
 | **Firings.ChainFiredUnit** | rumus | `If(And(RuleEnabled, Kind = "chain", FirstHoldsBeforeChain, SecondHoldsBeforeChain), 1, 0)` |
 | **Firings.TypeFiredUnit** | rumus | `If(And(RuleEnabled, Or(Kind = "domain", Kind = "range"), FirstHoldsBeforeTyping), 1, 0)` |
 | **Firings.FiredUnit** | rumus | `InverseFiredUnit + SymmetricFiredUnit + ChainFiredUnit + TypeFiredUnit` |
-| **Firings.OrderKey** | rumus | `FirstSortOrder * 100000 + KindSortOrder * 1000 + If(Second = "", 0, SecondSortOrder)` |
+| **Firings.PreChainFiredUnit** | rumus | `InverseFiredUnit + SymmetricFiredUnit` |
+| **Firings.PreChainOrderKey** | rumus | `FirstSortOrder * 10 + KindSortOrder` |
+| **Firings.Round** | rumus | `If(And(Kind = "chain", Not(And(FirstIsInEffect, SecondIsInEffect))), 2, 1)` |
+| **Firings.OrderKey** | rumus | `Round * 1000000000000000 + FirstSnapPosition * 100000000 + KindSortOrder * 10000000 + If(Second = "", 0, SecondSnapPosition)` |
 | **Firings.IsChosen** | rumus | `And(FiredUnit = 1, TargetIsConclusion, OrderKey = TargetFirstFiredOrderKey)` |
 | **Firings.ChosenUnit** | rumus | `If(IsChosen, 1, 0)` |
 | **Firings.CardText** | rumus | `If(IsChosen, Concat("Worked out by the ", KindWording, " from “", FirstWords, "”", If(Kind = "chain", Concat(" and “", SecondWords, "”"), If(Kind = "domain", Concat(" and “", FirstProperty, " has domain ", FirstPropertyDomainClass, "”"), If(Kind = "range", Concat(" and “", FirstProperty, " has range ", FirstPropertyRangeClass, "”"), ""))), "."), "")` |
@@ -781,6 +947,8 @@ logika yang sama dengan yang disimpan dalam buku aturan, ditulis untuk pembaca b
 | **NodeLayouts.Name** | rumus | `NodeLayoutId` |
 | **LayoutSlots.Name** | rumus | `LayoutSlotId` |
 | **PageTexts.Name** | rumus | `PageTextId` |
+| **Engines.Name** | rumus | `Label` |
+| **RulebookTools.Name** | rumus | `Label` |
 
 ---
 

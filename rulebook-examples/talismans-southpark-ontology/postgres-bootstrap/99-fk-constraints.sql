@@ -17,25 +17,37 @@ ALTER TABLE firing_kinds DROP CONSTRAINT IF EXISTS fk_firing_kinds_rule;
 ALTER TABLE firing_kinds ADD CONSTRAINT fk_firing_kinds_rule
   FOREIGN KEY (rule) REFERENCES rules (rule_id);
 
+-- Things
+ALTER TABLE things DROP CONSTRAINT IF EXISTS fk_things_portrait;
+ALTER TABLE things ADD CONSTRAINT fk_things_portrait
+  FOREIGN KEY (portrait) REFERENCES portraits (portrait_id);
+
+-- PortraitAliases
+ALTER TABLE portrait_aliases DROP CONSTRAINT IF EXISTS fk_portrait_aliases_portrait;
+ALTER TABLE portrait_aliases ADD CONSTRAINT fk_portrait_aliases_portrait
+  FOREIGN KEY (portrait) REFERENCES portraits (portrait_id);
+
 -- Properties
-ALTER TABLE properties DROP CONSTRAINT IF EXISTS fk_properties_inverse_of;
-ALTER TABLE properties ADD CONSTRAINT fk_properties_inverse_of
-  FOREIGN KEY (inverse_of) REFERENCES properties (property_id);
-ALTER TABLE properties DROP CONSTRAINT IF EXISTS fk_properties_chain_first;
-ALTER TABLE properties ADD CONSTRAINT fk_properties_chain_first
-  FOREIGN KEY (chain_first) REFERENCES properties (property_id);
-ALTER TABLE properties DROP CONSTRAINT IF EXISTS fk_properties_chain_second;
-ALTER TABLE properties ADD CONSTRAINT fk_properties_chain_second
-  FOREIGN KEY (chain_second) REFERENCES properties (property_id);
 ALTER TABLE properties DROP CONSTRAINT IF EXISTS fk_properties_domain_class;
 ALTER TABLE properties ADD CONSTRAINT fk_properties_domain_class
   FOREIGN KEY (domain_class) REFERENCES things (thing_id);
 ALTER TABLE properties DROP CONSTRAINT IF EXISTS fk_properties_range_class;
 ALTER TABLE properties ADD CONSTRAINT fk_properties_range_class
   FOREIGN KEY (range_class) REFERENCES things (thing_id);
-ALTER TABLE properties DROP CONSTRAINT IF EXISTS fk_properties_disjoint_with;
-ALTER TABLE properties ADD CONSTRAINT fk_properties_disjoint_with
-  FOREIGN KEY (disjoint_with) REFERENCES properties (property_id);
+
+-- PropertyAxioms
+ALTER TABLE property_axioms DROP CONSTRAINT IF EXISTS fk_property_axioms_kind;
+ALTER TABLE property_axioms ADD CONSTRAINT fk_property_axioms_kind
+  FOREIGN KEY (kind) REFERENCES firing_kinds (firing_kind_id);
+ALTER TABLE property_axioms DROP CONSTRAINT IF EXISTS fk_property_axioms_property;
+ALTER TABLE property_axioms ADD CONSTRAINT fk_property_axioms_property
+  FOREIGN KEY (property) REFERENCES properties (property_id);
+ALTER TABLE property_axioms DROP CONSTRAINT IF EXISTS fk_property_axioms_first;
+ALTER TABLE property_axioms ADD CONSTRAINT fk_property_axioms_first
+  FOREIGN KEY (first) REFERENCES properties (property_id);
+ALTER TABLE property_axioms DROP CONSTRAINT IF EXISTS fk_property_axioms_second;
+ALTER TABLE property_axioms ADD CONSTRAINT fk_property_axioms_second
+  FOREIGN KEY (second) REFERENCES properties (property_id);
 
 -- Statements
 ALTER TABLE statements DROP CONSTRAINT IF EXISTS fk_statements_graph;
@@ -106,4 +118,4 @@ ALTER TABLE scenario_rule_settings DROP CONSTRAINT IF EXISTS fk_scenario_rule_se
 ALTER TABLE scenario_rule_settings ADD CONSTRAINT fk_scenario_rule_settings_rule
   FOREIGN KEY (rule) REFERENCES rules (rule_id);
 
--- 26 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 28 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

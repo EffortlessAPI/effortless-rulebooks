@@ -1,0 +1,145 @@
+[
+  {
+    "portrait_id": "Butters",
+    "display_name": "Butters Stotch",
+    "page": "https://southpark.fandom.com/wiki/Butters_Stotch",
+    "image": "https://static.wikia.nocookie.net/southpark/images/0/06/ButtersStotch.png/revision/latest",
+    "crop": "-20 -10 670 670",
+    "width": 627,
+    "height": 992,
+    "sort_order": 9,
+    "name": null
+  },
+  {
+    "portrait_id": "Cartman",
+    "display_name": "Eric Cartman",
+    "page": "https://southpark.fandom.com/wiki/Eric_Cartman",
+    "image": "https://static.wikia.nocookie.net/southpark/images/c/c4/Eric-cartman.png/revision/latest",
+    "crop": "100 -10 800 800",
+    "width": 968,
+    "height": 891,
+    "sort_order": 11,
+    "name": null
+  },
+  {
+    "portrait_id": "Gerald",
+    "display_name": "Gerald Broflovski",
+    "page": "https://southpark.fandom.com/wiki/Gerald_Broflovski",
+    "image": "https://static.wikia.nocookie.net/southpark/images/3/36/Gerald-broflovski.png/revision/latest",
+    "crop": "-5 -10 420 420",
+    "width": 410,
+    "height": 1038,
+    "sort_order": 13,
+    "name": null
+  },
+  {
+    "portrait_id": "Ike",
+    "display_name": "Ike Broflovski",
+    "page": "https://southpark.fandom.com/wiki/Ike_Broflovski",
+    "image": "https://static.wikia.nocookie.net/southpark/images/b/b7/Ike.png/revision/latest",
+    "crop": "-10 -10 405 405",
+    "width": 385,
+    "height": 480,
+    "sort_order": 10,
+    "name": null
+  },
+  {
+    "portrait_id": "Kenny",
+    "display_name": "Kenny McCormick",
+    "page": "https://southpark.fandom.com/wiki/Kenny_McCormick",
+    "image": "https://static.wikia.nocookie.net/southpark/images/f/f3/Kenny-mccormick.png/revision/latest",
+    "crop": "10 0 840 840",
+    "width": 858,
+    "height": 948,
+    "sort_order": 8,
+    "name": null
+  },
+  {
+    "portrait_id": "Kyle",
+    "display_name": "Kyle Broflovski",
+    "page": "https://southpark.fandom.com/wiki/Kyle_Broflovski",
+    "image": "https://static.wikia.nocookie.net/southpark/images/9/95/Kyle-broflovski.png/revision/latest?cb=20190411033301",
+    "crop": "-20 -10 790 790",
+    "width": 753,
+    "height": 935,
+    "sort_order": 6,
+    "name": null
+  },
+  {
+    "portrait_id": "Marvin",
+    "display_name": "Marvin Marsh",
+    "page": "https://southpark.fandom.com/wiki/Marvin_Marsh",
+    "image": "https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest",
+    "crop": "48 -5 280 280",
+    "width": 375,
+    "height": 536,
+    "sort_order": 1,
+    "name": null
+  },
+  {
+    "portrait_id": "Randy",
+    "display_name": "Randy Marsh",
+    "page": "https://southpark.fandom.com/wiki/Randy_Marsh",
+    "image": "https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest",
+    "crop": "0 -10 428 428",
+    "width": 428,
+    "height": 1057,
+    "sort_order": 2,
+    "name": null
+  },
+  {
+    "portrait_id": "Sharon",
+    "display_name": "Sharon Marsh",
+    "page": "https://southpark.fandom.com/wiki/Sharon_Marsh",
+    "image": "https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest",
+    "crop": "20 -10 390 390",
+    "width": 439,
+    "height": 1049,
+    "sort_order": 3,
+    "name": null
+  },
+  {
+    "portrait_id": "Sheila",
+    "display_name": "Sheila Broflovski",
+    "page": "https://southpark.fandom.com/wiki/Sheila_Broflovski",
+    "image": "https://static.wikia.nocookie.net/southparkfanon/images/5/53/SheilaBroflovski.png/revision/latest",
+    "crop": "50 0 1400 1400",
+    "width": 1500,
+    "height": 2427,
+    "sort_order": 12,
+    "name": null
+  },
+  {
+    "portrait_id": "Shelly",
+    "display_name": "Shelley Marsh",
+    "page": "https://southpark.fandom.com/wiki/Shelley_Marsh",
+    "image": "https://static.wikia.nocookie.net/southpark/images/3/3b/Shelly.png/revision/latest",
+    "crop": "-20 -10 760 760",
+    "width": 720,
+    "height": 1064,
+    "sort_order": 5,
+    "name": null
+  },
+  {
+    "portrait_id": "SouthParkElementary",
+    "display_name": "South Park Elementary",
+    "page": "https://southpark.fandom.com/wiki/South_Park_Elementary",
+    "image": "https://static.wikia.nocookie.net/southpark/images/1/12/School_7.png/revision/latest?cb=20180414152359",
+    "crop": "420 0 1080 1080",
+    "width": 1920,
+    "height": 1080,
+    "sort_order": 7,
+    "name": null
+  },
+  {
+    "portrait_id": "Stan",
+    "display_name": "Stan Marsh",
+    "page": "https://southpark.fandom.com/wiki/Stan_Marsh",
+    "image": "https://static.wikia.nocookie.net/southpark/images/c/c6/Stan-marsh-0.png/revision/latest",
+    "crop": "-35 -10 735 735",
+    "width": 663,
+    "height": 1037,
+    "sort_order": 4,
+    "name": null
+  }
+]

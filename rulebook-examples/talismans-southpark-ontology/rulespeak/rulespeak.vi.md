@@ -1,6 +1,6 @@
 # 📘 Talisman's South Park ontology explainer — Tài liệu
 
-_Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten facts, five rule switches, property wiring, provenance wording and current-value policy are rows, and every conclusion is a formula. The rules apply in three fixed strata (inverse and symmetric, then the property chain, then domain and range); property wiring that feeds an earlier stratum would need repeated rounds._
+_Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten facts, five rule switches, property wiring, provenance wording and current-value policy are rows, and every conclusion is a formula. The rules apply in three fixed strata (inverse and symmetric, then the property chain, then domain and range); property wiring that feeds an earlier stratum would need repeated rounds. Every fact that could hold over the cast is a candidate row; app/lib/candidates.mjs writes the candidates when a thing, value or property is added._
 
 > Các quy tắc nghiệp vụ dạng khai báo, được sinh ra từ bộ quy tắc. Mỗi phát biểu
 > dưới đây diễn đạt một sự thật trong lĩnh vực nghiệp vụ — không phải là một thủ tục,
@@ -31,13 +31,15 @@ _Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten
 | Next Activation Seq | Được tính bằng max activation seq cộng 1. | _Order 2. The activation number the next switched-on fact takes._ |
 | Max Listed Sort Order | Giá trị lớn nhất của trường “sort order” trên các statements liên quan đến graph đó, chỉ tính các bản ghi là “listed unit”. | _Order 2. Highest list position among listed facts._ |
 | Next Listed Sort Order | Được tính bằng max listed sort order cộng 1. | _Order 3. The list position a newly added fact takes._ |
+| Max Sort Order | Giá trị lớn nhất của trường “sort order” trên các statements liên quan đến graph đó. | _Order 1. Highest sort order of any fact, listed or candidate._ |
+| Next Candidate Sort Order | Được tính bằng max sort order cộng 1. | _Order 2. The sort order a new candidate fact, or a fact removed from the list, takes._ |
 
 <details open>
 <summary>Dữ liệu mẫu</summary>
 
-| Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 |
+| Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ | Max Sort Order ƒ | Next Candidate Sort Order ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 | 100269 | 100270 |
 
 _ƒ đánh dấu cột được tính._
 
@@ -68,7 +70,7 @@ _ƒ đánh dấu cột được tính._
 
 | Thuật ngữ | Mô tả | Ghi chú diễn giải |
 |------|-------------|-------------------|
-| **Firing Kind** | The ways a rule can apply. Domain and range belong to one rule but are worded apart. | — |
+| **Firing Kind** | The ways a rule can apply. Domain and range belong to one rule but are worded apart; 'disjoint' names the rule the disjointness checks answer to. | — |
 | Rule | Thuộc tính đã được định nghĩa. | _The rule switch this kind belongs to._ |
 | Wording | Thuộc tính đã được định nghĩa. | _How a conclusion card names the rule, as in 'Worked out by the inverse rule'._ |
 | Sort Order | Thuộc tính đã được định nghĩa. | _Order in which the page's reasoner tries the kinds for one fact._ |
@@ -94,12 +96,13 @@ _ƒ đánh dấu cột được tính._
 | Label | Thuộc tính đã được định nghĩa. | _The name the page shows._ |
 | Kind | Thuộc tính đã được định nghĩa. | _'individual' or 'class'._ |
 | Sort Order | Thuộc tính đã được định nghĩa. | _Position in the cast._ |
-| Portrait Name | Thuộc tính đã được định nghĩa. | _The name on the portrait's Fandom page._ |
-| Portrait Page | Thuộc tính đã được định nghĩa. | _The Fandom page credited for the portrait._ |
-| Portrait Image | Thuộc tính đã được định nghĩa. | _The original Fandom image._ |
-| Portrait Crop | Thuộc tính đã được định nghĩa. | _The portrait's crop as an SVG viewBox: x y width height._ |
-| Portrait Width | Thuộc tính đã được định nghĩa. | _The original image's width in pixels._ |
-| Portrait Height | Thuộc tính đã được định nghĩa. | _The original image's height in pixels._ |
+| Portrait | Thuộc tính đã được định nghĩa. | _The portrait drawn for this thing; set when its name matches a portrait alias._ |
+| Portrait Name | Trường “display name” của bản ghi liên kết qua trường “portrait”. | _Order 1. The name on the portrait's Fandom page._ |
+| Portrait Page | Lấy từ bản ghi liên kết qua trường “portrait”. | _Order 1. The Fandom page credited for the portrait._ |
+| Portrait Image | Lấy từ bản ghi liên kết qua trường “portrait”. | _Order 1. The original Fandom image._ |
+| Portrait Crop | Lấy từ bản ghi liên kết qua trường “portrait”. | _Order 1. The portrait's crop as an SVG viewBox._ |
+| Portrait Width | Lấy từ bản ghi liên kết qua trường “portrait”. | _Order 1. The original image's width in pixels._ |
+| Portrait Height | Lấy từ bản ghi liên kết qua trường “portrait”. | _Order 1. The original image's height in pixels._ |
 | Name | Có cùng giá trị với trường “label” của chính thing đó. | _Order 1. The thing's name._ |
 | Node Key | Có cùng giá trị với trường “thing ID” của chính thing đó. | _Order 1. The key the graph draws this thing under._ |
 | Count of Children | Giá trị tổng cộng của trường “parent unit” trên các statements liên quan đến thing đó. | _Order 17. People this thing is a parent of, stated or concluded._ |
@@ -108,12 +111,12 @@ _ƒ đánh dấu cột được tính._
 | Count As Subject | Giá trị tổng cộng của trường “holds unit” trên các statements liên quan đến thing đó. | _Order 17. Holding facts about this thing._ |
 | Count As Object | Giá trị tổng cộng của trường “holds unit” trên các statements liên quan đến thing đó. | _Order 17. Holding facts that point at this thing._ |
 | Is in Graph | Đúng khi ít nhất một trong các điều kiện sau đúng: count as subject lớn hơn 0 hoặc count as object lớn hơn 0. | _Order 18. True when the graph draws this thing._ |
-| Node Kind | Được xác định theo thứ tự ưu tiên: “class” nếu kind là “class”; “place” nếu count as place lớn hơn 0; trong mọi trường hợp còn lại, “person”. | _Order 18. How the graph draws the thing: a class, a place someone attends, or a person._ |
+| Node Kind | Được xác định theo thứ tự ưu tiên: chuỗi rỗng nếu kind để trống; “class” nếu kind là “class”; “place” nếu count as place lớn hơn 0; trong mọi trường hợp còn lại, “person”. | _Order 18. How the graph draws the thing: a class, a place someone attends, or a person._ |
 
 <details open>
 <summary>Dữ liệu mẫu</summary>
 
-| Label | Kind | Sort Order | Portrait Name | Portrait Page | Portrait Image | Portrait Crop | Portrait Width | Portrait Height | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
+| Label | Kind | Sort Order | Portrait Name ƒ | Portrait Page ƒ | Portrait Image ƒ | Portrait Crop ƒ | Portrait Width ƒ | Portrait Height ƒ | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Marvin | individual | 1 | Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | Marvin | Marvin | 1 | 0 | 0 | 1 | 0 | true | person |
 | Randy | individual | 2 | Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | Randy | Randy | 2 | 0 | 0 | 3 | 1 | true | person |
@@ -125,19 +128,59 @@ _ƒ đánh dấu cột được tính._
 
 | Thuật ngữ | Mô tả | Ghi chú diễn giải |
 |------|-------------|-------------------|
-| **Property** | The ten properties and the wiring every rule reads. | — |
+| **Portrait** | The page's Fandom portraits, including those for characters a reader may add. | — |
+| Display Name | Thuộc tính đã được định nghĩa. | _The name on the portrait's Fandom page._ |
+| Page | Thuộc tính đã được định nghĩa. | _The Fandom page credited for the portrait._ |
+| Image | Thuộc tính đã được định nghĩa. | _The original Fandom image._ |
+| Crop | Thuộc tính đã được định nghĩa. | _The crop as an SVG viewBox: x y width height._ |
+| Width | Thuộc tính đã được định nghĩa. | _The original image's width in pixels._ |
+| Height | Thuộc tính đã được định nghĩa. | _The original image's height in pixels._ |
+| Sort Order | Thuộc tính đã được định nghĩa. | _Position in the credits._ |
+| Name | Có cùng giá trị với trường “display name” của chính portrait đó. | _Order 1. The portrait's name._ |
+
+<details open>
+<summary>Dữ liệu mẫu</summary>
+
+| Display Name | Page | Image | Crop | Width | Height | Sort Order | Name ƒ |
+|---|---|---|---|---|---|---|---|
+| Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | 1 | Marvin Marsh |
+| Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | 2 | Randy Marsh |
+| Sharon Marsh | https://southpark.fandom.com/wiki/Sharon_Marsh | https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest | 20 -10 390 390 | 439 | 1049 | 3 | Sharon Marsh |
+
+_ƒ đánh dấu cột được tính._
+
+</details>
+
+| Thuật ngữ | Mô tả | Ghi chú diễn giải |
+|------|-------------|-------------------|
+| **Portrait Aliase** | The names a portrait answers to. A new thing whose name matches an alias gets that portrait. | — |
+| Portrait | Thuộc tính đã được định nghĩa. | _The portrait this name selects._ |
+| Name | Có cùng giá trị với trường “portrait alias ID” của chính portrait aliase đó. | _Order 1. The alias._ |
+
+<details open>
+<summary>Dữ liệu mẫu</summary>
+
+| Name ƒ |
+|---|
+| marvin |
+| marvin marsh |
+| grandpa marsh |
+
+_ƒ đánh dấu cột được tính._
+
+</details>
+
+| Thuật ngữ | Mô tả | Ghi chú diễn giải |
+|------|-------------|-------------------|
+| **Property** | The ten properties, with what the symmetric, domain and range rules read. Axioms that relate one property to another (inverse, chain, disjoint) are rows of PropertyAxioms. | — |
 | Label | Thuộc tính đã được định nghĩa. | _The property's wording on the page._ |
 | Property Kind | Thuộc tính đã được định nghĩa. | _'object' links two things, 'datatype' links a thing to a value, 'type' states class membership._ |
 | Datatype | Thuộc tính đã được định nghĩa. | _The value's XML Schema datatype for a datatype property; blank otherwise._ |
 | Is User Addable | Đúng khi chuỗi rỗng. | _Offered in the page's Add fact form._ |
 | Has One Current Value | Đúng khi chuỗi rỗng. | _The page keeps one current value per person: switching a value on replaces the earlier one._ |
-| Inverse of | Thuộc tính đã được định nghĩa. | _The property the inverse rule derives from this one._ |
 | Is Symmetric | Đúng khi chuỗi rỗng. | _The symmetric rule makes this link true in both directions._ |
-| Chain First | Thuộc tính đã được định nghĩa. | _First link of the property chain that derives this property._ |
-| Chain Second | Thuộc tính đã được định nghĩa. | _Second link of the property chain that derives this property._ |
 | Domain Class | Thuộc tính đã được định nghĩa. | _The class the domain rule gives this property's subject._ |
 | Range Class | Thuộc tính đã được định nghĩa. | _The class the range rule gives this property's object._ |
-| Disjoint With | Thuộc tính đã được định nghĩa. | _A property that may not link the same pair, in the same direction, as this one._ |
 | Sort Order | Thuộc tính đã được định nghĩa. | _Position in the Add fact form's property list._ |
 | Value Node Label | Thuộc tính đã được định nghĩa. | _The small label under a value node for this property: 'role value' or 'number value'._ |
 | Current Value Wording | Thuộc tính đã được định nghĩa. | _How the Add fact form names a replaced value, as in 'Stan now has grade level 5'._ |
@@ -154,6 +197,28 @@ _ƒ đánh dấu cột được tính._
 | is parent of | object | — | true | false | false | 1 | — | — | — | — | — | is parent of |
 | is child of | object | — | true | false | false | 2 | — | — | — | — | — | is child of |
 | is spouse of | object | — | true | false | true | 3 | — | — | — | — | — | is spouse of |
+
+_ƒ đánh dấu cột được tính._
+
+</details>
+
+| Thuật ngữ | Mô tả | Ghi chú diễn giải |
+|------|-------------|-------------------|
+| **Property Axiom** | Axioms that relate one property to others, as OWL states them: an inverse, a two-link chain, or a disjoint pair. The candidate generator reads these rows. | — |
+| Kind | Thuộc tính đã được định nghĩa. | _inverse, chain or disjoint._ |
+| Property | Thuộc tính đã được định nghĩa. | _The property the axiom is about: the one inverted, the one a chain derives, or the first of a disjoint pair._ |
+| First | Thuộc tính đã được định nghĩa. | _The inverse property, the chain's first link, or the other property of a disjoint pair._ |
+| Second | Thuộc tính đã được định nghĩa. | _The chain's second link._ |
+| Name | Có cùng giá trị với trường “property axiom ID” của chính property axiom đó. | _Order 1. The axiom's key._ |
+
+<details open>
+<summary>Dữ liệu mẫu</summary>
+
+| Name ƒ |
+|---|
+| inverse:isParentOf |
+| disjoint:isParentOf~isSpouseOf |
+| inverse:isChildOf |
 
 _ƒ đánh dấu cột được tính._
 
@@ -210,6 +275,8 @@ _ƒ đánh dấu cột được tính._
 | Parent Unit | Được xác định theo thứ tự ưu tiên: 1 nếu tất cả các điều kiện sau đều đúng: cờ “holds” được bật và property là “isParentOf”; trong mọi trường hợp còn lại, 0. | _Order 16. 1 for a holding parent link._ |
 | Grandparent Unit | Được xác định theo thứ tự ưu tiên: 1 nếu tất cả các điều kiện sau đều đúng: cờ “holds” được bật và property là “isGrandparentOf”; trong mọi trường hợp còn lại, 0. | _Order 16. 1 for a holding grandparent link._ |
 | Place Unit | Được xác định theo thứ tự ưu tiên: 1 nếu tất cả các điều kiện sau đều đúng: cờ “holds” được bật và property là “attends”; trong mọi trường hợp còn lại, 0. | _Order 16. 1 for a holding attends link._ |
+| First Pre Chain Order Key | Giá trị nhỏ nhất của trường “pre chain order key” trên các firings liên quan đến statement đó, chỉ tính các bản ghi là “pre chain fired unit”. | _Order 7. Order key of the first inverse or symmetric application that concludes this fact._ |
+| Snap Position | Được xác định theo thứ tự ưu tiên: sort order nếu cờ “in effect” được bật; 100000 cộng first pre chain order key nếu cờ “holds before chain” được bật; trong mọi trường hợp còn lại, 0. | _Order 8. Where the page's reasoner meets this fact as a premise: a stated fact at its list position, a fact concluded by the inverse or symmetric rule after every stated fact, in the order it was concluded; 0 for a fact that does not hold yet, so a link to no fact reads the same on every engine._ |
 | First Fired Order Key | Giá trị nhỏ nhất của trường “order key” trên các firings liên quan đến statement đó, chỉ tính các bản ghi là “fired unit”. | _Order 15. Order key of the first rule application that concludes this fact, in the page reasoner's order._ |
 | Count of Chosen Firings | Giá trị tổng cộng của trường “chosen unit” trên các firings liên quan đến statement đó. | _Order 20. Rule applications shown as this fact's conclusion card: one for a conclusion, zero otherwise._ |
 | Subject Node Key | Có cùng giá trị với trường “subject” của chính statement đó. | _Order 1. The graph node this fact starts from._ |
@@ -225,11 +292,11 @@ _ƒ đánh dấu cột được tính._
 <details open>
 <summary>Dữ liệu mẫu</summary>
 
-| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 101 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 102 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
+| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Pre Chain Order Key ƒ | Snap Position ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 1.0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100001 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100002 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
 
 _ƒ đánh dấu cột được tính._
 
@@ -264,13 +331,18 @@ _ƒ đánh dấu cột được tính._
 | First Property Domain Class | Lấy từ bản ghi liên kết qua trường “first”. | _Order 2. The premise property's domain class._ |
 | First Property Range Class | Lấy từ bản ghi liên kết qua trường “first”. | _Order 2. The premise property's range class._ |
 | First Sort Order | Lấy từ bản ghi liên kết qua trường “first”. | _Order 1. The premise's list position._ |
-| Second Sort Order | Lấy từ bản ghi liên kết qua trường “second”. | _Order 1. The second premise's list position._ |
+| Second is in Effect | Đúng khi bản ghi liên kết qua trường “second” là “in effect”. | _Order 4. Whether the second premise is in effect._ |
+| First Snap Position | Lấy từ bản ghi liên kết qua trường “first”. | _Order 9. Where the reasoner meets the premise._ |
+| Second Snap Position | Lấy từ bản ghi liên kết qua trường “second”. | _Order 9. Where the reasoner meets the second premise._ |
 | Inverse Fired Unit | Được xác định theo thứ tự ưu tiên: 1 nếu tất cả các điều kiện sau đều đúng: cờ “rule enabled” được bật, kind là “inverse” và cờ “first is in effect” được bật; trong mọi trường hợp còn lại, 0. | _Order 5. 1 when the inverse rule fires here._ |
 | Symmetric Fired Unit | Được xác định theo thứ tự ưu tiên: 1 nếu tất cả các điều kiện sau đều đúng: cờ “rule enabled” được bật, kind là “symmetric” và cờ “first is in effect” được bật; trong mọi trường hợp còn lại, 0. | _Order 5. 1 when the symmetric rule fires here._ |
 | Chain Fired Unit | Được xác định theo thứ tự ưu tiên: 1 nếu tất cả các điều kiện sau đều đúng: cờ “rule enabled” được bật, kind là “chain”, cờ “first holds before chain” được bật và cờ “second holds before chain” được bật; trong mọi trường hợp còn lại, 0. | _Order 9. 1 when the property chain fires here._ |
 | Type Fired Unit | Được xác định theo thứ tự ưu tiên: 1 nếu tất cả các điều kiện sau đều đúng: cờ “rule enabled” được bật; ít nhất một trong các điều kiện sau đúng: kind là “domain” hoặc kind là “range”; và cờ “first holds before typing” được bật; trong mọi trường hợp còn lại, 0. | _Order 13. 1 when the domain or range rule fires here._ |
 | Fired Unit | Được tính bằng inverse fired unit cộng symmetric fired unit cộng chain fired unit cộng type fired unit. | _Order 14. 1 when this application fires._ |
-| Order Key | Được tính bằng first sort order nhân 100000 cộng kind sort order nhân 1000 cộng 0 nếu second để trống, trong mọi trường hợp còn lại là second sort order. | _Order 2. The page reasoner's order: by premise, then rule kind, then second premise._ |
+| Pre Chain Fired Unit | Được tính bằng inverse fired unit cộng symmetric fired unit. | _Order 6. 1 when this is an inverse or symmetric application that fires._ |
+| Pre Chain Order Key | Được tính bằng first sort order nhân 10 cộng kind sort order. | _Order 2. For an inverse or symmetric application: its place in the reasoner's first round._ |
+| Round | Được xác định theo thứ tự ưu tiên: 2 nếu tất cả các điều kiện sau đều đúng: kind là “chain” và không xảy ra việc tất cả các điều kiện sau đều đúng: cờ “first is in effect” được bật và cờ “second is in effect” được bật; trong mọi trường hợp còn lại, 1. | _Order 5. The reasoner's round: 1 when every premise is a stated fact, 2 when the property chain reads a concluded fact._ |
+| Order Key | Được tính bằng round nhân 1000000000000000 cộng first snap position nhân 100000000 cộng kind sort order nhân 10000000 cộng 0 nếu second để trống, trong mọi trường hợp còn lại là second snap position. | _Order 10. The page reasoner's order: by round, then premise, then rule kind, then second premise._ |
 | Is Chosen | Đúng khi tất cả các điều kiện sau đều đúng: fired unit là 1, cờ “target is conclusion” được bật và order key là target first fired order key. | _Order 18. The application the conclusions panel shows for its fact: the first one in the reasoner's order._ |
 | Chosen Unit | Được xác định theo thứ tự ưu tiên: 1 nếu cờ “chosen” được bật; trong mọi trường hợp còn lại, 0. | _Order 19. 1 when this application is shown._ |
 | Card Text | Được xác định theo thứ tự ưu tiên: “Worked out by the ”, tiếp theo là kind wording, tiếp theo là “ from “”, tiếp theo là first words, tiếp theo là “””, tiếp theo là “ and “”, tiếp theo là second words, tiếp theo là “”” nếu kind là “chain”, trong mọi trường hợp còn lại là “ and “”, tiếp theo là first property, tiếp theo là “ has domain ”, tiếp theo là first property domain class, tiếp theo là “”” nếu kind là “domain”, trong mọi trường hợp còn lại là “ and “”, tiếp theo là first property, tiếp theo là “ has range ”, tiếp theo là first property range class, tiếp theo là “””, tiếp theo là dấu chấm nếu cờ “chosen” được bật; trong mọi trường hợp còn lại, chuỗi rỗng. ⚠︎ máy móc <!-- rulespeak:reword --> | _Order 19. The conclusion card's provenance line, in the page's wording._ |
@@ -279,11 +351,11 @@ _ƒ đánh dấu cột được tính._
 <details open>
 <summary>Dữ liệu mẫu</summary>
 
-| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second Sort Order ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | — | 0 | 0 | 0 | 0 | 0 | 101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 101 | — | 0 | 0 | 0 | 0 | 0 | 10101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 102 | — | 0 | 0 | 0 | 0 | 0 | 10201000 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
+| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second is in Effect ƒ | First Snap Position ƒ | Second Snap Position ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Pre Chain Fired Unit ƒ | Pre Chain Order Key ƒ | Round ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | false | 1.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 11.0 | 1 | 1000000110000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 100001 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000011.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 100002 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000021.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
 
 _ƒ đánh dấu cột được tính._
 
@@ -456,11 +528,60 @@ _ƒ đánh dấu cột được tính._
 
 </details>
 
+| Thuật ngữ | Mô tả | Ghi chú diễn giải |
+|------|-------------|-------------------|
+| **Engine** | The execution engines the page can be computed by. Each is a build output of this rulebook. | — |
+| Label | Thuộc tính đã được định nghĩa. | _The engine's name in the switcher._ |
+| Substrate | Thuộc tính đã được định nghĩa. | _The conformance harness's name for this substrate._ |
+| Is Default | Đúng khi chuỗi rỗng. | _The engine a new visitor starts on._ |
+| Description | Thuộc tính đã được định nghĩa. | _What computes the page on this engine._ |
+| Sort Order | Thuộc tính đã được định nghĩa. | _Position in the switcher._ |
+| Name | Có cùng giá trị với trường “label” của chính engine đó. | _Order 1. The engine's name._ |
+
+<details open>
+<summary>Dữ liệu mẫu</summary>
+
+| Label | Substrate | Is Default | Description | Sort Order | Name ƒ |
+|---|---|---|---|---|---|
+| Postgres views | effortless-postgres | true | Every value is a column of a generated view; the database computes it when the page reads it. | 1 | Postgres views |
+| TypeScript | effortless-typescript | false | The generated TypeScript computes every field from the same rows, with no database. | 2 | TypeScript |
+| OWL and SHACL rules | effortless-owl | false | The generated ontology and SHACL rules, run over the same rows by a SPARQL engine. | 3 | OWL and SHACL rules |
+
+_ƒ đánh dấu cột được tính._
+
+</details>
+
+| Thuật ngữ | Mô tả | Ghi chú diễn giải |
+|------|-------------|-------------------|
+| **Rulebook Tool** | What each rulebook tool adds to the original explainer; the tools panel lists them. | — |
+| Label | Thuộc tính đã được định nghĩa. | _The tool's name._ |
+| Adds | Thuộc tính đã được định nghĩa. | _What it adds to the original explainer._ |
+| Href | Thuộc tính đã được định nghĩa. | _Where its link goes; 'editor' means the running rulebook editor._ |
+| Link Text | Thuộc tính đã được định nghĩa. | _The link's text._ |
+| Sort Order | Thuộc tính đã được định nghĩa. | _Position in the panel._ |
+| Name | Có cùng giá trị với trường “label” của chính rulebook tool đó. | _Order 1. The tool's name._ |
+
+<details open>
+<summary>Dữ liệu mẫu</summary>
+
+| Label | Adds | Href | Link Text | Sort Order | Name ƒ |
+|---|---|---|---|---|---|
+| Interchangeable engines | The same page, computed by Postgres views, generated TypeScript or the generated OWL and SHACL rules. Switch with the control above; nothing else changes. | — | — | 1 | Interchangeable engines |
+| Conformance | Every engine's answers for the current facts, compared value by value with the conformance harness's own rule for when two values are equal. | — | — | 2 | Conformance |
+| Explainer | Hover a dotted value for its rule in plain words and its witness: the values it came from, down to the stated facts. | /rulebook-explainer-dag/pages/index.html | Open the explainer | 3 | Explainer |
+
+_ƒ đánh dấu cột được tính._
+
+</details>
+
 ## 2 Kiểu dữ kiện
 
 - Mỗi **firing kind** tham chiếu đến đúng một **rule**
-- Mỗi **property** có thể tham chiếu đến một **property**
+- Mỗi **thing** có thể tham chiếu đến một **portrait**
+- Mỗi **portrait aliase** tham chiếu đến đúng một **portrait**
 - Mỗi **property** có thể tham chiếu đến một **thing**
+- Mỗi **property axiom** tham chiếu đến đúng một **firing kind**
+- Mỗi **property axiom** tham chiếu đến đúng một **property**
 - Mỗi **statement** tham chiếu đến đúng một **graph**
 - Mỗi **statement** tham chiếu đến đúng một **thing**
 - Mỗi **statement** tham chiếu đến đúng một **property**
@@ -491,7 +612,12 @@ quy tắc ngữ nghĩa bắt nguồn từ bảng Constraints, mỗi quy tắc c�
 - Mỗi firing kind **phải** tham chiếu đến đúng một rule.
 - Mỗi firing kind **phải** có wording và sort order.
 - Mỗi thing **phải** có label, kind và sort order.
+- Mỗi portrait **phải** có display name, page, image, crop, width, height và sort order.
+- Mỗi portrait aliase **phải** tham chiếu đến đúng một portrait.
 - Mỗi property **phải** có label, property kind và sort order, đồng thời được ghi nhận rõ là “user addable” hay không, có “one current value” hay không và là “symmetric” hay không.
+- Mỗi property axiom **phải** tham chiếu đến đúng một firing kind với vai trò kind.
+- Mỗi property axiom **phải** tham chiếu đến đúng một property.
+- Mỗi property axiom **phải** tham chiếu đến đúng một property với vai trò first.
 - Mỗi statement **phải** tham chiếu đến đúng một graph.
 - Mỗi statement **phải** tham chiếu đến đúng một thing với vai trò subject.
 - Mỗi statement **phải** tham chiếu đến đúng một property.
@@ -516,6 +642,8 @@ quy tắc ngữ nghĩa bắt nguồn từ bảng Constraints, mỗi quy tắc c�
 - Mỗi node layout **phải** có layout, node key, x và y.
 - Mỗi layout slot **phải** có sort order, x và y.
 - Mỗi page text **phải** có text.
+- Mỗi engine **phải** có label, substrate, description và sort order, đồng thời được ghi nhận rõ là “default” hay không.
+- Mỗi rulebook tool **phải** có label, adds và sort order.
 
 ## 4 Quy tắc định nghĩa
 
@@ -540,116 +668,136 @@ nhưng còn vụng — đó là gợi ý cho một lượt biên tập lại (kh
 | **DR-11 Next Activation Seq** | Trường “next activation seq” của mỗi graph được tính bằng max activation seq cộng 1. |
 | **DR-12 Max Listed Sort Order** | Trường “max listed sort order” của mỗi graph là giá trị lớn nhất của trường “sort order” trên các statements liên quan đến graph đó, chỉ tính các bản ghi là “listed unit”. |
 | **DR-13 Next Listed Sort Order** | Trường “next listed sort order” của mỗi graph được tính bằng max listed sort order cộng 1. |
-| **DR-14 Name** | Trường “name” của mỗi rule có cùng giá trị với trường “label” của chính rule đó. |
-| **DR-15 Count of Firings** | Trường “count of firings” của mỗi rule là giá trị tổng cộng của trường “fired unit” trên các firings liên quan đến rule đó. |
-| **DR-16 Name** | Trường “name” của mỗi firing kind có cùng giá trị với trường “wording” của chính firing kind đó. |
-| **DR-17 Rule Enabled** | Trường “rule enabled” của mỗi firing kind có giá trị đúng khi bản ghi liên kết qua trường “rule” là “enabled”. |
-| **DR-18 Name** | Trường “name” của mỗi thing có cùng giá trị với trường “label” của chính thing đó. |
-| **DR-19 Node Key** | Trường “node key” của mỗi thing có cùng giá trị với trường “thing ID” của chính thing đó. |
-| **DR-20 Count of Children** | Trường “count of children” của mỗi thing là giá trị tổng cộng của trường “parent unit” trên các statements liên quan đến thing đó. |
-| **DR-21 Count of Grandchildren** | Trường “count of grandchildren” của mỗi thing là giá trị tổng cộng của trường “grandparent unit” trên các statements liên quan đến thing đó. |
-| **DR-22 Count As Place** | Trường “count as place” của mỗi thing là giá trị tổng cộng của trường “place unit” trên các statements liên quan đến thing đó. |
-| **DR-23 Count As Subject** | Trường “count as subject” của mỗi thing là giá trị tổng cộng của trường “holds unit” trên các statements liên quan đến thing đó. |
-| **DR-24 Count As Object** | Trường “count as object” của mỗi thing là giá trị tổng cộng của trường “holds unit” trên các statements liên quan đến thing đó. |
-| **DR-25 Is in Graph** | Mỗi thing được coi là “in graph” nếu ít nhất một trong các điều kiện sau đúng: count as subject lớn hơn 0 hoặc count as object lớn hơn 0. |
-| **DR-26 Node Kind** | Trường “node kind” của mỗi thing được xác định theo thứ tự ưu tiên sau:<br>1. “class”, nếu kind là “class”;<br>2. “place”, nếu count as place lớn hơn 0;<br>3. trong mọi trường hợp còn lại, “person”. |
-| **DR-27 Name** | Trường “name” của mỗi property có cùng giá trị với trường “label” của chính property đó. |
-| **DR-28 Subject Label** | Trường “subject label” của mỗi statement được lấy từ bản ghi liên kết qua trường “subject”. |
-| **DR-29 Property Label** | Trường “property label” của mỗi statement được lấy từ bản ghi liên kết qua trường “property”. |
-| **DR-30 Object Label** | Trường “object label” của mỗi statement được lấy từ bản ghi liên kết qua trường “object thing”. |
-| **DR-31 Property Datatype** | Trường “property datatype” của mỗi statement được lấy từ bản ghi liên kết qua trường “property”. |
-| **DR-32 Property Has One Current Value** | Trường “property has one current value” của mỗi statement có giá trị đúng khi bản ghi liên kết qua trường “property” có “one current value”. |
-| **DR-33 Property Domain Class** | Trường “property domain class” của mỗi statement được lấy từ bản ghi liên kết qua trường “property”. |
-| **DR-34 Property Range Class** | Trường “property range class” của mỗi statement được lấy từ bản ghi liên kết qua trường “property”. |
-| **DR-35 Literal Quote** | Trường “literal quote” của mỗi statement được lấy từ bản ghi liên kết qua trường “graph”. |
-| **DR-36 Literal Type Marker** | Trường “literal type marker” của mỗi statement được lấy từ bản ghi liên kết qua trường “graph”. |
-| **DR-37 Built in Source Text** | Trường “built in source text” của mỗi statement được lấy từ bản ghi liên kết qua trường “graph”. |
-| **DR-38 User Source Text** | Trường “user source text” của mỗi statement được lấy từ bản ghi liên kết qua trường “graph”. |
-| **DR-39 Next Fact Sort Order** | Trường “next fact sort order” của mỗi statement được lấy từ bản ghi liên kết qua trường “graph”. |
-| **DR-40 Is Literal** | Mỗi statement được coi là “literal” nếu object thing để trống. |
-| **DR-41 Object Text** | Trường “object text” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. object value, nếu object thing để trống;<br>2. trong mọi trường hợp còn lại, object label. |
-| **DR-42 Name** | Trường “name” của mỗi statement được tính bằng subject label, tiếp theo là dấu cách, tiếp theo là property label, tiếp theo là dấu cách, tiếp theo là object text. |
-| **DR-43 Words** | Trường “words” của mỗi statement được tính bằng subject label, tiếp theo là dấu cách, tiếp theo là property label, tiếp theo là dấu cách, tiếp theo là literal quote, tiếp theo là object value, tiếp theo là literal quote, tiếp theo là literal type marker, tiếp theo là property datatype nếu object thing để trống, trong mọi trường hợp còn lại là object label. ⚠︎ máy móc <!-- rulespeak:reword --> |
-| **DR-44 Source** | Trường “source” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. built in source text, nếu cờ “built in” được bật;<br>2. trong mọi trường hợp còn lại, user source text. |
-| **DR-45 Subject Property Key** | Trường “subject property key” của mỗi statement được tính bằng subject, tiếp theo là “|”, tiếp theo là property. |
-| **DR-46 Latest Sibling Activation Seq** | Trường “latest sibling activation seq” của mỗi statement là giá trị lớn nhất của trường “activation seq” trên các statements liên quan đến statement đó. |
-| **DR-47 Is in Effect** | Mỗi statement được coi là “in effect” nếu tất cả các điều kiện sau đều đúng: cờ “stated” được bật và ít nhất một trong các điều kiện sau đúng: cờ “property has one current value” không được bật hoặc activation seq là latest sibling activation seq. |
-| **DR-48 Listed Unit** | Trường “listed unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu cờ “listed” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
-| **DR-49 In Effect Unit** | Trường “in effect unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu cờ “in effect” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
-| **DR-50 Listed Off Unit** | Trường “listed off unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “listed” được bật và cờ “in effect” không được bật;<br>2. trong mọi trường hợp còn lại, 0. |
-| **DR-51 Is Next to Add** | Mỗi statement được coi là “next to add” nếu tất cả các điều kiện sau đều đúng: listed off unit là 1 và sort order là next fact sort order. |
-| **DR-52 Count of Inverse Firings** | Trường “count of inverse firings” của mỗi statement là giá trị tổng cộng của trường “inverse fired unit” trên các firings liên quan đến statement đó. |
-| **DR-53 Count of Symmetric Firings** | Trường “count of symmetric firings” của mỗi statement là giá trị tổng cộng của trường “symmetric fired unit” trên các firings liên quan đến statement đó. |
-| **DR-54 Holds Before Chain** | Mỗi statement được coi là thỏa điều kiện “holds before chain” nếu ít nhất một trong các điều kiện sau đúng: cờ “in effect” được bật, count of inverse firings lớn hơn 0 hoặc count of symmetric firings lớn hơn 0. |
-| **DR-55 Count of Chain Firings** | Trường “count of chain firings” của mỗi statement là giá trị tổng cộng của trường “chain fired unit” trên các firings liên quan đến statement đó. |
-| **DR-56 Holds Before Typing** | Mỗi statement được coi là thỏa điều kiện “holds before typing” nếu ít nhất một trong các điều kiện sau đúng: cờ “holds before chain” được bật hoặc count of chain firings lớn hơn 0. |
-| **DR-57 Count of Type Firings** | Trường “count of type firings” của mỗi statement là giá trị tổng cộng của trường “type fired unit” trên các firings liên quan đến statement đó. |
-| **DR-58 Holds** | Mỗi statement được đánh dấu là “holds” nếu ít nhất một trong các điều kiện sau đúng: cờ “holds before typing” được bật hoặc count of type firings lớn hơn 0. |
-| **DR-59 Is Conclusion** | Mỗi statement được coi là “conclusion” nếu tất cả các điều kiện sau đều đúng: cờ “holds” được bật và cờ “in effect” không được bật. |
-| **DR-60 Holds Unit** | Trường “holds unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu cờ “holds” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
-| **DR-61 Conclusion Unit** | Trường “conclusion unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu cờ “conclusion” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
-| **DR-62 Parent Unit** | Trường “parent unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “holds” được bật và property là “isParentOf”;<br>2. trong mọi trường hợp còn lại, 0. |
-| **DR-63 Grandparent Unit** | Trường “grandparent unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “holds” được bật và property là “isGrandparentOf”;<br>2. trong mọi trường hợp còn lại, 0. |
-| **DR-64 Place Unit** | Trường “place unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “holds” được bật và property là “attends”;<br>2. trong mọi trường hợp còn lại, 0. |
-| **DR-65 First Fired Order Key** | Trường “first fired order key” của mỗi statement là giá trị nhỏ nhất của trường “order key” trên các firings liên quan đến statement đó, chỉ tính các bản ghi là “fired unit”. |
-| **DR-66 Count of Chosen Firings** | Trường “count of chosen firings” của mỗi statement là giá trị tổng cộng của trường “chosen unit” trên các firings liên quan đến statement đó. |
-| **DR-67 Subject Node Key** | Trường “subject node key” của mỗi statement có cùng giá trị với trường “subject” của chính statement đó. |
-| **DR-68 Object Node Key** | Trường “object node key” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. “literal|”, tiếp theo là object value, tiếp theo là “|”, tiếp theo là property datatype, nếu object thing để trống;<br>2. trong mọi trường hợp còn lại, object thing. |
-| **DR-69 Subject Node Kind** | Trường “subject node kind” của mỗi statement được lấy từ bản ghi liên kết qua trường “subject”. |
-| **DR-70 Object Thing Node Kind** | Trường “object thing node kind” của mỗi statement được lấy từ bản ghi liên kết qua trường “object thing”. |
-| **DR-71 Object Node Kind** | Trường “object node kind” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. “value”, nếu object thing để trống;<br>2. trong mọi trường hợp còn lại, object thing node kind. |
-| **DR-72 Object Value Node Label** | Trường “object value node label” của mỗi statement được lấy từ bản ghi liên kết qua trường “property”. |
-| **DR-73 Count of Violations As First** | Trường “count of violations as first” của mỗi statement là giá trị tổng cộng của trường “violation unit” trên các disjoint checks liên quan đến statement đó. |
-| **DR-74 Count of Violations As Second** | Trường “count of violations as second” của mỗi statement là giá trị tổng cộng của trường “violation unit” trên các disjoint checks liên quan đến statement đó. |
-| **DR-75 Is in Contradiction** | Mỗi statement được coi là “in contradiction” nếu ít nhất một trong các điều kiện sau đúng: count of violations as first lớn hơn 0 hoặc count of violations as second lớn hơn 0. |
-| **DR-76 Rule Enabled** | Trường “rule enabled” của mỗi firing có giá trị đúng khi bản ghi liên kết qua trường “rule” là “enabled”. |
-| **DR-77 Kind Wording** | Trường “kind wording” của mỗi firing được lấy từ bản ghi liên kết qua trường “kind”. |
-| **DR-78 Kind Sort Order** | Trường “kind sort order” của mỗi firing được lấy từ bản ghi liên kết qua trường “kind”. |
-| **DR-79 Target Name** | Trường “target name” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”. |
-| **DR-80 Target Subject Label** | Trường “target subject label” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”. |
-| **DR-81 Target Property Label** | Trường “target property label” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”. |
-| **DR-82 Target Object Text** | Trường “target object text” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”. |
-| **DR-83 Target is Conclusion** | Trường “target is conclusion” của mỗi firing có giá trị đúng khi bản ghi liên kết qua trường “target” là “conclusion”. |
-| **DR-84 Target Subject Node Key** | Trường “target subject node key” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”. |
-| **DR-85 Target Object Node Key** | Trường “target object node key” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”. |
-| **DR-86 Target First Fired Order Key** | Trường “target first fired order key” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”. |
-| **DR-87 First Words** | Trường “first words” của mỗi firing được lấy từ bản ghi liên kết qua trường “first”. |
-| **DR-88 Second Words** | Trường “second words” của mỗi firing được lấy từ bản ghi liên kết qua trường “second”. |
-| **DR-89 First is in Effect** | Trường “first is in effect” của mỗi firing có giá trị đúng khi bản ghi liên kết qua trường “first” là “in effect”. |
-| **DR-90 First Holds Before Chain** | Trường “first holds before chain” của mỗi firing có giá trị đúng khi bản ghi liên kết qua trường “first” thỏa điều kiện “holds before chain”. |
-| **DR-91 Second Holds Before Chain** | Trường “second holds before chain” của mỗi firing có giá trị đúng khi bản ghi liên kết qua trường “second” thỏa điều kiện “holds before chain”. |
-| **DR-92 First Holds Before Typing** | Trường “first holds before typing” của mỗi firing có giá trị đúng khi bản ghi liên kết qua trường “first” thỏa điều kiện “holds before typing”. |
-| **DR-93 First Property** | Trường “first property” của mỗi firing được lấy từ bản ghi liên kết qua trường “first”. |
-| **DR-94 First Property Domain Class** | Trường “first property domain class” của mỗi firing được lấy từ bản ghi liên kết qua trường “first”. |
-| **DR-95 First Property Range Class** | Trường “first property range class” của mỗi firing được lấy từ bản ghi liên kết qua trường “first”. |
-| **DR-96 First Sort Order** | Trường “first sort order” của mỗi firing được lấy từ bản ghi liên kết qua trường “first”. |
-| **DR-97 Second Sort Order** | Trường “second sort order” của mỗi firing được lấy từ bản ghi liên kết qua trường “second”. |
-| **DR-98 Inverse Fired Unit** | Trường “inverse fired unit” của mỗi firing được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “rule enabled” được bật, kind là “inverse” và cờ “first is in effect” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
-| **DR-99 Symmetric Fired Unit** | Trường “symmetric fired unit” của mỗi firing được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “rule enabled” được bật, kind là “symmetric” và cờ “first is in effect” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
-| **DR-100 Chain Fired Unit** | Trường “chain fired unit” của mỗi firing được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “rule enabled” được bật, kind là “chain”, cờ “first holds before chain” được bật và cờ “second holds before chain” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
-| **DR-101 Type Fired Unit** | Trường “type fired unit” của mỗi firing được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “rule enabled” được bật; ít nhất một trong các điều kiện sau đúng: kind là “domain” hoặc kind là “range”; và cờ “first holds before typing” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
-| **DR-102 Fired Unit** | Trường “fired unit” của mỗi firing được tính bằng inverse fired unit cộng symmetric fired unit cộng chain fired unit cộng type fired unit. |
-| **DR-103 Order Key** | Trường “order key” của mỗi firing được tính bằng first sort order nhân 100000 cộng kind sort order nhân 1000 cộng 0 nếu second để trống, trong mọi trường hợp còn lại là second sort order. |
-| **DR-104 Is Chosen** | Mỗi firing được coi là “chosen” nếu tất cả các điều kiện sau đều đúng: fired unit là 1, cờ “target is conclusion” được bật và order key là target first fired order key. |
-| **DR-105 Chosen Unit** | Trường “chosen unit” của mỗi firing được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu cờ “chosen” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
-| **DR-106 Card Text** | Trường “card text” của mỗi firing được xác định theo thứ tự ưu tiên sau:<br>1. “Worked out by the ”, tiếp theo là kind wording, tiếp theo là “ from “”, tiếp theo là first words, tiếp theo là “””, tiếp theo là “ and “”, tiếp theo là second words, tiếp theo là “”” nếu kind là “chain”, trong mọi trường hợp còn lại là “ and “”, tiếp theo là first property, tiếp theo là “ has domain ”, tiếp theo là first property domain class, tiếp theo là “”” nếu kind là “domain”, trong mọi trường hợp còn lại là “ and “”, tiếp theo là first property, tiếp theo là “ has range ”, tiếp theo là first property range class, tiếp theo là “””, tiếp theo là dấu chấm, nếu cờ “chosen” được bật;<br>2. trong mọi trường hợp còn lại, chuỗi rỗng. ⚠︎ máy móc <!-- rulespeak:reword --> |
-| **DR-107 Name** | Trường “name” của mỗi firing có cùng giá trị với trường “firing ID” của chính firing đó. |
-| **DR-108 Rule Enabled** | Trường “rule enabled” của mỗi disjoint check có giá trị đúng khi bản ghi liên kết qua trường “rule” là “enabled”. |
-| **DR-109 First Holds** | Trường “first holds” của mỗi disjoint check có giá trị đúng khi bản ghi liên kết qua trường “first” thỏa điều kiện “holds”. |
-| **DR-110 Second Holds** | Trường “second holds” của mỗi disjoint check có giá trị đúng khi bản ghi liên kết qua trường “second” thỏa điều kiện “holds”. |
-| **DR-111 Subject Label** | Trường “subject label” của mỗi disjoint check được lấy từ bản ghi liên kết qua trường “first”. |
-| **DR-112 Object Label** | Trường “object label” của mỗi disjoint check được lấy từ bản ghi liên kết qua trường “first”. |
-| **DR-113 Violation Unit** | Trường “violation unit” của mỗi disjoint check được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “rule enabled” được bật, cờ “first holds” được bật và cờ “second holds” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
-| **DR-114 Alarm Text** | Trường “alarm text” của mỗi disjoint check được xác định theo thứ tự ưu tiên sau:<br>1. “Contradiction found. ”, tiếp theo là subject label, tiếp theo là “ is recorded as both parent and spouse of ”, tiếp theo là object label, tiếp theo là “. Check those facts and the selected disjoint rule.”, nếu violation unit là 1;<br>2. trong mọi trường hợp còn lại, chuỗi rỗng. |
-| **DR-115 Name** | Trường “name” của mỗi disjoint check có cùng giá trị với trường “disjoint check ID” của chính disjoint check đó. |
-| **DR-116 Name** | Trường “name” của mỗi scenario có cùng giá trị với trường “label” của chính scenario đó. |
-| **DR-117 Graph Has Facts to Add** | Trường “graph has facts to add” của mỗi scenario có giá trị đúng khi bản ghi liên kết qua trường “graph” có “facts to add”. |
-| **DR-118 Is Available** | Mỗi scenario được coi là “available” nếu ít nhất một trong các điều kiện sau đúng: fact baseline khác “next” hoặc cờ “graph has facts to add” được bật. |
-| **DR-119 Name** | Trường “name” của mỗi scenario fact change có cùng giá trị với trường “scenario fact change ID” của chính scenario fact change đó. |
-| **DR-120 Name** | Trường “name” của mỗi scenario rule setting có cùng giá trị với trường “scenario rule setting ID” của chính scenario rule setting đó. |
-| **DR-121 Name** | Trường “name” của mỗi node layout có cùng giá trị với trường “node layout ID” của chính node layout đó. |
-| **DR-122 Name** | Trường “name” của mỗi layout slot có cùng giá trị với trường “layout slot ID” của chính layout slot đó. |
-| **DR-123 Name** | Trường “name” của mỗi page text có cùng giá trị với trường “page text ID” của chính page text đó. |
+| **DR-14 Max Sort Order** | Trường “max sort order” của mỗi graph là giá trị lớn nhất của trường “sort order” trên các statements liên quan đến graph đó. |
+| **DR-15 Next Candidate Sort Order** | Trường “next candidate sort order” của mỗi graph được tính bằng max sort order cộng 1. |
+| **DR-16 Name** | Trường “name” của mỗi rule có cùng giá trị với trường “label” của chính rule đó. |
+| **DR-17 Count of Firings** | Trường “count of firings” của mỗi rule là giá trị tổng cộng của trường “fired unit” trên các firings liên quan đến rule đó. |
+| **DR-18 Name** | Trường “name” của mỗi firing kind có cùng giá trị với trường “wording” của chính firing kind đó. |
+| **DR-19 Rule Enabled** | Trường “rule enabled” của mỗi firing kind có giá trị đúng khi bản ghi liên kết qua trường “rule” là “enabled”. |
+| **DR-20 Portrait Name** | Trường “portrait name” của mỗi thing là trường “display name” của bản ghi liên kết qua trường “portrait”. |
+| **DR-21 Portrait Page** | Trường “portrait page” của mỗi thing được lấy từ bản ghi liên kết qua trường “portrait”. |
+| **DR-22 Portrait Image** | Trường “portrait image” của mỗi thing được lấy từ bản ghi liên kết qua trường “portrait”. |
+| **DR-23 Portrait Crop** | Trường “portrait crop” của mỗi thing được lấy từ bản ghi liên kết qua trường “portrait”. |
+| **DR-24 Portrait Width** | Trường “portrait width” của mỗi thing được lấy từ bản ghi liên kết qua trường “portrait”. |
+| **DR-25 Portrait Height** | Trường “portrait height” của mỗi thing được lấy từ bản ghi liên kết qua trường “portrait”. |
+| **DR-26 Name** | Trường “name” của mỗi thing có cùng giá trị với trường “label” của chính thing đó. |
+| **DR-27 Node Key** | Trường “node key” của mỗi thing có cùng giá trị với trường “thing ID” của chính thing đó. |
+| **DR-28 Count of Children** | Trường “count of children” của mỗi thing là giá trị tổng cộng của trường “parent unit” trên các statements liên quan đến thing đó. |
+| **DR-29 Count of Grandchildren** | Trường “count of grandchildren” của mỗi thing là giá trị tổng cộng của trường “grandparent unit” trên các statements liên quan đến thing đó. |
+| **DR-30 Count As Place** | Trường “count as place” của mỗi thing là giá trị tổng cộng của trường “place unit” trên các statements liên quan đến thing đó. |
+| **DR-31 Count As Subject** | Trường “count as subject” của mỗi thing là giá trị tổng cộng của trường “holds unit” trên các statements liên quan đến thing đó. |
+| **DR-32 Count As Object** | Trường “count as object” của mỗi thing là giá trị tổng cộng của trường “holds unit” trên các statements liên quan đến thing đó. |
+| **DR-33 Is in Graph** | Mỗi thing được coi là “in graph” nếu ít nhất một trong các điều kiện sau đúng: count as subject lớn hơn 0 hoặc count as object lớn hơn 0. |
+| **DR-34 Node Kind** | Trường “node kind” của mỗi thing được xác định theo thứ tự ưu tiên sau:<br>1. chuỗi rỗng, nếu kind để trống;<br>2. “class”, nếu kind là “class”;<br>3. “place”, nếu count as place lớn hơn 0;<br>4. trong mọi trường hợp còn lại, “person”. |
+| **DR-35 Name** | Trường “name” của mỗi portrait có cùng giá trị với trường “display name” của chính portrait đó. |
+| **DR-36 Name** | Trường “name” của mỗi portrait aliase có cùng giá trị với trường “portrait alias ID” của chính portrait aliase đó. |
+| **DR-37 Name** | Trường “name” của mỗi property có cùng giá trị với trường “label” của chính property đó. |
+| **DR-38 Name** | Trường “name” của mỗi property axiom có cùng giá trị với trường “property axiom ID” của chính property axiom đó. |
+| **DR-39 Subject Label** | Trường “subject label” của mỗi statement được lấy từ bản ghi liên kết qua trường “subject”. |
+| **DR-40 Property Label** | Trường “property label” của mỗi statement được lấy từ bản ghi liên kết qua trường “property”. |
+| **DR-41 Object Label** | Trường “object label” của mỗi statement được lấy từ bản ghi liên kết qua trường “object thing”. |
+| **DR-42 Property Datatype** | Trường “property datatype” của mỗi statement được lấy từ bản ghi liên kết qua trường “property”. |
+| **DR-43 Property Has One Current Value** | Trường “property has one current value” của mỗi statement có giá trị đúng khi bản ghi liên kết qua trường “property” có “one current value”. |
+| **DR-44 Property Domain Class** | Trường “property domain class” của mỗi statement được lấy từ bản ghi liên kết qua trường “property”. |
+| **DR-45 Property Range Class** | Trường “property range class” của mỗi statement được lấy từ bản ghi liên kết qua trường “property”. |
+| **DR-46 Literal Quote** | Trường “literal quote” của mỗi statement được lấy từ bản ghi liên kết qua trường “graph”. |
+| **DR-47 Literal Type Marker** | Trường “literal type marker” của mỗi statement được lấy từ bản ghi liên kết qua trường “graph”. |
+| **DR-48 Built in Source Text** | Trường “built in source text” của mỗi statement được lấy từ bản ghi liên kết qua trường “graph”. |
+| **DR-49 User Source Text** | Trường “user source text” của mỗi statement được lấy từ bản ghi liên kết qua trường “graph”. |
+| **DR-50 Next Fact Sort Order** | Trường “next fact sort order” của mỗi statement được lấy từ bản ghi liên kết qua trường “graph”. |
+| **DR-51 Is Literal** | Mỗi statement được coi là “literal” nếu object thing để trống. |
+| **DR-52 Object Text** | Trường “object text” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. object value, nếu object thing để trống;<br>2. trong mọi trường hợp còn lại, object label. |
+| **DR-53 Name** | Trường “name” của mỗi statement được tính bằng subject label, tiếp theo là dấu cách, tiếp theo là property label, tiếp theo là dấu cách, tiếp theo là object text. |
+| **DR-54 Words** | Trường “words” của mỗi statement được tính bằng subject label, tiếp theo là dấu cách, tiếp theo là property label, tiếp theo là dấu cách, tiếp theo là literal quote, tiếp theo là object value, tiếp theo là literal quote, tiếp theo là literal type marker, tiếp theo là property datatype nếu object thing để trống, trong mọi trường hợp còn lại là object label. ⚠︎ máy móc <!-- rulespeak:reword --> |
+| **DR-55 Source** | Trường “source” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. built in source text, nếu cờ “built in” được bật;<br>2. trong mọi trường hợp còn lại, user source text. |
+| **DR-56 Subject Property Key** | Trường “subject property key” của mỗi statement được tính bằng subject, tiếp theo là “|”, tiếp theo là property. |
+| **DR-57 Latest Sibling Activation Seq** | Trường “latest sibling activation seq” của mỗi statement là giá trị lớn nhất của trường “activation seq” trên các statements liên quan đến statement đó. |
+| **DR-58 Is in Effect** | Mỗi statement được coi là “in effect” nếu tất cả các điều kiện sau đều đúng: cờ “stated” được bật và ít nhất một trong các điều kiện sau đúng: cờ “property has one current value” không được bật hoặc activation seq là latest sibling activation seq. |
+| **DR-59 Listed Unit** | Trường “listed unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu cờ “listed” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
+| **DR-60 In Effect Unit** | Trường “in effect unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu cờ “in effect” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
+| **DR-61 Listed Off Unit** | Trường “listed off unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “listed” được bật và cờ “in effect” không được bật;<br>2. trong mọi trường hợp còn lại, 0. |
+| **DR-62 Is Next to Add** | Mỗi statement được coi là “next to add” nếu tất cả các điều kiện sau đều đúng: listed off unit là 1 và sort order là next fact sort order. |
+| **DR-63 Count of Inverse Firings** | Trường “count of inverse firings” của mỗi statement là giá trị tổng cộng của trường “inverse fired unit” trên các firings liên quan đến statement đó. |
+| **DR-64 Count of Symmetric Firings** | Trường “count of symmetric firings” của mỗi statement là giá trị tổng cộng của trường “symmetric fired unit” trên các firings liên quan đến statement đó. |
+| **DR-65 Holds Before Chain** | Mỗi statement được coi là thỏa điều kiện “holds before chain” nếu ít nhất một trong các điều kiện sau đúng: cờ “in effect” được bật, count of inverse firings lớn hơn 0 hoặc count of symmetric firings lớn hơn 0. |
+| **DR-66 Count of Chain Firings** | Trường “count of chain firings” của mỗi statement là giá trị tổng cộng của trường “chain fired unit” trên các firings liên quan đến statement đó. |
+| **DR-67 Holds Before Typing** | Mỗi statement được coi là thỏa điều kiện “holds before typing” nếu ít nhất một trong các điều kiện sau đúng: cờ “holds before chain” được bật hoặc count of chain firings lớn hơn 0. |
+| **DR-68 Count of Type Firings** | Trường “count of type firings” của mỗi statement là giá trị tổng cộng của trường “type fired unit” trên các firings liên quan đến statement đó. |
+| **DR-69 Holds** | Mỗi statement được đánh dấu là “holds” nếu ít nhất một trong các điều kiện sau đúng: cờ “holds before typing” được bật hoặc count of type firings lớn hơn 0. |
+| **DR-70 Is Conclusion** | Mỗi statement được coi là “conclusion” nếu tất cả các điều kiện sau đều đúng: cờ “holds” được bật và cờ “in effect” không được bật. |
+| **DR-71 Holds Unit** | Trường “holds unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu cờ “holds” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
+| **DR-72 Conclusion Unit** | Trường “conclusion unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu cờ “conclusion” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
+| **DR-73 Parent Unit** | Trường “parent unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “holds” được bật và property là “isParentOf”;<br>2. trong mọi trường hợp còn lại, 0. |
+| **DR-74 Grandparent Unit** | Trường “grandparent unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “holds” được bật và property là “isGrandparentOf”;<br>2. trong mọi trường hợp còn lại, 0. |
+| **DR-75 Place Unit** | Trường “place unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “holds” được bật và property là “attends”;<br>2. trong mọi trường hợp còn lại, 0. |
+| **DR-76 First Pre Chain Order Key** | Trường “first pre chain order key” của mỗi statement là giá trị nhỏ nhất của trường “pre chain order key” trên các firings liên quan đến statement đó, chỉ tính các bản ghi là “pre chain fired unit”. |
+| **DR-77 Snap Position** | Trường “snap position” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. sort order, nếu cờ “in effect” được bật;<br>2. 100000 cộng first pre chain order key, nếu cờ “holds before chain” được bật;<br>3. trong mọi trường hợp còn lại, 0. |
+| **DR-78 First Fired Order Key** | Trường “first fired order key” của mỗi statement là giá trị nhỏ nhất của trường “order key” trên các firings liên quan đến statement đó, chỉ tính các bản ghi là “fired unit”. |
+| **DR-79 Count of Chosen Firings** | Trường “count of chosen firings” của mỗi statement là giá trị tổng cộng của trường “chosen unit” trên các firings liên quan đến statement đó. |
+| **DR-80 Subject Node Key** | Trường “subject node key” của mỗi statement có cùng giá trị với trường “subject” của chính statement đó. |
+| **DR-81 Object Node Key** | Trường “object node key” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. “literal|”, tiếp theo là object value, tiếp theo là “|”, tiếp theo là property datatype, nếu object thing để trống;<br>2. trong mọi trường hợp còn lại, object thing. |
+| **DR-82 Subject Node Kind** | Trường “subject node kind” của mỗi statement được lấy từ bản ghi liên kết qua trường “subject”. |
+| **DR-83 Object Thing Node Kind** | Trường “object thing node kind” của mỗi statement được lấy từ bản ghi liên kết qua trường “object thing”. |
+| **DR-84 Object Node Kind** | Trường “object node kind” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. “value”, nếu object thing để trống;<br>2. trong mọi trường hợp còn lại, object thing node kind. |
+| **DR-85 Object Value Node Label** | Trường “object value node label” của mỗi statement được lấy từ bản ghi liên kết qua trường “property”. |
+| **DR-86 Count of Violations As First** | Trường “count of violations as first” của mỗi statement là giá trị tổng cộng của trường “violation unit” trên các disjoint checks liên quan đến statement đó. |
+| **DR-87 Count of Violations As Second** | Trường “count of violations as second” của mỗi statement là giá trị tổng cộng của trường “violation unit” trên các disjoint checks liên quan đến statement đó. |
+| **DR-88 Is in Contradiction** | Mỗi statement được coi là “in contradiction” nếu ít nhất một trong các điều kiện sau đúng: count of violations as first lớn hơn 0 hoặc count of violations as second lớn hơn 0. |
+| **DR-89 Rule Enabled** | Trường “rule enabled” của mỗi firing có giá trị đúng khi bản ghi liên kết qua trường “rule” là “enabled”. |
+| **DR-90 Kind Wording** | Trường “kind wording” của mỗi firing được lấy từ bản ghi liên kết qua trường “kind”. |
+| **DR-91 Kind Sort Order** | Trường “kind sort order” của mỗi firing được lấy từ bản ghi liên kết qua trường “kind”. |
+| **DR-92 Target Name** | Trường “target name” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”. |
+| **DR-93 Target Subject Label** | Trường “target subject label” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”. |
+| **DR-94 Target Property Label** | Trường “target property label” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”. |
+| **DR-95 Target Object Text** | Trường “target object text” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”. |
+| **DR-96 Target is Conclusion** | Trường “target is conclusion” của mỗi firing có giá trị đúng khi bản ghi liên kết qua trường “target” là “conclusion”. |
+| **DR-97 Target Subject Node Key** | Trường “target subject node key” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”. |
+| **DR-98 Target Object Node Key** | Trường “target object node key” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”. |
+| **DR-99 Target First Fired Order Key** | Trường “target first fired order key” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”. |
+| **DR-100 First Words** | Trường “first words” của mỗi firing được lấy từ bản ghi liên kết qua trường “first”. |
+| **DR-101 Second Words** | Trường “second words” của mỗi firing được lấy từ bản ghi liên kết qua trường “second”. |
+| **DR-102 First is in Effect** | Trường “first is in effect” của mỗi firing có giá trị đúng khi bản ghi liên kết qua trường “first” là “in effect”. |
+| **DR-103 First Holds Before Chain** | Trường “first holds before chain” của mỗi firing có giá trị đúng khi bản ghi liên kết qua trường “first” thỏa điều kiện “holds before chain”. |
+| **DR-104 Second Holds Before Chain** | Trường “second holds before chain” của mỗi firing có giá trị đúng khi bản ghi liên kết qua trường “second” thỏa điều kiện “holds before chain”. |
+| **DR-105 First Holds Before Typing** | Trường “first holds before typing” của mỗi firing có giá trị đúng khi bản ghi liên kết qua trường “first” thỏa điều kiện “holds before typing”. |
+| **DR-106 First Property** | Trường “first property” của mỗi firing được lấy từ bản ghi liên kết qua trường “first”. |
+| **DR-107 First Property Domain Class** | Trường “first property domain class” của mỗi firing được lấy từ bản ghi liên kết qua trường “first”. |
+| **DR-108 First Property Range Class** | Trường “first property range class” của mỗi firing được lấy từ bản ghi liên kết qua trường “first”. |
+| **DR-109 First Sort Order** | Trường “first sort order” của mỗi firing được lấy từ bản ghi liên kết qua trường “first”. |
+| **DR-110 Second is in Effect** | Trường “second is in effect” của mỗi firing có giá trị đúng khi bản ghi liên kết qua trường “second” là “in effect”. |
+| **DR-111 First Snap Position** | Trường “first snap position” của mỗi firing được lấy từ bản ghi liên kết qua trường “first”. |
+| **DR-112 Second Snap Position** | Trường “second snap position” của mỗi firing được lấy từ bản ghi liên kết qua trường “second”. |
+| **DR-113 Inverse Fired Unit** | Trường “inverse fired unit” của mỗi firing được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “rule enabled” được bật, kind là “inverse” và cờ “first is in effect” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
+| **DR-114 Symmetric Fired Unit** | Trường “symmetric fired unit” của mỗi firing được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “rule enabled” được bật, kind là “symmetric” và cờ “first is in effect” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
+| **DR-115 Chain Fired Unit** | Trường “chain fired unit” của mỗi firing được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “rule enabled” được bật, kind là “chain”, cờ “first holds before chain” được bật và cờ “second holds before chain” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
+| **DR-116 Type Fired Unit** | Trường “type fired unit” của mỗi firing được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “rule enabled” được bật; ít nhất một trong các điều kiện sau đúng: kind là “domain” hoặc kind là “range”; và cờ “first holds before typing” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
+| **DR-117 Fired Unit** | Trường “fired unit” của mỗi firing được tính bằng inverse fired unit cộng symmetric fired unit cộng chain fired unit cộng type fired unit. |
+| **DR-118 Pre Chain Fired Unit** | Trường “pre chain fired unit” của mỗi firing được tính bằng inverse fired unit cộng symmetric fired unit. |
+| **DR-119 Pre Chain Order Key** | Trường “pre chain order key” của mỗi firing được tính bằng first sort order nhân 10 cộng kind sort order. |
+| **DR-120 Round** | Trường “round” của mỗi firing được xác định theo thứ tự ưu tiên sau:<br>1. 2, nếu tất cả các điều kiện sau đều đúng: kind là “chain” và không xảy ra việc tất cả các điều kiện sau đều đúng: cờ “first is in effect” được bật và cờ “second is in effect” được bật;<br>2. trong mọi trường hợp còn lại, 1. |
+| **DR-121 Order Key** | Trường “order key” của mỗi firing được tính bằng round nhân 1000000000000000 cộng first snap position nhân 100000000 cộng kind sort order nhân 10000000 cộng 0 nếu second để trống, trong mọi trường hợp còn lại là second snap position. |
+| **DR-122 Is Chosen** | Mỗi firing được coi là “chosen” nếu tất cả các điều kiện sau đều đúng: fired unit là 1, cờ “target is conclusion” được bật và order key là target first fired order key. |
+| **DR-123 Chosen Unit** | Trường “chosen unit” của mỗi firing được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu cờ “chosen” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
+| **DR-124 Card Text** | Trường “card text” của mỗi firing được xác định theo thứ tự ưu tiên sau:<br>1. “Worked out by the ”, tiếp theo là kind wording, tiếp theo là “ from “”, tiếp theo là first words, tiếp theo là “””, tiếp theo là “ and “”, tiếp theo là second words, tiếp theo là “”” nếu kind là “chain”, trong mọi trường hợp còn lại là “ and “”, tiếp theo là first property, tiếp theo là “ has domain ”, tiếp theo là first property domain class, tiếp theo là “”” nếu kind là “domain”, trong mọi trường hợp còn lại là “ and “”, tiếp theo là first property, tiếp theo là “ has range ”, tiếp theo là first property range class, tiếp theo là “””, tiếp theo là dấu chấm, nếu cờ “chosen” được bật;<br>2. trong mọi trường hợp còn lại, chuỗi rỗng. ⚠︎ máy móc <!-- rulespeak:reword --> |
+| **DR-125 Name** | Trường “name” của mỗi firing có cùng giá trị với trường “firing ID” của chính firing đó. |
+| **DR-126 Rule Enabled** | Trường “rule enabled” của mỗi disjoint check có giá trị đúng khi bản ghi liên kết qua trường “rule” là “enabled”. |
+| **DR-127 First Holds** | Trường “first holds” của mỗi disjoint check có giá trị đúng khi bản ghi liên kết qua trường “first” thỏa điều kiện “holds”. |
+| **DR-128 Second Holds** | Trường “second holds” của mỗi disjoint check có giá trị đúng khi bản ghi liên kết qua trường “second” thỏa điều kiện “holds”. |
+| **DR-129 Subject Label** | Trường “subject label” của mỗi disjoint check được lấy từ bản ghi liên kết qua trường “first”. |
+| **DR-130 Object Label** | Trường “object label” của mỗi disjoint check được lấy từ bản ghi liên kết qua trường “first”. |
+| **DR-131 Violation Unit** | Trường “violation unit” của mỗi disjoint check được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “rule enabled” được bật, cờ “first holds” được bật và cờ “second holds” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
+| **DR-132 Alarm Text** | Trường “alarm text” của mỗi disjoint check được xác định theo thứ tự ưu tiên sau:<br>1. “Contradiction found. ”, tiếp theo là subject label, tiếp theo là “ is recorded as both parent and spouse of ”, tiếp theo là object label, tiếp theo là “. Check those facts and the selected disjoint rule.”, nếu violation unit là 1;<br>2. trong mọi trường hợp còn lại, chuỗi rỗng. |
+| **DR-133 Name** | Trường “name” của mỗi disjoint check có cùng giá trị với trường “disjoint check ID” của chính disjoint check đó. |
+| **DR-134 Name** | Trường “name” của mỗi scenario có cùng giá trị với trường “label” của chính scenario đó. |
+| **DR-135 Graph Has Facts to Add** | Trường “graph has facts to add” của mỗi scenario có giá trị đúng khi bản ghi liên kết qua trường “graph” có “facts to add”. |
+| **DR-136 Is Available** | Mỗi scenario được coi là “available” nếu ít nhất một trong các điều kiện sau đúng: fact baseline khác “next” hoặc cờ “graph has facts to add” được bật. |
+| **DR-137 Name** | Trường “name” của mỗi scenario fact change có cùng giá trị với trường “scenario fact change ID” của chính scenario fact change đó. |
+| **DR-138 Name** | Trường “name” của mỗi scenario rule setting có cùng giá trị với trường “scenario rule setting ID” của chính scenario rule setting đó. |
+| **DR-139 Name** | Trường “name” của mỗi node layout có cùng giá trị với trường “node layout ID” của chính node layout đó. |
+| **DR-140 Name** | Trường “name” của mỗi layout slot có cùng giá trị với trường “layout slot ID” của chính layout slot đó. |
+| **DR-141 Name** | Trường “name” của mỗi page text có cùng giá trị với trường “page text ID” của chính page text đó. |
+| **DR-142 Name** | Trường “name” của mỗi engine có cùng giá trị với trường “label” của chính engine đó. |
+| **DR-143 Name** | Trường “name” của mỗi rulebook tool có cùng giá trị với trường “label” của chính rulebook tool đó. |
 
 ## 5 Truy vết đến lược đồ
 
@@ -671,10 +819,18 @@ cùng một logic mà bộ quy tắc lưu trữ, được viết cho người đ
 | **Graphs.NextActivationSeq** | công thức | `MaxActivationSeq + 1` |
 | **Graphs.MaxListedSortOrder** | tổng hợp | `Max(Statements.SortOrder via Graph)` |
 | **Graphs.NextListedSortOrder** | công thức | `MaxListedSortOrder + 1` |
+| **Graphs.MaxSortOrder** | tổng hợp | `Max(Statements.SortOrder via Graph)` |
+| **Graphs.NextCandidateSortOrder** | công thức | `MaxSortOrder + 1` |
 | **Rules.Name** | công thức | `Label` |
 | **Rules.CountOfFirings** | tổng hợp | `Sum(Firings.FiredUnit via Rule)` |
 | **FiringKinds.Name** | công thức | `Wording` |
 | **FiringKinds.RuleEnabled** | tra cứu | `Lookup(Rules.IsEnabled via Rule)` |
+| **Things.PortraitName** | tra cứu | `Lookup(Portraits.DisplayName via Portrait)` |
+| **Things.PortraitPage** | tra cứu | `Lookup(Portraits.Page via Portrait)` |
+| **Things.PortraitImage** | tra cứu | `Lookup(Portraits.Image via Portrait)` |
+| **Things.PortraitCrop** | tra cứu | `Lookup(Portraits.Crop via Portrait)` |
+| **Things.PortraitWidth** | tra cứu | `Lookup(Portraits.Width via Portrait)` |
+| **Things.PortraitHeight** | tra cứu | `Lookup(Portraits.Height via Portrait)` |
 | **Things.Name** | công thức | `Label` |
 | **Things.NodeKey** | công thức | `ThingId` |
 | **Things.CountOfChildren** | tổng hợp | `Sum(Statements.ParentUnit via Subject)` |
@@ -683,8 +839,11 @@ cùng một logic mà bộ quy tắc lưu trữ, được viết cho người đ
 | **Things.CountAsSubject** | tổng hợp | `Sum(Statements.HoldsUnit via Subject)` |
 | **Things.CountAsObject** | tổng hợp | `Sum(Statements.HoldsUnit via ObjectThing)` |
 | **Things.IsInGraph** | công thức | `Or(CountAsSubject > 0, CountAsObject > 0)` |
-| **Things.NodeKind** | công thức | `If(Kind = "class", "class", If(CountAsPlace > 0, "place", "person"))` |
+| **Things.NodeKind** | công thức | `If(Kind = "", "", If(Kind = "class", "class", If(CountAsPlace > 0, "place", "person")))` |
+| **Portraits.Name** | công thức | `DisplayName` |
+| **PortraitAliases.Name** | công thức | `PortraitAliasId` |
 | **Properties.Name** | công thức | `Label` |
+| **PropertyAxioms.Name** | công thức | `PropertyAxiomId` |
 | **Statements.SubjectLabel** | tra cứu | `Lookup(Things.Label via Subject)` |
 | **Statements.PropertyLabel** | tra cứu | `Lookup(Properties.Label via Property)` |
 | **Statements.ObjectLabel** | tra cứu | `Lookup(Things.Label via ObjectThing)` |
@@ -722,6 +881,8 @@ cùng một logic mà bộ quy tắc lưu trữ, được viết cho người đ
 | **Statements.ParentUnit** | công thức | `If(And(Holds, Property = "isParentOf"), 1, 0)` |
 | **Statements.GrandparentUnit** | công thức | `If(And(Holds, Property = "isGrandparentOf"), 1, 0)` |
 | **Statements.PlaceUnit** | công thức | `If(And(Holds, Property = "attends"), 1, 0)` |
+| **Statements.FirstPreChainOrderKey** | tổng hợp | `Min(Firings.PreChainOrderKey via Target)` |
+| **Statements.SnapPosition** | công thức | `If(IsInEffect, SortOrder, If(HoldsBeforeChain, 100000 + FirstPreChainOrderKey, 0))` |
 | **Statements.FirstFiredOrderKey** | tổng hợp | `Min(Firings.OrderKey via Target)` |
 | **Statements.CountOfChosenFirings** | tổng hợp | `Sum(Firings.ChosenUnit via Target)` |
 | **Statements.SubjectNodeKey** | công thức | `Subject` |
@@ -754,13 +915,18 @@ cùng một logic mà bộ quy tắc lưu trữ, được viết cho người đ
 | **Firings.FirstPropertyDomainClass** | tra cứu | `Lookup(Statements.PropertyDomainClass via First)` |
 | **Firings.FirstPropertyRangeClass** | tra cứu | `Lookup(Statements.PropertyRangeClass via First)` |
 | **Firings.FirstSortOrder** | tra cứu | `Lookup(Statements.SortOrder via First)` |
-| **Firings.SecondSortOrder** | tra cứu | `Lookup(Statements.SortOrder via Second)` |
+| **Firings.SecondIsInEffect** | tra cứu | `Lookup(Statements.IsInEffect via Second)` |
+| **Firings.FirstSnapPosition** | tra cứu | `Lookup(Statements.SnapPosition via First)` |
+| **Firings.SecondSnapPosition** | tra cứu | `Lookup(Statements.SnapPosition via Second)` |
 | **Firings.InverseFiredUnit** | công thức | `If(And(RuleEnabled, Kind = "inverse", FirstIsInEffect), 1, 0)` |
 | **Firings.SymmetricFiredUnit** | công thức | `If(And(RuleEnabled, Kind = "symmetric", FirstIsInEffect), 1, 0)` |
 | **Firings.ChainFiredUnit** | công thức | `If(And(RuleEnabled, Kind = "chain", FirstHoldsBeforeChain, SecondHoldsBeforeChain), 1, 0)` |
 | **Firings.TypeFiredUnit** | công thức | `If(And(RuleEnabled, Or(Kind = "domain", Kind = "range"), FirstHoldsBeforeTyping), 1, 0)` |
 | **Firings.FiredUnit** | công thức | `InverseFiredUnit + SymmetricFiredUnit + ChainFiredUnit + TypeFiredUnit` |
-| **Firings.OrderKey** | công thức | `FirstSortOrder * 100000 + KindSortOrder * 1000 + If(Second = "", 0, SecondSortOrder)` |
+| **Firings.PreChainFiredUnit** | công thức | `InverseFiredUnit + SymmetricFiredUnit` |
+| **Firings.PreChainOrderKey** | công thức | `FirstSortOrder * 10 + KindSortOrder` |
+| **Firings.Round** | công thức | `If(And(Kind = "chain", Not(And(FirstIsInEffect, SecondIsInEffect))), 2, 1)` |
+| **Firings.OrderKey** | công thức | `Round * 1000000000000000 + FirstSnapPosition * 100000000 + KindSortOrder * 10000000 + If(Second = "", 0, SecondSnapPosition)` |
 | **Firings.IsChosen** | công thức | `And(FiredUnit = 1, TargetIsConclusion, OrderKey = TargetFirstFiredOrderKey)` |
 | **Firings.ChosenUnit** | công thức | `If(IsChosen, 1, 0)` |
 | **Firings.CardText** | công thức | `If(IsChosen, Concat("Worked out by the ", KindWording, " from “", FirstWords, "”", If(Kind = "chain", Concat(" and “", SecondWords, "”"), If(Kind = "domain", Concat(" and “", FirstProperty, " has domain ", FirstPropertyDomainClass, "”"), If(Kind = "range", Concat(" and “", FirstProperty, " has range ", FirstPropertyRangeClass, "”"), ""))), "."), "")` |
@@ -781,6 +947,8 @@ cùng một logic mà bộ quy tắc lưu trữ, được viết cho người đ
 | **NodeLayouts.Name** | công thức | `NodeLayoutId` |
 | **LayoutSlots.Name** | công thức | `LayoutSlotId` |
 | **PageTexts.Name** | công thức | `PageTextId` |
+| **Engines.Name** | công thức | `Label` |
+| **RulebookTools.Name** | công thức | `Label` |
 
 ---
 

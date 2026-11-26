@@ -1,0 +1,50 @@
+[
+  {
+    "firing_kind_id": "inverse",
+    "wording": "inverse rule",
+    "sort_order": 1,
+    "rule": "inverse",
+    "name": "inverse rule",
+    "rule_enabled": false
+  },
+  {
+    "firing_kind_id": "symmetric",
+    "wording": "symmetric rule",
+    "sort_order": 2,
+    "rule": "symmetric",
+    "name": "symmetric rule",
+    "rule_enabled": false
+  },
+  {
+    "firing_kind_id": "chain",
+    "wording": "property chain rule",
+    "sort_order": 3,
+    "rule": "chain",
+    "name": "property chain rule",
+    "rule_enabled": false
+  },
+  {
+    "firing_kind_id": "domain",
+    "wording": "domain rule",
+    "sort_order": 4,
+    "rule": "domain",
+    "name": "domain rule",
+    "rule_enabled": false
+  },
+  {
+    "firing_kind_id": "range",
+    "wording": "range rule",
+    "sort_order": 5,
+    "rule": "domain",
+    "name": "range rule",
+    "rule_enabled": false
+  },
+  {
+    "firing_kind_id": "disjoint",
+    "wording": "disjoint rule",
+    "sort_order": 6,
+    "rule": "disjoint",
+    "name": "disjoint rule",
+    "rule_enabled": false
+  }
+]

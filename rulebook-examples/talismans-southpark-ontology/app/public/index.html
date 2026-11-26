@@ -13,16 +13,34 @@
 </head>
 <body>
 <div class="wrap">
+  <nav class="modebar" aria-label="What this page shows">
+    <span data-text="mode-label"></span>
+    <button type="button" data-mode-choice="original" data-text="mode-original"></button>
+    <button type="button" data-mode-choice="tools" data-text="mode-tools"></button>
+    <a class="tools-only admin-link" href="/admin.html" data-text="admin-title"></a>
+  </nav>
   <header>
     <p class="author-line"><span data-text="byline-prefix"></span> <a id="byline-author" target="_blank" rel="noopener noreferrer" data-text="byline-author"></a> <span data-text="byline-suffix"></span></p>
     <h1 data-text="title"></h1>
     <p data-text="intro"></p>
-    <p class="rulebook-line" data-text="intro-rulebook"></p>
+    <p class="rulebook-line tools-only" data-text="intro-rulebook"></p>
     <nav class="publication-links">
       <a class="primary" id="link-article" target="_blank" rel="noopener noreferrer" data-text="link-article"></a>
       <a id="link-original" target="_blank" rel="noopener noreferrer" data-text="link-original"></a>
     </nav>
   </header>
+
+  <section class="card enginebar tools-only" aria-label="Engine">
+    <div class="engine-row">
+      <span class="engine-label" data-text="engine-label"></span>
+      <span id="engines" class="engine-choices"></span>
+      <span id="engine-timing" class="engine-timing"></span>
+      <button type="button" id="compare" data-text="conformance-button"></button>
+      <a id="unsaved" class="unsaved" href="/admin.html"></a>
+    </div>
+    <p id="engine-description" class="hint"></p>
+    <div id="conformance" role="status" aria-live="polite"></div>
+  </section>
 
   <div class="grid">
     <section class="card stage" aria-label="Graph">
@@ -81,16 +99,11 @@
     </div>
   </div>
 
-  <section class="card hood">
-    <h2 data-text="hood-heading"></h2>
-    <p class="hint" data-text="hood-text"></p>
+  <section class="card tools tools-only">
+    <h2 data-text="tools-heading"></h2>
+    <p class="hint" data-text="tools-text"></p>
     <div class="hood-grid" id="hood-counts"></div>
-    <ul class="hood-links">
-      <li><a href="/rulebook-explainer-dag/pages/index.html" target="_blank" rel="noopener" data-text="hood-explainer"></a></li>
-      <li><a href="/rulespeak/rulespeak.html" target="_blank" rel="noopener" data-text="hood-docs"></a></li>
-      <li><a id="workbook-link" data-text="hood-workbook"></a></li>
-      <li><a href="/rulebook/talismans-southpark-ontology-rulebook.json" target="_blank" rel="noopener" data-text="hood-rulebook"></a></li>
-    </ul>
+    <ul class="tool-list" id="tools"></ul>
   </section>
 
   <footer>

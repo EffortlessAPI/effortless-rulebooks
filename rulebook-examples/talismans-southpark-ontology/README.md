@@ -5,93 +5,204 @@ explains ontologies through South Park, and her
 [interactive explainer](https://southpark-ontology-explainer.jessica-tali-7056.chatgpt.site/)
 lets you switch facts and rules on and watch conclusions appear. This project is that
 explainer rebuilt on one rulebook,
-[`effortless-rulebook/talismans-southpark-ontology-rulebook.json`](effortless-rulebook/talismans-southpark-ontology-rulebook.json).
+[`effortless-rulebook/talismans-southpark-ontology-rulebook.json`](effortless-rulebook/talismans-southpark-ontology-rulebook.json),
+and then opened up: the same page runs on three interchangeable execution engines, and the
+model behind it can be edited from the page, an admin, a generated rulebook editor, Excel,
+or the file itself.
 
-The page in [`app/`](app/) looks and behaves like hers, but runs no reasoner. Her facts,
-rule switches, property wiring, buttons, node layouts, provenance wording and interface
-text are rows, and every conclusion, card, alert, count and button state is a column of a
-Postgres view. The server reads views and writes base tables; the page draws what it is
-given. From the same file the build also produces TypeScript, Python, an Excel workbook,
-OWL, documentation in 16 languages, and the explainer: hover any dotted value on the page
-for its rule in plain words and the values it came from, down to the stated facts.
+The page has two views, switched at the top:
+
+- **The original explainer.** What her page shows and does, and nothing else: the graph,
+  the fact list and her seven buttons, the five rule switches, the conclusions with their
+  provenance lines, the contradiction alert, and the Add fact form taking any name or value.
+- **With the rulebook tools.** The same page plus everything the rulebook brings, listed
+  below. None of it changes how the explainer behaves.
 
 The South Park characters are the work of Trey Parker and Matt Stone; the portraits are
-Fandom images, linked (not copied) from each `Things` row.
+Fandom images, linked (not copied) from the `Portraits` table. The page says it is a
+rebuild of her explainer and links to the original.
 
 ```bash
 effortless build                                                               # every substrate
 python3 ../../scripts/erb_project.py talismans-southpark-ontology --reset-db   # load Postgres
-./start.sh                                                                     # the app on http://localhost:43210/
+./start.sh                                                                     # the app: http://localhost:43210/  (admin at /admin.html)
+./start.sh --editor                                                            # optional: the rulebook editor, http://localhost:43612
 ```
+
+## What the rulebook tools add
+
+| Tool | What it adds | Where |
+|---|---|---|
+| Interchangeable engines | The page computed by the **Postgres views**, the **generated TypeScript**, or the **generated OWL and SHACL rules**. Same rows, same page; a switch picks the engine. | The "Computed by" bar |
+| Conformance | Every engine's answers for the current facts, compared value by value with the conformance harness's own rule for when two values are equal. | "Compare the engines" |
+| Explainer | Hover a dotted value for its rule in plain words and its witness: the values it came from, down to the stated facts. | Every computed value on the page and in the admin |
+| Documentation | Every rule in plain language, in 16 languages. | `/rulespeak/rulespeak.html` |
+| Admin | Every table of the rulebook as an editable grid: rules, properties and their wiring, wording, layouts, buttons, the cast, the engines themselves. Edits apply at once on every engine. Save writes the rulebook file. | `/admin.html` |
+| Excel | Export the current rows as a workbook with every rule as a live formula (about 30 s). Import is wired to the catalog's `xlsx-to-rulebook`, which does not yet return for a workbook this size: see Known gaps. | The admin's Export and Import |
+| Rulebook editor | The platform's generated editor for tables, fields and formulas, in its own container. | `./start.sh --editor` |
+
+The tools list itself is the rulebook's `RulebookTools` table, and the engines are its
+`Engines` table.
+
+## One set of rows, three engines
+
+The app keeps one copy of the rulebook's stored rows as they are right now (the
+*workspace*). Every click on the page and every admin edit writes there. An engine computes
+everything else from those rows:
+
+| Engine | How it computes | A click takes about |
+|---|---|---|
+| Postgres views | The rows are mirrored into the generated base tables; values are columns of the generated `vw_*` views. | 0.4 s |
+| TypeScript | The generated `effortless-typescript/` SDK is handed the rows the way the conformance harness hands them over (blank tests in, answers out). No database. | 0.9 s |
+| OWL and SHACL rules | The generated `effortless-owl/` ontology and rules are run over individuals written from the rows, by the harness's own OWL runner (a SPARQL engine executing the rules in `sh:order`). | 2.2 s |
+
+The app holds no rule of its own on any engine. TypeScript and OWL go through
+[`orchestration/live_substrates.py`](../../orchestration/live_substrates.py), a platform
+tool that runs a substrate on live rows and compares substrates' answers with
+`test-orchestrator.compare_values`. It works for any project that builds those substrates.
+
+A request names its engine with the `X-ERB-Backend` header (`postgres`, `typescript`,
+`owl`); the page remembers the choice.
 
 ## Does it behave like her page?
 
-Two tests take her live page as the reference. Both download it each run, so they also
+The tests take her live page as the reference and download it each run, so they also
 report when her page changes.
 
 | Test | What it compares | Result (2026-11-26) |
 |---|---|---|
-| [`compare-app-with-her-app.mjs`](testing/her-app/compare-app-with-her-app.mjs) | Her whole page script, run against a stub document, and this app's real server receive the same random clicks: fact and rule checkboxes, the seven buttons, Remove, and the Add fact form. After every click: the fact list, rule switches, conclusions panel (each card word for word, in order), alerts, the Add next fact button, the current-record summary, the button note and the form message. | 1,153 of 1,153 screens agree (20 walks of up to 60 clicks) |
-| [`compare-with-her-app.mjs`](testing/her-app/compare-with-her-app.mjs) | Her reasoner against the database views, in every combination of the five rule switches for her starting facts, the two facts she suggests trying, and her buttons' fact changes: every fact that holds, every conclusion card, every alert. | 224 of 224 states agree, in her order too |
-
-Each test was also run with one row broken in the database, to show it can fail:
-
-| Break | Result |
-|---|---|
-| `range rule` wording changed to `range rules` | 64 of 224 states fail: exactly those where the range rule fires |
-| "Show Stan's details" set to leave the domain rule off | The click test fails on the first press of that button |
+| [`compare-app-with-her-app.mjs`](testing/her-app/compare-app-with-her-app.mjs) | Her whole page script, run against a stub document, and this app's real server receive the same random clicks: fact and rule checkboxes, her seven buttons, Remove, and the Add fact form with the original cast **and names and values the rulebook has never seen** (Kenny, Mr Garrison, grade 6). After every click: the fact list, rule switches, conclusions panel (each card word for word, in order), alerts, the Add next fact button, the record summary, the button note and the form message. Run once per engine. | Postgres 115 of 115 screens, TypeScript 115 of 115, OWL 115 of 115 |
+| [`compare-with-her-app.mjs`](testing/her-app/compare-with-her-app.mjs) | Her reasoner against the Postgres views, in every combination of the five rule switches for her starting facts, the two facts she suggests trying, and her buttons' fact changes. | 224 of 224 states, in her order too |
+| [`testing/app/app.test.mjs`](testing/app/app.test.mjs) | What her page cannot do, on each engine: a new property wired to the Symmetric rule by adding a row, a new name that finds its portrait, new wording, Save, Discard, and the engines still agreeing afterwards. Also the candidate generator against the rulebook's stored rows, and Save's refusal to overwrite a file someone else changed. | 7 of 7 |
+| [`scripts/tests/test_live_substrates.py`](../../scripts/tests/test_live_substrates.py) | The platform tool: TypeScript and OWL follow a change to the live rows, agree on every computed value, and a wrong value is named. | 4 of 4 |
 
 ```bash
-node testing/her-app/compare-app-with-her-app.mjs [walks] [steps] [seed]   # starts its own server on :43298
+node testing/her-app/compare-app-with-her-app.mjs --engine=all --walks=3 --steps=40
 node testing/her-app/compare-with-her-app.mjs
+node --test testing/app/app.test.mjs
+python3 ../../scripts/tests/test_live_substrates.py
 ```
 
-Both change the project's dev database while they run and put the seed state back at the
-end.
+The app tests run their own server on their own database
+(`erb_talismans_southpark_ontology_test`, created on first use), so they never disturb a
+running app, and they save only into temporary copies of the rulebook.
+
+## Conformance
+
+Two levels, one rule for when two values are equal (`test-orchestrator.compare_values`):
+
+- **Live, in the app.** "Compare the engines" computes every table on every available
+  engine from the rows as they are at that moment and lists any value that differs. It
+  found two real disagreements while this project was built, both recorded as findings
+  against the OWL generator in the root rulebook (`cr-27-04`: a sum with a blank operand and
+  a lookup through an empty link come out blank in the generated OWL rules; the formulas
+  here were rewritten to avoid both).
+- **The repo's harness.** `python3 ../../scripts/run-conformance.py talismans-southpark-ontology --reset-db --skip-build`
+  grades each built substrate against the answer keys baked into the rulebook, and asks
+  HermiT (through ROBOT, in Docker) whether the generated ontology is consistent.
+
+| Run `run-talismans-southpark-ontology-20261126-030532` | Graded values | Score |
+|---|---|---|
+| effortless-postgres | 31,456 | 100% |
+| effortless-typescript | 31,456 | 100% |
+| effortless-python | 31,456 | 100% |
+| effortless-xlsx | 31,456 | 100% |
+| effortless-owl | 31,456 | 100%; HermiT: OWL 2 DL, consistent, no unsatisfiable class |
+
+The run before it scored the same values but HermiT found the generated ontology
+inconsistent: the OWL generator had declared the property-to-property links on
+`Properties` to be inverses of one another. Those links now live in `PropertyAxioms`, which
+the generator reads correctly; the generator's defect is finding `cr-28-01`.
+
+## Editing the model
+
+| Angle | What you can change | How it reaches the page |
+|---|---|---|
+| The page | Facts (any name, any value), rule switches, her buttons | At once |
+| The admin (`/admin.html`) | Any stored value of any row of any table; add and delete rows | At once, on every engine |
+| Excel | Export works; import waits on a tool fix (Known gaps) | As unsaved changes in the admin, to review and save |
+| The rulebook editor (`./start.sh --editor`) | Tables, fields, formulas, rows | Its Save writes the rulebook file; the app then says the file changed and reloads it on Discard; a formula change needs a rebuild |
+| The rulebook file | Anything | Rebuild |
+
+**Save** (in the admin) writes the stored rows back into the rulebook file and nothing
+else: schema, descriptions and order stay as they are. It refuses if the file changed on
+disk since the app loaded it. The computed copies that the build's first step
+(`compile-rulebook`) bakes into the rows are dropped by Save and baked again by the next
+build. **Discard** reloads the rows from the file. **Rebuild** runs `effortless build` and
+reloads the database.
+
+Rows that are data, and so editable without touching a formula: the rule explanations and
+card wording, which properties are symmetric or typed (`Properties`), and which are inverse, chained or
+disjoint (`PropertyAxioms`), her buttons and what each does (`Scenarios`, `ScenarioFactChanges`,
+`ScenarioRuleSettings`), node positions (`NodeLayouts`), every string on the page
+(`PageTexts`), the portraits and the names they answer to, the engines and the tools.
+Adding a property row and ticking its `IsSymmetric` box is enough for the Symmetric rule to
+apply to it, on all three engines.
+
+### Candidate rows
+
+A formula decides whether a fact holds, but only for a fact that is a row. So every fact a
+rule could conclude over the cast is a row of `Statements`, every way a rule could conclude
+it is a row of `Firings`, and every pair the disjoint rule watches is a row of
+`DisjointChecks`. [`app/lib/candidates.mjs`](app/lib/candidates.mjs) is the one place those
+rows come from: the rulebook's own candidates are exactly what it produces for the seed
+cast (a test checks this), and the app calls it when a thing, a literal value, a property
+or an axiom is added or removed. A new name adds about 90 candidate facts and a few
+hundred ways to conclude them; the count grows with the cube of the cast because of the
+property chain.
 
 ## How the model works
 
 | Table | Rows | What it holds |
 |---|---|---|
-| `Graphs` | 1 | Wording variables (source lines, empty-state message, literal syntax) and totals |
+| `Graphs` | 1 | Wording variables and totals, and the next numbers a write needs |
 | `Rules` | 5 | Inverse, Symmetric, Property chain, Domain and range, Disjoint; `IsEnabled` is the checkbox |
-| `FiringKinds` | 5 | How each rule names itself on a conclusion card |
-| `Things` | 9 | The seven individuals her page draws and the classes Person and School, with portrait credits and crops |
-| `Properties` | 10 | Her properties and the wiring every rule reads: inverse, symmetric, chain, domain, range, disjoint, datatype, one current value |
+| `FiringKinds` | 6 | How each rule names itself on a conclusion card |
+| `Things` | 9 | The individuals and classes; a new name becomes a row here |
+| `Portraits`, `PortraitAliases` | 13, 32 | Her Fandom portraits and the names each answers to |
+| `Properties`, `PropertyAxioms` | 10, 4 | Her properties, and the axioms between them (inverse, chain, disjoint) that the rules read |
 | `Statements` | 270 | Every fact the page can state or conclude about the cast; `IsStated` is the checkbox |
 | `Firings` | 465 | Every way a rule could conclude a fact; the first one in her reasoner's order is the card shown |
 | `DisjointChecks` | 42 | Every pair the disjoint rule watches |
-| `Scenarios`, `ScenarioFactChanges`, `ScenarioRuleSettings` | 7, 6, 10 | Her seven buttons: a fact baseline, explicit fact changes, rule settings |
-| `NodeLayouts`, `LayoutSlots` | 26, 8 | Where the graph draws each node, per layout |
-| `PageTexts` | 67 | The page's wording |
+| `Scenarios`, `ScenarioFactChanges`, `ScenarioRuleSettings` | 7, 6, 10 | Her seven buttons |
+| `NodeLayouts`, `LayoutSlots` | 26, 8 | Where the graph draws each node |
+| `PageTexts` | about 100 | Every string on the page and in the admin |
+| `Engines`, `RulebookTools` | 3, 8 | The engine switcher and the tools panel |
 
 The seed data is her page's starting state: the ten teaching facts on, every rule off. A
 value the page keeps one of per person (grade, role) is current when it was switched on
 most recently, so switching grade 5 on puts grade 4 out of effect without deleting it.
 
 The rules apply in three fixed strata: inverse and symmetric, then the property chain,
-then domain and range. That matches her page for every property it has; wiring that made a
-later rule feed an earlier one would need repeated rounds.
+then domain and range. The conclusions are ordered the way her reasoner finds them: a
+conclusion whose premises are all stated facts first, then those that needed a concluded
+fact. This matches her page for every property it has; wiring that made a later rule feed
+an earlier one would need repeated rounds.
 
 ## Differences from her page
 
-- **New names and new numbers.** Her Add fact form takes any name and any number. Here,
-  every fact the page can hold is a row over the declared cast (the seven people and
-  places, and the values 10, 4, 5 and Student), written when the rulebook was authored. Any
-  other name or value gets a message saying it is not in the rulebook yet; nothing in the
-  platform generates the new rows.
 - **Her prose and illustrations.** The long explanatory sections of her page, her article,
   and her Person, School and Student illustrations are hers and are not copied. Those three
   nodes use simple icons, and the page links to her article instead.
 - **Attribution.** The page says it is a rebuild of her explainer and links to the original.
-- **One shared state.** Every visitor to a running server sees and changes the same database.
+- **One shared state.** Every visitor to a running server sees and changes the same rows.
+- **A link to a class.** Her page lets a class name (Person) be typed as an ordinary name.
+  Here that fact is stored and shown, but no rule concludes anything from it.
 
-## What is not done yet
+## Known gaps
 
-- The rulebook editor (`effortless-rulebook-editor`) is not set up for this project.
-- The TypeScript, Python, Excel and OWL outputs are built but not yet graded through the
-  repo's conformance harness. (The page's explainer computes its witnesses with the
-  TypeScript output.)
+- **Excel import does not complete.** The admin's Import hands the workbook and the live
+  rulebook to the catalog's `xlsx-to-rulebook`, as that tool asks. For this rulebook's
+  workbook (about 30,000 formula cells) the tool ran for 22 minutes without returning or
+  failing, and was stopped; a workbook of a few dozen formula cells is reported to return in
+  about 30 seconds. The app waits four
+  minutes (`XLSX_IMPORT_TIMEOUT_MS`) and then says so. The fix belongs in the tool. Until
+  then, rows can be re-imported per table as CSV through the rulebook editor.
+- **The rulebook editor has its own database.** An edit there reaches this app only after
+  the editor's Save (which rewrites the rulebook file) and a Discard here (which reloads
+  it). A formula or table change also needs a rebuild.
+- **Schema changes are not live.** The admin edits rows. Fields, formulas and tables
+  change in the rulebook editor or the file, followed by a rebuild.
 
 ## Building notes
 
@@ -103,6 +214,10 @@ The build's last step (`init-db`) fails on most builds: the CLI regenerates
 `postgres-bootstrap/reset-rulebook-db.sh` without its executable bit (cr-20-02). The step
 is last so every generator still runs; `erb_project.py --reset-db` loads the database
 with `bash`.
+
+`./start.sh` keeps the server in the foreground. On a machine with Postgres.app, a
+detached server is refused by its client check, and the Postgres engine then reports
+itself unavailable (the other engines keep working).
 
 ---
 

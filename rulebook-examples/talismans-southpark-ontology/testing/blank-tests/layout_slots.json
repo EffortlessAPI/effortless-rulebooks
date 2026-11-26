@@ -1,0 +1,58 @@
+[
+  {
+    "layout_slot_id": "slot-1",
+    "sort_order": 1,
+    "x": 330,
+    "y": 135,
+    "name": null
+  },
+  {
+    "layout_slot_id": "slot-2",
+    "sort_order": 2,
+    "x": 45,
+    "y": 120,
+    "name": null
+  },
+  {
+    "layout_slot_id": "slot-3",
+    "sort_order": 3,
+    "x": 330,
+    "y": 400,
+    "name": null
+  },
+  {
+    "layout_slot_id": "slot-4",
+    "sort_order": 4,
+    "x": 60,
+    "y": 425,
+    "name": null
+  },
+  {
+    "layout_slot_id": "slot-5",
+    "sort_order": 5,
+    "x": 200,
+    "y": 30,
+    "name": null
+  },
+  {
+    "layout_slot_id": "slot-6",
+    "sort_order": 6,
+    "x": 345,
+    "y": 250,
+    "name": null
+  },
+  {
+    "layout_slot_id": "slot-7",
+    "sort_order": 7,
+    "x": 110,
+    "y": 300,
+    "name": null
+  },
+  {
+    "layout_slot_id": "slot-8",
+    "sort_order": 8,
+    "x": 260,
+    "y": 280,
+    "name": null
+  }
+]

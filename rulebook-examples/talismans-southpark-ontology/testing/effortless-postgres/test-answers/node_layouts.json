@@ -1,0 +1,210 @@
+[
+  {
+    "node_layout_id": "default:Kyle",
+    "layout": "default",
+    "node_key": "Kyle",
+    "x": 55,
+    "y": 365,
+    "name": "default:Kyle"
+  },
+  {
+    "node_layout_id": "default:literal|10|xsd:integer",
+    "layout": "default",
+    "node_key": "literal|10|xsd:integer",
+    "x": 345,
+    "y": 290,
+    "name": "default:literal|10|xsd:integer"
+  },
+  {
+    "node_layout_id": "default:literal|4|xsd:integer",
+    "layout": "default",
+    "node_key": "literal|4|xsd:integer",
+    "x": 340,
+    "y": 140,
+    "name": "default:literal|4|xsd:integer"
+  },
+  {
+    "node_layout_id": "default:literal|5|xsd:integer",
+    "layout": "default",
+    "node_key": "literal|5|xsd:integer",
+    "x": 340,
+    "y": 140,
+    "name": "default:literal|5|xsd:integer"
+  },
+  {
+    "node_layout_id": "default:literal|Student|xsd:string",
+    "layout": "default",
+    "node_key": "literal|Student|xsd:string",
+    "x": 42,
+    "y": 235,
+    "name": "default:literal|Student|xsd:string"
+  },
+  {
+    "node_layout_id": "default:Marvin",
+    "layout": "default",
+    "node_key": "Marvin",
+    "x": 70,
+    "y": 45,
+    "name": "default:Marvin"
+  },
+  {
+    "node_layout_id": "default:Person",
+    "layout": "default",
+    "node_key": "Person",
+    "x": 55,
+    "y": 132,
+    "name": "default:Person"
+  },
+  {
+    "node_layout_id": "default:Randy",
+    "layout": "default",
+    "node_key": "Randy",
+    "x": 195,
+    "y": 125,
+    "name": "default:Randy"
+  },
+  {
+    "node_layout_id": "default:School",
+    "layout": "default",
+    "node_key": "School",
+    "x": 315,
+    "y": 405,
+    "name": "default:School"
+  },
+  {
+    "node_layout_id": "default:Sharon",
+    "layout": "default",
+    "node_key": "Sharon",
+    "x": 318,
+    "y": 55,
+    "name": "default:Sharon"
+  },
+  {
+    "node_layout_id": "default:Shelly",
+    "layout": "default",
+    "node_key": "Shelly",
+    "x": 300,
+    "y": 215,
+    "name": "default:Shelly"
+  },
+  {
+    "node_layout_id": "default:SouthParkElementary",
+    "layout": "default",
+    "node_key": "SouthParkElementary",
+    "x": 195,
+    "y": 345,
+    "name": "default:SouthParkElementary"
+  },
+  {
+    "node_layout_id": "default:Stan",
+    "layout": "default",
+    "node_key": "Stan",
+    "x": 150,
+    "y": 240,
+    "name": "default:Stan"
+  },
+  {
+    "node_layout_id": "stan-details:Kyle",
+    "layout": "stan-details",
+    "node_key": "Kyle",
+    "x": 55,
+    "y": 365,
+    "name": "stan-details:Kyle"
+  },
+  {
+    "node_layout_id": "stan-details:literal|10|xsd:integer",
+    "layout": "stan-details",
+    "node_key": "literal|10|xsd:integer",
+    "x": 345,
+    "y": 290,
+    "name": "stan-details:literal|10|xsd:integer"
+  },
+  {
+    "node_layout_id": "stan-details:literal|4|xsd:integer",
+    "layout": "stan-details",
+    "node_key": "literal|4|xsd:integer",
+    "x": 290,
+    "y": 85,
+    "name": "stan-details:literal|4|xsd:integer"
+  },
+  {
+    "node_layout_id": "stan-details:literal|5|xsd:integer",
+    "layout": "stan-details",
+    "node_key": "literal|5|xsd:integer",
+    "x": 290,
+    "y": 85,
+    "name": "stan-details:literal|5|xsd:integer"
+  },
+  {
+    "node_layout_id": "stan-details:literal|Student|xsd:string",
+    "layout": "stan-details",
+    "node_key": "literal|Student|xsd:string",
+    "x": 290,
+    "y": 245,
+    "name": "stan-details:literal|Student|xsd:string"
+  },
+  {
+    "node_layout_id": "stan-details:Marvin",
+    "layout": "stan-details",
+    "node_key": "Marvin",
+    "x": 70,
+    "y": 45,
+    "name": "stan-details:Marvin"
+  },
+  {
+    "node_layout_id": "stan-details:Person",
+    "layout": "stan-details",
+    "node_key": "Person",
+    "x": 100,
+    "y": 355,
+    "name": "stan-details:Person"
+  },
+  {
+    "node_layout_id": "stan-details:Randy",
+    "layout": "stan-details",
+    "node_key": "Randy",
+    "x": 195,
+    "y": 125,
+    "name": "stan-details:Randy"
+  },
+  {
+    "node_layout_id": "stan-details:School",
+    "layout": "stan-details",
+    "node_key": "School",
+    "x": 315,
+    "y": 405,
+    "name": "stan-details:School"
+  },
+  {
+    "node_layout_id": "stan-details:Sharon",
+    "layout": "stan-details",
+    "node_key": "Sharon",
+    "x": 318,
+    "y": 55,
+    "name": "stan-details:Sharon"
+  },
+  {
+    "node_layout_id": "stan-details:Shelly",
+    "layout": "stan-details",
+    "node_key": "Shelly",
+    "x": 300,
+    "y": 215,
+    "name": "stan-details:Shelly"
+  },
+  {
+    "node_layout_id": "stan-details:SouthParkElementary",
+    "layout": "stan-details",
+    "node_key": "SouthParkElementary",
+    "x": 195,
+    "y": 345,
+    "name": "stan-details:SouthParkElementary"
+  },
+  {
+    "node_layout_id": "stan-details:Stan",
+    "layout": "stan-details",
+    "node_key": "Stan",
+    "x": 100,
+    "y": 150,
+    "name": "stan-details:Stan"
+  }
+]

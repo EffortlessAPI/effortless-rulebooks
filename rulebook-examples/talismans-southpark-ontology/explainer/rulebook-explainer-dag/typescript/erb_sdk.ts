@@ -190,6 +190,10 @@ export interface GraphsRow {
   max_listed_sort_order: number | null;
   /** Order 3. The list position a newly added fact takes. */
   next_listed_sort_order: number | null;
+  /** Order 1. Highest sort order of any fact, listed or candidate. */
+  max_sort_order: number | null;
+  /** Order 2. The sort order a new candidate fact, or a fact removed from the list, takes. */
+  next_candidate_sort_order: number | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -214,6 +218,8 @@ const graphsFieldTypes: Record<string, FieldType> = {
   next_activation_seq: "*int",
   max_listed_sort_order: "*int",
   next_listed_sort_order: "*int",
+  max_sort_order: "*int",
+  next_candidate_sort_order: "*int",
 };
 
 /** Computes the Name calculated field.
@@ -258,6 +264,13 @@ export function calcGraphsNextListedSortOrder(tc: GraphsRow): number | null {
   return toIntPtr(erbInteger(erbAdd(vInt(tc.max_listed_sort_order), vI(1))));
 }
 
+/** Computes the NextCandidateSortOrder calculated field.
+ *  Order 2. The sort order a new candidate fact, or a fact removed from the list, takes.
+ *  Formula: ={{MaxSortOrder}} + 1 */
+export function calcGraphsNextCandidateSortOrder(tc: GraphsRow): number | null {
+  return toIntPtr(erbInteger(erbAdd(vInt(tc.max_sort_order), vI(1))));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeGraphs(tc: GraphsRow): GraphsRow {
   // Level 1
@@ -267,6 +280,7 @@ export function computeGraphs(tc: GraphsRow): GraphsRow {
   calcGuard(tc, graphsFieldTypes, "has_facts_to_add", () => { tc.has_facts_to_add = calcGraphsHasFactsToAdd(tc); });
   calcGuard(tc, graphsFieldTypes, "next_activation_seq", () => { tc.next_activation_seq = calcGraphsNextActivationSeq(tc); });
   calcGuard(tc, graphsFieldTypes, "next_listed_sort_order", () => { tc.next_listed_sort_order = calcGraphsNextListedSortOrder(tc); });
+  calcGuard(tc, graphsFieldTypes, "next_candidate_sort_order", () => { tc.next_candidate_sort_order = calcGraphsNextCandidateSortOrder(tc); });
   return tc;
 }
 
@@ -330,7 +344,7 @@ export function loadRulesRows(file: string): RulesRow[] {
 
 // =============================================================================
 // FIRINGKINDS TABLE
-// The ways a rule can apply. Domain and range belong to one rule but are worded apart.
+// The ways a rule can apply. Domain and range belong to one rule but are worded apart; 'disjoint' names the rule the disjointness checks answer to.
 // =============================================================================
 
 /** A row in the FiringKinds table. */
@@ -393,17 +407,19 @@ export interface ThingsRow {
   kind: string;
   /** Position in the cast. */
   sort_order: number;
-  /** The name on the portrait's Fandom page. */
+  /** The portrait drawn for this thing; set when its name matches a portrait alias. */
+  portrait: string | null;
+  /** Order 1. The name on the portrait's Fandom page. */
   portrait_name: string | null;
-  /** The Fandom page credited for the portrait. */
+  /** Order 1. The Fandom page credited for the portrait. */
   portrait_page: string | null;
-  /** The original Fandom image. */
+  /** Order 1. The original Fandom image. */
   portrait_image: string | null;
-  /** The portrait's crop as an SVG viewBox: x y width height. */
+  /** Order 1. The portrait's crop as an SVG viewBox. */
   portrait_crop: string | null;
-  /** The original image's width in pixels. */
+  /** Order 1. The original image's width in pixels. */
   portrait_width: number | null;
-  /** The original image's height in pixels. */
+  /** Order 1. The original image's height in pixels. */
   portrait_height: number | null;
   /** Order 1. The thing's name. */
   name: string | null;
@@ -431,6 +447,7 @@ const thingsFieldTypes: Record<string, FieldType> = {
   label: "string",
   kind: "string",
   sort_order: "int",
+  portrait: "*string",
   portrait_name: "*string",
   portrait_page: "*string",
   portrait_image: "*string",
@@ -471,9 +488,9 @@ export function calcThingsIsInGraph(tc: ThingsRow): boolean | null {
 
 /** Computes the NodeKind calculated field.
  *  Order 18. How the graph draws the thing: a class, a place someone attends, or a person.
- *  Formula: =IF({{Kind}} = "class", "class", IF({{CountAsPlace}} > 0, "place", "person")) */
+ *  Formula: =IF({{Kind}} = "", "", IF({{Kind}} = "class", "class", IF({{CountAsPlace}} > 0, "place", "person"))) */
 export function calcThingsNodeKind(tc: ThingsRow): string | null {
-  return toStringPtr(erbIf(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("class"))), () => vS("class"), () => erbIf(erbBool3(erbCmp(vInt(tc.count_as_place), ">", vI(0))), () => vS("place"), () => vS("person"))));
+  return toStringPtr(erbIf(erbBool3(erbIsBlank(vStrPlain(tc.kind))), () => vS(""), () => erbIf(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("class"))), () => vS("class"), () => erbIf(erbBool3(erbCmp(vInt(tc.count_as_place), ">", vI(0))), () => vS("place"), () => vS("person")))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -492,8 +509,108 @@ export function loadThingsRows(file: string): ThingsRow[] {
 }
 
 // =============================================================================
+// PORTRAITS TABLE
+// The page's Fandom portraits, including those for characters a reader may add.
+// =============================================================================
+
+/** A row in the Portraits table. */
+export interface PortraitsRow {
+  /** Key of the portrait: the short name the page files it under. */
+  portrait_id: string;
+  /** The name on the portrait's Fandom page. */
+  display_name: string;
+  /** The Fandom page credited for the portrait. */
+  page: string;
+  /** The original Fandom image. */
+  image: string;
+  /** The crop as an SVG viewBox: x y width height. */
+  crop: string;
+  /** The original image's width in pixels. */
+  width: number;
+  /** The original image's height in pixels. */
+  height: number;
+  /** Position in the credits. */
+  sort_order: number;
+  /** Order 1. The portrait's name. */
+  name: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const portraitsFieldTypes: Record<string, FieldType> = {
+  portrait_id: "string",
+  display_name: "string",
+  page: "string",
+  image: "string",
+  crop: "string",
+  width: "int",
+  height: "int",
+  sort_order: "int",
+  name: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Order 1. The portrait's name.
+ *  Formula: ={{DisplayName}} */
+export function calcPortraitsName(tc: PortraitsRow): string | null {
+  return toStringPtr(vStrPlain(tc.display_name));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computePortraits(tc: PortraitsRow): PortraitsRow {
+  // Level 1
+  calcGuard(tc, portraitsFieldTypes, "name", () => { tc.name = calcPortraitsName(tc); });
+  return tc;
+}
+
+/** Reads Portraits rows from a JSON array file. */
+export function loadPortraitsRows(file: string): PortraitsRow[] {
+  return loadRows(file, { fields: portraitsFieldTypes }) as unknown as PortraitsRow[];
+}
+
+// =============================================================================
+// PORTRAITALIASES TABLE
+// The names a portrait answers to. A new thing whose name matches an alias gets that portrait.
+// =============================================================================
+
+/** A row in the PortraitAliases table. */
+export interface PortraitAliasesRow {
+  /** Key: the name in lower case with single spaces. */
+  portrait_alias_id: string;
+  /** The portrait this name selects. */
+  portrait: string;
+  /** Order 1. The alias. */
+  name: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const portraitAliasesFieldTypes: Record<string, FieldType> = {
+  portrait_alias_id: "string",
+  portrait: "string",
+  name: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Order 1. The alias.
+ *  Formula: ={{PortraitAliasId}} */
+export function calcPortraitAliasesName(tc: PortraitAliasesRow): string | null {
+  return toStringPtr(vStrPlain(tc.portrait_alias_id));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computePortraitAliases(tc: PortraitAliasesRow): PortraitAliasesRow {
+  // Level 1
+  calcGuard(tc, portraitAliasesFieldTypes, "name", () => { tc.name = calcPortraitAliasesName(tc); });
+  return tc;
+}
+
+/** Reads PortraitAliases rows from a JSON array file. */
+export function loadPortraitAliasesRows(file: string): PortraitAliasesRow[] {
+  return loadRows(file, { fields: portraitAliasesFieldTypes }) as unknown as PortraitAliasesRow[];
+}
+
+// =============================================================================
 // PROPERTIES TABLE
-// The ten properties and the wiring every rule reads.
+// The ten properties, with what the symmetric, domain and range rules read. Axioms that relate one property to another (inverse, chain, disjoint) are rows of PropertyAxioms.
 // =============================================================================
 
 /** A row in the Properties table. */
@@ -510,20 +627,12 @@ export interface PropertiesRow {
   is_user_addable: boolean;
   /** The page keeps one current value per person: switching a value on replaces the earlier one. */
   has_one_current_value: boolean;
-  /** The property the inverse rule derives from this one. */
-  inverse_of: string | null;
   /** The symmetric rule makes this link true in both directions. */
   is_symmetric: boolean;
-  /** First link of the property chain that derives this property. */
-  chain_first: string | null;
-  /** Second link of the property chain that derives this property. */
-  chain_second: string | null;
   /** The class the domain rule gives this property's subject. */
   domain_class: string | null;
   /** The class the range rule gives this property's object. */
   range_class: string | null;
-  /** A property that may not link the same pair, in the same direction, as this one. */
-  disjoint_with: string | null;
   /** Position in the Add fact form's property list. */
   sort_order: number;
   /** The small label under a value node for this property: 'role value' or 'number value'. */
@@ -548,13 +657,9 @@ const propertiesFieldTypes: Record<string, FieldType> = {
   datatype: "*string",
   is_user_addable: "bool",
   has_one_current_value: "bool",
-  inverse_of: "*string",
   is_symmetric: "bool",
-  chain_first: "*string",
-  chain_second: "*string",
   domain_class: "*string",
   range_class: "*string",
-  disjoint_with: "*string",
   sort_order: "int",
   value_node_label: "*string",
   current_value_wording: "*string",
@@ -581,6 +686,56 @@ export function computeProperties(tc: PropertiesRow): PropertiesRow {
 /** Reads Properties rows from a JSON array file. */
 export function loadPropertiesRows(file: string): PropertiesRow[] {
   return loadRows(file, { fields: propertiesFieldTypes }) as unknown as PropertiesRow[];
+}
+
+// =============================================================================
+// PROPERTYAXIOMS TABLE
+// Axioms that relate one property to others, as OWL states them: an inverse, a two-link chain, or a disjoint pair. The candidate generator reads these rows.
+// =============================================================================
+
+/** A row in the PropertyAxioms table. */
+export interface PropertyAxiomsRow {
+  /** Key: kind:property, with ~other for a disjoint pair. */
+  property_axiom_id: string;
+  /** inverse, chain or disjoint. */
+  kind: string;
+  /** The property the axiom is about: the one inverted, the one a chain derives, or the first of a disjoint pair. */
+  property: string;
+  /** The inverse property, the chain's first link, or the other property of a disjoint pair. */
+  first: string;
+  /** The chain's second link. */
+  second: string | null;
+  /** Order 1. The axiom's key. */
+  name: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const propertyAxiomsFieldTypes: Record<string, FieldType> = {
+  property_axiom_id: "string",
+  kind: "string",
+  property: "string",
+  first: "string",
+  second: "*string",
+  name: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Order 1. The axiom's key.
+ *  Formula: ={{PropertyAxiomId}} */
+export function calcPropertyAxiomsName(tc: PropertyAxiomsRow): string | null {
+  return toStringPtr(vStrPlain(tc.property_axiom_id));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computePropertyAxioms(tc: PropertyAxiomsRow): PropertyAxiomsRow {
+  // Level 1
+  calcGuard(tc, propertyAxiomsFieldTypes, "name", () => { tc.name = calcPropertyAxiomsName(tc); });
+  return tc;
+}
+
+/** Reads PropertyAxioms rows from a JSON array file. */
+export function loadPropertyAxiomsRows(file: string): PropertyAxiomsRow[] {
+  return loadRows(file, { fields: propertyAxiomsFieldTypes }) as unknown as PropertyAxiomsRow[];
 }
 
 // =============================================================================
@@ -688,6 +843,10 @@ export interface StatementsRow {
   grandparent_unit: number | null;
   /** Order 16. 1 for a holding attends link. */
   place_unit: number | null;
+  /** Order 7. Order key of the first inverse or symmetric application that concludes this fact. */
+  first_pre_chain_order_key: number | null;
+  /** Order 8. Where the page's reasoner meets this fact as a premise: a stated fact at its list position, a fact concluded by the inverse or symmetric rule after every stated fact, in the order it was concluded; 0 for a fact that does not hold yet, so a link to no fact reads the same on every engine. */
+  snap_position: number | null;
   /** Order 15. Order key of the first rule application that concludes this fact, in the page reasoner's order. */
   first_fired_order_key: number | null;
   /** Order 20. Rule applications shown as this fact's conclusion card: one for a conclusion, zero otherwise. */
@@ -763,7 +922,9 @@ const statementsFieldTypes: Record<string, FieldType> = {
   parent_unit: "*int",
   grandparent_unit: "*int",
   place_unit: "*int",
-  first_fired_order_key: "*int",
+  first_pre_chain_order_key: "*float64",
+  snap_position: "*float64",
+  first_fired_order_key: "*float64",
   count_of_chosen_firings: "*int",
   subject_node_key: "*string",
   object_node_key: "*string",
@@ -916,6 +1077,13 @@ export function calcStatementsPlaceUnit(tc: StatementsRow): number | null {
   return toIntPtr(erbInteger(erbIf(erbBool3(erbAnd(erbBool3(vBool(tc.holds)), erbBool3(erbEq(erbNullif(vStrPlain(tc.property)), vS("attends"))))), () => vI(1), () => vI(0))));
 }
 
+/** Computes the SnapPosition calculated field.
+ *  Order 8. Where the page's reasoner meets this fact as a premise: a stated fact at its list position, a fact concluded by the inverse or symmetric rule after every stated fact, in the order it was concluded; 0 for a fact that does not hold yet, so a link to no fact reads the same on every engine.
+ *  Formula: =IF({{IsInEffect}}, {{SortOrder}}, IF({{HoldsBeforeChain}}, 100000 + {{FirstPreChainOrderKey}}, 0)) */
+export function calcStatementsSnapPosition(tc: StatementsRow): number | null {
+  return toFloatPtr(erbIf(erbBool3(vBool(tc.is_in_effect)), () => vIntPlain(tc.sort_order), () => erbIf(erbBool3(vBool(tc.holds_before_chain)), () => erbAdd(vI(100000), vNum(tc.first_pre_chain_order_key)), () => vI(0))));
+}
+
 /** Computes the SubjectNodeKey calculated field.
  *  Order 1. The graph node this fact starts from.
  *  Formula: ={{Subject}} */
@@ -966,6 +1134,7 @@ export function computeStatements(tc: StatementsRow): StatementsRow {
   // Level 3
   calcGuard(tc, statementsFieldTypes, "is_next_to_add", () => { tc.is_next_to_add = calcStatementsIsNextToAdd(tc); });
   calcGuard(tc, statementsFieldTypes, "holds_before_typing", () => { tc.holds_before_typing = calcStatementsHoldsBeforeTyping(tc); });
+  calcGuard(tc, statementsFieldTypes, "snap_position", () => { tc.snap_position = calcStatementsSnapPosition(tc); });
   // Level 4
   calcGuard(tc, statementsFieldTypes, "holds", () => { tc.holds = calcStatementsHolds(tc); });
   // Level 5
@@ -1045,8 +1214,12 @@ export interface FiringsRow {
   first_property_range_class: string | null;
   /** Order 1. The premise's list position. */
   first_sort_order: number | null;
-  /** Order 1. The second premise's list position. */
-  second_sort_order: number | null;
+  /** Order 4. Whether the second premise is in effect. */
+  second_is_in_effect: boolean | null;
+  /** Order 9. Where the reasoner meets the premise. */
+  first_snap_position: number | null;
+  /** Order 9. Where the reasoner meets the second premise. */
+  second_snap_position: number | null;
   /** Order 5. 1 when the inverse rule fires here. */
   inverse_fired_unit: number | null;
   /** Order 5. 1 when the symmetric rule fires here. */
@@ -1057,7 +1230,13 @@ export interface FiringsRow {
   type_fired_unit: number | null;
   /** Order 14. 1 when this application fires. */
   fired_unit: number | null;
-  /** Order 2. The page reasoner's order: by premise, then rule kind, then second premise. */
+  /** Order 6. 1 when this is an inverse or symmetric application that fires. */
+  pre_chain_fired_unit: number | null;
+  /** Order 2. For an inverse or symmetric application: its place in the reasoner's first round. */
+  pre_chain_order_key: number | null;
+  /** Order 5. The reasoner's round: 1 when every premise is a stated fact, 2 when the property chain reads a concluded fact. */
+  round: number | null;
+  /** Order 10. The page reasoner's order: by round, then premise, then rule kind, then second premise. */
   order_key: number | null;
   /** Order 18. The application the conclusions panel shows for its fact: the first one in the reasoner's order. */
   is_chosen: boolean | null;
@@ -1087,7 +1266,7 @@ const firingsFieldTypes: Record<string, FieldType> = {
   target_is_conclusion: "*bool",
   target_subject_node_key: "*string",
   target_object_node_key: "*string",
-  target_first_fired_order_key: "*int",
+  target_first_fired_order_key: "*float64",
   first_words: "*string",
   second_words: "*string",
   first_is_in_effect: "*bool",
@@ -1098,13 +1277,18 @@ const firingsFieldTypes: Record<string, FieldType> = {
   first_property_domain_class: "*string",
   first_property_range_class: "*string",
   first_sort_order: "*int",
-  second_sort_order: "*int",
+  second_is_in_effect: "*bool",
+  first_snap_position: "*float64",
+  second_snap_position: "*float64",
   inverse_fired_unit: "*int",
   symmetric_fired_unit: "*int",
   chain_fired_unit: "*int",
   type_fired_unit: "*int",
   fired_unit: "*int",
-  order_key: "*int",
+  pre_chain_fired_unit: "*int",
+  pre_chain_order_key: "*float64",
+  round: "*int",
+  order_key: "*float64",
   is_chosen: "*bool",
   chosen_unit: "*int",
   card_text: "*string",
@@ -1146,18 +1330,39 @@ export function calcFiringsFiredUnit(tc: FiringsRow): number | null {
   return toIntPtr(erbInteger(erbAdd(erbAdd(erbAdd(vInt(tc.inverse_fired_unit), vInt(tc.symmetric_fired_unit)), vInt(tc.chain_fired_unit)), vInt(tc.type_fired_unit))));
 }
 
+/** Computes the PreChainFiredUnit calculated field.
+ *  Order 6. 1 when this is an inverse or symmetric application that fires.
+ *  Formula: ={{InverseFiredUnit}} + {{SymmetricFiredUnit}} */
+export function calcFiringsPreChainFiredUnit(tc: FiringsRow): number | null {
+  return toIntPtr(erbInteger(erbAdd(vInt(tc.inverse_fired_unit), vInt(tc.symmetric_fired_unit))));
+}
+
+/** Computes the PreChainOrderKey calculated field.
+ *  Order 2. For an inverse or symmetric application: its place in the reasoner's first round.
+ *  Formula: =({{FirstSortOrder}} * 10) + {{KindSortOrder}} */
+export function calcFiringsPreChainOrderKey(tc: FiringsRow): number | null {
+  return toFloatPtr(erbAdd(erbMul(vInt(tc.first_sort_order), vI(10)), vInt(tc.kind_sort_order)));
+}
+
+/** Computes the Round calculated field.
+ *  Order 5. The reasoner's round: 1 when every premise is a stated fact, 2 when the property chain reads a concluded fact.
+ *  Formula: =IF(AND({{Kind}} = "chain", NOT(AND({{FirstIsInEffect}}, {{SecondIsInEffect}}))), 2, 1) */
+export function calcFiringsRound(tc: FiringsRow): number | null {
+  return toIntPtr(erbInteger(erbIf(erbBool3(erbAnd(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("chain"))), erbBool3(erbNot(erbBool3(erbAnd(erbBool3(vBool(tc.first_is_in_effect)), erbBool3(vBool(tc.second_is_in_effect)))))))), () => vI(2), () => vI(1))));
+}
+
 /** Computes the OrderKey calculated field.
- *  Order 2. The page reasoner's order: by premise, then rule kind, then second premise.
- *  Formula: =({{FirstSortOrder}} * 100000) + ({{KindSortOrder}} * 1000) + IF({{Second}} = "", 0, {{SecondSortOrder}}) */
+ *  Order 10. The page reasoner's order: by round, then premise, then rule kind, then second premise.
+ *  Formula: =({{Round}} * 1000000000000000) + ({{FirstSnapPosition}} * 100000000) + ({{KindSortOrder}} * 10000000) + IF({{Second}} = "", 0, {{SecondSnapPosition}}) */
 export function calcFiringsOrderKey(tc: FiringsRow): number | null {
-  return toIntPtr(erbInteger(erbAdd(erbAdd(erbMul(vInt(tc.first_sort_order), vI(100000)), erbMul(vInt(tc.kind_sort_order), vI(1000))), erbIf(erbBool3(erbIsBlank(vStr(tc.second))), () => vI(0), () => vInt(tc.second_sort_order)))));
+  return toFloatPtr(erbAdd(erbAdd(erbAdd(erbMul(vInt(tc.round), vI(1000000000000000)), erbMul(vNum(tc.first_snap_position), vI(100000000))), erbMul(vInt(tc.kind_sort_order), vI(10000000))), erbIf(erbBool3(erbIsBlank(vStr(tc.second))), () => vI(0), () => vNum(tc.second_snap_position))));
 }
 
 /** Computes the IsChosen calculated field.
  *  Order 18. The application the conclusions panel shows for its fact: the first one in the reasoner's order.
  *  Formula: =AND({{FiredUnit}} = 1, {{TargetIsConclusion}}, {{OrderKey}} = {{TargetFirstFiredOrderKey}}) */
 export function calcFiringsIsChosen(tc: FiringsRow): boolean | null {
-  return toBoolPtr(erbAnd(erbBool3(erbEq(vInt(tc.fired_unit), vI(1))), erbBool3(vBool(tc.target_is_conclusion)), erbBool3(erbEq(vInt(tc.order_key), vInt(tc.target_first_fired_order_key)))));
+  return toBoolPtr(erbAnd(erbBool3(erbEq(vInt(tc.fired_unit), vI(1))), erbBool3(vBool(tc.target_is_conclusion)), erbBool3(erbEq(vNum(tc.order_key), vNum(tc.target_first_fired_order_key)))));
 }
 
 /** Computes the ChosenUnit calculated field.
@@ -1188,10 +1393,13 @@ export function computeFirings(tc: FiringsRow): FiringsRow {
   calcGuard(tc, firingsFieldTypes, "symmetric_fired_unit", () => { tc.symmetric_fired_unit = calcFiringsSymmetricFiredUnit(tc); });
   calcGuard(tc, firingsFieldTypes, "chain_fired_unit", () => { tc.chain_fired_unit = calcFiringsChainFiredUnit(tc); });
   calcGuard(tc, firingsFieldTypes, "type_fired_unit", () => { tc.type_fired_unit = calcFiringsTypeFiredUnit(tc); });
-  calcGuard(tc, firingsFieldTypes, "order_key", () => { tc.order_key = calcFiringsOrderKey(tc); });
+  calcGuard(tc, firingsFieldTypes, "pre_chain_order_key", () => { tc.pre_chain_order_key = calcFiringsPreChainOrderKey(tc); });
+  calcGuard(tc, firingsFieldTypes, "round", () => { tc.round = calcFiringsRound(tc); });
   calcGuard(tc, firingsFieldTypes, "name", () => { tc.name = calcFiringsName(tc); });
   // Level 2
   calcGuard(tc, firingsFieldTypes, "fired_unit", () => { tc.fired_unit = calcFiringsFiredUnit(tc); });
+  calcGuard(tc, firingsFieldTypes, "pre_chain_fired_unit", () => { tc.pre_chain_fired_unit = calcFiringsPreChainFiredUnit(tc); });
+  calcGuard(tc, firingsFieldTypes, "order_key", () => { tc.order_key = calcFiringsOrderKey(tc); });
   // Level 3
   calcGuard(tc, firingsFieldTypes, "is_chosen", () => { tc.is_chosen = calcFiringsIsChosen(tc); });
   // Level 4
@@ -1619,8 +1827,114 @@ export function loadPageTextsRows(file: string): PageTextsRow[] {
   return loadRows(file, { fields: pageTextsFieldTypes }) as unknown as PageTextsRow[];
 }
 
+// =============================================================================
+// ENGINES TABLE
+// The execution engines the page can be computed by. Each is a build output of this rulebook.
+// =============================================================================
+
+/** A row in the Engines table. */
+export interface EnginesRow {
+  /** Key of the engine; the page sends it with every request. */
+  engine_id: string;
+  /** The engine's name in the switcher. */
+  label: string;
+  /** The conformance harness's name for this substrate. */
+  substrate: string;
+  /** The engine a new visitor starts on. */
+  is_default: boolean;
+  /** What computes the page on this engine. */
+  description: string;
+  /** Position in the switcher. */
+  sort_order: number;
+  /** Order 1. The engine's name. */
+  name: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const enginesFieldTypes: Record<string, FieldType> = {
+  engine_id: "string",
+  label: "string",
+  substrate: "string",
+  is_default: "bool",
+  description: "string",
+  sort_order: "int",
+  name: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Order 1. The engine's name.
+ *  Formula: ={{Label}} */
+export function calcEnginesName(tc: EnginesRow): string | null {
+  return toStringPtr(vStrPlain(tc.label));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeEngines(tc: EnginesRow): EnginesRow {
+  // Level 1
+  calcGuard(tc, enginesFieldTypes, "name", () => { tc.name = calcEnginesName(tc); });
+  return tc;
+}
+
+/** Reads Engines rows from a JSON array file. */
+export function loadEnginesRows(file: string): EnginesRow[] {
+  return loadRows(file, { fields: enginesFieldTypes }) as unknown as EnginesRow[];
+}
+
+// =============================================================================
+// RULEBOOKTOOLS TABLE
+// What each rulebook tool adds to the original explainer; the tools panel lists them.
+// =============================================================================
+
+/** A row in the RulebookTools table. */
+export interface RulebookToolsRow {
+  /** Key of the tool. */
+  rulebook_tool_id: string;
+  /** The tool's name. */
+  label: string;
+  /** What it adds to the original explainer. */
+  adds: string;
+  /** Where its link goes; 'editor' means the running rulebook editor. */
+  href: string | null;
+  /** The link's text. */
+  link_text: string | null;
+  /** Position in the panel. */
+  sort_order: number;
+  /** Order 1. The tool's name. */
+  name: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const rulebookToolsFieldTypes: Record<string, FieldType> = {
+  rulebook_tool_id: "string",
+  label: "string",
+  adds: "string",
+  href: "*string",
+  link_text: "*string",
+  sort_order: "int",
+  name: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Order 1. The tool's name.
+ *  Formula: ={{Label}} */
+export function calcRulebookToolsName(tc: RulebookToolsRow): string | null {
+  return toStringPtr(vStrPlain(tc.label));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeRulebookTools(tc: RulebookToolsRow): RulebookToolsRow {
+  // Level 1
+  calcGuard(tc, rulebookToolsFieldTypes, "name", () => { tc.name = calcRulebookToolsName(tc); });
+  return tc;
+}
+
+/** Reads RulebookTools rows from a JSON array file. */
+export function loadRulebookToolsRows(file: string): RulebookToolsRow[] {
+  return loadRows(file, { fields: rulebookToolsFieldTypes }) as unknown as RulebookToolsRow[];
+}
+
 /** Bounds the runner's passes over the dataset. */
-export const calculatedFieldCount = 58;
+export const calculatedFieldCount = 68;
 
 /** Every table, in rulebook order. */
 export const erbTables: TableSpec[] = [
@@ -1638,28 +1952,47 @@ export const erbTables: TableSpec[] = [
       { field: "count_of_facts_to_add", op: "SUM", table: "statements", target: "listed_off_unit", criteria: [{ range: "graph", kind: "field", field: "graph_id" }] },
       { field: "next_fact_sort_order", op: "MIN", table: "statements", target: "sort_order", criteria: [{ range: "graph", kind: "field", field: "graph_id" }, { range: "listed_off_unit", kind: "literal", literal: vI(1) }] },
       { field: "max_activation_seq", op: "MAX", table: "statements", target: "activation_seq", criteria: [{ range: "graph", kind: "field", field: "graph_id" }] },
-      { field: "max_listed_sort_order", op: "MAX", table: "statements", target: "sort_order", criteria: [{ range: "graph", kind: "field", field: "graph_id" }, { range: "listed_unit", kind: "literal", literal: vI(1) }] },] },
+      { field: "max_listed_sort_order", op: "MAX", table: "statements", target: "sort_order", criteria: [{ range: "graph", kind: "field", field: "graph_id" }, { range: "listed_unit", kind: "literal", literal: vI(1) }] },
+      { field: "max_sort_order", op: "MAX", table: "statements", target: "sort_order", criteria: [{ range: "graph", kind: "field", field: "graph_id" }] },] },
   { name: "Rules", file: "rules", rulebookRows: 5, fields: rulesFieldTypes,
     compute: (row: any) => computeRules(row as RulesRow),
     lookups: [],
     aggregations: [
       { field: "count_of_firings", op: "SUM", table: "firings", target: "fired_unit", criteria: [{ range: "rule", kind: "field", field: "rule_id" }] },] },
-  { name: "FiringKinds", file: "firing_kinds", rulebookRows: 5, fields: firingKindsFieldTypes,
+  { name: "FiringKinds", file: "firing_kinds", rulebookRows: 6, fields: firingKindsFieldTypes,
     compute: (row: any) => computeFiringKinds(row as FiringKindsRow),
     lookups: [
       { field: "rule_enabled", target: "rules", ret: "is_enabled", key: "rule", match: "rule_id" },],
     aggregations: [] },
   { name: "Things", file: "things", rulebookRows: 9, fields: thingsFieldTypes,
     compute: (row: any) => computeThings(row as ThingsRow),
-    lookups: [],
+    lookups: [
+      { field: "portrait_name", target: "portraits", ret: "display_name", key: "portrait", match: "portrait_id" },
+      { field: "portrait_page", target: "portraits", ret: "page", key: "portrait", match: "portrait_id" },
+      { field: "portrait_image", target: "portraits", ret: "image", key: "portrait", match: "portrait_id" },
+      { field: "portrait_crop", target: "portraits", ret: "crop", key: "portrait", match: "portrait_id" },
+      { field: "portrait_width", target: "portraits", ret: "width", key: "portrait", match: "portrait_id" },
+      { field: "portrait_height", target: "portraits", ret: "height", key: "portrait", match: "portrait_id" },],
     aggregations: [
       { field: "count_of_children", op: "SUM", table: "statements", target: "parent_unit", criteria: [{ range: "subject", kind: "field", field: "thing_id" }] },
       { field: "count_of_grandchildren", op: "SUM", table: "statements", target: "grandparent_unit", criteria: [{ range: "subject", kind: "field", field: "thing_id" }] },
       { field: "count_as_place", op: "SUM", table: "statements", target: "place_unit", criteria: [{ range: "object_thing", kind: "field", field: "thing_id" }] },
       { field: "count_as_subject", op: "SUM", table: "statements", target: "holds_unit", criteria: [{ range: "subject", kind: "field", field: "thing_id" }] },
       { field: "count_as_object", op: "SUM", table: "statements", target: "holds_unit", criteria: [{ range: "object_thing", kind: "field", field: "thing_id" }] },] },
+  { name: "Portraits", file: "portraits", rulebookRows: 13, fields: portraitsFieldTypes,
+    compute: (row: any) => computePortraits(row as PortraitsRow),
+    lookups: [],
+    aggregations: [] },
+  { name: "PortraitAliases", file: "portrait_aliases", rulebookRows: 32, fields: portraitAliasesFieldTypes,
+    compute: (row: any) => computePortraitAliases(row as PortraitAliasesRow),
+    lookups: [],
+    aggregations: [] },
   { name: "Properties", file: "properties", rulebookRows: 10, fields: propertiesFieldTypes,
     compute: (row: any) => computeProperties(row as PropertiesRow),
+    lookups: [],
+    aggregations: [] },
+  { name: "PropertyAxioms", file: "property_axioms", rulebookRows: 4, fields: propertyAxiomsFieldTypes,
+    compute: (row: any) => computePropertyAxioms(row as PropertyAxiomsRow),
     lookups: [],
     aggregations: [] },
   { name: "Statements", file: "statements", rulebookRows: 270, fields: statementsFieldTypes,
@@ -1686,6 +2019,7 @@ export const erbTables: TableSpec[] = [
       { field: "count_of_symmetric_firings", op: "SUM", table: "firings", target: "symmetric_fired_unit", criteria: [{ range: "target", kind: "field", field: "statement_id" }] },
       { field: "count_of_chain_firings", op: "SUM", table: "firings", target: "chain_fired_unit", criteria: [{ range: "target", kind: "field", field: "statement_id" }] },
       { field: "count_of_type_firings", op: "SUM", table: "firings", target: "type_fired_unit", criteria: [{ range: "target", kind: "field", field: "statement_id" }] },
+      { field: "first_pre_chain_order_key", op: "MIN", table: "firings", target: "pre_chain_order_key", criteria: [{ range: "target", kind: "field", field: "statement_id" }, { range: "pre_chain_fired_unit", kind: "literal", literal: vI(1) }] },
       { field: "first_fired_order_key", op: "MIN", table: "firings", target: "order_key", criteria: [{ range: "target", kind: "field", field: "statement_id" }, { range: "fired_unit", kind: "literal", literal: vI(1) }] },
       { field: "count_of_chosen_firings", op: "SUM", table: "firings", target: "chosen_unit", criteria: [{ range: "target", kind: "field", field: "statement_id" }] },
       { field: "count_of_violations_as_first", op: "SUM", table: "disjoint_checks", target: "violation_unit", criteria: [{ range: "first", kind: "field", field: "statement_id" }] },
@@ -1714,7 +2048,9 @@ export const erbTables: TableSpec[] = [
       { field: "first_property_domain_class", target: "statements", ret: "property_domain_class", key: "first", match: "statement_id" },
       { field: "first_property_range_class", target: "statements", ret: "property_range_class", key: "first", match: "statement_id" },
       { field: "first_sort_order", target: "statements", ret: "sort_order", key: "first", match: "statement_id" },
-      { field: "second_sort_order", target: "statements", ret: "sort_order", key: "second", match: "statement_id" },],
+      { field: "second_is_in_effect", target: "statements", ret: "is_in_effect", key: "second", match: "statement_id" },
+      { field: "first_snap_position", target: "statements", ret: "snap_position", key: "first", match: "statement_id" },
+      { field: "second_snap_position", target: "statements", ret: "snap_position", key: "second", match: "statement_id" },],
     aggregations: [] },
   { name: "DisjointChecks", file: "disjoint_checks", rulebookRows: 42, fields: disjointChecksFieldTypes,
     compute: (row: any) => computeDisjointChecks(row as DisjointChecksRow),
@@ -1746,8 +2082,16 @@ export const erbTables: TableSpec[] = [
     compute: (row: any) => computeLayoutSlots(row as LayoutSlotsRow),
     lookups: [],
     aggregations: [] },
-  { name: "PageTexts", file: "page_texts", rulebookRows: 67, fields: pageTextsFieldTypes,
+  { name: "PageTexts", file: "page_texts", rulebookRows: 102, fields: pageTextsFieldTypes,
     compute: (row: any) => computePageTexts(row as PageTextsRow),
+    lookups: [],
+    aggregations: [] },
+  { name: "Engines", file: "engines", rulebookRows: 3, fields: enginesFieldTypes,
+    compute: (row: any) => computeEngines(row as EnginesRow),
+    lookups: [],
+    aggregations: [] },
+  { name: "RulebookTools", file: "rulebook_tools", rulebookRows: 8, fields: rulebookToolsFieldTypes,
+    compute: (row: any) => computeRulebookTools(row as RulebookToolsRow),
     lookups: [],
     aggregations: [] },
 ];

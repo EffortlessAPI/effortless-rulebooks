@@ -4,7 +4,12 @@
 (function () {
   const svg = document.getElementById('graph');
   const $ = (id) => document.getElementById(id);
-  let P = null;                 // the page as the views describe it
+  let P = null;                 // the page as the chosen engine computes it
+  let engines = [];             // the execution engines the rulebook lists, with whether each is available
+  let editor = { running: false, url: '' };
+  // 'original' shows what the original explainer shows; 'tools' adds what the rulebook tools bring.
+  let mode = localStorage.getItem('southpark.mode') === 'original' ? 'original' : 'tools';
+  let engineId = localStorage.getItem('erb.backend');
   let pos = {};                 // node key -> [x, y]; layout and dragging are the page's own
   let slotIndex = 0, seen = {}, selected = null, selectedEdge = null, drag = null, explainerReady = false;
 
@@ -16,25 +21,31 @@
   };
   // Wraps a derived value for the explainer: hover it for its rule and the values it came from.
   const dag = (spec, row, inner, tag = 'span', cls = '') => {
+    if (mode === 'original') return `<${tag}${cls ? ` class="${cls}"` : ''}>${inner}</${tag}>`;
     const classes = [cls, tag === 'span' ? '' : 'dag-cell-block'].filter(Boolean).join(' ');
     return `<${tag} ${classes ? `class="${classes}" ` : ''}data-er-dag="${spec}" data-er-row="${esc(row)}">${inner}</${tag}>`;
   };
 
   async function api(method, url, body) {
-    const res = await fetch(url, { method, headers: { 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+    const headers = { 'content-type': 'application/json' };
+    if (engineId) headers['X-ERB-Backend'] = engineId;
+    const res = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined });
     const json = await res.json();
     if (!res.ok) throw new Error(json.error || `${method} ${url} answered ${res.status}`);
     return json;
   }
   async function act(method, url, body, after) {
+    document.body.classList.add('busy');
     try {
       const res = await api(method, url, body);
-      P = res.page;
+      if (res.page) P = res.page;
       if (after) after(res);
       render();
     } catch (e) {
       console.error(e);
       $('form-message').textContent = e.message;
+    } finally {
+      document.body.classList.remove('busy');
     }
   }
 
@@ -187,7 +198,6 @@
     $('byline-author').href = T('byline-author-url');
     $('link-article').href = T('link-article-url');
     $('link-original').href = T('link-original-url');
-    $('workbook-link').href = T('workbook-url');
 
     $('facts').innerHTML = P.facts.map((f) =>
       `<li><label class="row"><input type="checkbox" data-fact="${esc(f.statement_id)}"${f.is_in_effect ? ' checked' : ''}>` +
@@ -210,7 +220,7 @@
     const pred = $('pred'), keep = pred.value;
     pred.innerHTML = P.properties.map((p) => `<option value="${esc(p.property_id)}">${esc(p.label)}</option>`).join('');
     if (keep) pred.value = keep;
-    $('names').innerHTML = P.things.map((t) => `<option value="${esc(t.label)}">`).join('');
+    $('names').innerHTML = P.names.map((name) => `<option value="${esc(name)}">`).join('');
     $('image-credits').innerHTML = P.things.filter((t) => t.portrait_page).map((t) =>
       `<li><a href="${esc(t.portrait_page)}" target="_blank" rel="noopener noreferrer">${esc(t.portrait_name)}</a> ` +
       `<a class="credit-file" href="${esc(t.portrait_image)}" target="_blank" rel="noopener noreferrer">(image)</a></li>`).join('');
@@ -234,7 +244,7 @@
       mine = P.edges.filter((e) => e.subject_node_key === selected || e.object_node_key === selected);
       head = mine.length === 1 ? T('focus-appears-one', { name: `<strong>${esc(d.name)}</strong>` })
                                : T('focus-appears', { name: `<strong>${esc(d.name)}</strong>`, count: mine.length });
-      if (d.thing && d.thing.kind === 'individual') {
+      if (mode === 'tools' && d.thing && d.thing.kind === 'individual') {
         head += `<p class="counts">${dag('Things.CountOfChildren', d.thing.thing_id, esc(d.thing.count_of_children))} ${esc(T('focus-children'))} · ` +
           `${dag('Things.CountOfGrandchildren', d.thing.thing_id, esc(d.thing.count_of_grandchildren))} ${esc(T('focus-grandchildren'))}</p>`;
       }
@@ -251,16 +261,62 @@
     if (!window.EffortlessExplainer) return;
     try { window.EffortlessExplainer.setRows(await api('GET', '/api/rows')); } catch (e) { console.error(e); }
   }
+  // The tools layer: which engine computes the page, how the engines compare, and what each tool adds.
+  function renderTools() {
+    document.body.dataset.mode = mode;
+    for (const b of document.querySelectorAll('[data-mode-choice]')) b.setAttribute('aria-pressed', String(b.dataset.modeChoice === mode));
+    const current = engines.find((e) => e.id === engineId);
+    $('engines').innerHTML = engines.map((e) =>
+      `<button type="button" data-engine="${esc(e.id)}" aria-pressed="${e.id === engineId}"${e.ok ? '' : ' disabled'} title="${esc(e.ok ? e.description : T('engine-unavailable', { engine: e.label, reason: e.reason }))}">${esc(e.label)}</button>`).join('');
+    $('engine-description').textContent = current ? current.description : '';
+    $('engine-timing').textContent = T('engine-timing', { ms: P.pageMs });
+    const unsaved = $('unsaved');
+    unsaved.textContent = P.unsaved === 1 ? T('unsaved-one') : P.unsaved ? T('unsaved', { count: P.unsaved }) : T('unsaved-none');
+    unsaved.classList.toggle('dirty', P.unsaved > 0);
+    $('tools').innerHTML = P.tools.map((t) => {
+      let link = '';
+      if (t.href === 'editor') {
+        link = editor.running ? `<a href="${esc(editor.url)}" target="_blank" rel="noopener">${esc(t.link_text)}</a>` : `<span class="off">${esc(T('admin-editor-off'))}</span>`;
+      } else if (t.href) {
+        link = `<a href="${esc(t.href)}"${t.href.startsWith('/admin') ? '' : ' target="_blank" rel="noopener"'}>${esc(t.link_text)}</a>`;
+      }
+      return `<li><b>${esc(t.label)}</b><span>${esc(t.adds)}</span>${link}</li>`;
+    }).join('');
+  }
+
   function render(listsToo = true) {
     const info = drawGraph();
     if (!listsToo) return;
     renderPanels(info);
-    if (window.EffortlessExplainer) {
+    renderTools();
+    // The explainer (hover a value for its rule and witness) is one of the tools: it stays out of the original view.
+    if (mode === 'tools' && window.EffortlessExplainer) {
       if (!explainerReady) {
         window.EffortlessExplainer.init({ mode: 'modal', corner: 'bottom-right', xlsx: T('workbook-url') });
         explainerReady = true;
       } else window.EffortlessExplainer.enhanceCells(document);
       refreshWitnessRows();
+    }
+  }
+
+  async function compareEngines() {
+    const box = $('conformance');
+    box.className = 'conformance';
+    box.textContent = T('conformance-running');
+    try {
+      const r = await api('POST', '/api/conformance');
+      const agree = r.differingCount === 0 && r.missingRowCount === 0;
+      box.className = 'conformance' + (agree ? '' : ' differ');
+      const timings = r.engines.map((e) => `${e.label} ${e.ms} ms`).join(' \u00b7 ');
+      box.innerHTML = esc(agree ? T('conformance-agree', { engines: r.engines.length, cells: r.cells })
+                                 : T('conformance-differ', { count: r.differingCount + r.missingRowCount, cells: r.cells })) +
+        `<div class="muted">${esc(timings)}</div>` +
+        (r.skipped.length ? `<div class="muted">${r.skipped.map((s) => esc(T('engine-unavailable', { engine: s.label, reason: s.reason }))).join('<br>')}</div>` : '') +
+        (agree ? '' : '<ul>' + r.differing.slice(0, 12).map((d) =>
+          `<li>${esc(d.table)}.${esc(d.field)} of ${esc(d.key)}: ${Object.entries(d.values).map(([k, v]) => `${esc(k)} = ${esc(JSON.stringify(v))}`).join(', ')}</li>`).join('') + '</ul>');
+    } catch (e) {
+      box.className = 'conformance differ';
+      box.textContent = e.message;
     }
   }
 
@@ -340,6 +396,28 @@
     node.querySelector('.picture-fallback').style.display = '';
   }, true);
 
-  api('GET', '/api/page').then((page) => { P = page; applyLayout('default'); render(); })
-    .catch((e) => { console.error(e); document.body.insertAdjacentHTML('afterbegin', `<p class="alarm">${esc(e.message)}</p>`); });
+  document.addEventListener('click', (e) => {
+    const m = e.target.closest('[data-mode-choice]');
+    if (m) { mode = m.dataset.modeChoice; localStorage.setItem('southpark.mode', mode); render(); return; }
+    const b = e.target.closest('[data-engine]');
+    if (b && b.dataset.engine !== engineId) {
+      engineId = b.dataset.engine;
+      localStorage.setItem('erb.backend', engineId);
+      $('conformance').textContent = ''; $('conformance').className = '';
+      act('GET', '/api/page', null, (page) => { P = page; });   // the same rows, computed by the other engine
+    }
+  });
+  $('compare').addEventListener('click', compareEngines);
+
+  (async () => {
+    const listed = await api('GET', '/api/engines');
+    engines = listed.engines;
+    const mine = engines.find((e) => e.id === engineId && e.ok) || engines.find((e) => e.id === listed.defaultId && e.ok) || engines.find((e) => e.ok);
+    if (!mine) throw new Error(engines.map((e) => `${e.label}: ${e.reason}`).join(' | '));
+    engineId = mine.id;
+    editor = await api('GET', '/api/admin/editor');
+    P = await api('GET', '/api/page');
+    applyLayout('default');
+    render();
+  })().catch((e) => { console.error(e); document.body.insertAdjacentHTML('afterbegin', `<p class="alarm">${esc(e.message)}</p>`); });
 })();

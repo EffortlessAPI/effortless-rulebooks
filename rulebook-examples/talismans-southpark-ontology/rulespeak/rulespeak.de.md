@@ -1,6 +1,6 @@
 # 📘 Talisman's South Park ontology explainer — Dokumentation
 
-_Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten facts, five rule switches, property wiring, provenance wording and current-value policy are rows, and every conclusion is a formula. The rules apply in three fixed strata (inverse and symmetric, then the property chain, then domain and range); property wiring that feeds an earlier stratum would need repeated rounds._
+_Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten facts, five rule switches, property wiring, provenance wording and current-value policy are rows, and every conclusion is a formula. The rules apply in three fixed strata (inverse and symmetric, then the property chain, then domain and range); property wiring that feeds an earlier stratum would need repeated rounds. Every fact that could hold over the cast is a candidate row; app/lib/candidates.mjs writes the candidates when a thing, value or property is added._
 
 > Deklarative Geschäftsregeln, aus dem Regelbuch gerendert. Jede Aussage
 > unten drückt eine Wahrheit der Geschäftsdomäne aus — sie ist weder eine
@@ -31,13 +31,15 @@ _Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten
 | Next Activation Seq | Berechnet als der Max Activation Seq plus 1. | _Order 2. The activation number the next switched-on fact takes._ |
 | Max Listed Sort Order | Der größte Wert von Sort Order über die Statements des Graph, die Listed Unit sind. | _Order 2. Highest list position among listed facts._ |
 | Next Listed Sort Order | Berechnet als der Max Listed Sort Order plus 1. | _Order 3. The list position a newly added fact takes._ |
+| Max Sort Order | Der größte Wert von Sort Order über die mit dem Graph verbundenen Statements. | _Order 1. Highest sort order of any fact, listed or candidate._ |
+| Next Candidate Sort Order | Berechnet als der Max Sort Order plus 1. | _Order 2. The sort order a new candidate fact, or a fact removed from the list, takes._ |
 
 <details open>
 <summary>Beispieldaten</summary>
 
-| Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 |
+| Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ | Max Sort Order ƒ | Next Candidate Sort Order ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 | 100269 | 100270 |
 
 _ƒ kennzeichnet eine berechnete Spalte._
 
@@ -68,7 +70,7 @@ _ƒ kennzeichnet eine berechnete Spalte._
 
 | Begriff | Beschreibung | Erläuternder Kommentar |
 |------|-------------|-------------------|
-| **Firing Kind** | The ways a rule can apply. Domain and range belong to one rule but are worded apart. | — |
+| **Firing Kind** | The ways a rule can apply. Domain and range belong to one rule but are worded apart; 'disjoint' names the rule the disjointness checks answer to. | — |
 | Rule | Ein definiertes Attribut. | _The rule switch this kind belongs to._ |
 | Wording | Ein definiertes Attribut. | _How a conclusion card names the rule, as in 'Worked out by the inverse rule'._ |
 | Sort Order | Ein definiertes Attribut. | _Order in which the page's reasoner tries the kinds for one fact._ |
@@ -94,12 +96,13 @@ _ƒ kennzeichnet eine berechnete Spalte._
 | Label | Ein definiertes Attribut. | _The name the page shows._ |
 | Kind | Ein definiertes Attribut. | _'individual' or 'class'._ |
 | Sort Order | Ein definiertes Attribut. | _Position in the cast._ |
-| Portrait Name | Ein definiertes Attribut. | _The name on the portrait's Fandom page._ |
-| Portrait Page | Ein definiertes Attribut. | _The Fandom page credited for the portrait._ |
-| Portrait Image | Ein definiertes Attribut. | _The original Fandom image._ |
-| Portrait Crop | Ein definiertes Attribut. | _The portrait's crop as an SVG viewBox: x y width height._ |
-| Portrait Width | Ein definiertes Attribut. | _The original image's width in pixels._ |
-| Portrait Height | Ein definiertes Attribut. | _The original image's height in pixels._ |
+| Portrait | Ein definiertes Attribut. | _The portrait drawn for this thing; set when its name matches a portrait alias._ |
+| Portrait Name | Der Display Name des zugehörigen Portrait des Thing. | _Order 1. The name on the portrait's Fandom page._ |
+| Portrait Page | Aus dem zugehörigen Portrait übernommen. | _Order 1. The Fandom page credited for the portrait._ |
+| Portrait Image | Aus dem zugehörigen Portrait übernommen. | _Order 1. The original Fandom image._ |
+| Portrait Crop | Aus dem zugehörigen Portrait übernommen. | _Order 1. The portrait's crop as an SVG viewBox._ |
+| Portrait Width | Aus dem zugehörigen Portrait übernommen. | _Order 1. The original image's width in pixels._ |
+| Portrait Height | Aus dem zugehörigen Portrait übernommen. | _Order 1. The original image's height in pixels._ |
 | Name | Entspricht Label. | _Order 1. The thing's name._ |
 | Node Key | Entspricht Thing ID. | _Order 1. The key the graph draws this thing under._ |
 | Count of Children | Die Gesamtsumme von Parent Unit über die mit dem Thing verbundenen Statements. | _Order 17. People this thing is a parent of, stated or concluded._ |
@@ -108,12 +111,12 @@ _ƒ kennzeichnet eine berechnete Spalte._
 | Count As Subject | Die Gesamtsumme von Holds Unit über die mit dem Thing verbundenen Statements. | _Order 17. Holding facts about this thing._ |
 | Count As Object | Die Gesamtsumme von Holds Unit über die mit dem Thing verbundenen Statements. | _Order 17. Holding facts that point at this thing._ |
 | Is in Graph | Wahr, wenn mindestens eines des Folgenden gilt: der Count As Subject größer ist als 0 oder der Count As Object größer ist als 0. | _Order 18. True when the graph draws this thing._ |
-| Node Kind | Nach Priorität bestimmt: „class“, wenn der Kind „class“ ist; „place“, wenn die Count As Place größer ist als 0; andernfalls „person“. | _Order 18. How the graph draws the thing: a class, a place someone attends, or a person._ |
+| Node Kind | Nach Priorität bestimmt: eine leere Zeichenkette, wenn der Kind leer ist; „class“, wenn der Kind „class“ ist; „place“, wenn die Count As Place größer ist als 0; andernfalls „person“. | _Order 18. How the graph draws the thing: a class, a place someone attends, or a person._ |
 
 <details open>
 <summary>Beispieldaten</summary>
 
-| Label | Kind | Sort Order | Portrait Name | Portrait Page | Portrait Image | Portrait Crop | Portrait Width | Portrait Height | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
+| Label | Kind | Sort Order | Portrait Name ƒ | Portrait Page ƒ | Portrait Image ƒ | Portrait Crop ƒ | Portrait Width ƒ | Portrait Height ƒ | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Marvin | individual | 1 | Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | Marvin | Marvin | 1 | 0 | 0 | 1 | 0 | true | person |
 | Randy | individual | 2 | Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | Randy | Randy | 2 | 0 | 0 | 3 | 1 | true | person |
@@ -125,19 +128,59 @@ _ƒ kennzeichnet eine berechnete Spalte._
 
 | Begriff | Beschreibung | Erläuternder Kommentar |
 |------|-------------|-------------------|
-| **Property** | The ten properties and the wiring every rule reads. | — |
+| **Portrait** | The page's Fandom portraits, including those for characters a reader may add. | — |
+| Display Name | Ein definiertes Attribut. | _The name on the portrait's Fandom page._ |
+| Page | Ein definiertes Attribut. | _The Fandom page credited for the portrait._ |
+| Image | Ein definiertes Attribut. | _The original Fandom image._ |
+| Crop | Ein definiertes Attribut. | _The crop as an SVG viewBox: x y width height._ |
+| Width | Ein definiertes Attribut. | _The original image's width in pixels._ |
+| Height | Ein definiertes Attribut. | _The original image's height in pixels._ |
+| Sort Order | Ein definiertes Attribut. | _Position in the credits._ |
+| Name | Entspricht Display Name. | _Order 1. The portrait's name._ |
+
+<details open>
+<summary>Beispieldaten</summary>
+
+| Display Name | Page | Image | Crop | Width | Height | Sort Order | Name ƒ |
+|---|---|---|---|---|---|---|---|
+| Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | 1 | Marvin Marsh |
+| Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | 2 | Randy Marsh |
+| Sharon Marsh | https://southpark.fandom.com/wiki/Sharon_Marsh | https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest | 20 -10 390 390 | 439 | 1049 | 3 | Sharon Marsh |
+
+_ƒ kennzeichnet eine berechnete Spalte._
+
+</details>
+
+| Begriff | Beschreibung | Erläuternder Kommentar |
+|------|-------------|-------------------|
+| **Portrait Aliase** | The names a portrait answers to. A new thing whose name matches an alias gets that portrait. | — |
+| Portrait | Ein definiertes Attribut. | _The portrait this name selects._ |
+| Name | Entspricht Portrait Alias ID. | _Order 1. The alias._ |
+
+<details open>
+<summary>Beispieldaten</summary>
+
+| Name ƒ |
+|---|
+| marvin |
+| marvin marsh |
+| grandpa marsh |
+
+_ƒ kennzeichnet eine berechnete Spalte._
+
+</details>
+
+| Begriff | Beschreibung | Erläuternder Kommentar |
+|------|-------------|-------------------|
+| **Property** | The ten properties, with what the symmetric, domain and range rules read. Axioms that relate one property to another (inverse, chain, disjoint) are rows of PropertyAxioms. | — |
 | Label | Ein definiertes Attribut. | _The property's wording on the page._ |
 | Property Kind | Ein definiertes Attribut. | _'object' links two things, 'datatype' links a thing to a value, 'type' states class membership._ |
 | Datatype | Ein definiertes Attribut. | _The value's XML Schema datatype for a datatype property; blank otherwise._ |
 | Is User Addable | Wahr, wenn eine leere Zeichenkette. | _Offered in the page's Add fact form._ |
 | Has One Current Value | Wahr, wenn eine leere Zeichenkette. | _The page keeps one current value per person: switching a value on replaces the earlier one._ |
-| Inverse of | Ein definiertes Attribut. | _The property the inverse rule derives from this one._ |
 | Is Symmetric | Wahr, wenn eine leere Zeichenkette. | _The symmetric rule makes this link true in both directions._ |
-| Chain First | Ein definiertes Attribut. | _First link of the property chain that derives this property._ |
-| Chain Second | Ein definiertes Attribut. | _Second link of the property chain that derives this property._ |
 | Domain Class | Ein definiertes Attribut. | _The class the domain rule gives this property's subject._ |
 | Range Class | Ein definiertes Attribut. | _The class the range rule gives this property's object._ |
-| Disjoint With | Ein definiertes Attribut. | _A property that may not link the same pair, in the same direction, as this one._ |
 | Sort Order | Ein definiertes Attribut. | _Position in the Add fact form's property list._ |
 | Value Node Label | Ein definiertes Attribut. | _The small label under a value node for this property: 'role value' or 'number value'._ |
 | Current Value Wording | Ein definiertes Attribut. | _How the Add fact form names a replaced value, as in 'Stan now has grade level 5'._ |
@@ -154,6 +197,28 @@ _ƒ kennzeichnet eine berechnete Spalte._
 | is parent of | object | — | true | false | false | 1 | — | — | — | — | — | is parent of |
 | is child of | object | — | true | false | false | 2 | — | — | — | — | — | is child of |
 | is spouse of | object | — | true | false | true | 3 | — | — | — | — | — | is spouse of |
+
+_ƒ kennzeichnet eine berechnete Spalte._
+
+</details>
+
+| Begriff | Beschreibung | Erläuternder Kommentar |
+|------|-------------|-------------------|
+| **Property Axiom** | Axioms that relate one property to others, as OWL states them: an inverse, a two-link chain, or a disjoint pair. The candidate generator reads these rows. | — |
+| Kind | Ein definiertes Attribut. | _inverse, chain or disjoint._ |
+| Property | Ein definiertes Attribut. | _The property the axiom is about: the one inverted, the one a chain derives, or the first of a disjoint pair._ |
+| First | Ein definiertes Attribut. | _The inverse property, the chain's first link, or the other property of a disjoint pair._ |
+| Second | Ein definiertes Attribut. | _The chain's second link._ |
+| Name | Entspricht Property Axiom ID. | _Order 1. The axiom's key._ |
+
+<details open>
+<summary>Beispieldaten</summary>
+
+| Name ƒ |
+|---|
+| inverse:isParentOf |
+| disjoint:isParentOf~isSpouseOf |
+| inverse:isChildOf |
 
 _ƒ kennzeichnet eine berechnete Spalte._
 
@@ -210,6 +275,8 @@ _ƒ kennzeichnet eine berechnete Spalte._
 | Parent Unit | Nach Priorität bestimmt: 1, wenn alles Folgende gilt: das Kennzeichen „Holds“ gesetzt ist und der Property „isParentOf“ ist; andernfalls 0. | _Order 16. 1 for a holding parent link._ |
 | Grandparent Unit | Nach Priorität bestimmt: 1, wenn alles Folgende gilt: das Kennzeichen „Holds“ gesetzt ist und der Property „isGrandparentOf“ ist; andernfalls 0. | _Order 16. 1 for a holding grandparent link._ |
 | Place Unit | Nach Priorität bestimmt: 1, wenn alles Folgende gilt: das Kennzeichen „Holds“ gesetzt ist und der Property „attends“ ist; andernfalls 0. | _Order 16. 1 for a holding attends link._ |
+| First Pre Chain Order Key | Der kleinste Wert von Pre Chain Order Key über die Firings des Statement, die Pre Chain Fired Unit sind. | _Order 7. Order key of the first inverse or symmetric application that concludes this fact._ |
+| Snap Position | Nach Priorität bestimmt: der Sort Order, wenn das Kennzeichen „Is in Effect“ gesetzt ist; 100000 plus der First Pre Chain Order Key, wenn das Kennzeichen „Holds Before Chain“ gesetzt ist; andernfalls 0. | _Order 8. Where the page's reasoner meets this fact as a premise: a stated fact at its list position, a fact concluded by the inverse or symmetric rule after every stated fact, in the order it was concluded; 0 for a fact that does not hold yet, so a link to no fact reads the same on every engine._ |
 | First Fired Order Key | Der kleinste Wert von Order Key über die Firings des Statement, die Fired Unit sind. | _Order 15. Order key of the first rule application that concludes this fact, in the page reasoner's order._ |
 | Count of Chosen Firings | Die Gesamtsumme von Chosen Unit über die mit dem Statement verbundenen Firings. | _Order 20. Rule applications shown as this fact's conclusion card: one for a conclusion, zero otherwise._ |
 | Subject Node Key | Entspricht Subject. | _Order 1. The graph node this fact starts from._ |
@@ -225,11 +292,11 @@ _ƒ kennzeichnet eine berechnete Spalte._
 <details open>
 <summary>Beispieldaten</summary>
 
-| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 101 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 102 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
+| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Pre Chain Order Key ƒ | Snap Position ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 1.0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100001 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100002 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
 
 _ƒ kennzeichnet eine berechnete Spalte._
 
@@ -264,13 +331,18 @@ _ƒ kennzeichnet eine berechnete Spalte._
 | First Property Domain Class | Aus dem zugehörigen First übernommen. | _Order 2. The premise property's domain class._ |
 | First Property Range Class | Aus dem zugehörigen First übernommen. | _Order 2. The premise property's range class._ |
 | First Sort Order | Aus dem zugehörigen First übernommen. | _Order 1. The premise's list position._ |
-| Second Sort Order | Aus dem zugehörigen Second übernommen. | _Order 1. The second premise's list position._ |
+| Second is in Effect | Wahr, wenn der zugehörige Second des Firing ist in effect. | _Order 4. Whether the second premise is in effect._ |
+| First Snap Position | Aus dem zugehörigen First übernommen. | _Order 9. Where the reasoner meets the premise._ |
+| Second Snap Position | Aus dem zugehörigen Second übernommen. | _Order 9. Where the reasoner meets the second premise._ |
 | Inverse Fired Unit | Nach Priorität bestimmt: 1, wenn alles Folgende gilt: das Kennzeichen „Rule Enabled“ gesetzt ist; der Kind „inverse“ ist; und das Kennzeichen „First is in Effect“ gesetzt ist; andernfalls 0. | _Order 5. 1 when the inverse rule fires here._ |
 | Symmetric Fired Unit | Nach Priorität bestimmt: 1, wenn alles Folgende gilt: das Kennzeichen „Rule Enabled“ gesetzt ist; der Kind „symmetric“ ist; und das Kennzeichen „First is in Effect“ gesetzt ist; andernfalls 0. | _Order 5. 1 when the symmetric rule fires here._ |
 | Chain Fired Unit | Nach Priorität bestimmt: 1, wenn alles Folgende gilt: das Kennzeichen „Rule Enabled“ gesetzt ist; der Kind „chain“ ist; das Kennzeichen „First Holds Before Chain“ gesetzt ist; und das Kennzeichen „Second Holds Before Chain“ gesetzt ist; andernfalls 0. | _Order 9. 1 when the property chain fires here._ |
 | Type Fired Unit | Nach Priorität bestimmt: 1, wenn alles Folgende gilt: das Kennzeichen „Rule Enabled“ gesetzt ist; mindestens eines des Folgenden gilt: der Kind „domain“ ist oder der Kind „range“ ist; und das Kennzeichen „First Holds Before Typing“ gesetzt ist; andernfalls 0. | _Order 13. 1 when the domain or range rule fires here._ |
 | Fired Unit | Berechnet als der Inverse Fired Unit plus der Symmetric Fired Unit plus der Chain Fired Unit plus der Type Fired Unit. | _Order 14. 1 when this application fires._ |
-| Order Key | Berechnet als der First Sort Order mal 100000 plus der Kind Sort Order mal 1000 plus 0, wenn der Second leer ist, andernfalls der Second Sort Order. | _Order 2. The page reasoner's order: by premise, then rule kind, then second premise._ |
+| Pre Chain Fired Unit | Berechnet als der Inverse Fired Unit plus der Symmetric Fired Unit. | _Order 6. 1 when this is an inverse or symmetric application that fires._ |
+| Pre Chain Order Key | Berechnet als der First Sort Order mal 10 plus der Kind Sort Order. | _Order 2. For an inverse or symmetric application: its place in the reasoner's first round._ |
+| Round | Nach Priorität bestimmt: 2, wenn alles Folgende gilt: der Kind „chain“ ist und es nicht der Fall ist, dass alles Folgende gilt: das Kennzeichen „First is in Effect“ gesetzt ist und das Kennzeichen „Second is in Effect“ gesetzt ist; andernfalls 1. | _Order 5. The reasoner's round: 1 when every premise is a stated fact, 2 when the property chain reads a concluded fact._ |
+| Order Key | Berechnet als der Round mal 1000000000000000 plus die First Snap Position mal 100000000 plus der Kind Sort Order mal 10000000 plus 0, wenn der Second leer ist, andernfalls die Second Snap Position. | _Order 10. The page reasoner's order: by round, then premise, then rule kind, then second premise._ |
 | Is Chosen | Wahr, wenn alles Folgende gilt: der Fired Unit 1 ist; das Kennzeichen „Target is Conclusion“ gesetzt ist; und der Order Key der Target First Fired Order Key ist. | _Order 18. The application the conclusions panel shows for its fact: the first one in the reasoner's order._ |
 | Chosen Unit | Nach Priorität bestimmt: 1, wenn das Kennzeichen „Is Chosen“ gesetzt ist; andernfalls 0. | _Order 19. 1 when this application is shown._ |
 | Card Text | Nach Priorität bestimmt: „Worked out by the “, gefolgt von der Kind Wording, gefolgt von „ from ““, gefolgt von der First Words, gefolgt von „”“, gefolgt von „ and ““, gefolgt von der Second Words, gefolgt von „”“, wenn der Kind „chain“ ist, andernfalls „ and ““, gefolgt von der First Property, gefolgt von „ has domain “, gefolgt von der First Property Domain Class, gefolgt von „”“, wenn der Kind „domain“ ist, andernfalls „ and ““, gefolgt von der First Property, gefolgt von „ has range “, gefolgt von der First Property Range Class, gefolgt von „”“, gefolgt von ein Punkt, wenn das Kennzeichen „Is Chosen“ gesetzt ist; andernfalls eine leere Zeichenkette. ⚠︎ mechanisch <!-- rulespeak:reword --> | _Order 19. The conclusion card's provenance line, in the page's wording._ |
@@ -279,11 +351,11 @@ _ƒ kennzeichnet eine berechnete Spalte._
 <details open>
 <summary>Beispieldaten</summary>
 
-| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second Sort Order ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | — | 0 | 0 | 0 | 0 | 0 | 101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 101 | — | 0 | 0 | 0 | 0 | 0 | 10101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 102 | — | 0 | 0 | 0 | 0 | 0 | 10201000 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
+| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second is in Effect ƒ | First Snap Position ƒ | Second Snap Position ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Pre Chain Fired Unit ƒ | Pre Chain Order Key ƒ | Round ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | false | 1.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 11.0 | 1 | 1000000110000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 100001 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000011.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 100002 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000021.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
 
 _ƒ kennzeichnet eine berechnete Spalte._
 
@@ -456,11 +528,60 @@ _ƒ kennzeichnet eine berechnete Spalte._
 
 </details>
 
+| Begriff | Beschreibung | Erläuternder Kommentar |
+|------|-------------|-------------------|
+| **Engine** | The execution engines the page can be computed by. Each is a build output of this rulebook. | — |
+| Label | Ein definiertes Attribut. | _The engine's name in the switcher._ |
+| Substrate | Ein definiertes Attribut. | _The conformance harness's name for this substrate._ |
+| Is Default | Wahr, wenn eine leere Zeichenkette. | _The engine a new visitor starts on._ |
+| Description | Ein definiertes Attribut. | _What computes the page on this engine._ |
+| Sort Order | Ein definiertes Attribut. | _Position in the switcher._ |
+| Name | Entspricht Label. | _Order 1. The engine's name._ |
+
+<details open>
+<summary>Beispieldaten</summary>
+
+| Label | Substrate | Is Default | Description | Sort Order | Name ƒ |
+|---|---|---|---|---|---|
+| Postgres views | effortless-postgres | true | Every value is a column of a generated view; the database computes it when the page reads it. | 1 | Postgres views |
+| TypeScript | effortless-typescript | false | The generated TypeScript computes every field from the same rows, with no database. | 2 | TypeScript |
+| OWL and SHACL rules | effortless-owl | false | The generated ontology and SHACL rules, run over the same rows by a SPARQL engine. | 3 | OWL and SHACL rules |
+
+_ƒ kennzeichnet eine berechnete Spalte._
+
+</details>
+
+| Begriff | Beschreibung | Erläuternder Kommentar |
+|------|-------------|-------------------|
+| **Rulebook Tool** | What each rulebook tool adds to the original explainer; the tools panel lists them. | — |
+| Label | Ein definiertes Attribut. | _The tool's name._ |
+| Adds | Ein definiertes Attribut. | _What it adds to the original explainer._ |
+| Href | Ein definiertes Attribut. | _Where its link goes; 'editor' means the running rulebook editor._ |
+| Link Text | Ein definiertes Attribut. | _The link's text._ |
+| Sort Order | Ein definiertes Attribut. | _Position in the panel._ |
+| Name | Entspricht Label. | _Order 1. The tool's name._ |
+
+<details open>
+<summary>Beispieldaten</summary>
+
+| Label | Adds | Href | Link Text | Sort Order | Name ƒ |
+|---|---|---|---|---|---|
+| Interchangeable engines | The same page, computed by Postgres views, generated TypeScript or the generated OWL and SHACL rules. Switch with the control above; nothing else changes. | — | — | 1 | Interchangeable engines |
+| Conformance | Every engine's answers for the current facts, compared value by value with the conformance harness's own rule for when two values are equal. | — | — | 2 | Conformance |
+| Explainer | Hover a dotted value for its rule in plain words and its witness: the values it came from, down to the stated facts. | /rulebook-explainer-dag/pages/index.html | Open the explainer | 3 | Explainer |
+
+_ƒ kennzeichnet eine berechnete Spalte._
+
+</details>
+
 ## 2 Faktentypen
 
 - ein **Firing Kind** verweist auf genau ein **Rule**
-- ein **Property** kann auf ein **Property** verweisen
+- ein **Thing** kann auf ein **Portrait** verweisen
+- eine **Portrait Aliase** verweist auf genau ein **Portrait**
 - ein **Property** kann auf ein **Thing** verweisen
+- ein **Property Axiom** verweist auf genau ein **Firing Kind**
+- ein **Property Axiom** verweist auf genau ein **Property**
 - ein **Statement** verweist auf genau ein **Graph**
 - ein **Statement** verweist auf genau ein **Thing**
 - ein **Statement** verweist auf genau ein **Property**
@@ -491,7 +612,12 @@ den das Regelbuch bereits berechnet (querverwiesen als DR-N in den definitorisch
 - Ein Firing Kind **muss** auf genau einen Rule verweisen.
 - Ein Firing Kind **muss** ein Wording und ein Sort Order haben.
 - Ein Thing **muss** ein Label; ein Kind; und ein Sort Order haben.
+- Ein Portrait **muss** eine Display Name; eine Page; eine Image; ein Crop; ein Width; ein Height; und ein Sort Order haben.
+- Eine Portrait Aliase **muss** auf genau einen Portrait verweisen.
 - Ein Property **muss** ein Label; ein Property Kind; und ein Sort Order haben und erfassen, ob es ist eine User Addable; ob es hat eine One Current Value; und ob es ist ein Symmetric.
+- Ein Property Axiom **muss** auf genau einen Firing Kind als seinen Kind verweisen.
+- Ein Property Axiom **muss** auf genau einen Property verweisen.
+- Ein Property Axiom **muss** auf genau einen Property als seinen First verweisen.
 - Ein Statement **muss** auf genau einen Graph verweisen.
 - Ein Statement **muss** auf genau einen Thing als seinen Subject verweisen.
 - Ein Statement **muss** auf genau einen Property verweisen.
@@ -516,6 +642,8 @@ den das Regelbuch bereits berechnet (querverwiesen als DR-N in den definitorisch
 - Ein Node Layout **muss** ein Layout; ein Node Key; ein X; und ein Y haben.
 - Ein Layout Slot **muss** ein Sort Order; ein X; und ein Y haben.
 - Ein Page Text **muss** ein Text haben.
+- Eine Engine **muss** ein Label; eine Substrate; eine Description; und ein Sort Order haben und erfassen, ob es ist ein Default.
+- Ein Rulebook Tool **muss** ein Label; ein Adds; und ein Sort Order haben.
 
 ## 4 Definitorische Regeln
 
@@ -540,116 +668,136 @@ aber hölzern ist — ein Signal für eine optionale Umformulierung, kein Fehler
 | **DR-11 Next Activation Seq** | Ein Graph: Next Activation Seq wird berechnet als der Max Activation Seq plus 1. |
 | **DR-12 Max Listed Sort Order** | Ein Graph: Max Listed Sort Order ist der größte Wert von Sort Order über die Statements des Graph, die Listed Unit sind. |
 | **DR-13 Next Listed Sort Order** | Ein Graph: Next Listed Sort Order wird berechnet als der Max Listed Sort Order plus 1. |
-| **DR-14 Name** | Eine Rule: Name entspricht Label. |
-| **DR-15 Count of Firings** | Eine Rule: Count of Firings ist die Gesamtsumme von Fired Unit über die mit der Rule verbundenen Firings. |
-| **DR-16 Name** | Ein Firing Kind: Name entspricht Wording. |
-| **DR-17 Rule Enabled** | Ein Firing Kind: Rule Enabled ist wahr, wenn der zugehörige Rule des Firing Kind ist enabled. |
-| **DR-18 Name** | Ein Thing: Name entspricht Label. |
-| **DR-19 Node Key** | Ein Thing: Node Key entspricht Thing ID. |
-| **DR-20 Count of Children** | Ein Thing: Count of Children ist die Gesamtsumme von Parent Unit über die mit dem Thing verbundenen Statements. |
-| **DR-21 Count of Grandchildren** | Ein Thing: Count of Grandchildren ist die Gesamtsumme von Grandparent Unit über die mit dem Thing verbundenen Statements. |
-| **DR-22 Count As Place** | Ein Thing: Count As Place ist die Gesamtsumme von Place Unit über die mit dem Thing verbundenen Statements. |
-| **DR-23 Count As Subject** | Ein Thing: Count As Subject ist die Gesamtsumme von Holds Unit über die mit dem Thing verbundenen Statements. |
-| **DR-24 Count As Object** | Ein Thing: Count As Object ist die Gesamtsumme von Holds Unit über die mit dem Thing verbundenen Statements. |
-| **DR-25 Is in Graph** | Ein Thing gilt als in graph, wenn mindestens eines des Folgenden gilt: der Count As Subject größer ist als 0 oder der Count As Object größer ist als 0. |
-| **DR-26 Node Kind** | Das Feld „Node Kind“ des Thing wird nach folgender Priorität bestimmt:<br>1. „class“, wenn der Kind „class“ ist;<br>2. „place“, wenn die Count As Place größer ist als 0;<br>3. andernfalls „person“. |
-| **DR-27 Name** | Ein Property: Name entspricht Label. |
-| **DR-28 Subject Label** | Ein Statement: Subject Label — aus dem zugehörigen Subject übernommen. |
-| **DR-29 Property Label** | Ein Statement: Property Label — aus dem zugehörigen Property übernommen. |
-| **DR-30 Object Label** | Ein Statement: Object Label — aus dem zugehörigen Object Thing übernommen. |
-| **DR-31 Property Datatype** | Ein Statement: Property Datatype — aus dem zugehörigen Property übernommen. |
-| **DR-32 Property Has One Current Value** | Ein Statement: Property Has One Current Value ist wahr, wenn der zugehörige Property des Statement hat eine One Current Value. |
-| **DR-33 Property Domain Class** | Ein Statement: Property Domain Class — aus dem zugehörigen Property übernommen. |
-| **DR-34 Property Range Class** | Ein Statement: Property Range Class — aus dem zugehörigen Property übernommen. |
-| **DR-35 Literal Quote** | Ein Statement: Literal Quote — aus dem zugehörigen Graph übernommen. |
-| **DR-36 Literal Type Marker** | Ein Statement: Literal Type Marker — aus dem zugehörigen Graph übernommen. |
-| **DR-37 Built in Source Text** | Ein Statement: Built in Source Text — aus dem zugehörigen Graph übernommen. |
-| **DR-38 User Source Text** | Ein Statement: User Source Text — aus dem zugehörigen Graph übernommen. |
-| **DR-39 Next Fact Sort Order** | Ein Statement: Next Fact Sort Order — aus dem zugehörigen Graph übernommen. |
-| **DR-40 Is Literal** | Ein Statement gilt als ein Literal, wenn der Object Thing leer ist. |
-| **DR-41 Object Text** | Das Feld „Object Text“ des Statement wird nach folgender Priorität bestimmt:<br>1. die Object Value, wenn der Object Thing leer ist;<br>2. andernfalls der Object Label. |
-| **DR-42 Name** | Ein Statement: Name wird berechnet als der Subject Label, gefolgt von ein Leerzeichen, gefolgt von der Property Label, gefolgt von ein Leerzeichen, gefolgt von der Object Text. |
-| **DR-43 Words** | Ein Statement: Words wird berechnet als der Subject Label, gefolgt von ein Leerzeichen, gefolgt von der Property Label, gefolgt von ein Leerzeichen, gefolgt von die Literal Quote, gefolgt von die Object Value, gefolgt von die Literal Quote, gefolgt von der Literal Type Marker, gefolgt von die Property Datatype, wenn der Object Thing leer ist, andernfalls der Object Label. ⚠︎ mechanisch <!-- rulespeak:reword --> |
-| **DR-44 Source** | Das Feld „Source“ des Statement wird nach folgender Priorität bestimmt:<br>1. der Built in Source Text, wenn das Kennzeichen „Is Built in“ gesetzt ist;<br>2. andernfalls der User Source Text. |
-| **DR-45 Subject Property Key** | Ein Statement: Subject Property Key wird berechnet als der Subject, gefolgt von „|“, gefolgt von der Property. |
-| **DR-46 Latest Sibling Activation Seq** | Ein Statement: Latest Sibling Activation Seq ist der größte Wert von Activation Seq über die mit dem Statement verbundenen Statements. |
-| **DR-47 Is in Effect** | Ein Statement gilt als in effect, wenn alles Folgende gilt: das Kennzeichen „Is Stated“ gesetzt ist und mindestens eines des Folgenden gilt: das Kennzeichen „Property Has One Current Value“ nicht gesetzt ist oder der Activation Seq der Latest Sibling Activation Seq ist. |
-| **DR-48 Listed Unit** | Das Feld „Listed Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn das Kennzeichen „Is Listed“ gesetzt ist;<br>2. andernfalls 0. |
-| **DR-49 In Effect Unit** | Das Feld „In Effect Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn das Kennzeichen „Is in Effect“ gesetzt ist;<br>2. andernfalls 0. |
-| **DR-50 Listed Off Unit** | Das Feld „Listed Off Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Is Listed“ gesetzt ist und das Kennzeichen „Is in Effect“ nicht gesetzt ist;<br>2. andernfalls 0. |
-| **DR-51 Is Next to Add** | Ein Statement gilt als ein Next to Add, wenn alles Folgende gilt: der Listed Off Unit 1 ist und der Sort Order der Next Fact Sort Order ist. |
-| **DR-52 Count of Inverse Firings** | Ein Statement: Count of Inverse Firings ist die Gesamtsumme von Inverse Fired Unit über die mit dem Statement verbundenen Firings. |
-| **DR-53 Count of Symmetric Firings** | Ein Statement: Count of Symmetric Firings ist die Gesamtsumme von Symmetric Fired Unit über die mit dem Statement verbundenen Firings. |
-| **DR-54 Holds Before Chain** | Ein Statement gilt als Before Chain haltend, wenn mindestens eines des Folgenden gilt: das Kennzeichen „Is in Effect“ gesetzt ist; der Count of Inverse Firings größer ist als 0; oder der Count of Symmetric Firings größer ist als 0. |
-| **DR-55 Count of Chain Firings** | Ein Statement: Count of Chain Firings ist die Gesamtsumme von Chain Fired Unit über die mit dem Statement verbundenen Firings. |
-| **DR-56 Holds Before Typing** | Ein Statement gilt als Before Typing haltend, wenn mindestens eines des Folgenden gilt: das Kennzeichen „Holds Before Chain“ gesetzt ist oder der Count of Chain Firings größer ist als 0. |
-| **DR-57 Count of Type Firings** | Ein Statement: Count of Type Firings ist die Gesamtsumme von Type Fired Unit über die mit dem Statement verbundenen Firings. |
-| **DR-58 Holds** | Ein Statement gilt als haltend, wenn mindestens eines des Folgenden gilt: das Kennzeichen „Holds Before Typing“ gesetzt ist oder der Count of Type Firings größer ist als 0. |
-| **DR-59 Is Conclusion** | Ein Statement gilt als eine Conclusion, wenn alles Folgende gilt: das Kennzeichen „Holds“ gesetzt ist und das Kennzeichen „Is in Effect“ nicht gesetzt ist. |
-| **DR-60 Holds Unit** | Das Feld „Holds Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn das Kennzeichen „Holds“ gesetzt ist;<br>2. andernfalls 0. |
-| **DR-61 Conclusion Unit** | Das Feld „Conclusion Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn das Kennzeichen „Is Conclusion“ gesetzt ist;<br>2. andernfalls 0. |
-| **DR-62 Parent Unit** | Das Feld „Parent Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Holds“ gesetzt ist und der Property „isParentOf“ ist;<br>2. andernfalls 0. |
-| **DR-63 Grandparent Unit** | Das Feld „Grandparent Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Holds“ gesetzt ist und der Property „isGrandparentOf“ ist;<br>2. andernfalls 0. |
-| **DR-64 Place Unit** | Das Feld „Place Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Holds“ gesetzt ist und der Property „attends“ ist;<br>2. andernfalls 0. |
-| **DR-65 First Fired Order Key** | Ein Statement: First Fired Order Key ist der kleinste Wert von Order Key über die Firings des Statement, die Fired Unit sind. |
-| **DR-66 Count of Chosen Firings** | Ein Statement: Count of Chosen Firings ist die Gesamtsumme von Chosen Unit über die mit dem Statement verbundenen Firings. |
-| **DR-67 Subject Node Key** | Ein Statement: Subject Node Key entspricht Subject. |
-| **DR-68 Object Node Key** | Das Feld „Object Node Key“ des Statement wird nach folgender Priorität bestimmt:<br>1. „literal|“, gefolgt von die Object Value, gefolgt von „|“, gefolgt von die Property Datatype, wenn der Object Thing leer ist;<br>2. andernfalls der Object Thing. |
-| **DR-69 Subject Node Kind** | Ein Statement: Subject Node Kind — aus dem zugehörigen Subject übernommen. |
-| **DR-70 Object Thing Node Kind** | Ein Statement: Object Thing Node Kind — aus dem zugehörigen Object Thing übernommen. |
-| **DR-71 Object Node Kind** | Das Feld „Object Node Kind“ des Statement wird nach folgender Priorität bestimmt:<br>1. „value“, wenn der Object Thing leer ist;<br>2. andernfalls der Object Thing Node Kind. |
-| **DR-72 Object Value Node Label** | Ein Statement: Object Value Node Label — aus dem zugehörigen Property übernommen. |
-| **DR-73 Count of Violations As First** | Ein Statement: Count of Violations As First ist die Gesamtsumme von Violation Unit über die mit dem Statement verbundenen Disjoint Checks. |
-| **DR-74 Count of Violations As Second** | Ein Statement: Count of Violations As Second ist die Gesamtsumme von Violation Unit über die mit dem Statement verbundenen Disjoint Checks. |
-| **DR-75 Is in Contradiction** | Ein Statement gilt als in contradiction, wenn mindestens eines des Folgenden gilt: der Count of Violations As First größer ist als 0 oder der Count of Violations As Second größer ist als 0. |
-| **DR-76 Rule Enabled** | Ein Firing: Rule Enabled ist wahr, wenn der zugehörige Rule des Firing ist enabled. |
-| **DR-77 Kind Wording** | Ein Firing: Kind Wording — aus dem zugehörigen Kind übernommen. |
-| **DR-78 Kind Sort Order** | Ein Firing: Kind Sort Order — aus dem zugehörigen Kind übernommen. |
-| **DR-79 Target Name** | Ein Firing: Target Name — aus dem zugehörigen Target übernommen. |
-| **DR-80 Target Subject Label** | Ein Firing: Target Subject Label — aus dem zugehörigen Target übernommen. |
-| **DR-81 Target Property Label** | Ein Firing: Target Property Label — aus dem zugehörigen Target übernommen. |
-| **DR-82 Target Object Text** | Ein Firing: Target Object Text — aus dem zugehörigen Target übernommen. |
-| **DR-83 Target is Conclusion** | Ein Firing: Target is Conclusion ist wahr, wenn der zugehörige Target des Firing ist eine Conclusion. |
-| **DR-84 Target Subject Node Key** | Ein Firing: Target Subject Node Key — aus dem zugehörigen Target übernommen. |
-| **DR-85 Target Object Node Key** | Ein Firing: Target Object Node Key — aus dem zugehörigen Target übernommen. |
-| **DR-86 Target First Fired Order Key** | Ein Firing: Target First Fired Order Key — aus dem zugehörigen Target übernommen. |
-| **DR-87 First Words** | Ein Firing: First Words — aus dem zugehörigen First übernommen. |
-| **DR-88 Second Words** | Ein Firing: Second Words — aus dem zugehörigen Second übernommen. |
-| **DR-89 First is in Effect** | Ein Firing: First is in Effect ist wahr, wenn der zugehörige First des Firing ist in effect. |
-| **DR-90 First Holds Before Chain** | Ein Firing: First Holds Before Chain ist wahr, wenn der zugehörige First des Firing ist Holds Before Chain. |
-| **DR-91 Second Holds Before Chain** | Ein Firing: Second Holds Before Chain ist wahr, wenn der zugehörige Second des Firing ist Holds Before Chain. |
-| **DR-92 First Holds Before Typing** | Ein Firing: First Holds Before Typing ist wahr, wenn der zugehörige First des Firing ist Holds Before Typing. |
-| **DR-93 First Property** | Ein Firing: First Property — aus dem zugehörigen First übernommen. |
-| **DR-94 First Property Domain Class** | Ein Firing: First Property Domain Class — aus dem zugehörigen First übernommen. |
-| **DR-95 First Property Range Class** | Ein Firing: First Property Range Class — aus dem zugehörigen First übernommen. |
-| **DR-96 First Sort Order** | Ein Firing: First Sort Order — aus dem zugehörigen First übernommen. |
-| **DR-97 Second Sort Order** | Ein Firing: Second Sort Order — aus dem zugehörigen Second übernommen. |
-| **DR-98 Inverse Fired Unit** | Das Feld „Inverse Fired Unit“ des Firing wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Rule Enabled“ gesetzt ist; der Kind „inverse“ ist; und das Kennzeichen „First is in Effect“ gesetzt ist;<br>2. andernfalls 0. |
-| **DR-99 Symmetric Fired Unit** | Das Feld „Symmetric Fired Unit“ des Firing wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Rule Enabled“ gesetzt ist; der Kind „symmetric“ ist; und das Kennzeichen „First is in Effect“ gesetzt ist;<br>2. andernfalls 0. |
-| **DR-100 Chain Fired Unit** | Das Feld „Chain Fired Unit“ des Firing wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Rule Enabled“ gesetzt ist; der Kind „chain“ ist; das Kennzeichen „First Holds Before Chain“ gesetzt ist; und das Kennzeichen „Second Holds Before Chain“ gesetzt ist;<br>2. andernfalls 0. |
-| **DR-101 Type Fired Unit** | Das Feld „Type Fired Unit“ des Firing wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Rule Enabled“ gesetzt ist; mindestens eines des Folgenden gilt: der Kind „domain“ ist oder der Kind „range“ ist; und das Kennzeichen „First Holds Before Typing“ gesetzt ist;<br>2. andernfalls 0. |
-| **DR-102 Fired Unit** | Ein Firing: Fired Unit wird berechnet als der Inverse Fired Unit plus der Symmetric Fired Unit plus der Chain Fired Unit plus der Type Fired Unit. |
-| **DR-103 Order Key** | Ein Firing: Order Key wird berechnet als der First Sort Order mal 100000 plus der Kind Sort Order mal 1000 plus 0, wenn der Second leer ist, andernfalls der Second Sort Order. |
-| **DR-104 Is Chosen** | Ein Firing gilt als ein Chosen, wenn alles Folgende gilt: der Fired Unit 1 ist; das Kennzeichen „Target is Conclusion“ gesetzt ist; und der Order Key der Target First Fired Order Key ist. |
-| **DR-105 Chosen Unit** | Das Feld „Chosen Unit“ des Firing wird nach folgender Priorität bestimmt:<br>1. 1, wenn das Kennzeichen „Is Chosen“ gesetzt ist;<br>2. andernfalls 0. |
-| **DR-106 Card Text** | Das Feld „Card Text“ des Firing wird nach folgender Priorität bestimmt:<br>1. „Worked out by the “, gefolgt von der Kind Wording, gefolgt von „ from ““, gefolgt von der First Words, gefolgt von „”“, gefolgt von „ and ““, gefolgt von der Second Words, gefolgt von „”“, wenn der Kind „chain“ ist, andernfalls „ and ““, gefolgt von der First Property, gefolgt von „ has domain “, gefolgt von der First Property Domain Class, gefolgt von „”“, wenn der Kind „domain“ ist, andernfalls „ and ““, gefolgt von der First Property, gefolgt von „ has range “, gefolgt von der First Property Range Class, gefolgt von „”“, gefolgt von ein Punkt, wenn das Kennzeichen „Is Chosen“ gesetzt ist;<br>2. andernfalls eine leere Zeichenkette. ⚠︎ mechanisch <!-- rulespeak:reword --> |
-| **DR-107 Name** | Ein Firing: Name entspricht Firing ID. |
-| **DR-108 Rule Enabled** | Ein Disjoint Check: Rule Enabled ist wahr, wenn der zugehörige Rule des Disjoint Check ist enabled. |
-| **DR-109 First Holds** | Ein Disjoint Check: First Holds ist wahr, wenn der zugehörige First des Disjoint Check ist Holds. |
-| **DR-110 Second Holds** | Ein Disjoint Check: Second Holds ist wahr, wenn der zugehörige Second des Disjoint Check ist Holds. |
-| **DR-111 Subject Label** | Ein Disjoint Check: Subject Label — aus dem zugehörigen First übernommen. |
-| **DR-112 Object Label** | Ein Disjoint Check: Object Label — aus dem zugehörigen First übernommen. |
-| **DR-113 Violation Unit** | Das Feld „Violation Unit“ des Disjoint Check wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Rule Enabled“ gesetzt ist; das Kennzeichen „First Holds“ gesetzt ist; und das Kennzeichen „Second Holds“ gesetzt ist;<br>2. andernfalls 0. |
-| **DR-114 Alarm Text** | Das Feld „Alarm Text“ des Disjoint Check wird nach folgender Priorität bestimmt:<br>1. „Contradiction found. “, gefolgt von der Subject Label, gefolgt von „ is recorded as both parent and spouse of “, gefolgt von der Object Label, gefolgt von „. Check those facts and the selected disjoint rule.“, wenn der Violation Unit 1 ist;<br>2. andernfalls eine leere Zeichenkette. |
-| **DR-115 Name** | Ein Disjoint Check: Name entspricht Disjoint Check ID. |
-| **DR-116 Name** | Ein Scenario: Name entspricht Label. |
-| **DR-117 Graph Has Facts to Add** | Ein Scenario: Graph Has Facts to Add ist wahr, wenn der zugehörige Graph des Scenario hat einen Facts to Add. |
-| **DR-118 Is Available** | Ein Scenario gilt als eine Available, wenn mindestens eines des Folgenden gilt: die Fact Baseline nicht „next“ ist oder das Kennzeichen „Graph Has Facts to Add“ gesetzt ist. |
-| **DR-119 Name** | Eine Scenario Fact Change: Name entspricht Scenario Fact Change ID. |
-| **DR-120 Name** | Ein Scenario Rule Setting: Name entspricht Scenario Rule Setting ID. |
-| **DR-121 Name** | Ein Node Layout: Name entspricht Node Layout ID. |
-| **DR-122 Name** | Ein Layout Slot: Name entspricht Layout Slot ID. |
-| **DR-123 Name** | Ein Page Text: Name entspricht Page Text ID. |
+| **DR-14 Max Sort Order** | Ein Graph: Max Sort Order ist der größte Wert von Sort Order über die mit dem Graph verbundenen Statements. |
+| **DR-15 Next Candidate Sort Order** | Ein Graph: Next Candidate Sort Order wird berechnet als der Max Sort Order plus 1. |
+| **DR-16 Name** | Eine Rule: Name entspricht Label. |
+| **DR-17 Count of Firings** | Eine Rule: Count of Firings ist die Gesamtsumme von Fired Unit über die mit der Rule verbundenen Firings. |
+| **DR-18 Name** | Ein Firing Kind: Name entspricht Wording. |
+| **DR-19 Rule Enabled** | Ein Firing Kind: Rule Enabled ist wahr, wenn der zugehörige Rule des Firing Kind ist enabled. |
+| **DR-20 Portrait Name** | Ein Thing: Portrait Name ist der Display Name des zugehörigen Portrait des Thing. |
+| **DR-21 Portrait Page** | Ein Thing: Portrait Page — aus dem zugehörigen Portrait übernommen. |
+| **DR-22 Portrait Image** | Ein Thing: Portrait Image — aus dem zugehörigen Portrait übernommen. |
+| **DR-23 Portrait Crop** | Ein Thing: Portrait Crop — aus dem zugehörigen Portrait übernommen. |
+| **DR-24 Portrait Width** | Ein Thing: Portrait Width — aus dem zugehörigen Portrait übernommen. |
+| **DR-25 Portrait Height** | Ein Thing: Portrait Height — aus dem zugehörigen Portrait übernommen. |
+| **DR-26 Name** | Ein Thing: Name entspricht Label. |
+| **DR-27 Node Key** | Ein Thing: Node Key entspricht Thing ID. |
+| **DR-28 Count of Children** | Ein Thing: Count of Children ist die Gesamtsumme von Parent Unit über die mit dem Thing verbundenen Statements. |
+| **DR-29 Count of Grandchildren** | Ein Thing: Count of Grandchildren ist die Gesamtsumme von Grandparent Unit über die mit dem Thing verbundenen Statements. |
+| **DR-30 Count As Place** | Ein Thing: Count As Place ist die Gesamtsumme von Place Unit über die mit dem Thing verbundenen Statements. |
+| **DR-31 Count As Subject** | Ein Thing: Count As Subject ist die Gesamtsumme von Holds Unit über die mit dem Thing verbundenen Statements. |
+| **DR-32 Count As Object** | Ein Thing: Count As Object ist die Gesamtsumme von Holds Unit über die mit dem Thing verbundenen Statements. |
+| **DR-33 Is in Graph** | Ein Thing gilt als in graph, wenn mindestens eines des Folgenden gilt: der Count As Subject größer ist als 0 oder der Count As Object größer ist als 0. |
+| **DR-34 Node Kind** | Das Feld „Node Kind“ des Thing wird nach folgender Priorität bestimmt:<br>1. eine leere Zeichenkette, wenn der Kind leer ist;<br>2. „class“, wenn der Kind „class“ ist;<br>3. „place“, wenn die Count As Place größer ist als 0;<br>4. andernfalls „person“. |
+| **DR-35 Name** | Ein Portrait: Name entspricht Display Name. |
+| **DR-36 Name** | Eine Portrait Aliase: Name entspricht Portrait Alias ID. |
+| **DR-37 Name** | Ein Property: Name entspricht Label. |
+| **DR-38 Name** | Ein Property Axiom: Name entspricht Property Axiom ID. |
+| **DR-39 Subject Label** | Ein Statement: Subject Label — aus dem zugehörigen Subject übernommen. |
+| **DR-40 Property Label** | Ein Statement: Property Label — aus dem zugehörigen Property übernommen. |
+| **DR-41 Object Label** | Ein Statement: Object Label — aus dem zugehörigen Object Thing übernommen. |
+| **DR-42 Property Datatype** | Ein Statement: Property Datatype — aus dem zugehörigen Property übernommen. |
+| **DR-43 Property Has One Current Value** | Ein Statement: Property Has One Current Value ist wahr, wenn der zugehörige Property des Statement hat eine One Current Value. |
+| **DR-44 Property Domain Class** | Ein Statement: Property Domain Class — aus dem zugehörigen Property übernommen. |
+| **DR-45 Property Range Class** | Ein Statement: Property Range Class — aus dem zugehörigen Property übernommen. |
+| **DR-46 Literal Quote** | Ein Statement: Literal Quote — aus dem zugehörigen Graph übernommen. |
+| **DR-47 Literal Type Marker** | Ein Statement: Literal Type Marker — aus dem zugehörigen Graph übernommen. |
+| **DR-48 Built in Source Text** | Ein Statement: Built in Source Text — aus dem zugehörigen Graph übernommen. |
+| **DR-49 User Source Text** | Ein Statement: User Source Text — aus dem zugehörigen Graph übernommen. |
+| **DR-50 Next Fact Sort Order** | Ein Statement: Next Fact Sort Order — aus dem zugehörigen Graph übernommen. |
+| **DR-51 Is Literal** | Ein Statement gilt als ein Literal, wenn der Object Thing leer ist. |
+| **DR-52 Object Text** | Das Feld „Object Text“ des Statement wird nach folgender Priorität bestimmt:<br>1. die Object Value, wenn der Object Thing leer ist;<br>2. andernfalls der Object Label. |
+| **DR-53 Name** | Ein Statement: Name wird berechnet als der Subject Label, gefolgt von ein Leerzeichen, gefolgt von der Property Label, gefolgt von ein Leerzeichen, gefolgt von der Object Text. |
+| **DR-54 Words** | Ein Statement: Words wird berechnet als der Subject Label, gefolgt von ein Leerzeichen, gefolgt von der Property Label, gefolgt von ein Leerzeichen, gefolgt von die Literal Quote, gefolgt von die Object Value, gefolgt von die Literal Quote, gefolgt von der Literal Type Marker, gefolgt von die Property Datatype, wenn der Object Thing leer ist, andernfalls der Object Label. ⚠︎ mechanisch <!-- rulespeak:reword --> |
+| **DR-55 Source** | Das Feld „Source“ des Statement wird nach folgender Priorität bestimmt:<br>1. der Built in Source Text, wenn das Kennzeichen „Is Built in“ gesetzt ist;<br>2. andernfalls der User Source Text. |
+| **DR-56 Subject Property Key** | Ein Statement: Subject Property Key wird berechnet als der Subject, gefolgt von „|“, gefolgt von der Property. |
+| **DR-57 Latest Sibling Activation Seq** | Ein Statement: Latest Sibling Activation Seq ist der größte Wert von Activation Seq über die mit dem Statement verbundenen Statements. |
+| **DR-58 Is in Effect** | Ein Statement gilt als in effect, wenn alles Folgende gilt: das Kennzeichen „Is Stated“ gesetzt ist und mindestens eines des Folgenden gilt: das Kennzeichen „Property Has One Current Value“ nicht gesetzt ist oder der Activation Seq der Latest Sibling Activation Seq ist. |
+| **DR-59 Listed Unit** | Das Feld „Listed Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn das Kennzeichen „Is Listed“ gesetzt ist;<br>2. andernfalls 0. |
+| **DR-60 In Effect Unit** | Das Feld „In Effect Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn das Kennzeichen „Is in Effect“ gesetzt ist;<br>2. andernfalls 0. |
+| **DR-61 Listed Off Unit** | Das Feld „Listed Off Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Is Listed“ gesetzt ist und das Kennzeichen „Is in Effect“ nicht gesetzt ist;<br>2. andernfalls 0. |
+| **DR-62 Is Next to Add** | Ein Statement gilt als ein Next to Add, wenn alles Folgende gilt: der Listed Off Unit 1 ist und der Sort Order der Next Fact Sort Order ist. |
+| **DR-63 Count of Inverse Firings** | Ein Statement: Count of Inverse Firings ist die Gesamtsumme von Inverse Fired Unit über die mit dem Statement verbundenen Firings. |
+| **DR-64 Count of Symmetric Firings** | Ein Statement: Count of Symmetric Firings ist die Gesamtsumme von Symmetric Fired Unit über die mit dem Statement verbundenen Firings. |
+| **DR-65 Holds Before Chain** | Ein Statement gilt als Before Chain haltend, wenn mindestens eines des Folgenden gilt: das Kennzeichen „Is in Effect“ gesetzt ist; der Count of Inverse Firings größer ist als 0; oder der Count of Symmetric Firings größer ist als 0. |
+| **DR-66 Count of Chain Firings** | Ein Statement: Count of Chain Firings ist die Gesamtsumme von Chain Fired Unit über die mit dem Statement verbundenen Firings. |
+| **DR-67 Holds Before Typing** | Ein Statement gilt als Before Typing haltend, wenn mindestens eines des Folgenden gilt: das Kennzeichen „Holds Before Chain“ gesetzt ist oder der Count of Chain Firings größer ist als 0. |
+| **DR-68 Count of Type Firings** | Ein Statement: Count of Type Firings ist die Gesamtsumme von Type Fired Unit über die mit dem Statement verbundenen Firings. |
+| **DR-69 Holds** | Ein Statement gilt als haltend, wenn mindestens eines des Folgenden gilt: das Kennzeichen „Holds Before Typing“ gesetzt ist oder der Count of Type Firings größer ist als 0. |
+| **DR-70 Is Conclusion** | Ein Statement gilt als eine Conclusion, wenn alles Folgende gilt: das Kennzeichen „Holds“ gesetzt ist und das Kennzeichen „Is in Effect“ nicht gesetzt ist. |
+| **DR-71 Holds Unit** | Das Feld „Holds Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn das Kennzeichen „Holds“ gesetzt ist;<br>2. andernfalls 0. |
+| **DR-72 Conclusion Unit** | Das Feld „Conclusion Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn das Kennzeichen „Is Conclusion“ gesetzt ist;<br>2. andernfalls 0. |
+| **DR-73 Parent Unit** | Das Feld „Parent Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Holds“ gesetzt ist und der Property „isParentOf“ ist;<br>2. andernfalls 0. |
+| **DR-74 Grandparent Unit** | Das Feld „Grandparent Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Holds“ gesetzt ist und der Property „isGrandparentOf“ ist;<br>2. andernfalls 0. |
+| **DR-75 Place Unit** | Das Feld „Place Unit“ des Statement wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Holds“ gesetzt ist und der Property „attends“ ist;<br>2. andernfalls 0. |
+| **DR-76 First Pre Chain Order Key** | Ein Statement: First Pre Chain Order Key ist der kleinste Wert von Pre Chain Order Key über die Firings des Statement, die Pre Chain Fired Unit sind. |
+| **DR-77 Snap Position** | Das Feld „Snap Position“ des Statement wird nach folgender Priorität bestimmt:<br>1. der Sort Order, wenn das Kennzeichen „Is in Effect“ gesetzt ist;<br>2. 100000 plus der First Pre Chain Order Key, wenn das Kennzeichen „Holds Before Chain“ gesetzt ist;<br>3. andernfalls 0. |
+| **DR-78 First Fired Order Key** | Ein Statement: First Fired Order Key ist der kleinste Wert von Order Key über die Firings des Statement, die Fired Unit sind. |
+| **DR-79 Count of Chosen Firings** | Ein Statement: Count of Chosen Firings ist die Gesamtsumme von Chosen Unit über die mit dem Statement verbundenen Firings. |
+| **DR-80 Subject Node Key** | Ein Statement: Subject Node Key entspricht Subject. |
+| **DR-81 Object Node Key** | Das Feld „Object Node Key“ des Statement wird nach folgender Priorität bestimmt:<br>1. „literal|“, gefolgt von die Object Value, gefolgt von „|“, gefolgt von die Property Datatype, wenn der Object Thing leer ist;<br>2. andernfalls der Object Thing. |
+| **DR-82 Subject Node Kind** | Ein Statement: Subject Node Kind — aus dem zugehörigen Subject übernommen. |
+| **DR-83 Object Thing Node Kind** | Ein Statement: Object Thing Node Kind — aus dem zugehörigen Object Thing übernommen. |
+| **DR-84 Object Node Kind** | Das Feld „Object Node Kind“ des Statement wird nach folgender Priorität bestimmt:<br>1. „value“, wenn der Object Thing leer ist;<br>2. andernfalls der Object Thing Node Kind. |
+| **DR-85 Object Value Node Label** | Ein Statement: Object Value Node Label — aus dem zugehörigen Property übernommen. |
+| **DR-86 Count of Violations As First** | Ein Statement: Count of Violations As First ist die Gesamtsumme von Violation Unit über die mit dem Statement verbundenen Disjoint Checks. |
+| **DR-87 Count of Violations As Second** | Ein Statement: Count of Violations As Second ist die Gesamtsumme von Violation Unit über die mit dem Statement verbundenen Disjoint Checks. |
+| **DR-88 Is in Contradiction** | Ein Statement gilt als in contradiction, wenn mindestens eines des Folgenden gilt: der Count of Violations As First größer ist als 0 oder der Count of Violations As Second größer ist als 0. |
+| **DR-89 Rule Enabled** | Ein Firing: Rule Enabled ist wahr, wenn der zugehörige Rule des Firing ist enabled. |
+| **DR-90 Kind Wording** | Ein Firing: Kind Wording — aus dem zugehörigen Kind übernommen. |
+| **DR-91 Kind Sort Order** | Ein Firing: Kind Sort Order — aus dem zugehörigen Kind übernommen. |
+| **DR-92 Target Name** | Ein Firing: Target Name — aus dem zugehörigen Target übernommen. |
+| **DR-93 Target Subject Label** | Ein Firing: Target Subject Label — aus dem zugehörigen Target übernommen. |
+| **DR-94 Target Property Label** | Ein Firing: Target Property Label — aus dem zugehörigen Target übernommen. |
+| **DR-95 Target Object Text** | Ein Firing: Target Object Text — aus dem zugehörigen Target übernommen. |
+| **DR-96 Target is Conclusion** | Ein Firing: Target is Conclusion ist wahr, wenn der zugehörige Target des Firing ist eine Conclusion. |
+| **DR-97 Target Subject Node Key** | Ein Firing: Target Subject Node Key — aus dem zugehörigen Target übernommen. |
+| **DR-98 Target Object Node Key** | Ein Firing: Target Object Node Key — aus dem zugehörigen Target übernommen. |
+| **DR-99 Target First Fired Order Key** | Ein Firing: Target First Fired Order Key — aus dem zugehörigen Target übernommen. |
+| **DR-100 First Words** | Ein Firing: First Words — aus dem zugehörigen First übernommen. |
+| **DR-101 Second Words** | Ein Firing: Second Words — aus dem zugehörigen Second übernommen. |
+| **DR-102 First is in Effect** | Ein Firing: First is in Effect ist wahr, wenn der zugehörige First des Firing ist in effect. |
+| **DR-103 First Holds Before Chain** | Ein Firing: First Holds Before Chain ist wahr, wenn der zugehörige First des Firing ist Holds Before Chain. |
+| **DR-104 Second Holds Before Chain** | Ein Firing: Second Holds Before Chain ist wahr, wenn der zugehörige Second des Firing ist Holds Before Chain. |
+| **DR-105 First Holds Before Typing** | Ein Firing: First Holds Before Typing ist wahr, wenn der zugehörige First des Firing ist Holds Before Typing. |
+| **DR-106 First Property** | Ein Firing: First Property — aus dem zugehörigen First übernommen. |
+| **DR-107 First Property Domain Class** | Ein Firing: First Property Domain Class — aus dem zugehörigen First übernommen. |
+| **DR-108 First Property Range Class** | Ein Firing: First Property Range Class — aus dem zugehörigen First übernommen. |
+| **DR-109 First Sort Order** | Ein Firing: First Sort Order — aus dem zugehörigen First übernommen. |
+| **DR-110 Second is in Effect** | Ein Firing: Second is in Effect ist wahr, wenn der zugehörige Second des Firing ist in effect. |
+| **DR-111 First Snap Position** | Ein Firing: First Snap Position — aus dem zugehörigen First übernommen. |
+| **DR-112 Second Snap Position** | Ein Firing: Second Snap Position — aus dem zugehörigen Second übernommen. |
+| **DR-113 Inverse Fired Unit** | Das Feld „Inverse Fired Unit“ des Firing wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Rule Enabled“ gesetzt ist; der Kind „inverse“ ist; und das Kennzeichen „First is in Effect“ gesetzt ist;<br>2. andernfalls 0. |
+| **DR-114 Symmetric Fired Unit** | Das Feld „Symmetric Fired Unit“ des Firing wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Rule Enabled“ gesetzt ist; der Kind „symmetric“ ist; und das Kennzeichen „First is in Effect“ gesetzt ist;<br>2. andernfalls 0. |
+| **DR-115 Chain Fired Unit** | Das Feld „Chain Fired Unit“ des Firing wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Rule Enabled“ gesetzt ist; der Kind „chain“ ist; das Kennzeichen „First Holds Before Chain“ gesetzt ist; und das Kennzeichen „Second Holds Before Chain“ gesetzt ist;<br>2. andernfalls 0. |
+| **DR-116 Type Fired Unit** | Das Feld „Type Fired Unit“ des Firing wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Rule Enabled“ gesetzt ist; mindestens eines des Folgenden gilt: der Kind „domain“ ist oder der Kind „range“ ist; und das Kennzeichen „First Holds Before Typing“ gesetzt ist;<br>2. andernfalls 0. |
+| **DR-117 Fired Unit** | Ein Firing: Fired Unit wird berechnet als der Inverse Fired Unit plus der Symmetric Fired Unit plus der Chain Fired Unit plus der Type Fired Unit. |
+| **DR-118 Pre Chain Fired Unit** | Ein Firing: Pre Chain Fired Unit wird berechnet als der Inverse Fired Unit plus der Symmetric Fired Unit. |
+| **DR-119 Pre Chain Order Key** | Ein Firing: Pre Chain Order Key wird berechnet als der First Sort Order mal 10 plus der Kind Sort Order. |
+| **DR-120 Round** | Das Feld „Round“ des Firing wird nach folgender Priorität bestimmt:<br>1. 2, wenn alles Folgende gilt: der Kind „chain“ ist und es nicht der Fall ist, dass alles Folgende gilt: das Kennzeichen „First is in Effect“ gesetzt ist und das Kennzeichen „Second is in Effect“ gesetzt ist;<br>2. andernfalls 1. |
+| **DR-121 Order Key** | Ein Firing: Order Key wird berechnet als der Round mal 1000000000000000 plus die First Snap Position mal 100000000 plus der Kind Sort Order mal 10000000 plus 0, wenn der Second leer ist, andernfalls die Second Snap Position. |
+| **DR-122 Is Chosen** | Ein Firing gilt als ein Chosen, wenn alles Folgende gilt: der Fired Unit 1 ist; das Kennzeichen „Target is Conclusion“ gesetzt ist; und der Order Key der Target First Fired Order Key ist. |
+| **DR-123 Chosen Unit** | Das Feld „Chosen Unit“ des Firing wird nach folgender Priorität bestimmt:<br>1. 1, wenn das Kennzeichen „Is Chosen“ gesetzt ist;<br>2. andernfalls 0. |
+| **DR-124 Card Text** | Das Feld „Card Text“ des Firing wird nach folgender Priorität bestimmt:<br>1. „Worked out by the “, gefolgt von der Kind Wording, gefolgt von „ from ““, gefolgt von der First Words, gefolgt von „”“, gefolgt von „ and ““, gefolgt von der Second Words, gefolgt von „”“, wenn der Kind „chain“ ist, andernfalls „ and ““, gefolgt von der First Property, gefolgt von „ has domain “, gefolgt von der First Property Domain Class, gefolgt von „”“, wenn der Kind „domain“ ist, andernfalls „ and ““, gefolgt von der First Property, gefolgt von „ has range “, gefolgt von der First Property Range Class, gefolgt von „”“, gefolgt von ein Punkt, wenn das Kennzeichen „Is Chosen“ gesetzt ist;<br>2. andernfalls eine leere Zeichenkette. ⚠︎ mechanisch <!-- rulespeak:reword --> |
+| **DR-125 Name** | Ein Firing: Name entspricht Firing ID. |
+| **DR-126 Rule Enabled** | Ein Disjoint Check: Rule Enabled ist wahr, wenn der zugehörige Rule des Disjoint Check ist enabled. |
+| **DR-127 First Holds** | Ein Disjoint Check: First Holds ist wahr, wenn der zugehörige First des Disjoint Check ist Holds. |
+| **DR-128 Second Holds** | Ein Disjoint Check: Second Holds ist wahr, wenn der zugehörige Second des Disjoint Check ist Holds. |
+| **DR-129 Subject Label** | Ein Disjoint Check: Subject Label — aus dem zugehörigen First übernommen. |
+| **DR-130 Object Label** | Ein Disjoint Check: Object Label — aus dem zugehörigen First übernommen. |
+| **DR-131 Violation Unit** | Das Feld „Violation Unit“ des Disjoint Check wird nach folgender Priorität bestimmt:<br>1. 1, wenn alles Folgende gilt: das Kennzeichen „Rule Enabled“ gesetzt ist; das Kennzeichen „First Holds“ gesetzt ist; und das Kennzeichen „Second Holds“ gesetzt ist;<br>2. andernfalls 0. |
+| **DR-132 Alarm Text** | Das Feld „Alarm Text“ des Disjoint Check wird nach folgender Priorität bestimmt:<br>1. „Contradiction found. “, gefolgt von der Subject Label, gefolgt von „ is recorded as both parent and spouse of “, gefolgt von der Object Label, gefolgt von „. Check those facts and the selected disjoint rule.“, wenn der Violation Unit 1 ist;<br>2. andernfalls eine leere Zeichenkette. |
+| **DR-133 Name** | Ein Disjoint Check: Name entspricht Disjoint Check ID. |
+| **DR-134 Name** | Ein Scenario: Name entspricht Label. |
+| **DR-135 Graph Has Facts to Add** | Ein Scenario: Graph Has Facts to Add ist wahr, wenn der zugehörige Graph des Scenario hat einen Facts to Add. |
+| **DR-136 Is Available** | Ein Scenario gilt als eine Available, wenn mindestens eines des Folgenden gilt: die Fact Baseline nicht „next“ ist oder das Kennzeichen „Graph Has Facts to Add“ gesetzt ist. |
+| **DR-137 Name** | Eine Scenario Fact Change: Name entspricht Scenario Fact Change ID. |
+| **DR-138 Name** | Ein Scenario Rule Setting: Name entspricht Scenario Rule Setting ID. |
+| **DR-139 Name** | Ein Node Layout: Name entspricht Node Layout ID. |
+| **DR-140 Name** | Ein Layout Slot: Name entspricht Layout Slot ID. |
+| **DR-141 Name** | Ein Page Text: Name entspricht Page Text ID. |
+| **DR-142 Name** | Eine Engine: Name entspricht Label. |
+| **DR-143 Name** | Ein Rulebook Tool: Name entspricht Label. |
 
 ## 5 Rückverfolgbarkeit zum Schema
 
@@ -671,10 +819,18 @@ dieselbe Logik, die das Regelbuch speichert, geschrieben für Fachleser._
 | **Graphs.NextActivationSeq** | Formel | `MaxActivationSeq + 1` |
 | **Graphs.MaxListedSortOrder** | Rollup | `Max(Statements.SortOrder via Graph)` |
 | **Graphs.NextListedSortOrder** | Formel | `MaxListedSortOrder + 1` |
+| **Graphs.MaxSortOrder** | Rollup | `Max(Statements.SortOrder via Graph)` |
+| **Graphs.NextCandidateSortOrder** | Formel | `MaxSortOrder + 1` |
 | **Rules.Name** | Formel | `Label` |
 | **Rules.CountOfFirings** | Rollup | `Sum(Firings.FiredUnit via Rule)` |
 | **FiringKinds.Name** | Formel | `Wording` |
 | **FiringKinds.RuleEnabled** | Nachschlagewert | `Lookup(Rules.IsEnabled via Rule)` |
+| **Things.PortraitName** | Nachschlagewert | `Lookup(Portraits.DisplayName via Portrait)` |
+| **Things.PortraitPage** | Nachschlagewert | `Lookup(Portraits.Page via Portrait)` |
+| **Things.PortraitImage** | Nachschlagewert | `Lookup(Portraits.Image via Portrait)` |
+| **Things.PortraitCrop** | Nachschlagewert | `Lookup(Portraits.Crop via Portrait)` |
+| **Things.PortraitWidth** | Nachschlagewert | `Lookup(Portraits.Width via Portrait)` |
+| **Things.PortraitHeight** | Nachschlagewert | `Lookup(Portraits.Height via Portrait)` |
 | **Things.Name** | Formel | `Label` |
 | **Things.NodeKey** | Formel | `ThingId` |
 | **Things.CountOfChildren** | Rollup | `Sum(Statements.ParentUnit via Subject)` |
@@ -683,8 +839,11 @@ dieselbe Logik, die das Regelbuch speichert, geschrieben für Fachleser._
 | **Things.CountAsSubject** | Rollup | `Sum(Statements.HoldsUnit via Subject)` |
 | **Things.CountAsObject** | Rollup | `Sum(Statements.HoldsUnit via ObjectThing)` |
 | **Things.IsInGraph** | Formel | `Or(CountAsSubject > 0, CountAsObject > 0)` |
-| **Things.NodeKind** | Formel | `If(Kind = "class", "class", If(CountAsPlace > 0, "place", "person"))` |
+| **Things.NodeKind** | Formel | `If(Kind = "", "", If(Kind = "class", "class", If(CountAsPlace > 0, "place", "person")))` |
+| **Portraits.Name** | Formel | `DisplayName` |
+| **PortraitAliases.Name** | Formel | `PortraitAliasId` |
 | **Properties.Name** | Formel | `Label` |
+| **PropertyAxioms.Name** | Formel | `PropertyAxiomId` |
 | **Statements.SubjectLabel** | Nachschlagewert | `Lookup(Things.Label via Subject)` |
 | **Statements.PropertyLabel** | Nachschlagewert | `Lookup(Properties.Label via Property)` |
 | **Statements.ObjectLabel** | Nachschlagewert | `Lookup(Things.Label via ObjectThing)` |
@@ -722,6 +881,8 @@ dieselbe Logik, die das Regelbuch speichert, geschrieben für Fachleser._
 | **Statements.ParentUnit** | Formel | `If(And(Holds, Property = "isParentOf"), 1, 0)` |
 | **Statements.GrandparentUnit** | Formel | `If(And(Holds, Property = "isGrandparentOf"), 1, 0)` |
 | **Statements.PlaceUnit** | Formel | `If(And(Holds, Property = "attends"), 1, 0)` |
+| **Statements.FirstPreChainOrderKey** | Rollup | `Min(Firings.PreChainOrderKey via Target)` |
+| **Statements.SnapPosition** | Formel | `If(IsInEffect, SortOrder, If(HoldsBeforeChain, 100000 + FirstPreChainOrderKey, 0))` |
 | **Statements.FirstFiredOrderKey** | Rollup | `Min(Firings.OrderKey via Target)` |
 | **Statements.CountOfChosenFirings** | Rollup | `Sum(Firings.ChosenUnit via Target)` |
 | **Statements.SubjectNodeKey** | Formel | `Subject` |
@@ -754,13 +915,18 @@ dieselbe Logik, die das Regelbuch speichert, geschrieben für Fachleser._
 | **Firings.FirstPropertyDomainClass** | Nachschlagewert | `Lookup(Statements.PropertyDomainClass via First)` |
 | **Firings.FirstPropertyRangeClass** | Nachschlagewert | `Lookup(Statements.PropertyRangeClass via First)` |
 | **Firings.FirstSortOrder** | Nachschlagewert | `Lookup(Statements.SortOrder via First)` |
-| **Firings.SecondSortOrder** | Nachschlagewert | `Lookup(Statements.SortOrder via Second)` |
+| **Firings.SecondIsInEffect** | Nachschlagewert | `Lookup(Statements.IsInEffect via Second)` |
+| **Firings.FirstSnapPosition** | Nachschlagewert | `Lookup(Statements.SnapPosition via First)` |
+| **Firings.SecondSnapPosition** | Nachschlagewert | `Lookup(Statements.SnapPosition via Second)` |
 | **Firings.InverseFiredUnit** | Formel | `If(And(RuleEnabled, Kind = "inverse", FirstIsInEffect), 1, 0)` |
 | **Firings.SymmetricFiredUnit** | Formel | `If(And(RuleEnabled, Kind = "symmetric", FirstIsInEffect), 1, 0)` |
 | **Firings.ChainFiredUnit** | Formel | `If(And(RuleEnabled, Kind = "chain", FirstHoldsBeforeChain, SecondHoldsBeforeChain), 1, 0)` |
 | **Firings.TypeFiredUnit** | Formel | `If(And(RuleEnabled, Or(Kind = "domain", Kind = "range"), FirstHoldsBeforeTyping), 1, 0)` |
 | **Firings.FiredUnit** | Formel | `InverseFiredUnit + SymmetricFiredUnit + ChainFiredUnit + TypeFiredUnit` |
-| **Firings.OrderKey** | Formel | `FirstSortOrder * 100000 + KindSortOrder * 1000 + If(Second = "", 0, SecondSortOrder)` |
+| **Firings.PreChainFiredUnit** | Formel | `InverseFiredUnit + SymmetricFiredUnit` |
+| **Firings.PreChainOrderKey** | Formel | `FirstSortOrder * 10 + KindSortOrder` |
+| **Firings.Round** | Formel | `If(And(Kind = "chain", Not(And(FirstIsInEffect, SecondIsInEffect))), 2, 1)` |
+| **Firings.OrderKey** | Formel | `Round * 1000000000000000 + FirstSnapPosition * 100000000 + KindSortOrder * 10000000 + If(Second = "", 0, SecondSnapPosition)` |
 | **Firings.IsChosen** | Formel | `And(FiredUnit = 1, TargetIsConclusion, OrderKey = TargetFirstFiredOrderKey)` |
 | **Firings.ChosenUnit** | Formel | `If(IsChosen, 1, 0)` |
 | **Firings.CardText** | Formel | `If(IsChosen, Concat("Worked out by the ", KindWording, " from “", FirstWords, "”", If(Kind = "chain", Concat(" and “", SecondWords, "”"), If(Kind = "domain", Concat(" and “", FirstProperty, " has domain ", FirstPropertyDomainClass, "”"), If(Kind = "range", Concat(" and “", FirstProperty, " has range ", FirstPropertyRangeClass, "”"), ""))), "."), "")` |
@@ -781,6 +947,8 @@ dieselbe Logik, die das Regelbuch speichert, geschrieben für Fachleser._
 | **NodeLayouts.Name** | Formel | `NodeLayoutId` |
 | **LayoutSlots.Name** | Formel | `LayoutSlotId` |
 | **PageTexts.Name** | Formel | `PageTextId` |
+| **Engines.Name** | Formel | `Label` |
+| **RulebookTools.Name** | Formel | `Label` |
 
 ---
 

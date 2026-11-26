@@ -1,0 +1,74 @@
+[
+  {
+    "rulebook_tool_id": "engines",
+    "label": "Interchangeable engines",
+    "adds": "The same page, computed by Postgres views, generated TypeScript or the generated OWL and SHACL rules. Switch with the control above; nothing else changes.",
+    "href": null,
+    "link_text": null,
+    "sort_order": 1,
+    "name": "Interchangeable engines"
+  },
+  {
+    "rulebook_tool_id": "conformance",
+    "label": "Conformance",
+    "adds": "Every engine's answers for the current facts, compared value by value with the conformance harness's own rule for when two values are equal.",
+    "href": null,
+    "link_text": null,
+    "sort_order": 2,
+    "name": "Conformance"
+  },
+  {
+    "rulebook_tool_id": "explainer",
+    "label": "Explainer",
+    "adds": "Hover a dotted value for its rule in plain words and its witness: the values it came from, down to the stated facts.",
+    "href": "/rulebook-explainer-dag/pages/index.html",
+    "link_text": "Open the explainer",
+    "sort_order": 3,
+    "name": "Explainer"
+  },
+  {
+    "rulebook_tool_id": "docs",
+    "label": "Documentation in 16 languages",
+    "adds": "Every rule of the model in plain language, generated from the rulebook.",
+    "href": "/rulespeak/rulespeak.html",
+    "link_text": "Read the documentation",
+    "sort_order": 4,
+    "name": "Documentation in 16 languages"
+  },
+  {
+    "rulebook_tool_id": "admin",
+    "label": "Admin",
+    "adds": "Every table of the rulebook as an editable grid: rules, properties and their wiring, wording, layouts, the cast. Edits apply at once; Save writes the rulebook file.",
+    "href": "/admin.html",
+    "link_text": "Open the admin",
+    "sort_order": 5,
+    "name": "Admin"
+  },
+  {
+    "rulebook_tool_id": "xlsx",
+    "label": "Excel, both ways",
+    "adds": "Export the current rows as a workbook with every rule as a live formula, edit it, and import it again.",
+    "href": "/admin.html#excel",
+    "link_text": "Export or import",
+    "sort_order": 6,
+    "name": "Excel, both ways"
+  },
+  {
+    "rulebook_tool_id": "editor",
+    "label": "Rulebook editor",
+    "adds": "The generated editor for tables, fields and formulas, with its own database and API.",
+    "href": "editor",
+    "link_text": "Open the rulebook editor",
+    "sort_order": 7,
+    "name": "Rulebook editor"
+  },
+  {
+    "rulebook_tool_id": "rulebook",
+    "label": "The rulebook",
+    "adds": "One JSON file holds the whole model. Everything on this page is built from it.",
+    "href": "/rulebook/talismans-southpark-ontology-rulebook.json",
+    "link_text": "Open the file",
+    "sort_order": 8,
+    "name": "The rulebook"
+  }
+]

@@ -2,32 +2,30 @@
 
 ## Configuration
 
-- **Rulebook:** `/Users/eejai42/development/effortless-rulebooks/rulebook-examples/procedural-knowledge-ontology/effortless-rulebook/procedural-knowledge-ontology-rulebook.json`
-- **Substrates Tested:** 7
-- **Computed Columns Tested:** 2367
+- **Rulebook:** `/Users/eejai42/development/effortless-rulebooks/rulebook-examples/talismans-southpark-ontology/effortless-rulebook/talismans-southpark-ontology-rulebook.json`
+- **Substrates Tested:** 5
+- **Computed Columns Tested:** 120
 
 ## Summary by Substrate
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
-| effortless-golang | 273809 | 0 | 273809 | 100.0% | 13s | PASS |
-| effortless-typescript | 273809 | 0 | 273809 | 100.0% | 13s | PASS |
-| effortless-python | 273809 | 0 | 273809 | 100.0% | 16s | PASS |
-| effortless-postgres | 273803 | 6 | 273809 | 100.0% | 41s | FAIL |
-| effortless-entity-framework | 273785 | 24 | 273809 | 100.0% | 22s | FAIL |
-| effortless-xlsx | 272560 | 1249 | 273809 | 99.5% | 5s | FAIL |
-| effortless-owl | 114943 | 158866 | 273809 | 42.0% | 10m 0s | ERROR: Script timed out |
+| effortless-xlsx | 31456 | 0 | 31456 | 100.0% | < 1s | PASS |
+| effortless-python | 31456 | 0 | 31456 | 100.0% | < 1s | PASS |
+| effortless-typescript | 31456 | 0 | 31456 | 100.0% | 2s | PASS |
+| effortless-postgres | 31456 | 0 | 31456 | 100.0% | 4s | PASS |
+| effortless-owl | 31456 | 0 | 31456 | 100.0% | 10s | PASS |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
-| Total Substrates | 7 |
-| Total Fields Tested | 1916663 |
-| Total Passed | 1756518 |
-| Total Failed | 160145 |
-| Overall Score | 91.6% |
-| Total Duration | 11m 50s |
+| Total Substrates | 5 |
+| Total Fields Tested | 157280 |
+| Total Passed | 157280 |
+| Total Failed | 0 |
+| Overall Score | 100.0% |
+| Total Duration | 17s |
 
 ---
 

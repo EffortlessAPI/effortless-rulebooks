@@ -1,0 +1,26 @@
+[
+  {
+    "graph_id": "south-park",
+    "label": "South Park",
+    "literal_quote": "\"",
+    "literal_type_marker": "^^",
+    "built_in_source_text": "Stated as a teaching example on this page.",
+    "user_source_text": "Stated by you on this page.",
+    "no_conclusions_text": "These facts and selected rules add no further conclusions. Try another fact or rule.",
+    "name": "South Park",
+    "count_of_stated_facts": 10,
+    "count_of_conclusions": 0,
+    "count_of_violations": 0,
+    "is_consistent": true,
+    "conclusions_message": "These facts and selected rules add no further conclusions. Try another fact or rule.",
+    "count_of_facts_to_add": 0,
+    "has_facts_to_add": false,
+    "next_fact_sort_order": 0,
+    "max_activation_seq": 10,
+    "next_activation_seq": 11,
+    "max_listed_sort_order": 10,
+    "next_listed_sort_order": 11,
+    "max_sort_order": 100269,
+    "next_candidate_sort_order": 100270
+  }
+]

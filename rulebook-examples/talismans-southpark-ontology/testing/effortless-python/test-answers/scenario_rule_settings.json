@@ -1,0 +1,72 @@
+[
+  {
+    "scenario_rule_setting_id": "grade-example:chain",
+    "scenario": "grade-example",
+    "rule": "chain",
+    "is_enabled": false,
+    "name": "grade-example:chain"
+  },
+  {
+    "scenario_rule_setting_id": "grade-example:disjoint",
+    "scenario": "grade-example",
+    "rule": "disjoint",
+    "is_enabled": false,
+    "name": "grade-example:disjoint"
+  },
+  {
+    "scenario_rule_setting_id": "grade-example:domain",
+    "scenario": "grade-example",
+    "rule": "domain",
+    "is_enabled": true,
+    "name": "grade-example:domain"
+  },
+  {
+    "scenario_rule_setting_id": "grade-example:inverse",
+    "scenario": "grade-example",
+    "rule": "inverse",
+    "is_enabled": false,
+    "name": "grade-example:inverse"
+  },
+  {
+    "scenario_rule_setting_id": "grade-example:symmetric",
+    "scenario": "grade-example",
+    "rule": "symmetric",
+    "is_enabled": false,
+    "name": "grade-example:symmetric"
+  },
+  {
+    "scenario_rule_setting_id": "reset-original:chain",
+    "scenario": "reset-original",
+    "rule": "chain",
+    "is_enabled": false,
+    "name": "reset-original:chain"
+  },
+  {
+    "scenario_rule_setting_id": "reset-original:disjoint",
+    "scenario": "reset-original",
+    "rule": "disjoint",
+    "is_enabled": false,
+    "name": "reset-original:disjoint"
+  },
+  {
+    "scenario_rule_setting_id": "reset-original:domain",
+    "scenario": "reset-original",
+    "rule": "domain",
+    "is_enabled": false,
+    "name": "reset-original:domain"
+  },
+  {
+    "scenario_rule_setting_id": "reset-original:inverse",
+    "scenario": "reset-original",
+    "rule": "inverse",
+    "is_enabled": false,
+    "name": "reset-original:inverse"
+  },
+  {
+    "scenario_rule_setting_id": "reset-original:symmetric",
+    "scenario": "reset-original",
+    "rule": "symmetric",
+    "is_enabled": false,
+    "name": "reset-original:symmetric"
+  }
+]

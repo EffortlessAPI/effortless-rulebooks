@@ -1,0 +1,68 @@
+[
+  {
+    "scenario_fact_change_id": "stan-grade-five:Stan|isA|Person",
+    "object_key": "Person",
+    "action": "on",
+    "adds_to_list": true,
+    "sort_order": 1,
+    "scenario": "stan-grade-five",
+    "subject": "Stan",
+    "property": "isA",
+    "name": "stan-grade-five:Stan|isA|Person"
+  },
+  {
+    "scenario_fact_change_id": "stan-grade-five:Stan|hasGradeLevel|5",
+    "object_key": "5",
+    "action": "on",
+    "adds_to_list": true,
+    "sort_order": 2,
+    "scenario": "stan-grade-five",
+    "subject": "Stan",
+    "property": "hasGradeLevel",
+    "name": "stan-grade-five:Stan|hasGradeLevel|5"
+  },
+  {
+    "scenario_fact_change_id": "stan-leaves-school:Stan|isA|Person",
+    "object_key": "Person",
+    "action": "on",
+    "adds_to_list": true,
+    "sort_order": 3,
+    "scenario": "stan-leaves-school",
+    "subject": "Stan",
+    "property": "isA",
+    "name": "stan-leaves-school:Stan|isA|Person"
+  },
+  {
+    "scenario_fact_change_id": "stan-leaves-school:Stan|hasRole|*",
+    "object_key": null,
+    "action": "off",
+    "adds_to_list": false,
+    "sort_order": 4,
+    "scenario": "stan-leaves-school",
+    "subject": "Stan",
+    "property": "hasRole",
+    "name": "stan-leaves-school:Stan|hasRole|*"
+  },
+  {
+    "scenario_fact_change_id": "stan-leaves-school:Stan|hasGradeLevel|*",
+    "object_key": null,
+    "action": "off",
+    "adds_to_list": false,
+    "sort_order": 5,
+    "scenario": "stan-leaves-school",
+    "subject": "Stan",
+    "property": "hasGradeLevel",
+    "name": "stan-leaves-school:Stan|hasGradeLevel|*"
+  },
+  {
+    "scenario_fact_change_id": "stan-leaves-school:Stan|attends|*",
+    "object_key": null,
+    "action": "off",
+    "adds_to_list": false,
+    "sort_order": 6,
+    "scenario": "stan-leaves-school",
+    "subject": "Stan",
+    "property": "attends",
+    "name": "stan-leaves-school:Stan|attends|*"
+  }
+]

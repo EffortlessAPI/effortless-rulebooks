@@ -1,217 +1,235 @@
-// The South Park explainer's server. It reads the rulebook's vw_* views and writes
-// the rulebook's base tables; it holds no rule of its own. Every conclusion, card,
-// alert, count and button state on the page is a column of a view.
+// The South Park explainer's server.
+//
+// One workspace holds the rulebook's stored rows as they are right now. Every
+// click and every admin edit writes there. Whichever engine a request names
+// (X-ERB-Backend: postgres | typescript | owl) computes everything else from
+// those rows. The server holds no rule of its own.
 import express from 'express';
-import pg from 'pg';
+import fs from 'node:fs';
 import path from 'node:path';
+import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { Workspace } from './lib/workspace.mjs';
+import { createEngines } from './lib/engines.mjs';
+import { createExplainer } from './lib/explainer.mjs';
+import { syncCandidates } from './lib/candidates.mjs';
+import { rulebookWithRows, readHub, storedRows } from './lib/hub.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT = path.resolve(HERE, '..');
+const REPO = path.resolve(PROJECT, '../..');
+const SLUG = path.basename(PROJECT);
+// The rulebook file. RULEBOOK_PATH points the app at another copy of the SAME rulebook
+// (the tests save into a temporary copy, never into the project's file).
+const HUB = process.env.RULEBOOK_PATH || path.join(PROJECT, 'effortless-rulebook', `${SLUG}-rulebook.json`);
+const RUN_DIR = path.join(PROJECT, '.run');
 const PORT = Number(process.env.PORT || 43210);
-// Same database scripts/erb_project.py loads; DATABASE_URL only overrides it.
-const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://postgres@localhost:5432/erb_talismans_southpark_ontology';
-const pool = new pg.Pool({ connectionString: DATABASE_URL });
+// The database scripts/erb_project.py loads for this project; DATABASE_URL only overrides it.
+const DATABASE_URL = process.env.DATABASE_URL || `postgresql://postgres@localhost:5432/erb_${SLUG.replace(/-/g, '_')}`;
+// The rulebook editor's pinned ports (./start.sh --editor starts it on these).
+const EDITOR_UI_URL = `http://localhost:${process.env.RULEBOOK_EDITOR_UI_PORT || 43612}`;
 
-async function rows(client, sql, params = []) {
-  return (await client.query(sql, params)).rows;
+const ws = new Workspace(HUB);
+const engines = createEngines({ ws, projectDir: PROJECT, repoRoot: REPO, databaseUrl: DATABASE_URL });
+const explainer = createExplainer({ ws });
+
+// Tables whose rows decide which candidate facts exist.
+const CANDIDATE_SOURCES = new Set(['Things', 'Properties', 'PropertyAxioms', 'FiringKinds', 'Statements']);
+
+const engineOf = (req) => engines.get(req.get('X-ERB-Backend') || req.query.backend || engines.defaultId());
+const fill = (template, values) => template.replace(/\{(\w+)\}/g, (_, k) => values[k]);
+
+// Writes run one at a time, and a write that fails is undone.
+let writing = Promise.resolve();
+function write(fn) {
+  const run = writing.catch(() => {}).then(async () => {
+    const snapshot = ws.snapshot();
+    try { return await fn(); } catch (e) { ws.restore(snapshot); throw e; }
+  });
+  writing = run;
+  return run;
 }
-async function one(client, sql, params = []) {
-  const r = await rows(client, sql, params);
-  if (r.length !== 1) throw new Error(`Expected one row from: ${sql} (${JSON.stringify(params)}), got ${r.length}`);
-  return r[0];
+
+const app = express();
+app.use(express.json({ limit: '5mb' }));
+const route = (fn) => async (req, res) => {
+  try { res.json(await fn(req)); } catch (e) { console.error(e.message); res.status(400).json({ error: e.message }); }
+};
+// A page action: the write, then the page as the request's engine now computes it.
+const action = (fn) => route((req) => write(async () => {
+  const engine = engineOf(req);
+  const result = (await fn(req, engine)) || {};
+  return { ...result, page: await explainer.page(engine) };
+}));
+
+// ------------------------------------------------------------------ the explainer
+app.get('/api/health', route(async () => ({ ok: true, project: SLUG, engines: await engines.list() })));
+app.get('/api/page', route((req) => explainer.page(engineOf(req))));
+app.get('/api/rows', route(async () => ws.data));        // stored rows, for the explainer's witness
+app.get('/api/engines', route(async () => ({ engines: await engines.list(), defaultId: engines.defaultId() })));
+app.post('/api/facts/:id/switch', action((req, engine) => explainer.switchFact(engine, req.params.id, !!req.body.on)));
+app.post('/api/facts/:id/remove', action((req, engine) => explainer.removeFact(engine, req.params.id)));
+app.post('/api/facts', action((req, engine) => explainer.addFact(engine, req.body)));
+app.post('/api/rules/:id/switch', action((req) => explainer.switchRule(req.params.id, !!req.body.on)));
+app.post('/api/scenarios/:id/run', action((req, engine) => explainer.runScenario(engine, req.params.id)));
+app.post('/api/conformance', route(() => engines.compare()));
+
+// ------------------------------------------------------------------ admin: every table, every row
+const tableInfo = (t) => ({ name: t.name, description: t.description, key: t.key, rowCount: ws.rows(t.name).length,
+  fields: t.fields.map((f) => ({ name: f.name, type: f.type, datatype: f.datatype, stored: f.stored, relatedTo: f.relatedTo, formula: f.formula, description: f.description })) });
+
+app.get('/api/admin/tables', route(async () => ({ tables: Object.values(ws.tables).map(tableInfo), changes: ws.changes(), hubChangedOnDisk: ws.hubChangedOnDisk() })));
+
+app.get('/api/admin/tables/:table', route(async (req) => {
+  const t = ws.table(req.params.table);
+  const stored = ws.rows(t.name);
+  if (req.query.computed !== '1' || !t.computed.length) return { table: tableInfo(t), rows: stored, computed: false };
+  const computed = new Map((await engineOf(req).read(t.name, [t.key, ...t.computed])).map((row) => [String(row[t.key]), row]));
+  return { table: tableInfo(t), computed: true, rows: stored.map((row) => ({ ...row, ...(computed.get(String(row[t.key])) || {}) })) };
+}));
+
+// An admin edit, followed by the candidate facts it implies when it touches the cast or the wiring.
+const adminWrite = (fn) => route((req) => write(async () => {
+  const table = ws.table(req.params.table).name;
+  const next = CANDIDATE_SOURCES.has(table) ? await explainer.nextNumbers(engineOf(req)) : null;
+  const result = (await fn(req, table)) || {};
+  const candidates = next ? syncCandidates(ws, next.candidate) : null;
+  return { ...result, candidates: candidates && { added: candidates.added, removed: candidates.removed }, changes: ws.changes() };
+}));
+// Many rows of one table in one write: [{ key, values }] patches, [{ values }] inserts.
+app.post('/api/admin/tables/:table/bulk', adminWrite((req, table) => {
+  if (!Array.isArray(req.body)) throw new Error('Send an array of { key, values }');
+  for (const item of req.body) item.key === undefined ? ws.insert(table, item.values) : ws.patch(table, item.key, item.values);
+  return { rows: req.body.length };
+}));
+app.patch('/api/admin/tables/:table/rows/:key', adminWrite((req, table) => ({ row: ws.patch(table, req.params.key, req.body) })));
+app.post('/api/admin/tables/:table/rows', adminWrite((req, table) => ({ row: ws.insert(table, req.body) })));
+app.delete('/api/admin/tables/:table/rows/:key', adminWrite((req, table) => { ws.remove(table, req.params.key); }));
+
+app.get('/api/admin/changes', route(async () => ({ changes: ws.changes(), hubChangedOnDisk: ws.hubChangedOnDisk() })));
+app.post('/api/admin/save', route(() => write(async () => {
+  const rows = ws.save();
+  return { rows, file: path.relative(PROJECT, HUB), message: rows ? fill(explainer.text('admin-saved'), { rows, file: path.relative(PROJECT, HUB) }) : explainer.text('admin-nothing-to-save') };
+})));
+app.post('/api/admin/discard', route(() => write(async () => {
+  ws.reload();
+  engines.forgetSchema();
+  return { message: explainer.text('admin-discarded'), changes: ws.changes() };
+})));
+
+// ------------------------------------------------------------------ rebuild: effortless build, then the database
+const build = { running: false, startedAt: null, finishedAt: null, exitCode: null, log: path.join(RUN_DIR, 'build.log') };
+function runStep(cmd, args, cwd, logStream) {
+  return new Promise((resolve) => {
+    logStream.write(`\n$ ${cmd} ${args.join(' ')}   (in ${cwd})\n`);
+    const child = spawn(cmd, args, { cwd, stdio: ['ignore', 'pipe', 'pipe'] });
+    child.stdout.pipe(logStream, { end: false });
+    child.stderr.pipe(logStream, { end: false });
+    child.on('error', (e) => { logStream.write(`${e.message}\n`); resolve(1); });
+    child.on('close', (code) => resolve(code ?? 1));
+  });
 }
-const fill = (template, values) => template.replace(/\{(\w+)\}/g, (_, k) => {
-  if (!(k in values)) throw new Error(`Page text ${JSON.stringify(template)} names {${k}} but no value was given`);
-  return values[k];
+app.post('/api/admin/rebuild', route(async () => {
+  if (build.running) throw new Error('A rebuild is already running');
+  if (ws.changes().total) throw new Error('There are unsaved changes: save them to the rulebook (or discard them) before rebuilding from it');
+  fs.mkdirSync(RUN_DIR, { recursive: true });
+  Object.assign(build, { running: true, startedAt: new Date().toISOString(), finishedAt: null, exitCode: null });
+  const log = fs.createWriteStream(build.log);
+  (async () => {
+    // The build's last step (init-db) fails when the CLI drops the reset script's
+    // executable bit (cr-20-02); the database is loaded by the shared runner instead.
+    await runStep('effortless', ['build'], PROJECT, log);
+    const code = await runStep('python3', [path.join(REPO, 'scripts/erb_project.py'), SLUG, '--reset-db'], REPO, log);
+    log.end();
+    if (code === 0) { ws.reload(); engines.forgetSchema(); }
+    Object.assign(build, { running: false, finishedAt: new Date().toISOString(), exitCode: code });
+  })();
+  return { started: true };
+}));
+app.get('/api/admin/build', route(async () => {
+  const tail = fs.existsSync(build.log) ? fs.readFileSync(build.log, 'utf8').split('\n').filter((l) => /\*\*\*\*|rror|ailed|\$ |reset\]/.test(l)).slice(-25) : [];
+  return { ...build, log: path.relative(PROJECT, build.log), tail };
+}));
+
+// ------------------------------------------------------------------ Excel, both ways (the catalog's own tools)
+function effortless(args, cwd, timeoutMs = 420000) {
+  return new Promise((resolve, reject) => {
+    const child = spawn('effortless', args, { cwd, stdio: ['ignore', 'pipe', 'pipe'] });
+    let out = '';
+    const timer = setTimeout(() => { child.kill('SIGKILL'); reject(new Error(`effortless ${args[0]} did not finish within ${timeoutMs / 1000}s`)); }, timeoutMs);
+    child.stdout.on('data', (d) => { out += d; });
+    child.stderr.on('data', (d) => { out += d; });
+    child.on('error', (e) => { clearTimeout(timer); reject(e); });
+    child.on('close', (code) => { clearTimeout(timer); code === 0 ? resolve(out) : reject(new Error(`effortless ${args.join(' ')} exited ${code}:\n${out.split('\n').slice(-8).join('\n')}`)); });
+  });
+}
+const freshDir = (name) => { const dir = path.join(RUN_DIR, name); fs.rmSync(dir, { recursive: true, force: true }); fs.mkdirSync(dir, { recursive: true }); return dir; };
+
+app.get('/api/admin/export.xlsx', async (req, res) => {
+  try {
+    const dir = freshDir('xlsx-export');
+    fs.writeFileSync(path.join(dir, 'working-rulebook.json'), JSON.stringify(rulebookWithRows(ws.hub, ws.data), null, 1));
+    await effortless(['rulebook-to-xlsx', '-i', 'working-rulebook.json'], dir);
+    const made = fs.readdirSync(dir).filter((f) => f.endsWith('.xlsx'));
+    if (made.length !== 1) throw new Error(`rulebook-to-xlsx left ${made.length} workbooks in ${dir}, expected one`);
+    res.download(path.join(dir, made[0]), `${SLUG}.xlsx`);
+  } catch (e) {
+    console.error(e.message);
+    res.status(400).json({ error: e.message });
+  }
 });
 
-async function texts(client) {
-  return Object.fromEntries((await rows(client, 'SELECT page_text_id, text FROM vw_page_texts')).map(r => [r.page_text_id, r.text]));
-}
-
-// The current-record summary under the Stan buttons, from the facts in effect.
-async function recordSummary(client, t) {
-  const subject = await one(client, 'SELECT thing_id FROM vw_things WHERE label = $1', [t['record-subject']]);
-  const isPerson = (await rows(client,
-    `SELECT 1 FROM vw_statements s JOIN vw_properties p ON p.property_id = s.property
-      WHERE s.subject = $1 AND p.property_kind = 'type' AND s.object_label = $2 AND s.is_in_effect`, [subject.thing_id, t['record-class']])).length > 0;
-  const sentences = [isPerson ? t['record-person-yes'] : t['record-person-no']];
-  for (const p of await rows(client, 'SELECT property_id, record_kind FROM vw_properties WHERE record_kind IS NOT NULL ORDER BY record_order')) {
-    const values = (await rows(client,
-      `SELECT object_text FROM vw_statements WHERE subject = $1 AND property = $2 AND is_in_effect AND is_listed ORDER BY sort_order`,
-      [subject.thing_id, p.property_id])).map(r => r.object_text);
-    sentences.push(values.length ? fill(t['record-value'], { kind: p.record_kind, values: values.join(', ') }) : fill(t['record-none'], { kind: p.record_kind }));
+// The catalog's xlsx-to-rulebook syncs a workbook INTO a rulebook, so it is handed the
+// workbook and a copy of the live rulebook; what comes back is loaded as unsaved changes.
+const IMPORT_TIMEOUT_MS = Number(process.env.XLSX_IMPORT_TIMEOUT_MS || 240000);   // the tool answers a small workbook in about 30 s
+app.post('/api/admin/import', express.raw({ type: '*/*', limit: '30mb' }), route((req) => write(async () => {
+  if (!Buffer.isBuffer(req.body) || req.body.length === 0) throw new Error('Send the workbook as the request body');
+  const dir = freshDir('xlsx-import');
+  const target = path.join(dir, 'working-rulebook.json');
+  fs.writeFileSync(path.join(dir, 'upload.xlsx'), req.body);
+  fs.writeFileSync(target, JSON.stringify(rulebookWithRows(ws.hub, ws.data), null, 1));
+  await effortless(['xlsx-to-rulebook', '-i', 'upload.xlsx,working-rulebook.json'], dir, IMPORT_TIMEOUT_MS);
+  // The tool replaces the rulebook it was handed with the synced one and says what it did
+  // in xlsx-sync-summary.json (the same contract the generated rulebook editor's import uses).
+  const summaryFile = path.join(dir, 'xlsx-sync-summary.json');
+  if (!fs.existsSync(summaryFile)) throw new Error('xlsx-to-rulebook returned no xlsx-sync-summary.json: the installed tool predates workbook-into-rulebook sync');
+  const summary = JSON.parse(fs.readFileSync(summaryFile, 'utf8'));
+  const imported = readHub(target);
+  // Tables, fields and formulas changed in the workbook are reported, not applied: this import loads stored rows.
+  const schemaDiffers = [];
+  for (const [name, table] of Object.entries(ws.tables)) {
+    const other = imported.tables[name];
+    if (!other) throw new Error(`The synced rulebook has no table ${name}`);
+    for (const f of table.fields) {
+      const o = other.byName[f.name];
+      if (!o) schemaDiffers.push(`${name}.${f.name} is missing`);
+      else if ((o.formula || '') !== (f.formula || '')) schemaDiffers.push(`${name}.${f.name}: formula changed`);
+    }
+    for (const o of other.fields) if (!table.byName[o.name]) schemaDiffers.push(`${name}.${o.name} is new`);
   }
-  return sentences.join(' ');
-}
+  ws.replaceAll(storedRows(imported));
+  const changes = ws.changes();
+  return { message: fill(explainer.text('admin-imported'), { rows: changes.total }), changes, schemaDiffers, summary };
+})));
 
-async function page(client) {
-  const t = await texts(client);
-  const layouts = {};
-  for (const r of await rows(client, 'SELECT layout, node_key, x, y FROM vw_node_layouts')) (layouts[r.layout] ||= {})[r.node_key] = [r.x, r.y];
-  return {
-    texts: t,
-    graph: await one(client, `SELECT graph_id, count_of_stated_facts, count_of_conclusions, count_of_violations, is_consistent,
-                                     conclusions_message, has_facts_to_add FROM vw_graphs`),
-    rules: await rows(client, 'SELECT rule_id, label, explanation, is_enabled FROM vw_rules ORDER BY sort_order'),
-    scenarios: await rows(client, `SELECT scenario_id, label, button_group, is_primary, is_available FROM vw_scenarios ORDER BY sort_order`),
-    properties: await rows(client, `SELECT property_id, label, datatype, input_name, current_value_wording, has_one_current_value
-                                      FROM vw_properties WHERE is_user_addable ORDER BY sort_order`),
-    things: await rows(client, `SELECT thing_id, label, kind, node_key, node_kind, is_in_graph, count_of_children, count_of_grandchildren,
-                                       portrait_name, portrait_page, portrait_image, portrait_crop, portrait_width, portrait_height
-                                  FROM vw_things ORDER BY sort_order`),
-    facts: await rows(client, `SELECT statement_id, subject_label, property_label, object_text, is_literal, property_datatype,
-                                      is_in_effect, is_built_in, source
-                                 FROM vw_statements WHERE is_listed ORDER BY sort_order`),
-    edges: await rows(client, `SELECT statement_id, subject_node_key, object_node_key, subject_label, property_label, object_text,
-                                      is_literal, property, property_datatype, object_node_kind, object_value_node_label,
-                                      is_conclusion, is_in_contradiction, source
-                                 FROM vw_statements WHERE holds
-                                ORDER BY is_conclusion, CASE WHEN is_conclusion THEN first_fired_order_key ELSE sort_order END`),
-    conclusions: await rows(client, `SELECT firing_id, target, target_subject_label, target_property_label, target_object_text,
-                                            target_subject_node_key, target_object_node_key, card_text
-                                       FROM vw_firings WHERE is_chosen ORDER BY order_key`),
-    alarms: await rows(client, `SELECT disjoint_check_id, alarm_text FROM vw_disjoint_checks WHERE violation_unit = 1 ORDER BY disjoint_check_id`),
-    layouts,
-    slots: (await rows(client, 'SELECT x, y FROM vw_layout_slots ORDER BY sort_order')).map(r => [r.x, r.y]),
-    record: await recordSummary(client, t),
-  };
-}
-
-// Raw rows for the explainer's witness: the base tables, exactly as stored.
-const BASE_TABLES = { Graphs: 'graphs', Rules: 'rules', FiringKinds: 'firing_kinds', Things: 'things', Properties: 'properties',
-  Statements: 'statements', Firings: 'firings', DisjointChecks: 'disjoint_checks' };
-
-// ------------------------------------------------------------------ writes (base tables only)
-async function nextSeq(client) {
-  return (await one(client, 'SELECT next_activation_seq FROM vw_graphs')).next_activation_seq;
-}
-async function switchOn(client, id, seq) {
-  const r = await client.query('UPDATE statements SET is_stated = true, activation_seq = $2 WHERE statement_id = $1 AND is_listed', [id, seq]);
-  if (r.rowCount !== 1) throw new Error(`No listed fact ${id}`);
-}
-async function switchOff(client, id) {
-  const r = await client.query('UPDATE statements SET is_stated = false WHERE statement_id = $1 AND is_listed', [id]);
-  if (r.rowCount !== 1) throw new Error(`No listed fact ${id}`);
-}
-async function addToList(client, id) {
-  const r = await client.query(
-    `UPDATE statements SET is_listed = true, sort_order = (SELECT next_listed_sort_order FROM vw_graphs) WHERE statement_id = $1 AND NOT is_listed`, [id]);
-  if (r.rowCount === 0 && !(await rows(client, 'SELECT 1 FROM statements WHERE statement_id = $1', [id])).length)
-    throw new Error(`The rulebook has no row for ${id}`);
-}
-
-// A button: its fact baseline, then its explicit changes, then its rule settings.
-async function runScenario(client, id) {
-  const sc = await one(client, `SELECT scenario_id, fact_baseline, note, layout, clears_selection, clears_form_message, is_available
-                                  FROM vw_scenarios WHERE scenario_id = $1`, [id]);
-  let seq = await nextSeq(client);
-  const listed = await rows(client, 'SELECT statement_id, is_built_in, is_detail, is_next_to_add FROM vw_statements WHERE is_listed ORDER BY sort_order');
-  const set = async (r, on) => (on ? switchOn(client, r.statement_id, seq++) : switchOff(client, r.statement_id));
-  switch (sc.fact_baseline) {
-    case 'keep': break;
-    case 'built-in': for (const r of listed) await set(r, r.is_built_in); break;
-    case 'built-in-detail': for (const r of listed) await set(r, r.is_built_in && r.is_detail); break;
-    case 'all-off': for (const r of listed) await set(r, false); break;
-    case 'activate-all': for (const r of listed) await set(r, true); break;
-    case 'next': for (const r of listed.filter(r => r.is_next_to_add)) await set(r, true); break;
-    default: throw new Error(`Scenario ${id} has an unknown fact baseline: ${sc.fact_baseline}`);
-  }
-  for (const c of await rows(client, `SELECT subject, property, object_key, action, adds_to_list FROM vw_scenario_fact_changes
-                                       WHERE scenario = $1 ORDER BY sort_order`, [id])) {
-    const exact = c.object_key == null ? null : `${c.subject}|${c.property}|${c.object_key}`;
-    if (exact && c.adds_to_list) await addToList(client, exact);
-    const matched = await rows(client, `SELECT statement_id FROM vw_statements WHERE is_listed AND subject = $1 AND property = $2
-                                          AND ($3::text IS NULL OR statement_id = $3) ORDER BY sort_order`, [c.subject, c.property, exact]);
-    for (const m of matched) await set(m, c.action === 'on');
-  }
-  for (const r of await rows(client, 'SELECT rule, is_enabled FROM vw_scenario_rule_settings WHERE scenario = $1', [id]))
-    await client.query('UPDATE rules SET is_enabled = $2 WHERE rule_id = $1', [r.rule, r.is_enabled]);
-  return { note: sc.note || '', layout: sc.layout, clearsSelection: sc.clears_selection, clearsFormMessage: sc.clears_form_message };
-}
-
-function integerValue(value) {  // the page's own input check, unchanged
-  if (!/^[+-]?\d+$/.test(value)) return null;
-  const negative = value.charAt(0) === '-';
-  const digits = value.replace(/^[+-]/, '').replace(/^0+(?=\d)/, '');
-  return (negative && digits !== '0' ? '-' : '') + digits;
-}
-
-// The Add fact form. Returns { added, message }.
-async function addFact(client, { subject, property, object }) {
-  const t = await texts(client);
-  const s = String(subject || '').trim(), o0 = String(object || '').trim();
-  const prop = (await rows(client, 'SELECT property_id, label, datatype, input_name, current_value_wording FROM vw_properties WHERE property_id = $1 AND is_user_addable', [property]))[0];
-  if (!prop) throw new Error(`Not a property the form offers: ${property}`);
-  const literal = !!prop.datatype;
-  if (!s || !o0 || (s === o0 && !literal)) return { added: false, message: null };
-  let o = o0;
-  if (prop.datatype === 'xsd:integer') {
-    o = integerValue(o0);
-    if (o === null) return { added: false, message: fill(t['integer-error'], { field: prop.input_name }) };
-  }
-  const subj = (await rows(client, 'SELECT thing_id FROM vw_things WHERE label = $1', [s]))[0];
-  const obj = literal ? { key: o } : (await rows(client, 'SELECT thing_id AS key FROM vw_things WHERE label = $1', [o]))[0];
-  const id = subj && obj ? `${subj.thing_id}|${prop.property_id}|${obj.key}` : null;
-  if (!id || !(await rows(client, 'SELECT 1 FROM statements WHERE statement_id = $1', [id])).length)
-    return { added: false, message: fill(t['not-in-rulebook'], { fact: `${s} ${prop.label} ${o}` }) };
-  await addToList(client, id);
-  await switchOn(client, id, await nextSeq(client));
-  const message = prop.current_value_wording ? fill(t['form-replaced'], { subject: s, kind: prop.current_value_wording, value: o }) : '';
-  return { added: true, message };
-}
-
-async function removeFact(client, id) {
-  const r = await client.query(
-    `UPDATE statements SET is_listed = false, is_stated = false, sort_order = 10000 + activation_seq
-      WHERE statement_id = $1 AND is_listed AND NOT is_built_in`, [id]);
-  if (r.rowCount !== 1) throw new Error(`No removable fact ${id}`);
-}
-
-// ------------------------------------------------------------------ HTTP
-const app = express();
-app.use(express.json());
-const tx = (fn) => async (req, res) => {
-  const client = await pool.connect();
+// ------------------------------------------------------------------ the rulebook editor (its own container)
+app.get('/api/admin/editor', route(async () => {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 1500);
   try {
-    await client.query('BEGIN');
-    const result = await fn(client, req);
-    await client.query('COMMIT');
-    res.json({ ...result, page: await page(client) });
+    const r = await fetch(EDITOR_UI_URL, { signal: controller.signal });
+    return { running: r.ok, url: EDITOR_UI_URL };
   } catch (e) {
-    await client.query('ROLLBACK');
-    console.error(e);
-    res.status(400).json({ error: e.message });
+    return { running: false, url: EDITOR_UI_URL };
   } finally {
-    client.release();
+    clearTimeout(timer);
   }
-};
-const read = (fn) => async (req, res) => {
-  try { res.json(await fn(pool, req)); } catch (e) { console.error(e); res.status(500).json({ error: e.message }); }
-};
-
-app.get('/api/health', read(async (db) => ({ ok: true, views: (await rows(db, "SELECT count(*)::int AS n FROM information_schema.views WHERE table_name LIKE 'vw\\_%'"))[0].n })));
-app.get('/api/page', read((db) => page(db)));
-app.get('/api/rows', read(async (db) => {
-  const out = {};
-  for (const [table, base] of Object.entries(BASE_TABLES)) out[table] = await rows(db, `SELECT * FROM ${base}`);
-  return out;
 }));
-app.post('/api/facts/:id/switch', tx(async (c, req) => { req.body.on ? await switchOn(c, req.params.id, await nextSeq(c)) : await switchOff(c, req.params.id); return {}; }));
-app.post('/api/facts/:id/remove', tx(async (c, req) => { await removeFact(c, req.params.id); return {}; }));
-app.post('/api/facts', tx((c, req) => addFact(c, req.body)));
-app.post('/api/rules/:id/switch', tx(async (c, req) => {
-  const r = await c.query('UPDATE rules SET is_enabled = $2 WHERE rule_id = $1', [req.params.id, !!req.body.on]);
-  if (r.rowCount !== 1) throw new Error(`No rule ${req.params.id}`);
-  return {};
-}));
-app.post('/api/scenarios/:id/run', tx((c, req) => runScenario(c, req.params.id)));
 
 app.use('/rulebook-explainer-dag', express.static(path.join(PROJECT, 'explainer/rulebook-explainer-dag'), { maxAge: 0 }));
 app.use('/rulespeak', express.static(path.join(PROJECT, 'rulespeak')));
-app.use('/xlsx', express.static(path.join(PROJECT, 'xlsx')));
+app.use('/effortless-xlsx', express.static(path.join(PROJECT, 'effortless-xlsx')));
 app.use('/rulebook', express.static(path.join(PROJECT, 'effortless-rulebook')));
 app.use('/', express.static(path.join(HERE, 'public')));
 
-app.listen(PORT, '127.0.0.1', () => console.log(`South Park explainer on http://localhost:${PORT} (database ${DATABASE_URL})`));
+app.listen(PORT, '127.0.0.1', () => console.log(`South Park explainer on http://localhost:${PORT} (rulebook ${path.relative(REPO, HUB)}, database ${DATABASE_URL})`));

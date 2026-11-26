@@ -1,6 +1,6 @@
 # 📘 Talisman's South Park ontology explainer — التوثيق
 
-_Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten facts, five rule switches, property wiring, provenance wording and current-value policy are rows, and every conclusion is a formula. The rules apply in three fixed strata (inverse and symmetric, then the property chain, then domain and range); property wiring that feeds an earlier stratum would need repeated rounds._
+_Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten facts, five rule switches, property wiring, provenance wording and current-value policy are rows, and every conclusion is a formula. The rules apply in three fixed strata (inverse and symmetric, then the property chain, then domain and range); property wiring that feeds an earlier stratum would need repeated rounds. Every fact that could hold over the cast is a candidate row; app/lib/candidates.mjs writes the candidates when a thing, value or property is added._
 
 > قواعد عمل تصريحية مستخرجة من دفتر القواعد. كل عبارة واردة أدناه تعبّر عن حقيقة
 > في مجال العمل؛ فهي ليست إجراءً ولا أمرًا. صيغ دفتر القواعد هي المصدر الوحيد للحقيقة،
@@ -30,13 +30,15 @@ _Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten
 | Next Activation Seq | يُحسب على النحو الآتي: حقل «max activation seq» زائد 1. | _Order 2. The activation number the next switched-on fact takes._ |
 | Max Listed Sort Order | أكبر قيم حقل «sort order» عبر سجلات «statements» المرتبطة بسجل «graph» التي تحمل علامة «listed unit». | _Order 2. Highest list position among listed facts._ |
 | Next Listed Sort Order | يُحسب على النحو الآتي: حقل «max listed sort order» زائد 1. | _Order 3. The list position a newly added fact takes._ |
+| Max Sort Order | أكبر قيم حقل «sort order» عبر سجلات «statements» المرتبطة بسجل «graph». | _Order 1. Highest sort order of any fact, listed or candidate._ |
+| Next Candidate Sort Order | يُحسب على النحو الآتي: حقل «max sort order» زائد 1. | _Order 2. The sort order a new candidate fact, or a fact removed from the list, takes._ |
 
 <details open>
 <summary>بيانات توضيحية</summary>
 
-| Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 |
+| Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ | Max Sort Order ƒ | Next Candidate Sort Order ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 | 100269 | 100270 |
 
 _ƒ تدل على عمود محسوب._
 
@@ -67,7 +69,7 @@ _ƒ تدل على عمود محسوب._
 
 | المصطلح | الوصف | تعليق توضيحي |
 |------|-------------|-------------------|
-| **Firing Kind** | The ways a rule can apply. Domain and range belong to one rule but are worded apart. | — |
+| **Firing Kind** | The ways a rule can apply. Domain and range belong to one rule but are worded apart; 'disjoint' names the rule the disjointness checks answer to. | — |
 | Rule | سمة معرّفة. | _The rule switch this kind belongs to._ |
 | Wording | سمة معرّفة. | _How a conclusion card names the rule, as in 'Worked out by the inverse rule'._ |
 | Sort Order | سمة معرّفة. | _Order in which the page's reasoner tries the kinds for one fact._ |
@@ -93,12 +95,13 @@ _ƒ تدل على عمود محسوب._
 | Label | سمة معرّفة. | _The name the page shows._ |
 | Kind | سمة معرّفة. | _'individual' or 'class'._ |
 | Sort Order | سمة معرّفة. | _Position in the cast._ |
-| Portrait Name | سمة معرّفة. | _The name on the portrait's Fandom page._ |
-| Portrait Page | سمة معرّفة. | _The Fandom page credited for the portrait._ |
-| Portrait Image | سمة معرّفة. | _The original Fandom image._ |
-| Portrait Crop | سمة معرّفة. | _The portrait's crop as an SVG viewBox: x y width height._ |
-| Portrait Width | سمة معرّفة. | _The original image's width in pixels._ |
-| Portrait Height | سمة معرّفة. | _The original image's height in pixels._ |
+| Portrait | سمة معرّفة. | _The portrait drawn for this thing; set when its name matches a portrait alias._ |
+| Portrait Name | حقل «display name» من السجل المرتبط عبر حقل «portrait». | _Order 1. The name on the portrait's Fandom page._ |
+| Portrait Page | مأخوذ من السجل المرتبط عبر حقل «portrait». | _Order 1. The Fandom page credited for the portrait._ |
+| Portrait Image | مأخوذ من السجل المرتبط عبر حقل «portrait». | _Order 1. The original Fandom image._ |
+| Portrait Crop | مأخوذ من السجل المرتبط عبر حقل «portrait». | _Order 1. The portrait's crop as an SVG viewBox._ |
+| Portrait Width | مأخوذ من السجل المرتبط عبر حقل «portrait». | _Order 1. The original image's width in pixels._ |
+| Portrait Height | مأخوذ من السجل المرتبط عبر حقل «portrait». | _Order 1. The original image's height in pixels._ |
 | Name | يطابق حقل «label» في السجل نفسه. | _Order 1. The thing's name._ |
 | Node Key | يطابق حقل «thing ID» في السجل نفسه. | _Order 1. The key the graph draws this thing under._ |
 | Count of Children | مجموع قيم حقل «parent unit» عبر سجلات «statements» المرتبطة بسجل «thing». | _Order 17. People this thing is a parent of, stated or concluded._ |
@@ -107,12 +110,12 @@ _ƒ تدل على عمود محسوب._
 | Count As Subject | مجموع قيم حقل «holds unit» عبر سجلات «statements» المرتبطة بسجل «thing». | _Order 17. Holding facts about this thing._ |
 | Count As Object | مجموع قيم حقل «holds unit» عبر سجلات «statements» المرتبطة بسجل «thing». | _Order 17. Holding facts that point at this thing._ |
 | Is in Graph | صحيح إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: حقل «count as subject» أكبر من 0 أو حقل «count as object» أكبر من 0. | _Order 18. True when the graph draws this thing._ |
-| Node Kind | يتحدد وفق الأولوية: «class» إذا تحقق أنّ حقل «kind» يساوي «class»; «place» إذا تحقق أنّ حقل «count as place» أكبر من 0؛ وفي سائر الحالات «person». | _Order 18. How the graph draws the thing: a class, a place someone attends, or a person._ |
+| Node Kind | يتحدد وفق الأولوية: نص فارغ إذا تحقق أنّ حقل «kind» فارغ; «class» إذا تحقق أنّ حقل «kind» يساوي «class»; «place» إذا تحقق أنّ حقل «count as place» أكبر من 0؛ وفي سائر الحالات «person». | _Order 18. How the graph draws the thing: a class, a place someone attends, or a person._ |
 
 <details open>
 <summary>بيانات توضيحية</summary>
 
-| Label | Kind | Sort Order | Portrait Name | Portrait Page | Portrait Image | Portrait Crop | Portrait Width | Portrait Height | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
+| Label | Kind | Sort Order | Portrait Name ƒ | Portrait Page ƒ | Portrait Image ƒ | Portrait Crop ƒ | Portrait Width ƒ | Portrait Height ƒ | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Marvin | individual | 1 | Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | Marvin | Marvin | 1 | 0 | 0 | 1 | 0 | true | person |
 | Randy | individual | 2 | Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | Randy | Randy | 2 | 0 | 0 | 3 | 1 | true | person |
@@ -124,19 +127,59 @@ _ƒ تدل على عمود محسوب._
 
 | المصطلح | الوصف | تعليق توضيحي |
 |------|-------------|-------------------|
-| **Property** | The ten properties and the wiring every rule reads. | — |
+| **Portrait** | The page's Fandom portraits, including those for characters a reader may add. | — |
+| Display Name | سمة معرّفة. | _The name on the portrait's Fandom page._ |
+| Page | سمة معرّفة. | _The Fandom page credited for the portrait._ |
+| Image | سمة معرّفة. | _The original Fandom image._ |
+| Crop | سمة معرّفة. | _The crop as an SVG viewBox: x y width height._ |
+| Width | سمة معرّفة. | _The original image's width in pixels._ |
+| Height | سمة معرّفة. | _The original image's height in pixels._ |
+| Sort Order | سمة معرّفة. | _Position in the credits._ |
+| Name | يطابق حقل «display name» في السجل نفسه. | _Order 1. The portrait's name._ |
+
+<details open>
+<summary>بيانات توضيحية</summary>
+
+| Display Name | Page | Image | Crop | Width | Height | Sort Order | Name ƒ |
+|---|---|---|---|---|---|---|---|
+| Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | 1 | Marvin Marsh |
+| Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | 2 | Randy Marsh |
+| Sharon Marsh | https://southpark.fandom.com/wiki/Sharon_Marsh | https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest | 20 -10 390 390 | 439 | 1049 | 3 | Sharon Marsh |
+
+_ƒ تدل على عمود محسوب._
+
+</details>
+
+| المصطلح | الوصف | تعليق توضيحي |
+|------|-------------|-------------------|
+| **Portrait Aliase** | The names a portrait answers to. A new thing whose name matches an alias gets that portrait. | — |
+| Portrait | سمة معرّفة. | _The portrait this name selects._ |
+| Name | يطابق حقل «portrait alias ID» في السجل نفسه. | _Order 1. The alias._ |
+
+<details open>
+<summary>بيانات توضيحية</summary>
+
+| Name ƒ |
+|---|
+| marvin |
+| marvin marsh |
+| grandpa marsh |
+
+_ƒ تدل على عمود محسوب._
+
+</details>
+
+| المصطلح | الوصف | تعليق توضيحي |
+|------|-------------|-------------------|
+| **Property** | The ten properties, with what the symmetric, domain and range rules read. Axioms that relate one property to another (inverse, chain, disjoint) are rows of PropertyAxioms. | — |
 | Label | سمة معرّفة. | _The property's wording on the page._ |
 | Property Kind | سمة معرّفة. | _'object' links two things, 'datatype' links a thing to a value, 'type' states class membership._ |
 | Datatype | سمة معرّفة. | _The value's XML Schema datatype for a datatype property; blank otherwise._ |
 | Is User Addable | صحيح إذا تحقق أنّ نص فارغ. | _Offered in the page's Add fact form._ |
 | Has One Current Value | صحيح إذا تحقق أنّ نص فارغ. | _The page keeps one current value per person: switching a value on replaces the earlier one._ |
-| Inverse of | سمة معرّفة. | _The property the inverse rule derives from this one._ |
 | Is Symmetric | صحيح إذا تحقق أنّ نص فارغ. | _The symmetric rule makes this link true in both directions._ |
-| Chain First | سمة معرّفة. | _First link of the property chain that derives this property._ |
-| Chain Second | سمة معرّفة. | _Second link of the property chain that derives this property._ |
 | Domain Class | سمة معرّفة. | _The class the domain rule gives this property's subject._ |
 | Range Class | سمة معرّفة. | _The class the range rule gives this property's object._ |
-| Disjoint With | سمة معرّفة. | _A property that may not link the same pair, in the same direction, as this one._ |
 | Sort Order | سمة معرّفة. | _Position in the Add fact form's property list._ |
 | Value Node Label | سمة معرّفة. | _The small label under a value node for this property: 'role value' or 'number value'._ |
 | Current Value Wording | سمة معرّفة. | _How the Add fact form names a replaced value, as in 'Stan now has grade level 5'._ |
@@ -153,6 +196,28 @@ _ƒ تدل على عمود محسوب._
 | is parent of | object | — | true | false | false | 1 | — | — | — | — | — | is parent of |
 | is child of | object | — | true | false | false | 2 | — | — | — | — | — | is child of |
 | is spouse of | object | — | true | false | true | 3 | — | — | — | — | — | is spouse of |
+
+_ƒ تدل على عمود محسوب._
+
+</details>
+
+| المصطلح | الوصف | تعليق توضيحي |
+|------|-------------|-------------------|
+| **Property Axiom** | Axioms that relate one property to others, as OWL states them: an inverse, a two-link chain, or a disjoint pair. The candidate generator reads these rows. | — |
+| Kind | سمة معرّفة. | _inverse, chain or disjoint._ |
+| Property | سمة معرّفة. | _The property the axiom is about: the one inverted, the one a chain derives, or the first of a disjoint pair._ |
+| First | سمة معرّفة. | _The inverse property, the chain's first link, or the other property of a disjoint pair._ |
+| Second | سمة معرّفة. | _The chain's second link._ |
+| Name | يطابق حقل «property axiom ID» في السجل نفسه. | _Order 1. The axiom's key._ |
+
+<details open>
+<summary>بيانات توضيحية</summary>
+
+| Name ƒ |
+|---|
+| inverse:isParentOf |
+| disjoint:isParentOf~isSpouseOf |
+| inverse:isChildOf |
 
 _ƒ تدل على عمود محسوب._
 
@@ -209,6 +274,8 @@ _ƒ تدل على عمود محسوب._
 | Parent Unit | يتحدد وفق الأولوية: 1 إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «holds» مفعّلة وحقل «property» يساوي «isParentOf»؛ وفي سائر الحالات 0. | _Order 16. 1 for a holding parent link._ |
 | Grandparent Unit | يتحدد وفق الأولوية: 1 إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «holds» مفعّلة وحقل «property» يساوي «isGrandparentOf»؛ وفي سائر الحالات 0. | _Order 16. 1 for a holding grandparent link._ |
 | Place Unit | يتحدد وفق الأولوية: 1 إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «holds» مفعّلة وحقل «property» يساوي «attends»؛ وفي سائر الحالات 0. | _Order 16. 1 for a holding attends link._ |
+| First Pre Chain Order Key | أصغر قيم حقل «pre chain order key» عبر سجلات «firings» المرتبطة بسجل «statement» التي تحمل علامة «pre chain fired unit». | _Order 7. Order key of the first inverse or symmetric application that concludes this fact._ |
+| Snap Position | يتحدد وفق الأولوية: حقل «sort order» إذا تحقق أنّ علامة «in effect» مفعّلة; 100000 زائد حقل «first pre chain order key» إذا تحقق أنّ علامة «holds before chain» مفعّلة؛ وفي سائر الحالات 0. | _Order 8. Where the page's reasoner meets this fact as a premise: a stated fact at its list position, a fact concluded by the inverse or symmetric rule after every stated fact, in the order it was concluded; 0 for a fact that does not hold yet, so a link to no fact reads the same on every engine._ |
 | First Fired Order Key | أصغر قيم حقل «order key» عبر سجلات «firings» المرتبطة بسجل «statement» التي تحمل علامة «fired unit». | _Order 15. Order key of the first rule application that concludes this fact, in the page reasoner's order._ |
 | Count of Chosen Firings | مجموع قيم حقل «chosen unit» عبر سجلات «firings» المرتبطة بسجل «statement». | _Order 20. Rule applications shown as this fact's conclusion card: one for a conclusion, zero otherwise._ |
 | Subject Node Key | يطابق حقل «subject» في السجل نفسه. | _Order 1. The graph node this fact starts from._ |
@@ -224,11 +291,11 @@ _ƒ تدل على عمود محسوب._
 <details open>
 <summary>بيانات توضيحية</summary>
 
-| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 101 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 102 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
+| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Pre Chain Order Key ƒ | Snap Position ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 1.0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100001 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100002 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
 
 _ƒ تدل على عمود محسوب._
 
@@ -263,13 +330,18 @@ _ƒ تدل على عمود محسوب._
 | First Property Domain Class | مأخوذ من السجل المرتبط عبر حقل «first». | _Order 2. The premise property's domain class._ |
 | First Property Range Class | مأخوذ من السجل المرتبط عبر حقل «first». | _Order 2. The premise property's range class._ |
 | First Sort Order | مأخوذ من السجل المرتبط عبر حقل «first». | _Order 1. The premise's list position._ |
-| Second Sort Order | مأخوذ من السجل المرتبط عبر حقل «second». | _Order 1. The second premise's list position._ |
+| Second is in Effect | صحيح عندما يكون السجل المرتبط عبر حقل «second» مصنّفًا على أنه «in effect». | _Order 4. Whether the second premise is in effect._ |
+| First Snap Position | مأخوذ من السجل المرتبط عبر حقل «first». | _Order 9. Where the reasoner meets the premise._ |
+| Second Snap Position | مأخوذ من السجل المرتبط عبر حقل «second». | _Order 9. Where the reasoner meets the second premise._ |
 | Inverse Fired Unit | يتحدد وفق الأولوية: 1 إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «rule enabled» مفعّلة، وحقل «kind» يساوي «inverse»، وعلامة «first is in effect» مفعّلة؛ وفي سائر الحالات 0. | _Order 5. 1 when the inverse rule fires here._ |
 | Symmetric Fired Unit | يتحدد وفق الأولوية: 1 إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «rule enabled» مفعّلة، وحقل «kind» يساوي «symmetric»، وعلامة «first is in effect» مفعّلة؛ وفي سائر الحالات 0. | _Order 5. 1 when the symmetric rule fires here._ |
 | Chain Fired Unit | يتحدد وفق الأولوية: 1 إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «rule enabled» مفعّلة، وحقل «kind» يساوي «chain»، وعلامة «first holds before chain» مفعّلة، وعلامة «second holds before chain» مفعّلة؛ وفي سائر الحالات 0. | _Order 9. 1 when the property chain fires here._ |
 | Type Fired Unit | يتحدد وفق الأولوية: 1 إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «rule enabled» مفعّلة؛ وواحد على الأقل من الشروط الآتية متحقق: حقل «kind» يساوي «domain» أو حقل «kind» يساوي «range»؛ وعلامة «first holds before typing» مفعّلة؛ وفي سائر الحالات 0. | _Order 13. 1 when the domain or range rule fires here._ |
 | Fired Unit | يُحسب على النحو الآتي: حقل «inverse fired unit» زائد حقل «symmetric fired unit» زائد حقل «chain fired unit» زائد حقل «type fired unit». | _Order 14. 1 when this application fires._ |
-| Order Key | يُحسب على النحو الآتي: حقل «first sort order» مضروبًا في 100000 زائد حقل «kind sort order» مضروبًا في 1000 زائد 0 إذا تحقق أنّ حقل «second» فارغ، وفي سائر الحالات حقل «second sort order». | _Order 2. The page reasoner's order: by premise, then rule kind, then second premise._ |
+| Pre Chain Fired Unit | يُحسب على النحو الآتي: حقل «inverse fired unit» زائد حقل «symmetric fired unit». | _Order 6. 1 when this is an inverse or symmetric application that fires._ |
+| Pre Chain Order Key | يُحسب على النحو الآتي: حقل «first sort order» مضروبًا في 10 زائد حقل «kind sort order». | _Order 2. For an inverse or symmetric application: its place in the reasoner's first round._ |
+| Round | يتحدد وفق الأولوية: 2 إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «kind» يساوي «chain»؛ والشرط الآتي غير متحقق: جميع الشروط الآتية متحققة: علامة «first is in effect» مفعّلة وعلامة «second is in effect» مفعّلة؛ وفي سائر الحالات 1. | _Order 5. The reasoner's round: 1 when every premise is a stated fact, 2 when the property chain reads a concluded fact._ |
+| Order Key | يُحسب على النحو الآتي: حقل «round» مضروبًا في 1000000000000000 زائد حقل «first snap position» مضروبًا في 100000000 زائد حقل «kind sort order» مضروبًا في 10000000 زائد 0 إذا تحقق أنّ حقل «second» فارغ، وفي سائر الحالات حقل «second snap position». | _Order 10. The page reasoner's order: by round, then premise, then rule kind, then second premise._ |
 | Is Chosen | صحيح إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «fired unit» يساوي 1، وعلامة «target is conclusion» مفعّلة، وحقل «order key» يساوي حقل «target first fired order key». | _Order 18. The application the conclusions panel shows for its fact: the first one in the reasoner's order._ |
 | Chosen Unit | يتحدد وفق الأولوية: 1 إذا تحقق أنّ علامة «chosen» مفعّلة؛ وفي سائر الحالات 0. | _Order 19. 1 when this application is shown._ |
 | Card Text | يتحدد وفق الأولوية: «Worked out by the »، ثم حقل «kind wording»، ثم « from “»، ثم حقل «first words»، ثم «”»، ثم « and “»، ثم حقل «second words»، ثم «”» إذا تحقق أنّ حقل «kind» يساوي «chain»، وفي سائر الحالات « and “»، ثم حقل «first property»، ثم « has domain »، ثم حقل «first property domain class»، ثم «”» إذا تحقق أنّ حقل «kind» يساوي «domain»، وفي سائر الحالات « and “»، ثم حقل «first property»، ثم « has range »، ثم حقل «first property range class»، ثم «”»، ثم نقطة إذا تحقق أنّ علامة «chosen» مفعّلة؛ وفي سائر الحالات نص فارغ. ⚠︎ آلي <!-- rulespeak:reword --> | _Order 19. The conclusion card's provenance line, in the page's wording._ |
@@ -278,11 +350,11 @@ _ƒ تدل على عمود محسوب._
 <details open>
 <summary>بيانات توضيحية</summary>
 
-| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second Sort Order ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | — | 0 | 0 | 0 | 0 | 0 | 101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 101 | — | 0 | 0 | 0 | 0 | 0 | 10101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 102 | — | 0 | 0 | 0 | 0 | 0 | 10201000 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
+| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second is in Effect ƒ | First Snap Position ƒ | Second Snap Position ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Pre Chain Fired Unit ƒ | Pre Chain Order Key ƒ | Round ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | false | 1.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 11.0 | 1 | 1000000110000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 100001 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000011.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 100002 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000021.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
 
 _ƒ تدل على عمود محسوب._
 
@@ -455,11 +527,60 @@ _ƒ تدل على عمود محسوب._
 
 </details>
 
+| المصطلح | الوصف | تعليق توضيحي |
+|------|-------------|-------------------|
+| **Engine** | The execution engines the page can be computed by. Each is a build output of this rulebook. | — |
+| Label | سمة معرّفة. | _The engine's name in the switcher._ |
+| Substrate | سمة معرّفة. | _The conformance harness's name for this substrate._ |
+| Is Default | صحيح إذا تحقق أنّ نص فارغ. | _The engine a new visitor starts on._ |
+| Description | سمة معرّفة. | _What computes the page on this engine._ |
+| Sort Order | سمة معرّفة. | _Position in the switcher._ |
+| Name | يطابق حقل «label» في السجل نفسه. | _Order 1. The engine's name._ |
+
+<details open>
+<summary>بيانات توضيحية</summary>
+
+| Label | Substrate | Is Default | Description | Sort Order | Name ƒ |
+|---|---|---|---|---|---|
+| Postgres views | effortless-postgres | true | Every value is a column of a generated view; the database computes it when the page reads it. | 1 | Postgres views |
+| TypeScript | effortless-typescript | false | The generated TypeScript computes every field from the same rows, with no database. | 2 | TypeScript |
+| OWL and SHACL rules | effortless-owl | false | The generated ontology and SHACL rules, run over the same rows by a SPARQL engine. | 3 | OWL and SHACL rules |
+
+_ƒ تدل على عمود محسوب._
+
+</details>
+
+| المصطلح | الوصف | تعليق توضيحي |
+|------|-------------|-------------------|
+| **Rulebook Tool** | What each rulebook tool adds to the original explainer; the tools panel lists them. | — |
+| Label | سمة معرّفة. | _The tool's name._ |
+| Adds | سمة معرّفة. | _What it adds to the original explainer._ |
+| Href | سمة معرّفة. | _Where its link goes; 'editor' means the running rulebook editor._ |
+| Link Text | سمة معرّفة. | _The link's text._ |
+| Sort Order | سمة معرّفة. | _Position in the panel._ |
+| Name | يطابق حقل «label» في السجل نفسه. | _Order 1. The tool's name._ |
+
+<details open>
+<summary>بيانات توضيحية</summary>
+
+| Label | Adds | Href | Link Text | Sort Order | Name ƒ |
+|---|---|---|---|---|---|
+| Interchangeable engines | The same page, computed by Postgres views, generated TypeScript or the generated OWL and SHACL rules. Switch with the control above; nothing else changes. | — | — | 1 | Interchangeable engines |
+| Conformance | Every engine's answers for the current facts, compared value by value with the conformance harness's own rule for when two values are equal. | — | — | 2 | Conformance |
+| Explainer | Hover a dotted value for its rule in plain words and its witness: the values it came from, down to the stated facts. | /rulebook-explainer-dag/pages/index.html | Open the explainer | 3 | Explainer |
+
+_ƒ تدل على عمود محسوب._
+
+</details>
+
 ## 2 أنواع الحقائق
 
 - كل سجل «**firing kind**» يشير إلى سجل «**rule**» واحد فقط
-- كل سجل «**property**» يجوز أن يشير إلى سجل «**property**» واحد
+- كل سجل «**thing**» يجوز أن يشير إلى سجل «**portrait**» واحد
+- كل سجل «**portrait aliase**» يشير إلى سجل «**portrait**» واحد فقط
 - كل سجل «**property**» يجوز أن يشير إلى سجل «**thing**» واحد
+- كل سجل «**property axiom**» يشير إلى سجل «**firing kind**» واحد فقط
+- كل سجل «**property axiom**» يشير إلى سجل «**property**» واحد فقط
 - كل سجل «**statement**» يشير إلى سجل «**graph**» واحد فقط
 - كل سجل «**statement**» يشير إلى سجل «**thing**» واحد فقط
 - كل سجل «**statement**» يشير إلى سجل «**property**» واحد فقط
@@ -490,7 +611,12 @@ _القواعد التشغيلية تبيّن ما **يوجبه** العمل و�
 - **يجب أن** يشير كل سجل «firing kind» إلى سجل «rule» واحد فقط.
 - في كل سجل «firing kind»، **يجب أن** تُحدّد قيمة حقل «wording» وحقل «sort order».
 - في كل سجل «thing»، **يجب أن** تُحدّد قيمة حقل «label»، وحقل «kind»، وحقل «sort order».
+- في كل سجل «portrait»، **يجب أن** تُحدّد قيمة حقل «display name»، وحقل «page»، وحقل «image»، وحقل «crop»، وحقل «width»، وحقل «height»، وحقل «sort order».
+- **يجب أن** يشير كل سجل «portrait aliase» إلى سجل «portrait» واحد فقط.
 - في كل سجل «property»، **يجب أن** تُحدّد قيمة حقل «label»، وحقل «property kind»، وحقل «sort order»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «user addable»، وما إذا كان حائزًا على «one current value»، وما إذا كان مصنّفًا على أنه «symmetric».
+- **يجب أن** يشير كل سجل «property axiom» إلى سجل «firing kind» واحد فقط عبر حقل «kind».
+- **يجب أن** يشير كل سجل «property axiom» إلى سجل «property» واحد فقط.
+- **يجب أن** يشير كل سجل «property axiom» إلى سجل «property» واحد فقط عبر حقل «first».
 - **يجب أن** يشير كل سجل «statement» إلى سجل «graph» واحد فقط.
 - **يجب أن** يشير كل سجل «statement» إلى سجل «thing» واحد فقط عبر حقل «subject».
 - **يجب أن** يشير كل سجل «statement» إلى سجل «property» واحد فقط.
@@ -515,6 +641,8 @@ _القواعد التشغيلية تبيّن ما **يوجبه** العمل و�
 - في كل سجل «node layout»، **يجب أن** تُحدّد قيمة حقل «layout»، وحقل «node key»، وحقل «x»، وحقل «y».
 - في كل سجل «layout slot»، **يجب أن** تُحدّد قيمة حقل «sort order»، وحقل «x»، وحقل «y».
 - في كل سجل «page text»، **يجب أن** تُحدّد قيمة حقل «text».
+- في كل سجل «engine»، **يجب أن** تُحدّد قيمة حقل «label»، وحقل «substrate»، وحقل «description»، وحقل «sort order»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «default».
+- في كل سجل «rulebook tool»، **يجب أن** تُحدّد قيمة حقل «label»، وحقل «adds»، وحقل «sort order».
 
 ## 4 القواعد التعريفية
 
@@ -538,116 +666,136 @@ _جميع العبارات تعبّر عن حقيقة في مجال العمل؛
 | **DR-11 Next Activation Seq** | حقل «next activation seq» في سجل «graph» يُحسب على النحو الآتي: حقل «max activation seq» زائد 1. |
 | **DR-12 Max Listed Sort Order** | حقل «max listed sort order» في سجل «graph» هو أكبر قيم حقل «sort order» عبر سجلات «statements» المرتبطة بسجل «graph» التي تحمل علامة «listed unit». |
 | **DR-13 Next Listed Sort Order** | حقل «next listed sort order» في سجل «graph» يُحسب على النحو الآتي: حقل «max listed sort order» زائد 1. |
-| **DR-14 Name** | حقل «name» في سجل «rule» يطابق حقل «label» في السجل نفسه. |
-| **DR-15 Count of Firings** | حقل «count of firings» في سجل «rule» هو مجموع قيم حقل «fired unit» عبر سجلات «firings» المرتبطة بسجل «rule». |
-| **DR-16 Name** | حقل «name» في سجل «firing kind» يطابق حقل «wording» في السجل نفسه. |
-| **DR-17 Rule Enabled** | حقل «rule enabled» في سجل «firing kind» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «rule» مصنّفًا على أنه «enabled». |
-| **DR-18 Name** | حقل «name» في سجل «thing» يطابق حقل «label» في السجل نفسه. |
-| **DR-19 Node Key** | حقل «node key» في سجل «thing» يطابق حقل «thing ID» في السجل نفسه. |
-| **DR-20 Count of Children** | حقل «count of children» في سجل «thing» هو مجموع قيم حقل «parent unit» عبر سجلات «statements» المرتبطة بسجل «thing». |
-| **DR-21 Count of Grandchildren** | حقل «count of grandchildren» في سجل «thing» هو مجموع قيم حقل «grandparent unit» عبر سجلات «statements» المرتبطة بسجل «thing». |
-| **DR-22 Count As Place** | حقل «count as place» في سجل «thing» هو مجموع قيم حقل «place unit» عبر سجلات «statements» المرتبطة بسجل «thing». |
-| **DR-23 Count As Subject** | حقل «count as subject» في سجل «thing» هو مجموع قيم حقل «holds unit» عبر سجلات «statements» المرتبطة بسجل «thing». |
-| **DR-24 Count As Object** | حقل «count as object» في سجل «thing» هو مجموع قيم حقل «holds unit» عبر سجلات «statements» المرتبطة بسجل «thing». |
-| **DR-25 Is in Graph** | يُصنّف سجل «thing» على أنه «in graph» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: حقل «count as subject» أكبر من 0 أو حقل «count as object» أكبر من 0. |
-| **DR-26 Node Kind** | حقل «node kind» في سجل «thing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. «class»، إذا تحقق أنّ حقل «kind» يساوي «class»؛<br>2. «place»، إذا تحقق أنّ حقل «count as place» أكبر من 0؛<br>3. «person»، في سائر الحالات. |
-| **DR-27 Name** | حقل «name» في سجل «property» يطابق حقل «label» في السجل نفسه. |
-| **DR-28 Subject Label** | حقل «subject label» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «subject». |
-| **DR-29 Property Label** | حقل «property label» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «property». |
-| **DR-30 Object Label** | حقل «object label» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «object thing». |
-| **DR-31 Property Datatype** | حقل «property datatype» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «property». |
-| **DR-32 Property Has One Current Value** | حقل «property has one current value» في سجل «statement» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «property» حائزًا على «one current value». |
-| **DR-33 Property Domain Class** | حقل «property domain class» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «property». |
-| **DR-34 Property Range Class** | حقل «property range class» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «property». |
-| **DR-35 Literal Quote** | حقل «literal quote» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «graph». |
-| **DR-36 Literal Type Marker** | حقل «literal type marker» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «graph». |
-| **DR-37 Built in Source Text** | حقل «built in source text» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «graph». |
-| **DR-38 User Source Text** | حقل «user source text» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «graph». |
-| **DR-39 Next Fact Sort Order** | حقل «next fact sort order» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «graph». |
-| **DR-40 Is Literal** | يُصنّف سجل «statement» على أنه «literal» إذا تحقق أنّ حقل «object thing» فارغ. |
-| **DR-41 Object Text** | حقل «object text» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. حقل «object value»، إذا تحقق أنّ حقل «object thing» فارغ؛<br>2. حقل «object label»، في سائر الحالات. |
-| **DR-42 Name** | حقل «name» في سجل «statement» يُحسب على النحو الآتي: حقل «subject label»، ثم مسافة، ثم حقل «property label»، ثم مسافة، ثم حقل «object text». |
-| **DR-43 Words** | حقل «words» في سجل «statement» يُحسب على النحو الآتي: حقل «subject label»، ثم مسافة، ثم حقل «property label»، ثم مسافة، ثم حقل «literal quote»، ثم حقل «object value»، ثم حقل «literal quote»، ثم حقل «literal type marker»، ثم حقل «property datatype» إذا تحقق أنّ حقل «object thing» فارغ، وفي سائر الحالات حقل «object label». ⚠︎ آلي <!-- rulespeak:reword --> |
-| **DR-44 Source** | حقل «source» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. حقل «built in source text»، إذا تحقق أنّ علامة «built in» مفعّلة؛<br>2. حقل «user source text»، في سائر الحالات. |
-| **DR-45 Subject Property Key** | حقل «subject property key» في سجل «statement» يُحسب على النحو الآتي: حقل «subject»، ثم «|»، ثم حقل «property». |
-| **DR-46 Latest Sibling Activation Seq** | حقل «latest sibling activation seq» في سجل «statement» هو أكبر قيم حقل «activation seq» عبر سجلات «statements» المرتبطة بسجل «statement». |
-| **DR-47 Is in Effect** | يُصنّف سجل «statement» على أنه «in effect» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «stated» مفعّلة؛ وواحد على الأقل من الشروط الآتية متحقق: علامة «property has one current value» غير مفعّلة أو حقل «activation seq» يساوي حقل «latest sibling activation seq». |
-| **DR-48 Listed Unit** | حقل «listed unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ علامة «listed» مفعّلة؛<br>2. 0، في سائر الحالات. |
-| **DR-49 In Effect Unit** | حقل «in effect unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ علامة «in effect» مفعّلة؛<br>2. 0، في سائر الحالات. |
-| **DR-50 Listed Off Unit** | حقل «listed off unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «listed» مفعّلة وعلامة «in effect» غير مفعّلة؛<br>2. 0، في سائر الحالات. |
-| **DR-51 Is Next to Add** | يُصنّف سجل «statement» على أنه «next to add» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «listed off unit» يساوي 1 وحقل «sort order» يساوي حقل «next fact sort order». |
-| **DR-52 Count of Inverse Firings** | حقل «count of inverse firings» في سجل «statement» هو مجموع قيم حقل «inverse fired unit» عبر سجلات «firings» المرتبطة بسجل «statement». |
-| **DR-53 Count of Symmetric Firings** | حقل «count of symmetric firings» في سجل «statement» هو مجموع قيم حقل «symmetric fired unit» عبر سجلات «firings» المرتبطة بسجل «statement». |
-| **DR-54 Holds Before Chain** | يُعدّ سجل «statement» محققًا لشرط «holds before chain» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: علامة «in effect» مفعّلة، أو حقل «count of inverse firings» أكبر من 0، أو حقل «count of symmetric firings» أكبر من 0. |
-| **DR-55 Count of Chain Firings** | حقل «count of chain firings» في سجل «statement» هو مجموع قيم حقل «chain fired unit» عبر سجلات «firings» المرتبطة بسجل «statement». |
-| **DR-56 Holds Before Typing** | يُعدّ سجل «statement» محققًا لشرط «holds before typing» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: علامة «holds before chain» مفعّلة أو حقل «count of chain firings» أكبر من 0. |
-| **DR-57 Count of Type Firings** | حقل «count of type firings» في سجل «statement» هو مجموع قيم حقل «type fired unit» عبر سجلات «firings» المرتبطة بسجل «statement». |
-| **DR-58 Holds** | يُعدّ سجل «statement» محققًا لشرط «holds» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: علامة «holds before typing» مفعّلة أو حقل «count of type firings» أكبر من 0. |
-| **DR-59 Is Conclusion** | يُصنّف سجل «statement» على أنه «conclusion» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «holds» مفعّلة وعلامة «in effect» غير مفعّلة. |
-| **DR-60 Holds Unit** | حقل «holds unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ علامة «holds» مفعّلة؛<br>2. 0، في سائر الحالات. |
-| **DR-61 Conclusion Unit** | حقل «conclusion unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ علامة «conclusion» مفعّلة؛<br>2. 0، في سائر الحالات. |
-| **DR-62 Parent Unit** | حقل «parent unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «holds» مفعّلة وحقل «property» يساوي «isParentOf»؛<br>2. 0، في سائر الحالات. |
-| **DR-63 Grandparent Unit** | حقل «grandparent unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «holds» مفعّلة وحقل «property» يساوي «isGrandparentOf»؛<br>2. 0، في سائر الحالات. |
-| **DR-64 Place Unit** | حقل «place unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «holds» مفعّلة وحقل «property» يساوي «attends»؛<br>2. 0، في سائر الحالات. |
-| **DR-65 First Fired Order Key** | حقل «first fired order key» في سجل «statement» هو أصغر قيم حقل «order key» عبر سجلات «firings» المرتبطة بسجل «statement» التي تحمل علامة «fired unit». |
-| **DR-66 Count of Chosen Firings** | حقل «count of chosen firings» في سجل «statement» هو مجموع قيم حقل «chosen unit» عبر سجلات «firings» المرتبطة بسجل «statement». |
-| **DR-67 Subject Node Key** | حقل «subject node key» في سجل «statement» يطابق حقل «subject» في السجل نفسه. |
-| **DR-68 Object Node Key** | حقل «object node key» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. «literal|»، ثم حقل «object value»، ثم «|»، ثم حقل «property datatype»، إذا تحقق أنّ حقل «object thing» فارغ؛<br>2. حقل «object thing»، في سائر الحالات. |
-| **DR-69 Subject Node Kind** | حقل «subject node kind» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «subject». |
-| **DR-70 Object Thing Node Kind** | حقل «object thing node kind» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «object thing». |
-| **DR-71 Object Node Kind** | حقل «object node kind» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. «value»، إذا تحقق أنّ حقل «object thing» فارغ؛<br>2. حقل «object thing node kind»، في سائر الحالات. |
-| **DR-72 Object Value Node Label** | حقل «object value node label» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «property». |
-| **DR-73 Count of Violations As First** | حقل «count of violations as first» في سجل «statement» هو مجموع قيم حقل «violation unit» عبر سجلات «disjoint checks» المرتبطة بسجل «statement». |
-| **DR-74 Count of Violations As Second** | حقل «count of violations as second» في سجل «statement» هو مجموع قيم حقل «violation unit» عبر سجلات «disjoint checks» المرتبطة بسجل «statement». |
-| **DR-75 Is in Contradiction** | يُصنّف سجل «statement» على أنه «in contradiction» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: حقل «count of violations as first» أكبر من 0 أو حقل «count of violations as second» أكبر من 0. |
-| **DR-76 Rule Enabled** | حقل «rule enabled» في سجل «firing» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «rule» مصنّفًا على أنه «enabled». |
-| **DR-77 Kind Wording** | حقل «kind wording» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «kind». |
-| **DR-78 Kind Sort Order** | حقل «kind sort order» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «kind». |
-| **DR-79 Target Name** | حقل «target name» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target». |
-| **DR-80 Target Subject Label** | حقل «target subject label» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target». |
-| **DR-81 Target Property Label** | حقل «target property label» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target». |
-| **DR-82 Target Object Text** | حقل «target object text» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target». |
-| **DR-83 Target is Conclusion** | حقل «target is conclusion» في سجل «firing» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «target» مصنّفًا على أنه «conclusion». |
-| **DR-84 Target Subject Node Key** | حقل «target subject node key» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target». |
-| **DR-85 Target Object Node Key** | حقل «target object node key» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target». |
-| **DR-86 Target First Fired Order Key** | حقل «target first fired order key» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target». |
-| **DR-87 First Words** | حقل «first words» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «first». |
-| **DR-88 Second Words** | حقل «second words» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «second». |
-| **DR-89 First is in Effect** | حقل «first is in effect» في سجل «firing» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «first» مصنّفًا على أنه «in effect». |
-| **DR-90 First Holds Before Chain** | حقل «first holds before chain» في سجل «firing» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «first» موسومًا بعلامة «holds before chain». |
-| **DR-91 Second Holds Before Chain** | حقل «second holds before chain» في سجل «firing» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «second» موسومًا بعلامة «holds before chain». |
-| **DR-92 First Holds Before Typing** | حقل «first holds before typing» في سجل «firing» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «first» موسومًا بعلامة «holds before typing». |
-| **DR-93 First Property** | حقل «first property» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «first». |
-| **DR-94 First Property Domain Class** | حقل «first property domain class» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «first». |
-| **DR-95 First Property Range Class** | حقل «first property range class» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «first». |
-| **DR-96 First Sort Order** | حقل «first sort order» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «first». |
-| **DR-97 Second Sort Order** | حقل «second sort order» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «second». |
-| **DR-98 Inverse Fired Unit** | حقل «inverse fired unit» في سجل «firing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «rule enabled» مفعّلة، وحقل «kind» يساوي «inverse»، وعلامة «first is in effect» مفعّلة؛<br>2. 0، في سائر الحالات. |
-| **DR-99 Symmetric Fired Unit** | حقل «symmetric fired unit» في سجل «firing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «rule enabled» مفعّلة، وحقل «kind» يساوي «symmetric»، وعلامة «first is in effect» مفعّلة؛<br>2. 0، في سائر الحالات. |
-| **DR-100 Chain Fired Unit** | حقل «chain fired unit» في سجل «firing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «rule enabled» مفعّلة، وحقل «kind» يساوي «chain»، وعلامة «first holds before chain» مفعّلة، وعلامة «second holds before chain» مفعّلة؛<br>2. 0، في سائر الحالات. |
-| **DR-101 Type Fired Unit** | حقل «type fired unit» في سجل «firing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «rule enabled» مفعّلة؛ وواحد على الأقل من الشروط الآتية متحقق: حقل «kind» يساوي «domain» أو حقل «kind» يساوي «range»؛ وعلامة «first holds before typing» مفعّلة؛<br>2. 0، في سائر الحالات. |
-| **DR-102 Fired Unit** | حقل «fired unit» في سجل «firing» يُحسب على النحو الآتي: حقل «inverse fired unit» زائد حقل «symmetric fired unit» زائد حقل «chain fired unit» زائد حقل «type fired unit». |
-| **DR-103 Order Key** | حقل «order key» في سجل «firing» يُحسب على النحو الآتي: حقل «first sort order» مضروبًا في 100000 زائد حقل «kind sort order» مضروبًا في 1000 زائد 0 إذا تحقق أنّ حقل «second» فارغ، وفي سائر الحالات حقل «second sort order». |
-| **DR-104 Is Chosen** | يُصنّف سجل «firing» على أنه «chosen» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «fired unit» يساوي 1، وعلامة «target is conclusion» مفعّلة، وحقل «order key» يساوي حقل «target first fired order key». |
-| **DR-105 Chosen Unit** | حقل «chosen unit» في سجل «firing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ علامة «chosen» مفعّلة؛<br>2. 0، في سائر الحالات. |
-| **DR-106 Card Text** | حقل «card text» في سجل «firing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. «Worked out by the »، ثم حقل «kind wording»، ثم « from “»، ثم حقل «first words»، ثم «”»، ثم « and “»، ثم حقل «second words»، ثم «”» إذا تحقق أنّ حقل «kind» يساوي «chain»، وفي سائر الحالات « and “»، ثم حقل «first property»، ثم « has domain »، ثم حقل «first property domain class»، ثم «”» إذا تحقق أنّ حقل «kind» يساوي «domain»، وفي سائر الحالات « and “»، ثم حقل «first property»، ثم « has range »، ثم حقل «first property range class»، ثم «”»، ثم نقطة، إذا تحقق أنّ علامة «chosen» مفعّلة؛<br>2. نص فارغ، في سائر الحالات. ⚠︎ آلي <!-- rulespeak:reword --> |
-| **DR-107 Name** | حقل «name» في سجل «firing» يطابق حقل «firing ID» في السجل نفسه. |
-| **DR-108 Rule Enabled** | حقل «rule enabled» في سجل «disjoint check» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «rule» مصنّفًا على أنه «enabled». |
-| **DR-109 First Holds** | حقل «first holds» في سجل «disjoint check» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «first» موسومًا بعلامة «holds». |
-| **DR-110 Second Holds** | حقل «second holds» في سجل «disjoint check» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «second» موسومًا بعلامة «holds». |
-| **DR-111 Subject Label** | حقل «subject label» في سجل «disjoint check» مأخوذ من السجل المرتبط به عبر حقل «first». |
-| **DR-112 Object Label** | حقل «object label» في سجل «disjoint check» مأخوذ من السجل المرتبط به عبر حقل «first». |
-| **DR-113 Violation Unit** | حقل «violation unit» في سجل «disjoint check» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «rule enabled» مفعّلة، وعلامة «first holds» مفعّلة، وعلامة «second holds» مفعّلة؛<br>2. 0، في سائر الحالات. |
-| **DR-114 Alarm Text** | حقل «alarm text» في سجل «disjoint check» يتحدد وفق ترتيب الأولوية الآتي:<br>1. «Contradiction found. »، ثم حقل «subject label»، ثم « is recorded as both parent and spouse of »، ثم حقل «object label»، ثم «. Check those facts and the selected disjoint rule.»، إذا تحقق أنّ حقل «violation unit» يساوي 1؛<br>2. نص فارغ، في سائر الحالات. |
-| **DR-115 Name** | حقل «name» في سجل «disjoint check» يطابق حقل «disjoint check ID» في السجل نفسه. |
-| **DR-116 Name** | حقل «name» في سجل «scenario» يطابق حقل «label» في السجل نفسه. |
-| **DR-117 Graph Has Facts to Add** | حقل «graph has facts to add» في سجل «scenario» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «graph» حائزًا على «facts to add». |
-| **DR-118 Is Available** | يُصنّف سجل «scenario» على أنه «available» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: حقل «fact baseline» لا يساوي «next» أو علامة «graph has facts to add» مفعّلة. |
-| **DR-119 Name** | حقل «name» في سجل «scenario fact change» يطابق حقل «scenario fact change ID» في السجل نفسه. |
-| **DR-120 Name** | حقل «name» في سجل «scenario rule setting» يطابق حقل «scenario rule setting ID» في السجل نفسه. |
-| **DR-121 Name** | حقل «name» في سجل «node layout» يطابق حقل «node layout ID» في السجل نفسه. |
-| **DR-122 Name** | حقل «name» في سجل «layout slot» يطابق حقل «layout slot ID» في السجل نفسه. |
-| **DR-123 Name** | حقل «name» في سجل «page text» يطابق حقل «page text ID» في السجل نفسه. |
+| **DR-14 Max Sort Order** | حقل «max sort order» في سجل «graph» هو أكبر قيم حقل «sort order» عبر سجلات «statements» المرتبطة بسجل «graph». |
+| **DR-15 Next Candidate Sort Order** | حقل «next candidate sort order» في سجل «graph» يُحسب على النحو الآتي: حقل «max sort order» زائد 1. |
+| **DR-16 Name** | حقل «name» في سجل «rule» يطابق حقل «label» في السجل نفسه. |
+| **DR-17 Count of Firings** | حقل «count of firings» في سجل «rule» هو مجموع قيم حقل «fired unit» عبر سجلات «firings» المرتبطة بسجل «rule». |
+| **DR-18 Name** | حقل «name» في سجل «firing kind» يطابق حقل «wording» في السجل نفسه. |
+| **DR-19 Rule Enabled** | حقل «rule enabled» في سجل «firing kind» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «rule» مصنّفًا على أنه «enabled». |
+| **DR-20 Portrait Name** | حقل «portrait name» في سجل «thing» يأخذ قيمة حقل «display name» من السجل المرتبط به عبر حقل «portrait». |
+| **DR-21 Portrait Page** | حقل «portrait page» في سجل «thing» مأخوذ من السجل المرتبط به عبر حقل «portrait». |
+| **DR-22 Portrait Image** | حقل «portrait image» في سجل «thing» مأخوذ من السجل المرتبط به عبر حقل «portrait». |
+| **DR-23 Portrait Crop** | حقل «portrait crop» في سجل «thing» مأخوذ من السجل المرتبط به عبر حقل «portrait». |
+| **DR-24 Portrait Width** | حقل «portrait width» في سجل «thing» مأخوذ من السجل المرتبط به عبر حقل «portrait». |
+| **DR-25 Portrait Height** | حقل «portrait height» في سجل «thing» مأخوذ من السجل المرتبط به عبر حقل «portrait». |
+| **DR-26 Name** | حقل «name» في سجل «thing» يطابق حقل «label» في السجل نفسه. |
+| **DR-27 Node Key** | حقل «node key» في سجل «thing» يطابق حقل «thing ID» في السجل نفسه. |
+| **DR-28 Count of Children** | حقل «count of children» في سجل «thing» هو مجموع قيم حقل «parent unit» عبر سجلات «statements» المرتبطة بسجل «thing». |
+| **DR-29 Count of Grandchildren** | حقل «count of grandchildren» في سجل «thing» هو مجموع قيم حقل «grandparent unit» عبر سجلات «statements» المرتبطة بسجل «thing». |
+| **DR-30 Count As Place** | حقل «count as place» في سجل «thing» هو مجموع قيم حقل «place unit» عبر سجلات «statements» المرتبطة بسجل «thing». |
+| **DR-31 Count As Subject** | حقل «count as subject» في سجل «thing» هو مجموع قيم حقل «holds unit» عبر سجلات «statements» المرتبطة بسجل «thing». |
+| **DR-32 Count As Object** | حقل «count as object» في سجل «thing» هو مجموع قيم حقل «holds unit» عبر سجلات «statements» المرتبطة بسجل «thing». |
+| **DR-33 Is in Graph** | يُصنّف سجل «thing» على أنه «in graph» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: حقل «count as subject» أكبر من 0 أو حقل «count as object» أكبر من 0. |
+| **DR-34 Node Kind** | حقل «node kind» في سجل «thing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. نص فارغ، إذا تحقق أنّ حقل «kind» فارغ؛<br>2. «class»، إذا تحقق أنّ حقل «kind» يساوي «class»؛<br>3. «place»، إذا تحقق أنّ حقل «count as place» أكبر من 0؛<br>4. «person»، في سائر الحالات. |
+| **DR-35 Name** | حقل «name» في سجل «portrait» يطابق حقل «display name» في السجل نفسه. |
+| **DR-36 Name** | حقل «name» في سجل «portrait aliase» يطابق حقل «portrait alias ID» في السجل نفسه. |
+| **DR-37 Name** | حقل «name» في سجل «property» يطابق حقل «label» في السجل نفسه. |
+| **DR-38 Name** | حقل «name» في سجل «property axiom» يطابق حقل «property axiom ID» في السجل نفسه. |
+| **DR-39 Subject Label** | حقل «subject label» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «subject». |
+| **DR-40 Property Label** | حقل «property label» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «property». |
+| **DR-41 Object Label** | حقل «object label» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «object thing». |
+| **DR-42 Property Datatype** | حقل «property datatype» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «property». |
+| **DR-43 Property Has One Current Value** | حقل «property has one current value» في سجل «statement» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «property» حائزًا على «one current value». |
+| **DR-44 Property Domain Class** | حقل «property domain class» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «property». |
+| **DR-45 Property Range Class** | حقل «property range class» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «property». |
+| **DR-46 Literal Quote** | حقل «literal quote» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «graph». |
+| **DR-47 Literal Type Marker** | حقل «literal type marker» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «graph». |
+| **DR-48 Built in Source Text** | حقل «built in source text» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «graph». |
+| **DR-49 User Source Text** | حقل «user source text» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «graph». |
+| **DR-50 Next Fact Sort Order** | حقل «next fact sort order» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «graph». |
+| **DR-51 Is Literal** | يُصنّف سجل «statement» على أنه «literal» إذا تحقق أنّ حقل «object thing» فارغ. |
+| **DR-52 Object Text** | حقل «object text» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. حقل «object value»، إذا تحقق أنّ حقل «object thing» فارغ؛<br>2. حقل «object label»، في سائر الحالات. |
+| **DR-53 Name** | حقل «name» في سجل «statement» يُحسب على النحو الآتي: حقل «subject label»، ثم مسافة، ثم حقل «property label»، ثم مسافة، ثم حقل «object text». |
+| **DR-54 Words** | حقل «words» في سجل «statement» يُحسب على النحو الآتي: حقل «subject label»، ثم مسافة، ثم حقل «property label»، ثم مسافة، ثم حقل «literal quote»، ثم حقل «object value»، ثم حقل «literal quote»، ثم حقل «literal type marker»، ثم حقل «property datatype» إذا تحقق أنّ حقل «object thing» فارغ، وفي سائر الحالات حقل «object label». ⚠︎ آلي <!-- rulespeak:reword --> |
+| **DR-55 Source** | حقل «source» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. حقل «built in source text»، إذا تحقق أنّ علامة «built in» مفعّلة؛<br>2. حقل «user source text»، في سائر الحالات. |
+| **DR-56 Subject Property Key** | حقل «subject property key» في سجل «statement» يُحسب على النحو الآتي: حقل «subject»، ثم «|»، ثم حقل «property». |
+| **DR-57 Latest Sibling Activation Seq** | حقل «latest sibling activation seq» في سجل «statement» هو أكبر قيم حقل «activation seq» عبر سجلات «statements» المرتبطة بسجل «statement». |
+| **DR-58 Is in Effect** | يُصنّف سجل «statement» على أنه «in effect» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «stated» مفعّلة؛ وواحد على الأقل من الشروط الآتية متحقق: علامة «property has one current value» غير مفعّلة أو حقل «activation seq» يساوي حقل «latest sibling activation seq». |
+| **DR-59 Listed Unit** | حقل «listed unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ علامة «listed» مفعّلة؛<br>2. 0، في سائر الحالات. |
+| **DR-60 In Effect Unit** | حقل «in effect unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ علامة «in effect» مفعّلة؛<br>2. 0، في سائر الحالات. |
+| **DR-61 Listed Off Unit** | حقل «listed off unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «listed» مفعّلة وعلامة «in effect» غير مفعّلة؛<br>2. 0، في سائر الحالات. |
+| **DR-62 Is Next to Add** | يُصنّف سجل «statement» على أنه «next to add» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «listed off unit» يساوي 1 وحقل «sort order» يساوي حقل «next fact sort order». |
+| **DR-63 Count of Inverse Firings** | حقل «count of inverse firings» في سجل «statement» هو مجموع قيم حقل «inverse fired unit» عبر سجلات «firings» المرتبطة بسجل «statement». |
+| **DR-64 Count of Symmetric Firings** | حقل «count of symmetric firings» في سجل «statement» هو مجموع قيم حقل «symmetric fired unit» عبر سجلات «firings» المرتبطة بسجل «statement». |
+| **DR-65 Holds Before Chain** | يُعدّ سجل «statement» محققًا لشرط «holds before chain» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: علامة «in effect» مفعّلة، أو حقل «count of inverse firings» أكبر من 0، أو حقل «count of symmetric firings» أكبر من 0. |
+| **DR-66 Count of Chain Firings** | حقل «count of chain firings» في سجل «statement» هو مجموع قيم حقل «chain fired unit» عبر سجلات «firings» المرتبطة بسجل «statement». |
+| **DR-67 Holds Before Typing** | يُعدّ سجل «statement» محققًا لشرط «holds before typing» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: علامة «holds before chain» مفعّلة أو حقل «count of chain firings» أكبر من 0. |
+| **DR-68 Count of Type Firings** | حقل «count of type firings» في سجل «statement» هو مجموع قيم حقل «type fired unit» عبر سجلات «firings» المرتبطة بسجل «statement». |
+| **DR-69 Holds** | يُعدّ سجل «statement» محققًا لشرط «holds» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: علامة «holds before typing» مفعّلة أو حقل «count of type firings» أكبر من 0. |
+| **DR-70 Is Conclusion** | يُصنّف سجل «statement» على أنه «conclusion» إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «holds» مفعّلة وعلامة «in effect» غير مفعّلة. |
+| **DR-71 Holds Unit** | حقل «holds unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ علامة «holds» مفعّلة؛<br>2. 0، في سائر الحالات. |
+| **DR-72 Conclusion Unit** | حقل «conclusion unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ علامة «conclusion» مفعّلة؛<br>2. 0، في سائر الحالات. |
+| **DR-73 Parent Unit** | حقل «parent unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «holds» مفعّلة وحقل «property» يساوي «isParentOf»؛<br>2. 0، في سائر الحالات. |
+| **DR-74 Grandparent Unit** | حقل «grandparent unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «holds» مفعّلة وحقل «property» يساوي «isGrandparentOf»؛<br>2. 0، في سائر الحالات. |
+| **DR-75 Place Unit** | حقل «place unit» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «holds» مفعّلة وحقل «property» يساوي «attends»؛<br>2. 0، في سائر الحالات. |
+| **DR-76 First Pre Chain Order Key** | حقل «first pre chain order key» في سجل «statement» هو أصغر قيم حقل «pre chain order key» عبر سجلات «firings» المرتبطة بسجل «statement» التي تحمل علامة «pre chain fired unit». |
+| **DR-77 Snap Position** | حقل «snap position» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. حقل «sort order»، إذا تحقق أنّ علامة «in effect» مفعّلة؛<br>2. 100000 زائد حقل «first pre chain order key»، إذا تحقق أنّ علامة «holds before chain» مفعّلة؛<br>3. 0، في سائر الحالات. |
+| **DR-78 First Fired Order Key** | حقل «first fired order key» في سجل «statement» هو أصغر قيم حقل «order key» عبر سجلات «firings» المرتبطة بسجل «statement» التي تحمل علامة «fired unit». |
+| **DR-79 Count of Chosen Firings** | حقل «count of chosen firings» في سجل «statement» هو مجموع قيم حقل «chosen unit» عبر سجلات «firings» المرتبطة بسجل «statement». |
+| **DR-80 Subject Node Key** | حقل «subject node key» في سجل «statement» يطابق حقل «subject» في السجل نفسه. |
+| **DR-81 Object Node Key** | حقل «object node key» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. «literal|»، ثم حقل «object value»، ثم «|»، ثم حقل «property datatype»، إذا تحقق أنّ حقل «object thing» فارغ؛<br>2. حقل «object thing»، في سائر الحالات. |
+| **DR-82 Subject Node Kind** | حقل «subject node kind» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «subject». |
+| **DR-83 Object Thing Node Kind** | حقل «object thing node kind» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «object thing». |
+| **DR-84 Object Node Kind** | حقل «object node kind» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:<br>1. «value»، إذا تحقق أنّ حقل «object thing» فارغ؛<br>2. حقل «object thing node kind»، في سائر الحالات. |
+| **DR-85 Object Value Node Label** | حقل «object value node label» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «property». |
+| **DR-86 Count of Violations As First** | حقل «count of violations as first» في سجل «statement» هو مجموع قيم حقل «violation unit» عبر سجلات «disjoint checks» المرتبطة بسجل «statement». |
+| **DR-87 Count of Violations As Second** | حقل «count of violations as second» في سجل «statement» هو مجموع قيم حقل «violation unit» عبر سجلات «disjoint checks» المرتبطة بسجل «statement». |
+| **DR-88 Is in Contradiction** | يُصنّف سجل «statement» على أنه «in contradiction» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: حقل «count of violations as first» أكبر من 0 أو حقل «count of violations as second» أكبر من 0. |
+| **DR-89 Rule Enabled** | حقل «rule enabled» في سجل «firing» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «rule» مصنّفًا على أنه «enabled». |
+| **DR-90 Kind Wording** | حقل «kind wording» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «kind». |
+| **DR-91 Kind Sort Order** | حقل «kind sort order» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «kind». |
+| **DR-92 Target Name** | حقل «target name» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target». |
+| **DR-93 Target Subject Label** | حقل «target subject label» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target». |
+| **DR-94 Target Property Label** | حقل «target property label» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target». |
+| **DR-95 Target Object Text** | حقل «target object text» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target». |
+| **DR-96 Target is Conclusion** | حقل «target is conclusion» في سجل «firing» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «target» مصنّفًا على أنه «conclusion». |
+| **DR-97 Target Subject Node Key** | حقل «target subject node key» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target». |
+| **DR-98 Target Object Node Key** | حقل «target object node key» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target». |
+| **DR-99 Target First Fired Order Key** | حقل «target first fired order key» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target». |
+| **DR-100 First Words** | حقل «first words» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «first». |
+| **DR-101 Second Words** | حقل «second words» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «second». |
+| **DR-102 First is in Effect** | حقل «first is in effect» في سجل «firing» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «first» مصنّفًا على أنه «in effect». |
+| **DR-103 First Holds Before Chain** | حقل «first holds before chain» في سجل «firing» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «first» موسومًا بعلامة «holds before chain». |
+| **DR-104 Second Holds Before Chain** | حقل «second holds before chain» في سجل «firing» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «second» موسومًا بعلامة «holds before chain». |
+| **DR-105 First Holds Before Typing** | حقل «first holds before typing» في سجل «firing» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «first» موسومًا بعلامة «holds before typing». |
+| **DR-106 First Property** | حقل «first property» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «first». |
+| **DR-107 First Property Domain Class** | حقل «first property domain class» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «first». |
+| **DR-108 First Property Range Class** | حقل «first property range class» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «first». |
+| **DR-109 First Sort Order** | حقل «first sort order» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «first». |
+| **DR-110 Second is in Effect** | حقل «second is in effect» في سجل «firing» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «second» مصنّفًا على أنه «in effect». |
+| **DR-111 First Snap Position** | حقل «first snap position» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «first». |
+| **DR-112 Second Snap Position** | حقل «second snap position» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «second». |
+| **DR-113 Inverse Fired Unit** | حقل «inverse fired unit» في سجل «firing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «rule enabled» مفعّلة، وحقل «kind» يساوي «inverse»، وعلامة «first is in effect» مفعّلة؛<br>2. 0، في سائر الحالات. |
+| **DR-114 Symmetric Fired Unit** | حقل «symmetric fired unit» في سجل «firing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «rule enabled» مفعّلة، وحقل «kind» يساوي «symmetric»، وعلامة «first is in effect» مفعّلة؛<br>2. 0، في سائر الحالات. |
+| **DR-115 Chain Fired Unit** | حقل «chain fired unit» في سجل «firing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «rule enabled» مفعّلة، وحقل «kind» يساوي «chain»، وعلامة «first holds before chain» مفعّلة، وعلامة «second holds before chain» مفعّلة؛<br>2. 0، في سائر الحالات. |
+| **DR-116 Type Fired Unit** | حقل «type fired unit» في سجل «firing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «rule enabled» مفعّلة؛ وواحد على الأقل من الشروط الآتية متحقق: حقل «kind» يساوي «domain» أو حقل «kind» يساوي «range»؛ وعلامة «first holds before typing» مفعّلة؛<br>2. 0، في سائر الحالات. |
+| **DR-117 Fired Unit** | حقل «fired unit» في سجل «firing» يُحسب على النحو الآتي: حقل «inverse fired unit» زائد حقل «symmetric fired unit» زائد حقل «chain fired unit» زائد حقل «type fired unit». |
+| **DR-118 Pre Chain Fired Unit** | حقل «pre chain fired unit» في سجل «firing» يُحسب على النحو الآتي: حقل «inverse fired unit» زائد حقل «symmetric fired unit». |
+| **DR-119 Pre Chain Order Key** | حقل «pre chain order key» في سجل «firing» يُحسب على النحو الآتي: حقل «first sort order» مضروبًا في 10 زائد حقل «kind sort order». |
+| **DR-120 Round** | حقل «round» في سجل «firing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 2، إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «kind» يساوي «chain»؛ والشرط الآتي غير متحقق: جميع الشروط الآتية متحققة: علامة «first is in effect» مفعّلة وعلامة «second is in effect» مفعّلة؛<br>2. 1، في سائر الحالات. |
+| **DR-121 Order Key** | حقل «order key» في سجل «firing» يُحسب على النحو الآتي: حقل «round» مضروبًا في 1000000000000000 زائد حقل «first snap position» مضروبًا في 100000000 زائد حقل «kind sort order» مضروبًا في 10000000 زائد 0 إذا تحقق أنّ حقل «second» فارغ، وفي سائر الحالات حقل «second snap position». |
+| **DR-122 Is Chosen** | يُصنّف سجل «firing» على أنه «chosen» إذا تحقق أنّ جميع الشروط الآتية متحققة: حقل «fired unit» يساوي 1، وعلامة «target is conclusion» مفعّلة، وحقل «order key» يساوي حقل «target first fired order key». |
+| **DR-123 Chosen Unit** | حقل «chosen unit» في سجل «firing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ علامة «chosen» مفعّلة؛<br>2. 0، في سائر الحالات. |
+| **DR-124 Card Text** | حقل «card text» في سجل «firing» يتحدد وفق ترتيب الأولوية الآتي:<br>1. «Worked out by the »، ثم حقل «kind wording»، ثم « from “»، ثم حقل «first words»، ثم «”»، ثم « and “»، ثم حقل «second words»، ثم «”» إذا تحقق أنّ حقل «kind» يساوي «chain»، وفي سائر الحالات « and “»، ثم حقل «first property»، ثم « has domain »، ثم حقل «first property domain class»، ثم «”» إذا تحقق أنّ حقل «kind» يساوي «domain»، وفي سائر الحالات « and “»، ثم حقل «first property»، ثم « has range »، ثم حقل «first property range class»، ثم «”»، ثم نقطة، إذا تحقق أنّ علامة «chosen» مفعّلة؛<br>2. نص فارغ، في سائر الحالات. ⚠︎ آلي <!-- rulespeak:reword --> |
+| **DR-125 Name** | حقل «name» في سجل «firing» يطابق حقل «firing ID» في السجل نفسه. |
+| **DR-126 Rule Enabled** | حقل «rule enabled» في سجل «disjoint check» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «rule» مصنّفًا على أنه «enabled». |
+| **DR-127 First Holds** | حقل «first holds» في سجل «disjoint check» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «first» موسومًا بعلامة «holds». |
+| **DR-128 Second Holds** | حقل «second holds» في سجل «disjoint check» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «second» موسومًا بعلامة «holds». |
+| **DR-129 Subject Label** | حقل «subject label» في سجل «disjoint check» مأخوذ من السجل المرتبط به عبر حقل «first». |
+| **DR-130 Object Label** | حقل «object label» في سجل «disjoint check» مأخوذ من السجل المرتبط به عبر حقل «first». |
+| **DR-131 Violation Unit** | حقل «violation unit» في سجل «disjoint check» يتحدد وفق ترتيب الأولوية الآتي:<br>1. 1، إذا تحقق أنّ جميع الشروط الآتية متحققة: علامة «rule enabled» مفعّلة، وعلامة «first holds» مفعّلة، وعلامة «second holds» مفعّلة؛<br>2. 0، في سائر الحالات. |
+| **DR-132 Alarm Text** | حقل «alarm text» في سجل «disjoint check» يتحدد وفق ترتيب الأولوية الآتي:<br>1. «Contradiction found. »، ثم حقل «subject label»، ثم « is recorded as both parent and spouse of »، ثم حقل «object label»، ثم «. Check those facts and the selected disjoint rule.»، إذا تحقق أنّ حقل «violation unit» يساوي 1؛<br>2. نص فارغ، في سائر الحالات. |
+| **DR-133 Name** | حقل «name» في سجل «disjoint check» يطابق حقل «disjoint check ID» في السجل نفسه. |
+| **DR-134 Name** | حقل «name» في سجل «scenario» يطابق حقل «label» في السجل نفسه. |
+| **DR-135 Graph Has Facts to Add** | حقل «graph has facts to add» في سجل «scenario» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «graph» حائزًا على «facts to add». |
+| **DR-136 Is Available** | يُصنّف سجل «scenario» على أنه «available» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: حقل «fact baseline» لا يساوي «next» أو علامة «graph has facts to add» مفعّلة. |
+| **DR-137 Name** | حقل «name» في سجل «scenario fact change» يطابق حقل «scenario fact change ID» في السجل نفسه. |
+| **DR-138 Name** | حقل «name» في سجل «scenario rule setting» يطابق حقل «scenario rule setting ID» في السجل نفسه. |
+| **DR-139 Name** | حقل «name» في سجل «node layout» يطابق حقل «node layout ID» في السجل نفسه. |
+| **DR-140 Name** | حقل «name» في سجل «layout slot» يطابق حقل «layout slot ID» في السجل نفسه. |
+| **DR-141 Name** | حقل «name» في سجل «page text» يطابق حقل «page text ID» في السجل نفسه. |
+| **DR-142 Name** | حقل «name» في سجل «engine» يطابق حقل «label» في السجل نفسه. |
+| **DR-143 Name** | حقل «name» في سجل «rulebook tool» يطابق حقل «label» في السجل نفسه. |
 
 ## 5 التتبّع إلى المخطط
 
@@ -669,10 +817,18 @@ _عمود التعبير هو تعريف القاعدة بترميز التوث�
 | **Graphs.NextActivationSeq** | صيغة | `MaxActivationSeq + 1` |
 | **Graphs.MaxListedSortOrder** | تجميع | `Max(Statements.SortOrder via Graph)` |
 | **Graphs.NextListedSortOrder** | صيغة | `MaxListedSortOrder + 1` |
+| **Graphs.MaxSortOrder** | تجميع | `Max(Statements.SortOrder via Graph)` |
+| **Graphs.NextCandidateSortOrder** | صيغة | `MaxSortOrder + 1` |
 | **Rules.Name** | صيغة | `Label` |
 | **Rules.CountOfFirings** | تجميع | `Sum(Firings.FiredUnit via Rule)` |
 | **FiringKinds.Name** | صيغة | `Wording` |
 | **FiringKinds.RuleEnabled** | بحث | `Lookup(Rules.IsEnabled via Rule)` |
+| **Things.PortraitName** | بحث | `Lookup(Portraits.DisplayName via Portrait)` |
+| **Things.PortraitPage** | بحث | `Lookup(Portraits.Page via Portrait)` |
+| **Things.PortraitImage** | بحث | `Lookup(Portraits.Image via Portrait)` |
+| **Things.PortraitCrop** | بحث | `Lookup(Portraits.Crop via Portrait)` |
+| **Things.PortraitWidth** | بحث | `Lookup(Portraits.Width via Portrait)` |
+| **Things.PortraitHeight** | بحث | `Lookup(Portraits.Height via Portrait)` |
 | **Things.Name** | صيغة | `Label` |
 | **Things.NodeKey** | صيغة | `ThingId` |
 | **Things.CountOfChildren** | تجميع | `Sum(Statements.ParentUnit via Subject)` |
@@ -681,8 +837,11 @@ _عمود التعبير هو تعريف القاعدة بترميز التوث�
 | **Things.CountAsSubject** | تجميع | `Sum(Statements.HoldsUnit via Subject)` |
 | **Things.CountAsObject** | تجميع | `Sum(Statements.HoldsUnit via ObjectThing)` |
 | **Things.IsInGraph** | صيغة | `Or(CountAsSubject > 0, CountAsObject > 0)` |
-| **Things.NodeKind** | صيغة | `If(Kind = "class", "class", If(CountAsPlace > 0, "place", "person"))` |
+| **Things.NodeKind** | صيغة | `If(Kind = "", "", If(Kind = "class", "class", If(CountAsPlace > 0, "place", "person")))` |
+| **Portraits.Name** | صيغة | `DisplayName` |
+| **PortraitAliases.Name** | صيغة | `PortraitAliasId` |
 | **Properties.Name** | صيغة | `Label` |
+| **PropertyAxioms.Name** | صيغة | `PropertyAxiomId` |
 | **Statements.SubjectLabel** | بحث | `Lookup(Things.Label via Subject)` |
 | **Statements.PropertyLabel** | بحث | `Lookup(Properties.Label via Property)` |
 | **Statements.ObjectLabel** | بحث | `Lookup(Things.Label via ObjectThing)` |
@@ -720,6 +879,8 @@ _عمود التعبير هو تعريف القاعدة بترميز التوث�
 | **Statements.ParentUnit** | صيغة | `If(And(Holds, Property = "isParentOf"), 1, 0)` |
 | **Statements.GrandparentUnit** | صيغة | `If(And(Holds, Property = "isGrandparentOf"), 1, 0)` |
 | **Statements.PlaceUnit** | صيغة | `If(And(Holds, Property = "attends"), 1, 0)` |
+| **Statements.FirstPreChainOrderKey** | تجميع | `Min(Firings.PreChainOrderKey via Target)` |
+| **Statements.SnapPosition** | صيغة | `If(IsInEffect, SortOrder, If(HoldsBeforeChain, 100000 + FirstPreChainOrderKey, 0))` |
 | **Statements.FirstFiredOrderKey** | تجميع | `Min(Firings.OrderKey via Target)` |
 | **Statements.CountOfChosenFirings** | تجميع | `Sum(Firings.ChosenUnit via Target)` |
 | **Statements.SubjectNodeKey** | صيغة | `Subject` |
@@ -752,13 +913,18 @@ _عمود التعبير هو تعريف القاعدة بترميز التوث�
 | **Firings.FirstPropertyDomainClass** | بحث | `Lookup(Statements.PropertyDomainClass via First)` |
 | **Firings.FirstPropertyRangeClass** | بحث | `Lookup(Statements.PropertyRangeClass via First)` |
 | **Firings.FirstSortOrder** | بحث | `Lookup(Statements.SortOrder via First)` |
-| **Firings.SecondSortOrder** | بحث | `Lookup(Statements.SortOrder via Second)` |
+| **Firings.SecondIsInEffect** | بحث | `Lookup(Statements.IsInEffect via Second)` |
+| **Firings.FirstSnapPosition** | بحث | `Lookup(Statements.SnapPosition via First)` |
+| **Firings.SecondSnapPosition** | بحث | `Lookup(Statements.SnapPosition via Second)` |
 | **Firings.InverseFiredUnit** | صيغة | `If(And(RuleEnabled, Kind = "inverse", FirstIsInEffect), 1, 0)` |
 | **Firings.SymmetricFiredUnit** | صيغة | `If(And(RuleEnabled, Kind = "symmetric", FirstIsInEffect), 1, 0)` |
 | **Firings.ChainFiredUnit** | صيغة | `If(And(RuleEnabled, Kind = "chain", FirstHoldsBeforeChain, SecondHoldsBeforeChain), 1, 0)` |
 | **Firings.TypeFiredUnit** | صيغة | `If(And(RuleEnabled, Or(Kind = "domain", Kind = "range"), FirstHoldsBeforeTyping), 1, 0)` |
 | **Firings.FiredUnit** | صيغة | `InverseFiredUnit + SymmetricFiredUnit + ChainFiredUnit + TypeFiredUnit` |
-| **Firings.OrderKey** | صيغة | `FirstSortOrder * 100000 + KindSortOrder * 1000 + If(Second = "", 0, SecondSortOrder)` |
+| **Firings.PreChainFiredUnit** | صيغة | `InverseFiredUnit + SymmetricFiredUnit` |
+| **Firings.PreChainOrderKey** | صيغة | `FirstSortOrder * 10 + KindSortOrder` |
+| **Firings.Round** | صيغة | `If(And(Kind = "chain", Not(And(FirstIsInEffect, SecondIsInEffect))), 2, 1)` |
+| **Firings.OrderKey** | صيغة | `Round * 1000000000000000 + FirstSnapPosition * 100000000 + KindSortOrder * 10000000 + If(Second = "", 0, SecondSnapPosition)` |
 | **Firings.IsChosen** | صيغة | `And(FiredUnit = 1, TargetIsConclusion, OrderKey = TargetFirstFiredOrderKey)` |
 | **Firings.ChosenUnit** | صيغة | `If(IsChosen, 1, 0)` |
 | **Firings.CardText** | صيغة | `If(IsChosen, Concat("Worked out by the ", KindWording, " from “", FirstWords, "”", If(Kind = "chain", Concat(" and “", SecondWords, "”"), If(Kind = "domain", Concat(" and “", FirstProperty, " has domain ", FirstPropertyDomainClass, "”"), If(Kind = "range", Concat(" and “", FirstProperty, " has range ", FirstPropertyRangeClass, "”"), ""))), "."), "")` |
@@ -779,6 +945,8 @@ _عمود التعبير هو تعريف القاعدة بترميز التوث�
 | **NodeLayouts.Name** | صيغة | `NodeLayoutId` |
 | **LayoutSlots.Name** | صيغة | `LayoutSlotId` |
 | **PageTexts.Name** | صيغة | `PageTextId` |
+| **Engines.Name** | صيغة | `Label` |
+| **RulebookTools.Name** | صيغة | `Label` |
 
 ---
 

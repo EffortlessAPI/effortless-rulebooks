@@ -1,0 +1,512 @@
+[
+  {
+    "page_text_id": "add-button",
+    "text": "Add fact",
+    "name": "add-button"
+  },
+  {
+    "page_text_id": "add-heading",
+    "text": "Your statements extend the graph",
+    "name": "add-heading"
+  },
+  {
+    "page_text_id": "add-hint",
+    "text": "Try Sharon, is parent of, Stan. Then try Sharon, is parent of, Randy with the disjoint rule on.",
+    "name": "add-hint"
+  },
+  {
+    "page_text_id": "admin-add-row",
+    "text": "Add a row",
+    "name": "admin-add-row"
+  },
+  {
+    "page_text_id": "admin-back",
+    "text": "Back to the explainer",
+    "name": "admin-back"
+  },
+  {
+    "page_text_id": "admin-build-done",
+    "text": "Rebuild finished.",
+    "name": "admin-build-done"
+  },
+  {
+    "page_text_id": "admin-build-failed",
+    "text": "Rebuild failed; see the log.",
+    "name": "admin-build-failed"
+  },
+  {
+    "page_text_id": "admin-build-running",
+    "text": "Rebuilding: this runs every generator and takes a few minutes.",
+    "name": "admin-build-running"
+  },
+  {
+    "page_text_id": "admin-candidates",
+    "text": "Candidate facts updated: {added} added, {removed} removed.",
+    "name": "admin-candidates"
+  },
+  {
+    "page_text_id": "admin-changes-heading",
+    "text": "Unsaved changes",
+    "name": "admin-changes-heading"
+  },
+  {
+    "page_text_id": "admin-conformance-heading",
+    "text": "Conformance",
+    "name": "admin-conformance-heading"
+  },
+  {
+    "page_text_id": "admin-delete-row",
+    "text": "Delete",
+    "name": "admin-delete-row"
+  },
+  {
+    "page_text_id": "admin-discard",
+    "text": "Discard changes",
+    "name": "admin-discard"
+  },
+  {
+    "page_text_id": "admin-discarded",
+    "text": "Reloaded the rows from the rulebook.",
+    "name": "admin-discarded"
+  },
+  {
+    "page_text_id": "admin-editor",
+    "text": "Open the rulebook editor",
+    "name": "admin-editor"
+  },
+  {
+    "page_text_id": "admin-editor-off",
+    "text": "The rulebook editor is not running. Start it with ./start.sh --editor",
+    "name": "admin-editor-off"
+  },
+  {
+    "page_text_id": "admin-export",
+    "text": "Export to Excel",
+    "name": "admin-export"
+  },
+  {
+    "page_text_id": "admin-filter",
+    "text": "Filter rows",
+    "name": "admin-filter"
+  },
+  {
+    "page_text_id": "admin-hub-changed",
+    "text": "The rulebook file changed on disk since this app loaded it (saved from the rulebook editor, or edited by hand). Discard changes reloads it.",
+    "name": "admin-hub-changed"
+  },
+  {
+    "page_text_id": "admin-import",
+    "text": "Import from Excel",
+    "name": "admin-import"
+  },
+  {
+    "page_text_id": "admin-import-schema",
+    "text": "The workbook also differs from the rulebook in {count} fields or formulas ({examples}); those are not applied here. Change tables, fields and formulas in the rulebook editor or the rulebook file.",
+    "name": "admin-import-schema"
+  },
+  {
+    "page_text_id": "admin-imported",
+    "text": "Imported {rows} changed rows from the workbook. Review them, then save.",
+    "name": "admin-imported"
+  },
+  {
+    "page_text_id": "admin-intro",
+    "text": "Every table of the rulebook. Edit a stored value and the explainer follows at once, on every engine. Computed values are read-only: they come from the engine. Save writes the rows back into the rulebook file.",
+    "name": "admin-intro"
+  },
+  {
+    "page_text_id": "admin-nothing-to-save",
+    "text": "Nothing to save.",
+    "name": "admin-nothing-to-save"
+  },
+  {
+    "page_text_id": "admin-rebuild",
+    "text": "Rebuild from the rulebook",
+    "name": "admin-rebuild"
+  },
+  {
+    "page_text_id": "admin-rows",
+    "text": "{shown} of {total} rows",
+    "name": "admin-rows"
+  },
+  {
+    "page_text_id": "admin-save",
+    "text": "Save to the rulebook",
+    "name": "admin-save"
+  },
+  {
+    "page_text_id": "admin-saved",
+    "text": "Saved {rows} changed rows to {file}.",
+    "name": "admin-saved"
+  },
+  {
+    "page_text_id": "admin-show-computed",
+    "text": "Show computed fields",
+    "name": "admin-show-computed"
+  },
+  {
+    "page_text_id": "admin-title",
+    "text": "Rulebook admin",
+    "name": "admin-title"
+  },
+  {
+    "page_text_id": "byline-author",
+    "text": "Jessica Talisman",
+    "name": "byline-author"
+  },
+  {
+    "page_text_id": "byline-author-url",
+    "text": "https://substack.com/@jessicatalisman",
+    "name": "byline-author-url"
+  },
+  {
+    "page_text_id": "byline-prefix",
+    "text": "A rulebook rebuild of the explainer by",
+    "name": "byline-prefix"
+  },
+  {
+    "page_text_id": "byline-suffix",
+    "text": "· Intentional Arrangement",
+    "name": "byline-suffix"
+  },
+  {
+    "page_text_id": "conclusions-heading",
+    "text": "Rules produce new conclusions",
+    "name": "conclusions-heading"
+  },
+  {
+    "page_text_id": "conformance-agree",
+    "text": "{engines} engines agree on all {cells} computed values for the current facts.",
+    "name": "conformance-agree"
+  },
+  {
+    "page_text_id": "conformance-button",
+    "text": "Compare the engines",
+    "name": "conformance-button"
+  },
+  {
+    "page_text_id": "conformance-differ",
+    "text": "{count} of {cells} computed values differ between engines.",
+    "name": "conformance-differ"
+  },
+  {
+    "page_text_id": "conformance-running",
+    "text": "Comparing the engines on the current facts...",
+    "name": "conformance-running"
+  },
+  {
+    "page_text_id": "credits-summary",
+    "text": "Fandom supplies the character and location images",
+    "name": "credits-summary"
+  },
+  {
+    "page_text_id": "engine-label",
+    "text": "Computed by",
+    "name": "engine-label"
+  },
+  {
+    "page_text_id": "engine-timing",
+    "text": "{ms} ms",
+    "name": "engine-timing"
+  },
+  {
+    "page_text_id": "engine-unavailable",
+    "text": "{engine} is not available: {reason}",
+    "name": "engine-unavailable"
+  },
+  {
+    "page_text_id": "fandom-link",
+    "text": "{name} on Fandom",
+    "name": "fandom-link"
+  },
+  {
+    "page_text_id": "focus-appears",
+    "text": "{name} appears in {count} facts.",
+    "name": "focus-appears"
+  },
+  {
+    "page_text_id": "focus-appears-one",
+    "text": "{name} appears in 1 fact.",
+    "name": "focus-appears-one"
+  },
+  {
+    "page_text_id": "focus-children",
+    "text": "children",
+    "name": "focus-children"
+  },
+  {
+    "page_text_id": "focus-grandchildren",
+    "text": "grandchildren",
+    "name": "focus-grandchildren"
+  },
+  {
+    "page_text_id": "focus-source",
+    "text": "Source of this fact",
+    "name": "focus-source"
+  },
+  {
+    "page_text_id": "footer-credit",
+    "text": "A rebuild of Jessica Talisman’s South Park Ontology Explainer for Intentional Arrangement, made from a rulebook. The model, wording and layout follow her page. South Park is the work of Trey Parker and Matt Stone; the portraits are Fandom images.",
+    "name": "footer-credit"
+  },
+  {
+    "page_text_id": "form-replaced",
+    "text": "{subject} now has {kind} {value} in this page’s current record. The person’s identifier stays the same.",
+    "name": "form-replaced"
+  },
+  {
+    "page_text_id": "grade-input-note",
+    "text": "For has grade level, enter an integer (a number with no fractional part), such as 4 or 5. This form checks integer input as an application check. For has role, enter text such as Student. A new grade or role replaces that person’s previous active value in this page’s current record. Uncheck a role fact to clear it.",
+    "name": "grade-input-note"
+  },
+  {
+    "page_text_id": "hood-conclusions",
+    "text": "conclusions",
+    "name": "hood-conclusions"
+  },
+  {
+    "page_text_id": "hood-consistent",
+    "text": "consistent",
+    "name": "hood-consistent"
+  },
+  {
+    "page_text_id": "hood-no",
+    "text": "no",
+    "name": "hood-no"
+  },
+  {
+    "page_text_id": "hood-stated",
+    "text": "facts in effect",
+    "name": "hood-stated"
+  },
+  {
+    "page_text_id": "hood-yes",
+    "text": "yes",
+    "name": "hood-yes"
+  },
+  {
+    "page_text_id": "image-note",
+    "text": "Character portraits and South Park Elementary are Fandom images, linked from the rulebook’s Things table. Dashed circles mark classes; solid circles show individual things or values.",
+    "name": "image-note"
+  },
+  {
+    "page_text_id": "integer-error",
+    "text": "Enter an integer (a number with no fractional part) for {field}. This is an application input check.",
+    "name": "integer-error"
+  },
+  {
+    "page_text_id": "intro",
+    "text": "An ontology defines kinds of things, their properties and rules. This knowledge graph uses those definitions to connect facts about South Park. Stan’s school facts can change while Stan stays the same person.",
+    "name": "intro"
+  },
+  {
+    "page_text_id": "intro-rulebook",
+    "text": "This version runs no reasoner in the browser. Every fact, rule switch and conclusion on the page is a row or a formula in one rulebook, and the engine you pick below computes it: Postgres views, generated TypeScript, or the generated OWL and SHACL rules.",
+    "name": "intro-rulebook"
+  },
+  {
+    "page_text_id": "key-class",
+    "text": "a class",
+    "name": "key-class"
+  },
+  {
+    "page_text_id": "key-conclusion",
+    "text": "a conclusion from a rule",
+    "name": "key-conclusion"
+  },
+  {
+    "page_text_id": "key-help",
+    "text": "Drag a circle to move it. Tap a circle or a line to read its facts and sources.",
+    "name": "key-help"
+  },
+  {
+    "page_text_id": "key-individual",
+    "text": "an individual or value",
+    "name": "key-individual"
+  },
+  {
+    "page_text_id": "key-stated",
+    "text": "a fact we stated",
+    "name": "key-stated"
+  },
+  {
+    "page_text_id": "label-object",
+    "text": "Object or value",
+    "name": "label-object"
+  },
+  {
+    "page_text_id": "label-predicate",
+    "text": "Predicate / property",
+    "name": "label-predicate"
+  },
+  {
+    "page_text_id": "label-subject",
+    "text": "Subject",
+    "name": "label-subject"
+  },
+  {
+    "page_text_id": "link-article",
+    "text": "Read the article",
+    "name": "link-article"
+  },
+  {
+    "page_text_id": "link-article-url",
+    "text": "https://jessicatalisman.substack.com/p/what-is-an-ontology",
+    "name": "link-article-url"
+  },
+  {
+    "page_text_id": "link-original",
+    "text": "Open the original explainer",
+    "name": "link-original"
+  },
+  {
+    "page_text_id": "link-original-url",
+    "text": "https://southpark-ontology-explainer.jessica-tali-7056.chatgpt.site/",
+    "name": "link-original-url"
+  },
+  {
+    "page_text_id": "mode-label",
+    "text": "Showing",
+    "name": "mode-label"
+  },
+  {
+    "page_text_id": "mode-original",
+    "text": "The original explainer",
+    "name": "mode-original"
+  },
+  {
+    "page_text_id": "mode-tools",
+    "text": "With the rulebook tools",
+    "name": "mode-tools"
+  },
+  {
+    "page_text_id": "original-image",
+    "text": "Original image",
+    "name": "original-image"
+  },
+  {
+    "page_text_id": "page-title",
+    "text": "South Park Ontology Explainer, on one rulebook",
+    "name": "page-title"
+  },
+  {
+    "page_text_id": "record-class",
+    "text": "Person",
+    "name": "record-class"
+  },
+  {
+    "page_text_id": "record-none",
+    "text": "No current {kind} is recorded.",
+    "name": "record-none"
+  },
+  {
+    "page_text_id": "record-person-no",
+    "text": "Stan’s explicit Person statement is not selected.",
+    "name": "record-person-no"
+  },
+  {
+    "page_text_id": "record-person-yes",
+    "text": "Stan is explicitly recorded as a Person.",
+    "name": "record-person-yes"
+  },
+  {
+    "page_text_id": "record-subject",
+    "text": "Stan",
+    "name": "record-subject"
+  },
+  {
+    "page_text_id": "record-value",
+    "text": "His recorded {kind} is {values}.",
+    "name": "record-value"
+  },
+  {
+    "page_text_id": "remove",
+    "text": "Remove",
+    "name": "remove"
+  },
+  {
+    "page_text_id": "remove-label",
+    "text": "Remove this fact",
+    "name": "remove-label"
+  },
+  {
+    "page_text_id": "rules-heading",
+    "text": "Rules add facts to the graph",
+    "name": "rules-heading"
+  },
+  {
+    "page_text_id": "rules-hint",
+    "text": "An inference is a new conclusion from facts and a rule. Reasoning means following rules step by step to reach or check conclusions. Here the rulebook does that work: each rule is a switch, and every conclusion is a formula.",
+    "name": "rules-hint"
+  },
+  {
+    "page_text_id": "scenario-heading",
+    "text": "Stan can change while his identity stays the same",
+    "name": "scenario-heading"
+  },
+  {
+    "page_text_id": "scenario-hint",
+    "text": "The grade-5 and leaving-school buttons imagine future changes so you can see how the model responds. They do not report events from the show. Stan is allowed to graduate. The database does not get a vote.",
+    "name": "scenario-hint"
+  },
+  {
+    "page_text_id": "statements-heading",
+    "text": "Statements connect things and values",
+    "name": "statements-heading"
+  },
+  {
+    "page_text_id": "statements-hint",
+    "text": "Each statement has three parts, called a triple. The subject identifies what we describe. The predicate tells how it is connected to the object. The object is the related thing or value. Select a fact to show it.",
+    "name": "statements-hint"
+  },
+  {
+    "page_text_id": "sublabel-class",
+    "text": "class",
+    "name": "sublabel-class"
+  },
+  {
+    "page_text_id": "title",
+    "text": "South Park facts form a knowledge graph",
+    "name": "title"
+  },
+  {
+    "page_text_id": "title-class",
+    "text": "class",
+    "name": "title-class"
+  },
+  {
+    "page_text_id": "title-literal",
+    "text": "literal",
+    "name": "title-literal"
+  },
+  {
+    "page_text_id": "tools-heading",
+    "text": "What the rulebook tools add",
+    "name": "tools-heading"
+  },
+  {
+    "page_text_id": "tools-text",
+    "text": "The explainer above behaves as the original does. Everything in this panel comes from the same rulebook: hover a dotted value for its rule and the facts it came from, switch the engine that computes the page, or edit the model itself.",
+    "name": "tools-text"
+  },
+  {
+    "page_text_id": "unsaved",
+    "text": "{count} unsaved changes",
+    "name": "unsaved"
+  },
+  {
+    "page_text_id": "unsaved-none",
+    "text": "No unsaved changes",
+    "name": "unsaved-none"
+  },
+  {
+    "page_text_id": "unsaved-one",
+    "text": "1 unsaved change",
+    "name": "unsaved-one"
+  },
+  {
+    "page_text_id": "workbook-url",
+    "text": "/effortless-xlsx/talisman-s-south-park-ontology-explainer.xlsx",
+    "name": "workbook-url"
+  }
+]

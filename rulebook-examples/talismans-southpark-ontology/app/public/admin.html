@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rulebook admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/rulebook-explainer-dag/dag.css">
+</head>
+<body data-mode="tools" class="admin">
+<div class="wrap wide">
+  <nav class="modebar"><a href="/" data-text="admin-back"></a></nav>
+  <header>
+    <h1 data-text="admin-title"></h1>
+    <p data-text="admin-intro"></p>
+  </header>
+
+  <section class="card enginebar" aria-label="Engine">
+    <div class="engine-row">
+      <span class="engine-label" data-text="engine-label"></span>
+      <span id="engines" class="engine-choices"></span>
+      <button type="button" id="compare" data-text="conformance-button"></button>
+    </div>
+    <p id="engine-description" class="hint"></p>
+    <div id="conformance" role="status" aria-live="polite"></div>
+  </section>
+
+  <section class="card actions" id="excel" aria-label="Rulebook">
+    <div class="action-row">
+      <span id="unsaved" class="unsaved"></span>
+      <button type="button" class="primary" id="save" data-text="admin-save"></button>
+      <button type="button" id="discard" data-text="admin-discard"></button>
+      <button type="button" id="rebuild" data-text="admin-rebuild"></button>
+      <a class="buttonish" id="export" href="/api/admin/export.xlsx" data-text="admin-export"></a>
+      <label class="buttonish"><span data-text="admin-import"></span><input type="file" id="import" accept=".xlsx" hidden></label>
+      <a class="buttonish" id="editor" target="_blank" rel="noopener" data-text="admin-editor"></a>
+    </div>
+    <p id="editor-note" class="hint"></p>
+    <div id="message" class="form-message" role="status" aria-live="polite"></div>
+    <details id="changes"><summary data-text="admin-changes-heading"></summary><ul id="change-list"></ul></details>
+    <pre id="buildlog" hidden></pre>
+  </section>
+
+  <div class="admin-grid">
+    <nav class="card table-list" id="tables" aria-label="Tables"></nav>
+    <section class="card table-card">
+      <h2 id="table-name"></h2>
+      <p class="hint" id="table-description"></p>
+      <div class="table-tools">
+        <input type="text" id="filter" autocomplete="off">
+        <label class="inline"><input type="checkbox" id="show-computed"> <span data-text="admin-show-computed"></span></label>
+        <button type="button" id="add-row" data-text="admin-add-row"></button>
+        <span id="row-count" class="hint"></span>
+      </div>
+      <div class="scroll"><table id="grid"></table></div>
+    </section>
+  </div>
+</div>
+<script src="/rulebook-explainer-dag/embedded-graph.js"></script>
+<script src="/rulebook-explainer-dag/dag-resolver.js"></script>
+<script src="/rulebook-explainer-dag/routing.js"></script>
+<script src="/rulebook-explainer-dag/explainer-dag.js"></script>
+<script src="/admin.js"></script>
+</body>
+</html>

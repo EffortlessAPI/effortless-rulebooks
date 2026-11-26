@@ -1,0 +1,29 @@
+[
+  {
+    "engine_id": "owl",
+    "label": "OWL and SHACL rules",
+    "substrate": "effortless-owl",
+    "is_default": false,
+    "description": "The generated ontology and SHACL rules, run over the same rows by a SPARQL engine.",
+    "sort_order": 3,
+    "name": null
+  },
+  {
+    "engine_id": "postgres",
+    "label": "Postgres views",
+    "substrate": "effortless-postgres",
+    "is_default": true,
+    "description": "Every value is a column of a generated view; the database computes it when the page reads it.",
+    "sort_order": 1,
+    "name": null
+  },
+  {
+    "engine_id": "typescript",
+    "label": "TypeScript",
+    "substrate": "effortless-typescript",
+    "is_default": false,
+    "description": "The generated TypeScript computes every field from the same rows, with no database.",
+    "sort_order": 2,
+    "name": null
+  }
+]

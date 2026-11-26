@@ -1,0 +1,8 @@
+{
+  "ran": true,
+  "reasoner": "HermiT (ROBOT)",
+  "owl2dl": true,
+  "dlViolations": [],
+  "consistent": true,
+  "unsatisfiable": []
+}

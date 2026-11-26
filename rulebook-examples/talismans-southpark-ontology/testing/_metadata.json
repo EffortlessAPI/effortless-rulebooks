@@ -1,0 +1,259 @@
+{
+  "graphs": {
+    "primary_key": "graph_id",
+    "computed_columns": [
+      "name",
+      "count_of_stated_facts",
+      "count_of_conclusions",
+      "count_of_violations",
+      "is_consistent",
+      "conclusions_message",
+      "count_of_facts_to_add",
+      "has_facts_to_add",
+      "next_fact_sort_order",
+      "max_activation_seq",
+      "next_activation_seq",
+      "max_listed_sort_order",
+      "next_listed_sort_order",
+      "max_sort_order",
+      "next_candidate_sort_order"
+    ],
+    "record_count": 1
+  },
+  "rules": {
+    "primary_key": "rule_id",
+    "computed_columns": [
+      "name",
+      "count_of_firings"
+    ],
+    "record_count": 5
+  },
+  "firing_kinds": {
+    "primary_key": "firing_kind_id",
+    "computed_columns": [
+      "name",
+      "rule_enabled"
+    ],
+    "record_count": 6
+  },
+  "things": {
+    "primary_key": "thing_id",
+    "computed_columns": [
+      "portrait_name",
+      "portrait_page",
+      "portrait_image",
+      "portrait_crop",
+      "portrait_width",
+      "portrait_height",
+      "name",
+      "node_key",
+      "count_of_children",
+      "count_of_grandchildren",
+      "count_as_place",
+      "count_as_subject",
+      "count_as_object",
+      "is_in_graph",
+      "node_kind"
+    ],
+    "record_count": 9
+  },
+  "portraits": {
+    "primary_key": "portrait_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 13
+  },
+  "portrait_aliases": {
+    "primary_key": "portrait_alias_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 32
+  },
+  "properties": {
+    "primary_key": "property_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 10
+  },
+  "property_axioms": {
+    "primary_key": "property_axiom_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 4
+  },
+  "statements": {
+    "primary_key": "statement_id",
+    "computed_columns": [
+      "subject_label",
+      "property_label",
+      "object_label",
+      "property_datatype",
+      "property_has_one_current_value",
+      "property_domain_class",
+      "property_range_class",
+      "literal_quote",
+      "literal_type_marker",
+      "built_in_source_text",
+      "user_source_text",
+      "next_fact_sort_order",
+      "is_literal",
+      "object_text",
+      "name",
+      "words",
+      "source",
+      "subject_property_key",
+      "latest_sibling_activation_seq",
+      "is_in_effect",
+      "listed_unit",
+      "in_effect_unit",
+      "listed_off_unit",
+      "is_next_to_add",
+      "count_of_inverse_firings",
+      "count_of_symmetric_firings",
+      "holds_before_chain",
+      "count_of_chain_firings",
+      "holds_before_typing",
+      "count_of_type_firings",
+      "holds",
+      "is_conclusion",
+      "holds_unit",
+      "conclusion_unit",
+      "parent_unit",
+      "grandparent_unit",
+      "place_unit",
+      "first_pre_chain_order_key",
+      "snap_position",
+      "first_fired_order_key",
+      "count_of_chosen_firings",
+      "subject_node_key",
+      "object_node_key",
+      "subject_node_kind",
+      "object_thing_node_kind",
+      "object_node_kind",
+      "object_value_node_label",
+      "count_of_violations_as_first",
+      "count_of_violations_as_second",
+      "is_in_contradiction"
+    ],
+    "record_count": 270
+  },
+  "firings": {
+    "primary_key": "firing_id",
+    "computed_columns": [
+      "rule_enabled",
+      "kind_wording",
+      "kind_sort_order",
+      "target_name",
+      "target_subject_label",
+      "target_property_label",
+      "target_object_text",
+      "target_is_conclusion",
+      "target_subject_node_key",
+      "target_object_node_key",
+      "target_first_fired_order_key",
+      "first_words",
+      "second_words",
+      "first_is_in_effect",
+      "first_holds_before_chain",
+      "second_holds_before_chain",
+      "first_holds_before_typing",
+      "first_property",
+      "first_property_domain_class",
+      "first_property_range_class",
+      "first_sort_order",
+      "second_is_in_effect",
+      "first_snap_position",
+      "second_snap_position",
+      "inverse_fired_unit",
+      "symmetric_fired_unit",
+      "chain_fired_unit",
+      "type_fired_unit",
+      "fired_unit",
+      "pre_chain_fired_unit",
+      "pre_chain_order_key",
+      "round",
+      "order_key",
+      "is_chosen",
+      "chosen_unit",
+      "card_text",
+      "name"
+    ],
+    "record_count": 465
+  },
+  "disjoint_checks": {
+    "primary_key": "disjoint_check_id",
+    "computed_columns": [
+      "rule_enabled",
+      "first_holds",
+      "second_holds",
+      "subject_label",
+      "object_label",
+      "violation_unit",
+      "alarm_text",
+      "name"
+    ],
+    "record_count": 42
+  },
+  "scenarios": {
+    "primary_key": "scenario_id",
+    "computed_columns": [
+      "name",
+      "graph_has_facts_to_add",
+      "is_available"
+    ],
+    "record_count": 7
+  },
+  "scenario_fact_changes": {
+    "primary_key": "scenario_fact_change_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 6
+  },
+  "scenario_rule_settings": {
+    "primary_key": "scenario_rule_setting_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 10
+  },
+  "node_layouts": {
+    "primary_key": "node_layout_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 26
+  },
+  "layout_slots": {
+    "primary_key": "layout_slot_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 8
+  },
+  "page_texts": {
+    "primary_key": "page_text_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 102
+  },
+  "engines": {
+    "primary_key": "engine_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  },
+  "rulebook_tools": {
+    "primary_key": "rulebook_tool_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 8
+  }
+}
