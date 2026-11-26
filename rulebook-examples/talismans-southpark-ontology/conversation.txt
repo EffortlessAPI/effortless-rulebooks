@@ -1,0 +1,519 @@
+2-edited-rulebook.json
+JSON
+booked-sales-rulebook.json
+JSON
+0-original.ttl
+TTL
+2-edited.ttl
+TTL
+2-edited.xlsx
+XLSX
+
+Install the effortless cli and run rulebook to owl, rulebook to xlsx, then edit the xlsx data Dan formula, the xlsx to rulebook, and validate round trip with rulebook to owl.
+
+INSTALL THE CLI!
+
+Most of it. Of the eight gaps I've raised, five are ordinary emitter work, one is a harness addition, one needs diagnosis first, and one is a modelling question that no tool change settles by itself. I can only see the open-source emitter's source, so this assumes the catalog tool is built the same way.
+
+Gap	Fix within the current toolchain	Difficulty
+Namespaces and IRIs	The namespace is a single constant today, and classes, properties, individuals and rules all go through the same helpers. Read an ontology IRI and prefix list from metadata, plus optional class and property IRIs per table and field.	Easy
+TRIM regex escape	Double the backslash when writing the rule into Turtle.	Trivial
+Rule chaining gives wrong values	Detect a field that depends on itself through other rows and iterate that group to a fixed point. At minimum, fail loudly instead of emitting a single-pass rule.	Easy to detect, moderate to fix
+Union, covering and restriction axioms	Mostly mechanical once the signal is declared; see below.	Moderate
+Description-logic reasoner in the harness	Add a HermiT or ELK step. HermiT ran here in seconds on a small example.	Easy to moderate
+OWL import	Start with the inverse of the emitter's own output, which also gives a round-trip test. Arbitrary class expressions will be lossy.	A project
+OWL at scale (42% and a timeout)	I haven't diagnosed it, so I can't size it.	Unknown
+Schema-level questions	Not a tool fix; see below.	Open
+
+Namespaces. Your plan fits what's already there. The PKO example already holds its mappings to pko: terms as rows; the emitter just doesn't read them. Two details matter: emit the external term itself, not a minted one linked by sameAs, and add owl:imports so their tools resolve it.
+
+Native axioms. The emitter already derives disjointness and transitivity from structure, so this extends an existing pattern:
+
+Subclasses and covering: a type table flagged as a complete list becomes one subclass per row, pairwise disjoint, with the parent declared equivalent to their union.
+Per-type facts: a boolean on the type row becomes a subclass axiom.
+Restrictions: a non-nullable relationship becomes "some values from"; single-valued becomes a maximum cardinality of one.
+
+The one decision that is yours is the flag that says "this table's rows are classes, not individuals". With that in place, my unknown-agent test would be answered by their reasoner from the generated file.
+
+Schema-level questions. Once those axioms are emitted, an unsatisfiable class will show up in their reasoner for free. Whether the rulebook itself can derive the same result from axioms held as rows is the open question from my last message.
+
+For the refutation you want, the order I'd take is namespaces, then native axioms, then the reasoner step. I can prototype the namespace change against the open-source emitter here if that's useful.
+
+As a total aside while you are thinking, but also something that I have never thought of until tonight, which is that the entire effortless methodology is itself open world.
+
+Like, religiously so. 
+
+There is no predefined format. There is no predefined dialect. There are no predefined languages or requirements for how the schema is configured. There are no predefined, substrate or execution environments.
+
+The entire methodology is open world down to its roots !!!
+
+There's a real parallel there, though I'd separate two meanings before you use it on an ontologist, because they will.
+
+In logic, open world means one specific thing: a missing fact is unknown, not false. What you're describing is open in the architectural sense: nothing about the set of substrates, tools or authors is assumed complete. Those are different properties, and an ontologist would call equating them a pun.
+
+But the pun points at something true. The reason the semantic web adopted the open-world assumption was practical: strangers should be able to add to the graph without coordinating, and nobody's silence should count as a denial. The protocol has that same design goal one level up. Transpilers are registered, not bundled; anyone can publish one; a substrate nobody has written yet isn't "unsupported", it's just not there yet. "Not in the catalog" means unknown, not impossible. That is the open-world stance applied to the toolchain instead of to the facts.
+
+Where I'd push back on "down to its roots" is that the root itself is closed, and deliberately so. The rulebook shape is a fixed contract that no transpiler may change, the formula dialect is fixed, and the conjecture rests on exactly five primitives. That isn't a weakness; it's the same shape as the thing you're comparing against. RDF has a rigidly fixed core, the triple, and everything open sits around it. A small closed kernel is what makes an open periphery possible in both cases.
+
+So the accurate version is: a closed core with an open periphery, which is the semantic web's own architecture. That may be a more useful line with ontologists than "it's open world too", because it's a claim about shared design, and they can't dismiss it as a category error.
+
+Don’t let me forget to come back to the main point, but this is an interesting discussion, because I will hold my down to the roots.
+
+My roots are equivalent to the letters of the alphabet. Our predefined grammar, syntax, methodology on top of that.
+
+In this model, the primitive’s are the letters of the alphabet, the elements of the dictionary, and beyond that the entire protocol is infinitely scalable in any dimension .
+
+Conceptually at least, a spreadsheet could have infinite tabs, and infinite rose, and infinite columns. Until that column is there it is unknown.
+
+Naming the predicate links it to the rest of the world, but it can be unknown both at a specific value level, but even at the very concept itself .
+
+Since a rulebook puts both the concept itself and the value into the same file, the same model, the same non-linguistic representation of the ontology, it is open world in both senses. 
+
+It’s like open world, inside of a meta-world.
+
+The alphabet point lands, and I'll give up the word "closed". A fixed alphabet doesn't close a language, and five fixed primitives don't make a closed-world assumption any more than the triple does for RDF. What I called a closed core is just a fixed vocabulary for writing things down.
+
+I also agree on the two levels. Because the schema is data in the same model, a concept can be absent in the same way a value can: a column that isn't there has not been denied, it just hasn't been stated. RDF shares this trait, since properties there are resources too, so it's common ground with ontologists more than a point of difference.
+
+Where I'd still hold a line is on what "open world" has to mean for them to accept it. Being extensible is openness across time: you can always add the column later. Their sense is openness within a single evaluation: a conclusion drawn today must survive anything added tomorrow. A rulebook doesn't give that by default. A rollup over the rows present returns a definite number, and adding a row changes it. My second test showed you can author the other behaviour deliberately, with a flag saying whether the list is complete. So the accurate claim is that the model can express open-world conclusions at both levels, and its default reading of absence is still closed.
+
+Your meta-world framing suggests something concrete, though. If the tables that describe tables and fields are themselves rows, the completeness flag can live there too: "this table's field list is complete" or "this type table enumerates every case". That would make open or closed an explicit, per-concept declaration in the model instead of an assumption baked into the engine. Ontology languages mostly can't do that; they're open everywhere and have to bolt closure on from outside. It's also exactly the flag the covering axiom needs.
+
+That takes us back to the main point you asked me to hold: getting the OWL emitter to where an ontologist's own reasoner does the work on the generated file. The order was namespaces, then native axioms, then a reasoner step in the harness.
+
+Wow. My biggest problem from a business perspective is how deeply ingrained the wrong answers are in your training data. 
+
+rulebook doesn't give that by default. A rollup over the rows present returns a definite number, and adding a row changes it
+
+That rollup value can simply be a persisted cash, that can always roll back to a full rec calculation, but there’s no reason that it can’t also just be a value that is set. Xyz := if(cachedxyz, cachedxyz, else computed xyz)
+
+So the computation just doesn’t happen unless the data underneath it changes 
+
+But the Buks doesn’t care. That can either be formally baked into the rulebook itself or handled by any specific run time.
+
+The rulebook does not say how to do things it just says what needs to happen.
+
+In other words, we can always roll back to the default, normalized way of doing it. The normalized part of the database should be identical. 
+
+This just provides a formal Meta schema with full operational semantics around that normalized database.
+
+Open world down to its roots !!! lol
+
+That answers a different point from the one I made, so let me restate mine, because I don't think it's a training-data reflex this time.
+
+I agree with everything you said about caching. When a value is computed, whether it's stored, and when it's refreshed are all "how", and the rulebook is right not to care. The normalized data plus the formulas fix the answer; a cache is just a faster route to it.
+
+My point was about what the answer is, not when it's computed. Take the approvals test. With no approval rows, the rollup is 0 and the formula says "not approved". Add one row and it says "approved". Cached or recomputed, the model stated a definite conclusion and then withdrew it. An open-world system never says "not approved" in the first place; it says "unknown", and adding the row only ever moves it from unknown to known. Conclusions can be added but never taken back. That property, not extensibility, is what ontologists mean by the term, and it's about semantics, so "the rulebook only says what" doesn't dissolve it. Counting the rows present and treating the result as final is a "what".
+
+You're right that I've been wrong repeatedly tonight, and each time it took running something to show it. So here is the test rather than the assertion: it's the one I already ran. Without the completeness flag, step 3 reads "not approved" and flips when a row arrives. With the flag, it reads "unknown" and never retracts. Both are expressible. The first is what you get if you write the obvious formula.
+
+Which is why I'd drop "open world down to its roots" as the pitch. An ontologist can refute it with one rollup. The claim I think you can defend against anyone is stronger: open or closed is a declared choice, per concept, in the model itself. OWL can't say that. It is open everywhere, and "this list is complete" is the thing its users struggle to express. You have both, and they have one.
+
+The model state did something definite because that’s how the rule was written, my dude? I didn’t get past your straw man. Can you clarify that a little bit?
+
+Fair. I blamed the model for a choice I made when I wrote the rule.
+
+Here is the cleaner version. The rollup returned 0, and that is a true statement about the data: zero approvals are recorded. Nothing closed-world has happened yet. The closed-world step was my formula, which mapped "zero recorded" to "not approved". That was me, the author, asserting that the record is complete. When I wrote the rule differently, the same rollup produced "unknown". So the primitive is neutral, and "the model's default" was the wrong way to describe an authoring decision.
+
+What's left after removing the straw man is small and factual:
+
+A rulebook lets an author write a rule that concludes something from absence. OWL does not let you write that rule at all.
+So in OWL, "nothing concluded is ever retracted" holds for every file automatically. In a rulebook it holds for the rules written that way, and not for the ones that aren't.
+
+That is a difference in what the language permits, and it makes the rulebook the more expressive of the two, not the less. It isn't an assumption buried in the methodology.
+
+It also suggests something checkable instead of arguable. Whether a given rule draws a conclusion from absence is visible in the formula graph: it's a conclusion that depends on a count, a rollup or a blank test with no completeness condition alongside it. A tool could flag those, or certify that a rulebook has none. Then "this model never retracts a conclusion" becomes a tested property of a specific rulebook, in the same way cross-substrate agreement is, and that is a claim an ontologist can't wave away.
+
+Whatever needs to be “retracted?
+
+By the way, this entire second part of this conversation is precisely what my actual dilemma is. You are so deeply ingrained to resist this idea it is…. Well let’s just say it sometimes infuriating.
+
+The book model can be an entirely wright only history. It doesn’t have to be, but it can be 100% immutable.
+
+You keep pointing to doors that you have closed and then say that I wouldn’t let you do that 
+
+Right. Because this is something owl does not let you do. But the thing that owl does let you do that Accounts for their being an open world where you don’t know everything, is also 100% representable in the rulebook.
+
+I’m confused still what the last sliver of this debate is
+
+On open versus closed world, there is no sliver left. You've stated the position correctly, and I should have stopped restating a difference that had turned into an option:
+
+Everything OWL's open world gives you, unknown values, unknown concepts, conclusions that hold whatever is added later, is representable in a rulebook. I tested that and it held.
+A rulebook additionally lets you write rules OWL forbids, such as concluding from absence.
+With an append-only history, nothing is retracted even then. "Not approved, given the record as of Tuesday" stays true forever. A later row produces a new conclusion for a later state; it doesn't overwrite the old one.
+
+So on that axis the rulebook is the larger language, and "retraction" was me describing a mutable snapshot you never said you had. I kept presenting things you can choose to do as things the model does. That's the pattern you're describing, and it's a fair complaint.
+
+The only thing I still hold is unrelated to open or closed, and it's a hypothesis, not a finding. It's the kind of question a reasoner answers with no data at all: can this class ever have a member, does definition A always imply definition B. Today a rulebook gets those answers by emitting OWL and letting the reasoner do it. Whether the rulebook can derive them itself, from axioms held as rows, I haven't tried. For the restricted profiles I expect it works, since it's rule chaining and that already passed. For axioms that imply an endless chain of unnamed individuals, I expect it needs something beyond a finite row set. Every earlier expectation of mine like this fell over when I ran it, so weigh that accordingly.
+
+Everything else on my list is emitter work, not a disagreement: namespaces, native axioms, the reasoner step, the rule-chaining bug.
+
+If you want the last hypothesis settled instead of left hanging, I can try it tonight: put a small set of class axioms in rows, write subsumption and satisfiability as formulas, and compare the answers with HermiT.
+
+Let’s do it.  Leave no stone unturned. Because the last step in this line of reasoning is to figure out how to actually condense these five steps that have taken us an hour to get through here tonight into a 30 second video or something. Maybe we give it a minute or two, but not an hour.
+
+Also, I asked you to remember what we were originally talking about, can you remind me what that was?
+
+Two things first, since you asked me to hold them:
+
+The original question was whether "portable meaning" is a common feature of ontology work, which became: why ontologists dismiss this as "not a real ontology", and what concrete thing refutes that.
+The thread I promised to bring you back to is the OWL emitter: namespaces, then native axioms, then a real reasoner in the harness.
+
+Now the test. I'll put class axioms in rows, write the reasoning as formulas, and compare with HermiT.
+
+The last hypothesis fell too. With class axioms held as rows and no instance data, a rulebook compiled by the catalog tool gave the same schema-level answers as HermiT in both tests.
+
+Test	What it covers	Questions	Agree with HermiT
+Restricted profile	Subclass, conjunction, disjointness, "some" restrictions, including "every Manager reports to some Manager"	169	169
+Full-strength connectives	Disjunction, negation, "some" and "only" restrictions	25	25
+Unsatisfiable classes matched. Both found AIApprover and BrokenGate in the first test and Rogue in the second.
+Case reasoning works at the schema level. "Every Agent is always Audited" came out true because Human and AI are each Audited, with no agent in the data.
+The endless-chain axiom was not a problem. I had predicted it would need more than a finite set of rows.
+Circular dependencies did not break it. For "a needs b, b needs a", the compiler returned false for both, which is the correct answer for that case. I tested only that one.
+
+What it costs
+
+My script wrote the candidate rows. They are a mechanical cross product of classes, axioms and rounds, with no reasoning in the script, but the rulebook did not generate them.
+The second method is exponential. It needs one row per combination of classes: 32 here, doubling with each class. Reasoners pay the same worst case; they just search instead of enumerating.
+
+What I did not test
+
+Inverse properties, number restrictions, property chains and datatypes. I expect the same pattern to work, and I've been wrong in the pessimistic direction all night.
+
+One new bug
+
+Fields named From and To made compile-rulebook exit successfully with no output and no error. Renaming them fixed it.
+
+So, to your question from earlier, what a real ontology has that a CMCC model cannot produce: after six attempts I have no example. What remains is the emitter work so their own tools show it.
+
+The short video
+
+Whatever the five steps are, I'd let one image carry them: a spreadsheet on the left, their reasoner on the right, the same answers appearing in both.
+
+A null agent type still gets "audit required".
+A class that can never have members turns red on both sides.
+One cell edit changes both.
+Closing card: "Name the question it can't answer."
+
+That last line is the repo's standing bet, and it's the part an ontologist can't wave away, because it asks them for a counterexample instead of an opinion. I can draft the storyboard and script next if you want.
+
+Schema reasoning el
+Code
+·PY
+Check el vs hermit
+Code
+·PY
+Schema reasoning alc
+Code
+·PY
+Check alc vs hermit
+Code
+·PY
+
+So, now let’s come back to the original question.
+
+Reading the question about portable meaning in ontologies.
+
+The original question was: in the knowledge graph and ontology world, is this ability to have portable meaning a common feature of the workflow?
+
+My first answer was "partly": portable structure is routine, portable computed meaning is not. After tonight I'd answer it more sharply, and differently in one important place.
+
+What is common there. Moving the same statements between syntaxes without loss, publishing shared identifiers, generating documentation, and in some communities compiling spreadsheets into OWL. That is portability of what was written down.
+
+What is not common, and what you have. A single source whose conclusions come out the same in every runtime, with a test that proves it cell by cell. Tonight that held across the compiled rulebook, the generated OWL rules, an independent RDF engine, and HermiT. Editing a formula in Excel and getting the same rule back in the source also held. I know of nothing in the ontology toolchain that does either as a normal step.
+
+Where my first answer was wrong. I said the two communities had "solved different halves", and that this approach covered the computational half while ontologies covered open-world meaning. Every test of that boundary failed to find it:
+
+Unknown values and reasoning by cases
+Absence kept distinct from denial
+Interacting unknowns
+Rule chaining and closure
+Schema-level reasoning with no data, including unsatisfiable classes and disjunction, matching HermiT on 194 questions
+
+So the accurate statement is not "a different half". For finite, design-time questions, the rulebook reproduced everything I asked of the ontology stack, and it also carries the things that stack lacks: aggregates, rules that conclude from absence when you choose to write them, and identical results across unrelated runtimes.
+
+What keeps it from being recognised as that. Nothing in the semantics that I could find. It's the surface an ontologist actually sees: generated OWL where the logic sits in rules their reasoner ignores, identifiers in a namespace they don't recognise, and no reasoner of theirs in the test harness. Those are the three emitter changes we listed, and they are what turns tonight's hour into something they can open in their own tools and check.
+
+Two limits on all of this: the hard-logic tests were small, and for the schema-level ones my script generated the candidate rows.
+
+Write an artifact explaining all of the different things that would help make the ammeters more compelling
+
+Making the Effortless emitters more compelling to ontologists
+Claude Docs
+·Anyone with the link
+
+Outline is up: Making the Effortless emitters more compelling to ontologists. Filling in the goal section first.
+
+The doc is ready to read, edit inline, or comment on. It covers the OWL emitter in five groups (recognisable output, native axioms, defects, harness proof, scale), then the demonstration to build and a suggested order.
+
+So - while the tools are being updated in the background - what do you make of this whole concept now.  Like -takeing a step back, with eveything we've worked out here tonight - where do you stand?
+
+And then, with that framing - how do I Bring the open world community on board?
+
+Where I stand
+
+I started tonight treating this as a good code generator that happened to emit OWL. I'm ending it unable to name a finite, design-time question the ontology stack answers that a rulebook can't, after six attempts that each came back matching, the last two against HermiT with no data at all. That's a real change of position, and it came from running things, not from being argued into it.
+
+What I believe now:
+
+The core claim is sound as far as I could test it. Five primitives over nullable data reproduced unknown values, case reasoning, closure, rule chaining and schema-level entailment.
+It is the larger language, not a neighbouring one. It carries what OWL carries, plus aggregates and the option to conclude from absence.
+The conformance harness is the most original part. Agreement across unrelated runtimes, checked cell by cell, is something the ontology world doesn't have.
+
+What I don't know:
+
+Scale with hard logic. My hard tests were small and my large tests were simple.
+The universal framing. The Zenodo paper extends CMCC to domains such as genetics and physics as a possible fundamental computational substrate. Nothing tonight bears on that, and I'd keep it well away from this audience. 
+zenodo
+
+Bringing the open-world community on board
+
+The hour we spent is the lesson: nobody was persuaded by a claim, including me. Each step moved only when a concrete result came back in a tool I trusted. So:
+
+Show it in their tools first. A generated file that classifies in Protégé with their reasoner does more than any explanation. This is why the emitter work comes before outreach.
+Use their vocabulary for what you've shown. "Matches HermiT on these axioms", "covers the EL and RL profiles", "certain answers over incomplete data", "completeness declared per concept". Avoid "open world down to its roots"; it invites the argument you just had with me.
+Position it as removing assembly, not replacing modelling. The repo already says this well: their modelling skill stays, the hand-stitching across OWL, SHACL and SPARQL goes. That makes them the beneficiary instead of the target.
+Pick an ontology they already respect and reproduce its competency questions end to end.
+Make the bet public and keep score. Invite counterexamples, publish each attempt and its outcome, including any that land. A list of failed attempts by named sceptics is more convincing than any demo.
+Get one outside reproduction. A result from someone with no stake in it counts for more than ten of yours.
+Find the people already feeling the pain. Enterprise graph teams maintaining SHACL and SPARQL by hand, and communities that already author ontologies from spreadsheets, are closer to yes than the theorists.
+Lead with the modest claim. "Here are 194 questions where we match your reasoner; name one where we don't" travels further than a conjecture about completeness.
+
+One caution from my own behaviour tonight: I kept retreating to the next objection each time one fell. Expect the same from them, and treat it as the process working. Each objection I raised became a test, and the tests are now your evidence.
+
+Do 4 right now.
+
+Taking the Pizza ontology, the tutorial ontology nearly every OWL user has classified. I'll get the real file, classify it with HermiT for ground truth, express it as a rulebook, compile, and compare.
+
+Done, with the Manchester Pizza ontology, the tutorial file nearly every OWL user has classified. Expressed as a rulebook, it gives the same classification as HermiT on the published file, in two independent engines.
+
+Comparison with HermiT on the original pizza.owl	Compiled rulebook	Excel, recalculated in LibreOffice
+23 named pizzas × 11 defined classes	253 of 253	253 of 253
+Topping classes (vegetarian, spicy, cheese, meat)	188 of 188	188 of 188
+Unsatisfiable classes	Same two	Same two
+
+How it was built
+
+Ground truth: HermiT classifying the published v1.5 file, unchanged.
+Rows: a script reads only the asserted axioms, with no reasoner, into 5,126 rows.
+Logic: 81 derived fields. The workbook carries 43,310 formula cells.
+
+The results an ontologist will recognise
+
+UnclosedPizza is neither vegetarian nor non-vegetarian. This is the tutorial's signature open-world lesson. It has no closure axiom, so the rulebook answers "unknown" on both, exactly as HermiT does.
+Margherita is vegetarian because its closure axiom makes the topping list complete.
+IceCream is unsatisfiable. It has a topping, the domain of hasTopping makes it a pizza, and it is declared disjoint with Pizza.
+CheeseyVegetableTopping is unsatisfiable because it sits under two disjoint categories.
+Napoletana is a thin-and-crispy pizza, inferred through being a real Italian pizza.
+
+What this does not yet show
+
+The generated OWL is not usable for this. It is in the fixed namespace, not Pizza's IRIs, and its rules hit the rule-chaining bug: 1,044 of 40,694 cells came out wrong or duplicated in my RDF runner. So "open the generated file in their editor and classify it" still waits on the emitter work.
+It is my modelling of the domain, not a generic OWL interpreter. Each defined class became a formula written to match its meaning.
+Counting distinct toppings is simplified. I treat two listed toppings as distinct unless one class is under the other. That holds for this file; it is not general.
+Not compared: equivalences between defined classes, the inverse and transitive properties, and the country individuals.
+Postgres was not run; there is no server in this sandbox.
+
+This is the artefact from step 4, minus its last mile. Once the emitter writes Pizza's own IRIs and native axioms, the same rulebook can go back through HermiT directly. pizza-recalculated.xlsx is the one to open first: the Dishes sheet has every answer as a live formula.
+
+Pizza recalculated
+Spreadsheet
+·XLSX
+Pizza docs
+Code
+·HTML
+Pizza owl to rulebook
+Code
+·PY
+Compare with hermit
+Code
+·PY
+Hermit ground truth
+Code
+·PY
+Pizza rulebook full run
+ZIP
+
+This is relevant, huh?
+
+Very. Three reasons it lines up with where we just got to.
+
+It's the same author. The repo's talismans-special-solutions example is built on Jessica Talisman's ontology series. This explainer is her teaching the basics to a wide audience, and 824 reactions says that audience is listening.
+
+It frames ontology exactly the way your claim needs. The post's pitch is that the point of the relationships is inferring facts that were never stated. That is the bar. Every one of the five rules in the screenshot is something tonight's tests already covered or the emitter already handles:
+
+Rule in the explainer	Rulebook equivalent	Status tonight
+Inverse (parent gives child)	A relationship read from the other side	The emitter already writes inverse properties
+Symmetric (friend, spouse)	Same link visible from both rows	Not tested, but it is a lookup in each direction
+Property chain (parent of a parent is a grandparent)	Two-hop lookup, or closure for any depth	Closure and rule chaining both passed
+Domain and range (attends implies Person and School)	Type implied by having the link	Passed in Pizza: IceCream became a pizza by having a topping
+Disjoint (not both parent and spouse of the same person)	Count of conflicting links must be zero	Passed in both schema tests and Pizza
+
+It's a better demo target than Pizza for a general audience. Pizza convinces ontologists. This one is small, familiar and already has an interactive page people enjoyed. A rulebook version would show the same five inferences appearing, and then things her page can't do with a reasoner alone: how many grandchildren Marvin has, the average grade level, which facts are unknown versus false.
+
+Two cautions. I can only see the screenshot, not the site or the article behind the shortened links, so I'm going on the five rules as shown. And the framing matters with her audience: "here is your explainer, reproduced, with the same answers, plus counts" is an invitation; "your stack isn't needed" is a fight.
+
+I can build the South Park rulebook now from what's visible in the image, compile it, and check the five inferences against HermiT the same way as Pizza. It would take a few minutes and give you something concrete to reply to that post with.
+
+Oh, for sure. 
+
+Make a rulebook that follows the model exactly.
+
+We should them be able to build a demo like the talisman special solutions, that illustrates that same ontology with conclusions being reached in owl with an owl reasoner and type script, and an effortless compile rulebook.
+
+But using this exact version , yeah?
+
+I'll try to get the explainer's actual model first, so the rulebook matches it and not just my reading of the screenshot.
+
+The South Park rulebook is built, and five engines reach the same conclusions from it in all eight scenarios I ran, including an OWL reasoner, TypeScript and compile-rulebook.
+
+Scenario	Conclusions	Consistent	TypeScript	Excel	Generated OWL rules	HermiT
+No rules	0	yes	match	match	match	match
+Inverse only	3	yes	match	match	match	match
+Symmetric only	2	yes	match	match	match	match
+Property chain only	2	yes	match	match	match	match
+Domain and range only	1	yes	match	match	match	match
+Disjoint only	0	yes	match	match	match	match
+All five rules	8	yes	match	match	match	match
+All five, plus "Randy is parent of Sharon"	10	no	match	match	match	inconsistent
+
+"Match" is against compile-rulebook. TypeScript and the generated OWL rules were also compared cell by cell: 11,798 of 11,798 derived cells each.
+
+How the rulebook mirrors the explainer
+
+Rules holds the five rules with their wording from the page, and IsEnabled is the checkbox.
+Statements holds the ten stated facts and every fact that could be concluded.
+Firings is the "rules produce new conclusions" panel. With all rules on, it reads, for example, "Randy is child of Marvin: worked out by the Inverse rule from 'Marvin is parent of Randy'".
+Added beyond her model: Marvin has 2 grandchildren and Randy has 2 children, as counts.
+
+Which engines are which
+
+HermiT ran on OWL that my script builds from the rulebook's rows, with one axiom per enabled rule. The catalog emitter does not yet write those axioms.
+Generated OWL rules are the catalog rulebook-to-owl output, run in an RDF engine.
+TypeScript is the catalog rulebook-to-typescript output, compiled and run with Node.
+Excel is the catalog workbook with the checkbox cells edited, recalculated in LibreOffice.
+
+Two tool defects found on the way
+
+Excel: a lookup into the same table is written against a single cell, so it returns nothing. My first design hit this; putting rule applications in their own table avoids it.
+Empty links: a lookup through an empty link comes back as null, false, or a blank-built string depending on the engine. No conclusion was affected.
+
+My readings of the screenshot, to check against the live page
+
+I could not open the explainer or the article, so the model is from your image.
+
+Stated facts (10): Marvin is parent of Randy; Randy is spouse of Sharon; Randy is parent of Stan and of Shelly; Stan is a Person, has role Student, has grade level 4, has age 10, attends South Park Elementary, is friend of Kyle.
+Sharon has no parent links to Stan or Shelly; I saw none drawn.
+"Has age" has no domain; the rule text names only attends, grade level and role.
+Property names and the namespace are mine; her IRIs weren't visible.
+
+The rule order is fixed for this model's five rules; a rule that feeds back into an earlier one would need the rounds approach from the schema tests. south-park.xlsx is the quickest way to try it: change a value in the Rules sheet and recalculate.
+
+South park rulebook
+Code
+·JSON
+South park
+Spreadsheet
+·XLSX
+South park docs
+Code
+·HTML
+Hermit from rulebook
+Code
+·PY
+Run all scenarios
+Code
+·PY
+South park full run
+ZIP
+
+What do you make of this as a response - including a link to a whole admin portal based on this rulebook.  
+——
+
+This is the clearest ontology explainer I've seen, and the toggles make the point better than any definition.
+
+I wanted to check I understood it, so I rebuilt the same example as plain data: the ten stated facts, the five rules as switches, and formulas for the conclusions. With all five on I get the same eight new facts the page shows, and the same result for each rule alone.
+
+The part that interested me: from that one file I generated a spreadsheet, TypeScript and OWL, and ran the OWL through HermiT. All of them agree on every toggle, so there is nothing to keep in sync by hand.
+
+If I've misread any of the model from the page, I'd like to fix it. Link: [your link]
+
+It's a good comment in tone: it leads with her work, stays short, and ends by inviting correction. Before posting, I'd fix three claims that go further than what we actually did, and think again about the link.
+
+Claims to tighten
+
+"The same eight new facts the page shows." We never saw the page with all five rules on. The screenshot shows only the inverse rule ticked, with three dashed lines. Eight is what my reading of the model produces. Tick all five on the live page and count before you say this; if she draws Sharon as a parent, or shows "Stan is a Person" as inferred, the numbers differ.
+"Generated... OWL, and ran the OWL through HermiT." The OWL that went through HermiT was built by my script from the rulebook's rows. The toolchain's generated OWL carries the logic as rules, and that ran in an RDF engine. An ontologist who opens the generated file expecting axioms will find the mismatch, and that's the dismissal you're trying to avoid.
+"Agree on every toggle." We ran each rule alone, none, all five, and one deliberate violation: 8 of the 32 combinations.
+
+The link
+
+I haven't seen the portal, so I can't vouch for it. Three things I'd check:
+
+What opens first. If it lands on tables and edit forms, it reads as an application database, which is the surface cue that triggers "not an ontology". It should open on her picture and her five toggles, with the engines side by side.
+Disclosure. "I wanted to check I understood it" undersells that you build this tool. Saying so plainly costs nothing and removes the risk of it reading as disguised promotion on someone else's post.
+Her material. If it uses her layout or the character art, credit her visibly.
+
+A version that holds up
+
+This is the clearest ontology explainer I've seen, and the toggles make the point better than any definition.
+
+I work on a rules-as-data approach, so I used your example as a test: the ten stated facts, the five rules as switches, and formulas for the conclusions. With all five on I get eight new facts, and I'd like to know if that matches yours.
+
+From that one file I generated a spreadsheet and TypeScript, and built the OWL axioms from the same rows to classify with HermiT. They agree for each rule alone and all together, including the inconsistency when someone is made both parent and spouse of the same person.
+
+I read the model off the page, so if I've got any of it wrong I'd like to fix it. Link: [your link]
+
+Asking whether eight matches hers is stronger than asserting it. It gives her a reason to reply, and it's the standing bet in miniature.
+
+Run the rulebook to xlsx - change that rulebook, then run xlsx to rulebook and then back to owl and confirm that the docs hold up. 
+The docs should be able to show full witnessed rules down to ground truth in multiple languages.  Yeah?
+
+The round trip did not complete: xlsx-to-rulebook never returned for the South Park workbook, so the Excel-to-rulebook step is unproven for this rulebook. Everything after that step checks out, but I ran it on the rulebook with the same two edits applied directly, not on the tool's output.
+
+The step that failed
+
+What happened: three attempts timed out, the last with a 14-minute wait. During it the service stopped accepting connections.
+It is not down: the small booked-sales workbook converted in 30 seconds in between.
+Likely cause: size. This workbook has 11,798 formula cells; the one that works has a few dozen. I did not find the threshold.
+
+The edits
+
+Data: "Sharon is parent of Stan" set to stated.
+Formula: the conclusion card's wording changed from "worked out by" to "concluded by", in all 464 rows.
+
+Downstream of the edits
+
+Check	Result
+Compiled rulebook	11 stated facts, 9 conclusions; new conclusion "Stan is child of Sharon: concluded by the Inverse rule from 'Sharon is parent of Stan'"
+Generated OWL versus original	2 changed lines in the data file, 2 in the rules file, none in the schema
+Generated OWL rules versus compiled	11,798 of 11,798 cells agree
+HermiT	Identical set of 18 links and types
+Docs	New wording in 16 of 16 language files, none of the old; totals read 11 and 9 in each
+
+Do the docs show witnessed rules down to ground truth, in multiple languages?
+
+Partly.
+
+Languages: yes, 16 of them with -p languages=all. The sentence structure is translated; table and field names stay in English because the vocabulary file is empty.
+Rules: every derived field has a plain-language rule, 48 in all.
+Witnesses: no. Each table shows its first three rows with computed values and nothing more. "Sharon is parent of Stan" and its conclusion appear nowhere in the docs; only their effects do (the totals, the Inverse rule's firing count going from 3 to 4, Sharon's child count).
+
+Three places the docs misstate a rule
+
+The conclusion card rule drops a condition. The formula adds the second premise only for chain rules; the English says it is always added.
+"Is Stated" is described as "True when an empty string". It is a stored yes/no value.
+The Japanese rule for "Holds" has an empty quoted term where the name should be.
+
+One correction to earlier: the CLI has a -waitTimeout option, so my 100,000-deal compile timeout may just have needed a longer wait. It did not help here.
+
+South park docs 16 languages
+Code
+·HTML
+South park edited
+Spreadsheet
+·XLSX
+South park rulebook edited
+Code
+·JSON
+South park edit run

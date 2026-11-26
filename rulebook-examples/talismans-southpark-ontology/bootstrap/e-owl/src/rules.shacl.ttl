@@ -1,0 +1,1187 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix effortless-ntwf: <https://w3id.org/effortless-ntwf#> .
+
+# === Rules for DisjointChecks ===
+effortless-ntwf:DisjointChecks_NameShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:DisjointChecks ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DisjointChecks_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DisjointChecks .
+    OPTIONAL { $this effortless-ntwf:disjointCheckId ?disjoint_check_id . }
+                BIND(?disjoint_check_id AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:DisjointChecks_RuleEnabledShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:DisjointChecks ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DisjointChecks_RuleEnabled" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:ruleEnabled ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DisjointChecks .
+                OPTIONAL { $this effortless-ntwf:rule ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Rules ; effortless-ntwf:ruleId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:isEnabled ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:DisjointChecks_AHoldsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:DisjointChecks ;
+    sh:order 13 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DisjointChecks_AHolds" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:aHolds ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DisjointChecks .
+                OPTIONAL { $this effortless-ntwf:a ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Statements ; effortless-ntwf:statementId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:holds ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:DisjointChecks_BHoldsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:DisjointChecks ;
+    sh:order 13 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DisjointChecks_BHolds" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:bHolds ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DisjointChecks .
+                OPTIONAL { $this effortless-ntwf:b ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Statements ; effortless-ntwf:statementId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:holds ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:DisjointChecks_ViolationUnitShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:DisjointChecks ;
+    sh:order 14 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DisjointChecks_ViolationUnit" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:violationUnit ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:DisjointChecks .
+    OPTIONAL { $this effortless-ntwf:aHolds ?a_holds . }
+    OPTIONAL { $this effortless-ntwf:bHolds ?b_holds . }
+    OPTIONAL { $this effortless-ntwf:ruleEnabled ?rule_enabled . }
+                BIND(ROUND(IF(COALESCE((COALESCE(?rule_enabled, false) && COALESCE(?a_holds, false) && COALESCE(?b_holds, false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Firings ===
+effortless-ntwf:Firings_RuleEnabledShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_RuleEnabled" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:ruleEnabled ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+                OPTIONAL { $this effortless-ntwf:rule ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Rules ; effortless-ntwf:ruleId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:isEnabled ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Firings_RuleLabelShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_RuleLabel" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:ruleLabel ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+                OPTIONAL { $this effortless-ntwf:rule ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Rules ; effortless-ntwf:ruleId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Firings_TargetNameShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_TargetName" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:targetName ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+                OPTIONAL { $this effortless-ntwf:target ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Statements ; effortless-ntwf:statementId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:name ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Firings_FirstNameShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_FirstName" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:firstName ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+                OPTIONAL { $this effortless-ntwf:first ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Statements ; effortless-ntwf:statementId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:name ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Firings_SecondNameShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_SecondName" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:secondName ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+                OPTIONAL { $this effortless-ntwf:second ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Statements ; effortless-ntwf:statementId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:name ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Firings_FirstIsStatedShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_FirstIsStated" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:firstIsStated ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+                OPTIONAL { $this effortless-ntwf:first ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Statements ; effortless-ntwf:statementId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:isStated ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Firings_FirstHoldsBeforeChainShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 5 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_FirstHoldsBeforeChain" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:firstHoldsBeforeChain ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+                OPTIONAL { $this effortless-ntwf:first ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Statements ; effortless-ntwf:statementId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:holdsBeforeChain ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Firings_SecondHoldsBeforeChainShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 5 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_SecondHoldsBeforeChain" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:secondHoldsBeforeChain ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+                OPTIONAL { $this effortless-ntwf:second ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Statements ; effortless-ntwf:statementId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:holdsBeforeChain ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Firings_FirstHoldsBeforeTypingShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 9 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_FirstHoldsBeforeTyping" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:firstHoldsBeforeTyping ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+                OPTIONAL { $this effortless-ntwf:first ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Statements ; effortless-ntwf:statementId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:holdsBeforeTyping ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Firings_InverseFiredUnitShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_InverseFiredUnit" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:inverseFiredUnit ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+    OPTIONAL { $this effortless-ntwf:firstIsStated ?first_is_stated . }
+    OPTIONAL { $this effortless-ntwf:kind ?kind . OPTIONAL { ?kind effortless-ntwf:__key ?kind__key . } }
+    OPTIONAL { $this effortless-ntwf:ruleEnabled ?rule_enabled . }
+                BIND(ROUND(IF(COALESCE((COALESCE(?rule_enabled, false) && COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "inverse"), false) && COALESCE(?first_is_stated, false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Firings_SymmetricFiredUnitShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_SymmetricFiredUnit" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:symmetricFiredUnit ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+    OPTIONAL { $this effortless-ntwf:firstIsStated ?first_is_stated . }
+    OPTIONAL { $this effortless-ntwf:kind ?kind . OPTIONAL { ?kind effortless-ntwf:__key ?kind__key . } }
+    OPTIONAL { $this effortless-ntwf:ruleEnabled ?rule_enabled . }
+                BIND(ROUND(IF(COALESCE((COALESCE(?rule_enabled, false) && COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "symmetric"), false) && COALESCE(?first_is_stated, false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Firings_ChainFiredUnitShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 6 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_ChainFiredUnit" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:chainFiredUnit ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+    OPTIONAL { $this effortless-ntwf:firstHoldsBeforeChain ?first_holds_before_chain . }
+    OPTIONAL { $this effortless-ntwf:kind ?kind . OPTIONAL { ?kind effortless-ntwf:__key ?kind__key . } }
+    OPTIONAL { $this effortless-ntwf:ruleEnabled ?rule_enabled . }
+    OPTIONAL { $this effortless-ntwf:secondHoldsBeforeChain ?second_holds_before_chain . }
+                BIND(ROUND(IF(COALESCE((COALESCE(?rule_enabled, false) && COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "chain"), false) && COALESCE(?first_holds_before_chain, false) && COALESCE(?second_holds_before_chain, false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Firings_TypeFiredUnitShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 10 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_TypeFiredUnit" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:typeFiredUnit ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+    OPTIONAL { $this effortless-ntwf:firstHoldsBeforeTyping ?first_holds_before_typing . }
+    OPTIONAL { $this effortless-ntwf:kind ?kind . OPTIONAL { ?kind effortless-ntwf:__key ?kind__key . } }
+    OPTIONAL { $this effortless-ntwf:ruleEnabled ?rule_enabled . }
+                BIND(ROUND(IF(COALESCE((COALESCE(?rule_enabled, false) && COALESCE((COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "domain"), false) || COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "range"), false)), false) && COALESCE(?first_holds_before_typing, false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Firings_FiredUnitShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 11 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_FiredUnit" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:firedUnit ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+    OPTIONAL { $this effortless-ntwf:chainFiredUnit ?chain_fired_unit . }
+    OPTIONAL { $this effortless-ntwf:inverseFiredUnit ?inverse_fired_unit . }
+    OPTIONAL { $this effortless-ntwf:symmetricFiredUnit ?symmetric_fired_unit . }
+    OPTIONAL { $this effortless-ntwf:typeFiredUnit ?type_fired_unit . }
+                BIND(ROUND((((?inverse_fired_unit + ?symmetric_fired_unit) + ?chain_fired_unit) + ?type_fired_unit)) AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Firings_NameShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:order 12 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Firings .
+    OPTIONAL { $this effortless-ntwf:firedUnit ?fired_unit . }
+    OPTIONAL { $this effortless-ntwf:firingId ?firing_id . }
+    OPTIONAL { $this effortless-ntwf:firstName ?first_name . OPTIONAL { ?first_name effortless-ntwf:__key ?first_name__key . } }
+    OPTIONAL { $this effortless-ntwf:kind ?kind . OPTIONAL { ?kind effortless-ntwf:__key ?kind__key . } }
+    OPTIONAL { $this effortless-ntwf:ruleLabel ?rule_label . OPTIONAL { ?rule_label effortless-ntwf:__key ?rule_label__key . } }
+    OPTIONAL { $this effortless-ntwf:secondName ?second_name . OPTIONAL { ?second_name effortless-ntwf:__key ?second_name__key . } }
+    OPTIONAL { $this effortless-ntwf:targetName ?target_name . OPTIONAL { ?target_name effortless-ntwf:__key ?target_name__key . } }
+                BIND(IF(COALESCE((COALESCE(?fired_unit, 0) > 0), false), CONCAT(COALESCE(COALESCE(?target_name__key, IF(isIRI(?target_name), REPLACE(STR(?target_name), "^.*[#/]", ""), STR(?target_name))), ""), ": concluded by the ", COALESCE(COALESCE(?rule_label__key, IF(isIRI(?rule_label), REPLACE(STR(?rule_label), "^.*[#/]", ""), STR(?rule_label))), ""), " rule from \'", COALESCE(COALESCE(?first_name__key, IF(isIRI(?first_name), REPLACE(STR(?first_name), "^.*[#/]", ""), STR(?first_name))), ""), "\'", COALESCE(IF(isIRI(IF(COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "chain"), false), CONCAT(" and \'", COALESCE(COALESCE(?second_name__key, IF(isIRI(?second_name), REPLACE(STR(?second_name), "^.*[#/]", ""), STR(?second_name))), ""), "\'"), "")), REPLACE(STR(IF(COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "chain"), false), CONCAT(" and \'", COALESCE(COALESCE(?second_name__key, IF(isIRI(?second_name), REPLACE(STR(?second_name), "^.*[#/]", ""), STR(?second_name))), ""), "\'"), "")), "^.*[#/]", ""), STR(IF(COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "chain"), false), CONCAT(" and \'", COALESCE(COALESCE(?second_name__key, IF(isIRI(?second_name), REPLACE(STR(?second_name), "^.*[#/]", ""), STR(?second_name))), ""), "\'"), ""))), "")), ?firing_id) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Graphs ===
+effortless-ntwf:Graphs_NameShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Graphs ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Graphs .
+    OPTIONAL { $this effortless-ntwf:graphId ?graph_id . }
+                BIND(?graph_id AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Graphs_CountOfStatedFactsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Graphs ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_CountOfStatedFacts" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:countOfStatedFacts ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Graphs .
+                {
+                    SELECT (SUM(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:Statements .
+                    ?child effortless-ntwf:graph $this .
+                    OPTIONAL { ?child effortless-ntwf:statedUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY ?child
+                    }
+                }
+            }
+        """ ;
+    ] .
+effortless-ntwf:Graphs_CountOfConclusionsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Graphs ;
+    sh:order 15 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_CountOfConclusions" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:countOfConclusions ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Graphs .
+                {
+                    SELECT (SUM(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:Statements .
+                    ?child effortless-ntwf:graph $this .
+                    OPTIONAL { ?child effortless-ntwf:conclusionUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY ?child
+                    }
+                }
+            }
+        """ ;
+    ] .
+effortless-ntwf:Graphs_CountOfViolationsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Graphs ;
+    sh:order 15 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_CountOfViolations" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:countOfViolations ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Graphs .
+                {
+                    SELECT (SUM(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:DisjointChecks .
+                    ?child effortless-ntwf:graph $this .
+                    OPTIONAL { ?child effortless-ntwf:violationUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY ?child
+                    }
+                }
+            }
+        """ ;
+    ] .
+effortless-ntwf:Graphs_IsConsistentShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Graphs ;
+    sh:order 16 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_IsConsistent" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:isConsistent ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Graphs .
+    OPTIONAL { $this effortless-ntwf:countOfViolations ?count_of_violations . }
+                BIND((COALESCE(?count_of_violations, 0) = 0) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Properties ===
+effortless-ntwf:Properties_NameShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Properties ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Properties_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Properties .
+    OPTIONAL { $this effortless-ntwf:label ?label . }
+                BIND(?label AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Rules ===
+effortless-ntwf:Rules_NameShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Rules ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Rules_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Rules .
+    OPTIONAL { $this effortless-ntwf:label ?label . }
+                BIND(?label AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Rules_CountOfFiringsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Rules ;
+    sh:order 12 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Rules_CountOfFirings" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:countOfFirings ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Rules .
+                {
+                    SELECT (SUM(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:Firings .
+                    ?child effortless-ntwf:rule $this .
+                    OPTIONAL { ?child effortless-ntwf:firedUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY ?child
+                    }
+                }
+            }
+        """ ;
+    ] .
+
+# === Rules for Statements ===
+effortless-ntwf:Statements_SubjectLabelShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_SubjectLabel" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:subjectLabel ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+                OPTIONAL { $this effortless-ntwf:subject ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Things ; effortless-ntwf:thingId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_PropertyLabelShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_PropertyLabel" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:propertyLabel ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+                OPTIONAL { $this effortless-ntwf:property ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Properties ; effortless-ntwf:propertyId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_ObjectLabelShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_ObjectLabel" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:objectLabel ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+                OPTIONAL { $this effortless-ntwf:objectThing ?j0 . }
+                OPTIONAL { ?j1 a effortless-ntwf:Things ; effortless-ntwf:thingId ?j2 . FILTER( ?j1 = ?j0 || REPLACE(STR(?j2), "^.*[#/]", "") = REPLACE(STR(?j0), "^.*[#/]", "") ) OPTIONAL { ?j1 effortless-ntwf:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_NameShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+    OPTIONAL { $this effortless-ntwf:numberValue ?number_value . }
+    OPTIONAL { $this effortless-ntwf:objectLabel ?object_label . }
+    OPTIONAL { $this effortless-ntwf:objectThing ?object_thing . OPTIONAL { ?object_thing effortless-ntwf:__key ?object_thing__key . } }
+    OPTIONAL { $this effortless-ntwf:propertyLabel ?property_label . OPTIONAL { ?property_label effortless-ntwf:__key ?property_label__key . } }
+    OPTIONAL { $this effortless-ntwf:subjectLabel ?subject_label . OPTIONAL { ?subject_label effortless-ntwf:__key ?subject_label__key . } }
+                BIND(CONCAT(COALESCE(COALESCE(?subject_label__key, IF(isIRI(?subject_label), REPLACE(STR(?subject_label), "^.*[#/]", ""), STR(?subject_label))), ""), " ", COALESCE(COALESCE(?property_label__key, IF(isIRI(?property_label), REPLACE(STR(?property_label), "^.*[#/]", ""), STR(?property_label))), ""), " ", COALESCE(IF(isIRI(IF(COALESCE((COALESCE(?object_thing__key, COALESCE(IF(isIRI(?object_thing), REPLACE(STR(?object_thing), "^.*[#/]", ""), STR(?object_thing)), "")) = ""), false), ?number_value, ?object_label)), REPLACE(STR(IF(COALESCE((COALESCE(?object_thing__key, COALESCE(IF(isIRI(?object_thing), REPLACE(STR(?object_thing), "^.*[#/]", ""), STR(?object_thing)), "")) = ""), false), ?number_value, ?object_label)), "^.*[#/]", ""), STR(IF(COALESCE((COALESCE(?object_thing__key, COALESCE(IF(isIRI(?object_thing), REPLACE(STR(?object_thing), "^.*[#/]", ""), STR(?object_thing)), "")) = ""), false), ?number_value, ?object_label))), "")) AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_CountOfInverseFiringsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_CountOfInverseFirings" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:countOfInverseFirings ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+                {
+                    SELECT (SUM(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:Firings .
+                    ?child effortless-ntwf:target $this .
+                    OPTIONAL { ?child effortless-ntwf:inverseFiredUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY ?child
+                    }
+                }
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_CountOfSymmetricFiringsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_CountOfSymmetricFirings" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:countOfSymmetricFirings ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+                {
+                    SELECT (SUM(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:Firings .
+                    ?child effortless-ntwf:target $this .
+                    OPTIONAL { ?child effortless-ntwf:symmetricFiredUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY ?child
+                    }
+                }
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_HoldsBeforeChainShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_HoldsBeforeChain" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:holdsBeforeChain ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+    OPTIONAL { $this effortless-ntwf:countOfInverseFirings ?count_of_inverse_firings . }
+    OPTIONAL { $this effortless-ntwf:countOfSymmetricFirings ?count_of_symmetric_firings . }
+    OPTIONAL { $this effortless-ntwf:isStated ?is_stated . }
+                BIND((COALESCE(?is_stated, false) || COALESCE((COALESCE(?count_of_inverse_firings, 0) > 0), false) || COALESCE((COALESCE(?count_of_symmetric_firings, 0) > 0), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_CountOfChainFiringsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 7 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_CountOfChainFirings" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:countOfChainFirings ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+                {
+                    SELECT (SUM(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:Firings .
+                    ?child effortless-ntwf:target $this .
+                    OPTIONAL { ?child effortless-ntwf:chainFiredUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY ?child
+                    }
+                }
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_HoldsBeforeTypingShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 8 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_HoldsBeforeTyping" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:holdsBeforeTyping ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+    OPTIONAL { $this effortless-ntwf:countOfChainFirings ?count_of_chain_firings . }
+    OPTIONAL { $this effortless-ntwf:holdsBeforeChain ?holds_before_chain . }
+                BIND((COALESCE(?holds_before_chain, false) || COALESCE((COALESCE(?count_of_chain_firings, 0) > 0), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_CountOfTypeFiringsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 11 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_CountOfTypeFirings" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:countOfTypeFirings ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+                {
+                    SELECT (SUM(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:Firings .
+                    ?child effortless-ntwf:target $this .
+                    OPTIONAL { ?child effortless-ntwf:typeFiredUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY ?child
+                    }
+                }
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_HoldsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 12 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_Holds" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:holds ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+    OPTIONAL { $this effortless-ntwf:countOfTypeFirings ?count_of_type_firings . }
+    OPTIONAL { $this effortless-ntwf:holdsBeforeTyping ?holds_before_typing . }
+                BIND((COALESCE(?holds_before_typing, false) || COALESCE((COALESCE(?count_of_type_firings, 0) > 0), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_IsConclusionShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 13 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_IsConclusion" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:isConclusion ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+    OPTIONAL { $this effortless-ntwf:holds ?holds . }
+    OPTIONAL { $this effortless-ntwf:isStated ?is_stated . }
+                BIND((COALESCE(?holds, false) && COALESCE((!(COALESCE(?is_stated, false))), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_WorkedOutByShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 14 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_WorkedOutBy" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:workedOutBy ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+    OPTIONAL { $this effortless-ntwf:countOfChainFirings ?count_of_chain_firings . }
+    OPTIONAL { $this effortless-ntwf:countOfInverseFirings ?count_of_inverse_firings . }
+    OPTIONAL { $this effortless-ntwf:countOfSymmetricFirings ?count_of_symmetric_firings . }
+    OPTIONAL { $this effortless-ntwf:isConclusion ?is_conclusion . }
+                BIND(IF(COALESCE((!(COALESCE(?is_conclusion, false))), false), "", IF(COALESCE((COALESCE(?count_of_inverse_firings, 0) > 0), false), "inverse", IF(COALESCE((COALESCE(?count_of_symmetric_firings, 0) > 0), false), "symmetric", IF(COALESCE((COALESCE(?count_of_chain_firings, 0) > 0), false), "property chain", "domain and range")))) AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_StatedUnitShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_StatedUnit" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:statedUnit ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+    OPTIONAL { $this effortless-ntwf:isStated ?is_stated . }
+                BIND(ROUND(IF(COALESCE(?is_stated, false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_ConclusionUnitShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 14 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_ConclusionUnit" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:conclusionUnit ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+    OPTIONAL { $this effortless-ntwf:isConclusion ?is_conclusion . }
+                BIND(ROUND(IF(COALESCE(?is_conclusion, false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_ParentUnitShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 13 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_ParentUnit" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:parentUnit ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+    OPTIONAL { $this effortless-ntwf:holds ?holds . }
+    OPTIONAL { $this effortless-ntwf:property ?property . OPTIONAL { ?property effortless-ntwf:__key ?property__key . } }
+                BIND(ROUND(IF(COALESCE((COALESCE(?holds, false) && COALESCE((COALESCE(?property__key, COALESCE(IF(isIRI(?property), REPLACE(STR(?property), "^.*[#/]", ""), STR(?property)), "")) = "isParentOf"), false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Statements_GrandparentUnitShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:order 13 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_GrandparentUnit" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:grandparentUnit ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Statements .
+    OPTIONAL { $this effortless-ntwf:holds ?holds . }
+    OPTIONAL { $this effortless-ntwf:property ?property . OPTIONAL { ?property effortless-ntwf:__key ?property__key . } }
+                BIND(ROUND(IF(COALESCE((COALESCE(?holds, false) && COALESCE((COALESCE(?property__key, COALESCE(IF(isIRI(?property), REPLACE(STR(?property), "^.*[#/]", ""), STR(?property)), "")) = "isGrandparentOf"), false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Things ===
+effortless-ntwf:Things_NameShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Things ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Things_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Things .
+    OPTIONAL { $this effortless-ntwf:label ?label . }
+                BIND(?label AS ?_result)
+            }
+        """ ;
+    ] .
+effortless-ntwf:Things_CountOfChildrenShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Things ;
+    sh:order 14 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Things_CountOfChildren" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:countOfChildren ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Things .
+                {
+                    SELECT (SUM(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:Statements .
+                    ?child effortless-ntwf:subject $this .
+                    OPTIONAL { ?child effortless-ntwf:parentUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY ?child
+                    }
+                }
+            }
+        """ ;
+    ] .
+effortless-ntwf:Things_CountOfGrandchildrenShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Things ;
+    sh:order 14 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Things_CountOfGrandchildren" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            CONSTRUCT {
+                $this effortless-ntwf:countOfGrandchildren ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:Things .
+                {
+                    SELECT (SUM(?cval) AS ?_result) WHERE {
+                        SELECT ?child (MAX(?sumval) AS ?cval) WHERE {
+                    ?child a effortless-ntwf:Statements .
+                    ?child effortless-ntwf:subject $this .
+                    OPTIONAL { ?child effortless-ntwf:grandparentUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY ?child
+                    }
+                }
+            }
+        """ ;
+    ] .
+
+# === Cardinality: single-valued forward FK properties ===
+effortless-ntwf:DisjointChecksCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:DisjointChecks ;
+    sh:property [ sh:path effortless-ntwf:a ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:b ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:graph ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:rule ; sh:maxCount 1 ] .
+
+effortless-ntwf:FiringsCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Firings ;
+    sh:property [ sh:path effortless-ntwf:first ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:rule ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:second ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:target ; sh:maxCount 1 ] .
+
+effortless-ntwf:PropertiesCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Properties ;
+    sh:property [ sh:path effortless-ntwf:chainFirst ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:chainSecond ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:domainClass ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:rangeClass ; sh:maxCount 1 ] .
+
+effortless-ntwf:StatementsCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:Statements ;
+    sh:property [ sh:path effortless-ntwf:graph ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:objectThing ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:property ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:subject ; sh:maxCount 1 ] .
+
+# Generated 48 SHACL rules
