@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "ClaudeInChromeDomain(jessicatalisman.substack.com)"
+      "ClaudeInChromeDomain(jessicatalisman.substack.com)",
+      "ClaudeInChromeDomain(localhost:43210)"
     ]
   }
 }

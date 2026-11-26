@@ -1,8 +1,8 @@
 # Rulebook to PostgreSQL Script Generation Report
 
 **Schema:** `public`
-**Database:** `demo`
-**Timestamp:** 2026-11-26 09:05:51 UTC
+**Database:** `erb_talismans_southpark_ontology`
+**Timestamp:** 2026-11-26 18:50:01 UTC
 
 ## Parsing Rulebook
 
