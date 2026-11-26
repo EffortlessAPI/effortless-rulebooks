@@ -707,7 +707,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_graphs_count_of_stated_facts(p_graph_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_in_effect_unit(statement_id))::numeric), 0) FROM statements WHERE graph = p_graph_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_statements_is_in_effect(erb_r1.statement_id) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE graph = p_graph_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_graphs_count_of_conclusions
@@ -717,7 +717,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_graphs_count_of_conclusions(p_graph_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_conclusion_unit(statement_id))::numeric), 0) FROM statements WHERE graph = p_graph_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_statements_is_conclusion(erb_r1.statement_id) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE graph = p_graph_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_graphs_count_of_violations
@@ -727,7 +727,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_graphs_count_of_violations(p_graph_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_disjoint_checks_violation_unit(disjoint_check_id))::numeric), 0) FROM disjoint_checks WHERE graph = p_graph_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_disjoint_checks_rule_enabled(erb_r1.disjoint_check_id), FALSE) AND COALESCE(calc_disjoint_checks_first_holds(erb_r1.disjoint_check_id), FALSE) AND COALESCE(calc_disjoint_checks_second_holds(erb_r1.disjoint_check_id), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM disjoint_checks erb_r1 WHERE graph = p_graph_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_graphs_is_consistent
@@ -757,7 +757,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_graphs_count_of_facts_to_add(p_graph_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_listed_off_unit(statement_id))::numeric), 0) FROM statements WHERE graph = p_graph_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(COALESCE(erb_r1.is_listed, FALSE), FALSE) AND COALESCE(NOT (COALESCE(calc_statements_is_in_effect(erb_r1.statement_id), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE graph = p_graph_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_graphs_has_facts_to_add
@@ -777,7 +777,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_graphs_next_fact_sort_order(p_graph_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(MIN((sort_order)::numeric), 0) FROM statements WHERE graph = p_graph_id AND calc_statements_listed_off_unit(statement_id) = 1))::integer;
+  SELECT ((SELECT COALESCE(MIN((sort_order)::numeric), 0) FROM statements erb_r1 WHERE graph = p_graph_id AND ((SELECT (CASE WHEN (COALESCE(COALESCE(erb_r1.is_listed, FALSE), FALSE) AND COALESCE(NOT (COALESCE(calc_statements_is_in_effect(erb_r1.statement_id), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer = 1))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_graphs_max_activation_seq
@@ -807,7 +807,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_graphs_max_listed_sort_order(p_graph_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(MAX((sort_order)::numeric), 0) FROM statements WHERE graph = p_graph_id AND calc_statements_listed_unit(statement_id) = 1))::integer;
+  SELECT ((SELECT COALESCE(MAX((sort_order)::numeric), 0) FROM statements erb_r1 WHERE graph = p_graph_id AND ((SELECT (CASE WHEN COALESCE(erb_r1.is_listed, FALSE) THEN (1)::text ELSE (0)::text END)::integer))::integer = 1))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_graphs_next_listed_sort_order
@@ -857,7 +857,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rules_count_of_firings(p_rule_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_firings_fired_unit(firing_id))::numeric), 0) FROM firings WHERE rule = p_rule_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_inverse_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_symmetric_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_chain_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_type_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer))::integer)::numeric), 0) FROM firings erb_r1 WHERE rule = p_rule_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_firing_kinds_rule_enabled
@@ -1073,7 +1073,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_things_count_of_children(p_thing_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_parent_unit(statement_id))::numeric), 0) FROM statements WHERE subject = p_thing_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_statements_holds(erb_r1.statement_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.property, ''), '') = 'isParentOf', FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE subject = p_thing_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_things_count_of_grandchildren
@@ -1083,7 +1083,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_things_count_of_grandchildren(p_thing_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_grandparent_unit(statement_id))::numeric), 0) FROM statements WHERE subject = p_thing_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_statements_holds(erb_r1.statement_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.property, ''), '') = 'isGrandparentOf', FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE subject = p_thing_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_things_count_as_place
@@ -1093,7 +1093,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_things_count_as_place(p_thing_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_place_unit(statement_id))::numeric), 0) FROM statements WHERE object_thing = p_thing_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_statements_holds(erb_r1.statement_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.property, ''), '') = 'attends', FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE object_thing = p_thing_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_things_count_as_subject
@@ -1103,7 +1103,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_things_count_as_subject(p_thing_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_holds_unit(statement_id))::numeric), 0) FROM statements WHERE subject = p_thing_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_statements_holds(erb_r1.statement_id) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE subject = p_thing_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_things_count_as_object
@@ -1113,7 +1113,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_things_count_as_object(p_thing_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_holds_unit(statement_id))::numeric), 0) FROM statements WHERE object_thing = p_thing_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_statements_holds(erb_r1.statement_id) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE object_thing = p_thing_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_things_is_in_graph
@@ -1615,7 +1615,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_latest_sibling_activation_seq(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(MAX((activation_seq)::numeric), 0) FROM statements WHERE calc_statements_subject_property_key(statement_id) = calc_statements_subject_property_key(p_statement_id)))::integer;
+  SELECT ((SELECT COALESCE(MAX((activation_seq)::numeric), 0) FROM statements erb_r1 WHERE ((SELECT (CONCAT(NULLIF(erb_r1.subject, ''), '|', NULLIF(erb_r1.property, '')))::text))::text = (SELECT calc_statements_subject_property_key(p_statement_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_is_in_effect
@@ -1675,7 +1675,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_count_of_inverse_firings(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_firings_inverse_fired_unit(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_firings_rule_enabled(erb_r1.firing_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.kind, ''), '') = 'inverse', FALSE) AND COALESCE(calc_firings_first_is_in_effect(erb_r1.firing_id), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM firings erb_r1 WHERE target = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_count_of_symmetric_firings
@@ -1685,7 +1685,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_count_of_symmetric_firings(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_firings_symmetric_fired_unit(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_firings_rule_enabled(erb_r1.firing_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.kind, ''), '') = 'symmetric', FALSE) AND COALESCE(calc_firings_first_is_in_effect(erb_r1.firing_id), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM firings erb_r1 WHERE target = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_holds_before_chain
@@ -1705,7 +1705,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_count_of_chain_firings(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_firings_chain_fired_unit(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_firings_rule_enabled(erb_r1.firing_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.kind, ''), '') = 'chain', FALSE) AND COALESCE(calc_firings_first_holds_before_chain(erb_r1.firing_id), FALSE) AND COALESCE(calc_firings_second_holds_before_chain(erb_r1.firing_id), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM firings erb_r1 WHERE target = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_holds_before_typing
@@ -1725,7 +1725,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_count_of_type_firings(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_firings_type_fired_unit(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_firings_rule_enabled(erb_r1.firing_id), FALSE) AND COALESCE((COALESCE(COALESCE(NULLIF(erb_r1.kind, ''), '') = 'domain', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.kind, ''), '') = 'range', FALSE)), FALSE) AND COALESCE(calc_firings_first_holds_before_typing(erb_r1.firing_id), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM firings erb_r1 WHERE target = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_holds
@@ -1805,7 +1805,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_first_pre_chain_order_key(p_statement_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MIN((calc_firings_pre_chain_order_key(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id AND calc_firings_pre_chain_fired_unit(firing_id) = 1))::numeric;
+  SELECT ((SELECT COALESCE(MIN((((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_first_sort_order(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(10, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_kind_sort_order(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric))::numeric)::numeric), 0) FROM firings erb_r1 WHERE target = p_statement_id AND ((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_inverse_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_symmetric_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer))::integer = 1))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_snap_position
@@ -1825,7 +1825,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_first_fired_order_key(p_statement_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MIN((calc_firings_order_key(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id AND calc_firings_fired_unit(firing_id) = 1))::numeric;
+  SELECT ((SELECT COALESCE(MIN((((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_round(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(1000000000000000, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_first_snap_position(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(100000000, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_kind_sort_order(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(10000000, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN ((NULLIF(erb_r1.second, '')) IS NULL OR (NULLIF(erb_r1.second, ''))::text = '') THEN (0)::text ELSE (calc_firings_second_snap_position(erb_r1.firing_id))::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric))::numeric)::numeric), 0) FROM firings erb_r1 WHERE target = p_statement_id AND ((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_inverse_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_symmetric_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_chain_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_type_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer))::integer = 1))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_count_of_chosen_firings
@@ -1835,7 +1835,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_count_of_chosen_firings(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_firings_chosen_unit(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_firings_is_chosen(erb_r1.firing_id) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM firings erb_r1 WHERE target = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_subject_node_key
@@ -1875,7 +1875,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_count_of_violations_as_first(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_disjoint_checks_violation_unit(disjoint_check_id))::numeric), 0) FROM disjoint_checks WHERE first = p_statement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_disjoint_checks_rule_enabled(erb_r1.disjoint_check_id), FALSE) AND COALESCE(calc_disjoint_checks_first_holds(erb_r1.disjoint_check_id), FALSE) AND COALESCE(calc_disjoint_checks_second_holds(erb_r1.disjoint_check_id), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM disjoint_checks erb_r1 WHERE first = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_count_of_violations_as_second
@@ -1885,7 +1885,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_count_of_violations_as_second(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_disjoint_checks_violation_unit(disjoint_check_id))::numeric), 0) FROM disjoint_checks WHERE second = p_statement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_disjoint_checks_rule_enabled(erb_r1.disjoint_check_id), FALSE) AND COALESCE(calc_disjoint_checks_first_holds(erb_r1.disjoint_check_id), FALSE) AND COALESCE(calc_disjoint_checks_second_holds(erb_r1.disjoint_check_id), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM disjoint_checks erb_r1 WHERE second = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_is_in_contradiction

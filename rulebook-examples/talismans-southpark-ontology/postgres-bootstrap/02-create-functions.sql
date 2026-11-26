@@ -140,9 +140,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_graphs_count_of_stated_facts(p_graph_id TEXT)
+CREATE OR REPLACE FUNCTION calc_graphs_count_of_stated_facts__compute(p_graph_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_in_effect_unit(statement_id))::numeric), 0) FROM statements WHERE graph = p_graph_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_statements_is_in_effect(erb_r1.statement_id) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE graph = p_graph_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_graphs_count_of_conclusions
@@ -150,9 +150,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_graphs_count_of_conclusions(p_graph_id TEXT)
+CREATE OR REPLACE FUNCTION calc_graphs_count_of_conclusions__compute(p_graph_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_conclusion_unit(statement_id))::numeric), 0) FROM statements WHERE graph = p_graph_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_statements_is_conclusion(erb_r1.statement_id) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE graph = p_graph_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_graphs_count_of_violations
@@ -160,9 +160,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_graphs_count_of_violations(p_graph_id TEXT)
+CREATE OR REPLACE FUNCTION calc_graphs_count_of_violations__compute(p_graph_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_disjoint_checks_violation_unit(disjoint_check_id))::numeric), 0) FROM disjoint_checks WHERE graph = p_graph_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_disjoint_checks_rule_enabled(erb_r1.disjoint_check_id), FALSE) AND COALESCE(calc_disjoint_checks_first_holds(erb_r1.disjoint_check_id), FALSE) AND COALESCE(calc_disjoint_checks_second_holds(erb_r1.disjoint_check_id), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM disjoint_checks erb_r1 WHERE graph = p_graph_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_graphs_is_consistent
@@ -190,9 +190,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_graphs_count_of_facts_to_add(p_graph_id TEXT)
+CREATE OR REPLACE FUNCTION calc_graphs_count_of_facts_to_add__compute(p_graph_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_listed_off_unit(statement_id))::numeric), 0) FROM statements WHERE graph = p_graph_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(COALESCE(erb_r1.is_listed, FALSE), FALSE) AND COALESCE(NOT (COALESCE(calc_statements_is_in_effect(erb_r1.statement_id), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE graph = p_graph_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_graphs_has_facts_to_add
@@ -210,9 +210,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_graphs_next_fact_sort_order(p_graph_id TEXT)
+CREATE OR REPLACE FUNCTION calc_graphs_next_fact_sort_order__compute(p_graph_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(MIN((sort_order)::numeric), 0) FROM statements WHERE graph = p_graph_id AND calc_statements_listed_off_unit(statement_id) = 1))::integer;
+  SELECT ((SELECT COALESCE(MIN((sort_order)::numeric), 0) FROM statements erb_r1 WHERE graph = p_graph_id AND ((SELECT (CASE WHEN (COALESCE(COALESCE(erb_r1.is_listed, FALSE), FALSE) AND COALESCE(NOT (COALESCE(calc_statements_is_in_effect(erb_r1.statement_id), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer = 1))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_graphs_max_activation_seq
@@ -220,7 +220,7 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_graphs_max_activation_seq(p_graph_id TEXT)
+CREATE OR REPLACE FUNCTION calc_graphs_max_activation_seq__compute(p_graph_id TEXT)
 RETURNS INTEGER AS $$
   SELECT ((SELECT COALESCE(MAX((activation_seq)::numeric), 0) FROM statements WHERE graph = p_graph_id))::integer;
 $$ LANGUAGE sql STABLE;
@@ -240,9 +240,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_graphs_max_listed_sort_order(p_graph_id TEXT)
+CREATE OR REPLACE FUNCTION calc_graphs_max_listed_sort_order__compute(p_graph_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(MAX((sort_order)::numeric), 0) FROM statements WHERE graph = p_graph_id AND calc_statements_listed_unit(statement_id) = 1))::integer;
+  SELECT ((SELECT COALESCE(MAX((sort_order)::numeric), 0) FROM statements erb_r1 WHERE graph = p_graph_id AND ((SELECT (CASE WHEN COALESCE(erb_r1.is_listed, FALSE) THEN (1)::text ELSE (0)::text END)::integer))::integer = 1))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_graphs_next_listed_sort_order
@@ -260,7 +260,7 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_graphs_max_sort_order(p_graph_id TEXT)
+CREATE OR REPLACE FUNCTION calc_graphs_max_sort_order__compute(p_graph_id TEXT)
 RETURNS INTEGER AS $$
   SELECT ((SELECT COALESCE(MAX((sort_order)::numeric), 0) FROM statements WHERE graph = p_graph_id))::integer;
 $$ LANGUAGE sql STABLE;
@@ -292,7 +292,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rules_count_of_firings(p_rule_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_firings_fired_unit(firing_id))::numeric), 0) FROM firings WHERE rule = p_rule_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_inverse_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_symmetric_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_chain_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_type_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer))::integer)::numeric), 0) FROM firings erb_r1 WHERE rule = p_rule_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_firing_kinds_rule_enabled
@@ -506,9 +506,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_things_count_of_children(p_thing_id TEXT)
+CREATE OR REPLACE FUNCTION calc_things_count_of_children__compute(p_thing_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_parent_unit(statement_id))::numeric), 0) FROM statements WHERE subject = p_thing_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_statements_holds(erb_r1.statement_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.property, ''), '') = 'isParentOf', FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE subject = p_thing_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_things_count_of_grandchildren
@@ -516,9 +516,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_things_count_of_grandchildren(p_thing_id TEXT)
+CREATE OR REPLACE FUNCTION calc_things_count_of_grandchildren__compute(p_thing_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_grandparent_unit(statement_id))::numeric), 0) FROM statements WHERE subject = p_thing_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_statements_holds(erb_r1.statement_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.property, ''), '') = 'isGrandparentOf', FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE subject = p_thing_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_things_count_as_place
@@ -526,9 +526,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_things_count_as_place(p_thing_id TEXT)
+CREATE OR REPLACE FUNCTION calc_things_count_as_place__compute(p_thing_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_place_unit(statement_id))::numeric), 0) FROM statements WHERE object_thing = p_thing_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_statements_holds(erb_r1.statement_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.property, ''), '') = 'attends', FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE object_thing = p_thing_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_things_count_as_subject
@@ -536,9 +536,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_things_count_as_subject(p_thing_id TEXT)
+CREATE OR REPLACE FUNCTION calc_things_count_as_subject__compute(p_thing_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_holds_unit(statement_id))::numeric), 0) FROM statements WHERE subject = p_thing_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_statements_holds(erb_r1.statement_id) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE subject = p_thing_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_things_count_as_object
@@ -546,9 +546,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_things_count_as_object(p_thing_id TEXT)
+CREATE OR REPLACE FUNCTION calc_things_count_as_object__compute(p_thing_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_statements_holds_unit(statement_id))::numeric), 0) FROM statements WHERE object_thing = p_thing_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_statements_holds(erb_r1.statement_id) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM statements erb_r1 WHERE object_thing = p_thing_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_things_is_in_graph
@@ -1050,7 +1050,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_latest_sibling_activation_seq(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(MAX((activation_seq)::numeric), 0) FROM statements WHERE calc_statements_subject_property_key(statement_id) = calc_statements_subject_property_key(p_statement_id)))::integer;
+  SELECT ((SELECT COALESCE(MAX((activation_seq)::numeric), 0) FROM statements erb_r1 WHERE ((SELECT (CONCAT(NULLIF(erb_r1.subject, ''), '|', NULLIF(erb_r1.property, '')))::text))::text = (SELECT calc_statements_subject_property_key(p_statement_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_is_in_effect
@@ -1058,7 +1058,7 @@ $$ LANGUAGE sql STABLE;
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
 
 
-CREATE OR REPLACE FUNCTION calc_statements_is_in_effect(p_statement_id TEXT)
+CREATE OR REPLACE FUNCTION calc_statements_is_in_effect__compute(p_statement_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((COALESCE(COALESCE((SELECT is_stated FROM statements WHERE statement_id = p_statement_id), FALSE), FALSE) AND COALESCE((COALESCE(NOT (COALESCE(calc_statements_property_has_one_current_value(p_statement_id), FALSE)), FALSE) OR COALESCE(COALESCE((SELECT activation_seq FROM statements WHERE statement_id = p_statement_id), 0) = COALESCE(calc_statements_latest_sibling_activation_seq(p_statement_id), 0), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
@@ -1108,9 +1108,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_statements_count_of_inverse_firings(p_statement_id TEXT)
+CREATE OR REPLACE FUNCTION calc_statements_count_of_inverse_firings__compute(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_firings_inverse_fired_unit(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_firings_rule_enabled(erb_r1.firing_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.kind, ''), '') = 'inverse', FALSE) AND COALESCE(calc_firings_first_is_in_effect(erb_r1.firing_id), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM firings erb_r1 WHERE target = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_count_of_symmetric_firings
@@ -1118,9 +1118,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_statements_count_of_symmetric_firings(p_statement_id TEXT)
+CREATE OR REPLACE FUNCTION calc_statements_count_of_symmetric_firings__compute(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_firings_symmetric_fired_unit(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_firings_rule_enabled(erb_r1.firing_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.kind, ''), '') = 'symmetric', FALSE) AND COALESCE(calc_firings_first_is_in_effect(erb_r1.firing_id), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM firings erb_r1 WHERE target = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_holds_before_chain
@@ -1138,9 +1138,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_statements_count_of_chain_firings(p_statement_id TEXT)
+CREATE OR REPLACE FUNCTION calc_statements_count_of_chain_firings__compute(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_firings_chain_fired_unit(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_firings_rule_enabled(erb_r1.firing_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.kind, ''), '') = 'chain', FALSE) AND COALESCE(calc_firings_first_holds_before_chain(erb_r1.firing_id), FALSE) AND COALESCE(calc_firings_second_holds_before_chain(erb_r1.firing_id), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM firings erb_r1 WHERE target = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_holds_before_typing
@@ -1158,9 +1158,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_statements_count_of_type_firings(p_statement_id TEXT)
+CREATE OR REPLACE FUNCTION calc_statements_count_of_type_firings__compute(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_firings_type_fired_unit(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_firings_rule_enabled(erb_r1.firing_id), FALSE) AND COALESCE((COALESCE(COALESCE(NULLIF(erb_r1.kind, ''), '') = 'domain', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.kind, ''), '') = 'range', FALSE)), FALSE) AND COALESCE(calc_firings_first_holds_before_typing(erb_r1.firing_id), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM firings erb_r1 WHERE target = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_holds
@@ -1240,7 +1240,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_first_pre_chain_order_key(p_statement_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MIN((calc_firings_pre_chain_order_key(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id AND calc_firings_pre_chain_fired_unit(firing_id) = 1))::numeric;
+  SELECT ((SELECT COALESCE(MIN((((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_first_sort_order(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(10, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_kind_sort_order(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric))::numeric)::numeric), 0) FROM firings erb_r1 WHERE target = p_statement_id AND ((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_inverse_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_symmetric_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer))::integer = 1))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_snap_position
@@ -1260,7 +1260,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_first_fired_order_key(p_statement_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MIN((calc_firings_order_key(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id AND calc_firings_fired_unit(firing_id) = 1))::numeric;
+  SELECT ((SELECT COALESCE(MIN((((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_round(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(1000000000000000, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_first_snap_position(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(100000000, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_kind_sort_order(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(10000000, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN ((NULLIF(erb_r1.second, '')) IS NULL OR (NULLIF(erb_r1.second, ''))::text = '') THEN (0)::text ELSE (calc_firings_second_snap_position(erb_r1.firing_id))::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric))::numeric)::numeric), 0) FROM firings erb_r1 WHERE target = p_statement_id AND ((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_inverse_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_symmetric_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_chain_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_firings_type_fired_unit(erb_r1.firing_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer))::integer = 1))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_count_of_chosen_firings
@@ -1270,7 +1270,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_count_of_chosen_firings(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_firings_chosen_unit(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_firings_is_chosen(erb_r1.firing_id) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM firings erb_r1 WHERE target = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_subject_node_key
@@ -1310,7 +1310,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_count_of_violations_as_first(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_disjoint_checks_violation_unit(disjoint_check_id))::numeric), 0) FROM disjoint_checks WHERE first = p_statement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_disjoint_checks_rule_enabled(erb_r1.disjoint_check_id), FALSE) AND COALESCE(calc_disjoint_checks_first_holds(erb_r1.disjoint_check_id), FALSE) AND COALESCE(calc_disjoint_checks_second_holds(erb_r1.disjoint_check_id), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM disjoint_checks erb_r1 WHERE first = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_count_of_violations_as_second
@@ -1320,7 +1320,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_count_of_violations_as_second(p_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_disjoint_checks_violation_unit(disjoint_check_id))::numeric), 0) FROM disjoint_checks WHERE second = p_statement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_disjoint_checks_rule_enabled(erb_r1.disjoint_check_id), FALSE) AND COALESCE(calc_disjoint_checks_first_holds(erb_r1.disjoint_check_id), FALSE) AND COALESCE(calc_disjoint_checks_second_holds(erb_r1.disjoint_check_id), FALSE)) THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM disjoint_checks erb_r1 WHERE second = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_is_in_contradiction
@@ -1339,7 +1339,7 @@ $$ LANGUAGE sql STABLE;
 -- Lookup: IsEnabled from related Rules
 
 
-CREATE OR REPLACE FUNCTION calc_firings_rule_enabled(p_firing_id TEXT)
+CREATE OR REPLACE FUNCTION calc_firings_rule_enabled__compute(p_firing_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (SELECT is_enabled::boolean FROM rules WHERE rule_id = (SELECT rule FROM firings WHERE firing_id = p_firing_id));
 $$ LANGUAGE sql STABLE;
@@ -2067,3 +2067,226 @@ $$ LANGUAGE sql STABLE;
 -- These functions perform reverse FK lookups for inverse-side relationships
 -- ============================================================================
 
+
+-- ============================================================================
+-- SELF-REFERENCING LOOKUPS — memoised evaluation (see 06-refresh-memos.sql)
+-- A table whose lookup reads its own rows recomputes every ancestor row on each
+-- call. The original function is kept as <name>__compute; <name> now returns the
+-- memoised value when present and otherwise falls back to __compute. A write to a
+-- table the value depends on empties the memo (never stale) and refills it through
+-- erb_refresh_memos() once 06-refresh-memos.sql has defined it.
+-- ============================================================================
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_firings_rule_enabled (id TEXT PRIMARY KEY, val BOOLEAN);
+CREATE OR REPLACE FUNCTION calc_firings_rule_enabled(p_firing_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_firings_rule_enabled WHERE id = p_firing_id::text)
+              THEN (SELECT val FROM erb_memo_firings_rule_enabled WHERE id = p_firing_id::text)
+              ELSE calc_firings_rule_enabled__compute(p_firing_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_statements_is_in_effect (id TEXT PRIMARY KEY, val BOOLEAN);
+CREATE OR REPLACE FUNCTION calc_statements_is_in_effect(p_statement_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_statements_is_in_effect WHERE id = p_statement_id::text)
+              THEN (SELECT val FROM erb_memo_statements_is_in_effect WHERE id = p_statement_id::text)
+              ELSE calc_statements_is_in_effect__compute(p_statement_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_statements_count_of_inverse_firings (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_statements_count_of_inverse_firings(p_statement_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_statements_count_of_inverse_firings WHERE id = p_statement_id::text)
+              THEN (SELECT val FROM erb_memo_statements_count_of_inverse_firings WHERE id = p_statement_id::text)
+              ELSE calc_statements_count_of_inverse_firings__compute(p_statement_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_statements_count_of_symmetric_firings (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_statements_count_of_symmetric_firings(p_statement_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_statements_count_of_symmetric_firings WHERE id = p_statement_id::text)
+              THEN (SELECT val FROM erb_memo_statements_count_of_symmetric_firings WHERE id = p_statement_id::text)
+              ELSE calc_statements_count_of_symmetric_firings__compute(p_statement_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_statements_count_of_chain_firings (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_statements_count_of_chain_firings(p_statement_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_statements_count_of_chain_firings WHERE id = p_statement_id::text)
+              THEN (SELECT val FROM erb_memo_statements_count_of_chain_firings WHERE id = p_statement_id::text)
+              ELSE calc_statements_count_of_chain_firings__compute(p_statement_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_statements_count_of_type_firings (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_statements_count_of_type_firings(p_statement_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_statements_count_of_type_firings WHERE id = p_statement_id::text)
+              THEN (SELECT val FROM erb_memo_statements_count_of_type_firings WHERE id = p_statement_id::text)
+              ELSE calc_statements_count_of_type_firings__compute(p_statement_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_things_count_as_place (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_things_count_as_place(p_thing_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_things_count_as_place WHERE id = p_thing_id::text)
+              THEN (SELECT val FROM erb_memo_things_count_as_place WHERE id = p_thing_id::text)
+              ELSE calc_things_count_as_place__compute(p_thing_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_things_count_of_children (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_things_count_of_children(p_thing_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_things_count_of_children WHERE id = p_thing_id::text)
+              THEN (SELECT val FROM erb_memo_things_count_of_children WHERE id = p_thing_id::text)
+              ELSE calc_things_count_of_children__compute(p_thing_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_things_count_of_grandchildren (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_things_count_of_grandchildren(p_thing_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_things_count_of_grandchildren WHERE id = p_thing_id::text)
+              THEN (SELECT val FROM erb_memo_things_count_of_grandchildren WHERE id = p_thing_id::text)
+              ELSE calc_things_count_of_grandchildren__compute(p_thing_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_things_count_as_subject (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_things_count_as_subject(p_thing_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_things_count_as_subject WHERE id = p_thing_id::text)
+              THEN (SELECT val FROM erb_memo_things_count_as_subject WHERE id = p_thing_id::text)
+              ELSE calc_things_count_as_subject__compute(p_thing_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_things_count_as_object (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_things_count_as_object(p_thing_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_things_count_as_object WHERE id = p_thing_id::text)
+              THEN (SELECT val FROM erb_memo_things_count_as_object WHERE id = p_thing_id::text)
+              ELSE calc_things_count_as_object__compute(p_thing_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_graphs_count_of_stated_facts (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_graphs_count_of_stated_facts(p_graph_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_graphs_count_of_stated_facts WHERE id = p_graph_id::text)
+              THEN (SELECT val FROM erb_memo_graphs_count_of_stated_facts WHERE id = p_graph_id::text)
+              ELSE calc_graphs_count_of_stated_facts__compute(p_graph_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_graphs_count_of_conclusions (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_graphs_count_of_conclusions(p_graph_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_graphs_count_of_conclusions WHERE id = p_graph_id::text)
+              THEN (SELECT val FROM erb_memo_graphs_count_of_conclusions WHERE id = p_graph_id::text)
+              ELSE calc_graphs_count_of_conclusions__compute(p_graph_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_graphs_count_of_violations (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_graphs_count_of_violations(p_graph_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_graphs_count_of_violations WHERE id = p_graph_id::text)
+              THEN (SELECT val FROM erb_memo_graphs_count_of_violations WHERE id = p_graph_id::text)
+              ELSE calc_graphs_count_of_violations__compute(p_graph_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_graphs_count_of_facts_to_add (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_graphs_count_of_facts_to_add(p_graph_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_graphs_count_of_facts_to_add WHERE id = p_graph_id::text)
+              THEN (SELECT val FROM erb_memo_graphs_count_of_facts_to_add WHERE id = p_graph_id::text)
+              ELSE calc_graphs_count_of_facts_to_add__compute(p_graph_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_graphs_next_fact_sort_order (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_graphs_next_fact_sort_order(p_graph_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_graphs_next_fact_sort_order WHERE id = p_graph_id::text)
+              THEN (SELECT val FROM erb_memo_graphs_next_fact_sort_order WHERE id = p_graph_id::text)
+              ELSE calc_graphs_next_fact_sort_order__compute(p_graph_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_graphs_max_activation_seq (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_graphs_max_activation_seq(p_graph_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_graphs_max_activation_seq WHERE id = p_graph_id::text)
+              THEN (SELECT val FROM erb_memo_graphs_max_activation_seq WHERE id = p_graph_id::text)
+              ELSE calc_graphs_max_activation_seq__compute(p_graph_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_graphs_max_listed_sort_order (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_graphs_max_listed_sort_order(p_graph_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_graphs_max_listed_sort_order WHERE id = p_graph_id::text)
+              THEN (SELECT val FROM erb_memo_graphs_max_listed_sort_order WHERE id = p_graph_id::text)
+              ELSE calc_graphs_max_listed_sort_order__compute(p_graph_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_graphs_max_sort_order (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_graphs_max_sort_order(p_graph_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_graphs_max_sort_order WHERE id = p_graph_id::text)
+              THEN (SELECT val FROM erb_memo_graphs_max_sort_order WHERE id = p_graph_id::text)
+              ELSE calc_graphs_max_sort_order__compute(p_graph_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_memo_invalidate() RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM erb_memo_firings_rule_enabled) THEN DELETE FROM erb_memo_firings_rule_enabled; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_statements_is_in_effect) THEN DELETE FROM erb_memo_statements_is_in_effect; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_statements_count_of_inverse_firings) THEN DELETE FROM erb_memo_statements_count_of_inverse_firings; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_statements_count_of_symmetric_firings) THEN DELETE FROM erb_memo_statements_count_of_symmetric_firings; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_statements_count_of_chain_firings) THEN DELETE FROM erb_memo_statements_count_of_chain_firings; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_statements_count_of_type_firings) THEN DELETE FROM erb_memo_statements_count_of_type_firings; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_things_count_as_place) THEN DELETE FROM erb_memo_things_count_as_place; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_things_count_of_children) THEN DELETE FROM erb_memo_things_count_of_children; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_things_count_of_grandchildren) THEN DELETE FROM erb_memo_things_count_of_grandchildren; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_things_count_as_subject) THEN DELETE FROM erb_memo_things_count_as_subject; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_things_count_as_object) THEN DELETE FROM erb_memo_things_count_as_object; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_graphs_count_of_stated_facts) THEN DELETE FROM erb_memo_graphs_count_of_stated_facts; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_graphs_count_of_conclusions) THEN DELETE FROM erb_memo_graphs_count_of_conclusions; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_graphs_count_of_violations) THEN DELETE FROM erb_memo_graphs_count_of_violations; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_graphs_count_of_facts_to_add) THEN DELETE FROM erb_memo_graphs_count_of_facts_to_add; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_graphs_next_fact_sort_order) THEN DELETE FROM erb_memo_graphs_next_fact_sort_order; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_graphs_max_activation_seq) THEN DELETE FROM erb_memo_graphs_max_activation_seq; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_graphs_max_listed_sort_order) THEN DELETE FROM erb_memo_graphs_max_listed_sort_order; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_graphs_max_sort_order) THEN DELETE FROM erb_memo_graphs_max_sort_order; END IF;
+  INSERT INTO erb_memo_dirty(id) VALUES (1) ON CONFLICT DO NOTHING;
+  RETURN NULL;
+END $$;
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_dirty (id INTEGER PRIMARY KEY);
+CREATE OR REPLACE FUNCTION erb_memo_refill() RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+  DELETE FROM erb_memo_dirty;
+  IF to_regproc('erb_refresh_memos') IS NOT NULL THEN PERFORM erb_refresh_memos(); END IF;
+  RETURN NULL;
+END $$;
+DROP TRIGGER IF EXISTS erb_memo_refill ON erb_memo_dirty;
+CREATE CONSTRAINT TRIGGER erb_memo_refill AFTER INSERT ON erb_memo_dirty DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION erb_memo_refill();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON graphs;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON graphs FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON rules;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON rules FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON firing_kinds;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON firing_kinds FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON things;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON things FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON portraits;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON portraits FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON portrait_aliases;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON properties;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON properties FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON property_axioms;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON statements;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON statements FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON firings;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON firings FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON disjoint_checks;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON disjoint_checks FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON scenarios;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON scenario_fact_changes;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON scenario_rule_settings;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON node_layouts;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON layout_slots;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON page_texts;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON engines;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON rulebook_tools;
