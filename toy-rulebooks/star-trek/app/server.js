@@ -1,135 +1,81 @@
+// Star Trek explorer API. Every read is `SELECT ... FROM vw_<entity>`: the views
+// carry every value the rulebook derives (roll-ups, lookups, averages), so this
+// file computes nothing. A failing query is a 500 with the database's message.
 const express = require('express');
 const { Pool } = require('pg');
-const cors = require('cors');
 const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '..', 'postgres-bootstrap', '.env') });
 
+const PORT = process.env.APP_PORT || 3140;
+const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://postgres@localhost:5432/erb_star_trek';
+const EXPLAINER_DIR = path.join(__dirname, '..', 'explainer', 'rulebook-explainer-dag');
+
+const pool = new Pool({ connectionString: DATABASE_URL });
 const app = express();
-const PORT = process.env.APP_PORT || 3000;
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://postgres@localhost:5432/erb_star_trek',
-});
+const rows = async (sql, params = []) => (await pool.query(sql, params)).rows;
 
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname)));
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-app.get('/api/series', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM series ORDER BY serie_id');
-    res.json(result.rows);
-  } catch (err) {
-    console.error('Error fetching series:', err);
-    res.status(500).json({ error: 'Failed to fetch series' });
-  }
-});
-
-app.get('/api/series/:serieId', async (req, res) => {
-  try {
-    const { serieId } = req.params;
-    const result = await pool.query('SELECT * FROM series WHERE serie_id = $1', [serieId]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Series not found' });
+// One handler shape: run, 404 when a single row is missing, 500 with the cause.
+function route(handler) {
+  return async (req, res) => {
+    try {
+      const body = await handler(req);
+      if (body === undefined) return res.status(404).json({ error: `nothing at ${req.path}` });
+      res.json(body);
+    } catch (err) {
+      console.error(`${req.path}:`, err);
+      res.status(500).json({ error: err.message });
     }
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error('Error fetching series:', err);
-    res.status(500).json({ error: 'Failed to fetch series' });
-  }
-});
+  };
+}
 
-app.get('/api/series/:serieId/seasons', async (req, res) => {
-  try {
-    const { serieId } = req.params;
-    const result = await pool.query(
-      'SELECT * FROM seasons WHERE series = $1 ORDER BY season_number',
-      [serieId]
-    );
-    res.json(result.rows);
-  } catch (err) {
-    console.error('Error fetching seasons:', err);
-    res.status(500).json({ error: 'Failed to fetch seasons' });
-  }
-});
+app.get('/api/health', route(async () => {
+  const [db] = await rows('SELECT current_database() AS name, count(*)::int AS series FROM vw_series');
+  return { status: 'ok', database: db.name, series: db.series };
+}));
 
-app.get('/api/seasons/:seasonId/episodes', async (req, res) => {
-  try {
-    const { seasonId } = req.params;
-    const result = await pool.query(
-      'SELECT * FROM episodes WHERE season = $1 ORDER BY episode_number',
-      [seasonId]
-    );
-    res.json(result.rows);
-  } catch (err) {
-    console.error('Error fetching episodes:', err);
-    res.status(500).json({ error: 'Failed to fetch episodes' });
-  }
-});
+app.get('/api/series', route(() => rows('SELECT * FROM vw_series ORDER BY series_number')));
 
-app.get('/api/episodes/:episodeId', async (req, res) => {
-  try {
-    const { episodeId } = req.params;
-    const result = await pool.query(
-      'SELECT * FROM episodes WHERE episode_id = $1',
-      [episodeId]
-    );
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Episode not found' });
-    }
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error('Error fetching episode:', err);
-    res.status(500).json({ error: 'Failed to fetch episode' });
-  }
-});
+app.get('/api/shows/:code', route(async (req) => {
+  const [show] = await rows('SELECT * FROM vw_series WHERE lower(show_code) = lower($1)', [req.params.code]);
+  if (!show) return undefined;
+  show.ratings = await rows('SELECT * FROM vw_ratings WHERE series = $1 ORDER BY created_at, rating_id', [show.serie_id]);
+  return show;
+}));
 
-app.get('/api/movies', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM movies ORDER BY movie_number');
-    res.json(result.rows);
-  } catch (err) {
-    console.error('Error fetching movies:', err);
-    res.status(500).json({ error: 'Failed to fetch movies' });
-  }
-});
+app.get('/api/series/:serieId/seasons', route((req) =>
+  rows('SELECT * FROM vw_seasons WHERE series = $1 ORDER BY season_number', [req.params.serieId])));
 
-app.get('/api/movies/:movieId', async (req, res) => {
-  try {
-    const { movieId } = req.params;
-    const result = await pool.query('SELECT * FROM movies WHERE movie_id = $1', [movieId]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Movie not found' });
-    }
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error('Error fetching movie:', err);
-    res.status(500).json({ error: 'Failed to fetch movie' });
-  }
-});
+app.get('/api/seasons/:seasonId/episodes', route((req) =>
+  rows('SELECT * FROM vw_episodes WHERE season = $1 ORDER BY episode_number', [req.params.seasonId])));
 
-app.get('/api/people', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM people ORDER BY name LIMIT 50');
-    res.json(result.rows);
-  } catch (err) {
-    console.error('Error fetching people:', err);
-    res.status(500).json({ error: 'Failed to fetch people' });
-  }
-});
+app.get('/api/episodes/:episodeId', route(async (req) => {
+  const [episode] = await rows('SELECT * FROM vw_episodes WHERE episode_id = $1', [req.params.episodeId]);
+  if (!episode) return undefined;
+  episode.ratings = await rows('SELECT * FROM vw_ratings WHERE episode = $1 ORDER BY created_at, rating_id', [episode.episode_id]);
+  return episode;
+}));
 
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok' });
-});
+app.get('/api/movies', route(() => rows('SELECT * FROM vw_movies ORDER BY movie_number')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+app.get('/api/movies/:movieId', route(async (req) => {
+  const [movie] = await rows('SELECT * FROM vw_movies WHERE movie_id = $1', [req.params.movieId]);
+  if (!movie) return undefined;
+  movie.crew = await rows('SELECT * FROM vw_crew_assignments WHERE movie = $1 ORDER BY crew_type_name, person_name', [movie.movie_id]);
+  return movie;
+}));
+
+app.get('/api/people', route(() => rows('SELECT * FROM vw_people ORDER BY name')));
+
+app.use('/api', (req, res) => res.status(404).json({ error: `no API route ${req.path}` }));
+
+// The explainer this project's build writes (rulebook-to-explainer-dag): hover a
+// derived value for its rule and the values it came from.
+app.use('/rulebook-explainer-dag', express.static(EXPLAINER_DIR, { maxAge: 0 }));
+for (const file of ['app.js', 'routes.js']) {
+  app.get(`/${file}`, (req, res) => res.sendFile(path.join(__dirname, file)));
+}
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
 app.listen(PORT, () => {
-  console.log(`Star Trek Explorer API running on http://localhost:${PORT}`);
+  console.log(`Star Trek Explorer running on http://localhost:${PORT} (database ${DATABASE_URL})`);
 });
