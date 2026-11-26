@@ -38817,6 +38817,14 @@
         "Rule": "cr-29",
         "Domain": "domain-talismans-southpark-ontology",
         "Detail": "xlsx-to-rulebook v2026.11.14.1541 does not return for this project's own workbook (effortless-xlsx/talisman-s-south-park-ontology-explainer.xlsx, about 590 KB and about 30,000 formula cells) synced into its own rulebook: 'effortless xlsx-to-rulebook -i upload.xlsx,working-rulebook.json' ran for 22 minutes on 2026-11-26 without returning or failing and was then stopped (the earlier chat session recorded in the project's conversation.txt reports the same tool not returning in 14 minutes for an earlier, smaller workbook). The same tool answers a workbook of a few dozen formula cells in about 30 seconds. The app's Excel import (and the generated rulebook editor's POST /api/import/xlsx, which makes the same call) therefore cannot complete for this project; the app bounds its wait at four minutes and says so.",
+        "Status": "fixed",
+        "DetectedOn": "2026-11-26"
+      },
+      {
+        "ConsistencyFindingId": "cr-29-02",
+        "Rule": "cr-29",
+        "Domain": "domain-talismans-southpark-ontology",
+        "Detail": "The effortless CLI (the build installed on 2026-11-19, SSoTmeCLIHandler.ProxyRequest) does not bound or report two failures of a call to a hosted tool, both seen on 2026-11-26 while calling xlsx-to-rulebook for this project. (1) When the connection drops while the request is being sent ('Broken pipe', seen while the tool's workload was restarting), the HttpRequestException is not one of the kinds the method catches (its inner exception is an IOException wrapping the SocketException); the method is async void, so the exception is unhandled and the CLI ends with a stack trace instead of retrying or stating the failure. (2) A 504 from the platform's 120-second request limit is read as 'the tool is still booting' and the same job is sent again 5 seconds later, so a job that is only slow is started a second time next to the one still running (the workload's log shows the second POST 5 seconds after the 504). The first was fixed at its source for this tool by cr-29-01 (the import now answers in seconds); the CLI still behaves this way for any other slow or restarting tool.",
         "Status": "open",
         "DetectedOn": "2026-11-26"
       }

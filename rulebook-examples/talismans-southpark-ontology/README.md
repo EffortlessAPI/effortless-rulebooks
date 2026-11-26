@@ -38,7 +38,7 @@ python3 ../../scripts/erb_project.py talismans-southpark-ontology --reset-db   #
 | Explainer | Hover a dotted value for its rule in plain words and its witness: the values it came from, down to the stated facts. | Every computed value on the page and in the admin |
 | Documentation | Every rule in plain language, in 16 languages. | `/rulespeak/rulespeak.html` |
 | Admin | Every table of the rulebook as an editable grid: rules, properties and their wiring, wording, layouts, buttons, the cast, the engines themselves. Edits apply at once on every engine. Save writes the rulebook file. | `/admin.html` |
-| Excel | Export the current rows as a workbook with every rule as a live formula (about 30 s). Import is wired to the catalog's `xlsx-to-rulebook`, which does not yet return for a workbook this size: see Known gaps. | The admin's Export and Import |
+| Excel | Export the current rows as a workbook with every rule as a live formula (about 30 s). Edit it in Excel and import it again (about 2 s): the edits arrive as unsaved changes. | The admin's Export and Import |
 | Rulebook editor | The platform's generated editor for tables, fields and formulas, in its own container. | `./start.sh --editor` |
 
 The tools list itself is the rulebook's `RulebookTools` table, and the engines are its
@@ -120,7 +120,7 @@ the generator reads correctly; the generator's defect is finding `cr-28-01`.
 |---|---|---|
 | The page | Facts (any name, any value), rule switches, her buttons | At once |
 | The admin (`/admin.html`) | Any stored value of any row of any table; add and delete rows | At once, on every engine |
-| Excel | Export works; import waits on a tool fix (Known gaps) | As unsaved changes in the admin, to review and save |
+| Excel | The stored rows, in a workbook where every rule is a live formula | As unsaved changes in the admin, to review and save. A changed formula, field or table is reported, not applied |
 | The rulebook editor (`./start.sh --editor`) | Tables, fields, formulas, rows | Its Save writes the rulebook file; the app then says the file changed and reloads it on Discard; a formula change needs a rebuild |
 | The rulebook file | Anything | Rebuild |
 
@@ -191,18 +191,26 @@ an earlier one would need repeated rounds.
 
 ## Known gaps
 
-- **Excel import does not complete.** The admin's Import hands the workbook and the live
-  rulebook to the catalog's `xlsx-to-rulebook`, as that tool asks. For this rulebook's
-  workbook (about 30,000 formula cells) the tool ran for 22 minutes without returning or
-  failing, and was stopped; a workbook of a few dozen formula cells is reported to return in
-  about 30 seconds. The app waits four
-  minutes (`XLSX_IMPORT_TIMEOUT_MS`) and then says so. The fix belongs in the tool. Until
-  then, rows can be re-imported per table as CSV through the rulebook editor.
+- **An Excel import carries rows, not rules.** The catalog's `xlsx-to-rulebook` syncs the
+  workbook into a copy of the live rulebook and the app loads the stored rows from the
+  result. A formula, field or table changed in the workbook is listed after the import and
+  not applied; make that change in the rulebook editor or the file.
 - **The rulebook editor has its own database.** An edit there reaches this app only after
   the editor's Save (which rewrites the rulebook file) and a Discard here (which reloads
   it). A formula or table change also needs a rebuild.
 - **Schema changes are not live.** The admin edits rows. Fields, formulas and tables
   change in the rulebook editor or the file, followed by a rebuild.
+
+## How the Excel import came to work
+
+Until 2026-11-26 the import never answered for this rulebook. Its workbook holds 31,456
+formula cells, and the catalog's `xlsx-to-rulebook` recalculated all of them in Python
+before reading the file: 107 seconds and 4.1 GB on a laptop, against the published tool's
+half a CPU, 1 GB and 120-second limit. The recalculation also produced nothing; its results
+were thrown away by two coding errors, on every workbook of any size. The values were in the
+file all along, because Excel and `rulebook-to-xlsx` both save each formula's result next to
+it. The tool now reads them (root finding `cr-29-01`), and
+`testing/app/app.test.mjs` exports, edits one cell and imports on every run.
 
 ## Building notes
 

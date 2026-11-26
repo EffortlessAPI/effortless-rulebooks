@@ -10,6 +10,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { Workspace } from '../../app/lib/workspace.mjs';
 import { expectedCandidates, syncCandidates } from '../../app/lib/candidates.mjs';
 import { PROJECT, startApp } from '../her-app/lib.mjs';
@@ -129,3 +130,62 @@ for (const engine of ['typescript', 'owl', 'postgres']) {
     }
   });
 }
+
+// Excel, both ways, through the catalog's own tools: the app's export with one cell edited
+// comes back as exactly that one change. The workbook holds about 31,000 formula cells, each
+// saved with its result; the import reads those and computes nothing, so it answers in
+// seconds. (Until 2026-11-26 the catalog's xlsx-to-rulebook recalculated the whole workbook
+// first and never answered for this one: root finding cr-29-01.)
+const EDIT_ONE_TEXT = `
+import sys, zipfile
+src, dst, old, new = sys.argv[1:5]
+zin = zipfile.ZipFile(src)
+hits = 0
+with zipfile.ZipFile(dst, 'w', zipfile.ZIP_DEFLATED) as zout:
+    for info in zin.infolist():
+        data = zin.read(info.filename)
+        if info.filename == 'xl/sharedStrings.xml':
+            text = data.decode('utf-8')
+            hits = text.count('>' + old + '<')
+            data = text.replace('>' + old + '<', '>' + new + '<').encode('utf-8')
+        zout.writestr(info, data)
+if hits != 1:
+    sys.exit(f'expected the text once in the workbook, found it {hits} times')
+`;
+
+test('Excel round trip: the export with one cell edited imports as that one change, in seconds', async () => {
+  const file = copyOfHub();
+  const port = 43295;
+  const app = await startApp({ port, env: { RULEBOOK_PATH: file, XLSX_IMPORT_TIMEOUT_MS: '90000' } });
+  try {
+    const base = `http://127.0.0.1:${port}`;
+    const exported = await fetch(`${base}/api/admin/export.xlsx`);
+    assert.equal(exported.status, 200, 'the export answers');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'southpark-xlsx-'));
+    const original = path.join(dir, 'exported.xlsx'), edited = path.join(dir, 'edited.xlsx');
+    fs.writeFileSync(original, Buffer.from(await exported.arrayBuffer()));
+
+    const before = new Workspace(file).get('PageTexts', 'admin-title').Text;
+    const after = `${before} (edited in Excel)`;
+    const edit = spawnSync('python3', ['-c', EDIT_ONE_TEXT, original, edited, before, after], { encoding: 'utf8' });
+    assert.equal(edit.status, 0, edit.stderr);
+
+    const started = Date.now();
+    const answer = await fetch(`${base}/api/admin/import`, { method: 'POST', headers: { 'content-type': 'application/octet-stream' }, body: fs.readFileSync(edited) });
+    const body = await answer.json();
+    const seconds = (Date.now() - started) / 1000;
+    assert.equal(answer.status, 200, body.error);
+    assert.ok(seconds < 60, `the import took ${seconds.toFixed(0)} s`);
+    assert.deepEqual(body.changes, { total: 1, tables: { PageTexts: { added: [], changed: [{ key: 'admin-title', fields: { Text: [before, after] } }], removed: [] } } });
+    assert.deepEqual(body.schemaDiffers, []);
+    assert.deepEqual(body.summary.warnings, [], 'the workbook carried its stored results');
+    // The same workbook unedited changes nothing.
+    await app.api('POST', '/api/admin/discard');
+    const again = await fetch(`${base}/api/admin/import`, { method: 'POST', headers: { 'content-type': 'application/octet-stream' }, body: fs.readFileSync(original) });
+    const same = await again.json();
+    assert.equal(again.status, 200, same.error);
+    assert.equal(same.changes.total, 0);
+  } finally {
+    app.stop();
+  }
+});

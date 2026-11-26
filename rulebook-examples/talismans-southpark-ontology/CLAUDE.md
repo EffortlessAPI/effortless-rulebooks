@@ -25,7 +25,8 @@ engines. The README is the user-facing account; this file is how to work on it.
 - `node testing/her-app/compare-with-her-app.mjs` runs her reasoner and the Postgres views
   through 224 fact-and-rule states.
 - `node --test testing/app/app.test.mjs` covers what her page cannot do (admin edits, Save,
-  the candidate generator), on each engine.
+  the candidate generator), on each engine, and the Excel round trip (export, edit one cell,
+  import) through the catalog's `rulebook-to-xlsx` and `xlsx-to-rulebook`.
 - The tests download her page each time, so they also report when her page changes. When
   her page and the rulebook disagree, the rulebook is wrong until shown otherwise: read
   her page's script (one inline script) before changing a rule.

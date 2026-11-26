@@ -146,7 +146,16 @@ export class Workspace {
   replaceAll(rows) {
     for (const name of Object.keys(this.tables)) {
       if (!Array.isArray(rows[name])) throw new Error(`No rows given for table ${name}`);
-      this.data[name] = rows[name].map((row) => this.clean(name, Object.fromEntries(this.table(name).stored.map((f) => [f, row[f] ?? null])), { partial: false }));
+      const t = this.table(name);
+      const saved = new Map(this.saved[name].map((row) => [String(row[t.key]), row]));
+      this.data[name] = rows[name].map((row) => {
+        const cleaned = this.clean(name, Object.fromEntries(t.stored.map((f) => [f, row[f] ?? null])), { partial: false });
+        // A blank is a blank: where the rulebook file spells one "" it stays "", so rows that
+        // came back unchanged (an Excel import) are not reported, or saved, as edits.
+        const was = saved.get(String(cleaned[t.key]));
+        if (was) for (const f of t.stored) if (cleaned[f] === null && was[f] === '') cleaned[f] = '';
+        return cleaned;
+      });
       this.reindex(name);
       this.touch(name);
     }

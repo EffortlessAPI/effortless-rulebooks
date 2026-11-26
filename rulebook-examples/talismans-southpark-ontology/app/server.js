@@ -181,7 +181,7 @@ app.get('/api/admin/export.xlsx', async (req, res) => {
 
 // The catalog's xlsx-to-rulebook syncs a workbook INTO a rulebook, so it is handed the
 // workbook and a copy of the live rulebook; what comes back is loaded as unsaved changes.
-const IMPORT_TIMEOUT_MS = Number(process.env.XLSX_IMPORT_TIMEOUT_MS || 240000);   // the tool answers a small workbook in about 30 s
+const IMPORT_TIMEOUT_MS = Number(process.env.XLSX_IMPORT_TIMEOUT_MS || 240000);   // the tool answers this rulebook's workbook in about 2 s; a cold start adds up to a minute
 app.post('/api/admin/import', express.raw({ type: '*/*', limit: '30mb' }), route((req) => write(async () => {
   if (!Buffer.isBuffer(req.body) || req.body.length === 0) throw new Error('Send the workbook as the request body');
   const dir = freshDir('xlsx-import');
