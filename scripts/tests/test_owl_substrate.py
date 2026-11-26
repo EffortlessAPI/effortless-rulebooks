@@ -136,6 +136,74 @@ def test_the_examples_whose_apps_read_a_namespace_declare_it():
         assert rows.get('ontology_prefix') == 'effortless-ntwf', project
 
 
+FAKE_DOCKER = r"""#!/usr/bin/env python3
+# Stands in for Docker + ROBOT: writes what ROBOT would write, where the container's paths point on this machine.
+import os, sys, time
+args = sys.argv[1:]
+if args[:2] == ['image', 'inspect']:
+    sys.exit(0)
+if args[:1] == ['kill']:
+    open(os.environ['FAKE_DOCKER_LOG'], 'a').write('kill ' + ' '.join(args[1:]) + '\n')
+    sys.exit(0)
+mounts = {}
+for i, a in enumerate(args):
+    if a == '-v':
+        host, inside = args[i + 1].split(':')[:2]
+        mounts[inside] = host
+def host(path):
+    for inside, outside in mounts.items():
+        if path.startswith(inside + '/'):
+            return outside + path[len(inside):]
+    return path
+if os.environ.get('FAKE_DOCKER_HANGS'):
+    time.sleep(30)
+out = host(args[args.index('--output') + 1])
+open(out, 'w').write('OWL 2 DL Profile Report: [Ontology and imports closure in profile]\n')
+"""
+
+
+def _reasoner_step(tmp, **env):
+    """Run the runner's dl_check on a folder holding a DL document, with FAKE_DOCKER as docker."""
+    src, report, bin_dir = Path(tmp) / 'src', Path(tmp) / 'report', Path(tmp) / 'bin'
+    for d in (src, bin_dir):
+        d.mkdir()
+    (src / 'ontology-with-individuals.ttl').write_text('# a document', encoding='utf-8')
+    (src / 'ontology.owl').write_text('# the ontology', encoding='utf-8')
+    docker = bin_dir / 'docker'
+    docker.write_text(FAKE_DOCKER, encoding='utf-8')
+    docker.chmod(0o755)
+    code = ("import importlib.util; from pathlib import Path;"
+            f"s = importlib.util.spec_from_file_location('t', r'{RUNNER}');"
+            "m = importlib.util.module_from_spec(s); s.loader.exec_module(m);"
+            f"m.dl_check(Path(r'{src}'), Path(r'{report}'))")
+    full = dict(os.environ, PATH=f"{bin_dir}{os.pathsep}{os.environ['PATH']}",
+                FAKE_DOCKER_LOG=str(Path(tmp) / 'docker.log'), **env)
+    proc = subprocess.run([sys.executable, '-c', code], env=full, cwd=tmp, capture_output=True, text=True)
+    verdict = json.loads((report / 'dl-check.json').read_text(encoding='utf-8')) if (report / 'dl-check.json').exists() else None
+    return proc, verdict, sorted(p.name for p in src.iterdir())
+
+
+def test_the_reasoner_step_leaves_the_build_folder_as_it_found_it():
+    # ROBOT's own files (its profile report, the inferred ontology: as large as the build itself for a large
+    # rulebook) used to be written beside the build, inside the example's committed effortless-owl/src/.
+    with tempfile.TemporaryDirectory() as tmp:
+        proc, verdict, left = _reasoner_step(tmp)
+        assert proc.returncode == 0, proc.stderr[-800:] + proc.stdout[-400:]
+        assert left == ['ontology-with-individuals.ttl', 'ontology.owl'], f"the reasoner step left files in the build's folder: {left}"
+        assert verdict['ran'] is True and verdict['owl2dl'] is True and verdict['consistent'] is True, verdict
+
+
+def test_a_reasoner_that_does_not_finish_in_time_is_said_and_is_not_a_pass():
+    # HermiT over a rulebook of tens of thousands of rows can run for hours. The limit is ROBOT_TIMEOUT (seconds).
+    with tempfile.TemporaryDirectory() as tmp:
+        proc, verdict, left = _reasoner_step(tmp, FAKE_DOCKER_HANGS='1', ROBOT_TIMEOUT='1')
+        assert proc.returncode == 0, "running out of time is neither a crash nor a failed ontology:\n" + proc.stderr[-800:]
+        assert verdict is not None and verdict['ran'] is False and 'ROBOT_TIMEOUT' in verdict['reason'], verdict
+        assert 'NOT RUN' in proc.stdout, proc.stdout[-400:]
+        assert left == ['ontology-with-individuals.ttl', 'ontology.owl'], left
+        assert 'kill' in (Path(tmp) / 'docker.log').read_text(encoding='utf-8'), "the container it started was left running"
+
+
 if __name__ == '__main__':
     for name, fn in list(globals().items()):
         if name.startswith('test_') and callable(fn):

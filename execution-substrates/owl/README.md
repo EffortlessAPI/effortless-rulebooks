@@ -148,6 +148,16 @@ To ensure deterministic output:
 > **Sub-SELECTs return `$this`** (SHACL 5.3.1), so a rollup is the same number
 > whether an engine pre-binds `$this` per focus node or evaluates the rule once
 > for all of them, and the runner runs each such rule as one query.
+>
+> **The reasoner step** (`dl_check` in `take-test.py`, for a build that holds
+> `ontology-with-individuals.ttl`: the commercial tool's) puts that document
+> through ROBOT and HermiT in Docker and writes the verdict to
+> `testing/<substrate>/dl-check.json`. ROBOT's own files (its profile report,
+> the inferred ontology) go to a temporary folder, never into the build's
+> `src/`. One ROBOT run may take `ROBOT_TIMEOUT` seconds (default 3600): HermiT
+> over tens of thousands of rows can need hours, so set it as long as the run is
+> worth. A run that does not finish, like a machine without Docker, is reported
+> as NOT RUN with the reason, never as passed.
 
 ## Implementation Plan
 

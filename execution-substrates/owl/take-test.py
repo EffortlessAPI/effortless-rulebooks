@@ -39,6 +39,8 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
+import time
 from pathlib import Path
 
 # Auto-install dependencies if needed
@@ -395,9 +397,58 @@ ROBOT_IMAGE = os.environ.get('ROBOT_IMAGE', 'obolibrary/robot')
 DL_DOCUMENT = 'ontology-with-individuals.ttl'
 
 
-def _robot(src_dir: Path, *args: str):
-    return subprocess.run(['docker', 'run', '--rm', '-v', f'{src_dir.resolve()}:/work', ROBOT_IMAGE, 'robot', *args],
-                          capture_output=True, text=True, timeout=3600)
+# Seconds one ROBOT run may take. HermiT over a rulebook of tens of thousands of rows can run for hours: set it as
+# long as the run is worth (ROBOT_TIMEOUT=14400). A run that does not finish is said (NOT RUN), never passed.
+ROBOT_TIMEOUT = int(os.environ.get('ROBOT_TIMEOUT', '3600'))
+
+
+class _RobotOutOfTime(Exception):
+    pass
+
+
+def _robot(src_dir: Path, out_dir: Path, *args: str):
+    """One ROBOT command. The build is mounted read-only at /work and ROBOT writes under /out, so nothing of
+    ROBOT's is ever left in the build's folder (an example's committed effortless-owl/src/)."""
+    name = f'owl-dl-check-{os.getpid()}-{len(list(Path(out_dir).iterdir()))}-{int(time.time() * 1000) % 100000}'
+    try:
+        return subprocess.run(['docker', 'run', '--rm', '--name', name,
+                               '-v', f'{src_dir.resolve()}:/work:ro', '-v', f'{Path(out_dir).resolve()}:/out',
+                               ROBOT_IMAGE, 'robot', *args],
+                              capture_output=True, text=True, timeout=ROBOT_TIMEOUT)
+    except subprocess.TimeoutExpired:
+        # Stopping the docker command does not stop the container it started.
+        subprocess.run(['docker', 'kill', name], capture_output=True)
+        raise _RobotOutOfTime(f"{args[0]} did not finish within {ROBOT_TIMEOUT} seconds "
+                              f"(ROBOT_TIMEOUT sets the limit, in seconds)")
+
+
+def _dl_verdict(src_dir: Path, work: Path) -> dict:
+    """What ROBOT and HermiT say about the build's DL document; ROBOT's own files go to `work`."""
+    _robot(src_dir, work, 'validate-profile', '--input', f'/work/{DL_DOCUMENT}', '--profile', 'DL',
+           '--output', '/out/profile-DL.txt')
+    profile = work / 'profile-DL.txt'
+    if not profile.exists():
+        return {'ran': True, 'reasoner': 'HermiT (ROBOT)', 'owl2dl': None, 'dlViolations': [], 'consistent': None,
+                'unsatisfiable': [], 'error': 'ROBOT wrote no profile report'}
+    profile_lines = [line for line in profile.read_text(encoding='utf-8').splitlines() if line.strip()]
+    violations = profile_lines[1:] if profile_lines and 'NOT in profile' in profile_lines[0] else []
+    verdict = {'ran': True, 'reasoner': 'HermiT (ROBOT)', 'owl2dl': not violations,
+               'dlViolations': violations[:20], 'consistent': None, 'unsatisfiable': []}
+    if violations:
+        return verdict
+    reasoned = _robot(src_dir, work, 'reason', '--reasoner', 'hermit', '--input', f'/work/{DL_DOCUMENT}',
+                      '--output', '/out/inferred-hermit.ttl')
+    log = reasoned.stdout + reasoned.stderr
+    verdict['consistent'] = 'inconsistent' not in log.lower()
+    verdict['unsatisfiable'] = sorted(set(re.findall(r'unsatisfiable:\s*(\S+)', log)))
+    if not verdict['consistent']:
+        _robot(src_dir, work, 'explain', '--reasoner', 'hermit', '--input', f'/work/{DL_DOCUMENT}',
+               '-M', 'inconsistency', '--explanation', '/out/inconsistency.md')
+        explanation = work / 'inconsistency.md'
+        verdict['explanation'] = explanation.read_text(encoding='utf-8')[:4000] if explanation.exists() else ''
+    elif reasoned.returncode != 0 and not verdict['unsatisfiable']:
+        verdict['error'] = log[-2000:]
+    return verdict
 
 
 def dl_check(src_dir: Path, report_dir: Path) -> None:
@@ -435,30 +486,20 @@ def dl_check(src_dir: Path, report_dir: Path) -> None:
         record({'ran': False, 'reason': why_not})
         return
 
-    _robot(src_dir, 'validate-profile', '--input', f'/work/{DL_DOCUMENT}', '--profile', 'DL',
-           '--output', '/work/profile-DL.txt')
-    profile_lines = [line for line in (src_dir / 'profile-DL.txt').read_text(encoding='utf-8').splitlines() if line.strip()]
-    violations = profile_lines[1:] if profile_lines and 'NOT in profile' in profile_lines[0] else []
-    verdict = {'ran': True, 'reasoner': 'HermiT (ROBOT)', 'owl2dl': not violations,
-               'dlViolations': violations[:20], 'consistent': None, 'unsatisfiable': []}
-    if violations:
+    try:
+        with tempfile.TemporaryDirectory(prefix='owl-dl-check-') as work:
+            verdict = _dl_verdict(src_dir, Path(work))
+    except _RobotOutOfTime as out_of_time:
+        print(f"   NOT RUN: {out_of_time}")
+        record({'ran': False, 'reason': str(out_of_time)})
+        return
+    if verdict.get('error'):
         record(verdict)
-        print(f"   NOT OWL 2 DL: {len(violations)} violation(s). First: {violations[0][:300]}")
+        print(f"   ROBOT failed: {verdict['error'][-600:]}")
         sys.exit(1)
-
-    reasoned = _robot(src_dir, 'reason', '--reasoner', 'hermit', '--input', f'/work/{DL_DOCUMENT}',
-                      '--output', '/work/inferred-hermit.ttl')
-    log = reasoned.stdout + reasoned.stderr
-    verdict['consistent'] = 'inconsistent' not in log.lower()
-    verdict['unsatisfiable'] = sorted(set(re.findall(r'unsatisfiable:\s*(\S+)', log)))
-    if not verdict['consistent']:
-        _robot(src_dir, 'explain', '--reasoner', 'hermit', '--input', f'/work/{DL_DOCUMENT}',
-               '-M', 'inconsistency', '--explanation', '/work/inconsistency.md')
-        explanation = src_dir / 'inconsistency.md'
-        verdict['explanation'] = explanation.read_text(encoding='utf-8')[:4000] if explanation.exists() else ''
-    elif reasoned.returncode != 0 and not verdict['unsatisfiable']:
-        record({**verdict, 'error': log[-2000:]})
-        print(f"   ROBOT failed: {log[-600:]}")
+    if not verdict['owl2dl']:
+        record(verdict)
+        print(f"   NOT OWL 2 DL: {len(verdict['dlViolations'])} violation(s) shown. First: {verdict['dlViolations'][0][:300]}")
         sys.exit(1)
     record(verdict)
     if not verdict['consistent']:
