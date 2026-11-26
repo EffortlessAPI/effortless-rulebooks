@@ -38,9 +38,12 @@ engines. The README is the user-facing account; this file is how to work on it.
 
 - `app/lib/workspace.mjs` holds the stored rows as they are now. Every write goes there.
 - `app/lib/engines.mjs` computes everything else: Postgres reads `vw_*` views over the
-  mirrored rows; TypeScript and OWL run the generated substrates through the platform's
-  `orchestration/live_substrates.py`. An engine is a row of the rulebook's `Engines` table
-  plus an entry in `engines.mjs`.
+  mirrored rows; TypeScript imports the generated SDK (`effortless-typescript/dist/erb_sdk.js`)
+  into the server and calls its `evaluate(rows)` on the live rows, in-process (owner,
+  2026-11-26: a TypeScript engine that went through Python defeated the point, which is
+  that the ontology simply runs wherever it is needed); OWL runs the generated rules through
+  the platform's `orchestration/live_substrates.py`. An engine is a row of the rulebook's
+  `Engines` table plus an entry in `engines.mjs`.
 - `app/lib/explainer.mjs` and `app/server.js` read computed values from the engine and
   stored values from the workspace. A conclusion, card, alert, count, button state, label,
   layout or "next number" the page uses is always a field or a row. If a behaviour needs
@@ -49,8 +52,11 @@ engines. The README is the user-facing account; this file is how to work on it.
 - What the app may do itself is presentation and plumbing: drawing, dragging, selection,
   sorting rows for display, interpreting a button's declared baseline and changes
   (`runScenario`), and giving a new name its rows.
-- Do not add a fourth way to run a substrate, compare values, or write the rulebook.
-  Running a substrate on live rows and comparing answers belong in
+- Do not add another way to run a substrate, compare values, or write the rulebook.
+  TypeScript is computed by the SDK's own `evaluate()`, which is the same computation
+  (`erbCompute` in `erb_runtime.ts`) the conformance runner `main.ts` performs; a fix to
+  how TypeScript computes goes in the `rulebook-to-typescript` tool, never in the app.
+  Running OWL on live rows and comparing answers belong in
   `orchestration/live_substrates.py` (it reuses the harness's runner contract, OWL runner
   and `compare_values`); writing the rulebook file belongs in `app/lib/hub.mjs`.
 

@@ -59,8 +59,8 @@
       "RelativePath": "/effortless-typescript",
       "CommandLine": "rulebook-to-typescript -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.15.1827",
-      "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-11-15-1827-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.11.26.1239",
+      "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-11-26-1239-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "TypeScript substrate: the app's TypeScript engine and the conformance harness run it."
     },
     {
@@ -119,8 +119,8 @@
       "RelativePath": "/explainer/rulebook-explainer-dag/typescript",
       "CommandLine": "rulebook-to-typescript -i ../../../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.15.1827",
-      "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-11-15-1827-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.11.26.1239",
+      "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-11-26-1239-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "A second copy of the TypeScript substrate inside the explainer's folder, where the explainer looks for it to compute witnesses in the page."
     },
     {

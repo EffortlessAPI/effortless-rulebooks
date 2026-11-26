@@ -3,8 +3,9 @@
 // Generated from: effortless-rulebook/talisman-s-south-park-ontology-explainer-rulebook.json
 //
 // One interface per table, a calc<Table><Field>() function per calculated field,
-// and the table registry main.ts runs. Formulas compute through erb_runtime.ts;
-// nothing here parses a formula, reads the rulebook, or calls a database.
+// the table registry main.ts runs, and evaluate(rows) for an app that computes
+// in-process. Formulas compute through erb_runtime.ts; nothing here parses a
+// formula, reads the rulebook, or calls a database.
 
 /* eslint-disable */
 import {
@@ -88,6 +89,7 @@ import {
   erbNow,
   calcGuard,
   loadRows,
+  erbEvaluate,
 } from "./erb_runtime.js";
 import type { ClosureSpec, FieldType, TableSpec } from "./erb_runtime.js";
 
@@ -1939,10 +1941,14 @@ export const calculatedFieldCount = 68;
 /** Every table, in rulebook order. */
 export const erbTables: TableSpec[] = [
   { name: "__meta__", file: "__meta__", rulebookRows: 7, fields: __meta__FieldTypes,
+    columns: { meta_key: "MetaKey", name: "Name", value_type: "ValueType", string_value: "StringValue", json_value: "JsonValue" },
+    stored: ["meta_key", "value_type", "string_value", "json_value"],
     compute: (row: any) => compute__meta__(row as __meta__Row),
     lookups: [],
     aggregations: [] },
   { name: "Graphs", file: "graphs", rulebookRows: 1, fields: graphsFieldTypes,
+    columns: { graph_id: "GraphId", label: "Label", literal_quote: "LiteralQuote", literal_type_marker: "LiteralTypeMarker", built_in_source_text: "BuiltInSourceText", user_source_text: "UserSourceText", no_conclusions_text: "NoConclusionsText", name: "Name", count_of_stated_facts: "CountOfStatedFacts", count_of_conclusions: "CountOfConclusions", count_of_violations: "CountOfViolations", is_consistent: "IsConsistent", conclusions_message: "ConclusionsMessage", count_of_facts_to_add: "CountOfFactsToAdd", has_facts_to_add: "HasFactsToAdd", next_fact_sort_order: "NextFactSortOrder", max_activation_seq: "MaxActivationSeq", next_activation_seq: "NextActivationSeq", max_listed_sort_order: "MaxListedSortOrder", next_listed_sort_order: "NextListedSortOrder", max_sort_order: "MaxSortOrder", next_candidate_sort_order: "NextCandidateSortOrder" },
+    stored: ["graph_id", "label", "literal_quote", "literal_type_marker", "built_in_source_text", "user_source_text", "no_conclusions_text"],
     compute: (row: any) => computeGraphs(row as GraphsRow),
     lookups: [],
     aggregations: [
@@ -1955,16 +1961,22 @@ export const erbTables: TableSpec[] = [
       { field: "max_listed_sort_order", op: "MAX", table: "statements", target: "sort_order", criteria: [{ range: "graph", kind: "field", field: "graph_id" }, { range: "listed_unit", kind: "literal", literal: vI(1) }] },
       { field: "max_sort_order", op: "MAX", table: "statements", target: "sort_order", criteria: [{ range: "graph", kind: "field", field: "graph_id" }] },] },
   { name: "Rules", file: "rules", rulebookRows: 5, fields: rulesFieldTypes,
+    columns: { rule_id: "RuleId", label: "Label", explanation: "Explanation", is_enabled: "IsEnabled", sort_order: "SortOrder", name: "Name", count_of_firings: "CountOfFirings" },
+    stored: ["rule_id", "label", "explanation", "is_enabled", "sort_order"],
     compute: (row: any) => computeRules(row as RulesRow),
     lookups: [],
     aggregations: [
       { field: "count_of_firings", op: "SUM", table: "firings", target: "fired_unit", criteria: [{ range: "rule", kind: "field", field: "rule_id" }] },] },
   { name: "FiringKinds", file: "firing_kinds", rulebookRows: 6, fields: firingKindsFieldTypes,
+    columns: { firing_kind_id: "FiringKindId", rule: "Rule", wording: "Wording", sort_order: "SortOrder", name: "Name", rule_enabled: "RuleEnabled" },
+    stored: ["firing_kind_id", "rule", "wording", "sort_order"],
     compute: (row: any) => computeFiringKinds(row as FiringKindsRow),
     lookups: [
       { field: "rule_enabled", target: "rules", ret: "is_enabled", key: "rule", match: "rule_id" },],
     aggregations: [] },
   { name: "Things", file: "things", rulebookRows: 9, fields: thingsFieldTypes,
+    columns: { thing_id: "ThingId", label: "Label", kind: "Kind", sort_order: "SortOrder", portrait: "Portrait", portrait_name: "PortraitName", portrait_page: "PortraitPage", portrait_image: "PortraitImage", portrait_crop: "PortraitCrop", portrait_width: "PortraitWidth", portrait_height: "PortraitHeight", name: "Name", node_key: "NodeKey", count_of_children: "CountOfChildren", count_of_grandchildren: "CountOfGrandchildren", count_as_place: "CountAsPlace", count_as_subject: "CountAsSubject", count_as_object: "CountAsObject", is_in_graph: "IsInGraph", node_kind: "NodeKind" },
+    stored: ["thing_id", "label", "kind", "sort_order", "portrait"],
     compute: (row: any) => computeThings(row as ThingsRow),
     lookups: [
       { field: "portrait_name", target: "portraits", ret: "display_name", key: "portrait", match: "portrait_id" },
@@ -1980,22 +1992,32 @@ export const erbTables: TableSpec[] = [
       { field: "count_as_subject", op: "SUM", table: "statements", target: "holds_unit", criteria: [{ range: "subject", kind: "field", field: "thing_id" }] },
       { field: "count_as_object", op: "SUM", table: "statements", target: "holds_unit", criteria: [{ range: "object_thing", kind: "field", field: "thing_id" }] },] },
   { name: "Portraits", file: "portraits", rulebookRows: 13, fields: portraitsFieldTypes,
+    columns: { portrait_id: "PortraitId", display_name: "DisplayName", page: "Page", image: "Image", crop: "Crop", width: "Width", height: "Height", sort_order: "SortOrder", name: "Name" },
+    stored: ["portrait_id", "display_name", "page", "image", "crop", "width", "height", "sort_order"],
     compute: (row: any) => computePortraits(row as PortraitsRow),
     lookups: [],
     aggregations: [] },
   { name: "PortraitAliases", file: "portrait_aliases", rulebookRows: 32, fields: portraitAliasesFieldTypes,
+    columns: { portrait_alias_id: "PortraitAliasId", portrait: "Portrait", name: "Name" },
+    stored: ["portrait_alias_id", "portrait"],
     compute: (row: any) => computePortraitAliases(row as PortraitAliasesRow),
     lookups: [],
     aggregations: [] },
   { name: "Properties", file: "properties", rulebookRows: 10, fields: propertiesFieldTypes,
+    columns: { property_id: "PropertyId", label: "Label", property_kind: "PropertyKind", datatype: "Datatype", is_user_addable: "IsUserAddable", has_one_current_value: "HasOneCurrentValue", is_symmetric: "IsSymmetric", domain_class: "DomainClass", range_class: "RangeClass", sort_order: "SortOrder", value_node_label: "ValueNodeLabel", current_value_wording: "CurrentValueWording", input_name: "InputName", record_kind: "RecordKind", record_order: "RecordOrder", name: "Name" },
+    stored: ["property_id", "label", "property_kind", "datatype", "is_user_addable", "has_one_current_value", "is_symmetric", "domain_class", "range_class", "sort_order", "value_node_label", "current_value_wording", "input_name", "record_kind", "record_order"],
     compute: (row: any) => computeProperties(row as PropertiesRow),
     lookups: [],
     aggregations: [] },
   { name: "PropertyAxioms", file: "property_axioms", rulebookRows: 4, fields: propertyAxiomsFieldTypes,
+    columns: { property_axiom_id: "PropertyAxiomId", kind: "Kind", property: "Property", first: "First", second: "Second", name: "Name" },
+    stored: ["property_axiom_id", "kind", "property", "first", "second"],
     compute: (row: any) => computePropertyAxioms(row as PropertyAxiomsRow),
     lookups: [],
     aggregations: [] },
   { name: "Statements", file: "statements", rulebookRows: 270, fields: statementsFieldTypes,
+    columns: { statement_id: "StatementId", graph: "Graph", subject: "Subject", property: "Property", object_thing: "ObjectThing", object_value: "ObjectValue", is_listed: "IsListed", is_built_in: "IsBuiltIn", is_detail: "IsDetail", is_stated: "IsStated", activation_seq: "ActivationSeq", sort_order: "SortOrder", subject_label: "SubjectLabel", property_label: "PropertyLabel", object_label: "ObjectLabel", property_datatype: "PropertyDatatype", property_has_one_current_value: "PropertyHasOneCurrentValue", property_domain_class: "PropertyDomainClass", property_range_class: "PropertyRangeClass", literal_quote: "LiteralQuote", literal_type_marker: "LiteralTypeMarker", built_in_source_text: "BuiltInSourceText", user_source_text: "UserSourceText", next_fact_sort_order: "NextFactSortOrder", is_literal: "IsLiteral", object_text: "ObjectText", name: "Name", words: "Words", source: "Source", subject_property_key: "SubjectPropertyKey", latest_sibling_activation_seq: "LatestSiblingActivationSeq", is_in_effect: "IsInEffect", listed_unit: "ListedUnit", in_effect_unit: "InEffectUnit", listed_off_unit: "ListedOffUnit", is_next_to_add: "IsNextToAdd", count_of_inverse_firings: "CountOfInverseFirings", count_of_symmetric_firings: "CountOfSymmetricFirings", holds_before_chain: "HoldsBeforeChain", count_of_chain_firings: "CountOfChainFirings", holds_before_typing: "HoldsBeforeTyping", count_of_type_firings: "CountOfTypeFirings", holds: "Holds", is_conclusion: "IsConclusion", holds_unit: "HoldsUnit", conclusion_unit: "ConclusionUnit", parent_unit: "ParentUnit", grandparent_unit: "GrandparentUnit", place_unit: "PlaceUnit", first_pre_chain_order_key: "FirstPreChainOrderKey", snap_position: "SnapPosition", first_fired_order_key: "FirstFiredOrderKey", count_of_chosen_firings: "CountOfChosenFirings", subject_node_key: "SubjectNodeKey", object_node_key: "ObjectNodeKey", subject_node_kind: "SubjectNodeKind", object_thing_node_kind: "ObjectThingNodeKind", object_node_kind: "ObjectNodeKind", object_value_node_label: "ObjectValueNodeLabel", count_of_violations_as_first: "CountOfViolationsAsFirst", count_of_violations_as_second: "CountOfViolationsAsSecond", is_in_contradiction: "IsInContradiction" },
+    stored: ["statement_id", "graph", "subject", "property", "object_thing", "object_value", "is_listed", "is_built_in", "is_detail", "is_stated", "activation_seq", "sort_order"],
     compute: (row: any) => computeStatements(row as StatementsRow),
     lookups: [
       { field: "subject_label", target: "things", ret: "label", key: "subject", match: "thing_id" },
@@ -2025,6 +2047,8 @@ export const erbTables: TableSpec[] = [
       { field: "count_of_violations_as_first", op: "SUM", table: "disjoint_checks", target: "violation_unit", criteria: [{ range: "first", kind: "field", field: "statement_id" }] },
       { field: "count_of_violations_as_second", op: "SUM", table: "disjoint_checks", target: "violation_unit", criteria: [{ range: "second", kind: "field", field: "statement_id" }] },] },
   { name: "Firings", file: "firings", rulebookRows: 465, fields: firingsFieldTypes,
+    columns: { firing_id: "FiringId", kind: "Kind", rule: "Rule", target: "Target", first: "First", second: "Second", rule_enabled: "RuleEnabled", kind_wording: "KindWording", kind_sort_order: "KindSortOrder", target_name: "TargetName", target_subject_label: "TargetSubjectLabel", target_property_label: "TargetPropertyLabel", target_object_text: "TargetObjectText", target_is_conclusion: "TargetIsConclusion", target_subject_node_key: "TargetSubjectNodeKey", target_object_node_key: "TargetObjectNodeKey", target_first_fired_order_key: "TargetFirstFiredOrderKey", first_words: "FirstWords", second_words: "SecondWords", first_is_in_effect: "FirstIsInEffect", first_holds_before_chain: "FirstHoldsBeforeChain", second_holds_before_chain: "SecondHoldsBeforeChain", first_holds_before_typing: "FirstHoldsBeforeTyping", first_property: "FirstProperty", first_property_domain_class: "FirstPropertyDomainClass", first_property_range_class: "FirstPropertyRangeClass", first_sort_order: "FirstSortOrder", second_is_in_effect: "SecondIsInEffect", first_snap_position: "FirstSnapPosition", second_snap_position: "SecondSnapPosition", inverse_fired_unit: "InverseFiredUnit", symmetric_fired_unit: "SymmetricFiredUnit", chain_fired_unit: "ChainFiredUnit", type_fired_unit: "TypeFiredUnit", fired_unit: "FiredUnit", pre_chain_fired_unit: "PreChainFiredUnit", pre_chain_order_key: "PreChainOrderKey", round: "Round", order_key: "OrderKey", is_chosen: "IsChosen", chosen_unit: "ChosenUnit", card_text: "CardText", name: "Name" },
+    stored: ["firing_id", "kind", "rule", "target", "first", "second"],
     compute: (row: any) => computeFirings(row as FiringsRow),
     lookups: [
       { field: "rule_enabled", target: "rules", ret: "is_enabled", key: "rule", match: "rule_id" },
@@ -2053,6 +2077,8 @@ export const erbTables: TableSpec[] = [
       { field: "second_snap_position", target: "statements", ret: "snap_position", key: "second", match: "statement_id" },],
     aggregations: [] },
   { name: "DisjointChecks", file: "disjoint_checks", rulebookRows: 42, fields: disjointChecksFieldTypes,
+    columns: { disjoint_check_id: "DisjointCheckId", graph: "Graph", rule: "Rule", first: "First", second: "Second", rule_enabled: "RuleEnabled", first_holds: "FirstHolds", second_holds: "SecondHolds", subject_label: "SubjectLabel", object_label: "ObjectLabel", violation_unit: "ViolationUnit", alarm_text: "AlarmText", name: "Name" },
+    stored: ["disjoint_check_id", "graph", "rule", "first", "second"],
     compute: (row: any) => computeDisjointChecks(row as DisjointChecksRow),
     lookups: [
       { field: "rule_enabled", target: "rules", ret: "is_enabled", key: "rule", match: "rule_id" },
@@ -2062,35 +2088,51 @@ export const erbTables: TableSpec[] = [
       { field: "object_label", target: "statements", ret: "object_label", key: "first", match: "statement_id" },],
     aggregations: [] },
   { name: "Scenarios", file: "scenarios", rulebookRows: 7, fields: scenariosFieldTypes,
+    columns: { scenario_id: "ScenarioId", graph: "Graph", label: "Label", note: "Note", sort_order: "SortOrder", button_group: "ButtonGroup", is_primary: "IsPrimary", fact_baseline: "FactBaseline", layout: "Layout", clears_selection: "ClearsSelection", clears_form_message: "ClearsFormMessage", name: "Name", graph_has_facts_to_add: "GraphHasFactsToAdd", is_available: "IsAvailable" },
+    stored: ["scenario_id", "graph", "label", "note", "sort_order", "button_group", "is_primary", "fact_baseline", "layout", "clears_selection", "clears_form_message"],
     compute: (row: any) => computeScenarios(row as ScenariosRow),
     lookups: [
       { field: "graph_has_facts_to_add", target: "graphs", ret: "has_facts_to_add", key: "graph", match: "graph_id" },],
     aggregations: [] },
   { name: "ScenarioFactChanges", file: "scenario_fact_changes", rulebookRows: 6, fields: scenarioFactChangesFieldTypes,
+    columns: { scenario_fact_change_id: "ScenarioFactChangeId", scenario: "Scenario", subject: "Subject", property: "Property", object_key: "ObjectKey", action: "Action", adds_to_list: "AddsToList", sort_order: "SortOrder", name: "Name" },
+    stored: ["scenario_fact_change_id", "scenario", "subject", "property", "object_key", "action", "adds_to_list", "sort_order"],
     compute: (row: any) => computeScenarioFactChanges(row as ScenarioFactChangesRow),
     lookups: [],
     aggregations: [] },
   { name: "ScenarioRuleSettings", file: "scenario_rule_settings", rulebookRows: 10, fields: scenarioRuleSettingsFieldTypes,
+    columns: { scenario_rule_setting_id: "ScenarioRuleSettingId", scenario: "Scenario", rule: "Rule", is_enabled: "IsEnabled", name: "Name" },
+    stored: ["scenario_rule_setting_id", "scenario", "rule", "is_enabled"],
     compute: (row: any) => computeScenarioRuleSettings(row as ScenarioRuleSettingsRow),
     lookups: [],
     aggregations: [] },
   { name: "NodeLayouts", file: "node_layouts", rulebookRows: 26, fields: nodeLayoutsFieldTypes,
+    columns: { node_layout_id: "NodeLayoutId", layout: "Layout", node_key: "NodeKey", x: "X", y: "Y", name: "Name" },
+    stored: ["node_layout_id", "layout", "node_key", "x", "y"],
     compute: (row: any) => computeNodeLayouts(row as NodeLayoutsRow),
     lookups: [],
     aggregations: [] },
   { name: "LayoutSlots", file: "layout_slots", rulebookRows: 8, fields: layoutSlotsFieldTypes,
+    columns: { layout_slot_id: "LayoutSlotId", sort_order: "SortOrder", x: "X", y: "Y", name: "Name" },
+    stored: ["layout_slot_id", "sort_order", "x", "y"],
     compute: (row: any) => computeLayoutSlots(row as LayoutSlotsRow),
     lookups: [],
     aggregations: [] },
   { name: "PageTexts", file: "page_texts", rulebookRows: 102, fields: pageTextsFieldTypes,
+    columns: { page_text_id: "PageTextId", text: "Text", name: "Name" },
+    stored: ["page_text_id", "text"],
     compute: (row: any) => computePageTexts(row as PageTextsRow),
     lookups: [],
     aggregations: [] },
   { name: "Engines", file: "engines", rulebookRows: 3, fields: enginesFieldTypes,
+    columns: { engine_id: "EngineId", label: "Label", substrate: "Substrate", is_default: "IsDefault", description: "Description", sort_order: "SortOrder", name: "Name" },
+    stored: ["engine_id", "label", "substrate", "is_default", "description", "sort_order"],
     compute: (row: any) => computeEngines(row as EnginesRow),
     lookups: [],
     aggregations: [] },
   { name: "RulebookTools", file: "rulebook_tools", rulebookRows: 8, fields: rulebookToolsFieldTypes,
+    columns: { rulebook_tool_id: "RulebookToolId", label: "Label", adds: "Adds", href: "Href", link_text: "LinkText", sort_order: "SortOrder", name: "Name" },
+    stored: ["rulebook_tool_id", "label", "adds", "href", "link_text", "sort_order"],
     compute: (row: any) => computeRulebookTools(row as RulebookToolsRow),
     lookups: [],
     aggregations: [] },
@@ -2099,3 +2141,14 @@ export const erbTables: TableSpec[] = [
 /** Materializes each vw_<entity>_closure view aggregations read. */
 export const erbClosures: ClosureSpec[] = [
 ];
+
+/**
+ * Computes every field of every table from the stored (raw and relationship)
+ * values given, keyed by the rulebook's own table and field names, and returns
+ * every table the same way. Call it again whenever a row changes: a change of
+ * data is a new call, never a new SDK. The conformance runner (main.ts) runs
+ * the same computation over files. Throws ErbError naming what it cannot do.
+ */
+export function evaluate(rows: Record<string, Array<Record<string, unknown>>>): Record<string, Array<Record<string, unknown>>> {
+  return erbEvaluate(erbTables, erbClosures, calculatedFieldCount, rows);
+}

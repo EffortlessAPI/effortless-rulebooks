@@ -1174,6 +1174,11 @@ export interface TableSpec {
   /** Rows the rulebook itself holds for this table. */
   rulebookRows: number;
   fields: Record<string, FieldType>;
+  /** Each field's name in the rulebook, by its snake_case name in `fields`. */
+  columns: Record<string, string>;
+  /** The stored (raw and relationship) fields, by snake_case name: what a caller
+   *  hands evaluate(). Everything else is computed. */
+  stored: string[];
   compute: (row: any) => void;
   lookups: LookupSpec[];
   aggregations: AggregateSpec[];
@@ -1216,7 +1221,12 @@ export function loadRows(file: string, spec: { fields: Record<string, FieldType>
     return fail(`reading ${file}: ${errorText(e)}`);
   }
   if (!Array.isArray(raw)) fail(`${file} does not hold a JSON array of rows`);
-  return raw.map((m: Record<string, unknown>) => {
+  return rowsFrom(raw, spec);
+}
+
+/** Typed rows from plain objects, keeping only the table's own fields. */
+function rowsFrom(raw: Array<Record<string, unknown>>, spec: { fields: Record<string, FieldType> }): Row[] {
+  return raw.map((m) => {
     const row = newRow(spec);
     for (const [key, value] of Object.entries(m)) {
       const type = spec.fields[key];
@@ -1343,16 +1353,59 @@ class Dataset {
 
   // ───────────── aggregations ─────────────
 
-  aggregateValue(agg: AggregateSpec, owner: TableSpec, record: Row): Value {
-    if (agg.op === "COMPOSITE") {
-      const aggregates: Record<string, Value> = {};
-      for (const part of agg.parts ?? []) aggregates[part.field] = this.aggregateValue(part, owner, record);
-      return (agg.scalar as NonNullable<AggregateSpec["scalar"]>)(record, aggregates);
-    }
+  /**
+   * The rows of the aggregated table that match a record, for one
+   * computeAggregation call. The literal and operator criteria do not depend on
+   * the record, so they are applied once; the field criteria (Child!{{Fk}} =
+   * Parent!{{Id}}) become an index keyed by the cells' values, so each record
+   * finds its rows directly instead of scanning the table. Rows keep their table
+   * order (MIN/MAX keep the first of equal extremes).
+   *
+   * The index is built from the table's values when the call starts. When the
+   * aggregation reads the very field it is writing on its own table, each record
+   * must see the records before it already written, so that case scans.
+   */
+  matcher(agg: AggregateSpec, owner: TableSpec, written: string): (record: Row) => Row[] {
     const table = this.tableRows(agg.table as string);
     const ownerGet = this.accessor(owner);
     const criteria = agg.criteria ?? [];
-    const matching = table.rows.filter(row => criteria.every(c => criterionMatches(c, table.get(row, c.range), () => ownerGet(record, c.field as string))));
+    const keyed = criteria.filter(c => c.kind === "field");
+    const fixed = criteria.filter(c => c.kind !== "field");
+    const selfReading = agg.table === owner.file && (agg.target === written || criteria.some(c => c.range === written));
+    if (selfReading) {
+      return (record) => table.rows.filter(row => criteria.every(c => criterionMatches(c, table.get(row, c.range), () => ownerGet(record, c.field as string))));
+    }
+    const noRecordField = () => fail("a literal criterion read the record");
+    const candidates = table.rows.filter(row => fixed.every(c => criterionMatches(c, table.get(row, c.range), noRecordField)));
+    if (keyed.length === 0) return () => candidates;
+    const index = new Map<string, Row[]>();
+    for (const row of candidates) {
+      const key = criteriaKey(keyed.map(c => table.get(row, c.range)));
+      if (key === null) continue;
+      const bucket = index.get(key);
+      if (bucket) bucket.push(row);
+      else index.set(key, [row]);
+    }
+    return (record) => {
+      if (index.size === 0) return [];
+      const key = criteriaKey(keyed.map(c => ownerGet(record, c.field as string)));
+      return key === null ? [] : index.get(key) ?? [];
+    };
+  }
+
+  aggregateValue(agg: AggregateSpec, owner: TableSpec, record: Row, matchers: Map<AggregateSpec, (record: Row) => Row[]>, written: string): Value {
+    if (agg.op === "COMPOSITE") {
+      const aggregates: Record<string, Value> = {};
+      for (const part of agg.parts ?? []) aggregates[part.field] = this.aggregateValue(part, owner, record, matchers, written);
+      return (agg.scalar as NonNullable<AggregateSpec["scalar"]>)(record, aggregates);
+    }
+    let match = matchers.get(agg);
+    if (!match) {
+      match = this.matcher(agg, owner, written);
+      matchers.set(agg, match);
+    }
+    const table = this.tableRows(agg.table as string);
+    const matching = match(record);
     switch (agg.op) {
       case "COUNTIFS":
       case "COUNT":
@@ -1396,6 +1449,7 @@ class Dataset {
   }
 
   computeAggregation(agg: AggregateSpec, owner: TableSpec, rows: Row[]): void {
+    const matchers = new Map<AggregateSpec, (record: Row) => Row[]>();
     for (const r of rows) {
       if (agg.error) {
         this.set(owner, r, agg.field, Null);
@@ -1403,7 +1457,7 @@ class Dataset {
         continue;
       }
       try {
-        this.set(owner, r, agg.field, this.aggregateValue(agg, owner, r));
+        this.set(owner, r, agg.field, this.aggregateValue(agg, owner, r, matchers, agg.field));
       } catch (e) {
         this.set(owner, r, agg.field, Null);
         erbErrors(r)[agg.field] = errorText(e);
@@ -1426,6 +1480,34 @@ function lookupKey(v: Value): string {
 }
 
 function blankAsEmpty(v: Value): Value { return v.k === KNull ? EMPTY : v; }
+
+/** A key two values share exactly when pyEqual holds between them, or null for
+ *  a value pyEqual finds equal to nothing (NaN, or a kind it does not compare). */
+function equalityKey(v: Value): string | null {
+  const n = numericLike(v);
+  if (n !== null) return Number.isNaN(n) ? null : "n:" + String(n);
+  switch (v.k) {
+    case KNull: return "z";
+    case KStr: return "s:" + v.s;
+    case KTime: {
+      const t = v.t as ErbTime;
+      return `t:${t.sec - t.offset}:${t.nsec}`;
+    }
+  }
+  return null;
+}
+
+/** The index key of a row's (or a record's) values for a field criteria list:
+ *  equal exactly when every "field" criterion's blank-as-empty pyEqual holds. */
+function criteriaKey(values: Value[]): string | null {
+  const keys: string[] = [];
+  for (const v of values) {
+    const key = equalityKey(blankAsEmpty(v));
+    if (key === null) return null;
+    keys.push(key);
+  }
+  return JSON.stringify(keys);
+}
 
 function criterionMatches(c: Criterion, cell: Value, recordField: () => Value): boolean {
   switch (c.kind) {
@@ -1489,10 +1571,22 @@ function fatal(message: string): never {
   process.exit(1);
 }
 
+/** What erbCompute computed: each loaded table's rows (keyed by its `file`),
+ *  every field in schema order under its snake_case name, a field that could not
+ *  be computed null and named in that row's `_erb_errors`. */
+export interface ErbComputed {
+  tables: Map<string, Record<string, unknown>[]>;
+  closurePairs: Map<string, number>;
+  passes: number;
+}
+
 /**
- * Loads every table's blank test rows, computes lookups, aggregations and
- * calculations across the whole dataset until nothing changes, and writes each
- * table's answers.
+ * Computes lookups, aggregations and calculations across the whole dataset until
+ * nothing changes. `input` holds each table's stored rows under its `file` name,
+ * as plain objects keyed by snake_case field name. A table absent from `input`
+ * reads as empty when the rulebook declares it empty, and is otherwise left
+ * unloaded, so anything that reads it fails naming the gap. Throws ErbError;
+ * never exits the process.
  *
  * Tables depend on each other in both directions — one table's lookup reads
  * another's aggregation, which counts rows of the first — so no table order
@@ -1500,37 +1594,31 @@ function fatal(message: string): never {
  * is the number of computed fields, which a dependency chain cannot exceed
  * without a cycle.
  */
-export function erbRun(specs: TableSpec[], closures: ClosureSpec[], calculatedFieldCount: number): void {
-  const testing = process.env.ERB_TESTING_DIR;
-  if (!testing) fatal("ERB_TESTING_DIR is not set; point it at the domain's testing/ directory.");
-  const substrate = process.env.ERB_SUBSTRATE_NAME;
-  if (!substrate) fatal("ERB_SUBSTRATE_NAME is not set; the harness must name the substrate whose answers these are.");
-  const blankDir = path.join(testing, "blank-tests");
-  const answersDir = path.join(testing, substrate, "test-answers");
-  fs.mkdirSync(answersDir, { recursive: true });
-
+export function erbCompute(specs: TableSpec[], closures: ClosureSpec[], calculatedFieldCount: number, input: Map<string, Array<Record<string, unknown>>>): ErbComputed {
   const d = new Dataset(specs);
+  for (const file of input.keys()) {
+    if (!d.byFile.has(file)) fail(`no table ${JSON.stringify(file)} in this SDK`);
+  }
   let computed = 0;
-  const graded: string[] = [];
+  const loaded: string[] = [];
   for (const spec of specs) {
-    const file = path.join(blankDir, `${spec.file}.json`);
-    if (!fs.existsSync(file)) {
-      // No fixture: a table the rulebook declares empty has no rows to test, and
-      // reads as empty. One the rulebook holds rows for stays unloaded, so
-      // anything that reads it fails naming the gap.
+    const raw = input.get(spec.file);
+    if (raw === undefined) {
       if (spec.rulebookRows === 0) d.rows.set(spec.file, []);
       continue;
     }
-    d.rows.set(spec.file, loadRows(file, spec));
-    graded.push(spec.file);
+    if (!Array.isArray(raw)) fail(`${spec.name}: the rows are not an array`);
+    d.rows.set(spec.file, rowsFrom(raw, spec));
+    loaded.push(spec.file);
     computed += spec.lookups.length + spec.aggregations.length;
   }
-  if (graded.length === 0) fatal(`no blank tests for any table under ${blankDir}`);
+  if (loaded.length === 0) fail("no rows for any table");
+  const closurePairs = new Map<string, number>();
   for (const c of closures) {
-    if (!d.rows.has(c.source)) fatal(`closure ${c.view} needs ${c.source}.json in ${blankDir}`);
+    if (!d.rows.has(c.source)) fail(`closure ${c.view} needs the ${c.source} rows`);
     const closure = materializeClosure(d, c);
     d.closures.set(c.view, closure);
-    console.log(`  -> ${c.view}: ${closure.rows.length} pairs`);
+    closurePairs.set(c.view, closure.rows.length);
   }
 
   const maxPasses = computed + calculatedFieldCount + 2;
@@ -1538,7 +1626,7 @@ export function erbRun(specs: TableSpec[], closures: ClosureSpec[], calculatedFi
   let passes = 0;
   for (;;) {
     passes++;
-    if (passes > maxPasses) fatal(`the dataset did not settle within ${maxPasses} passes — the field dependencies are cyclic.`);
+    if (passes > maxPasses) fail(`the dataset did not settle within ${maxPasses} passes — the field dependencies are cyclic.`);
     d.blank = new Map();
     // A filtered closure's filter may be a derived field, so it is re-read from
     // the current rows on every pass and settles with them.
@@ -1561,15 +1649,103 @@ export function erbRun(specs: TableSpec[], closures: ClosureSpec[], calculatedFi
     if (current === previous) break;
     previous = current;
   }
-  console.log(`TypeScript substrate: dataset settled after ${passes} passes`);
+
+  const tables = new Map<string, Record<string, unknown>[]>();
+  for (const file of loaded) {
+    const spec = d.byFile.get(file) as TableSpec;
+    tables.set(file, (d.rows.get(file) as Row[]).map(r => outputRow(r, spec)));
+  }
+  return { tables, closurePairs, passes };
+}
+
+/**
+ * The SDK as a library: computes every field of every table from rows held in
+ * memory, keyed by the rulebook's own table and field names, and returns every
+ * table the same way. Only stored (raw and relationship) values are read; any
+ * computed value handed in is ignored and recomputed. Every table the SDK knows
+ * must be given (an empty array for none); a table it does not know, or a field
+ * that could not be computed, throws ErbError naming it.
+ *
+ * This is the same computation the conformance runner (erbRun) performs; only
+ * how the rows arrive and leave differs.
+ */
+export function erbEvaluate(specs: TableSpec[], closures: ClosureSpec[], calculatedFieldCount: number,
+                            rows: Record<string, Array<Record<string, unknown>>>): Record<string, Array<Record<string, unknown>>> {
+  const byName = new Map(specs.map(s => [s.name, s]));
+  const unknown = Object.keys(rows).filter(name => !byName.has(name)).sort();
+  if (unknown.length > 0) fail(`evaluate() was given tables the rulebook does not have: ${unknown.join(", ")}`);
+  const missing = specs.filter(s => rows[s.name] === undefined).map(s => s.name);
+  if (missing.length > 0) fail(`evaluate() was not given these tables (pass [] for an empty one): ${missing.join(", ")}`);
+  const input = new Map<string, Array<Record<string, unknown>>>();
+  for (const spec of specs) {
+    const given = rows[spec.name];
+    if (!Array.isArray(given)) fail(`evaluate(): ${spec.name} is not an array of rows`);
+    input.set(spec.file, given.map(row => {
+      const out: Record<string, unknown> = {};
+      for (const snake of spec.stored) out[snake] = row[spec.columns[snake]] ?? null;
+      return out;
+    }));
+  }
+  const { tables } = erbCompute(specs, closures, calculatedFieldCount, input);
+  const result: Record<string, Array<Record<string, unknown>>> = {};
+  for (const spec of specs) {
+    const computed = tables.get(spec.file) as Record<string, unknown>[];
+    result[spec.name] = computed.map(row => {
+      if (row._erb_errors) fail(`${spec.name}: could not compute ${JSON.stringify(row._erb_errors)}`);
+      const out: Record<string, unknown> = {};
+      for (const snake of Object.keys(spec.fields)) out[spec.columns[snake]] = row[snake];
+      return out;
+    });
+  }
+  return result;
+}
+
+/**
+ * The conformance runner: loads every table's blank test rows from
+ * $ERB_TESTING_DIR/blank-tests, computes them (erbCompute), and writes each
+ * table's answers to $ERB_TESTING_DIR/$ERB_SUBSTRATE_NAME/test-answers.
+ */
+export function erbRun(specs: TableSpec[], closures: ClosureSpec[], calculatedFieldCount: number): void {
+  const testing = process.env.ERB_TESTING_DIR;
+  if (!testing) fatal("ERB_TESTING_DIR is not set; point it at the domain's testing/ directory.");
+  const substrate = process.env.ERB_SUBSTRATE_NAME;
+  if (!substrate) fatal("ERB_SUBSTRATE_NAME is not set; the harness must name the substrate whose answers these are.");
+  const blankDir = path.join(testing, "blank-tests");
+  const answersDir = path.join(testing, substrate, "test-answers");
+  fs.mkdirSync(answersDir, { recursive: true });
+
+  let result: ErbComputed;
+  try {
+    const input = new Map<string, Array<Record<string, unknown>>>();
+    for (const spec of specs) {
+      // No fixture: a table the rulebook declares empty has no rows to test, and
+      // reads as empty. One the rulebook holds rows for stays unloaded, so
+      // anything that reads it fails naming the gap.
+      const file = path.join(blankDir, `${spec.file}.json`);
+      if (!fs.existsSync(file)) continue;
+      let raw: unknown;
+      try {
+        raw = JSON.parse(fs.readFileSync(file, "utf-8"));
+      } catch (e) {
+        return fatal(`reading ${file}: ${errorText(e)}`);
+      }
+      if (!Array.isArray(raw)) fatal(`${file} does not hold a JSON array of rows`);
+      input.set(spec.file, raw as Array<Record<string, unknown>>);
+    }
+    if (input.size === 0) fatal(`no blank tests for any table under ${blankDir}`);
+    result = erbCompute(specs, closures, calculatedFieldCount, input);
+  } catch (e) {
+    return fatal(errorText(e));
+  }
+  for (const [view, pairs] of result.closurePairs) console.log(`  -> ${view}: ${pairs} pairs`);
+  console.log(`TypeScript substrate: dataset settled after ${result.passes} passes`);
 
   let total = 0;
-  for (const file of [...graded].sort()) {
-    const spec = d.byFile.get(file) as TableSpec;
-    const rows = d.rows.get(file) as Row[];
-    fs.writeFileSync(path.join(answersDir, `${file}.json`), JSON.stringify(rows.map(r => outputRow(r, spec)), null, 2));
+  for (const file of [...result.tables.keys()].sort()) {
+    const rows = result.tables.get(file) as Record<string, unknown>[];
+    fs.writeFileSync(path.join(answersDir, `${file}.json`), JSON.stringify(rows, null, 2));
     total += rows.length;
     console.log(`  -> ${file}: ${rows.length} records`);
   }
-  console.log(`TypeScript substrate: wrote ${total} records across ${graded.length} tables to ${answersDir}`);
+  console.log(`TypeScript substrate: wrote ${total} records across ${result.tables.size} tables to ${answersDir}`);
 }

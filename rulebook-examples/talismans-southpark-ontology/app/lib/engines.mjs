@@ -1,13 +1,16 @@
 // The execution engines. Each one computes every field of the rulebook from the
 // same live rows (the workspace); the page and the admin read whichever one a
 // request names. None of them is hand-written logic: Postgres reads the generated
-// vw_* views, and TypeScript and OWL run the generated substrates through the
-// platform's orchestration/live_substrates.py, the same way the conformance
-// harness runs them.
+// vw_* views; TypeScript is the generated SDK (effortless-typescript/), imported
+// into this process and called with the live rows; OWL runs the generated rules
+// through the platform's orchestration/live_substrates.py, the same way the
+// conformance harness runs them.
 import pg from 'pg';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { performance } from 'node:perf_hooks';
+import { pathToFileURL } from 'node:url';
 import { spawn } from 'node:child_process';
 
 const norm = (name) => name.toLowerCase().replace(/_/g, '');
@@ -23,21 +26,22 @@ function normalize(value, datatype) {
   return blank ? null : String(value);
 }
 
-function runPython(args, { timeoutMs = 240000 } = {}) {
+function run(cmd, args, { cwd, timeoutMs = 240000 } = {}) {
   return new Promise((resolve, reject) => {
-    const child = spawn('python3', args, { stdio: ['ignore', 'pipe', 'pipe'] });
+    const child = spawn(cmd, args, { cwd, stdio: ['ignore', 'pipe', 'pipe'] });
     let out = '', err = '';
-    const timer = setTimeout(() => { child.kill('SIGKILL'); reject(new Error(`python3 ${args[0]} did not finish within ${timeoutMs / 1000}s`)); }, timeoutMs);
+    const timer = setTimeout(() => { child.kill('SIGKILL'); reject(new Error(`${cmd} ${args[0]} did not finish within ${timeoutMs / 1000}s`)); }, timeoutMs);
     child.stdout.on('data', (d) => { out += d; });
     child.stderr.on('data', (d) => { err += d; });
     child.on('error', (e) => { clearTimeout(timer); reject(e); });
     child.on('close', (code) => {
       clearTimeout(timer);
-      if (code !== 0) reject(new Error((err || out).trim().split('\n').slice(-6).join('\n') || `python3 exited ${code}`));
+      if (code !== 0) reject(new Error((err || out).trim().split('\n').slice(-6).join('\n') || `${cmd} exited ${code}`));
       else resolve(out);
     });
   });
 }
+const runPython = (args, options) => run('python3', args, options);
 
 function select(table, rows, fields, where) {
   let out = rows;
@@ -48,7 +52,82 @@ function select(table, rows, fields, where) {
 }
 
 // ---------------------------------------------------------------------------
-// A generated substrate run on the live rows (TypeScript, OWL)
+// TypeScript: the generated SDK, imported into this process. A click is one
+// evaluate() call over the live rows; nothing is regenerated, spawned or written.
+// ---------------------------------------------------------------------------
+class TypeScriptSdkEngine {
+  constructor({ ws, projectDir }) {
+    this.ws = ws;
+    this.projectDir = projectDir;
+    this.folder = path.join(projectDir, 'effortless-typescript');
+    this.sdk = null;          // the imported dist/erb_sdk.js
+    this.loadedFrom = null;   // the newest source mtime that build was made from
+    this.loading = null;
+    this.cache = null;        // { version, tables }
+    this.lastMs = null;
+  }
+
+  sources() { return ['erb_sdk.ts', 'erb_runtime.ts'].map((f) => path.join(this.folder, f)); }
+  newestSource() { return Math.max(...this.sources().map((f) => fs.statSync(f).mtimeMs)); }
+
+  async status() {
+    const missing = this.sources().filter((f) => !fs.existsSync(f));
+    if (missing.length) return { ok: false, reason: `${missing.map((f) => path.relative(this.projectDir, f)).join(', ')} is missing; run effortless build in the project` };
+    if (this.sdk && this.newestSource() > this.loadedFrom) return { ok: false, reason: 'effortless-typescript was rebuilt after this app loaded it; restart ./start.sh' };
+    return { ok: true };
+  }
+
+  // The SDK's own package builds it (npm run build); that runs only when the
+  // generated sources are newer than dist/, i.e. after an effortless build.
+  async load() {
+    if (this.sdk) {
+      if (this.newestSource() > this.loadedFrom) throw new Error('effortless-typescript was rebuilt after this app loaded it; restart ./start.sh');
+      return this.sdk;
+    }
+    this.loading ||= (async () => {
+      const built = path.join(this.folder, 'dist', 'erb_sdk.js');
+      const newest = this.newestSource();
+      if (!fs.existsSync(built) || fs.statSync(built).mtimeMs < newest) {
+        if (!fs.existsSync(path.join(this.folder, 'node_modules'))) await run('npm', ['install', '--no-audit', '--no-fund', '--silent'], { cwd: this.folder });
+        await run('npm', ['run', 'build', '--silent'], { cwd: this.folder });
+      }
+      const sdk = await import(pathToFileURL(built).href);
+      if (typeof sdk.evaluate !== 'function') {
+        throw new Error(`${path.relative(this.projectDir, built)} has no evaluate(): it was generated by a rulebook-to-typescript older than 2026-11-26; run effortless build in the project`);
+      }
+      this.sdk = sdk;
+      this.loadedFrom = newest;
+      return sdk;
+    })();
+    try {
+      return await this.loading;
+    } finally {
+      this.loading = null;
+    }
+  }
+
+  async evaluate() {
+    if (this.cache && this.cache.version === this.ws.version) return this.cache.tables;
+    const sdk = await this.load();
+    const version = this.ws.version;
+    const started = performance.now();
+    const tables = sdk.evaluate(this.ws.data);
+    this.lastMs = Math.round(performance.now() - started);
+    this.cache = { version, tables };
+    return tables;
+  }
+
+  async read(tableName, fields, where) {
+    const table = this.ws.table(tableName);
+    const tables = await this.evaluate();
+    return select(table, tables[tableName], fields, where);
+  }
+
+  async answers() { return this.evaluate(); }
+}
+
+// ---------------------------------------------------------------------------
+// OWL: the generated rules run on the live rows by the platform's runner
 // ---------------------------------------------------------------------------
 class LiveSubstrateEngine {
   constructor({ ws, substrate, projectDir, repoRoot, requires }) {
@@ -208,7 +287,7 @@ class PostgresEngine {
 export function createEngines({ ws, projectDir, repoRoot, databaseUrl }) {
   const implementations = {
     postgres: () => new PostgresEngine({ ws, databaseUrl }),
-    typescript: () => new LiveSubstrateEngine({ ws, substrate: 'effortless-typescript', projectDir, repoRoot, requires: ['effortless-typescript/erb_sdk.ts'] }),
+    typescript: () => new TypeScriptSdkEngine({ ws, projectDir }),
     owl: () => new LiveSubstrateEngine({ ws, substrate: 'effortless-owl', projectDir, repoRoot, requires: ['effortless-owl/src/ontology.owl', 'effortless-owl/src/rules.shacl.ttl', 'effortless-owl/src/manifest.json'] }),
   };
   const made = {};

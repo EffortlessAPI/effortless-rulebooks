@@ -131,6 +131,42 @@ for (const engine of ['typescript', 'owl', 'postgres']) {
   });
 }
 
+// The TypeScript engine is the generated SDK called inside the app's own process:
+// a click is one evaluate() over the live rows. No Python, no second process, no
+// files. The server runs here with only node, npm and /bin (npm's shell) on its
+// PATH (npm builds the SDK's dist/ if the build left it stale), and a ticked rule
+// must still reach the page, quickly. (Until 2026-11-26 every click went
+// python3 -> node -> temp files, about 0.5 s each.)
+test('the TypeScript engine computes in the app process, with no python3 on the PATH', async () => {
+  const bin = fs.mkdtempSync(path.join(os.tmpdir(), 'southpark-bin-'));
+  for (const tool of ['node', 'npm']) {
+    const found = spawnSync('which', [tool], { encoding: 'utf8' }).stdout.trim();
+    assert.ok(found, `${tool} is on this machine`);
+    fs.symlinkSync(found, path.join(bin, tool));
+  }
+  const PATH = `${bin}:/bin`;
+  assert.notEqual(spawnSync('/usr/bin/which', ['python3'], { env: { PATH } }).status, 0, 'python3 is not reachable on this PATH');
+  const app = await startApp({ engine: 'typescript', port: 43294, env: { RULEBOOK_PATH: copyOfHub(), PATH } });
+  try {
+    const { api } = app;
+    assert.deepEqual((await api('GET', '/api/page')).conclusions, [], 'the stored rows have every rule off');
+    const timings = [];
+    for (const on of [true, false, true]) {
+      await api('POST', '/api/rules/inverse/switch', { on });
+      const started = Date.now();
+      const page = await api('GET', '/api/page');
+      timings.push(Date.now() - started);
+      const cards = page.conclusions.map((c) => `${c.target_subject_label} ${c.target_property_label} ${c.target_object_text}`).sort();
+      assert.deepEqual(cards, on ? ['Randy is child of Marvin', 'Shelly is child of Randy', 'Stan is child of Randy'] : []);
+    }
+    const ts = (await api('GET', '/api/health')).engines.find((e) => e.id === 'typescript');
+    assert.ok(ts.lastMs < 300, `one evaluation took ${ts.lastMs} ms`);
+    assert.ok(Math.max(...timings) < 1000, `the page answered in ${timings.join(', ')} ms`);
+  } finally {
+    app.stop();
+  }
+});
+
 // Excel, both ways, through the catalog's own tools: the app's export with one cell edited
 // comes back as exactly that one change. The workbook holds about 31,000 formula cells, each
 // saved with its result; the import reads those and computes nothing, so it answers in

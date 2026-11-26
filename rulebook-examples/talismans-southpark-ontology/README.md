@@ -53,10 +53,12 @@ everything else from those rows:
 | Engine | How it computes | A click takes about |
 |---|---|---|
 | Postgres views | The rows are mirrored into the generated base tables; values are columns of the generated `vw_*` views. | 0.4 s |
-| TypeScript | The generated `effortless-typescript/` SDK is handed the rows the way the conformance harness hands them over (blank tests in, answers out). No database. | 0.9 s |
+| TypeScript | The generated `effortless-typescript/` SDK, imported into the app's own process: a click is one `evaluate(rows)` call over the live rows. No database, no other process, no files, nothing regenerated. | 0.1 s |
 | OWL and SHACL rules | The generated `effortless-owl/` ontology and rules are run over individuals written from the rows, by the harness's own OWL runner (a SPARQL engine executing the rules in `sh:order`). | 2.2 s |
 
-The app holds no rule of its own on any engine. TypeScript and OWL go through
+The app holds no rule of its own on any engine. A fact such as "Stan attends South Park
+Elementary" is a row, so ticking it is a data change: the TypeScript engine calls the same
+compiled SDK again with the new rows. OWL goes through
 [`orchestration/live_substrates.py`](../../orchestration/live_substrates.py), a platform
 tool that runs a substrate on live rows and compares substrates' answers with
 `test-orchestrator.compare_values`. It works for any project that builds those substrates.

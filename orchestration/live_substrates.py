@@ -28,7 +28,9 @@ compare out:  {"substrates", "cells", "differing": [{table, key, field,
 
 Substrates: effortless-typescript, effortless-python, effortless-owl.
 (effortless-postgres answers come from the database the app keeps; hand them to
-`compare` as an answers file.)
+`compare` as an answers file.) An app written in TypeScript or JavaScript does not
+come here for TypeScript: it imports the generated SDK and calls its evaluate(rows)
+in its own process, the same computation the runner below performs over files.
 """
 from __future__ import annotations
 
@@ -152,7 +154,7 @@ def ensure_typescript_built(folder: Path) -> None:
         return
     if not (folder / "node_modules").exists():
         run(["npm", "install", "--no-audit", "--no-fund", "--silent"], folder)
-    run(["npx", "tsc", "-p", "."], folder)
+    run(["npm", "run", "build", "--silent"], folder)  # the generated package's own build
 
 
 def evaluate_file_substrate(project_dir: Path, substrate: str, rulebook: dict, rows: dict) -> dict:
