@@ -1,0 +1,115 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": "",
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "06cb7b60-d048-4ad0-864b-ab86fc599fa9",
+  "Name": "Talisman's South Park Ontology Explainer, with a rulebook underneath",
+  "Description": "Jessica Talisman's interactive South Park ontology explainer rebuilt on one rulebook: the same facts, rule switches and conclusions in Postgres, TypeScript, Python, Excel, OWL and documentation in 16 languages.",
+  "ProjectSettings": [
+    {
+      "Name": "erbDateDiff",
+      "Value": "calendar"
+    },
+    {
+      "Name": "erbTimezone",
+      "Value": "UTC"
+    },
+    {
+      "Name": "erbDateTimeText",
+      "Value": "iso8601"
+    },
+    {
+      "Name": "erbBlankLogic",
+      "Value": "coerce"
+    },
+    {
+      "Name": "erbWholeNumber",
+      "Value": "by-field-type"
+    },
+    {
+      "Name": "project-name",
+      "Value": "Talisman's South Park Ontology Explainer, with a rulebook underneath"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.17.1626",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-11-17-1626-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Postgres schema, vw_* views and seed data from the rulebook."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktotypescript",
+      "RelativePath": "/effortless-typescript",
+      "CommandLine": "rulebook-to-typescript -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.15.1827",
+      "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-11-15-1827-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "TypeScript substrate."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopython",
+      "RelativePath": "/effortless-python",
+      "CommandLine": "rulebook-to-python -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.25.2221",
+      "LastUrl": "https://effortless-rulebook-to-python-v2026-11-25-2221-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Python substrate."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoxlsx",
+      "RelativePath": "/xlsx",
+      "CommandLine": "rulebook-to-xlsx -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.15.1835",
+      "LastUrl": "https://effortless-rulebook-to-xlsx-v2026-11-15-1835-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Excel workbook with every rule as a live formula."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoowl",
+      "RelativePath": "/owl",
+      "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.25.2217",
+      "LastUrl": "https://effortless-rulebook-to-owl-v2026-11-25-2217-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "OWL ontology, individuals and SHACL rules."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktorulespeak",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json -p languages=all",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.22.1524",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-11-22-1524-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Plain-language documentation of every rule, in every language the tool offers."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoexplainerdag",
+      "RelativePath": "/explainer",
+      "CommandLine": "rulebook-to-explainer-dag -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json -p languages=all",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.24.1636",
+      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-11-24-1636-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Explainer: every derived value's rule and witness down to ground truth, in 16 languages."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "init-db",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "-exec ./reset-rulebook-db.sh",
+      "IsDisabled": false,
+      "Description": "Load the generated SQL into the project database. Last on purpose: the CLI regenerates reset-rulebook-db.sh without its executable bit (cr-20-02), so this -exec step fails on most builds; scripts/erb_project.py --reset-db runs it with bash."
+    }
+  ]
+}

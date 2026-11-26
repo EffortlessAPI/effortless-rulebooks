@@ -1,0 +1,115 @@
+# Talisman's South Park Ontology Explainer, with a rulebook underneath
+
+Jessica Talisman's [What is an Ontology?](https://jessicatalisman.substack.com/p/what-is-an-ontology)
+explains ontologies through South Park, and her
+[interactive explainer](https://southpark-ontology-explainer.jessica-tali-7056.chatgpt.site/)
+lets you switch facts and rules on and watch conclusions appear. This project rebuilds
+that explainer on one rulebook. Her page's facts, rule switches, property wiring,
+provenance wording and current-value policy are rows in
+[`effortless-rulebook/talismans-southpark-ontology-rulebook.json`](effortless-rulebook/talismans-southpark-ontology-rulebook.json),
+and every conclusion is a formula. From that one file the build produces Postgres views,
+TypeScript, Python, an Excel workbook, OWL, plain-language documentation and an
+explainer that shows each derived value's rule and witnesses down to the stated facts.
+
+The South Park characters are the work of Trey Parker and Matt Stone; the portraits are
+Fandom images, linked (not copied) from each `Things` row.
+
+## Does it behave like her page?
+
+[`testing/her-app/compare-with-her-app.mjs`](testing/her-app/compare-with-her-app.mjs)
+downloads her live page, runs the page's own reasoner, puts this project's database in
+the same state and compares:
+
+- every fact that holds (the graph's edges),
+- every conclusion card, word for word ("Worked out by the inverse rule from …"),
+- every contradiction alert.
+
+It runs her starting facts, the two facts her page suggests trying, and the fact changes
+her buttons make (Move Stan to grade 5, Stan leaves school, Show Stan's details, Clear the
+graph), each under all 32 combinations of the five rule switches.
+
+| Run | Result |
+|---|---|
+| 2026-11-26, rulebook as committed | 224 of 224 states agree; 224 of 224 also list the conclusions in her page's order |
+| Same run with one wording row changed in the database (`range rule` to `range rules`) | 64 of 224 states fail: exactly those where the range rule fires (domain rule on, Stan's attends fact in effect) |
+
+```bash
+python3 ../../scripts/erb_project.py talismans-southpark-ontology --reset-db   # load the database
+node testing/her-app/compare-with-her-app.mjs
+```
+
+The test changes the project's dev database while it runs and puts the seed state back at
+the end.
+
+## How the model works
+
+| Table | Rows | What it holds |
+|---|---|---|
+| `Graphs` | 1 | The page's wording variables (source lines, empty-state message, literal syntax) and totals |
+| `Rules` | 5 | Inverse, Symmetric, Property chain, Domain and range, Disjoint; `IsEnabled` is the checkbox |
+| `FiringKinds` | 5 | How each rule names itself on a conclusion card |
+| `Things` | 9 | The seven individuals her page draws and the classes Person and School, with portrait credits |
+| `Properties` | 10 | The page's properties and the wiring every rule reads: inverse, symmetric, chain, domain, range, disjoint, datatype, one current value |
+| `Statements` | 270 | Every fact the page can state or conclude about the cast; `IsStated` is the checkbox |
+| `Firings` | 465 | Every way a rule could conclude a fact; the first one in her reasoner's order is the card shown |
+| `DisjointChecks` | 42 | Every pair the disjoint rule watches |
+
+The seed data is her page's starting state: the ten teaching facts on, every rule off.
+A value that the page keeps one of per person (grade, role) is current when it was
+switched on most recently, so switching grade 5 on puts grade 4 out of effect without
+deleting it.
+
+The rules apply in three fixed strata: inverse and symmetric, then the property chain,
+then domain and range. That matches her page for every property it has. Wiring that made
+a later rule feed an earlier one would need repeated rounds.
+
+## What is not done yet
+
+- **The app.** The next step is a page that looks and behaves like hers, reading these
+  views instead of running its own reasoner.
+- **New names and new values.** Her Add fact form takes any name and any number. Here,
+  every candidate fact over the declared cast is a row, written once when the rulebook was
+  authored; a new character or a new value needs new candidate rows, and nothing in the
+  platform generates them yet.
+- **The other substrates against her page.** The TypeScript, Python, Excel and OWL outputs
+  are built but not yet graded through the repo's conformance harness.
+- **Her explanatory prose and illustrations.** Her article and page text are hers and are
+  not copied here.
+
+## Building
+
+```bash
+effortless build                                                          # every substrate
+python3 ../../scripts/erb_project.py talismans-southpark-ontology --reset-db   # load Postgres
+./start.sh                                                                # serve the explainer and docs
+```
+
+`rulespeak/rulespeak.html` holds all 16 languages and is 13 MB, so it is generated by the
+build and not committed; the per-language Markdown files (`rulespeak/rulespeak.<lang>.md`) are.
+
+The build's last step (`init-db`) fails on most builds: the CLI regenerates
+`postgres-bootstrap/reset-rulebook-db.sh` without its executable bit (cr-20-02). The step
+is last so every generator still runs; `erb_project.py --reset-db` loads the database
+with `bash`.
+
+---
+
+## Local transpiler bus (`127.0.0.1:4242`)
+
+> **All 11 local transpilers are hosted by the effortless CLI itself.** Start
+> the bus with `effortless serve -port 4242` from the repo root; it serves every
+> tool under `effortless-tools/<name>/` — `oss-postgres-calculated-to-rulebook`,
+> `oss-rulebook-to-python`, `oss-rulebook-to-golang`, `oss-rulebook-to-cobol`,
+> `oss-rulebook-to-owl`, and more — as a first-class route any `effortless
+> build` can call. `GET /` lists them.
+>
+> **Address it as `127.0.0.1`, never `localhost`.** The host binds the literal
+> prefix `http://127.0.0.1:<port>/`, so a request carrying a `localhost` Host
+> header gets a bare 404 with no explanation.
+>
+> **Every repo-local route carries the `oss-` prefix.** The bare names
+> (`rulebook-to-python`, `rulebook-to-xlsx`, `rulebook-to-owl`,
+> `rulebook-to-airtable`, `airtable-to-rulebook`) belong to the commercial
+> catalog as `effortless/effortless/<tool>`; the prefix is the only thing
+> keeping a repo-local route from shadowing one.
+> `orchestration/local_tool_shim.py` refuses to run if any tool is missing it.

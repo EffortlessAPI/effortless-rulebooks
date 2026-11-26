@@ -1,0 +1,2260 @@
+@prefix talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#> .
+@prefix talismans-south-park-ontology-explainer-shapes: <https://example.org/talismans-south-park-ontology-explainer/shapes#> .
+@prefix erb: <https://effortlessapi.com/ns/erb#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+# === Rules for DisjointChecks ===
+talismans-south-park-ontology-explainer-shapes:DisjointChecks_RuleEnabled a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:DisjointChecks ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DisjointChecks_RuleEnabled" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:ruleEnabled ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:DisjointChecks .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:rule ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Rules . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:isEnabled ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:DisjointChecks_FirstHolds a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:DisjointChecks ;
+    sh:order 16 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DisjointChecks_FirstHolds" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:firstHolds ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:DisjointChecks .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:first ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:holds ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:DisjointChecks_SecondHolds a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:DisjointChecks ;
+    sh:order 16 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DisjointChecks_SecondHolds" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:secondHolds ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:DisjointChecks .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:second ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:holds ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:DisjointChecks_SubjectLabel a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:DisjointChecks ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DisjointChecks_SubjectLabel" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:subjectLabel ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:DisjointChecks .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:first ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:subjectLabel ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:DisjointChecks_ObjectLabel a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:DisjointChecks ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DisjointChecks_ObjectLabel" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:objectLabel ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:DisjointChecks .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:first ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:objectLabel ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:DisjointChecks_ViolationUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:DisjointChecks ;
+    sh:order 17 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DisjointChecks_ViolationUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:violationUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:DisjointChecks .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:firstHolds ?first_holds . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:ruleEnabled ?rule_enabled . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:secondHolds ?second_holds . }
+                BIND(ROUND(IF(COALESCE((COALESCE(?rule_enabled, false) && COALESCE(?first_holds, false) && COALESCE(?second_holds, false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:DisjointChecks_AlarmText a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:DisjointChecks ;
+    sh:order 18 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DisjointChecks_AlarmText" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:alarmText ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:DisjointChecks .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:objectLabel ?object_label . OPTIONAL { ?object_label erb:key ?object_label__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:subjectLabel ?subject_label . OPTIONAL { ?subject_label erb:key ?subject_label__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:violationUnit ?violation_unit . }
+                BIND(IF(COALESCE((COALESCE(?violation_unit, 0) = 1), false), CONCAT("Contradiction found. ", COALESCE(COALESCE(?subject_label__key, IF(isIRI(?subject_label), REPLACE(STR(?subject_label), "^.*[#/]", ""), STR(?subject_label))), ""), " is recorded as both parent and spouse of ", COALESCE(COALESCE(?object_label__key, IF(isIRI(?object_label), REPLACE(STR(?object_label), "^.*[#/]", ""), STR(?object_label))), ""), ". Check those facts and the selected disjoint rule."), "") AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:DisjointChecks_Name a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:DisjointChecks ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_DisjointChecks_Name" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:name ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:DisjointChecks .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:disjointCheckId ?disjoint_check_id . }
+                BIND(?disjoint_check_id AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for FiringKinds ===
+talismans-south-park-ontology-explainer-shapes:FiringKinds_Name a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:FiringKinds ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_FiringKinds_Name" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:name ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:FiringKinds .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:wording ?wording . }
+                BIND(?wording AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:FiringKinds_RuleEnabled a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:FiringKinds ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_FiringKinds_RuleEnabled" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:ruleEnabled ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:FiringKinds .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:rule ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Rules . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:isEnabled ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Firings ===
+talismans-south-park-ontology-explainer-shapes:Firings_RuleEnabled a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_RuleEnabled" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:ruleEnabled ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:rule ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Rules . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:isEnabled ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_KindWording a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_KindWording" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:kindWording ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:kind ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:FiringKinds . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:wording ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_KindSortOrder a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_KindSortOrder" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:kindSortOrder ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:kind ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:FiringKinds . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:sortOrder ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_TargetName a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_TargetName" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:targetName ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:target ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:name ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_TargetSubjectLabel a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_TargetSubjectLabel" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:targetSubjectLabel ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:target ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:subjectLabel ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_TargetPropertyLabel a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_TargetPropertyLabel" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:targetPropertyLabel ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:target ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:propertyLabel ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_TargetObjectText a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_TargetObjectText" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:targetObjectText ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:target ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:objectText ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_TargetIsConclusion a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 17 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_TargetIsConclusion" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:targetIsConclusion ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:target ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:isConclusion ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_TargetFirstFiredOrderKey a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 16 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_TargetFirstFiredOrderKey" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:targetFirstFiredOrderKey ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:target ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:firstFiredOrderKey ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_FirstWords a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_FirstWords" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:firstWords ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:first ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:words ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_SecondWords a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_SecondWords" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:secondWords ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:second ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:words ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_FirstIsInEffect a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_FirstIsInEffect" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:firstIsInEffect ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:first ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:isInEffect ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_FirstHoldsBeforeChain a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 8 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_FirstHoldsBeforeChain" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:firstHoldsBeforeChain ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:first ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:holdsBeforeChain ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_SecondHoldsBeforeChain a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 8 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_SecondHoldsBeforeChain" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:secondHoldsBeforeChain ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:second ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:holdsBeforeChain ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_FirstHoldsBeforeTyping a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 12 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_FirstHoldsBeforeTyping" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:firstHoldsBeforeTyping ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:first ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:holdsBeforeTyping ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_FirstProperty a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_FirstProperty" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:firstProperty ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:first ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:property ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_FirstPropertyDomainClass a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_FirstPropertyDomainClass" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:firstPropertyDomainClass ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:first ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:propertyDomainClass ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_FirstPropertyRangeClass a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_FirstPropertyRangeClass" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:firstPropertyRangeClass ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:first ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:propertyRangeClass ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_FirstSortOrder a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_FirstSortOrder" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:firstSortOrder ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:first ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:sortOrder ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_SecondSortOrder a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_SecondSortOrder" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:secondSortOrder ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:second ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Statements . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:sortOrder ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_InverseFiredUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 5 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_InverseFiredUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:inverseFiredUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:firstIsInEffect ?first_is_in_effect . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:kind ?kind . OPTIONAL { ?kind erb:key ?kind__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:ruleEnabled ?rule_enabled . }
+                BIND(ROUND(IF(COALESCE((COALESCE(?rule_enabled, false) && COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "inverse"), false) && COALESCE(?first_is_in_effect, false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_SymmetricFiredUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 5 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_SymmetricFiredUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:symmetricFiredUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:firstIsInEffect ?first_is_in_effect . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:kind ?kind . OPTIONAL { ?kind erb:key ?kind__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:ruleEnabled ?rule_enabled . }
+                BIND(ROUND(IF(COALESCE((COALESCE(?rule_enabled, false) && COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "symmetric"), false) && COALESCE(?first_is_in_effect, false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_ChainFiredUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 9 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_ChainFiredUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:chainFiredUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:firstHoldsBeforeChain ?first_holds_before_chain . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:kind ?kind . OPTIONAL { ?kind erb:key ?kind__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:ruleEnabled ?rule_enabled . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:secondHoldsBeforeChain ?second_holds_before_chain . }
+                BIND(ROUND(IF(COALESCE((COALESCE(?rule_enabled, false) && COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "chain"), false) && COALESCE(?first_holds_before_chain, false) && COALESCE(?second_holds_before_chain, false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_TypeFiredUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 13 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_TypeFiredUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:typeFiredUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:firstHoldsBeforeTyping ?first_holds_before_typing . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:kind ?kind . OPTIONAL { ?kind erb:key ?kind__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:ruleEnabled ?rule_enabled . }
+                BIND(ROUND(IF(COALESCE((COALESCE(?rule_enabled, false) && COALESCE((COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "domain"), false) || COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "range"), false)), false) && COALESCE(?first_holds_before_typing, false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_FiredUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 14 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_FiredUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:firedUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:chainFiredUnit ?chain_fired_unit . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:inverseFiredUnit ?inverse_fired_unit . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:symmetricFiredUnit ?symmetric_fired_unit . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:typeFiredUnit ?type_fired_unit . }
+                BIND(ROUND((((?inverse_fired_unit + ?symmetric_fired_unit) + ?chain_fired_unit) + ?type_fired_unit)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_OrderKey a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_OrderKey" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:orderKey ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:firstSortOrder ?first_sort_order . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:kindSortOrder ?kind_sort_order . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:second ?second . OPTIONAL { ?second erb:key ?second__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:secondSortOrder ?second_sort_order . }
+                BIND(ROUND((((?first_sort_order * 100000) + (?kind_sort_order * 1000)) + IF(COALESCE((COALESCE(?second__key, COALESCE(IF(isIRI(?second), REPLACE(STR(?second), "^.*[#/]", ""), STR(?second)), "")) = ""), false), 0, ?second_sort_order))) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_IsChosen a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 18 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_IsChosen" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:isChosen ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:firedUnit ?fired_unit . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:orderKey ?order_key . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:targetFirstFiredOrderKey ?target_first_fired_order_key . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:targetIsConclusion ?target_is_conclusion . }
+                BIND((COALESCE((COALESCE(?fired_unit, 0) = 1), false) && COALESCE(?target_is_conclusion, false) && COALESCE((COALESCE(?order_key, 0) = COALESCE(?target_first_fired_order_key, 0)), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_ChosenUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 19 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_ChosenUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:chosenUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:isChosen ?is_chosen . }
+                BIND(ROUND(IF(COALESCE(?is_chosen, false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_CardText a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 19 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_CardText" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:cardText ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:firstProperty ?first_property . OPTIONAL { ?first_property erb:key ?first_property__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:firstPropertyDomainClass ?first_property_domain_class . OPTIONAL { ?first_property_domain_class erb:key ?first_property_domain_class__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:firstPropertyRangeClass ?first_property_range_class . OPTIONAL { ?first_property_range_class erb:key ?first_property_range_class__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:firstWords ?first_words . OPTIONAL { ?first_words erb:key ?first_words__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:isChosen ?is_chosen . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:kind ?kind . OPTIONAL { ?kind erb:key ?kind__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:kindWording ?kind_wording . OPTIONAL { ?kind_wording erb:key ?kind_wording__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:secondWords ?second_words . OPTIONAL { ?second_words erb:key ?second_words__key . } }
+                BIND(IF(COALESCE(?is_chosen, false), CONCAT("Worked out by the ", COALESCE(COALESCE(?kind_wording__key, IF(isIRI(?kind_wording), REPLACE(STR(?kind_wording), "^.*[#/]", ""), STR(?kind_wording))), ""), " from “", COALESCE(COALESCE(?first_words__key, IF(isIRI(?first_words), REPLACE(STR(?first_words), "^.*[#/]", ""), STR(?first_words))), ""), "”", COALESCE(IF(isIRI(IF(COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "chain"), false), CONCAT(" and “", COALESCE(COALESCE(?second_words__key, IF(isIRI(?second_words), REPLACE(STR(?second_words), "^.*[#/]", ""), STR(?second_words))), ""), "”"), IF(COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "domain"), false), CONCAT(" and “", COALESCE(COALESCE(?first_property__key, IF(isIRI(?first_property), REPLACE(STR(?first_property), "^.*[#/]", ""), STR(?first_property))), ""), " has domain ", COALESCE(COALESCE(?first_property_domain_class__key, IF(isIRI(?first_property_domain_class), REPLACE(STR(?first_property_domain_class), "^.*[#/]", ""), STR(?first_property_domain_class))), ""), "”"), IF(COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "range"), false), CONCAT(" and “", COALESCE(COALESCE(?first_property__key, IF(isIRI(?first_property), REPLACE(STR(?first_property), "^.*[#/]", ""), STR(?first_property))), ""), " has range ", COALESCE(COALESCE(?first_property_range_class__key, IF(isIRI(?first_property_range_class), REPLACE(STR(?first_property_range_class), "^.*[#/]", ""), STR(?first_property_range_class))), ""), "”"), "")))), REPLACE(STR(IF(COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "chain"), false), CONCAT(" and “", COALESCE(COALESCE(?second_words__key, IF(isIRI(?second_words), REPLACE(STR(?second_words), "^.*[#/]", ""), STR(?second_words))), ""), "”"), IF(COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "domain"), false), CONCAT(" and “", COALESCE(COALESCE(?first_property__key, IF(isIRI(?first_property), REPLACE(STR(?first_property), "^.*[#/]", ""), STR(?first_property))), ""), " has domain ", COALESCE(COALESCE(?first_property_domain_class__key, IF(isIRI(?first_property_domain_class), REPLACE(STR(?first_property_domain_class), "^.*[#/]", ""), STR(?first_property_domain_class))), ""), "”"), IF(COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "range"), false), CONCAT(" and “", COALESCE(COALESCE(?first_property__key, IF(isIRI(?first_property), REPLACE(STR(?first_property), "^.*[#/]", ""), STR(?first_property))), ""), " has range ", COALESCE(COALESCE(?first_property_range_class__key, IF(isIRI(?first_property_range_class), REPLACE(STR(?first_property_range_class), "^.*[#/]", ""), STR(?first_property_range_class))), ""), "”"), "")))), "^.*[#/]", ""), STR(IF(COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "chain"), false), CONCAT(" and “", COALESCE(COALESCE(?second_words__key, IF(isIRI(?second_words), REPLACE(STR(?second_words), "^.*[#/]", ""), STR(?second_words))), ""), "”"), IF(COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "domain"), false), CONCAT(" and “", COALESCE(COALESCE(?first_property__key, IF(isIRI(?first_property), REPLACE(STR(?first_property), "^.*[#/]", ""), STR(?first_property))), ""), " has domain ", COALESCE(COALESCE(?first_property_domain_class__key, IF(isIRI(?first_property_domain_class), REPLACE(STR(?first_property_domain_class), "^.*[#/]", ""), STR(?first_property_domain_class))), ""), "”"), IF(COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "range"), false), CONCAT(" and “", COALESCE(COALESCE(?first_property__key, IF(isIRI(?first_property), REPLACE(STR(?first_property), "^.*[#/]", ""), STR(?first_property))), ""), " has range ", COALESCE(COALESCE(?first_property_range_class__key, IF(isIRI(?first_property_range_class), REPLACE(STR(?first_property_range_class), "^.*[#/]", ""), STR(?first_property_range_class))), ""), "”"), ""))))), ""), "."), "") AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Firings_Name a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Firings_Name" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:name ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Firings .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:firingId ?firing_id . }
+                BIND(?firing_id AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Graphs ===
+talismans-south-park-ontology-explainer-shapes:Graphs_Name a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Graphs ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_Name" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:name ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Graphs .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:label ?label . }
+                BIND(?label AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Graphs_CountOfStatedFacts a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Graphs ;
+    sh:order 5 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_CountOfStatedFacts" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countOfStatedFacts ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Graphs .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Graphs .
+                    ?child a talismans-south-park-ontology-explainer:Statements .
+                    ?child talismans-south-park-ontology-explainer:graph $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:inEffectUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Graphs_CountOfConclusions a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Graphs ;
+    sh:order 18 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_CountOfConclusions" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countOfConclusions ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Graphs .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Graphs .
+                    ?child a talismans-south-park-ontology-explainer:Statements .
+                    ?child talismans-south-park-ontology-explainer:graph $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:conclusionUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Graphs_CountOfViolations a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Graphs ;
+    sh:order 18 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_CountOfViolations" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countOfViolations ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Graphs .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Graphs .
+                    ?child a talismans-south-park-ontology-explainer:DisjointChecks .
+                    ?child talismans-south-park-ontology-explainer:graph $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:violationUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Graphs_IsConsistent a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Graphs ;
+    sh:order 19 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_IsConsistent" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:isConsistent ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Graphs .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:countOfViolations ?count_of_violations . }
+                BIND((COALESCE(?count_of_violations, 0) = 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Graphs_ConclusionsMessage a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Graphs ;
+    sh:order 19 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_ConclusionsMessage" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:conclusionsMessage ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Graphs .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:countOfConclusions ?count_of_conclusions . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:noConclusionsText ?no_conclusions_text . }
+                BIND(IF(COALESCE((COALESCE(?count_of_conclusions, 0) = 0), false), ?no_conclusions_text, "") AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Graphs_CountOfFactsToAdd a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Graphs ;
+    sh:order 5 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_CountOfFactsToAdd" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countOfFactsToAdd ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Graphs .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Graphs .
+                    ?child a talismans-south-park-ontology-explainer:Statements .
+                    ?child talismans-south-park-ontology-explainer:graph $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:listedOffUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Graphs_HasFactsToAdd a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Graphs ;
+    sh:order 6 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_HasFactsToAdd" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:hasFactsToAdd ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Graphs .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:countOfFactsToAdd ?count_of_facts_to_add . }
+                BIND((COALESCE(?count_of_facts_to_add, 0) > 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Graphs_NextFactSortOrder a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Graphs ;
+    sh:order 5 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_NextFactSortOrder" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:nextFactSortOrder ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Graphs .
+                OPTIONAL {
+                    SELECT $this (MIN(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MIN(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Graphs .
+                    ?child a talismans-south-park-ontology-explainer:Statements .
+                    ?child talismans-south-park-ontology-explainer:graph $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:listedOffUnit ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:sortOrder ?sumraw . }
+                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
+                    FILTER(?c2 = 1)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(?_agg1 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Graphs_MaxActivationSeq a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Graphs ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_MaxActivationSeq" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:maxActivationSeq ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Graphs .
+                OPTIONAL {
+                    SELECT $this (MAX(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Graphs .
+                    ?child a talismans-south-park-ontology-explainer:Statements .
+                    ?child talismans-south-park-ontology-explainer:graph $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:activationSeq ?sumraw . }
+                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(?_agg1 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Graphs_NextActivationSeq a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Graphs ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_NextActivationSeq" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:nextActivationSeq ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Graphs .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:maxActivationSeq ?max_activation_seq . }
+                BIND(ROUND((?max_activation_seq + 1)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Graphs_MaxListedSortOrder a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Graphs ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_MaxListedSortOrder" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:maxListedSortOrder ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Graphs .
+                OPTIONAL {
+                    SELECT $this (MAX(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Graphs .
+                    ?child a talismans-south-park-ontology-explainer:Statements .
+                    ?child talismans-south-park-ontology-explainer:graph $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:listedUnit ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:sortOrder ?sumraw . }
+                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
+                    FILTER(?c2 = 1)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(?_agg1 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Graphs_NextListedSortOrder a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Graphs ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Graphs_NextListedSortOrder" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:nextListedSortOrder ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Graphs .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:maxListedSortOrder ?max_listed_sort_order . }
+                BIND(ROUND((?max_listed_sort_order + 1)) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Properties ===
+talismans-south-park-ontology-explainer-shapes:Properties_Name a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Properties ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Properties_Name" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:name ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Properties .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:label ?label . }
+                BIND(?label AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Rules ===
+talismans-south-park-ontology-explainer-shapes:Rules_Name a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Rules ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Rules_Name" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:name ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Rules .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:label ?label . }
+                BIND(?label AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Rules_CountOfFirings a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Rules ;
+    sh:order 15 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Rules_CountOfFirings" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countOfFirings ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Rules .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Rules .
+                    ?child a talismans-south-park-ontology-explainer:Firings .
+                    ?child talismans-south-park-ontology-explainer:rule $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:firedUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Statements ===
+talismans-south-park-ontology-explainer-shapes:Statements_SubjectLabel a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_SubjectLabel" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:subjectLabel ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:subject ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Things . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_PropertyLabel a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_PropertyLabel" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:propertyLabel ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:property ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Properties . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_ObjectLabel a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_ObjectLabel" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:objectLabel ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:objectThing ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Things . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_PropertyDatatype a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_PropertyDatatype" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:propertyDatatype ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:property ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Properties . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:datatype ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_PropertyHasOneCurrentValue a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_PropertyHasOneCurrentValue" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:propertyHasOneCurrentValue ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:property ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Properties . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:hasOneCurrentValue ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_PropertyDomainClass a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_PropertyDomainClass" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:propertyDomainClass ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:property ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Properties . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:domainClass ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_PropertyRangeClass a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_PropertyRangeClass" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:propertyRangeClass ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:property ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Properties . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:rangeClass ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_LiteralQuote a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_LiteralQuote" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:literalQuote ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:graph ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Graphs . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:literalQuote ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_LiteralTypeMarker a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_LiteralTypeMarker" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:literalTypeMarker ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:graph ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Graphs . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:literalTypeMarker ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_BuiltInSourceText a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_BuiltInSourceText" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:builtInSourceText ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:graph ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Graphs . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:builtInSourceText ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_UserSourceText a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_UserSourceText" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:userSourceText ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:graph ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Graphs . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:userSourceText ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_NextFactSortOrder a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 6 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_NextFactSortOrder" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:nextFactSortOrder ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL { $this talismans-south-park-ontology-explainer:graph ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a talismans-south-park-ontology-explainer:Graphs . OPTIONAL { ?j1 talismans-south-park-ontology-explainer:nextFactSortOrder ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_IsLiteral a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_IsLiteral" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:isLiteral ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:objectThing ?object_thing . OPTIONAL { ?object_thing erb:key ?object_thing__key . } }
+                BIND((COALESCE(?object_thing__key, COALESCE(IF(isIRI(?object_thing), REPLACE(STR(?object_thing), "^.*[#/]", ""), STR(?object_thing)), "")) = "") AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_ObjectText a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_ObjectText" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:objectText ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:objectLabel ?object_label . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:objectThing ?object_thing . OPTIONAL { ?object_thing erb:key ?object_thing__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:objectValue ?object_value . }
+                BIND(IF(COALESCE((COALESCE(?object_thing__key, COALESCE(IF(isIRI(?object_thing), REPLACE(STR(?object_thing), "^.*[#/]", ""), STR(?object_thing)), "")) = ""), false), ?object_value, ?object_label) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_Name a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_Name" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:name ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:objectText ?object_text . OPTIONAL { ?object_text erb:key ?object_text__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:propertyLabel ?property_label . OPTIONAL { ?property_label erb:key ?property_label__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:subjectLabel ?subject_label . OPTIONAL { ?subject_label erb:key ?subject_label__key . } }
+                BIND(CONCAT(COALESCE(COALESCE(?subject_label__key, IF(isIRI(?subject_label), REPLACE(STR(?subject_label), "^.*[#/]", ""), STR(?subject_label))), ""), " ", COALESCE(COALESCE(?property_label__key, IF(isIRI(?property_label), REPLACE(STR(?property_label), "^.*[#/]", ""), STR(?property_label))), ""), " ", COALESCE(COALESCE(?object_text__key, IF(isIRI(?object_text), REPLACE(STR(?object_text), "^.*[#/]", ""), STR(?object_text))), "")) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_Words a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_Words" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:words ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:literalQuote ?literal_quote . OPTIONAL { ?literal_quote erb:key ?literal_quote__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:literalTypeMarker ?literal_type_marker . OPTIONAL { ?literal_type_marker erb:key ?literal_type_marker__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:objectLabel ?object_label . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:objectThing ?object_thing . OPTIONAL { ?object_thing erb:key ?object_thing__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:objectValue ?object_value . OPTIONAL { ?object_value erb:key ?object_value__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:propertyDatatype ?property_datatype . OPTIONAL { ?property_datatype erb:key ?property_datatype__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:propertyLabel ?property_label . OPTIONAL { ?property_label erb:key ?property_label__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:subjectLabel ?subject_label . OPTIONAL { ?subject_label erb:key ?subject_label__key . } }
+                BIND(CONCAT(COALESCE(COALESCE(?subject_label__key, IF(isIRI(?subject_label), REPLACE(STR(?subject_label), "^.*[#/]", ""), STR(?subject_label))), ""), " ", COALESCE(COALESCE(?property_label__key, IF(isIRI(?property_label), REPLACE(STR(?property_label), "^.*[#/]", ""), STR(?property_label))), ""), " ", COALESCE(IF(isIRI(IF(COALESCE((COALESCE(?object_thing__key, COALESCE(IF(isIRI(?object_thing), REPLACE(STR(?object_thing), "^.*[#/]", ""), STR(?object_thing)), "")) = ""), false), CONCAT(COALESCE(COALESCE(?literal_quote__key, IF(isIRI(?literal_quote), REPLACE(STR(?literal_quote), "^.*[#/]", ""), STR(?literal_quote))), ""), COALESCE(COALESCE(?object_value__key, IF(isIRI(?object_value), REPLACE(STR(?object_value), "^.*[#/]", ""), STR(?object_value))), ""), COALESCE(COALESCE(?literal_quote__key, IF(isIRI(?literal_quote), REPLACE(STR(?literal_quote), "^.*[#/]", ""), STR(?literal_quote))), ""), COALESCE(COALESCE(?literal_type_marker__key, IF(isIRI(?literal_type_marker), REPLACE(STR(?literal_type_marker), "^.*[#/]", ""), STR(?literal_type_marker))), ""), COALESCE(COALESCE(?property_datatype__key, IF(isIRI(?property_datatype), REPLACE(STR(?property_datatype), "^.*[#/]", ""), STR(?property_datatype))), "")), ?object_label)), REPLACE(STR(IF(COALESCE((COALESCE(?object_thing__key, COALESCE(IF(isIRI(?object_thing), REPLACE(STR(?object_thing), "^.*[#/]", ""), STR(?object_thing)), "")) = ""), false), CONCAT(COALESCE(COALESCE(?literal_quote__key, IF(isIRI(?literal_quote), REPLACE(STR(?literal_quote), "^.*[#/]", ""), STR(?literal_quote))), ""), COALESCE(COALESCE(?object_value__key, IF(isIRI(?object_value), REPLACE(STR(?object_value), "^.*[#/]", ""), STR(?object_value))), ""), COALESCE(COALESCE(?literal_quote__key, IF(isIRI(?literal_quote), REPLACE(STR(?literal_quote), "^.*[#/]", ""), STR(?literal_quote))), ""), COALESCE(COALESCE(?literal_type_marker__key, IF(isIRI(?literal_type_marker), REPLACE(STR(?literal_type_marker), "^.*[#/]", ""), STR(?literal_type_marker))), ""), COALESCE(COALESCE(?property_datatype__key, IF(isIRI(?property_datatype), REPLACE(STR(?property_datatype), "^.*[#/]", ""), STR(?property_datatype))), "")), ?object_label)), "^.*[#/]", ""), STR(IF(COALESCE((COALESCE(?object_thing__key, COALESCE(IF(isIRI(?object_thing), REPLACE(STR(?object_thing), "^.*[#/]", ""), STR(?object_thing)), "")) = ""), false), CONCAT(COALESCE(COALESCE(?literal_quote__key, IF(isIRI(?literal_quote), REPLACE(STR(?literal_quote), "^.*[#/]", ""), STR(?literal_quote))), ""), COALESCE(COALESCE(?object_value__key, IF(isIRI(?object_value), REPLACE(STR(?object_value), "^.*[#/]", ""), STR(?object_value))), ""), COALESCE(COALESCE(?literal_quote__key, IF(isIRI(?literal_quote), REPLACE(STR(?literal_quote), "^.*[#/]", ""), STR(?literal_quote))), ""), COALESCE(COALESCE(?literal_type_marker__key, IF(isIRI(?literal_type_marker), REPLACE(STR(?literal_type_marker), "^.*[#/]", ""), STR(?literal_type_marker))), ""), COALESCE(COALESCE(?property_datatype__key, IF(isIRI(?property_datatype), REPLACE(STR(?property_datatype), "^.*[#/]", ""), STR(?property_datatype))), "")), ?object_label))), "")) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_Source a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_Source" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:source ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:builtInSourceText ?built_in_source_text . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:isBuiltIn ?is_built_in . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:userSourceText ?user_source_text . }
+                BIND(IF(COALESCE(?is_built_in, false), ?built_in_source_text, ?user_source_text) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_SubjectPropertyKey a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_SubjectPropertyKey" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:subjectPropertyKey ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:property ?property . OPTIONAL { ?property erb:key ?property__key . } }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:subject ?subject . OPTIONAL { ?subject erb:key ?subject__key . } }
+                BIND(CONCAT(COALESCE(COALESCE(?subject__key, IF(isIRI(?subject), REPLACE(STR(?subject), "^.*[#/]", ""), STR(?subject))), ""), "|", COALESCE(COALESCE(?property__key, IF(isIRI(?property), REPLACE(STR(?property), "^.*[#/]", ""), STR(?property))), "")) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_LatestSiblingActivationSeq a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_LatestSiblingActivationSeq" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:latestSiblingActivationSeq ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL {
+                    SELECT $this (MAX(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Statements .
+                    ?child a talismans-south-park-ontology-explainer:Statements .
+                    ?child talismans-south-park-ontology-explainer:subjectPropertyKey ?backfk . OPTIONAL { ?backfk erb:key ?backfk__key . }
+                    $this talismans-south-park-ontology-explainer:subjectPropertyKey ?backpv . OPTIONAL { ?backpv erb:key ?backpv__key . }
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:activationSeq ?sumraw . }
+                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
+                    FILTER(COALESCE(?backfk__key, STR(?backfk)) = COALESCE(?backpv__key, STR(?backpv)))
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(?_agg1 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_IsInEffect a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_IsInEffect" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:isInEffect ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:activationSeq ?activation_seq . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:isStated ?is_stated . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:latestSiblingActivationSeq ?latest_sibling_activation_seq . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:propertyHasOneCurrentValue ?property_has_one_current_value . }
+                BIND((COALESCE(?is_stated, false) && COALESCE((COALESCE((!(COALESCE(?property_has_one_current_value, false))), false) || COALESCE((COALESCE(?activation_seq, 0) = COALESCE(?latest_sibling_activation_seq, 0)), false)), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_ListedUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_ListedUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:listedUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:isListed ?is_listed . }
+                BIND(ROUND(IF(COALESCE(?is_listed, false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_InEffectUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_InEffectUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:inEffectUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:isInEffect ?is_in_effect . }
+                BIND(ROUND(IF(COALESCE(?is_in_effect, false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_ListedOffUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_ListedOffUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:listedOffUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:isInEffect ?is_in_effect . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:isListed ?is_listed . }
+                BIND(ROUND(IF(COALESCE((COALESCE(?is_listed, false) && COALESCE((!(COALESCE(?is_in_effect, false))), false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_IsNextToAdd a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 7 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_IsNextToAdd" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:isNextToAdd ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:listedOffUnit ?listed_off_unit . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:nextFactSortOrder ?next_fact_sort_order . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:sortOrder ?sort_order . }
+                BIND((COALESCE((COALESCE(?listed_off_unit, 0) = 1), false) && COALESCE((COALESCE(?sort_order, 0) = COALESCE(?next_fact_sort_order, 0)), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_CountOfInverseFirings a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 6 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_CountOfInverseFirings" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countOfInverseFirings ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Statements .
+                    ?child a talismans-south-park-ontology-explainer:Firings .
+                    ?child talismans-south-park-ontology-explainer:target $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:inverseFiredUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_CountOfSymmetricFirings a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 6 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_CountOfSymmetricFirings" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countOfSymmetricFirings ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Statements .
+                    ?child a talismans-south-park-ontology-explainer:Firings .
+                    ?child talismans-south-park-ontology-explainer:target $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:symmetricFiredUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_HoldsBeforeChain a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 7 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_HoldsBeforeChain" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:holdsBeforeChain ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:countOfInverseFirings ?count_of_inverse_firings . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:countOfSymmetricFirings ?count_of_symmetric_firings . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:isInEffect ?is_in_effect . }
+                BIND((COALESCE(?is_in_effect, false) || COALESCE((COALESCE(?count_of_inverse_firings, 0) > 0), false) || COALESCE((COALESCE(?count_of_symmetric_firings, 0) > 0), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_CountOfChainFirings a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 10 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_CountOfChainFirings" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countOfChainFirings ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Statements .
+                    ?child a talismans-south-park-ontology-explainer:Firings .
+                    ?child talismans-south-park-ontology-explainer:target $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:chainFiredUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_HoldsBeforeTyping a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 11 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_HoldsBeforeTyping" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:holdsBeforeTyping ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:countOfChainFirings ?count_of_chain_firings . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:holdsBeforeChain ?holds_before_chain . }
+                BIND((COALESCE(?holds_before_chain, false) || COALESCE((COALESCE(?count_of_chain_firings, 0) > 0), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_CountOfTypeFirings a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 14 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_CountOfTypeFirings" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countOfTypeFirings ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Statements .
+                    ?child a talismans-south-park-ontology-explainer:Firings .
+                    ?child talismans-south-park-ontology-explainer:target $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:typeFiredUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_Holds a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 15 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_Holds" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:holds ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:countOfTypeFirings ?count_of_type_firings . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:holdsBeforeTyping ?holds_before_typing . }
+                BIND((COALESCE(?holds_before_typing, false) || COALESCE((COALESCE(?count_of_type_firings, 0) > 0), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_IsConclusion a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 16 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_IsConclusion" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:isConclusion ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:holds ?holds . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:isInEffect ?is_in_effect . }
+                BIND((COALESCE(?holds, false) && COALESCE((!(COALESCE(?is_in_effect, false))), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_HoldsUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 16 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_HoldsUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:holdsUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:holds ?holds . }
+                BIND(ROUND(IF(COALESCE(?holds, false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_ConclusionUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 17 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_ConclusionUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:conclusionUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:isConclusion ?is_conclusion . }
+                BIND(ROUND(IF(COALESCE(?is_conclusion, false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_ParentUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 16 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_ParentUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:parentUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:holds ?holds . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:property ?property . OPTIONAL { ?property erb:key ?property__key . } }
+                BIND(ROUND(IF(COALESCE((COALESCE(?holds, false) && COALESCE((COALESCE(?property__key, COALESCE(IF(isIRI(?property), REPLACE(STR(?property), "^.*[#/]", ""), STR(?property)), "")) = "isParentOf"), false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_GrandparentUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 16 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_GrandparentUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:grandparentUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:holds ?holds . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:property ?property . OPTIONAL { ?property erb:key ?property__key . } }
+                BIND(ROUND(IF(COALESCE((COALESCE(?holds, false) && COALESCE((COALESCE(?property__key, COALESCE(IF(isIRI(?property), REPLACE(STR(?property), "^.*[#/]", ""), STR(?property)), "")) = "isGrandparentOf"), false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_PlaceUnit a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 16 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_PlaceUnit" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:placeUnit ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:holds ?holds . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:property ?property . OPTIONAL { ?property erb:key ?property__key . } }
+                BIND(ROUND(IF(COALESCE((COALESCE(?holds, false) && COALESCE((COALESCE(?property__key, COALESCE(IF(isIRI(?property), REPLACE(STR(?property), "^.*[#/]", ""), STR(?property)), "")) = "attends"), false)), false), 1, 0)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_FirstFiredOrderKey a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 15 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_FirstFiredOrderKey" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:firstFiredOrderKey ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL {
+                    SELECT $this (MIN(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MIN(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Statements .
+                    ?child a talismans-south-park-ontology-explainer:Firings .
+                    ?child talismans-south-park-ontology-explainer:target $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:firedUnit ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:orderKey ?sumraw . }
+                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
+                    FILTER(?c2 = 1)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(?_agg1 AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Statements_CountOfChosenFirings a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:order 20 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Statements_CountOfChosenFirings" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countOfChosenFirings ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Statements .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Statements .
+                    ?child a talismans-south-park-ontology-explainer:Firings .
+                    ?child talismans-south-park-ontology-explainer:target $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:chosenUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Things ===
+talismans-south-park-ontology-explainer-shapes:Things_Name a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Things ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Things_Name" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:name ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Things .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:label ?label . }
+                BIND(?label AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Things_CountOfChildren a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Things ;
+    sh:order 17 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Things_CountOfChildren" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countOfChildren ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Things .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Things .
+                    ?child a talismans-south-park-ontology-explainer:Statements .
+                    ?child talismans-south-park-ontology-explainer:subject $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:parentUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Things_CountOfGrandchildren a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Things ;
+    sh:order 17 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Things_CountOfGrandchildren" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countOfGrandchildren ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Things .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Things .
+                    ?child a talismans-south-park-ontology-explainer:Statements .
+                    ?child talismans-south-park-ontology-explainer:subject $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:grandparentUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Things_CountAsPlace a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Things ;
+    sh:order 17 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Things_CountAsPlace" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countAsPlace ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Things .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Things .
+                    ?child a talismans-south-park-ontology-explainer:Statements .
+                    ?child talismans-south-park-ontology-explainer:objectThing $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:placeUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Things_CountAsSubject a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Things ;
+    sh:order 17 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Things_CountAsSubject" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countAsSubject ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Things .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Things .
+                    ?child a talismans-south-park-ontology-explainer:Statements .
+                    ?child talismans-south-park-ontology-explainer:subject $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:holdsUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Things_CountAsObject a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Things ;
+    sh:order 17 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Things_CountAsObject" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:countAsObject ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Things .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a talismans-south-park-ontology-explainer:Things .
+                    ?child a talismans-south-park-ontology-explainer:Statements .
+                    ?child talismans-south-park-ontology-explainer:objectThing $this .
+                    OPTIONAL { ?child talismans-south-park-ontology-explainer:holdsUnit ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Things_IsInGraph a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Things ;
+    sh:order 18 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Things_IsInGraph" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:isInGraph ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Things .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:countAsObject ?count_as_object . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:countAsSubject ?count_as_subject . }
+                BIND((COALESCE((COALESCE(?count_as_subject, 0) > 0), false) || COALESCE((COALESCE(?count_as_object, 0) > 0), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+talismans-south-park-ontology-explainer-shapes:Things_NodeKind a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Things ;
+    sh:order 18 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Things_NodeKind" ;
+        sh:construct """
+            PREFIX talismans-south-park-ontology-explainer: <https://example.org/talismans-south-park-ontology-explainer#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this talismans-south-park-ontology-explainer:nodeKind ?_result .
+            }
+            WHERE {
+    $this a talismans-south-park-ontology-explainer:Things .
+    OPTIONAL { $this talismans-south-park-ontology-explainer:countAsPlace ?count_as_place . }
+    OPTIONAL { $this talismans-south-park-ontology-explainer:kind_Things ?kind . OPTIONAL { ?kind erb:key ?kind__key . } }
+                BIND(IF(COALESCE((COALESCE(?kind__key, COALESCE(IF(isIRI(?kind), REPLACE(STR(?kind), "^.*[#/]", ""), STR(?kind)), "")) = "class"), false), "class", IF(COALESCE((COALESCE(?count_as_place, 0) > 0), false), "place", "person")) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Cardinality: single-valued forward FK properties ===
+talismans-south-park-ontology-explainer-shapes:DisjointChecksCardinality a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:DisjointChecks ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:first ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:graph ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:rule ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:second ; sh:maxCount 1 ] .
+
+talismans-south-park-ontology-explainer-shapes:FiringKindsCardinality a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:FiringKinds ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:rule ; sh:maxCount 1 ] .
+
+talismans-south-park-ontology-explainer-shapes:FiringsCardinality a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Firings ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:first ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:kind ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:rule ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:second ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:target ; sh:maxCount 1 ] .
+
+talismans-south-park-ontology-explainer-shapes:PropertiesCardinality a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Properties ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:chainFirst ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:chainSecond ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:disjointWith ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:domainClass ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:inverseOf ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:rangeClass ; sh:maxCount 1 ] .
+
+talismans-south-park-ontology-explainer-shapes:StatementsCardinality a sh:NodeShape ;
+    sh:targetClass talismans-south-park-ontology-explainer:Statements ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:graph ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:objectThing ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:property ; sh:maxCount 1 ] ;
+    sh:property [ sh:path talismans-south-park-ontology-explainer:subject ; sh:maxCount 1 ] .
+
+# Generated 103 SHACL rules

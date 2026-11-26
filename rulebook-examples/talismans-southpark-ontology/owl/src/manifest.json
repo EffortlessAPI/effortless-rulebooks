@@ -1,0 +1,940 @@
+{
+  "generator": "rulebook-to-owl",
+  "ontology": {
+    "iri": "https://example.org/talismans-south-park-ontology-explainer",
+    "versionIri": null,
+    "namespace": "https://example.org/talismans-south-park-ontology-explainer#",
+    "dataNamespace": "https://example.org/talismans-south-park-ontology-explainer#",
+    "prefix": "talismans-south-park-ontology-explainer",
+    "placeholder": true
+  },
+  "prefixes": {
+    "talismans-south-park-ontology-explainer": "https://example.org/talismans-south-park-ontology-explainer#",
+    "talismans-south-park-ontology-explainer-shapes": "https://example.org/talismans-south-park-ontology-explainer/shapes#",
+    "erb": "https://effortlessapi.com/ns/erb#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "keyProperty": "https://effortlessapi.com/ns/erb#key",
+  "derivedProperty": "https://effortlessapi.com/ns/erb#derived",
+  "tables": {
+    "Graphs": {
+      "class": "https://example.org/talismans-south-park-ontology-explainer#Graphs",
+      "keyField": "GraphId",
+      "fields": {
+        "GraphId": "https://example.org/talismans-south-park-ontology-explainer#graphId",
+        "Label": "https://example.org/talismans-south-park-ontology-explainer#label",
+        "LiteralQuote": "https://example.org/talismans-south-park-ontology-explainer#literalQuote",
+        "LiteralTypeMarker": "https://example.org/talismans-south-park-ontology-explainer#literalTypeMarker",
+        "BuiltInSourceText": "https://example.org/talismans-south-park-ontology-explainer#builtInSourceText",
+        "UserSourceText": "https://example.org/talismans-south-park-ontology-explainer#userSourceText",
+        "NoConclusionsText": "https://example.org/talismans-south-park-ontology-explainer#noConclusionsText",
+        "Name": "https://example.org/talismans-south-park-ontology-explainer#name",
+        "CountOfStatedFacts": "https://example.org/talismans-south-park-ontology-explainer#countOfStatedFacts",
+        "CountOfConclusions": "https://example.org/talismans-south-park-ontology-explainer#countOfConclusions",
+        "CountOfViolations": "https://example.org/talismans-south-park-ontology-explainer#countOfViolations",
+        "IsConsistent": "https://example.org/talismans-south-park-ontology-explainer#isConsistent",
+        "ConclusionsMessage": "https://example.org/talismans-south-park-ontology-explainer#conclusionsMessage",
+        "CountOfFactsToAdd": "https://example.org/talismans-south-park-ontology-explainer#countOfFactsToAdd",
+        "HasFactsToAdd": "https://example.org/talismans-south-park-ontology-explainer#hasFactsToAdd",
+        "NextFactSortOrder": "https://example.org/talismans-south-park-ontology-explainer#nextFactSortOrder",
+        "MaxActivationSeq": "https://example.org/talismans-south-park-ontology-explainer#maxActivationSeq",
+        "NextActivationSeq": "https://example.org/talismans-south-park-ontology-explainer#nextActivationSeq",
+        "MaxListedSortOrder": "https://example.org/talismans-south-park-ontology-explainer#maxListedSortOrder",
+        "NextListedSortOrder": "https://example.org/talismans-south-park-ontology-explainer#nextListedSortOrder"
+      }
+    },
+    "Rules": {
+      "class": "https://example.org/talismans-south-park-ontology-explainer#Rules",
+      "keyField": "RuleId",
+      "fields": {
+        "RuleId": "https://example.org/talismans-south-park-ontology-explainer#ruleId",
+        "Label": "https://example.org/talismans-south-park-ontology-explainer#label",
+        "Explanation": "https://example.org/talismans-south-park-ontology-explainer#explanation",
+        "IsEnabled": "https://example.org/talismans-south-park-ontology-explainer#isEnabled",
+        "SortOrder": "https://example.org/talismans-south-park-ontology-explainer#sortOrder",
+        "Name": "https://example.org/talismans-south-park-ontology-explainer#name",
+        "CountOfFirings": "https://example.org/talismans-south-park-ontology-explainer#countOfFirings"
+      }
+    },
+    "FiringKinds": {
+      "class": "https://example.org/talismans-south-park-ontology-explainer#FiringKinds",
+      "keyField": "FiringKindId",
+      "fields": {
+        "FiringKindId": "https://example.org/talismans-south-park-ontology-explainer#firingKindId",
+        "Rule": "https://example.org/talismans-south-park-ontology-explainer#rule",
+        "Wording": "https://example.org/talismans-south-park-ontology-explainer#wording",
+        "SortOrder": "https://example.org/talismans-south-park-ontology-explainer#sortOrder",
+        "Name": "https://example.org/talismans-south-park-ontology-explainer#name",
+        "RuleEnabled": "https://example.org/talismans-south-park-ontology-explainer#ruleEnabled"
+      }
+    },
+    "Things": {
+      "class": "https://example.org/talismans-south-park-ontology-explainer#Things",
+      "keyField": "ThingId",
+      "fields": {
+        "ThingId": "https://example.org/talismans-south-park-ontology-explainer#thingId",
+        "Label": "https://example.org/talismans-south-park-ontology-explainer#label",
+        "Kind": "https://example.org/talismans-south-park-ontology-explainer#kind_Things",
+        "SortOrder": "https://example.org/talismans-south-park-ontology-explainer#sortOrder",
+        "PortraitName": "https://example.org/talismans-south-park-ontology-explainer#portraitName",
+        "PortraitPage": "https://example.org/talismans-south-park-ontology-explainer#portraitPage",
+        "PortraitImage": "https://example.org/talismans-south-park-ontology-explainer#portraitImage",
+        "PortraitCrop": "https://example.org/talismans-south-park-ontology-explainer#portraitCrop",
+        "Name": "https://example.org/talismans-south-park-ontology-explainer#name",
+        "CountOfChildren": "https://example.org/talismans-south-park-ontology-explainer#countOfChildren",
+        "CountOfGrandchildren": "https://example.org/talismans-south-park-ontology-explainer#countOfGrandchildren",
+        "CountAsPlace": "https://example.org/talismans-south-park-ontology-explainer#countAsPlace",
+        "CountAsSubject": "https://example.org/talismans-south-park-ontology-explainer#countAsSubject",
+        "CountAsObject": "https://example.org/talismans-south-park-ontology-explainer#countAsObject",
+        "IsInGraph": "https://example.org/talismans-south-park-ontology-explainer#isInGraph",
+        "NodeKind": "https://example.org/talismans-south-park-ontology-explainer#nodeKind"
+      }
+    },
+    "Properties": {
+      "class": "https://example.org/talismans-south-park-ontology-explainer#Properties",
+      "keyField": "PropertyId",
+      "fields": {
+        "PropertyId": "https://example.org/talismans-south-park-ontology-explainer#propertyId",
+        "Label": "https://example.org/talismans-south-park-ontology-explainer#label",
+        "PropertyKind": "https://example.org/talismans-south-park-ontology-explainer#propertyKind",
+        "Datatype": "https://example.org/talismans-south-park-ontology-explainer#datatype",
+        "IsUserAddable": "https://example.org/talismans-south-park-ontology-explainer#isUserAddable",
+        "HasOneCurrentValue": "https://example.org/talismans-south-park-ontology-explainer#hasOneCurrentValue",
+        "InverseOf": "https://example.org/talismans-south-park-ontology-explainer#inverseOf",
+        "IsSymmetric": "https://example.org/talismans-south-park-ontology-explainer#isSymmetric",
+        "ChainFirst": "https://example.org/talismans-south-park-ontology-explainer#chainFirst",
+        "ChainSecond": "https://example.org/talismans-south-park-ontology-explainer#chainSecond",
+        "DomainClass": "https://example.org/talismans-south-park-ontology-explainer#domainClass",
+        "RangeClass": "https://example.org/talismans-south-park-ontology-explainer#rangeClass",
+        "DisjointWith": "https://example.org/talismans-south-park-ontology-explainer#disjointWith",
+        "SortOrder": "https://example.org/talismans-south-park-ontology-explainer#sortOrder",
+        "Name": "https://example.org/talismans-south-park-ontology-explainer#name"
+      }
+    },
+    "Statements": {
+      "class": "https://example.org/talismans-south-park-ontology-explainer#Statements",
+      "keyField": "StatementId",
+      "fields": {
+        "StatementId": "https://example.org/talismans-south-park-ontology-explainer#statementId",
+        "Graph": "https://example.org/talismans-south-park-ontology-explainer#graph",
+        "Subject": "https://example.org/talismans-south-park-ontology-explainer#subject",
+        "Property": "https://example.org/talismans-south-park-ontology-explainer#property",
+        "ObjectThing": "https://example.org/talismans-south-park-ontology-explainer#objectThing",
+        "ObjectValue": "https://example.org/talismans-south-park-ontology-explainer#objectValue",
+        "IsListed": "https://example.org/talismans-south-park-ontology-explainer#isListed",
+        "IsBuiltIn": "https://example.org/talismans-south-park-ontology-explainer#isBuiltIn",
+        "IsDetail": "https://example.org/talismans-south-park-ontology-explainer#isDetail",
+        "IsStated": "https://example.org/talismans-south-park-ontology-explainer#isStated",
+        "ActivationSeq": "https://example.org/talismans-south-park-ontology-explainer#activationSeq",
+        "SortOrder": "https://example.org/talismans-south-park-ontology-explainer#sortOrder",
+        "SubjectLabel": "https://example.org/talismans-south-park-ontology-explainer#subjectLabel",
+        "PropertyLabel": "https://example.org/talismans-south-park-ontology-explainer#propertyLabel",
+        "ObjectLabel": "https://example.org/talismans-south-park-ontology-explainer#objectLabel",
+        "PropertyDatatype": "https://example.org/talismans-south-park-ontology-explainer#propertyDatatype",
+        "PropertyHasOneCurrentValue": "https://example.org/talismans-south-park-ontology-explainer#propertyHasOneCurrentValue",
+        "PropertyDomainClass": "https://example.org/talismans-south-park-ontology-explainer#propertyDomainClass",
+        "PropertyRangeClass": "https://example.org/talismans-south-park-ontology-explainer#propertyRangeClass",
+        "LiteralQuote": "https://example.org/talismans-south-park-ontology-explainer#literalQuote",
+        "LiteralTypeMarker": "https://example.org/talismans-south-park-ontology-explainer#literalTypeMarker",
+        "BuiltInSourceText": "https://example.org/talismans-south-park-ontology-explainer#builtInSourceText",
+        "UserSourceText": "https://example.org/talismans-south-park-ontology-explainer#userSourceText",
+        "NextFactSortOrder": "https://example.org/talismans-south-park-ontology-explainer#nextFactSortOrder",
+        "IsLiteral": "https://example.org/talismans-south-park-ontology-explainer#isLiteral",
+        "ObjectText": "https://example.org/talismans-south-park-ontology-explainer#objectText",
+        "Name": "https://example.org/talismans-south-park-ontology-explainer#name",
+        "Words": "https://example.org/talismans-south-park-ontology-explainer#words",
+        "Source": "https://example.org/talismans-south-park-ontology-explainer#source",
+        "SubjectPropertyKey": "https://example.org/talismans-south-park-ontology-explainer#subjectPropertyKey",
+        "LatestSiblingActivationSeq": "https://example.org/talismans-south-park-ontology-explainer#latestSiblingActivationSeq",
+        "IsInEffect": "https://example.org/talismans-south-park-ontology-explainer#isInEffect",
+        "ListedUnit": "https://example.org/talismans-south-park-ontology-explainer#listedUnit",
+        "InEffectUnit": "https://example.org/talismans-south-park-ontology-explainer#inEffectUnit",
+        "ListedOffUnit": "https://example.org/talismans-south-park-ontology-explainer#listedOffUnit",
+        "IsNextToAdd": "https://example.org/talismans-south-park-ontology-explainer#isNextToAdd",
+        "CountOfInverseFirings": "https://example.org/talismans-south-park-ontology-explainer#countOfInverseFirings",
+        "CountOfSymmetricFirings": "https://example.org/talismans-south-park-ontology-explainer#countOfSymmetricFirings",
+        "HoldsBeforeChain": "https://example.org/talismans-south-park-ontology-explainer#holdsBeforeChain",
+        "CountOfChainFirings": "https://example.org/talismans-south-park-ontology-explainer#countOfChainFirings",
+        "HoldsBeforeTyping": "https://example.org/talismans-south-park-ontology-explainer#holdsBeforeTyping",
+        "CountOfTypeFirings": "https://example.org/talismans-south-park-ontology-explainer#countOfTypeFirings",
+        "Holds": "https://example.org/talismans-south-park-ontology-explainer#holds",
+        "IsConclusion": "https://example.org/talismans-south-park-ontology-explainer#isConclusion",
+        "HoldsUnit": "https://example.org/talismans-south-park-ontology-explainer#holdsUnit",
+        "ConclusionUnit": "https://example.org/talismans-south-park-ontology-explainer#conclusionUnit",
+        "ParentUnit": "https://example.org/talismans-south-park-ontology-explainer#parentUnit",
+        "GrandparentUnit": "https://example.org/talismans-south-park-ontology-explainer#grandparentUnit",
+        "PlaceUnit": "https://example.org/talismans-south-park-ontology-explainer#placeUnit",
+        "FirstFiredOrderKey": "https://example.org/talismans-south-park-ontology-explainer#firstFiredOrderKey",
+        "CountOfChosenFirings": "https://example.org/talismans-south-park-ontology-explainer#countOfChosenFirings"
+      }
+    },
+    "Firings": {
+      "class": "https://example.org/talismans-south-park-ontology-explainer#Firings",
+      "keyField": "FiringId",
+      "fields": {
+        "FiringId": "https://example.org/talismans-south-park-ontology-explainer#firingId",
+        "Kind": "https://example.org/talismans-south-park-ontology-explainer#kind",
+        "Rule": "https://example.org/talismans-south-park-ontology-explainer#rule",
+        "Target": "https://example.org/talismans-south-park-ontology-explainer#target",
+        "First": "https://example.org/talismans-south-park-ontology-explainer#first",
+        "Second": "https://example.org/talismans-south-park-ontology-explainer#second",
+        "RuleEnabled": "https://example.org/talismans-south-park-ontology-explainer#ruleEnabled",
+        "KindWording": "https://example.org/talismans-south-park-ontology-explainer#kindWording",
+        "KindSortOrder": "https://example.org/talismans-south-park-ontology-explainer#kindSortOrder",
+        "TargetName": "https://example.org/talismans-south-park-ontology-explainer#targetName",
+        "TargetSubjectLabel": "https://example.org/talismans-south-park-ontology-explainer#targetSubjectLabel",
+        "TargetPropertyLabel": "https://example.org/talismans-south-park-ontology-explainer#targetPropertyLabel",
+        "TargetObjectText": "https://example.org/talismans-south-park-ontology-explainer#targetObjectText",
+        "TargetIsConclusion": "https://example.org/talismans-south-park-ontology-explainer#targetIsConclusion",
+        "TargetFirstFiredOrderKey": "https://example.org/talismans-south-park-ontology-explainer#targetFirstFiredOrderKey",
+        "FirstWords": "https://example.org/talismans-south-park-ontology-explainer#firstWords",
+        "SecondWords": "https://example.org/talismans-south-park-ontology-explainer#secondWords",
+        "FirstIsInEffect": "https://example.org/talismans-south-park-ontology-explainer#firstIsInEffect",
+        "FirstHoldsBeforeChain": "https://example.org/talismans-south-park-ontology-explainer#firstHoldsBeforeChain",
+        "SecondHoldsBeforeChain": "https://example.org/talismans-south-park-ontology-explainer#secondHoldsBeforeChain",
+        "FirstHoldsBeforeTyping": "https://example.org/talismans-south-park-ontology-explainer#firstHoldsBeforeTyping",
+        "FirstProperty": "https://example.org/talismans-south-park-ontology-explainer#firstProperty",
+        "FirstPropertyDomainClass": "https://example.org/talismans-south-park-ontology-explainer#firstPropertyDomainClass",
+        "FirstPropertyRangeClass": "https://example.org/talismans-south-park-ontology-explainer#firstPropertyRangeClass",
+        "FirstSortOrder": "https://example.org/talismans-south-park-ontology-explainer#firstSortOrder",
+        "SecondSortOrder": "https://example.org/talismans-south-park-ontology-explainer#secondSortOrder",
+        "InverseFiredUnit": "https://example.org/talismans-south-park-ontology-explainer#inverseFiredUnit",
+        "SymmetricFiredUnit": "https://example.org/talismans-south-park-ontology-explainer#symmetricFiredUnit",
+        "ChainFiredUnit": "https://example.org/talismans-south-park-ontology-explainer#chainFiredUnit",
+        "TypeFiredUnit": "https://example.org/talismans-south-park-ontology-explainer#typeFiredUnit",
+        "FiredUnit": "https://example.org/talismans-south-park-ontology-explainer#firedUnit",
+        "OrderKey": "https://example.org/talismans-south-park-ontology-explainer#orderKey",
+        "IsChosen": "https://example.org/talismans-south-park-ontology-explainer#isChosen",
+        "ChosenUnit": "https://example.org/talismans-south-park-ontology-explainer#chosenUnit",
+        "CardText": "https://example.org/talismans-south-park-ontology-explainer#cardText",
+        "Name": "https://example.org/talismans-south-park-ontology-explainer#name"
+      }
+    },
+    "DisjointChecks": {
+      "class": "https://example.org/talismans-south-park-ontology-explainer#DisjointChecks",
+      "keyField": "DisjointCheckId",
+      "fields": {
+        "DisjointCheckId": "https://example.org/talismans-south-park-ontology-explainer#disjointCheckId",
+        "Graph": "https://example.org/talismans-south-park-ontology-explainer#graph",
+        "Rule": "https://example.org/talismans-south-park-ontology-explainer#rule",
+        "First": "https://example.org/talismans-south-park-ontology-explainer#first",
+        "Second": "https://example.org/talismans-south-park-ontology-explainer#second",
+        "RuleEnabled": "https://example.org/talismans-south-park-ontology-explainer#ruleEnabled",
+        "FirstHolds": "https://example.org/talismans-south-park-ontology-explainer#firstHolds",
+        "SecondHolds": "https://example.org/talismans-south-park-ontology-explainer#secondHolds",
+        "SubjectLabel": "https://example.org/talismans-south-park-ontology-explainer#subjectLabel",
+        "ObjectLabel": "https://example.org/talismans-south-park-ontology-explainer#objectLabel",
+        "ViolationUnit": "https://example.org/talismans-south-park-ontology-explainer#violationUnit",
+        "AlarmText": "https://example.org/talismans-south-park-ontology-explainer#alarmText",
+        "Name": "https://example.org/talismans-south-park-ontology-explainer#name"
+      }
+    }
+  },
+  "junctions": {},
+  "conclusionsFromAbsence": {
+    "derivedFields": 103,
+    "fromAbsence": 68,
+    "neverFromAbsence": 35,
+    "tablesCountedWithoutBeingDeclaredComplete": [
+      "DisjointChecks",
+      "Firings",
+      "Statements"
+    ],
+    "tablesDeclaredComplete": [],
+    "fields": [
+      {
+        "table": "DisjointChecks",
+        "field": "AlarmText",
+        "restsOn": [],
+        "inherits": [
+          "DisjointChecks.ViolationUnit"
+        ]
+      },
+      {
+        "table": "DisjointChecks",
+        "field": "FirstHolds",
+        "restsOn": [],
+        "inherits": [
+          "Statements.Holds"
+        ]
+      },
+      {
+        "table": "DisjointChecks",
+        "field": "SecondHolds",
+        "restsOn": [],
+        "inherits": [
+          "Statements.Holds"
+        ]
+      },
+      {
+        "table": "DisjointChecks",
+        "field": "ViolationUnit",
+        "restsOn": [],
+        "inherits": [
+          "DisjointChecks.FirstHolds",
+          "DisjointChecks.SecondHolds"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "CardText",
+        "restsOn": [],
+        "inherits": [
+          "Firings.FirstWords",
+          "Firings.IsChosen",
+          "Firings.SecondWords"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "ChainFiredUnit",
+        "restsOn": [],
+        "inherits": [
+          "Firings.FirstHoldsBeforeChain",
+          "Firings.SecondHoldsBeforeChain"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "ChosenUnit",
+        "restsOn": [],
+        "inherits": [
+          "Firings.IsChosen"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "FiredUnit",
+        "restsOn": [],
+        "inherits": [
+          "Firings.ChainFiredUnit",
+          "Firings.InverseFiredUnit",
+          "Firings.SymmetricFiredUnit",
+          "Firings.TypeFiredUnit"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "FirstHoldsBeforeChain",
+        "restsOn": [],
+        "inherits": [
+          "Statements.HoldsBeforeChain"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "FirstHoldsBeforeTyping",
+        "restsOn": [],
+        "inherits": [
+          "Statements.HoldsBeforeTyping"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "FirstIsInEffect",
+        "restsOn": [],
+        "inherits": [
+          "Statements.IsInEffect"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "FirstWords",
+        "restsOn": [],
+        "inherits": [
+          "Statements.Words"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "InverseFiredUnit",
+        "restsOn": [],
+        "inherits": [
+          "Firings.FirstIsInEffect"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "IsChosen",
+        "restsOn": [],
+        "inherits": [
+          "Firings.FiredUnit",
+          "Firings.OrderKey",
+          "Firings.TargetFirstFiredOrderKey",
+          "Firings.TargetIsConclusion"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "OrderKey",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "Firings.Second"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Firings",
+        "field": "SecondHoldsBeforeChain",
+        "restsOn": [],
+        "inherits": [
+          "Statements.HoldsBeforeChain"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "SecondWords",
+        "restsOn": [],
+        "inherits": [
+          "Statements.Words"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "SymmetricFiredUnit",
+        "restsOn": [],
+        "inherits": [
+          "Firings.FirstIsInEffect"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "TargetFirstFiredOrderKey",
+        "restsOn": [],
+        "inherits": [
+          "Statements.FirstFiredOrderKey"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "TargetIsConclusion",
+        "restsOn": [],
+        "inherits": [
+          "Statements.IsConclusion"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "TargetName",
+        "restsOn": [],
+        "inherits": [
+          "Statements.Name"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "TargetObjectText",
+        "restsOn": [],
+        "inherits": [
+          "Statements.ObjectText"
+        ]
+      },
+      {
+        "table": "Firings",
+        "field": "TypeFiredUnit",
+        "restsOn": [],
+        "inherits": [
+          "Firings.FirstHoldsBeforeTyping"
+        ]
+      },
+      {
+        "table": "Graphs",
+        "field": "ConclusionsMessage",
+        "restsOn": [],
+        "inherits": [
+          "Graphs.CountOfConclusions"
+        ]
+      },
+      {
+        "table": "Graphs",
+        "field": "CountOfConclusions",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Statements",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Statements.ConclusionUnit"
+        ]
+      },
+      {
+        "table": "Graphs",
+        "field": "CountOfFactsToAdd",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Statements",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Statements.ListedOffUnit"
+        ]
+      },
+      {
+        "table": "Graphs",
+        "field": "CountOfStatedFacts",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Statements",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Statements.InEffectUnit"
+        ]
+      },
+      {
+        "table": "Graphs",
+        "field": "CountOfViolations",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "DisjointChecks",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "DisjointChecks.ViolationUnit"
+        ]
+      },
+      {
+        "table": "Graphs",
+        "field": "HasFactsToAdd",
+        "restsOn": [],
+        "inherits": [
+          "Graphs.CountOfFactsToAdd"
+        ]
+      },
+      {
+        "table": "Graphs",
+        "field": "IsConsistent",
+        "restsOn": [],
+        "inherits": [
+          "Graphs.CountOfViolations"
+        ]
+      },
+      {
+        "table": "Graphs",
+        "field": "MaxActivationSeq",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Statements",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Graphs",
+        "field": "MaxListedSortOrder",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Statements",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Graphs",
+        "field": "NextActivationSeq",
+        "restsOn": [],
+        "inherits": [
+          "Graphs.MaxActivationSeq"
+        ]
+      },
+      {
+        "table": "Graphs",
+        "field": "NextFactSortOrder",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Statements",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Statements.ListedOffUnit"
+        ]
+      },
+      {
+        "table": "Graphs",
+        "field": "NextListedSortOrder",
+        "restsOn": [],
+        "inherits": [
+          "Graphs.MaxListedSortOrder"
+        ]
+      },
+      {
+        "table": "Rules",
+        "field": "CountOfFirings",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Firings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Firings.FiredUnit"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "ConclusionUnit",
+        "restsOn": [],
+        "inherits": [
+          "Statements.IsConclusion"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "CountOfChainFirings",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Firings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Firings.ChainFiredUnit"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "CountOfChosenFirings",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Firings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Firings.ChosenUnit"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "CountOfInverseFirings",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Firings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Firings.InverseFiredUnit"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "CountOfSymmetricFirings",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Firings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Firings.SymmetricFiredUnit"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "CountOfTypeFirings",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Firings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Firings.TypeFiredUnit"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "FirstFiredOrderKey",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Firings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Firings.FiredUnit",
+          "Firings.OrderKey"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "GrandparentUnit",
+        "restsOn": [],
+        "inherits": [
+          "Statements.Holds"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "Holds",
+        "restsOn": [],
+        "inherits": [
+          "Statements.CountOfTypeFirings",
+          "Statements.HoldsBeforeTyping"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "HoldsBeforeChain",
+        "restsOn": [],
+        "inherits": [
+          "Statements.CountOfInverseFirings",
+          "Statements.CountOfSymmetricFirings",
+          "Statements.IsInEffect"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "HoldsBeforeTyping",
+        "restsOn": [],
+        "inherits": [
+          "Statements.CountOfChainFirings",
+          "Statements.HoldsBeforeChain"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "HoldsUnit",
+        "restsOn": [],
+        "inherits": [
+          "Statements.Holds"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "InEffectUnit",
+        "restsOn": [],
+        "inherits": [
+          "Statements.IsInEffect"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "IsConclusion",
+        "restsOn": [],
+        "inherits": [
+          "Statements.Holds",
+          "Statements.IsInEffect"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "IsInEffect",
+        "restsOn": [],
+        "inherits": [
+          "Statements.LatestSiblingActivationSeq"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "IsLiteral",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "Statements.ObjectThing"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Statements",
+        "field": "IsNextToAdd",
+        "restsOn": [],
+        "inherits": [
+          "Statements.ListedOffUnit",
+          "Statements.NextFactSortOrder"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "LatestSiblingActivationSeq",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Statements",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Statements",
+        "field": "ListedOffUnit",
+        "restsOn": [],
+        "inherits": [
+          "Statements.IsInEffect"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "Name",
+        "restsOn": [],
+        "inherits": [
+          "Statements.ObjectText"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "NextFactSortOrder",
+        "restsOn": [],
+        "inherits": [
+          "Graphs.NextFactSortOrder"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "ObjectText",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "Statements.ObjectThing"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Statements",
+        "field": "ParentUnit",
+        "restsOn": [],
+        "inherits": [
+          "Statements.Holds"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "PlaceUnit",
+        "restsOn": [],
+        "inherits": [
+          "Statements.Holds"
+        ]
+      },
+      {
+        "table": "Statements",
+        "field": "Words",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "Statements.ObjectThing"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Things",
+        "field": "CountAsObject",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Statements",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Statements.HoldsUnit"
+        ]
+      },
+      {
+        "table": "Things",
+        "field": "CountAsPlace",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Statements",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Statements.PlaceUnit"
+        ]
+      },
+      {
+        "table": "Things",
+        "field": "CountAsSubject",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Statements",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Statements.HoldsUnit"
+        ]
+      },
+      {
+        "table": "Things",
+        "field": "CountOfChildren",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Statements",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Statements.ParentUnit"
+        ]
+      },
+      {
+        "table": "Things",
+        "field": "CountOfGrandchildren",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Statements",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Statements.GrandparentUnit"
+        ]
+      },
+      {
+        "table": "Things",
+        "field": "IsInGraph",
+        "restsOn": [],
+        "inherits": [
+          "Things.CountAsObject",
+          "Things.CountAsSubject"
+        ]
+      },
+      {
+        "table": "Things",
+        "field": "NodeKind",
+        "restsOn": [],
+        "inherits": [
+          "Things.CountAsPlace"
+        ]
+      }
+    ]
+  }
+}
