@@ -167,6 +167,32 @@ test('the TypeScript engine computes in the app process, with no python3 on the 
   }
 });
 
+// "Compare the engines" shows how long each engine took to compute the live rows. An
+// engine that already computed them for the page answers the compare from its cache, so
+// timing that answer measured a cache read: until 2026-11-26 the page showed
+// "Postgres views 6009 ms · TypeScript 8 ms · OWL and SHACL rules 8 ms" when the
+// computations had taken 5979, 95 and 1823 ms.
+test('Compare the engines reports each engine\'s computation time, not a cache read', async () => {
+  const port = 43293;
+  const app = await startApp({ port, env: { RULEBOOK_PATH: copyOfHub() } });
+  try {
+    const { api } = app;
+    const available = (await api('GET', '/api/engines')).engines.filter((e) => e.ok);
+    assert.ok(available.length >= 2, 'at least two engines to compare');
+    for (const e of available) {
+      const r = await fetch(`http://127.0.0.1:${port}/api/page?backend=${e.id}`);
+      assert.equal(r.status, 200, `the page on ${e.id}`);
+    }
+    const compared = await api('POST', '/api/conformance');
+    const computed = Object.fromEntries((await api('GET', '/api/engines')).engines.map((e) => [e.id, e.lastMs]));
+    for (const e of compared.engines) assert.equal(typeof computed[e.id], 'number', `${e.id} computed the rows`);
+    const wrong = compared.engines.filter((e) => e.ms !== computed[e.id]).map((e) => `${e.label}: shown ${e.ms} ms, the computation took ${computed[e.id]} ms`);
+    assert.deepEqual(wrong, []);
+  } finally {
+    app.stop();
+  }
+});
+
 // Excel, both ways, through the catalog's own tools: the app's export with one cell edited
 // comes back as exactly that one change. The workbook holds about 31,000 formula cells, each
 // saved with its result; the import reads those and computes nothing, so it answers in

@@ -323,10 +323,11 @@ export function createEngines({ ws, projectDir, repoRoot, databaseUrl }) {
           const engine = get(row.EngineId);
           const status = await engine.status();
           if (!status.ok) { skipped.push({ id: row.EngineId, label: row.Label, reason: status.reason }); continue; }
-          const t0 = Date.now();
           const file = path.join(dir, `${row.EngineId}.json`);
           fs.writeFileSync(file, JSON.stringify(await engine.answers()));
-          used.push({ id: row.EngineId, label: row.Label, ms: Date.now() - t0 });
+          // The engine's own time to compute these rows. answers() is often a cache read
+          // (the page already computed them), so timing the call here would show that read.
+          used.push({ id: row.EngineId, label: row.Label, ms: engine.lastMs });
           args.push(`${row.EngineId}=${file}`);
         }
         if (used.length < 2) throw new Error(`Only ${used.length} engine is available to compare: ${skipped.map((s) => `${s.label}: ${s.reason}`).join('; ')}`);
