@@ -2,4 +2,4 @@
 # Install: pip install -r requirements.txt
 
 rdflib>=6.0.0       # RDF graph library
-pyoxigraph>=0.5.0   # SPARQL 1.1 engine that executes the SHACL-AF rules
+pyoxigraph>=0.5.10  # SPARQL 1.1 engine that executes the SHACL-AF rules (0.5.9 and older multiply some decimals wrongly)

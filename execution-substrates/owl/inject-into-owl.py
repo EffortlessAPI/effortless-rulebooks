@@ -30,29 +30,101 @@ from orchestration.shared import load_rulebook, handle_clean_arg, get_rulebook_p
 # ONTOLOGY NAMESPACE
 # =============================================================================
 #
-# Every class, property, and individual in the emitted graph lives in ONE
-# namespace — this IS the NTWF ontology as rendered by Effortless from the
-# rulebook. We use the `effortless-ntwf:` prefix to be honest about provenance:
-# the vocabulary is Jessica Talisman's NTWF (the rulebook's PK slugs are already
-# `ntwf-*` / `prod-deploy-*` and the article uses the `ntwf:` prefix), but this
-# graph is the Effortless rendering of it, minted from the rulebook PKs — not a
-# claim to be her published serialization byte-for-byte.
+# Every class, property and individual lives in the RULEBOOK's namespace. Until
+# 2026-11-25 it was one constant, https://w3id.org/effortless-ntwf#, the namespace
+# of the first rulebook this injector was written for (the NTWF example): a
+# car-sales rulebook came out as a rendering of somebody else's ontology.
 #
-# Base URI: `https://w3id.org/effortless-ntwf#` (w3id = persistent, redirectable
-# community root). The article's canonical NTWF base is paywalled and is NOT
-# declared in the rulebook, so we do NOT guess it into every IRI; if it later
-# becomes known, aligning is a one-line change to ONT_NS below. The PREFIX and
-# the BASE are the single source of truth for the whole file — every `effortless-ntwf:`
-# token is produced via the helpers/constants here, never hard-coded inline.
-ONT_PREFIX = "effortless-ntwf"
-ONT_NS = "https://w3id.org/effortless-ntwf#"
+# configure_namespace() reads it from the rulebook's __meta__ table
+# (MetaKey ontology_iri / ontology_namespace / ontology_prefix), and otherwise
+# derives one from the rulebook's Name on the reserved example.org domain, which
+# is plainly a placeholder. The commercial rulebook-to-owl reads the same keys
+# and derives the same default, so the two renderings of one rulebook share
+# their IRIs. (Mapping tables and fields to another vocabulary's terms is the
+# commercial tool's; here every term is the rulebook's own.)
+#
+# The generator's own bookkeeping (a row's key) lives in the generator's
+# namespace, erb:, not the ontology's.
+ERB_PREFIX = "erb"
+ERB_NS = "https://effortlessapi.com/ns/erb#"
+KEY_PROP = f"{ERB_PREFIX}:key"
+
+ONT_IRI = None
+ONT_TITLE = None
+ONT_PREFIX = None
+ONT_NS = None
 # Convenience prefix token used when building Turtle/SPARQL terms by f-string.
-NS = f"{ONT_PREFIX}:"
+NS = None
+
+
+def _slug(text: str) -> str:
+    out = []
+    for ch in (text or '').strip().lower():
+        if ch.isalnum():
+            out.append(ch)
+        elif ch in '\'\u2019"':
+            continue
+        elif out and out[-1] != '-':
+            out.append('-')
+    return ''.join(out).strip('-')
+
+
+def configure_namespace(rulebook: Dict[str, Any]) -> None:
+    """Set the ontology's IRI, namespace and prefix from the rulebook. Called
+    once, before anything is generated or read back."""
+    global ONT_IRI, ONT_TITLE, ONT_PREFIX, ONT_NS, NS
+    meta = {}
+    table = rulebook.get('__meta__')
+    if isinstance(table, dict):
+        for row in table.get('data') or []:
+            if not isinstance(row, dict) or not str(row.get('MetaKey') or '').startswith('ontology_'):
+                continue
+            # typed rows keep the text in StringValue, plain name-value rows in Value
+            value = row.get('StringValue') if row.get('StringValue') not in (None, '') else row.get('Value')
+            if value not in (None, ''):
+                meta[row['MetaKey']] = str(value).strip()
+    slug = _slug(str(rulebook.get('Name') or '')) or _slug(get_rulebook_path().stem.replace('-rulebook', '')) \
+        or 'rulebook'
+    ONT_IRI = meta.get('ontology_iri') or f'https://example.org/{slug}'
+    ONT_NS = meta.get('ontology_namespace') or ONT_IRI.rstrip('#/') + '#'
+    prefix = meta.get('ontology_prefix') or slug
+    if not re.match(r'^[A-Za-z]([A-Za-z0-9_.\-]*[A-Za-z0-9_\-])?$', prefix):
+        if 'ontology_prefix' in meta:
+            raise SystemExit(f"ERROR: __meta__ ontology_prefix {prefix!r} is not a prefix name "
+                             f"(letters, digits, - . _; a letter first)")
+        prefix = 'r-' + re.sub(r'[^A-Za-z0-9_.\-]', '-', prefix).strip('-.')
+    ONT_PREFIX = prefix
+    NS = f"{ONT_PREFIX}:"
+    ONT_TITLE = meta.get('ontology_title') or str(rulebook.get('Name') or '').strip() or slug
 
 
 def prefix_decl() -> str:
     """The `@prefix` line declaring the ontology namespace (TBox/ABox/SHACL)."""
     return f"@prefix {ONT_PREFIX}: <{ONT_NS}> ."
+
+
+def manifest(tables: Dict[str, Any]) -> Dict[str, Any]:
+    """What the runner needs to find a rulebook's cells in the graph: each
+    table's class, each field's property, the property that holds a row's key.
+    (The same file the commercial rulebook-to-owl writes.)"""
+    out = {}
+    for name, definition in tables.items():
+        if name.startswith('_') or name.startswith('$'):
+            continue
+        schema = definition.get('schema', [])
+        out[name] = {
+            'class': ONT_NS + name,
+            'keyField': get_pk_field(schema),
+            'fields': {c.get('name'): ONT_NS + c['name'][0].lower() + c['name'][1:]
+                       for c in schema if c.get('name')},
+        }
+    return {
+        'generator': 'oss-rulebook-to-owl',
+        'ontology': {'iri': ONT_IRI, 'namespace': ONT_NS, 'prefix': ONT_PREFIX},
+        'prefixes': {ONT_PREFIX: ONT_NS, ERB_PREFIX: ERB_NS},
+        'keyProperty': ERB_NS + 'key',
+        'tables': out,
+    }
 
 
 # =============================================================================
@@ -1158,9 +1230,16 @@ def generate_ontology_owl(tables: Dict[str, Any]) -> str:
     lines.append('@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .')
     lines.append(prefix_decl())
     lines.append('')
-    lines.append(f'<{ONT_NS}> a owl:Ontology ;')
-    lines.append('    rdfs:label "NTWF Ontology (Effortless rendering)" ;')
-    lines.append(f'    rdfs:comment "Generated by Effortless from {get_rulebook_path().name}. Vocabulary: Jessica Talisman NTWF." .')
+    lines.append(f'@prefix {ERB_PREFIX}: <{ERB_NS}> .')
+    lines.append('')
+    lines.append(f'<{ONT_IRI}> a owl:Ontology ;')
+    lines.append(f'    rdfs:label "{_esc_comment(ONT_TITLE)}" ;')
+    lines.append(f'    rdfs:comment "Generated by Effortless (oss-rulebook-to-owl) from {get_rulebook_path().name}. '
+                 f'The rulebook is the source: change it there, not here." .')
+    lines.append('')
+    lines.append(f'{KEY_PROP} a owl:DatatypeProperty ;')
+    lines.append('    rdfs:range xsd:string ;')
+    lines.append('    rdfs:label "key" .')
     lines.append('')
 
     # Track object properties we declare so the transitive/functional axiom pass
@@ -1417,6 +1496,7 @@ def generate_individuals_ttl(tables: Dict[str, Any]) -> str:
     lines.append('@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .')
     lines.append('@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .')
     lines.append(prefix_decl())
+    lines.append(f'@prefix {ERB_PREFIX}: <{ERB_NS}> .')
     lines.append('')
 
     # Collect direct junction-projected edges to emit in a dedicated block, so
@@ -1469,7 +1549,10 @@ def generate_individuals_ttl(tables: Dict[str, Any]) -> str:
 
             lines.append(f'{ind_uri} a {class_uri} ;')
 
-            props = []
+            # The row's key verbatim: the IRI is only a slug of it (and carries
+            # the table when two tables share a key), so the runner finds a row
+            # by class and key instead of rebuilding its IRI.
+            props = [f'    {KEY_PROP} {value_to_turtle(str(pk_value), "string")}']
             for col_name, info in col_info.items():
                 # Calc/lookup/agg are ANSWERS produced by rules — never inputs.
                 if info['type'] in ('calculated', 'lookup', 'aggregation', 'closure'):
@@ -1809,14 +1892,7 @@ def build_closure_count_where(table_name: str, expr: ExprNode, closure: Dict[str
             raise ValueError(
                 "closure per-row COUNTIFS range must be the view's from_id/to_id "
                 f"column, got {range_ref.column!r}")
-        parts = [
-            f'    $this a {NS}{table_name} .',
-            f'{INDENT}{{',
-            f'{INDENT}    SELECT (COUNT(*) AS ?_result) WHERE {{',
-            path,
-            f'{INDENT}    }}',
-            f'{INDENT}}}',
-        ]
+        parts = [f'    $this a {NS}{table_name} .', *this_subselect(table_name, 'COUNT(*)', [path], '?_result')]
         return '\n'.join(parts)
 
     # ---- AGGREGATE closure count: COUNTIFS(<view>!{{IsInferred}}, TRUE/FALSE) ----
@@ -1843,14 +1919,7 @@ def build_closure_count_where(table_name: str, expr: ExprNode, closure: Dict[str
         f'{INDENT}        ?a {base}+ ?b .\n'
         f'{inferred_filter}'
     )
-    parts = [
-        f'    $this a {NS}{table_name} .',
-        f'{INDENT}{{',
-        f'{INDENT}    SELECT (COUNT(*) AS ?_result) WHERE {{',
-        inner,
-        f'{INDENT}    }}',
-        f'{INDENT}}}',
-    ]
+    parts = [f'    $this a {NS}{table_name} .', *this_subselect(table_name, 'COUNT(*)', [inner], '?_result')]
     return '\n'.join(parts)
 
 
@@ -1873,6 +1942,41 @@ def _key_text(var: str) -> str:
 
 def _column(table: str, name: str) -> Optional[Dict[str, Any]]:
     return next((c for c in TABLE_SCHEMAS.get(table, []) if c.get('name') == name), None)
+
+
+_THIS_REF = re.compile(r'\$this\b')
+_SUBSELECT_SEQ = [0]
+# What each SPARQL aggregate yields over NO rows: a sub-SELECT grouped by $this has
+# no row for a focus node nothing matched, so the rule states the empty value.
+_AGG_EMPTY = {'COUNT': '0', 'SUM': '0', 'AVG': '0', 'MIN': None, 'MAX': None}
+
+
+def this_subselect(table_name: str, aggregate: str, body: List[str], result_var: str) -> List[str]:
+    """One aggregate over the rows `body` selects, bound to result_var for $this.
+
+    SHACL 5.3.1: "Subqueries must return all potentially pre-bound variables."
+    The sub-SELECT therefore projects $this and groups by it, so the rule means
+    the same whether an engine pre-binds $this one focus node at a time or
+    evaluates it once for all of them (it used to keep $this to itself: right
+    under the first, the whole child table for every parent under the second).
+    A body that reads $this binds it first; one that never names it (a closure's
+    inferred pairs) is one group, whose unbound $this joins every focus node."""
+    kind = aggregate.split('(', 1)[0].strip().upper()
+    _SUBSELECT_SEQ[0] += 1
+    var = f'?_agg{_SUBSELECT_SEQ[0]}'
+    text = '\n'.join(body)
+    if _THIS_REF.search(text):
+        text = f'{INDENT}    $this a {NS}{table_name} .\n{text}'
+    empty = _AGG_EMPTY[kind]
+    return [
+        f'{INDENT}OPTIONAL {{',
+        f'{INDENT}    SELECT $this ({aggregate} AS {var}) WHERE {{',
+        text,
+        f'{INDENT}    }} GROUP BY $this',
+        f'{INDENT}}}',
+        (f'{INDENT}BIND({var} AS {result_var})' if empty is None
+         else f'{INDENT}BIND(COALESCE({var}, {empty}) AS {result_var})'),
+    ]
 
 
 def aggregation_block(table_name: str, expr: FuncCall, result_var: str) -> List[str]:
@@ -1958,14 +2062,7 @@ def aggregation_block(table_name: str, expr: FuncCall, result_var: str) -> List[
         triples.append(f'{INDENT}    ?child {field_to_property_uri(value_ref.column)} ?aggval .')
         agg = f'{kind}(?aggval)'
 
-    return [
-        f'{INDENT}{{',
-        f'{INDENT}    SELECT ({agg} AS {result_var}) WHERE {{',
-        *triples,
-        *filters,
-        f'{INDENT}    }}',
-        f'{INDENT}}}',
-    ]
+    return this_subselect(table_name, agg, [*triples, *filters], result_var)
 
 
 def build_aggregation_where(table_name: str, expr: ExprNode) -> str:
@@ -2263,6 +2360,7 @@ def main():
         'src/ontology.owl',
         'src/individuals.ttl',
         'src/rules.shacl.ttl',
+        'src/manifest.json',
         'test-answers.json',
         'test-results.md',
     ]
@@ -2299,6 +2397,8 @@ def main():
               if isinstance(v, dict) and 'schema' in v}
 
     print(f"Found {len(tables)} tables: {', '.join(tables.keys())}")
+    configure_namespace(rulebook)
+    print(f"Ontology: <{ONT_IRI}>  prefix {ONT_PREFIX}: <{ONT_NS}>")
     register_pk_collisions(tables)
     if COLLIDING_PK_SLUGS:
         print(f"Table-scoping IRIs for PK values shared across tables: {', '.join(sorted(COLLIDING_PK_SLUGS))}")
@@ -2333,6 +2433,13 @@ def main():
     rules_path = src_dir / "rules.shacl.ttl"
     rules_path.write_text(rules_content, encoding='utf-8')
     print(f"   Wrote: {rules_path} ({len(rules_content)} bytes)")
+
+    # Which class each table is and which property each field is, by IRI, so the
+    # runner finds a row's cells without rebuilding a name.
+    import json as _json
+    manifest_path = src_dir / "manifest.json"
+    manifest_path.write_text(_json.dumps(manifest(tables), indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+    print(f"\nWrote: {manifest_path}")
 
     print("\n" + "=" * 70)
     print("Generation complete!")

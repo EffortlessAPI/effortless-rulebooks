@@ -120,20 +120,34 @@ computed by the SPARQL engine.
 
 To ensure deterministic output:
 - Sort all triples by subject, predicate, object before serialization
-- Mint each individual's IRI from its PRIMARY KEY: `effortless-ntwf:{pk}`
-  (e.g. `effortless-ntwf:prod-deploy-step-3`), NOT a positional row index.
+- Mint each individual's IRI from its PRIMARY KEY: `<prefix>:{pk}`
+  (e.g. `ntwf:prod-deploy-step-3`), NOT a positional row index.
   The PK is the identity; FKs resolve to the target's PK-keyed IRI, so edges
-  link named individuals rather than carrying string literals.
+  link named individuals rather than carrying string literals. The key itself is
+  also on every individual, verbatim, as `erb:key`.
 - Use canonical Turtle serialization
 - Seed any randomness (though none should be needed)
 
-> **Namespace.** The whole graph lives in one namespace, prefix
-> `effortless-ntwf:` → `<https://w3id.org/effortless-ntwf#>`. The vocabulary is
-> Jessica Talisman's NTWF (the rulebook's PK slugs are already `ntwf-*` /
-> `prod-deploy-*`); the `effortless-ntwf:` prefix is honest that this is the
-> Effortless rendering minted from the rulebook PKs. If the article's canonical
-> NTWF base IRI becomes known, it is a one-line change to `ONT_NS` in
-> `inject-into-owl.py`.
+> **Namespace.** The whole graph lives in the RULEBOOK's namespace
+> (`configure_namespace` in `inject-into-owl.py`): its `__meta__` rows
+> `ontology_iri`, `ontology_namespace`, `ontology_prefix`, and otherwise
+> `https://example.org/<slug of the rulebook's Name>#`, a namespace of its own on
+> the reserved example domain. Until 2026-11-25 it was one constant,
+> `https://w3id.org/effortless-ntwf#`, the namespace of the first rulebook this
+> injector was written for, so every rulebook came out as a rendering of that
+> one. The three examples whose apps read that namespace
+> (talismans-special-solutions, causal-autoimmune-architecture, simpsons-paradox)
+> now state it in their `__meta__`. The generator's own terms (`erb:key`) live in
+> `https://effortlessapi.com/ns/erb#`.
+>
+> `src/manifest.json` names each table's class, each field's property and the
+> key property by IRI. `take-test.py` reads it and rebuilds no name, so the same
+> runner grades this injector's output and the commercial `rulebook-to-owl`'s
+> (which can also name a rulebook's terms after another vocabulary).
+>
+> **Sub-SELECTs return `$this`** (SHACL 5.3.1), so a rollup is the same number
+> whether an engine pre-binds `$this` per focus node or evaluates the rule once
+> for all of them, and the runner runs each such rule as one query.
 
 ## Implementation Plan
 

@@ -10,9 +10,13 @@ its own repo-local injector (execution-substrates/owl/inject-into-owl.py), NOT
 a project's owl/ transpiler output — so a project that registers rulebook-to-owl
 and runs only `owl` has never had that tool graded at all.
 
-Both emit the same effortless-ntwf: IRIs and SHACL-AF SPARQLRule shapes, so the
-reasoning runner is shared rather than copied: this file imports owl/take-test.py
-and hands it a different src dir and substrate name. The ABox the commercial tool
+Both write SHACL-AF SPARQLRule shapes and a manifest.json naming each table's
+class and each field's property, so the reasoning runner is shared rather than
+copied: this file imports owl/take-test.py and hands it a different src dir and
+substrate name. The runner rebuilds no IRI, so it does not matter that the
+commercial tool can name a rulebook's terms after another vocabulary
+(SemanticMappings) and the open-source one cannot. For this substrate the runner
+also puts the build's ontology-with-individuals.ttl through ROBOT and HermiT. The ABox the commercial tool
 emits carries raw fields only, so every derived value is computed by the SPARQL
 engine, never read back from the compiled rulebook.
 """

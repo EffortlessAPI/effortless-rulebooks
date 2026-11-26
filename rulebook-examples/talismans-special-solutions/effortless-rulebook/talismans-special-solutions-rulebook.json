@@ -5052,6 +5052,20 @@
     ],
     "data": [
       {
+        "MetaKey": "ontology_iri",
+        "Name": "ontology_iri",
+        "ValueType": "string",
+        "StringValue": "https://w3id.org/effortless-ntwf",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "ontology_prefix",
+        "Name": "ontology_prefix",
+        "ValueType": "string",
+        "StringValue": "effortless-ntwf",
+        "JsonValue": null
+      },
+      {
         "MetaKey": "tagline",
         "Name": "tagline",
         "ValueType": "string",

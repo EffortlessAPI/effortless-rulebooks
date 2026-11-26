@@ -10,21 +10,33 @@ cannot compute natively (SHACL rules that fail to compile, or formula classes
 the rulebook-to-owl translator doesn't yet support) must be left null and
 counted as failures by the grader.
 
-This script executes the SHACL-AF rules to compute derived values:
+This script runs the SHACL-AF rules to compute the derived values:
 1. Loads the generated ontology, individuals and SHACL rules
-2. Executes every sh:SPARQLRule once, in ascending sh:order (the injector emits
-   each rule's depth in the formula DAG), with $this bound to each focus node
-3. Extracts results to test-answers/ directory
+2. Runs every sh:SPARQLRule once, in ascending sh:order (the injector emits each
+   rule's depth in the formula DAG); the shapes of one erb:fixpointGroup are
+   repeated until they add nothing
+3. Reads every row's cells back and writes them to test-answers/
 
 The computation happens in the SPARQL engine, not in Python code; Python only
 sequences the rules. pyshacl was dropped because it evaluates every rule once per
 focus node and repeats whole passes until nothing changes, which on a large
 rulebook takes hours and never converges within its pass cap.
+
+Nothing here knows how a name was minted. src/manifest.json, which both injectors
+write, says which class each table is, which property each field is, and which
+property holds a row's key. (Until 2026-11-25 this file carried the namespace as
+a constant, https://w3id.org/effortless-ntwf#, and rebuilt every IRI from it.)
+
+When the build also wrote ontology-with-individuals.ttl (the commercial tool's
+OWL 2 DL document), a description-logic reasoner reads it too: ROBOT with HermiT,
+in Docker. See dl_check().
 """
 
 import json
+import math
 import os
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -48,6 +60,15 @@ from rdflib import Graph, Namespace, Literal, URIRef
 from rdflib.namespace import RDF, RDFS, XSD
 import pyoxigraph
 
+# pyoxigraph 0.5.9 and older multiply some xsd:decimals wrongly (an error where
+# there is a product). An engine that quietly computes other values is worse than
+# none, so an old one is refused.
+_ENGINE = tuple(int(re.match(r'\d+', part).group(0)) for part in pyoxigraph.__version__.split('.')[:3])
+if _ENGINE < (0, 5, 10):
+    raise SystemExit(
+        f"pyoxigraph {pyoxigraph.__version__} is too old to run these rules: versions before 0.5.10 "
+        f"multiply some decimals wrongly. Upgrade it: python3 -m pip install -U pyoxigraph")
+
 # Add project root to path for shared imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
@@ -58,49 +79,29 @@ script_dir = Path(__file__).parent.resolve()
 
 
 # =============================================================================
-# NAMESPACES
+# NAMES
 # =============================================================================
 
-# Ontology namespace — MUST match inject-into-owl.py's ONT_NS exactly. The
-# injector mints every individual as effortless-ntwf:<pk-slug>; the extractor
-# rebuilds the SAME IRI to read computed values back off it. If these drift, the
-# graph lookups silently return None and every computed field reads blank — so
-# this is a single, shared contract, not two independent constants.
-NTWF = Namespace("https://w3id.org/effortless-ntwf#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
+# The generator's own vocabulary (a row's key, a rule's fixpoint group).
+ERB = Namespace("https://effortlessapi.com/ns/erb#")
 
 
-# The extractor must rebuild the exact IRI the injector minted, so it uses the
-# injector's own minting function rather than a copy that could drift.
-import importlib.util as _ilu
-_inj_spec = _ilu.spec_from_file_location("owl_injector", script_dir / "inject-into-owl.py")
-owl_injector = _ilu.module_from_spec(_inj_spec)
-_inj_spec.loader.exec_module(owl_injector)
-
-
-def individual_uri(table_name: str, pk_value) -> URIRef:
-    local = owl_injector.individual_iri(table_name, pk_value)[len(owl_injector.NS):]
-    return NTWF[local]
-
-
-def _primary_key_field(schema: list):
-    """The PK field = the first raw column (mirror inject-into-owl.py:get_pk_field)."""
-    for col in schema:
-        if col.get('type', 'raw') == 'raw':
-            return col.get('name')
-    return schema[0].get('name') if schema else None
+def load_manifest(src_dir: Path) -> dict:
+    """src/manifest.json: the class of each table, the property of each field,
+    the property that holds a row's key."""
+    path = src_dir / "manifest.json"
+    if not path.exists():
+        raise SystemExit(
+            f"{path} is missing. Both OWL injectors write it since 2026-11-25; these files are "
+            f"from an older build. Rebuild the project (for effortless-owl, with the published "
+            f"rulebook-to-owl of that date or later).")
+    return json.loads(path.read_text(encoding='utf-8'))
 
 
 # =============================================================================
 # UTILITY FUNCTIONS
 # =============================================================================
-
-def field_to_property_uri(field_name: str) -> str:
-    """Convert field name to property URI (camelCase) - must match injector."""
-    if field_name:
-        return field_name[0].lower() + field_name[1:]
-    return 'unknown'
-
 
 def camel_to_snake(name: str) -> str:
     """Convert CamelCase to snake_case for output compatibility."""
@@ -110,44 +111,31 @@ def camel_to_snake(name: str) -> str:
     return re.sub('_+', '_', s2)
 
 
-def _resolve_multipass_value(values, field_info, table_name, field_name, pk_value):
-    """Pick the converged value when a property carries several (multi-pass).
-
-    The reasoner adds, never replaces, so an aggregation that depends on a
-    derived child field leaves a trail: a premature value (counted before the
-    dependency materialized) plus the converged value. We resolve by the field's
-    convergence semantics, NOT by an arbitrary pick:
-
-      • aggregation / calculated NUMERIC → the converged value is the MAX. A
-        COUNT/SUM is monotonic non-decreasing as its dependency rows fill in
-        across passes, so the largest is the fixpoint.
-      • everything else → distinct multiplicity is unexpected; raise loudly
-        rather than silently choosing one (CLAUDE.md "Avoid Silent Fallbacks").
-    """
+def _one_value(values, table_name, field_name, pk_value):
+    """The single value of a cell. Rules run in sh:order and only add triples, so
+    a cell with two values means a rule fired on an input that was not there yet:
+    a defect in the rules, reported, never settled by picking one."""
     distinct = []
     for v in values:
         if v not in distinct:
             distinct.append(v)
     if len(distinct) == 1:
         return distinct[0]
-
-    ftype = field_info.get('type')
-    numeric = [v for v in distinct if isinstance(v, (int, float)) and not isinstance(v, bool)]
-    if ftype in ('aggregation', 'calculated') and len(numeric) == len(distinct):
-        return max(numeric)
-
     raise ValueError(
-        f"{table_name}.{field_name} (id={pk_value!r}) has conflicting multi-pass "
-        f"values {distinct!r} that cannot be converged by a known rule. The SHACL "
-        f"rule likely fired on a not-yet-stable dependency; fix the rule or the "
-        f"dependency ordering rather than picking a value arbitrarily."
-    )
+        f"{table_name}.{field_name} (id={pk_value!r}) holds several values {distinct!r}. "
+        f"A rule fired before the field it reads was computed; fix the rule's sh:order "
+        f"rather than choosing a value.")
 
 
-def rdf_value_to_python(value):
+def rdf_value_to_python(value, graph=None, key_property=None):
     """Convert an RDF value to Python native type."""
     if value is None:
         return None
+    if isinstance(value, URIRef) and graph is not None and key_property is not None:
+        # A relationship resolved to an individual: that row's key, verbatim.
+        key = graph.value(value, key_property)
+        if key is not None:
+            return str(key)
 
     if isinstance(value, Literal):
         py_val = value.toPython()
@@ -176,119 +164,123 @@ def rdf_value_to_python(value):
 # =============================================================================
 
 THIS_VAR = re.compile(r'\$this\b')
+SUBSELECT = re.compile(r'\bSELECT\b([^{]*?)\bWHERE\b', re.S)
+XSD_DOUBLE = pyoxigraph.NamedNode('http://www.w3.org/2001/XMLSchema#double')
+MAX_FIXPOINT_PASSES = 10000
+
+
+def _sqrt(value):
+    """XPath math:sqrt, which SQRT() compiles to and Oxigraph does not ship."""
+    try:
+        number = float(value.value)
+    except (AttributeError, TypeError, ValueError):
+        return None
+    return None if number < 0 else pyoxigraph.Literal(repr(math.sqrt(number)), datatype=XSD_DOUBLE)
+
+
+CUSTOM_FUNCTIONS = {
+    pyoxigraph.NamedNode('http://www.w3.org/2005/xpath-functions/math#sqrt'): _sqrt,
+}
 
 
 def load_sparql_rules(shacl_graph: Graph) -> list:
-    """Every sh:SPARQLRule as (order, label, target_class, construct), sorted by sh:order.
-
-    The open-source injector gives every rule an sh:order (its depth in the
-    formula DAG). rulebook-to-owl gives none, which SHACL-AF allows: a spec
-    engine iterates to a fixed point, and this runner executes each rule once.
-    Unordered rules are therefore sequenced by dependency_orders() from what
-    each rule itself reads and constructs. A rule set that is partly ordered
-    is refused, since there is no sound way to merge the two schemes.
-    """
+    """Every sh:SPARQLRule as (order, label, target_class, construct, group, derives),
+    sorted by sh:order. Both injectors give every rule an sh:order (its depth in
+    the formula DAG); a rule without one cannot be sequenced and is refused."""
     rules = []
     for shape, target in shacl_graph.subject_objects(SH.targetClass):
+        group = shacl_graph.value(shape, ERB.fixpointGroup)
+        derives = shacl_graph.value(shape, ERB.derives)
         for rule in shacl_graph.objects(shape, SH.rule):
             construct = shacl_graph.value(rule, SH.construct)
             if construct is None:
                 continue
-            order = shacl_graph.value(rule, SH.order)
             label = shacl_graph.value(rule, RDFS.label)
-            rules.append((int(order.toPython()) if order is not None else None,
-                          str(label), str(target), str(construct)))
-    unordered = [r for r in rules if r[0] is None]
-    if unordered and len(unordered) != len(rules):
-        raise RuntimeError(
-            f"{len(unordered)} of {len(rules)} SHACL rules carry no sh:order; "
-            f"a partly ordered rule set cannot be sequenced.")
-    if unordered:
-        orders = dependency_orders(rules)
-        rules = [(orders[r[1]], r[1], r[2], r[3]) for r in rules]
+            # sh:order sits on the rule (this repo's injector: several rules to a
+            # shape) or on its shape (rulebook-to-owl: one shape per rule).
+            order = shacl_graph.value(rule, SH.order)
+            if order is None:
+                order = shacl_graph.value(shape, SH.order)
+            if order is None:
+                raise RuntimeError(f"SHACL rule {label} carries no sh:order; it cannot be sequenced.")
+            rules.append((int(order.toPython()), str(label), str(target), str(construct),
+                          str(group) if group is not None else None,
+                          str(derives) if derives is not None else None))
     rules.sort(key=lambda r: (r[0], r[1]))
     return rules
 
 
-_CONSTRUCTED = re.compile(r'CONSTRUCT\s*\{\s*\$this\s+effortless-ntwf:(\w+)\s')
-_NTWF_TERM = re.compile(r'effortless-ntwf:([A-Za-z_]\w*)')
+def _fire(store, rule) -> int:
+    """Run one rule once; return how many new triples it added.
 
-
-def dependency_orders(rules: list) -> dict:
-    """Depth of each rule in the graph of what it reads and what other rules construct.
-
-    Rule R depends on rule P when R's WHERE reads the predicate P constructs AND
-    that predicate is on P's class from R's point of view: P targets R's own
-    class (a same-row read of $this), or R names P's class (a joined or counted
-    node is always typed, e.g. `?j1 a effortless-ntwf:RulebookFields`). The class
-    check matters: dozens of classes construct a predicate called `name`. A
-    dependency cycle is a real defect in the rules and raises.
-    """
-    produced = {}
-    by_label = {}
-    for _, label, target, construct in rules:
-        m = _CONSTRUCTED.search(construct)
-        if not m:
-            raise RuntimeError(f"cannot read the constructed predicate of SHACL rule {label}")
-        cls = re.split(r'[#/]', target)[-1]
-        produced.setdefault(m.group(1), []).append((cls, label))
-        by_label[label] = (cls, construct)
-
-    deps = {}
-    for label, (cls, construct) in by_label.items():
-        where = construct[construct.find('WHERE'):]
-        terms = set(_NTWF_TERM.findall(where))
-        deps[label] = {p_label for pred in terms for p_cls, p_label in produced.get(pred, ())
-                       if p_label != label and (p_cls == cls or p_cls in terms)}
-
-    depth, visiting = {}, []
-
-    def visit(label):
-        if label in depth:
-            return depth[label]
-        if label in visiting:
-            cycle = visiting[visiting.index(label):] + [label]
-            raise RuntimeError("SHACL rules form a dependency cycle: " + " -> ".join(cycle))
-        visiting.append(label)
-        depth[label] = 1 + max((visit(d) for d in deps[label]), default=-1)
-        visiting.pop()
-        return depth[label]
-
-    sys.setrecursionlimit(max(sys.getrecursionlimit(), 10 * len(rules)))
-    for label in by_label:
-        visit(label)
-    return depth
+    A rule whose every sub-SELECT returns $this (SHACL 5.3.1; the commercial tool
+    and, since 2026-11-25, this repo's injector) means the same evaluated once for
+    all focus nodes, with $this an ordinary variable: one query. Any other rule
+    needs $this pre-bound inside its sub-SELECT, one focus node at a time (SPARQL
+    SEP-0007 substitution, which is what a SHACL engine does)."""
+    _, label, target, construct, _, _ = rule
+    query = THIS_VAR.sub('?this', construct)
+    where = construct[construct.find('WHERE'):]
+    returns_this = all('$this' in projection for projection in SUBSELECT.findall(where))
+    try:
+        if returns_this:
+            triples = list(store.query(query, custom_functions=CUSTOM_FUNCTIONS))
+        else:
+            this = pyoxigraph.Variable('this')
+            triples = []
+            for node in [s['n'] for s in store.query(f'SELECT ?n WHERE {{ ?n a <{target}> }}')]:
+                triples.extend(store.query(query, substitutions={this: node}, custom_functions=CUSTOM_FUNCTIONS))
+    except SyntaxError as exc:
+        raise RuntimeError(f"SHACL rule {label} is not valid SPARQL: {exc}") from exc
+    before = len(store)
+    store.extend([pyoxigraph.Quad(t.subject, t.predicate, t.object, pyoxigraph.DefaultGraph())
+                  for t in triples])
+    return len(store) - before
 
 
 def run_shacl_reasoning(store: "pyoxigraph.Store", rules: list) -> int:
-    """Execute each SHACL-AF rule once, in sh:order, inserting what it constructs.
-
-    SHACL-AF pre-binds $this to the focus node everywhere in the query, including
-    inside sub-SELECTs. A rule without a sub-SELECT is equivalent to one query with
-    $this as a free variable (its WHERE starts with `$this a <targetClass>`); a rule
-    WITH one must be evaluated per focus node, or its aggregate stops being
-    correlated with the row and counts the whole table.
+    """Run each SHACL-AF rule once, in sh:order, inserting what it constructs. The
+    shapes of one erb:fixpointGroup (fields that depend on themselves through
+    other rows) are repeated until a pass adds nothing; their rules mark the rows
+    they have computed and wait for the rows they read, so that is exact.
 
     Returns the number of distinct sh:order levels executed.
     """
-    for order, label, target, construct in rules:
-        if re.search(r'WHERE\s*\{.*\bSELECT\b', construct, re.S):
-            focus = [s['n'] for s in store.query(f'SELECT ?n WHERE {{ ?n a <{target}> }}')]
-            triples = []
-            for node in focus:
-                triples.extend(store.query(THIS_VAR.sub(f'<{node.value}>', construct)))
-        else:
-            triples = list(store.query(THIS_VAR.sub('?this', construct)))
-        store.extend([pyoxigraph.Quad(t.subject, t.predicate, t.object, pyoxigraph.DefaultGraph())
-                      for t in triples])
-    return len({r[0] for r in rules})
+    by_order = {}
+    for rule in rules:
+        by_order.setdefault(rule[0], []).append(rule)
+    for order in sorted(by_order):
+        groups = {}
+        for rule in by_order[order]:
+            if rule[4] is None:
+                _fire(store, rule)
+            else:
+                groups.setdefault(rule[4], []).append(rule)
+        for name in sorted(groups):
+            for _ in range(MAX_FIXPOINT_PASSES):
+                if sum(_fire(store, rule) for rule in groups[name]) == 0:
+                    break
+            else:
+                raise RuntimeError(f"fixpoint group {name} still added triples after {MAX_FIXPOINT_PASSES} passes")
+            for _, label, target, _, _, derives in groups[name]:
+                if derives is None:
+                    continue
+                waiting = [s['n'].value for s in store.query(
+                    f'SELECT ?n WHERE {{ ?n a <{target}> . FILTER NOT EXISTS {{ ?n <{ERB.derived}> <{derives}> }} }}')]
+                if waiting:
+                    raise RuntimeError(
+                        f"fixpoint group {name}: {len(waiting)} row(s) of <{target}> never got <{derives}> "
+                        f"({label}): the rows they read include themselves, a cycle in the DATA "
+                        f"(first: {', '.join(sorted(waiting)[:5])}).")
+    return len(by_order)
 
 
 def extract_entity_results(
     data_graph: Graph,
     table_name: str,
     schema: list,
-    data: list
+    data: list,
+    manifest: dict,
 ) -> list:
     """
     Extract computed results from RDF graph for a single entity type.
@@ -316,11 +308,19 @@ def extract_entity_results(
         if col_type == 'raw':
             raw_snake_keys.add(snake_name)
 
-    # The individual's IRI is keyed by PRIMARY KEY (first raw column), matching
-    # the injector. We rebuild effortless-ntwf:<pk-slug> per row to read its
-    # computed values back. A row with no PK value would yield a fabricated IRI
-    # that matches nothing — surface it loudly rather than silently reading None.
-    pk_field = _primary_key_field(schema)
+    # A row's individual is found by its table's class and its key, both named by
+    # the manifest: the IRI itself is the injector's business (a slug of the key,
+    # with the table in it when two tables share a key).
+    names = manifest['tables'].get(table_name)
+    if names is None:
+        raise ValueError(f"manifest.json has no table {table_name!r}: it was made from another rulebook")
+    key_property = URIRef(manifest['keyProperty'])
+    pk_field = names['keyField']
+    by_key = {}
+    for subject in data_graph.subjects(RDF.type, URIRef(names['class'])):
+        key = data_graph.value(subject, key_property)
+        if key is not None:
+            by_key.setdefault(str(key), subject)
 
     # Extract each individual
     for i, original_row in enumerate(data):
@@ -331,7 +331,11 @@ def extract_entity_results(
                 f"'{pk_field}'; cannot locate its individual in the graph. The "
                 f"OWL injector keys every individual by PK — fix the rulebook row."
             )
-        ind_uri = individual_uri(table_name, pk_value)
+        ind_uri = by_key.get(str(pk_value))
+        if ind_uri is None:
+            raise ValueError(
+                f"{table_name}[{i}] (id={pk_value!r}) has no individual of <{names['class']}> "
+                f"carrying that key: the graph and the rulebook are not the same build.")
 
         # Start with RAW data only; never carry pre-computed values through.
         record = {}
@@ -343,28 +347,14 @@ def extract_entity_results(
         # Query each field from the graph (includes computed values)
         for field_info in all_fields:
             field_name = field_info['name']
-            prop_name = field_to_property_uri(field_name)
-            prop_uri = NTWF[prop_name]
+            prop_uri = URIRef(names['fields'][field_name])
 
-            # A computed field can carry MULTIPLE values when its SHACL rule
-            # fired across several reasoning passes: an aggregation that depends
-            # on a derived CHILD field counts 0 in the pass before the child's
-            # value materialized, then the true count in a later pass. SHACL
-            # CONSTRUCT only ADDS triples, so both the stale 0 and the converged
-            # value coexist. data_graph.value() would pick one arbitrarily — and
-            # picking the stale 0 is exactly the bug. Resolve multiplicity by the
-            # field's convergence semantics instead of guessing.
             objs = list(data_graph.objects(ind_uri, prop_uri))
             if not objs:
                 continue
-            py_values = [rdf_value_to_python(o) for o in objs]
+            py_values = [rdf_value_to_python(o, data_graph, key_property) for o in objs]
             snake_key = camel_to_snake(field_name)
-
-            if len(py_values) == 1:
-                py_value = py_values[0]
-            else:
-                py_value = _resolve_multipass_value(
-                    py_values, field_info, table_name, field_name, pk_value)
+            py_value = _one_value(py_values, table_name, field_name, pk_value)
 
             if py_value is not None:
                 record[snake_key] = py_value
@@ -399,6 +389,86 @@ def _get_testing_paths(substrate_name: str):
             "testing/ directory."
         )
     return Path(erb_testing) / "blank-tests", Path(erb_testing) / substrate_name / "test-answers"
+
+
+ROBOT_IMAGE = os.environ.get('ROBOT_IMAGE', 'obolibrary/robot')
+DL_DOCUMENT = 'ontology-with-individuals.ttl'
+
+
+def _robot(src_dir: Path, *args: str):
+    return subprocess.run(['docker', 'run', '--rm', '-v', f'{src_dir.resolve()}:/work', ROBOT_IMAGE, 'robot', *args],
+                          capture_output=True, text=True, timeout=3600)
+
+
+def dl_check(src_dir: Path, report_dir: Path) -> None:
+    """Put the build through an ontologist's own tools, and say what they say.
+
+    The rules above are SPARQL; they prove agreement between substrates, not with
+    a reasoner an ontologist already trusts. The commercial rulebook-to-owl also
+    writes ontology-with-individuals.ttl, the ontology and its rows in one OWL 2
+    DL document. ROBOT (the tool OBO ontologies are released with), in its Docker
+    image, checks that it IS OWL 2 DL and runs HermiT over it: is it consistent,
+    and can every class have a member.
+
+    The verdict is written to dl-check.json beside the answers, and a document
+    that is outside OWL 2 DL, inconsistent, or holds a class with no possible
+    member fails the run. Where the check cannot run (no document: the
+    open-source injector does not write one; no Docker; no image) that is said,
+    in the log and in dl-check.json. It is never reported as passed."""
+    report_dir.mkdir(parents=True, exist_ok=True)
+    report = report_dir / 'dl-check.json'
+    document = src_dir / DL_DOCUMENT
+
+    def record(verdict: dict) -> None:
+        report.write_text(json.dumps(verdict, indent=2) + '\n', encoding='utf-8')
+
+    print("\nDescription-logic check (ROBOT + HermiT)...")
+    why_not = None
+    if not document.exists():
+        why_not = f"this build wrote no {DL_DOCUMENT} (only the commercial rulebook-to-owl does)"
+    elif shutil.which('docker') is None:
+        why_not = "docker is not installed"
+    elif subprocess.run(['docker', 'image', 'inspect', ROBOT_IMAGE], capture_output=True).returncode != 0:
+        why_not = f"the Docker image {ROBOT_IMAGE} is not here (docker pull {ROBOT_IMAGE}), or Docker is not running"
+    if why_not:
+        print(f"   NOT RUN: {why_not}")
+        record({'ran': False, 'reason': why_not})
+        return
+
+    _robot(src_dir, 'validate-profile', '--input', f'/work/{DL_DOCUMENT}', '--profile', 'DL',
+           '--output', '/work/profile-DL.txt')
+    profile_lines = [line for line in (src_dir / 'profile-DL.txt').read_text(encoding='utf-8').splitlines() if line.strip()]
+    violations = profile_lines[1:] if profile_lines and 'NOT in profile' in profile_lines[0] else []
+    verdict = {'ran': True, 'reasoner': 'HermiT (ROBOT)', 'owl2dl': not violations,
+               'dlViolations': violations[:20], 'consistent': None, 'unsatisfiable': []}
+    if violations:
+        record(verdict)
+        print(f"   NOT OWL 2 DL: {len(violations)} violation(s). First: {violations[0][:300]}")
+        sys.exit(1)
+
+    reasoned = _robot(src_dir, 'reason', '--reasoner', 'hermit', '--input', f'/work/{DL_DOCUMENT}',
+                      '--output', '/work/inferred-hermit.ttl')
+    log = reasoned.stdout + reasoned.stderr
+    verdict['consistent'] = 'inconsistent' not in log.lower()
+    verdict['unsatisfiable'] = sorted(set(re.findall(r'unsatisfiable:\s*(\S+)', log)))
+    if not verdict['consistent']:
+        _robot(src_dir, 'explain', '--reasoner', 'hermit', '--input', f'/work/{DL_DOCUMENT}',
+               '-M', 'inconsistency', '--explanation', '/work/inconsistency.md')
+        explanation = src_dir / 'inconsistency.md'
+        verdict['explanation'] = explanation.read_text(encoding='utf-8')[:4000] if explanation.exists() else ''
+    elif reasoned.returncode != 0 and not verdict['unsatisfiable']:
+        record({**verdict, 'error': log[-2000:]})
+        print(f"   ROBOT failed: {log[-600:]}")
+        sys.exit(1)
+    record(verdict)
+    if not verdict['consistent']:
+        print("   INCONSISTENT under HermiT:")
+        print('   ' + '\n   '.join(verdict['explanation'].splitlines()[:14]))
+        sys.exit(1)
+    if verdict['unsatisfiable']:
+        print(f"   {len(verdict['unsatisfiable'])} class(es) can have no member: {', '.join(verdict['unsatisfiable'][:8])}")
+        sys.exit(1)
+    print("   OWL 2 DL, consistent, every class can have a member")
 
 
 def main(src_dir: Path, substrate_name: str, missing_hint: str):
@@ -447,7 +517,7 @@ def main(src_dir: Path, substrate_name: str, missing_hint: str):
             tables_with_computed[table_name] = computed_cols
 
     print(f"Tables with computed columns: {', '.join(tables_with_computed.keys())}")
-    owl_injector.register_pk_collisions(tables)
+    manifest = load_manifest(src_dir)
 
     # Load ontology + individuals into a single store
     print("\nLoading ontology and data...")
@@ -494,7 +564,7 @@ def main(src_dir: Path, substrate_name: str, missing_hint: str):
         if not schema or not data:
             continue
 
-        records = extract_entity_results(data_graph, table_name, schema, data)
+        records = extract_entity_results(data_graph, table_name, schema, data, manifest)
         total_records += len(records)
 
         # Convert table name to snake_case for filename
@@ -509,6 +579,8 @@ def main(src_dir: Path, substrate_name: str, missing_hint: str):
 
     print(f"\nTotal: {total_records} records extracted")
     print(f"Output: {test_answers_dir}/")
+
+    dl_check(src_dir, test_answers_dir.parent)
 
     print("\n" + "=" * 70)
     print("SHACL reasoning complete!")
