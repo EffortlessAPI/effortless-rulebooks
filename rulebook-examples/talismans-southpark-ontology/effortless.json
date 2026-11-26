@@ -45,16 +45,6 @@
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "rulebooktotypescript",
-      "RelativePath": "/effortless-typescript",
-      "CommandLine": "rulebook-to-typescript -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
-      "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.15.1827",
-      "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-11-15-1827-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
-      "Description": "TypeScript substrate."
-    },
-    {
-      "IsSSoTTranspiler": false,
       "Name": "rulebooktopython",
       "RelativePath": "/effortless-python",
       "CommandLine": "rulebook-to-python -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
@@ -102,6 +92,16 @@
       "LastVersionUsed": "v2026.11.24.1636",
       "LastUrl": "https://effortless-rulebook-to-explainer-v2026-11-24-1636-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Explainer: every derived value's rule and witness down to ground truth, in 16 languages."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktotypescript",
+      "RelativePath": "/explainer/rulebook-explainer-dag/typescript",
+      "CommandLine": "rulebook-to-typescript -i ../../../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.15.1827",
+      "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-11-15-1827-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "TypeScript substrate, written into the explainer's folder so the explainer computes each value's witness in the page."
     },
     {
       "IsSSoTTranspiler": false,

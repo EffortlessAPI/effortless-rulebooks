@@ -82,4 +82,28 @@ ALTER TABLE disjoint_checks DROP CONSTRAINT IF EXISTS fk_disjoint_checks_second;
 ALTER TABLE disjoint_checks ADD CONSTRAINT fk_disjoint_checks_second
   FOREIGN KEY (second) REFERENCES statements (statement_id);
 
--- 20 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- Scenarios
+ALTER TABLE scenarios DROP CONSTRAINT IF EXISTS fk_scenarios_graph;
+ALTER TABLE scenarios ADD CONSTRAINT fk_scenarios_graph
+  FOREIGN KEY (graph) REFERENCES graphs (graph_id);
+
+-- ScenarioFactChanges
+ALTER TABLE scenario_fact_changes DROP CONSTRAINT IF EXISTS fk_scenario_fact_changes_scenario;
+ALTER TABLE scenario_fact_changes ADD CONSTRAINT fk_scenario_fact_changes_scenario
+  FOREIGN KEY (scenario) REFERENCES scenarios (scenario_id);
+ALTER TABLE scenario_fact_changes DROP CONSTRAINT IF EXISTS fk_scenario_fact_changes_subject;
+ALTER TABLE scenario_fact_changes ADD CONSTRAINT fk_scenario_fact_changes_subject
+  FOREIGN KEY (subject) REFERENCES things (thing_id);
+ALTER TABLE scenario_fact_changes DROP CONSTRAINT IF EXISTS fk_scenario_fact_changes_property;
+ALTER TABLE scenario_fact_changes ADD CONSTRAINT fk_scenario_fact_changes_property
+  FOREIGN KEY (property) REFERENCES properties (property_id);
+
+-- ScenarioRuleSettings
+ALTER TABLE scenario_rule_settings DROP CONSTRAINT IF EXISTS fk_scenario_rule_settings_scenario;
+ALTER TABLE scenario_rule_settings ADD CONSTRAINT fk_scenario_rule_settings_scenario
+  FOREIGN KEY (scenario) REFERENCES scenarios (scenario_id);
+ALTER TABLE scenario_rule_settings DROP CONSTRAINT IF EXISTS fk_scenario_rule_settings_rule;
+ALTER TABLE scenario_rule_settings ADD CONSTRAINT fk_scenario_rule_settings_rule
+  FOREIGN KEY (rule) REFERENCES rules (rule_id);
+
+-- 26 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

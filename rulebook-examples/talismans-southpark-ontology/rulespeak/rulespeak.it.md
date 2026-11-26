@@ -98,7 +98,10 @@ _ƒ indica una colonna calcolata._
 | Portrait Page | Un attributo definito. | _The Fandom page credited for the portrait._ |
 | Portrait Image | Un attributo definito. | _The original Fandom image._ |
 | Portrait Crop | Un attributo definito. | _The portrait's crop as an SVG viewBox: x y width height._ |
+| Portrait Width | Un attributo definito. | _The original image's width in pixels._ |
+| Portrait Height | Un attributo definito. | _The original image's height in pixels._ |
 | Name | Uguale a label. | _Order 1. The thing's name._ |
+| Node Key | Uguale a thing ID. | _Order 1. The key the graph draws this thing under._ |
 | Count of Children | Il totale di parent unit tra i statements collegati a il thing. | _Order 17. People this thing is a parent of, stated or concluded._ |
 | Count of Grandchildren | Il totale di grandparent unit tra i statements collegati a il thing. | _Order 17. People this thing is a grandparent of._ |
 | Count As Place | Il totale di place unit tra i statements collegati a il thing. | _Order 17. Holding attends facts whose object is this thing._ |
@@ -110,11 +113,11 @@ _ƒ indica una colonna calcolata._
 <details open>
 <summary>Dati di esempio</summary>
 
-| Label | Kind | Sort Order | Portrait Name | Portrait Page | Portrait Image | Portrait Crop | Name ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Marvin | individual | 1 | Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | Marvin | 1 | 0 | 0 | 1 | 0 | true | person |
-| Randy | individual | 2 | Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | Randy | 2 | 0 | 0 | 3 | 1 | true | person |
-| Sharon | individual | 3 | Sharon Marsh | https://southpark.fandom.com/wiki/Sharon_Marsh | https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest | 20 -10 390 390 | Sharon | 0 | 0 | 0 | 0 | 1 | true | person |
+| Label | Kind | Sort Order | Portrait Name | Portrait Page | Portrait Image | Portrait Crop | Portrait Width | Portrait Height | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Marvin | individual | 1 | Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | Marvin | Marvin | 1 | 0 | 0 | 1 | 0 | true | person |
+| Randy | individual | 2 | Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | Randy | Randy | 2 | 0 | 0 | 3 | 1 | true | person |
+| Sharon | individual | 3 | Sharon Marsh | https://southpark.fandom.com/wiki/Sharon_Marsh | https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest | 20 -10 390 390 | 439 | 1049 | Sharon | Sharon | 0 | 0 | 0 | 0 | 1 | true | person |
 
 _ƒ indica una colonna calcolata._
 
@@ -136,16 +139,21 @@ _ƒ indica una colonna calcolata._
 | Range Class | Un attributo definito. | _The class the range rule gives this property's object._ |
 | Disjoint With | Un attributo definito. | _A property that may not link the same pair, in the same direction, as this one._ |
 | Sort Order | Un attributo definito. | _Position in the Add fact form's property list._ |
+| Value Node Label | Un attributo definito. | _The small label under a value node for this property: 'role value' or 'number value'._ |
+| Current Value Wording | Un attributo definito. | _How the Add fact form names a replaced value, as in 'Stan now has grade level 5'._ |
+| Input Name | Un attributo definito. | _How the integer check names this property's value, as in 'for grade level'._ |
+| Record Kind | Un attributo definito. | _The word the current-record summary uses for this property's values: role, grade or school._ |
+| Record Order | Un attributo definito. | _Position of this property in the current-record summary._ |
 | Name | Uguale a label. | _Order 1. The property's wording._ |
 
 <details open>
 <summary>Dati di esempio</summary>
 
-| Label | Property Kind | Datatype | Is User Addable | Has One Current Value | Is Symmetric | Sort Order | Name ƒ |
-|---|---|---|---|---|---|---|---|
-| is parent of | object | — | true | false | false | 1 | is parent of |
-| is child of | object | — | true | false | false | 2 | is child of |
-| is spouse of | object | — | true | false | true | 3 | is spouse of |
+| Label | Property Kind | Datatype | Is User Addable | Has One Current Value | Is Symmetric | Sort Order | Value Node Label | Current Value Wording | Input Name | Record Kind | Record Order | Name ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| is parent of | object | — | true | false | false | 1 | — | — | — | — | — | is parent of |
+| is child of | object | — | true | false | false | 2 | — | — | — | — | — | is child of |
+| is spouse of | object | — | true | false | true | 3 | — | — | — | — | — | is spouse of |
 
 _ƒ indica una colonna calcolata._
 
@@ -204,15 +212,24 @@ _ƒ indica una colonna calcolata._
 | Place Unit | Determinato per priorità: 1 se vale tutto quanto segue: l'indicatore “holds” è attivo e il property è «attends»; in tutti gli altri casi, 0. | _Order 16. 1 for a holding attends link._ |
 | First Fired Order Key | Il valore minimo di order key tra i firings del statement che sono fired unit. | _Order 15. Order key of the first rule application that concludes this fact, in the page reasoner's order._ |
 | Count of Chosen Firings | Il totale di chosen unit tra i firings collegati a il statement. | _Order 20. Rule applications shown as this fact's conclusion card: one for a conclusion, zero otherwise._ |
+| Subject Node Key | Uguale a subject. | _Order 1. The graph node this fact starts from._ |
+| Object Node Key | Determinato per priorità: «literal|», seguito da l'object value, seguito da «|», seguito da il property datatype se l'object thing è vuoto; in tutti gli altri casi, l'object thing. | _Order 2. The graph node this fact points at: the thing, or one node per value and datatype._ |
+| Subject Node Kind | Ripreso dal subject collegato. | _Order 19. How the graph draws the subject._ |
+| Object Thing Node Kind | Ripreso dal object thing collegato. | _Order 19. How the graph draws the object thing._ |
+| Object Node Kind | Determinato per priorità: «value» se l'object thing è vuoto; in tutti gli altri casi, l'object thing node kind. | _Order 20. How the graph draws the object: a value, a class, a place or a person._ |
+| Object Value Node Label | Ripreso dal property collegato. | _Order 1. The small label under a value node._ |
+| Count of Violations As First | Il totale di violation unit tra i disjoint checks collegati a il statement. | _Order 18. Violated disjointness checks naming this fact first._ |
+| Count of Violations As Second | Il totale di violation unit tra i disjoint checks collegati a il statement. | _Order 18. Violated disjointness checks naming this fact second._ |
+| Is in Contradiction | Vero quando vale almeno una delle seguenti: il count of violations as first è maggiore di 0 o il count of violations as second è maggiore di 0. | _Order 19. Part of a contradiction the disjoint rule found; drawn in the alarm colour._ |
 
 <details open>
 <summary>Dati di esempio</summary>
 
-| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 0 |
-| — | false | false | false | false | 0 | 101 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 |
-| — | false | false | false | false | 0 | 102 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 |
+| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 101 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 102 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
 
 _ƒ indica una colonna calcolata._
 
@@ -234,6 +251,8 @@ _ƒ indica una colonna calcolata._
 | Target Property Label | Ripreso dal target collegato. | _Order 2. The concluded fact's property._ |
 | Target Object Text | Ripreso dal target collegato. | _Order 3. The concluded fact's object._ |
 | Target is Conclusion | Vero quando il target collegato è un conclusion. | _Order 17. Whether the concluded fact is new._ |
+| Target Subject Node Key | Ripreso dal target collegato. | _Order 2. The concluded fact's subject node._ |
+| Target Object Node Key | Ripreso dal target collegato. | _Order 3. The concluded fact's object node._ |
 | Target First Fired Order Key | Ripreso dal target collegato. | _Order 16. The order key of the concluded fact's first application._ |
 | First Words | Ripreso dal first collegato. | _Order 3. The premise as the card quotes it._ |
 | Second Words | Ripreso dal second collegato. | _Order 3. The second premise as the card quotes it._ |
@@ -260,11 +279,11 @@ _ƒ indica una colonna calcolata._
 <details open>
 <summary>Dati di esempio</summary>
 
-| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second Sort Order ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | — | 0 | 0 | 0 | 0 | 0 | 101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 101 | — | 0 | 0 | 0 | 0 | 0 | 10101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 102 | — | 0 | 0 | 0 | 0 | 0 | 10201000 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
+| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second Sort Order ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | — | 0 | 0 | 0 | 0 | 0 | 101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 101 | — | 0 | 0 | 0 | 0 | 0 | 10101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 102 | — | 0 | 0 | 0 | 0 | 0 | 10201000 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
 
 _ƒ indica una colonna calcolata._
 
@@ -299,6 +318,144 @@ _ƒ indica una colonna calcolata._
 
 </details>
 
+| Termine | Descrizione | Commento narrativo |
+|------|-------------|-------------------|
+| **Scenario** | The page's buttons. Each one is a fact baseline, explicit fact changes and rule settings, applied in that order. | — |
+| Graph | Un attributo definito. | _The graph._ |
+| Label | Un attributo definito. | _The button's text._ |
+| Note | Un attributo definito. | _The note shown under the buttons after this one is pressed; blank clears it._ |
+| Sort Order | Un attributo definito. | _Position among the buttons._ |
+| Button Group | Un attributo definito. | _'stan' for the two imagined changes, 'facts' for the buttons under the fact list._ |
+| Is Primary | Vero quando una stringa vuota. | _Drawn as the filled button._ |
+| Fact Baseline | Un attributo definito. | _What happens to every listed fact first: keep, built-in (teaching facts on, others off), built-in-detail, all-off, activate-all (each switched on in list order), or next (the next fact on)._ |
+| Layout | Un attributo definito. | _The node layout the graph returns to; blank keeps the current positions._ |
+| Clears Selection | Vero quando una stringa vuota. | _Clears the selected node or line._ |
+| Clears Form Message | Vero quando una stringa vuota. | _Clears the Add fact form's message._ |
+| Name | Uguale a label. | _Order 1. The button's text._ |
+| Graph Has Facts to Add | Vero quando il graph collegato ha un facts to add. | _Order 7. Whether a listed fact can still be added._ |
+| Is Available | Vero quando vale almeno una delle seguenti: il fact baseline non è «next» o l'indicatore “graph has facts to add” è attivo. | _Order 8. False only for Add next fact once every listed fact is in effect._ |
+
+<details open>
+<summary>Dati di esempio</summary>
+
+| Label | Note | Sort Order | Button Group | Is Primary | Fact Baseline | Layout | Clears Selection | Clears Form Message | Name ƒ | Graph Has Facts to Add ƒ | Is Available ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Move Stan to grade 5 | This imagined change updates Stan’s grade to 5. His identifier, Person statement and family links stay the same. His other selected details are unchanged. | 1 | stan | false | keep | — | true | true | Move Stan to grade 5 | false | true |
+| Stan leaves school | This imagined change clears Stan’s current school details. His identifier, Person statement and family links remain. Removing a current fact does not say that its opposite is true; school history needs dates. | 2 | stan | false | keep | — | true | true | Stan leaves school | false | true |
+| Add next fact | — | 3 | facts | true | next | — | false | false | Add next fact | false | false |
+
+_ƒ indica una colonna calcolata._
+
+</details>
+
+| Termine | Descrizione | Commento narrativo |
+|------|-------------|-------------------|
+| **Scenario Fact Change** | Fact changes a button makes after its baseline. A blank object key matches every listed value of the property. | — |
+| Scenario | Un attributo definito. | _The button._ |
+| Subject | Un attributo definito. | _The subject whose facts change._ |
+| Property | Un attributo definito. | _The property whose facts change._ |
+| Object Key | Un attributo definito. | _The object thing's key or the literal value; blank for every listed value._ |
+| Action | Un attributo definito. | _'on' switches the fact on as the newest value; 'off' switches it off._ |
+| Adds to List | Vero quando una stringa vuota. | _Adds the fact to the fact list first when it is not listed._ |
+| Sort Order | Un attributo definito. | _Order of the change within the button._ |
+| Name | Uguale a scenario fact change ID. | _Order 1. The change's key._ |
+
+<details open>
+<summary>Dati di esempio</summary>
+
+| Object Key | Action | Adds to List | Sort Order | Name ƒ |
+|---|---|---|---|---|
+| Person | on | true | 1 | stan-grade-five:Stan\|isA\|Person |
+| 5 | on | true | 2 | stan-grade-five:Stan\|hasGradeLevel\|5 |
+| Person | on | true | 3 | stan-leaves-school:Stan\|isA\|Person |
+
+_ƒ indica una colonna calcolata._
+
+</details>
+
+| Termine | Descrizione | Commento narrativo |
+|------|-------------|-------------------|
+| **Scenario Rule Setting** | Rule switches a button sets. | — |
+| Scenario | Un attributo definito. | _The button._ |
+| Rule | Un attributo definito. | _The rule switch._ |
+| Is Enabled | Vero quando una stringa vuota. | _The state the button puts the switch in._ |
+| Name | Uguale a scenario rule setting ID. | _Order 1. The setting's key._ |
+
+<details open>
+<summary>Dati di esempio</summary>
+
+| Is Enabled | Name ƒ |
+|---|---|
+| false | reset-original:inverse |
+| false | reset-original:symmetric |
+| false | reset-original:chain |
+
+_ƒ indica una colonna calcolata._
+
+</details>
+
+| Termine | Descrizione | Commento narrativo |
+|------|-------------|-------------------|
+| **Node Layout** | Node positions in the graph's 380 by 480 drawing, one set per layout. | — |
+| Layout | Un attributo definito. | _The layout: 'default' or 'stan-details'._ |
+| Node Key | Un attributo definito. | _The node: a thing's key, or literal\|value\|datatype._ |
+| X | Un attributo definito. | _Horizontal position._ |
+| Y | Un attributo definito. | _Vertical position._ |
+| Name | Uguale a node layout ID. | _Order 1. The position's key._ |
+
+<details open>
+<summary>Dati di esempio</summary>
+
+| Layout | Node Key | X | Y | Name ƒ |
+|---|---|---|---|---|
+| default | Marvin | 70 | 45 | default:Marvin |
+| default | Randy | 195 | 125 | default:Randy |
+| default | Sharon | 318 | 55 | default:Sharon |
+
+_ƒ indica una colonna calcolata._
+
+</details>
+
+| Termine | Descrizione | Commento narrativo |
+|------|-------------|-------------------|
+| **Layout Slot** | Places for nodes no layout positions, used in turn. | — |
+| Sort Order | Un attributo definito. | _Order in which slots are used._ |
+| X | Un attributo definito. | _Horizontal position._ |
+| Y | Un attributo definito. | _Vertical position._ |
+| Name | Uguale a layout slot ID. | _Order 1. The slot's key._ |
+
+<details open>
+<summary>Dati di esempio</summary>
+
+| Sort Order | X | Y | Name ƒ |
+|---|---|---|---|
+| 1 | 330 | 135 | slot-1 |
+| 2 | 45 | 120 | slot-2 |
+| 3 | 330 | 400 | slot-3 |
+
+_ƒ indica una colonna calcolata._
+
+</details>
+
+| Termine | Descrizione | Commento narrativo |
+|------|-------------|-------------------|
+| **Page Text** | The page's wording, one row per string. {name}-style placeholders are filled by the page. | — |
+| Text | Un attributo definito. | _The string._ |
+| Name | Uguale a page text ID. | _Order 1. The string's key._ |
+
+<details open>
+<summary>Dati di esempio</summary>
+
+| Text | Name ƒ |
+|---|---|
+| South Park Ontology Explainer, on one rulebook | page-title |
+| A rulebook rebuild of the explainer by | byline-prefix |
+| Jessica Talisman | byline-author |
+
+_ƒ indica una colonna calcolata._
+
+</details>
+
 ## 2 Tipi di fatto
 
 - un **firing kind** referenzia esattamente un **rule**
@@ -313,6 +470,12 @@ _ƒ indica una colonna calcolata._
 - un **disjoint check** referenzia esattamente un **graph**
 - un **disjoint check** referenzia esattamente un **rule**
 - un **disjoint check** referenzia esattamente un **statement**
+- un **scenario** referenzia esattamente un **graph**
+- un **scenario fact change** referenzia esattamente un **scenario**
+- un **scenario fact change** referenzia esattamente un **thing**
+- un **scenario fact change** referenzia esattamente un **property**
+- un **scenario rule setting** referenzia esattamente un **scenario**
+- un **scenario rule setting** referenzia esattamente un **rule**
 
 ## 3 Regole operative
 
@@ -341,6 +504,18 @@ il libro delle regole già calcola (referenziato come DR-N nelle regole definito
 - Un disjoint check **deve** referenziare esattamente un rule.
 - Un disjoint check **deve** referenziare esattamente un statement come suo first.
 - Un disjoint check **deve** referenziare esattamente un statement come suo second.
+- Un scenario **deve** referenziare esattamente un graph.
+- Un scenario **deve** avere un label; un sort order; un button group; e un fact baseline, e registrare se è primary; se è clears selection; e se è clears form message.
+- Un scenario fact change **deve** referenziare esattamente un scenario.
+- Un scenario fact change **deve** referenziare esattamente un thing come suo subject.
+- Un scenario fact change **deve** referenziare esattamente un property.
+- Un scenario fact change **deve** avere un action e un sort order, e registrare se è adds to list.
+- Un scenario rule setting **deve** referenziare esattamente un scenario.
+- Un scenario rule setting **deve** referenziare esattamente un rule.
+- Un scenario rule setting **deve** registrare se è enabled.
+- Un node layout **deve** avere un layout; un node key; un x; e un y.
+- Un layout slot **deve** avere un sort order; un x; e un y.
+- Un page text **deve** avere un text.
 
 ## 4 Regole definitorie
 
@@ -370,91 +545,111 @@ legnosa — un segnale per una riscrittura opzionale, non un difetto._
 | **DR-16 Name** | Un firing kind: name è uguale a wording. |
 | **DR-17 Rule Enabled** | Un firing kind: rule enabled è vero quando il rule collegato è enabled. |
 | **DR-18 Name** | Un thing: name è uguale a label. |
-| **DR-19 Count of Children** | Un thing: count of children è il totale di parent unit tra i statements collegati a il thing. |
-| **DR-20 Count of Grandchildren** | Un thing: count of grandchildren è il totale di grandparent unit tra i statements collegati a il thing. |
-| **DR-21 Count As Place** | Un thing: count as place è il totale di place unit tra i statements collegati a il thing. |
-| **DR-22 Count As Subject** | Un thing: count as subject è il totale di holds unit tra i statements collegati a il thing. |
-| **DR-23 Count As Object** | Un thing: count as object è il totale di holds unit tra i statements collegati a il thing. |
-| **DR-24 Is in Graph** | Un thing è considerato in graph se vale almeno una delle seguenti: il count as subject è maggiore di 0 o il count as object è maggiore di 0. |
-| **DR-25 Node Kind** | Il campo “node kind” del thing è determinato secondo la seguente priorità:<br>1. «class», se il kind è «class»;<br>2. «place», se il count as place è maggiore di 0;<br>3. in tutti gli altri casi, «person». |
-| **DR-26 Name** | Un property: name è uguale a label. |
-| **DR-27 Subject Label** | Un statement: subject label — ripreso dal subject collegato. |
-| **DR-28 Property Label** | Un statement: property label — ripreso dal property collegato. |
-| **DR-29 Object Label** | Un statement: object label — ripreso dal object thing collegato. |
-| **DR-30 Property Datatype** | Un statement: property datatype — ripreso dal property collegato. |
-| **DR-31 Property Has One Current Value** | Un statement: property has one current value è vero quando il property collegato ha un one current value. |
-| **DR-32 Property Domain Class** | Un statement: property domain class — ripreso dal property collegato. |
-| **DR-33 Property Range Class** | Un statement: property range class — ripreso dal property collegato. |
-| **DR-34 Literal Quote** | Un statement: literal quote — ripreso dal graph collegato. |
-| **DR-35 Literal Type Marker** | Un statement: literal type marker — ripreso dal graph collegato. |
-| **DR-36 Built in Source Text** | Un statement: built in source text — ripreso dal graph collegato. |
-| **DR-37 User Source Text** | Un statement: user source text — ripreso dal graph collegato. |
-| **DR-38 Next Fact Sort Order** | Un statement: next fact sort order — ripreso dal graph collegato. |
-| **DR-39 Is Literal** | Un statement è considerato literal se l'object thing è vuoto. |
-| **DR-40 Object Text** | Il campo “object text” del statement è determinato secondo la seguente priorità:<br>1. l'object value, se l'object thing è vuoto;<br>2. in tutti gli altri casi, l'object label. |
-| **DR-41 Name** | Un statement: name è calcolato come il subject label, seguito da uno spazio, seguito da il property label, seguito da uno spazio, seguito da l'object text. |
-| **DR-42 Words** | Un statement: words è calcolato come il subject label, seguito da uno spazio, seguito da il property label, seguito da uno spazio, seguito da il literal quote, seguito da l'object value, seguito da il literal quote, seguito da il literal type marker, seguito da il property datatype se l'object thing è vuoto, in tutti gli altri casi l'object label. ⚠︎ meccanica <!-- rulespeak:reword --> |
-| **DR-43 Source** | Il campo “source” del statement è determinato secondo la seguente priorità:<br>1. il built in source text, se l'indicatore “built in” è attivo;<br>2. in tutti gli altri casi, l'user source text. |
-| **DR-44 Subject Property Key** | Un statement: subject property key è calcolato come il subject, seguito da «|», seguito da il property. |
-| **DR-45 Latest Sibling Activation Seq** | Un statement: latest sibling activation seq è il valore massimo di activation seq tra i statements collegati a il statement. |
-| **DR-46 Is in Effect** | Un statement è considerato in effect se vale tutto quanto segue: l'indicatore “stated” è attivo e vale almeno una delle seguenti: l'indicatore “property has one current value” non è attivo o l'activation seq è il latest sibling activation seq. |
-| **DR-47 Listed Unit** | Il campo “listed unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se l'indicatore “listed” è attivo;<br>2. in tutti gli altri casi, 0. |
-| **DR-48 In Effect Unit** | Il campo “in effect unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se l'indicatore “in effect” è attivo;<br>2. in tutti gli altri casi, 0. |
-| **DR-49 Listed Off Unit** | Il campo “listed off unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “listed” è attivo e l'indicatore “in effect” non è attivo;<br>2. in tutti gli altri casi, 0. |
-| **DR-50 Is Next to Add** | Un statement è considerato un next to add se vale tutto quanto segue: il listed off unit è 1 e il sort order è il next fact sort order. |
-| **DR-51 Count of Inverse Firings** | Un statement: count of inverse firings è il totale di inverse fired unit tra i firings collegati a il statement. |
-| **DR-52 Count of Symmetric Firings** | Un statement: count of symmetric firings è il totale di symmetric fired unit tra i firings collegati a il statement. |
-| **DR-53 Holds Before Chain** | Un statement è considerato come soddisfacente: before chain se vale almeno una delle seguenti: l'indicatore “in effect” è attivo; il count of inverse firings è maggiore di 0; o il count of symmetric firings è maggiore di 0. |
-| **DR-54 Count of Chain Firings** | Un statement: count of chain firings è il totale di chain fired unit tra i firings collegati a il statement. |
-| **DR-55 Holds Before Typing** | Un statement è considerato come soddisfacente: before typing se vale almeno una delle seguenti: l'indicatore “holds before chain” è attivo o il count of chain firings è maggiore di 0. |
-| **DR-56 Count of Type Firings** | Un statement: count of type firings è il totale di type fired unit tra i firings collegati a il statement. |
-| **DR-57 Holds** | Un statement è considerato come soddisfacente: se vale almeno una delle seguenti: l'indicatore “holds before typing” è attivo o il count of type firings è maggiore di 0. |
-| **DR-58 Is Conclusion** | Un statement è considerato un conclusion se vale tutto quanto segue: l'indicatore “holds” è attivo e l'indicatore “in effect” non è attivo. |
-| **DR-59 Holds Unit** | Il campo “holds unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se l'indicatore “holds” è attivo;<br>2. in tutti gli altri casi, 0. |
-| **DR-60 Conclusion Unit** | Il campo “conclusion unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se l'indicatore “conclusion” è attivo;<br>2. in tutti gli altri casi, 0. |
-| **DR-61 Parent Unit** | Il campo “parent unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “holds” è attivo e il property è «isParentOf»;<br>2. in tutti gli altri casi, 0. |
-| **DR-62 Grandparent Unit** | Il campo “grandparent unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “holds” è attivo e il property è «isGrandparentOf»;<br>2. in tutti gli altri casi, 0. |
-| **DR-63 Place Unit** | Il campo “place unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “holds” è attivo e il property è «attends»;<br>2. in tutti gli altri casi, 0. |
-| **DR-64 First Fired Order Key** | Un statement: first fired order key è il valore minimo di order key tra i firings del statement che sono fired unit. |
-| **DR-65 Count of Chosen Firings** | Un statement: count of chosen firings è il totale di chosen unit tra i firings collegati a il statement. |
-| **DR-66 Rule Enabled** | Un firing: rule enabled è vero quando il rule collegato è enabled. |
-| **DR-67 Kind Wording** | Un firing: kind wording — ripreso dal kind collegato. |
-| **DR-68 Kind Sort Order** | Un firing: kind sort order — ripreso dal kind collegato. |
-| **DR-69 Target Name** | Un firing: target name — ripreso dal target collegato. |
-| **DR-70 Target Subject Label** | Un firing: target subject label — ripreso dal target collegato. |
-| **DR-71 Target Property Label** | Un firing: target property label — ripreso dal target collegato. |
-| **DR-72 Target Object Text** | Un firing: target object text — ripreso dal target collegato. |
-| **DR-73 Target is Conclusion** | Un firing: target is conclusion è vero quando il target collegato è un conclusion. |
-| **DR-74 Target First Fired Order Key** | Un firing: target first fired order key — ripreso dal target collegato. |
-| **DR-75 First Words** | Un firing: first words — ripreso dal first collegato. |
-| **DR-76 Second Words** | Un firing: second words — ripreso dal second collegato. |
-| **DR-77 First is in Effect** | Un firing: first is in effect è vero quando il first collegato è in effect. |
-| **DR-78 First Holds Before Chain** | Un firing: first holds before chain è vero quando il first collegato è holds before chain. |
-| **DR-79 Second Holds Before Chain** | Un firing: second holds before chain è vero quando il second collegato è holds before chain. |
-| **DR-80 First Holds Before Typing** | Un firing: first holds before typing è vero quando il first collegato è holds before typing. |
-| **DR-81 First Property** | Un firing: first property — ripreso dal first collegato. |
-| **DR-82 First Property Domain Class** | Un firing: first property domain class — ripreso dal first collegato. |
-| **DR-83 First Property Range Class** | Un firing: first property range class — ripreso dal first collegato. |
-| **DR-84 First Sort Order** | Un firing: first sort order — ripreso dal first collegato. |
-| **DR-85 Second Sort Order** | Un firing: second sort order — ripreso dal second collegato. |
-| **DR-86 Inverse Fired Unit** | Il campo “inverse fired unit” del firing è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “rule enabled” è attivo; il kind è «inverse»; e l'indicatore “first is in effect” è attivo;<br>2. in tutti gli altri casi, 0. |
-| **DR-87 Symmetric Fired Unit** | Il campo “symmetric fired unit” del firing è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “rule enabled” è attivo; il kind è «symmetric»; e l'indicatore “first is in effect” è attivo;<br>2. in tutti gli altri casi, 0. |
-| **DR-88 Chain Fired Unit** | Il campo “chain fired unit” del firing è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “rule enabled” è attivo; il kind è «chain»; l'indicatore “first holds before chain” è attivo; e l'indicatore “second holds before chain” è attivo;<br>2. in tutti gli altri casi, 0. |
-| **DR-89 Type Fired Unit** | Il campo “type fired unit” del firing è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “rule enabled” è attivo; vale almeno una delle seguenti: il kind è «domain» o il kind è «range»; e l'indicatore “first holds before typing” è attivo;<br>2. in tutti gli altri casi, 0. |
-| **DR-90 Fired Unit** | Un firing: fired unit è calcolato come l'inverse fired unit più il symmetric fired unit più il chain fired unit più il type fired unit. |
-| **DR-91 Order Key** | Un firing: order key è calcolato come il first sort order per 100000 più il kind sort order per 1000 più 0 se il second è vuoto, in tutti gli altri casi il second sort order. |
-| **DR-92 Is Chosen** | Un firing è considerato un chosen se vale tutto quanto segue: il fired unit è 1; l'indicatore “target is conclusion” è attivo; e l'order key è il target first fired order key. |
-| **DR-93 Chosen Unit** | Il campo “chosen unit” del firing è determinato secondo la seguente priorità:<br>1. 1, se l'indicatore “chosen” è attivo;<br>2. in tutti gli altri casi, 0. |
-| **DR-94 Card Text** | Il campo “card text” del firing è determinato secondo la seguente priorità:<br>1. «Worked out by the », seguito da il kind wording, seguito da « from “», seguito da il first words, seguito da «”», seguito da « and “», seguito da il second words, seguito da «”» se il kind è «chain», in tutti gli altri casi « and “», seguito da il first property, seguito da « has domain », seguito da il first property domain class, seguito da «”» se il kind è «domain», in tutti gli altri casi « and “», seguito da il first property, seguito da « has range », seguito da il first property range class, seguito da «”», seguito da un punto, se l'indicatore “chosen” è attivo;<br>2. in tutti gli altri casi, una stringa vuota. ⚠︎ meccanica <!-- rulespeak:reword --> |
-| **DR-95 Name** | Un firing: name è uguale a firing ID. |
-| **DR-96 Rule Enabled** | Un disjoint check: rule enabled è vero quando il rule collegato è enabled. |
-| **DR-97 First Holds** | Un disjoint check: first holds è vero quando il first collegato è holds. |
-| **DR-98 Second Holds** | Un disjoint check: second holds è vero quando il second collegato è holds. |
-| **DR-99 Subject Label** | Un disjoint check: subject label — ripreso dal first collegato. |
-| **DR-100 Object Label** | Un disjoint check: object label — ripreso dal first collegato. |
-| **DR-101 Violation Unit** | Il campo “violation unit” del disjoint check è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “rule enabled” è attivo; l'indicatore “first holds” è attivo; e l'indicatore “second holds” è attivo;<br>2. in tutti gli altri casi, 0. |
-| **DR-102 Alarm Text** | Il campo “alarm text” del disjoint check è determinato secondo la seguente priorità:<br>1. «Contradiction found. », seguito da il subject label, seguito da « is recorded as both parent and spouse of », seguito da l'object label, seguito da «. Check those facts and the selected disjoint rule.», se il violation unit è 1;<br>2. in tutti gli altri casi, una stringa vuota. |
-| **DR-103 Name** | Un disjoint check: name è uguale a disjoint check ID. |
+| **DR-19 Node Key** | Un thing: node key è uguale a thing ID. |
+| **DR-20 Count of Children** | Un thing: count of children è il totale di parent unit tra i statements collegati a il thing. |
+| **DR-21 Count of Grandchildren** | Un thing: count of grandchildren è il totale di grandparent unit tra i statements collegati a il thing. |
+| **DR-22 Count As Place** | Un thing: count as place è il totale di place unit tra i statements collegati a il thing. |
+| **DR-23 Count As Subject** | Un thing: count as subject è il totale di holds unit tra i statements collegati a il thing. |
+| **DR-24 Count As Object** | Un thing: count as object è il totale di holds unit tra i statements collegati a il thing. |
+| **DR-25 Is in Graph** | Un thing è considerato in graph se vale almeno una delle seguenti: il count as subject è maggiore di 0 o il count as object è maggiore di 0. |
+| **DR-26 Node Kind** | Il campo “node kind” del thing è determinato secondo la seguente priorità:<br>1. «class», se il kind è «class»;<br>2. «place», se il count as place è maggiore di 0;<br>3. in tutti gli altri casi, «person». |
+| **DR-27 Name** | Un property: name è uguale a label. |
+| **DR-28 Subject Label** | Un statement: subject label — ripreso dal subject collegato. |
+| **DR-29 Property Label** | Un statement: property label — ripreso dal property collegato. |
+| **DR-30 Object Label** | Un statement: object label — ripreso dal object thing collegato. |
+| **DR-31 Property Datatype** | Un statement: property datatype — ripreso dal property collegato. |
+| **DR-32 Property Has One Current Value** | Un statement: property has one current value è vero quando il property collegato ha un one current value. |
+| **DR-33 Property Domain Class** | Un statement: property domain class — ripreso dal property collegato. |
+| **DR-34 Property Range Class** | Un statement: property range class — ripreso dal property collegato. |
+| **DR-35 Literal Quote** | Un statement: literal quote — ripreso dal graph collegato. |
+| **DR-36 Literal Type Marker** | Un statement: literal type marker — ripreso dal graph collegato. |
+| **DR-37 Built in Source Text** | Un statement: built in source text — ripreso dal graph collegato. |
+| **DR-38 User Source Text** | Un statement: user source text — ripreso dal graph collegato. |
+| **DR-39 Next Fact Sort Order** | Un statement: next fact sort order — ripreso dal graph collegato. |
+| **DR-40 Is Literal** | Un statement è considerato literal se l'object thing è vuoto. |
+| **DR-41 Object Text** | Il campo “object text” del statement è determinato secondo la seguente priorità:<br>1. l'object value, se l'object thing è vuoto;<br>2. in tutti gli altri casi, l'object label. |
+| **DR-42 Name** | Un statement: name è calcolato come il subject label, seguito da uno spazio, seguito da il property label, seguito da uno spazio, seguito da l'object text. |
+| **DR-43 Words** | Un statement: words è calcolato come il subject label, seguito da uno spazio, seguito da il property label, seguito da uno spazio, seguito da il literal quote, seguito da l'object value, seguito da il literal quote, seguito da il literal type marker, seguito da il property datatype se l'object thing è vuoto, in tutti gli altri casi l'object label. ⚠︎ meccanica <!-- rulespeak:reword --> |
+| **DR-44 Source** | Il campo “source” del statement è determinato secondo la seguente priorità:<br>1. il built in source text, se l'indicatore “built in” è attivo;<br>2. in tutti gli altri casi, l'user source text. |
+| **DR-45 Subject Property Key** | Un statement: subject property key è calcolato come il subject, seguito da «|», seguito da il property. |
+| **DR-46 Latest Sibling Activation Seq** | Un statement: latest sibling activation seq è il valore massimo di activation seq tra i statements collegati a il statement. |
+| **DR-47 Is in Effect** | Un statement è considerato in effect se vale tutto quanto segue: l'indicatore “stated” è attivo e vale almeno una delle seguenti: l'indicatore “property has one current value” non è attivo o l'activation seq è il latest sibling activation seq. |
+| **DR-48 Listed Unit** | Il campo “listed unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se l'indicatore “listed” è attivo;<br>2. in tutti gli altri casi, 0. |
+| **DR-49 In Effect Unit** | Il campo “in effect unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se l'indicatore “in effect” è attivo;<br>2. in tutti gli altri casi, 0. |
+| **DR-50 Listed Off Unit** | Il campo “listed off unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “listed” è attivo e l'indicatore “in effect” non è attivo;<br>2. in tutti gli altri casi, 0. |
+| **DR-51 Is Next to Add** | Un statement è considerato un next to add se vale tutto quanto segue: il listed off unit è 1 e il sort order è il next fact sort order. |
+| **DR-52 Count of Inverse Firings** | Un statement: count of inverse firings è il totale di inverse fired unit tra i firings collegati a il statement. |
+| **DR-53 Count of Symmetric Firings** | Un statement: count of symmetric firings è il totale di symmetric fired unit tra i firings collegati a il statement. |
+| **DR-54 Holds Before Chain** | Un statement è considerato come soddisfacente: before chain se vale almeno una delle seguenti: l'indicatore “in effect” è attivo; il count of inverse firings è maggiore di 0; o il count of symmetric firings è maggiore di 0. |
+| **DR-55 Count of Chain Firings** | Un statement: count of chain firings è il totale di chain fired unit tra i firings collegati a il statement. |
+| **DR-56 Holds Before Typing** | Un statement è considerato come soddisfacente: before typing se vale almeno una delle seguenti: l'indicatore “holds before chain” è attivo o il count of chain firings è maggiore di 0. |
+| **DR-57 Count of Type Firings** | Un statement: count of type firings è il totale di type fired unit tra i firings collegati a il statement. |
+| **DR-58 Holds** | Un statement è considerato come soddisfacente: se vale almeno una delle seguenti: l'indicatore “holds before typing” è attivo o il count of type firings è maggiore di 0. |
+| **DR-59 Is Conclusion** | Un statement è considerato un conclusion se vale tutto quanto segue: l'indicatore “holds” è attivo e l'indicatore “in effect” non è attivo. |
+| **DR-60 Holds Unit** | Il campo “holds unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se l'indicatore “holds” è attivo;<br>2. in tutti gli altri casi, 0. |
+| **DR-61 Conclusion Unit** | Il campo “conclusion unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se l'indicatore “conclusion” è attivo;<br>2. in tutti gli altri casi, 0. |
+| **DR-62 Parent Unit** | Il campo “parent unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “holds” è attivo e il property è «isParentOf»;<br>2. in tutti gli altri casi, 0. |
+| **DR-63 Grandparent Unit** | Il campo “grandparent unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “holds” è attivo e il property è «isGrandparentOf»;<br>2. in tutti gli altri casi, 0. |
+| **DR-64 Place Unit** | Il campo “place unit” del statement è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “holds” è attivo e il property è «attends»;<br>2. in tutti gli altri casi, 0. |
+| **DR-65 First Fired Order Key** | Un statement: first fired order key è il valore minimo di order key tra i firings del statement che sono fired unit. |
+| **DR-66 Count of Chosen Firings** | Un statement: count of chosen firings è il totale di chosen unit tra i firings collegati a il statement. |
+| **DR-67 Subject Node Key** | Un statement: subject node key è uguale a subject. |
+| **DR-68 Object Node Key** | Il campo “object node key” del statement è determinato secondo la seguente priorità:<br>1. «literal|», seguito da l'object value, seguito da «|», seguito da il property datatype, se l'object thing è vuoto;<br>2. in tutti gli altri casi, l'object thing. |
+| **DR-69 Subject Node Kind** | Un statement: subject node kind — ripreso dal subject collegato. |
+| **DR-70 Object Thing Node Kind** | Un statement: object thing node kind — ripreso dal object thing collegato. |
+| **DR-71 Object Node Kind** | Il campo “object node kind” del statement è determinato secondo la seguente priorità:<br>1. «value», se l'object thing è vuoto;<br>2. in tutti gli altri casi, l'object thing node kind. |
+| **DR-72 Object Value Node Label** | Un statement: object value node label — ripreso dal property collegato. |
+| **DR-73 Count of Violations As First** | Un statement: count of violations as first è il totale di violation unit tra i disjoint checks collegati a il statement. |
+| **DR-74 Count of Violations As Second** | Un statement: count of violations as second è il totale di violation unit tra i disjoint checks collegati a il statement. |
+| **DR-75 Is in Contradiction** | Un statement è considerato in contradiction se vale almeno una delle seguenti: il count of violations as first è maggiore di 0 o il count of violations as second è maggiore di 0. |
+| **DR-76 Rule Enabled** | Un firing: rule enabled è vero quando il rule collegato è enabled. |
+| **DR-77 Kind Wording** | Un firing: kind wording — ripreso dal kind collegato. |
+| **DR-78 Kind Sort Order** | Un firing: kind sort order — ripreso dal kind collegato. |
+| **DR-79 Target Name** | Un firing: target name — ripreso dal target collegato. |
+| **DR-80 Target Subject Label** | Un firing: target subject label — ripreso dal target collegato. |
+| **DR-81 Target Property Label** | Un firing: target property label — ripreso dal target collegato. |
+| **DR-82 Target Object Text** | Un firing: target object text — ripreso dal target collegato. |
+| **DR-83 Target is Conclusion** | Un firing: target is conclusion è vero quando il target collegato è un conclusion. |
+| **DR-84 Target Subject Node Key** | Un firing: target subject node key — ripreso dal target collegato. |
+| **DR-85 Target Object Node Key** | Un firing: target object node key — ripreso dal target collegato. |
+| **DR-86 Target First Fired Order Key** | Un firing: target first fired order key — ripreso dal target collegato. |
+| **DR-87 First Words** | Un firing: first words — ripreso dal first collegato. |
+| **DR-88 Second Words** | Un firing: second words — ripreso dal second collegato. |
+| **DR-89 First is in Effect** | Un firing: first is in effect è vero quando il first collegato è in effect. |
+| **DR-90 First Holds Before Chain** | Un firing: first holds before chain è vero quando il first collegato è holds before chain. |
+| **DR-91 Second Holds Before Chain** | Un firing: second holds before chain è vero quando il second collegato è holds before chain. |
+| **DR-92 First Holds Before Typing** | Un firing: first holds before typing è vero quando il first collegato è holds before typing. |
+| **DR-93 First Property** | Un firing: first property — ripreso dal first collegato. |
+| **DR-94 First Property Domain Class** | Un firing: first property domain class — ripreso dal first collegato. |
+| **DR-95 First Property Range Class** | Un firing: first property range class — ripreso dal first collegato. |
+| **DR-96 First Sort Order** | Un firing: first sort order — ripreso dal first collegato. |
+| **DR-97 Second Sort Order** | Un firing: second sort order — ripreso dal second collegato. |
+| **DR-98 Inverse Fired Unit** | Il campo “inverse fired unit” del firing è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “rule enabled” è attivo; il kind è «inverse»; e l'indicatore “first is in effect” è attivo;<br>2. in tutti gli altri casi, 0. |
+| **DR-99 Symmetric Fired Unit** | Il campo “symmetric fired unit” del firing è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “rule enabled” è attivo; il kind è «symmetric»; e l'indicatore “first is in effect” è attivo;<br>2. in tutti gli altri casi, 0. |
+| **DR-100 Chain Fired Unit** | Il campo “chain fired unit” del firing è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “rule enabled” è attivo; il kind è «chain»; l'indicatore “first holds before chain” è attivo; e l'indicatore “second holds before chain” è attivo;<br>2. in tutti gli altri casi, 0. |
+| **DR-101 Type Fired Unit** | Il campo “type fired unit” del firing è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “rule enabled” è attivo; vale almeno una delle seguenti: il kind è «domain» o il kind è «range»; e l'indicatore “first holds before typing” è attivo;<br>2. in tutti gli altri casi, 0. |
+| **DR-102 Fired Unit** | Un firing: fired unit è calcolato come l'inverse fired unit più il symmetric fired unit più il chain fired unit più il type fired unit. |
+| **DR-103 Order Key** | Un firing: order key è calcolato come il first sort order per 100000 più il kind sort order per 1000 più 0 se il second è vuoto, in tutti gli altri casi il second sort order. |
+| **DR-104 Is Chosen** | Un firing è considerato un chosen se vale tutto quanto segue: il fired unit è 1; l'indicatore “target is conclusion” è attivo; e l'order key è il target first fired order key. |
+| **DR-105 Chosen Unit** | Il campo “chosen unit” del firing è determinato secondo la seguente priorità:<br>1. 1, se l'indicatore “chosen” è attivo;<br>2. in tutti gli altri casi, 0. |
+| **DR-106 Card Text** | Il campo “card text” del firing è determinato secondo la seguente priorità:<br>1. «Worked out by the », seguito da il kind wording, seguito da « from “», seguito da il first words, seguito da «”», seguito da « and “», seguito da il second words, seguito da «”» se il kind è «chain», in tutti gli altri casi « and “», seguito da il first property, seguito da « has domain », seguito da il first property domain class, seguito da «”» se il kind è «domain», in tutti gli altri casi « and “», seguito da il first property, seguito da « has range », seguito da il first property range class, seguito da «”», seguito da un punto, se l'indicatore “chosen” è attivo;<br>2. in tutti gli altri casi, una stringa vuota. ⚠︎ meccanica <!-- rulespeak:reword --> |
+| **DR-107 Name** | Un firing: name è uguale a firing ID. |
+| **DR-108 Rule Enabled** | Un disjoint check: rule enabled è vero quando il rule collegato è enabled. |
+| **DR-109 First Holds** | Un disjoint check: first holds è vero quando il first collegato è holds. |
+| **DR-110 Second Holds** | Un disjoint check: second holds è vero quando il second collegato è holds. |
+| **DR-111 Subject Label** | Un disjoint check: subject label — ripreso dal first collegato. |
+| **DR-112 Object Label** | Un disjoint check: object label — ripreso dal first collegato. |
+| **DR-113 Violation Unit** | Il campo “violation unit” del disjoint check è determinato secondo la seguente priorità:<br>1. 1, se vale tutto quanto segue: l'indicatore “rule enabled” è attivo; l'indicatore “first holds” è attivo; e l'indicatore “second holds” è attivo;<br>2. in tutti gli altri casi, 0. |
+| **DR-114 Alarm Text** | Il campo “alarm text” del disjoint check è determinato secondo la seguente priorità:<br>1. «Contradiction found. », seguito da il subject label, seguito da « is recorded as both parent and spouse of », seguito da l'object label, seguito da «. Check those facts and the selected disjoint rule.», se il violation unit è 1;<br>2. in tutti gli altri casi, una stringa vuota. |
+| **DR-115 Name** | Un disjoint check: name è uguale a disjoint check ID. |
+| **DR-116 Name** | Un scenario: name è uguale a label. |
+| **DR-117 Graph Has Facts to Add** | Un scenario: graph has facts to add è vero quando il graph collegato ha un facts to add. |
+| **DR-118 Is Available** | Un scenario è considerato available se vale almeno una delle seguenti: il fact baseline non è «next» o l'indicatore “graph has facts to add” è attivo. |
+| **DR-119 Name** | Un scenario fact change: name è uguale a scenario fact change ID. |
+| **DR-120 Name** | Un scenario rule setting: name è uguale a scenario rule setting ID. |
+| **DR-121 Name** | Un node layout: name è uguale a node layout ID. |
+| **DR-122 Name** | Un layout slot: name è uguale a layout slot ID. |
+| **DR-123 Name** | Un page text: name è uguale a page text ID. |
 
 ## 5 Tracciabilità allo schema
 
@@ -481,6 +676,7 @@ la stessa logica che il libro delle regole memorizza, scritta per un lettore di 
 | **FiringKinds.Name** | formula | `Wording` |
 | **FiringKinds.RuleEnabled** | ricerca | `Lookup(Rules.IsEnabled via Rule)` |
 | **Things.Name** | formula | `Label` |
+| **Things.NodeKey** | formula | `ThingId` |
 | **Things.CountOfChildren** | aggregato | `Sum(Statements.ParentUnit via Subject)` |
 | **Things.CountOfGrandchildren** | aggregato | `Sum(Statements.GrandparentUnit via Subject)` |
 | **Things.CountAsPlace** | aggregato | `Sum(Statements.PlaceUnit via ObjectThing)` |
@@ -528,6 +724,15 @@ la stessa logica che il libro delle regole memorizza, scritta per un lettore di 
 | **Statements.PlaceUnit** | formula | `If(And(Holds, Property = "attends"), 1, 0)` |
 | **Statements.FirstFiredOrderKey** | aggregato | `Min(Firings.OrderKey via Target)` |
 | **Statements.CountOfChosenFirings** | aggregato | `Sum(Firings.ChosenUnit via Target)` |
+| **Statements.SubjectNodeKey** | formula | `Subject` |
+| **Statements.ObjectNodeKey** | formula | `If(ObjectThing = "", Concat("literal\|", ObjectValue, "\|", PropertyDatatype), ObjectThing)` |
+| **Statements.SubjectNodeKind** | ricerca | `Lookup(Things.NodeKind via Subject)` |
+| **Statements.ObjectThingNodeKind** | ricerca | `Lookup(Things.NodeKind via ObjectThing)` |
+| **Statements.ObjectNodeKind** | formula | `If(ObjectThing = "", "value", ObjectThingNodeKind)` |
+| **Statements.ObjectValueNodeLabel** | ricerca | `Lookup(Properties.ValueNodeLabel via Property)` |
+| **Statements.CountOfViolationsAsFirst** | aggregato | `Sum(DisjointChecks.ViolationUnit via First)` |
+| **Statements.CountOfViolationsAsSecond** | aggregato | `Sum(DisjointChecks.ViolationUnit via Second)` |
+| **Statements.IsInContradiction** | formula | `Or(CountOfViolationsAsFirst > 0, CountOfViolationsAsSecond > 0)` |
 | **Firings.RuleEnabled** | ricerca | `Lookup(Rules.IsEnabled via Rule)` |
 | **Firings.KindWording** | ricerca | `Lookup(FiringKinds.Wording via Kind)` |
 | **Firings.KindSortOrder** | ricerca | `Lookup(FiringKinds.SortOrder via Kind)` |
@@ -536,6 +741,8 @@ la stessa logica che il libro delle regole memorizza, scritta per un lettore di 
 | **Firings.TargetPropertyLabel** | ricerca | `Lookup(Statements.PropertyLabel via Target)` |
 | **Firings.TargetObjectText** | ricerca | `Lookup(Statements.ObjectText via Target)` |
 | **Firings.TargetIsConclusion** | ricerca | `Lookup(Statements.IsConclusion via Target)` |
+| **Firings.TargetSubjectNodeKey** | ricerca | `Lookup(Statements.SubjectNodeKey via Target)` |
+| **Firings.TargetObjectNodeKey** | ricerca | `Lookup(Statements.ObjectNodeKey via Target)` |
 | **Firings.TargetFirstFiredOrderKey** | ricerca | `Lookup(Statements.FirstFiredOrderKey via Target)` |
 | **Firings.FirstWords** | ricerca | `Lookup(Statements.Words via First)` |
 | **Firings.SecondWords** | ricerca | `Lookup(Statements.Words via Second)` |
@@ -566,6 +773,14 @@ la stessa logica che il libro delle regole memorizza, scritta per un lettore di 
 | **DisjointChecks.ViolationUnit** | formula | `If(And(RuleEnabled, FirstHolds, SecondHolds), 1, 0)` |
 | **DisjointChecks.AlarmText** | formula | `If(ViolationUnit = 1, Concat("Contradiction found. ", SubjectLabel, " is recorded as both parent and spouse of ", ObjectLabel, ". Check those facts and the selected disjoint rule."), "")` |
 | **DisjointChecks.Name** | formula | `DisjointCheckId` |
+| **Scenarios.Name** | formula | `Label` |
+| **Scenarios.GraphHasFactsToAdd** | ricerca | `Lookup(Graphs.HasFactsToAdd via Graph)` |
+| **Scenarios.IsAvailable** | formula | `Or(FactBaseline <> "next", GraphHasFactsToAdd)` |
+| **ScenarioFactChanges.Name** | formula | `ScenarioFactChangeId` |
+| **ScenarioRuleSettings.Name** | formula | `ScenarioRuleSettingId` |
+| **NodeLayouts.Name** | formula | `NodeLayoutId` |
+| **LayoutSlots.Name** | formula | `LayoutSlotId` |
+| **PageTexts.Name** | formula | `PageTextId` |
 
 ---
 

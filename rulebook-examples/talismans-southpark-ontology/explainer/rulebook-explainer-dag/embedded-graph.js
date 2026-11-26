@@ -492,12 +492,34 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "Description": "The portrait's crop as an SVG viewBox: x y width height."
    },
    {
+    "name": "PortraitWidth",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The original image's width in pixels."
+   },
+   {
+    "name": "PortraitHeight",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The original image's height in pixels."
+   },
+   {
     "name": "Name",
     "datatype": "string",
     "type": "calculated",
     "nullable": false,
     "Description": "Order 1. The thing's name.",
     "formula": "={{Label}}"
+   },
+   {
+    "name": "NodeKey",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The key the graph draws this thing under.",
+    "formula": "={{ThingId}}"
    },
    {
     "name": "CountOfChildren",
@@ -565,7 +587,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "PortraitName": "Marvin Marsh",
     "PortraitPage": "https://southpark.fandom.com/wiki/Marvin_Marsh",
     "PortraitImage": "https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest",
-    "PortraitCrop": "48 -5 280 280"
+    "PortraitCrop": "48 -5 280 280",
+    "PortraitWidth": 375,
+    "PortraitHeight": 536
    },
    {
     "ThingId": "Randy",
@@ -575,7 +599,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "PortraitName": "Randy Marsh",
     "PortraitPage": "https://southpark.fandom.com/wiki/Randy_Marsh",
     "PortraitImage": "https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest",
-    "PortraitCrop": "0 -10 428 428"
+    "PortraitCrop": "0 -10 428 428",
+    "PortraitWidth": 428,
+    "PortraitHeight": 1057
    },
    {
     "ThingId": "Sharon",
@@ -585,7 +611,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "PortraitName": "Sharon Marsh",
     "PortraitPage": "https://southpark.fandom.com/wiki/Sharon_Marsh",
     "PortraitImage": "https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest",
-    "PortraitCrop": "20 -10 390 390"
+    "PortraitCrop": "20 -10 390 390",
+    "PortraitWidth": 439,
+    "PortraitHeight": 1049
    },
    {
     "ThingId": "Stan",
@@ -595,7 +623,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "PortraitName": "Stan Marsh",
     "PortraitPage": "https://southpark.fandom.com/wiki/Stan_Marsh",
     "PortraitImage": "https://static.wikia.nocookie.net/southpark/images/c/c6/Stan-marsh-0.png/revision/latest",
-    "PortraitCrop": "-35 -10 735 735"
+    "PortraitCrop": "-35 -10 735 735",
+    "PortraitWidth": 663,
+    "PortraitHeight": 1037
    },
    {
     "ThingId": "Shelly",
@@ -605,7 +635,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "PortraitName": "Shelley Marsh",
     "PortraitPage": "https://southpark.fandom.com/wiki/Shelley_Marsh",
     "PortraitImage": "https://static.wikia.nocookie.net/southpark/images/3/3b/Shelly.png/revision/latest",
-    "PortraitCrop": "-20 -10 760 760"
+    "PortraitCrop": "-20 -10 760 760",
+    "PortraitWidth": 720,
+    "PortraitHeight": 1064
    },
    {
     "ThingId": "Kyle",
@@ -615,7 +647,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "PortraitName": "Kyle Broflovski",
     "PortraitPage": "https://southpark.fandom.com/wiki/Kyle_Broflovski",
     "PortraitImage": "https://static.wikia.nocookie.net/southpark/images/9/95/Kyle-broflovski.png/revision/latest?cb=20190411033301",
-    "PortraitCrop": "-20 -10 790 790"
+    "PortraitCrop": "-20 -10 790 790",
+    "PortraitWidth": 753,
+    "PortraitHeight": 935
    },
    {
     "ThingId": "SouthParkElementary",
@@ -625,7 +659,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "PortraitName": "South Park Elementary",
     "PortraitPage": "https://southpark.fandom.com/wiki/South_Park_Elementary",
     "PortraitImage": "https://static.wikia.nocookie.net/southpark/images/1/12/School_7.png/revision/latest?cb=20180414152359",
-    "PortraitCrop": "420 0 1080 1080"
+    "PortraitCrop": "420 0 1080 1080",
+    "PortraitWidth": 1920,
+    "PortraitHeight": 1080
    },
    {
     "ThingId": "Person",
@@ -635,7 +671,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "PortraitName": null,
     "PortraitPage": null,
     "PortraitImage": null,
-    "PortraitCrop": null
+    "PortraitCrop": null,
+    "PortraitWidth": null,
+    "PortraitHeight": null
    },
    {
     "ThingId": "School",
@@ -645,7 +683,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "PortraitName": null,
     "PortraitPage": null,
     "PortraitImage": null,
-    "PortraitCrop": null
+    "PortraitCrop": null,
+    "PortraitWidth": null,
+    "PortraitHeight": null
    }
   ]
  },
@@ -757,6 +797,41 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "Description": "Position in the Add fact form's property list."
    },
    {
+    "name": "ValueNodeLabel",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The small label under a value node for this property: 'role value' or 'number value'."
+   },
+   {
+    "name": "CurrentValueWording",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "How the Add fact form names a replaced value, as in 'Stan now has grade level 5'."
+   },
+   {
+    "name": "InputName",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "How the integer check names this property's value, as in 'for grade level'."
+   },
+   {
+    "name": "RecordKind",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The word the current-record summary uses for this property's values: role, grade or school."
+   },
+   {
+    "name": "RecordOrder",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": true,
+    "Description": "Position of this property in the current-record summary."
+   },
+   {
     "name": "Name",
     "datatype": "string",
     "type": "calculated",
@@ -780,7 +855,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "DomainClass": null,
     "RangeClass": null,
     "DisjointWith": "isSpouseOf",
-    "SortOrder": 1
+    "SortOrder": 1,
+    "ValueNodeLabel": null,
+    "CurrentValueWording": null,
+    "InputName": null,
+    "RecordKind": null,
+    "RecordOrder": null
    },
    {
     "PropertyId": "isChildOf",
@@ -796,7 +876,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "DomainClass": null,
     "RangeClass": null,
     "DisjointWith": null,
-    "SortOrder": 2
+    "SortOrder": 2,
+    "ValueNodeLabel": null,
+    "CurrentValueWording": null,
+    "InputName": null,
+    "RecordKind": null,
+    "RecordOrder": null
    },
    {
     "PropertyId": "isSpouseOf",
@@ -812,7 +897,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "DomainClass": null,
     "RangeClass": null,
     "DisjointWith": "isParentOf",
-    "SortOrder": 3
+    "SortOrder": 3,
+    "ValueNodeLabel": null,
+    "CurrentValueWording": null,
+    "InputName": null,
+    "RecordKind": null,
+    "RecordOrder": null
    },
    {
     "PropertyId": "isFriendOf",
@@ -828,7 +918,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "DomainClass": null,
     "RangeClass": null,
     "DisjointWith": null,
-    "SortOrder": 4
+    "SortOrder": 4,
+    "ValueNodeLabel": null,
+    "CurrentValueWording": null,
+    "InputName": null,
+    "RecordKind": null,
+    "RecordOrder": null
    },
    {
     "PropertyId": "attends",
@@ -844,7 +939,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "DomainClass": "Person",
     "RangeClass": "School",
     "DisjointWith": null,
-    "SortOrder": 5
+    "SortOrder": 5,
+    "ValueNodeLabel": null,
+    "CurrentValueWording": null,
+    "InputName": null,
+    "RecordKind": "school",
+    "RecordOrder": 3
    },
    {
     "PropertyId": "hasAge",
@@ -860,7 +960,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "DomainClass": null,
     "RangeClass": null,
     "DisjointWith": null,
-    "SortOrder": 6
+    "SortOrder": 6,
+    "ValueNodeLabel": "number value",
+    "CurrentValueWording": null,
+    "InputName": "age",
+    "RecordKind": null,
+    "RecordOrder": null
    },
    {
     "PropertyId": "hasGradeLevel",
@@ -876,7 +981,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "DomainClass": "Person",
     "RangeClass": null,
     "DisjointWith": null,
-    "SortOrder": 7
+    "SortOrder": 7,
+    "ValueNodeLabel": "number value",
+    "CurrentValueWording": "grade level",
+    "InputName": "grade level",
+    "RecordKind": "grade",
+    "RecordOrder": 2
    },
    {
     "PropertyId": "hasRole",
@@ -892,7 +1002,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "DomainClass": "Person",
     "RangeClass": null,
     "DisjointWith": null,
-    "SortOrder": 8
+    "SortOrder": 8,
+    "ValueNodeLabel": "role value",
+    "CurrentValueWording": "role",
+    "InputName": null,
+    "RecordKind": "role",
+    "RecordOrder": 1
    },
    {
     "PropertyId": "isGrandparentOf",
@@ -908,7 +1023,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "DomainClass": null,
     "RangeClass": null,
     "DisjointWith": null,
-    "SortOrder": 9
+    "SortOrder": 9,
+    "ValueNodeLabel": null,
+    "CurrentValueWording": null,
+    "InputName": null,
+    "RecordKind": null,
+    "RecordOrder": null
    },
    {
     "PropertyId": "isA",
@@ -924,7 +1044,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "DomainClass": null,
     "RangeClass": null,
     "DisjointWith": null,
-    "SortOrder": 10
+    "SortOrder": 10,
+    "ValueNodeLabel": null,
+    "CurrentValueWording": null,
+    "InputName": null,
+    "RecordKind": null,
+    "RecordOrder": null
    }
   ]
  },
@@ -1330,6 +1455,78 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "nullable": false,
     "Description": "Order 20. Rule applications shown as this fact's conclusion card: one for a conclusion, zero otherwise.",
     "formula": "=SUMIFS(Firings!{{ChosenUnit}}, Firings!{{Target}}, {{StatementId}})"
+   },
+   {
+    "name": "SubjectNodeKey",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The graph node this fact starts from.",
+    "formula": "={{Subject}}"
+   },
+   {
+    "name": "ObjectNodeKey",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 2. The graph node this fact points at: the thing, or one node per value and datatype.",
+    "formula": "=IF({{ObjectThing}} = \"\", CONCAT(\"literal|\", {{ObjectValue}}, \"|\", {{PropertyDatatype}}), {{ObjectThing}})"
+   },
+   {
+    "name": "SubjectNodeKind",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Order 19. How the graph draws the subject.",
+    "formula": "=INDEX(Things!{{NodeKind}}, MATCH({{Subject}}, Things!{{ThingId}}, 0))"
+   },
+   {
+    "name": "ObjectThingNodeKind",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Order 19. How the graph draws the object thing.",
+    "formula": "=INDEX(Things!{{NodeKind}}, MATCH({{ObjectThing}}, Things!{{ThingId}}, 0))"
+   },
+   {
+    "name": "ObjectNodeKind",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 20. How the graph draws the object: a value, a class, a place or a person.",
+    "formula": "=IF({{ObjectThing}} = \"\", \"value\", {{ObjectThingNodeKind}})"
+   },
+   {
+    "name": "ObjectValueNodeLabel",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Order 1. The small label under a value node.",
+    "formula": "=INDEX(Properties!{{ValueNodeLabel}}, MATCH({{Property}}, Properties!{{PropertyId}}, 0))"
+   },
+   {
+    "name": "CountOfViolationsAsFirst",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": false,
+    "Description": "Order 18. Violated disjointness checks naming this fact first.",
+    "formula": "=SUMIFS(DisjointChecks!{{ViolationUnit}}, DisjointChecks!{{First}}, {{StatementId}})"
+   },
+   {
+    "name": "CountOfViolationsAsSecond",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": false,
+    "Description": "Order 18. Violated disjointness checks naming this fact second.",
+    "formula": "=SUMIFS(DisjointChecks!{{ViolationUnit}}, DisjointChecks!{{Second}}, {{StatementId}})"
+   },
+   {
+    "name": "IsInContradiction",
+    "datatype": "boolean",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 19. Part of a contradiction the disjoint rule found; drawn in the alarm colour.",
+    "formula": "=OR({{CountOfViolationsAsFirst}} > 0, {{CountOfViolationsAsSecond}} > 0)"
    }
   ],
   "data": [
@@ -5228,6 +5425,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "nullable": true,
     "Description": "Order 17. Whether the concluded fact is new.",
     "formula": "=INDEX(Statements!{{IsConclusion}}, MATCH({{Target}}, Statements!{{StatementId}}, 0))"
+   },
+   {
+    "name": "TargetSubjectNodeKey",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Order 2. The concluded fact's subject node.",
+    "formula": "=INDEX(Statements!{{SubjectNodeKey}}, MATCH({{Target}}, Statements!{{StatementId}}, 0))"
+   },
+   {
+    "name": "TargetObjectNodeKey",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Order 3. The concluded fact's object node.",
+    "formula": "=INDEX(Statements!{{ObjectNodeKey}}, MATCH({{Target}}, Statements!{{StatementId}}, 0))"
    },
    {
     "name": "TargetFirstFiredOrderKey",
@@ -9532,6 +9745,1065 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "Second": "SouthParkElementary|isSpouseOf|Kyle"
    }
   ]
+ },
+ "Scenarios": {
+  "Description": "The page's buttons. Each one is a fact baseline, explicit fact changes and rule settings, applied in that order.",
+  "schema": [
+   {
+    "name": "ScenarioId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Key of the button."
+   },
+   {
+    "name": "Graph",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The graph.",
+    "RelatedTo": "Graphs"
+   },
+   {
+    "name": "Label",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The button's text."
+   },
+   {
+    "name": "Note",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The note shown under the buttons after this one is pressed; blank clears it."
+   },
+   {
+    "name": "SortOrder",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Position among the buttons."
+   },
+   {
+    "name": "ButtonGroup",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "'stan' for the two imagined changes, 'facts' for the buttons under the fact list."
+   },
+   {
+    "name": "IsPrimary",
+    "datatype": "boolean",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Drawn as the filled button."
+   },
+   {
+    "name": "FactBaseline",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "What happens to every listed fact first: keep, built-in (teaching facts on, others off), built-in-detail, all-off, activate-all (each switched on in list order), or next (the next fact on)."
+   },
+   {
+    "name": "Layout",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The node layout the graph returns to; blank keeps the current positions."
+   },
+   {
+    "name": "ClearsSelection",
+    "datatype": "boolean",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Clears the selected node or line."
+   },
+   {
+    "name": "ClearsFormMessage",
+    "datatype": "boolean",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Clears the Add fact form's message."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The button's text.",
+    "formula": "={{Label}}"
+   },
+   {
+    "name": "GraphHasFactsToAdd",
+    "datatype": "boolean",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Order 7. Whether a listed fact can still be added.",
+    "formula": "=INDEX(Graphs!{{HasFactsToAdd}}, MATCH({{Graph}}, Graphs!{{GraphId}}, 0))"
+   },
+   {
+    "name": "IsAvailable",
+    "datatype": "boolean",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 8. False only for Add next fact once every listed fact is in effect.",
+    "formula": "=OR({{FactBaseline}} <> \"next\", {{GraphHasFactsToAdd}})"
+   }
+  ],
+  "data": [
+   {
+    "ScenarioId": "stan-grade-five",
+    "Graph": "south-park",
+    "Label": "Move Stan to grade 5",
+    "Note": "This imagined change updates Stan’s grade to 5. His identifier, Person statement and family links stay the same. His other selected details are unchanged.",
+    "SortOrder": 1,
+    "ButtonGroup": "stan",
+    "IsPrimary": false,
+    "FactBaseline": "keep",
+    "Layout": null,
+    "ClearsSelection": true,
+    "ClearsFormMessage": true
+   },
+   {
+    "ScenarioId": "stan-leaves-school",
+    "Graph": "south-park",
+    "Label": "Stan leaves school",
+    "Note": "This imagined change clears Stan’s current school details. His identifier, Person statement and family links remain. Removing a current fact does not say that its opposite is true; school history needs dates.",
+    "SortOrder": 2,
+    "ButtonGroup": "stan",
+    "IsPrimary": false,
+    "FactBaseline": "keep",
+    "Layout": null,
+    "ClearsSelection": true,
+    "ClearsFormMessage": true
+   },
+   {
+    "ScenarioId": "next",
+    "Graph": "south-park",
+    "Label": "Add next fact",
+    "Note": null,
+    "SortOrder": 3,
+    "ButtonGroup": "facts",
+    "IsPrimary": true,
+    "FactBaseline": "next",
+    "Layout": null,
+    "ClearsSelection": false,
+    "ClearsFormMessage": false
+   },
+   {
+    "ScenarioId": "all",
+    "Graph": "south-park",
+    "Label": "Add all current facts",
+    "Note": null,
+    "SortOrder": 4,
+    "ButtonGroup": "facts",
+    "IsPrimary": false,
+    "FactBaseline": "activate-all",
+    "Layout": null,
+    "ClearsSelection": false,
+    "ClearsFormMessage": false
+   },
+   {
+    "ScenarioId": "clear",
+    "Graph": "south-park",
+    "Label": "Clear the graph",
+    "Note": null,
+    "SortOrder": 5,
+    "ButtonGroup": "facts",
+    "IsPrimary": false,
+    "FactBaseline": "all-off",
+    "Layout": null,
+    "ClearsSelection": true,
+    "ClearsFormMessage": false
+   },
+   {
+    "ScenarioId": "grade-example",
+    "Graph": "south-park",
+    "Label": "Show Stan’s details",
+    "Note": null,
+    "SortOrder": 6,
+    "ButtonGroup": "facts",
+    "IsPrimary": false,
+    "FactBaseline": "built-in-detail",
+    "Layout": "stan-details",
+    "ClearsSelection": true,
+    "ClearsFormMessage": true
+   },
+   {
+    "ScenarioId": "reset-original",
+    "Graph": "south-park",
+    "Label": "Reset example facts",
+    "Note": null,
+    "SortOrder": 7,
+    "ButtonGroup": "facts",
+    "IsPrimary": false,
+    "FactBaseline": "built-in",
+    "Layout": "default",
+    "ClearsSelection": true,
+    "ClearsFormMessage": true
+   }
+  ]
+ },
+ "ScenarioFactChanges": {
+  "Description": "Fact changes a button makes after its baseline. A blank object key matches every listed value of the property.",
+  "schema": [
+   {
+    "name": "ScenarioFactChangeId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Key of the change."
+   },
+   {
+    "name": "Scenario",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The button.",
+    "RelatedTo": "Scenarios"
+   },
+   {
+    "name": "Subject",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The subject whose facts change.",
+    "RelatedTo": "Things"
+   },
+   {
+    "name": "Property",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The property whose facts change.",
+    "RelatedTo": "Properties"
+   },
+   {
+    "name": "ObjectKey",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The object thing's key or the literal value; blank for every listed value."
+   },
+   {
+    "name": "Action",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "'on' switches the fact on as the newest value; 'off' switches it off."
+   },
+   {
+    "name": "AddsToList",
+    "datatype": "boolean",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Adds the fact to the fact list first when it is not listed."
+   },
+   {
+    "name": "SortOrder",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Order of the change within the button."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The change's key.",
+    "formula": "={{ScenarioFactChangeId}}"
+   }
+  ],
+  "data": [
+   {
+    "ScenarioFactChangeId": "stan-grade-five:Stan|isA|Person",
+    "Scenario": "stan-grade-five",
+    "Subject": "Stan",
+    "Property": "isA",
+    "ObjectKey": "Person",
+    "Action": "on",
+    "AddsToList": true,
+    "SortOrder": 1
+   },
+   {
+    "ScenarioFactChangeId": "stan-grade-five:Stan|hasGradeLevel|5",
+    "Scenario": "stan-grade-five",
+    "Subject": "Stan",
+    "Property": "hasGradeLevel",
+    "ObjectKey": "5",
+    "Action": "on",
+    "AddsToList": true,
+    "SortOrder": 2
+   },
+   {
+    "ScenarioFactChangeId": "stan-leaves-school:Stan|isA|Person",
+    "Scenario": "stan-leaves-school",
+    "Subject": "Stan",
+    "Property": "isA",
+    "ObjectKey": "Person",
+    "Action": "on",
+    "AddsToList": true,
+    "SortOrder": 3
+   },
+   {
+    "ScenarioFactChangeId": "stan-leaves-school:Stan|hasRole|*",
+    "Scenario": "stan-leaves-school",
+    "Subject": "Stan",
+    "Property": "hasRole",
+    "ObjectKey": null,
+    "Action": "off",
+    "AddsToList": false,
+    "SortOrder": 4
+   },
+   {
+    "ScenarioFactChangeId": "stan-leaves-school:Stan|hasGradeLevel|*",
+    "Scenario": "stan-leaves-school",
+    "Subject": "Stan",
+    "Property": "hasGradeLevel",
+    "ObjectKey": null,
+    "Action": "off",
+    "AddsToList": false,
+    "SortOrder": 5
+   },
+   {
+    "ScenarioFactChangeId": "stan-leaves-school:Stan|attends|*",
+    "Scenario": "stan-leaves-school",
+    "Subject": "Stan",
+    "Property": "attends",
+    "ObjectKey": null,
+    "Action": "off",
+    "AddsToList": false,
+    "SortOrder": 6
+   }
+  ]
+ },
+ "ScenarioRuleSettings": {
+  "Description": "Rule switches a button sets.",
+  "schema": [
+   {
+    "name": "ScenarioRuleSettingId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Key of the setting."
+   },
+   {
+    "name": "Scenario",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The button.",
+    "RelatedTo": "Scenarios"
+   },
+   {
+    "name": "Rule",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The rule switch.",
+    "RelatedTo": "Rules"
+   },
+   {
+    "name": "IsEnabled",
+    "datatype": "boolean",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The state the button puts the switch in."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The setting's key.",
+    "formula": "={{ScenarioRuleSettingId}}"
+   }
+  ],
+  "data": [
+   {
+    "ScenarioRuleSettingId": "reset-original:inverse",
+    "Scenario": "reset-original",
+    "Rule": "inverse",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "reset-original:symmetric",
+    "Scenario": "reset-original",
+    "Rule": "symmetric",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "reset-original:chain",
+    "Scenario": "reset-original",
+    "Rule": "chain",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "reset-original:domain",
+    "Scenario": "reset-original",
+    "Rule": "domain",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "reset-original:disjoint",
+    "Scenario": "reset-original",
+    "Rule": "disjoint",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "grade-example:inverse",
+    "Scenario": "grade-example",
+    "Rule": "inverse",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "grade-example:symmetric",
+    "Scenario": "grade-example",
+    "Rule": "symmetric",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "grade-example:chain",
+    "Scenario": "grade-example",
+    "Rule": "chain",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "grade-example:domain",
+    "Scenario": "grade-example",
+    "Rule": "domain",
+    "IsEnabled": true
+   },
+   {
+    "ScenarioRuleSettingId": "grade-example:disjoint",
+    "Scenario": "grade-example",
+    "Rule": "disjoint",
+    "IsEnabled": false
+   }
+  ]
+ },
+ "NodeLayouts": {
+  "Description": "Node positions in the graph's 380 by 480 drawing, one set per layout.",
+  "schema": [
+   {
+    "name": "NodeLayoutId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Key: layout:node."
+   },
+   {
+    "name": "Layout",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The layout: 'default' or 'stan-details'."
+   },
+   {
+    "name": "NodeKey",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The node: a thing's key, or literal|value|datatype."
+   },
+   {
+    "name": "X",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Horizontal position."
+   },
+   {
+    "name": "Y",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Vertical position."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The position's key.",
+    "formula": "={{NodeLayoutId}}"
+   }
+  ],
+  "data": [
+   {
+    "NodeLayoutId": "default:Marvin",
+    "Layout": "default",
+    "NodeKey": "Marvin",
+    "X": 70,
+    "Y": 45
+   },
+   {
+    "NodeLayoutId": "default:Randy",
+    "Layout": "default",
+    "NodeKey": "Randy",
+    "X": 195,
+    "Y": 125
+   },
+   {
+    "NodeLayoutId": "default:Sharon",
+    "Layout": "default",
+    "NodeKey": "Sharon",
+    "X": 318,
+    "Y": 55
+   },
+   {
+    "NodeLayoutId": "default:Stan",
+    "Layout": "default",
+    "NodeKey": "Stan",
+    "X": 150,
+    "Y": 240
+   },
+   {
+    "NodeLayoutId": "default:Shelly",
+    "Layout": "default",
+    "NodeKey": "Shelly",
+    "X": 300,
+    "Y": 215
+   },
+   {
+    "NodeLayoutId": "default:Kyle",
+    "Layout": "default",
+    "NodeKey": "Kyle",
+    "X": 55,
+    "Y": 365
+   },
+   {
+    "NodeLayoutId": "default:SouthParkElementary",
+    "Layout": "default",
+    "NodeKey": "SouthParkElementary",
+    "X": 195,
+    "Y": 345
+   },
+   {
+    "NodeLayoutId": "default:literal|10|xsd:integer",
+    "Layout": "default",
+    "NodeKey": "literal|10|xsd:integer",
+    "X": 345,
+    "Y": 290
+   },
+   {
+    "NodeLayoutId": "default:literal|4|xsd:integer",
+    "Layout": "default",
+    "NodeKey": "literal|4|xsd:integer",
+    "X": 340,
+    "Y": 140
+   },
+   {
+    "NodeLayoutId": "default:literal|5|xsd:integer",
+    "Layout": "default",
+    "NodeKey": "literal|5|xsd:integer",
+    "X": 340,
+    "Y": 140
+   },
+   {
+    "NodeLayoutId": "default:literal|Student|xsd:string",
+    "Layout": "default",
+    "NodeKey": "literal|Student|xsd:string",
+    "X": 42,
+    "Y": 235
+   },
+   {
+    "NodeLayoutId": "default:School",
+    "Layout": "default",
+    "NodeKey": "School",
+    "X": 315,
+    "Y": 405
+   },
+   {
+    "NodeLayoutId": "default:Person",
+    "Layout": "default",
+    "NodeKey": "Person",
+    "X": 55,
+    "Y": 132
+   },
+   {
+    "NodeLayoutId": "stan-details:Marvin",
+    "Layout": "stan-details",
+    "NodeKey": "Marvin",
+    "X": 70,
+    "Y": 45
+   },
+   {
+    "NodeLayoutId": "stan-details:Randy",
+    "Layout": "stan-details",
+    "NodeKey": "Randy",
+    "X": 195,
+    "Y": 125
+   },
+   {
+    "NodeLayoutId": "stan-details:Sharon",
+    "Layout": "stan-details",
+    "NodeKey": "Sharon",
+    "X": 318,
+    "Y": 55
+   },
+   {
+    "NodeLayoutId": "stan-details:Stan",
+    "Layout": "stan-details",
+    "NodeKey": "Stan",
+    "X": 100,
+    "Y": 150
+   },
+   {
+    "NodeLayoutId": "stan-details:Shelly",
+    "Layout": "stan-details",
+    "NodeKey": "Shelly",
+    "X": 300,
+    "Y": 215
+   },
+   {
+    "NodeLayoutId": "stan-details:Kyle",
+    "Layout": "stan-details",
+    "NodeKey": "Kyle",
+    "X": 55,
+    "Y": 365
+   },
+   {
+    "NodeLayoutId": "stan-details:SouthParkElementary",
+    "Layout": "stan-details",
+    "NodeKey": "SouthParkElementary",
+    "X": 195,
+    "Y": 345
+   },
+   {
+    "NodeLayoutId": "stan-details:literal|10|xsd:integer",
+    "Layout": "stan-details",
+    "NodeKey": "literal|10|xsd:integer",
+    "X": 345,
+    "Y": 290
+   },
+   {
+    "NodeLayoutId": "stan-details:literal|4|xsd:integer",
+    "Layout": "stan-details",
+    "NodeKey": "literal|4|xsd:integer",
+    "X": 290,
+    "Y": 85
+   },
+   {
+    "NodeLayoutId": "stan-details:literal|5|xsd:integer",
+    "Layout": "stan-details",
+    "NodeKey": "literal|5|xsd:integer",
+    "X": 290,
+    "Y": 85
+   },
+   {
+    "NodeLayoutId": "stan-details:literal|Student|xsd:string",
+    "Layout": "stan-details",
+    "NodeKey": "literal|Student|xsd:string",
+    "X": 290,
+    "Y": 245
+   },
+   {
+    "NodeLayoutId": "stan-details:School",
+    "Layout": "stan-details",
+    "NodeKey": "School",
+    "X": 315,
+    "Y": 405
+   },
+   {
+    "NodeLayoutId": "stan-details:Person",
+    "Layout": "stan-details",
+    "NodeKey": "Person",
+    "X": 100,
+    "Y": 355
+   }
+  ]
+ },
+ "LayoutSlots": {
+  "Description": "Places for nodes no layout positions, used in turn.",
+  "schema": [
+   {
+    "name": "LayoutSlotId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Key of the slot."
+   },
+   {
+    "name": "SortOrder",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Order in which slots are used."
+   },
+   {
+    "name": "X",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Horizontal position."
+   },
+   {
+    "name": "Y",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Vertical position."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The slot's key.",
+    "formula": "={{LayoutSlotId}}"
+   }
+  ],
+  "data": [
+   {
+    "LayoutSlotId": "slot-1",
+    "SortOrder": 1,
+    "X": 330,
+    "Y": 135
+   },
+   {
+    "LayoutSlotId": "slot-2",
+    "SortOrder": 2,
+    "X": 45,
+    "Y": 120
+   },
+   {
+    "LayoutSlotId": "slot-3",
+    "SortOrder": 3,
+    "X": 330,
+    "Y": 400
+   },
+   {
+    "LayoutSlotId": "slot-4",
+    "SortOrder": 4,
+    "X": 60,
+    "Y": 425
+   },
+   {
+    "LayoutSlotId": "slot-5",
+    "SortOrder": 5,
+    "X": 200,
+    "Y": 30
+   },
+   {
+    "LayoutSlotId": "slot-6",
+    "SortOrder": 6,
+    "X": 345,
+    "Y": 250
+   },
+   {
+    "LayoutSlotId": "slot-7",
+    "SortOrder": 7,
+    "X": 110,
+    "Y": 300
+   },
+   {
+    "LayoutSlotId": "slot-8",
+    "SortOrder": 8,
+    "X": 260,
+    "Y": 280
+   }
+  ]
+ },
+ "PageTexts": {
+  "Description": "The page's wording, one row per string. {name}-style placeholders are filled by the page.",
+  "schema": [
+   {
+    "name": "PageTextId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Key of the string."
+   },
+   {
+    "name": "Text",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The string."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The string's key.",
+    "formula": "={{PageTextId}}"
+   }
+  ],
+  "data": [
+   {
+    "PageTextId": "page-title",
+    "Text": "South Park Ontology Explainer, on one rulebook"
+   },
+   {
+    "PageTextId": "byline-prefix",
+    "Text": "A rulebook rebuild of the explainer by"
+   },
+   {
+    "PageTextId": "byline-author",
+    "Text": "Jessica Talisman"
+   },
+   {
+    "PageTextId": "byline-author-url",
+    "Text": "https://substack.com/@jessicatalisman"
+   },
+   {
+    "PageTextId": "byline-suffix",
+    "Text": "· Intentional Arrangement"
+   },
+   {
+    "PageTextId": "title",
+    "Text": "South Park facts form a knowledge graph"
+   },
+   {
+    "PageTextId": "intro",
+    "Text": "An ontology defines kinds of things, their properties and rules. This knowledge graph uses those definitions to connect facts about South Park. Stan’s school facts can change while Stan stays the same person."
+   },
+   {
+    "PageTextId": "intro-rulebook",
+    "Text": "This version runs no reasoner in the browser. Every fact, rule switch and conclusion on the page is a row or a formula in one rulebook, compiled to Postgres views; the same rulebook also builds TypeScript, Python, an Excel workbook, OWL and documentation in 16 languages."
+   },
+   {
+    "PageTextId": "link-article",
+    "Text": "Read the article"
+   },
+   {
+    "PageTextId": "link-article-url",
+    "Text": "https://jessicatalisman.substack.com/p/what-is-an-ontology"
+   },
+   {
+    "PageTextId": "link-original",
+    "Text": "Open the original explainer"
+   },
+   {
+    "PageTextId": "link-original-url",
+    "Text": "https://southpark-ontology-explainer.jessica-tali-7056.chatgpt.site/"
+   },
+   {
+    "PageTextId": "key-stated",
+    "Text": "a fact we stated"
+   },
+   {
+    "PageTextId": "key-conclusion",
+    "Text": "a conclusion from a rule"
+   },
+   {
+    "PageTextId": "key-class",
+    "Text": "a class"
+   },
+   {
+    "PageTextId": "key-individual",
+    "Text": "an individual or value"
+   },
+   {
+    "PageTextId": "key-help",
+    "Text": "Drag a circle to move it. Tap a circle or a line to read its facts and sources."
+   },
+   {
+    "PageTextId": "image-note",
+    "Text": "Character portraits and South Park Elementary are Fandom images, linked from the rulebook’s Things table. Dashed circles mark classes; solid circles show individual things or values."
+   },
+   {
+    "PageTextId": "statements-heading",
+    "Text": "Statements connect things and values"
+   },
+   {
+    "PageTextId": "statements-hint",
+    "Text": "Each statement has three parts, called a triple. The subject identifies what we describe. The predicate tells how it is connected to the object. The object is the related thing or value. Select a fact to show it."
+   },
+   {
+    "PageTextId": "scenario-heading",
+    "Text": "Stan can change while his identity stays the same"
+   },
+   {
+    "PageTextId": "scenario-hint",
+    "Text": "The grade-5 and leaving-school buttons imagine future changes so you can see how the model responds. They do not report events from the show. Stan is allowed to graduate. The database does not get a vote."
+   },
+   {
+    "PageTextId": "rules-heading",
+    "Text": "Rules add facts to the graph"
+   },
+   {
+    "PageTextId": "rules-hint",
+    "Text": "An inference is a new conclusion from facts and a rule. Reasoning means following rules step by step to reach or check conclusions. Here the rulebook does that work: each rule is a switch, and every conclusion is a formula."
+   },
+   {
+    "PageTextId": "conclusions-heading",
+    "Text": "Rules produce new conclusions"
+   },
+   {
+    "PageTextId": "add-heading",
+    "Text": "Your statements extend the graph"
+   },
+   {
+    "PageTextId": "add-hint",
+    "Text": "Try Sharon, is parent of, Stan. Then try Sharon, is parent of, Randy with the disjoint rule on."
+   },
+   {
+    "PageTextId": "label-subject",
+    "Text": "Subject"
+   },
+   {
+    "PageTextId": "label-predicate",
+    "Text": "Predicate / property"
+   },
+   {
+    "PageTextId": "label-object",
+    "Text": "Object or value"
+   },
+   {
+    "PageTextId": "add-button",
+    "Text": "Add fact"
+   },
+   {
+    "PageTextId": "grade-input-note",
+    "Text": "For has grade level, enter an integer (a number with no fractional part), such as 4 or 5. This form checks integer input as an application check. For has role, enter text such as Student. A new grade or role replaces that person’s previous active value in this page’s current record. Uncheck a role fact to clear it."
+   },
+   {
+    "PageTextId": "integer-error",
+    "Text": "Enter an integer (a number with no fractional part) for {field}. This is an application input check."
+   },
+   {
+    "PageTextId": "form-replaced",
+    "Text": "{subject} now has {kind} {value} in this page’s current record. The person’s identifier stays the same."
+   },
+   {
+    "PageTextId": "not-in-rulebook",
+    "Text": "“{fact}” is not in this rulebook yet. Every fact the page can hold is a row; a new name or value needs new rows."
+   },
+   {
+    "PageTextId": "remove",
+    "Text": "Remove"
+   },
+   {
+    "PageTextId": "remove-label",
+    "Text": "Remove this fact"
+   },
+   {
+    "PageTextId": "focus-appears",
+    "Text": "{name} appears in {count} facts."
+   },
+   {
+    "PageTextId": "focus-appears-one",
+    "Text": "{name} appears in 1 fact."
+   },
+   {
+    "PageTextId": "focus-source",
+    "Text": "Source of this fact"
+   },
+   {
+    "PageTextId": "fandom-link",
+    "Text": "{name} on Fandom"
+   },
+   {
+    "PageTextId": "original-image",
+    "Text": "Original image"
+   },
+   {
+    "PageTextId": "record-subject",
+    "Text": "Stan"
+   },
+   {
+    "PageTextId": "record-person-yes",
+    "Text": "Stan is explicitly recorded as a Person."
+   },
+   {
+    "PageTextId": "record-person-no",
+    "Text": "Stan’s explicit Person statement is not selected."
+   },
+   {
+    "PageTextId": "record-value",
+    "Text": "His recorded {kind} is {values}."
+   },
+   {
+    "PageTextId": "record-none",
+    "Text": "No current {kind} is recorded."
+   },
+   {
+    "PageTextId": "sublabel-class",
+    "Text": "class"
+   },
+   {
+    "PageTextId": "title-class",
+    "Text": "class"
+   },
+   {
+    "PageTextId": "title-literal",
+    "Text": "literal"
+   },
+   {
+    "PageTextId": "hood-heading",
+    "Text": "Under the covers: one rulebook"
+   },
+   {
+    "PageTextId": "hood-text",
+    "Text": "Hover a dotted value to read its rule and the facts it came from. Every rule on this page is in the rulebook below, and every projection of it agrees."
+   },
+   {
+    "PageTextId": "hood-explainer",
+    "Text": "Explainer: every rule, down to the stated facts"
+   },
+   {
+    "PageTextId": "hood-docs",
+    "Text": "Documentation in 16 languages"
+   },
+   {
+    "PageTextId": "hood-workbook",
+    "Text": "Excel workbook with every rule as a live formula"
+   },
+   {
+    "PageTextId": "hood-rulebook",
+    "Text": "The rulebook"
+   },
+   {
+    "PageTextId": "record-class",
+    "Text": "Person"
+   },
+   {
+    "PageTextId": "hood-stated",
+    "Text": "facts in effect"
+   },
+   {
+    "PageTextId": "hood-conclusions",
+    "Text": "conclusions"
+   },
+   {
+    "PageTextId": "hood-consistent",
+    "Text": "consistent"
+   },
+   {
+    "PageTextId": "hood-yes",
+    "Text": "yes"
+   },
+   {
+    "PageTextId": "hood-no",
+    "Text": "no"
+   },
+   {
+    "PageTextId": "focus-children",
+    "Text": "children"
+   },
+   {
+    "PageTextId": "focus-grandchildren",
+    "Text": "grandchildren"
+   },
+   {
+    "PageTextId": "workbook-url",
+    "Text": "/xlsx/talisman-s-south-park-ontology-explainer.xlsx"
+   },
+   {
+    "PageTextId": "credits-summary",
+    "Text": "Fandom supplies the character and location images"
+   },
+   {
+    "PageTextId": "footer-credit",
+    "Text": "A rebuild of Jessica Talisman’s South Park Ontology Explainer for Intentional Arrangement, made from a rulebook. The model, wording and layout follow her page. South Park is the work of Trey Parker and Matt Stone; the portraits are Fandom images."
+   }
+  ]
  }
 }, languages: [
   "en",
@@ -9941,6 +11213,21 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
             "table": "Things",
             "field": "Label",
             "label": "label"
+          }
+        ],
+        "structure": null
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "A thing's node key is the same as its thing ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
           }
         ],
         "structure": null
@@ -11416,6 +12703,264 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "A statement's subject node key is the same as its subject.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "The statement's object node key is determined by the following priority:\n1. “literal|”, followed by the object value, followed by “|”, followed by the property datatype, if the object thing is blank;\n2. in all other cases, the object thing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The statement's object node key is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“literal|”, followed by the object value, followed by “|”, followed by the property datatype",
+              "when": {
+                "kind": "leaf",
+                "text": "the object thing is blank"
+              }
+            },
+            {
+              "value": "the object thing",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "A statement's subject node kind — taken from the linked subject.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "A statement's object thing node kind — taken from the linked object thing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "The statement's object node kind is determined by the following priority:\n1. “value”, if the object thing is blank;\n2. in all other cases, the object thing node kind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "The statement's object node kind is determined by the following priority:",
+          "cases": [
+            {
+              "value": "“value”",
+              "when": {
+                "kind": "leaf",
+                "text": "the object thing is blank"
+              }
+            },
+            {
+              "value": "the object thing node kind",
+              "when": null
+            }
+          ],
+          "children": null
+        }
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "A statement's object value node label — taken from the linked property.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "A statement's count of violations as first is the total violation unit across the disjoint checks related to the statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "A statement's count of violations as second is the total violation unit across the disjoint checks related to the statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "A statement is considered in-contradiction if at least one of the following holds: the count of violations as first is greater than 0 or the count of violations as second is greater than 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "A statement is considered in-contradiction if any of the following:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the count of violations as first is greater than 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the count of violations as second is greater than 0"
+                }
+              ]
+            }
+          ]
+        }
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -11602,6 +13147,56 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
             "table": "Statements",
             "field": "IsConclusion",
             "label": "is conclusion"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "A firing's target subject node key — taken from the linked target.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "A firing's target object node key — taken from the linked target.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
           },
           {
             "table": "Firings",
@@ -12617,6 +14212,160 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         ],
         "structure": null
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A scenario's name is the same as its label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "A scenario's graph has facts to add when the linked graph has a facts to add.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "A scenario is considered available if at least one of the following holds: the fact baseline is not “next” or the graph has facts to add flag is set.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "A scenario is considered available if any of the following:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the fact baseline is not “next”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the graph has facts to add flag is set"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A scenario fact change's name is the same as its scenario fact change ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A scenario rule setting's name is the same as its scenario rule setting ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A node layout's name is the same as its node layout ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A layout slot's name is the same as its layout slot ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "A page text's name is the same as its page text ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null
       }
     },
     "obligations": [],
@@ -12654,6 +14403,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "A disjoint check **must** reference exactly one rule.",
         "A disjoint check **must** reference exactly one statement as its first.",
         "A disjoint check **must** reference exactly one statement as its second."
+      ],
+      "Scenarios": [
+        "A scenario **must** reference exactly one graph.",
+        "A scenario **must** have a label; a sort order; a button group; and a fact baseline, and record whether it is primary; whether it is clears selection; and whether it is clears form message."
+      ],
+      "ScenarioFactChanges": [
+        "A scenario fact change **must** reference exactly one scenario.",
+        "A scenario fact change **must** reference exactly one thing as its subject.",
+        "A scenario fact change **must** reference exactly one property.",
+        "A scenario fact change **must** have an action and a sort order, and record whether it is adds to list."
+      ],
+      "ScenarioRuleSettings": [
+        "A scenario rule setting **must** reference exactly one scenario.",
+        "A scenario rule setting **must** reference exactly one rule.",
+        "A scenario rule setting **must** record whether it is enabled."
+      ],
+      "NodeLayouts": [
+        "A node layout **must** have a layout; a node key; a x; and a y."
+      ],
+      "LayoutSlots": [
+        "A layout slot **must** have a sort order; a x; and a y."
+      ],
+      "PageTexts": [
+        "A page text **must** have a text."
       ]
     },
     "connectors": {
@@ -12671,7 +14444,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   },
   "ar": {
@@ -13085,6 +14864,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "حقل «node key» في سجل «thing» يطابق حقل «thing ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -14604,6 +16399,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "مجموع «chosen unit» في جميع سجلات «firings» التي يتحقق فيها أنّ حقل «target» يساوي statement ID"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "حقل «subject node key» في سجل «statement» يطابق حقل «subject» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "حقل «object node key» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:\n1. «literal|»، ثم حقل «object value»، ثم «|»، ثم حقل «property datatype»، إذا تحقق أنّ حقل «object thing» فارغ؛\n2. حقل «object thing»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «object node key» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«literal|»، ثم حقل «object value»، ثم «|»، ثم حقل «property datatype»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «object thing» فارغ"
+              }
+            },
+            {
+              "value": "حقل «object thing»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ object thing هو \"\" فالناتج \"literal|\"، ثم object value، ثم \"|\"، ثم property datatype، وإلا فالناتج object thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "حقل «subject node kind» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «subject».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «node kind» من السجل المرتبط عبر «subject»"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "حقل «object thing node kind» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «object thing».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «node kind» من السجل المرتبط عبر «object thing»"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "حقل «object node kind» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:\n1. «value»، إذا تحقق أنّ حقل «object thing» فارغ؛\n2. حقل «object thing node kind»، في سائر الحالات.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "حقل «object node kind» في سجل «statement» يتحدد وفق ترتيب الأولوية الآتي:",
+          "cases": [
+            {
+              "value": "«value»",
+              "when": {
+                "kind": "leaf",
+                "text": "حقل «object thing» فارغ"
+              }
+            },
+            {
+              "value": "حقل «object thing node kind»",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "إذا تحقق أنّ object thing هو \"\" فالناتج \"value\"، وإلا فالناتج object thing node kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "حقل «object value node label» في سجل «statement» مأخوذ من السجل المرتبط به عبر حقل «property».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «value node label» من السجل المرتبط عبر «property»"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "حقل «count of violations as first» في سجل «statement» هو مجموع قيم حقل «violation unit» عبر سجلات «disjoint checks» المرتبطة بسجل «statement».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «violation unit» في جميع سجلات «disjoint checks» التي يتحقق فيها أنّ حقل «first» يساوي statement ID"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "حقل «count of violations as second» في سجل «statement» هو مجموع قيم حقل «violation unit» عبر سجلات «disjoint checks» المرتبطة بسجل «statement».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "مجموع «violation unit» في جميع سجلات «disjoint checks» التي يتحقق فيها أنّ حقل «second» يساوي statement ID"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «statement» على أنه «in contradiction» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: حقل «count of violations as first» أكبر من 0 أو حقل «count of violations as second» أكبر من 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «statement» على أنه «in contradiction» إذا تحقق واحد على الأقل مما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "حقل «count of violations as first» أكبر من 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "حقل «count of violations as second» أكبر من 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of violations as first أكبر من 0 أو count of violations as second أكبر من 0"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -14811,6 +16873,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "حقل «is conclusion» من السجل المرتبط عبر «target»"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "حقل «target subject node key» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «subject node key» من السجل المرتبط عبر «target»"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "حقل «target object node key» في سجل «firing» مأخوذ من السجل المرتبط به عبر حقل «target».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «object node key» من السجل المرتبط عبر «target»"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -15843,6 +17957,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «scenario» يطابق حقل «label» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "حقل «graph has facts to add» في سجل «scenario» يكون صحيحًا عندما يكون السجل المرتبط به عبر حقل «graph» حائزًا على «facts to add».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "حقل «has facts to add» من السجل المرتبط عبر «graph»"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "يُصنّف سجل «scenario» على أنه «available» إذا تحقق أنّ واحد على الأقل من الشروط الآتية متحقق: حقل «fact baseline» لا يساوي «next» أو علامة «graph has facts to add» مفعّلة.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "يُصنّف سجل «scenario» على أنه «available» إذا تحقق واحد على الأقل مما يلي:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "حقل «fact baseline» لا يساوي «next»"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "علامة «graph has facts to add» مفعّلة"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact baseline لا يساوي \"next\" أو graph has facts to add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «scenario fact change» يطابق حقل «scenario fact change ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario fact change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «scenario rule setting» يطابق حقل «scenario rule setting ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario rule setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «node layout» يطابق حقل «node layout ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «layout slot» يطابق حقل «layout slot ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "حقل «name» في سجل «page text» يطابق حقل «page text ID» في السجل نفسه.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page text ID"
       }
     },
     "obligations": [],
@@ -15880,6 +18156,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "**يجب أن** يشير كل سجل «disjoint check» إلى سجل «rule» واحد فقط.",
         "**يجب أن** يشير كل سجل «disjoint check» إلى سجل «statement» واحد فقط عبر حقل «first».",
         "**يجب أن** يشير كل سجل «disjoint check» إلى سجل «statement» واحد فقط عبر حقل «second»."
+      ],
+      "Scenarios": [
+        "**يجب أن** يشير كل سجل «scenario» إلى سجل «graph» واحد فقط.",
+        "في كل سجل «scenario»، **يجب أن** تُحدّد قيمة حقل «label»، وحقل «sort order»، وحقل «button group»، وحقل «fact baseline»، وأن يُسجّل ما إذا كان مصنّفًا على أنه «primary»، وما إذا كان موسومًا بعلامة «clears selection»، وما إذا كان موسومًا بعلامة «clears form message»."
+      ],
+      "ScenarioFactChanges": [
+        "**يجب أن** يشير كل سجل «scenario fact change» إلى سجل «scenario» واحد فقط.",
+        "**يجب أن** يشير كل سجل «scenario fact change» إلى سجل «thing» واحد فقط عبر حقل «subject».",
+        "**يجب أن** يشير كل سجل «scenario fact change» إلى سجل «property» واحد فقط.",
+        "في كل سجل «scenario fact change»، **يجب أن** تُحدّد قيمة حقل «action» وحقل «sort order»، وأن يُسجّل ما إذا كان موسومًا بعلامة «adds to list»."
+      ],
+      "ScenarioRuleSettings": [
+        "**يجب أن** يشير كل سجل «scenario rule setting» إلى سجل «scenario» واحد فقط.",
+        "**يجب أن** يشير كل سجل «scenario rule setting» إلى سجل «rule» واحد فقط.",
+        "في كل سجل «scenario rule setting»، **يجب أن** يُسجّل ما إذا كان مصنّفًا على أنه «enabled»."
+      ],
+      "NodeLayouts": [
+        "في كل سجل «node layout»، **يجب أن** تُحدّد قيمة حقل «layout»، وحقل «node key»، وحقل «x»، وحقل «y»."
+      ],
+      "LayoutSlots": [
+        "في كل سجل «layout slot»، **يجب أن** تُحدّد قيمة حقل «sort order»، وحقل «x»، وحقل «y»."
+      ],
+      "PageTexts": [
+        "في كل سجل «page text»، **يجب أن** تُحدّد قيمة حقل «text»."
       ]
     },
     "connectors": {
@@ -15897,7 +18197,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   },
   "de": {
@@ -16311,6 +18617,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "Ein Thing: Node Key entspricht Thing ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -17830,6 +20152,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Summe von Chosen Unit über alle Firings, deren Target ist Statement ID"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "Ein Statement: Subject Node Key entspricht Subject.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "Das Feld „Object Node Key“ des Statement wird nach folgender Priorität bestimmt:\n1. „literal|“, gefolgt von die Object Value, gefolgt von „|“, gefolgt von die Property Datatype, wenn der Object Thing leer ist;\n2. andernfalls der Object Thing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Object Node Key“ des Statement wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„literal|“, gefolgt von die Object Value, gefolgt von „|“, gefolgt von die Property Datatype",
+              "when": {
+                "kind": "leaf",
+                "text": "der Object Thing leer ist"
+              }
+            },
+            {
+              "value": "der Object Thing",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Object Thing ist \"\", dann \"literal|\", Object Value, \"|\", verbunden mit Property Datatype, andernfalls Object Thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "Ein Statement: Subject Node Kind — aus dem zugehörigen Subject übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Node Kind des verknüpften Subject"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "Ein Statement: Object Thing Node Kind — aus dem zugehörigen Object Thing übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Node Kind des verknüpften Object Thing"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "Das Feld „Object Node Kind“ des Statement wird nach folgender Priorität bestimmt:\n1. „value“, wenn der Object Thing leer ist;\n2. andernfalls der Object Thing Node Kind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Das Feld „Object Node Kind“ des Statement wird nach folgender Priorität bestimmt:",
+          "cases": [
+            {
+              "value": "„value“",
+              "when": {
+                "kind": "leaf",
+                "text": "der Object Thing leer ist"
+              }
+            },
+            {
+              "value": "der Object Thing Node Kind",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Wenn Object Thing ist \"\", dann \"value\", andernfalls Object Thing Node Kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "Ein Statement: Object Value Node Label — aus dem zugehörigen Property übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Value Node Label des verknüpften Property"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "Ein Statement: Count of Violations As First ist die Gesamtsumme von Violation Unit über die mit dem Statement verbundenen Disjoint Checks.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Violation Unit über alle Disjoint Checks, deren First ist Statement ID"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "Ein Statement: Count of Violations As Second ist die Gesamtsumme von Violation Unit über die mit dem Statement verbundenen Disjoint Checks.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Summe von Violation Unit über alle Disjoint Checks, deren Second ist Statement ID"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "Ein Statement gilt als in contradiction, wenn mindestens eines des Folgenden gilt: der Count of Violations As First größer ist als 0 oder der Count of Violations As Second größer ist als 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Statement gilt als in contradiction, wenn mindestens eines des Folgenden gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "der Count of Violations As First größer ist als 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "der Count of Violations As Second größer ist als 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of Violations As First größer als 0 ist oder Count of Violations As Second größer als 0 ist"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -18037,6 +20626,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Der Is Conclusion des verknüpften Target"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "Ein Firing: Target Subject Node Key — aus dem zugehörigen Target übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Subject Node Key des verknüpften Target"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "Ein Firing: Target Object Node Key — aus dem zugehörigen Target übernommen.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Object Node Key des verknüpften Target"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -19069,6 +21710,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint Check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Scenario: Name entspricht Label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "Ein Scenario: Graph Has Facts to Add ist wahr, wenn der zugehörige Graph des Scenario hat einen Facts to Add.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Der Has Facts to Add des verknüpften Graph"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Ein Scenario gilt als eine Available, wenn mindestens eines des Folgenden gilt: die Fact Baseline nicht „next“ ist oder das Kennzeichen „Graph Has Facts to Add“ gesetzt ist.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Ein Scenario gilt als eine Available, wenn mindestens eines des Folgenden gilt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "die Fact Baseline nicht „next“ ist"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "das Kennzeichen „Graph Has Facts to Add“ gesetzt ist"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact Baseline nicht \"next\" ist oder Graph Has Facts to Add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Eine Scenario Fact Change: Name entspricht Scenario Fact Change ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario Fact Change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Scenario Rule Setting: Name entspricht Scenario Rule Setting ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario Rule Setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Node Layout: Name entspricht Node Layout ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node Layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Layout Slot: Name entspricht Layout Slot ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout Slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Ein Page Text: Name entspricht Page Text ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page Text ID"
       }
     },
     "obligations": [],
@@ -19106,6 +21909,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Ein Disjoint Check **muss** auf genau einen Rule verweisen.",
         "Ein Disjoint Check **muss** auf genau einen Statement als seinen First verweisen.",
         "Ein Disjoint Check **muss** auf genau einen Statement als seinen Second verweisen."
+      ],
+      "Scenarios": [
+        "Ein Scenario **muss** auf genau einen Graph verweisen.",
+        "Ein Scenario **muss** ein Label; ein Sort Order; ein Button Group; und eine Fact Baseline haben und erfassen, ob es ist ein Primary; ob es ist Clears Selection; und ob es ist Clears Form Message."
+      ],
+      "ScenarioFactChanges": [
+        "Eine Scenario Fact Change **muss** auf genau einen Scenario verweisen.",
+        "Eine Scenario Fact Change **muss** auf genau einen Thing als seinen Subject verweisen.",
+        "Eine Scenario Fact Change **muss** auf genau einen Property verweisen.",
+        "Eine Scenario Fact Change **muss** eine Action und ein Sort Order haben und erfassen, ob es ist Adds to List."
+      ],
+      "ScenarioRuleSettings": [
+        "Ein Scenario Rule Setting **muss** auf genau einen Scenario verweisen.",
+        "Ein Scenario Rule Setting **muss** auf genau einen Rule verweisen.",
+        "Ein Scenario Rule Setting **muss** erfassen, ob es ist enabled."
+      ],
+      "NodeLayouts": [
+        "Ein Node Layout **muss** ein Layout; ein Node Key; ein X; und ein Y haben."
+      ],
+      "LayoutSlots": [
+        "Ein Layout Slot **muss** ein Sort Order; ein X; und ein Y haben."
+      ],
+      "PageTexts": [
+        "Ein Page Text **muss** ein Text haben."
       ]
     },
     "connectors": {
@@ -19123,7 +21950,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "Property",
       "Statements": "Statement",
       "Firings": "Firing",
-      "DisjointChecks": "Disjoint Check"
+      "DisjointChecks": "Disjoint Check",
+      "Scenarios": "Scenario",
+      "ScenarioFactChanges": "Scenario Fact Change",
+      "ScenarioRuleSettings": "Scenario Rule Setting",
+      "NodeLayouts": "Node Layout",
+      "LayoutSlots": "Layout Slot",
+      "PageTexts": "Page Text"
     }
   },
   "es": {
@@ -19537,6 +22370,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "Un thing: node key es igual a thing ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -21056,6 +23905,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Suma de chosen unit entre todos los firings cuyo target es statement ID"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "Un statement: subject node key es igual a subject.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "El campo «object node key» del statement se determina según la siguiente prioridad:\n1. «literal|», seguido de el object value, seguido de «|», seguido de el property datatype, si el object thing está vacío;\n2. en todos los demás casos, el object thing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «object node key» del statement se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«literal|», seguido de el object value, seguido de «|», seguido de el property datatype",
+              "when": {
+                "kind": "leaf",
+                "text": "el object thing está vacío"
+              }
+            },
+            {
+              "value": "el object thing",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si object thing es \"\", entonces \"literal|\", object value, \"|\", unido con property datatype, de lo contrario object thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "Un statement: subject node kind — tomado del subject vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El node kind del subject vinculado"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "Un statement: object thing node kind — tomado del object thing vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El node kind del object thing vinculado"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "El campo «object node kind» del statement se determina según la siguiente prioridad:\n1. «value», si el object thing está vacío;\n2. en todos los demás casos, el object thing node kind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "El campo «object node kind» del statement se determina según la siguiente prioridad:",
+          "cases": [
+            {
+              "value": "«value»",
+              "when": {
+                "kind": "leaf",
+                "text": "el object thing está vacío"
+              }
+            },
+            {
+              "value": "el object thing node kind",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si object thing es \"\", entonces \"value\", de lo contrario object thing node kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "Un statement: object value node label — tomado del property vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El value node label del property vinculado"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "Un statement: count of violations as first es el total de violation unit entre los disjoint checks relacionados con el statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de violation unit entre todos los disjoint checks cuyo first es statement ID"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "Un statement: count of violations as second es el total de violation unit entre los disjoint checks relacionados con el statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Suma de violation unit entre todos los disjoint checks cuyo second es statement ID"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "Un statement se considera in contradiction si se cumple al menos una de las siguientes: el count of violations as first es mayor que 0 o el count of violations as second es mayor que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un statement se considera in contradiction si se cumple al menos una de las siguientes:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el count of violations as first es mayor que 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el count of violations as second es mayor que 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of violations as first es mayor que 0 o count of violations as second es mayor que 0"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -21263,6 +24379,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "El is conclusion del target vinculado"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "Un firing: target subject node key — tomado del target vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El subject node key del target vinculado"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "Un firing: target object node key — tomado del target vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El object node key del target vinculado"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -22295,6 +25463,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un scenario: name es igual a label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "Un scenario: graph has facts to add es verdadero cuando el graph vinculado tiene un facts to add.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "El has facts to add del graph vinculado"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Un scenario se considera available si se cumple al menos una de las siguientes: el fact baseline no es «next» o el indicador «graph has facts to add» está activado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un scenario se considera available si se cumple al menos una de las siguientes:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "el fact baseline no es «next»"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "el indicador «graph has facts to add» está activado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact baseline no es \"next\" o graph has facts to add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un scenario fact change: name es igual a scenario fact change ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario fact change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un scenario rule setting: name es igual a scenario rule setting ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario rule setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un node layout: name es igual a node layout ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un layout slot: name es igual a layout slot ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un page text: name es igual a page text ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page text ID"
       }
     },
     "obligations": [],
@@ -22332,6 +25662,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Un disjoint check **debe** referenciar exactamente un rule.",
         "Un disjoint check **debe** referenciar exactamente un statement como su first.",
         "Un disjoint check **debe** referenciar exactamente un statement como su second."
+      ],
+      "Scenarios": [
+        "Un scenario **debe** referenciar exactamente un graph.",
+        "Un scenario **debe** tener un label; un sort order; un button group; y un fact baseline, y registrar si es primary; si es clears selection; y si es clears form message."
+      ],
+      "ScenarioFactChanges": [
+        "Un scenario fact change **debe** referenciar exactamente un scenario.",
+        "Un scenario fact change **debe** referenciar exactamente un thing como su subject.",
+        "Un scenario fact change **debe** referenciar exactamente un property.",
+        "Un scenario fact change **debe** tener un action y un sort order, y registrar si es adds to list."
+      ],
+      "ScenarioRuleSettings": [
+        "Un scenario rule setting **debe** referenciar exactamente un scenario.",
+        "Un scenario rule setting **debe** referenciar exactamente un rule.",
+        "Un scenario rule setting **debe** registrar si es enabled."
+      ],
+      "NodeLayouts": [
+        "Un node layout **debe** tener un layout; un node key; un x; y un y."
+      ],
+      "LayoutSlots": [
+        "Un layout slot **debe** tener un sort order; un x; y un y."
+      ],
+      "PageTexts": [
+        "Un page text **debe** tener un text."
       ]
     },
     "connectors": {
@@ -22349,7 +25703,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   },
   "fr": {
@@ -22763,6 +26123,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "Un thing : node key est identique à thing ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -24282,6 +27658,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Somme de chosen unit sur tous les firings dont target est statement ID"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "Un statement : subject node key est identique à subject.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "Le champ « object node key » du statement est déterminé selon la priorité suivante :\n1. « literal| », suivi de l'object value, suivi de « | », suivi de le property datatype, si l'object thing est vide ;\n2. dans tous les autres cas, l'object thing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « object node key » du statement est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« literal| », suivi de l'object value, suivi de « | », suivi de le property datatype",
+              "when": {
+                "kind": "leaf",
+                "text": "l'object thing est vide"
+              }
+            },
+            {
+              "value": "l'object thing",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si object thing est \"\", alors \"literal|\", object value, \"|\", joint à property datatype, sinon object thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "Un statement : subject node kind — repris du subject lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le node kind du subject lié"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "Un statement : object thing node kind — repris du object thing lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le node kind du object thing lié"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "Le champ « object node kind » du statement est déterminé selon la priorité suivante :\n1. « value », si l'object thing est vide ;\n2. dans tous les autres cas, l'object thing node kind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Le champ « object node kind » du statement est déterminé selon la priorité suivante :",
+          "cases": [
+            {
+              "value": "« value »",
+              "when": {
+                "kind": "leaf",
+                "text": "l'object thing est vide"
+              }
+            },
+            {
+              "value": "l'object thing node kind",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Si object thing est \"\", alors \"value\", sinon object thing node kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "Un statement : object value node label — repris du property lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le value node label du property lié"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "Un statement : count of violations as first est le total de violation unit sur les disjoint checks liés à le statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de violation unit sur tous les disjoint checks dont first est statement ID"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "Un statement : count of violations as second est le total de violation unit sur les disjoint checks liés à le statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somme de violation unit sur tous les disjoint checks dont second est statement ID"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "Un statement est considéré comme in contradiction si au moins une des conditions suivantes est vraie : le count of violations as first est supérieur à 0 ou le count of violations as second est supérieur à 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un statement est considéré comme in contradiction si au moins une des conditions suivantes est vraie :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "le count of violations as first est supérieur à 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "le count of violations as second est supérieur à 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of violations as first est supérieur à 0 ou count of violations as second est supérieur à 0"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -24489,6 +28132,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Le is conclusion du target lié"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "Un firing : target subject node key — repris du target lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le subject node key du target lié"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "Un firing : target object node key — repris du target lié.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le object node key du target lié"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -25521,6 +29216,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un scenario : name est identique à label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "Un scenario : graph has facts to add est vrai lorsque le graph lié a un facts to add.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Le has facts to add du graph lié"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Un scenario est considéré comme available si au moins une des conditions suivantes est vraie : le fact baseline n'est pas « next » ou l'indicateur « graph has facts to add » est activé.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un scenario est considéré comme available si au moins une des conditions suivantes est vraie :",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "le fact baseline n'est pas « next »"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicateur « graph has facts to add » est activé"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact baseline n'est pas \"next\" ou graph has facts to add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un scenario fact change : name est identique à scenario fact change ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario fact change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un scenario rule setting : name est identique à scenario rule setting ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario rule setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un node layout : name est identique à node layout ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un layout slot : name est identique à layout slot ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un page text : name est identique à page text ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page text ID"
       }
     },
     "obligations": [],
@@ -25558,6 +29415,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Un disjoint check **doit** référencer exactement un rule.",
         "Un disjoint check **doit** référencer exactement un statement comme son first.",
         "Un disjoint check **doit** référencer exactement un statement comme son second."
+      ],
+      "Scenarios": [
+        "Un scenario **doit** référencer exactement un graph.",
+        "Un scenario **doit** avoir un label; un sort order; un button group; et un fact baseline, et consigner si il est primary; si il est clears selection; et si il est clears form message."
+      ],
+      "ScenarioFactChanges": [
+        "Un scenario fact change **doit** référencer exactement un scenario.",
+        "Un scenario fact change **doit** référencer exactement un thing comme son subject.",
+        "Un scenario fact change **doit** référencer exactement un property.",
+        "Un scenario fact change **doit** avoir une action et un sort order, et consigner si il est adds to list."
+      ],
+      "ScenarioRuleSettings": [
+        "Un scenario rule setting **doit** référencer exactement un scenario.",
+        "Un scenario rule setting **doit** référencer exactement un rule.",
+        "Un scenario rule setting **doit** consigner si il est enabled."
+      ],
+      "NodeLayouts": [
+        "Un node layout **doit** avoir un layout; un node key; un x; et un y."
+      ],
+      "LayoutSlots": [
+        "Un layout slot **doit** avoir un sort order; un x; et un y."
+      ],
+      "PageTexts": [
+        "Un page text **doit** avoir un text."
       ]
     },
     "connectors": {
@@ -25575,7 +29456,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   },
   "hi": {
@@ -25989,6 +29876,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "thing का “node key” उसके “thing ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -27508,6 +31411,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "उन सभी “firings” पर योग chosen unit, जिनका target statement ID है"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "statement का “subject node key” उसके “subject” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "Statement का “object node key” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “literal|”, उसके बाद object value, उसके बाद “|”, उसके बाद property datatype, यदि object thing खाली है;\n2. अन्य सभी स्थितियों में, object thing।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Statement का “object node key” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“literal|”, उसके बाद object value, उसके बाद “|”, उसके बाद property datatype",
+              "when": {
+                "kind": "leaf",
+                "text": "object thing खाली है"
+              }
+            },
+            {
+              "value": "object thing",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि object thing \"\" है, तो \"literal|\", object value, \"|\" से जुड़ा हुआ property datatype, अन्यथा object thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "statement का “subject node kind” — लिंक किए गए “subject” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “subject” का node kind"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "statement का “object thing node kind” — लिंक किए गए “object thing” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “object thing” का node kind"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "Statement का “object node kind” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:\n1. “value”, यदि object thing खाली है;\n2. अन्य सभी स्थितियों में, object thing node kind।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Statement का “object node kind” निम्नलिखित प्राथमिकता के अनुसार निर्धारित होता है:",
+          "cases": [
+            {
+              "value": "“value”",
+              "when": {
+                "kind": "leaf",
+                "text": "object thing खाली है"
+              }
+            },
+            {
+              "value": "object thing node kind",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "यदि object thing \"\" है, तो \"value\", अन्यथा object thing node kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "statement का “object value node label” — लिंक किए गए “property” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “property” का value node label"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "statement का “count of violations as first” statement से संबंधित “disjoint checks” पर कुल “violation unit” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “disjoint checks” पर योग violation unit, जिनका first statement ID है"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "statement का “count of violations as second” statement से संबंधित “disjoint checks” पर कुल “violation unit” है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "उन सभी “disjoint checks” पर योग violation unit, जिनका second statement ID है"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित में से कम से कम एक सही है: count of violations as first 0 से अधिक है या count of violations as second 0 से अधिक है, तो statement “in contradiction” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "statement “in contradiction” माना जाता है, यदि निम्नलिखित में से कम से कम एक सही हो:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "count of violations as first 0 से अधिक है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "count of violations as second 0 से अधिक है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of violations as first 0 से अधिक है या count of violations as second 0 से अधिक है"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -27715,6 +31885,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "लिंक किए गए “target” का is conclusion"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "firing का “target subject node key” — लिंक किए गए “target” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “target” का subject node key"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "firing का “target object node key” — लिंक किए गए “target” से लिया जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “target” का object node key"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -28747,6 +32969,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "scenario का “name” उसके “label” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "scenario का “graph has facts to add” तब सत्य होता है, जब लिंक किए गए “graph” का “facts to add” रखता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "लिंक किए गए “graph” का has facts to add"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "यदि निम्नलिखित में से कम से कम एक सही है: fact baseline “next” नहीं है या “graph has facts to add” ध्वज लगा हुआ है, तो scenario “available” माना जाता है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "scenario “available” माना जाता है, यदि निम्नलिखित में से कम से कम एक सही हो:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "fact baseline “next” नहीं है"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“graph has facts to add” ध्वज लगा हुआ है"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact baseline \"next\" नहीं है या graph has facts to add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "scenario fact change का “name” उसके “scenario fact change ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario fact change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "scenario rule setting का “name” उसके “scenario rule setting ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario rule setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "node layout का “name” उसके “node layout ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "layout slot का “name” उसके “layout slot ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "page text का “name” उसके “page text ID” के समान है।",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page text ID"
       }
     },
     "obligations": [],
@@ -28784,6 +33168,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "disjoint check को ठीक एक “rule” का संदर्भ देना **अनिवार्य** है।",
         "disjoint check को अपने “first” के रूप में ठीक एक “statement” का संदर्भ देना **अनिवार्य** है।",
         "disjoint check को अपने “second” के रूप में ठीक एक “statement” का संदर्भ देना **अनिवार्य** है।"
+      ],
+      "Scenarios": [
+        "scenario को ठीक एक “graph” का संदर्भ देना **अनिवार्य** है।",
+        "scenario को label, sort order, button group और fact baseline रखना, तथा यह कि वह “primary” है या नहीं, यह कि वह “clears selection” है या नहीं और यह कि वह “clears form message” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "ScenarioFactChanges": [
+        "scenario fact change को ठीक एक “scenario” का संदर्भ देना **अनिवार्य** है।",
+        "scenario fact change को अपने “subject” के रूप में ठीक एक “thing” का संदर्भ देना **अनिवार्य** है।",
+        "scenario fact change को ठीक एक “property” का संदर्भ देना **अनिवार्य** है।",
+        "scenario fact change को action और sort order रखना, तथा यह कि वह “adds to list” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "ScenarioRuleSettings": [
+        "scenario rule setting को ठीक एक “scenario” का संदर्भ देना **अनिवार्य** है।",
+        "scenario rule setting को ठीक एक “rule” का संदर्भ देना **अनिवार्य** है।",
+        "scenario rule setting को यह कि वह “enabled” है या नहीं दर्ज करना **अनिवार्य** है।"
+      ],
+      "NodeLayouts": [
+        "node layout को layout, node key, x और y रखना **अनिवार्य** है।"
+      ],
+      "LayoutSlots": [
+        "layout slot को sort order, x और y रखना **अनिवार्य** है।"
+      ],
+      "PageTexts": [
+        "page text को text रखना **अनिवार्य** है।"
       ]
     },
     "connectors": {
@@ -28801,7 +33209,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   },
   "id": {
@@ -29215,6 +33629,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "Untuk setiap thing, node key sama dengan thing ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -30734,6 +35164,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Total chosen unit pada semua firings dengan syarat target adalah statement ID"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "Untuk setiap statement, subject node key sama dengan subject.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "Untuk setiap statement, object node key ditentukan menurut urutan prioritas berikut:\n1. “literal|”, diikuti object value, diikuti “|”, diikuti property datatype, jika object thing kosong;\n2. dalam semua kasus lainnya, object thing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap statement, object node key ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“literal|”, diikuti object value, diikuti “|”, diikuti property datatype",
+              "when": {
+                "kind": "leaf",
+                "text": "object thing kosong"
+              }
+            },
+            {
+              "value": "object thing",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika object thing adalah \"\" maka \"literal|\", object value, \"|\", digabung dengan property datatype, selain itu object thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "Untuk setiap statement, subject node kind diambil dari subject yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node kind dari subject yang tertaut"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "Untuk setiap statement, object thing node kind diambil dari object thing yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node kind dari object thing yang tertaut"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "Untuk setiap statement, object node kind ditentukan menurut urutan prioritas berikut:\n1. “value”, jika object thing kosong;\n2. dalam semua kasus lainnya, object thing node kind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Untuk setiap statement, object node kind ditentukan menurut urutan prioritas berikut:",
+          "cases": [
+            {
+              "value": "“value”",
+              "when": {
+                "kind": "leaf",
+                "text": "object thing kosong"
+              }
+            },
+            {
+              "value": "object thing node kind",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Jika object thing adalah \"\" maka \"value\", selain itu object thing node kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "Untuk setiap statement, object value node label diambil dari property yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Value node label dari property yang tertaut"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "Untuk setiap statement, count of violations as first adalah nilai total violation unit pada seluruh disjoint checks yang terkait dengan statement tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total violation unit pada semua disjoint checks dengan syarat first adalah statement ID"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "Untuk setiap statement, count of violations as second adalah nilai total violation unit pada seluruh disjoint checks yang terkait dengan statement tersebut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Total violation unit pada semua disjoint checks dengan syarat second adalah statement ID"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "Setiap statement dianggap “in contradiction” jika paling sedikit satu dari kondisi berikut terpenuhi: count of violations as first lebih dari 0 atau count of violations as second lebih dari 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap statement dianggap “in contradiction” jika paling sedikit satu kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "count of violations as first lebih dari 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "count of violations as second lebih dari 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of violations as first lebih dari 0 atau count of violations as second lebih dari 0"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -30941,6 +35638,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Is conclusion dari target yang tertaut"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "Untuk setiap firing, target subject node key diambil dari target yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject node key dari target yang tertaut"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "Untuk setiap firing, target object node key diambil dari target yang tertaut.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Object node key dari target yang tertaut"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -31973,6 +36722,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap scenario, name sama dengan label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "Untuk setiap scenario, graph has facts to add bernilai benar jika graph yang tertaut pada scenario tersebut memiliki “facts to add”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Has facts to add dari graph yang tertaut"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Setiap scenario dianggap “available” jika paling sedikit satu dari kondisi berikut terpenuhi: fact baseline bukan “next” atau penanda “graph has facts to add” aktif.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Setiap scenario dianggap “available” jika paling sedikit satu kondisi berikut terpenuhi:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "fact baseline bukan “next”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "penanda “graph has facts to add” aktif"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact baseline tidak sama dengan \"next\" atau graph has facts to add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap scenario fact change, name sama dengan scenario fact change ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario fact change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap scenario rule setting, name sama dengan scenario rule setting ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario rule setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap node layout, name sama dengan node layout ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap layout slot, name sama dengan layout slot ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Untuk setiap page text, name sama dengan page text ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page text ID"
       }
     },
     "obligations": [],
@@ -32010,6 +36921,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Setiap disjoint check **harus** merujuk pada tepat satu rule.",
         "Setiap disjoint check **harus** merujuk pada tepat satu statement sebagai first.",
         "Setiap disjoint check **harus** merujuk pada tepat satu statement sebagai second."
+      ],
+      "Scenarios": [
+        "Setiap scenario **harus** merujuk pada tepat satu graph.",
+        "Setiap scenario **harus** memiliki label, sort order, button group, dan fact baseline, serta menyatakan apakah tergolong “primary”, apakah memenuhi kondisi “clears selection”, dan apakah memenuhi kondisi “clears form message”."
+      ],
+      "ScenarioFactChanges": [
+        "Setiap scenario fact change **harus** merujuk pada tepat satu scenario.",
+        "Setiap scenario fact change **harus** merujuk pada tepat satu thing sebagai subject.",
+        "Setiap scenario fact change **harus** merujuk pada tepat satu property.",
+        "Setiap scenario fact change **harus** memiliki action dan sort order, serta menyatakan apakah memenuhi kondisi “adds to list”."
+      ],
+      "ScenarioRuleSettings": [
+        "Setiap scenario rule setting **harus** merujuk pada tepat satu scenario.",
+        "Setiap scenario rule setting **harus** merujuk pada tepat satu rule.",
+        "Setiap scenario rule setting **harus** menyatakan apakah tergolong “enabled”."
+      ],
+      "NodeLayouts": [
+        "Setiap node layout **harus** memiliki layout, node key, x, dan y."
+      ],
+      "LayoutSlots": [
+        "Setiap layout slot **harus** memiliki sort order, x, dan y."
+      ],
+      "PageTexts": [
+        "Setiap page text **harus** memiliki text."
       ]
     },
     "connectors": {
@@ -32027,7 +36962,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   },
   "it": {
@@ -32441,6 +37382,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "Un thing: node key è uguale a thing ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -33960,6 +38917,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Somma di chosen unit su tutti i firings il cui target è statement ID"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "Un statement: subject node key è uguale a subject.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "Il campo “object node key” del statement è determinato secondo la seguente priorità:\n1. «literal|», seguito da l'object value, seguito da «|», seguito da il property datatype, se l'object thing è vuoto;\n2. in tutti gli altri casi, l'object thing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “object node key” del statement è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«literal|», seguito da l'object value, seguito da «|», seguito da il property datatype",
+              "when": {
+                "kind": "leaf",
+                "text": "l'object thing è vuoto"
+              }
+            },
+            {
+              "value": "l'object thing",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se object thing è \"\", allora \"literal|\", object value, \"|\", unito a property datatype, altrimenti object thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "Un statement: subject node kind — ripreso dal subject collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il node kind del subject collegato"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "Un statement: object thing node kind — ripreso dal object thing collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il node kind del object thing collegato"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "Il campo “object node kind” del statement è determinato secondo la seguente priorità:\n1. «value», se l'object thing è vuoto;\n2. in tutti gli altri casi, l'object thing node kind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Il campo “object node kind” del statement è determinato secondo la seguente priorità:",
+          "cases": [
+            {
+              "value": "«value»",
+              "when": {
+                "kind": "leaf",
+                "text": "l'object thing è vuoto"
+              }
+            },
+            {
+              "value": "l'object thing node kind",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se object thing è \"\", allora \"value\", altrimenti object thing node kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "Un statement: object value node label — ripreso dal property collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il value node label del property collegato"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "Un statement: count of violations as first è il totale di violation unit tra i disjoint checks collegati a il statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di violation unit su tutti i disjoint checks il cui first è statement ID"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "Un statement: count of violations as second è il totale di violation unit tra i disjoint checks collegati a il statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Somma di violation unit su tutti i disjoint checks il cui second è statement ID"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "Un statement è considerato in contradiction se vale almeno una delle seguenti: il count of violations as first è maggiore di 0 o il count of violations as second è maggiore di 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un statement è considerato in contradiction se vale almeno una delle seguenti:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "il count of violations as first è maggiore di 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "il count of violations as second è maggiore di 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of violations as first è maggiore di 0 o count of violations as second è maggiore di 0"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -34167,6 +39391,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Il is conclusion del target collegato"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "Un firing: target subject node key — ripreso dal target collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il subject node key del target collegato"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "Un firing: target object node key — ripreso dal target collegato.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il object node key del target collegato"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -35199,6 +40475,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un scenario: name è uguale a label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "Un scenario: graph has facts to add è vero quando il graph collegato ha un facts to add.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Il has facts to add del graph collegato"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Un scenario è considerato available se vale almeno una delle seguenti: il fact baseline non è «next» o l'indicatore “graph has facts to add” è attivo.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Un scenario è considerato available se vale almeno una delle seguenti:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "il fact baseline non è «next»"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "l'indicatore “graph has facts to add” è attivo"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact baseline non è \"next\" o graph has facts to add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un scenario fact change: name è uguale a scenario fact change ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario fact change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un scenario rule setting: name è uguale a scenario rule setting ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario rule setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un node layout: name è uguale a node layout ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un layout slot: name è uguale a layout slot ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Un page text: name è uguale a page text ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page text ID"
       }
     },
     "obligations": [],
@@ -35236,6 +40674,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Un disjoint check **deve** referenziare esattamente un rule.",
         "Un disjoint check **deve** referenziare esattamente un statement come suo first.",
         "Un disjoint check **deve** referenziare esattamente un statement come suo second."
+      ],
+      "Scenarios": [
+        "Un scenario **deve** referenziare esattamente un graph.",
+        "Un scenario **deve** avere un label; un sort order; un button group; e un fact baseline, e registrare se è primary; se è clears selection; e se è clears form message."
+      ],
+      "ScenarioFactChanges": [
+        "Un scenario fact change **deve** referenziare esattamente un scenario.",
+        "Un scenario fact change **deve** referenziare esattamente un thing come suo subject.",
+        "Un scenario fact change **deve** referenziare esattamente un property.",
+        "Un scenario fact change **deve** avere un action e un sort order, e registrare se è adds to list."
+      ],
+      "ScenarioRuleSettings": [
+        "Un scenario rule setting **deve** referenziare esattamente un scenario.",
+        "Un scenario rule setting **deve** referenziare esattamente un rule.",
+        "Un scenario rule setting **deve** registrare se è enabled."
+      ],
+      "NodeLayouts": [
+        "Un node layout **deve** avere un layout; un node key; un x; e un y."
+      ],
+      "LayoutSlots": [
+        "Un layout slot **deve** avere un sort order; un x; e un y."
+      ],
+      "PageTexts": [
+        "Un page text **deve** avere un text."
       ]
     },
     "connectors": {
@@ -35253,7 +40715,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   },
   "ja": {
@@ -35667,6 +41135,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "thingの「node key」は thing ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -37186,6 +42670,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Target が statement ID であるすべての「firings」にわたる chosen unit の合計"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "statementの「subject node key」は subject と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "Statementの「object node key」は、次の優先順位で決まります:\n1. object thing が空である場合は 「literal|」、続いて object value、続いて 「|」、続いて property datatype;\n2. それ以外の場合は object thing。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Statementの「object node key」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「literal|」、続いて object value、続いて 「|」、続いて property datatype",
+              "when": {
+                "kind": "leaf",
+                "text": "object thing が空である"
+              }
+            },
+            {
+              "value": "object thing",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Object thing は \"\"なら \"literal|\"、object value、\"|\"、と連結してproperty datatype、そうでなければ object thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "statementの「subject node kind」— リンクされた「subject」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「subject」の node kind"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "statementの「object thing node kind」— リンクされた「object thing」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「object thing」の node kind"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "Statementの「object node kind」は、次の優先順位で決まります:\n1. object thing が空である場合は 「value」;\n2. それ以外の場合は object thing node kind。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Statementの「object node kind」は、次の優先順位で決まります:",
+          "cases": [
+            {
+              "value": "「value」",
+              "when": {
+                "kind": "leaf",
+                "text": "object thing が空である"
+              }
+            },
+            {
+              "value": "object thing node kind",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Object thing は \"\"なら \"value\"、そうでなければ object thing node kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "statementの「object value node label」— リンクされた「property」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「property」の value node label"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "statementの「count of violations as first」は statementに関連する「disjoint checks」全体での「violation unit」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "First が statement ID であるすべての「disjoint checks」にわたる violation unit の合計"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "statementの「count of violations as second」は statementに関連する「disjoint checks」全体での「violation unit」の合計 です。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Second が statement ID であるすべての「disjoint checks」にわたる violation unit の合計"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "次のいずれかが成り立つ: count of violations as first が 0 より大きいまたはcount of violations as second が 0 より大きい場合、statementは「In Contradiction」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のいずれかが成り立つ場合、statementは「In Contradiction」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "count of violations as first が 0 より大きい"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "count of violations as second が 0 より大きい"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of violations as first が 0 より大きいまたはcount of violations as second が 0 より大きい"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -37393,6 +43144,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "リンクされた「target」の is conclusion"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "firingの「target subject node key」— リンクされた「target」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「target」の subject node key"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "firingの「target object node key」— リンクされた「target」から取得されます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「target」の object node key"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -38425,6 +44228,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "scenarioの「name」は label と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "scenarioの「graph has facts to add」は、リンクされた「graph」が「Facts to Add」を持つとき真になります。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "リンクされた「graph」の has facts to add"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "次のいずれかが成り立つ: fact baseline が 「next」 でないまたはフラグ「graph has facts to add」が設定されている場合、scenarioは「Available」と見なされます。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "次のいずれかが成り立つ場合、scenarioは「Available」と見なされます:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "fact baseline が 「next」 でない"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "フラグ「graph has facts to add」が設定されている"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact baseline が \"next\" でないまたはgraph has facts to add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "scenario fact changeの「name」は scenario fact change ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario fact change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "scenario rule settingの「name」は scenario rule setting ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario rule setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "node layoutの「name」は node layout ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "layout slotの「name」は layout slot ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "page textの「name」は page text ID と同じです。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page text ID"
       }
     },
     "obligations": [],
@@ -38462,6 +44427,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "disjoint checkは「rule」をちょうど 1 件参照し**なければなりません**。",
         "disjoint checkは、firstとして「statement」をちょうど 1 件参照し**なければなりません**。",
         "disjoint checkは、secondとして「statement」をちょうど 1 件参照し**なければなりません**。"
+      ],
+      "Scenarios": [
+        "scenarioは「graph」をちょうど 1 件参照し**なければなりません**。",
+        "scenarioは label、sort order、button group、およびfact baseline を持た、かつ 「Primary」であるかどうか、「Clears Selection」であるかどうか、および「Clears Form Message」であるかどうかを記録し**なければなりません**。"
+      ],
+      "ScenarioFactChanges": [
+        "scenario fact changeは「scenario」をちょうど 1 件参照し**なければなりません**。",
+        "scenario fact changeは、subjectとして「thing」をちょうど 1 件参照し**なければなりません**。",
+        "scenario fact changeは「property」をちょうど 1 件参照し**なければなりません**。",
+        "scenario fact changeは actionおよびsort order を持た、かつ 「Adds to List」であるかどうかを記録し**なければなりません**。"
+      ],
+      "ScenarioRuleSettings": [
+        "scenario rule settingは「scenario」をちょうど 1 件参照し**なければなりません**。",
+        "scenario rule settingは「rule」をちょうど 1 件参照し**なければなりません**。",
+        "scenario rule settingは 「Enabled」であるかどうかを記録し**なければなりません**。"
+      ],
+      "NodeLayouts": [
+        "node layoutは layout、node key、x、およびy を持た**なければなりません**。"
+      ],
+      "LayoutSlots": [
+        "layout slotは sort order、x、およびy を持た**なければなりません**。"
+      ],
+      "PageTexts": [
+        "page textは text を持た**なければなりません**。"
       ]
     },
     "connectors": {
@@ -38479,7 +44468,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   },
   "ko": {
@@ -38893,6 +44888,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "‘thing’ 레코드의 ‘node key’ 값은 같은 레코드의 ‘thing ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -40412,6 +46423,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "조건(target 값이 statement ID임)에 맞는 모든 firings 레코드의 chosen unit 합계"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "‘statement’ 레코드의 ‘subject node key’ 값은 같은 레코드의 ‘subject’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "‘statement’ 레코드의 ‘object node key’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘object thing’ 값이 비어 있는 경우: “literal|”, 이어서 ‘object value’, 이어서 “|”, 이어서 ‘property datatype’\n2. 그 밖의 경우: ‘object thing’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘statement’ 레코드의 ‘object node key’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“literal|”, 이어서 ‘object value’, 이어서 “|”, 이어서 ‘property datatype’",
+              "when": {
+                "kind": "leaf",
+                "text": "‘object thing’ 값이 비어 있는 경우"
+              }
+            },
+            {
+              "value": "‘object thing’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(object thing 값이 \"\"임)이 성립하면 \"literal|\" 이어서 object value 이어서 \"|\" 이어서 property datatype, 그렇지 않으면 object thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "‘statement’ 레코드의 ‘subject node kind’ 값은 연결된 ‘subject’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 subject 레코드의 node kind"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "‘statement’ 레코드의 ‘object thing node kind’ 값은 연결된 ‘object thing’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 object thing 레코드의 node kind"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "‘statement’ 레코드의 ‘object node kind’ 값은 다음 우선순위에 따라 결정됩니다:\n1. ‘object thing’ 값이 비어 있는 경우: “value”\n2. 그 밖의 경우: ‘object thing node kind’.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "‘statement’ 레코드의 ‘object node kind’ 값은 다음 우선순위에 따라 결정됩니다:",
+          "cases": [
+            {
+              "value": "“value”",
+              "when": {
+                "kind": "leaf",
+                "text": "‘object thing’ 값이 비어 있는 경우"
+              }
+            },
+            {
+              "value": "‘object thing node kind’",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "조건(object thing 값이 \"\"임)이 성립하면 \"value\", 그렇지 않으면 object thing node kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "‘statement’ 레코드의 ‘object value node label’ 값은 연결된 ‘property’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 property 레코드의 value node label"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "‘statement’ 레코드의 ‘count of violations as first’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘disjoint checks’ 레코드의 총 ‘violation unit’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(first 값이 statement ID임)에 맞는 모든 disjoint checks 레코드의 violation unit 합계"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "‘statement’ 레코드의 ‘count of violations as second’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘disjoint checks’ 레코드의 총 ‘violation unit’입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "조건(second 값이 statement ID임)에 맞는 모든 disjoint checks 레코드의 violation unit 합계"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "다음 중 하나 이상에 해당하는 경우(‘count of violations as first’ 값이 0보다 큰 경우 또는 ‘count of violations as second’ 값이 0보다 큰 경우), ‘statement’ 레코드는 ‘in contradiction’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 중 하나 이상에 해당하는 경우, ‘statement’ 레코드는 ‘in contradiction’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘count of violations as first’ 값이 0보다 큰 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘count of violations as second’ 값이 0보다 큰 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of violations as first 값이 0보다 큼 또는 count of violations as second 값이 0보다 큼"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -40619,6 +46897,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "연결된 target 레코드의 is conclusion"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "‘firing’ 레코드의 ‘target subject node key’ 값은 연결된 ‘target’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 target 레코드의 subject node key"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "‘firing’ 레코드의 ‘target object node key’ 값은 연결된 ‘target’ 레코드에서 가져옵니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 target 레코드의 object node key"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -41651,6 +47981,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘scenario’ 레코드의 ‘name’ 값은 같은 레코드의 ‘label’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "‘scenario’ 레코드의 ‘graph has facts to add’ 값은 연결된 ‘graph’ 레코드가 ‘facts to add’ 항목이 있는 경우에 참입니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "연결된 graph 레코드의 has facts to add"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "다음 중 하나 이상에 해당하는 경우(‘fact baseline’ 값이 “next” 이외의 값인 경우 또는 ‘graph has facts to add’ 플래그가 설정된 경우), ‘scenario’ 레코드는 ‘available’에 해당하는 것으로 간주됩니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "다음 중 하나 이상에 해당하는 경우, ‘scenario’ 레코드는 ‘available’에 해당하는 것으로 간주됩니다:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "‘fact baseline’ 값이 “next” 이외의 값인 경우"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "‘graph has facts to add’ 플래그가 설정된 경우"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact baseline 값이 \"next\" 값과 다름 또는 graph has facts to add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘scenario fact change’ 레코드의 ‘name’ 값은 같은 레코드의 ‘scenario fact change ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario fact change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘scenario rule setting’ 레코드의 ‘name’ 값은 같은 레코드의 ‘scenario rule setting ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario rule setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘node layout’ 레코드의 ‘name’ 값은 같은 레코드의 ‘node layout ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘layout slot’ 레코드의 ‘name’ 값은 같은 레코드의 ‘layout slot ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "‘page text’ 레코드의 ‘name’ 값은 같은 레코드의 ‘page text ID’ 값과 같습니다.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page text ID"
       }
     },
     "obligations": [],
@@ -41688,6 +48180,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "‘disjoint check’ 레코드는 ‘rule’ 레코드를 정확히 하나 참조**해야 합니다**.",
         "‘disjoint check’ 레코드는 ‘first’ 필드를 통해 ‘statement’ 레코드를 정확히 하나 참조**해야 합니다**.",
         "‘disjoint check’ 레코드는 ‘second’ 필드를 통해 ‘statement’ 레코드를 정확히 하나 참조**해야 합니다**."
+      ],
+      "Scenarios": [
+        "‘scenario’ 레코드는 ‘graph’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘scenario’ 레코드는 ‘label’, ‘sort order’, ‘button group’ 및 ‘fact baseline’ 값을 포함하고, 해당 레코드가 ‘primary’에 해당하는지 여부, 해당 레코드가 ‘clears selection’에 해당하는지 여부 및 해당 레코드가 ‘clears form message’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "ScenarioFactChanges": [
+        "‘scenario fact change’ 레코드는 ‘scenario’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘scenario fact change’ 레코드는 ‘subject’ 필드를 통해 ‘thing’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘scenario fact change’ 레코드는 ‘property’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘scenario fact change’ 레코드는 ‘action’ 및 ‘sort order’ 값을 포함하고, 해당 레코드가 ‘adds to list’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "ScenarioRuleSettings": [
+        "‘scenario rule setting’ 레코드는 ‘scenario’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘scenario rule setting’ 레코드는 ‘rule’ 레코드를 정확히 하나 참조**해야 합니다**.",
+        "‘scenario rule setting’ 레코드는 해당 레코드가 ‘enabled’에 해당하는지 여부를 기록**해야 합니다**."
+      ],
+      "NodeLayouts": [
+        "‘node layout’ 레코드는 ‘layout’, ‘node key’, ‘x’ 및 ‘y’ 값을 포함**해야 합니다**."
+      ],
+      "LayoutSlots": [
+        "‘layout slot’ 레코드는 ‘sort order’, ‘x’ 및 ‘y’ 값을 포함**해야 합니다**."
+      ],
+      "PageTexts": [
+        "‘page text’ 레코드는 ‘text’ 값을 포함**해야 합니다**."
       ]
     },
     "connectors": {
@@ -41705,7 +48221,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   },
   "nl": {
@@ -42119,6 +48641,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "Een thing: node key is gelijk aan thing ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -43638,6 +50176,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Som van chosen unit over alle firings waarvan target is statement ID"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "Een statement: subject node key is gelijk aan subject.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "Het veld ‘object node key’ van het statement wordt bepaald volgens de volgende prioriteit:\n1. ‘literal|’, gevolgd door de object value, gevolgd door ‘|’, gevolgd door de property datatype, als de object thing leeg is;\n2. in alle andere gevallen de object thing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘object node key’ van het statement wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘literal|’, gevolgd door de object value, gevolgd door ‘|’, gevolgd door de property datatype",
+              "when": {
+                "kind": "leaf",
+                "text": "de object thing leeg is"
+              }
+            },
+            {
+              "value": "de object thing",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als object thing is \"\", dan \"literal|\", object value, \"|\", samengevoegd met property datatype, anders object thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "Een statement: subject node kind — overgenomen van de gekoppelde subject.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De node kind van de gekoppelde subject"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "Een statement: object thing node kind — overgenomen van de gekoppelde object thing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De node kind van de gekoppelde object thing"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "Het veld ‘object node kind’ van het statement wordt bepaald volgens de volgende prioriteit:\n1. ‘value’, als de object thing leeg is;\n2. in alle andere gevallen de object thing node kind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Het veld ‘object node kind’ van het statement wordt bepaald volgens de volgende prioriteit:",
+          "cases": [
+            {
+              "value": "‘value’",
+              "when": {
+                "kind": "leaf",
+                "text": "de object thing leeg is"
+              }
+            },
+            {
+              "value": "de object thing node kind",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Als object thing is \"\", dan \"value\", anders object thing node kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "Een statement: object value node label — overgenomen van de gekoppelde property.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De value node label van de gekoppelde property"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "Een statement: count of violations as first is het totaal van violation unit over de disjoint checks gekoppeld aan het statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van violation unit over alle disjoint checks waarvan first is statement ID"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "Een statement: count of violations as second is het totaal van violation unit over de disjoint checks gekoppeld aan het statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Som van violation unit over alle disjoint checks waarvan second is statement ID"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "Een statement geldt als in contradiction als ten minste één van het volgende geldt: de count of violations as first groter is dan 0 of de count of violations as second groter is dan 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een statement geldt als in contradiction als ten minste één van het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de count of violations as first groter is dan 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de count of violations as second groter is dan 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of violations as first is groter dan 0 of count of violations as second is groter dan 0"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -43845,6 +50650,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "De is conclusion van de gekoppelde target"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "Een firing: target subject node key — overgenomen van de gekoppelde target.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De subject node key van de gekoppelde target"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "Een firing: target object node key — overgenomen van de gekoppelde target.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De object node key van de gekoppelde target"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -44877,6 +51734,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een scenario: name is gelijk aan label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "Een scenario: graph has facts to add is waar wanneer de gekoppelde graph heeft een facts to add.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "De has facts to add van de gekoppelde graph"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Een scenario geldt als available als ten minste één van het volgende geldt: de fact baseline niet ‘next’ is of de vlag ‘graph has facts to add’ is gezet.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Een scenario geldt als available als ten minste één van het volgende geldt:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "de fact baseline niet ‘next’ is"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "de vlag ‘graph has facts to add’ is gezet"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact baseline is niet \"next\" of graph has facts to add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een scenario fact change: name is gelijk aan scenario fact change ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario fact change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een scenario rule setting: name is gelijk aan scenario rule setting ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario rule setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een node layout: name is gelijk aan node layout ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een layout slot: name is gelijk aan layout slot ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Een page text: name is gelijk aan page text ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page text ID"
       }
     },
     "obligations": [],
@@ -44914,6 +51933,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Een disjoint check **moet** naar precies één rule verwijzen.",
         "Een disjoint check **moet** naar precies één statement verwijzen als zijn first.",
         "Een disjoint check **moet** naar precies één statement verwijzen als zijn second."
+      ],
+      "Scenarios": [
+        "Een scenario **moet** naar precies één graph verwijzen.",
+        "Een scenario **moet** een label; een sort order; een button group; en een fact baseline hebben, en vastleggen of het is primary; of het is clears selection; en of het is clears form message."
+      ],
+      "ScenarioFactChanges": [
+        "Een scenario fact change **moet** naar precies één scenario verwijzen.",
+        "Een scenario fact change **moet** naar precies één thing verwijzen als zijn subject.",
+        "Een scenario fact change **moet** naar precies één property verwijzen.",
+        "Een scenario fact change **moet** een action en een sort order hebben, en vastleggen of het is adds to list."
+      ],
+      "ScenarioRuleSettings": [
+        "Een scenario rule setting **moet** naar precies één scenario verwijzen.",
+        "Een scenario rule setting **moet** naar precies één rule verwijzen.",
+        "Een scenario rule setting **moet** vastleggen of het is enabled."
+      ],
+      "NodeLayouts": [
+        "Een node layout **moet** een layout; een node key; een x; en een y hebben."
+      ],
+      "LayoutSlots": [
+        "Een layout slot **moet** een sort order; een x; en een y hebben."
+      ],
+      "PageTexts": [
+        "Een page text **moet** een text hebben."
       ]
     },
     "connectors": {
@@ -44931,7 +51974,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   },
   "pt": {
@@ -45345,6 +52394,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "Um thing: node key é igual a thing ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -46864,6 +53929,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Soma de chosen unit entre todos os firings cujo target é statement ID"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "Um statement: subject node key é igual a subject.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "O campo “object node key” do statement é determinado pela seguinte prioridade:\n1. “literal|”, seguido de o object value, seguido de “|”, seguido de o property datatype, se o object thing está vazio;\n2. em todos os outros casos, o object thing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “object node key” do statement é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“literal|”, seguido de o object value, seguido de “|”, seguido de o property datatype",
+              "when": {
+                "kind": "leaf",
+                "text": "o object thing está vazio"
+              }
+            },
+            {
+              "value": "o object thing",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se object thing é \"\", então \"literal|\", object value, \"|\", unido a property datatype, caso contrário object thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "Um statement: subject node kind — obtido do subject vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O node kind do subject vinculado"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "Um statement: object thing node kind — obtido do object thing vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O node kind do object thing vinculado"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "O campo “object node kind” do statement é determinado pela seguinte prioridade:\n1. “value”, se o object thing está vazio;\n2. em todos os outros casos, o object thing node kind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "O campo “object node kind” do statement é determinado pela seguinte prioridade:",
+          "cases": [
+            {
+              "value": "“value”",
+              "when": {
+                "kind": "leaf",
+                "text": "o object thing está vazio"
+              }
+            },
+            {
+              "value": "o object thing node kind",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Se object thing é \"\", então \"value\", caso contrário object thing node kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "Um statement: object value node label — obtido do property vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O value node label do property vinculado"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "Um statement: count of violations as first é o total de violation unit entre os disjoint checks relacionados a o statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de violation unit entre todos os disjoint checks cujo first é statement ID"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "Um statement: count of violations as second é o total de violation unit entre os disjoint checks relacionados a o statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Soma de violation unit entre todos os disjoint checks cujo second é statement ID"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "Um statement é considerado in contradiction se pelo menos uma das seguintes é verdadeira: o count of violations as first é maior que 0 ou o count of violations as second é maior que 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um statement é considerado in contradiction se pelo menos um dos seguintes for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o count of violations as first é maior que 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o count of violations as second é maior que 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of violations as first é maior que 0 ou count of violations as second é maior que 0"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -47071,6 +54403,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "O is conclusion do target vinculado"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "Um firing: target subject node key — obtido do target vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O subject node key do target vinculado"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "Um firing: target object node key — obtido do target vinculado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O object node key do target vinculado"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -48103,6 +55487,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um scenario: name é igual a label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "Um scenario: graph has facts to add é verdadeiro quando o graph vinculado tem um facts to add.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "O has facts to add do graph vinculado"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Um scenario é considerado available se pelo menos uma das seguintes é verdadeira: o fact baseline não é “next” ou o indicador “graph has facts to add” está ativado.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Um scenario é considerado available se pelo menos um dos seguintes for verdadeiro:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "o fact baseline não é “next”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "o indicador “graph has facts to add” está ativado"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact baseline não é \"next\" ou graph has facts to add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um scenario fact change: name é igual a scenario fact change ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario fact change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um scenario rule setting: name é igual a scenario rule setting ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario rule setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um node layout: name é igual a node layout ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um layout slot: name é igual a layout slot ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Um page text: name é igual a page text ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page text ID"
       }
     },
     "obligations": [],
@@ -48140,6 +55686,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Um disjoint check **deve** referenciar exatamente um rule.",
         "Um disjoint check **deve** referenciar exatamente um statement como seu first.",
         "Um disjoint check **deve** referenciar exatamente um statement como seu second."
+      ],
+      "Scenarios": [
+        "Um scenario **deve** referenciar exatamente um graph.",
+        "Um scenario **deve** ter um label; um sort order; um button group; e um fact baseline, e registrar se é primary; se é clears selection; e se é clears form message."
+      ],
+      "ScenarioFactChanges": [
+        "Um scenario fact change **deve** referenciar exatamente um scenario.",
+        "Um scenario fact change **deve** referenciar exatamente um thing como seu subject.",
+        "Um scenario fact change **deve** referenciar exatamente um property.",
+        "Um scenario fact change **deve** ter um action e um sort order, e registrar se é adds to list."
+      ],
+      "ScenarioRuleSettings": [
+        "Um scenario rule setting **deve** referenciar exatamente um scenario.",
+        "Um scenario rule setting **deve** referenciar exatamente um rule.",
+        "Um scenario rule setting **deve** registrar se é enabled."
+      ],
+      "NodeLayouts": [
+        "Um node layout **deve** ter um layout; um node key; um x; e um y."
+      ],
+      "LayoutSlots": [
+        "Um layout slot **deve** ter um sort order; um x; e um y."
+      ],
+      "PageTexts": [
+        "Um page text **deve** ter um text."
       ]
     },
     "connectors": {
@@ -48157,7 +55727,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   },
   "ru": {
@@ -48571,6 +56147,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "Thing: «node key» совпадает с thing ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -50090,6 +57682,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Сумма chosen unit по всем «firings», у которых target равно statement ID"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "Statement: «subject node key» совпадает с subject.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "Поле «object node key» (Statement) определяется по следующему приоритету:\n1. «literal|», затем object value, затем «|», затем property datatype, если object thing пусто;\n2. во всех остальных случаях — object thing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «object node key» (Statement) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«literal|», затем object value, затем «|», затем property datatype",
+              "when": {
+                "kind": "leaf",
+                "text": "object thing пусто"
+              }
+            },
+            {
+              "value": "object thing",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если object thing равно \"\", то \"literal|\", object value, \"|\", соединено с property datatype, иначе object thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "Statement: «subject node kind» — берётся из связанного «subject».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node kind связанного «subject»"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "Statement: «object thing node kind» — берётся из связанного «object thing».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node kind связанного «object thing»"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "Поле «object node kind» (Statement) определяется по следующему приоритету:\n1. «value», если object thing пусто;\n2. во всех остальных случаях — object thing node kind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Поле «object node kind» (Statement) определяется по следующему приоритету:",
+          "cases": [
+            {
+              "value": "«value»",
+              "when": {
+                "kind": "leaf",
+                "text": "object thing пусто"
+              }
+            },
+            {
+              "value": "object thing node kind",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Если object thing равно \"\", то \"value\", иначе object thing node kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "Statement: «object value node label» — берётся из связанного «property».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Value node label связанного «property»"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "Statement: «count of violations as first» — это сумма «violation unit» по записям «disjoint checks», связанным с statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма violation unit по всем «disjoint checks», у которых first равно statement ID"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "Statement: «count of violations as second» — это сумма «violation unit» по записям «disjoint checks», связанным с statement.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Сумма violation unit по всем «disjoint checks», у которых second равно statement ID"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "Statement считается «in contradiction», если выполняется хотя бы одно из следующего: count of violations as first больше 0 или count of violations as second больше 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Statement считается «in contradiction», если выполняется хотя бы одно из следующего:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "count of violations as first больше 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "count of violations as second больше 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of violations as first больше 0 или count of violations as second больше 0"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -50297,6 +58156,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Is conclusion связанного «target»"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "Firing: «target subject node key» — берётся из связанного «target».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject node key связанного «target»"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "Firing: «target object node key» — берётся из связанного «target».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Object node key связанного «target»"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -51329,6 +59240,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Scenario: «name» совпадает с label.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "Scenario: «graph has facts to add» истинно, когда связанный «graph» имеет «facts to add».",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Has facts to add связанного «graph»"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Scenario считается «available», если выполняется хотя бы одно из следующего: fact baseline не равно «next» или признак «graph has facts to add» установлен.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Scenario считается «available», если выполняется хотя бы одно из следующего:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "fact baseline не равно «next»"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "признак «graph has facts to add» установлен"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact baseline не равно \"next\" или graph has facts to add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Scenario fact change: «name» совпадает с scenario fact change ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario fact change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Scenario rule setting: «name» совпадает с scenario rule setting ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario rule setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Node layout: «name» совпадает с node layout ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Layout slot: «name» совпадает с layout slot ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Page text: «name» совпадает с page text ID.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page text ID"
       }
     },
     "obligations": [],
@@ -51366,6 +59439,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Disjoint check **обязан** ссылаться ровно на один «rule».",
         "Disjoint check **обязан** ссылаться ровно на один «statement» в роли «first».",
         "Disjoint check **обязан** ссылаться ровно на один «statement» в роли «second»."
+      ],
+      "Scenarios": [
+        "Scenario **обязан** ссылаться ровно на один «graph».",
+        "Scenario **обязан** иметь label; sort order; button group; и fact baseline, а также фиксировать то, он является «primary» ли; то, он является «clears selection» ли; и то, он является «clears form message» ли."
+      ],
+      "ScenarioFactChanges": [
+        "Scenario fact change **обязан** ссылаться ровно на один «scenario».",
+        "Scenario fact change **обязан** ссылаться ровно на один «thing» в роли «subject».",
+        "Scenario fact change **обязан** ссылаться ровно на один «property».",
+        "Scenario fact change **обязан** иметь action и sort order, а также фиксировать то, он является «adds to list» ли."
+      ],
+      "ScenarioRuleSettings": [
+        "Scenario rule setting **обязан** ссылаться ровно на один «scenario».",
+        "Scenario rule setting **обязан** ссылаться ровно на один «rule».",
+        "Scenario rule setting **обязан** фиксировать то, он является «enabled» ли."
+      ],
+      "NodeLayouts": [
+        "Node layout **обязан** иметь layout; node key; x; и y."
+      ],
+      "LayoutSlots": [
+        "Layout slot **обязан** иметь sort order; x; и y."
+      ],
+      "PageTexts": [
+        "Page text **обязан** иметь text."
       ]
     },
     "connectors": {
@@ -51383,7 +59480,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   },
   "tr": {
@@ -51797,6 +59900,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "“thing” kaydının “node key” alanı, “thing ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -53316,6 +61435,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Target değeri statement ID olan tüm firings kayıtlarındaki chosen unit değerlerinin toplamı"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "“statement” kaydının “subject node key” alanı, “subject” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "“statement” kaydının “object node key” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “object thing” alanı boş ise “literal|”, ardından “object value” alanı, ardından “|”, ardından “property datatype” alanı;\n2. diğer tüm durumlarda “object thing” alanı.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“statement” kaydının “object node key” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“literal|”, ardından “object value” alanı, ardından “|”, ardından “property datatype” alanı",
+              "when": {
+                "kind": "leaf",
+                "text": "“object thing” alanı boş"
+              }
+            },
+            {
+              "value": "“object thing” alanı",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Object thing, \"\" değerine eşit ise \"literal|\", object value, \"|\" ve ardından property datatype, aksi takdirde object thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "“statement” kaydının “subject node kind” alanı, “subject” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı subject kaydının node kind değeri"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "“statement” kaydının “object thing node kind” alanı, “object thing” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı object thing kaydının node kind değeri"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "“statement” kaydının “object node kind” alanı, aşağıdaki öncelik sırasına göre belirlenir:\n1. “object thing” alanı boş ise “value”;\n2. diğer tüm durumlarda “object thing node kind” alanı.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“statement” kaydının “object node kind” alanı, aşağıdaki öncelik sırasına göre belirlenir:",
+          "cases": [
+            {
+              "value": "“value”",
+              "when": {
+                "kind": "leaf",
+                "text": "“object thing” alanı boş"
+              }
+            },
+            {
+              "value": "“object thing node kind” alanı",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Object thing, \"\" değerine eşit ise \"value\", aksi takdirde object thing node kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "“statement” kaydının “object value node label” alanı, “property” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı property kaydının value node label değeri"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "“statement” kaydının “count of violations as first” alanı, “statement” kaydıyla ilişkili “disjoint checks” kayıtları üzerinden hesaplanan toplam “violation unit” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "First değeri statement ID olan tüm disjoint checks kayıtlarındaki violation unit değerlerinin toplamı"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "“statement” kaydının “count of violations as second” alanı, “statement” kaydıyla ilişkili “disjoint checks” kayıtları üzerinden hesaplanan toplam “violation unit” değeri olarak belirlenir.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Second değeri statement ID olan tüm disjoint checks kayıtlarındaki violation unit değerlerinin toplamı"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "“statement” kaydı, “count of violations as first” alanı 0 değerinden büyük veya “count of violations as second” alanı 0 değerinden büyük ise “in contradiction” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“statement” kaydı, aşağıdakilerden en az biri sağlanıyor ise “in contradiction” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“count of violations as first” alanı 0 değerinden büyük"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“count of violations as second” alanı 0 değerinden büyük"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of violations as first, 0 değerinden büyük veya count of violations as second, 0 değerinden büyük"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -53523,6 +61909,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Bağlı target kaydının is conclusion değeri"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "“firing” kaydının “target subject node key” alanı, “target” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı target kaydının subject node key değeri"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "“firing” kaydının “target object node key” alanı, “target” alanı üzerinden bağlı kayıttan alınır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı target kaydının object node key değeri"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -54555,6 +62993,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“scenario” kaydının “name” alanı, “label” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "“scenario” kaydının “graph has facts to add” alanı, “graph” alanı üzerinden bağlı kayıt “facts to add” sahibi ise doğrudur.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Bağlı graph kaydının has facts to add değeri"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "“scenario” kaydı, “fact baseline” alanı “next” değerine eşit değil veya “graph has facts to add” bayrağı etkin ise “available” sayılır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "“scenario” kaydı, aşağıdakilerden en az biri sağlanıyor ise “available” sayılır:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "“fact baseline” alanı “next” değerine eşit değil"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "“graph has facts to add” bayrağı etkin"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact baseline, \"next\" değerine eşit değil veya graph has facts to add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“scenario fact change” kaydının “name” alanı, “scenario fact change ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario fact change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“scenario rule setting” kaydının “name” alanı, “scenario rule setting ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario rule setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“node layout” kaydının “name” alanı, “node layout ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“layout slot” kaydının “name” alanı, “layout slot ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "“page text” kaydının “name” alanı, “page text ID” alanı ile aynı değeri taşır.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page text ID"
       }
     },
     "obligations": [],
@@ -54592,6 +63192,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "“disjoint check” kaydı, tam olarak bir “rule” kaydına referans vermek **zorundadır**.",
         "“disjoint check” kaydı, “first” alanı aracılığıyla tam olarak bir “statement” kaydına referans vermek **zorundadır**.",
         "“disjoint check” kaydı, “second” alanı aracılığıyla tam olarak bir “statement” kaydına referans vermek **zorundadır**."
+      ],
+      "Scenarios": [
+        "“scenario” kaydı, tam olarak bir “graph” kaydına referans vermek **zorundadır**.",
+        "“scenario” kaydı, “label” alanı, “sort order” alanı, “button group” alanı ve “fact baseline” alanı dolu olmak, ayrıca “primary” olup olmadığı bilgisini, “clears selection” olarak işaretli olup olmadığı bilgisini ve “clears form message” olarak işaretli olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "ScenarioFactChanges": [
+        "“scenario fact change” kaydı, tam olarak bir “scenario” kaydına referans vermek **zorundadır**.",
+        "“scenario fact change” kaydı, “subject” alanı aracılığıyla tam olarak bir “thing” kaydına referans vermek **zorundadır**.",
+        "“scenario fact change” kaydı, tam olarak bir “property” kaydına referans vermek **zorundadır**.",
+        "“scenario fact change” kaydı, “action” alanı ve “sort order” alanı dolu olmak, ayrıca “adds to list” olarak işaretli olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "ScenarioRuleSettings": [
+        "“scenario rule setting” kaydı, tam olarak bir “scenario” kaydına referans vermek **zorundadır**.",
+        "“scenario rule setting” kaydı, tam olarak bir “rule” kaydına referans vermek **zorundadır**.",
+        "“scenario rule setting” kaydı, “enabled” olup olmadığı bilgisini kaydetmek **zorundadır**."
+      ],
+      "NodeLayouts": [
+        "“node layout” kaydı, “layout” alanı, “node key” alanı, “x” alanı ve “y” alanı dolu olmak **zorundadır**."
+      ],
+      "LayoutSlots": [
+        "“layout slot” kaydı, “sort order” alanı, “x” alanı ve “y” alanı dolu olmak **zorundadır**."
+      ],
+      "PageTexts": [
+        "“page text” kaydı, “text” alanı dolu olmak **zorundadır**."
       ]
     },
     "connectors": {
@@ -54609,7 +63233,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   },
   "vi": {
@@ -55023,6 +63653,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "Trường “node key” của mỗi thing có cùng giá trị với trường “thing ID” của chính thing đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -56542,6 +65188,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "Tổng chosen unit trên tất cả firings có target là statement ID"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "Trường “subject node key” của mỗi statement có cùng giá trị với trường “subject” của chính statement đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "Trường “object node key” của mỗi statement được xác định theo thứ tự ưu tiên sau:\n1. “literal|”, tiếp theo là object value, tiếp theo là “|”, tiếp theo là property datatype, nếu object thing để trống;\n2. trong mọi trường hợp còn lại, object thing.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “object node key” của mỗi statement được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“literal|”, tiếp theo là object value, tiếp theo là “|”, tiếp theo là property datatype",
+              "when": {
+                "kind": "leaf",
+                "text": "object thing để trống"
+              }
+            },
+            {
+              "value": "object thing",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu object thing là \"\" thì \"literal|\" nối với object value nối với \"|\" nối với property datatype, nếu không thì object thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "Trường “subject node kind” của mỗi statement được lấy từ bản ghi liên kết qua trường “subject”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node kind của bản ghi liên kết qua subject"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "Trường “object thing node kind” của mỗi statement được lấy từ bản ghi liên kết qua trường “object thing”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node kind của bản ghi liên kết qua object thing"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "Trường “object node kind” của mỗi statement được xác định theo thứ tự ưu tiên sau:\n1. “value”, nếu object thing để trống;\n2. trong mọi trường hợp còn lại, object thing node kind.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Trường “object node kind” của mỗi statement được xác định theo thứ tự ưu tiên sau:",
+          "cases": [
+            {
+              "value": "“value”",
+              "when": {
+                "kind": "leaf",
+                "text": "object thing để trống"
+              }
+            },
+            {
+              "value": "object thing node kind",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "Nếu object thing là \"\" thì \"value\", nếu không thì object thing node kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "Trường “object value node label” của mỗi statement được lấy từ bản ghi liên kết qua trường “property”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Value node label của bản ghi liên kết qua property"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "Trường “count of violations as first” của mỗi statement là giá trị tổng cộng của trường “violation unit” trên các disjoint checks liên quan đến statement đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng violation unit trên tất cả disjoint checks có first là statement ID"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "Trường “count of violations as second” của mỗi statement là giá trị tổng cộng của trường “violation unit” trên các disjoint checks liên quan đến statement đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Tổng violation unit trên tất cả disjoint checks có second là statement ID"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "Mỗi statement được coi là “in contradiction” nếu ít nhất một trong các điều kiện sau đúng: count of violations as first lớn hơn 0 hoặc count of violations as second lớn hơn 0.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi statement được coi là “in contradiction” nếu ít nhất một trong các điều kiện sau đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "count of violations as first lớn hơn 0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "count of violations as second lớn hơn 0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of violations as first lớn hơn 0 hoặc count of violations as second lớn hơn 0"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -56749,6 +65662,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Is conclusion của bản ghi liên kết qua target"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "Trường “target subject node key” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject node key của bản ghi liên kết qua target"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "Trường “target object node key” của mỗi firing được lấy từ bản ghi liên kết qua trường “target”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Object node key của bản ghi liên kết qua target"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -57781,6 +66746,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi scenario có cùng giá trị với trường “label” của chính scenario đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "Trường “graph has facts to add” của mỗi scenario có giá trị đúng khi bản ghi liên kết qua trường “graph” có “facts to add”.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Has facts to add của bản ghi liên kết qua graph"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "Mỗi scenario được coi là “available” nếu ít nhất một trong các điều kiện sau đúng: fact baseline khác “next” hoặc cờ “graph has facts to add” được bật.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Mỗi scenario được coi là “available” nếu ít nhất một trong các điều kiện sau đúng:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "fact baseline khác “next”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "cờ “graph has facts to add” được bật"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact baseline khác \"next\" hoặc graph has facts to add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi scenario fact change có cùng giá trị với trường “scenario fact change ID” của chính scenario fact change đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario fact change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi scenario rule setting có cùng giá trị với trường “scenario rule setting ID” của chính scenario rule setting đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario rule setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi node layout có cùng giá trị với trường “node layout ID” của chính node layout đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi layout slot có cùng giá trị với trường “layout slot ID” của chính layout slot đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "Trường “name” của mỗi page text có cùng giá trị với trường “page text ID” của chính page text đó.",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page text ID"
       }
     },
     "obligations": [],
@@ -57818,6 +66945,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Mỗi disjoint check **phải** tham chiếu đến đúng một rule.",
         "Mỗi disjoint check **phải** tham chiếu đến đúng một statement với vai trò first.",
         "Mỗi disjoint check **phải** tham chiếu đến đúng một statement với vai trò second."
+      ],
+      "Scenarios": [
+        "Mỗi scenario **phải** tham chiếu đến đúng một graph.",
+        "Mỗi scenario **phải** có label, sort order, button group và fact baseline, đồng thời được ghi nhận rõ là “primary” hay không, thỏa điều kiện “clears selection” hay không và thỏa điều kiện “clears form message” hay không."
+      ],
+      "ScenarioFactChanges": [
+        "Mỗi scenario fact change **phải** tham chiếu đến đúng một scenario.",
+        "Mỗi scenario fact change **phải** tham chiếu đến đúng một thing với vai trò subject.",
+        "Mỗi scenario fact change **phải** tham chiếu đến đúng một property.",
+        "Mỗi scenario fact change **phải** có action và sort order, đồng thời được ghi nhận rõ thỏa điều kiện “adds to list” hay không."
+      ],
+      "ScenarioRuleSettings": [
+        "Mỗi scenario rule setting **phải** tham chiếu đến đúng một scenario.",
+        "Mỗi scenario rule setting **phải** tham chiếu đến đúng một rule.",
+        "Mỗi scenario rule setting **phải** được ghi nhận rõ là “enabled” hay không."
+      ],
+      "NodeLayouts": [
+        "Mỗi node layout **phải** có layout, node key, x và y."
+      ],
+      "LayoutSlots": [
+        "Mỗi layout slot **phải** có sort order, x và y."
+      ],
+      "PageTexts": [
+        "Mỗi page text **phải** có text."
       ]
     },
     "connectors": {
@@ -57835,7 +66986,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   },
   "zh": {
@@ -58249,6 +67406,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Label"
+      },
+      "Things.NodeKey": {
+        "table": "Things",
+        "field": "NodeKey",
+        "kind": "formula",
+        "rule": "thing的“node key”与 thing ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Thing ID"
       },
       "Things.CountOfChildren": {
         "table": "Things",
@@ -59768,6 +68941,273 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "structure": null,
         "plain": "所有target为statement ID的“firings”的chosen unit的总和"
       },
+      "Statements.SubjectNodeKey": {
+        "table": "Statements",
+        "field": "SubjectNodeKey",
+        "kind": "formula",
+        "rule": "statement的“subject node key”与 subject 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          }
+        ],
+        "structure": null,
+        "plain": "Subject"
+      },
+      "Statements.ObjectNodeKey": {
+        "table": "Statements",
+        "field": "ObjectNodeKey",
+        "kind": "formula",
+        "rule": "Statement的“object node key”按以下优先级确定:\n1. 当object thing为空时,取 “literal|”,接着是object value,接着是“|”,接着是property datatype;\n2. 其余情况取 object thing。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectValue",
+            "label": "object value"
+          },
+          {
+            "table": "Statements",
+            "field": "PropertyDatatype",
+            "label": "property datatype"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Statement的“object node key”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“literal|”,接着是object value,接着是“|”,接着是property datatype",
+              "when": {
+                "kind": "leaf",
+                "text": "object thing为空"
+              }
+            },
+            {
+              "value": "object thing",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若object thing为\"\",则\"literal|\"、object value、\"|\",拼接property datatype,否则object thing"
+      },
+      "Statements.SubjectNodeKind": {
+        "table": "Statements",
+        "field": "SubjectNodeKind",
+        "kind": "lookup",
+        "rule": "statement的“subject node kind”——取自所关联的“subject”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "Subject",
+            "label": "subject"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“subject”的node kind"
+      },
+      "Statements.ObjectThingNodeKind": {
+        "table": "Statements",
+        "field": "ObjectThingNodeKind",
+        "kind": "lookup",
+        "rule": "statement的“object thing node kind”——取自所关联的“object thing”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Things",
+            "field": "NodeKind",
+            "label": "node kind"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Things",
+            "field": "ThingId",
+            "label": "thing ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“object thing”的node kind"
+      },
+      "Statements.ObjectNodeKind": {
+        "table": "Statements",
+        "field": "ObjectNodeKind",
+        "kind": "formula",
+        "rule": "Statement的“object node kind”按以下优先级确定:\n1. 当object thing为空时,取 “value”;\n2. 其余情况取 object thing node kind。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectThing",
+            "label": "object thing"
+          },
+          {
+            "table": "Statements",
+            "field": "ObjectThingNodeKind",
+            "label": "object thing node kind"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "Statement的“object node kind”按以下优先级确定:",
+          "cases": [
+            {
+              "value": "“value”",
+              "when": {
+                "kind": "leaf",
+                "text": "object thing为空"
+              }
+            },
+            {
+              "value": "object thing node kind",
+              "when": null
+            }
+          ],
+          "children": null
+        },
+        "plain": "若object thing为\"\",则\"value\",否则object thing node kind"
+      },
+      "Statements.ObjectValueNodeLabel": {
+        "table": "Statements",
+        "field": "ObjectValueNodeLabel",
+        "kind": "lookup",
+        "rule": "statement的“object value node label”——取自所关联的“property”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Properties",
+            "field": "ValueNodeLabel",
+            "label": "value node label"
+          },
+          {
+            "table": "Statements",
+            "field": "Property",
+            "label": "property"
+          },
+          {
+            "table": "Properties",
+            "field": "PropertyId",
+            "label": "property ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“property”的value node label"
+      },
+      "Statements.CountOfViolationsAsFirst": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsFirst",
+        "kind": "rollup",
+        "rule": "statement的“count of violations as first”为 与statement相关的所有“disjoint checks”的“violation unit”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "First",
+            "label": "first"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有first为statement ID的“disjoint checks”的violation unit的总和"
+      },
+      "Statements.CountOfViolationsAsSecond": {
+        "table": "Statements",
+        "field": "CountOfViolationsAsSecond",
+        "kind": "rollup",
+        "rule": "statement的“count of violations as second”为 与statement相关的所有“disjoint checks”的“violation unit”的总和。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "DisjointChecks",
+            "field": "ViolationUnit",
+            "label": "violation unit"
+          },
+          {
+            "table": "DisjointChecks",
+            "field": "Second",
+            "label": "second"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所有second为statement ID的“disjoint checks”的violation unit的总和"
+      },
+      "Statements.IsInContradiction": {
+        "table": "Statements",
+        "field": "IsInContradiction",
+        "kind": "formula",
+        "rule": "当以下至少一项成立:count of violations as first大于0或count of violations as second大于0时,statement被视为“In Contradiction”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsFirst",
+            "label": "count of violations as first"
+          },
+          {
+            "table": "Statements",
+            "field": "CountOfViolationsAsSecond",
+            "label": "count of violations as second"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下任一成立时,statement被视为“In Contradiction”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "count of violations as first大于0"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "count of violations as second大于0"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Count of violations as first大于0或count of violations as second大于0"
+      },
       "Firings.RuleEnabled": {
         "table": "Firings",
         "field": "RuleEnabled",
@@ -59975,6 +69415,58 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "所关联的“target”的is conclusion"
+      },
+      "Firings.TargetSubjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetSubjectNodeKey",
+        "kind": "lookup",
+        "rule": "firing的“target subject node key”——取自所关联的“target”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "SubjectNodeKey",
+            "label": "subject node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“target”的subject node key"
+      },
+      "Firings.TargetObjectNodeKey": {
+        "table": "Firings",
+        "field": "TargetObjectNodeKey",
+        "kind": "lookup",
+        "rule": "firing的“target object node key”——取自所关联的“target”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Statements",
+            "field": "ObjectNodeKey",
+            "label": "object node key"
+          },
+          {
+            "table": "Firings",
+            "field": "Target",
+            "label": "target"
+          },
+          {
+            "table": "Statements",
+            "field": "StatementId",
+            "label": "statement ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“target”的object node key"
       },
       "Firings.TargetFirstFiredOrderKey": {
         "table": "Firings",
@@ -61007,6 +70499,168 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": null,
         "plain": "Disjoint check ID"
+      },
+      "Scenarios.Name": {
+        "table": "Scenarios",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "scenario的“name”与 label 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "Label",
+            "label": "label"
+          }
+        ],
+        "structure": null,
+        "plain": "Label"
+      },
+      "Scenarios.GraphHasFactsToAdd": {
+        "table": "Scenarios",
+        "field": "GraphHasFactsToAdd",
+        "kind": "lookup",
+        "rule": "scenario的“graph has facts to add”在所关联的“graph”具有“Facts to Add”时为真。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Graphs",
+            "field": "HasFactsToAdd",
+            "label": "has facts to add"
+          },
+          {
+            "table": "Scenarios",
+            "field": "Graph",
+            "label": "graph"
+          },
+          {
+            "table": "Graphs",
+            "field": "GraphId",
+            "label": "graph ID"
+          }
+        ],
+        "structure": null,
+        "plain": "所关联的“graph”的has facts to add"
+      },
+      "Scenarios.IsAvailable": {
+        "table": "Scenarios",
+        "field": "IsAvailable",
+        "kind": "formula",
+        "rule": "当以下至少一项成立:fact baseline不为“next”或标志“graph has facts to add”已设置时,scenario被视为“Available”。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "Scenarios",
+            "field": "FactBaseline",
+            "label": "fact baseline"
+          },
+          {
+            "table": "Scenarios",
+            "field": "GraphHasFactsToAdd",
+            "label": "graph has facts to add"
+          }
+        ],
+        "structure": {
+          "kind": "priority",
+          "headline": "当以下任一成立时,scenario被视为“Available”:",
+          "cases": [],
+          "children": [
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "fact baseline不为“next”"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "标志“graph has facts to add”已设置"
+                }
+              ]
+            }
+          ]
+        },
+        "plain": "Fact baseline不为\"next\"或graph has facts to add"
+      },
+      "ScenarioFactChanges.Name": {
+        "table": "ScenarioFactChanges",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "scenario fact change的“name”与 scenario fact change ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioFactChanges",
+            "field": "ScenarioFactChangeId",
+            "label": "scenario fact change ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario fact change ID"
+      },
+      "ScenarioRuleSettings.Name": {
+        "table": "ScenarioRuleSettings",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "scenario rule setting的“name”与 scenario rule setting ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "ScenarioRuleSettings",
+            "field": "ScenarioRuleSettingId",
+            "label": "scenario rule setting ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Scenario rule setting ID"
+      },
+      "NodeLayouts.Name": {
+        "table": "NodeLayouts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "node layout的“name”与 node layout ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "NodeLayouts",
+            "field": "NodeLayoutId",
+            "label": "node layout ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Node layout ID"
+      },
+      "LayoutSlots.Name": {
+        "table": "LayoutSlots",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "layout slot的“name”与 layout slot ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "LayoutSlots",
+            "field": "LayoutSlotId",
+            "label": "layout slot ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Layout slot ID"
+      },
+      "PageTexts.Name": {
+        "table": "PageTexts",
+        "field": "Name",
+        "kind": "formula",
+        "rule": "page text的“name”与 page text ID 相同。",
+        "mechanical": false,
+        "refs": [
+          {
+            "table": "PageTexts",
+            "field": "PageTextId",
+            "label": "page text ID"
+          }
+        ],
+        "structure": null,
+        "plain": "Page text ID"
       }
     },
     "obligations": [],
@@ -61044,6 +70698,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "disjoint check**必须**恰好引用一个“rule”。",
         "disjoint check**必须**恰好引用一个“statement”作为其first。",
         "disjoint check**必须**恰好引用一个“statement”作为其second。"
+      ],
+      "Scenarios": [
+        "scenario**必须**恰好引用一个“graph”。",
+        "scenario**必须**具有label、sort order、button group,且fact baseline,并记录其是“Primary”与否、其是“Clears Selection”与否,且其是“Clears Form Message”与否。"
+      ],
+      "ScenarioFactChanges": [
+        "scenario fact change**必须**恰好引用一个“scenario”。",
+        "scenario fact change**必须**恰好引用一个“thing”作为其subject。",
+        "scenario fact change**必须**恰好引用一个“property”。",
+        "scenario fact change**必须**具有action且sort order,并记录其是“Adds to List”与否。"
+      ],
+      "ScenarioRuleSettings": [
+        "scenario rule setting**必须**恰好引用一个“scenario”。",
+        "scenario rule setting**必须**恰好引用一个“rule”。",
+        "scenario rule setting**必须**记录其是“Enabled”与否。"
+      ],
+      "NodeLayouts": [
+        "node layout**必须**具有layout、node key、x,且y。"
+      ],
+      "LayoutSlots": [
+        "layout slot**必须**具有sort order、x,且y。"
+      ],
+      "PageTexts": [
+        "page text**必须**具有text。"
       ]
     },
     "connectors": {
@@ -61061,7 +70739,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Properties": "property",
       "Statements": "statement",
       "Firings": "firing",
-      "DisjointChecks": "disjoint check"
+      "DisjointChecks": "disjoint check",
+      "Scenarios": "scenario",
+      "ScenarioFactChanges": "scenario fact change",
+      "ScenarioRuleSettings": "scenario rule setting",
+      "NodeLayouts": "node layout",
+      "LayoutSlots": "layout slot",
+      "PageTexts": "page text"
     }
   }
-}, stamp: "5e4e812d363bbf5d" };
+}, stamp: "6c0b82647b991376" };

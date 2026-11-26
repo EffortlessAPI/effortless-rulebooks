@@ -342,6 +342,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(label, '') FROM things WHERE thing_id = p_thing_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_things_node_key
+-- Field: Things.NodeKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_things_node_key(p_thing_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(thing_id, '') FROM things WHERE thing_id = p_thing_id))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_things_count_of_children
 -- Field: Things.CountOfChildren
 -- Type: aggregation | DataType: integer | Returns: INTEGER
@@ -475,6 +485,51 @@ RETURNS INTEGER AS $$
   SELECT (SELECT sort_order FROM properties WHERE property_id = p_property_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_properties_value_node_label
+-- Helper function: Get ValueNodeLabel from Properties by PropertyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_properties_value_node_label(p_property_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT value_node_label FROM properties WHERE property_id = p_property_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_properties_current_value_wording
+-- Helper function: Get CurrentValueWording from Properties by PropertyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_properties_current_value_wording(p_property_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT current_value_wording FROM properties WHERE property_id = p_property_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_properties_input_name
+-- Helper function: Get InputName from Properties by PropertyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_properties_input_name(p_property_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT input_name FROM properties WHERE property_id = p_property_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_properties_record_kind
+-- Helper function: Get RecordKind from Properties by PropertyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_properties_record_kind(p_property_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT record_kind FROM properties WHERE property_id = p_property_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_properties_record_order
+-- Helper function: Get RecordOrder from Properties by PropertyId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_properties_record_order(p_property_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT record_order FROM properties WHERE property_id = p_property_id);
+$$ LANGUAGE sql STABLE;
+
 -- get_things_label
 -- Helper function: Get Label from Things by ThingId
 -- Used for join-free cross-table references in aggregations
@@ -536,6 +591,24 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_things_portrait_crop(p_thing_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT portrait_crop FROM things WHERE thing_id = p_thing_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_things_portrait_width
+-- Helper function: Get PortraitWidth from Things by ThingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_things_portrait_width(p_thing_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT portrait_width FROM things WHERE thing_id = p_thing_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_things_portrait_height
+-- Helper function: Get PortraitHeight from Things by ThingId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_things_portrait_height(p_thing_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT portrait_height FROM things WHERE thing_id = p_thing_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_properties_name
@@ -678,6 +751,39 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_statements_next_fact_sort_order(p_statement_id TEXT)
 RETURNS INTEGER AS $$
   SELECT calc_graphs_next_fact_sort_order((SELECT graph FROM statements WHERE statement_id = p_statement_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_statements_subject_node_kind
+-- Field: Statements.SubjectNodeKind
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: NodeKind from related Things
+
+
+CREATE OR REPLACE FUNCTION calc_statements_subject_node_kind(p_statement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_things_node_kind((SELECT subject FROM statements WHERE statement_id = p_statement_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_statements_object_thing_node_kind
+-- Field: Statements.ObjectThingNodeKind
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: NodeKind from related Things
+
+
+CREATE OR REPLACE FUNCTION calc_statements_object_thing_node_kind(p_statement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_things_node_kind((SELECT object_thing FROM statements WHERE statement_id = p_statement_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_statements_object_value_node_label
+-- Field: Statements.ObjectValueNodeLabel
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: ValueNodeLabel from related Properties
+
+
+CREATE OR REPLACE FUNCTION calc_statements_object_value_node_label(p_statement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT value_node_label::text FROM properties WHERE property_id = (SELECT property FROM statements WHERE statement_id = p_statement_id));
 $$ LANGUAGE sql STABLE;
 
 -- get_graphs_label
@@ -1004,6 +1110,66 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COALESCE(SUM((calc_firings_chosen_unit(firing_id))::numeric), 0) FROM firings WHERE target = p_statement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_statements_subject_node_key
+-- Field: Statements.SubjectNodeKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_statements_subject_node_key(p_statement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(subject, '') FROM statements WHERE statement_id = p_statement_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_statements_object_node_key
+-- Field: Statements.ObjectNodeKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_statements_object_node_key(p_statement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (((SELECT NULLIF(object_thing, '') FROM statements WHERE statement_id = p_statement_id)) IS NULL OR ((SELECT NULLIF(object_thing, '') FROM statements WHERE statement_id = p_statement_id))::text = '') THEN (CONCAT('literal|', (SELECT NULLIF(object_value, '') FROM statements WHERE statement_id = p_statement_id), '|', calc_statements_property_datatype(p_statement_id)))::text ELSE ((SELECT NULLIF(object_thing, '') FROM statements WHERE statement_id = p_statement_id))::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_statements_object_node_kind
+-- Field: Statements.ObjectNodeKind
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_statements_object_node_kind(p_statement_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (((SELECT NULLIF(object_thing, '') FROM statements WHERE statement_id = p_statement_id)) IS NULL OR ((SELECT NULLIF(object_thing, '') FROM statements WHERE statement_id = p_statement_id))::text = '') THEN ('value')::text ELSE (calc_statements_object_thing_node_kind(p_statement_id))::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_statements_count_of_violations_as_first
+-- Field: Statements.CountOfViolationsAsFirst
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_statements_count_of_violations_as_first(p_statement_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_disjoint_checks_violation_unit(disjoint_check_id))::numeric), 0) FROM disjoint_checks WHERE first = p_statement_id))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_statements_count_of_violations_as_second
+-- Field: Statements.CountOfViolationsAsSecond
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_statements_count_of_violations_as_second(p_statement_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COALESCE(SUM((calc_disjoint_checks_violation_unit(disjoint_check_id))::numeric), 0) FROM disjoint_checks WHERE second = p_statement_id))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_statements_is_in_contradiction
+-- Field: Statements.IsInContradiction
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_statements_is_in_contradiction(p_statement_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(COALESCE((calc_statements_count_of_violations_as_first(p_statement_id))::NUMERIC, 0) > 0, FALSE) OR COALESCE(COALESCE((calc_statements_count_of_violations_as_second(p_statement_id))::NUMERIC, 0) > 0, FALSE)));
+$$ LANGUAGE sql STABLE;
+
 -- calc_firings_rule_enabled
 -- Field: Firings.RuleEnabled
 -- Type: lookup | DataType: boolean | Returns: BOOLEAN
@@ -1090,6 +1256,28 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_firings_target_is_conclusion(p_firing_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT calc_statements_is_conclusion((SELECT target FROM firings WHERE firing_id = p_firing_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_firings_target_subject_node_key
+-- Field: Firings.TargetSubjectNodeKey
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: SubjectNodeKey from related Statements
+
+
+CREATE OR REPLACE FUNCTION calc_firings_target_subject_node_key(p_firing_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_statements_subject_node_key((SELECT target FROM firings WHERE firing_id = p_firing_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_firings_target_object_node_key
+-- Field: Firings.TargetObjectNodeKey
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: ObjectNodeKey from related Statements
+
+
+CREATE OR REPLACE FUNCTION calc_firings_target_object_node_key(p_firing_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_statements_object_node_key((SELECT target FROM firings WHERE firing_id = p_firing_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_firings_target_first_fired_order_key
@@ -1488,6 +1676,168 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_disjoint_checks_name(p_disjoint_check_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(disjoint_check_id, '') FROM disjoint_checks WHERE disjoint_check_id = p_disjoint_check_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_scenarios_graph_has_facts_to_add
+-- Field: Scenarios.GraphHasFactsToAdd
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: HasFactsToAdd from related Graphs
+
+
+CREATE OR REPLACE FUNCTION calc_scenarios_graph_has_facts_to_add(p_scenario_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_graphs_has_facts_to_add((SELECT graph FROM scenarios WHERE scenario_id = p_scenario_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_scenarios_name
+-- Field: Scenarios.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_scenarios_name(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(label, '') FROM scenarios WHERE scenario_id = p_scenario_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_scenarios_is_available
+-- Field: Scenarios.IsAvailable
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_scenarios_is_available(p_scenario_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(fact_baseline, '') FROM scenarios WHERE scenario_id = p_scenario_id), '') <> 'next', FALSE) OR COALESCE(calc_scenarios_graph_has_facts_to_add(p_scenario_id), FALSE)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_label
+-- Helper function: Get Label from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_label(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_note
+-- Helper function: Get Note from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_note(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT note FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_sort_order
+-- Helper function: Get SortOrder from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_sort_order(p_scenario_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT sort_order FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_button_group
+-- Helper function: Get ButtonGroup from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_button_group(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT button_group FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_is_primary
+-- Helper function: Get IsPrimary from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_is_primary(p_scenario_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_primary FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_fact_baseline
+-- Helper function: Get FactBaseline from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_fact_baseline(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT fact_baseline FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_layout
+-- Helper function: Get Layout from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_layout(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT layout FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_clears_selection
+-- Helper function: Get ClearsSelection from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_clears_selection(p_scenario_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT clears_selection FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_clears_form_message
+-- Helper function: Get ClearsFormMessage from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_clears_form_message(p_scenario_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT clears_form_message FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_scenario_fact_changes_name
+-- Field: ScenarioFactChanges.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_scenario_fact_changes_name(p_scenario_fact_change_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(scenario_fact_change_id, '') FROM scenario_fact_changes WHERE scenario_fact_change_id = p_scenario_fact_change_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_scenario_rule_settings_name
+-- Field: ScenarioRuleSettings.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_scenario_rule_settings_name(p_scenario_rule_setting_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(scenario_rule_setting_id, '') FROM scenario_rule_settings WHERE scenario_rule_setting_id = p_scenario_rule_setting_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_node_layouts_name
+-- Field: NodeLayouts.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_node_layouts_name(p_node_layout_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(node_layout_id, '') FROM node_layouts WHERE node_layout_id = p_node_layout_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_layout_slots_name
+-- Field: LayoutSlots.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_layout_slots_name(p_layout_slot_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(layout_slot_id, '') FROM layout_slots WHERE layout_slot_id = p_layout_slot_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_page_texts_name
+-- Field: PageTexts.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_page_texts_name(p_page_text_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(page_text_id, '') FROM page_texts WHERE page_text_id = p_page_text_id))::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

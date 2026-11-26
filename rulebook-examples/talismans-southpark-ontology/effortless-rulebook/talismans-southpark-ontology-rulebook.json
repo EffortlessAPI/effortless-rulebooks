@@ -491,12 +491,34 @@
     "Description": "The portrait's crop as an SVG viewBox: x y width height."
    },
    {
+    "name": "PortraitWidth",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The original image's width in pixels."
+   },
+   {
+    "name": "PortraitHeight",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The original image's height in pixels."
+   },
+   {
     "name": "Name",
     "datatype": "string",
     "type": "calculated",
     "nullable": false,
     "Description": "Order 1. The thing's name.",
     "formula": "={{Label}}"
+   },
+   {
+    "name": "NodeKey",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The key the graph draws this thing under.",
+    "formula": "={{ThingId}}"
    },
    {
     "name": "CountOfChildren",
@@ -564,7 +586,9 @@
     "PortraitName": "Marvin Marsh",
     "PortraitPage": "https://southpark.fandom.com/wiki/Marvin_Marsh",
     "PortraitImage": "https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest",
-    "PortraitCrop": "48 -5 280 280"
+    "PortraitCrop": "48 -5 280 280",
+    "PortraitWidth": 375,
+    "PortraitHeight": 536
    },
    {
     "ThingId": "Randy",
@@ -574,7 +598,9 @@
     "PortraitName": "Randy Marsh",
     "PortraitPage": "https://southpark.fandom.com/wiki/Randy_Marsh",
     "PortraitImage": "https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest",
-    "PortraitCrop": "0 -10 428 428"
+    "PortraitCrop": "0 -10 428 428",
+    "PortraitWidth": 428,
+    "PortraitHeight": 1057
    },
    {
     "ThingId": "Sharon",
@@ -584,7 +610,9 @@
     "PortraitName": "Sharon Marsh",
     "PortraitPage": "https://southpark.fandom.com/wiki/Sharon_Marsh",
     "PortraitImage": "https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest",
-    "PortraitCrop": "20 -10 390 390"
+    "PortraitCrop": "20 -10 390 390",
+    "PortraitWidth": 439,
+    "PortraitHeight": 1049
    },
    {
     "ThingId": "Stan",
@@ -594,7 +622,9 @@
     "PortraitName": "Stan Marsh",
     "PortraitPage": "https://southpark.fandom.com/wiki/Stan_Marsh",
     "PortraitImage": "https://static.wikia.nocookie.net/southpark/images/c/c6/Stan-marsh-0.png/revision/latest",
-    "PortraitCrop": "-35 -10 735 735"
+    "PortraitCrop": "-35 -10 735 735",
+    "PortraitWidth": 663,
+    "PortraitHeight": 1037
    },
    {
     "ThingId": "Shelly",
@@ -604,7 +634,9 @@
     "PortraitName": "Shelley Marsh",
     "PortraitPage": "https://southpark.fandom.com/wiki/Shelley_Marsh",
     "PortraitImage": "https://static.wikia.nocookie.net/southpark/images/3/3b/Shelly.png/revision/latest",
-    "PortraitCrop": "-20 -10 760 760"
+    "PortraitCrop": "-20 -10 760 760",
+    "PortraitWidth": 720,
+    "PortraitHeight": 1064
    },
    {
     "ThingId": "Kyle",
@@ -614,7 +646,9 @@
     "PortraitName": "Kyle Broflovski",
     "PortraitPage": "https://southpark.fandom.com/wiki/Kyle_Broflovski",
     "PortraitImage": "https://static.wikia.nocookie.net/southpark/images/9/95/Kyle-broflovski.png/revision/latest?cb=20190411033301",
-    "PortraitCrop": "-20 -10 790 790"
+    "PortraitCrop": "-20 -10 790 790",
+    "PortraitWidth": 753,
+    "PortraitHeight": 935
    },
    {
     "ThingId": "SouthParkElementary",
@@ -624,7 +658,9 @@
     "PortraitName": "South Park Elementary",
     "PortraitPage": "https://southpark.fandom.com/wiki/South_Park_Elementary",
     "PortraitImage": "https://static.wikia.nocookie.net/southpark/images/1/12/School_7.png/revision/latest?cb=20180414152359",
-    "PortraitCrop": "420 0 1080 1080"
+    "PortraitCrop": "420 0 1080 1080",
+    "PortraitWidth": 1920,
+    "PortraitHeight": 1080
    },
    {
     "ThingId": "Person",
@@ -634,7 +670,9 @@
     "PortraitName": null,
     "PortraitPage": null,
     "PortraitImage": null,
-    "PortraitCrop": null
+    "PortraitCrop": null,
+    "PortraitWidth": null,
+    "PortraitHeight": null
    },
    {
     "ThingId": "School",
@@ -644,7 +682,9 @@
     "PortraitName": null,
     "PortraitPage": null,
     "PortraitImage": null,
-    "PortraitCrop": null
+    "PortraitCrop": null,
+    "PortraitWidth": null,
+    "PortraitHeight": null
    }
   ]
  },
@@ -756,6 +796,41 @@
     "Description": "Position in the Add fact form's property list."
    },
    {
+    "name": "ValueNodeLabel",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The small label under a value node for this property: 'role value' or 'number value'."
+   },
+   {
+    "name": "CurrentValueWording",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "How the Add fact form names a replaced value, as in 'Stan now has grade level 5'."
+   },
+   {
+    "name": "InputName",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "How the integer check names this property's value, as in 'for grade level'."
+   },
+   {
+    "name": "RecordKind",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The word the current-record summary uses for this property's values: role, grade or school."
+   },
+   {
+    "name": "RecordOrder",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": true,
+    "Description": "Position of this property in the current-record summary."
+   },
+   {
     "name": "Name",
     "datatype": "string",
     "type": "calculated",
@@ -779,7 +854,12 @@
     "DomainClass": null,
     "RangeClass": null,
     "DisjointWith": "isSpouseOf",
-    "SortOrder": 1
+    "SortOrder": 1,
+    "ValueNodeLabel": null,
+    "CurrentValueWording": null,
+    "InputName": null,
+    "RecordKind": null,
+    "RecordOrder": null
    },
    {
     "PropertyId": "isChildOf",
@@ -795,7 +875,12 @@
     "DomainClass": null,
     "RangeClass": null,
     "DisjointWith": null,
-    "SortOrder": 2
+    "SortOrder": 2,
+    "ValueNodeLabel": null,
+    "CurrentValueWording": null,
+    "InputName": null,
+    "RecordKind": null,
+    "RecordOrder": null
    },
    {
     "PropertyId": "isSpouseOf",
@@ -811,7 +896,12 @@
     "DomainClass": null,
     "RangeClass": null,
     "DisjointWith": "isParentOf",
-    "SortOrder": 3
+    "SortOrder": 3,
+    "ValueNodeLabel": null,
+    "CurrentValueWording": null,
+    "InputName": null,
+    "RecordKind": null,
+    "RecordOrder": null
    },
    {
     "PropertyId": "isFriendOf",
@@ -827,7 +917,12 @@
     "DomainClass": null,
     "RangeClass": null,
     "DisjointWith": null,
-    "SortOrder": 4
+    "SortOrder": 4,
+    "ValueNodeLabel": null,
+    "CurrentValueWording": null,
+    "InputName": null,
+    "RecordKind": null,
+    "RecordOrder": null
    },
    {
     "PropertyId": "attends",
@@ -843,7 +938,12 @@
     "DomainClass": "Person",
     "RangeClass": "School",
     "DisjointWith": null,
-    "SortOrder": 5
+    "SortOrder": 5,
+    "ValueNodeLabel": null,
+    "CurrentValueWording": null,
+    "InputName": null,
+    "RecordKind": "school",
+    "RecordOrder": 3
    },
    {
     "PropertyId": "hasAge",
@@ -859,7 +959,12 @@
     "DomainClass": null,
     "RangeClass": null,
     "DisjointWith": null,
-    "SortOrder": 6
+    "SortOrder": 6,
+    "ValueNodeLabel": "number value",
+    "CurrentValueWording": null,
+    "InputName": "age",
+    "RecordKind": null,
+    "RecordOrder": null
    },
    {
     "PropertyId": "hasGradeLevel",
@@ -875,7 +980,12 @@
     "DomainClass": "Person",
     "RangeClass": null,
     "DisjointWith": null,
-    "SortOrder": 7
+    "SortOrder": 7,
+    "ValueNodeLabel": "number value",
+    "CurrentValueWording": "grade level",
+    "InputName": "grade level",
+    "RecordKind": "grade",
+    "RecordOrder": 2
    },
    {
     "PropertyId": "hasRole",
@@ -891,7 +1001,12 @@
     "DomainClass": "Person",
     "RangeClass": null,
     "DisjointWith": null,
-    "SortOrder": 8
+    "SortOrder": 8,
+    "ValueNodeLabel": "role value",
+    "CurrentValueWording": "role",
+    "InputName": null,
+    "RecordKind": "role",
+    "RecordOrder": 1
    },
    {
     "PropertyId": "isGrandparentOf",
@@ -907,7 +1022,12 @@
     "DomainClass": null,
     "RangeClass": null,
     "DisjointWith": null,
-    "SortOrder": 9
+    "SortOrder": 9,
+    "ValueNodeLabel": null,
+    "CurrentValueWording": null,
+    "InputName": null,
+    "RecordKind": null,
+    "RecordOrder": null
    },
    {
     "PropertyId": "isA",
@@ -923,7 +1043,12 @@
     "DomainClass": null,
     "RangeClass": null,
     "DisjointWith": null,
-    "SortOrder": 10
+    "SortOrder": 10,
+    "ValueNodeLabel": null,
+    "CurrentValueWording": null,
+    "InputName": null,
+    "RecordKind": null,
+    "RecordOrder": null
    }
   ]
  },
@@ -1329,6 +1454,78 @@
     "nullable": false,
     "Description": "Order 20. Rule applications shown as this fact's conclusion card: one for a conclusion, zero otherwise.",
     "formula": "=SUMIFS(Firings!{{ChosenUnit}}, Firings!{{Target}}, {{StatementId}})"
+   },
+   {
+    "name": "SubjectNodeKey",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The graph node this fact starts from.",
+    "formula": "={{Subject}}"
+   },
+   {
+    "name": "ObjectNodeKey",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 2. The graph node this fact points at: the thing, or one node per value and datatype.",
+    "formula": "=IF({{ObjectThing}} = \"\", CONCAT(\"literal|\", {{ObjectValue}}, \"|\", {{PropertyDatatype}}), {{ObjectThing}})"
+   },
+   {
+    "name": "SubjectNodeKind",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Order 19. How the graph draws the subject.",
+    "formula": "=INDEX(Things!{{NodeKind}}, MATCH({{Subject}}, Things!{{ThingId}}, 0))"
+   },
+   {
+    "name": "ObjectThingNodeKind",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Order 19. How the graph draws the object thing.",
+    "formula": "=INDEX(Things!{{NodeKind}}, MATCH({{ObjectThing}}, Things!{{ThingId}}, 0))"
+   },
+   {
+    "name": "ObjectNodeKind",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 20. How the graph draws the object: a value, a class, a place or a person.",
+    "formula": "=IF({{ObjectThing}} = \"\", \"value\", {{ObjectThingNodeKind}})"
+   },
+   {
+    "name": "ObjectValueNodeLabel",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Order 1. The small label under a value node.",
+    "formula": "=INDEX(Properties!{{ValueNodeLabel}}, MATCH({{Property}}, Properties!{{PropertyId}}, 0))"
+   },
+   {
+    "name": "CountOfViolationsAsFirst",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": false,
+    "Description": "Order 18. Violated disjointness checks naming this fact first.",
+    "formula": "=SUMIFS(DisjointChecks!{{ViolationUnit}}, DisjointChecks!{{First}}, {{StatementId}})"
+   },
+   {
+    "name": "CountOfViolationsAsSecond",
+    "datatype": "integer",
+    "type": "aggregation",
+    "nullable": false,
+    "Description": "Order 18. Violated disjointness checks naming this fact second.",
+    "formula": "=SUMIFS(DisjointChecks!{{ViolationUnit}}, DisjointChecks!{{Second}}, {{StatementId}})"
+   },
+   {
+    "name": "IsInContradiction",
+    "datatype": "boolean",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 19. Part of a contradiction the disjoint rule found; drawn in the alarm colour.",
+    "formula": "=OR({{CountOfViolationsAsFirst}} > 0, {{CountOfViolationsAsSecond}} > 0)"
    }
   ],
   "data": [
@@ -5227,6 +5424,22 @@
     "nullable": true,
     "Description": "Order 17. Whether the concluded fact is new.",
     "formula": "=INDEX(Statements!{{IsConclusion}}, MATCH({{Target}}, Statements!{{StatementId}}, 0))"
+   },
+   {
+    "name": "TargetSubjectNodeKey",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Order 2. The concluded fact's subject node.",
+    "formula": "=INDEX(Statements!{{SubjectNodeKey}}, MATCH({{Target}}, Statements!{{StatementId}}, 0))"
+   },
+   {
+    "name": "TargetObjectNodeKey",
+    "datatype": "string",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Order 3. The concluded fact's object node.",
+    "formula": "=INDEX(Statements!{{ObjectNodeKey}}, MATCH({{Target}}, Statements!{{StatementId}}, 0))"
    },
    {
     "name": "TargetFirstFiredOrderKey",
@@ -9529,6 +9742,1065 @@
     "Rule": "disjoint",
     "First": "SouthParkElementary|isParentOf|Kyle",
     "Second": "SouthParkElementary|isSpouseOf|Kyle"
+   }
+  ]
+ },
+ "Scenarios": {
+  "Description": "The page's buttons. Each one is a fact baseline, explicit fact changes and rule settings, applied in that order.",
+  "schema": [
+   {
+    "name": "ScenarioId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Key of the button."
+   },
+   {
+    "name": "Graph",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The graph.",
+    "RelatedTo": "Graphs"
+   },
+   {
+    "name": "Label",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The button's text."
+   },
+   {
+    "name": "Note",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The note shown under the buttons after this one is pressed; blank clears it."
+   },
+   {
+    "name": "SortOrder",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Position among the buttons."
+   },
+   {
+    "name": "ButtonGroup",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "'stan' for the two imagined changes, 'facts' for the buttons under the fact list."
+   },
+   {
+    "name": "IsPrimary",
+    "datatype": "boolean",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Drawn as the filled button."
+   },
+   {
+    "name": "FactBaseline",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "What happens to every listed fact first: keep, built-in (teaching facts on, others off), built-in-detail, all-off, activate-all (each switched on in list order), or next (the next fact on)."
+   },
+   {
+    "name": "Layout",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The node layout the graph returns to; blank keeps the current positions."
+   },
+   {
+    "name": "ClearsSelection",
+    "datatype": "boolean",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Clears the selected node or line."
+   },
+   {
+    "name": "ClearsFormMessage",
+    "datatype": "boolean",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Clears the Add fact form's message."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The button's text.",
+    "formula": "={{Label}}"
+   },
+   {
+    "name": "GraphHasFactsToAdd",
+    "datatype": "boolean",
+    "type": "lookup",
+    "nullable": true,
+    "Description": "Order 7. Whether a listed fact can still be added.",
+    "formula": "=INDEX(Graphs!{{HasFactsToAdd}}, MATCH({{Graph}}, Graphs!{{GraphId}}, 0))"
+   },
+   {
+    "name": "IsAvailable",
+    "datatype": "boolean",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 8. False only for Add next fact once every listed fact is in effect.",
+    "formula": "=OR({{FactBaseline}} <> \"next\", {{GraphHasFactsToAdd}})"
+   }
+  ],
+  "data": [
+   {
+    "ScenarioId": "stan-grade-five",
+    "Graph": "south-park",
+    "Label": "Move Stan to grade 5",
+    "Note": "This imagined change updates Stan’s grade to 5. His identifier, Person statement and family links stay the same. His other selected details are unchanged.",
+    "SortOrder": 1,
+    "ButtonGroup": "stan",
+    "IsPrimary": false,
+    "FactBaseline": "keep",
+    "Layout": null,
+    "ClearsSelection": true,
+    "ClearsFormMessage": true
+   },
+   {
+    "ScenarioId": "stan-leaves-school",
+    "Graph": "south-park",
+    "Label": "Stan leaves school",
+    "Note": "This imagined change clears Stan’s current school details. His identifier, Person statement and family links remain. Removing a current fact does not say that its opposite is true; school history needs dates.",
+    "SortOrder": 2,
+    "ButtonGroup": "stan",
+    "IsPrimary": false,
+    "FactBaseline": "keep",
+    "Layout": null,
+    "ClearsSelection": true,
+    "ClearsFormMessage": true
+   },
+   {
+    "ScenarioId": "next",
+    "Graph": "south-park",
+    "Label": "Add next fact",
+    "Note": null,
+    "SortOrder": 3,
+    "ButtonGroup": "facts",
+    "IsPrimary": true,
+    "FactBaseline": "next",
+    "Layout": null,
+    "ClearsSelection": false,
+    "ClearsFormMessage": false
+   },
+   {
+    "ScenarioId": "all",
+    "Graph": "south-park",
+    "Label": "Add all current facts",
+    "Note": null,
+    "SortOrder": 4,
+    "ButtonGroup": "facts",
+    "IsPrimary": false,
+    "FactBaseline": "activate-all",
+    "Layout": null,
+    "ClearsSelection": false,
+    "ClearsFormMessage": false
+   },
+   {
+    "ScenarioId": "clear",
+    "Graph": "south-park",
+    "Label": "Clear the graph",
+    "Note": null,
+    "SortOrder": 5,
+    "ButtonGroup": "facts",
+    "IsPrimary": false,
+    "FactBaseline": "all-off",
+    "Layout": null,
+    "ClearsSelection": true,
+    "ClearsFormMessage": false
+   },
+   {
+    "ScenarioId": "grade-example",
+    "Graph": "south-park",
+    "Label": "Show Stan’s details",
+    "Note": null,
+    "SortOrder": 6,
+    "ButtonGroup": "facts",
+    "IsPrimary": false,
+    "FactBaseline": "built-in-detail",
+    "Layout": "stan-details",
+    "ClearsSelection": true,
+    "ClearsFormMessage": true
+   },
+   {
+    "ScenarioId": "reset-original",
+    "Graph": "south-park",
+    "Label": "Reset example facts",
+    "Note": null,
+    "SortOrder": 7,
+    "ButtonGroup": "facts",
+    "IsPrimary": false,
+    "FactBaseline": "built-in",
+    "Layout": "default",
+    "ClearsSelection": true,
+    "ClearsFormMessage": true
+   }
+  ]
+ },
+ "ScenarioFactChanges": {
+  "Description": "Fact changes a button makes after its baseline. A blank object key matches every listed value of the property.",
+  "schema": [
+   {
+    "name": "ScenarioFactChangeId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Key of the change."
+   },
+   {
+    "name": "Scenario",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The button.",
+    "RelatedTo": "Scenarios"
+   },
+   {
+    "name": "Subject",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The subject whose facts change.",
+    "RelatedTo": "Things"
+   },
+   {
+    "name": "Property",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The property whose facts change.",
+    "RelatedTo": "Properties"
+   },
+   {
+    "name": "ObjectKey",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": true,
+    "Description": "The object thing's key or the literal value; blank for every listed value."
+   },
+   {
+    "name": "Action",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "'on' switches the fact on as the newest value; 'off' switches it off."
+   },
+   {
+    "name": "AddsToList",
+    "datatype": "boolean",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Adds the fact to the fact list first when it is not listed."
+   },
+   {
+    "name": "SortOrder",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Order of the change within the button."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The change's key.",
+    "formula": "={{ScenarioFactChangeId}}"
+   }
+  ],
+  "data": [
+   {
+    "ScenarioFactChangeId": "stan-grade-five:Stan|isA|Person",
+    "Scenario": "stan-grade-five",
+    "Subject": "Stan",
+    "Property": "isA",
+    "ObjectKey": "Person",
+    "Action": "on",
+    "AddsToList": true,
+    "SortOrder": 1
+   },
+   {
+    "ScenarioFactChangeId": "stan-grade-five:Stan|hasGradeLevel|5",
+    "Scenario": "stan-grade-five",
+    "Subject": "Stan",
+    "Property": "hasGradeLevel",
+    "ObjectKey": "5",
+    "Action": "on",
+    "AddsToList": true,
+    "SortOrder": 2
+   },
+   {
+    "ScenarioFactChangeId": "stan-leaves-school:Stan|isA|Person",
+    "Scenario": "stan-leaves-school",
+    "Subject": "Stan",
+    "Property": "isA",
+    "ObjectKey": "Person",
+    "Action": "on",
+    "AddsToList": true,
+    "SortOrder": 3
+   },
+   {
+    "ScenarioFactChangeId": "stan-leaves-school:Stan|hasRole|*",
+    "Scenario": "stan-leaves-school",
+    "Subject": "Stan",
+    "Property": "hasRole",
+    "ObjectKey": null,
+    "Action": "off",
+    "AddsToList": false,
+    "SortOrder": 4
+   },
+   {
+    "ScenarioFactChangeId": "stan-leaves-school:Stan|hasGradeLevel|*",
+    "Scenario": "stan-leaves-school",
+    "Subject": "Stan",
+    "Property": "hasGradeLevel",
+    "ObjectKey": null,
+    "Action": "off",
+    "AddsToList": false,
+    "SortOrder": 5
+   },
+   {
+    "ScenarioFactChangeId": "stan-leaves-school:Stan|attends|*",
+    "Scenario": "stan-leaves-school",
+    "Subject": "Stan",
+    "Property": "attends",
+    "ObjectKey": null,
+    "Action": "off",
+    "AddsToList": false,
+    "SortOrder": 6
+   }
+  ]
+ },
+ "ScenarioRuleSettings": {
+  "Description": "Rule switches a button sets.",
+  "schema": [
+   {
+    "name": "ScenarioRuleSettingId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Key of the setting."
+   },
+   {
+    "name": "Scenario",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The button.",
+    "RelatedTo": "Scenarios"
+   },
+   {
+    "name": "Rule",
+    "datatype": "string",
+    "type": "relationship",
+    "nullable": false,
+    "Description": "The rule switch.",
+    "RelatedTo": "Rules"
+   },
+   {
+    "name": "IsEnabled",
+    "datatype": "boolean",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The state the button puts the switch in."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The setting's key.",
+    "formula": "={{ScenarioRuleSettingId}}"
+   }
+  ],
+  "data": [
+   {
+    "ScenarioRuleSettingId": "reset-original:inverse",
+    "Scenario": "reset-original",
+    "Rule": "inverse",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "reset-original:symmetric",
+    "Scenario": "reset-original",
+    "Rule": "symmetric",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "reset-original:chain",
+    "Scenario": "reset-original",
+    "Rule": "chain",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "reset-original:domain",
+    "Scenario": "reset-original",
+    "Rule": "domain",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "reset-original:disjoint",
+    "Scenario": "reset-original",
+    "Rule": "disjoint",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "grade-example:inverse",
+    "Scenario": "grade-example",
+    "Rule": "inverse",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "grade-example:symmetric",
+    "Scenario": "grade-example",
+    "Rule": "symmetric",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "grade-example:chain",
+    "Scenario": "grade-example",
+    "Rule": "chain",
+    "IsEnabled": false
+   },
+   {
+    "ScenarioRuleSettingId": "grade-example:domain",
+    "Scenario": "grade-example",
+    "Rule": "domain",
+    "IsEnabled": true
+   },
+   {
+    "ScenarioRuleSettingId": "grade-example:disjoint",
+    "Scenario": "grade-example",
+    "Rule": "disjoint",
+    "IsEnabled": false
+   }
+  ]
+ },
+ "NodeLayouts": {
+  "Description": "Node positions in the graph's 380 by 480 drawing, one set per layout.",
+  "schema": [
+   {
+    "name": "NodeLayoutId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Key: layout:node."
+   },
+   {
+    "name": "Layout",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The layout: 'default' or 'stan-details'."
+   },
+   {
+    "name": "NodeKey",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The node: a thing's key, or literal|value|datatype."
+   },
+   {
+    "name": "X",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Horizontal position."
+   },
+   {
+    "name": "Y",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Vertical position."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The position's key.",
+    "formula": "={{NodeLayoutId}}"
+   }
+  ],
+  "data": [
+   {
+    "NodeLayoutId": "default:Marvin",
+    "Layout": "default",
+    "NodeKey": "Marvin",
+    "X": 70,
+    "Y": 45
+   },
+   {
+    "NodeLayoutId": "default:Randy",
+    "Layout": "default",
+    "NodeKey": "Randy",
+    "X": 195,
+    "Y": 125
+   },
+   {
+    "NodeLayoutId": "default:Sharon",
+    "Layout": "default",
+    "NodeKey": "Sharon",
+    "X": 318,
+    "Y": 55
+   },
+   {
+    "NodeLayoutId": "default:Stan",
+    "Layout": "default",
+    "NodeKey": "Stan",
+    "X": 150,
+    "Y": 240
+   },
+   {
+    "NodeLayoutId": "default:Shelly",
+    "Layout": "default",
+    "NodeKey": "Shelly",
+    "X": 300,
+    "Y": 215
+   },
+   {
+    "NodeLayoutId": "default:Kyle",
+    "Layout": "default",
+    "NodeKey": "Kyle",
+    "X": 55,
+    "Y": 365
+   },
+   {
+    "NodeLayoutId": "default:SouthParkElementary",
+    "Layout": "default",
+    "NodeKey": "SouthParkElementary",
+    "X": 195,
+    "Y": 345
+   },
+   {
+    "NodeLayoutId": "default:literal|10|xsd:integer",
+    "Layout": "default",
+    "NodeKey": "literal|10|xsd:integer",
+    "X": 345,
+    "Y": 290
+   },
+   {
+    "NodeLayoutId": "default:literal|4|xsd:integer",
+    "Layout": "default",
+    "NodeKey": "literal|4|xsd:integer",
+    "X": 340,
+    "Y": 140
+   },
+   {
+    "NodeLayoutId": "default:literal|5|xsd:integer",
+    "Layout": "default",
+    "NodeKey": "literal|5|xsd:integer",
+    "X": 340,
+    "Y": 140
+   },
+   {
+    "NodeLayoutId": "default:literal|Student|xsd:string",
+    "Layout": "default",
+    "NodeKey": "literal|Student|xsd:string",
+    "X": 42,
+    "Y": 235
+   },
+   {
+    "NodeLayoutId": "default:School",
+    "Layout": "default",
+    "NodeKey": "School",
+    "X": 315,
+    "Y": 405
+   },
+   {
+    "NodeLayoutId": "default:Person",
+    "Layout": "default",
+    "NodeKey": "Person",
+    "X": 55,
+    "Y": 132
+   },
+   {
+    "NodeLayoutId": "stan-details:Marvin",
+    "Layout": "stan-details",
+    "NodeKey": "Marvin",
+    "X": 70,
+    "Y": 45
+   },
+   {
+    "NodeLayoutId": "stan-details:Randy",
+    "Layout": "stan-details",
+    "NodeKey": "Randy",
+    "X": 195,
+    "Y": 125
+   },
+   {
+    "NodeLayoutId": "stan-details:Sharon",
+    "Layout": "stan-details",
+    "NodeKey": "Sharon",
+    "X": 318,
+    "Y": 55
+   },
+   {
+    "NodeLayoutId": "stan-details:Stan",
+    "Layout": "stan-details",
+    "NodeKey": "Stan",
+    "X": 100,
+    "Y": 150
+   },
+   {
+    "NodeLayoutId": "stan-details:Shelly",
+    "Layout": "stan-details",
+    "NodeKey": "Shelly",
+    "X": 300,
+    "Y": 215
+   },
+   {
+    "NodeLayoutId": "stan-details:Kyle",
+    "Layout": "stan-details",
+    "NodeKey": "Kyle",
+    "X": 55,
+    "Y": 365
+   },
+   {
+    "NodeLayoutId": "stan-details:SouthParkElementary",
+    "Layout": "stan-details",
+    "NodeKey": "SouthParkElementary",
+    "X": 195,
+    "Y": 345
+   },
+   {
+    "NodeLayoutId": "stan-details:literal|10|xsd:integer",
+    "Layout": "stan-details",
+    "NodeKey": "literal|10|xsd:integer",
+    "X": 345,
+    "Y": 290
+   },
+   {
+    "NodeLayoutId": "stan-details:literal|4|xsd:integer",
+    "Layout": "stan-details",
+    "NodeKey": "literal|4|xsd:integer",
+    "X": 290,
+    "Y": 85
+   },
+   {
+    "NodeLayoutId": "stan-details:literal|5|xsd:integer",
+    "Layout": "stan-details",
+    "NodeKey": "literal|5|xsd:integer",
+    "X": 290,
+    "Y": 85
+   },
+   {
+    "NodeLayoutId": "stan-details:literal|Student|xsd:string",
+    "Layout": "stan-details",
+    "NodeKey": "literal|Student|xsd:string",
+    "X": 290,
+    "Y": 245
+   },
+   {
+    "NodeLayoutId": "stan-details:School",
+    "Layout": "stan-details",
+    "NodeKey": "School",
+    "X": 315,
+    "Y": 405
+   },
+   {
+    "NodeLayoutId": "stan-details:Person",
+    "Layout": "stan-details",
+    "NodeKey": "Person",
+    "X": 100,
+    "Y": 355
+   }
+  ]
+ },
+ "LayoutSlots": {
+  "Description": "Places for nodes no layout positions, used in turn.",
+  "schema": [
+   {
+    "name": "LayoutSlotId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Key of the slot."
+   },
+   {
+    "name": "SortOrder",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Order in which slots are used."
+   },
+   {
+    "name": "X",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Horizontal position."
+   },
+   {
+    "name": "Y",
+    "datatype": "integer",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Vertical position."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The slot's key.",
+    "formula": "={{LayoutSlotId}}"
+   }
+  ],
+  "data": [
+   {
+    "LayoutSlotId": "slot-1",
+    "SortOrder": 1,
+    "X": 330,
+    "Y": 135
+   },
+   {
+    "LayoutSlotId": "slot-2",
+    "SortOrder": 2,
+    "X": 45,
+    "Y": 120
+   },
+   {
+    "LayoutSlotId": "slot-3",
+    "SortOrder": 3,
+    "X": 330,
+    "Y": 400
+   },
+   {
+    "LayoutSlotId": "slot-4",
+    "SortOrder": 4,
+    "X": 60,
+    "Y": 425
+   },
+   {
+    "LayoutSlotId": "slot-5",
+    "SortOrder": 5,
+    "X": 200,
+    "Y": 30
+   },
+   {
+    "LayoutSlotId": "slot-6",
+    "SortOrder": 6,
+    "X": 345,
+    "Y": 250
+   },
+   {
+    "LayoutSlotId": "slot-7",
+    "SortOrder": 7,
+    "X": 110,
+    "Y": 300
+   },
+   {
+    "LayoutSlotId": "slot-8",
+    "SortOrder": 8,
+    "X": 260,
+    "Y": 280
+   }
+  ]
+ },
+ "PageTexts": {
+  "Description": "The page's wording, one row per string. {name}-style placeholders are filled by the page.",
+  "schema": [
+   {
+    "name": "PageTextId",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Key of the string."
+   },
+   {
+    "name": "Text",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "The string."
+   },
+   {
+    "name": "Name",
+    "datatype": "string",
+    "type": "calculated",
+    "nullable": false,
+    "Description": "Order 1. The string's key.",
+    "formula": "={{PageTextId}}"
+   }
+  ],
+  "data": [
+   {
+    "PageTextId": "page-title",
+    "Text": "South Park Ontology Explainer, on one rulebook"
+   },
+   {
+    "PageTextId": "byline-prefix",
+    "Text": "A rulebook rebuild of the explainer by"
+   },
+   {
+    "PageTextId": "byline-author",
+    "Text": "Jessica Talisman"
+   },
+   {
+    "PageTextId": "byline-author-url",
+    "Text": "https://substack.com/@jessicatalisman"
+   },
+   {
+    "PageTextId": "byline-suffix",
+    "Text": "· Intentional Arrangement"
+   },
+   {
+    "PageTextId": "title",
+    "Text": "South Park facts form a knowledge graph"
+   },
+   {
+    "PageTextId": "intro",
+    "Text": "An ontology defines kinds of things, their properties and rules. This knowledge graph uses those definitions to connect facts about South Park. Stan’s school facts can change while Stan stays the same person."
+   },
+   {
+    "PageTextId": "intro-rulebook",
+    "Text": "This version runs no reasoner in the browser. Every fact, rule switch and conclusion on the page is a row or a formula in one rulebook, compiled to Postgres views; the same rulebook also builds TypeScript, Python, an Excel workbook, OWL and documentation in 16 languages."
+   },
+   {
+    "PageTextId": "link-article",
+    "Text": "Read the article"
+   },
+   {
+    "PageTextId": "link-article-url",
+    "Text": "https://jessicatalisman.substack.com/p/what-is-an-ontology"
+   },
+   {
+    "PageTextId": "link-original",
+    "Text": "Open the original explainer"
+   },
+   {
+    "PageTextId": "link-original-url",
+    "Text": "https://southpark-ontology-explainer.jessica-tali-7056.chatgpt.site/"
+   },
+   {
+    "PageTextId": "key-stated",
+    "Text": "a fact we stated"
+   },
+   {
+    "PageTextId": "key-conclusion",
+    "Text": "a conclusion from a rule"
+   },
+   {
+    "PageTextId": "key-class",
+    "Text": "a class"
+   },
+   {
+    "PageTextId": "key-individual",
+    "Text": "an individual or value"
+   },
+   {
+    "PageTextId": "key-help",
+    "Text": "Drag a circle to move it. Tap a circle or a line to read its facts and sources."
+   },
+   {
+    "PageTextId": "image-note",
+    "Text": "Character portraits and South Park Elementary are Fandom images, linked from the rulebook’s Things table. Dashed circles mark classes; solid circles show individual things or values."
+   },
+   {
+    "PageTextId": "statements-heading",
+    "Text": "Statements connect things and values"
+   },
+   {
+    "PageTextId": "statements-hint",
+    "Text": "Each statement has three parts, called a triple. The subject identifies what we describe. The predicate tells how it is connected to the object. The object is the related thing or value. Select a fact to show it."
+   },
+   {
+    "PageTextId": "scenario-heading",
+    "Text": "Stan can change while his identity stays the same"
+   },
+   {
+    "PageTextId": "scenario-hint",
+    "Text": "The grade-5 and leaving-school buttons imagine future changes so you can see how the model responds. They do not report events from the show. Stan is allowed to graduate. The database does not get a vote."
+   },
+   {
+    "PageTextId": "rules-heading",
+    "Text": "Rules add facts to the graph"
+   },
+   {
+    "PageTextId": "rules-hint",
+    "Text": "An inference is a new conclusion from facts and a rule. Reasoning means following rules step by step to reach or check conclusions. Here the rulebook does that work: each rule is a switch, and every conclusion is a formula."
+   },
+   {
+    "PageTextId": "conclusions-heading",
+    "Text": "Rules produce new conclusions"
+   },
+   {
+    "PageTextId": "add-heading",
+    "Text": "Your statements extend the graph"
+   },
+   {
+    "PageTextId": "add-hint",
+    "Text": "Try Sharon, is parent of, Stan. Then try Sharon, is parent of, Randy with the disjoint rule on."
+   },
+   {
+    "PageTextId": "label-subject",
+    "Text": "Subject"
+   },
+   {
+    "PageTextId": "label-predicate",
+    "Text": "Predicate / property"
+   },
+   {
+    "PageTextId": "label-object",
+    "Text": "Object or value"
+   },
+   {
+    "PageTextId": "add-button",
+    "Text": "Add fact"
+   },
+   {
+    "PageTextId": "grade-input-note",
+    "Text": "For has grade level, enter an integer (a number with no fractional part), such as 4 or 5. This form checks integer input as an application check. For has role, enter text such as Student. A new grade or role replaces that person’s previous active value in this page’s current record. Uncheck a role fact to clear it."
+   },
+   {
+    "PageTextId": "integer-error",
+    "Text": "Enter an integer (a number with no fractional part) for {field}. This is an application input check."
+   },
+   {
+    "PageTextId": "form-replaced",
+    "Text": "{subject} now has {kind} {value} in this page’s current record. The person’s identifier stays the same."
+   },
+   {
+    "PageTextId": "not-in-rulebook",
+    "Text": "“{fact}” is not in this rulebook yet. Every fact the page can hold is a row; a new name or value needs new rows."
+   },
+   {
+    "PageTextId": "remove",
+    "Text": "Remove"
+   },
+   {
+    "PageTextId": "remove-label",
+    "Text": "Remove this fact"
+   },
+   {
+    "PageTextId": "focus-appears",
+    "Text": "{name} appears in {count} facts."
+   },
+   {
+    "PageTextId": "focus-appears-one",
+    "Text": "{name} appears in 1 fact."
+   },
+   {
+    "PageTextId": "focus-source",
+    "Text": "Source of this fact"
+   },
+   {
+    "PageTextId": "fandom-link",
+    "Text": "{name} on Fandom"
+   },
+   {
+    "PageTextId": "original-image",
+    "Text": "Original image"
+   },
+   {
+    "PageTextId": "record-subject",
+    "Text": "Stan"
+   },
+   {
+    "PageTextId": "record-person-yes",
+    "Text": "Stan is explicitly recorded as a Person."
+   },
+   {
+    "PageTextId": "record-person-no",
+    "Text": "Stan’s explicit Person statement is not selected."
+   },
+   {
+    "PageTextId": "record-value",
+    "Text": "His recorded {kind} is {values}."
+   },
+   {
+    "PageTextId": "record-none",
+    "Text": "No current {kind} is recorded."
+   },
+   {
+    "PageTextId": "sublabel-class",
+    "Text": "class"
+   },
+   {
+    "PageTextId": "title-class",
+    "Text": "class"
+   },
+   {
+    "PageTextId": "title-literal",
+    "Text": "literal"
+   },
+   {
+    "PageTextId": "hood-heading",
+    "Text": "Under the covers: one rulebook"
+   },
+   {
+    "PageTextId": "hood-text",
+    "Text": "Hover a dotted value to read its rule and the facts it came from. Every rule on this page is in the rulebook below, and every projection of it agrees."
+   },
+   {
+    "PageTextId": "hood-explainer",
+    "Text": "Explainer: every rule, down to the stated facts"
+   },
+   {
+    "PageTextId": "hood-docs",
+    "Text": "Documentation in 16 languages"
+   },
+   {
+    "PageTextId": "hood-workbook",
+    "Text": "Excel workbook with every rule as a live formula"
+   },
+   {
+    "PageTextId": "hood-rulebook",
+    "Text": "The rulebook"
+   },
+   {
+    "PageTextId": "record-class",
+    "Text": "Person"
+   },
+   {
+    "PageTextId": "hood-stated",
+    "Text": "facts in effect"
+   },
+   {
+    "PageTextId": "hood-conclusions",
+    "Text": "conclusions"
+   },
+   {
+    "PageTextId": "hood-consistent",
+    "Text": "consistent"
+   },
+   {
+    "PageTextId": "hood-yes",
+    "Text": "yes"
+   },
+   {
+    "PageTextId": "hood-no",
+    "Text": "no"
+   },
+   {
+    "PageTextId": "focus-children",
+    "Text": "children"
+   },
+   {
+    "PageTextId": "focus-grandchildren",
+    "Text": "grandchildren"
+   },
+   {
+    "PageTextId": "workbook-url",
+    "Text": "/xlsx/talisman-s-south-park-ontology-explainer.xlsx"
+   },
+   {
+    "PageTextId": "credits-summary",
+    "Text": "Fandom supplies the character and location images"
+   },
+   {
+    "PageTextId": "footer-credit",
+    "Text": "A rebuild of Jessica Talisman’s South Park Ontology Explainer for Intentional Arrangement, made from a rulebook. The model, wording and layout follow her page. South Park is the work of Trey Parker and Matt Stone; the portraits are Fandom images."
    }
   ]
  }

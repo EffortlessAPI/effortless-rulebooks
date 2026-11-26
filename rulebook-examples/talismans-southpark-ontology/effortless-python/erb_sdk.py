@@ -250,6 +250,14 @@ def calc_things_name(label):
     """
     return label
 
+def calc_things_node_key(thing_id):
+    """
+    Order 1. The key the graph draws this thing under.
+    
+    Formula: ={{ThingId}}
+    """
+    return thing_id
+
 def calc_things_is_in_graph(count_as_subject, count_as_object):
     """
     Order 18. True when the graph draws this thing.
@@ -282,6 +290,11 @@ def compute_things_fields(record: dict) -> dict:
         result['name'] = None
         result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
     try:
+        result['node_key'] = calc_things_node_key(result.get('thing_id'))
+    except Exception as _field_exc:
+        result['node_key'] = None
+        result.setdefault('_erb_errors', {})['node_key'] = str(_field_exc)
+    try:
         result['is_in_graph'] = calc_things_is_in_graph(result.get('count_as_subject'), result.get('count_as_object'))
     except Exception as _field_exc:
         result['is_in_graph'] = None
@@ -293,7 +306,7 @@ def compute_things_fields(record: dict) -> dict:
         result.setdefault('_erb_errors', {})['node_kind'] = str(_field_exc)
 
     # Convert empty strings to None for string fields
-    for key in ['name', 'node_kind']:
+    for key in ['name', 'node_key', 'node_kind']:
         if result.get(key) == '':
             result[key] = None
 
@@ -399,6 +412,38 @@ def calc_statements_listed_unit(is_listed):
     Formula: =IF({{IsListed}}, 1, 0)
     """
     return _erb.erb_integer((1 if (is_listed is True) else 0))
+
+def calc_statements_subject_node_key(subject):
+    """
+    Order 1. The graph node this fact starts from.
+    
+    Formula: ={{Subject}}
+    """
+    return subject
+
+def calc_statements_object_node_key(object_thing, object_value, property_datatype):
+    """
+    Order 2. The graph node this fact points at: the thing, or one node per value and datatype.
+    
+    Formula: =IF({{ObjectThing}} = "", CONCAT("literal|", {{ObjectValue}}, "|", {{PropertyDatatype}}), {{ObjectThing}})
+    """
+    return (('literal|' + _erb.erb_text(object_value) + '|' + _erb.erb_text(property_datatype)) if _erb.erb_bool3((object_thing is None or object_thing == "")) else object_thing)
+
+def calc_statements_object_node_kind(object_thing, object_thing_node_kind):
+    """
+    Order 20. How the graph draws the object: a value, a class, a place or a person.
+    
+    Formula: =IF({{ObjectThing}} = "", "value", {{ObjectThingNodeKind}})
+    """
+    return ('value' if _erb.erb_bool3((object_thing is None or object_thing == "")) else object_thing_node_kind)
+
+def calc_statements_is_in_contradiction(count_of_violations_as_first, count_of_violations_as_second):
+    """
+    Order 19. Part of a contradiction the disjoint rule found; drawn in the alarm colour.
+    
+    Formula: =OR({{CountOfViolationsAsFirst}} > 0, {{CountOfViolationsAsSecond}} > 0)
+    """
+    return _erb.erb_or(_erb.erb_bool3(_erb.erb_cmp(count_of_violations_as_first, '>', 0)), _erb.erb_bool3(_erb.erb_cmp(count_of_violations_as_second, '>', 0)))
 
 # Level 2
 
@@ -559,6 +604,26 @@ def compute_statements_fields(record: dict) -> dict:
     except Exception as _field_exc:
         result['listed_unit'] = None
         result.setdefault('_erb_errors', {})['listed_unit'] = str(_field_exc)
+    try:
+        result['subject_node_key'] = calc_statements_subject_node_key(result.get('subject'))
+    except Exception as _field_exc:
+        result['subject_node_key'] = None
+        result.setdefault('_erb_errors', {})['subject_node_key'] = str(_field_exc)
+    try:
+        result['object_node_key'] = calc_statements_object_node_key(result.get('object_thing'), result.get('object_value'), result.get('property_datatype'))
+    except Exception as _field_exc:
+        result['object_node_key'] = None
+        result.setdefault('_erb_errors', {})['object_node_key'] = str(_field_exc)
+    try:
+        result['object_node_kind'] = calc_statements_object_node_kind(result.get('object_thing'), result.get('object_thing_node_kind'))
+    except Exception as _field_exc:
+        result['object_node_kind'] = None
+        result.setdefault('_erb_errors', {})['object_node_kind'] = str(_field_exc)
+    try:
+        result['is_in_contradiction'] = calc_statements_is_in_contradiction(result.get('count_of_violations_as_first'), result.get('count_of_violations_as_second'))
+    except Exception as _field_exc:
+        result['is_in_contradiction'] = None
+        result.setdefault('_erb_errors', {})['is_in_contradiction'] = str(_field_exc)
 
     # Level 2 calculations
     try:
@@ -636,7 +701,7 @@ def compute_statements_fields(record: dict) -> dict:
         result.setdefault('_erb_errors', {})['conclusion_unit'] = str(_field_exc)
 
     # Convert empty strings to None for string fields
-    for key in ['object_text', 'name', 'words', 'source', 'subject_property_key']:
+    for key in ['object_text', 'name', 'words', 'source', 'subject_property_key', 'subject_node_key', 'object_node_key', 'object_node_kind']:
         if result.get(key) == '':
             result[key] = None
 
@@ -877,6 +942,247 @@ def compute_disjoint_checks_fields(record: dict) -> dict:
 
     return result
 
+# =============================================================================
+# SCENARIOS
+# The page's buttons. Each one is a fact baseline, explicit fact changes and rule settings, applied in that order.
+# =============================================================================
+
+# Level 1
+
+def calc_scenarios_name(label):
+    """
+    Order 1. The button's text.
+    
+    Formula: ={{Label}}
+    """
+    return label
+
+def calc_scenarios_is_available(fact_baseline, graph_has_facts_to_add):
+    """
+    Order 8. False only for Add next fact once every listed fact is in effect.
+    
+    Formula: =OR({{FactBaseline}} <> "next", {{GraphHasFactsToAdd}})
+    """
+    return _erb.erb_or(_erb.erb_bool3(_erb.erb_ne(_erb.erb_nullif(fact_baseline), 'next')), _erb.erb_bool3(graph_has_facts_to_add))
+
+
+def compute_scenarios_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for Scenarios.
+    
+    The page's buttons. Each one is a fact baseline, explicit fact changes and rule settings, applied in that order.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_scenarios_name(result.get('label'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+    try:
+        result['is_available'] = calc_scenarios_is_available(result.get('fact_baseline'), result.get('graph_has_facts_to_add'))
+    except Exception as _field_exc:
+        result['is_available'] = None
+        result.setdefault('_erb_errors', {})['is_available'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# SCENARIOFACTCHANGES
+# Fact changes a button makes after its baseline. A blank object key matches every listed value of the property.
+# =============================================================================
+
+# Level 1
+
+def calc_scenario_fact_changes_name(scenario_fact_change_id):
+    """
+    Order 1. The change's key.
+    
+    Formula: ={{ScenarioFactChangeId}}
+    """
+    return scenario_fact_change_id
+
+
+def compute_scenario_fact_changes_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for ScenarioFactChanges.
+    
+    Fact changes a button makes after its baseline. A blank object key matches every listed value of the property.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_scenario_fact_changes_name(result.get('scenario_fact_change_id'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# SCENARIORULESETTINGS
+# Rule switches a button sets.
+# =============================================================================
+
+# Level 1
+
+def calc_scenario_rule_settings_name(scenario_rule_setting_id):
+    """
+    Order 1. The setting's key.
+    
+    Formula: ={{ScenarioRuleSettingId}}
+    """
+    return scenario_rule_setting_id
+
+
+def compute_scenario_rule_settings_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for ScenarioRuleSettings.
+    
+    Rule switches a button sets.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_scenario_rule_settings_name(result.get('scenario_rule_setting_id'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# NODELAYOUTS
+# Node positions in the graph's 380 by 480 drawing, one set per layout.
+# =============================================================================
+
+# Level 1
+
+def calc_node_layouts_name(node_layout_id):
+    """
+    Order 1. The position's key.
+    
+    Formula: ={{NodeLayoutId}}
+    """
+    return node_layout_id
+
+
+def compute_node_layouts_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for NodeLayouts.
+    
+    Node positions in the graph's 380 by 480 drawing, one set per layout.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_node_layouts_name(result.get('node_layout_id'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# LAYOUTSLOTS
+# Places for nodes no layout positions, used in turn.
+# =============================================================================
+
+# Level 1
+
+def calc_layout_slots_name(layout_slot_id):
+    """
+    Order 1. The slot's key.
+    
+    Formula: ={{LayoutSlotId}}
+    """
+    return layout_slot_id
+
+
+def compute_layout_slots_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for LayoutSlots.
+    
+    Places for nodes no layout positions, used in turn.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_layout_slots_name(result.get('layout_slot_id'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# PAGETEXTS
+# The page's wording, one row per string. {name}-style placeholders are filled by the page.
+# =============================================================================
+
+# Level 1
+
+def calc_page_texts_name(page_text_id):
+    """
+    Order 1. The string's key.
+    
+    Formula: ={{PageTextId}}
+    """
+    return page_text_id
+
+
+def compute_page_texts_fields(record: dict) -> dict:
+    """
+    Compute all calculated fields for PageTexts.
+    
+    The page's wording, one row per string. {name}-style placeholders are filled by the page.
+    """
+    result = dict(record)
+
+    # Level 1 calculations
+    try:
+        result['name'] = calc_page_texts_name(result.get('page_text_id'))
+    except Exception as _field_exc:
+        result['name'] = None
+        result.setdefault('_erb_errors', {})['name'] = str(_field_exc)
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
 
 # =============================================================================
 # DISPATCHER
@@ -912,6 +1218,18 @@ _ERB_COMPUTE_BY_NAME = {
     'firings': compute_firings_fields,
     'DisjointChecks': compute_disjoint_checks_fields,
     'disjoint_checks': compute_disjoint_checks_fields,
+    'Scenarios': compute_scenarios_fields,
+    'scenarios': compute_scenarios_fields,
+    'ScenarioFactChanges': compute_scenario_fact_changes_fields,
+    'scenario_fact_changes': compute_scenario_fact_changes_fields,
+    'ScenarioRuleSettings': compute_scenario_rule_settings_fields,
+    'scenario_rule_settings': compute_scenario_rule_settings_fields,
+    'NodeLayouts': compute_node_layouts_fields,
+    'node_layouts': compute_node_layouts_fields,
+    'LayoutSlots': compute_layout_slots_fields,
+    'layout_slots': compute_layout_slots_fields,
+    'PageTexts': compute_page_texts_fields,
+    'page_texts': compute_page_texts_fields,
 }
 
 
@@ -921,7 +1239,7 @@ _ERB_COMPUTE_BY_NAME = {
 
 
 # calculated_field_count bounds the runner's passes over the dataset.
-CALCULATED_FIELD_COUNT = 46
+CALCULATED_FIELD_COUNT = 58
 
 # ERB_TABLES is every table, in rulebook order.
 ERB_TABLES = [
@@ -936,7 +1254,7 @@ ERB_TABLES = [
      'compute': compute_graphs_fields,
      'fields': ['graph_id', 'label', 'literal_quote', 'literal_type_marker', 'built_in_source_text', 'user_source_text', 'no_conclusions_text', 'name', 'count_of_stated_facts', 'count_of_conclusions', 'count_of_violations', 'is_consistent', 'conclusions_message', 'count_of_facts_to_add', 'has_facts_to_add', 'next_fact_sort_order', 'max_activation_seq', 'next_activation_seq', 'max_listed_sort_order', 'next_listed_sort_order'],
      'datatypes': {'name': 'string', 'count_of_stated_facts': 'integer', 'count_of_conclusions': 'integer', 'count_of_violations': 'integer', 'is_consistent': 'boolean', 'conclusions_message': 'string', 'count_of_facts_to_add': 'integer', 'has_facts_to_add': 'boolean', 'next_fact_sort_order': 'integer', 'max_activation_seq': 'integer', 'next_activation_seq': 'integer', 'max_listed_sort_order': 'integer', 'next_listed_sort_order': 'integer'},
-     'calculated': {'conclusions_message', 'is_consistent', 'has_facts_to_add', 'name', 'next_listed_sort_order', 'next_activation_seq'},
+     'calculated': {'name', 'is_consistent', 'conclusions_message', 'next_activation_seq', 'next_listed_sort_order', 'has_facts_to_add'},
      'lookups': [],
      'aggregations': [
         {'field': 'count_of_stated_facts', 'op': 'SUM', 'table': 'statements', 'target': 'in_effect_unit', 'criteria': [('graph', 'raw_field', 'graph_id')], 'suffix': None},
@@ -964,9 +1282,9 @@ ERB_TABLES = [
      'aggregations': []},
     {'name': 'Things', 'file': 'things', 'rulebook_rows': 9,
      'compute': compute_things_fields,
-     'fields': ['thing_id', 'label', 'kind', 'sort_order', 'portrait_name', 'portrait_page', 'portrait_image', 'portrait_crop', 'name', 'count_of_children', 'count_of_grandchildren', 'count_as_place', 'count_as_subject', 'count_as_object', 'is_in_graph', 'node_kind'],
-     'datatypes': {'name': 'string', 'count_of_children': 'integer', 'count_of_grandchildren': 'integer', 'count_as_place': 'integer', 'count_as_subject': 'integer', 'count_as_object': 'integer', 'is_in_graph': 'boolean', 'node_kind': 'string'},
-     'calculated': {'node_kind', 'name', 'is_in_graph'},
+     'fields': ['thing_id', 'label', 'kind', 'sort_order', 'portrait_name', 'portrait_page', 'portrait_image', 'portrait_crop', 'portrait_width', 'portrait_height', 'name', 'node_key', 'count_of_children', 'count_of_grandchildren', 'count_as_place', 'count_as_subject', 'count_as_object', 'is_in_graph', 'node_kind'],
+     'datatypes': {'name': 'string', 'node_key': 'string', 'count_of_children': 'integer', 'count_of_grandchildren': 'integer', 'count_as_place': 'integer', 'count_as_subject': 'integer', 'count_as_object': 'integer', 'is_in_graph': 'boolean', 'node_kind': 'string'},
+     'calculated': {'name', 'is_in_graph', 'node_key', 'node_kind'},
      'lookups': [],
      'aggregations': [
         {'field': 'count_of_children', 'op': 'SUM', 'table': 'statements', 'target': 'parent_unit', 'criteria': [('subject', 'raw_field', 'thing_id')], 'suffix': None},
@@ -976,16 +1294,16 @@ ERB_TABLES = [
         {'field': 'count_as_object', 'op': 'SUM', 'table': 'statements', 'target': 'holds_unit', 'criteria': [('object_thing', 'raw_field', 'thing_id')], 'suffix': None},]},
     {'name': 'Properties', 'file': 'properties', 'rulebook_rows': 10,
      'compute': compute_properties_fields,
-     'fields': ['property_id', 'label', 'property_kind', 'datatype', 'is_user_addable', 'has_one_current_value', 'inverse_of', 'is_symmetric', 'chain_first', 'chain_second', 'domain_class', 'range_class', 'disjoint_with', 'sort_order', 'name'],
+     'fields': ['property_id', 'label', 'property_kind', 'datatype', 'is_user_addable', 'has_one_current_value', 'inverse_of', 'is_symmetric', 'chain_first', 'chain_second', 'domain_class', 'range_class', 'disjoint_with', 'sort_order', 'value_node_label', 'current_value_wording', 'input_name', 'record_kind', 'record_order', 'name'],
      'datatypes': {'name': 'string'},
      'calculated': {'name'},
      'lookups': [],
      'aggregations': []},
     {'name': 'Statements', 'file': 'statements', 'rulebook_rows': 270,
      'compute': compute_statements_fields,
-     'fields': ['statement_id', 'graph', 'subject', 'property', 'object_thing', 'object_value', 'is_listed', 'is_built_in', 'is_detail', 'is_stated', 'activation_seq', 'sort_order', 'subject_label', 'property_label', 'object_label', 'property_datatype', 'property_has_one_current_value', 'property_domain_class', 'property_range_class', 'literal_quote', 'literal_type_marker', 'built_in_source_text', 'user_source_text', 'next_fact_sort_order', 'is_literal', 'object_text', 'name', 'words', 'source', 'subject_property_key', 'latest_sibling_activation_seq', 'is_in_effect', 'listed_unit', 'in_effect_unit', 'listed_off_unit', 'is_next_to_add', 'count_of_inverse_firings', 'count_of_symmetric_firings', 'holds_before_chain', 'count_of_chain_firings', 'holds_before_typing', 'count_of_type_firings', 'holds', 'is_conclusion', 'holds_unit', 'conclusion_unit', 'parent_unit', 'grandparent_unit', 'place_unit', 'first_fired_order_key', 'count_of_chosen_firings'],
-     'datatypes': {'subject_label': 'string', 'property_label': 'string', 'object_label': 'string', 'property_datatype': 'string', 'property_has_one_current_value': 'boolean', 'property_domain_class': 'string', 'property_range_class': 'string', 'literal_quote': 'string', 'literal_type_marker': 'string', 'built_in_source_text': 'string', 'user_source_text': 'string', 'next_fact_sort_order': 'integer', 'is_literal': 'boolean', 'object_text': 'string', 'name': 'string', 'words': 'string', 'source': 'string', 'subject_property_key': 'string', 'latest_sibling_activation_seq': 'integer', 'is_in_effect': 'boolean', 'listed_unit': 'integer', 'in_effect_unit': 'integer', 'listed_off_unit': 'integer', 'is_next_to_add': 'boolean', 'count_of_inverse_firings': 'integer', 'count_of_symmetric_firings': 'integer', 'holds_before_chain': 'boolean', 'count_of_chain_firings': 'integer', 'holds_before_typing': 'boolean', 'count_of_type_firings': 'integer', 'holds': 'boolean', 'is_conclusion': 'boolean', 'holds_unit': 'integer', 'conclusion_unit': 'integer', 'parent_unit': 'integer', 'grandparent_unit': 'integer', 'place_unit': 'integer', 'first_fired_order_key': 'integer', 'count_of_chosen_firings': 'integer'},
-     'calculated': {'words', 'subject_property_key', 'is_in_effect', 'in_effect_unit', 'holds_before_typing', 'source', 'is_next_to_add', 'is_conclusion', 'listed_unit', 'name', 'holds', 'place_unit', 'grandparent_unit', 'conclusion_unit', 'holds_before_chain', 'listed_off_unit', 'object_text', 'is_literal', 'parent_unit', 'holds_unit'},
+     'fields': ['statement_id', 'graph', 'subject', 'property', 'object_thing', 'object_value', 'is_listed', 'is_built_in', 'is_detail', 'is_stated', 'activation_seq', 'sort_order', 'subject_label', 'property_label', 'object_label', 'property_datatype', 'property_has_one_current_value', 'property_domain_class', 'property_range_class', 'literal_quote', 'literal_type_marker', 'built_in_source_text', 'user_source_text', 'next_fact_sort_order', 'is_literal', 'object_text', 'name', 'words', 'source', 'subject_property_key', 'latest_sibling_activation_seq', 'is_in_effect', 'listed_unit', 'in_effect_unit', 'listed_off_unit', 'is_next_to_add', 'count_of_inverse_firings', 'count_of_symmetric_firings', 'holds_before_chain', 'count_of_chain_firings', 'holds_before_typing', 'count_of_type_firings', 'holds', 'is_conclusion', 'holds_unit', 'conclusion_unit', 'parent_unit', 'grandparent_unit', 'place_unit', 'first_fired_order_key', 'count_of_chosen_firings', 'subject_node_key', 'object_node_key', 'subject_node_kind', 'object_thing_node_kind', 'object_node_kind', 'object_value_node_label', 'count_of_violations_as_first', 'count_of_violations_as_second', 'is_in_contradiction'],
+     'datatypes': {'subject_label': 'string', 'property_label': 'string', 'object_label': 'string', 'property_datatype': 'string', 'property_has_one_current_value': 'boolean', 'property_domain_class': 'string', 'property_range_class': 'string', 'literal_quote': 'string', 'literal_type_marker': 'string', 'built_in_source_text': 'string', 'user_source_text': 'string', 'next_fact_sort_order': 'integer', 'is_literal': 'boolean', 'object_text': 'string', 'name': 'string', 'words': 'string', 'source': 'string', 'subject_property_key': 'string', 'latest_sibling_activation_seq': 'integer', 'is_in_effect': 'boolean', 'listed_unit': 'integer', 'in_effect_unit': 'integer', 'listed_off_unit': 'integer', 'is_next_to_add': 'boolean', 'count_of_inverse_firings': 'integer', 'count_of_symmetric_firings': 'integer', 'holds_before_chain': 'boolean', 'count_of_chain_firings': 'integer', 'holds_before_typing': 'boolean', 'count_of_type_firings': 'integer', 'holds': 'boolean', 'is_conclusion': 'boolean', 'holds_unit': 'integer', 'conclusion_unit': 'integer', 'parent_unit': 'integer', 'grandparent_unit': 'integer', 'place_unit': 'integer', 'first_fired_order_key': 'integer', 'count_of_chosen_firings': 'integer', 'subject_node_key': 'string', 'object_node_key': 'string', 'subject_node_kind': 'string', 'object_thing_node_kind': 'string', 'object_node_kind': 'string', 'object_value_node_label': 'string', 'count_of_violations_as_first': 'integer', 'count_of_violations_as_second': 'integer', 'is_in_contradiction': 'boolean'},
+     'calculated': {'in_effect_unit', 'grandparent_unit', 'is_literal', 'place_unit', 'words', 'is_in_effect', 'holds', 'object_node_key', 'subject_node_key', 'is_next_to_add', 'is_conclusion', 'holds_before_typing', 'subject_property_key', 'parent_unit', 'listed_unit', 'name', 'is_in_contradiction', 'listed_off_unit', 'conclusion_unit', 'source', 'holds_before_chain', 'holds_unit', 'object_text', 'object_node_kind'},
      'lookups': [
         {'field': 'subject_label', 'target': 'things', 'return': 'label', 'key': 'subject', 'match': 'thing_id'},
         {'field': 'property_label', 'target': 'properties', 'return': 'label', 'key': 'property', 'match': 'property_id'},
@@ -998,7 +1316,10 @@ ERB_TABLES = [
         {'field': 'literal_type_marker', 'target': 'graphs', 'return': 'literal_type_marker', 'key': 'graph', 'match': 'graph_id'},
         {'field': 'built_in_source_text', 'target': 'graphs', 'return': 'built_in_source_text', 'key': 'graph', 'match': 'graph_id'},
         {'field': 'user_source_text', 'target': 'graphs', 'return': 'user_source_text', 'key': 'graph', 'match': 'graph_id'},
-        {'field': 'next_fact_sort_order', 'target': 'graphs', 'return': 'next_fact_sort_order', 'key': 'graph', 'match': 'graph_id'},],
+        {'field': 'next_fact_sort_order', 'target': 'graphs', 'return': 'next_fact_sort_order', 'key': 'graph', 'match': 'graph_id'},
+        {'field': 'subject_node_kind', 'target': 'things', 'return': 'node_kind', 'key': 'subject', 'match': 'thing_id'},
+        {'field': 'object_thing_node_kind', 'target': 'things', 'return': 'node_kind', 'key': 'object_thing', 'match': 'thing_id'},
+        {'field': 'object_value_node_label', 'target': 'properties', 'return': 'value_node_label', 'key': 'property', 'match': 'property_id'},],
      'aggregations': [
         {'field': 'latest_sibling_activation_seq', 'op': 'MAX', 'table': 'statements', 'target': 'activation_seq', 'criteria': [('subject_property_key', 'field', 'subject_property_key')], 'suffix': None, 'empty': 0},
         {'field': 'count_of_inverse_firings', 'op': 'SUM', 'table': 'firings', 'target': 'inverse_fired_unit', 'criteria': [('target', 'raw_field', 'statement_id')], 'suffix': None},
@@ -1006,12 +1327,14 @@ ERB_TABLES = [
         {'field': 'count_of_chain_firings', 'op': 'SUM', 'table': 'firings', 'target': 'chain_fired_unit', 'criteria': [('target', 'raw_field', 'statement_id')], 'suffix': None},
         {'field': 'count_of_type_firings', 'op': 'SUM', 'table': 'firings', 'target': 'type_fired_unit', 'criteria': [('target', 'raw_field', 'statement_id')], 'suffix': None},
         {'field': 'first_fired_order_key', 'op': 'MIN', 'table': 'firings', 'target': 'order_key', 'criteria': [('target', 'raw_field', 'statement_id'), ('fired_unit', 'literal', 1)], 'suffix': None, 'empty': 0},
-        {'field': 'count_of_chosen_firings', 'op': 'SUM', 'table': 'firings', 'target': 'chosen_unit', 'criteria': [('target', 'raw_field', 'statement_id')], 'suffix': None},]},
+        {'field': 'count_of_chosen_firings', 'op': 'SUM', 'table': 'firings', 'target': 'chosen_unit', 'criteria': [('target', 'raw_field', 'statement_id')], 'suffix': None},
+        {'field': 'count_of_violations_as_first', 'op': 'SUM', 'table': 'disjoint_checks', 'target': 'violation_unit', 'criteria': [('first', 'raw_field', 'statement_id')], 'suffix': None},
+        {'field': 'count_of_violations_as_second', 'op': 'SUM', 'table': 'disjoint_checks', 'target': 'violation_unit', 'criteria': [('second', 'raw_field', 'statement_id')], 'suffix': None},]},
     {'name': 'Firings', 'file': 'firings', 'rulebook_rows': 465,
      'compute': compute_firings_fields,
-     'fields': ['firing_id', 'kind', 'rule', 'target', 'first', 'second', 'rule_enabled', 'kind_wording', 'kind_sort_order', 'target_name', 'target_subject_label', 'target_property_label', 'target_object_text', 'target_is_conclusion', 'target_first_fired_order_key', 'first_words', 'second_words', 'first_is_in_effect', 'first_holds_before_chain', 'second_holds_before_chain', 'first_holds_before_typing', 'first_property', 'first_property_domain_class', 'first_property_range_class', 'first_sort_order', 'second_sort_order', 'inverse_fired_unit', 'symmetric_fired_unit', 'chain_fired_unit', 'type_fired_unit', 'fired_unit', 'order_key', 'is_chosen', 'chosen_unit', 'card_text', 'name'],
-     'datatypes': {'rule_enabled': 'boolean', 'kind_wording': 'string', 'kind_sort_order': 'integer', 'target_name': 'string', 'target_subject_label': 'string', 'target_property_label': 'string', 'target_object_text': 'string', 'target_is_conclusion': 'boolean', 'target_first_fired_order_key': 'integer', 'first_words': 'string', 'second_words': 'string', 'first_is_in_effect': 'boolean', 'first_holds_before_chain': 'boolean', 'second_holds_before_chain': 'boolean', 'first_holds_before_typing': 'boolean', 'first_property': 'string', 'first_property_domain_class': 'string', 'first_property_range_class': 'string', 'first_sort_order': 'integer', 'second_sort_order': 'integer', 'inverse_fired_unit': 'integer', 'symmetric_fired_unit': 'integer', 'chain_fired_unit': 'integer', 'type_fired_unit': 'integer', 'fired_unit': 'integer', 'order_key': 'integer', 'is_chosen': 'boolean', 'chosen_unit': 'integer', 'card_text': 'string', 'name': 'string'},
-     'calculated': {'card_text', 'order_key', 'chain_fired_unit', 'is_chosen', 'type_fired_unit', 'fired_unit', 'symmetric_fired_unit', 'chosen_unit', 'name', 'inverse_fired_unit'},
+     'fields': ['firing_id', 'kind', 'rule', 'target', 'first', 'second', 'rule_enabled', 'kind_wording', 'kind_sort_order', 'target_name', 'target_subject_label', 'target_property_label', 'target_object_text', 'target_is_conclusion', 'target_subject_node_key', 'target_object_node_key', 'target_first_fired_order_key', 'first_words', 'second_words', 'first_is_in_effect', 'first_holds_before_chain', 'second_holds_before_chain', 'first_holds_before_typing', 'first_property', 'first_property_domain_class', 'first_property_range_class', 'first_sort_order', 'second_sort_order', 'inverse_fired_unit', 'symmetric_fired_unit', 'chain_fired_unit', 'type_fired_unit', 'fired_unit', 'order_key', 'is_chosen', 'chosen_unit', 'card_text', 'name'],
+     'datatypes': {'rule_enabled': 'boolean', 'kind_wording': 'string', 'kind_sort_order': 'integer', 'target_name': 'string', 'target_subject_label': 'string', 'target_property_label': 'string', 'target_object_text': 'string', 'target_is_conclusion': 'boolean', 'target_subject_node_key': 'string', 'target_object_node_key': 'string', 'target_first_fired_order_key': 'integer', 'first_words': 'string', 'second_words': 'string', 'first_is_in_effect': 'boolean', 'first_holds_before_chain': 'boolean', 'second_holds_before_chain': 'boolean', 'first_holds_before_typing': 'boolean', 'first_property': 'string', 'first_property_domain_class': 'string', 'first_property_range_class': 'string', 'first_sort_order': 'integer', 'second_sort_order': 'integer', 'inverse_fired_unit': 'integer', 'symmetric_fired_unit': 'integer', 'chain_fired_unit': 'integer', 'type_fired_unit': 'integer', 'fired_unit': 'integer', 'order_key': 'integer', 'is_chosen': 'boolean', 'chosen_unit': 'integer', 'card_text': 'string', 'name': 'string'},
+     'calculated': {'name', 'fired_unit', 'type_fired_unit', 'chain_fired_unit', 'is_chosen', 'order_key', 'chosen_unit', 'symmetric_fired_unit', 'inverse_fired_unit', 'card_text'},
      'lookups': [
         {'field': 'rule_enabled', 'target': 'rules', 'return': 'is_enabled', 'key': 'rule', 'match': 'rule_id'},
         {'field': 'kind_wording', 'target': 'firing_kinds', 'return': 'wording', 'key': 'kind', 'match': 'firing_kind_id'},
@@ -1021,6 +1344,8 @@ ERB_TABLES = [
         {'field': 'target_property_label', 'target': 'statements', 'return': 'property_label', 'key': 'target', 'match': 'statement_id'},
         {'field': 'target_object_text', 'target': 'statements', 'return': 'object_text', 'key': 'target', 'match': 'statement_id'},
         {'field': 'target_is_conclusion', 'target': 'statements', 'return': 'is_conclusion', 'key': 'target', 'match': 'statement_id'},
+        {'field': 'target_subject_node_key', 'target': 'statements', 'return': 'subject_node_key', 'key': 'target', 'match': 'statement_id'},
+        {'field': 'target_object_node_key', 'target': 'statements', 'return': 'object_node_key', 'key': 'target', 'match': 'statement_id'},
         {'field': 'target_first_fired_order_key', 'target': 'statements', 'return': 'first_fired_order_key', 'key': 'target', 'match': 'statement_id'},
         {'field': 'first_words', 'target': 'statements', 'return': 'words', 'key': 'first', 'match': 'statement_id'},
         {'field': 'second_words', 'target': 'statements', 'return': 'words', 'key': 'second', 'match': 'statement_id'},
@@ -1038,13 +1363,56 @@ ERB_TABLES = [
      'compute': compute_disjoint_checks_fields,
      'fields': ['disjoint_check_id', 'graph', 'rule', 'first', 'second', 'rule_enabled', 'first_holds', 'second_holds', 'subject_label', 'object_label', 'violation_unit', 'alarm_text', 'name'],
      'datatypes': {'rule_enabled': 'boolean', 'first_holds': 'boolean', 'second_holds': 'boolean', 'subject_label': 'string', 'object_label': 'string', 'violation_unit': 'integer', 'alarm_text': 'string', 'name': 'string'},
-     'calculated': {'violation_unit', 'name', 'alarm_text'},
+     'calculated': {'name', 'violation_unit', 'alarm_text'},
      'lookups': [
         {'field': 'rule_enabled', 'target': 'rules', 'return': 'is_enabled', 'key': 'rule', 'match': 'rule_id'},
         {'field': 'first_holds', 'target': 'statements', 'return': 'holds', 'key': 'first', 'match': 'statement_id'},
         {'field': 'second_holds', 'target': 'statements', 'return': 'holds', 'key': 'second', 'match': 'statement_id'},
         {'field': 'subject_label', 'target': 'statements', 'return': 'subject_label', 'key': 'first', 'match': 'statement_id'},
         {'field': 'object_label', 'target': 'statements', 'return': 'object_label', 'key': 'first', 'match': 'statement_id'},],
+     'aggregations': []},
+    {'name': 'Scenarios', 'file': 'scenarios', 'rulebook_rows': 7,
+     'compute': compute_scenarios_fields,
+     'fields': ['scenario_id', 'graph', 'label', 'note', 'sort_order', 'button_group', 'is_primary', 'fact_baseline', 'layout', 'clears_selection', 'clears_form_message', 'name', 'graph_has_facts_to_add', 'is_available'],
+     'datatypes': {'name': 'string', 'graph_has_facts_to_add': 'boolean', 'is_available': 'boolean'},
+     'calculated': {'name', 'is_available'},
+     'lookups': [
+        {'field': 'graph_has_facts_to_add', 'target': 'graphs', 'return': 'has_facts_to_add', 'key': 'graph', 'match': 'graph_id'},],
+     'aggregations': []},
+    {'name': 'ScenarioFactChanges', 'file': 'scenario_fact_changes', 'rulebook_rows': 6,
+     'compute': compute_scenario_fact_changes_fields,
+     'fields': ['scenario_fact_change_id', 'scenario', 'subject', 'property', 'object_key', 'action', 'adds_to_list', 'sort_order', 'name'],
+     'datatypes': {'name': 'string'},
+     'calculated': {'name'},
+     'lookups': [],
+     'aggregations': []},
+    {'name': 'ScenarioRuleSettings', 'file': 'scenario_rule_settings', 'rulebook_rows': 10,
+     'compute': compute_scenario_rule_settings_fields,
+     'fields': ['scenario_rule_setting_id', 'scenario', 'rule', 'is_enabled', 'name'],
+     'datatypes': {'name': 'string'},
+     'calculated': {'name'},
+     'lookups': [],
+     'aggregations': []},
+    {'name': 'NodeLayouts', 'file': 'node_layouts', 'rulebook_rows': 26,
+     'compute': compute_node_layouts_fields,
+     'fields': ['node_layout_id', 'layout', 'node_key', 'x', 'y', 'name'],
+     'datatypes': {'name': 'string'},
+     'calculated': {'name'},
+     'lookups': [],
+     'aggregations': []},
+    {'name': 'LayoutSlots', 'file': 'layout_slots', 'rulebook_rows': 8,
+     'compute': compute_layout_slots_fields,
+     'fields': ['layout_slot_id', 'sort_order', 'x', 'y', 'name'],
+     'datatypes': {'name': 'string'},
+     'calculated': {'name'},
+     'lookups': [],
+     'aggregations': []},
+    {'name': 'PageTexts', 'file': 'page_texts', 'rulebook_rows': 67,
+     'compute': compute_page_texts_fields,
+     'fields': ['page_text_id', 'text', 'name'],
+     'datatypes': {'name': 'string'},
+     'calculated': {'name'},
+     'lookups': [],
      'aggregations': []},
 ]
 

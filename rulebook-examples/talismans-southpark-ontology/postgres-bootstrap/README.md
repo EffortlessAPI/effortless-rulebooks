@@ -2,30 +2,36 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-11-26 06:57:21 UTC
+**Timestamp:** 2026-11-26 07:20:49 UTC
 
 ## Parsing Rulebook
 
-Found **8** tables in rulebook
+Found **14** tables in rulebook
 
 
   - **Graphs** (20 fields, 1 records)
   - **Rules** (7 fields, 5 records)
   - **FiringKinds** (6 fields, 5 records)
-  - **Things** (16 fields, 9 records)
-  - **Properties** (15 fields, 10 records)
-  - **Statements** (51 fields, 270 records)
-  - **Firings** (36 fields, 465 records)
+  - **Things** (19 fields, 9 records)
+  - **Properties** (20 fields, 10 records)
+  - **Statements** (60 fields, 270 records)
+  - **Firings** (38 fields, 465 records)
   - **DisjointChecks** (13 fields, 42 records)
+  - **Scenarios** (14 fields, 7 records)
+  - **ScenarioFactChanges** (9 fields, 6 records)
+  - **ScenarioRuleSettings** (5 fields, 10 records)
+  - **NodeLayouts** (6 fields, 26 records)
+  - **LayoutSlots** (5 fields, 8 records)
+  - **PageTexts** (3 fields, 67 records)
 
-Generated **8** table definitions with **41** raw fields (mode=drop-all)
-Generated **136** calculation functions
-Generated **8** views
-Enabled RLS on **8** tables
-Generated insert statements for **807** records
-Generated **8** table definitions with **41** raw fields (mode=drop-all)
-Generated **136** calculation functions
-Generated **8** views
+Generated **14** table definitions with **76** raw fields (mode=drop-all)
+Generated **172** calculation functions
+Generated **14** views
+Enabled RLS on **14** tables
+Generated insert statements for **931** records
+Generated **14** table definitions with **76** raw fields (mode=drop-all)
+Generated **172** calculation functions
+Generated **14** views
 ## Script Generation Complete
 
 Generated files:

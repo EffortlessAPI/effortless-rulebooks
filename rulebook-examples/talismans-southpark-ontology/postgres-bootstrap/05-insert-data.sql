@@ -51,65 +51,65 @@ VALUES ('range', 'domain', 'range rule', 5) ON CONFLICT (firing_kind_id) DO UPDA
 -- ----------------------------------------------------------------------------
 -- Things: Every individual and class the page can draw.
 -- ----------------------------------------------------------------------------
-INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop)
-VALUES ('Marvin', 'Marvin', 'individual', 1, 'Marvin Marsh', 'https://southpark.fandom.com/wiki/Marvin_Marsh', 'https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest', '48 -5 280 280') ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop;
+INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop, portrait_width, portrait_height)
+VALUES ('Marvin', 'Marvin', 'individual', 1, 'Marvin Marsh', 'https://southpark.fandom.com/wiki/Marvin_Marsh', 'https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest', '48 -5 280 280', 375, 536) ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop, portrait_width = EXCLUDED.portrait_width, portrait_height = EXCLUDED.portrait_height;
 
-INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop)
-VALUES ('Randy', 'Randy', 'individual', 2, 'Randy Marsh', 'https://southpark.fandom.com/wiki/Randy_Marsh', 'https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest', '0 -10 428 428') ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop;
+INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop, portrait_width, portrait_height)
+VALUES ('Randy', 'Randy', 'individual', 2, 'Randy Marsh', 'https://southpark.fandom.com/wiki/Randy_Marsh', 'https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest', '0 -10 428 428', 428, 1057) ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop, portrait_width = EXCLUDED.portrait_width, portrait_height = EXCLUDED.portrait_height;
 
-INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop)
-VALUES ('Sharon', 'Sharon', 'individual', 3, 'Sharon Marsh', 'https://southpark.fandom.com/wiki/Sharon_Marsh', 'https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest', '20 -10 390 390') ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop;
+INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop, portrait_width, portrait_height)
+VALUES ('Sharon', 'Sharon', 'individual', 3, 'Sharon Marsh', 'https://southpark.fandom.com/wiki/Sharon_Marsh', 'https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest', '20 -10 390 390', 439, 1049) ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop, portrait_width = EXCLUDED.portrait_width, portrait_height = EXCLUDED.portrait_height;
 
-INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop)
-VALUES ('Stan', 'Stan', 'individual', 4, 'Stan Marsh', 'https://southpark.fandom.com/wiki/Stan_Marsh', 'https://static.wikia.nocookie.net/southpark/images/c/c6/Stan-marsh-0.png/revision/latest', '-35 -10 735 735') ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop;
+INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop, portrait_width, portrait_height)
+VALUES ('Stan', 'Stan', 'individual', 4, 'Stan Marsh', 'https://southpark.fandom.com/wiki/Stan_Marsh', 'https://static.wikia.nocookie.net/southpark/images/c/c6/Stan-marsh-0.png/revision/latest', '-35 -10 735 735', 663, 1037) ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop, portrait_width = EXCLUDED.portrait_width, portrait_height = EXCLUDED.portrait_height;
 
-INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop)
-VALUES ('Shelly', 'Shelly', 'individual', 5, 'Shelley Marsh', 'https://southpark.fandom.com/wiki/Shelley_Marsh', 'https://static.wikia.nocookie.net/southpark/images/3/3b/Shelly.png/revision/latest', '-20 -10 760 760') ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop;
+INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop, portrait_width, portrait_height)
+VALUES ('Shelly', 'Shelly', 'individual', 5, 'Shelley Marsh', 'https://southpark.fandom.com/wiki/Shelley_Marsh', 'https://static.wikia.nocookie.net/southpark/images/3/3b/Shelly.png/revision/latest', '-20 -10 760 760', 720, 1064) ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop, portrait_width = EXCLUDED.portrait_width, portrait_height = EXCLUDED.portrait_height;
 
-INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop)
-VALUES ('Kyle', 'Kyle', 'individual', 6, 'Kyle Broflovski', 'https://southpark.fandom.com/wiki/Kyle_Broflovski', 'https://static.wikia.nocookie.net/southpark/images/9/95/Kyle-broflovski.png/revision/latest?cb=20190411033301', '-20 -10 790 790') ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop;
+INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop, portrait_width, portrait_height)
+VALUES ('Kyle', 'Kyle', 'individual', 6, 'Kyle Broflovski', 'https://southpark.fandom.com/wiki/Kyle_Broflovski', 'https://static.wikia.nocookie.net/southpark/images/9/95/Kyle-broflovski.png/revision/latest?cb=20190411033301', '-20 -10 790 790', 753, 935) ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop, portrait_width = EXCLUDED.portrait_width, portrait_height = EXCLUDED.portrait_height;
 
-INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop)
-VALUES ('SouthParkElementary', 'South Park Elementary', 'individual', 7, 'South Park Elementary', 'https://southpark.fandom.com/wiki/South_Park_Elementary', 'https://static.wikia.nocookie.net/southpark/images/1/12/School_7.png/revision/latest?cb=20180414152359', '420 0 1080 1080') ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop;
+INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop, portrait_width, portrait_height)
+VALUES ('SouthParkElementary', 'South Park Elementary', 'individual', 7, 'South Park Elementary', 'https://southpark.fandom.com/wiki/South_Park_Elementary', 'https://static.wikia.nocookie.net/southpark/images/1/12/School_7.png/revision/latest?cb=20180414152359', '420 0 1080 1080', 1920, 1080) ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop, portrait_width = EXCLUDED.portrait_width, portrait_height = EXCLUDED.portrait_height;
 
-INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop)
-VALUES ('Person', 'Person', 'class', 8, NULL, NULL, NULL, NULL) ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop;
+INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop, portrait_width, portrait_height)
+VALUES ('Person', 'Person', 'class', 8, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop, portrait_width = EXCLUDED.portrait_width, portrait_height = EXCLUDED.portrait_height;
 
-INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop)
-VALUES ('School', 'School', 'class', 9, NULL, NULL, NULL, NULL) ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop;
+INSERT INTO things (thing_id, label, kind, sort_order, portrait_name, portrait_page, portrait_image, portrait_crop, portrait_width, portrait_height)
+VALUES ('School', 'School', 'class', 9, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (thing_id) DO UPDATE SET label = EXCLUDED.label, kind = EXCLUDED.kind, sort_order = EXCLUDED.sort_order, portrait_name = EXCLUDED.portrait_name, portrait_page = EXCLUDED.portrait_page, portrait_image = EXCLUDED.portrait_image, portrait_crop = EXCLUDED.portrait_crop, portrait_width = EXCLUDED.portrait_width, portrait_height = EXCLUDED.portrait_height;
 
 -- ----------------------------------------------------------------------------
 -- Properties: The ten properties and the wiring every rule reads.
 -- ----------------------------------------------------------------------------
-INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order)
-VALUES ('isParentOf', 'is parent of', 'object', '', TRUE, FALSE, 'isChildOf', FALSE, NULL, NULL, NULL, NULL, 'isSpouseOf', 1) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order;
+INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order, value_node_label, current_value_wording, input_name, record_kind, record_order)
+VALUES ('isParentOf', 'is parent of', 'object', '', TRUE, FALSE, 'isChildOf', FALSE, NULL, NULL, NULL, NULL, 'isSpouseOf', 1, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order, value_node_label = EXCLUDED.value_node_label, current_value_wording = EXCLUDED.current_value_wording, input_name = EXCLUDED.input_name, record_kind = EXCLUDED.record_kind, record_order = EXCLUDED.record_order;
 
-INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order)
-VALUES ('isChildOf', 'is child of', 'object', '', TRUE, FALSE, 'isParentOf', FALSE, NULL, NULL, NULL, NULL, NULL, 2) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order;
+INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order, value_node_label, current_value_wording, input_name, record_kind, record_order)
+VALUES ('isChildOf', 'is child of', 'object', '', TRUE, FALSE, 'isParentOf', FALSE, NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order, value_node_label = EXCLUDED.value_node_label, current_value_wording = EXCLUDED.current_value_wording, input_name = EXCLUDED.input_name, record_kind = EXCLUDED.record_kind, record_order = EXCLUDED.record_order;
 
-INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order)
-VALUES ('isSpouseOf', 'is spouse of', 'object', '', TRUE, FALSE, NULL, TRUE, NULL, NULL, NULL, NULL, 'isParentOf', 3) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order;
+INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order, value_node_label, current_value_wording, input_name, record_kind, record_order)
+VALUES ('isSpouseOf', 'is spouse of', 'object', '', TRUE, FALSE, NULL, TRUE, NULL, NULL, NULL, NULL, 'isParentOf', 3, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order, value_node_label = EXCLUDED.value_node_label, current_value_wording = EXCLUDED.current_value_wording, input_name = EXCLUDED.input_name, record_kind = EXCLUDED.record_kind, record_order = EXCLUDED.record_order;
 
-INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order)
-VALUES ('isFriendOf', 'is friend of', 'object', '', TRUE, FALSE, NULL, TRUE, NULL, NULL, NULL, NULL, NULL, 4) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order;
+INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order, value_node_label, current_value_wording, input_name, record_kind, record_order)
+VALUES ('isFriendOf', 'is friend of', 'object', '', TRUE, FALSE, NULL, TRUE, NULL, NULL, NULL, NULL, NULL, 4, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order, value_node_label = EXCLUDED.value_node_label, current_value_wording = EXCLUDED.current_value_wording, input_name = EXCLUDED.input_name, record_kind = EXCLUDED.record_kind, record_order = EXCLUDED.record_order;
 
-INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order)
-VALUES ('attends', 'attends', 'object', '', TRUE, FALSE, NULL, FALSE, NULL, NULL, 'Person', 'School', NULL, 5) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order;
+INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order, value_node_label, current_value_wording, input_name, record_kind, record_order)
+VALUES ('attends', 'attends', 'object', '', TRUE, FALSE, NULL, FALSE, NULL, NULL, 'Person', 'School', NULL, 5, NULL, NULL, NULL, 'school', 3) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order, value_node_label = EXCLUDED.value_node_label, current_value_wording = EXCLUDED.current_value_wording, input_name = EXCLUDED.input_name, record_kind = EXCLUDED.record_kind, record_order = EXCLUDED.record_order;
 
-INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order)
-VALUES ('hasAge', 'has age', 'datatype', 'xsd:integer', TRUE, FALSE, NULL, FALSE, NULL, NULL, NULL, NULL, NULL, 6) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order;
+INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order, value_node_label, current_value_wording, input_name, record_kind, record_order)
+VALUES ('hasAge', 'has age', 'datatype', 'xsd:integer', TRUE, FALSE, NULL, FALSE, NULL, NULL, NULL, NULL, NULL, 6, 'number value', NULL, 'age', NULL, NULL) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order, value_node_label = EXCLUDED.value_node_label, current_value_wording = EXCLUDED.current_value_wording, input_name = EXCLUDED.input_name, record_kind = EXCLUDED.record_kind, record_order = EXCLUDED.record_order;
 
-INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order)
-VALUES ('hasGradeLevel', 'has grade level', 'datatype', 'xsd:integer', TRUE, TRUE, NULL, FALSE, NULL, NULL, 'Person', NULL, NULL, 7) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order;
+INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order, value_node_label, current_value_wording, input_name, record_kind, record_order)
+VALUES ('hasGradeLevel', 'has grade level', 'datatype', 'xsd:integer', TRUE, TRUE, NULL, FALSE, NULL, NULL, 'Person', NULL, NULL, 7, 'number value', 'grade level', 'grade level', 'grade', 2) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order, value_node_label = EXCLUDED.value_node_label, current_value_wording = EXCLUDED.current_value_wording, input_name = EXCLUDED.input_name, record_kind = EXCLUDED.record_kind, record_order = EXCLUDED.record_order;
 
-INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order)
-VALUES ('hasRole', 'has role', 'datatype', 'xsd:string', TRUE, TRUE, NULL, FALSE, NULL, NULL, 'Person', NULL, NULL, 8) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order;
+INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order, value_node_label, current_value_wording, input_name, record_kind, record_order)
+VALUES ('hasRole', 'has role', 'datatype', 'xsd:string', TRUE, TRUE, NULL, FALSE, NULL, NULL, 'Person', NULL, NULL, 8, 'role value', 'role', NULL, 'role', 1) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order, value_node_label = EXCLUDED.value_node_label, current_value_wording = EXCLUDED.current_value_wording, input_name = EXCLUDED.input_name, record_kind = EXCLUDED.record_kind, record_order = EXCLUDED.record_order;
 
-INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order)
-VALUES ('isGrandparentOf', 'is grandparent of', 'object', '', FALSE, FALSE, NULL, FALSE, 'isParentOf', 'isParentOf', NULL, NULL, NULL, 9) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order;
+INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order, value_node_label, current_value_wording, input_name, record_kind, record_order)
+VALUES ('isGrandparentOf', 'is grandparent of', 'object', '', FALSE, FALSE, NULL, FALSE, 'isParentOf', 'isParentOf', NULL, NULL, NULL, 9, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order, value_node_label = EXCLUDED.value_node_label, current_value_wording = EXCLUDED.current_value_wording, input_name = EXCLUDED.input_name, record_kind = EXCLUDED.record_kind, record_order = EXCLUDED.record_order;
 
-INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order)
-VALUES ('isA', 'is a', 'type', '', FALSE, FALSE, NULL, FALSE, NULL, NULL, NULL, NULL, NULL, 10) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order;
+INSERT INTO properties (property_id, label, property_kind, datatype, is_user_addable, has_one_current_value, inverse_of, is_symmetric, chain_first, chain_second, domain_class, range_class, disjoint_with, sort_order, value_node_label, current_value_wording, input_name, record_kind, record_order)
+VALUES ('isA', 'is a', 'type', '', FALSE, FALSE, NULL, FALSE, NULL, NULL, NULL, NULL, NULL, 10, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (property_id) DO UPDATE SET label = EXCLUDED.label, property_kind = EXCLUDED.property_kind, datatype = EXCLUDED.datatype, is_user_addable = EXCLUDED.is_user_addable, has_one_current_value = EXCLUDED.has_one_current_value, inverse_of = EXCLUDED.inverse_of, is_symmetric = EXCLUDED.is_symmetric, chain_first = EXCLUDED.chain_first, chain_second = EXCLUDED.chain_second, domain_class = EXCLUDED.domain_class, range_class = EXCLUDED.range_class, disjoint_with = EXCLUDED.disjoint_with, sort_order = EXCLUDED.sort_order, value_node_label = EXCLUDED.value_node_label, current_value_wording = EXCLUDED.current_value_wording, input_name = EXCLUDED.input_name, record_kind = EXCLUDED.record_kind, record_order = EXCLUDED.record_order;
 
 -- ----------------------------------------------------------------------------
 -- Statements: Every fact the page can state or conclude about the cast. A listed fact appears in the page's fact list; the rest are candidates that only a rule can make hold.
@@ -2450,4 +2450,394 @@ VALUES ('SouthParkElementary|isParentOf|Shelly~isSpouseOf', 'south-park', 'disjo
 
 INSERT INTO disjoint_checks (disjoint_check_id, graph, rule, first, second)
 VALUES ('SouthParkElementary|isParentOf|Kyle~isSpouseOf', 'south-park', 'disjoint', 'SouthParkElementary|isParentOf|Kyle', 'SouthParkElementary|isSpouseOf|Kyle') ON CONFLICT (disjoint_check_id) DO UPDATE SET graph = EXCLUDED.graph, rule = EXCLUDED.rule, first = EXCLUDED.first, second = EXCLUDED.second;
+
+-- ----------------------------------------------------------------------------
+-- Scenarios: The page's buttons. Each one is a fact baseline, explicit fact changes and rule settings, applied in that order.
+-- ----------------------------------------------------------------------------
+INSERT INTO scenarios (scenario_id, graph, label, note, sort_order, button_group, is_primary, fact_baseline, layout, clears_selection, clears_form_message)
+VALUES ('stan-grade-five', 'south-park', 'Move Stan to grade 5', 'This imagined change updates Stan’s grade to 5. His identifier, Person statement and family links stay the same. His other selected details are unchanged.', 1, 'stan', FALSE, 'keep', NULL, TRUE, TRUE) ON CONFLICT (scenario_id) DO UPDATE SET graph = EXCLUDED.graph, label = EXCLUDED.label, note = EXCLUDED.note, sort_order = EXCLUDED.sort_order, button_group = EXCLUDED.button_group, is_primary = EXCLUDED.is_primary, fact_baseline = EXCLUDED.fact_baseline, layout = EXCLUDED.layout, clears_selection = EXCLUDED.clears_selection, clears_form_message = EXCLUDED.clears_form_message;
+
+INSERT INTO scenarios (scenario_id, graph, label, note, sort_order, button_group, is_primary, fact_baseline, layout, clears_selection, clears_form_message)
+VALUES ('stan-leaves-school', 'south-park', 'Stan leaves school', 'This imagined change clears Stan’s current school details. His identifier, Person statement and family links remain. Removing a current fact does not say that its opposite is true; school history needs dates.', 2, 'stan', FALSE, 'keep', NULL, TRUE, TRUE) ON CONFLICT (scenario_id) DO UPDATE SET graph = EXCLUDED.graph, label = EXCLUDED.label, note = EXCLUDED.note, sort_order = EXCLUDED.sort_order, button_group = EXCLUDED.button_group, is_primary = EXCLUDED.is_primary, fact_baseline = EXCLUDED.fact_baseline, layout = EXCLUDED.layout, clears_selection = EXCLUDED.clears_selection, clears_form_message = EXCLUDED.clears_form_message;
+
+INSERT INTO scenarios (scenario_id, graph, label, note, sort_order, button_group, is_primary, fact_baseline, layout, clears_selection, clears_form_message)
+VALUES ('next', 'south-park', 'Add next fact', NULL, 3, 'facts', TRUE, 'next', NULL, FALSE, FALSE) ON CONFLICT (scenario_id) DO UPDATE SET graph = EXCLUDED.graph, label = EXCLUDED.label, note = EXCLUDED.note, sort_order = EXCLUDED.sort_order, button_group = EXCLUDED.button_group, is_primary = EXCLUDED.is_primary, fact_baseline = EXCLUDED.fact_baseline, layout = EXCLUDED.layout, clears_selection = EXCLUDED.clears_selection, clears_form_message = EXCLUDED.clears_form_message;
+
+INSERT INTO scenarios (scenario_id, graph, label, note, sort_order, button_group, is_primary, fact_baseline, layout, clears_selection, clears_form_message)
+VALUES ('all', 'south-park', 'Add all current facts', NULL, 4, 'facts', FALSE, 'activate-all', NULL, FALSE, FALSE) ON CONFLICT (scenario_id) DO UPDATE SET graph = EXCLUDED.graph, label = EXCLUDED.label, note = EXCLUDED.note, sort_order = EXCLUDED.sort_order, button_group = EXCLUDED.button_group, is_primary = EXCLUDED.is_primary, fact_baseline = EXCLUDED.fact_baseline, layout = EXCLUDED.layout, clears_selection = EXCLUDED.clears_selection, clears_form_message = EXCLUDED.clears_form_message;
+
+INSERT INTO scenarios (scenario_id, graph, label, note, sort_order, button_group, is_primary, fact_baseline, layout, clears_selection, clears_form_message)
+VALUES ('clear', 'south-park', 'Clear the graph', NULL, 5, 'facts', FALSE, 'all-off', NULL, TRUE, FALSE) ON CONFLICT (scenario_id) DO UPDATE SET graph = EXCLUDED.graph, label = EXCLUDED.label, note = EXCLUDED.note, sort_order = EXCLUDED.sort_order, button_group = EXCLUDED.button_group, is_primary = EXCLUDED.is_primary, fact_baseline = EXCLUDED.fact_baseline, layout = EXCLUDED.layout, clears_selection = EXCLUDED.clears_selection, clears_form_message = EXCLUDED.clears_form_message;
+
+INSERT INTO scenarios (scenario_id, graph, label, note, sort_order, button_group, is_primary, fact_baseline, layout, clears_selection, clears_form_message)
+VALUES ('grade-example', 'south-park', 'Show Stan’s details', NULL, 6, 'facts', FALSE, 'built-in-detail', 'stan-details', TRUE, TRUE) ON CONFLICT (scenario_id) DO UPDATE SET graph = EXCLUDED.graph, label = EXCLUDED.label, note = EXCLUDED.note, sort_order = EXCLUDED.sort_order, button_group = EXCLUDED.button_group, is_primary = EXCLUDED.is_primary, fact_baseline = EXCLUDED.fact_baseline, layout = EXCLUDED.layout, clears_selection = EXCLUDED.clears_selection, clears_form_message = EXCLUDED.clears_form_message;
+
+INSERT INTO scenarios (scenario_id, graph, label, note, sort_order, button_group, is_primary, fact_baseline, layout, clears_selection, clears_form_message)
+VALUES ('reset-original', 'south-park', 'Reset example facts', NULL, 7, 'facts', FALSE, 'built-in', 'default', TRUE, TRUE) ON CONFLICT (scenario_id) DO UPDATE SET graph = EXCLUDED.graph, label = EXCLUDED.label, note = EXCLUDED.note, sort_order = EXCLUDED.sort_order, button_group = EXCLUDED.button_group, is_primary = EXCLUDED.is_primary, fact_baseline = EXCLUDED.fact_baseline, layout = EXCLUDED.layout, clears_selection = EXCLUDED.clears_selection, clears_form_message = EXCLUDED.clears_form_message;
+
+-- ----------------------------------------------------------------------------
+-- ScenarioFactChanges: Fact changes a button makes after its baseline. A blank object key matches every listed value of the property.
+-- ----------------------------------------------------------------------------
+INSERT INTO scenario_fact_changes (scenario_fact_change_id, scenario, subject, property, object_key, "action", adds_to_list, sort_order)
+VALUES ('stan-grade-five:Stan|isA|Person', 'stan-grade-five', 'Stan', 'isA', 'Person', 'on', TRUE, 1) ON CONFLICT (scenario_fact_change_id) DO UPDATE SET scenario = EXCLUDED.scenario, subject = EXCLUDED.subject, property = EXCLUDED.property, object_key = EXCLUDED.object_key, "action" = EXCLUDED."action", adds_to_list = EXCLUDED.adds_to_list, sort_order = EXCLUDED.sort_order;
+
+INSERT INTO scenario_fact_changes (scenario_fact_change_id, scenario, subject, property, object_key, "action", adds_to_list, sort_order)
+VALUES ('stan-grade-five:Stan|hasGradeLevel|5', 'stan-grade-five', 'Stan', 'hasGradeLevel', '5', 'on', TRUE, 2) ON CONFLICT (scenario_fact_change_id) DO UPDATE SET scenario = EXCLUDED.scenario, subject = EXCLUDED.subject, property = EXCLUDED.property, object_key = EXCLUDED.object_key, "action" = EXCLUDED."action", adds_to_list = EXCLUDED.adds_to_list, sort_order = EXCLUDED.sort_order;
+
+INSERT INTO scenario_fact_changes (scenario_fact_change_id, scenario, subject, property, object_key, "action", adds_to_list, sort_order)
+VALUES ('stan-leaves-school:Stan|isA|Person', 'stan-leaves-school', 'Stan', 'isA', 'Person', 'on', TRUE, 3) ON CONFLICT (scenario_fact_change_id) DO UPDATE SET scenario = EXCLUDED.scenario, subject = EXCLUDED.subject, property = EXCLUDED.property, object_key = EXCLUDED.object_key, "action" = EXCLUDED."action", adds_to_list = EXCLUDED.adds_to_list, sort_order = EXCLUDED.sort_order;
+
+INSERT INTO scenario_fact_changes (scenario_fact_change_id, scenario, subject, property, object_key, "action", adds_to_list, sort_order)
+VALUES ('stan-leaves-school:Stan|hasRole|*', 'stan-leaves-school', 'Stan', 'hasRole', NULL, 'off', FALSE, 4) ON CONFLICT (scenario_fact_change_id) DO UPDATE SET scenario = EXCLUDED.scenario, subject = EXCLUDED.subject, property = EXCLUDED.property, object_key = EXCLUDED.object_key, "action" = EXCLUDED."action", adds_to_list = EXCLUDED.adds_to_list, sort_order = EXCLUDED.sort_order;
+
+INSERT INTO scenario_fact_changes (scenario_fact_change_id, scenario, subject, property, object_key, "action", adds_to_list, sort_order)
+VALUES ('stan-leaves-school:Stan|hasGradeLevel|*', 'stan-leaves-school', 'Stan', 'hasGradeLevel', NULL, 'off', FALSE, 5) ON CONFLICT (scenario_fact_change_id) DO UPDATE SET scenario = EXCLUDED.scenario, subject = EXCLUDED.subject, property = EXCLUDED.property, object_key = EXCLUDED.object_key, "action" = EXCLUDED."action", adds_to_list = EXCLUDED.adds_to_list, sort_order = EXCLUDED.sort_order;
+
+INSERT INTO scenario_fact_changes (scenario_fact_change_id, scenario, subject, property, object_key, "action", adds_to_list, sort_order)
+VALUES ('stan-leaves-school:Stan|attends|*', 'stan-leaves-school', 'Stan', 'attends', NULL, 'off', FALSE, 6) ON CONFLICT (scenario_fact_change_id) DO UPDATE SET scenario = EXCLUDED.scenario, subject = EXCLUDED.subject, property = EXCLUDED.property, object_key = EXCLUDED.object_key, "action" = EXCLUDED."action", adds_to_list = EXCLUDED.adds_to_list, sort_order = EXCLUDED.sort_order;
+
+-- ----------------------------------------------------------------------------
+-- ScenarioRuleSettings: Rule switches a button sets.
+-- ----------------------------------------------------------------------------
+INSERT INTO scenario_rule_settings (scenario_rule_setting_id, scenario, rule, is_enabled)
+VALUES ('reset-original:inverse', 'reset-original', 'inverse', FALSE) ON CONFLICT (scenario_rule_setting_id) DO UPDATE SET scenario = EXCLUDED.scenario, rule = EXCLUDED.rule, is_enabled = EXCLUDED.is_enabled;
+
+INSERT INTO scenario_rule_settings (scenario_rule_setting_id, scenario, rule, is_enabled)
+VALUES ('reset-original:symmetric', 'reset-original', 'symmetric', FALSE) ON CONFLICT (scenario_rule_setting_id) DO UPDATE SET scenario = EXCLUDED.scenario, rule = EXCLUDED.rule, is_enabled = EXCLUDED.is_enabled;
+
+INSERT INTO scenario_rule_settings (scenario_rule_setting_id, scenario, rule, is_enabled)
+VALUES ('reset-original:chain', 'reset-original', 'chain', FALSE) ON CONFLICT (scenario_rule_setting_id) DO UPDATE SET scenario = EXCLUDED.scenario, rule = EXCLUDED.rule, is_enabled = EXCLUDED.is_enabled;
+
+INSERT INTO scenario_rule_settings (scenario_rule_setting_id, scenario, rule, is_enabled)
+VALUES ('reset-original:domain', 'reset-original', 'domain', FALSE) ON CONFLICT (scenario_rule_setting_id) DO UPDATE SET scenario = EXCLUDED.scenario, rule = EXCLUDED.rule, is_enabled = EXCLUDED.is_enabled;
+
+INSERT INTO scenario_rule_settings (scenario_rule_setting_id, scenario, rule, is_enabled)
+VALUES ('reset-original:disjoint', 'reset-original', 'disjoint', FALSE) ON CONFLICT (scenario_rule_setting_id) DO UPDATE SET scenario = EXCLUDED.scenario, rule = EXCLUDED.rule, is_enabled = EXCLUDED.is_enabled;
+
+INSERT INTO scenario_rule_settings (scenario_rule_setting_id, scenario, rule, is_enabled)
+VALUES ('grade-example:inverse', 'grade-example', 'inverse', FALSE) ON CONFLICT (scenario_rule_setting_id) DO UPDATE SET scenario = EXCLUDED.scenario, rule = EXCLUDED.rule, is_enabled = EXCLUDED.is_enabled;
+
+INSERT INTO scenario_rule_settings (scenario_rule_setting_id, scenario, rule, is_enabled)
+VALUES ('grade-example:symmetric', 'grade-example', 'symmetric', FALSE) ON CONFLICT (scenario_rule_setting_id) DO UPDATE SET scenario = EXCLUDED.scenario, rule = EXCLUDED.rule, is_enabled = EXCLUDED.is_enabled;
+
+INSERT INTO scenario_rule_settings (scenario_rule_setting_id, scenario, rule, is_enabled)
+VALUES ('grade-example:chain', 'grade-example', 'chain', FALSE) ON CONFLICT (scenario_rule_setting_id) DO UPDATE SET scenario = EXCLUDED.scenario, rule = EXCLUDED.rule, is_enabled = EXCLUDED.is_enabled;
+
+INSERT INTO scenario_rule_settings (scenario_rule_setting_id, scenario, rule, is_enabled)
+VALUES ('grade-example:domain', 'grade-example', 'domain', TRUE) ON CONFLICT (scenario_rule_setting_id) DO UPDATE SET scenario = EXCLUDED.scenario, rule = EXCLUDED.rule, is_enabled = EXCLUDED.is_enabled;
+
+INSERT INTO scenario_rule_settings (scenario_rule_setting_id, scenario, rule, is_enabled)
+VALUES ('grade-example:disjoint', 'grade-example', 'disjoint', FALSE) ON CONFLICT (scenario_rule_setting_id) DO UPDATE SET scenario = EXCLUDED.scenario, rule = EXCLUDED.rule, is_enabled = EXCLUDED.is_enabled;
+
+-- ----------------------------------------------------------------------------
+-- NodeLayouts: Node positions in the graph's 380 by 480 drawing, one set per layout.
+-- ----------------------------------------------------------------------------
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('default:Marvin', 'default', 'Marvin', 70, 45) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('default:Randy', 'default', 'Randy', 195, 125) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('default:Sharon', 'default', 'Sharon', 318, 55) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('default:Stan', 'default', 'Stan', 150, 240) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('default:Shelly', 'default', 'Shelly', 300, 215) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('default:Kyle', 'default', 'Kyle', 55, 365) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('default:SouthParkElementary', 'default', 'SouthParkElementary', 195, 345) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('default:literal|10|xsd:integer', 'default', 'literal|10|xsd:integer', 345, 290) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('default:literal|4|xsd:integer', 'default', 'literal|4|xsd:integer', 340, 140) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('default:literal|5|xsd:integer', 'default', 'literal|5|xsd:integer', 340, 140) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('default:literal|Student|xsd:string', 'default', 'literal|Student|xsd:string', 42, 235) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('default:School', 'default', 'School', 315, 405) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('default:Person', 'default', 'Person', 55, 132) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('stan-details:Marvin', 'stan-details', 'Marvin', 70, 45) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('stan-details:Randy', 'stan-details', 'Randy', 195, 125) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('stan-details:Sharon', 'stan-details', 'Sharon', 318, 55) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('stan-details:Stan', 'stan-details', 'Stan', 100, 150) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('stan-details:Shelly', 'stan-details', 'Shelly', 300, 215) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('stan-details:Kyle', 'stan-details', 'Kyle', 55, 365) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('stan-details:SouthParkElementary', 'stan-details', 'SouthParkElementary', 195, 345) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('stan-details:literal|10|xsd:integer', 'stan-details', 'literal|10|xsd:integer', 345, 290) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('stan-details:literal|4|xsd:integer', 'stan-details', 'literal|4|xsd:integer', 290, 85) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('stan-details:literal|5|xsd:integer', 'stan-details', 'literal|5|xsd:integer', 290, 85) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('stan-details:literal|Student|xsd:string', 'stan-details', 'literal|Student|xsd:string', 290, 245) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('stan-details:School', 'stan-details', 'School', 315, 405) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO node_layouts (node_layout_id, layout, node_key, x, y)
+VALUES ('stan-details:Person', 'stan-details', 'Person', 100, 355) ON CONFLICT (node_layout_id) DO UPDATE SET layout = EXCLUDED.layout, node_key = EXCLUDED.node_key, x = EXCLUDED.x, y = EXCLUDED.y;
+
+-- ----------------------------------------------------------------------------
+-- LayoutSlots: Places for nodes no layout positions, used in turn.
+-- ----------------------------------------------------------------------------
+INSERT INTO layout_slots (layout_slot_id, sort_order, x, y)
+VALUES ('slot-1', 1, 330, 135) ON CONFLICT (layout_slot_id) DO UPDATE SET sort_order = EXCLUDED.sort_order, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO layout_slots (layout_slot_id, sort_order, x, y)
+VALUES ('slot-2', 2, 45, 120) ON CONFLICT (layout_slot_id) DO UPDATE SET sort_order = EXCLUDED.sort_order, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO layout_slots (layout_slot_id, sort_order, x, y)
+VALUES ('slot-3', 3, 330, 400) ON CONFLICT (layout_slot_id) DO UPDATE SET sort_order = EXCLUDED.sort_order, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO layout_slots (layout_slot_id, sort_order, x, y)
+VALUES ('slot-4', 4, 60, 425) ON CONFLICT (layout_slot_id) DO UPDATE SET sort_order = EXCLUDED.sort_order, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO layout_slots (layout_slot_id, sort_order, x, y)
+VALUES ('slot-5', 5, 200, 30) ON CONFLICT (layout_slot_id) DO UPDATE SET sort_order = EXCLUDED.sort_order, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO layout_slots (layout_slot_id, sort_order, x, y)
+VALUES ('slot-6', 6, 345, 250) ON CONFLICT (layout_slot_id) DO UPDATE SET sort_order = EXCLUDED.sort_order, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO layout_slots (layout_slot_id, sort_order, x, y)
+VALUES ('slot-7', 7, 110, 300) ON CONFLICT (layout_slot_id) DO UPDATE SET sort_order = EXCLUDED.sort_order, x = EXCLUDED.x, y = EXCLUDED.y;
+
+INSERT INTO layout_slots (layout_slot_id, sort_order, x, y)
+VALUES ('slot-8', 8, 260, 280) ON CONFLICT (layout_slot_id) DO UPDATE SET sort_order = EXCLUDED.sort_order, x = EXCLUDED.x, y = EXCLUDED.y;
+
+-- ----------------------------------------------------------------------------
+-- PageTexts: The page's wording, one row per string. {name}-style placeholders are filled by the page.
+-- ----------------------------------------------------------------------------
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('page-title', 'South Park Ontology Explainer, on one rulebook') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('byline-prefix', 'A rulebook rebuild of the explainer by') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('byline-author', 'Jessica Talisman') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('byline-author-url', 'https://substack.com/@jessicatalisman') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('byline-suffix', '· Intentional Arrangement') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('title', 'South Park facts form a knowledge graph') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('intro', 'An ontology defines kinds of things, their properties and rules. This knowledge graph uses those definitions to connect facts about South Park. Stan’s school facts can change while Stan stays the same person.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('intro-rulebook', 'This version runs no reasoner in the browser. Every fact, rule switch and conclusion on the page is a row or a formula in one rulebook, compiled to Postgres views; the same rulebook also builds TypeScript, Python, an Excel workbook, OWL and documentation in 16 languages.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('link-article', 'Read the article') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('link-article-url', 'https://jessicatalisman.substack.com/p/what-is-an-ontology') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('link-original', 'Open the original explainer') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('link-original-url', 'https://southpark-ontology-explainer.jessica-tali-7056.chatgpt.site/') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('key-stated', 'a fact we stated') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('key-conclusion', 'a conclusion from a rule') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('key-class', 'a class') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('key-individual', 'an individual or value') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('key-help', 'Drag a circle to move it. Tap a circle or a line to read its facts and sources.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('image-note', 'Character portraits and South Park Elementary are Fandom images, linked from the rulebook’s Things table. Dashed circles mark classes; solid circles show individual things or values.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('statements-heading', 'Statements connect things and values') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('statements-hint', 'Each statement has three parts, called a triple. The subject identifies what we describe. The predicate tells how it is connected to the object. The object is the related thing or value. Select a fact to show it.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('scenario-heading', 'Stan can change while his identity stays the same') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('scenario-hint', 'The grade-5 and leaving-school buttons imagine future changes so you can see how the model responds. They do not report events from the show. Stan is allowed to graduate. The database does not get a vote.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('rules-heading', 'Rules add facts to the graph') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('rules-hint', 'An inference is a new conclusion from facts and a rule. Reasoning means following rules step by step to reach or check conclusions. Here the rulebook does that work: each rule is a switch, and every conclusion is a formula.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('conclusions-heading', 'Rules produce new conclusions') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('add-heading', 'Your statements extend the graph') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('add-hint', 'Try Sharon, is parent of, Stan. Then try Sharon, is parent of, Randy with the disjoint rule on.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('label-subject', 'Subject') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('label-predicate', 'Predicate / property') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('label-object', 'Object or value') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('add-button', 'Add fact') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('grade-input-note', 'For has grade level, enter an integer (a number with no fractional part), such as 4 or 5. This form checks integer input as an application check. For has role, enter text such as Student. A new grade or role replaces that person’s previous active value in this page’s current record. Uncheck a role fact to clear it.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('integer-error', 'Enter an integer (a number with no fractional part) for {field}. This is an application input check.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('form-replaced', '{subject} now has {kind} {value} in this page’s current record. The person’s identifier stays the same.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('not-in-rulebook', '“{fact}” is not in this rulebook yet. Every fact the page can hold is a row; a new name or value needs new rows.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('remove', 'Remove') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('remove-label', 'Remove this fact') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('focus-appears', '{name} appears in {count} facts.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('focus-appears-one', '{name} appears in 1 fact.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('focus-source', 'Source of this fact') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('fandom-link', '{name} on Fandom') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('original-image', 'Original image') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('record-subject', 'Stan') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('record-person-yes', 'Stan is explicitly recorded as a Person.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('record-person-no', 'Stan’s explicit Person statement is not selected.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('record-value', 'His recorded {kind} is {values}.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('record-none', 'No current {kind} is recorded.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('sublabel-class', 'class') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('title-class', 'class') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('title-literal', 'literal') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('hood-heading', 'Under the covers: one rulebook') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('hood-text', 'Hover a dotted value to read its rule and the facts it came from. Every rule on this page is in the rulebook below, and every projection of it agrees.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('hood-explainer', 'Explainer: every rule, down to the stated facts') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('hood-docs', 'Documentation in 16 languages') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('hood-workbook', 'Excel workbook with every rule as a live formula') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('hood-rulebook', 'The rulebook') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('record-class', 'Person') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('hood-stated', 'facts in effect') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('hood-conclusions', 'conclusions') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('hood-consistent', 'consistent') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('hood-yes', 'yes') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('hood-no', 'no') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('focus-children', 'children') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('focus-grandchildren', 'grandchildren') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('workbook-url', '/xlsx/talisman-s-south-park-ontology-explainer.xlsx') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('credits-summary', 'Fandom supplies the character and location images') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('footer-credit', 'A rebuild of Jessica Talisman’s South Park Ontology Explainer for Intentional Arrangement, made from a rulebook. The model, wording and layout follow her page. South Park is the work of Trey Parker and Matt Stone; the portraits are Fandom images.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
 

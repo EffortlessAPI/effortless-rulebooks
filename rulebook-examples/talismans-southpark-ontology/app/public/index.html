@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>South Park Ontology Explainer, on one rulebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/rulebook-explainer-dag/dag.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="author-line"><span data-text="byline-prefix"></span> <a id="byline-author" target="_blank" rel="noopener noreferrer" data-text="byline-author"></a> <span data-text="byline-suffix"></span></p>
+    <h1 data-text="title"></h1>
+    <p data-text="intro"></p>
+    <p class="rulebook-line" data-text="intro-rulebook"></p>
+    <nav class="publication-links">
+      <a class="primary" id="link-article" target="_blank" rel="noopener noreferrer" data-text="link-article"></a>
+      <a id="link-original" target="_blank" rel="noopener noreferrer" data-text="link-original"></a>
+    </nav>
+  </header>
+
+  <div class="grid">
+    <section class="card stage" aria-label="Graph">
+      <svg id="graph" viewBox="0 0 380 480" role="img" aria-label="Graph of South Park facts"></svg>
+      <div class="key">
+        <span><span class="swatch"></span><span data-text="key-stated"></span></span>
+        <span><span class="swatch inf"></span><span data-text="key-conclusion"></span></span>
+        <span><span class="picture-key" aria-hidden="true"></span><span data-text="key-class"></span></span>
+        <span><span class="picture-key solid" aria-hidden="true"></span><span data-text="key-individual"></span></span>
+        <span data-text="key-help"></span>
+      </div>
+      <p class="image-note" data-text="image-note"></p>
+      <div id="alarm"></div>
+      <div class="focus" id="focus"></div>
+    </section>
+
+    <div class="side">
+      <section class="card">
+        <h2 data-text="statements-heading"></h2>
+        <p class="hint" data-text="statements-hint"></p>
+        <div class="scenario">
+          <h3 data-text="scenario-heading"></h3>
+          <p class="hint" data-text="scenario-hint"></p>
+          <div class="btns" id="buttons-stan"></div>
+          <p id="scenario-message" class="scenario-message" role="status" aria-live="polite"></p>
+          <p id="scenario-note" class="hint"></p>
+        </div>
+        <ul class="rows" id="facts"></ul>
+        <div class="btns" id="buttons-facts"></div>
+      </section>
+
+      <section class="card">
+        <h2 data-text="rules-heading"></h2>
+        <p class="hint" data-text="rules-hint"></p>
+        <ul class="rows" id="rules"></ul>
+      </section>
+
+      <section class="card">
+        <h2 data-text="conclusions-heading"></h2>
+        <div id="inferred"></div>
+      </section>
+
+      <section class="card">
+        <h2 data-text="add-heading"></h2>
+        <p class="hint" data-text="add-hint"></p>
+        <form class="add" id="add">
+          <label for="subj"><span data-text="label-subject"></span><input type="text" id="subj" list="names" maxlength="24" autocomplete="off" required></label>
+          <label for="pred"><span data-text="label-predicate"></span><select id="pred"></select></label>
+          <label for="obj"><span data-text="label-object"></span><input type="text" id="obj" list="names" maxlength="24" autocomplete="off" required></label>
+          <button type="submit" class="primary" data-text="add-button"></button>
+        </form>
+        <p class="image-note" data-text="grade-input-note"></p>
+        <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+        <datalist id="names"></datalist>
+      </section>
+    </div>
+  </div>
+
+  <section class="card hood">
+    <h2 data-text="hood-heading"></h2>
+    <p class="hint" data-text="hood-text"></p>
+    <div class="hood-grid" id="hood-counts"></div>
+    <ul class="hood-links">
+      <li><a href="/rulebook-explainer-dag/pages/index.html" target="_blank" rel="noopener" data-text="hood-explainer"></a></li>
+      <li><a href="/rulespeak/rulespeak.html" target="_blank" rel="noopener" data-text="hood-docs"></a></li>
+      <li><a id="workbook-link" data-text="hood-workbook"></a></li>
+      <li><a href="/rulebook/talismans-southpark-ontology-rulebook.json" target="_blank" rel="noopener" data-text="hood-rulebook"></a></li>
+    </ul>
+  </section>
+
+  <footer>
+    <p class="source-credit" data-text="footer-credit"></p>
+    <details class="image-credits">
+      <summary data-text="credits-summary"></summary>
+      <ul id="image-credits"></ul>
+    </details>
+  </footer>
+</div>
+<script src="/rulebook-explainer-dag/embedded-graph.js"></script>
+<script src="/rulebook-explainer-dag/dag-resolver.js"></script>
+<script src="/rulebook-explainer-dag/routing.js"></script>
+<script src="/rulebook-explainer-dag/explainer-dag.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

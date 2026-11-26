@@ -4321,6 +4321,611 @@ talismans-south-park-ontology-explainer:south-park a talismans-south-park-ontolo
     talismans-south-park-ontology-explainer:userSourceText "Stated by you on this page." ;
     talismans-south-park-ontology-explainer:noConclusionsText "These facts and selected rules add no further conclusions. Try another fact or rule." .
 
+# === Individuals: LayoutSlots ===
+
+talismans-south-park-ontology-explainer:slot-1 a talismans-south-park-ontology-explainer:LayoutSlots ;
+    erb:key "slot-1" ;
+    talismans-south-park-ontology-explainer:layoutSlotId "slot-1" ;
+    talismans-south-park-ontology-explainer:sortOrder 1 ;
+    talismans-south-park-ontology-explainer:x 330 ;
+    talismans-south-park-ontology-explainer:y 135 .
+
+talismans-south-park-ontology-explainer:slot-2 a talismans-south-park-ontology-explainer:LayoutSlots ;
+    erb:key "slot-2" ;
+    talismans-south-park-ontology-explainer:layoutSlotId "slot-2" ;
+    talismans-south-park-ontology-explainer:sortOrder 2 ;
+    talismans-south-park-ontology-explainer:x 45 ;
+    talismans-south-park-ontology-explainer:y 120 .
+
+talismans-south-park-ontology-explainer:slot-3 a talismans-south-park-ontology-explainer:LayoutSlots ;
+    erb:key "slot-3" ;
+    talismans-south-park-ontology-explainer:layoutSlotId "slot-3" ;
+    talismans-south-park-ontology-explainer:sortOrder 3 ;
+    talismans-south-park-ontology-explainer:x 330 ;
+    talismans-south-park-ontology-explainer:y 400 .
+
+talismans-south-park-ontology-explainer:slot-4 a talismans-south-park-ontology-explainer:LayoutSlots ;
+    erb:key "slot-4" ;
+    talismans-south-park-ontology-explainer:layoutSlotId "slot-4" ;
+    talismans-south-park-ontology-explainer:sortOrder 4 ;
+    talismans-south-park-ontology-explainer:x 60 ;
+    talismans-south-park-ontology-explainer:y 425 .
+
+talismans-south-park-ontology-explainer:slot-5 a talismans-south-park-ontology-explainer:LayoutSlots ;
+    erb:key "slot-5" ;
+    talismans-south-park-ontology-explainer:layoutSlotId "slot-5" ;
+    talismans-south-park-ontology-explainer:sortOrder 5 ;
+    talismans-south-park-ontology-explainer:x 200 ;
+    talismans-south-park-ontology-explainer:y 30 .
+
+talismans-south-park-ontology-explainer:slot-6 a talismans-south-park-ontology-explainer:LayoutSlots ;
+    erb:key "slot-6" ;
+    talismans-south-park-ontology-explainer:layoutSlotId "slot-6" ;
+    talismans-south-park-ontology-explainer:sortOrder 6 ;
+    talismans-south-park-ontology-explainer:x 345 ;
+    talismans-south-park-ontology-explainer:y 250 .
+
+talismans-south-park-ontology-explainer:slot-7 a talismans-south-park-ontology-explainer:LayoutSlots ;
+    erb:key "slot-7" ;
+    talismans-south-park-ontology-explainer:layoutSlotId "slot-7" ;
+    talismans-south-park-ontology-explainer:sortOrder 7 ;
+    talismans-south-park-ontology-explainer:x 110 ;
+    talismans-south-park-ontology-explainer:y 300 .
+
+talismans-south-park-ontology-explainer:slot-8 a talismans-south-park-ontology-explainer:LayoutSlots ;
+    erb:key "slot-8" ;
+    talismans-south-park-ontology-explainer:layoutSlotId "slot-8" ;
+    talismans-south-park-ontology-explainer:sortOrder 8 ;
+    talismans-south-park-ontology-explainer:x 260 ;
+    talismans-south-park-ontology-explainer:y 280 .
+
+# === Individuals: NodeLayouts ===
+
+talismans-south-park-ontology-explainer:default-Marvin a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "default:Marvin" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "default:Marvin" ;
+    talismans-south-park-ontology-explainer:layout "default" ;
+    talismans-south-park-ontology-explainer:nodeKey "Marvin" ;
+    talismans-south-park-ontology-explainer:x 70 ;
+    talismans-south-park-ontology-explainer:y 45 .
+
+talismans-south-park-ontology-explainer:default-Randy a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "default:Randy" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "default:Randy" ;
+    talismans-south-park-ontology-explainer:layout "default" ;
+    talismans-south-park-ontology-explainer:nodeKey "Randy" ;
+    talismans-south-park-ontology-explainer:x 195 ;
+    talismans-south-park-ontology-explainer:y 125 .
+
+talismans-south-park-ontology-explainer:default-Sharon a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "default:Sharon" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "default:Sharon" ;
+    talismans-south-park-ontology-explainer:layout "default" ;
+    talismans-south-park-ontology-explainer:nodeKey "Sharon" ;
+    talismans-south-park-ontology-explainer:x 318 ;
+    talismans-south-park-ontology-explainer:y 55 .
+
+talismans-south-park-ontology-explainer:default-Stan a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "default:Stan" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "default:Stan" ;
+    talismans-south-park-ontology-explainer:layout "default" ;
+    talismans-south-park-ontology-explainer:nodeKey "Stan" ;
+    talismans-south-park-ontology-explainer:x 150 ;
+    talismans-south-park-ontology-explainer:y 240 .
+
+talismans-south-park-ontology-explainer:default-Shelly a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "default:Shelly" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "default:Shelly" ;
+    talismans-south-park-ontology-explainer:layout "default" ;
+    talismans-south-park-ontology-explainer:nodeKey "Shelly" ;
+    talismans-south-park-ontology-explainer:x 300 ;
+    talismans-south-park-ontology-explainer:y 215 .
+
+talismans-south-park-ontology-explainer:default-Kyle a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "default:Kyle" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "default:Kyle" ;
+    talismans-south-park-ontology-explainer:layout "default" ;
+    talismans-south-park-ontology-explainer:nodeKey "Kyle" ;
+    talismans-south-park-ontology-explainer:x 55 ;
+    talismans-south-park-ontology-explainer:y 365 .
+
+talismans-south-park-ontology-explainer:default-SouthParkElementary a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "default:SouthParkElementary" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "default:SouthParkElementary" ;
+    talismans-south-park-ontology-explainer:layout "default" ;
+    talismans-south-park-ontology-explainer:nodeKey "SouthParkElementary" ;
+    talismans-south-park-ontology-explainer:x 195 ;
+    talismans-south-park-ontology-explainer:y 345 .
+
+talismans-south-park-ontology-explainer:default-literal-10-xsd-integer a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "default:literal|10|xsd:integer" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "default:literal|10|xsd:integer" ;
+    talismans-south-park-ontology-explainer:layout "default" ;
+    talismans-south-park-ontology-explainer:nodeKey "literal|10|xsd:integer" ;
+    talismans-south-park-ontology-explainer:x 345 ;
+    talismans-south-park-ontology-explainer:y 290 .
+
+talismans-south-park-ontology-explainer:default-literal-4-xsd-integer a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "default:literal|4|xsd:integer" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "default:literal|4|xsd:integer" ;
+    talismans-south-park-ontology-explainer:layout "default" ;
+    talismans-south-park-ontology-explainer:nodeKey "literal|4|xsd:integer" ;
+    talismans-south-park-ontology-explainer:x 340 ;
+    talismans-south-park-ontology-explainer:y 140 .
+
+talismans-south-park-ontology-explainer:default-literal-5-xsd-integer a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "default:literal|5|xsd:integer" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "default:literal|5|xsd:integer" ;
+    talismans-south-park-ontology-explainer:layout "default" ;
+    talismans-south-park-ontology-explainer:nodeKey "literal|5|xsd:integer" ;
+    talismans-south-park-ontology-explainer:x 340 ;
+    talismans-south-park-ontology-explainer:y 140 .
+
+talismans-south-park-ontology-explainer:default-literal-Student-xsd-string a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "default:literal|Student|xsd:string" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "default:literal|Student|xsd:string" ;
+    talismans-south-park-ontology-explainer:layout "default" ;
+    talismans-south-park-ontology-explainer:nodeKey "literal|Student|xsd:string" ;
+    talismans-south-park-ontology-explainer:x 42 ;
+    talismans-south-park-ontology-explainer:y 235 .
+
+talismans-south-park-ontology-explainer:default-School a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "default:School" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "default:School" ;
+    talismans-south-park-ontology-explainer:layout "default" ;
+    talismans-south-park-ontology-explainer:nodeKey "School" ;
+    talismans-south-park-ontology-explainer:x 315 ;
+    talismans-south-park-ontology-explainer:y 405 .
+
+talismans-south-park-ontology-explainer:default-Person a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "default:Person" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "default:Person" ;
+    talismans-south-park-ontology-explainer:layout "default" ;
+    talismans-south-park-ontology-explainer:nodeKey "Person" ;
+    talismans-south-park-ontology-explainer:x 55 ;
+    talismans-south-park-ontology-explainer:y 132 .
+
+talismans-south-park-ontology-explainer:stan-details-Marvin a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "stan-details:Marvin" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "stan-details:Marvin" ;
+    talismans-south-park-ontology-explainer:layout "stan-details" ;
+    talismans-south-park-ontology-explainer:nodeKey "Marvin" ;
+    talismans-south-park-ontology-explainer:x 70 ;
+    talismans-south-park-ontology-explainer:y 45 .
+
+talismans-south-park-ontology-explainer:stan-details-Randy a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "stan-details:Randy" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "stan-details:Randy" ;
+    talismans-south-park-ontology-explainer:layout "stan-details" ;
+    talismans-south-park-ontology-explainer:nodeKey "Randy" ;
+    talismans-south-park-ontology-explainer:x 195 ;
+    talismans-south-park-ontology-explainer:y 125 .
+
+talismans-south-park-ontology-explainer:stan-details-Sharon a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "stan-details:Sharon" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "stan-details:Sharon" ;
+    talismans-south-park-ontology-explainer:layout "stan-details" ;
+    talismans-south-park-ontology-explainer:nodeKey "Sharon" ;
+    talismans-south-park-ontology-explainer:x 318 ;
+    talismans-south-park-ontology-explainer:y 55 .
+
+talismans-south-park-ontology-explainer:stan-details-Stan a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "stan-details:Stan" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "stan-details:Stan" ;
+    talismans-south-park-ontology-explainer:layout "stan-details" ;
+    talismans-south-park-ontology-explainer:nodeKey "Stan" ;
+    talismans-south-park-ontology-explainer:x 100 ;
+    talismans-south-park-ontology-explainer:y 150 .
+
+talismans-south-park-ontology-explainer:stan-details-Shelly a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "stan-details:Shelly" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "stan-details:Shelly" ;
+    talismans-south-park-ontology-explainer:layout "stan-details" ;
+    talismans-south-park-ontology-explainer:nodeKey "Shelly" ;
+    talismans-south-park-ontology-explainer:x 300 ;
+    talismans-south-park-ontology-explainer:y 215 .
+
+talismans-south-park-ontology-explainer:stan-details-Kyle a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "stan-details:Kyle" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "stan-details:Kyle" ;
+    talismans-south-park-ontology-explainer:layout "stan-details" ;
+    talismans-south-park-ontology-explainer:nodeKey "Kyle" ;
+    talismans-south-park-ontology-explainer:x 55 ;
+    talismans-south-park-ontology-explainer:y 365 .
+
+talismans-south-park-ontology-explainer:stan-details-SouthParkElementary a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "stan-details:SouthParkElementary" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "stan-details:SouthParkElementary" ;
+    talismans-south-park-ontology-explainer:layout "stan-details" ;
+    talismans-south-park-ontology-explainer:nodeKey "SouthParkElementary" ;
+    talismans-south-park-ontology-explainer:x 195 ;
+    talismans-south-park-ontology-explainer:y 345 .
+
+talismans-south-park-ontology-explainer:stan-details-literal-10-xsd-integer a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "stan-details:literal|10|xsd:integer" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "stan-details:literal|10|xsd:integer" ;
+    talismans-south-park-ontology-explainer:layout "stan-details" ;
+    talismans-south-park-ontology-explainer:nodeKey "literal|10|xsd:integer" ;
+    talismans-south-park-ontology-explainer:x 345 ;
+    talismans-south-park-ontology-explainer:y 290 .
+
+talismans-south-park-ontology-explainer:stan-details-literal-4-xsd-integer a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "stan-details:literal|4|xsd:integer" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "stan-details:literal|4|xsd:integer" ;
+    talismans-south-park-ontology-explainer:layout "stan-details" ;
+    talismans-south-park-ontology-explainer:nodeKey "literal|4|xsd:integer" ;
+    talismans-south-park-ontology-explainer:x 290 ;
+    talismans-south-park-ontology-explainer:y 85 .
+
+talismans-south-park-ontology-explainer:stan-details-literal-5-xsd-integer a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "stan-details:literal|5|xsd:integer" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "stan-details:literal|5|xsd:integer" ;
+    talismans-south-park-ontology-explainer:layout "stan-details" ;
+    talismans-south-park-ontology-explainer:nodeKey "literal|5|xsd:integer" ;
+    talismans-south-park-ontology-explainer:x 290 ;
+    talismans-south-park-ontology-explainer:y 85 .
+
+talismans-south-park-ontology-explainer:stan-details-literal-Student-xsd-string a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "stan-details:literal|Student|xsd:string" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "stan-details:literal|Student|xsd:string" ;
+    talismans-south-park-ontology-explainer:layout "stan-details" ;
+    talismans-south-park-ontology-explainer:nodeKey "literal|Student|xsd:string" ;
+    talismans-south-park-ontology-explainer:x 290 ;
+    talismans-south-park-ontology-explainer:y 245 .
+
+talismans-south-park-ontology-explainer:stan-details-School a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "stan-details:School" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "stan-details:School" ;
+    talismans-south-park-ontology-explainer:layout "stan-details" ;
+    talismans-south-park-ontology-explainer:nodeKey "School" ;
+    talismans-south-park-ontology-explainer:x 315 ;
+    talismans-south-park-ontology-explainer:y 405 .
+
+talismans-south-park-ontology-explainer:stan-details-Person a talismans-south-park-ontology-explainer:NodeLayouts ;
+    erb:key "stan-details:Person" ;
+    talismans-south-park-ontology-explainer:nodeLayoutId "stan-details:Person" ;
+    talismans-south-park-ontology-explainer:layout "stan-details" ;
+    talismans-south-park-ontology-explainer:nodeKey "Person" ;
+    talismans-south-park-ontology-explainer:x 100 ;
+    talismans-south-park-ontology-explainer:y 355 .
+
+# === Individuals: PageTexts ===
+
+talismans-south-park-ontology-explainer:page-title a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "page-title" ;
+    talismans-south-park-ontology-explainer:pageTextId "page-title" ;
+    talismans-south-park-ontology-explainer:text "South Park Ontology Explainer, on one rulebook" .
+
+talismans-south-park-ontology-explainer:byline-prefix a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "byline-prefix" ;
+    talismans-south-park-ontology-explainer:pageTextId "byline-prefix" ;
+    talismans-south-park-ontology-explainer:text "A rulebook rebuild of the explainer by" .
+
+talismans-south-park-ontology-explainer:byline-author a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "byline-author" ;
+    talismans-south-park-ontology-explainer:pageTextId "byline-author" ;
+    talismans-south-park-ontology-explainer:text "Jessica Talisman" .
+
+talismans-south-park-ontology-explainer:byline-author-url a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "byline-author-url" ;
+    talismans-south-park-ontology-explainer:pageTextId "byline-author-url" ;
+    talismans-south-park-ontology-explainer:text "https://substack.com/@jessicatalisman" .
+
+talismans-south-park-ontology-explainer:byline-suffix a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "byline-suffix" ;
+    talismans-south-park-ontology-explainer:pageTextId "byline-suffix" ;
+    talismans-south-park-ontology-explainer:text "· Intentional Arrangement" .
+
+talismans-south-park-ontology-explainer:title a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "title" ;
+    talismans-south-park-ontology-explainer:pageTextId "title" ;
+    talismans-south-park-ontology-explainer:text "South Park facts form a knowledge graph" .
+
+talismans-south-park-ontology-explainer:intro a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "intro" ;
+    talismans-south-park-ontology-explainer:pageTextId "intro" ;
+    talismans-south-park-ontology-explainer:text "An ontology defines kinds of things, their properties and rules. This knowledge graph uses those definitions to connect facts about South Park. Stan’s school facts can change while Stan stays the same person." .
+
+talismans-south-park-ontology-explainer:intro-rulebook a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "intro-rulebook" ;
+    talismans-south-park-ontology-explainer:pageTextId "intro-rulebook" ;
+    talismans-south-park-ontology-explainer:text "This version runs no reasoner in the browser. Every fact, rule switch and conclusion on the page is a row or a formula in one rulebook, compiled to Postgres views; the same rulebook also builds TypeScript, Python, an Excel workbook, OWL and documentation in 16 languages." .
+
+talismans-south-park-ontology-explainer:link-article a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "link-article" ;
+    talismans-south-park-ontology-explainer:pageTextId "link-article" ;
+    talismans-south-park-ontology-explainer:text "Read the article" .
+
+talismans-south-park-ontology-explainer:link-article-url a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "link-article-url" ;
+    talismans-south-park-ontology-explainer:pageTextId "link-article-url" ;
+    talismans-south-park-ontology-explainer:text "https://jessicatalisman.substack.com/p/what-is-an-ontology" .
+
+talismans-south-park-ontology-explainer:link-original a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "link-original" ;
+    talismans-south-park-ontology-explainer:pageTextId "link-original" ;
+    talismans-south-park-ontology-explainer:text "Open the original explainer" .
+
+talismans-south-park-ontology-explainer:link-original-url a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "link-original-url" ;
+    talismans-south-park-ontology-explainer:pageTextId "link-original-url" ;
+    talismans-south-park-ontology-explainer:text "https://southpark-ontology-explainer.jessica-tali-7056.chatgpt.site/" .
+
+talismans-south-park-ontology-explainer:key-stated a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "key-stated" ;
+    talismans-south-park-ontology-explainer:pageTextId "key-stated" ;
+    talismans-south-park-ontology-explainer:text "a fact we stated" .
+
+talismans-south-park-ontology-explainer:key-conclusion a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "key-conclusion" ;
+    talismans-south-park-ontology-explainer:pageTextId "key-conclusion" ;
+    talismans-south-park-ontology-explainer:text "a conclusion from a rule" .
+
+talismans-south-park-ontology-explainer:key-class a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "key-class" ;
+    talismans-south-park-ontology-explainer:pageTextId "key-class" ;
+    talismans-south-park-ontology-explainer:text "a class" .
+
+talismans-south-park-ontology-explainer:key-individual a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "key-individual" ;
+    talismans-south-park-ontology-explainer:pageTextId "key-individual" ;
+    talismans-south-park-ontology-explainer:text "an individual or value" .
+
+talismans-south-park-ontology-explainer:key-help a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "key-help" ;
+    talismans-south-park-ontology-explainer:pageTextId "key-help" ;
+    talismans-south-park-ontology-explainer:text "Drag a circle to move it. Tap a circle or a line to read its facts and sources." .
+
+talismans-south-park-ontology-explainer:image-note a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "image-note" ;
+    talismans-south-park-ontology-explainer:pageTextId "image-note" ;
+    talismans-south-park-ontology-explainer:text "Character portraits and South Park Elementary are Fandom images, linked from the rulebook’s Things table. Dashed circles mark classes; solid circles show individual things or values." .
+
+talismans-south-park-ontology-explainer:statements-heading a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "statements-heading" ;
+    talismans-south-park-ontology-explainer:pageTextId "statements-heading" ;
+    talismans-south-park-ontology-explainer:text "Statements connect things and values" .
+
+talismans-south-park-ontology-explainer:statements-hint a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "statements-hint" ;
+    talismans-south-park-ontology-explainer:pageTextId "statements-hint" ;
+    talismans-south-park-ontology-explainer:text "Each statement has three parts, called a triple. The subject identifies what we describe. The predicate tells how it is connected to the object. The object is the related thing or value. Select a fact to show it." .
+
+talismans-south-park-ontology-explainer:scenario-heading a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "scenario-heading" ;
+    talismans-south-park-ontology-explainer:pageTextId "scenario-heading" ;
+    talismans-south-park-ontology-explainer:text "Stan can change while his identity stays the same" .
+
+talismans-south-park-ontology-explainer:scenario-hint a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "scenario-hint" ;
+    talismans-south-park-ontology-explainer:pageTextId "scenario-hint" ;
+    talismans-south-park-ontology-explainer:text "The grade-5 and leaving-school buttons imagine future changes so you can see how the model responds. They do not report events from the show. Stan is allowed to graduate. The database does not get a vote." .
+
+talismans-south-park-ontology-explainer:rules-heading a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "rules-heading" ;
+    talismans-south-park-ontology-explainer:pageTextId "rules-heading" ;
+    talismans-south-park-ontology-explainer:text "Rules add facts to the graph" .
+
+talismans-south-park-ontology-explainer:rules-hint a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "rules-hint" ;
+    talismans-south-park-ontology-explainer:pageTextId "rules-hint" ;
+    talismans-south-park-ontology-explainer:text "An inference is a new conclusion from facts and a rule. Reasoning means following rules step by step to reach or check conclusions. Here the rulebook does that work: each rule is a switch, and every conclusion is a formula." .
+
+talismans-south-park-ontology-explainer:conclusions-heading a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "conclusions-heading" ;
+    talismans-south-park-ontology-explainer:pageTextId "conclusions-heading" ;
+    talismans-south-park-ontology-explainer:text "Rules produce new conclusions" .
+
+talismans-south-park-ontology-explainer:add-heading a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "add-heading" ;
+    talismans-south-park-ontology-explainer:pageTextId "add-heading" ;
+    talismans-south-park-ontology-explainer:text "Your statements extend the graph" .
+
+talismans-south-park-ontology-explainer:add-hint a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "add-hint" ;
+    talismans-south-park-ontology-explainer:pageTextId "add-hint" ;
+    talismans-south-park-ontology-explainer:text "Try Sharon, is parent of, Stan. Then try Sharon, is parent of, Randy with the disjoint rule on." .
+
+talismans-south-park-ontology-explainer:label-subject a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "label-subject" ;
+    talismans-south-park-ontology-explainer:pageTextId "label-subject" ;
+    talismans-south-park-ontology-explainer:text "Subject" .
+
+talismans-south-park-ontology-explainer:label-predicate a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "label-predicate" ;
+    talismans-south-park-ontology-explainer:pageTextId "label-predicate" ;
+    talismans-south-park-ontology-explainer:text "Predicate / property" .
+
+talismans-south-park-ontology-explainer:label-object a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "label-object" ;
+    talismans-south-park-ontology-explainer:pageTextId "label-object" ;
+    talismans-south-park-ontology-explainer:text "Object or value" .
+
+talismans-south-park-ontology-explainer:add-button a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "add-button" ;
+    talismans-south-park-ontology-explainer:pageTextId "add-button" ;
+    talismans-south-park-ontology-explainer:text "Add fact" .
+
+talismans-south-park-ontology-explainer:grade-input-note a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "grade-input-note" ;
+    talismans-south-park-ontology-explainer:pageTextId "grade-input-note" ;
+    talismans-south-park-ontology-explainer:text "For has grade level, enter an integer (a number with no fractional part), such as 4 or 5. This form checks integer input as an application check. For has role, enter text such as Student. A new grade or role replaces that person’s previous active value in this page’s current record. Uncheck a role fact to clear it." .
+
+talismans-south-park-ontology-explainer:integer-error a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "integer-error" ;
+    talismans-south-park-ontology-explainer:pageTextId "integer-error" ;
+    talismans-south-park-ontology-explainer:text "Enter an integer (a number with no fractional part) for {field}. This is an application input check." .
+
+talismans-south-park-ontology-explainer:form-replaced a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "form-replaced" ;
+    talismans-south-park-ontology-explainer:pageTextId "form-replaced" ;
+    talismans-south-park-ontology-explainer:text "{subject} now has {kind} {value} in this page’s current record. The person’s identifier stays the same." .
+
+talismans-south-park-ontology-explainer:not-in-rulebook a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "not-in-rulebook" ;
+    talismans-south-park-ontology-explainer:pageTextId "not-in-rulebook" ;
+    talismans-south-park-ontology-explainer:text "“{fact}” is not in this rulebook yet. Every fact the page can hold is a row; a new name or value needs new rows." .
+
+talismans-south-park-ontology-explainer:remove a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "remove" ;
+    talismans-south-park-ontology-explainer:pageTextId "remove" ;
+    talismans-south-park-ontology-explainer:text "Remove" .
+
+talismans-south-park-ontology-explainer:remove-label a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "remove-label" ;
+    talismans-south-park-ontology-explainer:pageTextId "remove-label" ;
+    talismans-south-park-ontology-explainer:text "Remove this fact" .
+
+talismans-south-park-ontology-explainer:focus-appears a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "focus-appears" ;
+    talismans-south-park-ontology-explainer:pageTextId "focus-appears" ;
+    talismans-south-park-ontology-explainer:text "{name} appears in {count} facts." .
+
+talismans-south-park-ontology-explainer:focus-appears-one a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "focus-appears-one" ;
+    talismans-south-park-ontology-explainer:pageTextId "focus-appears-one" ;
+    talismans-south-park-ontology-explainer:text "{name} appears in 1 fact." .
+
+talismans-south-park-ontology-explainer:focus-source a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "focus-source" ;
+    talismans-south-park-ontology-explainer:pageTextId "focus-source" ;
+    talismans-south-park-ontology-explainer:text "Source of this fact" .
+
+talismans-south-park-ontology-explainer:fandom-link a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "fandom-link" ;
+    talismans-south-park-ontology-explainer:pageTextId "fandom-link" ;
+    talismans-south-park-ontology-explainer:text "{name} on Fandom" .
+
+talismans-south-park-ontology-explainer:original-image a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "original-image" ;
+    talismans-south-park-ontology-explainer:pageTextId "original-image" ;
+    talismans-south-park-ontology-explainer:text "Original image" .
+
+talismans-south-park-ontology-explainer:record-subject a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "record-subject" ;
+    talismans-south-park-ontology-explainer:pageTextId "record-subject" ;
+    talismans-south-park-ontology-explainer:text "Stan" .
+
+talismans-south-park-ontology-explainer:record-person-yes a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "record-person-yes" ;
+    talismans-south-park-ontology-explainer:pageTextId "record-person-yes" ;
+    talismans-south-park-ontology-explainer:text "Stan is explicitly recorded as a Person." .
+
+talismans-south-park-ontology-explainer:record-person-no a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "record-person-no" ;
+    talismans-south-park-ontology-explainer:pageTextId "record-person-no" ;
+    talismans-south-park-ontology-explainer:text "Stan’s explicit Person statement is not selected." .
+
+talismans-south-park-ontology-explainer:record-value a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "record-value" ;
+    talismans-south-park-ontology-explainer:pageTextId "record-value" ;
+    talismans-south-park-ontology-explainer:text "His recorded {kind} is {values}." .
+
+talismans-south-park-ontology-explainer:record-none a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "record-none" ;
+    talismans-south-park-ontology-explainer:pageTextId "record-none" ;
+    talismans-south-park-ontology-explainer:text "No current {kind} is recorded." .
+
+talismans-south-park-ontology-explainer:sublabel-class a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "sublabel-class" ;
+    talismans-south-park-ontology-explainer:pageTextId "sublabel-class" ;
+    talismans-south-park-ontology-explainer:text "class" .
+
+talismans-south-park-ontology-explainer:title-class a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "title-class" ;
+    talismans-south-park-ontology-explainer:pageTextId "title-class" ;
+    talismans-south-park-ontology-explainer:text "class" .
+
+talismans-south-park-ontology-explainer:title-literal a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "title-literal" ;
+    talismans-south-park-ontology-explainer:pageTextId "title-literal" ;
+    talismans-south-park-ontology-explainer:text "literal" .
+
+talismans-south-park-ontology-explainer:hood-heading a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "hood-heading" ;
+    talismans-south-park-ontology-explainer:pageTextId "hood-heading" ;
+    talismans-south-park-ontology-explainer:text "Under the covers: one rulebook" .
+
+talismans-south-park-ontology-explainer:hood-text a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "hood-text" ;
+    talismans-south-park-ontology-explainer:pageTextId "hood-text" ;
+    talismans-south-park-ontology-explainer:text "Hover a dotted value to read its rule and the facts it came from. Every rule on this page is in the rulebook below, and every projection of it agrees." .
+
+talismans-south-park-ontology-explainer:hood-explainer a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "hood-explainer" ;
+    talismans-south-park-ontology-explainer:pageTextId "hood-explainer" ;
+    talismans-south-park-ontology-explainer:text "Explainer: every rule, down to the stated facts" .
+
+talismans-south-park-ontology-explainer:hood-docs a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "hood-docs" ;
+    talismans-south-park-ontology-explainer:pageTextId "hood-docs" ;
+    talismans-south-park-ontology-explainer:text "Documentation in 16 languages" .
+
+talismans-south-park-ontology-explainer:hood-workbook a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "hood-workbook" ;
+    talismans-south-park-ontology-explainer:pageTextId "hood-workbook" ;
+    talismans-south-park-ontology-explainer:text "Excel workbook with every rule as a live formula" .
+
+talismans-south-park-ontology-explainer:hood-rulebook a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "hood-rulebook" ;
+    talismans-south-park-ontology-explainer:pageTextId "hood-rulebook" ;
+    talismans-south-park-ontology-explainer:text "The rulebook" .
+
+talismans-south-park-ontology-explainer:record-class a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "record-class" ;
+    talismans-south-park-ontology-explainer:pageTextId "record-class" ;
+    talismans-south-park-ontology-explainer:text "Person" .
+
+talismans-south-park-ontology-explainer:hood-stated a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "hood-stated" ;
+    talismans-south-park-ontology-explainer:pageTextId "hood-stated" ;
+    talismans-south-park-ontology-explainer:text "facts in effect" .
+
+talismans-south-park-ontology-explainer:hood-conclusions a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "hood-conclusions" ;
+    talismans-south-park-ontology-explainer:pageTextId "hood-conclusions" ;
+    talismans-south-park-ontology-explainer:text "conclusions" .
+
+talismans-south-park-ontology-explainer:hood-consistent a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "hood-consistent" ;
+    talismans-south-park-ontology-explainer:pageTextId "hood-consistent" ;
+    talismans-south-park-ontology-explainer:text "consistent" .
+
+talismans-south-park-ontology-explainer:hood-yes a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "hood-yes" ;
+    talismans-south-park-ontology-explainer:pageTextId "hood-yes" ;
+    talismans-south-park-ontology-explainer:text "yes" .
+
+talismans-south-park-ontology-explainer:hood-no a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "hood-no" ;
+    talismans-south-park-ontology-explainer:pageTextId "hood-no" ;
+    talismans-south-park-ontology-explainer:text "no" .
+
+talismans-south-park-ontology-explainer:focus-children a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "focus-children" ;
+    talismans-south-park-ontology-explainer:pageTextId "focus-children" ;
+    talismans-south-park-ontology-explainer:text "children" .
+
+talismans-south-park-ontology-explainer:focus-grandchildren a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "focus-grandchildren" ;
+    talismans-south-park-ontology-explainer:pageTextId "focus-grandchildren" ;
+    talismans-south-park-ontology-explainer:text "grandchildren" .
+
+talismans-south-park-ontology-explainer:workbook-url a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "workbook-url" ;
+    talismans-south-park-ontology-explainer:pageTextId "workbook-url" ;
+    talismans-south-park-ontology-explainer:text "/xlsx/talisman-s-south-park-ontology-explainer.xlsx" .
+
+talismans-south-park-ontology-explainer:credits-summary a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "credits-summary" ;
+    talismans-south-park-ontology-explainer:pageTextId "credits-summary" ;
+    talismans-south-park-ontology-explainer:text "Fandom supplies the character and location images" .
+
+talismans-south-park-ontology-explainer:footer-credit a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "footer-credit" ;
+    talismans-south-park-ontology-explainer:pageTextId "footer-credit" ;
+    talismans-south-park-ontology-explainer:text "A rebuild of Jessica Talisman’s South Park Ontology Explainer for Intentional Arrangement, made from a rulebook. The model, wording and layout follow her page. South Park is the work of Trey Parker and Matt Stone; the portraits are Fandom images." .
+
 # === Individuals: Properties ===
 
 talismans-south-park-ontology-explainer:isParentOf a talismans-south-park-ontology-explainer:Properties ;
@@ -4382,7 +4987,9 @@ talismans-south-park-ontology-explainer:attends a talismans-south-park-ontology-
     talismans-south-park-ontology-explainer:isSymmetric false ;
     talismans-south-park-ontology-explainer:domainClass talismans-south-park-ontology-explainer:Person ;
     talismans-south-park-ontology-explainer:rangeClass talismans-south-park-ontology-explainer:School ;
-    talismans-south-park-ontology-explainer:sortOrder 5 .
+    talismans-south-park-ontology-explainer:sortOrder 5 ;
+    talismans-south-park-ontology-explainer:recordKind "school" ;
+    talismans-south-park-ontology-explainer:recordOrder 3 .
 
 talismans-south-park-ontology-explainer:hasAge a talismans-south-park-ontology-explainer:Properties ;
     erb:key "hasAge" ;
@@ -4393,7 +5000,9 @@ talismans-south-park-ontology-explainer:hasAge a talismans-south-park-ontology-e
     talismans-south-park-ontology-explainer:isUserAddable true ;
     talismans-south-park-ontology-explainer:hasOneCurrentValue false ;
     talismans-south-park-ontology-explainer:isSymmetric false ;
-    talismans-south-park-ontology-explainer:sortOrder 6 .
+    talismans-south-park-ontology-explainer:sortOrder 6 ;
+    talismans-south-park-ontology-explainer:valueNodeLabel "number value" ;
+    talismans-south-park-ontology-explainer:inputName "age" .
 
 talismans-south-park-ontology-explainer:hasGradeLevel a talismans-south-park-ontology-explainer:Properties ;
     erb:key "hasGradeLevel" ;
@@ -4405,7 +5014,12 @@ talismans-south-park-ontology-explainer:hasGradeLevel a talismans-south-park-ont
     talismans-south-park-ontology-explainer:hasOneCurrentValue true ;
     talismans-south-park-ontology-explainer:isSymmetric false ;
     talismans-south-park-ontology-explainer:domainClass talismans-south-park-ontology-explainer:Person ;
-    talismans-south-park-ontology-explainer:sortOrder 7 .
+    talismans-south-park-ontology-explainer:sortOrder 7 ;
+    talismans-south-park-ontology-explainer:valueNodeLabel "number value" ;
+    talismans-south-park-ontology-explainer:currentValueWording "grade level" ;
+    talismans-south-park-ontology-explainer:inputName "grade level" ;
+    talismans-south-park-ontology-explainer:recordKind "grade" ;
+    talismans-south-park-ontology-explainer:recordOrder 2 .
 
 talismans-south-park-ontology-explainer:hasRole a talismans-south-park-ontology-explainer:Properties ;
     erb:key "hasRole" ;
@@ -4417,7 +5031,11 @@ talismans-south-park-ontology-explainer:hasRole a talismans-south-park-ontology-
     talismans-south-park-ontology-explainer:hasOneCurrentValue true ;
     talismans-south-park-ontology-explainer:isSymmetric false ;
     talismans-south-park-ontology-explainer:domainClass talismans-south-park-ontology-explainer:Person ;
-    talismans-south-park-ontology-explainer:sortOrder 8 .
+    talismans-south-park-ontology-explainer:sortOrder 8 ;
+    talismans-south-park-ontology-explainer:valueNodeLabel "role value" ;
+    talismans-south-park-ontology-explainer:currentValueWording "role" ;
+    talismans-south-park-ontology-explainer:recordKind "role" ;
+    talismans-south-park-ontology-explainer:recordOrder 1 .
 
 talismans-south-park-ontology-explainer:isGrandparentOf a talismans-south-park-ontology-explainer:Properties ;
     erb:key "isGrandparentOf" ;
@@ -4484,6 +5102,233 @@ talismans-south-park-ontology-explainer:disjoint a talismans-south-park-ontology
     talismans-south-park-ontology-explainer:explanation "In this example, no person is both the parent and the spouse of the same person." ;
     talismans-south-park-ontology-explainer:isEnabled false ;
     talismans-south-park-ontology-explainer:sortOrder 5 .
+
+# === Individuals: ScenarioFactChanges ===
+
+talismans-south-park-ontology-explainer:stan-grade-five-Stan-isA-Person a talismans-south-park-ontology-explainer:ScenarioFactChanges ;
+    erb:key "stan-grade-five:Stan|isA|Person" ;
+    talismans-south-park-ontology-explainer:scenarioFactChangeId "stan-grade-five:Stan|isA|Person" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:stan-grade-five ;
+    talismans-south-park-ontology-explainer:subject talismans-south-park-ontology-explainer:Stan ;
+    talismans-south-park-ontology-explainer:property talismans-south-park-ontology-explainer:isA ;
+    talismans-south-park-ontology-explainer:objectKey "Person" ;
+    talismans-south-park-ontology-explainer:action "on" ;
+    talismans-south-park-ontology-explainer:addsToList true ;
+    talismans-south-park-ontology-explainer:sortOrder 1 .
+
+talismans-south-park-ontology-explainer:stan-grade-five-Stan-hasGradeLevel-5 a talismans-south-park-ontology-explainer:ScenarioFactChanges ;
+    erb:key "stan-grade-five:Stan|hasGradeLevel|5" ;
+    talismans-south-park-ontology-explainer:scenarioFactChangeId "stan-grade-five:Stan|hasGradeLevel|5" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:stan-grade-five ;
+    talismans-south-park-ontology-explainer:subject talismans-south-park-ontology-explainer:Stan ;
+    talismans-south-park-ontology-explainer:property talismans-south-park-ontology-explainer:hasGradeLevel ;
+    talismans-south-park-ontology-explainer:objectKey "5" ;
+    talismans-south-park-ontology-explainer:action "on" ;
+    talismans-south-park-ontology-explainer:addsToList true ;
+    talismans-south-park-ontology-explainer:sortOrder 2 .
+
+talismans-south-park-ontology-explainer:stan-leaves-school-Stan-isA-Person a talismans-south-park-ontology-explainer:ScenarioFactChanges ;
+    erb:key "stan-leaves-school:Stan|isA|Person" ;
+    talismans-south-park-ontology-explainer:scenarioFactChangeId "stan-leaves-school:Stan|isA|Person" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:stan-leaves-school ;
+    talismans-south-park-ontology-explainer:subject talismans-south-park-ontology-explainer:Stan ;
+    talismans-south-park-ontology-explainer:property talismans-south-park-ontology-explainer:isA ;
+    talismans-south-park-ontology-explainer:objectKey "Person" ;
+    talismans-south-park-ontology-explainer:action "on" ;
+    talismans-south-park-ontology-explainer:addsToList true ;
+    talismans-south-park-ontology-explainer:sortOrder 3 .
+
+talismans-south-park-ontology-explainer:stan-leaves-school-Stan-hasRole-- a talismans-south-park-ontology-explainer:ScenarioFactChanges ;
+    erb:key "stan-leaves-school:Stan|hasRole|*" ;
+    talismans-south-park-ontology-explainer:scenarioFactChangeId "stan-leaves-school:Stan|hasRole|*" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:stan-leaves-school ;
+    talismans-south-park-ontology-explainer:subject talismans-south-park-ontology-explainer:Stan ;
+    talismans-south-park-ontology-explainer:property talismans-south-park-ontology-explainer:hasRole ;
+    talismans-south-park-ontology-explainer:action "off" ;
+    talismans-south-park-ontology-explainer:addsToList false ;
+    talismans-south-park-ontology-explainer:sortOrder 4 .
+
+talismans-south-park-ontology-explainer:stan-leaves-school-Stan-hasGradeLevel-- a talismans-south-park-ontology-explainer:ScenarioFactChanges ;
+    erb:key "stan-leaves-school:Stan|hasGradeLevel|*" ;
+    talismans-south-park-ontology-explainer:scenarioFactChangeId "stan-leaves-school:Stan|hasGradeLevel|*" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:stan-leaves-school ;
+    talismans-south-park-ontology-explainer:subject talismans-south-park-ontology-explainer:Stan ;
+    talismans-south-park-ontology-explainer:property talismans-south-park-ontology-explainer:hasGradeLevel ;
+    talismans-south-park-ontology-explainer:action "off" ;
+    talismans-south-park-ontology-explainer:addsToList false ;
+    talismans-south-park-ontology-explainer:sortOrder 5 .
+
+talismans-south-park-ontology-explainer:stan-leaves-school-Stan-attends-- a talismans-south-park-ontology-explainer:ScenarioFactChanges ;
+    erb:key "stan-leaves-school:Stan|attends|*" ;
+    talismans-south-park-ontology-explainer:scenarioFactChangeId "stan-leaves-school:Stan|attends|*" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:stan-leaves-school ;
+    talismans-south-park-ontology-explainer:subject talismans-south-park-ontology-explainer:Stan ;
+    talismans-south-park-ontology-explainer:property talismans-south-park-ontology-explainer:attends ;
+    talismans-south-park-ontology-explainer:action "off" ;
+    talismans-south-park-ontology-explainer:addsToList false ;
+    talismans-south-park-ontology-explainer:sortOrder 6 .
+
+# === Individuals: ScenarioRuleSettings ===
+
+talismans-south-park-ontology-explainer:reset-original-inverse a talismans-south-park-ontology-explainer:ScenarioRuleSettings ;
+    erb:key "reset-original:inverse" ;
+    talismans-south-park-ontology-explainer:scenarioRuleSettingId "reset-original:inverse" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:reset-original ;
+    talismans-south-park-ontology-explainer:rule talismans-south-park-ontology-explainer:Rules-inverse ;
+    talismans-south-park-ontology-explainer:isEnabled false .
+
+talismans-south-park-ontology-explainer:reset-original-symmetric a talismans-south-park-ontology-explainer:ScenarioRuleSettings ;
+    erb:key "reset-original:symmetric" ;
+    talismans-south-park-ontology-explainer:scenarioRuleSettingId "reset-original:symmetric" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:reset-original ;
+    talismans-south-park-ontology-explainer:rule talismans-south-park-ontology-explainer:Rules-symmetric ;
+    talismans-south-park-ontology-explainer:isEnabled false .
+
+talismans-south-park-ontology-explainer:reset-original-chain a talismans-south-park-ontology-explainer:ScenarioRuleSettings ;
+    erb:key "reset-original:chain" ;
+    talismans-south-park-ontology-explainer:scenarioRuleSettingId "reset-original:chain" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:reset-original ;
+    talismans-south-park-ontology-explainer:rule talismans-south-park-ontology-explainer:Rules-chain ;
+    talismans-south-park-ontology-explainer:isEnabled false .
+
+talismans-south-park-ontology-explainer:reset-original-domain a talismans-south-park-ontology-explainer:ScenarioRuleSettings ;
+    erb:key "reset-original:domain" ;
+    talismans-south-park-ontology-explainer:scenarioRuleSettingId "reset-original:domain" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:reset-original ;
+    talismans-south-park-ontology-explainer:rule talismans-south-park-ontology-explainer:Rules-domain ;
+    talismans-south-park-ontology-explainer:isEnabled false .
+
+talismans-south-park-ontology-explainer:reset-original-disjoint a talismans-south-park-ontology-explainer:ScenarioRuleSettings ;
+    erb:key "reset-original:disjoint" ;
+    talismans-south-park-ontology-explainer:scenarioRuleSettingId "reset-original:disjoint" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:reset-original ;
+    talismans-south-park-ontology-explainer:rule talismans-south-park-ontology-explainer:disjoint ;
+    talismans-south-park-ontology-explainer:isEnabled false .
+
+talismans-south-park-ontology-explainer:grade-example-inverse a talismans-south-park-ontology-explainer:ScenarioRuleSettings ;
+    erb:key "grade-example:inverse" ;
+    talismans-south-park-ontology-explainer:scenarioRuleSettingId "grade-example:inverse" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:grade-example ;
+    talismans-south-park-ontology-explainer:rule talismans-south-park-ontology-explainer:Rules-inverse ;
+    talismans-south-park-ontology-explainer:isEnabled false .
+
+talismans-south-park-ontology-explainer:grade-example-symmetric a talismans-south-park-ontology-explainer:ScenarioRuleSettings ;
+    erb:key "grade-example:symmetric" ;
+    talismans-south-park-ontology-explainer:scenarioRuleSettingId "grade-example:symmetric" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:grade-example ;
+    talismans-south-park-ontology-explainer:rule talismans-south-park-ontology-explainer:Rules-symmetric ;
+    talismans-south-park-ontology-explainer:isEnabled false .
+
+talismans-south-park-ontology-explainer:grade-example-chain a talismans-south-park-ontology-explainer:ScenarioRuleSettings ;
+    erb:key "grade-example:chain" ;
+    talismans-south-park-ontology-explainer:scenarioRuleSettingId "grade-example:chain" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:grade-example ;
+    talismans-south-park-ontology-explainer:rule talismans-south-park-ontology-explainer:Rules-chain ;
+    talismans-south-park-ontology-explainer:isEnabled false .
+
+talismans-south-park-ontology-explainer:grade-example-domain a talismans-south-park-ontology-explainer:ScenarioRuleSettings ;
+    erb:key "grade-example:domain" ;
+    talismans-south-park-ontology-explainer:scenarioRuleSettingId "grade-example:domain" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:grade-example ;
+    talismans-south-park-ontology-explainer:rule talismans-south-park-ontology-explainer:Rules-domain ;
+    talismans-south-park-ontology-explainer:isEnabled true .
+
+talismans-south-park-ontology-explainer:grade-example-disjoint a talismans-south-park-ontology-explainer:ScenarioRuleSettings ;
+    erb:key "grade-example:disjoint" ;
+    talismans-south-park-ontology-explainer:scenarioRuleSettingId "grade-example:disjoint" ;
+    talismans-south-park-ontology-explainer:scenario talismans-south-park-ontology-explainer:grade-example ;
+    talismans-south-park-ontology-explainer:rule talismans-south-park-ontology-explainer:disjoint ;
+    talismans-south-park-ontology-explainer:isEnabled false .
+
+# === Individuals: Scenarios ===
+
+talismans-south-park-ontology-explainer:stan-grade-five a talismans-south-park-ontology-explainer:Scenarios ;
+    erb:key "stan-grade-five" ;
+    talismans-south-park-ontology-explainer:scenarioId "stan-grade-five" ;
+    talismans-south-park-ontology-explainer:graph talismans-south-park-ontology-explainer:south-park ;
+    talismans-south-park-ontology-explainer:label "Move Stan to grade 5" ;
+    talismans-south-park-ontology-explainer:note "This imagined change updates Stan’s grade to 5. His identifier, Person statement and family links stay the same. His other selected details are unchanged." ;
+    talismans-south-park-ontology-explainer:sortOrder 1 ;
+    talismans-south-park-ontology-explainer:buttonGroup "stan" ;
+    talismans-south-park-ontology-explainer:isPrimary false ;
+    talismans-south-park-ontology-explainer:factBaseline "keep" ;
+    talismans-south-park-ontology-explainer:clearsSelection true ;
+    talismans-south-park-ontology-explainer:clearsFormMessage true .
+
+talismans-south-park-ontology-explainer:stan-leaves-school a talismans-south-park-ontology-explainer:Scenarios ;
+    erb:key "stan-leaves-school" ;
+    talismans-south-park-ontology-explainer:scenarioId "stan-leaves-school" ;
+    talismans-south-park-ontology-explainer:graph talismans-south-park-ontology-explainer:south-park ;
+    talismans-south-park-ontology-explainer:label "Stan leaves school" ;
+    talismans-south-park-ontology-explainer:note "This imagined change clears Stan’s current school details. His identifier, Person statement and family links remain. Removing a current fact does not say that its opposite is true; school history needs dates." ;
+    talismans-south-park-ontology-explainer:sortOrder 2 ;
+    talismans-south-park-ontology-explainer:buttonGroup "stan" ;
+    talismans-south-park-ontology-explainer:isPrimary false ;
+    talismans-south-park-ontology-explainer:factBaseline "keep" ;
+    talismans-south-park-ontology-explainer:clearsSelection true ;
+    talismans-south-park-ontology-explainer:clearsFormMessage true .
+
+talismans-south-park-ontology-explainer:next a talismans-south-park-ontology-explainer:Scenarios ;
+    erb:key "next" ;
+    talismans-south-park-ontology-explainer:scenarioId "next" ;
+    talismans-south-park-ontology-explainer:graph talismans-south-park-ontology-explainer:south-park ;
+    talismans-south-park-ontology-explainer:label "Add next fact" ;
+    talismans-south-park-ontology-explainer:sortOrder 3 ;
+    talismans-south-park-ontology-explainer:buttonGroup "facts" ;
+    talismans-south-park-ontology-explainer:isPrimary true ;
+    talismans-south-park-ontology-explainer:factBaseline "next" ;
+    talismans-south-park-ontology-explainer:clearsSelection false ;
+    talismans-south-park-ontology-explainer:clearsFormMessage false .
+
+talismans-south-park-ontology-explainer:all a talismans-south-park-ontology-explainer:Scenarios ;
+    erb:key "all" ;
+    talismans-south-park-ontology-explainer:scenarioId "all" ;
+    talismans-south-park-ontology-explainer:graph talismans-south-park-ontology-explainer:south-park ;
+    talismans-south-park-ontology-explainer:label "Add all current facts" ;
+    talismans-south-park-ontology-explainer:sortOrder 4 ;
+    talismans-south-park-ontology-explainer:buttonGroup "facts" ;
+    talismans-south-park-ontology-explainer:isPrimary false ;
+    talismans-south-park-ontology-explainer:factBaseline "activate-all" ;
+    talismans-south-park-ontology-explainer:clearsSelection false ;
+    talismans-south-park-ontology-explainer:clearsFormMessage false .
+
+talismans-south-park-ontology-explainer:clear a talismans-south-park-ontology-explainer:Scenarios ;
+    erb:key "clear" ;
+    talismans-south-park-ontology-explainer:scenarioId "clear" ;
+    talismans-south-park-ontology-explainer:graph talismans-south-park-ontology-explainer:south-park ;
+    talismans-south-park-ontology-explainer:label "Clear the graph" ;
+    talismans-south-park-ontology-explainer:sortOrder 5 ;
+    talismans-south-park-ontology-explainer:buttonGroup "facts" ;
+    talismans-south-park-ontology-explainer:isPrimary false ;
+    talismans-south-park-ontology-explainer:factBaseline "all-off" ;
+    talismans-south-park-ontology-explainer:clearsSelection true ;
+    talismans-south-park-ontology-explainer:clearsFormMessage false .
+
+talismans-south-park-ontology-explainer:grade-example a talismans-south-park-ontology-explainer:Scenarios ;
+    erb:key "grade-example" ;
+    talismans-south-park-ontology-explainer:scenarioId "grade-example" ;
+    talismans-south-park-ontology-explainer:graph talismans-south-park-ontology-explainer:south-park ;
+    talismans-south-park-ontology-explainer:label "Show Stan’s details" ;
+    talismans-south-park-ontology-explainer:sortOrder 6 ;
+    talismans-south-park-ontology-explainer:buttonGroup "facts" ;
+    talismans-south-park-ontology-explainer:isPrimary false ;
+    talismans-south-park-ontology-explainer:factBaseline "built-in-detail" ;
+    talismans-south-park-ontology-explainer:layout "stan-details" ;
+    talismans-south-park-ontology-explainer:clearsSelection true ;
+    talismans-south-park-ontology-explainer:clearsFormMessage true .
+
+talismans-south-park-ontology-explainer:reset-original a talismans-south-park-ontology-explainer:Scenarios ;
+    erb:key "reset-original" ;
+    talismans-south-park-ontology-explainer:scenarioId "reset-original" ;
+    talismans-south-park-ontology-explainer:graph talismans-south-park-ontology-explainer:south-park ;
+    talismans-south-park-ontology-explainer:label "Reset example facts" ;
+    talismans-south-park-ontology-explainer:sortOrder 7 ;
+    talismans-south-park-ontology-explainer:buttonGroup "facts" ;
+    talismans-south-park-ontology-explainer:isPrimary false ;
+    talismans-south-park-ontology-explainer:factBaseline "built-in" ;
+    talismans-south-park-ontology-explainer:layout "default" ;
+    talismans-south-park-ontology-explainer:clearsSelection true ;
+    talismans-south-park-ontology-explainer:clearsFormMessage true .
 
 # === Individuals: Statements ===
 
@@ -8278,7 +9123,9 @@ talismans-south-park-ontology-explainer:Marvin a talismans-south-park-ontology-e
     talismans-south-park-ontology-explainer:portraitName "Marvin Marsh" ;
     talismans-south-park-ontology-explainer:portraitPage "https://southpark.fandom.com/wiki/Marvin_Marsh" ;
     talismans-south-park-ontology-explainer:portraitImage "https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest" ;
-    talismans-south-park-ontology-explainer:portraitCrop "48 -5 280 280" .
+    talismans-south-park-ontology-explainer:portraitCrop "48 -5 280 280" ;
+    talismans-south-park-ontology-explainer:portraitWidth 375 ;
+    talismans-south-park-ontology-explainer:portraitHeight 536 .
 
 talismans-south-park-ontology-explainer:Randy a talismans-south-park-ontology-explainer:Things ;
     erb:key "Randy" ;
@@ -8289,7 +9136,9 @@ talismans-south-park-ontology-explainer:Randy a talismans-south-park-ontology-ex
     talismans-south-park-ontology-explainer:portraitName "Randy Marsh" ;
     talismans-south-park-ontology-explainer:portraitPage "https://southpark.fandom.com/wiki/Randy_Marsh" ;
     talismans-south-park-ontology-explainer:portraitImage "https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest" ;
-    talismans-south-park-ontology-explainer:portraitCrop "0 -10 428 428" .
+    talismans-south-park-ontology-explainer:portraitCrop "0 -10 428 428" ;
+    talismans-south-park-ontology-explainer:portraitWidth 428 ;
+    talismans-south-park-ontology-explainer:portraitHeight 1057 .
 
 talismans-south-park-ontology-explainer:Sharon a talismans-south-park-ontology-explainer:Things ;
     erb:key "Sharon" ;
@@ -8300,7 +9149,9 @@ talismans-south-park-ontology-explainer:Sharon a talismans-south-park-ontology-e
     talismans-south-park-ontology-explainer:portraitName "Sharon Marsh" ;
     talismans-south-park-ontology-explainer:portraitPage "https://southpark.fandom.com/wiki/Sharon_Marsh" ;
     talismans-south-park-ontology-explainer:portraitImage "https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest" ;
-    talismans-south-park-ontology-explainer:portraitCrop "20 -10 390 390" .
+    talismans-south-park-ontology-explainer:portraitCrop "20 -10 390 390" ;
+    talismans-south-park-ontology-explainer:portraitWidth 439 ;
+    talismans-south-park-ontology-explainer:portraitHeight 1049 .
 
 talismans-south-park-ontology-explainer:Stan a talismans-south-park-ontology-explainer:Things ;
     erb:key "Stan" ;
@@ -8311,7 +9162,9 @@ talismans-south-park-ontology-explainer:Stan a talismans-south-park-ontology-exp
     talismans-south-park-ontology-explainer:portraitName "Stan Marsh" ;
     talismans-south-park-ontology-explainer:portraitPage "https://southpark.fandom.com/wiki/Stan_Marsh" ;
     talismans-south-park-ontology-explainer:portraitImage "https://static.wikia.nocookie.net/southpark/images/c/c6/Stan-marsh-0.png/revision/latest" ;
-    talismans-south-park-ontology-explainer:portraitCrop "-35 -10 735 735" .
+    talismans-south-park-ontology-explainer:portraitCrop "-35 -10 735 735" ;
+    talismans-south-park-ontology-explainer:portraitWidth 663 ;
+    talismans-south-park-ontology-explainer:portraitHeight 1037 .
 
 talismans-south-park-ontology-explainer:Shelly a talismans-south-park-ontology-explainer:Things ;
     erb:key "Shelly" ;
@@ -8322,7 +9175,9 @@ talismans-south-park-ontology-explainer:Shelly a talismans-south-park-ontology-e
     talismans-south-park-ontology-explainer:portraitName "Shelley Marsh" ;
     talismans-south-park-ontology-explainer:portraitPage "https://southpark.fandom.com/wiki/Shelley_Marsh" ;
     talismans-south-park-ontology-explainer:portraitImage "https://static.wikia.nocookie.net/southpark/images/3/3b/Shelly.png/revision/latest" ;
-    talismans-south-park-ontology-explainer:portraitCrop "-20 -10 760 760" .
+    talismans-south-park-ontology-explainer:portraitCrop "-20 -10 760 760" ;
+    talismans-south-park-ontology-explainer:portraitWidth 720 ;
+    talismans-south-park-ontology-explainer:portraitHeight 1064 .
 
 talismans-south-park-ontology-explainer:Kyle a talismans-south-park-ontology-explainer:Things ;
     erb:key "Kyle" ;
@@ -8333,7 +9188,9 @@ talismans-south-park-ontology-explainer:Kyle a talismans-south-park-ontology-exp
     talismans-south-park-ontology-explainer:portraitName "Kyle Broflovski" ;
     talismans-south-park-ontology-explainer:portraitPage "https://southpark.fandom.com/wiki/Kyle_Broflovski" ;
     talismans-south-park-ontology-explainer:portraitImage "https://static.wikia.nocookie.net/southpark/images/9/95/Kyle-broflovski.png/revision/latest?cb=20190411033301" ;
-    talismans-south-park-ontology-explainer:portraitCrop "-20 -10 790 790" .
+    talismans-south-park-ontology-explainer:portraitCrop "-20 -10 790 790" ;
+    talismans-south-park-ontology-explainer:portraitWidth 753 ;
+    talismans-south-park-ontology-explainer:portraitHeight 935 .
 
 talismans-south-park-ontology-explainer:SouthParkElementary a talismans-south-park-ontology-explainer:Things ;
     erb:key "SouthParkElementary" ;
@@ -8344,7 +9201,9 @@ talismans-south-park-ontology-explainer:SouthParkElementary a talismans-south-pa
     talismans-south-park-ontology-explainer:portraitName "South Park Elementary" ;
     talismans-south-park-ontology-explainer:portraitPage "https://southpark.fandom.com/wiki/South_Park_Elementary" ;
     talismans-south-park-ontology-explainer:portraitImage "https://static.wikia.nocookie.net/southpark/images/1/12/School_7.png/revision/latest?cb=20180414152359" ;
-    talismans-south-park-ontology-explainer:portraitCrop "420 0 1080 1080" .
+    talismans-south-park-ontology-explainer:portraitCrop "420 0 1080 1080" ;
+    talismans-south-park-ontology-explainer:portraitWidth 1920 ;
+    talismans-south-park-ontology-explainer:portraitHeight 1080 .
 
 talismans-south-park-ontology-explainer:Person a talismans-south-park-ontology-explainer:Things ;
     erb:key "Person" ;

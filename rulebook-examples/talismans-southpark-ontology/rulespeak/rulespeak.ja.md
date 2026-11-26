@@ -97,7 +97,10 @@ _ƒ は計算列を示します。_
 | Portrait Page | 定義済みの属性。 | _The Fandom page credited for the portrait._ |
 | Portrait Image | 定義済みの属性。 | _The original Fandom image._ |
 | Portrait Crop | 定義済みの属性。 | _The portrait's crop as an SVG viewBox: x y width height._ |
+| Portrait Width | 定義済みの属性。 | _The original image's width in pixels._ |
+| Portrait Height | 定義済みの属性。 | _The original image's height in pixels._ |
 | Name | label と同じ。 | _Order 1. The thing's name._ |
+| Node Key | thing ID と同じ。 | _Order 1. The key the graph draws this thing under._ |
 | Count of Children | Thingに関連する「statements」全体での「parent unit」の合計。 | _Order 17. People this thing is a parent of, stated or concluded._ |
 | Count of Grandchildren | Thingに関連する「statements」全体での「grandparent unit」の合計。 | _Order 17. People this thing is a grandparent of._ |
 | Count As Place | Thingに関連する「statements」全体での「place unit」の合計。 | _Order 17. Holding attends facts whose object is this thing._ |
@@ -109,11 +112,11 @@ _ƒ は計算列を示します。_
 <details open>
 <summary>サンプルデータ</summary>
 
-| Label | Kind | Sort Order | Portrait Name | Portrait Page | Portrait Image | Portrait Crop | Name ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Marvin | individual | 1 | Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | Marvin | 1 | 0 | 0 | 1 | 0 | true | person |
-| Randy | individual | 2 | Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | Randy | 2 | 0 | 0 | 3 | 1 | true | person |
-| Sharon | individual | 3 | Sharon Marsh | https://southpark.fandom.com/wiki/Sharon_Marsh | https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest | 20 -10 390 390 | Sharon | 0 | 0 | 0 | 0 | 1 | true | person |
+| Label | Kind | Sort Order | Portrait Name | Portrait Page | Portrait Image | Portrait Crop | Portrait Width | Portrait Height | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Marvin | individual | 1 | Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | Marvin | Marvin | 1 | 0 | 0 | 1 | 0 | true | person |
+| Randy | individual | 2 | Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | Randy | Randy | 2 | 0 | 0 | 3 | 1 | true | person |
+| Sharon | individual | 3 | Sharon Marsh | https://southpark.fandom.com/wiki/Sharon_Marsh | https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest | 20 -10 390 390 | 439 | 1049 | Sharon | Sharon | 0 | 0 | 0 | 0 | 1 | true | person |
 
 _ƒ は計算列を示します。_
 
@@ -135,16 +138,21 @@ _ƒ は計算列を示します。_
 | Range Class | 定義済みの属性。 | _The class the range rule gives this property's object._ |
 | Disjoint With | 定義済みの属性。 | _A property that may not link the same pair, in the same direction, as this one._ |
 | Sort Order | 定義済みの属性。 | _Position in the Add fact form's property list._ |
+| Value Node Label | 定義済みの属性。 | _The small label under a value node for this property: 'role value' or 'number value'._ |
+| Current Value Wording | 定義済みの属性。 | _How the Add fact form names a replaced value, as in 'Stan now has grade level 5'._ |
+| Input Name | 定義済みの属性。 | _How the integer check names this property's value, as in 'for grade level'._ |
+| Record Kind | 定義済みの属性。 | _The word the current-record summary uses for this property's values: role, grade or school._ |
+| Record Order | 定義済みの属性。 | _Position of this property in the current-record summary._ |
 | Name | label と同じ。 | _Order 1. The property's wording._ |
 
 <details open>
 <summary>サンプルデータ</summary>
 
-| Label | Property Kind | Datatype | Is User Addable | Has One Current Value | Is Symmetric | Sort Order | Name ƒ |
-|---|---|---|---|---|---|---|---|
-| is parent of | object | — | true | false | false | 1 | is parent of |
-| is child of | object | — | true | false | false | 2 | is child of |
-| is spouse of | object | — | true | false | true | 3 | is spouse of |
+| Label | Property Kind | Datatype | Is User Addable | Has One Current Value | Is Symmetric | Sort Order | Value Node Label | Current Value Wording | Input Name | Record Kind | Record Order | Name ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| is parent of | object | — | true | false | false | 1 | — | — | — | — | — | is parent of |
+| is child of | object | — | true | false | false | 2 | — | — | — | — | — | is child of |
+| is spouse of | object | — | true | false | true | 3 | — | — | — | — | — | is spouse of |
 
 _ƒ は計算列を示します。_
 
@@ -203,15 +211,24 @@ _ƒ は計算列を示します。_
 | Place Unit | 優先順位で決定: 次のすべてが成り立つ: フラグ「holds」が設定されているおよびproperty が 「attends」 である場合は 1; それ以外の場合は 0。 | _Order 16. 1 for a holding attends link._ |
 | First Fired Order Key | Statementの「firings」のうち「Fired Unit」であるものについての「order key」の最小値。 | _Order 15. Order key of the first rule application that concludes this fact, in the page reasoner's order._ |
 | Count of Chosen Firings | Statementに関連する「firings」全体での「chosen unit」の合計。 | _Order 20. Rule applications shown as this fact's conclusion card: one for a conclusion, zero otherwise._ |
+| Subject Node Key | subject と同じ。 | _Order 1. The graph node this fact starts from._ |
+| Object Node Key | 優先順位で決定: object thing が空である場合は 「literal|」、続いて object value、続いて 「|」、続いて property datatype; それ以外の場合は object thing。 | _Order 2. The graph node this fact points at: the thing, or one node per value and datatype._ |
+| Subject Node Kind | リンクされた「subject」から取得。 | _Order 19. How the graph draws the subject._ |
+| Object Thing Node Kind | リンクされた「object thing」から取得。 | _Order 19. How the graph draws the object thing._ |
+| Object Node Kind | 優先順位で決定: object thing が空である場合は 「value」; それ以外の場合は object thing node kind。 | _Order 20. How the graph draws the object: a value, a class, a place or a person._ |
+| Object Value Node Label | リンクされた「property」から取得。 | _Order 1. The small label under a value node._ |
+| Count of Violations As First | Statementに関連する「disjoint checks」全体での「violation unit」の合計。 | _Order 18. Violated disjointness checks naming this fact first._ |
+| Count of Violations As Second | Statementに関連する「disjoint checks」全体での「violation unit」の合計。 | _Order 18. Violated disjointness checks naming this fact second._ |
+| Is in Contradiction | 次のいずれかが成り立つ: count of violations as first が 0 より大きいまたはcount of violations as second が 0 より大きいとき真。 | _Order 19. Part of a contradiction the disjoint rule found; drawn in the alarm colour._ |
 
 <details open>
 <summary>サンプルデータ</summary>
 
-| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 0 |
-| — | false | false | false | false | 0 | 101 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 |
-| — | false | false | false | false | 0 | 102 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 |
+| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 101 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 102 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
 
 _ƒ は計算列を示します。_
 
@@ -233,6 +250,8 @@ _ƒ は計算列を示します。_
 | Target Property Label | リンクされた「target」から取得。 | _Order 2. The concluded fact's property._ |
 | Target Object Text | リンクされた「target」から取得。 | _Order 3. The concluded fact's object._ |
 | Target is Conclusion | リンクされた「target」が「Conclusion」であるとき真。 | _Order 17. Whether the concluded fact is new._ |
+| Target Subject Node Key | リンクされた「target」から取得。 | _Order 2. The concluded fact's subject node._ |
+| Target Object Node Key | リンクされた「target」から取得。 | _Order 3. The concluded fact's object node._ |
 | Target First Fired Order Key | リンクされた「target」から取得。 | _Order 16. The order key of the concluded fact's first application._ |
 | First Words | リンクされた「first」から取得。 | _Order 3. The premise as the card quotes it._ |
 | Second Words | リンクされた「second」から取得。 | _Order 3. The second premise as the card quotes it._ |
@@ -259,11 +278,11 @@ _ƒ は計算列を示します。_
 <details open>
 <summary>サンプルデータ</summary>
 
-| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second Sort Order ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | — | 0 | 0 | 0 | 0 | 0 | 101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 101 | — | 0 | 0 | 0 | 0 | 0 | 10101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 102 | — | 0 | 0 | 0 | 0 | 0 | 10201000 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
+| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second Sort Order ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | — | 0 | 0 | 0 | 0 | 0 | 101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 101 | — | 0 | 0 | 0 | 0 | 0 | 10101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 102 | — | 0 | 0 | 0 | 0 | 0 | 10201000 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
 
 _ƒ は計算列を示します。_
 
@@ -298,6 +317,144 @@ _ƒ は計算列を示します。_
 
 </details>
 
+| 用語 | 説明 | 補足コメント |
+|------|-------------|-------------------|
+| **Scenario** | The page's buttons. Each one is a fact baseline, explicit fact changes and rule settings, applied in that order. | — |
+| Graph | 定義済みの属性。 | _The graph._ |
+| Label | 定義済みの属性。 | _The button's text._ |
+| Note | 定義済みの属性。 | _The note shown under the buttons after this one is pressed; blank clears it._ |
+| Sort Order | 定義済みの属性。 | _Position among the buttons._ |
+| Button Group | 定義済みの属性。 | _'stan' for the two imagined changes, 'facts' for the buttons under the fact list._ |
+| Is Primary | 空文字列とき真。 | _Drawn as the filled button._ |
+| Fact Baseline | 定義済みの属性。 | _What happens to every listed fact first: keep, built-in (teaching facts on, others off), built-in-detail, all-off, activate-all (each switched on in list order), or next (the next fact on)._ |
+| Layout | 定義済みの属性。 | _The node layout the graph returns to; blank keeps the current positions._ |
+| Clears Selection | 空文字列とき真。 | _Clears the selected node or line._ |
+| Clears Form Message | 空文字列とき真。 | _Clears the Add fact form's message._ |
+| Name | label と同じ。 | _Order 1. The button's text._ |
+| Graph Has Facts to Add | リンクされた「graph」が「Facts to Add」を持つとき真。 | _Order 7. Whether a listed fact can still be added._ |
+| Is Available | 次のいずれかが成り立つ: fact baseline が 「next」 でないまたはフラグ「graph has facts to add」が設定されているとき真。 | _Order 8. False only for Add next fact once every listed fact is in effect._ |
+
+<details open>
+<summary>サンプルデータ</summary>
+
+| Label | Note | Sort Order | Button Group | Is Primary | Fact Baseline | Layout | Clears Selection | Clears Form Message | Name ƒ | Graph Has Facts to Add ƒ | Is Available ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Move Stan to grade 5 | This imagined change updates Stan’s grade to 5. His identifier, Person statement and family links stay the same. His other selected details are unchanged. | 1 | stan | false | keep | — | true | true | Move Stan to grade 5 | false | true |
+| Stan leaves school | This imagined change clears Stan’s current school details. His identifier, Person statement and family links remain. Removing a current fact does not say that its opposite is true; school history needs dates. | 2 | stan | false | keep | — | true | true | Stan leaves school | false | true |
+| Add next fact | — | 3 | facts | true | next | — | false | false | Add next fact | false | false |
+
+_ƒ は計算列を示します。_
+
+</details>
+
+| 用語 | 説明 | 補足コメント |
+|------|-------------|-------------------|
+| **Scenario Fact Change** | Fact changes a button makes after its baseline. A blank object key matches every listed value of the property. | — |
+| Scenario | 定義済みの属性。 | _The button._ |
+| Subject | 定義済みの属性。 | _The subject whose facts change._ |
+| Property | 定義済みの属性。 | _The property whose facts change._ |
+| Object Key | 定義済みの属性。 | _The object thing's key or the literal value; blank for every listed value._ |
+| Action | 定義済みの属性。 | _'on' switches the fact on as the newest value; 'off' switches it off._ |
+| Adds to List | 空文字列とき真。 | _Adds the fact to the fact list first when it is not listed._ |
+| Sort Order | 定義済みの属性。 | _Order of the change within the button._ |
+| Name | scenario fact change ID と同じ。 | _Order 1. The change's key._ |
+
+<details open>
+<summary>サンプルデータ</summary>
+
+| Object Key | Action | Adds to List | Sort Order | Name ƒ |
+|---|---|---|---|---|
+| Person | on | true | 1 | stan-grade-five:Stan\|isA\|Person |
+| 5 | on | true | 2 | stan-grade-five:Stan\|hasGradeLevel\|5 |
+| Person | on | true | 3 | stan-leaves-school:Stan\|isA\|Person |
+
+_ƒ は計算列を示します。_
+
+</details>
+
+| 用語 | 説明 | 補足コメント |
+|------|-------------|-------------------|
+| **Scenario Rule Setting** | Rule switches a button sets. | — |
+| Scenario | 定義済みの属性。 | _The button._ |
+| Rule | 定義済みの属性。 | _The rule switch._ |
+| Is Enabled | 空文字列とき真。 | _The state the button puts the switch in._ |
+| Name | scenario rule setting ID と同じ。 | _Order 1. The setting's key._ |
+
+<details open>
+<summary>サンプルデータ</summary>
+
+| Is Enabled | Name ƒ |
+|---|---|
+| false | reset-original:inverse |
+| false | reset-original:symmetric |
+| false | reset-original:chain |
+
+_ƒ は計算列を示します。_
+
+</details>
+
+| 用語 | 説明 | 補足コメント |
+|------|-------------|-------------------|
+| **Node Layout** | Node positions in the graph's 380 by 480 drawing, one set per layout. | — |
+| Layout | 定義済みの属性。 | _The layout: 'default' or 'stan-details'._ |
+| Node Key | 定義済みの属性。 | _The node: a thing's key, or literal\|value\|datatype._ |
+| X | 定義済みの属性。 | _Horizontal position._ |
+| Y | 定義済みの属性。 | _Vertical position._ |
+| Name | node layout ID と同じ。 | _Order 1. The position's key._ |
+
+<details open>
+<summary>サンプルデータ</summary>
+
+| Layout | Node Key | X | Y | Name ƒ |
+|---|---|---|---|---|
+| default | Marvin | 70 | 45 | default:Marvin |
+| default | Randy | 195 | 125 | default:Randy |
+| default | Sharon | 318 | 55 | default:Sharon |
+
+_ƒ は計算列を示します。_
+
+</details>
+
+| 用語 | 説明 | 補足コメント |
+|------|-------------|-------------------|
+| **Layout Slot** | Places for nodes no layout positions, used in turn. | — |
+| Sort Order | 定義済みの属性。 | _Order in which slots are used._ |
+| X | 定義済みの属性。 | _Horizontal position._ |
+| Y | 定義済みの属性。 | _Vertical position._ |
+| Name | layout slot ID と同じ。 | _Order 1. The slot's key._ |
+
+<details open>
+<summary>サンプルデータ</summary>
+
+| Sort Order | X | Y | Name ƒ |
+|---|---|---|---|
+| 1 | 330 | 135 | slot-1 |
+| 2 | 45 | 120 | slot-2 |
+| 3 | 330 | 400 | slot-3 |
+
+_ƒ は計算列を示します。_
+
+</details>
+
+| 用語 | 説明 | 補足コメント |
+|------|-------------|-------------------|
+| **Page Text** | The page's wording, one row per string. {name}-style placeholders are filled by the page. | — |
+| Text | 定義済みの属性。 | _The string._ |
+| Name | page text ID と同じ。 | _Order 1. The string's key._ |
+
+<details open>
+<summary>サンプルデータ</summary>
+
+| Text | Name ƒ |
+|---|---|
+| South Park Ontology Explainer, on one rulebook | page-title |
+| A rulebook rebuild of the explainer by | byline-prefix |
+| Jessica Talisman | byline-author |
+
+_ƒ は計算列を示します。_
+
+</details>
+
 ## 2 ファクトタイプ
 
 - **firing kind**は**rule**をちょうど 1 件参照します
@@ -312,6 +469,12 @@ _ƒ は計算列を示します。_
 - **disjoint check**は**graph**をちょうど 1 件参照します
 - **disjoint check**は**rule**をちょうど 1 件参照します
 - **disjoint check**は**statement**をちょうど 1 件参照します
+- **scenario**は**graph**をちょうど 1 件参照します
+- **scenario fact change**は**scenario**をちょうど 1 件参照します
+- **scenario fact change**は**thing**をちょうど 1 件参照します
+- **scenario fact change**は**property**をちょうど 1 件参照します
+- **scenario rule setting**は**scenario**をちょうど 1 件参照します
+- **scenario rule setting**は**rule**をちょうど 1 件参照します
 
 ## 3 運用ルール
 
@@ -340,6 +503,18 @@ _運用ルールは、ビジネスが**義務付ける**こと、**禁止する*
 - disjoint checkは「rule」をちょうど 1 件参照し**なければなりません**。
 - disjoint checkは、firstとして「statement」をちょうど 1 件参照し**なければなりません**。
 - disjoint checkは、secondとして「statement」をちょうど 1 件参照し**なければなりません**。
+- scenarioは「graph」をちょうど 1 件参照し**なければなりません**。
+- scenarioは label、sort order、button group、およびfact baseline を持た、かつ 「Primary」であるかどうか、「Clears Selection」であるかどうか、および「Clears Form Message」であるかどうかを記録し**なければなりません**。
+- scenario fact changeは「scenario」をちょうど 1 件参照し**なければなりません**。
+- scenario fact changeは、subjectとして「thing」をちょうど 1 件参照し**なければなりません**。
+- scenario fact changeは「property」をちょうど 1 件参照し**なければなりません**。
+- scenario fact changeは actionおよびsort order を持た、かつ 「Adds to List」であるかどうかを記録し**なければなりません**。
+- scenario rule settingは「scenario」をちょうど 1 件参照し**なければなりません**。
+- scenario rule settingは「rule」をちょうど 1 件参照し**なければなりません**。
+- scenario rule settingは 「Enabled」であるかどうかを記録し**なければなりません**。
+- node layoutは layout、node key、x、およびy を持た**なければなりません**。
+- layout slotは sort order、x、およびy を持た**なければなりません**。
+- page textは text を持た**なければなりません**。
 
 ## 4 定義ルール
 
@@ -368,91 +543,111 @@ _すべての文はビジネスドメインの真実を表し、手続きでも�
 | **DR-16 Name** | firing kindの「name」は wording と同じです。 |
 | **DR-17 Rule Enabled** | firing kindの「rule enabled」は、リンクされた「rule」が「Enabled」であるとき真になります。 |
 | **DR-18 Name** | thingの「name」は label と同じです。 |
-| **DR-19 Count of Children** | thingの「count of children」は thingに関連する「statements」全体での「parent unit」の合計 です。 |
-| **DR-20 Count of Grandchildren** | thingの「count of grandchildren」は thingに関連する「statements」全体での「grandparent unit」の合計 です。 |
-| **DR-21 Count As Place** | thingの「count as place」は thingに関連する「statements」全体での「place unit」の合計 です。 |
-| **DR-22 Count As Subject** | thingの「count as subject」は thingに関連する「statements」全体での「holds unit」の合計 です。 |
-| **DR-23 Count As Object** | thingの「count as object」は thingに関連する「statements」全体での「holds unit」の合計 です。 |
-| **DR-24 Is in Graph** | 次のいずれかが成り立つ: count as subject が 0 より大きいまたはcount as object が 0 より大きい場合、thingは「In Graph」と見なされます。 |
-| **DR-25 Node Kind** | Thingの「node kind」は、次の優先順位で決まります:<br>1. kind が 「class」 である場合は 「class」;<br>2. count as place が 0 より大きい場合は 「place」;<br>3. それ以外の場合は 「person」。 |
-| **DR-26 Name** | propertyの「name」は label と同じです。 |
-| **DR-27 Subject Label** | statementの「subject label」— リンクされた「subject」から取得されます。 |
-| **DR-28 Property Label** | statementの「property label」— リンクされた「property」から取得されます。 |
-| **DR-29 Object Label** | statementの「object label」— リンクされた「object thing」から取得されます。 |
-| **DR-30 Property Datatype** | statementの「property datatype」— リンクされた「property」から取得されます。 |
-| **DR-31 Property Has One Current Value** | statementの「property has one current value」は、リンクされた「property」が「One Current Value」を持つとき真になります。 |
-| **DR-32 Property Domain Class** | statementの「property domain class」— リンクされた「property」から取得されます。 |
-| **DR-33 Property Range Class** | statementの「property range class」— リンクされた「property」から取得されます。 |
-| **DR-34 Literal Quote** | statementの「literal quote」— リンクされた「graph」から取得されます。 |
-| **DR-35 Literal Type Marker** | statementの「literal type marker」— リンクされた「graph」から取得されます。 |
-| **DR-36 Built in Source Text** | statementの「built in source text」— リンクされた「graph」から取得されます。 |
-| **DR-37 User Source Text** | statementの「user source text」— リンクされた「graph」から取得されます。 |
-| **DR-38 Next Fact Sort Order** | statementの「next fact sort order」— リンクされた「graph」から取得されます。 |
-| **DR-39 Is Literal** | object thing が空である場合、statementは「Literal」と見なされます。 |
-| **DR-40 Object Text** | Statementの「object text」は、次の優先順位で決まります:<br>1. object thing が空である場合は object value;<br>2. それ以外の場合は object label。 |
-| **DR-41 Name** | statementの「name」は subject label、続いて 空白 1 つ、続いて property label、続いて 空白 1 つ、続いて object text として計算されます。 |
-| **DR-42 Words** | statementの「words」は subject label、続いて 空白 1 つ、続いて property label、続いて 空白 1 つ、続いて object thing が空である場合は literal quote、続いて object value、続いて literal quote、続いて literal type marker、続いて property datatype、それ以外の場合は object label として計算されます。 ⚠︎ 機械的 <!-- rulespeak:reword --> |
-| **DR-43 Source** | Statementの「source」は、次の優先順位で決まります:<br>1. フラグ「built in」が設定されている場合は built in source text;<br>2. それ以外の場合は user source text。 |
-| **DR-44 Subject Property Key** | statementの「subject property key」は subject、続いて 「|」、続いて property として計算されます。 |
-| **DR-45 Latest Sibling Activation Seq** | statementの「latest sibling activation seq」は statementに関連する「statements」全体での「activation seq」の最大値 です。 |
-| **DR-46 Is in Effect** | 次のすべてが成り立つ: フラグ「stated」が設定されているおよび次のいずれかが成り立つ: フラグ「property has one current value」が設定されていないまたはactivation seq が latest sibling activation seq である場合、statementは「In Effect」と見なされます。 |
-| **DR-47 Listed Unit** | Statementの「listed unit」は、次の優先順位で決まります:<br>1. フラグ「listed」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
-| **DR-48 In Effect Unit** | Statementの「in effect unit」は、次の優先順位で決まります:<br>1. フラグ「in effect」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
-| **DR-49 Listed Off Unit** | Statementの「listed off unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「listed」が設定されているおよびフラグ「in effect」が設定されていない場合は 1;<br>2. それ以外の場合は 0。 |
-| **DR-50 Is Next to Add** | 次のすべてが成り立つ: listed off unit が 1 であるおよびsort order が next fact sort order である場合、statementは「Next to Add」と見なされます。 |
-| **DR-51 Count of Inverse Firings** | statementの「count of inverse firings」は statementに関連する「firings」全体での「inverse fired unit」の合計 です。 |
-| **DR-52 Count of Symmetric Firings** | statementの「count of symmetric firings」は statementに関連する「firings」全体での「symmetric fired unit」の合計 です。 |
-| **DR-53 Holds Before Chain** | 次のいずれかが成り立つ: フラグ「in effect」が設定されている、count of inverse firings が 0 より大きい、またはcount of symmetric firings が 0 より大きい場合、statementは「Before Chain」を満たすと見なされます。 |
-| **DR-54 Count of Chain Firings** | statementの「count of chain firings」は statementに関連する「firings」全体での「chain fired unit」の合計 です。 |
-| **DR-55 Holds Before Typing** | 次のいずれかが成り立つ: フラグ「holds before chain」が設定されているまたはcount of chain firings が 0 より大きい場合、statementは「Before Typing」を満たすと見なされます。 |
-| **DR-56 Count of Type Firings** | statementの「count of type firings」は statementに関連する「firings」全体での「type fired unit」の合計 です。 |
-| **DR-57 Holds** | 次のいずれかが成り立つ: フラグ「holds before typing」が設定されているまたはcount of type firings が 0 より大きい場合、statementは「」を満たすと見なされます。 |
-| **DR-58 Is Conclusion** | 次のすべてが成り立つ: フラグ「holds」が設定されているおよびフラグ「in effect」が設定されていない場合、statementは「Conclusion」と見なされます。 |
-| **DR-59 Holds Unit** | Statementの「holds unit」は、次の優先順位で決まります:<br>1. フラグ「holds」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
-| **DR-60 Conclusion Unit** | Statementの「conclusion unit」は、次の優先順位で決まります:<br>1. フラグ「conclusion」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
-| **DR-61 Parent Unit** | Statementの「parent unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「holds」が設定されているおよびproperty が 「isParentOf」 である場合は 1;<br>2. それ以外の場合は 0。 |
-| **DR-62 Grandparent Unit** | Statementの「grandparent unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「holds」が設定されているおよびproperty が 「isGrandparentOf」 である場合は 1;<br>2. それ以外の場合は 0。 |
-| **DR-63 Place Unit** | Statementの「place unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「holds」が設定されているおよびproperty が 「attends」 である場合は 1;<br>2. それ以外の場合は 0。 |
-| **DR-64 First Fired Order Key** | statementの「first fired order key」は statementの「firings」のうち「Fired Unit」であるものについての「order key」の最小値 です。 |
-| **DR-65 Count of Chosen Firings** | statementの「count of chosen firings」は statementに関連する「firings」全体での「chosen unit」の合計 です。 |
-| **DR-66 Rule Enabled** | firingの「rule enabled」は、リンクされた「rule」が「Enabled」であるとき真になります。 |
-| **DR-67 Kind Wording** | firingの「kind wording」— リンクされた「kind」から取得されます。 |
-| **DR-68 Kind Sort Order** | firingの「kind sort order」— リンクされた「kind」から取得されます。 |
-| **DR-69 Target Name** | firingの「target name」— リンクされた「target」から取得されます。 |
-| **DR-70 Target Subject Label** | firingの「target subject label」— リンクされた「target」から取得されます。 |
-| **DR-71 Target Property Label** | firingの「target property label」— リンクされた「target」から取得されます。 |
-| **DR-72 Target Object Text** | firingの「target object text」— リンクされた「target」から取得されます。 |
-| **DR-73 Target is Conclusion** | firingの「target is conclusion」は、リンクされた「target」が「Conclusion」であるとき真になります。 |
-| **DR-74 Target First Fired Order Key** | firingの「target first fired order key」— リンクされた「target」から取得されます。 |
-| **DR-75 First Words** | firingの「first words」— リンクされた「first」から取得されます。 |
-| **DR-76 Second Words** | firingの「second words」— リンクされた「second」から取得されます。 |
-| **DR-77 First is in Effect** | firingの「first is in effect」は、リンクされた「first」が「In Effect」であるとき真になります。 |
-| **DR-78 First Holds Before Chain** | firingの「first holds before chain」は、リンクされた「first」が「Holds Before Chain」であるとき真になります。 |
-| **DR-79 Second Holds Before Chain** | firingの「second holds before chain」は、リンクされた「second」が「Holds Before Chain」であるとき真になります。 |
-| **DR-80 First Holds Before Typing** | firingの「first holds before typing」は、リンクされた「first」が「Holds Before Typing」であるとき真になります。 |
-| **DR-81 First Property** | firingの「first property」— リンクされた「first」から取得されます。 |
-| **DR-82 First Property Domain Class** | firingの「first property domain class」— リンクされた「first」から取得されます。 |
-| **DR-83 First Property Range Class** | firingの「first property range class」— リンクされた「first」から取得されます。 |
-| **DR-84 First Sort Order** | firingの「first sort order」— リンクされた「first」から取得されます。 |
-| **DR-85 Second Sort Order** | firingの「second sort order」— リンクされた「second」から取得されます。 |
-| **DR-86 Inverse Fired Unit** | Firingの「inverse fired unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「rule enabled」が設定されている、kind が 「inverse」 である、およびフラグ「first is in effect」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
-| **DR-87 Symmetric Fired Unit** | Firingの「symmetric fired unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「rule enabled」が設定されている、kind が 「symmetric」 である、およびフラグ「first is in effect」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
-| **DR-88 Chain Fired Unit** | Firingの「chain fired unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「rule enabled」が設定されている、kind が 「chain」 である、フラグ「first holds before chain」が設定されている、およびフラグ「second holds before chain」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
-| **DR-89 Type Fired Unit** | Firingの「type fired unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「rule enabled」が設定されている、次のいずれかが成り立つ: kind が 「domain」 であるまたはkind が 「range」 である、およびフラグ「first holds before typing」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
-| **DR-90 Fired Unit** | firingの「fired unit」は inverse fired unit たす symmetric fired unit たす chain fired unit たす type fired unit として計算されます。 |
-| **DR-91 Order Key** | firingの「order key」は first sort order かける 100000 たす kind sort order かける 1000 たす second が空である場合は 0、それ以外の場合は second sort order として計算されます。 |
-| **DR-92 Is Chosen** | 次のすべてが成り立つ: fired unit が 1 である、フラグ「target is conclusion」が設定されている、およびorder key が target first fired order key である場合、firingは「Chosen」と見なされます。 |
-| **DR-93 Chosen Unit** | Firingの「chosen unit」は、次の優先順位で決まります:<br>1. フラグ「chosen」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
-| **DR-94 Card Text** | Firingの「card text」は、次の優先順位で決まります:<br>1. フラグ「chosen」が設定されている場合は 「Worked out by the 」、続いて kind wording、続いて 「 from “」、続いて first words、続いて 「”」、続いて kind が 「chain」 である場合は 「 and “」、続いて second words、続いて 「”」、それ以外の場合は kind が 「domain」 である場合は 「 and “」、続いて first property、続いて 「 has domain 」、続いて first property domain class、続いて 「”」、それ以外の場合は 「 and “」、続いて first property、続いて 「 has range 」、続いて first property range class、続いて 「”」、続いて ピリオド;<br>2. それ以外の場合は 空文字列。 ⚠︎ 機械的 <!-- rulespeak:reword --> |
-| **DR-95 Name** | firingの「name」は firing ID と同じです。 |
-| **DR-96 Rule Enabled** | disjoint checkの「rule enabled」は、リンクされた「rule」が「Enabled」であるとき真になります。 |
-| **DR-97 First Holds** | disjoint checkの「first holds」は、リンクされた「first」が「Holds」であるとき真になります。 |
-| **DR-98 Second Holds** | disjoint checkの「second holds」は、リンクされた「second」が「Holds」であるとき真になります。 |
-| **DR-99 Subject Label** | disjoint checkの「subject label」— リンクされた「first」から取得されます。 |
-| **DR-100 Object Label** | disjoint checkの「object label」— リンクされた「first」から取得されます。 |
-| **DR-101 Violation Unit** | Disjoint checkの「violation unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「rule enabled」が設定されている、フラグ「first holds」が設定されている、およびフラグ「second holds」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
-| **DR-102 Alarm Text** | Disjoint checkの「alarm text」は、次の優先順位で決まります:<br>1. violation unit が 1 である場合は 「Contradiction found. 」、続いて subject label、続いて 「 is recorded as both parent and spouse of 」、続いて object label、続いて 「. Check those facts and the selected disjoint rule.」;<br>2. それ以外の場合は 空文字列。 |
-| **DR-103 Name** | disjoint checkの「name」は disjoint check ID と同じです。 |
+| **DR-19 Node Key** | thingの「node key」は thing ID と同じです。 |
+| **DR-20 Count of Children** | thingの「count of children」は thingに関連する「statements」全体での「parent unit」の合計 です。 |
+| **DR-21 Count of Grandchildren** | thingの「count of grandchildren」は thingに関連する「statements」全体での「grandparent unit」の合計 です。 |
+| **DR-22 Count As Place** | thingの「count as place」は thingに関連する「statements」全体での「place unit」の合計 です。 |
+| **DR-23 Count As Subject** | thingの「count as subject」は thingに関連する「statements」全体での「holds unit」の合計 です。 |
+| **DR-24 Count As Object** | thingの「count as object」は thingに関連する「statements」全体での「holds unit」の合計 です。 |
+| **DR-25 Is in Graph** | 次のいずれかが成り立つ: count as subject が 0 より大きいまたはcount as object が 0 より大きい場合、thingは「In Graph」と見なされます。 |
+| **DR-26 Node Kind** | Thingの「node kind」は、次の優先順位で決まります:<br>1. kind が 「class」 である場合は 「class」;<br>2. count as place が 0 より大きい場合は 「place」;<br>3. それ以外の場合は 「person」。 |
+| **DR-27 Name** | propertyの「name」は label と同じです。 |
+| **DR-28 Subject Label** | statementの「subject label」— リンクされた「subject」から取得されます。 |
+| **DR-29 Property Label** | statementの「property label」— リンクされた「property」から取得されます。 |
+| **DR-30 Object Label** | statementの「object label」— リンクされた「object thing」から取得されます。 |
+| **DR-31 Property Datatype** | statementの「property datatype」— リンクされた「property」から取得されます。 |
+| **DR-32 Property Has One Current Value** | statementの「property has one current value」は、リンクされた「property」が「One Current Value」を持つとき真になります。 |
+| **DR-33 Property Domain Class** | statementの「property domain class」— リンクされた「property」から取得されます。 |
+| **DR-34 Property Range Class** | statementの「property range class」— リンクされた「property」から取得されます。 |
+| **DR-35 Literal Quote** | statementの「literal quote」— リンクされた「graph」から取得されます。 |
+| **DR-36 Literal Type Marker** | statementの「literal type marker」— リンクされた「graph」から取得されます。 |
+| **DR-37 Built in Source Text** | statementの「built in source text」— リンクされた「graph」から取得されます。 |
+| **DR-38 User Source Text** | statementの「user source text」— リンクされた「graph」から取得されます。 |
+| **DR-39 Next Fact Sort Order** | statementの「next fact sort order」— リンクされた「graph」から取得されます。 |
+| **DR-40 Is Literal** | object thing が空である場合、statementは「Literal」と見なされます。 |
+| **DR-41 Object Text** | Statementの「object text」は、次の優先順位で決まります:<br>1. object thing が空である場合は object value;<br>2. それ以外の場合は object label。 |
+| **DR-42 Name** | statementの「name」は subject label、続いて 空白 1 つ、続いて property label、続いて 空白 1 つ、続いて object text として計算されます。 |
+| **DR-43 Words** | statementの「words」は subject label、続いて 空白 1 つ、続いて property label、続いて 空白 1 つ、続いて object thing が空である場合は literal quote、続いて object value、続いて literal quote、続いて literal type marker、続いて property datatype、それ以外の場合は object label として計算されます。 ⚠︎ 機械的 <!-- rulespeak:reword --> |
+| **DR-44 Source** | Statementの「source」は、次の優先順位で決まります:<br>1. フラグ「built in」が設定されている場合は built in source text;<br>2. それ以外の場合は user source text。 |
+| **DR-45 Subject Property Key** | statementの「subject property key」は subject、続いて 「|」、続いて property として計算されます。 |
+| **DR-46 Latest Sibling Activation Seq** | statementの「latest sibling activation seq」は statementに関連する「statements」全体での「activation seq」の最大値 です。 |
+| **DR-47 Is in Effect** | 次のすべてが成り立つ: フラグ「stated」が設定されているおよび次のいずれかが成り立つ: フラグ「property has one current value」が設定されていないまたはactivation seq が latest sibling activation seq である場合、statementは「In Effect」と見なされます。 |
+| **DR-48 Listed Unit** | Statementの「listed unit」は、次の優先順位で決まります:<br>1. フラグ「listed」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
+| **DR-49 In Effect Unit** | Statementの「in effect unit」は、次の優先順位で決まります:<br>1. フラグ「in effect」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
+| **DR-50 Listed Off Unit** | Statementの「listed off unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「listed」が設定されているおよびフラグ「in effect」が設定されていない場合は 1;<br>2. それ以外の場合は 0。 |
+| **DR-51 Is Next to Add** | 次のすべてが成り立つ: listed off unit が 1 であるおよびsort order が next fact sort order である場合、statementは「Next to Add」と見なされます。 |
+| **DR-52 Count of Inverse Firings** | statementの「count of inverse firings」は statementに関連する「firings」全体での「inverse fired unit」の合計 です。 |
+| **DR-53 Count of Symmetric Firings** | statementの「count of symmetric firings」は statementに関連する「firings」全体での「symmetric fired unit」の合計 です。 |
+| **DR-54 Holds Before Chain** | 次のいずれかが成り立つ: フラグ「in effect」が設定されている、count of inverse firings が 0 より大きい、またはcount of symmetric firings が 0 より大きい場合、statementは「Before Chain」を満たすと見なされます。 |
+| **DR-55 Count of Chain Firings** | statementの「count of chain firings」は statementに関連する「firings」全体での「chain fired unit」の合計 です。 |
+| **DR-56 Holds Before Typing** | 次のいずれかが成り立つ: フラグ「holds before chain」が設定されているまたはcount of chain firings が 0 より大きい場合、statementは「Before Typing」を満たすと見なされます。 |
+| **DR-57 Count of Type Firings** | statementの「count of type firings」は statementに関連する「firings」全体での「type fired unit」の合計 です。 |
+| **DR-58 Holds** | 次のいずれかが成り立つ: フラグ「holds before typing」が設定されているまたはcount of type firings が 0 より大きい場合、statementは「」を満たすと見なされます。 |
+| **DR-59 Is Conclusion** | 次のすべてが成り立つ: フラグ「holds」が設定されているおよびフラグ「in effect」が設定されていない場合、statementは「Conclusion」と見なされます。 |
+| **DR-60 Holds Unit** | Statementの「holds unit」は、次の優先順位で決まります:<br>1. フラグ「holds」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
+| **DR-61 Conclusion Unit** | Statementの「conclusion unit」は、次の優先順位で決まります:<br>1. フラグ「conclusion」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
+| **DR-62 Parent Unit** | Statementの「parent unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「holds」が設定されているおよびproperty が 「isParentOf」 である場合は 1;<br>2. それ以外の場合は 0。 |
+| **DR-63 Grandparent Unit** | Statementの「grandparent unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「holds」が設定されているおよびproperty が 「isGrandparentOf」 である場合は 1;<br>2. それ以外の場合は 0。 |
+| **DR-64 Place Unit** | Statementの「place unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「holds」が設定されているおよびproperty が 「attends」 である場合は 1;<br>2. それ以外の場合は 0。 |
+| **DR-65 First Fired Order Key** | statementの「first fired order key」は statementの「firings」のうち「Fired Unit」であるものについての「order key」の最小値 です。 |
+| **DR-66 Count of Chosen Firings** | statementの「count of chosen firings」は statementに関連する「firings」全体での「chosen unit」の合計 です。 |
+| **DR-67 Subject Node Key** | statementの「subject node key」は subject と同じです。 |
+| **DR-68 Object Node Key** | Statementの「object node key」は、次の優先順位で決まります:<br>1. object thing が空である場合は 「literal|」、続いて object value、続いて 「|」、続いて property datatype;<br>2. それ以外の場合は object thing。 |
+| **DR-69 Subject Node Kind** | statementの「subject node kind」— リンクされた「subject」から取得されます。 |
+| **DR-70 Object Thing Node Kind** | statementの「object thing node kind」— リンクされた「object thing」から取得されます。 |
+| **DR-71 Object Node Kind** | Statementの「object node kind」は、次の優先順位で決まります:<br>1. object thing が空である場合は 「value」;<br>2. それ以外の場合は object thing node kind。 |
+| **DR-72 Object Value Node Label** | statementの「object value node label」— リンクされた「property」から取得されます。 |
+| **DR-73 Count of Violations As First** | statementの「count of violations as first」は statementに関連する「disjoint checks」全体での「violation unit」の合計 です。 |
+| **DR-74 Count of Violations As Second** | statementの「count of violations as second」は statementに関連する「disjoint checks」全体での「violation unit」の合計 です。 |
+| **DR-75 Is in Contradiction** | 次のいずれかが成り立つ: count of violations as first が 0 より大きいまたはcount of violations as second が 0 より大きい場合、statementは「In Contradiction」と見なされます。 |
+| **DR-76 Rule Enabled** | firingの「rule enabled」は、リンクされた「rule」が「Enabled」であるとき真になります。 |
+| **DR-77 Kind Wording** | firingの「kind wording」— リンクされた「kind」から取得されます。 |
+| **DR-78 Kind Sort Order** | firingの「kind sort order」— リンクされた「kind」から取得されます。 |
+| **DR-79 Target Name** | firingの「target name」— リンクされた「target」から取得されます。 |
+| **DR-80 Target Subject Label** | firingの「target subject label」— リンクされた「target」から取得されます。 |
+| **DR-81 Target Property Label** | firingの「target property label」— リンクされた「target」から取得されます。 |
+| **DR-82 Target Object Text** | firingの「target object text」— リンクされた「target」から取得されます。 |
+| **DR-83 Target is Conclusion** | firingの「target is conclusion」は、リンクされた「target」が「Conclusion」であるとき真になります。 |
+| **DR-84 Target Subject Node Key** | firingの「target subject node key」— リンクされた「target」から取得されます。 |
+| **DR-85 Target Object Node Key** | firingの「target object node key」— リンクされた「target」から取得されます。 |
+| **DR-86 Target First Fired Order Key** | firingの「target first fired order key」— リンクされた「target」から取得されます。 |
+| **DR-87 First Words** | firingの「first words」— リンクされた「first」から取得されます。 |
+| **DR-88 Second Words** | firingの「second words」— リンクされた「second」から取得されます。 |
+| **DR-89 First is in Effect** | firingの「first is in effect」は、リンクされた「first」が「In Effect」であるとき真になります。 |
+| **DR-90 First Holds Before Chain** | firingの「first holds before chain」は、リンクされた「first」が「Holds Before Chain」であるとき真になります。 |
+| **DR-91 Second Holds Before Chain** | firingの「second holds before chain」は、リンクされた「second」が「Holds Before Chain」であるとき真になります。 |
+| **DR-92 First Holds Before Typing** | firingの「first holds before typing」は、リンクされた「first」が「Holds Before Typing」であるとき真になります。 |
+| **DR-93 First Property** | firingの「first property」— リンクされた「first」から取得されます。 |
+| **DR-94 First Property Domain Class** | firingの「first property domain class」— リンクされた「first」から取得されます。 |
+| **DR-95 First Property Range Class** | firingの「first property range class」— リンクされた「first」から取得されます。 |
+| **DR-96 First Sort Order** | firingの「first sort order」— リンクされた「first」から取得されます。 |
+| **DR-97 Second Sort Order** | firingの「second sort order」— リンクされた「second」から取得されます。 |
+| **DR-98 Inverse Fired Unit** | Firingの「inverse fired unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「rule enabled」が設定されている、kind が 「inverse」 である、およびフラグ「first is in effect」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
+| **DR-99 Symmetric Fired Unit** | Firingの「symmetric fired unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「rule enabled」が設定されている、kind が 「symmetric」 である、およびフラグ「first is in effect」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
+| **DR-100 Chain Fired Unit** | Firingの「chain fired unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「rule enabled」が設定されている、kind が 「chain」 である、フラグ「first holds before chain」が設定されている、およびフラグ「second holds before chain」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
+| **DR-101 Type Fired Unit** | Firingの「type fired unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「rule enabled」が設定されている、次のいずれかが成り立つ: kind が 「domain」 であるまたはkind が 「range」 である、およびフラグ「first holds before typing」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
+| **DR-102 Fired Unit** | firingの「fired unit」は inverse fired unit たす symmetric fired unit たす chain fired unit たす type fired unit として計算されます。 |
+| **DR-103 Order Key** | firingの「order key」は first sort order かける 100000 たす kind sort order かける 1000 たす second が空である場合は 0、それ以外の場合は second sort order として計算されます。 |
+| **DR-104 Is Chosen** | 次のすべてが成り立つ: fired unit が 1 である、フラグ「target is conclusion」が設定されている、およびorder key が target first fired order key である場合、firingは「Chosen」と見なされます。 |
+| **DR-105 Chosen Unit** | Firingの「chosen unit」は、次の優先順位で決まります:<br>1. フラグ「chosen」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
+| **DR-106 Card Text** | Firingの「card text」は、次の優先順位で決まります:<br>1. フラグ「chosen」が設定されている場合は 「Worked out by the 」、続いて kind wording、続いて 「 from “」、続いて first words、続いて 「”」、続いて kind が 「chain」 である場合は 「 and “」、続いて second words、続いて 「”」、それ以外の場合は kind が 「domain」 である場合は 「 and “」、続いて first property、続いて 「 has domain 」、続いて first property domain class、続いて 「”」、それ以外の場合は 「 and “」、続いて first property、続いて 「 has range 」、続いて first property range class、続いて 「”」、続いて ピリオド;<br>2. それ以外の場合は 空文字列。 ⚠︎ 機械的 <!-- rulespeak:reword --> |
+| **DR-107 Name** | firingの「name」は firing ID と同じです。 |
+| **DR-108 Rule Enabled** | disjoint checkの「rule enabled」は、リンクされた「rule」が「Enabled」であるとき真になります。 |
+| **DR-109 First Holds** | disjoint checkの「first holds」は、リンクされた「first」が「Holds」であるとき真になります。 |
+| **DR-110 Second Holds** | disjoint checkの「second holds」は、リンクされた「second」が「Holds」であるとき真になります。 |
+| **DR-111 Subject Label** | disjoint checkの「subject label」— リンクされた「first」から取得されます。 |
+| **DR-112 Object Label** | disjoint checkの「object label」— リンクされた「first」から取得されます。 |
+| **DR-113 Violation Unit** | Disjoint checkの「violation unit」は、次の優先順位で決まります:<br>1. 次のすべてが成り立つ: フラグ「rule enabled」が設定されている、フラグ「first holds」が設定されている、およびフラグ「second holds」が設定されている場合は 1;<br>2. それ以外の場合は 0。 |
+| **DR-114 Alarm Text** | Disjoint checkの「alarm text」は、次の優先順位で決まります:<br>1. violation unit が 1 である場合は 「Contradiction found. 」、続いて subject label、続いて 「 is recorded as both parent and spouse of 」、続いて object label、続いて 「. Check those facts and the selected disjoint rule.」;<br>2. それ以外の場合は 空文字列。 |
+| **DR-115 Name** | disjoint checkの「name」は disjoint check ID と同じです。 |
+| **DR-116 Name** | scenarioの「name」は label と同じです。 |
+| **DR-117 Graph Has Facts to Add** | scenarioの「graph has facts to add」は、リンクされた「graph」が「Facts to Add」を持つとき真になります。 |
+| **DR-118 Is Available** | 次のいずれかが成り立つ: fact baseline が 「next」 でないまたはフラグ「graph has facts to add」が設定されている場合、scenarioは「Available」と見なされます。 |
+| **DR-119 Name** | scenario fact changeの「name」は scenario fact change ID と同じです。 |
+| **DR-120 Name** | scenario rule settingの「name」は scenario rule setting ID と同じです。 |
+| **DR-121 Name** | node layoutの「name」は node layout ID と同じです。 |
+| **DR-122 Name** | layout slotの「name」は layout slot ID と同じです。 |
+| **DR-123 Name** | page textの「name」は page text ID と同じです。 |
 
 ## 5 スキーマへのトレーサビリティ
 
@@ -479,6 +674,7 @@ _式の列は ドキュメント 記法によるルールの定義です —
 | **FiringKinds.Name** | 数式 | `Wording` |
 | **FiringKinds.RuleEnabled** | 参照 | `Lookup(Rules.IsEnabled via Rule)` |
 | **Things.Name** | 数式 | `Label` |
+| **Things.NodeKey** | 数式 | `ThingId` |
 | **Things.CountOfChildren** | 集計 | `Sum(Statements.ParentUnit via Subject)` |
 | **Things.CountOfGrandchildren** | 集計 | `Sum(Statements.GrandparentUnit via Subject)` |
 | **Things.CountAsPlace** | 集計 | `Sum(Statements.PlaceUnit via ObjectThing)` |
@@ -526,6 +722,15 @@ _式の列は ドキュメント 記法によるルールの定義です —
 | **Statements.PlaceUnit** | 数式 | `If(And(Holds, Property = "attends"), 1, 0)` |
 | **Statements.FirstFiredOrderKey** | 集計 | `Min(Firings.OrderKey via Target)` |
 | **Statements.CountOfChosenFirings** | 集計 | `Sum(Firings.ChosenUnit via Target)` |
+| **Statements.SubjectNodeKey** | 数式 | `Subject` |
+| **Statements.ObjectNodeKey** | 数式 | `If(ObjectThing = "", Concat("literal\|", ObjectValue, "\|", PropertyDatatype), ObjectThing)` |
+| **Statements.SubjectNodeKind** | 参照 | `Lookup(Things.NodeKind via Subject)` |
+| **Statements.ObjectThingNodeKind** | 参照 | `Lookup(Things.NodeKind via ObjectThing)` |
+| **Statements.ObjectNodeKind** | 数式 | `If(ObjectThing = "", "value", ObjectThingNodeKind)` |
+| **Statements.ObjectValueNodeLabel** | 参照 | `Lookup(Properties.ValueNodeLabel via Property)` |
+| **Statements.CountOfViolationsAsFirst** | 集計 | `Sum(DisjointChecks.ViolationUnit via First)` |
+| **Statements.CountOfViolationsAsSecond** | 集計 | `Sum(DisjointChecks.ViolationUnit via Second)` |
+| **Statements.IsInContradiction** | 数式 | `Or(CountOfViolationsAsFirst > 0, CountOfViolationsAsSecond > 0)` |
 | **Firings.RuleEnabled** | 参照 | `Lookup(Rules.IsEnabled via Rule)` |
 | **Firings.KindWording** | 参照 | `Lookup(FiringKinds.Wording via Kind)` |
 | **Firings.KindSortOrder** | 参照 | `Lookup(FiringKinds.SortOrder via Kind)` |
@@ -534,6 +739,8 @@ _式の列は ドキュメント 記法によるルールの定義です —
 | **Firings.TargetPropertyLabel** | 参照 | `Lookup(Statements.PropertyLabel via Target)` |
 | **Firings.TargetObjectText** | 参照 | `Lookup(Statements.ObjectText via Target)` |
 | **Firings.TargetIsConclusion** | 参照 | `Lookup(Statements.IsConclusion via Target)` |
+| **Firings.TargetSubjectNodeKey** | 参照 | `Lookup(Statements.SubjectNodeKey via Target)` |
+| **Firings.TargetObjectNodeKey** | 参照 | `Lookup(Statements.ObjectNodeKey via Target)` |
 | **Firings.TargetFirstFiredOrderKey** | 参照 | `Lookup(Statements.FirstFiredOrderKey via Target)` |
 | **Firings.FirstWords** | 参照 | `Lookup(Statements.Words via First)` |
 | **Firings.SecondWords** | 参照 | `Lookup(Statements.Words via Second)` |
@@ -564,6 +771,14 @@ _式の列は ドキュメント 記法によるルールの定義です —
 | **DisjointChecks.ViolationUnit** | 数式 | `If(And(RuleEnabled, FirstHolds, SecondHolds), 1, 0)` |
 | **DisjointChecks.AlarmText** | 数式 | `If(ViolationUnit = 1, Concat("Contradiction found. ", SubjectLabel, " is recorded as both parent and spouse of ", ObjectLabel, ". Check those facts and the selected disjoint rule."), "")` |
 | **DisjointChecks.Name** | 数式 | `DisjointCheckId` |
+| **Scenarios.Name** | 数式 | `Label` |
+| **Scenarios.GraphHasFactsToAdd** | 参照 | `Lookup(Graphs.HasFactsToAdd via Graph)` |
+| **Scenarios.IsAvailable** | 数式 | `Or(FactBaseline <> "next", GraphHasFactsToAdd)` |
+| **ScenarioFactChanges.Name** | 数式 | `ScenarioFactChangeId` |
+| **ScenarioRuleSettings.Name** | 数式 | `ScenarioRuleSettingId` |
+| **NodeLayouts.Name** | 数式 | `NodeLayoutId` |
+| **LayoutSlots.Name** | 数式 | `LayoutSlotId` |
+| **PageTexts.Name** | 数式 | `PageTextId` |
 
 ---
 

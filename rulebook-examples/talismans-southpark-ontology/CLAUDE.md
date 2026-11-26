@@ -15,10 +15,23 @@ documentation in many languages.
 
 ## Her page is the reference
 
-- `node testing/her-app/compare-with-her-app.mjs` runs her live page's own reasoner and
-  this project's Postgres views through the same 224 states and fails on any difference in
-  facts that hold, conclusion cards or contradiction alerts. Run it after any rulebook
-  change. It downloads her page each time, so it also reports when her page changes.
+- `node testing/her-app/compare-app-with-her-app.mjs` runs her whole page script against a
+  stub document and this project's real server side by side, gives both the same random
+  clicks, and fails on the first screen that differs. Run it after any change to the
+  rulebook or `app/`.
+- `node testing/her-app/compare-with-her-app.mjs` runs her reasoner and the Postgres views
+  through 224 fact-and-rule states.
+- Both download her page each time, so they also report when her page changes.
+
+## The app holds no rules
+
+`app/server.js` reads `vw_*` views and writes base tables; `app/public/app.js` draws what
+the server sends. A conclusion, card, alert, count, button state, label or layout that the
+page shows comes from a view column or a row (`PageTexts`, `Scenarios`, `NodeLayouts`...).
+If a behaviour needs code that decides something about facts or rules, the rulebook is
+missing a field: add it there. What the app may do itself is presentation: drawing,
+dragging, selection, and interpreting a button's declared baseline and changes
+(`runScenario` in `server.js`).
 - When her page and the rulebook disagree, the rulebook is wrong until shown otherwise.
   Read her page's script (it is one inline script) before changing a rule.
 
@@ -26,9 +39,11 @@ documentation in many languages.
 
 - **Do not copy her prose or her embedded images into the repo.** Her article is
   subscriber-only and her page text and illustrations are hers. Short interface strings
-  the model needs (rule explanations, source lines, card wording, alert wording) are rows;
-  long explanatory text is not. Portraits are linked to Fandom from `Things`, never
-  downloaded.
+  (headings, hints, rule explanations, source lines, card and alert wording) are
+  `PageTexts` and other rows; her long explanatory sections are not. Portraits are linked
+  to Fandom from `Things`, never downloaded.
+- **Never present the page as hers.** The byline and footer say it is a rebuild of her
+  explainer and link to the original.
 - **Candidate rows are data.** `Statements`, `Firings` and `DisjointChecks` hold every
   candidate over the declared cast. A new individual, class or literal value needs its
   candidate rows added to the rulebook too (the cross product with the existing cast, and

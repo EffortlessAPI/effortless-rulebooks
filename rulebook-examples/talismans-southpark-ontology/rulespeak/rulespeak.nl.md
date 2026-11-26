@@ -98,7 +98,10 @@ _ƒ markeert een berekende kolom._
 | Portrait Page | Een gedefinieerd attribuut. | _The Fandom page credited for the portrait._ |
 | Portrait Image | Een gedefinieerd attribuut. | _The original Fandom image._ |
 | Portrait Crop | Een gedefinieerd attribuut. | _The portrait's crop as an SVG viewBox: x y width height._ |
+| Portrait Width | Een gedefinieerd attribuut. | _The original image's width in pixels._ |
+| Portrait Height | Een gedefinieerd attribuut. | _The original image's height in pixels._ |
 | Name | Gelijk aan label. | _Order 1. The thing's name._ |
+| Node Key | Gelijk aan thing ID. | _Order 1. The key the graph draws this thing under._ |
 | Count of Children | Het totaal van parent unit over de statements gekoppeld aan de thing. | _Order 17. People this thing is a parent of, stated or concluded._ |
 | Count of Grandchildren | Het totaal van grandparent unit over de statements gekoppeld aan de thing. | _Order 17. People this thing is a grandparent of._ |
 | Count As Place | Het totaal van place unit over de statements gekoppeld aan de thing. | _Order 17. Holding attends facts whose object is this thing._ |
@@ -110,11 +113,11 @@ _ƒ markeert een berekende kolom._
 <details open>
 <summary>Voorbeeldgegevens</summary>
 
-| Label | Kind | Sort Order | Portrait Name | Portrait Page | Portrait Image | Portrait Crop | Name ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Marvin | individual | 1 | Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | Marvin | 1 | 0 | 0 | 1 | 0 | true | person |
-| Randy | individual | 2 | Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | Randy | 2 | 0 | 0 | 3 | 1 | true | person |
-| Sharon | individual | 3 | Sharon Marsh | https://southpark.fandom.com/wiki/Sharon_Marsh | https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest | 20 -10 390 390 | Sharon | 0 | 0 | 0 | 0 | 1 | true | person |
+| Label | Kind | Sort Order | Portrait Name | Portrait Page | Portrait Image | Portrait Crop | Portrait Width | Portrait Height | Name ƒ | Node Key ƒ | Count of Children ƒ | Count of Grandchildren ƒ | Count As Place ƒ | Count As Subject ƒ | Count As Object ƒ | Is in Graph ƒ | Node Kind ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Marvin | individual | 1 | Marvin Marsh | https://southpark.fandom.com/wiki/Marvin_Marsh | https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest | 48 -5 280 280 | 375 | 536 | Marvin | Marvin | 1 | 0 | 0 | 1 | 0 | true | person |
+| Randy | individual | 2 | Randy Marsh | https://southpark.fandom.com/wiki/Randy_Marsh | https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest | 0 -10 428 428 | 428 | 1057 | Randy | Randy | 2 | 0 | 0 | 3 | 1 | true | person |
+| Sharon | individual | 3 | Sharon Marsh | https://southpark.fandom.com/wiki/Sharon_Marsh | https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest | 20 -10 390 390 | 439 | 1049 | Sharon | Sharon | 0 | 0 | 0 | 0 | 1 | true | person |
 
 _ƒ markeert een berekende kolom._
 
@@ -136,16 +139,21 @@ _ƒ markeert een berekende kolom._
 | Range Class | Een gedefinieerd attribuut. | _The class the range rule gives this property's object._ |
 | Disjoint With | Een gedefinieerd attribuut. | _A property that may not link the same pair, in the same direction, as this one._ |
 | Sort Order | Een gedefinieerd attribuut. | _Position in the Add fact form's property list._ |
+| Value Node Label | Een gedefinieerd attribuut. | _The small label under a value node for this property: 'role value' or 'number value'._ |
+| Current Value Wording | Een gedefinieerd attribuut. | _How the Add fact form names a replaced value, as in 'Stan now has grade level 5'._ |
+| Input Name | Een gedefinieerd attribuut. | _How the integer check names this property's value, as in 'for grade level'._ |
+| Record Kind | Een gedefinieerd attribuut. | _The word the current-record summary uses for this property's values: role, grade or school._ |
+| Record Order | Een gedefinieerd attribuut. | _Position of this property in the current-record summary._ |
 | Name | Gelijk aan label. | _Order 1. The property's wording._ |
 
 <details open>
 <summary>Voorbeeldgegevens</summary>
 
-| Label | Property Kind | Datatype | Is User Addable | Has One Current Value | Is Symmetric | Sort Order | Name ƒ |
-|---|---|---|---|---|---|---|---|
-| is parent of | object | — | true | false | false | 1 | is parent of |
-| is child of | object | — | true | false | false | 2 | is child of |
-| is spouse of | object | — | true | false | true | 3 | is spouse of |
+| Label | Property Kind | Datatype | Is User Addable | Has One Current Value | Is Symmetric | Sort Order | Value Node Label | Current Value Wording | Input Name | Record Kind | Record Order | Name ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| is parent of | object | — | true | false | false | 1 | — | — | — | — | — | is parent of |
+| is child of | object | — | true | false | false | 2 | — | — | — | — | — | is child of |
+| is spouse of | object | — | true | false | true | 3 | — | — | — | — | — | is spouse of |
 
 _ƒ markeert een berekende kolom._
 
@@ -204,15 +212,24 @@ _ƒ markeert een berekende kolom._
 | Place Unit | Bepaald op prioriteit: 1 als al het volgende geldt: de vlag ‘holds’ is gezet en de property ‘attends’ is; in alle andere gevallen 0. | _Order 16. 1 for a holding attends link._ |
 | First Fired Order Key | De laagste waarde van order key over de firings van het statement die fired unit zijn. | _Order 15. Order key of the first rule application that concludes this fact, in the page reasoner's order._ |
 | Count of Chosen Firings | Het totaal van chosen unit over de firings gekoppeld aan het statement. | _Order 20. Rule applications shown as this fact's conclusion card: one for a conclusion, zero otherwise._ |
+| Subject Node Key | Gelijk aan subject. | _Order 1. The graph node this fact starts from._ |
+| Object Node Key | Bepaald op prioriteit: ‘literal|’, gevolgd door de object value, gevolgd door ‘|’, gevolgd door de property datatype als de object thing leeg is; in alle andere gevallen de object thing. | _Order 2. The graph node this fact points at: the thing, or one node per value and datatype._ |
+| Subject Node Kind | Overgenomen van de gekoppelde subject. | _Order 19. How the graph draws the subject._ |
+| Object Thing Node Kind | Overgenomen van de gekoppelde object thing. | _Order 19. How the graph draws the object thing._ |
+| Object Node Kind | Bepaald op prioriteit: ‘value’ als de object thing leeg is; in alle andere gevallen de object thing node kind. | _Order 20. How the graph draws the object: a value, a class, a place or a person._ |
+| Object Value Node Label | Overgenomen van de gekoppelde property. | _Order 1. The small label under a value node._ |
+| Count of Violations As First | Het totaal van violation unit over de disjoint checks gekoppeld aan het statement. | _Order 18. Violated disjointness checks naming this fact first._ |
+| Count of Violations As Second | Het totaal van violation unit over de disjoint checks gekoppeld aan het statement. | _Order 18. Violated disjointness checks naming this fact second._ |
+| Is in Contradiction | Waar wanneer ten minste één van het volgende geldt: de count of violations as first groter is dan 0 of de count of violations as second groter is dan 0. | _Order 19. Part of a contradiction the disjoint rule found; drawn in the alarm colour._ |
 
 <details open>
 <summary>Voorbeeldgegevens</summary>
 
-| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 0 |
-| — | false | false | false | false | 0 | 101 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 |
-| — | false | false | false | false | 0 | 102 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 |
+| Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 101 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 102 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
 
 _ƒ markeert een berekende kolom._
 
@@ -234,6 +251,8 @@ _ƒ markeert een berekende kolom._
 | Target Property Label | Overgenomen van de gekoppelde target. | _Order 2. The concluded fact's property._ |
 | Target Object Text | Overgenomen van de gekoppelde target. | _Order 3. The concluded fact's object._ |
 | Target is Conclusion | Waar wanneer de gekoppelde target is een conclusion. | _Order 17. Whether the concluded fact is new._ |
+| Target Subject Node Key | Overgenomen van de gekoppelde target. | _Order 2. The concluded fact's subject node._ |
+| Target Object Node Key | Overgenomen van de gekoppelde target. | _Order 3. The concluded fact's object node._ |
 | Target First Fired Order Key | Overgenomen van de gekoppelde target. | _Order 16. The order key of the concluded fact's first application._ |
 | First Words | Overgenomen van de gekoppelde first. | _Order 3. The premise as the card quotes it._ |
 | Second Words | Overgenomen van de gekoppelde second. | _Order 3. The second premise as the card quotes it._ |
@@ -260,11 +279,11 @@ _ƒ markeert een berekende kolom._
 <details open>
 <summary>Voorbeeldgegevens</summary>
 
-| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second Sort Order ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | — | 0 | 0 | 0 | 0 | 0 | 101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 101 | — | 0 | 0 | 0 | 0 | 0 | 10101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 102 | — | 0 | 0 | 0 | 0 | 0 | 10201000 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
+| Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second Sort Order ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | — | 0 | 0 | 0 | 0 | 0 | 101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 101 | — | 0 | 0 | 0 | 0 | 0 | 10101000 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 102 | — | 0 | 0 | 0 | 0 | 0 | 10201000 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
 
 _ƒ markeert een berekende kolom._
 
@@ -299,6 +318,144 @@ _ƒ markeert een berekende kolom._
 
 </details>
 
+| Term | Beschrijving | Toelichting |
+|------|-------------|-------------------|
+| **Scenario** | The page's buttons. Each one is a fact baseline, explicit fact changes and rule settings, applied in that order. | — |
+| Graph | Een gedefinieerd attribuut. | _The graph._ |
+| Label | Een gedefinieerd attribuut. | _The button's text._ |
+| Note | Een gedefinieerd attribuut. | _The note shown under the buttons after this one is pressed; blank clears it._ |
+| Sort Order | Een gedefinieerd attribuut. | _Position among the buttons._ |
+| Button Group | Een gedefinieerd attribuut. | _'stan' for the two imagined changes, 'facts' for the buttons under the fact list._ |
+| Is Primary | Waar wanneer een lege tekenreeks. | _Drawn as the filled button._ |
+| Fact Baseline | Een gedefinieerd attribuut. | _What happens to every listed fact first: keep, built-in (teaching facts on, others off), built-in-detail, all-off, activate-all (each switched on in list order), or next (the next fact on)._ |
+| Layout | Een gedefinieerd attribuut. | _The node layout the graph returns to; blank keeps the current positions._ |
+| Clears Selection | Waar wanneer een lege tekenreeks. | _Clears the selected node or line._ |
+| Clears Form Message | Waar wanneer een lege tekenreeks. | _Clears the Add fact form's message._ |
+| Name | Gelijk aan label. | _Order 1. The button's text._ |
+| Graph Has Facts to Add | Waar wanneer de gekoppelde graph heeft een facts to add. | _Order 7. Whether a listed fact can still be added._ |
+| Is Available | Waar wanneer ten minste één van het volgende geldt: de fact baseline niet ‘next’ is of de vlag ‘graph has facts to add’ is gezet. | _Order 8. False only for Add next fact once every listed fact is in effect._ |
+
+<details open>
+<summary>Voorbeeldgegevens</summary>
+
+| Label | Note | Sort Order | Button Group | Is Primary | Fact Baseline | Layout | Clears Selection | Clears Form Message | Name ƒ | Graph Has Facts to Add ƒ | Is Available ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Move Stan to grade 5 | This imagined change updates Stan’s grade to 5. His identifier, Person statement and family links stay the same. His other selected details are unchanged. | 1 | stan | false | keep | — | true | true | Move Stan to grade 5 | false | true |
+| Stan leaves school | This imagined change clears Stan’s current school details. His identifier, Person statement and family links remain. Removing a current fact does not say that its opposite is true; school history needs dates. | 2 | stan | false | keep | — | true | true | Stan leaves school | false | true |
+| Add next fact | — | 3 | facts | true | next | — | false | false | Add next fact | false | false |
+
+_ƒ markeert een berekende kolom._
+
+</details>
+
+| Term | Beschrijving | Toelichting |
+|------|-------------|-------------------|
+| **Scenario Fact Change** | Fact changes a button makes after its baseline. A blank object key matches every listed value of the property. | — |
+| Scenario | Een gedefinieerd attribuut. | _The button._ |
+| Subject | Een gedefinieerd attribuut. | _The subject whose facts change._ |
+| Property | Een gedefinieerd attribuut. | _The property whose facts change._ |
+| Object Key | Een gedefinieerd attribuut. | _The object thing's key or the literal value; blank for every listed value._ |
+| Action | Een gedefinieerd attribuut. | _'on' switches the fact on as the newest value; 'off' switches it off._ |
+| Adds to List | Waar wanneer een lege tekenreeks. | _Adds the fact to the fact list first when it is not listed._ |
+| Sort Order | Een gedefinieerd attribuut. | _Order of the change within the button._ |
+| Name | Gelijk aan scenario fact change ID. | _Order 1. The change's key._ |
+
+<details open>
+<summary>Voorbeeldgegevens</summary>
+
+| Object Key | Action | Adds to List | Sort Order | Name ƒ |
+|---|---|---|---|---|
+| Person | on | true | 1 | stan-grade-five:Stan\|isA\|Person |
+| 5 | on | true | 2 | stan-grade-five:Stan\|hasGradeLevel\|5 |
+| Person | on | true | 3 | stan-leaves-school:Stan\|isA\|Person |
+
+_ƒ markeert een berekende kolom._
+
+</details>
+
+| Term | Beschrijving | Toelichting |
+|------|-------------|-------------------|
+| **Scenario Rule Setting** | Rule switches a button sets. | — |
+| Scenario | Een gedefinieerd attribuut. | _The button._ |
+| Rule | Een gedefinieerd attribuut. | _The rule switch._ |
+| Is Enabled | Waar wanneer een lege tekenreeks. | _The state the button puts the switch in._ |
+| Name | Gelijk aan scenario rule setting ID. | _Order 1. The setting's key._ |
+
+<details open>
+<summary>Voorbeeldgegevens</summary>
+
+| Is Enabled | Name ƒ |
+|---|---|
+| false | reset-original:inverse |
+| false | reset-original:symmetric |
+| false | reset-original:chain |
+
+_ƒ markeert een berekende kolom._
+
+</details>
+
+| Term | Beschrijving | Toelichting |
+|------|-------------|-------------------|
+| **Node Layout** | Node positions in the graph's 380 by 480 drawing, one set per layout. | — |
+| Layout | Een gedefinieerd attribuut. | _The layout: 'default' or 'stan-details'._ |
+| Node Key | Een gedefinieerd attribuut. | _The node: a thing's key, or literal\|value\|datatype._ |
+| X | Een gedefinieerd attribuut. | _Horizontal position._ |
+| Y | Een gedefinieerd attribuut. | _Vertical position._ |
+| Name | Gelijk aan node layout ID. | _Order 1. The position's key._ |
+
+<details open>
+<summary>Voorbeeldgegevens</summary>
+
+| Layout | Node Key | X | Y | Name ƒ |
+|---|---|---|---|---|
+| default | Marvin | 70 | 45 | default:Marvin |
+| default | Randy | 195 | 125 | default:Randy |
+| default | Sharon | 318 | 55 | default:Sharon |
+
+_ƒ markeert een berekende kolom._
+
+</details>
+
+| Term | Beschrijving | Toelichting |
+|------|-------------|-------------------|
+| **Layout Slot** | Places for nodes no layout positions, used in turn. | — |
+| Sort Order | Een gedefinieerd attribuut. | _Order in which slots are used._ |
+| X | Een gedefinieerd attribuut. | _Horizontal position._ |
+| Y | Een gedefinieerd attribuut. | _Vertical position._ |
+| Name | Gelijk aan layout slot ID. | _Order 1. The slot's key._ |
+
+<details open>
+<summary>Voorbeeldgegevens</summary>
+
+| Sort Order | X | Y | Name ƒ |
+|---|---|---|---|
+| 1 | 330 | 135 | slot-1 |
+| 2 | 45 | 120 | slot-2 |
+| 3 | 330 | 400 | slot-3 |
+
+_ƒ markeert een berekende kolom._
+
+</details>
+
+| Term | Beschrijving | Toelichting |
+|------|-------------|-------------------|
+| **Page Text** | The page's wording, one row per string. {name}-style placeholders are filled by the page. | — |
+| Text | Een gedefinieerd attribuut. | _The string._ |
+| Name | Gelijk aan page text ID. | _Order 1. The string's key._ |
+
+<details open>
+<summary>Voorbeeldgegevens</summary>
+
+| Text | Name ƒ |
+|---|---|
+| South Park Ontology Explainer, on one rulebook | page-title |
+| A rulebook rebuild of the explainer by | byline-prefix |
+| Jessica Talisman | byline-author |
+
+_ƒ markeert een berekende kolom._
+
+</details>
+
 ## 2 Feittypen
 
 - een **firing kind** verwijst naar precies één **rule**
@@ -313,6 +470,12 @@ _ƒ markeert een berekende kolom._
 - een **disjoint check** verwijst naar precies één **graph**
 - een **disjoint check** verwijst naar precies één **rule**
 - een **disjoint check** verwijst naar precies één **statement**
+- een **scenario** verwijst naar precies één **graph**
+- een **scenario fact change** verwijst naar precies één **scenario**
+- een **scenario fact change** verwijst naar precies één **thing**
+- een **scenario fact change** verwijst naar precies één **property**
+- een **scenario rule setting** verwijst naar precies één **scenario**
+- een **scenario rule setting** verwijst naar precies één **rule**
 
 ## 3 Operationele regels
 
@@ -341,6 +504,18 @@ boolean die het regelboek al berekent (verwezen als DR-N in de definitieregels).
 - Een disjoint check **moet** naar precies één rule verwijzen.
 - Een disjoint check **moet** naar precies één statement verwijzen als zijn first.
 - Een disjoint check **moet** naar precies één statement verwijzen als zijn second.
+- Een scenario **moet** naar precies één graph verwijzen.
+- Een scenario **moet** een label; een sort order; een button group; en een fact baseline hebben, en vastleggen of het is primary; of het is clears selection; en of het is clears form message.
+- Een scenario fact change **moet** naar precies één scenario verwijzen.
+- Een scenario fact change **moet** naar precies één thing verwijzen als zijn subject.
+- Een scenario fact change **moet** naar precies één property verwijzen.
+- Een scenario fact change **moet** een action en een sort order hebben, en vastleggen of het is adds to list.
+- Een scenario rule setting **moet** naar precies één scenario verwijzen.
+- Een scenario rule setting **moet** naar precies één rule verwijzen.
+- Een scenario rule setting **moet** vastleggen of het is enabled.
+- Een node layout **moet** een layout; een node key; een x; en een y hebben.
+- Een layout slot **moet** een sort order; een x; en een y hebben.
+- Een page text **moet** een text hebben.
 
 ## 4 Definitieregels
 
@@ -370,91 +545,111 @@ formulering trouw maar houterig is — een signaal voor optionele herformulering
 | **DR-16 Name** | Een firing kind: name is gelijk aan wording. |
 | **DR-17 Rule Enabled** | Een firing kind: rule enabled geldt wanneer de gekoppelde rule is enabled. |
 | **DR-18 Name** | Een thing: name is gelijk aan label. |
-| **DR-19 Count of Children** | Een thing: count of children is het totaal van parent unit over de statements gekoppeld aan de thing. |
-| **DR-20 Count of Grandchildren** | Een thing: count of grandchildren is het totaal van grandparent unit over de statements gekoppeld aan de thing. |
-| **DR-21 Count As Place** | Een thing: count as place is het totaal van place unit over de statements gekoppeld aan de thing. |
-| **DR-22 Count As Subject** | Een thing: count as subject is het totaal van holds unit over de statements gekoppeld aan de thing. |
-| **DR-23 Count As Object** | Een thing: count as object is het totaal van holds unit over de statements gekoppeld aan de thing. |
-| **DR-24 Is in Graph** | Een thing geldt als in graph als ten minste één van het volgende geldt: de count as subject groter is dan 0 of de count as object groter is dan 0. |
-| **DR-25 Node Kind** | Het veld ‘node kind’ van de thing wordt bepaald volgens de volgende prioriteit:<br>1. ‘class’, als de kind ‘class’ is;<br>2. ‘place’, als de count as place groter is dan 0;<br>3. in alle andere gevallen ‘person’. |
-| **DR-26 Name** | Een property: name is gelijk aan label. |
-| **DR-27 Subject Label** | Een statement: subject label — overgenomen van de gekoppelde subject. |
-| **DR-28 Property Label** | Een statement: property label — overgenomen van de gekoppelde property. |
-| **DR-29 Object Label** | Een statement: object label — overgenomen van de gekoppelde object thing. |
-| **DR-30 Property Datatype** | Een statement: property datatype — overgenomen van de gekoppelde property. |
-| **DR-31 Property Has One Current Value** | Een statement: property has one current value is waar wanneer de gekoppelde property heeft een one current value. |
-| **DR-32 Property Domain Class** | Een statement: property domain class — overgenomen van de gekoppelde property. |
-| **DR-33 Property Range Class** | Een statement: property range class — overgenomen van de gekoppelde property. |
-| **DR-34 Literal Quote** | Een statement: literal quote — overgenomen van de gekoppelde graph. |
-| **DR-35 Literal Type Marker** | Een statement: literal type marker — overgenomen van de gekoppelde graph. |
-| **DR-36 Built in Source Text** | Een statement: built in source text — overgenomen van de gekoppelde graph. |
-| **DR-37 User Source Text** | Een statement: user source text — overgenomen van de gekoppelde graph. |
-| **DR-38 Next Fact Sort Order** | Een statement: next fact sort order — overgenomen van de gekoppelde graph. |
-| **DR-39 Is Literal** | Een statement geldt als literal als de object thing leeg is. |
-| **DR-40 Object Text** | Het veld ‘object text’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. de object value, als de object thing leeg is;<br>2. in alle andere gevallen de object label. |
-| **DR-41 Name** | Een statement: name wordt berekend als de subject label, gevolgd door een spatie, gevolgd door de property label, gevolgd door een spatie, gevolgd door de object text. |
-| **DR-42 Words** | Een statement: words wordt berekend als de subject label, gevolgd door een spatie, gevolgd door de property label, gevolgd door een spatie, gevolgd door de literal quote, gevolgd door de object value, gevolgd door de literal quote, gevolgd door de literal type marker, gevolgd door de property datatype als de object thing leeg is, in alle andere gevallen de object label. ⚠︎ mechanisch <!-- rulespeak:reword --> |
-| **DR-43 Source** | Het veld ‘source’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. de built in source text, als de vlag ‘built in’ is gezet;<br>2. in alle andere gevallen de user source text. |
-| **DR-44 Subject Property Key** | Een statement: subject property key wordt berekend als de subject, gevolgd door ‘|’, gevolgd door de property. |
-| **DR-45 Latest Sibling Activation Seq** | Een statement: latest sibling activation seq is de hoogste waarde van activation seq over de statements gekoppeld aan het statement. |
-| **DR-46 Is in Effect** | Een statement geldt als in effect als al het volgende geldt: de vlag ‘stated’ is gezet en ten minste één van het volgende geldt: de vlag ‘property has one current value’ niet is gezet of de activation seq de latest sibling activation seq is. |
-| **DR-47 Listed Unit** | Het veld ‘listed unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als de vlag ‘listed’ is gezet;<br>2. in alle andere gevallen 0. |
-| **DR-48 In Effect Unit** | Het veld ‘in effect unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als de vlag ‘in effect’ is gezet;<br>2. in alle andere gevallen 0. |
-| **DR-49 Listed Off Unit** | Het veld ‘listed off unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘listed’ is gezet en de vlag ‘in effect’ niet is gezet;<br>2. in alle andere gevallen 0. |
-| **DR-50 Is Next to Add** | Een statement geldt als een next to add als al het volgende geldt: de listed off unit 1 is en de sort order de next fact sort order is. |
-| **DR-51 Count of Inverse Firings** | Een statement: count of inverse firings is het totaal van inverse fired unit over de firings gekoppeld aan het statement. |
-| **DR-52 Count of Symmetric Firings** | Een statement: count of symmetric firings is het totaal van symmetric fired unit over de firings gekoppeld aan het statement. |
-| **DR-53 Holds Before Chain** | Een statement geldt als voldoend aan: before chain als ten minste één van het volgende geldt: de vlag ‘in effect’ is gezet; de count of inverse firings groter is dan 0; of de count of symmetric firings groter is dan 0. |
-| **DR-54 Count of Chain Firings** | Een statement: count of chain firings is het totaal van chain fired unit over de firings gekoppeld aan het statement. |
-| **DR-55 Holds Before Typing** | Een statement geldt als voldoend aan: before typing als ten minste één van het volgende geldt: de vlag ‘holds before chain’ is gezet of de count of chain firings groter is dan 0. |
-| **DR-56 Count of Type Firings** | Een statement: count of type firings is het totaal van type fired unit over de firings gekoppeld aan het statement. |
-| **DR-57 Holds** | Een statement geldt als voldoend aan: als ten minste één van het volgende geldt: de vlag ‘holds before typing’ is gezet of de count of type firings groter is dan 0. |
-| **DR-58 Is Conclusion** | Een statement geldt als een conclusion als al het volgende geldt: de vlag ‘holds’ is gezet en de vlag ‘in effect’ niet is gezet. |
-| **DR-59 Holds Unit** | Het veld ‘holds unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als de vlag ‘holds’ is gezet;<br>2. in alle andere gevallen 0. |
-| **DR-60 Conclusion Unit** | Het veld ‘conclusion unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als de vlag ‘conclusion’ is gezet;<br>2. in alle andere gevallen 0. |
-| **DR-61 Parent Unit** | Het veld ‘parent unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘holds’ is gezet en de property ‘isParentOf’ is;<br>2. in alle andere gevallen 0. |
-| **DR-62 Grandparent Unit** | Het veld ‘grandparent unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘holds’ is gezet en de property ‘isGrandparentOf’ is;<br>2. in alle andere gevallen 0. |
-| **DR-63 Place Unit** | Het veld ‘place unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘holds’ is gezet en de property ‘attends’ is;<br>2. in alle andere gevallen 0. |
-| **DR-64 First Fired Order Key** | Een statement: first fired order key is de laagste waarde van order key over de firings van het statement die fired unit zijn. |
-| **DR-65 Count of Chosen Firings** | Een statement: count of chosen firings is het totaal van chosen unit over de firings gekoppeld aan het statement. |
-| **DR-66 Rule Enabled** | Een firing: rule enabled geldt wanneer de gekoppelde rule is enabled. |
-| **DR-67 Kind Wording** | Een firing: kind wording — overgenomen van de gekoppelde kind. |
-| **DR-68 Kind Sort Order** | Een firing: kind sort order — overgenomen van de gekoppelde kind. |
-| **DR-69 Target Name** | Een firing: target name — overgenomen van de gekoppelde target. |
-| **DR-70 Target Subject Label** | Een firing: target subject label — overgenomen van de gekoppelde target. |
-| **DR-71 Target Property Label** | Een firing: target property label — overgenomen van de gekoppelde target. |
-| **DR-72 Target Object Text** | Een firing: target object text — overgenomen van de gekoppelde target. |
-| **DR-73 Target is Conclusion** | Een firing: target is conclusion is waar wanneer de gekoppelde target is een conclusion. |
-| **DR-74 Target First Fired Order Key** | Een firing: target first fired order key — overgenomen van de gekoppelde target. |
-| **DR-75 First Words** | Een firing: first words — overgenomen van de gekoppelde first. |
-| **DR-76 Second Words** | Een firing: second words — overgenomen van de gekoppelde second. |
-| **DR-77 First is in Effect** | Een firing: first is in effect geldt wanneer de gekoppelde first is in effect. |
-| **DR-78 First Holds Before Chain** | Een firing: first holds before chain geldt wanneer de gekoppelde first is holds before chain. |
-| **DR-79 Second Holds Before Chain** | Een firing: second holds before chain geldt wanneer de gekoppelde second is holds before chain. |
-| **DR-80 First Holds Before Typing** | Een firing: first holds before typing geldt wanneer de gekoppelde first is holds before typing. |
-| **DR-81 First Property** | Een firing: first property — overgenomen van de gekoppelde first. |
-| **DR-82 First Property Domain Class** | Een firing: first property domain class — overgenomen van de gekoppelde first. |
-| **DR-83 First Property Range Class** | Een firing: first property range class — overgenomen van de gekoppelde first. |
-| **DR-84 First Sort Order** | Een firing: first sort order — overgenomen van de gekoppelde first. |
-| **DR-85 Second Sort Order** | Een firing: second sort order — overgenomen van de gekoppelde second. |
-| **DR-86 Inverse Fired Unit** | Het veld ‘inverse fired unit’ van de firing wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘rule enabled’ is gezet; de kind ‘inverse’ is; en de vlag ‘first is in effect’ is gezet;<br>2. in alle andere gevallen 0. |
-| **DR-87 Symmetric Fired Unit** | Het veld ‘symmetric fired unit’ van de firing wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘rule enabled’ is gezet; de kind ‘symmetric’ is; en de vlag ‘first is in effect’ is gezet;<br>2. in alle andere gevallen 0. |
-| **DR-88 Chain Fired Unit** | Het veld ‘chain fired unit’ van de firing wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘rule enabled’ is gezet; de kind ‘chain’ is; de vlag ‘first holds before chain’ is gezet; en de vlag ‘second holds before chain’ is gezet;<br>2. in alle andere gevallen 0. |
-| **DR-89 Type Fired Unit** | Het veld ‘type fired unit’ van de firing wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘rule enabled’ is gezet; ten minste één van het volgende geldt: de kind ‘domain’ is of de kind ‘range’ is; en de vlag ‘first holds before typing’ is gezet;<br>2. in alle andere gevallen 0. |
-| **DR-90 Fired Unit** | Een firing: fired unit wordt berekend als de inverse fired unit plus de symmetric fired unit plus de chain fired unit plus de type fired unit. |
-| **DR-91 Order Key** | Een firing: order key wordt berekend als de first sort order maal 100000 plus de kind sort order maal 1000 plus 0 als de second leeg is, in alle andere gevallen de second sort order. |
-| **DR-92 Is Chosen** | Een firing geldt als een chosen als al het volgende geldt: de fired unit 1 is; de vlag ‘target is conclusion’ is gezet; en de order key de target first fired order key is. |
-| **DR-93 Chosen Unit** | Het veld ‘chosen unit’ van de firing wordt bepaald volgens de volgende prioriteit:<br>1. 1, als de vlag ‘chosen’ is gezet;<br>2. in alle andere gevallen 0. |
-| **DR-94 Card Text** | Het veld ‘card text’ van de firing wordt bepaald volgens de volgende prioriteit:<br>1. ‘Worked out by the ’, gevolgd door de kind wording, gevolgd door ‘ from “’, gevolgd door de first words, gevolgd door ‘”’, gevolgd door ‘ and “’, gevolgd door de second words, gevolgd door ‘”’ als de kind ‘chain’ is, in alle andere gevallen ‘ and “’, gevolgd door de first property, gevolgd door ‘ has domain ’, gevolgd door de first property domain class, gevolgd door ‘”’ als de kind ‘domain’ is, in alle andere gevallen ‘ and “’, gevolgd door de first property, gevolgd door ‘ has range ’, gevolgd door de first property range class, gevolgd door ‘”’, gevolgd door een punt, als de vlag ‘chosen’ is gezet;<br>2. in alle andere gevallen een lege tekenreeks. ⚠︎ mechanisch <!-- rulespeak:reword --> |
-| **DR-95 Name** | Een firing: name is gelijk aan firing ID. |
-| **DR-96 Rule Enabled** | Een disjoint check: rule enabled geldt wanneer de gekoppelde rule is enabled. |
-| **DR-97 First Holds** | Een disjoint check: first holds geldt wanneer de gekoppelde first is holds. |
-| **DR-98 Second Holds** | Een disjoint check: second holds geldt wanneer de gekoppelde second is holds. |
-| **DR-99 Subject Label** | Een disjoint check: subject label — overgenomen van de gekoppelde first. |
-| **DR-100 Object Label** | Een disjoint check: object label — overgenomen van de gekoppelde first. |
-| **DR-101 Violation Unit** | Het veld ‘violation unit’ van de disjoint check wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘rule enabled’ is gezet; de vlag ‘first holds’ is gezet; en de vlag ‘second holds’ is gezet;<br>2. in alle andere gevallen 0. |
-| **DR-102 Alarm Text** | Het veld ‘alarm text’ van de disjoint check wordt bepaald volgens de volgende prioriteit:<br>1. ‘Contradiction found. ’, gevolgd door de subject label, gevolgd door ‘ is recorded as both parent and spouse of ’, gevolgd door de object label, gevolgd door ‘. Check those facts and the selected disjoint rule.’, als de violation unit 1 is;<br>2. in alle andere gevallen een lege tekenreeks. |
-| **DR-103 Name** | Een disjoint check: name is gelijk aan disjoint check ID. |
+| **DR-19 Node Key** | Een thing: node key is gelijk aan thing ID. |
+| **DR-20 Count of Children** | Een thing: count of children is het totaal van parent unit over de statements gekoppeld aan de thing. |
+| **DR-21 Count of Grandchildren** | Een thing: count of grandchildren is het totaal van grandparent unit over de statements gekoppeld aan de thing. |
+| **DR-22 Count As Place** | Een thing: count as place is het totaal van place unit over de statements gekoppeld aan de thing. |
+| **DR-23 Count As Subject** | Een thing: count as subject is het totaal van holds unit over de statements gekoppeld aan de thing. |
+| **DR-24 Count As Object** | Een thing: count as object is het totaal van holds unit over de statements gekoppeld aan de thing. |
+| **DR-25 Is in Graph** | Een thing geldt als in graph als ten minste één van het volgende geldt: de count as subject groter is dan 0 of de count as object groter is dan 0. |
+| **DR-26 Node Kind** | Het veld ‘node kind’ van de thing wordt bepaald volgens de volgende prioriteit:<br>1. ‘class’, als de kind ‘class’ is;<br>2. ‘place’, als de count as place groter is dan 0;<br>3. in alle andere gevallen ‘person’. |
+| **DR-27 Name** | Een property: name is gelijk aan label. |
+| **DR-28 Subject Label** | Een statement: subject label — overgenomen van de gekoppelde subject. |
+| **DR-29 Property Label** | Een statement: property label — overgenomen van de gekoppelde property. |
+| **DR-30 Object Label** | Een statement: object label — overgenomen van de gekoppelde object thing. |
+| **DR-31 Property Datatype** | Een statement: property datatype — overgenomen van de gekoppelde property. |
+| **DR-32 Property Has One Current Value** | Een statement: property has one current value is waar wanneer de gekoppelde property heeft een one current value. |
+| **DR-33 Property Domain Class** | Een statement: property domain class — overgenomen van de gekoppelde property. |
+| **DR-34 Property Range Class** | Een statement: property range class — overgenomen van de gekoppelde property. |
+| **DR-35 Literal Quote** | Een statement: literal quote — overgenomen van de gekoppelde graph. |
+| **DR-36 Literal Type Marker** | Een statement: literal type marker — overgenomen van de gekoppelde graph. |
+| **DR-37 Built in Source Text** | Een statement: built in source text — overgenomen van de gekoppelde graph. |
+| **DR-38 User Source Text** | Een statement: user source text — overgenomen van de gekoppelde graph. |
+| **DR-39 Next Fact Sort Order** | Een statement: next fact sort order — overgenomen van de gekoppelde graph. |
+| **DR-40 Is Literal** | Een statement geldt als literal als de object thing leeg is. |
+| **DR-41 Object Text** | Het veld ‘object text’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. de object value, als de object thing leeg is;<br>2. in alle andere gevallen de object label. |
+| **DR-42 Name** | Een statement: name wordt berekend als de subject label, gevolgd door een spatie, gevolgd door de property label, gevolgd door een spatie, gevolgd door de object text. |
+| **DR-43 Words** | Een statement: words wordt berekend als de subject label, gevolgd door een spatie, gevolgd door de property label, gevolgd door een spatie, gevolgd door de literal quote, gevolgd door de object value, gevolgd door de literal quote, gevolgd door de literal type marker, gevolgd door de property datatype als de object thing leeg is, in alle andere gevallen de object label. ⚠︎ mechanisch <!-- rulespeak:reword --> |
+| **DR-44 Source** | Het veld ‘source’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. de built in source text, als de vlag ‘built in’ is gezet;<br>2. in alle andere gevallen de user source text. |
+| **DR-45 Subject Property Key** | Een statement: subject property key wordt berekend als de subject, gevolgd door ‘|’, gevolgd door de property. |
+| **DR-46 Latest Sibling Activation Seq** | Een statement: latest sibling activation seq is de hoogste waarde van activation seq over de statements gekoppeld aan het statement. |
+| **DR-47 Is in Effect** | Een statement geldt als in effect als al het volgende geldt: de vlag ‘stated’ is gezet en ten minste één van het volgende geldt: de vlag ‘property has one current value’ niet is gezet of de activation seq de latest sibling activation seq is. |
+| **DR-48 Listed Unit** | Het veld ‘listed unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als de vlag ‘listed’ is gezet;<br>2. in alle andere gevallen 0. |
+| **DR-49 In Effect Unit** | Het veld ‘in effect unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als de vlag ‘in effect’ is gezet;<br>2. in alle andere gevallen 0. |
+| **DR-50 Listed Off Unit** | Het veld ‘listed off unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘listed’ is gezet en de vlag ‘in effect’ niet is gezet;<br>2. in alle andere gevallen 0. |
+| **DR-51 Is Next to Add** | Een statement geldt als een next to add als al het volgende geldt: de listed off unit 1 is en de sort order de next fact sort order is. |
+| **DR-52 Count of Inverse Firings** | Een statement: count of inverse firings is het totaal van inverse fired unit over de firings gekoppeld aan het statement. |
+| **DR-53 Count of Symmetric Firings** | Een statement: count of symmetric firings is het totaal van symmetric fired unit over de firings gekoppeld aan het statement. |
+| **DR-54 Holds Before Chain** | Een statement geldt als voldoend aan: before chain als ten minste één van het volgende geldt: de vlag ‘in effect’ is gezet; de count of inverse firings groter is dan 0; of de count of symmetric firings groter is dan 0. |
+| **DR-55 Count of Chain Firings** | Een statement: count of chain firings is het totaal van chain fired unit over de firings gekoppeld aan het statement. |
+| **DR-56 Holds Before Typing** | Een statement geldt als voldoend aan: before typing als ten minste één van het volgende geldt: de vlag ‘holds before chain’ is gezet of de count of chain firings groter is dan 0. |
+| **DR-57 Count of Type Firings** | Een statement: count of type firings is het totaal van type fired unit over de firings gekoppeld aan het statement. |
+| **DR-58 Holds** | Een statement geldt als voldoend aan: als ten minste één van het volgende geldt: de vlag ‘holds before typing’ is gezet of de count of type firings groter is dan 0. |
+| **DR-59 Is Conclusion** | Een statement geldt als een conclusion als al het volgende geldt: de vlag ‘holds’ is gezet en de vlag ‘in effect’ niet is gezet. |
+| **DR-60 Holds Unit** | Het veld ‘holds unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als de vlag ‘holds’ is gezet;<br>2. in alle andere gevallen 0. |
+| **DR-61 Conclusion Unit** | Het veld ‘conclusion unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als de vlag ‘conclusion’ is gezet;<br>2. in alle andere gevallen 0. |
+| **DR-62 Parent Unit** | Het veld ‘parent unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘holds’ is gezet en de property ‘isParentOf’ is;<br>2. in alle andere gevallen 0. |
+| **DR-63 Grandparent Unit** | Het veld ‘grandparent unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘holds’ is gezet en de property ‘isGrandparentOf’ is;<br>2. in alle andere gevallen 0. |
+| **DR-64 Place Unit** | Het veld ‘place unit’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘holds’ is gezet en de property ‘attends’ is;<br>2. in alle andere gevallen 0. |
+| **DR-65 First Fired Order Key** | Een statement: first fired order key is de laagste waarde van order key over de firings van het statement die fired unit zijn. |
+| **DR-66 Count of Chosen Firings** | Een statement: count of chosen firings is het totaal van chosen unit over de firings gekoppeld aan het statement. |
+| **DR-67 Subject Node Key** | Een statement: subject node key is gelijk aan subject. |
+| **DR-68 Object Node Key** | Het veld ‘object node key’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. ‘literal|’, gevolgd door de object value, gevolgd door ‘|’, gevolgd door de property datatype, als de object thing leeg is;<br>2. in alle andere gevallen de object thing. |
+| **DR-69 Subject Node Kind** | Een statement: subject node kind — overgenomen van de gekoppelde subject. |
+| **DR-70 Object Thing Node Kind** | Een statement: object thing node kind — overgenomen van de gekoppelde object thing. |
+| **DR-71 Object Node Kind** | Het veld ‘object node kind’ van het statement wordt bepaald volgens de volgende prioriteit:<br>1. ‘value’, als de object thing leeg is;<br>2. in alle andere gevallen de object thing node kind. |
+| **DR-72 Object Value Node Label** | Een statement: object value node label — overgenomen van de gekoppelde property. |
+| **DR-73 Count of Violations As First** | Een statement: count of violations as first is het totaal van violation unit over de disjoint checks gekoppeld aan het statement. |
+| **DR-74 Count of Violations As Second** | Een statement: count of violations as second is het totaal van violation unit over de disjoint checks gekoppeld aan het statement. |
+| **DR-75 Is in Contradiction** | Een statement geldt als in contradiction als ten minste één van het volgende geldt: de count of violations as first groter is dan 0 of de count of violations as second groter is dan 0. |
+| **DR-76 Rule Enabled** | Een firing: rule enabled geldt wanneer de gekoppelde rule is enabled. |
+| **DR-77 Kind Wording** | Een firing: kind wording — overgenomen van de gekoppelde kind. |
+| **DR-78 Kind Sort Order** | Een firing: kind sort order — overgenomen van de gekoppelde kind. |
+| **DR-79 Target Name** | Een firing: target name — overgenomen van de gekoppelde target. |
+| **DR-80 Target Subject Label** | Een firing: target subject label — overgenomen van de gekoppelde target. |
+| **DR-81 Target Property Label** | Een firing: target property label — overgenomen van de gekoppelde target. |
+| **DR-82 Target Object Text** | Een firing: target object text — overgenomen van de gekoppelde target. |
+| **DR-83 Target is Conclusion** | Een firing: target is conclusion is waar wanneer de gekoppelde target is een conclusion. |
+| **DR-84 Target Subject Node Key** | Een firing: target subject node key — overgenomen van de gekoppelde target. |
+| **DR-85 Target Object Node Key** | Een firing: target object node key — overgenomen van de gekoppelde target. |
+| **DR-86 Target First Fired Order Key** | Een firing: target first fired order key — overgenomen van de gekoppelde target. |
+| **DR-87 First Words** | Een firing: first words — overgenomen van de gekoppelde first. |
+| **DR-88 Second Words** | Een firing: second words — overgenomen van de gekoppelde second. |
+| **DR-89 First is in Effect** | Een firing: first is in effect geldt wanneer de gekoppelde first is in effect. |
+| **DR-90 First Holds Before Chain** | Een firing: first holds before chain geldt wanneer de gekoppelde first is holds before chain. |
+| **DR-91 Second Holds Before Chain** | Een firing: second holds before chain geldt wanneer de gekoppelde second is holds before chain. |
+| **DR-92 First Holds Before Typing** | Een firing: first holds before typing geldt wanneer de gekoppelde first is holds before typing. |
+| **DR-93 First Property** | Een firing: first property — overgenomen van de gekoppelde first. |
+| **DR-94 First Property Domain Class** | Een firing: first property domain class — overgenomen van de gekoppelde first. |
+| **DR-95 First Property Range Class** | Een firing: first property range class — overgenomen van de gekoppelde first. |
+| **DR-96 First Sort Order** | Een firing: first sort order — overgenomen van de gekoppelde first. |
+| **DR-97 Second Sort Order** | Een firing: second sort order — overgenomen van de gekoppelde second. |
+| **DR-98 Inverse Fired Unit** | Het veld ‘inverse fired unit’ van de firing wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘rule enabled’ is gezet; de kind ‘inverse’ is; en de vlag ‘first is in effect’ is gezet;<br>2. in alle andere gevallen 0. |
+| **DR-99 Symmetric Fired Unit** | Het veld ‘symmetric fired unit’ van de firing wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘rule enabled’ is gezet; de kind ‘symmetric’ is; en de vlag ‘first is in effect’ is gezet;<br>2. in alle andere gevallen 0. |
+| **DR-100 Chain Fired Unit** | Het veld ‘chain fired unit’ van de firing wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘rule enabled’ is gezet; de kind ‘chain’ is; de vlag ‘first holds before chain’ is gezet; en de vlag ‘second holds before chain’ is gezet;<br>2. in alle andere gevallen 0. |
+| **DR-101 Type Fired Unit** | Het veld ‘type fired unit’ van de firing wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘rule enabled’ is gezet; ten minste één van het volgende geldt: de kind ‘domain’ is of de kind ‘range’ is; en de vlag ‘first holds before typing’ is gezet;<br>2. in alle andere gevallen 0. |
+| **DR-102 Fired Unit** | Een firing: fired unit wordt berekend als de inverse fired unit plus de symmetric fired unit plus de chain fired unit plus de type fired unit. |
+| **DR-103 Order Key** | Een firing: order key wordt berekend als de first sort order maal 100000 plus de kind sort order maal 1000 plus 0 als de second leeg is, in alle andere gevallen de second sort order. |
+| **DR-104 Is Chosen** | Een firing geldt als een chosen als al het volgende geldt: de fired unit 1 is; de vlag ‘target is conclusion’ is gezet; en de order key de target first fired order key is. |
+| **DR-105 Chosen Unit** | Het veld ‘chosen unit’ van de firing wordt bepaald volgens de volgende prioriteit:<br>1. 1, als de vlag ‘chosen’ is gezet;<br>2. in alle andere gevallen 0. |
+| **DR-106 Card Text** | Het veld ‘card text’ van de firing wordt bepaald volgens de volgende prioriteit:<br>1. ‘Worked out by the ’, gevolgd door de kind wording, gevolgd door ‘ from “’, gevolgd door de first words, gevolgd door ‘”’, gevolgd door ‘ and “’, gevolgd door de second words, gevolgd door ‘”’ als de kind ‘chain’ is, in alle andere gevallen ‘ and “’, gevolgd door de first property, gevolgd door ‘ has domain ’, gevolgd door de first property domain class, gevolgd door ‘”’ als de kind ‘domain’ is, in alle andere gevallen ‘ and “’, gevolgd door de first property, gevolgd door ‘ has range ’, gevolgd door de first property range class, gevolgd door ‘”’, gevolgd door een punt, als de vlag ‘chosen’ is gezet;<br>2. in alle andere gevallen een lege tekenreeks. ⚠︎ mechanisch <!-- rulespeak:reword --> |
+| **DR-107 Name** | Een firing: name is gelijk aan firing ID. |
+| **DR-108 Rule Enabled** | Een disjoint check: rule enabled geldt wanneer de gekoppelde rule is enabled. |
+| **DR-109 First Holds** | Een disjoint check: first holds geldt wanneer de gekoppelde first is holds. |
+| **DR-110 Second Holds** | Een disjoint check: second holds geldt wanneer de gekoppelde second is holds. |
+| **DR-111 Subject Label** | Een disjoint check: subject label — overgenomen van de gekoppelde first. |
+| **DR-112 Object Label** | Een disjoint check: object label — overgenomen van de gekoppelde first. |
+| **DR-113 Violation Unit** | Het veld ‘violation unit’ van de disjoint check wordt bepaald volgens de volgende prioriteit:<br>1. 1, als al het volgende geldt: de vlag ‘rule enabled’ is gezet; de vlag ‘first holds’ is gezet; en de vlag ‘second holds’ is gezet;<br>2. in alle andere gevallen 0. |
+| **DR-114 Alarm Text** | Het veld ‘alarm text’ van de disjoint check wordt bepaald volgens de volgende prioriteit:<br>1. ‘Contradiction found. ’, gevolgd door de subject label, gevolgd door ‘ is recorded as both parent and spouse of ’, gevolgd door de object label, gevolgd door ‘. Check those facts and the selected disjoint rule.’, als de violation unit 1 is;<br>2. in alle andere gevallen een lege tekenreeks. |
+| **DR-115 Name** | Een disjoint check: name is gelijk aan disjoint check ID. |
+| **DR-116 Name** | Een scenario: name is gelijk aan label. |
+| **DR-117 Graph Has Facts to Add** | Een scenario: graph has facts to add is waar wanneer de gekoppelde graph heeft een facts to add. |
+| **DR-118 Is Available** | Een scenario geldt als available als ten minste één van het volgende geldt: de fact baseline niet ‘next’ is of de vlag ‘graph has facts to add’ is gezet. |
+| **DR-119 Name** | Een scenario fact change: name is gelijk aan scenario fact change ID. |
+| **DR-120 Name** | Een scenario rule setting: name is gelijk aan scenario rule setting ID. |
+| **DR-121 Name** | Een node layout: name is gelijk aan node layout ID. |
+| **DR-122 Name** | Een layout slot: name is gelijk aan layout slot ID. |
+| **DR-123 Name** | Een page text: name is gelijk aan page text ID. |
 
 ## 5 Herleidbaarheid naar het schema
 
@@ -481,6 +676,7 @@ dezelfde logica die het regelboek opslaat, geschreven voor een zakelijke lezer._
 | **FiringKinds.Name** | formule | `Wording` |
 | **FiringKinds.RuleEnabled** | opzoekwaarde | `Lookup(Rules.IsEnabled via Rule)` |
 | **Things.Name** | formule | `Label` |
+| **Things.NodeKey** | formule | `ThingId` |
 | **Things.CountOfChildren** | rollup | `Sum(Statements.ParentUnit via Subject)` |
 | **Things.CountOfGrandchildren** | rollup | `Sum(Statements.GrandparentUnit via Subject)` |
 | **Things.CountAsPlace** | rollup | `Sum(Statements.PlaceUnit via ObjectThing)` |
@@ -528,6 +724,15 @@ dezelfde logica die het regelboek opslaat, geschreven voor een zakelijke lezer._
 | **Statements.PlaceUnit** | formule | `If(And(Holds, Property = "attends"), 1, 0)` |
 | **Statements.FirstFiredOrderKey** | rollup | `Min(Firings.OrderKey via Target)` |
 | **Statements.CountOfChosenFirings** | rollup | `Sum(Firings.ChosenUnit via Target)` |
+| **Statements.SubjectNodeKey** | formule | `Subject` |
+| **Statements.ObjectNodeKey** | formule | `If(ObjectThing = "", Concat("literal\|", ObjectValue, "\|", PropertyDatatype), ObjectThing)` |
+| **Statements.SubjectNodeKind** | opzoekwaarde | `Lookup(Things.NodeKind via Subject)` |
+| **Statements.ObjectThingNodeKind** | opzoekwaarde | `Lookup(Things.NodeKind via ObjectThing)` |
+| **Statements.ObjectNodeKind** | formule | `If(ObjectThing = "", "value", ObjectThingNodeKind)` |
+| **Statements.ObjectValueNodeLabel** | opzoekwaarde | `Lookup(Properties.ValueNodeLabel via Property)` |
+| **Statements.CountOfViolationsAsFirst** | rollup | `Sum(DisjointChecks.ViolationUnit via First)` |
+| **Statements.CountOfViolationsAsSecond** | rollup | `Sum(DisjointChecks.ViolationUnit via Second)` |
+| **Statements.IsInContradiction** | formule | `Or(CountOfViolationsAsFirst > 0, CountOfViolationsAsSecond > 0)` |
 | **Firings.RuleEnabled** | opzoekwaarde | `Lookup(Rules.IsEnabled via Rule)` |
 | **Firings.KindWording** | opzoekwaarde | `Lookup(FiringKinds.Wording via Kind)` |
 | **Firings.KindSortOrder** | opzoekwaarde | `Lookup(FiringKinds.SortOrder via Kind)` |
@@ -536,6 +741,8 @@ dezelfde logica die het regelboek opslaat, geschreven voor een zakelijke lezer._
 | **Firings.TargetPropertyLabel** | opzoekwaarde | `Lookup(Statements.PropertyLabel via Target)` |
 | **Firings.TargetObjectText** | opzoekwaarde | `Lookup(Statements.ObjectText via Target)` |
 | **Firings.TargetIsConclusion** | opzoekwaarde | `Lookup(Statements.IsConclusion via Target)` |
+| **Firings.TargetSubjectNodeKey** | opzoekwaarde | `Lookup(Statements.SubjectNodeKey via Target)` |
+| **Firings.TargetObjectNodeKey** | opzoekwaarde | `Lookup(Statements.ObjectNodeKey via Target)` |
 | **Firings.TargetFirstFiredOrderKey** | opzoekwaarde | `Lookup(Statements.FirstFiredOrderKey via Target)` |
 | **Firings.FirstWords** | opzoekwaarde | `Lookup(Statements.Words via First)` |
 | **Firings.SecondWords** | opzoekwaarde | `Lookup(Statements.Words via Second)` |
@@ -566,6 +773,14 @@ dezelfde logica die het regelboek opslaat, geschreven voor een zakelijke lezer._
 | **DisjointChecks.ViolationUnit** | formule | `If(And(RuleEnabled, FirstHolds, SecondHolds), 1, 0)` |
 | **DisjointChecks.AlarmText** | formule | `If(ViolationUnit = 1, Concat("Contradiction found. ", SubjectLabel, " is recorded as both parent and spouse of ", ObjectLabel, ". Check those facts and the selected disjoint rule."), "")` |
 | **DisjointChecks.Name** | formule | `DisjointCheckId` |
+| **Scenarios.Name** | formule | `Label` |
+| **Scenarios.GraphHasFactsToAdd** | opzoekwaarde | `Lookup(Graphs.HasFactsToAdd via Graph)` |
+| **Scenarios.IsAvailable** | formule | `Or(FactBaseline <> "next", GraphHasFactsToAdd)` |
+| **ScenarioFactChanges.Name** | formule | `ScenarioFactChangeId` |
+| **ScenarioRuleSettings.Name** | formule | `ScenarioRuleSettingId` |
+| **NodeLayouts.Name** | formule | `NodeLayoutId` |
+| **LayoutSlots.Name** | formule | `LayoutSlotId` |
+| **PageTexts.Name** | formule | `PageTextId` |
 
 ---
 

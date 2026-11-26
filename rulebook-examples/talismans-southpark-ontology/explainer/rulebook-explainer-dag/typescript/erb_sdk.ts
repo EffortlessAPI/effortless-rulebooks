@@ -401,8 +401,14 @@ export interface ThingsRow {
   portrait_image: string | null;
   /** The portrait's crop as an SVG viewBox: x y width height. */
   portrait_crop: string | null;
+  /** The original image's width in pixels. */
+  portrait_width: number | null;
+  /** The original image's height in pixels. */
+  portrait_height: number | null;
   /** Order 1. The thing's name. */
   name: string | null;
+  /** Order 1. The key the graph draws this thing under. */
+  node_key: string | null;
   /** Order 17. People this thing is a parent of, stated or concluded. */
   count_of_children: number | null;
   /** Order 17. People this thing is a grandparent of. */
@@ -429,7 +435,10 @@ const thingsFieldTypes: Record<string, FieldType> = {
   portrait_page: "*string",
   portrait_image: "*string",
   portrait_crop: "*string",
+  portrait_width: "*int",
+  portrait_height: "*int",
   name: "*string",
+  node_key: "*string",
   count_of_children: "*int",
   count_of_grandchildren: "*int",
   count_as_place: "*int",
@@ -444,6 +453,13 @@ const thingsFieldTypes: Record<string, FieldType> = {
  *  Formula: ={{Label}} */
 export function calcThingsName(tc: ThingsRow): string | null {
   return toStringPtr(vStrPlain(tc.label));
+}
+
+/** Computes the NodeKey calculated field.
+ *  Order 1. The key the graph draws this thing under.
+ *  Formula: ={{ThingId}} */
+export function calcThingsNodeKey(tc: ThingsRow): string | null {
+  return toStringPtr(vStrPlain(tc.thing_id));
 }
 
 /** Computes the IsInGraph calculated field.
@@ -464,6 +480,7 @@ export function calcThingsNodeKind(tc: ThingsRow): string | null {
 export function computeThings(tc: ThingsRow): ThingsRow {
   // Level 1
   calcGuard(tc, thingsFieldTypes, "name", () => { tc.name = calcThingsName(tc); });
+  calcGuard(tc, thingsFieldTypes, "node_key", () => { tc.node_key = calcThingsNodeKey(tc); });
   calcGuard(tc, thingsFieldTypes, "is_in_graph", () => { tc.is_in_graph = calcThingsIsInGraph(tc); });
   calcGuard(tc, thingsFieldTypes, "node_kind", () => { tc.node_kind = calcThingsNodeKind(tc); });
   return tc;
@@ -509,6 +526,16 @@ export interface PropertiesRow {
   disjoint_with: string | null;
   /** Position in the Add fact form's property list. */
   sort_order: number;
+  /** The small label under a value node for this property: 'role value' or 'number value'. */
+  value_node_label: string | null;
+  /** How the Add fact form names a replaced value, as in 'Stan now has grade level 5'. */
+  current_value_wording: string | null;
+  /** How the integer check names this property's value, as in 'for grade level'. */
+  input_name: string | null;
+  /** The word the current-record summary uses for this property's values: role, grade or school. */
+  record_kind: string | null;
+  /** Position of this property in the current-record summary. */
+  record_order: number | null;
   /** Order 1. The property's wording. */
   name: string | null;
   _erb_errors?: Record<string, string>;
@@ -529,6 +556,11 @@ const propertiesFieldTypes: Record<string, FieldType> = {
   range_class: "*string",
   disjoint_with: "*string",
   sort_order: "int",
+  value_node_label: "*string",
+  current_value_wording: "*string",
+  input_name: "*string",
+  record_kind: "*string",
+  record_order: "*int",
   name: "*string",
 };
 
@@ -660,6 +692,24 @@ export interface StatementsRow {
   first_fired_order_key: number | null;
   /** Order 20. Rule applications shown as this fact's conclusion card: one for a conclusion, zero otherwise. */
   count_of_chosen_firings: number | null;
+  /** Order 1. The graph node this fact starts from. */
+  subject_node_key: string | null;
+  /** Order 2. The graph node this fact points at: the thing, or one node per value and datatype. */
+  object_node_key: string | null;
+  /** Order 19. How the graph draws the subject. */
+  subject_node_kind: string | null;
+  /** Order 19. How the graph draws the object thing. */
+  object_thing_node_kind: string | null;
+  /** Order 20. How the graph draws the object: a value, a class, a place or a person. */
+  object_node_kind: string | null;
+  /** Order 1. The small label under a value node. */
+  object_value_node_label: string | null;
+  /** Order 18. Violated disjointness checks naming this fact first. */
+  count_of_violations_as_first: number | null;
+  /** Order 18. Violated disjointness checks naming this fact second. */
+  count_of_violations_as_second: number | null;
+  /** Order 19. Part of a contradiction the disjoint rule found; drawn in the alarm colour. */
+  is_in_contradiction: boolean | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -715,6 +765,15 @@ const statementsFieldTypes: Record<string, FieldType> = {
   place_unit: "*int",
   first_fired_order_key: "*int",
   count_of_chosen_firings: "*int",
+  subject_node_key: "*string",
+  object_node_key: "*string",
+  subject_node_kind: "*string",
+  object_thing_node_kind: "*string",
+  object_node_kind: "*string",
+  object_value_node_label: "*string",
+  count_of_violations_as_first: "*int",
+  count_of_violations_as_second: "*int",
+  is_in_contradiction: "*bool",
 };
 
 /** Computes the IsLiteral calculated field.
@@ -857,6 +916,34 @@ export function calcStatementsPlaceUnit(tc: StatementsRow): number | null {
   return toIntPtr(erbInteger(erbIf(erbBool3(erbAnd(erbBool3(vBool(tc.holds)), erbBool3(erbEq(erbNullif(vStrPlain(tc.property)), vS("attends"))))), () => vI(1), () => vI(0))));
 }
 
+/** Computes the SubjectNodeKey calculated field.
+ *  Order 1. The graph node this fact starts from.
+ *  Formula: ={{Subject}} */
+export function calcStatementsSubjectNodeKey(tc: StatementsRow): string | null {
+  return toStringPtr(vStrPlain(tc.subject));
+}
+
+/** Computes the ObjectNodeKey calculated field.
+ *  Order 2. The graph node this fact points at: the thing, or one node per value and datatype.
+ *  Formula: =IF({{ObjectThing}} = "", CONCAT("literal|", {{ObjectValue}}, "|", {{PropertyDatatype}}), {{ObjectThing}}) */
+export function calcStatementsObjectNodeKey(tc: StatementsRow): string | null {
+  return toStringPtr(erbIf(erbBool3(erbIsBlank(vStr(tc.object_thing))), () => erbConcat(vS("literal|"), erbText(vStr(tc.object_value)), vS("|"), erbText(vStr(tc.property_datatype))), () => vStr(tc.object_thing)));
+}
+
+/** Computes the ObjectNodeKind calculated field.
+ *  Order 20. How the graph draws the object: a value, a class, a place or a person.
+ *  Formula: =IF({{ObjectThing}} = "", "value", {{ObjectThingNodeKind}}) */
+export function calcStatementsObjectNodeKind(tc: StatementsRow): string | null {
+  return toStringPtr(erbIf(erbBool3(erbIsBlank(vStr(tc.object_thing))), () => vS("value"), () => vStr(tc.object_thing_node_kind)));
+}
+
+/** Computes the IsInContradiction calculated field.
+ *  Order 19. Part of a contradiction the disjoint rule found; drawn in the alarm colour.
+ *  Formula: =OR({{CountOfViolationsAsFirst}} > 0, {{CountOfViolationsAsSecond}} > 0) */
+export function calcStatementsIsInContradiction(tc: StatementsRow): boolean | null {
+  return toBoolPtr(erbOr(erbBool3(erbCmp(vInt(tc.count_of_violations_as_first), ">", vI(0))), erbBool3(erbCmp(vInt(tc.count_of_violations_as_second), ">", vI(0)))));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeStatements(tc: StatementsRow): StatementsRow {
   // Level 1
@@ -867,6 +954,10 @@ export function computeStatements(tc: StatementsRow): StatementsRow {
   calcGuard(tc, statementsFieldTypes, "subject_property_key", () => { tc.subject_property_key = calcStatementsSubjectPropertyKey(tc); });
   calcGuard(tc, statementsFieldTypes, "is_in_effect", () => { tc.is_in_effect = calcStatementsIsInEffect(tc); });
   calcGuard(tc, statementsFieldTypes, "listed_unit", () => { tc.listed_unit = calcStatementsListedUnit(tc); });
+  calcGuard(tc, statementsFieldTypes, "subject_node_key", () => { tc.subject_node_key = calcStatementsSubjectNodeKey(tc); });
+  calcGuard(tc, statementsFieldTypes, "object_node_key", () => { tc.object_node_key = calcStatementsObjectNodeKey(tc); });
+  calcGuard(tc, statementsFieldTypes, "object_node_kind", () => { tc.object_node_kind = calcStatementsObjectNodeKind(tc); });
+  calcGuard(tc, statementsFieldTypes, "is_in_contradiction", () => { tc.is_in_contradiction = calcStatementsIsInContradiction(tc); });
   // Level 2
   calcGuard(tc, statementsFieldTypes, "name", () => { tc.name = calcStatementsName(tc); });
   calcGuard(tc, statementsFieldTypes, "in_effect_unit", () => { tc.in_effect_unit = calcStatementsInEffectUnit(tc); });
@@ -928,6 +1019,10 @@ export interface FiringsRow {
   target_object_text: string | null;
   /** Order 17. Whether the concluded fact is new. */
   target_is_conclusion: boolean | null;
+  /** Order 2. The concluded fact's subject node. */
+  target_subject_node_key: string | null;
+  /** Order 3. The concluded fact's object node. */
+  target_object_node_key: string | null;
   /** Order 16. The order key of the concluded fact's first application. */
   target_first_fired_order_key: number | null;
   /** Order 3. The premise as the card quotes it. */
@@ -990,6 +1085,8 @@ const firingsFieldTypes: Record<string, FieldType> = {
   target_property_label: "*string",
   target_object_text: "*string",
   target_is_conclusion: "*bool",
+  target_subject_node_key: "*string",
+  target_object_node_key: "*string",
   target_first_fired_order_key: "*int",
   first_words: "*string",
   second_words: "*string",
@@ -1196,8 +1293,334 @@ export function loadDisjointChecksRows(file: string): DisjointChecksRow[] {
   return loadRows(file, { fields: disjointChecksFieldTypes }) as unknown as DisjointChecksRow[];
 }
 
+// =============================================================================
+// SCENARIOS TABLE
+// The page's buttons. Each one is a fact baseline, explicit fact changes and rule settings, applied in that order.
+// =============================================================================
+
+/** A row in the Scenarios table. */
+export interface ScenariosRow {
+  /** Key of the button. */
+  scenario_id: string;
+  /** The graph. */
+  graph: string;
+  /** The button's text. */
+  label: string;
+  /** The note shown under the buttons after this one is pressed; blank clears it. */
+  note: string | null;
+  /** Position among the buttons. */
+  sort_order: number;
+  /** 'stan' for the two imagined changes, 'facts' for the buttons under the fact list. */
+  button_group: string;
+  /** Drawn as the filled button. */
+  is_primary: boolean;
+  /** What happens to every listed fact first: keep, built-in (teaching facts on, others off), built-in-detail, all-off, activate-all (each switched on in list order), or next (the next fact on). */
+  fact_baseline: string;
+  /** The node layout the graph returns to; blank keeps the current positions. */
+  layout: string | null;
+  /** Clears the selected node or line. */
+  clears_selection: boolean;
+  /** Clears the Add fact form's message. */
+  clears_form_message: boolean;
+  /** Order 1. The button's text. */
+  name: string | null;
+  /** Order 7. Whether a listed fact can still be added. */
+  graph_has_facts_to_add: boolean | null;
+  /** Order 8. False only for Add next fact once every listed fact is in effect. */
+  is_available: boolean | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const scenariosFieldTypes: Record<string, FieldType> = {
+  scenario_id: "string",
+  graph: "string",
+  label: "string",
+  note: "*string",
+  sort_order: "int",
+  button_group: "string",
+  is_primary: "bool",
+  fact_baseline: "string",
+  layout: "*string",
+  clears_selection: "bool",
+  clears_form_message: "bool",
+  name: "*string",
+  graph_has_facts_to_add: "*bool",
+  is_available: "*bool",
+};
+
+/** Computes the Name calculated field.
+ *  Order 1. The button's text.
+ *  Formula: ={{Label}} */
+export function calcScenariosName(tc: ScenariosRow): string | null {
+  return toStringPtr(vStrPlain(tc.label));
+}
+
+/** Computes the IsAvailable calculated field.
+ *  Order 8. False only for Add next fact once every listed fact is in effect.
+ *  Formula: =OR({{FactBaseline}} <> "next", {{GraphHasFactsToAdd}}) */
+export function calcScenariosIsAvailable(tc: ScenariosRow): boolean | null {
+  return toBoolPtr(erbOr(erbBool3(erbNe(erbNullif(vStrPlain(tc.fact_baseline)), vS("next"))), erbBool3(vBool(tc.graph_has_facts_to_add))));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeScenarios(tc: ScenariosRow): ScenariosRow {
+  // Level 1
+  calcGuard(tc, scenariosFieldTypes, "name", () => { tc.name = calcScenariosName(tc); });
+  calcGuard(tc, scenariosFieldTypes, "is_available", () => { tc.is_available = calcScenariosIsAvailable(tc); });
+  return tc;
+}
+
+/** Reads Scenarios rows from a JSON array file. */
+export function loadScenariosRows(file: string): ScenariosRow[] {
+  return loadRows(file, { fields: scenariosFieldTypes }) as unknown as ScenariosRow[];
+}
+
+// =============================================================================
+// SCENARIOFACTCHANGES TABLE
+// Fact changes a button makes after its baseline. A blank object key matches every listed value of the property.
+// =============================================================================
+
+/** A row in the ScenarioFactChanges table. */
+export interface ScenarioFactChangesRow {
+  /** Key of the change. */
+  scenario_fact_change_id: string;
+  /** The button. */
+  scenario: string;
+  /** The subject whose facts change. */
+  subject: string;
+  /** The property whose facts change. */
+  property: string;
+  /** The object thing's key or the literal value; blank for every listed value. */
+  object_key: string | null;
+  /** 'on' switches the fact on as the newest value; 'off' switches it off. */
+  action: string;
+  /** Adds the fact to the fact list first when it is not listed. */
+  adds_to_list: boolean;
+  /** Order of the change within the button. */
+  sort_order: number;
+  /** Order 1. The change's key. */
+  name: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const scenarioFactChangesFieldTypes: Record<string, FieldType> = {
+  scenario_fact_change_id: "string",
+  scenario: "string",
+  subject: "string",
+  property: "string",
+  object_key: "*string",
+  action: "string",
+  adds_to_list: "bool",
+  sort_order: "int",
+  name: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Order 1. The change's key.
+ *  Formula: ={{ScenarioFactChangeId}} */
+export function calcScenarioFactChangesName(tc: ScenarioFactChangesRow): string | null {
+  return toStringPtr(vStrPlain(tc.scenario_fact_change_id));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeScenarioFactChanges(tc: ScenarioFactChangesRow): ScenarioFactChangesRow {
+  // Level 1
+  calcGuard(tc, scenarioFactChangesFieldTypes, "name", () => { tc.name = calcScenarioFactChangesName(tc); });
+  return tc;
+}
+
+/** Reads ScenarioFactChanges rows from a JSON array file. */
+export function loadScenarioFactChangesRows(file: string): ScenarioFactChangesRow[] {
+  return loadRows(file, { fields: scenarioFactChangesFieldTypes }) as unknown as ScenarioFactChangesRow[];
+}
+
+// =============================================================================
+// SCENARIORULESETTINGS TABLE
+// Rule switches a button sets.
+// =============================================================================
+
+/** A row in the ScenarioRuleSettings table. */
+export interface ScenarioRuleSettingsRow {
+  /** Key of the setting. */
+  scenario_rule_setting_id: string;
+  /** The button. */
+  scenario: string;
+  /** The rule switch. */
+  rule: string;
+  /** The state the button puts the switch in. */
+  is_enabled: boolean;
+  /** Order 1. The setting's key. */
+  name: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const scenarioRuleSettingsFieldTypes: Record<string, FieldType> = {
+  scenario_rule_setting_id: "string",
+  scenario: "string",
+  rule: "string",
+  is_enabled: "bool",
+  name: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Order 1. The setting's key.
+ *  Formula: ={{ScenarioRuleSettingId}} */
+export function calcScenarioRuleSettingsName(tc: ScenarioRuleSettingsRow): string | null {
+  return toStringPtr(vStrPlain(tc.scenario_rule_setting_id));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeScenarioRuleSettings(tc: ScenarioRuleSettingsRow): ScenarioRuleSettingsRow {
+  // Level 1
+  calcGuard(tc, scenarioRuleSettingsFieldTypes, "name", () => { tc.name = calcScenarioRuleSettingsName(tc); });
+  return tc;
+}
+
+/** Reads ScenarioRuleSettings rows from a JSON array file. */
+export function loadScenarioRuleSettingsRows(file: string): ScenarioRuleSettingsRow[] {
+  return loadRows(file, { fields: scenarioRuleSettingsFieldTypes }) as unknown as ScenarioRuleSettingsRow[];
+}
+
+// =============================================================================
+// NODELAYOUTS TABLE
+// Node positions in the graph's 380 by 480 drawing, one set per layout.
+// =============================================================================
+
+/** A row in the NodeLayouts table. */
+export interface NodeLayoutsRow {
+  /** Key: layout:node. */
+  node_layout_id: string;
+  /** The layout: 'default' or 'stan-details'. */
+  layout: string;
+  /** The node: a thing's key, or literal|value|datatype. */
+  node_key: string;
+  /** Horizontal position. */
+  x: number;
+  /** Vertical position. */
+  y: number;
+  /** Order 1. The position's key. */
+  name: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const nodeLayoutsFieldTypes: Record<string, FieldType> = {
+  node_layout_id: "string",
+  layout: "string",
+  node_key: "string",
+  x: "int",
+  y: "int",
+  name: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Order 1. The position's key.
+ *  Formula: ={{NodeLayoutId}} */
+export function calcNodeLayoutsName(tc: NodeLayoutsRow): string | null {
+  return toStringPtr(vStrPlain(tc.node_layout_id));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeNodeLayouts(tc: NodeLayoutsRow): NodeLayoutsRow {
+  // Level 1
+  calcGuard(tc, nodeLayoutsFieldTypes, "name", () => { tc.name = calcNodeLayoutsName(tc); });
+  return tc;
+}
+
+/** Reads NodeLayouts rows from a JSON array file. */
+export function loadNodeLayoutsRows(file: string): NodeLayoutsRow[] {
+  return loadRows(file, { fields: nodeLayoutsFieldTypes }) as unknown as NodeLayoutsRow[];
+}
+
+// =============================================================================
+// LAYOUTSLOTS TABLE
+// Places for nodes no layout positions, used in turn.
+// =============================================================================
+
+/** A row in the LayoutSlots table. */
+export interface LayoutSlotsRow {
+  /** Key of the slot. */
+  layout_slot_id: string;
+  /** Order in which slots are used. */
+  sort_order: number;
+  /** Horizontal position. */
+  x: number;
+  /** Vertical position. */
+  y: number;
+  /** Order 1. The slot's key. */
+  name: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const layoutSlotsFieldTypes: Record<string, FieldType> = {
+  layout_slot_id: "string",
+  sort_order: "int",
+  x: "int",
+  y: "int",
+  name: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Order 1. The slot's key.
+ *  Formula: ={{LayoutSlotId}} */
+export function calcLayoutSlotsName(tc: LayoutSlotsRow): string | null {
+  return toStringPtr(vStrPlain(tc.layout_slot_id));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computeLayoutSlots(tc: LayoutSlotsRow): LayoutSlotsRow {
+  // Level 1
+  calcGuard(tc, layoutSlotsFieldTypes, "name", () => { tc.name = calcLayoutSlotsName(tc); });
+  return tc;
+}
+
+/** Reads LayoutSlots rows from a JSON array file. */
+export function loadLayoutSlotsRows(file: string): LayoutSlotsRow[] {
+  return loadRows(file, { fields: layoutSlotsFieldTypes }) as unknown as LayoutSlotsRow[];
+}
+
+// =============================================================================
+// PAGETEXTS TABLE
+// The page's wording, one row per string. {name}-style placeholders are filled by the page.
+// =============================================================================
+
+/** A row in the PageTexts table. */
+export interface PageTextsRow {
+  /** Key of the string. */
+  page_text_id: string;
+  /** The string. */
+  text: string;
+  /** Order 1. The string's key. */
+  name: string | null;
+  _erb_errors?: Record<string, string>;
+}
+
+const pageTextsFieldTypes: Record<string, FieldType> = {
+  page_text_id: "string",
+  text: "string",
+  name: "*string",
+};
+
+/** Computes the Name calculated field.
+ *  Order 1. The string's key.
+ *  Formula: ={{PageTextId}} */
+export function calcPageTextsName(tc: PageTextsRow): string | null {
+  return toStringPtr(vStrPlain(tc.page_text_id));
+}
+
+/** Computes every calculated field of the row in dependency order. */
+export function computePageTexts(tc: PageTextsRow): PageTextsRow {
+  // Level 1
+  calcGuard(tc, pageTextsFieldTypes, "name", () => { tc.name = calcPageTextsName(tc); });
+  return tc;
+}
+
+/** Reads PageTexts rows from a JSON array file. */
+export function loadPageTextsRows(file: string): PageTextsRow[] {
+  return loadRows(file, { fields: pageTextsFieldTypes }) as unknown as PageTextsRow[];
+}
+
 /** Bounds the runner's passes over the dataset. */
-export const calculatedFieldCount = 46;
+export const calculatedFieldCount = 58;
 
 /** Every table, in rulebook order. */
 export const erbTables: TableSpec[] = [
@@ -1253,7 +1676,10 @@ export const erbTables: TableSpec[] = [
       { field: "literal_type_marker", target: "graphs", ret: "literal_type_marker", key: "graph", match: "graph_id" },
       { field: "built_in_source_text", target: "graphs", ret: "built_in_source_text", key: "graph", match: "graph_id" },
       { field: "user_source_text", target: "graphs", ret: "user_source_text", key: "graph", match: "graph_id" },
-      { field: "next_fact_sort_order", target: "graphs", ret: "next_fact_sort_order", key: "graph", match: "graph_id" },],
+      { field: "next_fact_sort_order", target: "graphs", ret: "next_fact_sort_order", key: "graph", match: "graph_id" },
+      { field: "subject_node_kind", target: "things", ret: "node_kind", key: "subject", match: "thing_id" },
+      { field: "object_thing_node_kind", target: "things", ret: "node_kind", key: "object_thing", match: "thing_id" },
+      { field: "object_value_node_label", target: "properties", ret: "value_node_label", key: "property", match: "property_id" },],
     aggregations: [
       { field: "latest_sibling_activation_seq", op: "MAX", table: "statements", target: "activation_seq", criteria: [{ range: "subject_property_key", kind: "field", field: "subject_property_key" }] },
       { field: "count_of_inverse_firings", op: "SUM", table: "firings", target: "inverse_fired_unit", criteria: [{ range: "target", kind: "field", field: "statement_id" }] },
@@ -1261,7 +1687,9 @@ export const erbTables: TableSpec[] = [
       { field: "count_of_chain_firings", op: "SUM", table: "firings", target: "chain_fired_unit", criteria: [{ range: "target", kind: "field", field: "statement_id" }] },
       { field: "count_of_type_firings", op: "SUM", table: "firings", target: "type_fired_unit", criteria: [{ range: "target", kind: "field", field: "statement_id" }] },
       { field: "first_fired_order_key", op: "MIN", table: "firings", target: "order_key", criteria: [{ range: "target", kind: "field", field: "statement_id" }, { range: "fired_unit", kind: "literal", literal: vI(1) }] },
-      { field: "count_of_chosen_firings", op: "SUM", table: "firings", target: "chosen_unit", criteria: [{ range: "target", kind: "field", field: "statement_id" }] },] },
+      { field: "count_of_chosen_firings", op: "SUM", table: "firings", target: "chosen_unit", criteria: [{ range: "target", kind: "field", field: "statement_id" }] },
+      { field: "count_of_violations_as_first", op: "SUM", table: "disjoint_checks", target: "violation_unit", criteria: [{ range: "first", kind: "field", field: "statement_id" }] },
+      { field: "count_of_violations_as_second", op: "SUM", table: "disjoint_checks", target: "violation_unit", criteria: [{ range: "second", kind: "field", field: "statement_id" }] },] },
   { name: "Firings", file: "firings", rulebookRows: 465, fields: firingsFieldTypes,
     compute: (row: any) => computeFirings(row as FiringsRow),
     lookups: [
@@ -1273,6 +1701,8 @@ export const erbTables: TableSpec[] = [
       { field: "target_property_label", target: "statements", ret: "property_label", key: "target", match: "statement_id" },
       { field: "target_object_text", target: "statements", ret: "object_text", key: "target", match: "statement_id" },
       { field: "target_is_conclusion", target: "statements", ret: "is_conclusion", key: "target", match: "statement_id" },
+      { field: "target_subject_node_key", target: "statements", ret: "subject_node_key", key: "target", match: "statement_id" },
+      { field: "target_object_node_key", target: "statements", ret: "object_node_key", key: "target", match: "statement_id" },
       { field: "target_first_fired_order_key", target: "statements", ret: "first_fired_order_key", key: "target", match: "statement_id" },
       { field: "first_words", target: "statements", ret: "words", key: "first", match: "statement_id" },
       { field: "second_words", target: "statements", ret: "words", key: "second", match: "statement_id" },
@@ -1294,6 +1724,31 @@ export const erbTables: TableSpec[] = [
       { field: "second_holds", target: "statements", ret: "holds", key: "second", match: "statement_id" },
       { field: "subject_label", target: "statements", ret: "subject_label", key: "first", match: "statement_id" },
       { field: "object_label", target: "statements", ret: "object_label", key: "first", match: "statement_id" },],
+    aggregations: [] },
+  { name: "Scenarios", file: "scenarios", rulebookRows: 7, fields: scenariosFieldTypes,
+    compute: (row: any) => computeScenarios(row as ScenariosRow),
+    lookups: [
+      { field: "graph_has_facts_to_add", target: "graphs", ret: "has_facts_to_add", key: "graph", match: "graph_id" },],
+    aggregations: [] },
+  { name: "ScenarioFactChanges", file: "scenario_fact_changes", rulebookRows: 6, fields: scenarioFactChangesFieldTypes,
+    compute: (row: any) => computeScenarioFactChanges(row as ScenarioFactChangesRow),
+    lookups: [],
+    aggregations: [] },
+  { name: "ScenarioRuleSettings", file: "scenario_rule_settings", rulebookRows: 10, fields: scenarioRuleSettingsFieldTypes,
+    compute: (row: any) => computeScenarioRuleSettings(row as ScenarioRuleSettingsRow),
+    lookups: [],
+    aggregations: [] },
+  { name: "NodeLayouts", file: "node_layouts", rulebookRows: 26, fields: nodeLayoutsFieldTypes,
+    compute: (row: any) => computeNodeLayouts(row as NodeLayoutsRow),
+    lookups: [],
+    aggregations: [] },
+  { name: "LayoutSlots", file: "layout_slots", rulebookRows: 8, fields: layoutSlotsFieldTypes,
+    compute: (row: any) => computeLayoutSlots(row as LayoutSlotsRow),
+    lookups: [],
+    aggregations: [] },
+  { name: "PageTexts", file: "page_texts", rulebookRows: 67, fields: pageTextsFieldTypes,
+    compute: (row: any) => computePageTexts(row as PageTextsRow),
+    lookups: [],
     aggregations: [] },
 ];
 
