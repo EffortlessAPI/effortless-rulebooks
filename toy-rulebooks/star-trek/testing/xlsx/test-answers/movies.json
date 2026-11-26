@@ -1,0 +1,54 @@
+[
+  {
+    "movie_id": "movie-1-generations",
+    "name": "1-Star Trek: Generations",
+    "movie_number": 1,
+    "title": "Star Trek: Generations",
+    "description": "The seventh and final film of the original series cast, featuring the Next Generation crew",
+    "release_date": "1994-11-18",
+    "runtime_minutes": 118,
+    "budget": 40000000,
+    "box_office": 118159941,
+    "crew_assignments": "",
+    "crew_count": 0
+  },
+  {
+    "movie_id": "movie-2-first-contact",
+    "name": "2-Star Trek: First Contact",
+    "movie_number": 2,
+    "title": "Star Trek: First Contact",
+    "description": "The Enterprise-E travels back in time to prevent a Borg invasion of Earth",
+    "release_date": "1996-11-22",
+    "runtime_minutes": 111,
+    "budget": 46000000,
+    "box_office": 92262550,
+    "crew_assignments": "",
+    "crew_count": 0
+  },
+  {
+    "movie_id": "movie-3-insurrection",
+    "name": "3-Star Trek: Insurrection",
+    "movie_number": 3,
+    "title": "Star Trek: Insurrection",
+    "description": "The Enterprise-E crew fights to protect a peaceful planet from exploitation",
+    "release_date": "1998-11-25",
+    "runtime_minutes": 103,
+    "budget": 70000000,
+    "box_office": 70252769,
+    "crew_assignments": "",
+    "crew_count": 0
+  },
+  {
+    "movie_id": "movie-4-nemesis",
+    "name": "4-Star Trek: Nemesis",
+    "movie_number": 4,
+    "title": "Star Trek: Nemesis",
+    "description": "Captain Picard confronts a clone from his past in his final adventure",
+    "release_date": "2002-12-13",
+    "runtime_minutes": 116,
+    "budget": 60000000,
+    "box_office": 43254409,
+    "crew_assignments": "",
+    "crew_count": 0
+  }
+]

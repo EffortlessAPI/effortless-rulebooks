@@ -6,6 +6,8 @@
       "total_seasons",
       "total_episodes",
       "is_long_running",
+      "rating_count",
+      "rating_total",
       "rating",
       "is_good"
     ],

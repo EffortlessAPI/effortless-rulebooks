@@ -15,7 +15,9 @@
     "series_ratings": "series-1-tos-riley-shaw, series-1-tos-alex-mercer, series-1-tos-drew-patel",
     "rating": null,
     "is_long_running": null,
-    "is_good": null
+    "is_good": null,
+    "rating_count": null,
+    "rating_total": null
   },
   {
     "serie_id": "10-snw",
@@ -33,7 +35,9 @@
     "is_long_running": null,
     "seasons": "10-snw-season-1, 10-snw-season-2",
     "series_ratings": "",
-    "is_good": null
+    "is_good": null,
+    "rating_count": null,
+    "rating_total": null
   },
   {
     "serie_id": "2-tng",
@@ -51,7 +55,9 @@
     "series_ratings": "series-2-tng-avery-chen",
     "rating": null,
     "is_good": null,
-    "is_long_running": null
+    "is_long_running": null,
+    "rating_count": null,
+    "rating_total": null
   },
   {
     "serie_id": "3-ds9",
@@ -69,7 +75,9 @@
     "finale_date": "",
     "is_long_running": null,
     "series_ratings": "",
-    "is_good": null
+    "is_good": null,
+    "rating_count": null,
+    "rating_total": null
   },
   {
     "serie_id": "4-voy",
@@ -87,7 +95,9 @@
     "finale_date": "",
     "is_long_running": null,
     "series_ratings": "",
-    "is_good": null
+    "is_good": null,
+    "rating_count": null,
+    "rating_total": null
   },
   {
     "serie_id": "5-ent",
@@ -105,7 +115,9 @@
     "finale_date": "",
     "is_long_running": null,
     "series_ratings": "",
-    "is_good": null
+    "is_good": null,
+    "rating_count": null,
+    "rating_total": null
   },
   {
     "serie_id": "6-dis",
@@ -123,7 +135,9 @@
     "finale_date": "",
     "is_long_running": null,
     "series_ratings": "",
-    "is_good": null
+    "is_good": null,
+    "rating_count": null,
+    "rating_total": null
   },
   {
     "serie_id": "7-pic",
@@ -141,7 +155,9 @@
     "finale_date": "",
     "is_long_running": null,
     "series_ratings": "",
-    "is_good": null
+    "is_good": null,
+    "rating_count": null,
+    "rating_total": null
   },
   {
     "serie_id": "8-lds",
@@ -159,7 +175,9 @@
     "finale_date": "",
     "is_long_running": null,
     "series_ratings": "",
-    "is_good": null
+    "is_good": null,
+    "rating_count": null,
+    "rating_total": null
   },
   {
     "serie_id": "9-pro",
@@ -177,6 +195,8 @@
     "finale_date": "",
     "is_long_running": null,
     "series_ratings": "",
-    "is_good": null
+    "is_good": null,
+    "rating_count": null,
+    "rating_total": null
   }
 ]

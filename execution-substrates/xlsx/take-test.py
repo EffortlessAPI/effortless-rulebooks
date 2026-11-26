@@ -737,13 +737,30 @@ def run_multi_entity(script_dir, xlsx_path):
     print(f"\nxlsx: Processed {entity_count} entities from rulebook.xlsx")
 
 
+def workbook_path() -> Path:
+    """The workbook the project's own `oss-rulebook-to-xlsx` step built:
+    <ERB_DOMAIN_DIR>/xlsx/rulebook.xlsx. That `/xlsx` step is what puts this
+    substrate in the run, so its output is what gets graded. The copy next to
+    this script belongs to whichever project's injector ran here last, which
+    is how star-trek was graded against customer-fullname's workbook
+    (2026-11-26; scripts/tests/test_xlsx_substrate_reads_project_workbook.py)."""
+    domain_dir = os.environ.get("ERB_DOMAIN_DIR")
+    if not domain_dir:
+        raise SystemExit(
+            "ERB_DOMAIN_DIR is not set. xlsx/take-test.py must be invoked by the "
+            "orchestrator with ERB_DOMAIN_DIR pointing at the project being graded.")
+    path = Path(domain_dir) / "xlsx" / "rulebook.xlsx"
+    if not path.is_file():
+        raise SystemExit(
+            f"{path} does not exist. Run 'effortless build' in {domain_dir}: its "
+            f"oss-rulebook-to-xlsx step writes that workbook.")
+    return path
+
+
 def main():
     script_dir = Path(__file__).parent
-    xlsx_path = script_dir / 'rulebook.xlsx'
-
-    if not xlsx_path.exists():
-        print(f"Error: {xlsx_path} not found")
-        sys.exit(1)
+    xlsx_path = workbook_path()
+    print(f"Workbook: {xlsx_path}")
 
     run_multi_entity(script_dir, xlsx_path)
 
