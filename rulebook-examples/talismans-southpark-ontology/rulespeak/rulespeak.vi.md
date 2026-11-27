@@ -39,7 +39,7 @@ _Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten
 
 | Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ | Max Sort Order ƒ | Next Candidate Sort Order ƒ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 | 100269 | 100270 |
+| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | 0 | 10 | 11 | 10 | 11 | 100269 | 100270 |
 
 _ƒ đánh dấu cột được tính._
 
@@ -264,12 +264,12 @@ _ƒ đánh dấu cột được tính._
 | Is Next to Add | Đúng khi tất cả các điều kiện sau đều đúng: listed off unit là 1 và sort order là next fact sort order. | _Order 7. The fact the Add next fact button switches on._ |
 | Count of Inverse Firings | Giá trị tổng cộng của trường “inverse fired unit” trên các firings liên quan đến statement đó. | _Order 6. Inverse rule applications that conclude this fact._ |
 | Count of Symmetric Firings | Giá trị tổng cộng của trường “symmetric fired unit” trên các firings liên quan đến statement đó. | _Order 6. Symmetric rule applications that conclude this fact._ |
-| Holds Before Chain | Đúng khi ít nhất một trong các điều kiện sau đúng: cờ “in effect” được bật, count of inverse firings lớn hơn 0 hoặc count of symmetric firings lớn hơn 0. | _Order 7. Holds from facts in effect plus the inverse and symmetric rules._ |
+| Holds Before Chain | Đúng khi kết quả của hàm IF trên kết quả của hàm OR trên is in effect, count of inverse firings lớn hơn 0 và count of symmetric firings lớn hơn 0 và đúng. | _Order 7. TRUE when the fact is in effect or the inverse or symmetric rule concludes it. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true)._ |
 | Count of Chain Firings | Giá trị tổng cộng của trường “chain fired unit” trên các firings liên quan đến statement đó. | _Order 10. Property chain applications that conclude this fact._ |
-| Holds Before Typing | Đúng khi ít nhất một trong các điều kiện sau đúng: cờ “holds before chain” được bật hoặc count of chain firings lớn hơn 0. | _Order 11. Holds before the domain and range rules apply._ |
+| Holds Before Typing | Đúng khi kết quả của hàm IF trên kết quả của hàm OR trên holds before chain và count of chain firings lớn hơn 0 và đúng. | _Order 11. TRUE when the fact holds before the domain and range rules apply. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true)._ |
 | Count of Type Firings | Giá trị tổng cộng của trường “type fired unit” trên các firings liên quan đến statement đó. | _Order 14. Domain and range applications that conclude this fact._ |
-| Holds | Đúng khi ít nhất một trong các điều kiện sau đúng: cờ “holds before typing” được bật hoặc count of type firings lớn hơn 0. | _Order 15. True when in effect or concluded by an enabled rule; the graph draws it._ |
-| Is Conclusion | Đúng khi tất cả các điều kiện sau đều đúng: cờ “holds” được bật và cờ “in effect” không được bật. | _Order 16. Holds only because a rule concluded it. Drawn dashed._ |
+| Holds | Đúng khi kết quả của hàm IF trên kết quả của hàm OR trên holds before typing và count of type firings lớn hơn 0 và đúng. | _Order 15. TRUE when in effect or concluded by an enabled rule; the graph draws it. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true)._ |
+| Is Conclusion | Đúng khi kết quả của hàm IF trên kết quả của hàm AND trên holds và cờ “in effect” không được bật và đúng. | _Order 16. TRUE when the fact holds only because a rule concluded it; drawn dashed. Blank otherwise: a stated fact is not a conclusion, and a fact nothing concludes is not known (never FALSE)._ |
 | Holds Unit | Được xác định theo thứ tự ưu tiên: 1 nếu cờ “holds” được bật; trong mọi trường hợp còn lại, 0. | _Order 16. 1 when the fact holds._ |
 | Conclusion Unit | Được xác định theo thứ tự ưu tiên: 1 nếu cờ “conclusion” được bật; trong mọi trường hợp còn lại, 0. | _Order 17. 1 when the fact is a conclusion._ |
 | Parent Unit | Được xác định theo thứ tự ưu tiên: 1 nếu tất cả các điều kiện sau đều đúng: cờ “holds” được bật và property là “isParentOf”; trong mọi trường hợp còn lại, 0. | _Order 16. 1 for a holding parent link._ |
@@ -294,9 +294,9 @@ _ƒ đánh dấu cột được tính._
 
 | Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Pre Chain Order Key ƒ | Snap Position ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 1.0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 100001 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 100002 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
+| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | 0 | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | — | 1 | 0 | 1 | 0 | 0 | 0.0 | 1.0 | 0.0 | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100001 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | 0 | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | — | 0 | — | 0 | — | — | 0 | 0 | 0 | 0 | 0 | 0.0 | 0.0 | 0.0 | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100002 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | 0 | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | — | 0 | — | 0 | — | — | 0 | 0 | 0 | 0 | 0 | 0.0 | 0.0 | 0.0 | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
 
 _ƒ đánh dấu cột được tính._
 
@@ -353,9 +353,9 @@ _ƒ đánh dấu cột được tính._
 
 | Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second is in Effect ƒ | First Snap Position ƒ | Second Snap Position ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Pre Chain Fired Unit ƒ | Pre Chain Order Key ƒ | Round ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | false | 1.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 11.0 | 1 | 1000000110000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 100001 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000011.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 100002 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000021.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | — | Randy | Marvin | 0.0 | Marvin is parent of Randy |    | true | true | — | true | isParentOf | — | — | 1 | false | 1.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 11.0 | 1 | 1000000110000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | — | Sharon | Marvin | 0.0 | Marvin is parent of Sharon |    | false | — | — | — | isParentOf | — | — | 100001 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000011.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | — | Stan | Marvin | 0.0 | Marvin is parent of Stan |    | false | — | — | — | isParentOf | — | — | 100002 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000021.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
 
 _ƒ đánh dấu cột được tính._
 
@@ -382,9 +382,9 @@ _ƒ đánh dấu cột được tính._
 
 | Rule Enabled ƒ | First Holds ƒ | Second Holds ƒ | Subject Label ƒ | Object Label ƒ | Violation Unit ƒ | Alarm Text ƒ | Name ƒ |
 |---|---|---|---|---|---|---|---|
-| false | true | false | Marvin | Randy | 0 | — | Marvin\|isParentOf\|Randy~isSpouseOf |
-| false | false | false | Marvin | Sharon | 0 | — | Marvin\|isParentOf\|Sharon~isSpouseOf |
-| false | false | false | Marvin | Stan | 0 | — | Marvin\|isParentOf\|Stan~isSpouseOf |
+| false | true | — | Marvin | Randy | 0 | — | Marvin\|isParentOf\|Randy~isSpouseOf |
+| false | — | — | Marvin | Sharon | 0 | — | Marvin\|isParentOf\|Sharon~isSpouseOf |
+| false | — | — | Marvin | Stan | 0 | — | Marvin\|isParentOf\|Stan~isSpouseOf |
 
 _ƒ đánh dấu cột được tính._
 
@@ -719,12 +719,12 @@ nhưng còn vụng — đó là gợi ý cho một lượt biên tập lại (kh
 | **DR-62 Is Next to Add** | Mỗi statement được coi là “next to add” nếu tất cả các điều kiện sau đều đúng: listed off unit là 1 và sort order là next fact sort order. |
 | **DR-63 Count of Inverse Firings** | Trường “count of inverse firings” của mỗi statement là giá trị tổng cộng của trường “inverse fired unit” trên các firings liên quan đến statement đó. |
 | **DR-64 Count of Symmetric Firings** | Trường “count of symmetric firings” của mỗi statement là giá trị tổng cộng của trường “symmetric fired unit” trên các firings liên quan đến statement đó. |
-| **DR-65 Holds Before Chain** | Mỗi statement được coi là thỏa điều kiện “holds before chain” nếu ít nhất một trong các điều kiện sau đúng: cờ “in effect” được bật, count of inverse firings lớn hơn 0 hoặc count of symmetric firings lớn hơn 0. |
+| **DR-65 Holds Before Chain** | Mỗi statement được coi là thỏa điều kiện “holds before chain” nếu kết quả của hàm IF trên kết quả của hàm OR trên is in effect, count of inverse firings lớn hơn 0 và count of symmetric firings lớn hơn 0 và đúng. |
 | **DR-66 Count of Chain Firings** | Trường “count of chain firings” của mỗi statement là giá trị tổng cộng của trường “chain fired unit” trên các firings liên quan đến statement đó. |
-| **DR-67 Holds Before Typing** | Mỗi statement được coi là thỏa điều kiện “holds before typing” nếu ít nhất một trong các điều kiện sau đúng: cờ “holds before chain” được bật hoặc count of chain firings lớn hơn 0. |
+| **DR-67 Holds Before Typing** | Mỗi statement được coi là thỏa điều kiện “holds before typing” nếu kết quả của hàm IF trên kết quả của hàm OR trên holds before chain và count of chain firings lớn hơn 0 và đúng. |
 | **DR-68 Count of Type Firings** | Trường “count of type firings” của mỗi statement là giá trị tổng cộng của trường “type fired unit” trên các firings liên quan đến statement đó. |
-| **DR-69 Holds** | Mỗi statement được đánh dấu là “holds” nếu ít nhất một trong các điều kiện sau đúng: cờ “holds before typing” được bật hoặc count of type firings lớn hơn 0. |
-| **DR-70 Is Conclusion** | Mỗi statement được coi là “conclusion” nếu tất cả các điều kiện sau đều đúng: cờ “holds” được bật và cờ “in effect” không được bật. |
+| **DR-69 Holds** | Mỗi statement được đánh dấu là “holds” nếu kết quả của hàm IF trên kết quả của hàm OR trên holds before typing và count of type firings lớn hơn 0 và đúng. |
+| **DR-70 Is Conclusion** | Mỗi statement được coi là “conclusion” nếu kết quả của hàm IF trên kết quả của hàm AND trên holds và cờ “in effect” không được bật và đúng. |
 | **DR-71 Holds Unit** | Trường “holds unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu cờ “holds” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
 | **DR-72 Conclusion Unit** | Trường “conclusion unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu cờ “conclusion” được bật;<br>2. trong mọi trường hợp còn lại, 0. |
 | **DR-73 Parent Unit** | Trường “parent unit” của mỗi statement được xác định theo thứ tự ưu tiên sau:<br>1. 1, nếu tất cả các điều kiện sau đều đúng: cờ “holds” được bật và property là “isParentOf”;<br>2. trong mọi trường hợp còn lại, 0. |
@@ -870,12 +870,12 @@ cùng một logic mà bộ quy tắc lưu trữ, được viết cho người đ
 | **Statements.IsNextToAdd** | công thức | `And(ListedOffUnit = 1, SortOrder = NextFactSortOrder)` |
 | **Statements.CountOfInverseFirings** | tổng hợp | `Sum(Firings.InverseFiredUnit via Target)` |
 | **Statements.CountOfSymmetricFirings** | tổng hợp | `Sum(Firings.SymmetricFiredUnit via Target)` |
-| **Statements.HoldsBeforeChain** | công thức | `Or(IsInEffect, CountOfInverseFirings > 0, CountOfSymmetricFirings > 0)` |
+| **Statements.HoldsBeforeChain** | công thức | `If(Or(IsInEffect, CountOfInverseFirings > 0, CountOfSymmetricFirings > 0), True())` |
 | **Statements.CountOfChainFirings** | tổng hợp | `Sum(Firings.ChainFiredUnit via Target)` |
-| **Statements.HoldsBeforeTyping** | công thức | `Or(HoldsBeforeChain, CountOfChainFirings > 0)` |
+| **Statements.HoldsBeforeTyping** | công thức | `If(Or(HoldsBeforeChain, CountOfChainFirings > 0), True())` |
 | **Statements.CountOfTypeFirings** | tổng hợp | `Sum(Firings.TypeFiredUnit via Target)` |
-| **Statements.Holds** | công thức | `Or(HoldsBeforeTyping, CountOfTypeFirings > 0)` |
-| **Statements.IsConclusion** | công thức | `And(Holds, Not(IsInEffect))` |
+| **Statements.Holds** | công thức | `If(Or(HoldsBeforeTyping, CountOfTypeFirings > 0), True())` |
+| **Statements.IsConclusion** | công thức | `If(And(Holds, Not(IsInEffect)), True())` |
 | **Statements.HoldsUnit** | công thức | `If(Holds, 1, 0)` |
 | **Statements.ConclusionUnit** | công thức | `If(IsConclusion, 1, 0)` |
 | **Statements.ParentUnit** | công thức | `If(And(Holds, Property = "isParentOf"), 1, 0)` |

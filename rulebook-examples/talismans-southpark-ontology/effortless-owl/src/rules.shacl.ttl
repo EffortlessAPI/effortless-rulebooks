@@ -779,7 +779,7 @@ talismans-south-park-ontology-explainer-shapes:Firings_FiredUnit a sh:NodeShape 
     OPTIONAL { $this talismans-south-park-ontology-explainer:inverseFiredUnit ?inverse_fired_unit . }
     OPTIONAL { $this talismans-south-park-ontology-explainer:symmetricFiredUnit ?symmetric_fired_unit . }
     OPTIONAL { $this talismans-south-park-ontology-explainer:typeFiredUnit ?type_fired_unit . }
-                BIND(ROUND((((?inverse_fired_unit + ?symmetric_fired_unit) + ?chain_fired_unit) + ?type_fired_unit)) AS ?_result)
+                BIND(ROUND((COALESCE(((COALESCE(((COALESCE((?inverse_fired_unit + 0), 0) + COALESCE((?symmetric_fired_unit + 0), 0)) + 0), 0) + COALESCE((?chain_fired_unit + 0), 0)) + 0), 0) + COALESCE((?type_fired_unit + 0), 0))) AS ?_result)
             }
         """ ;
     ] .
@@ -798,7 +798,7 @@ talismans-south-park-ontology-explainer-shapes:Firings_PreChainFiredUnit a sh:No
     $this a talismans-south-park-ontology-explainer:Firings .
     OPTIONAL { $this talismans-south-park-ontology-explainer:inverseFiredUnit ?inverse_fired_unit . }
     OPTIONAL { $this talismans-south-park-ontology-explainer:symmetricFiredUnit ?symmetric_fired_unit . }
-                BIND(ROUND((?inverse_fired_unit + ?symmetric_fired_unit)) AS ?_result)
+                BIND(ROUND((COALESCE((?inverse_fired_unit + 0), 0) + COALESCE((?symmetric_fired_unit + 0), 0))) AS ?_result)
             }
         """ ;
     ] .
@@ -817,7 +817,7 @@ talismans-south-park-ontology-explainer-shapes:Firings_PreChainOrderKey a sh:Nod
     $this a talismans-south-park-ontology-explainer:Firings .
     OPTIONAL { $this talismans-south-park-ontology-explainer:firstSortOrder ?first_sort_order . }
     OPTIONAL { $this talismans-south-park-ontology-explainer:kindSortOrder ?kind_sort_order . }
-                BIND(((?first_sort_order * 10) + ?kind_sort_order) AS ?_result)
+                BIND((COALESCE(((COALESCE((?first_sort_order + 0), 0) * COALESCE((10 + 0), 0)) + 0), 0) + COALESCE((?kind_sort_order + 0), 0)) AS ?_result)
             }
         """ ;
     ] .
@@ -861,7 +861,7 @@ talismans-south-park-ontology-explainer-shapes:Firings_OrderKey a sh:NodeShape ;
     OPTIONAL { $this talismans-south-park-ontology-explainer:round ?round . }
     OPTIONAL { $this talismans-south-park-ontology-explainer:second ?second . OPTIONAL { ?second erb:key ?second__key . } }
     OPTIONAL { $this talismans-south-park-ontology-explainer:secondSnapPosition ?second_snap_position . }
-                BIND(((((?round * 1000000000000000) + (?first_snap_position * 100000000)) + (?kind_sort_order * 10000000)) + IF(COALESCE((COALESCE(?second__key, COALESCE(IF(isIRI(?second), REPLACE(STR(?second), "^.*[#/]", ""), STR(?second)), "")) = ""), false), 0, ?second_snap_position)) AS ?_result)
+                BIND((COALESCE(((COALESCE(((COALESCE(((COALESCE((?round + 0), 0) * COALESCE((1000000000000000 + 0), 0)) + 0), 0) + COALESCE(((COALESCE((?first_snap_position + 0), 0) * COALESCE((100000000 + 0), 0)) + 0), 0)) + 0), 0) + COALESCE(((COALESCE((?kind_sort_order + 0), 0) * COALESCE((10000000 + 0), 0)) + 0), 0)) + 0), 0) + COALESCE((IF(COALESCE((COALESCE(?second__key, COALESCE(IF(isIRI(?second), REPLACE(STR(?second), "^.*[#/]", ""), STR(?second)), "")) = ""), false), 0, ?second_snap_position) + 0), 0)) AS ?_result)
             }
         """ ;
     ] .
@@ -1214,7 +1214,7 @@ talismans-south-park-ontology-explainer-shapes:Graphs_NextActivationSeq a sh:Nod
             WHERE {
     $this a talismans-south-park-ontology-explainer:Graphs .
     OPTIONAL { $this talismans-south-park-ontology-explainer:maxActivationSeq ?max_activation_seq . }
-                BIND(ROUND((?max_activation_seq + 1)) AS ?_result)
+                BIND(ROUND((COALESCE((?max_activation_seq + 0), 0) + COALESCE((1 + 0), 0))) AS ?_result)
             }
         """ ;
     ] .
@@ -1264,7 +1264,7 @@ talismans-south-park-ontology-explainer-shapes:Graphs_NextListedSortOrder a sh:N
             WHERE {
     $this a talismans-south-park-ontology-explainer:Graphs .
     OPTIONAL { $this talismans-south-park-ontology-explainer:maxListedSortOrder ?max_listed_sort_order . }
-                BIND(ROUND((?max_listed_sort_order + 1)) AS ?_result)
+                BIND(ROUND((COALESCE((?max_listed_sort_order + 0), 0) + COALESCE((1 + 0), 0))) AS ?_result)
             }
         """ ;
     ] .
@@ -1311,7 +1311,7 @@ talismans-south-park-ontology-explainer-shapes:Graphs_NextCandidateSortOrder a s
             WHERE {
     $this a talismans-south-park-ontology-explainer:Graphs .
     OPTIONAL { $this talismans-south-park-ontology-explainer:maxSortOrder ?max_sort_order . }
-                BIND(ROUND((?max_sort_order + 1)) AS ?_result)
+                BIND(ROUND((COALESCE((?max_sort_order + 0), 0) + COALESCE((1 + 0), 0))) AS ?_result)
             }
         """ ;
     ] .
@@ -2182,7 +2182,7 @@ talismans-south-park-ontology-explainer-shapes:Statements_HoldsBeforeChain a sh:
     OPTIONAL { $this talismans-south-park-ontology-explainer:countOfInverseFirings ?count_of_inverse_firings . }
     OPTIONAL { $this talismans-south-park-ontology-explainer:countOfSymmetricFirings ?count_of_symmetric_firings . }
     OPTIONAL { $this talismans-south-park-ontology-explainer:isInEffect ?is_in_effect . }
-                BIND((COALESCE(?is_in_effect, false) || COALESCE((COALESCE(?count_of_inverse_firings, 0) > 0), false) || COALESCE((COALESCE(?count_of_symmetric_firings, 0) > 0), false)) AS ?_result)
+                BIND(IF(COALESCE((COALESCE(?is_in_effect, false) || COALESCE((COALESCE(?count_of_inverse_firings, 0) > 0), false) || COALESCE((COALESCE(?count_of_symmetric_firings, 0) > 0), false)), false), true, ?_erbNoValue) AS ?_result)
             }
         """ ;
     ] .
@@ -2230,7 +2230,7 @@ talismans-south-park-ontology-explainer-shapes:Statements_HoldsBeforeTyping a sh
     $this a talismans-south-park-ontology-explainer:Statements .
     OPTIONAL { $this talismans-south-park-ontology-explainer:countOfChainFirings ?count_of_chain_firings . }
     OPTIONAL { $this talismans-south-park-ontology-explainer:holdsBeforeChain ?holds_before_chain . }
-                BIND((COALESCE(?holds_before_chain, false) || COALESCE((COALESCE(?count_of_chain_firings, 0) > 0), false)) AS ?_result)
+                BIND(IF(COALESCE((COALESCE(?holds_before_chain, false) || COALESCE((COALESCE(?count_of_chain_firings, 0) > 0), false)), false), true, ?_erbNoValue) AS ?_result)
             }
         """ ;
     ] .
@@ -2278,7 +2278,7 @@ talismans-south-park-ontology-explainer-shapes:Statements_Holds a sh:NodeShape ;
     $this a talismans-south-park-ontology-explainer:Statements .
     OPTIONAL { $this talismans-south-park-ontology-explainer:countOfTypeFirings ?count_of_type_firings . }
     OPTIONAL { $this talismans-south-park-ontology-explainer:holdsBeforeTyping ?holds_before_typing . }
-                BIND((COALESCE(?holds_before_typing, false) || COALESCE((COALESCE(?count_of_type_firings, 0) > 0), false)) AS ?_result)
+                BIND(IF(COALESCE((COALESCE(?holds_before_typing, false) || COALESCE((COALESCE(?count_of_type_firings, 0) > 0), false)), false), true, ?_erbNoValue) AS ?_result)
             }
         """ ;
     ] .
@@ -2297,7 +2297,7 @@ talismans-south-park-ontology-explainer-shapes:Statements_IsConclusion a sh:Node
     $this a talismans-south-park-ontology-explainer:Statements .
     OPTIONAL { $this talismans-south-park-ontology-explainer:holds ?holds . }
     OPTIONAL { $this talismans-south-park-ontology-explainer:isInEffect ?is_in_effect . }
-                BIND((COALESCE(?holds, false) && COALESCE((!(COALESCE(?is_in_effect, false))), false)) AS ?_result)
+                BIND(IF(COALESCE((COALESCE(?holds, false) && COALESCE((!(COALESCE(?is_in_effect, false))), false)), false), true, ?_erbNoValue) AS ?_result)
             }
         """ ;
     ] .
@@ -2446,7 +2446,7 @@ talismans-south-park-ontology-explainer-shapes:Statements_SnapPosition a sh:Node
     OPTIONAL { $this talismans-south-park-ontology-explainer:holdsBeforeChain ?holds_before_chain . }
     OPTIONAL { $this talismans-south-park-ontology-explainer:isInEffect ?is_in_effect . }
     OPTIONAL { $this talismans-south-park-ontology-explainer:sortOrder ?sort_order . }
-                BIND(IF(COALESCE(?is_in_effect, false), ?sort_order, IF(COALESCE(?holds_before_chain, false), (100000 + ?first_pre_chain_order_key), 0)) AS ?_result)
+                BIND(IF(COALESCE(?is_in_effect, false), ?sort_order, IF(COALESCE(?holds_before_chain, false), (COALESCE((100000 + 0), 0) + COALESCE((?first_pre_chain_order_key + 0), 0)), 0)) AS ?_result)
             }
         """ ;
     ] .

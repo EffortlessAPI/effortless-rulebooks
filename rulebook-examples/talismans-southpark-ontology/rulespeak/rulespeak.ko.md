@@ -38,7 +38,7 @@ _Jessica Talisman's South Park Ontology Explainer, as a rulebook: the page's ten
 
 | Label | Literal Quote | Literal Type Marker | Built in Source Text | User Source Text | No Conclusions Text | Name ƒ | Count of Stated Facts ƒ | Count of Conclusions ƒ | Count of Violations ƒ | Is Consistent ƒ | Conclusions Message ƒ | Count of Facts to Add ƒ | Has Facts to Add ƒ | Next Fact Sort Order ƒ | Max Activation Seq ƒ | Next Activation Seq ƒ | Max Listed Sort Order ƒ | Next Listed Sort Order ƒ | Max Sort Order ƒ | Next Candidate Sort Order ƒ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | — | 10 | 11 | 10 | 11 | 100269 | 100270 |
+| South Park | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | These facts and selected rules add no further conclusions. Try another fact or rule. | South Park | 10 | 0 | 0 | true | These facts and selected rules add no further conclusions. Try another fact or rule. | 0 | false | 0 | 10 | 11 | 10 | 11 | 100269 | 100270 |
 
 _ƒ 표시는 계산된 열을 나타냅니다._
 
@@ -263,12 +263,12 @@ _ƒ 표시는 계산된 열을 나타냅니다._
 | Is Next to Add | 다음 모두에 해당하는 경우(‘listed off unit’ 값이 1인 경우 및 ‘sort order’ 값이 ‘next fact sort order’인 경우)에 참입니다. | _Order 7. The fact the Add next fact button switches on._ |
 | Count of Inverse Firings | 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘inverse fired unit’. | _Order 6. Inverse rule applications that conclude this fact._ |
 | Count of Symmetric Firings | 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘symmetric fired unit’. | _Order 6. Symmetric rule applications that conclude this fact._ |
-| Holds Before Chain | 다음 중 하나 이상에 해당하는 경우(‘in effect’ 플래그가 설정된 경우, ‘count of inverse firings’ 값이 0보다 큰 경우 또는 ‘count of symmetric firings’ 값이 0보다 큰 경우)에 참입니다. | _Order 7. Holds from facts in effect plus the inverse and symmetric rules._ |
+| Holds Before Chain | ‘is in effect’, ‘count of inverse firings’ 값이 0보다 큰 경우 및 ‘count of symmetric firings’ 값이 0보다 큰 경우에 대한 OR 함수의 결과 및 참에 대한 IF 함수의 결과에 참입니다. | _Order 7. TRUE when the fact is in effect or the inverse or symmetric rule concludes it. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true)._ |
 | Count of Chain Firings | 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘chain fired unit’. | _Order 10. Property chain applications that conclude this fact._ |
-| Holds Before Typing | 다음 중 하나 이상에 해당하는 경우(‘holds before chain’ 플래그가 설정된 경우 또는 ‘count of chain firings’ 값이 0보다 큰 경우)에 참입니다. | _Order 11. Holds before the domain and range rules apply._ |
+| Holds Before Typing | ‘holds before chain’ 및 ‘count of chain firings’ 값이 0보다 큰 경우에 대한 OR 함수의 결과 및 참에 대한 IF 함수의 결과에 참입니다. | _Order 11. TRUE when the fact holds before the domain and range rules apply. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true)._ |
 | Count of Type Firings | 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘type fired unit’. | _Order 14. Domain and range applications that conclude this fact._ |
-| Holds | 다음 중 하나 이상에 해당하는 경우(‘holds before typing’ 플래그가 설정된 경우 또는 ‘count of type firings’ 값이 0보다 큰 경우)에 참입니다. | _Order 15. True when in effect or concluded by an enabled rule; the graph draws it._ |
-| Is Conclusion | 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘in effect’ 플래그가 설정되지 않은 경우)에 참입니다. | _Order 16. Holds only because a rule concluded it. Drawn dashed._ |
+| Holds | ‘holds before typing’ 및 ‘count of type firings’ 값이 0보다 큰 경우에 대한 OR 함수의 결과 및 참에 대한 IF 함수의 결과에 참입니다. | _Order 15. TRUE when in effect or concluded by an enabled rule; the graph draws it. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true)._ |
+| Is Conclusion | ‘holds’ 및 ‘in effect’ 플래그가 설정되지 않은 경우에 대한 AND 함수의 결과 및 참에 대한 IF 함수의 결과에 참입니다. | _Order 16. TRUE when the fact holds only because a rule concluded it; drawn dashed. Blank otherwise: a stated fact is not a conclusion, and a fact nothing concludes is not known (never FALSE)._ |
 | Holds Unit | 우선순위에 따라 결정됩니다: ‘holds’ 플래그가 설정된 경우에는 1; 그 밖의 경우에는 0. | _Order 16. 1 when the fact holds._ |
 | Conclusion Unit | 우선순위에 따라 결정됩니다: ‘conclusion’ 플래그가 설정된 경우에는 1; 그 밖의 경우에는 0. | _Order 17. 1 when the fact is a conclusion._ |
 | Parent Unit | 우선순위에 따라 결정됩니다: 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘property’ 값이 “isParentOf”인 경우)에는 1; 그 밖의 경우에는 0. | _Order 16. 1 for a holding parent link._ |
@@ -293,9 +293,9 @@ _ƒ 표시는 계산된 열을 나타냅니다._
 
 | Object Value | Is Listed | Is Built in | Is Detail | Is Stated | Activation Seq | Sort Order | Subject Label ƒ | Property Label ƒ | Object Label ƒ | Property Datatype ƒ | Property Has One Current Value ƒ | Property Domain Class ƒ | Property Range Class ƒ | Literal Quote ƒ | Literal Type Marker ƒ | Built in Source Text ƒ | User Source Text ƒ | Next Fact Sort Order ƒ | Is Literal ƒ | Object Text ƒ | Name ƒ | Words ƒ | Source ƒ | Subject Property Key ƒ | Latest Sibling Activation Seq ƒ | Is in Effect ƒ | Listed Unit ƒ | In Effect Unit ƒ | Listed Off Unit ƒ | Is Next to Add ƒ | Count of Inverse Firings ƒ | Count of Symmetric Firings ƒ | Holds Before Chain ƒ | Count of Chain Firings ƒ | Holds Before Typing ƒ | Count of Type Firings ƒ | Holds ƒ | Is Conclusion ƒ | Holds Unit ƒ | Conclusion Unit ƒ | Parent Unit ƒ | Grandparent Unit ƒ | Place Unit ƒ | First Pre Chain Order Key ƒ | Snap Position ƒ | First Fired Order Key ƒ | Count of Chosen Firings ƒ | Subject Node Key ƒ | Object Node Key ƒ | Subject Node Kind ƒ | Object Thing Node Kind ƒ | Object Node Kind ƒ | Object Value Node Label ƒ | Count of Violations As First ƒ | Count of Violations As Second ƒ | Is in Contradiction ƒ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | false | 1 | 0 | 1 | 0 | 0 | — | 1.0 | — | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 100001 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
-| — | false | false | false | false | 0 | 100002 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | — | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | false | 0 | false | 0 | false | false | 0 | 0 | 0 | 0 | 0 | — | 0.0 | — | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
+| — | true | true | false | true | 1 | 1 | Marvin | is parent of | Randy | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | 0 | false | Randy | Marvin is parent of Randy | Marvin is parent of Randy | Stated as a teaching example on this page. | Marvin\|isParentOf | 1 | true | 1 | 1 | 0 | false | 0 | 0 | true | 0 | true | 0 | true | — | 1 | 0 | 1 | 0 | 0 | 0.0 | 1.0 | 0.0 | 0 | Marvin | Randy | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100001 | Marvin | is parent of | Sharon | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | 0 | false | Sharon | Marvin is parent of Sharon | Marvin is parent of Sharon | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | — | 0 | — | 0 | — | — | 0 | 0 | 0 | 0 | 0 | 0.0 | 0.0 | 0.0 | 0 | Marvin | Sharon | person | person | person | — | 0 | 0 | false |
+| — | false | false | false | false | 0 | 100002 | Marvin | is parent of | Stan | — | false | — | — | " | ^^ | Stated as a teaching example on this page. | Stated by you on this page. | 0 | false | Stan | Marvin is parent of Stan | Marvin is parent of Stan | Stated by you on this page. | Marvin\|isParentOf | 1 | false | 0 | 0 | 0 | false | 0 | 0 | — | 0 | — | 0 | — | — | 0 | 0 | 0 | 0 | 0 | 0.0 | 0.0 | 0.0 | 0 | Marvin | Stan | person | person | person | — | 0 | 0 | false |
 
 _ƒ 표시는 계산된 열을 나타냅니다._
 
@@ -352,9 +352,9 @@ _ƒ 표시는 계산된 열을 나타냅니다._
 
 | Rule Enabled ƒ | Kind Wording ƒ | Kind Sort Order ƒ | Target Name ƒ | Target Subject Label ƒ | Target Property Label ƒ | Target Object Text ƒ | Target is Conclusion ƒ | Target Subject Node Key ƒ | Target Object Node Key ƒ | Target First Fired Order Key ƒ | First Words ƒ | Second Words ƒ | First is in Effect ƒ | First Holds Before Chain ƒ | Second Holds Before Chain ƒ | First Holds Before Typing ƒ | First Property ƒ | First Property Domain Class ƒ | First Property Range Class ƒ | First Sort Order ƒ | Second is in Effect ƒ | First Snap Position ƒ | Second Snap Position ƒ | Inverse Fired Unit ƒ | Symmetric Fired Unit ƒ | Chain Fired Unit ƒ | Type Fired Unit ƒ | Fired Unit ƒ | Pre Chain Fired Unit ƒ | Pre Chain Order Key ƒ | Round ƒ | Order Key ƒ | Is Chosen ƒ | Chosen Unit ƒ | Card Text ƒ | Name ƒ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | false | Randy | Marvin | — | Marvin is parent of Randy |    | true | true | false | true | isParentOf | — | — | 1 | false | 1.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 11.0 | 1 | 1000000110000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | false | Sharon | Marvin | — | Marvin is parent of Sharon |    | false | false | false | false | isParentOf | — | — | 100001 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000011.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
-| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | false | Stan | Marvin | — | Marvin is parent of Stan |    | false | false | false | false | isParentOf | — | — | 100002 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000021.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Randy is child of Marvin | Randy | is child of | Marvin | — | Randy | Marvin | 0.0 | Marvin is parent of Randy |    | true | true | — | true | isParentOf | — | — | 1 | false | 1.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 11.0 | 1 | 1000000110000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Randy>Randy\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Sharon is child of Marvin | Sharon | is child of | Marvin | — | Sharon | Marvin | 0.0 | Marvin is parent of Sharon |    | false | — | — | — | isParentOf | — | — | 100001 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000011.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Sharon>Sharon\|isChildOf\|Marvin |
+| false | inverse rule | 1 | Stan is child of Marvin | Stan | is child of | Marvin | — | Stan | Marvin | 0.0 | Marvin is parent of Stan |    | false | — | — | — | isParentOf | — | — | 100002 | false | 0.0 | 0.0 | 0 | 0 | 0 | 0 | 0 | 0 | 1000021.0 | 1 | 1000000010000000.0 | false | 0 | — | inverse:Marvin\|isParentOf\|Stan>Stan\|isChildOf\|Marvin |
 
 _ƒ 표시는 계산된 열을 나타냅니다._
 
@@ -381,9 +381,9 @@ _ƒ 표시는 계산된 열을 나타냅니다._
 
 | Rule Enabled ƒ | First Holds ƒ | Second Holds ƒ | Subject Label ƒ | Object Label ƒ | Violation Unit ƒ | Alarm Text ƒ | Name ƒ |
 |---|---|---|---|---|---|---|---|
-| false | true | false | Marvin | Randy | 0 | — | Marvin\|isParentOf\|Randy~isSpouseOf |
-| false | false | false | Marvin | Sharon | 0 | — | Marvin\|isParentOf\|Sharon~isSpouseOf |
-| false | false | false | Marvin | Stan | 0 | — | Marvin\|isParentOf\|Stan~isSpouseOf |
+| false | true | — | Marvin | Randy | 0 | — | Marvin\|isParentOf\|Randy~isSpouseOf |
+| false | — | — | Marvin | Sharon | 0 | — | Marvin\|isParentOf\|Sharon~isSpouseOf |
+| false | — | — | Marvin | Stan | 0 | — | Marvin\|isParentOf\|Stan~isSpouseOf |
 
 _ƒ 표시는 계산된 열을 나타냅니다._
 
@@ -717,12 +717,12 @@ _모든 문장은 비즈니스 영역에서 성립하는 사실을 서술하며,
 | **DR-62 Is Next to Add** | 다음 모두에 해당하는 경우(‘listed off unit’ 값이 1인 경우 및 ‘sort order’ 값이 ‘next fact sort order’인 경우), ‘statement’ 레코드는 ‘next to add’에 해당하는 것으로 간주됩니다. |
 | **DR-63 Count of Inverse Firings** | ‘statement’ 레코드의 ‘count of inverse firings’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘inverse fired unit’입니다. |
 | **DR-64 Count of Symmetric Firings** | ‘statement’ 레코드의 ‘count of symmetric firings’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘symmetric fired unit’입니다. |
-| **DR-65 Holds Before Chain** | 다음 중 하나 이상에 해당하는 경우(‘in effect’ 플래그가 설정된 경우, ‘count of inverse firings’ 값이 0보다 큰 경우 또는 ‘count of symmetric firings’ 값이 0보다 큰 경우), ‘statement’ 레코드는 ‘holds before chain’ 조건에 해당하는 것으로 간주됩니다. |
+| **DR-65 Holds Before Chain** | ‘is in effect’, ‘count of inverse firings’ 값이 0보다 큰 경우 및 ‘count of symmetric firings’ 값이 0보다 큰 경우에 대한 OR 함수의 결과 및 참에 대한 IF 함수의 결과, ‘statement’ 레코드는 ‘holds before chain’ 조건에 해당하는 것으로 간주됩니다. |
 | **DR-66 Count of Chain Firings** | ‘statement’ 레코드의 ‘count of chain firings’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘chain fired unit’입니다. |
-| **DR-67 Holds Before Typing** | 다음 중 하나 이상에 해당하는 경우(‘holds before chain’ 플래그가 설정된 경우 또는 ‘count of chain firings’ 값이 0보다 큰 경우), ‘statement’ 레코드는 ‘holds before typing’ 조건에 해당하는 것으로 간주됩니다. |
+| **DR-67 Holds Before Typing** | ‘holds before chain’ 및 ‘count of chain firings’ 값이 0보다 큰 경우에 대한 OR 함수의 결과 및 참에 대한 IF 함수의 결과, ‘statement’ 레코드는 ‘holds before typing’ 조건에 해당하는 것으로 간주됩니다. |
 | **DR-68 Count of Type Firings** | ‘statement’ 레코드의 ‘count of type firings’ 값은 해당 ‘statement’ 레코드에 연결된 모든 ‘firings’ 레코드의 총 ‘type fired unit’입니다. |
-| **DR-69 Holds** | 다음 중 하나 이상에 해당하는 경우(‘holds before typing’ 플래그가 설정된 경우 또는 ‘count of type firings’ 값이 0보다 큰 경우), ‘statement’ 레코드는 ‘holds’ 조건에 해당하는 것으로 간주됩니다. |
-| **DR-70 Is Conclusion** | 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘in effect’ 플래그가 설정되지 않은 경우), ‘statement’ 레코드는 ‘conclusion’에 해당하는 것으로 간주됩니다. |
+| **DR-69 Holds** | ‘holds before typing’ 및 ‘count of type firings’ 값이 0보다 큰 경우에 대한 OR 함수의 결과 및 참에 대한 IF 함수의 결과, ‘statement’ 레코드는 ‘holds’ 조건에 해당하는 것으로 간주됩니다. |
+| **DR-70 Is Conclusion** | ‘holds’ 및 ‘in effect’ 플래그가 설정되지 않은 경우에 대한 AND 함수의 결과 및 참에 대한 IF 함수의 결과, ‘statement’ 레코드는 ‘conclusion’에 해당하는 것으로 간주됩니다. |
 | **DR-71 Holds Unit** | ‘statement’ 레코드의 ‘holds unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘holds’ 플래그가 설정된 경우: 1<br>2. 그 밖의 경우: 0. |
 | **DR-72 Conclusion Unit** | ‘statement’ 레코드의 ‘conclusion unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. ‘conclusion’ 플래그가 설정된 경우: 1<br>2. 그 밖의 경우: 0. |
 | **DR-73 Parent Unit** | ‘statement’ 레코드의 ‘parent unit’ 값은 다음 우선순위에 따라 결정됩니다:<br>1. 다음 모두에 해당하는 경우(‘holds’ 플래그가 설정된 경우 및 ‘property’ 값이 “isParentOf”인 경우): 1<br>2. 그 밖의 경우: 0. |
@@ -868,12 +868,12 @@ _표현식 열은 문서 표기법으로 적은 규칙의 정의입니다.
 | **Statements.IsNextToAdd** | 수식 | `And(ListedOffUnit = 1, SortOrder = NextFactSortOrder)` |
 | **Statements.CountOfInverseFirings** | 집계 | `Sum(Firings.InverseFiredUnit via Target)` |
 | **Statements.CountOfSymmetricFirings** | 집계 | `Sum(Firings.SymmetricFiredUnit via Target)` |
-| **Statements.HoldsBeforeChain** | 수식 | `Or(IsInEffect, CountOfInverseFirings > 0, CountOfSymmetricFirings > 0)` |
+| **Statements.HoldsBeforeChain** | 수식 | `If(Or(IsInEffect, CountOfInverseFirings > 0, CountOfSymmetricFirings > 0), True())` |
 | **Statements.CountOfChainFirings** | 집계 | `Sum(Firings.ChainFiredUnit via Target)` |
-| **Statements.HoldsBeforeTyping** | 수식 | `Or(HoldsBeforeChain, CountOfChainFirings > 0)` |
+| **Statements.HoldsBeforeTyping** | 수식 | `If(Or(HoldsBeforeChain, CountOfChainFirings > 0), True())` |
 | **Statements.CountOfTypeFirings** | 집계 | `Sum(Firings.TypeFiredUnit via Target)` |
-| **Statements.Holds** | 수식 | `Or(HoldsBeforeTyping, CountOfTypeFirings > 0)` |
-| **Statements.IsConclusion** | 수식 | `And(Holds, Not(IsInEffect))` |
+| **Statements.Holds** | 수식 | `If(Or(HoldsBeforeTyping, CountOfTypeFirings > 0), True())` |
+| **Statements.IsConclusion** | 수식 | `If(And(Holds, Not(IsInEffect)), True())` |
 | **Statements.HoldsUnit** | 수식 | `If(Holds, 1, 0)` |
 | **Statements.ConclusionUnit** | 수식 | `If(IsConclusion, 1, 0)` |
 | **Statements.ParentUnit** | 수식 | `If(And(Holds, Property = "isParentOf"), 1, 0)` |

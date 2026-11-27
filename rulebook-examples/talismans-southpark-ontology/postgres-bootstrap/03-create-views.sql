@@ -236,12 +236,12 @@ SELECT
   calc_statements_is_next_to_add(t.statement_id) AS is_next_to_add,             -- Order 7. The fact the Add next fact button switches on.
   calc_statements_count_of_inverse_firings(t.statement_id) AS count_of_inverse_firings,-- Order 6. Inverse rule applications that conclude this fact.
   calc_statements_count_of_symmetric_firings(t.statement_id) AS count_of_symmetric_firings,-- Order 6. Symmetric rule applications that conclude this fact.
-  calc_statements_holds_before_chain(t.statement_id) AS holds_before_chain,     -- Order 7. Holds from facts in effect plus the inverse and symmetric rules.
+  calc_statements_holds_before_chain(t.statement_id) AS holds_before_chain,     -- Order 7. TRUE when the fact is in effect or the inverse or symmetric rule concludes it. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true).
   calc_statements_count_of_chain_firings(t.statement_id) AS count_of_chain_firings,-- Order 10. Property chain applications that conclude this fact.
-  calc_statements_holds_before_typing(t.statement_id) AS holds_before_typing,   -- Order 11. Holds before the domain and range rules apply.
+  calc_statements_holds_before_typing(t.statement_id) AS holds_before_typing,   -- Order 11. TRUE when the fact holds before the domain and range rules apply. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true).
   calc_statements_count_of_type_firings(t.statement_id) AS count_of_type_firings,-- Order 14. Domain and range applications that conclude this fact.
-  calc_statements_holds(t.statement_id) AS holds,                               -- Order 15. True when in effect or concluded by an enabled rule; the graph draws it.
-  calc_statements_is_conclusion(t.statement_id) AS is_conclusion,               -- Order 16. Holds only because a rule concluded it. Drawn dashed.
+  calc_statements_holds(t.statement_id) AS holds,                               -- Order 15. TRUE when in effect or concluded by an enabled rule; the graph draws it. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true).
+  calc_statements_is_conclusion(t.statement_id) AS is_conclusion,               -- Order 16. TRUE when the fact holds only because a rule concluded it; drawn dashed. Blank otherwise: a stated fact is not a conclusion, and a fact nothing concludes is not known (never FALSE).
   calc_statements_holds_unit(t.statement_id) AS holds_unit,                     -- Order 16. 1 when the fact holds.
   calc_statements_conclusion_unit(t.statement_id) AS conclusion_unit,           -- Order 17. 1 when the fact is a conclusion.
   calc_statements_parent_unit(t.statement_id) AS parent_unit,                   -- Order 16. 1 for a holding parent link.

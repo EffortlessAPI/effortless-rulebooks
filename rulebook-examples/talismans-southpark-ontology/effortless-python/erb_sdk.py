@@ -14,7 +14,7 @@ import erb_runtime as _erb
 
 # The ERB build parameters this SDK was generated under
 # (docs/ERB-BUILD-PARAMETERS.md). The runtime refuses to run unconfigured.
-ERB_BUILD_PARAMETERS = {'erbDateDiff': 'calendar', 'erbTimezone': 'UTC', 'erbDateTimeText': 'iso8601', 'erbBlankLogic': 'coerce', 'erbWholeNumber': 'by-field-type'}
+ERB_BUILD_PARAMETERS = {'erbDateDiff': 'calendar', 'erbTimezone': 'UTC', 'erbDateTimeText': 'iso8601', 'erbBlankLogic': 'coerce', 'erbBlankValue': 'coerce', 'erbWholeNumber': 'by-field-type'}
 _erb.configure(ERB_BUILD_PARAMETERS)
 
 
@@ -506,7 +506,7 @@ def calc_statements_words(subject_label, property_label, object_thing, literal_q
     
     Formula: =CONCAT({{SubjectLabel}}, " ", {{PropertyLabel}}, " ", IF({{ObjectThing}} = "", CONCAT({{LiteralQuote}}, {{ObjectValue}}, {{LiteralQuote}}, {{LiteralTypeMarker}}, {{PropertyDatatype}}), {{ObjectLabel}}))
     """
-    return (_erb.erb_text(subject_label) + ' ' + _erb.erb_text(property_label) + ' ' + _erb.erb_text(((_erb.erb_text(literal_quote) + _erb.erb_text(object_value) + _erb.erb_text(literal_quote) + _erb.erb_text(literal_type_marker) + _erb.erb_text(property_datatype)) if _erb.erb_bool3((object_thing is None or object_thing == "")) else object_label)))
+    return _erb.erb_concat(_erb.erb_part(subject_label), ' ', _erb.erb_part(property_label), ' ', _erb.erb_part((_erb.erb_concat(_erb.erb_part(literal_quote), _erb.erb_part(object_value), _erb.erb_part(literal_quote), _erb.erb_part(literal_type_marker), _erb.erb_part(property_datatype)) if _erb.erb_bool3((object_thing is None or object_thing == "")) else object_label)))
 
 def calc_statements_source(is_built_in, built_in_source_text, user_source_text):
     """
@@ -522,7 +522,7 @@ def calc_statements_subject_property_key(subject, property):
     
     Formula: =CONCAT({{Subject}}, "|", {{Property}})
     """
-    return (_erb.erb_text(subject) + '|' + _erb.erb_text(property))
+    return _erb.erb_concat(_erb.erb_part(subject), '|', _erb.erb_part(property))
 
 def calc_statements_is_in_effect(is_stated, property_has_one_current_value, activation_seq, latest_sibling_activation_seq):
     """
@@ -554,7 +554,7 @@ def calc_statements_object_node_key(object_thing, object_value, property_datatyp
     
     Formula: =IF({{ObjectThing}} = "", CONCAT("literal|", {{ObjectValue}}, "|", {{PropertyDatatype}}), {{ObjectThing}})
     """
-    return (('literal|' + _erb.erb_text(object_value) + '|' + _erb.erb_text(property_datatype)) if _erb.erb_bool3((object_thing is None or object_thing == "")) else object_thing)
+    return (_erb.erb_concat('literal|', _erb.erb_part(object_value), '|', _erb.erb_part(property_datatype)) if _erb.erb_bool3((object_thing is None or object_thing == "")) else object_thing)
 
 def calc_statements_object_node_kind(object_thing, object_thing_node_kind):
     """
@@ -580,7 +580,7 @@ def calc_statements_name(subject_label, property_label, object_text):
     
     Formula: =CONCAT({{SubjectLabel}}, " ", {{PropertyLabel}}, " ", {{ObjectText}})
     """
-    return (_erb.erb_text(subject_label) + ' ' + _erb.erb_text(property_label) + ' ' + _erb.erb_text(object_text))
+    return _erb.erb_concat(_erb.erb_part(subject_label), ' ', _erb.erb_part(property_label), ' ', _erb.erb_part(object_text))
 
 def calc_statements_in_effect_unit(is_in_effect):
     """
@@ -600,11 +600,11 @@ def calc_statements_listed_off_unit(is_listed, is_in_effect):
 
 def calc_statements_holds_before_chain(is_in_effect, count_of_inverse_firings, count_of_symmetric_firings):
     """
-    Order 7. Holds from facts in effect plus the inverse and symmetric rules.
+    Order 7. TRUE when the fact is in effect or the inverse or symmetric rule concludes it. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true).
     
-    Formula: =OR({{IsInEffect}}, {{CountOfInverseFirings}} > 0, {{CountOfSymmetricFirings}} > 0)
+    Formula: =IF(OR({{IsInEffect}}, {{CountOfInverseFirings}} > 0, {{CountOfSymmetricFirings}} > 0), TRUE())
     """
-    return _erb.erb_or(_erb.erb_bool3(is_in_effect), _erb.erb_bool3(_erb.erb_cmp(count_of_inverse_firings, '>', 0)), _erb.erb_bool3(_erb.erb_cmp(count_of_symmetric_firings, '>', 0)))
+    return (True if _erb.erb_bool3(_erb.erb_or(_erb.erb_bool3(is_in_effect), _erb.erb_bool3(_erb.erb_cmp(count_of_inverse_firings, '>', 0)), _erb.erb_bool3(_erb.erb_cmp(count_of_symmetric_firings, '>', 0)))) else None)
 
 # Level 3
 
@@ -618,11 +618,11 @@ def calc_statements_is_next_to_add(listed_off_unit, sort_order, next_fact_sort_o
 
 def calc_statements_holds_before_typing(holds_before_chain, count_of_chain_firings):
     """
-    Order 11. Holds before the domain and range rules apply.
+    Order 11. TRUE when the fact holds before the domain and range rules apply. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true).
     
-    Formula: =OR({{HoldsBeforeChain}}, {{CountOfChainFirings}} > 0)
+    Formula: =IF(OR({{HoldsBeforeChain}}, {{CountOfChainFirings}} > 0), TRUE())
     """
-    return _erb.erb_or(_erb.erb_bool3(holds_before_chain), _erb.erb_bool3(_erb.erb_cmp(count_of_chain_firings, '>', 0)))
+    return (True if _erb.erb_bool3(_erb.erb_or(_erb.erb_bool3(holds_before_chain), _erb.erb_bool3(_erb.erb_cmp(count_of_chain_firings, '>', 0)))) else None)
 
 def calc_statements_snap_position(is_in_effect, sort_order, holds_before_chain, first_pre_chain_order_key):
     """
@@ -636,21 +636,21 @@ def calc_statements_snap_position(is_in_effect, sort_order, holds_before_chain, 
 
 def calc_statements_holds(holds_before_typing, count_of_type_firings):
     """
-    Order 15. True when in effect or concluded by an enabled rule; the graph draws it.
+    Order 15. TRUE when in effect or concluded by an enabled rule; the graph draws it. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true).
     
-    Formula: =OR({{HoldsBeforeTyping}}, {{CountOfTypeFirings}} > 0)
+    Formula: =IF(OR({{HoldsBeforeTyping}}, {{CountOfTypeFirings}} > 0), TRUE())
     """
-    return _erb.erb_or(_erb.erb_bool3(holds_before_typing), _erb.erb_bool3(_erb.erb_cmp(count_of_type_firings, '>', 0)))
+    return (True if _erb.erb_bool3(_erb.erb_or(_erb.erb_bool3(holds_before_typing), _erb.erb_bool3(_erb.erb_cmp(count_of_type_firings, '>', 0)))) else None)
 
 # Level 5
 
 def calc_statements_is_conclusion(holds, is_in_effect):
     """
-    Order 16. Holds only because a rule concluded it. Drawn dashed.
+    Order 16. TRUE when the fact holds only because a rule concluded it; drawn dashed. Blank otherwise: a stated fact is not a conclusion, and a fact nothing concludes is not known (never FALSE).
     
-    Formula: =AND({{Holds}}, NOT({{IsInEffect}}))
+    Formula: =IF(AND({{Holds}}, NOT({{IsInEffect}})), TRUE())
     """
-    return _erb.erb_and(_erb.erb_bool3(holds), _erb.erb_bool3(_erb.erb_not(_erb.erb_bool3(is_in_effect))))
+    return (True if _erb.erb_bool3(_erb.erb_and(_erb.erb_bool3(holds), _erb.erb_bool3(_erb.erb_not(_erb.erb_bool3(is_in_effect))))) else None)
 
 def calc_statements_holds_unit(holds):
     """
@@ -962,7 +962,7 @@ def calc_firings_card_text(is_chosen, kind_wording, first_words, kind, second_wo
     
     Formula: =IF({{IsChosen}}, CONCAT("Worked out by the ", {{KindWording}}, " from “", {{FirstWords}}, "”", IF({{Kind}} = "chain", CONCAT(" and “", {{SecondWords}}, "”"), IF({{Kind}} = "domain", CONCAT(" and “", {{FirstProperty}}, " has domain ", {{FirstPropertyDomainClass}}, "”"), IF({{Kind}} = "range", CONCAT(" and “", {{FirstProperty}}, " has range ", {{FirstPropertyRangeClass}}, "”"), ""))), "."), "")
     """
-    return (('Worked out by the ' + _erb.erb_text(kind_wording) + ' from “' + _erb.erb_text(first_words) + '”' + _erb.erb_text(((' and “' + _erb.erb_text(second_words) + '”') if _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(kind), 'chain')) else ((' and “' + _erb.erb_text(first_property) + ' has domain ' + _erb.erb_text(first_property_domain_class) + '”') if _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(kind), 'domain')) else ((' and “' + _erb.erb_text(first_property) + ' has range ' + _erb.erb_text(first_property_range_class) + '”') if _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(kind), 'range')) else '')))) + '.') if _erb.erb_bool3(is_chosen) else '')
+    return (_erb.erb_concat('Worked out by the ', _erb.erb_part(kind_wording), ' from “', _erb.erb_part(first_words), '”', _erb.erb_part((_erb.erb_concat(' and “', _erb.erb_part(second_words), '”') if _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(kind), 'chain')) else (_erb.erb_concat(' and “', _erb.erb_part(first_property), ' has domain ', _erb.erb_part(first_property_domain_class), '”') if _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(kind), 'domain')) else (_erb.erb_concat(' and “', _erb.erb_part(first_property), ' has range ', _erb.erb_part(first_property_range_class), '”') if _erb.erb_bool3(_erb.erb_eq(_erb.erb_nullif(kind), 'range')) else '')))), '.') if _erb.erb_bool3(is_chosen) else '')
 
 
 def compute_firings_fields(record: dict) -> dict:
@@ -1084,7 +1084,7 @@ def calc_disjoint_checks_alarm_text(violation_unit, subject_label, object_label)
     
     Formula: =IF({{ViolationUnit}} = 1, CONCAT("Contradiction found. ", {{SubjectLabel}}, " is recorded as both parent and spouse of ", {{ObjectLabel}}, ". Check those facts and the selected disjoint rule."), "")
     """
-    return (('Contradiction found. ' + _erb.erb_text(subject_label) + ' is recorded as both parent and spouse of ' + _erb.erb_text(object_label) + '. Check those facts and the selected disjoint rule.') if _erb.erb_bool3(_erb.erb_eq(violation_unit, 1)) else '')
+    return (_erb.erb_concat('Contradiction found. ', _erb.erb_part(subject_label), ' is recorded as both parent and spouse of ', _erb.erb_part(object_label), '. Check those facts and the selected disjoint rule.') if _erb.erb_bool3(_erb.erb_eq(violation_unit, 1)) else '')
 
 
 def compute_disjoint_checks_fields(record: dict) -> dict:
@@ -1519,7 +1519,7 @@ ERB_TABLES = [
      'compute': compute_graphs_fields,
      'fields': ['graph_id', 'label', 'literal_quote', 'literal_type_marker', 'built_in_source_text', 'user_source_text', 'no_conclusions_text', 'name', 'count_of_stated_facts', 'count_of_conclusions', 'count_of_violations', 'is_consistent', 'conclusions_message', 'count_of_facts_to_add', 'has_facts_to_add', 'next_fact_sort_order', 'max_activation_seq', 'next_activation_seq', 'max_listed_sort_order', 'next_listed_sort_order', 'max_sort_order', 'next_candidate_sort_order'],
      'datatypes': {'name': 'string', 'count_of_stated_facts': 'integer', 'count_of_conclusions': 'integer', 'count_of_violations': 'integer', 'is_consistent': 'boolean', 'conclusions_message': 'string', 'count_of_facts_to_add': 'integer', 'has_facts_to_add': 'boolean', 'next_fact_sort_order': 'integer', 'max_activation_seq': 'integer', 'next_activation_seq': 'integer', 'max_listed_sort_order': 'integer', 'next_listed_sort_order': 'integer', 'max_sort_order': 'integer', 'next_candidate_sort_order': 'integer'},
-     'calculated': {'conclusions_message', 'name', 'has_facts_to_add', 'next_candidate_sort_order', 'next_activation_seq', 'next_listed_sort_order', 'is_consistent'},
+     'calculated': {'has_facts_to_add', 'conclusions_message', 'next_activation_seq', 'name', 'next_candidate_sort_order', 'next_listed_sort_order', 'is_consistent'},
      'lookups': [],
      'aggregations': [
         {'field': 'count_of_stated_facts', 'op': 'SUM', 'table': 'statements', 'target': 'in_effect_unit', 'criteria': [('graph', 'raw_field', 'graph_id')], 'suffix': None},
@@ -1550,7 +1550,7 @@ ERB_TABLES = [
      'compute': compute_things_fields,
      'fields': ['thing_id', 'label', 'kind', 'sort_order', 'portrait', 'portrait_name', 'portrait_page', 'portrait_image', 'portrait_crop', 'portrait_width', 'portrait_height', 'name', 'node_key', 'count_of_children', 'count_of_grandchildren', 'count_as_place', 'count_as_subject', 'count_as_object', 'is_in_graph', 'node_kind'],
      'datatypes': {'portrait_name': 'string', 'portrait_page': 'string', 'portrait_image': 'string', 'portrait_crop': 'string', 'portrait_width': 'integer', 'portrait_height': 'integer', 'name': 'string', 'node_key': 'string', 'count_of_children': 'integer', 'count_of_grandchildren': 'integer', 'count_as_place': 'integer', 'count_as_subject': 'integer', 'count_as_object': 'integer', 'is_in_graph': 'boolean', 'node_kind': 'string'},
-     'calculated': {'node_key', 'node_kind', 'name', 'is_in_graph'},
+     'calculated': {'node_key', 'name', 'node_kind', 'is_in_graph'},
      'lookups': [
         {'field': 'portrait_name', 'target': 'portraits', 'return': 'display_name', 'key': 'portrait', 'match': 'portrait_id'},
         {'field': 'portrait_page', 'target': 'portraits', 'return': 'page', 'key': 'portrait', 'match': 'portrait_id'},
@@ -1596,7 +1596,7 @@ ERB_TABLES = [
      'compute': compute_statements_fields,
      'fields': ['statement_id', 'graph', 'subject', 'property', 'object_thing', 'object_value', 'is_listed', 'is_built_in', 'is_detail', 'is_stated', 'activation_seq', 'sort_order', 'subject_label', 'property_label', 'object_label', 'property_datatype', 'property_has_one_current_value', 'property_domain_class', 'property_range_class', 'literal_quote', 'literal_type_marker', 'built_in_source_text', 'user_source_text', 'next_fact_sort_order', 'is_literal', 'object_text', 'name', 'words', 'source', 'subject_property_key', 'latest_sibling_activation_seq', 'is_in_effect', 'listed_unit', 'in_effect_unit', 'listed_off_unit', 'is_next_to_add', 'count_of_inverse_firings', 'count_of_symmetric_firings', 'holds_before_chain', 'count_of_chain_firings', 'holds_before_typing', 'count_of_type_firings', 'holds', 'is_conclusion', 'holds_unit', 'conclusion_unit', 'parent_unit', 'grandparent_unit', 'place_unit', 'first_pre_chain_order_key', 'snap_position', 'first_fired_order_key', 'count_of_chosen_firings', 'subject_node_key', 'object_node_key', 'subject_node_kind', 'object_thing_node_kind', 'object_node_kind', 'object_value_node_label', 'count_of_violations_as_first', 'count_of_violations_as_second', 'is_in_contradiction'],
      'datatypes': {'subject_label': 'string', 'property_label': 'string', 'object_label': 'string', 'property_datatype': 'string', 'property_has_one_current_value': 'boolean', 'property_domain_class': 'string', 'property_range_class': 'string', 'literal_quote': 'string', 'literal_type_marker': 'string', 'built_in_source_text': 'string', 'user_source_text': 'string', 'next_fact_sort_order': 'integer', 'is_literal': 'boolean', 'object_text': 'string', 'name': 'string', 'words': 'string', 'source': 'string', 'subject_property_key': 'string', 'latest_sibling_activation_seq': 'integer', 'is_in_effect': 'boolean', 'listed_unit': 'integer', 'in_effect_unit': 'integer', 'listed_off_unit': 'integer', 'is_next_to_add': 'boolean', 'count_of_inverse_firings': 'integer', 'count_of_symmetric_firings': 'integer', 'holds_before_chain': 'boolean', 'count_of_chain_firings': 'integer', 'holds_before_typing': 'boolean', 'count_of_type_firings': 'integer', 'holds': 'boolean', 'is_conclusion': 'boolean', 'holds_unit': 'integer', 'conclusion_unit': 'integer', 'parent_unit': 'integer', 'grandparent_unit': 'integer', 'place_unit': 'integer', 'first_pre_chain_order_key': 'number', 'snap_position': 'number', 'first_fired_order_key': 'number', 'count_of_chosen_firings': 'integer', 'subject_node_key': 'string', 'object_node_key': 'string', 'subject_node_kind': 'string', 'object_thing_node_kind': 'string', 'object_node_kind': 'string', 'object_value_node_label': 'string', 'count_of_violations_as_first': 'integer', 'count_of_violations_as_second': 'integer', 'is_in_contradiction': 'boolean'},
-     'calculated': {'in_effect_unit', 'snap_position', 'grandparent_unit', 'is_conclusion', 'name', 'place_unit', 'conclusion_unit', 'is_in_contradiction', 'is_in_effect', 'object_text', 'holds_unit', 'holds_before_typing', 'source', 'words', 'listed_unit', 'listed_off_unit', 'subject_property_key', 'object_node_kind', 'is_literal', 'object_node_key', 'parent_unit', 'is_next_to_add', 'subject_node_key', 'holds', 'holds_before_chain'},
+     'calculated': {'holds_before_chain', 'in_effect_unit', 'source', 'listed_off_unit', 'listed_unit', 'is_literal', 'words', 'name', 'is_in_effect', 'place_unit', 'subject_property_key', 'is_in_contradiction', 'snap_position', 'is_conclusion', 'object_text', 'subject_node_key', 'parent_unit', 'holds', 'conclusion_unit', 'holds_before_typing', 'grandparent_unit', 'object_node_kind', 'object_node_key', 'holds_unit', 'is_next_to_add'},
      'lookups': [
         {'field': 'subject_label', 'target': 'things', 'return': 'label', 'key': 'subject', 'match': 'thing_id'},
         {'field': 'property_label', 'target': 'properties', 'return': 'label', 'key': 'property', 'match': 'property_id'},
@@ -1628,7 +1628,7 @@ ERB_TABLES = [
      'compute': compute_firings_fields,
      'fields': ['firing_id', 'kind', 'rule', 'target', 'first', 'second', 'rule_enabled', 'kind_wording', 'kind_sort_order', 'target_name', 'target_subject_label', 'target_property_label', 'target_object_text', 'target_is_conclusion', 'target_subject_node_key', 'target_object_node_key', 'target_first_fired_order_key', 'first_words', 'second_words', 'first_is_in_effect', 'first_holds_before_chain', 'second_holds_before_chain', 'first_holds_before_typing', 'first_property', 'first_property_domain_class', 'first_property_range_class', 'first_sort_order', 'second_is_in_effect', 'first_snap_position', 'second_snap_position', 'inverse_fired_unit', 'symmetric_fired_unit', 'chain_fired_unit', 'type_fired_unit', 'fired_unit', 'pre_chain_fired_unit', 'pre_chain_order_key', 'round', 'order_key', 'is_chosen', 'chosen_unit', 'card_text', 'name'],
      'datatypes': {'rule_enabled': 'boolean', 'kind_wording': 'string', 'kind_sort_order': 'integer', 'target_name': 'string', 'target_subject_label': 'string', 'target_property_label': 'string', 'target_object_text': 'string', 'target_is_conclusion': 'boolean', 'target_subject_node_key': 'string', 'target_object_node_key': 'string', 'target_first_fired_order_key': 'number', 'first_words': 'string', 'second_words': 'string', 'first_is_in_effect': 'boolean', 'first_holds_before_chain': 'boolean', 'second_holds_before_chain': 'boolean', 'first_holds_before_typing': 'boolean', 'first_property': 'string', 'first_property_domain_class': 'string', 'first_property_range_class': 'string', 'first_sort_order': 'integer', 'second_is_in_effect': 'boolean', 'first_snap_position': 'number', 'second_snap_position': 'number', 'inverse_fired_unit': 'integer', 'symmetric_fired_unit': 'integer', 'chain_fired_unit': 'integer', 'type_fired_unit': 'integer', 'fired_unit': 'integer', 'pre_chain_fired_unit': 'integer', 'pre_chain_order_key': 'number', 'round': 'integer', 'order_key': 'number', 'is_chosen': 'boolean', 'chosen_unit': 'integer', 'card_text': 'string', 'name': 'string'},
-     'calculated': {'pre_chain_order_key', 'fired_unit', 'name', 'order_key', 'symmetric_fired_unit', 'type_fired_unit', 'round', 'is_chosen', 'chain_fired_unit', 'pre_chain_fired_unit', 'chosen_unit', 'card_text', 'inverse_fired_unit'},
+     'calculated': {'fired_unit', 'pre_chain_order_key', 'pre_chain_fired_unit', 'order_key', 'inverse_fired_unit', 'is_chosen', 'card_text', 'name', 'chain_fired_unit', 'symmetric_fired_unit', 'type_fired_unit', 'chosen_unit', 'round'},
      'lookups': [
         {'field': 'rule_enabled', 'target': 'rules', 'return': 'is_enabled', 'key': 'rule', 'match': 'rule_id'},
         {'field': 'kind_wording', 'target': 'firing_kinds', 'return': 'wording', 'key': 'kind', 'match': 'firing_kind_id'},
@@ -1659,7 +1659,7 @@ ERB_TABLES = [
      'compute': compute_disjoint_checks_fields,
      'fields': ['disjoint_check_id', 'graph', 'rule', 'first', 'second', 'rule_enabled', 'first_holds', 'second_holds', 'subject_label', 'object_label', 'violation_unit', 'alarm_text', 'name'],
      'datatypes': {'rule_enabled': 'boolean', 'first_holds': 'boolean', 'second_holds': 'boolean', 'subject_label': 'string', 'object_label': 'string', 'violation_unit': 'integer', 'alarm_text': 'string', 'name': 'string'},
-     'calculated': {'name', 'violation_unit', 'alarm_text'},
+     'calculated': {'alarm_text', 'violation_unit', 'name'},
      'lookups': [
         {'field': 'rule_enabled', 'target': 'rules', 'return': 'is_enabled', 'key': 'rule', 'match': 'rule_id'},
         {'field': 'first_holds', 'target': 'statements', 'return': 'holds', 'key': 'first', 'match': 'statement_id'},

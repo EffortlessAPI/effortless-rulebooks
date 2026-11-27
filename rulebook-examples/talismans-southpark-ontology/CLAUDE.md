@@ -60,6 +60,15 @@ engines. The README is the user-facing account; this file is how to work on it.
   `orchestration/live_substrates.py` (it reuses the harness's runner contract, OWL runner
   and `compare_values`); writing the rulebook file belongs in `app/lib/hub.mjs`.
 
+## Open world: a fact is TRUE or not known, never FALSE (2026-11-27)
+
+Her page: "Removing a statement alone does not say that its opposite is true." `Statements.Holds`,
+`HoldsBeforeChain`, `HoldsBeforeTyping` and `IsConclusion` are `IF(<condition>, TRUE())`: TRUE when stated or
+concluded, blank (not known) otherwise. Never write a formula that makes a fact about the cast FALSE. A
+predicate still reads a blank as FALSE (`erbBlankLogic=coerce`, kept on purpose: a premise that is not known never
+fires a rule, exactly as in her reasoner). `normalize()` in `app/lib/engines.mjs` keeps a blank boolean blank (null).
+`node --test testing/app/open-world.test.mjs` holds it on every engine.
+
 ## Candidate rows are data, with one generator
 
 `Statements`, `Firings` and `DisjointChecks` hold every candidate over the cast.

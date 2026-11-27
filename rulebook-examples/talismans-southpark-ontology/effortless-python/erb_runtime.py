@@ -14,11 +14,12 @@ run's own rows, never from another substrate's answers.
 SEMANTICS are the ERB build parameters' (docs/ERB-BUILD-PARAMETERS.md in
 Versioned-Stable-SSoTme-Tools): erb_sdk.py calls configure() with the set it
 was generated under, and every helper below reads that set — how a blank
-behaves in a predicate (erbBlankLogic), how DATETIME_DIFF counts
+behaves in a predicate (erbBlankLogic) and in arithmetic and text joining
+(erbBlankValue), how DATETIME_DIFF counts
 (erbDateDiff), the zone calendar dates live in (erbTimezone), how a datetime
 renders inside text (erbDateTimeText) and whether a whole value is an integer
 (erbWholeNumber). Independent of those: a raw text column reads through
-NULLIF(x, ''), a blank is 0 in arithmetic and '' in CONCAT. erb_runtime.go and
+NULLIF(x, ''). erb_runtime.go and
 erb_runtime.ts are line-for-line counterparts; when a rule changes here it
 changes there.
 """
@@ -42,6 +43,7 @@ _PARAMETER_VALUES = {
     'erbTimezone': ('UTC',),          # or any IANA zone name
     'erbDateTimeText': ('iso8601', 'sql'),
     'erbBlankLogic': ('coerce', 'propagate'),
+    'erbBlankValue': ('coerce', 'propagate'),
     'erbWholeNumber': ('by-field-type', 'integer', 'decimal'),
 }
 
@@ -127,6 +129,25 @@ def _num_or_zero(value):
     plus COALESCE(..., 0) computes it."""
     number = _to_number(value)
     return 0 if number is None else number
+
+
+def _propagate_values() -> bool:
+    """erbBlankValue=propagate: a blank operand of an operator, or a blank part
+    of a CONCAT / `&`, makes the result blank (not known), as SQL's NULL does.
+    coerce (the default): a blank is 0 in arithmetic and '' in text."""
+    return _p('erbBlankValue') == 'propagate'
+
+
+def _operands(*values):
+    """The operands of `+ - * /` as numbers, or None when the result is blank.
+
+    coerce: a blank or non-numeric operand is 0 (the oracle's safe cast plus
+    COALESCE(..., 0)). propagate: a blank or non-numeric operand (the safe cast
+    reads it as NULL) makes the whole result blank."""
+    if _propagate_values():
+        numbers = [_to_number(v) for v in values]
+        return None if any(n is None for n in numbers) else numbers
+    return [_num_or_zero(v) for v in values]
 
 
 def _compare_operands(left, right):
@@ -439,41 +460,85 @@ def erb_date_or_none(value):
 
 
 def _erb_days_delta(value):
+    """The days added to a date, or None when the result is blank (a blank count
+    under erbBlankValue=propagate)."""
+    if _propagate_values() and _to_number(value) is None:
+        return None
     try:
         return datetime.timedelta(days=float(value or 0))
     except (TypeError, ValueError):
         return datetime.timedelta(0)
 
 
+def _shift(date, delta, sign):
+    return None if delta is None else (date + delta if sign > 0 else date - delta)
+
+
 def erb_add(a, b):
     """`+`: numeric addition, except date-plus-days."""
     a_dt, b_dt = erb_date_or_none(a), erb_date_or_none(b)
     if a_dt is not None and b_dt is None:
-        return a_dt + _erb_days_delta(b)
+        return _shift(a_dt, _erb_days_delta(b), 1)
     if b_dt is not None and a_dt is None:
-        return b_dt + _erb_days_delta(a)
-    return _num_or_zero(a) + _num_or_zero(b)
+        return _shift(b_dt, _erb_days_delta(a), 1)
+    pair = _operands(a, b)
+    return None if pair is None else pair[0] + pair[1]
 
 
 def erb_sub(a, b):
     """`-`: numeric subtraction, except date-minus-days."""
     a_dt = erb_date_or_none(a)
     if a_dt is not None and erb_date_or_none(b) is None:
-        return a_dt - _erb_days_delta(b)
-    return _num_or_zero(a) - _num_or_zero(b)
+        return _shift(a_dt, _erb_days_delta(b), -1)
+    pair = _operands(a, b)
+    return None if pair is None else pair[0] - pair[1]
+
+
+def erb_add_days(date, days, sign):
+    """A date-typed field plus (sign 1) or minus (sign -1) a count of days. A blank
+    date gives a blank, in both erbBlankValue settings (SQL's NULL::date + n); a
+    blank count is 0 under coerce and gives a blank under propagate."""
+    if erb_blank(date):
+        return None
+    return erb_add(date, days) if sign > 0 else erb_sub(date, days)
 
 
 def erb_mul(a, b):
     """`*`: numeric multiplication (never string repetition)."""
-    return _num_or_zero(a) * _num_or_zero(b)
+    pair = _operands(a, b)
+    return None if pair is None else pair[0] * pair[1]
 
 
 def erb_div(a, b):
     """`/`: numeric division; a zero divisor is NULL, as NULLIF(divisor, 0) is."""
-    divisor = _num_or_zero(b)
-    if divisor == 0:
+    pair = _operands(a, b)
+    if pair is None or pair[1] == 0:
         return None
-    return _num_or_zero(a) / divisor
+    return pair[0] / pair[1]
+
+
+def erb_neg(value):
+    """Unary `-`. coerce: a blank is 0, so -blank is 0. propagate: -blank is blank."""
+    operand = _operands(value)
+    return None if operand is None else -operand[0]
+
+
+def erb_part(value, render=None):
+    """One non-literal CONCAT / `&` operand as text (`render`, default erb_text).
+    A blank operand is '' under erbBlankValue=coerce and None (it makes the whole
+    join blank, see erb_concat) under propagate."""
+    if value is None or value == '':
+        return None if _propagate_values() else ''
+    text = (render or erb_text)(value)
+    return '' if text is None else text
+
+
+def erb_concat(*parts):
+    """CONCAT / `&` over parts already rendered by erb_part (or literals). A None
+    part, which only erbBlankValue=propagate produces, makes the result blank."""
+    if any(part is None for part in parts):
+        return None
+    return ''.join(parts)
 
 
 def erb_right(text, count) -> str:

@@ -38,10 +38,12 @@ import {
   erbDatetimeText,
   erbText,
   erbConcat,
+  erbPart,
   erbConfigure,
   erbNeg,
   erbAdd,
   erbSub,
+  erbAddDays,
   erbMul,
   erbDiv,
   erbInteger,
@@ -95,7 +97,7 @@ import type { ClosureSpec, FieldType, TableSpec } from "./erb_runtime.js";
 
 /** The ERB build parameters this SDK was generated under
  *  (docs/ERB-BUILD-PARAMETERS.md). The runtime refuses to run unconfigured. */
-export const erbBuildParameters: Record<string, string> = { "erbDateDiff": "calendar", "erbTimezone": "UTC", "erbDateTimeText": "iso8601", "erbBlankLogic": "coerce", "erbWholeNumber": "by-field-type" };
+export const erbBuildParameters: Record<string, string> = { "erbDateDiff": "calendar", "erbTimezone": "UTC", "erbDateTimeText": "iso8601", "erbBlankLogic": "coerce", "erbBlankValue": "coerce", "erbWholeNumber": "by-field-type" };
 erbConfigure(erbBuildParameters);
 
 // =============================================================================
@@ -823,17 +825,17 @@ export interface StatementsRow {
   count_of_inverse_firings: number | null;
   /** Order 6. Symmetric rule applications that conclude this fact. */
   count_of_symmetric_firings: number | null;
-  /** Order 7. Holds from facts in effect plus the inverse and symmetric rules. */
+  /** Order 7. TRUE when the fact is in effect or the inverse or symmetric rule concludes it. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true). */
   holds_before_chain: boolean | null;
   /** Order 10. Property chain applications that conclude this fact. */
   count_of_chain_firings: number | null;
-  /** Order 11. Holds before the domain and range rules apply. */
+  /** Order 11. TRUE when the fact holds before the domain and range rules apply. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true). */
   holds_before_typing: boolean | null;
   /** Order 14. Domain and range applications that conclude this fact. */
   count_of_type_firings: number | null;
-  /** Order 15. True when in effect or concluded by an enabled rule; the graph draws it. */
+  /** Order 15. TRUE when in effect or concluded by an enabled rule; the graph draws it. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true). */
   holds: boolean | null;
-  /** Order 16. Holds only because a rule concluded it. Drawn dashed. */
+  /** Order 16. TRUE when the fact holds only because a rule concluded it; drawn dashed. Blank otherwise: a stated fact is not a conclusion, and a fact nothing concludes is not known (never FALSE). */
   is_conclusion: boolean | null;
   /** Order 16. 1 when the fact holds. */
   holds_unit: number | null;
@@ -957,14 +959,14 @@ export function calcStatementsObjectText(tc: StatementsRow): string | null {
  *  Order 3. The fact in words.
  *  Formula: =CONCAT({{SubjectLabel}}, " ", {{PropertyLabel}}, " ", {{ObjectText}}) */
 export function calcStatementsName(tc: StatementsRow): string | null {
-  return toStringPtr(erbConcat(erbText(vStr(tc.subject_label)), vS(" "), erbText(vStr(tc.property_label)), vS(" "), erbText(vStr(tc.object_text))));
+  return toStringPtr(erbConcat(erbPart(vStr(tc.subject_label)), vS(" "), erbPart(vStr(tc.property_label)), vS(" "), erbPart(vStr(tc.object_text))));
 }
 
 /** Computes the Words calculated field.
  *  Order 2. The fact as a conclusion card quotes it, with a literal written in Turtle form.
  *  Formula: =CONCAT({{SubjectLabel}}, " ", {{PropertyLabel}}, " ", IF({{ObjectThing}} = "", CONCAT({{LiteralQuote}}, {{ObjectValue}}, {{LiteralQuote}}, {{LiteralTypeMarker}}, {{PropertyDatatype}}), {{ObjectLabel}})) */
 export function calcStatementsWords(tc: StatementsRow): string | null {
-  return toStringPtr(erbConcat(erbText(vStr(tc.subject_label)), vS(" "), erbText(vStr(tc.property_label)), vS(" "), erbText(erbIf(erbBool3(erbIsBlank(vStr(tc.object_thing))), () => erbConcat(erbText(vStr(tc.literal_quote)), erbText(vStr(tc.object_value)), erbText(vStr(tc.literal_quote)), erbText(vStr(tc.literal_type_marker)), erbText(vStr(tc.property_datatype))), () => vStr(tc.object_label)))));
+  return toStringPtr(erbConcat(erbPart(vStr(tc.subject_label)), vS(" "), erbPart(vStr(tc.property_label)), vS(" "), erbPart(erbIf(erbBool3(erbIsBlank(vStr(tc.object_thing))), () => erbConcat(erbPart(vStr(tc.literal_quote)), erbPart(vStr(tc.object_value)), erbPart(vStr(tc.literal_quote)), erbPart(vStr(tc.literal_type_marker)), erbPart(vStr(tc.property_datatype))), () => vStr(tc.object_label)))));
 }
 
 /** Computes the Source calculated field.
@@ -978,7 +980,7 @@ export function calcStatementsSource(tc: StatementsRow): string | null {
  *  Order 1. Groups the values one subject has for one property.
  *  Formula: =CONCAT({{Subject}}, "|", {{Property}}) */
 export function calcStatementsSubjectPropertyKey(tc: StatementsRow): string | null {
-  return toStringPtr(erbConcat(erbText(vStrPlain(tc.subject)), vS("|"), erbText(vStrPlain(tc.property))));
+  return toStringPtr(erbConcat(erbPart(vStrPlain(tc.subject)), vS("|"), erbPart(vStrPlain(tc.property))));
 }
 
 /** Computes the IsInEffect calculated field.
@@ -1017,31 +1019,31 @@ export function calcStatementsIsNextToAdd(tc: StatementsRow): boolean | null {
 }
 
 /** Computes the HoldsBeforeChain calculated field.
- *  Order 7. Holds from facts in effect plus the inverse and symmetric rules.
- *  Formula: =OR({{IsInEffect}}, {{CountOfInverseFirings}} > 0, {{CountOfSymmetricFirings}} > 0) */
+ *  Order 7. TRUE when the fact is in effect or the inverse or symmetric rule concludes it. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true).
+ *  Formula: =IF(OR({{IsInEffect}}, {{CountOfInverseFirings}} > 0, {{CountOfSymmetricFirings}} > 0), TRUE()) */
 export function calcStatementsHoldsBeforeChain(tc: StatementsRow): boolean | null {
-  return toBoolPtr(erbOr(erbBool3(vBool(tc.is_in_effect)), erbBool3(erbCmp(vInt(tc.count_of_inverse_firings), ">", vI(0))), erbBool3(erbCmp(vInt(tc.count_of_symmetric_firings), ">", vI(0)))));
+  return toBoolPtr(erbIf(erbBool3(erbOr(erbBool3(vBool(tc.is_in_effect)), erbBool3(erbCmp(vInt(tc.count_of_inverse_firings), ">", vI(0))), erbBool3(erbCmp(vInt(tc.count_of_symmetric_firings), ">", vI(0))))), () => vB(true), () => Null));
 }
 
 /** Computes the HoldsBeforeTyping calculated field.
- *  Order 11. Holds before the domain and range rules apply.
- *  Formula: =OR({{HoldsBeforeChain}}, {{CountOfChainFirings}} > 0) */
+ *  Order 11. TRUE when the fact holds before the domain and range rules apply. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true).
+ *  Formula: =IF(OR({{HoldsBeforeChain}}, {{CountOfChainFirings}} > 0), TRUE()) */
 export function calcStatementsHoldsBeforeTyping(tc: StatementsRow): boolean | null {
-  return toBoolPtr(erbOr(erbBool3(vBool(tc.holds_before_chain)), erbBool3(erbCmp(vInt(tc.count_of_chain_firings), ">", vI(0)))));
+  return toBoolPtr(erbIf(erbBool3(erbOr(erbBool3(vBool(tc.holds_before_chain)), erbBool3(erbCmp(vInt(tc.count_of_chain_firings), ">", vI(0))))), () => vB(true), () => Null));
 }
 
 /** Computes the Holds calculated field.
- *  Order 15. True when in effect or concluded by an enabled rule; the graph draws it.
- *  Formula: =OR({{HoldsBeforeTyping}}, {{CountOfTypeFirings}} > 0) */
+ *  Order 15. TRUE when in effect or concluded by an enabled rule; the graph draws it. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true).
+ *  Formula: =IF(OR({{HoldsBeforeTyping}}, {{CountOfTypeFirings}} > 0), TRUE()) */
 export function calcStatementsHolds(tc: StatementsRow): boolean | null {
-  return toBoolPtr(erbOr(erbBool3(vBool(tc.holds_before_typing)), erbBool3(erbCmp(vInt(tc.count_of_type_firings), ">", vI(0)))));
+  return toBoolPtr(erbIf(erbBool3(erbOr(erbBool3(vBool(tc.holds_before_typing)), erbBool3(erbCmp(vInt(tc.count_of_type_firings), ">", vI(0))))), () => vB(true), () => Null));
 }
 
 /** Computes the IsConclusion calculated field.
- *  Order 16. Holds only because a rule concluded it. Drawn dashed.
- *  Formula: =AND({{Holds}}, NOT({{IsInEffect}})) */
+ *  Order 16. TRUE when the fact holds only because a rule concluded it; drawn dashed. Blank otherwise: a stated fact is not a conclusion, and a fact nothing concludes is not known (never FALSE).
+ *  Formula: =IF(AND({{Holds}}, NOT({{IsInEffect}})), TRUE()) */
 export function calcStatementsIsConclusion(tc: StatementsRow): boolean | null {
-  return toBoolPtr(erbAnd(erbBool3(vBool(tc.holds)), erbBool3(erbNot(erbBool3(vBool(tc.is_in_effect))))));
+  return toBoolPtr(erbIf(erbBool3(erbAnd(erbBool3(vBool(tc.holds)), erbBool3(erbNot(erbBool3(vBool(tc.is_in_effect)))))), () => vB(true), () => Null));
 }
 
 /** Computes the HoldsUnit calculated field.
@@ -1097,7 +1099,7 @@ export function calcStatementsSubjectNodeKey(tc: StatementsRow): string | null {
  *  Order 2. The graph node this fact points at: the thing, or one node per value and datatype.
  *  Formula: =IF({{ObjectThing}} = "", CONCAT("literal|", {{ObjectValue}}, "|", {{PropertyDatatype}}), {{ObjectThing}}) */
 export function calcStatementsObjectNodeKey(tc: StatementsRow): string | null {
-  return toStringPtr(erbIf(erbBool3(erbIsBlank(vStr(tc.object_thing))), () => erbConcat(vS("literal|"), erbText(vStr(tc.object_value)), vS("|"), erbText(vStr(tc.property_datatype))), () => vStr(tc.object_thing)));
+  return toStringPtr(erbIf(erbBool3(erbIsBlank(vStr(tc.object_thing))), () => erbConcat(vS("literal|"), erbPart(vStr(tc.object_value)), vS("|"), erbPart(vStr(tc.property_datatype))), () => vStr(tc.object_thing)));
 }
 
 /** Computes the ObjectNodeKind calculated field.
@@ -1378,7 +1380,7 @@ export function calcFiringsChosenUnit(tc: FiringsRow): number | null {
  *  Order 19. The conclusion card's provenance line, in the page's wording.
  *  Formula: =IF({{IsChosen}}, CONCAT("Worked out by the ", {{KindWording}}, " from “", {{FirstWords}}, "”", IF({{Kind}} = "chain", CONCAT(" and “", {{SecondWords}}, "”"), IF({{Kind}} = "domain", CONCAT(" and “", {{FirstProperty}}, " has domain ", {{FirstPropertyDomainClass}}, "”"), IF({{Kind}} = "range", CONCAT(" and “", {{FirstProperty}}, " has range ", {{FirstPropertyRangeClass}}, "”"), ""))), "."), "") */
 export function calcFiringsCardText(tc: FiringsRow): string | null {
-  return toStringPtr(erbIf(erbBool3(vBool(tc.is_chosen)), () => erbConcat(vS("Worked out by the "), erbText(vStr(tc.kind_wording)), vS(" from “"), erbText(vStr(tc.first_words)), vS("”"), erbText(erbIf(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("chain"))), () => erbConcat(vS(" and “"), erbText(vStr(tc.second_words)), vS("”")), () => erbIf(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("domain"))), () => erbConcat(vS(" and “"), erbText(vStr(tc.first_property)), vS(" has domain "), erbText(vStr(tc.first_property_domain_class)), vS("”")), () => erbIf(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("range"))), () => erbConcat(vS(" and “"), erbText(vStr(tc.first_property)), vS(" has range "), erbText(vStr(tc.first_property_range_class)), vS("”")), () => vS(""))))), vS(".")), () => vS("")));
+  return toStringPtr(erbIf(erbBool3(vBool(tc.is_chosen)), () => erbConcat(vS("Worked out by the "), erbPart(vStr(tc.kind_wording)), vS(" from “"), erbPart(vStr(tc.first_words)), vS("”"), erbPart(erbIf(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("chain"))), () => erbConcat(vS(" and “"), erbPart(vStr(tc.second_words)), vS("”")), () => erbIf(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("domain"))), () => erbConcat(vS(" and “"), erbPart(vStr(tc.first_property)), vS(" has domain "), erbPart(vStr(tc.first_property_domain_class)), vS("”")), () => erbIf(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("range"))), () => erbConcat(vS(" and “"), erbPart(vStr(tc.first_property)), vS(" has range "), erbPart(vStr(tc.first_property_range_class)), vS("”")), () => vS(""))))), vS(".")), () => vS("")));
 }
 
 /** Computes the Name calculated field.
@@ -1478,7 +1480,7 @@ export function calcDisjointChecksViolationUnit(tc: DisjointChecksRow): number |
  *  Order 18. The page's contradiction alert, blank when there is none.
  *  Formula: =IF({{ViolationUnit}} = 1, CONCAT("Contradiction found. ", {{SubjectLabel}}, " is recorded as both parent and spouse of ", {{ObjectLabel}}, ". Check those facts and the selected disjoint rule."), "") */
 export function calcDisjointChecksAlarmText(tc: DisjointChecksRow): string | null {
-  return toStringPtr(erbIf(erbBool3(erbEq(vInt(tc.violation_unit), vI(1))), () => erbConcat(vS("Contradiction found. "), erbText(vStr(tc.subject_label)), vS(" is recorded as both parent and spouse of "), erbText(vStr(tc.object_label)), vS(". Check those facts and the selected disjoint rule.")), () => vS("")));
+  return toStringPtr(erbIf(erbBool3(erbEq(vInt(tc.violation_unit), vI(1))), () => erbConcat(vS("Contradiction found. "), erbPart(vStr(tc.subject_label)), vS(" is recorded as both parent and spouse of "), erbPart(vStr(tc.object_label)), vS(". Check those facts and the selected disjoint rule.")), () => vS("")));
 }
 
 /** Computes the Name calculated field.

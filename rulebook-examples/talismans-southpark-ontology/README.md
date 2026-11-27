@@ -76,12 +76,13 @@ report when her page changes.
 | [`compare-app-with-her-app.mjs`](testing/her-app/compare-app-with-her-app.mjs) | Her whole page script, run against a stub document, and this app's real server receive the same random clicks: fact and rule checkboxes, her seven buttons, Remove, and the Add fact form with the original cast **and names and values the rulebook has never seen** (Kenny, Mr Garrison, grade 6). After every click: the fact list, rule switches, conclusions panel (each card word for word, in order), alerts, the Add next fact button, the record summary, the button note and the form message. Run once per engine. | Postgres 115 of 115 screens, TypeScript 115 of 115, OWL 115 of 115 |
 | [`compare-with-her-app.mjs`](testing/her-app/compare-with-her-app.mjs) | Her reasoner against the Postgres views, in every combination of the five rule switches for her starting facts, the two facts she suggests trying, and her buttons' fact changes. | 224 of 224 states, in her order too |
 | [`testing/app/app.test.mjs`](testing/app/app.test.mjs) | What her page cannot do, on each engine: a new property wired to the Symmetric rule by adding a row, a new name that finds its portrait, new wording, Save, Discard, and the engines still agreeing afterwards. Also the candidate generator against the rulebook's stored rows, and Save's refusal to overwrite a file someone else changed. | 7 of 7 |
+| [`testing/app/open-world.test.mjs`](testing/app/open-world.test.mjs) | Open world on each engine: a stated fact is TRUE, a fact nothing states or concludes is blank (not known, never FALSE), a rule's conclusion is TRUE, and switching a fact off leaves it not known. | 4 of 4 |
 | [`scripts/tests/test_live_substrates.py`](../../scripts/tests/test_live_substrates.py) | The platform tool: TypeScript and OWL follow a change to the live rows, agree on every computed value, and a wrong value is named. | 4 of 4 |
 
 ```bash
 node testing/her-app/compare-app-with-her-app.mjs --engine=all --walks=3 --steps=40
 node testing/her-app/compare-with-her-app.mjs
-node --test testing/app/app.test.mjs
+node --test testing/app/app.test.mjs testing/app/open-world.test.mjs
 python3 ../../scripts/tests/test_live_substrates.py
 ```
 
@@ -174,6 +175,19 @@ property chain.
 The seed data is her page's starting state: the ten teaching facts on, every rule off. A
 value the page keeps one of per person (grade, role) is current when it was switched on
 most recently, so switching grade 5 on puts grade 4 out of effect without deleting it.
+
+**Open world, as her page says it** ("Removing a statement alone does not say that its
+opposite is true"). A fact about the cast is TRUE when it is stated or an enabled rule
+concludes it, and otherwise *not known*: `Statements.Holds`, `HoldsBeforeChain`,
+`HoldsBeforeTyping` and `IsConclusion` are `IF(..., TRUE())`, TRUE or blank, never FALSE.
+Switching a fact off, or Stan leaving school, leaves it not known rather than false, and a
+candidate nothing concludes (Marvin is parent of Sharon) is not known either. The admin
+shows such a value blank. A rule fires only from facts that are known: counts, cards and
+alarms read a blank as FALSE in a predicate (the project's `erbBlankLogic=coerce`), so the
+page behaves as hers does. What stays TRUE or FALSE is about this record, not about South
+Park: whether a fact is listed, stated or in effect, a rule switched on, a contradiction
+found. [`testing/app/open-world.test.mjs`](testing/app/open-world.test.mjs) holds it on
+every engine.
 
 The rules apply in three fixed strata: inverse and symmetric, then the property chain,
 then domain and range. The conclusions are ordered the way her reasoner finds them: a
