@@ -207,6 +207,17 @@ reimplemented). `scripts/erb_project.py` is the single implementation of the
 first two phases, shared with `run-conformance.py --project-build --reset-db`, so
 the explorer's per-project button and the corpus runner cannot drift apart.
 
+**A build runs every step, fails if any step failed, and ends (2026-11-27).**
+`build_project` (also the root build of `run-corpus.py` and `run-conformance.py`)
+runs `effortless build -continueOnError`: `oss-rulebook-to-english` fails without
+`OPENAI_API_KEY`, and it used to stop every build at step 9 of 18, leaving Postgres and
+the rest unbuilt. With that flag the CLI exits 0 even when a step failed, so the build
+is failed from the CLI's own summary (`[cli]   FAILED: <step>`). A build still running
+after 30 minutes (`BUILD_TIME_LIMIT_SECONDS`) is stopped and failed: an older CLI once
+crashed and never exited, and the runner waited three hours. Run builds with the
+published CLI (`npm install -g @effortlessapi/cli`), the one that has `serve -port`.
+Test: `scripts/tests/test_build_runs_every_step.py`.
+
 **Builds are sequential and must stay that way.** Every `effortless build` goes
 through the local transpiler host on `:4242`; concurrent builds corrupt each other. The
 explorer refuses to launch a second fan-out while one is live for the same reason.

@@ -13,11 +13,15 @@ Runnable standalone for one project:
 from __future__ import annotations
 
 import argparse
+import codecs
 import json
 import os
 import re
+import select
+import signal
 import subprocess
 import sys
+import time
 from collections import OrderedDict
 from pathlib import Path
 
@@ -120,16 +124,45 @@ def unpin(effortless_json: Path, log) -> int:
     return removed
 
 
-def build_project(slug: str, domain_dir: Path, log) -> None:
+# A build that has not finished after this long is stuck, not slow: the largest
+# project (procedural-knowledge-ontology) builds in a few minutes. On 2026-11-27 an
+# older CLI crashed reading a step's error reply and its process never exited; the
+# corpus runner waited on it for three hours with 34 projects still to build.
+BUILD_TIME_LIMIT_SECONDS = 30 * 60
+
+# The CLI's own summary of a build in which some step failed.
+FAILED_STEP = re.compile(r"^\[cli\]\s+FAILED:\s*(?P<step>.+)$")
+FAILED_SUMMARY = re.compile(r"^\[cli\]\s+BUILD (?:FAILED|FINISHED WITH \d+ FAILED STEP)")
+
+
+def failed_steps(lines: list[str]) -> list[str]:
+    """The steps a build's output says failed ("oss-rulebook-to-english  (/english)")."""
+    steps = [m.group("step").strip() for m in (FAILED_STEP.match(l.strip()) for l in lines) if m]
+    if not steps and any(FAILED_SUMMARY.match(l.strip()) for l in lines):
+        steps = ["a step (the CLI did not name it)"]
+    return steps
+
+
+def build_project(slug: str, domain_dir: Path, log, time_limit: float = BUILD_TIME_LIMIT_SECONDS) -> None:
     """`effortless build` in the project directory: the whole pipeline declared
     in that project's effortless.json. Unpins first (see unpin()). Raises
-    SystemExit on failure."""
+    SystemExit on failure.
+
+    Every step runs even when one fails (-continueOnError): a step that cannot run
+    on this machine (oss-rulebook-to-english with no OPENAI_API_KEY) used to stop
+    the build there and leave the nine steps after it, Postgres among them,
+    unbuilt. The build still FAILS, naming every failed step: with
+    -continueOnError the CLI exits 0, so its own summary is what is read."""
     effortless_json = domain_dir / "effortless.json"
     if not effortless_json.is_file():
         raise SystemExit(f"{effortless_json} does not exist — {slug} has no build pipeline.")
     unpin(effortless_json, log)
     log(f"[build] effortless build in {domain_dir.relative_to(REPO_ROOT) if domain_dir != REPO_ROOT else '.'}")
-    run_streaming(["effortless", "build"], cwd=domain_dir, log=log)
+    lines = run_streaming(["effortless", "build", "-continueOnError"], cwd=domain_dir, log=log,
+                          time_limit=time_limit)
+    failed = failed_steps(lines)
+    if failed:
+        raise SystemExit(f"build finished with {len(failed)} failed step(s): {'; '.join(failed)}")
 
 
 def postgres_output_dir(domain_dir: Path) -> Path | None:
@@ -230,24 +263,78 @@ def first_error(lines: list[str], fallback: str) -> str:
     return fallback[:400]
 
 
-def run_streaming(cmd: list[str], cwd: Path, log, env: dict | None = None) -> None:
-    """Run a command, forwarding every output line to `log` as it arrives.
-    Raises SystemExit with the most useful error line on a nonzero exit — no
-    partial success is ever reported as success."""
+LINE_BREAK = re.compile(r"\r\n|\r|\n")
+
+
+def run_streaming(cmd: list[str], cwd: Path, log, env: dict | None = None,
+                  time_limit: float | None = None) -> list[str]:
+    """Run a command, forwarding every output line to `log` as it arrives, and
+    return its non-blank lines. Raises SystemExit with the most useful error line
+    on a nonzero exit — no partial success is ever reported as success.
+
+    With `time_limit` (seconds), a command still running then is stopped (its
+    whole process group) and reported as a failure. The output is read with a
+    deadline rather than line by line, because a stuck process can hold the pipe
+    open without writing to it, and even past SIGKILL (the 2026-11-27 CLI sat in
+    the kernel's exit path, unkillable, for hours): waiting for the pipe to close
+    would wait for ever."""
     proc = subprocess.Popen(
         cmd, cwd=str(cwd), env=env,
         stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-        text=True, bufsize=1)
-    lines, last = [], ""
-    for line in proc.stdout:
-        line = line.rstrip("\n")
+        start_new_session=time_limit is not None)
+    deadline = None if time_limit is None else time.monotonic() + time_limit
+    decoder = codecs.getincrementaldecoder("utf-8")("replace")
+    fd = proc.stdout.fileno()
+    lines, last, pending = [], "", ""
+
+    def emit(line: str) -> None:
+        nonlocal last
         if line:
             last = line
             lines.append(line)
         log(line)
+
+    timed_out = False
+    while True:
+        wait = None if deadline is None else deadline - time.monotonic()
+        if wait is not None and wait <= 0:
+            timed_out = True
+            break
+        ready, _, _ = select.select([fd], [], [], wait)
+        if not ready:
+            continue
+        chunk = os.read(fd, 65536)
+        if not chunk:
+            break
+        pending += decoder.decode(chunk)
+        # A "\r" at the end may be the first half of a "\r\n" still to come.
+        held = "\r" if pending.endswith("\r") else ""
+        parts = LINE_BREAK.split(pending[:len(pending) - len(held)])
+        pending = parts.pop() + held
+        for part in parts:
+            emit(part)
+    pending += decoder.decode(b"", final=True)
+    if pending.rstrip("\r"):
+        emit(pending.rstrip("\r"))
+
+    if timed_out:
+        try:
+            os.killpg(proc.pid, signal.SIGKILL)
+        except (ProcessLookupError, PermissionError):
+            pass
+        try:
+            proc.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            pass
+        proc.stdout.close()
+        minutes = f"{time_limit / 60:g} minute(s)" if time_limit >= 60 else f"{time_limit:g} second(s)"
+        raise SystemExit(f"{cmd[0]} was still running after {minutes} and was stopped "
+                         f"(last output: {first_error(lines, last)})")
+    proc.stdout.close()
     code = proc.wait()
     if code != 0:
         raise SystemExit(f"{cmd[0]} exited {code}: {first_error(lines, last)}")
+    return lines
 
 
 def main() -> None:

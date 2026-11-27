@@ -430,10 +430,13 @@ def main() -> None:
     status.doc["phase"] = "building-root"
     status.flush()
     print("[corpus] running the single root effortless build so every derived score recomputes", flush=True)
-    result = subprocess.run(["effortless", "build"], cwd=str(REPO_ROOT))
-    if result.returncode != 0:
+    # The same build_project every project build uses: every step runs, a failed
+    # step fails it (the CLI exits 0 then), and a stuck build is stopped.
+    try:
+        build_project("root", REPO_ROOT, lambda line: print(line, flush=True))
+    except SystemExit as e:
         finish("root-build-failed")
-        raise SystemExit(f"root effortless build exited {result.returncode}")
+        raise SystemExit(f"root effortless build failed: {e}")
     finish("done")
     print(json.dumps({"run_id": run_id, "targets": len(targets), "green": green,
                       "status_path": str(status.path.relative_to(REPO_ROOT))}), flush=True)

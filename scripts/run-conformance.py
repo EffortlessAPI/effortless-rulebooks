@@ -252,9 +252,8 @@ def record_rows(rulebook_path: Path, run_row: dict, result_rows: list[dict]) -> 
 
 def run_effortless_build() -> None:
     print("[run-conformance] running effortless build at repo root", flush=True)
-    result = subprocess.run(["effortless", "build"], cwd=str(REPO_ROOT))
-    if result.returncode != 0:
-        raise SystemExit(f"effortless build exited {result.returncode}")
+    # The same build_project every project build uses (see its docstring).
+    build_project("root", REPO_ROOT, lambda line: print(line, flush=True))
 
 
 def main() -> None:
