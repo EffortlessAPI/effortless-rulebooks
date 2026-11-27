@@ -94,6 +94,32 @@ def _resolve_rulebook_path():
 
 RULEBOOK_PATH = _resolve_rulebook_path()
 
+
+def _project_blank_logic():
+    """The project's erbBlankLogic, which decides what a blank boolean MEANS.
+
+    Under `coerce` a blank in a predicate is FALSE, so a substrate that answers
+    false where another answers blank computed the same thing. Under `propagate`
+    (three-valued logic: open world) a blank is "not known", and answering false
+    for it is a different answer. A project that does not set it is built under
+    the contract's default, `coerce` (docs/ERB-BUILD-PARAMETERS.md in
+    Versioned-Stable-SSoTme-Tools; every generated SDK in this repo says the same).
+    """
+    path = os.path.join(DOMAIN_DIR, "effortless.json")
+    if not os.path.isfile(path):
+        return "coerce"
+    with open(path, encoding="utf-8") as f:
+        settings = json.load(f).get("ProjectSettings") or []
+    values = [s.get("Value") for s in settings if s.get("Name") == "erbBlankLogic"]
+    if not values:
+        return "coerce"
+    if len(values) > 1 or values[0] not in ("coerce", "propagate"):
+        raise ValueError(f"{path}: erbBlankLogic must be set once, to coerce or propagate; found {values}")
+    return values[0]
+
+
+BLANK_LOGIC = _project_blank_logic()
+
 # All conformance artifacts live inside the domain folder so each rulebook
 # example is fully self-contained. The central testing/ folder at repo root
 # is no longer used.
@@ -918,6 +944,15 @@ _NULL_STRINGS = {"", "none", "null", "n/a", "na"}
 _FALSY_STRINGS = _NULL_STRINGS | {"0", "0.0", "false", "f", "no"}
 
 
+def _is_blank(val) -> bool:
+    """Absent, however a substrate spells it: NULL, the empty string, or a NULL
+    written out as text. Never a zero or a false: under erbBlankLogic=propagate
+    those are known values and a blank is not one of them."""
+    if val is None:
+        return True
+    return isinstance(val, str) and val.strip().lower() in _NULL_STRINGS
+
+
 def _is_nullish(val) -> bool:
     if val is None:
         return True
@@ -993,7 +1028,7 @@ def _normalize_string(val) -> str:
     return s.lower()
 
 
-def compare_values(expected, actual, datatype: str = None) -> bool:
+def compare_values(expected, actual, datatype: str = None, blank_logic: str = None) -> bool:
     """Compare two values forgivingly across the type-representation drift that
     naturally occurs between substrates (Python None vs SQL NULL vs CSV empty,
     int vs float, "1,000" vs 1000, " Internal " vs "internal", etc.).
@@ -1011,15 +1046,26 @@ def compare_values(expected, actual, datatype: str = None) -> bool:
 
     This is the conservative variant — it's still deterministic. Fuzzy/semantic
     grading is a separate tool (llm-fuzzy-grader.py).
+
+    `blank_logic` is the project's erbBlankLogic (BLANK_LOGIC when not given).
+    Under `coerce` a blank boolean is FALSE; under `propagate` a blank is "not
+    known" and equals only another blank, so a substrate that coerces a blank to
+    false fails an open-world project instead of passing it.
     """
-    if _is_nullish(expected) and _is_nullish(actual):
+    blank_logic = blank_logic or BLANK_LOGIC
+    if blank_logic not in ("coerce", "propagate"):
+        raise ValueError(f"blank_logic must be coerce or propagate, not {blank_logic!r}")
+    # Under coerce a blank, a zero and a false are one class (every substrate
+    # coerces a blank to them); under propagate a blank is only ever a blank.
+    nullish = _is_nullish if blank_logic == "coerce" else _is_blank
+    if nullish(expected) and nullish(actual):
         return True
     # One side null-ish, the other not, is a real disagreement.
-    if _is_nullish(expected) != _is_nullish(actual):
-        # Boolean is a special case: a null actual canonicalizes to False, which
-        # may legitimately equal a False expected — fall through to the boolean
-        # branch below for that one.
-        if (datatype or "").lower() != "boolean":
+    if nullish(expected) != nullish(actual):
+        # Boolean under coerce is a special case: a null actual canonicalizes to
+        # False, which may legitimately equal a False expected — fall through to
+        # the boolean branch below for that one. Under propagate it never does.
+        if (datatype or "").lower() != "boolean" or blank_logic == "propagate":
             return False
 
     dt = (datatype or "").lower()
