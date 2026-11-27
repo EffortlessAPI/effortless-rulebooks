@@ -42857,7 +42857,7 @@
    },
    {
     "PageTextId": "concepts-intro",
-    "Text": "The same ontology as ordinary tables: a table of individuals, a table for each class, and a table or a column for each property. An edit here is written straight to the rows the explainer runs on, as the matching change of its things, properties and statements; nothing is kept twice. What a table is comes from its fields. What its fields cannot say (a label, symmetric, inverse of) is a row of ERBTables or ERBFields.",
+    "Text": "The same ontology as ordinary tables: a table of individuals, a table for each class, and a table or a column for each property. An edit here is written straight to the rows the explainer runs on, as the matching change of its things, properties and statements; nothing is kept twice. What a table is comes from its fields. What its fields cannot say (a label, symmetric, inverse of) is on its row of ERBTables or ERBFields.",
     "Name": "concepts-intro"
    },
    {
@@ -43007,7 +43007,7 @@
    },
    {
     "PageTextId": "concepts-role-attributes",
-    "Text": "What the tables' fields cannot say about a class or a property: its label, its wording on the page, whether it is symmetric, its inverse, chain and disjoint properties. One row per table (ERBTables) or per column that is a property (ERBFields). A row comes and goes with its table or column.",
+    "Text": "One row per table (ERBTables) and one per field (ERBFields), as the platform's Schema module keeps them. On the row of a class, a property or a column that is a property is what its fields cannot say: its label, its wording on the page, whether it is symmetric, its inverse, chain and disjoint properties. The other columns follow the table or field the row is about.",
     "Name": "concepts-role-attributes"
    },
    {
@@ -43134,6 +43134,56 @@
     "PageTextId": "concepts-remove-confirm",
     "Text": "Click again to remove",
     "Name": "concepts-remove-confirm"
+   },
+   {
+    "PageTextId": "concepts-editor",
+    "Text": "Open the concept rulebook editor",
+    "Name": "concepts-editor"
+   },
+   {
+    "PageTextId": "concepts-editor-off",
+    "Text": "The concept rulebook editor is not running. Start it with ./start.sh --concept-editor",
+    "Name": "concepts-editor-off"
+   },
+   {
+    "PageTextId": "concepts-load-file",
+    "Text": "Load the concept rulebook file",
+    "Name": "concepts-load-file"
+   },
+   {
+    "PageTextId": "concepts-write-file",
+    "Text": "Overwrite the file from these rows",
+    "Name": "concepts-write-file"
+   },
+   {
+    "PageTextId": "concepts-file-changed",
+    "Text": "The concept rulebook file ({file}) changed on disk: saved from its rulebook editor, or edited by hand. Load it to bring those edits into the ontology, or overwrite it from the rows here.",
+    "Name": "concepts-file-changed"
+   },
+   {
+    "PageTextId": "concepts-file-loaded",
+    "Text": "Loaded {file}: {rows} rows of the ontology differ from the rulebook file. Review them, then save.",
+    "Name": "concepts-file-loaded"
+   },
+   {
+    "PageTextId": "concepts-file-missing",
+    "Text": "There is no concept rulebook file yet ({file}). Save writes it.",
+    "Name": "concepts-file-missing"
+   },
+   {
+    "PageTextId": "concepts-file-written",
+    "Text": "The concept rulebook was written to {file}.",
+    "Name": "concepts-file-written"
+   },
+   {
+    "PageTextId": "concepts-file-kept",
+    "Text": "The concept rulebook file ({file}) changed on disk and was not overwritten: load it on the Concepts page, or overwrite it there.",
+    "Name": "concepts-file-kept"
+   },
+   {
+    "PageTextId": "concepts-file-failed",
+    "Text": "The concept rulebook file was not written: {reason}",
+    "Name": "concepts-file-failed"
    }
   ]
  },

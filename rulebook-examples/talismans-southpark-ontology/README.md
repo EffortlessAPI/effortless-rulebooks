@@ -40,7 +40,7 @@ python3 ../../scripts/erb_project.py talismans-southpark-ontology --reset-db   #
 | Admin | Every table of the rulebook as an editable grid: rules, properties and their wiring, wording, layouts, buttons, the cast, the engines themselves. Edits apply at once on every engine. Save writes the rulebook file. | `/admin.html` |
 | The concept form | The same ontology as ordinary tables: a table of individuals, a table per class, a table or a column per property, with each property's attributes beside it. Add a person, a class, a relationship or a column there and the page shows it. | `/concepts.html` |
 | Excel | Export the current rows as a workbook with every rule as a live formula (about 30 s). Edit it in Excel and import it again (about 2 s): the edits arrive as unsaved changes. The concept form exports and imports its own workbook the same way. | The admin's Export and Import |
-| Rulebook editor | The platform's generated editor for tables, fields and formulas, in its own container. | `./start.sh --editor` |
+| Rulebook editor | The platform's generated editor for tables, fields and formulas, in its own container. A second one opens the concept rulebook. | `./start.sh --editor`, `./start.sh --concept-editor` |
 
 The tools list itself is the rulebook's `RulebookTools` table, and the engines are its
 `Engines` table.
@@ -127,6 +127,7 @@ the generator reads correctly; the generator's defect is finding `cr-28-01`.
 | The concept form (`/concepts.html`) | The individuals, each class's members, each property's facts, and the vocabulary itself: a new class, relationship, value property or column; what a link points at (domain and range); symmetric, inverse of, chain, disjoint | At once, on every engine: each edit is written as the matching change of the rulebook's things, properties and statements |
 | Excel | The stored rows, in a workbook where every rule is a live formula | As unsaved changes in the admin, to review and save. A changed formula, field or table is reported, not applied |
 | The rulebook editor (`./start.sh --editor`) | Tables, fields, formulas, rows | Its Save writes the rulebook file; the app then says the file changed and reloads it on Discard; a formula change needs a rebuild |
+| The concept rulebook editor (`./start.sh --concept-editor`) | The concept rulebook: a column added to a class, a new class or property table, rows | Its Save rewrites `concept-rulebook/talismans-southpark-ontology-concepts.json`; the concept form's page says the file changed and **Load the concept rulebook file** brings it into the ontology as unsaved changes. No rebuild: a new column there is a new property row here |
 | The rulebook file | Anything | Rebuild |
 
 **Save** (in the admin) writes the stored rows back into the rulebook file and nothing
@@ -160,7 +161,7 @@ The same ontology has a **concept form**, the shape an ordinary rulebook has:
 | A table with `Subject` and `Value` (`hasAge`) | A datatype property with many values |
 | A column of a class's table (`Person.hasGradeLevel`) | A property with one current value, whose domain is that class |
 | The table a `Subject` or an `Object` links to | The property's domain or range (`Things` for any thing) |
-| A row of `ERBTables` or `ERBFields` | What the structure cannot say: the label, the page's wording, symmetric, and the inverse, chain and disjoint axioms |
+| Its row of `ERBTables` (a table) or `ERBFields` (a column) | What the structure cannot say: the label, the page's wording, symmetric, and the inverse, chain and disjoint axioms. The two tables are the platform's Schema module (one row per table, one per field), with these attributes as further columns |
 
 `/concepts.html` shows the live rows in that form and edits them there. It is a view, not a
 copy: there is one set of rows, and an edit in the concept form is written at once as the
@@ -179,10 +180,21 @@ What the page itself keeps (its rules, buttons, wording, layouts, and its record
 fact: listed, built in, when it was stated) is not a concept and is not in the concept
 form. A fact removed from a concept table is switched off and stays in the page's list.
 
-The concept rulebook is also a document: **Open the concept rulebook** gives it as JSON,
-and **Export / Import a concept workbook** take it through the same catalog tools as the
-ontology form's workbook. One cell changed in the concept workbook comes back as the
-matching change of the ontology's rows.
+The concept rulebook is also a document, with the tools any rulebook has:
+
+- **A file**, `concept-rulebook/talismans-southpark-ontology-concepts.json`. The build writes
+  it (the `concept-rulebook` step, after `compile-rulebook`) and so does Save, from the saved
+  rows. **Open the concept rulebook** gives the live one as JSON.
+- **Its own rulebook editor**, `./start.sh --concept-editor` (ports 43621 to 43623): the same
+  generated editor as the rulebook's, built from the concept rulebook, with its own database.
+  Add a column to `Person` there, or a table shaped like a class or a property, and save.
+- **Load the concept rulebook file** lays that file over the live rows: what was edited in it
+  becomes the matching change of the ontology, as unsaved changes to review. The page says
+  when the file changed on disk; Save never overwrites a file it has not seen, and
+  **Overwrite the file from these rows** discards it on request.
+- **Export / Import a concept workbook** take it through the same catalog tools as the
+  ontology form's workbook. One cell changed in the concept workbook comes back as the
+  matching change of the ontology's rows.
 
 What it cannot hold, it refuses in words: a calculated column (the ontology states facts
 and concludes by its five rules), an attribute the model has no field for, a table that is
@@ -265,8 +277,16 @@ an earlier one would need repeated rounds.
 - **Schema changes are not live.** The admin edits rows. Fields, formulas and tables
   change in the rulebook editor or the file, followed by a rebuild. (A new class, property
   or column of the ONTOLOGY is not a schema change: it is rows, made in the concept form.)
-- **The rulebook editor opens the ontology form only.** The concept rulebook has the admin
-  grid, the file and Excel both ways; the generated editor is not yet pointed at it.
+- **Save in either rulebook editor fails until the published editor is updated.** The
+  generated API saves into `effortless-rulebook.json` unless it is told the file's real name,
+  and the published `effortless-rulebook-editor` never told it, so Save answers
+  `ENOENT ... effortless-rulebook.json` (seen on the concept rulebook's editor; the
+  rulebook's own editor runs the same generated runtime with the same environment). Fixed
+  with a test in
+  `Versioned-Stable-SSoTme-Tools` (c31abefa, 2026-11-27) and proven here on the concept
+  rulebook's editor (a column, a person and a fact added there, saved, loaded into the
+  ontology and shown on the page); it reaches this project when that tool is published and
+  the project rebuilt. Until then the editors show and edit, and do not save.
 
 ## How the Excel import came to work
 

@@ -31,25 +31,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from erb_project import REPO_ROOT, reset_db  # noqa: E402
-
-AREAS = ("rulebook-examples", "toy-rulebooks")
-
-
-def project_dir(start: Path) -> Path:
-    """The project folder holding the effortless.json of the build running in
-    `start`: the nearest folder at or above `start` directly under an area."""
-    start = start.resolve()
-    for d in (start, *start.parents):
-        if d.parent.name in AREAS and d.parent.parent == REPO_ROOT:
-            if not (d / "effortless.json").is_file():
-                raise SystemExit(f"{d} is a project folder with no effortless.json — nothing declares this build.")
-            return d
-        if d == REPO_ROOT:
-            break
-    raise SystemExit(
-        f"{start} is not inside a project under {', '.join(AREAS)} — "
-        f"reset-project-db.py resets the database of the project whose build runs it.")
+from erb_project import project_dir_of_build as project_dir, reset_db  # noqa: E402,F401
 
 
 def main() -> None:

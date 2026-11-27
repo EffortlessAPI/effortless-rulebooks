@@ -236,3 +236,83 @@ test('Excel, both ways, on the concept rulebook: a cell edited in the concept wo
     app.stop();
   }
 });
+
+// The concept rulebook is also a file: the one its own rulebook editor
+// (./start.sh --concept-editor) opens and saves. Save writes it from the saved rows. An
+// edit made in the file (here: what that editor's Save leaves, a new column with a value, a
+// new class table, a new row, the rows' keys in another order, computed copies baked in)
+// is loaded back as the matching change of the ontology. A file that changed on disk is
+// someone's edit: Save never overwrites it.
+test('the concept rulebook file: Save writes it, an edit made in it is loaded into the ontology, and it is never overwritten unseen', async () => {
+  const hub = copyOfHub();
+  const conceptFile = path.join(path.dirname(hub), 'talismans-southpark-ontology-concepts.json');   // beside the copy, never the project's
+  const app = await startApp({ engine: 'typescript', port: 43285, env: { RULEBOOK_PATH: hub } });
+  try {
+    const { api } = app;
+    let view = await api('GET', '/api/concepts');
+    assert.deepEqual(view.file, { file: path.relative(PROJECT, conceptFile), exists: false, changedOnDisk: false });
+    await assert.rejects(() => api('POST', '/api/concepts/load-file'), /There is no concept rulebook file yet/);
+
+    // Save writes the rulebook, and its concept form beside it.
+    await api('POST', '/api/concepts/edit', [{ op: 'insert', table: 'Things', values: { ThingId: 'Butters', Label: 'Butters' } }]);
+    let saved = await api('POST', '/api/admin/save');
+    assert.equal(saved.concept.written, true, saved.message);
+    let onDisk = JSON.parse(fs.readFileSync(conceptFile, 'utf8'));
+    assert.ok(onDisk.Things.data.some((t) => t.ThingId === 'Butters'));
+    assert.ok(!('Statements' in onDisk) && 'ERBTables' in onDisk);
+    view = await api('GET', '/api/concepts');
+    assert.deepEqual([view.file.exists, view.file.changedOnDisk], [true, false]);
+    assert.deepEqual(onDisk, view.concepts, 'the file is the concept form of the saved rows');
+
+    // The file edited elsewhere, as a rulebook editor leaves it.
+    onDisk.Person.schema.push({ name: 'nickname', datatype: 'string', type: 'raw', nullable: true, Description: 'What friends call them.' });
+    onDisk.Person.data = onDisk.Person.data.map((r) => ({ nickname: r.PersonId === 'Stan' ? 'Stan the Man' : null, ...r }));   // keys in another order
+    onDisk.Concert = { Description: 'Concerts.', schema: [
+      { name: 'ConcertId', datatype: 'string', type: 'raw', nullable: false },
+      { name: 'Thing', datatype: 'string', type: 'relationship', nullable: false, RelatedTo: 'Things' },
+      { name: 'IsAsserted', datatype: 'boolean', type: 'raw', nullable: false }],
+    data: [{ ConcertId: 'Lollapalooza', Thing: 'Lollapalooza', IsAsserted: true }] };
+    onDisk.Things.data.push({ ThingId: 'Lollapalooza', Label: 'Lollapalooza', SortOrder: 30, Portrait: null });
+    onDisk.isFriendOf.data.push({ isFriendOfId: 'typed by hand', Subject: 'Butters', Object: 'Kyle' });   // the key is the mapping's to make
+    for (const r of onDisk.Portraits.data) r.Name = r.DisplayName;                                             // a computed copy, baked in
+    fs.writeFileSync(conceptFile, JSON.stringify(onDisk, null, 4));
+    view = await api('GET', '/api/concepts');
+    assert.equal(view.file.changedOnDisk, true);
+
+    // Save leaves a file it has not seen alone.
+    await api('POST', '/api/rules/inverse/switch', { on: true });
+    saved = await api('POST', '/api/admin/save');
+    assert.equal(saved.concept.written, false);
+    assert.match(saved.message, /changed on disk and was not overwritten/);
+    assert.ok(JSON.parse(fs.readFileSync(conceptFile, 'utf8')).Concert, 'the edit is still in the file');
+
+    // Loaded, it is the matching change of the ontology.
+    const loaded = await api('POST', '/api/concepts/load-file');
+    const changed = loaded.changes.tables;
+    assert.deepEqual(changed.Properties.added, ['nickname']);
+    assert.deepEqual(changed.Things.added.sort(), ['Concert', 'Lollapalooza']);
+    for (const fact of ['Stan|nickname|Stan the Man', 'Lollapalooza|isA|Concert']) assert.ok(changed.Statements.added.includes(fact), fact);
+    assert.ok([...changed.Statements.added, ...changed.Statements.changed.map((c) => c.key)].includes('Butters|isFriendOf|Kyle'));
+    assert.equal(loaded.file.changedOnDisk, false);
+    assert.equal(row(loaded, 'Person', 'Stan').nickname, 'Stan the Man');
+    assert.equal(row(loaded, 'ERBFields', 'Person.nickname').Label, 'nickname', 'a column with no attributes of its own takes its name as its wording');
+    assert.equal(role(loaded, 'Concert'), 'class');
+    const page = await api('GET', '/api/page');
+    assert.ok(facts(page).includes('Stan nickname Stan the Man') && facts(page).includes('Butters is friend of Kyle'));
+
+    // Saved, the file is written again, as the concept form of what was saved.
+    saved = await api('POST', '/api/admin/save');
+    assert.equal(saved.concept.written, true, saved.message);
+    view = await api('GET', '/api/concepts');
+    assert.deepEqual(JSON.parse(fs.readFileSync(conceptFile, 'utf8')), view.concepts);
+
+    // And a file changed on disk can be overwritten from the rows, on request.
+    fs.writeFileSync(conceptFile, '{"not": "this"}');
+    assert.equal((await api('GET', '/api/concepts')).file.changedOnDisk, true);
+    const written = await api('POST', '/api/concepts/write-file');
+    assert.equal(written.file.changedOnDisk, false);
+    assert.deepEqual(JSON.parse(fs.readFileSync(conceptFile, 'utf8')), written.concepts);
+  } finally {
+    app.stop();
+  }
+});

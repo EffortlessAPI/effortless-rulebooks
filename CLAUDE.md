@@ -73,6 +73,12 @@ and `ERBFields`. The page's own tables and its record of each fact stay in the o
 property's table is made; `view` and `edit` on the command line are what the South Park app's Concepts page calls. Never put
 vocabulary back into `__meta__`: the one thing it says is `ontology-form = concepts-of-an-ontology`.
 
+`ERBTables` and `ERBFields` there are the platform's Schema module (the generated rulebook editor's Modules > Schema: one row
+per table and one per field, `GET /api/erb/schema` on a running editor lists its fields), with the ontology's attributes as
+further columns, so the concept rulebook opens in the generated editor like any rulebook. `scripts/extract-concept-rulebook.py`
+is the build step that writes a project's concept rulebook into a folder of its own (South Park's `concept-rulebook/`); like
+`reset-project-db.py` it is committed executable and takes no arguments.
+
 ## Consistency governance
 
 Inconsistency is pruned by working `ConsistencyFindings` to zero — not by editing prose. When you discover a repeatable trap, the fix goes to a place the whole team sees: a rule row + finding rows in the root rulebook, a guard in code, or this file. When you fix a finding, mark its `Status` `fixed` (never delete witnessed rows); when a rule was wrong, correct the rule and record that as a `cr-15` finding. Re-run `python3 scripts/scan-project-slots.py effortless-rulebook/effortless-rulebook.json .` after moving or creating projects; it refreshes `ProjectSlotWitnesses`, preserves finding history, and exits nonzero on malformed or ambiguous project artifacts.

@@ -212,3 +212,6 @@ form.mini select { width: auto; padding: 6px 8px; font-size: 0.9rem; }
 form.mini.tall { flex-direction: column; align-items: stretch; max-width: 520px; }
 form.mini.tall input[type="text"] { width: 100%; }
 button.danger { border-color: var(--alarm); color: var(--alarm); }
+.file-note { margin: 10px 0 0; padding: 10px 12px; border-radius: 10px; background: var(--flare-soft); font-size: 0.92rem; }
+.file-note button { padding: 4px 10px; margin-left: 6px; }
+.actions #editor-note { margin: 8px 0 0; }

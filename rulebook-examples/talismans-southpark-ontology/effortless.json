@@ -135,6 +135,24 @@
     },
     {
       "IsSSoTTranspiler": false,
+      "Name": "concept-rulebook",
+      "RelativePath": "/concept-rulebook",
+      "CommandLine": "-exec ../../../scripts/extract-concept-rulebook.py",
+      "IsDisabled": false,
+      "Description": "Write the concept rulebook: the same ontology as ordinary tables (individuals, a table per class, a table or a column per property, ERBTables and ERBFields), from the hub compile-rulebook just baked. orchestration/ontology_form.py is the mapping; the script is committed executable and takes no arguments. The app's Save writes the same file from the live rows."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "conceptrulebookeditor",
+      "RelativePath": "/concept-rulebook",
+      "CommandLine": "effortless-rulebook-editor -i talismans-southpark-ontology-concepts.json -p rulebookPath=talismans-southpark-ontology-concepts.json -p dockerfilePath=docker/Dockerfile",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.23.0835",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-11-23-0835-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "The generated rulebook editor on the concept rulebook: its own Postgres, API and admin UI in a second container (./start.sh --concept-editor). Its Save rewrites the concept rulebook file; the app's Concepts page loads that file back into the ontology."
+    },
+    {
+      "IsSSoTTranspiler": false,
       "Name": "init-db",
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "-exec ../../../scripts/reset-project-db.py",

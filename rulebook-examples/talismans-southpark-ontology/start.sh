@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # ./start.sh            the explainer app (foreground; Ctrl-C stops it)
 # ./start.sh --editor   the generated rulebook editor, in its own container
+# ./start.sh --concept-editor   the same editor on the concept rulebook, in a second container
 set -euo pipefail
 
 PROJECT_NAME="Talisman's South Park Ontology Explainer"
@@ -13,6 +14,10 @@ HEALTH_URL="http://localhost:${PORT}/api/health"
 EDITOR_API_PORT=43611
 EDITOR_UI_PORT=43612
 EDITOR_PG_PORT=43613
+# The concept rulebook's editor (concept-rulebook/): the Concepts page links to its UI port.
+CONCEPT_EDITOR_API_PORT=43621
+CONCEPT_EDITOR_UI_PORT=43622
+CONCEPT_EDITOR_PG_PORT=43623
 export DATABASE_URL="${DATABASE_URL:-postgresql://postgres@localhost:5432/erb_talismans_southpark_ontology}"
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -43,6 +48,19 @@ if [[ "${1:-}" == "--editor" ]]; then
     exec bash edit-rulebook.sh
 fi
 
+if [[ "${1:-}" == "--concept-editor" ]]; then
+  command -v docker >/dev/null 2>&1 || fail "Required command 'docker' was not found."
+  [[ -f "$PROJECT_ROOT/concept-rulebook/edit-rulebook.sh" ]] \
+    || fail "The concept rulebook editor is not generated: run 'effortless build' in $PROJECT_ROOT"
+  [[ -f "$PROJECT_ROOT/concept-rulebook/talismans-southpark-ontology-concepts.json" ]] \
+    || fail "There is no concept rulebook yet: run 'effortless build' in $PROJECT_ROOT, or Save in the app"
+  printf '%s\n' "Concept rulebook editor: http://localhost:${CONCEPT_EDITOR_UI_PORT}  (API http://localhost:${CONCEPT_EDITOR_API_PORT})" \
+    "Its Save rewrites concept-rulebook/talismans-southpark-ontology-concepts.json; the app's Concepts page loads that file into the ontology."
+  cd "$PROJECT_ROOT/concept-rulebook"
+  RULEBOOK_EDITOR_API_PORT="$CONCEPT_EDITOR_API_PORT" RULEBOOK_EDITOR_UI_PORT="$CONCEPT_EDITOR_UI_PORT" RULEBOOK_EDITOR_PG_PORT="$CONCEPT_EDITOR_PG_PORT" \
+    exec bash edit-rulebook.sh
+fi
+
 for command_name in node npm python3 lsof; do
   command -v "$command_name" >/dev/null 2>&1 || fail "Required command '$command_name' was not found."
 done
@@ -60,9 +78,10 @@ printf '%s\n' \
   "Admin: ${PRIMARY_URL}admin.html" \
   "Concept form: ${PRIMARY_URL}concepts.html" \
   "Health: $HEALTH_URL" \
-  "Rulebook editor (optional): ./start.sh --editor  ->  http://localhost:${EDITOR_UI_PORT}"
+  "Rulebook editor (optional): ./start.sh --editor  ->  http://localhost:${EDITOR_UI_PORT}" \
+  "Concept rulebook editor (optional): ./start.sh --concept-editor  ->  http://localhost:${CONCEPT_EDITOR_UI_PORT}"
 # The server stays in the foreground: it reports each engine's state itself (a
 # missing database only switches the Postgres engine off), and a detached process
 # is refused by Postgres.app's client check on this kind of machine.
 cd "$PROJECT_ROOT/app"
-RULEBOOK_EDITOR_UI_PORT="$EDITOR_UI_PORT" PORT="$PORT" exec node server.js
+RULEBOOK_EDITOR_UI_PORT="$EDITOR_UI_PORT" CONCEPT_EDITOR_UI_PORT="$CONCEPT_EDITOR_UI_PORT" PORT="$PORT" exec node server.js

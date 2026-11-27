@@ -38,8 +38,12 @@
       <button type="button" id="export" data-text="concepts-export"></button>
       <label class="buttonish" id="import-label"><span id="import-text" data-text="concepts-import"></span><input type="file" id="import" accept=".xlsx" hidden></label>
       <a class="buttonish" id="file" href="/api/concepts/rulebook.json" target="_blank" rel="noopener" data-text="concepts-open-file"></a>
+      <a class="buttonish" id="editor" target="_blank" rel="noopener" data-text="concepts-editor"></a>
+      <button type="button" id="load-file" data-text="concepts-load-file"></button>
       <a class="buttonish" href="/" data-text="concepts-see-page"></a>
     </div>
+    <p id="editor-note" class="hint"></p>
+    <p id="file-note" class="file-note" hidden><span id="file-note-text"></span> <button type="button" id="write-file" data-text="concepts-write-file"></button></p>
     <div id="message" class="form-message" role="status" aria-live="polite"></div>
     <details id="changes"><summary data-text="concepts-changes-heading"></summary><ul id="change-list"></ul></details>
   </section>

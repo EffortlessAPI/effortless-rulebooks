@@ -103,9 +103,21 @@ them there. See "Two forms of one rulebook" in the README.
   import. Do not keep a concept document in the server between requests.
 - **Vocabulary is tables and rows.** What structure cannot say goes in `ERBTables` and
   `ERBFields`; `__meta__` says only which form the document is in.
+- **`ERBTables` and `ERBFields` are the platform's Schema module** (one row per table, one
+  per field, the module's own columns first), with the ontology's attributes as further
+  columns. Rows about other tables and fields are the mirror; the mapping reads only the rows
+  of classes, properties and property columns.
+- **The concept rulebook is also a file**, `concept-rulebook/talismans-southpark-ontology-concepts.json`:
+  a build output (the `concept-rulebook` step runs `scripts/extract-concept-rulebook.py`) that
+  Save also writes. Never edit it by hand as if it were the hub: an edit there counts only
+  when the Concepts page loads it (`POST /api/concepts/load-file`). A test fails when the
+  committed file no longer matches the hub; run the step again.
+- **Its rulebook editor** is `./start.sh --concept-editor`, a second container on ports
+  43621 (API), 43622 (UI), 43623 (Postgres), generated into `concept-rulebook/` like the
+  first one in `effortless-rulebook/`.
 - Its wording is `concepts-*` in `PageTexts`. `node --test testing/app/concepts.test.mjs`
-  covers it on each engine and through Excel; `python3 ../../scripts/tests/test_ontology_form.py`
-  covers the mapping.
+  covers it on each engine, through Excel and through the file;
+  `python3 ../../scripts/tests/test_ontology_form.py` covers the mapping.
 
 ## Formula traps found here (all three engines must agree)
 
@@ -149,7 +161,8 @@ them there. See "Two forms of one rulebook" in the README.
 ## Folders
 
 - `app/` the server, the page and the admin. `testing/` the tests. `effortless-*/`,
-  `postgres-bootstrap/`, `rulespeak/`, `explainer/` are build outputs; never edit them.
+  `postgres-bootstrap/`, `rulespeak/`, `explainer/`, `concept-rulebook/` are build outputs;
+  never edit them.
 - `bootstrap/` is the earlier chat session's output (a first rulebook read off a
   screenshot, its workbook, docs and OWL). It is history, not input to the build.
 - `conversation.txt` and `original-post.txt` are that session's transcript and the

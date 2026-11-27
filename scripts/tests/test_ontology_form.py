@@ -212,17 +212,14 @@ class SouthParkItself(unittest.TestCase):
         grade = next(p for p in described["properties"] if p["id"] == "hasGradeLevel")
         self.assertEqual((grade["home"], grade["table"], grade["single"], grade["domain"], grade["datatype"]),
                          ("column", "Person", True, "Person", "integer"))
-        # So no attribute column repeats it.
+        # So no attribute column says it again: what a property is, is not a cell.
         for name in ("ERBTables", "ERBFields"):
             names = {f["name"] for f in c[name]["schema"]}
-            self.assertFalse(names & {"PropertyKind", "Datatype", "HasOneCurrentValue", "DomainClass",
-                                      "RangeClass", "Kind"}, name)
+            self.assertFalse(names & {"PropertyKind", "HasOneCurrentValue", "DomainClass", "RangeClass", "Kind"}, name)
 
     def test_what_it_cannot_say_is_rows_of_erbtables_and_erbfields_not_a_blob(self):
         c = self.concepts
         tables = {r["ERBTableId"]: r for r in c["ERBTables"]["data"]}
-        self.assertEqual(list(tables), ["Things", "Person", "School", "isParentOf", "isChildOf",
-                                        "isSpouseOf", "isFriendOf", "attends", "hasAge", "isGrandparentOf"])
         self.assertEqual((tables["isParentOf"]["Label"], tables["isParentOf"]["InverseOf"],
                           tables["isParentOf"]["DisjointWith"]), ("is parent of", "isChildOf", "isSpouseOf"))
         self.assertTrue(tables["isSpouseOf"]["IsSymmetric"])
@@ -231,7 +228,7 @@ class SouthParkItself(unittest.TestCase):
                          ("isParentOf", "isParentOf"))
         self.assertEqual((tables["Person"]["Label"], tables["Person"]["SortOrder"]), ("Person", 8))
         fields = {r["ERBFieldId"]: r for r in c["ERBFields"]["data"]}
-        self.assertEqual(list(fields), ["Person.hasGradeLevel", "Person.hasRole"])
+        self.assertEqual([k for k, r in fields.items() if r["Label"]], ["Person.hasGradeLevel", "Person.hasRole"])
         self.assertEqual(fields["Person.hasGradeLevel"]["CurrentValueWording"], "grade level")
         # The one thing __meta__ says is which form this is, as a string.
         marker = [r for r in c["__meta__"]["data"] if r["MetaKey"] == of.FORM_META_KEY]
@@ -239,6 +236,37 @@ class SouthParkItself(unittest.TestCase):
                          [("string", of.FORM_NAME, None)])
         for row in c["__meta__"]["data"]:
             self.assertNotIn("properties", row.get("JsonValue") or "")
+
+    def test_erbtables_and_erbfields_are_the_platforms_schema_module(self):
+        """One row per table and one per field, with the module's own columns first: its
+        Sync, and whatever points at these rows, work on the concept rulebook as on any other."""
+        c = self.concepts
+        named = [k for k, v in c.items() if of.is_table(v) and k != "__meta__"]
+        self.assertEqual([r["ERBTableId"] for r in c["ERBTables"]["data"]], named)
+        self.assertEqual([r["ERBFieldId"] for r in c["ERBFields"]["data"]],
+                         [f"{t}.{f['name']}" for t in named for f in c[t]["schema"]])
+        self.assertEqual([f["name"] for f in c["ERBTables"]["schema"]][:8],
+                         ["ERBTableId", "TableName", "Description", "IsMetaTable", "IsTenantScoped",
+                          "TenantParentTable", "TenantParentField", "SortOrder"])
+        self.assertEqual([f["name"] for f in c["ERBFields"]["schema"]][:7],
+                         ["ERBFieldId", "ERBTable", "FieldName", "FieldType", "Datatype", "IsPrimaryKey", "Description"])
+        self.assertEqual([r["ERBTableId"] for r in c["ERBTables"]["data"] if r["IsMetaTable"]], ["ERBTables", "ERBFields"])
+        for row in c["ERBFields"]["data"]:
+            field = next(f for f in c[row["ERBTable"]]["schema"] if f["name"] == row["FieldName"])
+            self.assertEqual((row["FieldType"], row["Datatype"], row["Description"]),
+                             (field["type"], field["datatype"], field["Description"]), row["ERBFieldId"])
+            self.assertEqual(row["IsPrimaryKey"], c[row["ERBTable"]]["schema"][0] is field)
+        for row in c["ERBTables"]["data"]:
+            self.assertEqual(row["Description"], c[row["ERBTableId"]]["Description"])
+
+    def test_a_mirror_row_that_is_missing_or_stale_says_nothing(self):
+        """The module's rows drift until its Sync runs; only the ontology's own cells count."""
+        doc = json.loads(of.canonical(self.concepts))
+        doc["ERBFields"]["data"] = [r for r in doc["ERBFields"]["data"] if r["Label"]]       # only the property columns
+        doc["ERBTables"]["data"] = [r for r in doc["ERBTables"]["data"] if r["ERBTableId"] != "Portraits"]
+        doc["ERBTables"]["data"].append({**doc["ERBTables"]["data"][0], "ERBTableId": "Gone", "TableName": "Gone"})
+        doc["ERBFields"]["data"].append({**doc["ERBFields"]["data"][0], "ERBFieldId": "Gone.Field", "ERBTable": "Gone"})
+        self.assertEqual(of.canonical(of.inject(doc, TEMPLATE)), of.canonical(TEMPLATE))
 
     def test_unchanged_it_gives_her_ontology_back_whole(self):
         self.assertEqual(of.canonical(self.back), of.canonical(TEMPLATE))
@@ -435,14 +463,61 @@ class EditsInTheConceptRulebookAreChangesOfTheOntology(unittest.TestCase):
                "the model has no IsTransitive")
         broken(lambda c: c["ERBTables"]["data"][3].update(InverseOf="isSiblingOf"),
                "'isSiblingOf', which is not a property")
-        broken(lambda c: c["ERBTables"]["data"].append({**c["ERBTables"]["data"][3], "ERBTableId": "Gone", "TableName": "Gone"}),
-               "remove the row")
+        broken(lambda c: c["ERBFields"]["schema"].pop(), "ERBFields lacks DisjointWith")
         with self.assertRaisesRegex(of.OntologyFormError, "IsInEffect"):
             of.inject(self.concepts, {**TEMPLATE, "Statements": {**TEMPLATE["Statements"], "data": [
                 {k: v for k, v in row.items() if k != "IsInEffect"} for row in TEMPLATE["Statements"]["data"]]}})
         with self.assertRaisesRegex(of.OntologyFormError, "cannot be changed"):
             of.edit_concepts(self.concepts, [{"op": "patch", "table": "Things", "key": "Stan",
                                               "values": {"ThingId": "Stanley"}}], TEMPLATE)
+        # A copy of what the structure says is not where to change it.
+        with self.assertRaisesRegex(of.OntologyFormError, "follows the table or field"):
+            of.edit_concepts(self.concepts, [{"op": "patch", "table": "ERBFields", "key": "hasAge.Value",
+                                              "values": {"Datatype": "string"}}], TEMPLATE)
+        with self.assertRaisesRegex(of.OntologyFormError, "no place for it"):
+            of.edit_concepts(self.concepts, [{"op": "patch", "table": "ERBTables", "key": "Person",
+                                              "values": {"IsTenantScoped": True}}], TEMPLATE)
+
+
+class TheConceptRulebookFileOfSouthPark(unittest.TestCase):
+    """rulebook-examples/talismans-southpark-ontology/concept-rulebook/ holds her ontology's
+    concept rulebook as a file: what the generated rulebook editor opens there
+    (./start.sh --concept-editor). The build's concept-rulebook step writes it
+    (scripts/extract-concept-rulebook.py) and so does the app's Save."""
+
+    PROJECT = REPO / "rulebook-examples" / "talismans-southpark-ontology"
+    FILE = PROJECT / "concept-rulebook" / "talismans-southpark-ontology-concepts.json"
+
+    def test_the_committed_file_is_the_hubs_concept_form(self):
+        self.assertTrue(self.FILE.is_file(), f"{self.FILE} is missing")
+        committed = of.read_rulebook(self.FILE)
+        self.assertEqual(
+            of.canonical(of.inject(committed, TEMPLATE)), of.canonical(TEMPLATE),
+            "The concept rulebook file no longer matches the hub: laying it over the hub would "
+            "change the ontology. Run scripts/extract-concept-rulebook.py from "
+            f"{self.FILE.parent.relative_to(REPO)} (the build's concept-rulebook step), or Save in the app.")
+
+    def test_the_build_step_writes_that_file_and_refuses_the_hubs_folder(self):
+        script = REPO / "scripts" / "extract-concept-rulebook.py"
+        mode = subprocess.run(["git", "ls-files", "-s", "scripts/extract-concept-rulebook.py"], cwd=REPO,
+                              capture_output=True, text=True, check=True).stdout.split(" ")[0]
+        self.assertEqual(mode, "100755", "scripts/extract-concept-rulebook.py must be committed executable: -exec runs it directly")
+        steps = json.loads((self.PROJECT / "effortless.json").read_text())["ProjectTranspilers"]
+        step = next(s for s in steps if s["Name"] == "concept-rulebook")
+        self.assertEqual((step["RelativePath"], step["CommandLine"]), ("/concept-rulebook", "-exec ../../../scripts/extract-concept-rulebook.py"))
+        names = [s["Name"] for s in steps]
+        self.assertLess(names.index("compile-rulebook"), names.index("concept-rulebook"),
+                        "the mapping reads the computed values compile-rulebook bakes")
+        before = self.FILE.read_text(encoding="utf-8")
+        try:
+            done = subprocess.run([str(script)], cwd=self.FILE.parent, capture_output=True, text=True)
+            self.assertEqual(done.returncode, 0, done.stderr)
+            self.assertEqual(json.loads(self.FILE.read_text(encoding="utf-8")), through_file(of.extract(TEMPLATE)))
+        finally:
+            self.FILE.write_text(before, encoding="utf-8")
+        refused = subprocess.run([str(script)], cwd=self.PROJECT / "effortless-rulebook", capture_output=True, text=True)
+        self.assertNotEqual(refused.returncode, 0)
+        self.assertIn("never beside or over the hub", refused.stderr)
 
 
 class TheTools(unittest.TestCase):

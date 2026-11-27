@@ -7,6 +7,7 @@
 import express from 'express';
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { Workspace } from './lib/workspace.mjs';
@@ -29,6 +30,11 @@ const PORT = Number(process.env.PORT || 43210);
 const DATABASE_URL = process.env.DATABASE_URL || `postgresql://postgres@localhost:5432/erb_${SLUG.replace(/-/g, '_')}`;
 // The rulebook editor's pinned ports (./start.sh --editor starts it on these).
 const EDITOR_UI_URL = `http://localhost:${process.env.RULEBOOK_EDITOR_UI_PORT || 43612}`;
+// The concept rulebook as a file: what its own rulebook editor (./start.sh --concept-editor)
+// opens and saves. Beside the hub when RULEBOOK_PATH points the app at a copy.
+const CONCEPT_FILE = process.env.CONCEPT_RULEBOOK_PATH
+  || (process.env.RULEBOOK_PATH ? path.join(path.dirname(HUB), `${SLUG}-concepts.json`) : path.join(PROJECT, 'concept-rulebook', `${SLUG}-concepts.json`));
+const CONCEPT_EDITOR_UI_URL = `http://localhost:${process.env.CONCEPT_EDITOR_UI_PORT || 43622}`;
 
 const ws = new Workspace(HUB);
 const engines = createEngines({ ws, projectDir: PROJECT, repoRoot: REPO, databaseUrl: DATABASE_URL });
@@ -109,9 +115,12 @@ app.post('/api/admin/tables/:table/rows', adminWrite((req, table) => ({ row: ws.
 app.delete('/api/admin/tables/:table/rows/:key', adminWrite((req, table) => { ws.remove(table, req.params.key); }));
 
 app.get('/api/admin/changes', route(async () => ({ changes: ws.changes(), hubChangedOnDisk: ws.hubChangedOnDisk() })));
-app.post('/api/admin/save', route(() => write(async () => {
+app.post('/api/admin/save', route((req) => write(async () => {
   const rows = ws.save();
-  return { rows, file: path.relative(PROJECT, HUB), message: rows ? fill(explainer.text('admin-saved'), { rows, file: path.relative(PROJECT, HUB) }) : explainer.text('admin-nothing-to-save') };
+  const message = rows ? fill(explainer.text('admin-saved'), { rows, file: path.relative(PROJECT, HUB) }) : explainer.text('admin-nothing-to-save');
+  // The saved rows have a concept form too: its file follows the save (see "the concept rulebook as a file").
+  const concept = rows || !fs.existsSync(CONCEPT_FILE) ? await saveConceptFile(engineOf(req)) : null;
+  return { rows, file: path.relative(PROJECT, HUB), message: [message, concept?.message].filter(Boolean).join(' '), concept };
 })));
 app.post('/api/admin/discard', route(() => write(async () => {
   ws.reload();
@@ -259,7 +268,7 @@ app.post('/api/admin/jobs/import', express.raw({ type: () => true, limit: '30mb'
 // the same live rows as their concept rulebook (a table of individuals, a table per class, a
 // table or a column per property, ERBTables and ERBFields) and writes an edit made there as the
 // matching change of the ontology's rows. One store, two forms of it.
-const conceptView = async (engine) => ({ ...(await concepts.view(engine)), changes: ws.changes(), hubChangedOnDisk: ws.hubChangedOnDisk() });
+const conceptView = async (engine) => ({ ...(await concepts.view(engine)), changes: ws.changes(), hubChangedOnDisk: ws.hubChangedOnDisk(), file: conceptFileState() });
 app.get('/api/concepts', route((req) => conceptView(engineOf(req))));
 app.post('/api/concepts/edit', route((req) => write(async () => {
   const engine = engineOf(req);
@@ -281,6 +290,49 @@ app.post('/api/concepts/rulebook', route((req) => write(async () => {
   const engine = engineOf(req);
   const result = await concepts.lay(engine, req.body);
   return { ...result, ...(await conceptView(engine)) };
+})));
+
+// The concept rulebook as a file. Save writes it from the saved rows, so the rulebook editor
+// opened on it (./start.sh --concept-editor) shows what was saved. That editor's own Save
+// rewrites the file; "Load the concept rulebook file" lays it over the live rows, as unsaved
+// changes of the ontology. A file that changed on disk since this app wrote, loaded or first
+// found it is someone's edit: Save leaves it alone until it is loaded or overwritten here.
+const hashOfFile = (file) => (fs.existsSync(file) ? crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') : null);
+const conceptFileName = path.relative(PROJECT, CONCEPT_FILE);
+let conceptFileSeen = hashOfFile(CONCEPT_FILE);
+function conceptFileState() {
+  const now = hashOfFile(CONCEPT_FILE);
+  return { file: conceptFileName, exists: now !== null, changedOnDisk: now !== conceptFileSeen };
+}
+async function writeConceptFile(engine) {
+  const { concepts: document } = await concepts.view(engine);
+  fs.mkdirSync(path.dirname(CONCEPT_FILE), { recursive: true });
+  fs.writeFileSync(CONCEPT_FILE, JSON.stringify(document, null, 2) + '\n', 'utf8');
+  conceptFileSeen = hashOfFile(CONCEPT_FILE);
+}
+// What Save does with the file, and says about it. The rows are saved either way.
+async function saveConceptFile(engine) {
+  if (conceptFileState().changedOnDisk) return { written: false, message: fill(explainer.text('concepts-file-kept'), { file: conceptFileName }) };
+  try {
+    await writeConceptFile(engine);
+    return { written: true, message: fill(explainer.text('concepts-file-written'), { file: conceptFileName }) };
+  } catch (e) {
+    console.error(`concept rulebook file: ${e.message}`);
+    return { written: false, message: fill(explainer.text('concepts-file-failed'), { reason: e.message }) };
+  }
+}
+app.post('/api/concepts/load-file', route((req) => write(async () => {
+  if (!fs.existsSync(CONCEPT_FILE)) throw new Error(fill(explainer.text('concepts-file-missing'), { file: conceptFileName }));
+  const engine = engineOf(req);
+  const seen = hashOfFile(CONCEPT_FILE);
+  const result = await concepts.lay(engine, JSON.parse(fs.readFileSync(CONCEPT_FILE, 'utf8')));
+  conceptFileSeen = seen;
+  return { ...result, message: fill(explainer.text('concepts-file-loaded'), { file: conceptFileName, rows: ws.changes().total }), ...(await conceptView(engine)) };
+})));
+app.post('/api/concepts/write-file', route((req) => write(async () => {
+  const engine = engineOf(req);
+  await writeConceptFile(engine);
+  return { message: fill(explainer.text('concepts-file-written'), { file: conceptFileName }), ...(await conceptView(engine)) };
 })));
 
 // Excel, both ways, on the concept rulebook: the same catalog tools, handed the concept form.
@@ -317,19 +369,21 @@ app.post('/api/admin/jobs/concept-import', express.raw({ type: () => true, limit
   });
 }));
 
-// ------------------------------------------------------------------ the rulebook editor (its own container)
-app.get('/api/admin/editor', route(async () => {
+// ------------------------------------------------------------------ the rulebook editors (each its own container)
+async function editorAt(url) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 1500);
   try {
-    const r = await fetch(EDITOR_UI_URL, { signal: controller.signal });
-    return { running: r.ok, url: EDITOR_UI_URL };
+    const r = await fetch(url, { signal: controller.signal });
+    return { running: r.ok, url };
   } catch (e) {
-    return { running: false, url: EDITOR_UI_URL };
+    return { running: false, url };
   } finally {
     clearTimeout(timer);
   }
-}));
+}
+app.get('/api/admin/editor', route(() => editorAt(EDITOR_UI_URL)));            // on the rulebook (the ontology form)
+app.get('/api/concepts/editor', route(() => editorAt(CONCEPT_EDITOR_UI_URL)));   // on the concept rulebook file
 
 app.use('/rulebook-explainer-dag', express.static(path.join(PROJECT, 'explainer/rulebook-explainer-dag'), { maxAge: 0 }));
 app.use('/rulespeak', express.static(path.join(PROJECT, 'rulespeak')));

@@ -11,7 +11,6 @@
   const MAX_ROWS = 300;
   const GROUPS = ['individuals', 'class', 'relationship', 'values', 'attributes', 'support', 'meta'];
   const NEW = { class: 'concepts-new-class', relationship: 'concepts-new-relationship', values: 'concepts-new-values' };
-  const IDENTITY = new Set(['ERBTableId', 'TableName', 'ERBFieldId', 'ERBTable', 'FieldName']);
   const PROPERTY_PICKS = new Set(['InverseOf', 'ChainFirst', 'ChainSecond']);
   let texts = {}, engines = [], view = null, current = 'Things', creating = null, armed = null;
   let engineId = localStorage.getItem('erb.backend');
@@ -82,6 +81,11 @@
     $('discard').disabled = !changes.total && !hubChangedOnDisk;
     $('changes').hidden = !changes.total;
     $('change-list').innerHTML = changeLines(changes).join('');
+    // The concept rulebook file: what its rulebook editor saves. Changed on disk, it waits to be loaded.
+    $('load-file').disabled = !view.file.exists;
+    $('load-file').classList.toggle('primary', view.file.changedOnDisk);
+    $('file-note').hidden = !view.file.changedOnDisk;
+    $('file-note-text').textContent = view.file.changedOnDisk ? T('concepts-file-changed', { file: view.file.file }) : '';
   }
 
   // ---------------------------------------------------------------- the list of tables, by what each is
@@ -178,7 +182,7 @@
   function editable(name, field) {
     const role = info(name).role;
     if (field.name === keyOf(name)) return false;                            // a key is set once (and derived for a membership or a fact)
-    if (role === 'attributes' && IDENTITY.has(field.name)) return false;       // follows the table or column it is about
+    if (role === 'attributes' && view.description.follows.includes(field.name)) return false;   // follows the table or field the row is about
     return true;
   }
   function options(name, field) {
@@ -289,6 +293,9 @@
   $('filter').addEventListener('input', renderGrid);
   $('save').addEventListener('click', () => busy(async () => { const r = await api('POST', '/api/admin/save'); await load(); say(r.message); }));
   $('discard').addEventListener('click', () => busy(async () => { const r = await api('POST', '/api/admin/discard'); await load(); say(r.message); }));
+  for (const [id, url] of [['load-file', '/api/concepts/load-file'], ['write-file', '/api/concepts/write-file']]) {
+    $(id).addEventListener('click', () => busy(async () => { const r = await api('POST', url); view = r; if (!table(current)) current = 'Things'; render(); say(r.message); }));
+  }
 
   // The concept rulebook as a workbook, both ways: the same catalog tools as the ontology form's, on the concept rulebook.
   const JOBS = {
@@ -332,6 +339,8 @@
     engineId = mine.id;
     renderEngines();
     await load();
+    const ed = await api('GET', '/api/concepts/editor');
+    if (ed.running) $('editor').href = ed.url; else { $('editor').removeAttribute('href'); $('editor').classList.add('off'); $('editor-note').textContent = T('concepts-editor-off'); }
     for (const kind of Object.keys(JOBS)) await jobs.watch(kind, false);
   })().catch((e) => { console.error(e); say(e.message, true); });
 })();

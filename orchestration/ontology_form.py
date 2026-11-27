@@ -602,10 +602,12 @@ def _extract_injected(onto: dict) -> dict:
 #   <property>        one table per many-valued property: one row per fact in effect
 #   a column          each property that has one current value, on its domain's class
 #                     table (on Things when it has no domain class)
-#   ERBTables         what a table's structure cannot say: a class's label and place, a
-#                     property's label, wording, symmetry and its inverse, chain and
-#                     disjoint axioms
-#   ERBFields         the same, for a property that is a column
+#   ERBTables         one row per table, as the platform's Schema module keeps it, and on
+#                     the row what the table's structure cannot say: a class's label and
+#                     place, a property's label, wording, symmetry and its inverse, chain
+#                     and disjoint axioms
+#   ERBFields         one row per field, and the same attributes for a property that is a
+#                     column
 #   the tables Things links to (Portraits)
 #
 # What the structure says is not stored again: a table with Thing and IsAsserted is a
@@ -726,8 +728,56 @@ def _support_tables(onto: dict, attribute_fields: list) -> list:
     return [name for name in onto if name in found]
 
 
+# ERBTables and ERBFields are the platform's Schema module (the generated rulebook editor's
+# Modules > Schema; GET /api/erb/schema on a running editor lists it): a mirror of the
+# rulebook, one row per table and one per field, that permissions and reports point at and
+# the editor's Sync keeps current. The concept rulebook keeps that shape, so the module works
+# on it as on any rulebook, and adds the ontology's attributes as further columns.
+SCHEMA_MODULE_TABLE_FIELDS = (
+    {"name": "ERBTableId", "datatype": "string", "type": "raw", "nullable": False,
+     "Description": "The concept table's name: this row's key."},
+    {"name": "TableName", "datatype": "string", "type": "raw", "nullable": True,
+     "Description": "The table's name again, as a plain column."},
+    {"name": "Description", "datatype": "string", "type": "raw", "nullable": True,
+     "Description": "What the table holds. Follows the table."},
+    {"name": "IsMetaTable", "datatype": "boolean", "type": "raw", "nullable": True,
+     "Description": "True for a table that serves the rulebook itself (ERBTables, ERBFields) "
+                    "and not the ontology."},
+    {"name": "IsTenantScoped", "datatype": "boolean", "type": "raw", "nullable": True,
+     "Description": "The Schema module's: rows belong to one tenant. Not used by the ontology."},
+    {"name": "TenantParentTable", "datatype": "string", "type": "relationship", "nullable": True,
+     "Description": "The Schema module's: the table tenancy is reached through. Not used by "
+                    "the ontology.", "RelatedTo": "ERBTables"},
+    {"name": "TenantParentField", "datatype": "string", "type": "raw", "nullable": True,
+     "Description": "The Schema module's: the field that points at TenantParentTable. Not "
+                    "used by the ontology."},
+    {"name": "SortOrder", "datatype": "integer", "type": "raw", "nullable": True,
+     "Description": "Display order."},
+)
+SCHEMA_MODULE_FIELD_FIELDS = (
+    {"name": "ERBFieldId", "datatype": "string", "type": "raw", "nullable": False,
+     "Description": "Table.Field: this row's key."},
+    {"name": "ERBTable", "datatype": "string", "type": "relationship", "nullable": True,
+     "Description": "The table the field is on.", "RelatedTo": "ERBTables"},
+    {"name": "FieldName", "datatype": "string", "type": "raw", "nullable": True,
+     "Description": "The field's name. For a column that is a property: the property's id."},
+    {"name": "FieldType", "datatype": "string", "type": "raw", "nullable": True,
+     "Description": "raw or relationship. Follows the field."},
+    {"name": "Datatype", "datatype": "string", "type": "raw", "nullable": True,
+     "Description": "The rulebook datatype. Follows the field."},
+    {"name": "IsPrimaryKey", "datatype": "boolean", "type": "raw", "nullable": True,
+     "Description": "True for the field that identifies a row of its table."},
+    {"name": "Description", "datatype": "string", "type": "raw", "nullable": True,
+     "Description": "What the field means. Follows the field."},
+)
+# What follows the table or field a row is about: read from the structure, never from the row.
+ERB_MIRRORED = ("ERBTableId", "TableName", "ERBFieldId", "ERBTable", "FieldName", "FieldType",
+                "Datatype", "IsPrimaryKey", "IsMetaTable", "Description")
+
+
 def _erb_schemas(native: dict) -> tuple:
-    """ERBTables and ERBFields: the model's own attribute fields, and the axioms."""
+    """ERBTables and ERBFields: the Schema module's fields, then the model's own attribute
+    fields (a class's, a property's), then the axioms."""
     def attribute(f, note):
         field = {"name": f["name"], "datatype": f.get("datatype", "string"), "type": f["type"],
                  "nullable": True, "Description": note}
@@ -735,40 +785,35 @@ def _erb_schemas(native: dict) -> tuple:
             field["RelatedTo"] = f["RelatedTo"]
         return field
 
-    merged, where = [], {}
-    for owner, fields in (("class", native["class_attrs"]), ("property", native["prop_attrs"])):
-        for f in fields:
-            note = f"For a {owner}: {f.get('Description') or f['name']}"
-            if f["name"] in where:
-                first = merged[where[f["name"]]]
-                if (first["datatype"], first["type"], first.get("RelatedTo")) != \
-                        (f.get("datatype", "string"), f["type"], f.get("RelatedTo")):
-                    raise OntologyFormError(f"Things.{f['name']} and Properties.{f['name']} differ "
-                                            f"in type, so ERBTables cannot hold both")
-                first["Description"] = f"{first['Description']} {note}"
-                continue
-            where[f["name"]] = len(merged)
-            merged.append(attribute(f, note))
-    axioms = [{"name": name, "datatype": "string", "type": "raw", "nullable": True,
-               "Description": description} for name, description in AXIOM_FIELDS]
-    tables = [
-        {"name": "ERBTableId", "datatype": "string", "type": "raw", "nullable": False,
-         "Description": "The concept table's name."},
-        {"name": "TableName", "datatype": "string", "type": "raw", "nullable": False,
-         "Description": "The concept table's name."},
-        *merged, *axioms,
-    ]
-    fields = [
-        {"name": "ERBFieldId", "datatype": "string", "type": "raw", "nullable": False,
-         "Description": "Table.Field: the column that is a property."},
-        {"name": "ERBTable", "datatype": "string", "type": "relationship", "nullable": False,
-         "Description": "The table the column is on.", "RelatedTo": ERB_TABLES},
-        {"name": "FieldName", "datatype": "string", "type": "raw", "nullable": False,
-         "Description": "The column's name: the property's id."},
-        *(attribute(f, f.get("Description") or f["name"]) for f in native["prop_attrs"]),
-        *(dict(a) for a in axioms),
-    ]
-    return tables, fields
+    def merged(module_fields, owners):
+        out = [dict(f) for f in module_fields]
+        where = {f["name"]: i for i, f in enumerate(out)}
+        for owner, fields in owners:
+            for f in fields:
+                note = f"For a {owner}: {f.get('Description') or f['name']}"
+                if f["name"] in where:
+                    first = out[where[f["name"]]]
+                    if (first["datatype"], first["type"], first.get("RelatedTo")) != \
+                            (f.get("datatype", "string"), f["type"], f.get("RelatedTo")):
+                        raise OntologyFormError(
+                            f"The model's {f['name']} ({owner}) differs in type from the "
+                            f"{f['name']} the attribute tables already have")
+                    first["Description"] = f"{first['Description']} {note}"
+                    continue
+                where[f["name"]] = len(out)
+                out.append(attribute(f, note))
+        return out + [{"name": name, "datatype": "string", "type": "raw", "nullable": True,
+                       "Description": description} for name, description in AXIOM_FIELDS]
+
+    return (merged(SCHEMA_MODULE_TABLE_FIELDS, (("class", native["class_attrs"]), ("property", native["prop_attrs"]))),
+            merged(SCHEMA_MODULE_FIELD_FIELDS, (("property", native["prop_attrs"]),)))
+
+
+def _attribute_names(native: dict) -> tuple:
+    """The columns the ontology reads from an ERBTables and from an ERBFields row."""
+    props = [f["name"] for f in native["prop_attrs"]]
+    return ([f["name"] for f in native["class_attrs"]] + [n for n in props if n not in
+            {f["name"] for f in native["class_attrs"]}] + list(AXIOM_NAMES), props + list(AXIOM_NAMES))
 
 
 def _form_marker(rulebook: dict):
@@ -1016,34 +1061,45 @@ def _extract_native(onto: dict) -> dict:
                     if mine["DisjointWith"] else None})
         return out
 
+    # The mirror: a row per table and a row per field, with the attributes on the rows of
+    # the classes, the properties and the columns that are properties.
     tables_schema, fields_schema = _erb_schemas(native)
-    blank = {f["name"]: None for f in tables_schema}
-    erb_tables = [{**blank, "ERBTableId": "Things", "TableName": "Things"}]
-    for c in classes:
-        erb_tables.append({**blank, "ERBTableId": c["ThingId"], "TableName": c["ThingId"],
-                           **{f["name"]: c.get(f["name"]) for f in native["class_attrs"]}})
-    for p in link_tables:
-        erb_tables.append({**blank, "ERBTableId": p["PropertyId"], "TableName": p["PropertyId"],
-                           **property_attributes(p)})
-    erb_fields = []
-    for table, held in columns.items():
-        for p in held:
-            erb_fields.append({"ERBFieldId": f"{table}.{p['PropertyId']}", "ERBTable": table,
-                               "FieldName": p["PropertyId"], **property_attributes(p)})
-    erb_fields.sort(key=lambda r: prop[r["FieldName"]]["SortOrder"])
-    tables[ERB_TABLES] = {
-        "Description": "What a concept table's structure does not say. A class: its label and "
-                       "its place in the cast. A property that is a table: its label, its "
-                       "wording on the page, whether it is symmetric, and its inverse, chain "
-                       "and disjoint axioms. What a table IS is read from its fields: Thing "
-                       "and IsAsserted make a class; Subject with Object or Value make a "
-                       "property, whose domain and range are the tables they link to.",
-        "schema": tables_schema, "data": erb_tables}
-    tables[ERB_FIELDS] = {
-        "Description": "The same attributes for a property that is a column: a property with "
+    tables[ERB_TABLES] = {"Description": "", "schema": tables_schema, "data": []}
+    tables[ERB_FIELDS] = {"Description": "", "schema": fields_schema, "data": []}
+    class_row = {c["ThingId"]: {f["name"]: c.get(f["name"]) for f in native["class_attrs"]} for c in classes}
+    table_property = {p["PropertyId"]: property_attributes(p) for p in link_tables}
+    column_property = {(table, p["PropertyId"]): property_attributes(p)
+                       for table, held in columns.items() for p in held}
+    blank_table = {f["name"]: None for f in tables_schema}
+    blank_field = {f["name"]: None for f in fields_schema}
+    erb_tables, erb_fields = [], []
+    for name, table in tables.items():
+        erb_tables.append({**blank_table, "ERBTableId": name, "TableName": name,
+                           "Description": None, "IsMetaTable": name in (ERB_TABLES, ERB_FIELDS),
+                           **class_row.get(name, {}), **table_property.get(name, {})})
+        for at, f in enumerate(table["schema"]):
+            erb_fields.append({**blank_field, "ERBFieldId": f"{name}.{f['name']}", "ERBTable": name,
+                               "FieldName": f["name"], "FieldType": f.get("type"),
+                               "Datatype": f.get("datatype"), "IsPrimaryKey": at == 0,
+                               "Description": f.get("Description"),
+                               **column_property.get((name, f["name"]), {})})
+    tables[ERB_TABLES].update({
+        "Description": "One row per table of this rulebook (the platform's Schema module), and on "
+                       "it what the table's structure does not say. A class: its label and its "
+                       "place in the cast. A property that is a table: its label, its wording "
+                       "on the page, whether it is symmetric, and its inverse, chain and "
+                       "disjoint axioms. What a table IS is read from its fields: Thing and "
+                       "IsAsserted make a class; Subject with Object or Value make a property, "
+                       "whose domain and range are the tables they link to.",
+        "data": erb_tables})
+    tables[ERB_FIELDS].update({
+        "Description": "One row per field of every table (the platform's Schema module), and on "
+                       "it the same attributes for a property that is a column: a property with "
                        "one current value, on its domain's class table (on Things when it has "
                        "no domain class).",
-        "schema": fields_schema, "data": erb_fields}
+        "data": erb_fields})
+    for row in erb_tables:
+        row["Description"] = tables[row["ERBTableId"]]["Description"]
 
     meta = json.loads(_dumps(onto[META_TABLE]))
     meta["data"] = [r for r in meta["data"] if r.get("MetaKey") != FORM_META_KEY]
@@ -1187,16 +1243,20 @@ def _read_concepts(concepts: dict, native: dict) -> dict:
                 add(name, {"kind": "datatype", "xsd": datatype(name, fields["Value"]), "single": False,
                            "domain": domain, "range": None, "table": name, "field": None})
 
-    # The attribute rows, each for a table or a column that exists.
+    # The attribute rows. ERBTables and ERBFields mirror every table and field; the ontology
+    # reads the rows of its classes, its properties and its property columns, and of those
+    # only its own columns. A row about a table or a field that is not there says nothing.
     tables_schema, fields_schema = _erb_schemas(native)
-    for name, schema in ((ERB_TABLES, tables_schema), (ERB_FIELDS, fields_schema)):
+    table_columns, field_columns = _attribute_names(native)
+    for name, schema, needed in ((ERB_TABLES, tables_schema, table_columns),
+                                 (ERB_FIELDS, fields_schema, field_columns)):
         have = [f["name"] for f in concepts[name]["schema"]]
-        want = [f["name"] for f in schema]
-        if sorted(have) != sorted(want):
-            unknown = [n for n in have if n not in want]
-            missing = [n for n in want if n not in have]
+        known = [f["name"] for f in schema]
+        unknown = [n for n in have if n not in known]
+        missing = [n for n in [known[0], *needed] if n not in have]
+        if unknown or missing:
             raise OntologyFormError(
-                f"{name} holds the attributes the ontology model has"
+                f"{name} holds the Schema module's fields and the attributes the ontology model has"
                 + (f"; the model has no {', '.join(unknown)}" if unknown else "")
                 + (f"; {name} lacks {', '.join(missing)}" if missing else ""))
     table_rows, field_rows = {}, {}
@@ -1204,22 +1264,17 @@ def _read_concepts(concepts: dict, native: dict) -> dict:
         tid = row.get("ERBTableId")
         if tid in table_rows:
             raise OntologyFormError(f"{ERB_TABLES} has two rows for {tid}")
-        if roles.get(tid) not in ("individuals", "class", "relationship", "values"):
-            raise OntologyFormError(f"{ERB_TABLES} has a row for {tid!r}, which is not a table of "
-                                    f"things, a class or a property: remove the row")
         table_rows[tid] = row
+    seen_fields = set()
     for row in concepts[ERB_FIELDS]["data"]:
-        table, field = row.get("ERBTable"), row.get("FieldName")
+        fid = row.get("ERBFieldId")
+        if fid in seen_fields:
+            raise OntologyFormError(f"{ERB_FIELDS} has two rows for {fid}")
+        seen_fields.add(fid)
+        table, _, field = str(fid).partition(".")
         p = properties.get(field)
-        if p is None or p["field"] is None or p["table"] != table:
-            raise OntologyFormError(f"{ERB_FIELDS} has a row for {table}.{field}, which is not a "
-                                    f"column that is a property: remove the row")
-        if row.get("ERBFieldId") != f"{table}.{field}":
-            raise OntologyFormError(f"{ERB_FIELDS} row {row.get('ERBFieldId')!r} is about "
-                                    f"{table}.{field}; its id must say so")
-        if field in field_rows:
-            raise OntologyFormError(f"{ERB_FIELDS} has two rows for {table}.{field}")
-        field_rows[field] = row
+        if p is not None and p["field"] is not None and p["table"] == table:
+            field_rows[field] = row
     for pid, p in properties.items():
         p["attributes"] = field_rows.get(pid) if p["field"] else table_rows.get(pid)
     for cid, c in classes.items():
@@ -1377,9 +1432,11 @@ def _inject_concepts(concepts: dict, base: dict) -> dict:
     for cid, c in classes.items():
         for row in concepts[cid]["data"]:
             thing, key = row.get("Thing"), row.get(c["key"])
+            if _blank(thing):
+                thing = key
             if _blank(thing) or (not _blank(key) and key != thing):
                 raise OntologyFormError(f"{cid}: a row's {c['key']} and its Thing name the same "
-                                        f"individual, found {key!r} and {thing!r}")
+                                        f"individual, found {key!r} and {row.get('Thing')!r}")
             if thing not in thing_ids:
                 raise OntologyFormError(f"{cid} row {thing!r} is not in Things")
             row = {**row, c["key"]: thing}
@@ -1487,7 +1544,10 @@ def describe(concepts: dict, base: dict) -> dict:
         })
     return {"form": FORM_NAME, "typeProperty": native["type"], "tables": tables,
             "properties": properties, "classes": list(reading["classes"]),
-            "datatypes": list(XSD), "axioms": list(AXIOM_NAMES)}
+            "datatypes": list(XSD), "axioms": list(AXIOM_NAMES),
+            # Columns of ERBTables and ERBFields that are not edited there: they follow the
+            # table or field the row is about, or are the Schema module's and not the ontology's.
+            "follows": [*ERB_MIRRORED, *ERB_NOT_ONTOLOGY]}
 
 
 # ---- editing a concept rulebook of an ontology
@@ -1579,7 +1639,8 @@ def _is_marker(name: str, row: dict) -> bool:
     return name == META_TABLE and row.get("MetaKey") == FORM_META_KEY
 
 
-ATTRIBUTE_IDENTITY = ("ERBTableId", "TableName", "ERBFieldId", "ERBTable", "FieldName")
+# The Schema module's own columns the ontology has no place for: an edit there would be lost.
+ERB_NOT_ONTOLOGY = ("IsTenantScoped", "TenantParentTable", "TenantParentField")
 
 
 def _op_patch(doc, reading, native, op):
@@ -1598,10 +1659,14 @@ def _op_patch(doc, reading, native, op):
         raise OntologyFormError(f"{name}: a row's key ({key}) cannot be changed; remove the row "
                                 f"and add another")
     if role == "attributes":
-        for fixed in ATTRIBUTE_IDENTITY:
+        for fixed in ERB_MIRRORED:
             if fixed in values and values[fixed] != old.get(fixed):
-                raise OntologyFormError(f"{name}.{fixed} names the table or column the row is "
-                                        f"about; it follows the table, it is not edited")
+                raise OntologyFormError(f"{name}.{fixed} follows the table or field the row is "
+                                        f"about; change that, not this copy of it")
+        for foreign in ERB_NOT_ONTOLOGY:
+            if foreign in values and values[foreign] != old.get(foreign):
+                raise OntologyFormError(f"{name}.{foreign} is the Schema module's; the ontology "
+                                        f"has no place for it, so an edit here would be lost")
     row = {**old, **values}
     _settle_row(doc, reading, name, row)
     _one_of_a_kind(name, table, row, at)
@@ -1618,16 +1683,14 @@ def _op_insert(doc, reading, native, op):
         raise OntologyFormError(f"There is one {FORM_META_KEY} row")
     if name == ERB_TABLES:
         about = row.get("ERBTableId") or row.get("TableName")
-        if reading["roles"].get(about) not in ("individuals", "class", "relationship", "values"):
-            raise OntologyFormError(f"{ERB_TABLES} holds a row per table of things, class and "
-                                    f"property; {about!r} is none of them")
+        if about not in reading["roles"] or about == META_TABLE:
+            raise OntologyFormError(f"{ERB_TABLES} holds a row per table; {about!r} is not one")
         row["ERBTableId"] = row["TableName"] = about
     elif name == ERB_FIELDS:
-        p = reading["properties"].get(row.get("FieldName"))
-        if p is None or p["field"] is None or (row.get("ERBTable") not in (None, p["table"])):
-            raise OntologyFormError(f"{ERB_FIELDS} holds a row per column that is a property; "
-                                    f"{row.get('ERBTable')}.{row.get('FieldName')} is not one")
-        row["ERBTable"], row["ERBFieldId"] = p["table"], f"{p['table']}.{p['id']}"
+        table, field = row.get("ERBTable"), row.get("FieldName")
+        if not is_table(doc.get(table)) or not any(f["name"] == field for f in doc[table]["schema"]):
+            raise OntologyFormError(f"{ERB_FIELDS} holds a row per field; {table}.{field} is not one")
+        row["ERBFieldId"] = f"{table}.{field}"
     _settle_row(doc, reading, name, row)
     _one_of_a_kind(name, table, row, None)
     table["data"].append(row)
