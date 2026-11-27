@@ -106,6 +106,26 @@ test('each Save that changes the file is the rulebook\'s next version, kept in t
   assert.equal(ws.changes().total, 1, 'and the refused save leaves only the edit unsaved');
 });
 
+test('the version is the file\'s: rows loaded from elsewhere never move it, and it cannot be removed or made a word', () => {
+  const ws = new Workspace(copyOfHub());
+  const version = ws.rulebookVersion();
+  // A workbook or a concept rulebook made before the rulebook had a version: its rows carry none.
+  const without = structuredClone(ws.data);
+  without.__meta__ = without.__meta__.filter((r) => r.MetaKey !== 'rulebook-version');
+  ws.replaceAll(without);
+  assert.equal(ws.rulebookVersion(), version, 'rows without a version row leave the version where it is');
+  // One exported at another version.
+  const other = structuredClone(ws.data);
+  other.__meta__.find((r) => r.MetaKey === 'rulebook-version').StringValue = String(version + 7);
+  ws.replaceAll(other);
+  assert.equal(ws.rulebookVersion(), version, 'rows from another version do not carry their number in');
+  assert.equal(ws.changes().total, 0, 'and neither load is an unsaved change');
+  assert.throws(() => ws.remove('__meta__', 'rulebook-version'), /version/);
+  assert.throws(() => ws.removeMany('__meta__', ['rulebook-version']), /version/);
+  assert.throws(() => ws.patch('__meta__', 'rulebook-version', { StringValue: 'soon' }), /whole number/);
+  assert.equal(ws.rulebookVersion(), version);
+});
+
 for (const engine of ['typescript', 'owl', 'postgres']) {
   test(`admin edits reach the page on the ${engine} engine: a new property, a new name, new wording`, async () => {
     const file = copyOfHub();

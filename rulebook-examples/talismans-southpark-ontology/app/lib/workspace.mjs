@@ -3,6 +3,10 @@
 // from these rows; Save writes them back to the rulebook file.
 import { readHub, storedRows, writeHub } from './hub.mjs';
 
+// The row of __meta__ that names the rulebook file's version, and what a version is.
+const VERSION_KEY = 'rulebook-version';
+const isVersion = (text) => /^[1-9]\d*$/.test(String(text ?? ''));
+
 function coerce(field, value, table) {
   if (value === undefined) throw new Error(`${table}.${field.name}: no value given`);
   if (value === null || value === '') return null;
@@ -87,10 +91,17 @@ export class Workspace {
     return out;
   }
 
+  // The rulebook file's version row belongs to the file, not to the rows: it is never removed,
+  // never a word, and rows loaded from elsewhere (a workbook, a concept rulebook) do not bring theirs.
+  isVersionRow(name, key) { return name === '__meta__' && String(key) === VERSION_KEY; }
+
   patch(name, key, values) {
     const t = this.table(name);
     const row = this.need(name, key);
     const clean = this.clean(name, values, { partial: true });
+    if (this.isVersionRow(name, key) && 'StringValue' in clean && !isVersion(clean.StringValue)) {
+      throw new Error(`The rulebook's version is a whole number, 1 or more; ${JSON.stringify(clean.StringValue)} is not`);
+    }
     if (t.key in clean && String(clean[t.key]) !== String(key)) throw new Error(`${name}: a row's key (${t.key}) cannot be changed; delete the row and add another`);
     this.checkLinks(name, clean);
     Object.assign(row, clean);
@@ -128,6 +139,7 @@ export class Workspace {
 
   remove(name, key) {
     this.need(name, key);
+    if (this.isVersionRow(name, key)) throw new Error("The rulebook's version row cannot be removed: every page reads it");
     this.data[name] = this.data[name].filter((row) => String(row[this.table(name).key]) !== String(key));
     this.index[name].delete(String(key));
     this.touch(name);
@@ -135,6 +147,7 @@ export class Workspace {
 
   removeMany(name, keys) {
     if (!keys.length) return 0;
+    if (keys.some((k) => this.isVersionRow(name, k))) throw new Error("The rulebook's version row cannot be removed: every page reads it");
     const gone = new Set(keys.map(String));
     const key = this.table(name).key;
     this.data[name] = this.data[name].filter((row) => !gone.has(String(row[key])));
@@ -144,6 +157,7 @@ export class Workspace {
   }
 
   replaceAll(rows) {
+    const version = structuredClone(this.get('__meta__', VERSION_KEY));
     for (const name of Object.keys(this.tables)) {
       if (!Array.isArray(rows[name])) throw new Error(`No rows given for table ${name}`);
       const t = this.table(name);
@@ -156,6 +170,10 @@ export class Workspace {
         if (was) for (const f of t.stored) if (cleaned[f] === null && was[f] === '') cleaned[f] = '';
         return cleaned;
       });
+      if (name === '__meta__' && version) {
+        const at = this.data[name].findIndex((row) => row.MetaKey === VERSION_KEY);
+        if (at < 0) this.data[name].push(version); else this.data[name][at] = version;
+      }
       this.reindex(name);
       this.touch(name);
     }
@@ -195,9 +213,9 @@ export class Workspace {
   // The rulebook file's version: the number its __meta__ carries, which a reader quotes to
   // name the file they saw. It belongs to the file, so it is stamped by the one writer (save).
   rulebookVersion() {
-    const row = this.data.__meta__.find((r) => r.MetaKey === 'rulebook-version');
-    const n = row ? Number(row.StringValue) : NaN;
-    if (!Number.isInteger(n) || n < 1) throw new Error(`${this.hubPath} has no version: its __meta__ needs a rulebook-version row holding a whole number`);
+    const row = this.get('__meta__', VERSION_KEY);
+    const n = row && isVersion(row.StringValue) ? Number(row.StringValue) : NaN;
+    if (!Number.isInteger(n)) throw new Error(`${this.hubPath} has no version: its __meta__ needs a rulebook-version row holding a whole number`);
     return n;
   }
 
@@ -205,7 +223,7 @@ export class Workspace {
   // the file refuses (it changed on disk) is none. Returns how many rows the save changed.
   save() {
     const changed = this.changes().total;
-    const row = this.data.__meta__.find((r) => r.MetaKey === 'rulebook-version');
+    const row = this.get('__meta__', VERSION_KEY);
     const was = this.rulebookVersion();
     if (changed) { row.StringValue = String(was + 1); this.touch('__meta__'); }
     try {
