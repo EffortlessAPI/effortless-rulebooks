@@ -91,6 +91,13 @@
     "StringValue": "Character and location portraits are Fandom images, linked from each Things row; South Park is the work of Trey Parker and Matt Stone.",
     "JsonValue": null,
     "Name": "image_credit"
+   },
+   {
+    "MetaKey": "rulebook-version",
+    "ValueType": "number",
+    "StringValue": "1",
+    "JsonValue": null,
+    "Name": "rulebook-version"
    }
   ]
  },
@@ -43184,6 +43191,86 @@
     "PageTextId": "concepts-file-failed",
     "Text": "The concept rulebook file was not written: {reason}",
     "Name": "concepts-file-failed"
+   },
+   {
+    "PageTextId": "kind-page",
+    "Text": "another page of this app",
+    "Name": "kind-page"
+   },
+   {
+    "PageTextId": "kind-newtab",
+    "Text": "opens in a new tab",
+    "Name": "kind-newtab"
+   },
+   {
+    "PageTextId": "kind-download",
+    "Text": "downloads a file",
+    "Name": "kind-download"
+   },
+   {
+    "PageTextId": "kind-upload",
+    "Text": "reads a file you pick",
+    "Name": "kind-upload"
+   },
+   {
+    "PageTextId": "version-label",
+    "Text": "Rulebook v{number}",
+    "Name": "version-label"
+   },
+   {
+    "PageTextId": "version-label-unsaved",
+    "Text": "Rulebook v{number} + unsaved changes",
+    "Name": "version-label-unsaved"
+   },
+   {
+    "PageTextId": "version-hint",
+    "Text": "The rulebook file is at version {number}. Each Save to the rulebook makes the next version.",
+    "Name": "version-hint"
+   },
+   {
+    "PageTextId": "form-ontology-what",
+    "Text": "Things, properties and statements: one row per fact, as the graph draws them.",
+    "Name": "form-ontology-what"
+   },
+   {
+    "PageTextId": "form-concepts-what",
+    "Text": "Ordinary tables: one per class, one per relationship, a column per value.",
+    "Name": "form-concepts-what"
+   },
+   {
+    "PageTextId": "group-rows",
+    "Text": "These rows",
+    "Name": "group-rows"
+   },
+   {
+    "PageTextId": "group-excel",
+    "Text": "Excel",
+    "Name": "group-excel"
+   },
+   {
+    "PageTextId": "group-file",
+    "Text": "The rulebook file",
+    "Name": "group-file"
+   },
+   {
+    "PageTextId": "group-editor",
+    "Text": "Rulebook editor",
+    "Name": "group-editor"
+   },
+   {
+    "PageTextId": "admin-open-file",
+    "Text": "Open the rulebook",
+    "Name": "admin-open-file"
+   },
+   {
+    "PageTextId": "effortless-tag",
+    "Text": "Effortless",
+    "Name": "effortless-tag"
+   },
+   {
+    "PageTextId": "effortless-legend",
+    "Text": "Added by Effortless. Everything else follows the original explainer.",
+    "Name": "effortless-legend"
    }
   ]
  },

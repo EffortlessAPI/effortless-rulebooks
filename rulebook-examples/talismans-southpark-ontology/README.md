@@ -45,6 +45,27 @@ python3 ../../scripts/erb_project.py talismans-southpark-ontology --reset-db   #
 The tools list itself is the rulebook's `RulebookTools` table, and the engines are its
 `Engines` table.
 
+### What is hers, what Effortless added, and what each control does
+
+- **One colour marks what Effortless added.** The bar on top, the "Computed by" card, the
+  tools panel and the notes inside her cards are violet and carry an "Effortless" tag; the
+  bar says so in words. Nothing else on the page uses that colour: the rest follows her
+  explainer, in her greens and oranges. In "The original explainer" view only the bar and
+  the link to her page remain.
+- **Controls come in three shapes, by what they do.** A *switch* (one track, the chosen one
+  filled) picks one of a few and stays here: the view, the engine. A *button* does something
+  to the rows: filled is the main one, red undoes work, a down or up arrow means a file
+  leaves or comes in. An *underlined link* goes somewhere: `→` is another page of this app,
+  `↗` opens in a new tab.
+- **Two editors, one colour each.** The ontology form (blue, a graph) and the concept form
+  (purple, a grid) are the two admin pages over the same rows. Each wears its colour, a tab
+  on top says which one you are editing, and their tools sit in the same four groups: these
+  rows, Excel, the rulebook file, the rulebook editor.
+- **The rulebook's version is top right on every page.** Each Save that changes the file
+  makes the next version; with unsaved changes the label says so, because the page is then
+  no longer that version. The number is the `rulebook-version` row of the rulebook's
+  `__meta__` table, so it travels in the file (and in the concept rulebook file).
+
 ## One set of rows, three engines
 
 The app keeps one copy of the rulebook's stored rows as they are right now (the
@@ -277,6 +298,9 @@ an earlier one would need repeated rounds.
 - **Schema changes are not live.** The admin edits rows. Fields, formulas and tables
   change in the rulebook editor or the file, followed by a rebuild. (A new class, property
   or column of the ONTOLOGY is not a schema change: it is rows, made in the concept form.)
+- **Only this app's Save makes a new rulebook version.** The rulebook editor's Save, an
+  edit by hand and a build leave the number as it is. Earlier versions are not kept by the
+  app: the number names a version, and the file's history is where it is found again.
 - **Save in either rulebook editor fails until the published editor is updated.** The
   generated API saves into `effortless-rulebook.json` unless it is told the file's real name,
   and the published `effortless-rulebook-editor` never told it, so Save answers

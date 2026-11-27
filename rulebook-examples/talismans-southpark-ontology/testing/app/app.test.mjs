@@ -85,6 +85,27 @@ test('Save writes the stored rows into the file, as UTF-8, and only when nobody 
   assert.throws(() => ws.save(), /changed on disk/);
 });
 
+test('each Save that changes the file is the rulebook\'s next version, kept in the file', () => {
+  const file = copyOfHub();
+  const ws = new Workspace(file);
+  const first = ws.rulebookVersion();
+  assert.ok(Number.isInteger(first) && first >= 1, `the rulebook's __meta__ names its version: ${first}`);
+  assert.equal(ws.save(), 0);
+  assert.equal(new Workspace(file).rulebookVersion(), first, 'a save that changes nothing is the same version');
+  ws.patch('Rules', 'inverse', { IsEnabled: true });
+  assert.equal(ws.rulebookVersion(), first, 'an unsaved change is not a version yet');
+  assert.equal(ws.save(), 1, 'the version row is the save\'s own stamp, not one of the changed rows it reports');
+  assert.equal(ws.rulebookVersion(), first + 1);
+  assert.equal(ws.changes().total, 0);
+  assert.equal(new Workspace(file).rulebookVersion(), first + 1, 'the file carries its version');
+  // A save the file refuses is not a version.
+  ws.patch('Rules', 'symmetric', { IsEnabled: true });
+  fs.appendFileSync(file, '\n');
+  assert.throws(() => ws.save(), /changed on disk/);
+  assert.equal(ws.rulebookVersion(), first + 1);
+  assert.equal(ws.changes().total, 1, 'and the refused save leaves only the edit unsaved');
+});
+
 for (const engine of ['typescript', 'owl', 'postgres']) {
   test(`admin edits reach the page on the ${engine} engine: a new property, a new name, new wording`, async () => {
     const file = copyOfHub();
@@ -111,8 +132,11 @@ for (const engine of ['typescript', 'owl', 'postgres']) {
       page = await api('GET', '/api/page');
       assert.ok(page.conclusions.some((c) => c.card_text.startsWith('Worked out by the both-ways rule from')));
       // 4. Save writes it all into the (temporary) rulebook; Discard after a further edit returns to what was saved.
+      const version = (await api('GET', '/api/page')).version;
       const saved = await api('POST', '/api/admin/save');
       assert.ok(saved.rows > 100);
+      assert.equal(saved.version, version + 1, 'Save answers with the version it made');
+      assert.equal((await api('GET', '/api/page')).version, version + 1, 'and the page shows it');
       assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).Properties.data.some((p) => p.PropertyId === 'isSiblingOf'), true);
       await api('POST', '/api/rules/inverse/switch', { on: true });
       assert.equal((await api('GET', '/api/admin/changes')).changes.total, 1);

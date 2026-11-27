@@ -192,9 +192,28 @@ export class Workspace {
 
   hubChangedOnDisk() { return readHub(this.hubPath).hash !== this.hub.hash; }
 
+  // The rulebook file's version: the number its __meta__ carries, which a reader quotes to
+  // name the file they saw. It belongs to the file, so it is stamped by the one writer (save).
+  rulebookVersion() {
+    const row = this.data.__meta__.find((r) => r.MetaKey === 'rulebook-version');
+    const n = row ? Number(row.StringValue) : NaN;
+    if (!Number.isInteger(n) || n < 1) throw new Error(`${this.hubPath} has no version: its __meta__ needs a rulebook-version row holding a whole number`);
+    return n;
+  }
+
+  // Writes the rows into the file. A save that changes it is the file's next version; a save
+  // the file refuses (it changed on disk) is none. Returns how many rows the save changed.
   save() {
     const changed = this.changes().total;
-    this.hub = writeHub(this.hub, this.data);
+    const row = this.data.__meta__.find((r) => r.MetaKey === 'rulebook-version');
+    const was = this.rulebookVersion();
+    if (changed) { row.StringValue = String(was + 1); this.touch('__meta__'); }
+    try {
+      this.hub = writeHub(this.hub, this.data);
+    } catch (e) {
+      if (changed) { row.StringValue = String(was); this.touch('__meta__'); }
+      throw e;
+    }
     this.tables = this.hub.tables;
     this.saved = storedRows(this.hub);
     return changed;

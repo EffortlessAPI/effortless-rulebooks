@@ -93,6 +93,13 @@
         "Name": "image_credit"
       },
       {
+        "MetaKey": "rulebook-version",
+        "ValueType": "number",
+        "StringValue": "1",
+        "JsonValue": null,
+        "Name": "rulebook-version"
+      },
+      {
         "MetaKey": "ontology-form",
         "ValueType": "string",
         "StringValue": "concepts-of-an-ontology",

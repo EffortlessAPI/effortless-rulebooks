@@ -1,7 +1,22 @@
-// What the two admin pages share (the ontology form in admin.js, the concept form in
-// concepts.js): escaping, the list of unsaved changes, and watching a server job.
+// What the pages share (the explainer in app.js, the ontology form in admin.js, the concept
+// form in concepts.js): escaping, the rulebook's version, what each kind of control does,
+// the list of unsaved changes, and watching a server job.
 window.RulebookAdmin = (function () {
   const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  // The rulebook file's version, top right on every page. With unsaved changes the page is
+  // no longer that version, and the label says so.
+  function showVersion(el, T, version, unsaved) {
+    el.textContent = T(unsaved ? 'version-label-unsaved' : 'version-label', { number: version });
+    el.title = T('version-hint', { number: version });
+    el.classList.toggle('dirty', unsaved > 0);
+  }
+
+  // Each control says what kind it is (data-kind: page, newtab, download, upload); the
+  // stylesheet draws the kind's mark and this gives it the kind's words on hover.
+  function nameKinds(T, texts, root = document) {
+    for (const el of root.querySelectorAll('[data-kind]')) if (texts[`kind-${el.dataset.kind}`] != null) el.title = T(`kind-${el.dataset.kind}`);
+  }
 
   // The unsaved changes as list items: what differs from the rulebook file, a few per table.
   function changeLines(changes) {
@@ -48,5 +63,5 @@ window.RulebookAdmin = (function () {
     return { watch, start };
   }
 
-  return { esc, changeLines, jobs };
+  return { esc, showVersion, nameKinds, changeLines, jobs };
 })();

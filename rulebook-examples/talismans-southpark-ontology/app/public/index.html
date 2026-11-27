@@ -13,30 +13,40 @@
 </head>
 <body>
 <div class="wrap">
+  <!-- Everything Effortless added wears one colour (class fx) that the original explainer never uses. -->
   <nav class="modebar" aria-label="What this page shows">
     <span data-text="mode-label"></span>
-    <button type="button" data-mode-choice="original" data-text="mode-original"></button>
-    <button type="button" data-mode-choice="tools" data-text="mode-tools"></button>
-    <a class="tools-only admin-link" href="/admin.html" data-text="admin-title"></a>
+    <span class="switch">
+      <button type="button" data-mode-choice="original" data-text="mode-original"></button>
+      <button type="button" data-mode-choice="tools" data-text="mode-tools"></button>
+    </span>
+    <span class="effortless-legend tools-only" data-text="effortless-legend"></span>
+    <span class="modebar-end tools-only">
+      <span class="admin-links"><span data-text="admin-title"></span>
+        <a class="formlink onto" href="/admin.html" data-kind="page" data-text="form-switch-ontology"></a>
+        <a class="formlink concept" href="/concepts.html" data-kind="page" data-text="form-switch-concepts"></a></span>
+      <span class="version" id="version"></span>
+    </span>
   </nav>
   <header>
-    <p class="author-line"><span data-text="byline-prefix"></span> <a id="byline-author" target="_blank" rel="noopener noreferrer" data-text="byline-author"></a> <span data-text="byline-suffix"></span></p>
+    <p class="author-line"><span data-text="byline-prefix"></span> <a id="byline-author" target="_blank" rel="noopener noreferrer" data-kind="newtab" data-text="byline-author"></a> <span data-text="byline-suffix"></span></p>
     <h1 data-text="title"></h1>
     <p data-text="intro"></p>
-    <p class="rulebook-line tools-only" data-text="intro-rulebook"></p>
+    <p class="rulebook-line tools-only effortless-note" data-text="intro-rulebook"></p>
     <nav class="publication-links">
-      <a class="primary" id="link-article" target="_blank" rel="noopener noreferrer" data-text="link-article"></a>
-      <a id="link-original" target="_blank" rel="noopener noreferrer" data-text="link-original"></a>
+      <a class="primary" id="link-article" target="_blank" rel="noopener noreferrer" data-kind="newtab" data-text="link-article"></a>
+      <a class="effortless-link" id="link-original" target="_blank" rel="noopener noreferrer" data-kind="newtab" data-text="link-original"></a>
     </nav>
   </header>
 
-  <section class="card enginebar tools-only" aria-label="Engine">
+  <section class="card enginebar tools-only effortless" aria-label="Engine">
+    <span class="effortless-tag" data-text="effortless-tag"></span>
     <div class="engine-row">
       <span class="engine-label" data-text="engine-label"></span>
-      <span id="engines" class="engine-choices"></span>
+      <span id="engines" class="engine-choices switch"></span>
       <span id="engine-timing" class="engine-timing"></span>
       <button type="button" id="compare" data-text="conformance-button"></button>
-      <a id="unsaved" class="unsaved" href="/admin.html"></a>
+      <a id="unsaved" class="unsaved" href="/admin.html" data-kind="page"></a>
     </div>
     <p id="engine-description" class="hint"></p>
     <div id="conformance" role="status" aria-live="polite"></div>
@@ -99,7 +109,8 @@
     </div>
   </div>
 
-  <section class="card tools tools-only">
+  <section class="card tools tools-only effortless">
+    <span class="effortless-tag" data-text="effortless-tag"></span>
     <h2 data-text="tools-heading"></h2>
     <p class="hint" data-text="tools-text"></p>
     <div class="hood-grid" id="hood-counts"></div>
@@ -118,6 +129,7 @@
 <script src="/rulebook-explainer-dag/dag-resolver.js"></script>
 <script src="/rulebook-explainer-dag/routing.js"></script>
 <script src="/rulebook-explainer-dag/explainer-dag.js"></script>
+<script src="/admin-shared.js"></script>
 <script src="/app.js"></script>
 </body>
 </html>

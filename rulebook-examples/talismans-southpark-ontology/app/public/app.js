@@ -194,6 +194,7 @@
 
   function renderPanels(info) {
     for (const el of document.querySelectorAll('[data-text]')) el.textContent = T(el.dataset.text);
+    window.RulebookAdmin.nameKinds(T, P.texts);
     document.title = T('page-title');
     $('byline-author').href = T('byline-author-url');
     $('link-article').href = T('link-article-url');
@@ -245,7 +246,7 @@
       head = mine.length === 1 ? T('focus-appears-one', { name: `<strong>${esc(d.name)}</strong>` })
                                : T('focus-appears', { name: `<strong>${esc(d.name)}</strong>`, count: mine.length });
       if (mode === 'tools' && d.thing && d.thing.kind === 'individual') {
-        head += `<p class="counts">${dag('Things.CountOfChildren', d.thing.thing_id, esc(d.thing.count_of_children))} ${esc(T('focus-children'))} · ` +
+        head += `<p class="counts effortless-note">${dag('Things.CountOfChildren', d.thing.thing_id, esc(d.thing.count_of_children))} ${esc(T('focus-children'))} · ` +
           `${dag('Things.CountOfGrandchildren', d.thing.thing_id, esc(d.thing.count_of_grandchildren))} ${esc(T('focus-grandchildren'))}</p>`;
       }
       if (d.picture) {
@@ -273,15 +274,19 @@
     const unsaved = $('unsaved');
     unsaved.textContent = P.unsaved === 1 ? T('unsaved-one') : P.unsaved ? T('unsaved', { count: P.unsaved }) : T('unsaved-none');
     unsaved.classList.toggle('dirty', P.unsaved > 0);
+    window.RulebookAdmin.showVersion($('version'), T, P.version, P.unsaved);
     $('tools').innerHTML = P.tools.map((t) => {
       let link = '';
       if (t.href === 'editor') {
-        link = editor.running ? `<a href="${esc(editor.url)}" target="_blank" rel="noopener">${esc(t.link_text)}</a>` : `<span class="off">${esc(T('admin-editor-off'))}</span>`;
+        link = editor.running ? `<a href="${esc(editor.url)}" target="_blank" rel="noopener" data-kind="newtab">${esc(t.link_text)}</a>` : `<span class="off">${esc(T('admin-editor-off'))}</span>`;
       } else if (t.href) {
-        link = `<a href="${esc(t.href)}"${/^\/(admin|concepts)\./.test(t.href) ? '' : ' target="_blank" rel="noopener"'}>${esc(t.link_text)}</a>`;
+        // A page of this app opens here; anything else (a generated page, a file) opens beside it.
+        link = /^\/(admin|concepts)\./.test(t.href) ? `<a href="${esc(t.href)}" data-kind="page">${esc(t.link_text)}</a>`
+                                                    : `<a href="${esc(t.href)}" target="_blank" rel="noopener" data-kind="newtab">${esc(t.link_text)}</a>`;
       }
-      return `<li><b>${esc(t.label)}</b><span>${esc(t.adds)}</span>${link}</li>`;
+      return `<li data-tool="${esc(t.rulebook_tool_id)}"><b>${esc(t.label)}</b><span>${esc(t.adds)}</span>${link}</li>`;
     }).join('');
+    window.RulebookAdmin.nameKinds(T, P.texts, $('tools'));
   }
 
   function render(listsToo = true) {

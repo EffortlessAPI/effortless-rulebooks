@@ -86,7 +86,10 @@ app.post('/api/conformance', route(() => engines.compare()));
 const tableInfo = (t) => ({ name: t.name, description: t.description, key: t.key, rowCount: ws.rows(t.name).length,
   fields: t.fields.map((f) => ({ name: f.name, type: f.type, datatype: f.datatype, stored: f.stored, relatedTo: f.relatedTo, formula: f.formula, description: f.description })) });
 
-app.get('/api/admin/tables', route(async () => ({ tables: Object.values(ws.tables).map(tableInfo), changes: ws.changes(), hubChangedOnDisk: ws.hubChangedOnDisk() })));
+// What the rows are against the rulebook file: what differs, whether the file changed under the app, and the file's version.
+const fileState = () => ({ changes: ws.changes(), hubChangedOnDisk: ws.hubChangedOnDisk(), version: ws.rulebookVersion() });
+
+app.get('/api/admin/tables', route(async () => ({ tables: Object.values(ws.tables).map(tableInfo), ...fileState() })));
 
 app.get('/api/admin/tables/:table', route(async (req) => {
   const t = ws.table(req.params.table);
@@ -114,13 +117,13 @@ app.patch('/api/admin/tables/:table/rows/:key', adminWrite((req, table) => ({ ro
 app.post('/api/admin/tables/:table/rows', adminWrite((req, table) => ({ row: ws.insert(table, req.body) })));
 app.delete('/api/admin/tables/:table/rows/:key', adminWrite((req, table) => { ws.remove(table, req.params.key); }));
 
-app.get('/api/admin/changes', route(async () => ({ changes: ws.changes(), hubChangedOnDisk: ws.hubChangedOnDisk() })));
+app.get('/api/admin/changes', route(async () => fileState()));
 app.post('/api/admin/save', route((req) => write(async () => {
   const rows = ws.save();
   const message = rows ? fill(explainer.text('admin-saved'), { rows, file: path.relative(PROJECT, HUB) }) : explainer.text('admin-nothing-to-save');
   // The saved rows have a concept form too: its file follows the save (see "the concept rulebook as a file").
   const concept = rows || !fs.existsSync(CONCEPT_FILE) ? await saveConceptFile(engineOf(req)) : null;
-  return { rows, file: path.relative(PROJECT, HUB), message: [message, concept?.message].filter(Boolean).join(' '), concept };
+  return { rows, version: ws.rulebookVersion(), file: path.relative(PROJECT, HUB), message: [message, concept?.message].filter(Boolean).join(' '), concept };
 })));
 app.post('/api/admin/discard', route(() => write(async () => {
   ws.reload();
@@ -268,7 +271,7 @@ app.post('/api/admin/jobs/import', express.raw({ type: () => true, limit: '30mb'
 // the same live rows as their concept rulebook (a table of individuals, a table per class, a
 // table or a column per property, ERBTables and ERBFields) and writes an edit made there as the
 // matching change of the ontology's rows. One store, two forms of it.
-const conceptView = async (engine) => ({ ...(await concepts.view(engine)), changes: ws.changes(), hubChangedOnDisk: ws.hubChangedOnDisk(), file: conceptFileState() });
+const conceptView = async (engine) => ({ ...(await concepts.view(engine)), ...fileState(), file: conceptFileState() });
 app.get('/api/concepts', route((req) => conceptView(engineOf(req))));
 app.post('/api/concepts/edit', route((req) => write(async () => {
   const engine = engineOf(req);

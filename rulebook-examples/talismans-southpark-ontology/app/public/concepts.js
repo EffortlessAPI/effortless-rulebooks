@@ -7,7 +7,7 @@
 // edits and the server answers with the concept rulebook as it now reads.
 (function () {
   const $ = (id) => document.getElementById(id);
-  const { esc, changeLines } = window.RulebookAdmin;
+  const { esc, changeLines, showVersion, nameKinds } = window.RulebookAdmin;
   const MAX_ROWS = 300;
   const GROUPS = ['individuals', 'class', 'relationship', 'values', 'attributes', 'support', 'meta'];
   const NEW = { class: 'concepts-new-class', relationship: 'concepts-new-relationship', values: 'concepts-new-values' };
@@ -76,6 +76,7 @@
     const u = $('unsaved');
     u.textContent = changes.total === 1 ? T('unsaved-one') : changes.total ? T('unsaved', { count: changes.total }) : T('unsaved-none');
     u.classList.toggle('dirty', changes.total > 0);
+    showVersion($('version'), T, view.version, changes.total);
     if (hubChangedOnDisk) say(T('admin-hub-changed'), true);
     $('save').disabled = !changes.total;
     $('discard').disabled = !changes.total && !hubChangedOnDisk;
@@ -330,6 +331,7 @@
     const live = await api('GET', '/api/rows');
     texts = Object.fromEntries(live.PageTexts.map((x) => [x.PageTextId, x.Text]));
     for (const el of document.querySelectorAll('[data-text]')) el.textContent = T(el.dataset.text);
+    nameKinds(T, texts);
     document.title = T('concepts-title');
     $('filter').placeholder = T('admin-filter');
     const listed = await api('GET', '/api/engines');
@@ -340,7 +342,7 @@
     renderEngines();
     await load();
     const ed = await api('GET', '/api/concepts/editor');
-    if (ed.running) $('editor').href = ed.url; else { $('editor').removeAttribute('href'); $('editor').classList.add('off'); $('editor-note').textContent = T('concepts-editor-off'); }
+    if (ed.running) $('editor').href = ed.url; else { $('editor').removeAttribute('href'); $('editor').removeAttribute('data-kind'); $('editor').classList.add('off'); $('editor-note').textContent = T('concepts-editor-off'); }
     for (const kind of Object.keys(JOBS)) await jobs.watch(kind, false);
   })().catch((e) => { console.error(e); say(e.message, true); });
 })();

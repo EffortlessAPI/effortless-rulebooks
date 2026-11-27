@@ -2,6 +2,9 @@
 :root {
   --snow: #f1f5f8; --panel: #ffffff; --ink: #16263a; --quiet: #586a80; --line: #c9d4de;
   --pine: #1f6b4f; --flare: #d2541c; --flare-soft: #fbe6da; --alarm: #a8201a; --alarm-soft: #fbe3e1;
+  /* What Effortless added wears --fx, a colour the original explainer never uses. Each form of the
+     rulebook has its own (--onto, --concept); an editor page sets --fx to the form it edits. */
+  --fx: #5746d8; --fx-soft: #eeecfc; --onto: #1c6fb8; --onto-soft: #e4f0fa; --concept: #9a3bb5; --concept-soft: #f6e9f9; --on-accent: #ffffff;
   --display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
   --body: "Figtree", "Segoe UI", system-ui, sans-serif;
   color-scheme: light;
@@ -10,6 +13,7 @@
   :root {
     --snow: #0f1823; --panel: #18232f; --ink: #e8eef4; --quiet: #9fb0c2; --line: #34465a;
     --pine: #5fc49b; --flare: #ff8a4c; --flare-soft: #3a2418; --alarm: #ff8f88; --alarm-soft: #3b1c1b;
+    --fx: #aea3ff; --fx-soft: #25214a; --onto: #7bbcf2; --onto-soft: #14293b; --concept: #dc97ec; --concept-soft: #33193a; --on-accent: #10141c;
     color-scheme: dark;
   }
 }
@@ -124,19 +128,13 @@ footer .source-credit { margin: 8px 0 12px; }
 /* ---- the rulebook-tools layer: everything here is absent from the original explainer ---- */
 [data-mode="original"] .tools-only, [data-mode="original"] .dag-cell-badge-wrap, [data-mode="original"] .er-corner, [data-mode="original"] [class*="dag-corner"] { display: none !important; }
 [data-mode="original"] .dag-cell:hover { background: none; cursor: inherit; }
-.modebar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--quiet); }
-.modebar button { padding: 6px 12px; border-color: var(--line); font-weight: 500; }
-.modebar button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--panel); }
-.modebar .admin-link { margin-left: auto; font-weight: 600; }
 .enginebar { padding: 12px 14px; }
 .engine-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .engine-label { font-family: var(--display); font-weight: 600; }
-.engine-choices { display: inline-flex; flex-wrap: wrap; gap: 6px; }
-.engine-choices button { padding: 6px 12px; border-color: var(--line); font-weight: 500; }
-.engine-choices button[aria-pressed="true"] { background: var(--pine); border-color: var(--pine); color: var(--panel); }
 .engine-timing { color: var(--quiet); font-size: 0.85rem; min-width: 5ch; }
 .enginebar .hint { margin: 8px 0 0; }
-.unsaved { margin-left: auto; font-size: 0.85rem; }
+.enginebar .unsaved { margin-left: auto; }
+.unsaved { font-size: 0.85rem; }
 .unsaved.dirty { color: var(--flare); font-weight: 600; }
 .conformance { margin-top: 10px; padding: 10px 12px; border-radius: 10px; font-size: 0.92rem; border: 1px solid var(--pine); }
 .conformance.differ { border-color: var(--alarm); background: var(--alarm-soft); color: var(--alarm); }
@@ -153,8 +151,6 @@ body.busy .stage { opacity: 0.75; transition: opacity 0.2s 0.4s; }
 
 /* ---- the admin ---- */
 .wrap.wide { max-width: 1500px; }
-.action-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.action-row .unsaved { margin: 0 8px 0 0; }
 .buttonish { display: inline-flex; align-items: center; font-weight: 600; padding: 8px 14px; border-radius: 10px; border: 1px solid var(--ink); background: var(--panel); color: var(--ink); cursor: pointer; text-decoration: none; }
 .buttonish.off { opacity: 0.45; cursor: default; }
 .form-message.bad { color: var(--alarm); }
@@ -185,10 +181,6 @@ label.inline { display: inline-flex; align-items: center; gap: 6px; font-size: 0
 #new-row td { background: var(--flare-soft); }
 
 /* ---- the two forms of the rulebook: which one a page edits, and the concept form's page ---- */
-.formswitch { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.95rem; }
-.formswitch-label { color: var(--quiet); }
-.formswitch a { padding: 7px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--ink); font-weight: 600; text-decoration: none; }
-.formswitch a[aria-current="page"] { background: var(--ink); border-color: var(--ink); color: var(--panel); }
 .concept-main { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
 .table-list .group-title { margin: 10px 0 2px; padding: 0 10px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--quiet); }
 .table-list .group-title:first-child { margin-top: 0; }
@@ -211,7 +203,110 @@ form.mini input[type="text"] { width: 260px; padding: 6px 8px; font-size: 0.9rem
 form.mini select { width: auto; padding: 6px 8px; font-size: 0.9rem; }
 form.mini.tall { flex-direction: column; align-items: stretch; max-width: 520px; }
 form.mini.tall input[type="text"] { width: 100%; }
-button.danger { border-color: var(--alarm); color: var(--alarm); }
 .file-note { margin: 10px 0 0; padding: 10px 12px; border-radius: 10px; background: var(--flare-soft); font-size: 0.92rem; }
 .file-note button { padding: 4px 10px; margin-left: 6px; }
 .actions #editor-note { margin: 8px 0 0; }
+
+/* ==== What Effortless added, and what each kind of control does =====================================
+   The original explainer's own parts keep its look (pine, ink, flare). Three things are added here:
+   1. --fx colours every part Effortless added (class effortless; the explainer tool's own stylesheet uses ".fx" for a formula): the bar on top, the tinted cards with their tag, notes.
+   2. Controls come in three shapes, by what they do:
+        a switch  (.switch)        picks one of a few, and stays here;
+        a button  (button)         does something to the rows: filled = the main one, red = undoes work,
+                                   a down or up arrow = a file leaves or comes in;
+        a link    (underlined)     goes somewhere: -> another page of this app, an up-right arrow = a new tab.
+   3. The two editors wear the colour of the form of the rulebook they edit. */
+
+/* ---- 1. the mark of what Effortless added */
+.modebar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 8px 12px; border-radius: 12px; font-size: 0.9rem;
+  color: var(--ink); background: var(--fx-soft); border: 1px solid color-mix(in srgb, var(--fx) 40%, transparent); }
+.modebar-end { margin-left: auto; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.effortless-legend { display: inline-flex; align-items: center; gap: 7px; font-size: 0.82rem; color: var(--fx); font-weight: 600; }
+.effortless-legend::before { content: ""; flex: none; width: 12px; height: 12px; border-radius: 3px; background: var(--fx); }
+.card.effortless { position: relative; border-color: color-mix(in srgb, var(--fx) 45%, var(--line)); border-left: 5px solid var(--fx);
+  background: color-mix(in srgb, var(--fx-soft) 50%, var(--panel)); }
+.effortless-tag { position: absolute; top: -10px; right: 14px; padding: 1px 9px; border-radius: 999px; background: var(--fx); color: var(--on-accent);
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+.effortless-note { border-left: 4px solid var(--fx); padding-left: 10px; }
+header .rulebook-line.effortless-note { max-width: 66ch; }
+.effortless a, .modebar a, .effortless-note a { color: var(--fx); }
+.effortless button, .modebar button { border-color: var(--fx); }
+.effortless input[type="checkbox"] { accent-color: var(--fx); }
+.publication-links a.effortless-link { border-color: var(--fx); color: var(--fx); }
+.conformance { border-color: var(--fx); }
+.version { padding: 2px 10px; border-radius: 999px; border: 1.5px solid var(--fx); background: var(--panel); color: var(--fx);
+  font-size: 0.82rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; cursor: default; }
+.version.dirty { border-style: dashed; }
+.tool-list li { background: var(--panel); }
+.tool-list li[data-tool="admin"] { border-left: 5px solid var(--onto); }
+.tool-list li[data-tool="concepts"] { border-left: 5px solid var(--concept); }
+.tool-list li[data-tool="admin"] a { color: var(--onto); }
+.tool-list li[data-tool="concepts"] a { color: var(--concept); }
+
+/* ---- 2a. a switch: one track, the chosen one filled */
+.switch { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border-radius: 999px; border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--ink) 7%, var(--panel)); }
+.switch > button { padding: 5px 14px; border: 0; border-radius: 999px; background: transparent; color: var(--ink); font-weight: 600; }
+.switch > button[aria-pressed="true"] { background: var(--fx); color: var(--on-accent); }
+.switch > button[data-mode-choice="original"][aria-pressed="true"] { background: var(--ink); color: var(--panel); }   /* the original is not Effortless's */
+
+/* ---- 2b. a button: it does something to the rows */
+button.danger { border-color: var(--alarm); color: var(--alarm); }
+.admin button.primary, .effortless button.primary { background: var(--fx); border-color: var(--fx); color: var(--on-accent); }
+[data-kind="download"]::before { content: "\2193\00a0"; }
+[data-kind="upload"]::before { content: "\2191\00a0"; }
+
+/* ---- 2c. a link: it goes somewhere */
+a.link { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; padding: 6px 2px; }
+a.link.off { color: var(--quiet); text-decoration: none; cursor: default; }
+[data-kind="page"]::after { content: "\00a0\2192"; }
+[data-kind="newtab"]::after { content: "\00a0\2197"; }
+[data-kind="back"]::before { content: "\2190\00a0"; }
+.modebar [data-kind="back"] { font-weight: 600; }
+/* The original view keeps the original's links as they are: no marks there. */
+[data-mode="original"] [data-kind]::after, [data-mode="original"] [data-kind]::before { content: none; }
+.kinds-key { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 10px 0 0; font-size: 0.8rem; color: var(--quiet); }
+[data-kind-key]::before { font-weight: 700; color: var(--fx); }
+[data-kind-key="page"]::before { content: "\2192\00a0\00a0"; }
+[data-kind-key="newtab"]::before { content: "\2197\00a0\00a0"; }
+[data-kind-key="download"]::before { content: "\2193\00a0\00a0"; }
+[data-kind-key="upload"]::before { content: "\2191\00a0\00a0"; }
+
+/* ---- the editors' tools, one group each */
+.action-groups { display: flex; flex-wrap: wrap; align-items: stretch; gap: 10px; }
+.action-group { flex: 1 1 260px; display: flex; flex-wrap: wrap; align-items: center; align-content: flex-start; gap: 6px 10px; padding: 8px 12px 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+.action-group .hint { flex-basis: 100%; margin: 0; }
+.group-label { flex-basis: 100%; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--quiet); }
+
+/* ---- 3. the two forms of the rulebook: the explainer's links to them, and each editor's own colour */
+.admin-links { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; color: var(--quiet); }
+.formlink { font-weight: 700; }
+.modebar a.formlink.onto { color: var(--onto); }
+.modebar a.formlink.concept { color: var(--concept); }
+body.admin { --fx: var(--onto); --fx-soft: var(--onto-soft); }
+body.admin.concepts { --fx: var(--concept); --fx-soft: var(--concept-soft); }
+.admin a { color: var(--fx); }
+.admin input[type="checkbox"], .admin #grid td input[type="checkbox"], .admin .about-line input[type="checkbox"] { accent-color: var(--fx); }
+.admin .table-list button[aria-pressed="true"] { background: var(--fx); color: var(--on-accent); }
+.admin .table-list button[aria-pressed="true"] span { color: var(--on-accent); }
+.admin .table-list button.new-concept { color: var(--fx); }
+.admin .table-list button.new-concept[aria-pressed="true"] { color: var(--on-accent); }
+.admin #changes summary { color: var(--fx); }
+.admin header { padding: 14px 18px; border-radius: 14px; border-left: 6px solid var(--fx); background: var(--fx-soft); }
+.admin header p { color: var(--ink); max-width: 90ch; }
+.admin .card.actions, .admin .card.enginebar { border-color: color-mix(in srgb, var(--fx) 40%, var(--line)); }
+.formswitch { display: grid; gap: 10px; grid-template-columns: 1fr; align-items: stretch; }
+@media (min-width: 760px) { .formswitch { grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); } }
+.formswitch-label { align-self: center; color: var(--quiet); font-size: 0.95rem; }
+.formtab { --tab: var(--onto); --tab-soft: var(--onto-soft); display: grid; grid-template-columns: auto minmax(0, 1fr) auto; column-gap: 12px; align-items: center;
+  padding: 10px 14px; border: 2px solid var(--tab); border-radius: 14px; background: var(--panel); text-decoration: none; }
+.formtab.concept { --tab: var(--concept); --tab-soft: var(--concept-soft); }
+.admin a.formtab { color: var(--ink); }
+.formtab svg { grid-row: 1 / span 2; width: 36px; height: 36px; color: var(--tab); }
+.formtab b, .formtab small { grid-column: 2; }
+.formtab[data-kind="page"]::after { grid-column: 3; grid-row: 1 / span 2; font-size: 1.4rem; font-weight: 700; color: var(--tab); }
+.formtab b { font-family: var(--display); font-size: 1.1rem; line-height: 1.2; }
+.formtab small { color: var(--quiet); font-size: 0.82rem; }
+.formtab:not([aria-current]):hover { background: var(--tab-soft); }
+.admin a.formtab[aria-current="page"] { background: var(--tab); color: var(--on-accent); cursor: default; }
+.formtab[aria-current="page"] svg, .formtab[aria-current="page"] small { color: var(--on-accent); }

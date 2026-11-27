@@ -145,6 +145,22 @@ them there. See "Two forms of one rulebook" in the README.
 - **The original view stays the original.** Anything new (a control, a count, a badge)
   goes in the tools layer (`.tools-only`, or inside `mode === 'tools'`), and its wording in
   `PageTexts`.
+- **What Effortless added looks like it.** A card it added is `class="card effortless"` with
+  an `effortless-tag` inside; a note inside one of her cards is `effortless-note`. All of it
+  is drawn in `--fx`, a colour her page never uses (`style.css`, last section). Do not name a
+  class `fx`: the explainer tool's stylesheet (`dag.css`) owns `.fx` for a formula's text and
+  turns the whole card monospace. Each editor page sets `--fx` to the colour of the form it
+  edits (`--onto` on `/admin.html`, `--concept` on `/concepts.html`).
+- **A control says what kind it is.** A switch is `.switch`; a button does something to the
+  rows; a link that goes somewhere is underlined and carries `data-kind="page"` (another page
+  of this app), `"newtab"` (opens beside it) or `"back"`; a button that moves a file carries
+  `"download"` or `"upload"`. The stylesheet draws the mark and `nameKinds` gives it its
+  words (`kind-*` in `PageTexts`). Never make a link look like a button, or a button like a link.
+  The original view shows no marks.
+- **The rulebook's version** is the `rulebook-version` row of `__meta__` (a whole number).
+  `Workspace.save()` is the one place that raises it, and only for a save that changes the
+  file; every page shows it top right (`showVersion`). `ws.version` is something else: the
+  in-memory change counter the engines' caches watch.
 - **Save writes stored rows only** (`app/lib/hub.mjs`): never schema, never computed
   values, and never over a file that changed on disk since it was loaded.
 - **Loading the database**: the build's `init-db` step fails on most builds (cr-20-02,

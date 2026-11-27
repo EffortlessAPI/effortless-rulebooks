@@ -3,9 +3,9 @@
 // chosen engine computes them. Save writes the rows back into the rulebook file.
 (function () {
   const $ = (id) => document.getElementById(id);
-  const { esc, changeLines } = window.RulebookAdmin;   // shared with the concept form's page
+  const { esc, changeLines, showVersion, nameKinds } = window.RulebookAdmin;   // shared with the other pages
   const MAX_ROWS = 200, MAX_OPTIONS = 80;
-  let texts = {}, live = {}, tables = [], current = null, rows = [], engines = [], explainerReady = false;
+  let texts = {}, live = {}, tables = [], current = null, rows = [], engines = [], explainerReady = false, version = null;
   let engineId = localStorage.getItem('erb.backend');
   const T = (key, values) => {
     if (texts[key] == null) throw new Error(`The rulebook has no page text "${key}"`);
@@ -42,16 +42,19 @@
     $('discard').disabled = !changes.total && !hubChangedOnDisk;
     $('changes').hidden = !changes.total;
     $('change-list').innerHTML = changeLines(changes).join('');
+    showVersion($('version'), T, version, changes.total);
   }
 
   // ---------------------------------------------------------------- tables and the grid
   async function loadTables() {
     const r = await api('GET', '/api/admin/tables');
     tables = r.tables;
+    version = r.version;
     live = await api('GET', '/api/rows');
     texts = Object.fromEntries(live.PageTexts.map((x) => [x.PageTextId, x.Text]));
     for (const el of document.querySelectorAll('[data-text]')) el.textContent = T(el.dataset.text);
-    document.title = T('admin-title');
+    nameKinds(T, texts);
+    document.title = T('form-switch-ontology');
     $('filter').placeholder = T('admin-filter');
     $('tables').innerHTML = tables.map((t) =>
       `<button type="button" data-table="${esc(t.name)}" aria-pressed="${current === t.name}">${esc(t.name)} <span>${t.rowCount}</span></button>`).join('');
@@ -209,7 +212,7 @@
     await loadTables();
     await loadTable(tables.find((t) => t.name === 'Statements') ? 'Statements' : tables[0].name);
     const ed = await api('GET', '/api/admin/editor');
-    if (ed.running) $('editor').href = ed.url; else { $('editor').removeAttribute('href'); $('editor').classList.add('off'); $('editor-note').textContent = T('admin-editor-off'); }
+    if (ed.running) $('editor').href = ed.url; else { $('editor').removeAttribute('href'); $('editor').removeAttribute('data-kind'); $('editor').classList.add('off'); $('editor-note').textContent = T('admin-editor-off'); }
     for (const kind of Object.keys(JOBS)) await jobs.watch(kind, false);
   })().catch((e) => { console.error(e); say(e.message, true); });
 })();

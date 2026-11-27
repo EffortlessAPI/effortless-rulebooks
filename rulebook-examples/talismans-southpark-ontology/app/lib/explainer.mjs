@@ -74,6 +74,7 @@ export function createExplainer({ ws }) {
       tools: [...ws.rows('RulebookTools')].sort(bySort).map(snakeRow),
       record: recordSummary(facts),
       unsaved: ws.changes().total,
+      version: ws.rulebookVersion(),
       pageMs: Date.now() - started,
     };
   }
