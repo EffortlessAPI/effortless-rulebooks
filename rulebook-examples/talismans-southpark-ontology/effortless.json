@@ -109,8 +109,8 @@
       "RelativePath": "/explainer",
       "CommandLine": "rulebook-to-explainer-dag -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json -p languages=all",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.24.1636",
-      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-11-24-1636-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.11.27.1439",
+      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-11-27-1439-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Explainer: every derived value's rule and witness down to ground truth, in 16 languages."
     },
     {
@@ -129,8 +129,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i talismans-southpark-ontology-rulebook.json -p rulebookPath=talismans-southpark-ontology-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.23.0835",
-      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-11-23-0835-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.11.27.1442",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-11-27-1442-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "The generated rulebook editor: its own Postgres, API and admin UI in a container (./start.sh --editor)."
     },
     {
@@ -147,8 +147,8 @@
       "RelativePath": "/concept-rulebook",
       "CommandLine": "effortless-rulebook-editor -i talismans-southpark-ontology-concepts.json -p rulebookPath=talismans-southpark-ontology-concepts.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.23.0835",
-      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-11-23-0835-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.11.27.1442",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-11-27-1442-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "The generated rulebook editor on the concept rulebook: its own Postgres, API and admin UI in a second container (./start.sh --concept-editor). Its Save rewrites the concept rulebook file; the app's Concepts page loads that file back into the ontology."
     },
     {
@@ -167,8 +167,8 @@
       "RelativePath": "/concept-rulebook/explainer",
       "CommandLine": "rulebook-to-explainer-dag -i ../talismans-southpark-ontology-concepts.json -p languages=all",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.24.1636",
-      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-11-24-1636-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.11.27.1439",
+      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-11-27-1439-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "The concept rulebook's own explainer: the same tool as rulebooktoexplainerdag, on the concept rulebook. The concept form's tools panel links to it."
     },
     {

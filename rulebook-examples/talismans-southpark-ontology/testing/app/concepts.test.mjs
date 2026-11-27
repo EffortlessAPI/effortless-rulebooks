@@ -25,6 +25,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import vm from 'node:vm';
 import { spawnSync } from 'node:child_process';
 import { PROJECT, startApp } from '../her-app/lib.mjs';
 
@@ -344,4 +345,31 @@ test('both forms of the rulebook list the same tools, and every link a tool give
     assert.match(await (await fetch(`http://127.0.0.1:${port}${hrefOf('concept-docs')}`)).text(), /is ?parent ?of: one row per fact in effect/i, 'the concept documentation describes a property\'s table');
     await assert.rejects(app.api('GET', '/api/tools?form=accounting'), /no form/);
   } finally { app.stop(); }
+});
+
+// The concept rulebook's explainer is about the concept rulebook: every table of it. Found
+// 2026-11-27: the explainer listed 6 of the 13, leaving out every table whose name starts
+// with a lowercase letter (a property's table is named for the property: isParentOf).
+test('the concept rulebook\'s explainer lists every table of the concept rulebook', () => {
+  const dir = path.join(PROJECT, 'concept-rulebook', 'explainer', 'rulebook-explainer-dag');
+  const window = {};
+  window.window = window;
+  const context = vm.createContext(window);
+  for (const file of ['embedded-graph.js', 'dag-resolver.js']) vm.runInContext(fs.readFileSync(path.join(dir, file), 'utf8'), context, { filename: file });
+  const listed = JSON.parse(JSON.stringify(window.EffortlessDagResolver.listTables())).map((t) => t.table).sort();
+  const concepts = JSON.parse(fs.readFileSync(path.join(PROJECT, 'concept-rulebook', 'talismans-southpark-ontology-concepts.json'), 'utf8'));
+  const tables = Object.keys(concepts).filter((k) => !k.startsWith('_') && concepts[k] && Array.isArray(concepts[k].schema)).sort();
+  assert.ok(tables.includes('isParentOf') && tables.length >= 13, `the concept rulebook has its property tables: ${tables.join(', ')}`);
+  assert.deepEqual(listed, tables, 'the explainer lists the concept rulebook\'s tables, all of them');
+});
+
+// Save inside a rulebook editor writes the rulebook file it was opened on. Found 2026-11-27:
+// the generated API saved into effortless-rulebook.json whatever the file was called, so Save
+// answered "ENOENT ... effortless-rulebook.json" for both of this project's rulebooks. The
+// container's entrypoint has to tell the API the file's name.
+test('both rulebook editors tell their API which rulebook file to save into', () => {
+  for (const folder of ['effortless-rulebook', 'concept-rulebook']) {
+    const entrypoint = fs.readFileSync(path.join(PROJECT, folder, 'docker', 'container-entrypoint.sh'), 'utf8');
+    assert.match(entrypoint, /^\s*export RULEBOOK_FILE_PATH="\$RULEBOOK_PATH"/m, `${folder}/docker/container-entrypoint.sh exports RULEBOOK_FILE_PATH`);
+  }
 });

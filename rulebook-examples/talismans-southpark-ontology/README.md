@@ -307,27 +307,9 @@ an earlier one would need repeated rounds.
 - **Schema changes are not live.** The admin edits rows. Fields, formulas and tables
   change in the rulebook editor or the file, followed by a rebuild. (A new class, property
   or column of the ONTOLOGY is not a schema change: it is rows, made in the concept form.)
-- **The concept rulebook's explainer lists 6 of its 13 tables until the published explainer
-  tool is updated.** The explainer listed only tables whose names start with a capital
-  letter, and a property's table is named for the property (`isParentOf`, `attends`,
-  `hasAge`), so those were left out with nothing said. The concept rulebook's documentation
-  and its rulebook editor show all 13. Fixed with a test in `Versioned-Stable-SSoTme-Tools`
-  (bb10fdf7, 2026-11-27) and checked against this project's generated explainer (6 tables
-  before, 13 after); it reaches this project when `rulebook-to-explainer-dag` is published
-  and the project rebuilt.
 - **Only this app's Save makes a new rulebook version.** The rulebook editor's Save, an
   edit by hand and a build leave the number as it is. Earlier versions are not kept by the
   app: the number names a version, and the file's history is where it is found again.
-- **Save in either rulebook editor fails until the published editor is updated.** The
-  generated API saves into `effortless-rulebook.json` unless it is told the file's real name,
-  and the published `effortless-rulebook-editor` never told it, so Save answers
-  `ENOENT ... effortless-rulebook.json` (seen on the concept rulebook's editor; the
-  rulebook's own editor runs the same generated runtime with the same environment). Fixed
-  with a test in
-  `Versioned-Stable-SSoTme-Tools` (c31abefa, 2026-11-27) and proven here on the concept
-  rulebook's editor (a column, a person and a fact added there, saved, loaded into the
-  ontology and shown on the page); it reaches this project when that tool is published and
-  the project rebuilt. Until then the editors show and edit, and do not save.
 
 ## How the Excel import came to work
 

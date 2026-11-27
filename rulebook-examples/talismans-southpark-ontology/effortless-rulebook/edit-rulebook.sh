@@ -20,7 +20,7 @@ EXTERNAL_SRC_MOUNTED=
 EXTERNAL_SRC_HOST_PATH=""
 ENABLE_MODULES="false"
 RULEBOOK_SELF_UPDATE_PATH="talismans-southpark-ontology-rulebook.json"
-EDITOR_RUNTIME_VERSION="2026.11.23.835"
+EDITOR_RUNTIME_VERSION="2026.11.27.1442"
 
 # The launcher is the OUTER half of the editor and therefore cannot rely on the
 # container's inner `effortless -upgradeAll`. Update and regenerate this runtime

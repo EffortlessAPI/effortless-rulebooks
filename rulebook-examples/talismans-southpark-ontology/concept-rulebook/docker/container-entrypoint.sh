@@ -69,6 +69,13 @@ if [ -z "${RULEBOOK_FILENAME:-}" ]; then
   exit 1
 fi
 RULEBOOK_PATH="/app/effortless-rulebook/$RULEBOOK_FILENAME"
+# The generated API (rulebook-to-node-postgres-api) reads the rulebook file it saves
+# into, syncs a workbook into, and names its pending-change files after, from
+# RULEBOOK_FILE_PATH; its default is effortless-rulebook.json. Exported here, where the
+# real name is settled, so the API started further down (a child of this script) saves
+# into the rulebook that is actually mounted. Until 2026-11-27 nothing set it, and Save
+# answered ENOENT for every rulebook named <slug>-rulebook.json.
+export RULEBOOK_FILE_PATH="$RULEBOOK_PATH"
 RULEBOOK_DIR="/app/effortless-rulebook"
 # Where the effortless CLI writes its structured build-failure record when
 # -continueOnError is in effect (see BuildErrorLog in the CLI): the project root,
