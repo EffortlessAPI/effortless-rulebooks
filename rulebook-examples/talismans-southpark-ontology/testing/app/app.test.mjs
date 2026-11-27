@@ -233,7 +233,12 @@ test('Excel round trip: the export with one cell edited imports as that one chan
     assert.equal(edit.status, 0, edit.stderr);
 
     const started = Date.now();
-    const answer = await fetch(`${base}/api/admin/import`, { method: 'POST', headers: { 'content-type': 'application/octet-stream' }, body: fs.readFileSync(edited) });
+    // Sent exactly as the admin page sends it (app/public/admin.js): the file's bytes as an
+    // ArrayBuffer, with NO content-type header (a browser adds none for an ArrayBuffer body).
+    // The test once sent application/octet-stream, so it passed while the page answered
+    // "Send the workbook as the request body" (2026-11-26).
+    const asThePageSendsIt = (file) => { const b = fs.readFileSync(file); return b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength); };
+    const answer = await fetch(`${base}/api/admin/import`, { method: 'POST', body: asThePageSendsIt(edited) });
     const body = await answer.json();
     const seconds = (Date.now() - started) / 1000;
     assert.equal(answer.status, 200, body.error);
@@ -243,7 +248,7 @@ test('Excel round trip: the export with one cell edited imports as that one chan
     assert.deepEqual(body.summary.warnings, [], 'the workbook carried its stored results');
     // The same workbook unedited changes nothing.
     await app.api('POST', '/api/admin/discard');
-    const again = await fetch(`${base}/api/admin/import`, { method: 'POST', headers: { 'content-type': 'application/octet-stream' }, body: fs.readFileSync(original) });
+    const again = await fetch(`${base}/api/admin/import`, { method: 'POST', body: asThePageSendsIt(original) });
     const same = await again.json();
     assert.equal(again.status, 200, same.error);
     assert.equal(same.changes.total, 0);

@@ -182,7 +182,9 @@ app.get('/api/admin/export.xlsx', async (req, res) => {
 // The catalog's xlsx-to-rulebook syncs a workbook INTO a rulebook, so it is handed the
 // workbook and a copy of the live rulebook; what comes back is loaded as unsaved changes.
 const IMPORT_TIMEOUT_MS = Number(process.env.XLSX_IMPORT_TIMEOUT_MS || 240000);   // the tool answers this rulebook's workbook in about 2 s; a cold start adds up to a minute
-app.post('/api/admin/import', express.raw({ type: '*/*', limit: '30mb' }), route((req) => write(async () => {
+// The body is the workbook whatever its content-type, or none: a browser sends an ArrayBuffer
+// with NO content-type, and express.raw's '*/*' matches only a request that has one.
+app.post('/api/admin/import', express.raw({ type: () => true, limit: '30mb' }), route((req) => write(async () => {
   if (!Buffer.isBuffer(req.body) || req.body.length === 0) throw new Error('Send the workbook as the request body');
   const dir = freshDir('xlsx-import');
   const target = path.join(dir, 'working-rulebook.json');
