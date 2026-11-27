@@ -2,7 +2,7 @@
   "name": "oss-ontology-rulebook-to-rulebook",
   "runtime": "script",
   "entry": "transpiler.py",
-  "description": "Extract a rulebook in the South Park ontology form into concept tables: an injected rulebook comes back exactly as it went in; a native ontology becomes Things, one table per class and one per many-valued property.",
+  "description": "Extract a rulebook in the South Park ontology form into its concept rulebook: an injected rulebook comes back exactly as it went in; a native ontology becomes Things, a table per class, a table or a column per property, and ERBTables and ERBFields for what the structure cannot say (labels, symmetry, inverse, chain and disjoint axioms).",
   "tags": [
     "oss",
     "ontology"

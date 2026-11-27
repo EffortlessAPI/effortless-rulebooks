@@ -63,6 +63,16 @@ read at run time: a change to its model tables is a change to the form, so run `
 (the whole corpus round-trips identically, and South Park goes to concept tables and back). A formula outside the five rules
 rides along in `Properties.Formula`; candidate rows stay the job of `app/lib/candidates.mjs`.
 
+**An ontology's own concept rulebook holds concepts, in tables, and nothing in a blob (2026-11-27).** South Park extracts to
+`Things`, a table per class, a table per many-valued property and a column per one-valued property. What a table IS is read from
+its fields (`Thing` + `IsAsserted` is a class; `Subject` + `Object` or `Value` is a property; the tables those link to are its
+domain and range). What structure cannot say (labels, symmetry, the inverse, chain and disjoint axioms) is rows of `ERBTables`
+and `ERBFields`. The page's own tables and its record of each fact stay in the ontology: `inject` lays a concept rulebook over a
+**base** ontology (`--base`, default the South Park rulebook), switching facts on and off against the base's computed
+`IsInEffect` and taking its computed next numbers, so the base must be built. `edit_concepts` is the one place a class's or a
+property's table is made; `view` and `edit` on the command line are what the South Park app's Concepts page calls. Never put
+vocabulary back into `__meta__`: the one thing it says is `ontology-form = concepts-of-an-ontology`.
+
 ## Consistency governance
 
 Inconsistency is pruned by working `ConsistencyFindings` to zero — not by editing prose. When you discover a repeatable trap, the fix goes to a place the whole team sees: a rule row + finding rows in the root rulebook, a guard in code, or this file. When you fix a finding, mark its `Status` `fixed` (never delete witnessed rows); when a rule was wrong, correct the rule and record that as a `cr-15` finding. Re-run `python3 scripts/scan-project-slots.py effortless-rulebook/effortless-rulebook.json .` after moving or creating projects; it refreshes `ProjectSlotWitnesses`, preserves finding history, and exits nonzero on malformed or ambiguous project artifacts.
