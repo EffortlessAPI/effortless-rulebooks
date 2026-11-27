@@ -402,28 +402,41 @@ DL_DOCUMENT = 'ontology-with-individuals.ttl'
 ROBOT_TIMEOUT = int(os.environ.get('ROBOT_TIMEOUT', '3600'))
 
 
-class _RobotOutOfTime(Exception):
-    pass
+# ROBOT's Java settings, handed to its container as they are: the heap for HermiT (ROBOT_JAVA_ARGS=-Xmx6G). Without
+# it Java takes a quarter of the memory Docker has.
+ROBOT_JAVA_ARGS = os.environ.get('ROBOT_JAVA_ARGS', '')
+
+
+class _RobotCouldNotFinish(Exception):
+    """ROBOT ran out of time or of memory: the check did not finish. Never a pass, and not a failed ontology."""
 
 
 def _robot(src_dir: Path, out_dir: Path, *args: str):
     """One ROBOT command. The build is mounted read-only at /work and ROBOT writes under /out, so nothing of
     ROBOT's is ever left in the build's folder (an example's committed effortless-owl/src/)."""
     name = f'owl-dl-check-{os.getpid()}-{len(list(Path(out_dir).iterdir()))}-{int(time.time() * 1000) % 100000}'
+    java = ['-e', f'ROBOT_JAVA_ARGS={ROBOT_JAVA_ARGS}'] if ROBOT_JAVA_ARGS else []
     try:
-        return subprocess.run(['docker', 'run', '--rm', '--name', name,
+        done = subprocess.run(['docker', 'run', '--rm', '--name', name, *java,
                                '-v', f'{src_dir.resolve()}:/work:ro', '-v', f'{Path(out_dir).resolve()}:/out',
                                ROBOT_IMAGE, 'robot', *args],
                               capture_output=True, text=True, timeout=ROBOT_TIMEOUT)
     except subprocess.TimeoutExpired:
         # Stopping the docker command does not stop the container it started.
         subprocess.run(['docker', 'kill', name], capture_output=True)
-        raise _RobotOutOfTime(f"{args[0]} did not finish within {ROBOT_TIMEOUT} seconds "
-                              f"(ROBOT_TIMEOUT sets the limit, in seconds)")
+        raise _RobotCouldNotFinish(f"{args[0]} did not finish within {ROBOT_TIMEOUT} seconds "
+                                   f"(ROBOT_TIMEOUT sets the limit, in seconds)")
+    # 137 is the container killed for the memory Docker gives it; the other is Java's own heap running out.
+    if done.returncode == 137 or 'OutOfMemoryError' in done.stdout + done.stderr:
+        raise _RobotCouldNotFinish(f"{args[0]} ran out of memory"
+                                   f"{' with ROBOT_JAVA_ARGS=' + ROBOT_JAVA_ARGS if ROBOT_JAVA_ARGS else ''} "
+                                   f"(ROBOT_JAVA_ARGS=-Xmx<n>G gives HermiT more heap, up to what Docker has)")
+    return done
 
 
-def _dl_verdict(src_dir: Path, work: Path) -> dict:
-    """What ROBOT and HermiT say about the build's DL document; ROBOT's own files go to `work`."""
+def _dl_verdict(src_dir: Path, work: Path, known: dict) -> dict:
+    """What ROBOT and HermiT say about the build's DL document; ROBOT's own files go to `work`. What each finished
+    step found is also put in `known`, so a later step that cannot finish does not lose it."""
     _robot(src_dir, work, 'validate-profile', '--input', f'/work/{DL_DOCUMENT}', '--profile', 'DL',
            '--output', '/out/profile-DL.txt')
     profile = work / 'profile-DL.txt'
@@ -434,14 +447,18 @@ def _dl_verdict(src_dir: Path, work: Path) -> dict:
     violations = profile_lines[1:] if profile_lines and 'NOT in profile' in profile_lines[0] else []
     verdict = {'ran': True, 'reasoner': 'HermiT (ROBOT)', 'owl2dl': not violations,
                'dlViolations': violations[:20], 'consistent': None, 'unsatisfiable': []}
+    known['owl2dl'] = not violations
     if violations:
         return verdict
     reasoned = _robot(src_dir, work, 'reason', '--reasoner', 'hermit', '--input', f'/work/{DL_DOCUMENT}',
                       '--output', '/out/inferred-hermit.ttl')
     log = reasoned.stdout + reasoned.stderr
-    verdict['consistent'] = 'inconsistent' not in log.lower()
     verdict['unsatisfiable'] = sorted(set(re.findall(r'unsatisfiable:\s*(\S+)', log)))
-    if not verdict['consistent']:
+    if 'inconsistent' in log.lower():
+        verdict['consistent'] = False
+    elif reasoned.returncode == 0 or verdict['unsatisfiable']:
+        verdict['consistent'] = True          # HermiT finished; anything else leaves it unknown
+    if verdict['consistent'] is False:
         _robot(src_dir, work, 'explain', '--reasoner', 'hermit', '--input', f'/work/{DL_DOCUMENT}',
                '-M', 'inconsistency', '--explanation', '/out/inconsistency.md')
         explanation = work / 'inconsistency.md'
@@ -486,12 +503,15 @@ def dl_check(src_dir: Path, report_dir: Path) -> None:
         record({'ran': False, 'reason': why_not})
         return
 
+    known = {}
     try:
         with tempfile.TemporaryDirectory(prefix='owl-dl-check-') as work:
-            verdict = _dl_verdict(src_dir, Path(work))
-    except _RobotOutOfTime as out_of_time:
-        print(f"   NOT RUN: {out_of_time}")
-        record({'ran': False, 'reason': str(out_of_time)})
+            verdict = _dl_verdict(src_dir, Path(work), known)
+    except _RobotCouldNotFinish as could_not:
+        if known.get('owl2dl'):
+            print("   OWL 2 DL: yes")
+        print(f"   HermiT NOT RUN: {could_not}")
+        record({'ran': False, 'reason': str(could_not), **known})
         return
     if verdict.get('error'):
         record(verdict)
@@ -502,7 +522,7 @@ def dl_check(src_dir: Path, report_dir: Path) -> None:
         print(f"   NOT OWL 2 DL: {len(verdict['dlViolations'])} violation(s) shown. First: {verdict['dlViolations'][0][:300]}")
         sys.exit(1)
     record(verdict)
-    if not verdict['consistent']:
+    if verdict['consistent'] is False:
         print("   INCONSISTENT under HermiT:")
         print('   ' + '\n   '.join(verdict['explanation'].splitlines()[:14]))
         sys.exit(1)

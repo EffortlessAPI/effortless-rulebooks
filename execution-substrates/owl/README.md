@@ -154,10 +154,14 @@ To ensure deterministic output:
 > through ROBOT and HermiT in Docker and writes the verdict to
 > `testing/<substrate>/dl-check.json`. ROBOT's own files (its profile report,
 > the inferred ontology) go to a temporary folder, never into the build's
-> `src/`. One ROBOT run may take `ROBOT_TIMEOUT` seconds (default 3600): HermiT
-> over tens of thousands of rows can need hours, so set it as long as the run is
-> worth. A run that does not finish, like a machine without Docker, is reported
-> as NOT RUN with the reason, never as passed.
+> `src/`. One ROBOT run may take `ROBOT_TIMEOUT` seconds (default 3600), and
+> `ROBOT_JAVA_ARGS=-Xmx6G` gives HermiT more heap than the quarter of Docker's
+> memory Java takes by itself: HermiT over tens of thousands of rows can need
+> hours and many gigabytes, so set both as large as the run is worth. A run
+> that runs out of time or of memory, like a machine without Docker, is
+> reported as NOT RUN with the reason (and what did finish, such as "is OWL 2
+> DL", is kept). It is never reported as passed, never as consistent, and it
+> does not fail the substrate's run: the rules' answers are still graded.
 
 ## Implementation Plan
 

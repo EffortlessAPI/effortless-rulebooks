@@ -157,6 +157,10 @@ def host(path):
     return path
 if os.environ.get('FAKE_DOCKER_HANGS'):
     time.sleep(30)
+open(os.environ['FAKE_DOCKER_LOG'], 'a').write('run ' + ' '.join(args) + '\\n')
+if os.environ.get('FAKE_DOCKER_OUT_OF_MEMORY') and 'reason' in args:
+    sys.stderr.write('Exception in thread "main" java.lang.OutOfMemoryError: Java heap space\\n\\tat org.semanticweb.HermiT.tableau.Tableau.isSatisfiable(Tableau.java:410)\\n')
+    sys.exit(1)
 out = host(args[args.index('--output') + 1])
 open(out, 'w').write('OWL 2 DL Profile Report: [Ontology and imports closure in profile]\n')
 """
@@ -202,6 +206,21 @@ def test_a_reasoner_that_does_not_finish_in_time_is_said_and_is_not_a_pass():
         assert 'NOT RUN' in proc.stdout, proc.stdout[-400:]
         assert left == ['ontology-with-individuals.ttl', 'ontology.owl'], left
         assert 'kill' in (Path(tmp) / 'docker.log').read_text(encoding='utf-8'), "the container it started was left running"
+
+
+def test_a_reasoner_that_runs_out_of_memory_is_said_and_nothing_is_claimed_for_it():
+    # HermiT over the largest example (34,000 rows) ran out of Java heap. The run stopped as if the ontology had
+    # failed, no grade was recorded for answers that were all written, and the verdict said "consistent": true.
+    with tempfile.TemporaryDirectory() as tmp:
+        proc, verdict, left = _reasoner_step(tmp, FAKE_DOCKER_OUT_OF_MEMORY='1', ROBOT_JAVA_ARGS='-Xmx6G')
+        assert proc.returncode == 0, "a reasoner out of memory is not a failed ontology:\n" + proc.stdout[-600:] + proc.stderr[-400:]
+        assert verdict['ran'] is False and 'memory' in verdict['reason'] and 'ROBOT_JAVA_ARGS' in verdict['reason'], verdict
+        assert verdict.get('consistent') is None, f"HermiT never finished, and the verdict says consistent: {verdict.get('consistent')}"
+        assert verdict.get('owl2dl') is True, "the profile check did finish, and what it found is kept"
+        assert 'NOT RUN' in proc.stdout, proc.stdout[-400:]
+        runs = (Path(tmp) / 'docker.log').read_text(encoding='utf-8')
+        assert '-e ROBOT_JAVA_ARGS=-Xmx6G' in runs, "the heap asked for was not handed to ROBOT:\n" + runs[:400]
+        assert left == ['ontology-with-individuals.ttl', 'ontology.owl'], left
 
 
 if __name__ == '__main__':
