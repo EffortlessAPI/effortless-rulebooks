@@ -3974,6 +3974,30 @@
     "is_answered": true
   },
   {
+    "role_question_id": "q18-plant-safety-officer-breached-never-failed",
+    "asking_role": "plant-safety-officer",
+    "witness_loop": "loop-18",
+    "question_text": "Has the book recorded a condition failing that one of my controls exists to enforce, while that control's own record still says it has never failed?",
+    "why_it_matters": "A failed check of 'zero energy has been verified' is the zero-energy control failing. If the check sits in the execution record and the control still reads as never having failed, the two halves of the book have never met, and I am the person who has to be told.",
+    "answerable_before": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleQuestion",
+    "name": "plant-safety-officer: Has the book recorded a condition failing that one of my con",
+    "predicate_count": 5.0,
+    "is_answered": true
+  },
+  {
+    "role_question_id": "q18-plant-safety-officer-passed-never-evaluated",
+    "asking_role": "plant-safety-officer",
+    "witness_loop": "loop-18",
+    "question_text": "Of the controls I answer for, which carry PASS marks on their steps and have never once been evaluated themselves?",
+    "why_it_matters": "A PASS on the step tells me somebody finished it. It does not tell me the control held. If a control has only ever been passed and never asked, its clean record is not evidence of anything, and I need to see the two numbers side by side to know which of mine that is.",
+    "answerable_before": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleQuestion",
+    "name": "plant-safety-officer: Of the controls I answer for, which carry PASS marks on thei",
+    "predicate_count": 3.0,
+    "is_answered": true
+  },
+  {
     "role_question_id": "q2-authority-boundary-rests-on-expired-claim",
     "asking_role": "knowledge-authority",
     "witness_loop": "loop-02",
@@ -4556,6 +4580,30 @@
     "witnessed_answer": "RoleAssignments.ExceedsTolerableErrorRate=0/36; RoleAssignments.HasAnyBoundaryViolation=0/36; RoleAssignments.HasDeclaredSuspensionCondition=0/36; RoleAssignments.HasUngroundedGoverningBoundary=0/36; RoleAssignments.IsOperatingUnderMetSuspensionCondition=0/36; RoleAssignments.SuspensionConditionMet=0/36",
     "name": "variance-review-agent: Every witness in this model detects something after it has h",
     "predicate_count": 9,
+    "is_answered": true
+  },
+  {
+    "role_question_id": "q20-maintenance-technician-no-then-done",
+    "asking_role": "maintenance-technician",
+    "witness_loop": "loop-20",
+    "question_text": "When a check on the step I am on says no, does the register stop offering me Done?",
+    "why_it_matters": "On July ninth I answered the zero-energy check with no at one in the morning and the register let me mark the maintenance step done anyway. If the only thing that stops me is my own judgement at two in the morning, the checklist is a notebook. When I say no, the only way forward should be the way out.",
+    "answerable_before": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleQuestion",
+    "name": "maintenance-technician: When a check on the step I am on says no, does the register ",
+    "predicate_count": 1.0,
+    "is_answered": true
+  },
+  {
+    "role_question_id": "q20-plant-safety-officer-scored-breaches",
+    "asking_role": "plant-safety-officer",
+    "witness_loop": "loop-20",
+    "question_text": "Which of my rules has the register itself counted as broken, without waiting for me to look?",
+    "why_it_matters": "A rule I answer for is only ever marked broken when I evaluate a run against it, and I had never evaluated one. Once the book knows which column computes a rule, a failed check of the condition that enforces it is a breach the register can count the minute it is recorded, and it belongs on my desk that minute, not in a card I read on Monday.",
+    "answerable_before": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleQuestion",
+    "name": "plant-safety-officer: Which of my rules has the register itself counted as broken,",
+    "predicate_count": 5.0,
     "is_answered": true
   },
   {

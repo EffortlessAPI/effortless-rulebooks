@@ -1,0 +1,110 @@
+[
+  {
+    "procedure_resource_id": "pr-close-source",
+    "relation": "wasExtractedFrom",
+    "name": "close-v1.1.0 / res-close-sop-pdf",
+    "procedure_version": "close-v1.1.0",
+    "resource": "res-close-sop-pdf",
+    "relation_iri": "https://w3id.org/pko#wasExtractedFrom",
+    "resource_modified_at": "2026-04-01 14:00:00+00:00"
+  },
+  {
+    "procedure_resource_id": "pr-close-api",
+    "relation": "references",
+    "name": "close-v1.1.0 / res-erp-api",
+    "procedure_version": "close-v1.1.0",
+    "resource": "res-erp-api",
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2026-07-19 13:00:00+00:00"
+  },
+  {
+    "procedure_resource_id": "pr-close-check",
+    "relation": "references",
+    "name": "close-v1.1.0 / res-close-checklist",
+    "procedure_version": "close-v1.1.0",
+    "resource": "res-close-checklist",
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2026-07-02 20:00:00+00:00"
+  },
+  {
+    "procedure_resource_id": "pr-policy-source",
+    "relation": "wasExtractedFrom",
+    "name": "policy-v1.0.0 / res-policy-source",
+    "procedure_version": "policy-v1.0.0",
+    "resource": "res-policy-source",
+    "relation_iri": "https://w3id.org/pko#wasExtractedFrom",
+    "resource_modified_at": "2026-07-18 21:30:00+00:00"
+  },
+  {
+    "procedure_resource_id": "pr-policy-consent",
+    "relation": "references",
+    "name": "policy-v1.0.0 / res-consent-registry",
+    "procedure_version": "policy-v1.0.0",
+    "resource": "res-consent-registry",
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2026-07-19 16:45:00+00:00"
+  },
+  {
+    "procedure_resource_id": "pr-policy-email",
+    "relation": "references",
+    "name": "policy-v1.0.0 / res-email-template",
+    "procedure_version": "policy-v1.0.0",
+    "resource": "res-email-template",
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2026-07-18 21:30:00+00:00"
+  },
+  {
+    "procedure_resource_id": "pr-policy-sms",
+    "relation": "references",
+    "name": "policy-v1.0.0 / res-sms-template",
+    "procedure_version": "policy-v1.0.0",
+    "resource": "res-sms-template",
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2026-07-18 21:30:00+00:00"
+  },
+  {
+    "procedure_resource_id": "pr-policy-ticket",
+    "relation": "references",
+    "name": "policy-v1.0.0 / res-change-ticket",
+    "procedure_version": "policy-v1.0.0",
+    "resource": "res-change-ticket",
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2026-07-19 15:30:00+00:00"
+  },
+  {
+    "procedure_resource_id": "pr-loto2-sop",
+    "relation": "wasExtractedFrom",
+    "name": "loto-v2.0.0 / res-loto-sop-2019",
+    "procedure_version": "loto-v2.0.0",
+    "resource": "res-loto-sop-2019",
+    "relation_iri": "https://w3id.org/pko#wasExtractedFrom",
+    "resource_modified_at": "2019-03-01 14:00:00+00:00"
+  },
+  {
+    "procedure_resource_id": "pr-loto2-spec",
+    "relation": "references",
+    "name": "loto-v2.0.0 / res-loto-v2-spec",
+    "procedure_version": "loto-v2.0.0",
+    "resource": "res-loto-v2-spec",
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2026-05-20 14:00:00+00:00"
+  },
+  {
+    "procedure_resource_id": "pr-deploy-runbook",
+    "relation": "wasExtractedFrom",
+    "name": "deploy-v3.2.0 / res-deploy-runbook",
+    "procedure_version": "deploy-v3.2.0",
+    "resource": "res-deploy-runbook",
+    "relation_iri": "https://w3id.org/pko#wasExtractedFrom",
+    "resource_modified_at": "2026-01-02 14:00:00+00:00"
+  },
+  {
+    "procedure_resource_id": "pr-press-pdf",
+    "relation": "references",
+    "name": "press-changeover-v1.0.0 / res-press-changeover-pdf",
+    "procedure_version": "press-changeover-v1.0.0",
+    "resource": "res-press-changeover-pdf",
+    "relation_iri": "http://purl.org/dc/terms/references",
+    "resource_modified_at": "2024-06-01 14:00:00+00:00"
+  }
+]

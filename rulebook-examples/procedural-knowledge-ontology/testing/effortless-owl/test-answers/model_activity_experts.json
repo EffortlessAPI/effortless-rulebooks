@@ -1,0 +1,130 @@
+[
+  {
+    "model_activity_expert_id": "mae-loto-requirementsspecification",
+    "lot_activity": "RequirementsSpecification",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-lockout-tagout RequirementsSpecification tomas-reyes",
+    "governed_model": "gm-lockout-tagout",
+    "expert": "tomas-reyes"
+  },
+  {
+    "model_activity_expert_id": "mae-loto-implementation",
+    "lot_activity": "Implementation",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-lockout-tagout Implementation tomas-reyes",
+    "governed_model": "gm-lockout-tagout",
+    "expert": "tomas-reyes"
+  },
+  {
+    "model_activity_expert_id": "mae-loto-publication",
+    "lot_activity": "Publication",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-lockout-tagout Publication tomas-reyes",
+    "governed_model": "gm-lockout-tagout",
+    "expert": "tomas-reyes"
+  },
+  {
+    "model_activity_expert_id": "mae-loto-maintenance",
+    "lot_activity": "Maintenance",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-lockout-tagout Maintenance tomas-reyes",
+    "governed_model": "gm-lockout-tagout",
+    "expert": "tomas-reyes"
+  },
+  {
+    "model_activity_expert_id": "mae-pko-requirementsspecification",
+    "lot_activity": "RequirementsSpecification",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-pko-rulebook RequirementsSpecification devon-okafor",
+    "governed_model": "gm-pko-rulebook",
+    "expert": "devon-okafor"
+  },
+  {
+    "model_activity_expert_id": "mae-pko-implementation",
+    "lot_activity": "Implementation",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-pko-rulebook Implementation devon-okafor",
+    "governed_model": "gm-pko-rulebook",
+    "expert": "devon-okafor"
+  },
+  {
+    "model_activity_expert_id": "mae-pko-publication",
+    "lot_activity": "Publication",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-pko-rulebook Publication devon-okafor",
+    "governed_model": "gm-pko-rulebook",
+    "expert": "devon-okafor"
+  },
+  {
+    "model_activity_expert_id": "mae-pko-maintenance",
+    "lot_activity": "Maintenance",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-pko-rulebook Maintenance devon-okafor",
+    "governed_model": "gm-pko-rulebook",
+    "expert": "devon-okafor"
+  },
+  {
+    "model_activity_expert_id": "mae-policy-requirementsspecification",
+    "lot_activity": "RequirementsSpecification",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-workforce-policy RequirementsSpecification noah-williams",
+    "governed_model": "gm-workforce-policy",
+    "expert": "noah-williams"
+  },
+  {
+    "model_activity_expert_id": "mae-policy-implementation",
+    "lot_activity": "Implementation",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-workforce-policy Implementation noah-williams",
+    "governed_model": "gm-workforce-policy",
+    "expert": "noah-williams"
+  },
+  {
+    "model_activity_expert_id": "mae-policy-publication",
+    "lot_activity": "Publication",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-workforce-policy Publication noah-williams",
+    "governed_model": "gm-workforce-policy",
+    "expert": "noah-williams"
+  },
+  {
+    "model_activity_expert_id": "mae-policy-maintenance",
+    "lot_activity": "Maintenance",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-workforce-policy Maintenance noah-williams",
+    "governed_model": "gm-workforce-policy",
+    "expert": "noah-williams"
+  },
+  {
+    "model_activity_expert_id": "mae-close-requirementsspecification",
+    "lot_activity": "RequirementsSpecification",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-quarter-end-close RequirementsSpecification maria-chen",
+    "governed_model": "gm-quarter-end-close",
+    "expert": "maria-chen"
+  },
+  {
+    "model_activity_expert_id": "mae-close-implementation",
+    "lot_activity": "Implementation",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-quarter-end-close Implementation maria-chen",
+    "governed_model": "gm-quarter-end-close",
+    "expert": "maria-chen"
+  },
+  {
+    "model_activity_expert_id": "mae-close-publication",
+    "lot_activity": "Publication",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-quarter-end-close Publication maria-chen",
+    "governed_model": "gm-quarter-end-close",
+    "expert": "maria-chen"
+  },
+  {
+    "model_activity_expert_id": "mae-deploy-implementation",
+    "lot_activity": "Implementation",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ModelActivityExpert",
+    "name": "gm-production-deployment Implementation grace-holloway",
+    "governed_model": "gm-production-deployment",
+    "expert": "grace-holloway"
+  }
+]

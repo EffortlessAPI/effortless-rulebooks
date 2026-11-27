@@ -905,6 +905,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsBool(F.Memo(this, "IsBlockedByObservedCue", () => F.Cmp(F.Of(this.IncompleteCueObservationCount), ">", F.I(0)))); set { }
         }
 
+        // Formula IsBlockedByFailedPrecondition (rulebook: ={{FailedPreconditionCount}} > 0)
+        [NotMapped]
+        public bool? IsBlockedByFailedPrecondition
+        {
+            get => F.AsBool(F.Memo(this, "IsBlockedByFailedPrecondition", () => F.Cmp(F.Of(this.FailedPreconditionCount), ">", F.I(0)))); set { }
+        }
+
 
         public string? ProcedureExecution { get; set; }
         public string? Step { get; set; }

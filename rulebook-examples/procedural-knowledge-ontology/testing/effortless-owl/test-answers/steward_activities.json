@@ -1,0 +1,114 @@
+[
+  {
+    "steward_activity_id": "sa-pko01-drift-0301",
+    "duty_kind": "DriftWatch",
+    "performed_at": "2026-03-01 14:00:00+00:00",
+    "subject": "Close and policy procedures against the register",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StewardActivity",
+    "name": "charter-pko-2026-01 DriftWatch",
+    "model_charter": "charter-pko-2026-01",
+    "performed_by_agent": "elena-garcia",
+    "activity_model": "gm-pko-rulebook"
+  },
+  {
+    "steward_activity_id": "sa-pko01-suite-0419",
+    "duty_kind": "ValidationSuiteUpdate",
+    "performed_at": "2026-04-19 14:00:00+00:00",
+    "subject": "Tests for the lockout class model",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StewardActivity",
+    "name": "charter-pko-2026-01 ValidationSuiteUpdate",
+    "model_charter": "charter-pko-2026-01",
+    "performed_by_agent": "elena-garcia",
+    "release": "pko-release-0.9.0",
+    "activity_model": "gm-pko-rulebook"
+  },
+  {
+    "steward_activity_id": "sa-pko05-drift-0615",
+    "duty_kind": "DriftWatch",
+    "performed_at": "2026-06-15 14:00:00+00:00",
+    "subject": "Staleness and mining drift across families",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StewardActivity",
+    "name": "charter-pko-2026-05 DriftWatch",
+    "model_charter": "charter-pko-2026-05",
+    "performed_by_agent": "sam-adeyemi",
+    "activity_model": "gm-pko-rulebook"
+  },
+  {
+    "steward_activity_id": "sa-pko05-docs-0620",
+    "duty_kind": "DocumentationUpdate",
+    "performed_at": "2026-06-20 14:00:00+00:00",
+    "subject": "README for 0.10.0",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StewardActivity",
+    "name": "charter-pko-2026-05 DocumentationUpdate",
+    "model_charter": "charter-pko-2026-05",
+    "performed_by_agent": "sam-adeyemi",
+    "activity_model": "gm-pko-rulebook"
+  },
+  {
+    "steward_activity_id": "sa-pko05-deps-0701",
+    "duty_kind": "DependencyTracking",
+    "performed_at": "2026-07-01 14:00:00+00:00",
+    "subject": "PROV-O errata checked against mappings",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StewardActivity",
+    "name": "charter-pko-2026-05 DependencyTracking",
+    "model_charter": "charter-pko-2026-05",
+    "performed_by_agent": "sam-adeyemi",
+    "activity_model": "gm-pko-rulebook"
+  },
+  {
+    "steward_activity_id": "sa-pko05-question-0716",
+    "duty_kind": "UserQuestion",
+    "performed_at": "2026-07-16 14:00:00+00:00",
+    "subject": "Answered the verbal-approval question",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StewardActivity",
+    "name": "charter-pko-2026-05 UserQuestion",
+    "model_charter": "charter-pko-2026-05",
+    "performed_by_agent": "sam-adeyemi",
+    "activity_model": "gm-pko-rulebook"
+  },
+  {
+    "steward_activity_id": "sa-pko05-suite-0718",
+    "duty_kind": "ValidationSuiteUpdate",
+    "performed_at": "2026-07-18 14:00:00+00:00",
+    "subject": "Suite updated for 1.0.0",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StewardActivity",
+    "name": "charter-pko-2026-05 ValidationSuiteUpdate",
+    "model_charter": "charter-pko-2026-05",
+    "performed_by_agent": "sam-adeyemi",
+    "release": "pko-release-1.0.0",
+    "activity_model": "gm-pko-rulebook"
+  },
+  {
+    "steward_activity_id": "sa-loto07-drift-0710",
+    "duty_kind": "DriftWatch",
+    "performed_at": "2026-07-10 14:00:00+00:00",
+    "subject": "Night-shift execution against loto-v2.0.0",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StewardActivity",
+    "name": "charter-loto-2026-07 DriftWatch",
+    "model_charter": "charter-loto-2026-07",
+    "performed_by_agent": "sam-adeyemi",
+    "activity_model": "gm-lockout-tagout"
+  },
+  {
+    "steward_activity_id": "sa-close-drift-0416",
+    "duty_kind": "DriftWatch",
+    "performed_at": "2026-04-16 14:00:00+00:00",
+    "subject": "Close controls against Q1 execution",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StewardActivity",
+    "name": "charter-close-2026-04 DriftWatch",
+    "model_charter": "charter-close-2026-04",
+    "performed_by_agent": "elena-garcia",
+    "activity_model": "gm-quarter-end-close"
+  },
+  {
+    "steward_activity_id": "sa-policy-drift-0710",
+    "duty_kind": "DriftWatch",
+    "performed_at": "2026-07-10 14:00:00+00:00",
+    "subject": "Channel rules against provider behaviour",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StewardActivity",
+    "name": "charter-policy-2026-06 DriftWatch",
+    "model_charter": "charter-policy-2026-06",
+    "performed_by_agent": "elena-garcia",
+    "activity_model": "gm-workforce-policy"
+  }
+]

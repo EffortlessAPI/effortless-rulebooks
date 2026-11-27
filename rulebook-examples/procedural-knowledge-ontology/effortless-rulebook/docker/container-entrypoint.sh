@@ -77,7 +77,33 @@ RULEBOOK_DIR="/app/effortless-rulebook"
 # means it was clean. Copied to BOOT_ERRORS_FILE so boot-server.js can serve it
 # from a fixed path without knowing where effortless-root actually resolved to.
 ERRORS_JSON_PATH="/app/effortless-root/errors.json"
+# Where everything `effortless build` generates lives (named for the functions that
+# are run on their own by scripts/test-rulebook-save.js; older code spells it out).
+EDITOR_ROOT="/app/effortless-root"
+# refresh_rows_files (a Save rebuilding the Explainer DAG's files): the folder it
+# builds them in before putting the changed ones in place, and the tool's output,
+# in its own file and never the build log. See that function.
+ROWS_FILES_DIR="/tmp/rows-files"
+ROWS_FILES_LOG_FILE="/tmp/rows-files.log"
+# The project's own files (build_project_files, further down). PROJECT_DIR is the
+# project's root as this container sees it (the folder that holds the project's own
+# effortless.json); whoever runs this container mounts it there or sets PROJECT_DIR.
+# The app's folder inside it is named by PROJECT_APP_DIR, or by the one line of
+# PROJECT_APP_DIR_FILE, written by whoever starts the app. Neither given, or no
+# project there: nothing is built and nothing is said.
+PROJECT_DIR="${PROJECT_DIR:-/app/project}"
+PROJECT_APP_DIR_FILE="/tmp/project-app-dir"
+PROJECT_FILES_DIR="/tmp/project-files"
+PROJECT_FILES_LOG_FILE="/tmp/project-files.log"
+PROJECT_FILES_BUILT_FILE="/tmp/project-files-built-from"
+PROJECT_FILES_POLL_SECS="${PROJECT_FILES_POLL_SECS:-3}"
 BOOT_ERRORS_FILE="/tmp/build-errors.json"
+# Why the app could not START after a build that itself succeeded (the portal's
+# dev server never answered, or it was never generated): a headline line, then
+# the tail of that process's own log. boot-server.js puts it at the top of the
+# boot page and in GET /__boot/status, so the reason is on screen instead of
+# only in /tmp/ui.log inside the container. Present means the last start failed.
+BOOT_FAILURE_FILE="/tmp/boot-failure.txt"
 # Component-level health snapshot written after every build (see
 # write_status_json below), served as GET /__boot/status. This is what makes
 # "which parts of this container are alive?" answerable when most of them aren't.
@@ -142,6 +168,7 @@ BOOT_REBUILD_PROMPT_FILE="$REBUILD_PROMPT_FILE" \
 BOOT_REBUILD_PROMPT_CONFIRM_FILE="$REBUILD_PROMPT_CONFIRM_FILE" \
 BOOT_REBUILD_PROMPT_DISMISS_FILE="$REBUILD_PROMPT_DISMISS_FILE" \
 BOOT_ERRORS_FILE="$BOOT_ERRORS_FILE" \
+BOOT_FAILURE_FILE="$BOOT_FAILURE_FILE" \
 BOOT_STATUS_FILE="$BOOT_STATUS_FILE" \
 BOOT_PIPELINE_FILE="$BOOT_PIPELINE_FILE" \
   node /app/boot-server.js > /tmp/boot-server.log 2>&1 &
@@ -244,12 +271,25 @@ fi
 # Each migration changes only its exact prior default. Any other value is an
 # intentional user customization and is preserved.
 # Version 6: the ERB module steps (rulebook-to-rbac, the Postgres policy
-#            compiler, the progress report) are added, disabled; the portal's
+#            compiler; once also the progress report) are added, disabled; the portal's
 #            Modules page switches them on with their module.
 # Version 7: the Explainer DAG step bakes RuleSpeak® in every registered
 #            language (-p languages=all), so the Provenance tab's hover cards
 #            and field pages follow the portal's language instead of English.
-PIPELINE_DEFAULTS_VERSION=7
+# Version 8: unused. Two branches each took it (the quick build and the progress
+#            report removal); both now run below as 9 and 10, so a project that
+#            already reached 8 or 9 on either branch still gets the other one.
+# Version 9: the quick build (MERGE-NOT-LEASES.md 8.2, owner 2026-11-06): every
+#            step but the XLSX export is marked Category "QuickBuild" (where its
+#            Category is still empty); a quick rebuild runs only those.
+# Version 10: the progress report step is removed (owner, 2026-11-07: the
+#            report is dropped entirely), whatever it was set to.
+# Version 11: the TypeScript step (owner, 2026-11-22: the explainer's witness,
+#            one row's values down to ground truth): rulebook-to-typescript
+#            writes into the Explainer DAG's own folder, right after that step.
+#            Added only where no step of that name exists; one that is there,
+#            enabled or not, is the project's own and is left alone.
+PIPELINE_DEFAULTS_VERSION=11
 if ! node - "$EFFORTLESS_ROOT_TARGET/effortless.json" "$PIPELINE_DEFAULTS_VERSION" <<'NODE'
 const fs = require('fs');
 const file = process.argv[2];
@@ -377,17 +417,6 @@ if (currentVersion < targetVersion) {
       });
       console.log('[entrypoint] added the Security module build steps (disabled by default)');
     }
-    if (!byName.get('rulebooktoprogressreport')) {
-      steps.push({
-        IsSSoTTranspiler: false,
-        Name: 'rulebooktoprogressreport',
-        RelativePath: '/progress-report',
-        CommandLine: 'rulebook-to-progress-report -i ' + inputOf(postgres),
-        IsDisabled: true,
-        Description: 'Delivery module: render the Progress Report from the ERBUserStories / ERBAcceptanceCriteria / ERBBuildPhases tables, shown under the portal\'s Progress Report tab. Disabled until the Delivery module is switched on.',
-      });
-      console.log('[entrypoint] added the Delivery module build step (disabled by default)');
-    }
   }
 
   if (currentVersion < 7) {
@@ -402,6 +431,43 @@ if (currentVersion < targetVersion) {
     } else {
       console.log('[entrypoint] preserved customized Explainer DAG command while advancing defaults to v7');
     }
+  }
+
+  if (currentVersion < 9) {
+    const quick = ['rulebooktopostgres', 'chmodinitdb', 'initdb', 'rulebooktonodepostgresapi', 'rulebooktoviteadminportal', 'rulebooktoexplainerdag', 'rulebooktorulespeak'];
+    for (const name of quick) {
+      const s = byName.get(name);
+      if (s && !s.Category) s.Category = 'QuickBuild';
+    }
+    console.log('[entrypoint] marked the quick-build steps (Category QuickBuild): everything but the XLSX export');
+  }
+
+  if (currentVersion < 10) {
+    // The progress report is dropped entirely (owner, 2026-11-07).
+    const at = steps.findIndex((s) => s && s.Name === 'rulebooktoprogressreport');
+    if (at >= 0) {
+      steps.splice(at, 1);
+      console.log('[entrypoint] removed the progress report build step');
+    }
+  }
+
+  if (currentVersion < 11 && !byName.has('rulebooktotypescript')) {
+    // The rulebook's real file name is in every step's -i (it was substituted when
+    // this file was seeded); the new step reads the same file, four folders up.
+    const named = steps.map((s) => /effortless-rulebook\/([^\s/]+)/.exec(String((s && s.CommandLine) || ''))).find(Boolean);
+    const rulebookFile = named ? named[1] : 'effortless-rulebook.json';
+    const step = {
+      IsSSoTTranspiler: false,
+      Name: 'rulebooktotypescript',
+      RelativePath: '/admin-portal/public/rulebook-explainer-dag/typescript',
+      CommandLine: 'rulebook-to-typescript -i ../../../../effortless-rulebook/' + rulebookFile,
+      IsDisabled: false,
+      Category: 'QuickBuild',
+      Description: 'Generate the rulebook as a TypeScript program, written inside the Explainer DAG\'s folder. The explainer finds it there and uses it for the witness: one row\'s value and every value it came from, down to the stored ones.',
+    };
+    const after = steps.findIndex((s) => s && s.Name === 'rulebooktoexplainerdag');
+    steps.splice(after >= 0 ? after + 1 : steps.length, 0, step);
+    console.log('[entrypoint] added the TypeScript build step: the explainer\'s witness is computed by it');
   }
 
   if (marker) marker.Value = String(targetVersion);
@@ -419,8 +485,8 @@ fi
 
 # ERB modules: a rulebook that arrives with a module already switched on
 # (_meta.erb.modules.<name>.enabled) gets that module's build steps switched
-# on BEFORE the first build, so the very first boot compiles its policies /
-# report rather than waiting for the generated API to notice and a rebuild.
+# on BEFORE the first build, so the very first boot compiles its policies
+# rather than waiting for the generated API to notice and a rebuild.
 # Mirrors the module->steps table in the API's erb-schema.js.
 if [ -f "$RULEBOOK_PATH" ]; then
   node - "$EFFORTLESS_ROOT_TARGET/effortless.json" "$RULEBOOK_PATH" <<'NODE' || echo "[entrypoint] warning: could not reconcile ERB module build steps (continuing)"
@@ -428,7 +494,6 @@ const fs = require('fs');
 const [file, rulebookPath] = process.argv.slice(2);
 const MODULE_STEPS = {
   security: ['rulebooktorbac', 'rbactopostgrespolicies', 'rbactosqlserverpolicies'],
-  delivery: ['rulebooktoprogressreport'],
 };
 let modules = {};
 try { modules = (JSON.parse(fs.readFileSync(rulebookPath, 'utf8'))._meta || {}).erb?.modules || {}; } catch { process.exit(0); }
@@ -604,6 +669,40 @@ fi
 # worse outcome than a build step that stops and says which file would have
 # destroyed data.
 # ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+# The project's own SQL. The generated 01-05 come from the rulebook; a
+# project may add lettered files (01b-customize-schema.sql, ...) and
+# function-overrides/*.sql, which the apply script runs after them. Whoever
+# runs this container mounts the project's postgres/ folder read-only at
+# PROJECT_POSTGRES_DIR (default /app/project-postgres; Loops does). Its files
+# are copied in before every apply, and copies of files the project has since
+# removed are taken out again (.project-overlay lists what was copied). An
+# override the rulebook itself generates (ERBCustomizations) wins over a
+# project file of the same name. The data guard below checks only the
+# generated files: the project's own are its own (a role schema rebuilt with
+# DROP SCHEMA, say).
+# ------------------------------------------------------------------------
+PROJECT_SQL_DIR="${PROJECT_POSTGRES_DIR:-/app/project-postgres}"
+OVERLAY_LIST="$SCRIPT_DIR/.project-overlay"
+if [ -f "$OVERLAY_LIST" ]; then
+  while IFS= read -r copied; do [ -n "$copied" ] && rm -f "$SCRIPT_DIR/$copied"; done < "$OVERLAY_LIST"
+  rm -f "$OVERLAY_LIST"
+fi
+if [ -d "$PROJECT_SQL_DIR" ]; then
+  shopt -s nullglob
+  for f in "$PROJECT_SQL_DIR"/[0-9][0-9][a-z]-*.sql; do
+    cp "$f" "$SCRIPT_DIR/" && basename "$f" >> "$OVERLAY_LIST"
+  done
+  if [ -d "$PROJECT_SQL_DIR/function-overrides" ]; then
+    mkdir -p "$SCRIPT_DIR/function-overrides"
+    for f in "$PROJECT_SQL_DIR"/function-overrides/*.sql; do
+      [ -e "$SCRIPT_DIR/function-overrides/$(basename "$f")" ] && continue
+      cp "$f" "$SCRIPT_DIR/function-overrides/" && echo "function-overrides/$(basename "$f")" >> "$OVERLAY_LIST"
+    done
+  fi
+  [ -f "$OVERLAY_LIST" ] && echo "[db-apply] the project's own SQL: $(wc -l < "$OVERLAY_LIST") file(s) from $PROJECT_SQL_DIR"
+fi
+
 STAMP_FILE="${EFFORTLESS_EDITOR_DB_STAMP:-/tmp/rulebook-db-applied}"
 
 if [ ! -f "$STAMP_FILE" ]; then
@@ -614,6 +713,8 @@ else
   OFFENDING_FILES=""
   shopt -s nullglob
   for sql_file in "$SCRIPT_DIR"/[0-9][0-9]*-*.sql; do
+    # The project's own files (copied in above) are not checked.
+    [ -f "$OVERLAY_LIST" ] && grep -qxF "$(basename "$sql_file")" "$OVERLAY_LIST" && continue
     # Comments come off first: 00-bootstrap.sql ships an inert, commented-out
     # drop-everything block that must not trip this.
     #
@@ -630,8 +731,7 @@ else
     echo "[db-apply]   offending file(s):$OFFENDING_FILES" >&2
     echo "[db-apply] While the container is up, a rebuild is additive only. The usual cause" >&2
     echo "[db-apply] is the rulebooktopostgres step in effortless.json having lost its" >&2
-    echo "[db-apply] '-p mode=check-add' (mode=drop-all generates DROP TABLE), or a" >&2
-    echo "[db-apply] hand-written NNb-customize-*.sql that drops or deletes." >&2
+    echo "[db-apply] '-p mode=check-add' (mode=drop-all generates DROP TABLE)." >&2
     echo "[db-apply] To wipe on purpose: restart the container -- the DB is built from" >&2
     echo "[db-apply] scratch on every boot -- or set EFFORTLESS_EDITOR_ALLOW_DB_RESET=1." >&2
     exit 1
@@ -715,6 +815,16 @@ check_uncommitted_before_build() {
 # instead -- which would yank the user out of the app they are working in just
 # to ask them a question. The whole point is a toast INSIDE the running app, so
 # the app must stay up and proxied while the offer stands.
+# A rebuild request is a REQUEST, not an event (2026-11-02). Its trigger file's
+# mtime is compared with the last one handled, so a request made while this
+# loop was busy -- the rebuild offer below, or a build -- is acted on as soon as
+# the loop is free, instead of being lost because no inotifywait was listening
+# at that moment (seen live: an agent's rebuild sent during the 45-second offer
+# never ran).
+trigger_stamp() { stat -c %Y "$REBUILD_TRIGGER_FILE" 2>/dev/null || echo 0; }
+LAST_TRIGGER_STAMP=$(trigger_stamp)
+trigger_pending() { [ "$(trigger_stamp)" != "$LAST_TRIGGER_STAMP" ]; }
+
 prompt_for_rebuild() {
   local deadline
   deadline=$(( $(date +%s) + REBUILD_PROMPT_TIMEOUT_SECS ))
@@ -723,6 +833,12 @@ prompt_for_rebuild() {
   echo "[entrypoint] $(date -Iseconds) rulebook file changed on disk -- offering a rebuild (${REBUILD_PROMPT_TIMEOUT_SECS}s to answer). NOT rebuilding on its own." >> "$BUILD_LOG_FILE"
 
   while [ "$(date +%s)" -lt "$deadline" ]; do
+    if trigger_pending; then
+      LAST_TRIGGER_STAMP=$(trigger_stamp)
+      rm -f "$REBUILD_PROMPT_FILE" "$REBUILD_PROMPT_CONFIRM_FILE" "$REBUILD_PROMPT_DISMISS_FILE"
+      echo "[entrypoint] rebuild requested explicitly during the offer -- rebuilding now." >> "$BUILD_LOG_FILE"
+      return 0
+    fi
     if [ -f "$REBUILD_PROMPT_CONFIRM_FILE" ]; then
       rm -f "$REBUILD_PROMPT_FILE" "$REBUILD_PROMPT_CONFIRM_FILE" "$REBUILD_PROMPT_DISMISS_FILE"
       echo "[entrypoint] rebuild confirmed -- rebuilding now." >> "$BUILD_LOG_FILE"
@@ -852,8 +968,285 @@ unused_conflict_gate() {
   esac
 }
 
+# report_start_failure <headline> [process log]: record why the app did not
+# start -- the headline plus the last 80 lines of the process's log -- in
+# BOOT_FAILURE_FILE (shown at the top of the boot page) and in the build log.
+report_start_failure() {
+  {
+    echo "$1"
+    if [ -n "${2:-}" ]; then
+      echo ""
+      echo "---- last 80 lines of $2 ----"
+      tail -n 80 "$2" 2>/dev/null || echo "($2 is empty or missing)"
+    fi
+  } > "$BOOT_FAILURE_FILE"
+  { echo "[entrypoint] START FAILED: $(cat "$BOOT_FAILURE_FILE")"; } >> "$BUILD_LOG_FILE"
+}
+
+# One kind of build, narrowed from the project's effortless.json ($1): every step
+# the kind ($2) does not name is marked IsDisabled IN PLACE, so the caller keeps a
+# copy of the file and puts it back afterwards (the manifest itself never changes).
+#   quick      the steps marked Category "QuickBuild";
+#   data       the data load (rulebooktopostgres, chmodinitdb, initdb) and the
+#              files that hold the rulebook's rows (ROWS_FILES);
+#   explainer  those files alone: what a Save in the editor changes outside
+#              Postgres. Exit 3, the file untouched, when the project has that
+#              step switched off.
+# ROWS_FILES: the Explainer DAG bakes the whole rulebook, rows included, into
+# embedded-graph.js, and its witness ("this row's values, down to ground truth")
+# reads them there, never from Postgres. Whatever changes the rulebook's rows has
+# to build it again, or the witness goes on showing the rows of the last full
+# build beside an app that shows the new ones (reported 2026-11-23).
+narrow_manifest() {
+  node - "$1" "$2" <<'NODE'
+  const fs = require('fs');
+  const [file, mode] = process.argv.slice(2);
+  const cfg = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const DATA = ['rulebooktopostgres', 'chmodinitdb', 'initdb'];
+  const ROWS_FILES = ['rulebooktoexplainerdag'];
+  const KEEP = {
+    quick: (s) => s.Category === 'QuickBuild',
+    data: (s) => DATA.includes(s.Name) || ROWS_FILES.includes(s.Name),
+    explainer: (s) => ROWS_FILES.includes(s.Name),
+  };
+  if (!KEEP[mode]) { console.error('narrow_manifest: no such kind of build: ' + mode); process.exit(2); }
+  const steps = cfg.ProjectTranspilers || [];
+  for (const s of steps) { if (!KEEP[mode](s)) s.IsDisabled = true; }
+  if (mode === 'explainer' && !steps.some((s) => !s.IsDisabled)) process.exit(3);
+  fs.writeFileSync(file, JSON.stringify(cfg, null, 2) + '\n');
+NODE
+}
+
+# A Save in the editor (or an auto-save) merges the rows it changed into the
+# rulebook file. Postgres already has them, so nothing is stopped and nothing is
+# rebuilt -- except the files that are baked FROM THAT FILE and hold its rows
+# (narrow_manifest's ROWS_FILES: the Explainer DAG). They are built again here,
+# with the API and the portal left running; a page that is already open asks for
+# the newer build by itself (the explainer's stamp.json).
+# Until 2026-11-23 they were not: a value changed in the editor showed in the app
+# at once, and the popup over it went on witnessing the old one until the next
+# full rebuild.
+#
+# This is NOT a build, and it does not run in the project's folder. The step runs
+# in a folder of its own (ROWS_FILES_DIR: a copy of effortless.json narrowed to
+# that step, beside a link to the rulebook), and only the files that came out
+# DIFFERENT are put in place, each in one move. So:
+#   - the project's effortless.json, errors.json (which goes on describing the
+#     last build) and boot state are never touched;
+#   - the files that did not change are not rewritten. The CLI deletes and writes
+#     every file of a step each time it runs, the explainer's .html pages too, and
+#     the portal's dev server reloads the editor's page for any .html written under
+#     its public folder: built in place, every Save reloaded the editor;
+#   - the tool's output goes to its own file. The boot page reads step banners in
+#     the build log as a build in progress; the build log gets one line.
+#
+# Nothing is watching the rulebook while this runs, so the file is compared before
+# and after. Changed again by the editor (its marker moved): built again. Changed
+# by anyone else: exit 1, and the caller offers a rebuild as for any outside
+# change. One Save raises more than one file event; the second finds the files
+# already built from this rulebook and does nothing.
+refresh_rows_files() {
+  local before after marker_before narrowed built file target pass=0
+  while :; do
+    pass=$((pass + 1))
+    before=$(cksum "$RULEBOOK_PATH" 2>/dev/null)
+    marker_before=$(cat "$SELF_WRITE_MARKER_FILE" 2>/dev/null)
+    if [ -n "$before" ] && [ "$before" = "${ROWS_FILES_BUILT_FROM:-}" ]; then
+      return 0
+    fi
+    rm -rf "$ROWS_FILES_DIR"
+    mkdir -p "$ROWS_FILES_DIR"
+    cp "$EDITOR_ROOT/effortless.json" "$ROWS_FILES_DIR/effortless.json"
+    ln -s "$(dirname "$RULEBOOK_PATH")" "$ROWS_FILES_DIR/effortless-rulebook"
+    narrow_manifest "$ROWS_FILES_DIR/effortless.json" explainer
+    narrowed=$?
+    if [ "$narrowed" = 3 ]; then
+      return 0
+    fi
+    built=no
+    echo "[entrypoint] $(date -Iseconds) rebuilding the Explainer DAG's files from the saved rulebook (pass $pass)" > "$ROWS_FILES_LOG_FILE"
+    # -continueOnError exits 0 whatever happened: errors.json is how the CLI says a step failed.
+    if [ "$narrowed" = 0 ] && (cd "$ROWS_FILES_DIR" && effortless build $CONTINUE_ON_ERROR_FLAG) >> "$ROWS_FILES_LOG_FILE" 2>&1 && [ ! -f "$ROWS_FILES_DIR/errors.json" ]; then
+      built=yes
+      while IFS= read -r file; do
+        target="$EDITOR_ROOT/$file"
+        if ! cmp -s "$ROWS_FILES_DIR/$file" "$target"; then
+          mkdir -p "$(dirname "$target")"
+          cp "$ROWS_FILES_DIR/$file" "$target.rows-files-new" && mv -f "$target.rows-files-new" "$target"
+          echo "[entrypoint] put in place: $file" >> "$ROWS_FILES_LOG_FILE"
+        fi
+      done < <(cd "$ROWS_FILES_DIR" && find . -type f ! -path './effortless.json' ! -path './errors.json' ! -path './.effortless/*' | sed 's|^\./||')
+    fi
+    if [ "$built" = yes ]; then
+      ROWS_FILES_BUILT_FROM="$before"
+      echo "[entrypoint] $(date -Iseconds) the Explainer DAG's files were rebuilt from the saved rulebook, so its witness shows the saved rows." >> "$BUILD_LOG_FILE"
+    else
+      echo "[entrypoint] $(date -Iseconds) WARNING: the Explainer DAG's files could NOT be rebuilt after this Save (see $ROWS_FILES_LOG_FILE). Its witness shows the rows of the last build until the next rebuild." >> "$BUILD_LOG_FILE"
+    fi
+    after=$(cksum "$RULEBOOK_PATH" 2>/dev/null)
+    if [ "$before" = "$after" ]; then
+      return 0
+    fi
+    if [ "$marker_before" = "$(cat "$SELF_WRITE_MARKER_FILE" 2>/dev/null)" ]; then
+      return 1
+    fi
+    if [ "$pass" -ge 20 ]; then
+      return 0
+    fi
+  done
+}
+
+# ------------------------------------------------------------------------
+# The project's own files.
+#
+# A project says what it is made of in its own effortless.json. Whatever it
+# builds into its app's folder from the rules (the rules as a page in its own
+# languages, the workbook as a download, anything a tool writes) is part of its
+# app. This container builds only its OWN pipeline (/app/effortless-root), so
+# until 2026-11-23 nothing in Dev ran those steps: the app went on serving what
+# a step had last written on somebody's laptop, weeks earlier, beside rules that
+# had moved on (reported on a project whose app linked RuleSpeak in English and
+# Dutch and a workbook, both from 15 November).
+#
+# So: the project's enabled steps whose folder is inside its app's folder are
+# built here, with the project's own command lines, whenever the rulebook file
+# or the project's effortless.json is not what they were last built from: after
+# every build, after a Save, after a step is added, after the project appears
+# (a clone that lands after this container started). No tool is named here: a
+# new kind of file is a step in the project, and nothing in this script.
+#
+# Like refresh_rows_files, this is NOT a build of the project and does not run
+# in the project's folder. The steps run in a folder of their own
+# (PROJECT_FILES_DIR: a manifest holding those steps alone, at the same paths,
+# beside a link to the rulebook's folder, so each step's own `-i ../..` reads
+# the rulebook), and only the files that came out DIFFERENT are put into the
+# project, each in one move, and only under the app's folder. So:
+#   - the project's effortless.json is never written (no version pins moved in
+#     a file git tracks), and the steps run at the tools' current versions, as
+#     every step of this container's own pipeline does;
+#   - a file that did not change is not rewritten under an app's dev server;
+#   - the tools' output goes to its own file (PROJECT_FILES_LOG_FILE); the build
+#     log gets one line.
+# A step that reads something other than the rulebook through a relative path
+# does not find it there, and its failure says so in that log.
+# A step that fails is reported and not tried again until the rules or the
+# steps change; what the other steps wrote is still put in place.
+# ------------------------------------------------------------------------
+project_app_dir() {
+  local app="${PROJECT_APP_DIR:-}"
+  [ -n "$app" ] || app=$(head -n 1 "$PROJECT_APP_DIR_FILE" 2>/dev/null)
+  app="${app#./}"
+  app="${app#/}"
+  app="${app%/}"
+  case "$app" in
+    ''|.|*..*) return 1 ;;
+  esac
+  echo "$app"
+}
+
+# What the project's files would be built from, as one line: the app's folder,
+# the project's effortless.json and the rulebook file. Nothing (and exit 1)
+# when there is no project here, no app folder named, or no such folder.
+project_files_stamp() {
+  local app
+  app=$(project_app_dir) || return 1
+  [ -f "$PROJECT_DIR/effortless.json" ] && [ -d "$PROJECT_DIR/$app" ] && [ -f "$RULEBOOK_PATH" ] || return 1
+  echo "$app $(cksum < "$PROJECT_DIR/effortless.json") $(cksum < "$RULEBOOK_PATH")"
+}
+
+# The manifest build_project_files builds: the project's enabled steps inside
+# its app's folder, as the project wrote them, without the versions it last ran
+# them at. Exit 3 when the project has no such step; the steps, in words, go to
+# <folder>/.steps.
+project_files_manifest() {
+  node - "$1" "$2" "$3" <<'NODE'
+  const fs = require('fs');
+  const path = require('path');
+  const [file, out, app] = process.argv.slice(2);
+  const parts = (s) => String(s.RelativePath || '').split(/[\\/]/).filter(Boolean);
+  let all;
+  try { all = JSON.parse(fs.readFileSync(file, 'utf8')).ProjectTranspilers || []; }
+  catch (e) { console.error('the project\'s effortless.json could not be read: ' + e.message); process.exit(2); }
+  const own = all.filter((s) => !s.IsDisabled && !parts(s).includes('..') && ('/' + parts(s).join('/') + '/').startsWith('/' + app + '/'));
+  if (!own.length) process.exit(3);
+  const steps = own.map((s) => ({ IsSSoTTranspiler: false, Name: s.Name, RelativePath: '/' + parts(s).join('/'), CommandLine: s.CommandLine, IsDisabled: false }));
+  for (const s of steps) fs.mkdirSync(path.join(out, s.RelativePath), { recursive: true });
+  fs.writeFileSync(path.join(out, 'effortless.json'), JSON.stringify({ Name: 'project-files', Description: 'The steps of the project\'s own effortless.json that write inside its app\'s folder.', SSoTmeProjectId: '', ProjectSettings: [], ProjectTranspilers: steps }, null, 2) + '\n');
+  fs.writeFileSync(path.join(out, '.steps'), steps.map((s) => String(s.CommandLine || '').trim().split(/\s+/)[0] + ' in ' + s.RelativePath.slice(1) + '/').join(', ') + '\n');
+NODE
+}
+
+build_project_files() {
+  local stamp app picked status steps file target changed=0
+  stamp=$(project_files_stamp) || return 0
+  if [ "$stamp" = "$(cat "$PROJECT_FILES_BUILT_FILE" 2>/dev/null)" ]; then
+    return 0
+  fi
+  app=$(project_app_dir)
+  rm -rf "$PROJECT_FILES_DIR"
+  mkdir -p "$PROJECT_FILES_DIR"
+  ln -s "$(dirname "$RULEBOOK_PATH")" "$PROJECT_FILES_DIR/effortless-rulebook"
+  project_files_manifest "$PROJECT_DIR/effortless.json" "$PROJECT_FILES_DIR" "$app" > "$PROJECT_FILES_LOG_FILE" 2>&1
+  picked=$?
+  if [ "$picked" != 0 ]; then
+    # 3: the project builds nothing into its app. Anything else is said once.
+    [ "$picked" = 3 ] || echo "[entrypoint] $(date -Iseconds) WARNING: the project's own files in $app/ were NOT built: $(tail -n 1 "$PROJECT_FILES_LOG_FILE")" >> "$BUILD_LOG_FILE"
+    echo "$stamp" > "$PROJECT_FILES_BUILT_FILE"
+    return 0
+  fi
+  steps=$(cat "$PROJECT_FILES_DIR/.steps" 2>/dev/null)
+  echo "[entrypoint] $(date -Iseconds) building the project's own files from the rulebook: $steps" >> "$PROJECT_FILES_LOG_FILE"
+  # -continueOnError exits 0 whatever happened: errors.json is how the CLI says a step failed.
+  (cd "$PROJECT_FILES_DIR" && effortless build $CONTINUE_ON_ERROR_FLAG) >> "$PROJECT_FILES_LOG_FILE" 2>&1
+  status=$?
+  while IFS= read -r file; do
+    target="$PROJECT_DIR/$file"
+    if ! cmp -s "$PROJECT_FILES_DIR/$file" "$target"; then
+      mkdir -p "$(dirname "$target")"
+      cp "$PROJECT_FILES_DIR/$file" "$target.project-files-new" && mv -f "$target.project-files-new" "$target"
+      changed=$((changed + 1))
+      echo "[entrypoint] put in place: $file" >> "$PROJECT_FILES_LOG_FILE"
+    fi
+  done < <(cd "$PROJECT_FILES_DIR" && find "./$app" -type f | sed 's|^\./||')
+  if [ "$status" != 0 ] || [ -f "$PROJECT_FILES_DIR/errors.json" ]; then
+    echo "[entrypoint] $(date -Iseconds) WARNING: a step of the project's own (its effortless.json: $steps) FAILED on this rulebook (see $PROJECT_FILES_LOG_FILE). What it writes in $app/ is from an earlier rulebook until the rules or the steps change." >> "$BUILD_LOG_FILE"
+  else
+    echo "[entrypoint] $(date -Iseconds) the project's own files were built from the rulebook ($steps): $changed file(s) changed." >> "$BUILD_LOG_FILE"
+  fi
+  echo "$stamp" > "$PROJECT_FILES_BUILT_FILE"
+}
+
+# Keeps the project's own files level with the rules for as long as this
+# container runs, beside the loop below (which must go on listening for the
+# rulebook and the rebuild trigger while these are built). It looks every
+# PROJECT_FILES_POLL_SECS; it builds when what there is differs from what they
+# were last built from and has stayed the same for two looks in a row (a file
+# still being written is not built from), and never while a build of this
+# container's own is running.
+watch_project_files() {
+  local seen="" now
+  while :; do
+    sleep "$PROJECT_FILES_POLL_SECS"
+    if [ "$(cat "$BOOT_STATE_FILE" 2>/dev/null)" = building ]; then
+      continue
+    fi
+    now=$(project_files_stamp) || continue
+    if [ "$now" = "$(cat "$PROJECT_FILES_BUILT_FILE" 2>/dev/null)" ]; then
+      continue
+    fi
+    if [ "$now" != "$seen" ]; then
+      seen="$now"
+      continue
+    fi
+    build_project_files
+  done
+}
+
 run_build() {
   echo "building" > "$BOOT_STATE_FILE"
+  # Every build bakes the Explainer DAG from the file as it is now: what a Save
+  # last built it from (refresh_rows_files) no longer says anything.
+  ROWS_FILES_BUILT_FROM=""
   echo "[entrypoint] $(date -Iseconds) running effortless build..." > "$BUILD_LOG_FILE"
   # A stale errors.json from the PREVIOUS build must not be mistaken for this
   # build's result. The CLI removes it itself on a clean build, but only once it
@@ -861,7 +1254,7 @@ run_build() {
   # file would still be sitting there describing failures that may already be
   # fixed. Clearing it up front makes "errors.json exists" mean exactly one
   # thing: THIS build produced failures.
-  rm -f "$ERRORS_JSON_PATH" "$BOOT_ERRORS_FILE"
+  rm -f "$ERRORS_JSON_PATH" "$BOOT_ERRORS_FILE" "$BOOT_FAILURE_FILE"
   # The registered chmodinitdb step makes the generated reset script
   # executable before initdb runs the compatibility selector. On the first
   # build the selected script does not exist until the preceding
@@ -905,8 +1298,33 @@ run_build() {
   # exactly the same "degrade, don't die" rule the build itself now follows.
   (cd /app/effortless-root && effortless -upgradeAll) >> >(tee -a "$BUILD_LOG_FILE") 2>&1 || \
     echo "[entrypoint] WARNING: -upgradeAll failed (tools index not refreshed) -- building with the currently pinned versions." >> "$BUILD_LOG_FILE"
+  # Which build (MERGE-NOT-LEASES.md 8.2, D7): /tmp/pw-build-mode, written by
+  # whoever asked for this one and consumed here.
+  #   full  (or none)  every step that is not IsDisabled, as always;
+  #   quick            only the steps marked Category "QuickBuild";
+  #   data             only the data load (rulebooktopostgres, chmodinitdb, initdb)
+  #                    and the Explainer DAG, whose files hold the rulebook's rows
+  #                    (a version that changed rows and cells, not rules).
+  # narrow_manifest (above) is the one place that says which steps a kind runs.
+  # quick/data build against a copy of effortless.json with every other step
+  # IsDisabled, and the project's own file is put back afterwards (or at the
+  # next build, if this one was killed): the manifest itself never changes.
+  local mode manifest="/app/effortless-root/effortless.json" full_copy="/app/effortless-root/.effortless.full.json"
+  mode=$(cat /tmp/pw-build-mode 2>/dev/null || echo full)
+  rm -f /tmp/pw-build-mode
+  [ -f "$full_copy" ] && mv -f "$full_copy" "$manifest"
+  if [ "$mode" = quick ] || [ "$mode" = data ]; then
+    cp "$manifest" "$full_copy"
+    if narrow_manifest "$manifest" "$mode"; then
+      echo "[entrypoint] $(date -Iseconds) a ${mode} build: $([ "$mode" = quick ] && echo 'the QuickBuild steps only' || echo 'the data load (rulebooktopostgres, chmodinitdb, initdb) and the Explainer DAG, whose files hold the rows')" >> "$BUILD_LOG_FILE"
+    else
+      mv -f "$full_copy" "$manifest"
+      echo "[entrypoint] could not narrow the build to '${mode}'; running the full build" >> "$BUILD_LOG_FILE"
+    fi
+  fi
   (cd /app/effortless-root && effortless build $CONTINUE_ON_ERROR_FLAG) >> >(tee -a "$BUILD_LOG_FILE") 2>&1
   build_status=$?
+  [ -f "$full_copy" ] && mv -f "$full_copy" "$manifest"
   echo "[entrypoint] $(date -Iseconds) effortless build finished (exit $build_status)" >> "$BUILD_LOG_FILE"
 
   # errors.json is the CLI's structured record of what failed (see BuildErrorLog
@@ -1017,6 +1435,7 @@ start_services() {
         echo "[entrypoint] The generated API IS running on :5177 -- reachable from the host for debugging even without the portal."
       fi
     } >> "$BUILD_LOG_FILE"
+    report_start_failure "The rulebook editor was not generated: rulebook-to-vite-admin-portal produced no admin-portal folder."
     write_status_json "error"
     echo "error" > "$BOOT_STATE_FILE"
     return 0
@@ -1038,14 +1457,24 @@ start_services() {
   # just data) is simpler to keep correct than wiring a second static-file
   # server + manual rebuild step. Bound to the INTERNAL port 5175 --
   # boot-server.js owns the EXTERNAL port 5174 and proxies to this once ready.
-  setsid bash -c 'cd /app/effortless-root/admin-portal && npm install --silent && API_PROXY_TARGET=http://127.0.0.1:5177 exec npx vite --host 0.0.0.0 --port 5175' \
+  # --include=dev: vite and @vitejs/plugin-react are devDependencies, and a
+  # container with NODE_ENV=production (the Loops runner) would otherwise skip
+  # them; `npx vite` then fetched an unrelated vite major that could not load
+  # vite.config.js and exited. Run the installed binary so that cannot recur.
+  setsid bash -c 'cd /app/effortless-root/admin-portal && npm install --silent --include=dev && API_PROXY_TARGET=http://127.0.0.1:5177 VITE_ENABLE_MODULES="${ENABLE_MODULES:-false}" exec ./node_modules/.bin/vite --host 0.0.0.0 --port 5175' \
     > /tmp/ui.log 2>&1 &
   UI_PID=$!
 
   echo "[entrypoint] waiting for internal Vite UI to accept connections..."  >> "$BUILD_LOG_FILE"
+  # Up to 5 minutes: a just-woken container on a small CPU share can spend well
+  # over a minute in npm install, and declaring a slow start a failure is far
+  # worse than waiting. A dev server that has exited is a real failure and is
+  # reported at once, not after 5 minutes.
   UI_UP=""
-  for i in $(seq 1 60); do
+  for i in $(seq 1 300); do
     if curl -sf "http://127.0.0.1:5175/" >/dev/null 2>&1; then UI_UP=1; break; fi
+    kill -0 "$UI_PID" 2>/dev/null || break
+    [ $((i % 30)) -eq 0 ] && echo "[entrypoint] still waiting for the portal's dev server (${i}s of 300s)..." >> "$BUILD_LOG_FILE"
     sleep 1
   done
 
@@ -1054,9 +1483,14 @@ start_services() {
     # failed, a syntax error in generated code, port already held). Same rule as
     # above: keep the boot page in front of the user so they see WHY.
     {
-      echo "[entrypoint] the generated Vite UI did not answer on :5175 within 60s -- see /tmp/ui.log inside the container."
+      echo "[entrypoint] the generated Vite UI did not answer on :5175 -- its own output (/tmp/ui.log) follows below."
       echo "[entrypoint] Keeping the boot page on :5174 so the log and /__boot/errors stay reachable."
     } >> "$BUILD_LOG_FILE"
+    if kill -0 "$UI_PID" 2>/dev/null; then
+      report_start_failure "The rulebook editor did not start: its dev server (npm install + vite, port 5175) was still not answering after 5 minutes." /tmp/ui.log
+    else
+      report_start_failure "The rulebook editor did not start: its dev server (npm install + vite, port 5175) exited." /tmp/ui.log
+    fi
     write_status_json "error"
     echo "error" > "$BOOT_STATE_FILE"
     return 0
@@ -1116,11 +1550,25 @@ write_status_json() {
   pg_version="$(echo "$versions" | node -e 'console.log(JSON.parse(require("fs").readFileSync(0,"utf8")).postgres || "")')"
   api_version="$(echo "$versions" | node -e 'console.log(JSON.parse(require("fs").readFileSync(0,"utf8")).api || "")')"
   portal_version="$(echo "$versions" | node -e 'console.log(JSON.parse(require("fs").readFileSync(0,"utf8")).portal || "")')"
+  # Which steps failed, by name, so a client can say WHAT did not build:
+  # rulebooktopostgres failing leaves the API up over an empty database, and
+  # 'degraded' alone read as "the preview is up" (a Loops run, 2026-10-28).
+  local failed_steps="[]"
+  if [ -n "${BUILD_HAD_FAILURES:-}" ] && [ -f "$BOOT_ERRORS_FILE" ]; then
+    failed_steps="$(node -e '
+      const r = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"));
+      console.log(JSON.stringify((r.errors || []).map((e) => ({
+        name: e.name || null, relativePath: e.relativePath || null, message: String(e.message || "").slice(0, 400),
+      }))));
+    ' "$BOOT_ERRORS_FILE" 2>/dev/null)"
+    [ -z "$failed_steps" ] && failed_steps="[]"
+  fi
   cat > "$BOOT_STATUS_FILE" <<EOF
 {
   "state": "$state",
   "checkedAt": "$(date -Iseconds)",
   "buildHadFailures": $failed,
+  "failedSteps": $failed_steps,
   "components": {
     "postgres": { "status": "$pg", "note": "in-container cluster; the launcher prints its resolved host port", "version": $([ -n "$pg_version" ] && echo "\"$pg_version\"" || echo null) },
     "api":      { "status": "$api", "note": "generated Node API on container :5177; the launcher prints its resolved host port", "version": $([ -n "$api_version" ] && echo "\"$api_version\"" || echo null) },
@@ -1169,6 +1617,9 @@ report_ready_state() {
 }
 report_ready_state
 
+# The project's own files follow the rules from here on (see build_project_files).
+watch_project_files &
+
 echo "[entrypoint] watching $RULEBOOK_PATH and $REBUILD_TRIGGER_FILE for changes (Ctrl-C / docker stop to exit)..."
 while true; do
   # No stale offer may survive into the next wait: an answer file left behind
@@ -1195,7 +1646,10 @@ while true; do
   # to: the uncommitted-change log and the editor-settings file, both written by
   # the API itself. So events are filtered by name below, and anything else is
   # ignored without so much as a prompt.
-  if ! inotifywait -e modify -e close_write -e move -e create "$RULEBOOK_DIR" "$REBUILD_TRIGGER_FILE" >/tmp/watch.log 2>&1; then
+  if trigger_pending; then
+    # Requested while this loop was busy (a build, or the offer): no event will come for it.
+    echo "$REBUILD_TRIGGER_FILE REQUESTED_WHILE_BUSY" > /tmp/watch.log
+  elif ! inotifywait -e modify -e close_write -e move -e create "$RULEBOOK_DIR" "$REBUILD_TRIGGER_FILE" >/tmp/watch.log 2>&1; then
     # inotifywait only returns non-zero when it failed to SET UP the watch --
     # never on a real event, which always exits 0. Treating a setup failure as
     # an event is what once caused an infinite instant-rebuild loop: the watch
@@ -1230,6 +1684,7 @@ while true; do
   if grep -q "$REBUILD_TRIGGER_FILE" /tmp/watch.log 2>/dev/null; then
     # The Rebuild button (or POST /__boot/rebuild) -- somebody asked for this
     # in so many words, so there is nothing to ask about.
+    LAST_TRIGGER_STAMP=$(trigger_stamp)
     echo "[entrypoint] $(date -Iseconds) rebuild requested explicitly -- rebuilding..."
   else
     # The rulebook FILE changed. If the app itself just wrote it (Save, or an
@@ -1240,7 +1695,11 @@ while true; do
     case "$self_write_epoch" in (''|*[!0-9]*) self_write_epoch=0 ;; esac
     if [ "$(( now_epoch - self_write_epoch ))" -le "$SELF_WRITE_GRACE_SECS" ]; then
       echo "[entrypoint] $(date -Iseconds) rulebook file changed by our own Save -- Postgres already matches it, so no rebuild is offered." >> "$BUILD_LOG_FILE"
-      continue
+      # Postgres matches it; the files baked from the rulebook file do not, yet.
+      if refresh_rows_files; then
+        continue
+      fi
+      echo "[entrypoint] $(date -Iseconds) the rulebook file changed again while those files were being rebuilt, and not by a Save here." >> "$BUILD_LOG_FILE"
     fi
 
     # A genuine outside change (hand-edited, or written by another process). A

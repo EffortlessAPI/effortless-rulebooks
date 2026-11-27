@@ -95,7 +95,7 @@
     "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema",
     "name": "pko_knowledge_engineer",
     "search_path": "pko_knowledge_engineer",
-    "view_count": 51,
+    "view_count": 55,
     "is_empty_schema": false
   },
   {
@@ -106,7 +106,7 @@
     "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema",
     "name": "pko_maintenance_technician",
     "search_path": "pko_maintenance_technician",
-    "view_count": 28,
+    "view_count": 29,
     "is_empty_schema": false
   },
   {
@@ -161,7 +161,7 @@
     "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchema",
     "name": "pko_plant_safety_officer",
     "search_path": "pko_plant_safety_officer",
-    "view_count": 33,
+    "view_count": 37,
     "is_empty_schema": false
   },
   {

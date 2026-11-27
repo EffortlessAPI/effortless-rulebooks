@@ -61,6 +61,41 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         }
 
         public string? SemanticTypeIri { get; set; }
+        // Formula EnforcedRequirement (rulebook: =INDEX(StepConditions!{{EnforcesRequirement}}, MATCH({{StepCondition}}, StepConditions!{{StepConditionId}}, 0)))
+        [NotMapped]
+        public string? EnforcedRequirement
+        {
+            get => F.AsString(F.Memo(this, "EnforcedRequirement", () => F.Lookup<StepCondition>(this, "StepConditions", "StepConditionId", __c => __c.StepConditions, __r => F.Of(__r.StepConditionId), F.Of(this.StepCondition), __r => F.Of(__r.EnforcesRequirement), () => F.Of(new StepCondition().EnforcesRequirement)))); set { }
+        }
+
+        // Formula FailedCheckRequirementKey (rulebook: =IF({{Held}} = FALSE, {{EnforcedRequirement}}, ""))
+        [NotMapped]
+        public string? FailedCheckRequirementKey
+        {
+            get => F.AsString(F.Memo(this, "FailedCheckRequirementKey", () => (F.Truthy(F.Bool3(F.Eq(F.Nullif(F.Of(this.Held)), F.B(false)))) ? F.Of(this.EnforcedRequirement) : F.S("")))); set { }
+        }
+
+        // Formula EnforcedRequirementIsComputed (rulebook: =INDEX(StepConditions!{{EnforcedRequirementIsComputed}}, MATCH({{StepCondition}}, StepConditions!{{StepConditionId}}, 0)))
+        [NotMapped]
+        public bool? EnforcedRequirementIsComputed
+        {
+            get => F.AsBool(F.Memo(this, "EnforcedRequirementIsComputed", () => F.Lookup<StepCondition>(this, "StepConditions", "StepConditionId", __c => __c.StepConditions, __r => F.Of(__r.StepConditionId), F.Of(this.StepCondition), __r => F.Of(__r.EnforcedRequirementIsComputed), () => F.Of(new StepCondition().EnforcedRequirementIsComputed)))); set { }
+        }
+
+        // Formula EnforcedRequirementStatement (rulebook: =INDEX(StepConditions!{{EnforcedRequirementStatement}}, MATCH({{StepCondition}}, StepConditions!{{StepConditionId}}, 0)))
+        [NotMapped]
+        public string? EnforcedRequirementStatement
+        {
+            get => F.AsString(F.Memo(this, "EnforcedRequirementStatement", () => F.Lookup<StepCondition>(this, "StepConditions", "StepConditionId", __c => __c.StepConditions, __r => F.Of(__r.StepConditionId), F.Of(this.StepCondition), __r => F.Of(__r.EnforcedRequirementStatement), () => F.Of(new StepCondition().EnforcedRequirementStatement)))); set { }
+        }
+
+        // Formula IsScoredBreach (rulebook: =AND({{Held}} = FALSE, {{EnforcedRequirementIsComputed}}))
+        [NotMapped]
+        public bool? IsScoredBreach
+        {
+            get => F.AsBool(F.Memo(this, "IsScoredBreach", () => F.And(F.Bool3(F.Eq(F.Nullif(F.Of(this.Held)), F.B(false))), F.Bool3(F.Of(this.EnforcedRequirementIsComputed))))); set { }
+        }
+
 
         public string? StepExecution { get; set; }
         public string? StepCondition { get; set; }

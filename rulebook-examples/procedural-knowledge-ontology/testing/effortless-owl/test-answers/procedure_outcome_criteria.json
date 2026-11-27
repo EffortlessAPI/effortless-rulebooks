@@ -1,0 +1,47 @@
+[
+  {
+    "procedure_outcome_criterion_id": "crit-loto-success",
+    "polarity": "Success",
+    "statement": "Work finished with zero energy verified and every lock removed by the person who applied it.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion",
+    "name": "lockout-tagout Success",
+    "procedure": "lockout-tagout",
+    "failure_procedure_key": null
+  },
+  {
+    "procedure_outcome_criterion_id": "crit-loto-failure",
+    "polarity": "Failure",
+    "statement": "Any stored energy released while someone is working on the machine.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion",
+    "name": "lockout-tagout Failure",
+    "procedure": "lockout-tagout",
+    "failure_procedure_key": "lockout-tagout"
+  },
+  {
+    "procedure_outcome_criterion_id": "crit-deploy-success",
+    "polarity": "Success",
+    "statement": "Change live with health signals green for thirty minutes.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion",
+    "name": "production-deployment Success",
+    "procedure": "production-deployment",
+    "failure_procedure_key": null
+  },
+  {
+    "procedure_outcome_criterion_id": "crit-deploy-failure",
+    "polarity": "Failure",
+    "statement": "Rollback required, or a change reached production without a recorded approval.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion",
+    "name": "production-deployment Failure",
+    "procedure": "production-deployment",
+    "failure_procedure_key": "production-deployment"
+  },
+  {
+    "procedure_outcome_criterion_id": "crit-close-success",
+    "polarity": "Success",
+    "statement": "Package published with every blocking control evidenced.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#OutcomeCriterion",
+    "name": "quarter-end-close Success",
+    "procedure": "quarter-end-close",
+    "failure_procedure_key": null
+  }
+]

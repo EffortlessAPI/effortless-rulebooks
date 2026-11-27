@@ -1,0 +1,66 @@
+[
+  {
+    "decision_point_id": "dp-loto06-zero",
+    "question": "Does every isolation point read zero?",
+    "deciding_factors": "Gauge readings; start-button try-out; any hiss.",
+    "default_outcome": "Proceed to maintenance.",
+    "dmn_decision_key": "zero-energy-decision",
+    "semantic_type_iri": "https://www.omg.org/spec/DMN/20191111/MODEL/Decision",
+    "name": "loto-06: Does every isolation point read zero?",
+    "step": "loto-06",
+    "governing_transition": "loto-06-fallback-loto-09",
+    "has_no_deciding_factors": false,
+    "is_dmn_encoded": true
+  },
+  {
+    "decision_point_id": "dp-loto06-reverify",
+    "question": "Is a reading doubtful enough to verify once more?",
+    "deciding_factors": "Needle flicker; reading taken before the bleed finished.",
+    "default_outcome": "No repeat.",
+    "dmn_decision_key": "reverify-decision",
+    "semantic_type_iri": "https://www.omg.org/spec/DMN/20191111/MODEL/Decision",
+    "name": "loto-06: Is a reading doubtful enough to verify once more?",
+    "step": "loto-06",
+    "governing_transition": "loto-06-repeat-loto-06",
+    "has_no_deciding_factors": false,
+    "is_dmn_encoded": true
+  },
+  {
+    "decision_point_id": "dp-deploy03-approve",
+    "question": "Approve the release?",
+    "deciding_factors": "Risk class; test results; change window.",
+    "default_outcome": "Approve.",
+    "dmn_decision_key": "release-approval",
+    "semantic_type_iri": "https://www.omg.org/spec/DMN/20191111/MODEL/Decision",
+    "name": "deploy-03: Approve the release?",
+    "step": "deploy-03",
+    "governing_transition": "deploy-03-reject-deploy-01",
+    "has_no_deciding_factors": false,
+    "is_dmn_encoded": true
+  },
+  {
+    "decision_point_id": "dp-close05-expedite",
+    "question": "Is aggregate variance below materiality?",
+    "deciding_factors": null,
+    "default_outcome": "Full review.",
+    "dmn_decision_key": "close-expedite",
+    "semantic_type_iri": "https://www.omg.org/spec/DMN/20191111/MODEL/Decision",
+    "name": "close-05: Is aggregate variance below materiality?",
+    "step": "close-05",
+    "governing_transition": "close-05-expedite-close-07",
+    "has_no_deciding_factors": true,
+    "is_dmn_encoded": true
+  },
+  {
+    "decision_point_id": "dp-deploy02-unscorable",
+    "question": "Can the classifier score this change, or must it go to the release manager unscored?",
+    "deciding_factors": "Change touches services with no incident history; classifier confidence below threshold.",
+    "default_outcome": "Score the change.",
+    "dmn_decision_key": null,
+    "semantic_type_iri": "https://www.omg.org/spec/DMN/20191111/MODEL/Decision",
+    "name": "deploy-02: Can the classifier score this change, or must it g",
+    "step": "deploy-02",
+    "has_no_deciding_factors": false,
+    "is_dmn_encoded": false
+  }
+]

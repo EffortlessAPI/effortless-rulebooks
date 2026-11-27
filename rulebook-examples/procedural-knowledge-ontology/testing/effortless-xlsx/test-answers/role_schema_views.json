@@ -4912,6 +4912,22 @@
     "is_degenerate_view": false
   },
   {
+    "role_schema_view_id": "rsv-knowledge-engineer-condition_checks",
+    "role_schema": "schema-knowledge-engineer",
+    "principal": "principal-knowledge-engineer",
+    "target_table": "ConditionChecks",
+    "view_name": "condition_checks",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchemaView",
+    "name": null,
+    "schema_name": null,
+    "source_view": null,
+    "grant_key": null,
+    "column_count": null,
+    "table_field_count": null,
+    "is_full_width": null,
+    "is_degenerate_view": null
+  },
+  {
     "role_schema_view_id": "rsv-knowledge-engineer-critical_incidents",
     "role_schema": "schema-knowledge-engineer",
     "principal": "principal-knowledge-engineer",
@@ -5408,6 +5424,38 @@
     "is_degenerate_view": false
   },
   {
+    "role_schema_view_id": "rsv-knowledge-engineer-requirement_satisfactions",
+    "role_schema": "schema-knowledge-engineer",
+    "principal": "principal-knowledge-engineer",
+    "target_table": "RequirementSatisfactions",
+    "view_name": "requirement_satisfactions",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchemaView",
+    "name": null,
+    "schema_name": null,
+    "source_view": null,
+    "grant_key": null,
+    "column_count": null,
+    "table_field_count": null,
+    "is_full_width": null,
+    "is_degenerate_view": null
+  },
+  {
+    "role_schema_view_id": "rsv-knowledge-engineer-requirements",
+    "role_schema": "schema-knowledge-engineer",
+    "principal": "principal-knowledge-engineer",
+    "target_table": "Requirements",
+    "view_name": "requirements",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchemaView",
+    "name": null,
+    "schema_name": null,
+    "source_view": null,
+    "grant_key": null,
+    "column_count": null,
+    "table_field_count": null,
+    "is_full_width": null,
+    "is_degenerate_view": null
+  },
+  {
     "role_schema_view_id": "rsv-knowledge-engineer-roles",
     "role_schema": "schema-knowledge-engineer",
     "principal": "principal-knowledge-engineer",
@@ -5534,6 +5582,22 @@
     "table_field_count": 5,
     "is_full_width": true,
     "is_degenerate_view": false
+  },
+  {
+    "role_schema_view_id": "rsv-knowledge-engineer-step_requirements",
+    "role_schema": "schema-knowledge-engineer",
+    "principal": "principal-knowledge-engineer",
+    "target_table": "StepRequirements",
+    "view_name": "step_requirements",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchemaView",
+    "name": null,
+    "schema_name": null,
+    "source_view": null,
+    "grant_key": null,
+    "column_count": null,
+    "table_field_count": null,
+    "is_full_width": null,
+    "is_degenerate_view": null
   },
   {
     "role_schema_view_id": "rsv-knowledge-engineer-step_transitions",
@@ -5678,6 +5742,22 @@
     "table_field_count": 11,
     "is_full_width": true,
     "is_degenerate_view": false
+  },
+  {
+    "role_schema_view_id": "rsv-maintenance-technician-condition_checks",
+    "role_schema": "schema-maintenance-technician",
+    "principal": "principal-maintenance-technician",
+    "target_table": "ConditionChecks",
+    "view_name": "condition_checks",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchemaView",
+    "name": null,
+    "schema_name": null,
+    "source_view": null,
+    "grant_key": null,
+    "column_count": null,
+    "table_field_count": null,
+    "is_full_width": null,
+    "is_degenerate_view": null
   },
   {
     "role_schema_view_id": "rsv-maintenance-technician-cue_observations",
@@ -7056,6 +7136,22 @@
     "is_degenerate_view": false
   },
   {
+    "role_schema_view_id": "rsv-plant-safety-officer-condition_checks",
+    "role_schema": "schema-plant-safety-officer",
+    "principal": "principal-plant-safety-officer",
+    "target_table": "ConditionChecks",
+    "view_name": "condition_checks",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchemaView",
+    "name": null,
+    "schema_name": null,
+    "source_view": null,
+    "grant_key": null,
+    "column_count": null,
+    "table_field_count": null,
+    "is_full_width": null,
+    "is_degenerate_view": null
+  },
+  {
     "role_schema_view_id": "rsv-plant-safety-officer-cue_observations",
     "role_schema": "schema-plant-safety-officer",
     "principal": "principal-plant-safety-officer",
@@ -7344,6 +7440,38 @@
     "is_degenerate_view": false
   },
   {
+    "role_schema_view_id": "rsv-plant-safety-officer-requirement_satisfactions",
+    "role_schema": "schema-plant-safety-officer",
+    "principal": "principal-plant-safety-officer",
+    "target_table": "RequirementSatisfactions",
+    "view_name": "requirement_satisfactions",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchemaView",
+    "name": null,
+    "schema_name": null,
+    "source_view": null,
+    "grant_key": null,
+    "column_count": null,
+    "table_field_count": null,
+    "is_full_width": null,
+    "is_degenerate_view": null
+  },
+  {
+    "role_schema_view_id": "rsv-plant-safety-officer-requirements",
+    "role_schema": "schema-plant-safety-officer",
+    "principal": "principal-plant-safety-officer",
+    "target_table": "Requirements",
+    "view_name": "requirements",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchemaView",
+    "name": null,
+    "schema_name": null,
+    "source_view": null,
+    "grant_key": null,
+    "column_count": null,
+    "table_field_count": null,
+    "is_full_width": null,
+    "is_degenerate_view": null
+  },
+  {
     "role_schema_view_id": "rsv-plant-safety-officer-roles",
     "role_schema": "schema-plant-safety-officer",
     "principal": "principal-plant-safety-officer",
@@ -7454,6 +7582,22 @@
     "table_field_count": 5,
     "is_full_width": true,
     "is_degenerate_view": false
+  },
+  {
+    "role_schema_view_id": "rsv-plant-safety-officer-step_requirements",
+    "role_schema": "schema-plant-safety-officer",
+    "principal": "principal-plant-safety-officer",
+    "target_table": "StepRequirements",
+    "view_name": "step_requirements",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#RoleSchemaView",
+    "name": null,
+    "schema_name": null,
+    "source_view": null,
+    "grant_key": null,
+    "column_count": null,
+    "table_field_count": null,
+    "is_full_width": null,
+    "is_degenerate_view": null
   },
   {
     "role_schema_view_id": "rsv-plant-safety-officer-step_transitions",

@@ -3,8 +3,9 @@
 // Generated from: effortless-rulebook/pko-native-procedural-knowledge-rulebook-rulebook.json
 //
 // One interface per table, a calc<Table><Field>() function per calculated field,
-// and the table registry main.ts runs. Formulas compute through erb_runtime.ts;
-// nothing here parses a formula, reads the rulebook, or calls a database.
+// the table registry main.ts runs, and evaluate(rows) for an app that computes
+// in-process. Formulas compute through erb_runtime.ts; nothing here parses a
+// formula, reads the rulebook, or calls a database.
 
 /* eslint-disable */
 import {
@@ -62,6 +63,7 @@ import {
   erbOr,
   erbNot,
   erbIf,
+  erbSwitch,
   erbIsBlank,
   erbIsNotBlank,
   erbNullif,
@@ -81,10 +83,13 @@ import {
   erbSubstitute,
   erbFind,
   erbCast,
+  erbTextDate,
+  erbTextNumber,
   erbDatetimeDiff,
   erbNow,
   calcGuard,
   loadRows,
+  erbEvaluate,
 } from "./erb_runtime.js";
 import type { ClosureSpec, FieldType, TableSpec } from "./erb_runtime.js";
 
@@ -6102,6 +6107,14 @@ export interface RequirementsRow {
   constraint_trace_count: number | null;
   /** TRUE when a constraint bound to a step traces to no collection activity. */
   is_untraced_bound_constraint: boolean | null;
+  /** PASS marks recorded on every step this control is bound to. Set beside SatisfactionRecordCount, it says how often somebody passed the step against how often anybody asked whether the control held. */
+  recorded_pass_count: number | null;
+  /** TRUE for a blocking control whose steps carry PASS marks while the control itself has never once been evaluated. The green on those steps says nothing about the control. */
+  is_passed_but_never_evaluated: boolean | null;
+  /** Checks on record, of a condition that enforces this control, that found the condition did not hold. */
+  failed_check_count: number | null;
+  /** TRUE when the book holds a failed check of a condition this control enforces, and the control's own record still says it has never failed. The breach is on record; the control never heard about it. */
+  is_breached_but_never_failed: boolean | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -6153,6 +6166,10 @@ const requirementsFieldTypes: Record<string, FieldType> = {
   is_regulatory_requirement: "*bool",
   constraint_trace_count: "*int",
   is_untraced_bound_constraint: "*bool",
+  recorded_pass_count: "*int",
+  is_passed_but_never_evaluated: "*bool",
+  failed_check_count: "*int",
+  is_breached_but_never_failed: "*bool",
 };
 
 /** Computes the Name calculated field.
@@ -6344,6 +6361,20 @@ export function calcRequirementsIsUntracedBoundConstraint(tc: RequirementsRow): 
   return toBoolPtr(erbAnd(erbBool3(vBool(tc.is_bound_to_any_step)), erbBool3(erbEq(vInt(tc.constraint_trace_count), vI(0)))));
 }
 
+/** Computes the IsPassedButNeverEvaluated calculated field.
+ *  TRUE for a blocking control whose steps carry PASS marks while the control itself has never once been evaluated. The green on those steps says nothing about the control.
+ *  Formula: =AND({{IsInoperativeControl}}, {{RecordedPassCount}} > 0) */
+export function calcRequirementsIsPassedButNeverEvaluated(tc: RequirementsRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(vBool(tc.is_inoperative_control)), erbBool3(erbCmp(vInt(tc.recorded_pass_count), ">", vI(0)))));
+}
+
+/** Computes the IsBreachedButNeverFailed calculated field.
+ *  TRUE when the book holds a failed check of a condition this control enforces, and the control's own record still says it has never failed. The breach is on record; the control never heard about it.
+ *  Formula: =AND({{FailedCheckCount}} > 0, NOT({{HasEverProducedNegative}})) */
+export function calcRequirementsIsBreachedButNeverFailed(tc: RequirementsRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbCmp(vInt(tc.failed_check_count), ">", vI(0))), erbBool3(erbNot(erbBool3(vBool(tc.has_ever_produced_negative))))));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeRequirements(tc: RequirementsRow): RequirementsRow {
   // Level 1
@@ -6368,6 +6399,7 @@ export function computeRequirements(tc: RequirementsRow): RequirementsRow {
   calcGuard(tc, requirementsFieldTypes, "is_orphaned_blocking_control", () => { tc.is_orphaned_blocking_control = calcRequirementsIsOrphanedBlockingControl(tc); });
   calcGuard(tc, requirementsFieldTypes, "is_unwatched_and_unowned", () => { tc.is_unwatched_and_unowned = calcRequirementsIsUnwatchedAndUnowned(tc); });
   calcGuard(tc, requirementsFieldTypes, "is_untraced_bound_constraint", () => { tc.is_untraced_bound_constraint = calcRequirementsIsUntracedBoundConstraint(tc); });
+  calcGuard(tc, requirementsFieldTypes, "is_breached_but_never_failed", () => { tc.is_breached_but_never_failed = calcRequirementsIsBreachedButNeverFailed(tc); });
   // Level 3
   calcGuard(tc, requirementsFieldTypes, "witness_claim_is_unverified", () => { tc.witness_claim_is_unverified = calcRequirementsWitnessClaimIsUnverified(tc); });
   calcGuard(tc, requirementsFieldTypes, "is_unwitnessed_blocking_control", () => { tc.is_unwitnessed_blocking_control = calcRequirementsIsUnwitnessedBlockingControl(tc); });
@@ -6376,6 +6408,7 @@ export function computeRequirements(tc: RequirementsRow): RequirementsRow {
   calcGuard(tc, requirementsFieldTypes, "control_assurance_state", () => { tc.control_assurance_state = calcRequirementsControlAssuranceState(tc); });
   calcGuard(tc, requirementsFieldTypes, "attestation_exposure_note", () => { tc.attestation_exposure_note = calcRequirementsAttestationExposureNote(tc); });
   calcGuard(tc, requirementsFieldTypes, "unwatched_unowned_flag", () => { tc.unwatched_unowned_flag = calcRequirementsUnwatchedUnownedFlag(tc); });
+  calcGuard(tc, requirementsFieldTypes, "is_passed_but_never_evaluated", () => { tc.is_passed_but_never_evaluated = calcRequirementsIsPassedButNeverEvaluated(tc); });
   return tc;
 }
 
@@ -6419,6 +6452,8 @@ export interface StepRequirementsRow {
   unexercised_binding_requirement_key: string | null;
   /** Whether a regulation imposes the requirement. */
   requirement_is_regulatory: boolean | null;
+  /** How many executions of this binding's step were recorded as PASS. */
+  pass_count_on_step: number | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -6437,6 +6472,7 @@ const stepRequirementsFieldTypes: Record<string, FieldType> = {
   is_unexercised_blocking_binding: "*bool",
   unexercised_binding_requirement_key: "*string",
   requirement_is_regulatory: "*bool",
+  pass_count_on_step: "*int",
 };
 
 /** Computes the Name calculated field.
@@ -9288,6 +9324,8 @@ export interface StepExecutionsRow {
   incomplete_cue_observation_count: number | null;
   /** A warning sign that means 'not finished' was seen on this step execution, so the normal next step must not be offered; only a fallback is. */
   is_blocked_by_observed_cue: boolean | null;
+  /** A check on this step recorded that a precondition did not hold. The step may not be marked done; only a fallback is offered, exactly as for an observed warning sign. */
+  is_blocked_by_failed_precondition: boolean | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -9431,6 +9469,7 @@ const stepExecutionsFieldTypes: Record<string, FieldType> = {
   owner_organization: "*string",
   incomplete_cue_observation_count: "*int",
   is_blocked_by_observed_cue: "*bool",
+  is_blocked_by_failed_precondition: "*bool",
 };
 
 /** Computes the Name calculated field.
@@ -9951,6 +9990,13 @@ export function calcStepExecutionsIsBlockedByObservedCue(tc: StepExecutionsRow):
   return toBoolPtr(erbCmp(vInt(tc.incomplete_cue_observation_count), ">", vI(0)));
 }
 
+/** Computes the IsBlockedByFailedPrecondition calculated field.
+ *  A check on this step recorded that a precondition did not hold. The step may not be marked done; only a fallback is offered, exactly as for an observed warning sign.
+ *  Formula: ={{FailedPreconditionCount}} > 0 */
+export function calcStepExecutionsIsBlockedByFailedPrecondition(tc: StepExecutionsRow): boolean | null {
+  return toBoolPtr(erbCmp(vInt(tc.failed_precondition_count), ">", vI(0)));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeStepExecutions(tc: StepExecutionsRow): StepExecutionsRow {
   // Level 1
@@ -9996,6 +10042,7 @@ export function computeStepExecutions(tc: StepExecutionsRow): StepExecutionsRow 
   calcGuard(tc, stepExecutionsFieldTypes, "broke_invariant", () => { tc.broke_invariant = calcStepExecutionsBrokeInvariant(tc); });
   calcGuard(tc, stepExecutionsFieldTypes, "is_blocked_by_incomplete_prerequisite", () => { tc.is_blocked_by_incomplete_prerequisite = calcStepExecutionsIsBlockedByIncompletePrerequisite(tc); });
   calcGuard(tc, stepExecutionsFieldTypes, "is_blocked_by_observed_cue", () => { tc.is_blocked_by_observed_cue = calcStepExecutionsIsBlockedByObservedCue(tc); });
+  calcGuard(tc, stepExecutionsFieldTypes, "is_blocked_by_failed_precondition", () => { tc.is_blocked_by_failed_precondition = calcStepExecutionsIsBlockedByFailedPrecondition(tc); });
   // Level 2
   calcGuard(tc, stepExecutionsFieldTypes, "is_late", () => { tc.is_late = calcStepExecutionsIsLate(tc); });
   calcGuard(tc, stepExecutionsFieldTypes, "has_unevaluated_blocking_control", () => { tc.has_unevaluated_blocking_control = calcStepExecutionsHasUnevaluatedBlockingControl(tc); });
@@ -20423,6 +20470,12 @@ export interface StepConditionsRow {
   machine_expression: string | null;
   /** TRUE when the condition is stored as an expression, not only prose. */
   is_machine_parseable: boolean | null;
+  /** The blocking requirement this condition is the physical check of, when it is one. A failed check of the condition is then a failure of that requirement. */
+  enforces_requirement: string | null;
+  /** Whether the requirement this condition enforces has a computed witness (loop 18): a failed check of it is then a breach the register counts on its own. */
+  enforced_requirement_is_computed: boolean | null;
+  /** The statement of the requirement this condition enforces, for the desk that shows a breach. */
+  enforced_requirement_statement: string | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -20442,6 +20495,9 @@ const stepConditionsFieldTypes: Record<string, FieldType> = {
   semantic_type_iri: "*string",
   machine_expression: "*string",
   is_machine_parseable: "*bool",
+  enforces_requirement: "*string",
+  enforced_requirement_is_computed: "*bool",
+  enforced_requirement_statement: "*string",
 };
 
 /** Computes the Name calculated field.
@@ -20544,6 +20600,16 @@ export interface ConditionChecksRow {
   violated_invariant_execution_key: string | null;
   /** Semantic type IRI. */
   semantic_type_iri: string | null;
+  /** The requirement the checked condition enforces, copied from the condition. */
+  enforced_requirement: string | null;
+  /** Echoes the enforced requirement's id when this check recorded that the condition did not hold; blank otherwise. */
+  failed_check_requirement_key: string | null;
+  /** Copied from the checked condition: the rule it enforces has a computed witness. */
+  enforced_requirement_is_computed: boolean | null;
+  /** Copied from the checked condition: the rule it enforces, in its own words. */
+  enforced_requirement_statement: string | null;
+  /** This check recorded that the condition did not hold, and the rule it enforces is computed by the register: a breach counted by the register itself, not by a person looking. */
+  is_scored_breach: boolean | null;
   _erb_errors?: Record<string, string>;
 }
 
@@ -20561,6 +20627,11 @@ const conditionChecksFieldTypes: Record<string, FieldType> = {
   failed_precondition_execution_key: "*string",
   violated_invariant_execution_key: "*string",
   semantic_type_iri: "*string",
+  enforced_requirement: "*string",
+  failed_check_requirement_key: "*string",
+  enforced_requirement_is_computed: "*bool",
+  enforced_requirement_statement: "*string",
+  is_scored_breach: "*bool",
 };
 
 /** Computes the Name calculated field.
@@ -20598,12 +20669,28 @@ export function calcConditionChecksViolatedInvariantExecutionKey(tc: ConditionCh
   return toStringPtr(erbIf(erbBool3(vBool(tc.is_violated_invariant)), () => vStr(tc.step_execution), () => vS("")));
 }
 
+/** Computes the FailedCheckRequirementKey calculated field.
+ *  Echoes the enforced requirement's id when this check recorded that the condition did not hold; blank otherwise.
+ *  Formula: =IF({{Held}} = FALSE, {{EnforcedRequirement}}, "") */
+export function calcConditionChecksFailedCheckRequirementKey(tc: ConditionChecksRow): string | null {
+  return toStringPtr(erbIf(erbBool3(erbEq(erbNullif(vBool(tc.held)), vB(false))), () => vStr(tc.enforced_requirement), () => vS("")));
+}
+
+/** Computes the IsScoredBreach calculated field.
+ *  This check recorded that the condition did not hold, and the rule it enforces is computed by the register: a breach counted by the register itself, not by a person looking.
+ *  Formula: =AND({{Held}} = FALSE, {{EnforcedRequirementIsComputed}}) */
+export function calcConditionChecksIsScoredBreach(tc: ConditionChecksRow): boolean | null {
+  return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vBool(tc.held)), vB(false))), erbBool3(vBool(tc.enforced_requirement_is_computed))));
+}
+
 /** Computes every calculated field of the row in dependency order. */
 export function computeConditionChecks(tc: ConditionChecksRow): ConditionChecksRow {
   // Level 1
   calcGuard(tc, conditionChecksFieldTypes, "name", () => { tc.name = calcConditionChecksName(tc); });
   calcGuard(tc, conditionChecksFieldTypes, "is_failed_precondition", () => { tc.is_failed_precondition = calcConditionChecksIsFailedPrecondition(tc); });
   calcGuard(tc, conditionChecksFieldTypes, "is_violated_invariant", () => { tc.is_violated_invariant = calcConditionChecksIsViolatedInvariant(tc); });
+  calcGuard(tc, conditionChecksFieldTypes, "failed_check_requirement_key", () => { tc.failed_check_requirement_key = calcConditionChecksFailedCheckRequirementKey(tc); });
+  calcGuard(tc, conditionChecksFieldTypes, "is_scored_breach", () => { tc.is_scored_breach = calcConditionChecksIsScoredBreach(tc); });
   // Level 2
   calcGuard(tc, conditionChecksFieldTypes, "failed_precondition_execution_key", () => { tc.failed_precondition_execution_key = calcConditionChecksFailedPreconditionExecutionKey(tc); });
   calcGuard(tc, conditionChecksFieldTypes, "violated_invariant_execution_key", () => { tc.violated_invariant_execution_key = calcConditionChecksViolatedInvariantExecutionKey(tc); });
@@ -35755,11 +35842,13 @@ export function loadOntologySupportProgrammesRows(file: string): OntologySupport
 }
 
 /** Bounds the runner's passes over the dataset. */
-export const calculatedFieldCount = 1702;
+export const calculatedFieldCount = 1707;
 
 /** Every table, in rulebook order. */
 export const erbTables: TableSpec[] = [
   { name: "RulebookReleases", file: "rulebook_releases", rulebookRows: 9, fields: rulebookReleasesFieldTypes,
+    columns: { rulebook_release_id: "RulebookReleaseId", name: "Name", rulebook_version: "RulebookVersion", profile_version: "ProfileVersion", profile_schema_path: "ProfileSchemaPath", pko_core_version_iri: "PkoCoreVersionIri", pko_industry_version_iri: "PkoIndustryVersionIri", issued_at: "IssuedAt", status: "Status", changelog: "Changelog", is_current: "IsCurrent", governed_model: "GovernedModel", previous_release: "PreviousRelease", declared_scale: "DeclaredScale", version_major: "VersionMajor", version_minor: "VersionMinor", version_patch: "VersionPatch", migration_plan: "MigrationPlan", version_decision_rationale: "VersionDecisionRationale", version_decided_by_agent: "VersionDecidedByAgent", approved_by_agent: "ApprovedByAgent", rulebook_commit: "RulebookCommit", license: "License", permanent_iri: "PermanentIri", namespace_prefix: "NamespacePrefix", funding_note: "FundingNote", prev_major: "PrevMajor", prev_minor: "PrevMinor", prev_patch: "PrevPatch", prev_issued_at: "PrevIssuedAt", model_current_release: "ModelCurrentRelease", expected_major: "ExpectedMajor", expected_minor: "ExpectedMinor", expected_patch: "ExpectedPatch", is_increment_inconsistent_with_scale: "IsIncrementInconsistentWithScale", days_since_previous_release: "DaysSincePreviousRelease", is_long_release_cycle: "IsLongReleaseCycle", is_declared_current_release: "IsDeclaredCurrentRelease", log_entry_count: "LogEntryCount", logical_change_count: "LogicalChangeCount", non_additive_change_count: "NonAdditiveChangeCount", class_removal_or_rename_count: "ClassRemovalOrRenameCount", invalidating_domain_range_count: "InvalidatingDomainRangeCount", inconsistent_disjointness_count: "InconsistentDisjointnessCount", schema_addition_count: "SchemaAdditionCount", suite_update_count: "SuiteUpdateCount", consumer_count: "ConsumerCount", notified_consumer_count: "NotifiedConsumerCount", revalidated_consumer_count: "RevalidatedConsumerCount", validation_run_count: "ValidationRunCount", validation_failure_total: "ValidationFailureTotal", consistent_run_count: "ConsistentRunCount", cq_run_count: "CqRunCount", answerable_cq_run_count: "AnswerableCqRunCount", regressed_baseline_count: "RegressedBaselineCount", cq_coverage_percent: "CqCoveragePercent", prev_cq_coverage_percent: "PrevCqCoveragePercent", prev_cq_run_count: "PrevCqRunCount", scored_criterion_count: "ScoredCriterionCount", stated_criterion_count: "StatedCriterionCount", patch_alters_logical_model: "PatchAltersLogicalModel", minor_is_not_backward_compatible: "MinorIsNotBackwardCompatible", class_removal_without_major: "ClassRemovalWithoutMajor", invalidating_domain_range_without_major: "InvalidatingDomainRangeWithoutMajor", inconsistent_disjointness_without_major: "InconsistentDisjointnessWithoutMajor", is_breaking_release: "IsBreakingRelease", breaking_release_with_unrevalidated_consumers: "BreakingReleaseWithUnrevalidatedConsumers", breaking_release_without_migration_plan: "BreakingReleaseWithoutMigrationPlan", is_undocumented_version_decision: "IsUndocumentedVersionDecision", is_unannounced_to_dependents: "IsUnannouncedToDependents", is_release_without_recorded_changes: "IsReleaseWithoutRecordedChanges", suite_lags_release: "SuiteLagsRelease", is_untagged_release: "IsUntaggedRelease", published_without_approval: "PublishedWithoutApproval", released_despite_failed_validation: "ReleasedDespiteFailedValidation", released_without_consistency_check: "ReleasedWithoutConsistencyCheck", passed_validation_at_release: "PassedValidationAtRelease", cq_coverage_declined: "CqCoverageDeclined", has_baseline_regression: "HasBaselineRegression", released_without_cq_task_test: "ReleasedWithoutCqTaskTest", well_formed_but_requirements_unshown: "WellFormedButRequirementsUnshown", is_not_scored_against_criteria: "IsNotScoredAgainstCriteria", is_released_without_licence_or_permanent_id: "IsReleasedWithoutLicenceOrPermanentId" },
+    stored: ["rulebook_release_id", "rulebook_version", "profile_version", "profile_schema_path", "pko_core_version_iri", "pko_industry_version_iri", "issued_at", "status", "changelog", "is_current", "governed_model", "previous_release", "declared_scale", "version_major", "version_minor", "version_patch", "migration_plan", "version_decision_rationale", "version_decided_by_agent", "approved_by_agent", "rulebook_commit", "license", "permanent_iri", "namespace_prefix", "funding_note"],
     compute: (row: any) => computeRulebookReleases(row as RulebookReleasesRow),
     lookups: [
       { field: "prev_major", target: "rulebook_releases", ret: "version_major", key: "previous_release", match: "rulebook_release_id" },
@@ -35790,6 +35879,8 @@ export const erbTables: TableSpec[] = [
       { field: "scored_criterion_count", op: "COUNTIFS", table: "quality_assessments", criteria: [{ range: "rulebook_release", kind: "field", field: "rulebook_release_id" }] },
       { field: "stated_criterion_count", op: "COUNTIFS", table: "quality_criteria", criteria: [{ range: "is_stated", kind: "literal", literal: vB(true) }] },] },
   { name: "OntologyProfiles", file: "ontology_profiles", rulebookRows: 27, fields: ontologyProfilesFieldTypes,
+    columns: { ontology_profile_id: "OntologyProfileId", name: "Name", label: "Label", version: "Version", version_iri: "VersionIri", namespace_iri: "NamespaceIri", license: "License", scope: "Scope", mapping_count: "MappingCount", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", last_revised_at: "LastRevisedAt", last_major_revision_at: "LastMajorRevisionAt", dependency_reviewed_at: "DependencyReviewedAt", days_since_last_revision: "DaysSinceLastRevision", days_since_major_revision: "DaysSinceMajorRevision", days_since_dependency_reviewed: "DaysSinceDependencyReviewed", recent_deprecation_count: "RecentDeprecationCount", requires_frequent_review: "RequiresFrequentReview", change_rate_profile: "ChangeRateProfile", is_review_overdue_for_change_rate: "IsReviewOverdueForChangeRate", adoption_stage: "AdoptionStage", adopted_at: "AdoptedAt", prerequisite_profile: "PrerequisiteProfile", prerequisite_adopted_at: "PrerequisiteAdoptedAt", skips_adoption_path: "SkipsAdoptionPath", supporting_programme: "SupportingProgramme", namespace_checked_at: "NamespaceCheckedAt", namespace_http_status: "NamespaceHttpStatus", namespace_serves_rdf: "NamespaceServesRdf", namespace_is_http: "NamespaceIsHttp", namespace_dereferences: "NamespaceDereferences", publishes_following_linked_data_principles: "PublishesFollowingLinkedDataPrinciples" },
+    stored: ["ontology_profile_id", "label", "version", "version_iri", "namespace_iri", "license", "scope", "evaluation_context", "last_revised_at", "last_major_revision_at", "dependency_reviewed_at", "adoption_stage", "adopted_at", "prerequisite_profile", "supporting_programme", "namespace_checked_at", "namespace_http_status", "namespace_serves_rdf"],
     compute: (row: any) => computeOntologyProfiles(row as OntologyProfilesRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -35798,6 +35889,8 @@ export const erbTables: TableSpec[] = [
       { field: "mapping_count", op: "COUNTIFS", table: "semantic_mappings", criteria: [{ range: "ontology_profile", kind: "field", field: "ontology_profile_id" }] },
       { field: "recent_deprecation_count", op: "COUNTIFS", table: "external_standard_terms", criteria: [{ range: "ontology_profile", kind: "field", field: "ontology_profile_id" }, { range: "is_recent_deprecation", kind: "literal", literal: vB(true) }] },] },
   { name: "EvaluationContexts", file: "evaluation_contexts", rulebookRows: 1, fields: evaluationContextsFieldTypes,
+    columns: { evaluation_context_id: "EvaluationContextId", name: "Name", label: "Label", as_of_instant: "AsOfInstant", is_current: "IsCurrent", rationale: "Rationale", semantic_type_iri: "SemanticTypeIri", explicit_fragment_count: "ExplicitFragmentCount", tacit_fragment_count: "TacitFragmentCount", implicit_fragment_count: "ImplicitFragmentCount", situated_judgment_fragment_count: "SituatedJudgmentFragmentCount", model_reasoned_answer_count: "ModelReasonedAnswerCount", otherwise_reasoned_answer_count: "OtherwiseReasonedAnswerCount", assistant_answer_count: "AssistantAnswerCount", model_reasoned_failed_answer_count: "ModelReasonedFailedAnswerCount", out_of_order_step_execution_count: "OutOfOrderStepExecutionCount", in_order_step_execution_count: "InOrderStepExecutionCount", step_execution_count: "StepExecutionCount", early_start_step_execution_count: "EarlyStartStepExecutionCount", exact_mapping_count: "ExactMappingCount", aligned_mapping_count: "AlignedMappingCount", extension_mapping_count: "ExtensionMappingCount" },
+    stored: ["evaluation_context_id", "label", "as_of_instant", "is_current", "rationale", "semantic_type_iri"],
     compute: (row: any) => computeEvaluationContexts(row as EvaluationContextsRow),
     lookups: [],
     aggregations: [
@@ -35815,6 +35908,8 @@ export const erbTables: TableSpec[] = [
       { field: "aligned_mapping_count", op: "COUNTIFS", table: "semantic_mappings", criteria: [{ range: "mapping_relation", kind: "literal", literal: vS("aligned") }] },
       { field: "extension_mapping_count", op: "COUNTIFS", table: "semantic_mappings", criteria: [{ range: "mapping_relation", kind: "literal", literal: vS("extension") }] },] },
   { name: "Organizations", file: "organizations", rulebookRows: 18, fields: organizationsFieldTypes,
+    columns: { organization_id: "OrganizationId", name: "Name", display_name: "DisplayName", organization_type: "OrganizationType", external_identifier: "ExternalIdentifier", semantic_type_iri: "SemanticTypeIri", failed_ai_initiative_count: "FailedAiInitiativeCount", owned_procedure_count: "OwnedProcedureCount", ai_fails_for_lack_of_captured_knowledge: "AiFailsForLackOfCapturedKnowledge", product_delivery_function_count: "ProductDeliveryFunctionCount", provider_held_delivery_method_count: "ProviderHeldDeliveryMethodCount", is_hollowed_out_firm: "IsHollowedOutFirm", audit_finding_count: "AuditFindingCount", filled_knowledge_position_count: "FilledKnowledgePositionCount", has_knowledge_findings_without_knowledge_staff: "HasKnowledgeFindingsWithoutKnowledgeStaff", departed_holder_know_how_count: "DepartedHolderKnowHowCount", lost_departed_know_how_count: "LostDepartedKnowHowCount", retained_departed_know_how_percent: "RetainedDepartedKnowHowPercent", memory_leaves_with_staff: "MemoryLeavesWithStaff", captured_own_know_how_count: "CapturedOwnKnowHowCount", documentation_entry_count: "DocumentationEntryCount", unallocated_documentation_count: "UnallocatedDocumentationCount", transfer_given_count: "TransferGivenCount", unallocated_transfer_count: "UnallocatedTransferCount", treats_knowledge_work_as_unvalued: "TreatsKnowledgeWorkAsUnvalued", person_carried_know_how_count: "PersonCarriedKnowHowCount", facility_carried_know_how_count: "FacilityCarriedKnowHowCount", system_carried_know_how_count: "SystemCarriedKnowHowCount", holds_know_how_in_people_plants_and_systems: "HoldsKnowHowInPeoplePlantsAndSystems", staged_decline_count: "StagedDeclineCount", eroded_in_stages: "ErodedInStages" },
+    stored: ["organization_id", "display_name", "organization_type", "external_identifier", "semantic_type_iri"],
     compute: (row: any) => computeOrganizations(row as OrganizationsRow),
     lookups: [],
     aggregations: [
@@ -35836,6 +35931,8 @@ export const erbTables: TableSpec[] = [
       { field: "system_carried_know_how_count", op: "COUNTIFS", table: "know_how_carriers", criteria: [{ range: "organization", kind: "field", field: "organization_id" }, { range: "carrier_kind", kind: "literal", literal: vS("System") }] },
       { field: "staged_decline_count", op: "COUNTIFS", table: "capability_declines", criteria: [{ range: "organization", kind: "field", field: "organization_id" }, { range: "follows_preceding_stage_decline", kind: "literal", literal: vB(true) }] },] },
   { name: "Agents", file: "agents", rulebookRows: 55, fields: agentsFieldTypes,
+    columns: { agent_id: "AgentId", name: "Name", display_name: "DisplayName", agent_kind: "AgentKind", organization: "Organization", contact_address: "ContactAddress", version_or_employment_key: "VersionOrEmploymentKey", count_of_current_role_assignments: "CountOfCurrentRoleAssignments", is_still_engaged: "IsStillEngaged", decision_count: "DecisionCount", overridden_decision_count: "OverriddenDecisionCount", override_rate_percent: "OverrideRatePercent", is_non_human: "IsNonHuman", boundary_violation_count: "BoundaryViolationCount", is_operating_outside_boundary: "IsOperatingOutsideBoundary", draft_decision_count: "DraftDecisionCount", overridden_draft_count: "OverriddenDraftCount", draft_rewrite_rate_percent: "DraftRewriteRatePercent", times_named_as_broker: "TimesNamedAsBroker", is_recognized_broker: "IsRecognizedBroker", at_risk_reliance_count: "AtRiskRelianceCount", has_at_risk_knowledge_reliance: "HasAtRiskKnowledgeReliance", semantic_type_iri: "SemanticTypeIri", represents_organization: "RepresentsOrganization", is_organization_agent: "IsOrganizationAgent", answer_count: "AnswerCount", ai_task_completed_count: "AiTaskCompletedCount", ai_task_completion_percent: "AiTaskCompletionPercent", is_below_task_completion_target: "IsBelowTaskCompletionTarget", runtime_integration_count: "RuntimeIntegrationCount", lacks_runtime_knowledge_integration: "LacksRuntimeKnowledgeIntegration", search_event_count: "SearchEventCount", is_untracked_ai_consumer: "IsUntrackedAiConsumer", accountability_assertion_count: "AccountabilityAssertionCount", inferred_category_count: "InferredCategoryCount", category_not_available_as_inference: "CategoryNotAvailableAsInference", is_unclassified_agent: "IsUnclassifiedAgent", is_ai_agent_without_model_version: "IsAiAgentWithoutModelVersion", attributed_artifact_count: "AttributedArtifactCount", has_produced_artifacts: "HasProducedArtifacts", has_artifact_blast_radius: "HasArtifactBlastRadius", registry_version_match_count: "RegistryVersionMatchCount", is_ai_agent_not_filled_from_registry: "IsAiAgentNotFilledFromRegistry", current_accountable_human_count: "CurrentAccountableHumanCount", is_ai_agent_without_accountable_human: "IsAiAgentWithoutAccountableHuman", service_started_at: "ServiceStartedAt", departure_at: "DepartureAt", protected_mentoring_hours_per_week: "ProtectedMentoringHoursPerWeek", community_count: "CommunityCount", is_boundary_spanner: "IsBoundarySpanner", sna_identification_count: "SnaIdentificationCount", is_unidentified_boundary_spanner: "IsUnidentifiedBoundarySpanner", located_know_how_count: "LocatedKnowHowCount", required_mentoring_hours_per_week: "RequiredMentoringHoursPerWeek", lacks_time_to_mentor: "LacksTimeToMentor", transfers_given_count: "TransfersGivenCount", recognition_count: "RecognitionCount", is_unrewarded_sharer: "IsUnrewardedSharer", downstream_of_held_steps_count: "DownstreamOfHeldStepsCount", artifact_blast_radius_step_count: "ArtifactBlastRadiusStepCount" },
+    stored: ["agent_id", "display_name", "agent_kind", "organization", "contact_address", "version_or_employment_key", "semantic_type_iri", "represents_organization", "service_started_at", "departure_at", "protected_mentoring_hours_per_week"],
     compute: (row: any) => computeAgents(row as AgentsRow),
     lookups: [],
     aggregations: [
@@ -35864,6 +35961,8 @@ export const erbTables: TableSpec[] = [
       { field: "recognition_count", op: "COUNTIFS", table: "sharing_recognitions", criteria: [{ range: "recognized_agent", kind: "field", field: "agent_id" }] },
       { field: "downstream_of_held_steps_count", op: "SUM", table: "steps", target: "downstream_artifact_step_count", criteria: [{ range: "accountable_agent", kind: "field", field: "agent_id" }] },] },
   { name: "Roles", file: "roles", rulebookRows: 33, fields: rolesFieldTypes,
+    columns: { role_id: "RoleId", name: "Name", label: "Label", organization: "Organization", current_agent: "CurrentAgent", current_agent_kind: "CurrentAgentKind", responsibility: "Responsibility", active_assignment_count: "ActiveAssignmentCount", currently_covered_assignment_count: "CurrentlyCoveredAssignmentCount", has_no_current_holder: "HasNoCurrentHolder", count_of_awaited_decisions: "CountOfAwaitedDecisions", current_assignment: "CurrentAssignment", current_assignment_valid_from: "CurrentAssignmentValidFrom", is_non_human_held: "IsNonHumanHeld", is_ungoverned_non_human_role: "IsUngovernedNonHumanRole", departed_assignment_count: "DepartedAssignmentCount", has_lost_a_holder: "HasLostAHolder", is_vacated_role: "IsVacatedRole", ungrounded_boundary_count: "UngroundedBoundaryCount", is_governed_by_lapsed_authority: "IsGovernedByLapsedAuthority", unescalated_refusal_count: "UnescalatedRefusalCount", unauthorized_enforcement_assignment_count: "UnauthorizedEnforcementAssignmentCount", is_ungoverned_enforcement_role: "IsUngovernedEnforcementRole", semantic_type_iri: "SemanticTypeIri", specializes_role: "SpecializesRole", seniority_level: "SeniorityLevel", role_family: "RoleFamily", specialized_role_family: "SpecializedRoleFamily", specialization_count: "SpecializationCount", has_specializations: "HasSpecializations", is_senior_variant_not_specialization: "IsSeniorVariantNotSpecialization", organization_type: "OrganizationType", is_not_housed_in_department: "IsNotHousedInDepartment", capability_tag_count: "CapabilityTagCount", compliance_review_tag_count: "ComplianceReviewTagCount", has_compliance_review_capability: "HasComplianceReviewCapability", role_mention_count: "RoleMentionCount", unresolved_role_mention_count: "UnresolvedRoleMentionCount", is_missed_by_phrase_query: "IsMissedByPhraseQuery", preferred_knowledge_form: "PreferredKnowledgeForm", escalation_backup_role: "EscalationBackupRole", current_holder_name: "CurrentHolderName", backup_role_holder: "BackupRoleHolder", has_escalation_backup: "HasEscalationBackup", has_unfilled_escalation_backup: "HasUnfilledEscalationBackup", release_approval_step_count: "ReleaseApprovalStepCount", is_production_release_approver: "IsProductionReleaseApprover", approval_step_count: "ApprovalStepCount" },
+    stored: ["role_id", "label", "organization", "current_agent", "responsibility", "current_assignment", "semantic_type_iri", "specializes_role", "seniority_level", "role_family", "preferred_knowledge_form", "escalation_backup_role"],
     compute: (row: any) => computeRoles(row as RolesRow),
     lookups: [
       { field: "current_agent_kind", target: "agents", ret: "agent_kind", key: "current_agent", match: "agent_id" },
@@ -35888,6 +35987,8 @@ export const erbTables: TableSpec[] = [
       { field: "release_approval_step_count", op: "COUNTIFS", table: "steps", criteria: [{ range: "assigned_role", kind: "field", field: "role_id" }, { range: "is_release_approval_gate", kind: "literal", literal: vB(true) }] },
       { field: "approval_step_count", op: "COUNTIFS", table: "steps", criteria: [{ range: "assigned_role", kind: "field", field: "role_id" }, { range: "control_kind", kind: "literal", literal: vS("Approval") }] },] },
   { name: "RoleAssignments", file: "role_assignments", rulebookRows: 36, fields: roleAssignmentsFieldTypes,
+    columns: { role_assignment_id: "RoleAssignmentId", name: "Name", role: "Role", agent: "Agent", valid_from: "ValidFrom", valid_to: "ValidTo", reason: "Reason", status: "Status", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", is_current: "IsCurrent", current_agent_key: "CurrentAgentKey", is_currently_valid: "IsCurrentlyValid", agent_role_key: "AgentRoleKey", has_departed: "HasDeparted", covers_now: "CoversNow", role_when_covering: "RoleWhenCovering", agent_kind: "AgentKind", is_non_human_assignment: "IsNonHumanAssignment", supersedes_assignment: "SupersedesAssignment", predecessor_agent_kind: "PredecessorAgentKind", is_human_to_non_human_handover: "IsHumanToNonHumanHandover", approving_authority_role: "ApprovingAuthorityRole", authorizing_change_request: "AuthorizingChangeRequest", is_unauthorized_non_human_assignment: "IsUnauthorizedNonHumanAssignment", was_authorized_by_change_request: "WasAuthorizedByChangeRequest", decision_count: "DecisionCount", overridden_decision_count: "OverriddenDecisionCount", override_rate_percent: "OverrideRatePercent", predecessor_override_rate_percent: "PredecessorOverrideRatePercent", quality_regressed_vs_predecessor: "QualityRegressedVsPredecessor", departed_role_key: "DepartedRoleKey", minimum_decisions_for_comparison: "MinimumDecisionsForComparison", predecessor_decision_count: "PredecessorDecisionCount", has_sufficient_sample: "HasSufficientSample", predecessor_has_sufficient_sample: "PredecessorHasSufficientSample", comparison_is_evidentially_sound: "ComparisonIsEvidentiallySound", single_override_swing_percent: "SingleOverrideSwingPercent", quality_verdict_is_unsupported: "QualityVerdictIsUnsupported", is_unmeasured_automation_handover: "IsUnmeasuredAutomationHandover", error_correction_count: "ErrorCorrectionCount", error_rate_percent: "ErrorRatePercent", authorization_decided_at: "AuthorizationDecidedAt", authorization_reviewed_at: "AuthorizationReviewedAt", authorization_review_cadence_days: "AuthorizationReviewCadenceDays", has_dated_authorization: "HasDatedAuthorization", days_since_authorization_review: "DaysSinceAuthorizationReview", authorization_is_overdue_for_review: "AuthorizationIsOverdueForReview", is_standing_unreviewed_automation: "IsStandingUnreviewedAutomation", is_unconditioned_automation_handover: "IsUnconditionedAutomationHandover", max_tolerable_error_rate_percent: "MaxTolerableErrorRatePercent", exceeds_tolerable_error_rate: "ExceedsTolerableErrorRate", boundary_violation_count_for_assignment: "BoundaryViolationCountForAssignment", has_any_boundary_violation: "HasAnyBoundaryViolation", has_ungrounded_governing_boundary: "HasUngroundedGoverningBoundary", suspension_condition_met: "SuspensionConditionMet", is_operating_under_met_suspension_condition: "IsOperatingUnderMetSuspensionCondition", has_declared_suspension_condition: "HasDeclaredSuspensionCondition", has_approving_authority: "HasApprovingAuthority", has_authorizing_change_request: "HasAuthorizingChangeRequest", is_enforcement_role: "IsEnforcementRole", is_unauthorized_enforcement_agent: "IsUnauthorizedEnforcementAgent", governance_evidence_count: "GovernanceEvidenceCount", unauthorized_enforcement_role_key: "UnauthorizedEnforcementRoleKey", semantic_type_iri: "SemanticTypeIri", for_procedure_version: "ForProcedureVersion", scoped_version_status: "ScopedVersionStatus", is_scoped_to_retired_version: "IsScopedToRetiredVersion", predecessor_valid_to: "PredecessorValidTo", predecessor_lacks_validity_end: "PredecessorLacksValidityEnd", agent_version_key: "AgentVersionKey", agent_role_pair_key: "AgentRolePairKey", is_open_ended: "IsOpenEnded", role_approval_step_count: "RoleApprovalStepCount", receives_approval_notices_now: "ReceivesApprovalNoticesNow" },
+    stored: ["role_assignment_id", "role", "agent", "valid_from", "valid_to", "reason", "status", "evaluation_context", "supersedes_assignment", "approving_authority_role", "authorizing_change_request", "minimum_decisions_for_comparison", "authorization_decided_at", "authorization_reviewed_at", "authorization_review_cadence_days", "max_tolerable_error_rate_percent", "is_enforcement_role", "semantic_type_iri", "for_procedure_version"],
     compute: (row: any) => computeRoleAssignments(row as RoleAssignmentsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -35906,6 +36007,8 @@ export const erbTables: TableSpec[] = [
       { field: "error_correction_count", op: "COUNTIFS", table: "agent_decision_records", criteria: [{ range: "error_correction_role_assignment_key", kind: "field", field: "role_assignment_id" }] },
       { field: "boundary_violation_count_for_assignment", op: "COUNTIFS", table: "agent_decision_records", criteria: [{ range: "boundary_violation_role_assignment_key", kind: "field", field: "role_assignment_id" }] },] },
   { name: "CommunitiesOfPractice", file: "communities_of_practice", rulebookRows: 7, fields: communitiesOfPracticeFieldTypes,
+    columns: { community_of_practice_id: "CommunityOfPracticeId", name: "Name", label: "Label", organization: "Organization", steward_role: "StewardRole", purpose: "Purpose", cadence: "Cadence", semantic_type_iri: "SemanticTypeIri", own_vocabulary: "OwnVocabulary", norms: "Norms", origin: "Origin", open_apprenticeship_places: "OpenApprenticeshipPlaces", is_colocated_trade: "IsColocatedTrade", has_own_vocabulary_and_norms: "HasOwnVocabularyAndNorms", sharing_event_count: "SharingEventCount", is_mandated_without_sharing_norm: "IsMandatedWithoutSharingNorm", interconnected_know_how_count: "InterconnectedKnowHowCount", physical_know_how_count: "PhysicalKnowHowCount", digital_know_how_count: "DigitalKnowHowCount", person_carried_know_how_count: "PersonCarriedKnowHowCount", spans_physical_and_digital_with_humans: "SpansPhysicalAndDigitalWithHumans", external_member_count: "ExternalMemberCount", specialist_member_count: "SpecialistMemberCount", employer_move_count: "EmployerMoveCount", is_cross_firm_practice_cluster: "IsCrossFirmPracticeCluster", recent_apprenticeship_count: "RecentApprenticeshipCount", is_circulation_ending_for_lack_of_apprentices: "IsCirculationEndingForLackOfApprentices", ambient_absorption_count: "AmbientAbsorptionCount", has_ambient_trade_know_how: "HasAmbientTradeKnowHow" },
+    stored: ["community_of_practice_id", "label", "organization", "steward_role", "purpose", "cadence", "semantic_type_iri", "own_vocabulary", "norms", "origin", "open_apprenticeship_places", "is_colocated_trade"],
     compute: (row: any) => computeCommunitiesOfPractice(row as CommunitiesOfPracticeRow),
     lookups: [],
     aggregations: [
@@ -35920,12 +36023,16 @@ export const erbTables: TableSpec[] = [
       { field: "recent_apprenticeship_count", op: "COUNTIFS", table: "mentorships", criteria: [{ range: "community_of_practice", kind: "field", field: "community_of_practice_id" }, { range: "is_recent_apprenticeship", kind: "literal", literal: vB(true) }] },
       { field: "ambient_absorption_count", op: "COUNTIFS", table: "knowledge_transfers", criteria: [{ range: "community_of_practice", kind: "field", field: "community_of_practice_id" }, { range: "is_ambient_absorption_by_non_practitioner", kind: "literal", literal: vB(true) }] },] },
   { name: "Mentorships", file: "mentorships", rulebookRows: 5, fields: mentorshipsFieldTypes,
+    columns: { mentorship_id: "MentorshipId", name: "Name", community_of_practice: "CommunityOfPractice", mentor_agent: "MentorAgent", learner_agent: "LearnerAgent", valid_from: "ValidFrom", valid_to: "ValidTo", learning_objective: "LearningObjective", evidence_of_completion: "EvidenceOfCompletion", semantic_type_iri: "SemanticTypeIri", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", mentorship_form: "MentorshipForm", employer_worker_obligation: "EmployerWorkerObligation", expected_weekly_hours: "ExpectedWeeklyHours", is_active: "IsActive", days_since_started: "DaysSinceStarted", is_recent_apprenticeship: "IsRecentApprenticeship", community_label: "CommunityLabel" },
+    stored: ["mentorship_id", "community_of_practice", "mentor_agent", "learner_agent", "valid_from", "valid_to", "learning_objective", "evidence_of_completion", "semantic_type_iri", "evaluation_context", "mentorship_form", "employer_worker_obligation", "expected_weekly_hours"],
     compute: (row: any) => computeMentorships(row as MentorshipsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
       { field: "community_label", target: "communities_of_practice", ret: "label", key: "community_of_practice", match: "community_of_practice_id" },],
     aggregations: [] },
   { name: "ProcedureTypes", file: "procedure_types", rulebookRows: 17, fields: procedureTypesFieldTypes,
+    columns: { procedure_type_id: "ProcedureTypeId", name: "Name", label: "Label", definition: "Definition", semantic_type_iri: "SemanticTypeIri", broader_procedure_type: "BroaderProcedureType", taxonomy_rank: "TaxonomyRank", distinguishing_facet: "DistinguishingFacet", distinguishing_value: "DistinguishingValue", narrower_type_count: "NarrowerTypeCount", has_narrower_types: "HasNarrowerTypes", is_detached_from_taxonomy: "IsDetachedFromTaxonomy", broader_is_detached: "BroaderIsDetached", is_unreachable_by_navigation: "IsUnreachableByNavigation", member_count: "MemberCount", members_lacking_distinction_count: "MembersLackingDistinctionCount", is_arbitrary_grouping: "IsArbitraryGrouping" },
+    stored: ["procedure_type_id", "label", "definition", "semantic_type_iri", "broader_procedure_type", "taxonomy_rank", "distinguishing_facet", "distinguishing_value"],
     compute: (row: any) => computeProcedureTypes(row as ProcedureTypesRow),
     lookups: [
       { field: "broader_is_detached", target: "procedure_types", ret: "is_detached_from_taxonomy", key: "broader_procedure_type", match: "procedure_type_id" },],
@@ -35934,6 +36041,8 @@ export const erbTables: TableSpec[] = [
       { field: "member_count", op: "COUNTIFS", table: "procedures", criteria: [{ range: "procedure_type", kind: "field", field: "procedure_type_id" }] },
       { field: "members_lacking_distinction_count", op: "COUNTIFS", table: "procedures", criteria: [{ range: "lacks_distinction_type_key", kind: "field", field: "procedure_type_id" }] },] },
   { name: "Procedures", file: "procedures", rulebookRows: 10, fields: proceduresFieldTypes,
+    columns: { procedure_id: "ProcedureId", name: "Name", title: "Title", procedure_type: "ProcedureType", owner_organization: "OwnerOrganization", adopted_by_organization: "AdoptedByOrganization", purpose: "Purpose", target: "Target", is_template: "IsTemplate", current_version_key: "CurrentVersionKey", semantic_type_iri: "SemanticTypeIri", execution_count: "ExecutionCount", template_procedure: "TemplateProcedure", required_by_regulation: "RequiredByRegulation", is_template_instance: "IsTemplateInstance", target_count: "TargetCount", adoption_count: "AdoptionCount", specified_step_total: "SpecifiedStepTotal", has_no_explicit_steps: "HasNoExplicitSteps", called_by_step_count: "CalledByStepCount", is_nested_procedure: "IsNestedProcedure", failure_criterion_count: "FailureCriterionCount", has_no_failure_criterion: "HasNoFailureCriterion", lens_view_count: "LensViewCount", privileges_single_stakeholder_view: "PrivilegesSingleStakeholderView", step_level_view_count: "StepLevelViewCount", category_level_view_count: "CategoryLevelViewCount", procedure_type_rank: "ProcedureTypeRank", procedure_type_definition: "ProcedureTypeDefinition", has_step_and_category_resolutions: "HasStepAndCategoryResolutions", is_missing_demanded_resolution: "IsMissingDemandedResolution", is_inconsistently_categorized: "IsInconsistentlyCategorized", strategic_alignment_count: "StrategicAlignmentCount", has_no_stated_reason_for_existing: "HasNoStatedReasonForExisting", outcome_measure_count: "OutcomeMeasureCount", unlinked_measure_count: "UnlinkedMeasureCount", measures_performance_without_business_link: "MeasuresPerformanceWithoutBusinessLink", hindered_by_count: "HinderedByCount", is_hindered_by_another_operation: "IsHinderedByAnotherOperation", type_distinguishing_facet: "TypeDistinguishingFacet", type_distinguishing_value: "TypeDistinguishingValue", matching_distinction_count: "MatchingDistinctionCount", lacks_type_distinction: "LacksTypeDistinction", lacks_distinction_type_key: "LacksDistinctionTypeKey", managed_vocabulary_count: "ManagedVocabularyCount", lacks_managed_controlled_vocabulary: "LacksManagedControlledVocabulary", compliance_review_step_count: "ComplianceReviewStepCount", involves_compliance_review_role: "InvolvesComplianceReviewRole", is_regulated_but_unformalized: "IsRegulatedButUnformalized", agent_intended_count: "AgentIntendedCount", is_tacit_only_agent_target: "IsTacitOnlyAgentTarget", repository_entry_count: "RepositoryEntryCount", stale_entry_count: "StaleEntryCount", departed_only_know_how_count: "DepartedOnlyKnowHowCount", has_decayed_transfer_channel: "HasDecayedTransferChannel", execution_feedback_entry_count: "ExecutionFeedbackEntryCount", is_executed_without_feedback_loop: "IsExecutedWithoutFeedbackLoop", machine_authored_entry_count: "MachineAuthoredEntryCount", practitioner_relationship_count: "PractitionerRelationshipCount", is_captured_by_automation_alone: "IsCapturedByAutomationAlone", unengaged_stakeholder_count: "UnengagedStakeholderCount", has_unengaged_stakeholder: "HasUnengagedStakeholder", recent_starter_count: "RecentStarterCount", untransferred_veteran_know_how_count: "UntransferredVeteranKnowHowCount", departing_veteran_know_how_count: "DepartingVeteranKnowHowCount", has_transfer_shortfall_exposure: "HasTransferShortfallExposure", proficient_with_capture_count: "ProficientWithCaptureCount", proficient_without_capture_count: "ProficientWithoutCaptureCount", days_with_capture_total: "DaysWithCaptureTotal", days_without_capture_total: "DaysWithoutCaptureTotal", avg_days_to_proficiency_with_capture: "AvgDaysToProficiencyWithCapture", avg_days_to_proficiency_without_capture: "AvgDaysToProficiencyWithoutCapture", formalization_does_not_ease_onboarding: "FormalizationDoesNotEaseOnboarding", collected_material_count: "CollectedMaterialCount", in_work_capture_count: "InWorkCaptureCount", is_capture_separate_from_work: "IsCaptureSeparateFromWork", expert_acquisition_hours: "ExpertAcquisitionHours", compliance_document_count: "ComplianceDocumentCount" },
+    stored: ["procedure_id", "title", "procedure_type", "owner_organization", "adopted_by_organization", "purpose", "target", "is_template", "current_version_key", "semantic_type_iri", "template_procedure", "required_by_regulation"],
     compute: (row: any) => computeProcedures(row as ProceduresRow),
     lookups: [
       { field: "procedure_type_rank", target: "procedure_types", ret: "taxonomy_rank", key: "procedure_type", match: "procedure_type_id" },
@@ -35977,6 +36086,8 @@ export const erbTables: TableSpec[] = [
       { field: "expert_acquisition_hours", op: "SUM", table: "collected_source_materials", target: "expert_effort_hours", criteria: [{ range: "procedure", kind: "field", field: "procedure_id" }] },
       { field: "compliance_document_count", op: "COUNTIFS", table: "resources", criteria: [{ range: "compliance_record_for", kind: "field", field: "procedure_id" }] },] },
   { name: "ProcedureVersions", file: "procedure_versions", rulebookRows: 9, fields: procedureVersionsFieldTypes,
+    columns: { procedure_version_id: "ProcedureVersionId", name: "Name", procedure: "Procedure", version_number: "VersionNumber", title: "Title", status: "Status", issued_at: "IssuedAt", modified_at: "ModifiedAt", created_by_agent: "CreatedByAgent", modified_by_agent: "ModifiedByAgent", new_version_motivation: "NewVersionMotivation", changelog_description: "ChangelogDescription", is_current: "IsCurrent", count_of_steps: "CountOfSteps", count_of_open_knowledge_gaps: "CountOfOpenKnowledgeGaps", is_ready_for_execution: "IsReadyForExecution", specified_step_count: "SpecifiedStepCount", overdue_review_count: "OverdueReviewCount", open_change_request_count: "OpenChangeRequestCount", open_high_severity_gap_count: "OpenHighSeverityGapCount", is_fit_to_execute: "IsFitToExecute", steward_review_cadence_days: "StewardReviewCadenceDays", count_of_stewardship_assignments: "CountOfStewardshipAssignments", has_any_steward: "HasAnySteward", is_live: "IsLive", is_unstewarded: "IsUnstewarded", is_live_and_unstewarded: "IsLiveAndUnstewarded", count_of_open_blocking_gaps: "CountOfOpenBlockingGaps", has_open_blocking_gap: "HasOpenBlockingGap", is_live_with_blocking_gap: "IsLiveWithBlockingGap", should_not_be_executable: "ShouldNotBeExecutable", count_of_unapproved_reliance_fragments: "CountOfUnapprovedRelianceFragments", runs_on_unapproved_knowledge: "RunsOnUnapprovedKnowledge", count_of_overdue_gaps: "CountOfOverdueGaps", count_of_change_requests: "CountOfChangeRequests", count_of_review_events: "CountOfReviewEvents", has_governance_record: "HasGovernanceRecord", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", days_since_modified: "DaysSinceModified", days_since_last_review: "DaysSinceLastReview", was_modified_since_last_review: "WasModifiedSinceLastReview", modifier_is_authority: "ModifierIsAuthority", has_unwitnessed_change: "HasUnwitnessedChange", count_of_stale_fragments: "CountOfStaleFragments", knowledge_is_staler_than_cadence: "KnowledgeIsStalerThanCadence", compound_fragile_fragment_count: "CompoundFragileFragmentCount", rests_on_compound_fragile_knowledge: "RestsOnCompoundFragileKnowledge", concentrated_witness_session_count: "ConcentratedWitnessSessionCount", knowledge_base_is_concentrated: "KnowledgeBaseIsConcentrated", machine_consumed_unapproved_count: "MachineConsumedUnapprovedCount", feeds_unapproved_knowledge_to_machines: "FeedsUnapprovedKnowledgeToMachines", genuinely_overdue_fragment_count: "GenuinelyOverdueFragmentCount", awaited_decision_count: "AwaitedDecisionCount", scoped_open_blocking_gap_count: "ScopedOpenBlockingGapCount", is_blocked_on_pending_decision: "IsBlockedOnPendingDecision", unexercised_human_gate_count: "UnexercisedHumanGateCount", ai_boundary_is_unevidenced: "AiBoundaryIsUnevidenced", load_bearing_unapproved_count: "LoadBearingUnapprovedCount", unlanded_decision_count: "UnlandedDecisionCount", unrehearsed_control_entry_count: "UnrehearsedControlEntryCount", has_unrehearsed_control_entry: "HasUnrehearsedControlEntry", is_live_with_unrehearsed_control: "IsLiveWithUnrehearsedControl", cadence_breach_count: "CadenceBreachCount", is_in_cadence_breach: "IsInCadenceBreach", has_decision_in_flight: "HasDecisionInFlight", is_unremediated_cadence_breach: "IsUnremediatedCadenceBreach", is_managed_cadence_breach: "IsManagedCadenceBreach", governance_is_silent: "GovernanceIsSilent", valid_fragment_count: "ValidFragmentCount", still_owns_valid_knowledge: "StillOwnsValidKnowledge", incoming_supersession_count: "IncomingSupersessionCount", is_still_referenced: "IsStillReferenced", is_load_bearing_orphan: "IsLoadBearingOrphan", is_cleanly_retired: "IsCleanlyRetired", stalled_implementation_count: "StalledImplementationCount", is_held_unfit_by_landed_decisions: "IsHeldUnfitByLandedDecisions", undeclared_control_kind_count: "UndeclaredControlKindCount", control_taxonomy_is_incomplete: "ControlTaxonomyIsIncomplete", has_approved_change_request: "HasApprovedChangeRequest", approved_change_request_count: "ApprovedChangeRequestCount", unwatched_unowned_control_count: "UnwatchedUnownedControlCount", mining_run_count: "MiningRunCount", drifted_mining_run_count: "DriftedMiningRunCount", has_unresolved_mining_drift: "HasUnresolvedMiningDrift", entry_step_id: "EntryStepId", semantic_type_iri: "SemanticTypeIri", execution_count: "ExecutionCount", expected_duration_value: "ExpectedDurationValue", expected_duration_unit: "ExpectedDurationUnit", status_is_pko: "StatusIsPko", uses_non_pko_status: "UsesNonPkoStatus", exception_count: "ExceptionCount", fallback_transition_count: "FallbackTransitionCount", alternative_transition_count: "AlternativeTransitionCount", has_no_exception_handling: "HasNoExceptionHandling", latest_source_document_modified_at: "LatestSourceDocumentModifiedAt", days_document_trails_version: "DaysDocumentTrailsVersion", document_lags_practice: "DocumentLagsPractice", human_step_count: "HumanStepCount", non_human_step_count: "NonHumanStepCount", mixes_human_and_software_steps: "MixesHumanAndSoftwareSteps", day_run_count: "DayRunCount", night_run_count: "NightRunCount", day_deviating_run_count: "DayDeviatingRunCount", night_deviating_run_count: "NightDeviatingRunCount", is_inconsistent_across_shifts: "IsInconsistentAcrossShifts", overlaps_relation_count: "OverlapsRelationCount", enables_relation_count: "EnablesRelationCount", prevents_relation_count: "PreventsRelationCount", steps_without_ontology_type_count: "StepsWithoutOntologyTypeCount", rests_on_notation_only: "RestsOnNotationOnly", is_current_without_motivation: "IsCurrentWithoutMotivation", conditionless_step_count: "ConditionlessStepCount", is_under_specified_for_execution: "IsUnderSpecifiedForExecution", coarse_top_level_step_count: "CoarseTopLevelStepCount", fine_top_level_step_count: "FineTopLevelStepCount", mixes_granularity_at_one_level: "MixesGranularityAtOneLevel", procedure_type_of_version: "ProcedureTypeOfVersion", created_by_agent_kind: "CreatedByAgentKind", elicitation_session_count: "ElicitationSessionCount", expert_capture_count: "ExpertCaptureCount", elicitation_evidence_count: "ElicitationEvidenceCount", indexed_segment_count: "IndexedSegmentCount", search_count: "SearchCount", successful_search_count: "SuccessfulSearchCount", search_success_percent: "SearchSuccessPercent", open_question_annotation_count: "OpenQuestionAnnotationCount", is_inadequate_for_use: "IsInadequateForUse", served_assertion_count: "ServedAssertionCount", lacks_machine_interpretable_encoding: "LacksMachineInterpretableEncoding", structured_query_count: "StructuredQueryCount", profile_validated_submission_count: "ProfileValidatedSubmissionCount", reasoned_assertion_count: "ReasonedAssertionCount", is_not_query_validate_reason_ready: "IsNotQueryValidateReasonReady", published_projection_count: "PublishedProjectionCount", consumer_sync_count: "ConsumerSyncCount", is_unreachable_knowledge: "IsUnreachableKnowledge", human_sync_count: "HumanSyncCount", machine_sync_count: "MachineSyncCount", human_channel_count: "HumanChannelCount", machine_channel_count: "MachineChannelCount", serves_only_humans_or_only_machines: "ServesOnlyHumansOrOnlyMachines", fresh_mining_run_count: "FreshMiningRunCount", lacks_continuous_drift_detection: "LacksContinuousDriftDetection", outcome_measurement_count: "OutcomeMeasurementCount", is_disconnected_from_outcomes: "IsDisconnectedFromOutcomes", ai_contribution_count: "AiContributionCount", ai_consumption_count: "AiConsumptionCount", uses_ai_in_one_direction_only: "UsesAiInOneDirectionOnly", is_unmodified_for_twelve_months: "IsUnmodifiedForTwelveMonths", design_decision_count: "DesignDecisionCount", is_live_without_recorded_decisions: "IsLiveWithoutRecordedDecisions", ai_artifact_consuming_input_count: "AiArtifactConsumingInputCount", contains_steps_affected_by_ai_agent_change: "ContainsStepsAffectedByAiAgentChange", interview_session_count: "InterviewSessionCount", observation_session_count: "ObservationSessionCount", workshop_session_count: "WorkshopSessionCount", protocol_session_count: "ProtocolSessionCount", incident_session_count: "IncidentSessionCount", reconciled_divergence_count: "ReconciledDivergenceCount", complementary_method_count: "ComplementaryMethodCount", relies_on_single_method: "ReliesOnSingleMethod", misses_a_required_elicitation_mode: "MissesARequiredElicitationMode", critical_incident_count: "CriticalIncidentCount", judgment_unprobed_by_incidents: "JudgmentUnprobedByIncidents", sme_approval_count: "SmeApprovalCount", sme_ai_evaluation_count: "SmeAiEvaluationCount", is_approved_without_sme_signoff: "IsApprovedWithoutSmeSignoff", experts_evaluate_ai_not_representation: "ExpertsEvaluateAiNotRepresentation", ke_session_count: "KeSessionCount", ke_field_session_count: "KeFieldSessionCount", is_studied_only_from_the_desk: "IsStudiedOnlyFromTheDesk", judgment_held_outside_sop_count: "JudgmentHeldOutsideSopCount", tacit_holding_count: "TacitHoldingCount", explicit_holding_count: "ExplicitHoldingCount", tacit_share_exceeds_explicit: "TacitShareExceedsExplicit", hands_held_count: "HandsHeldCount", negotiated_practice_count: "NegotiatedPracticeCount", lives_in_hands_silence_and_negotiation: "LivesInHandsSilenceAndNegotiation", process_model_trace_count: "ProcessModelTraceCount", is_live_model_untraced: "IsLiveModelUntraced", trailing_practice_trace_count: "TrailingPracticeTraceCount", is_documented_behind_practice: "IsDocumentedBehindPractice", standardization_driver: "StandardizationDriver", tacit_fragment_count: "TacitFragmentCount", is_standardized_without_tacit_capture: "IsStandardizedWithoutTacitCapture", tacit_form_fragment_count: "TacitFormFragmentCount", situated_judgment_fragment_count: "SituatedJudgmentFragmentCount", tacit_judgment_fragment_count: "TacitJudgmentFragmentCount", first_step: "FirstStep", fallback_step: "FallbackStep", first_step_disagrees_with_graph: "FirstStepDisagreesWithGraph", declared_first_step_count: "DeclaredFirstStepCount", graph_entry_step_count: "GraphEntryStepCount", owner_organization: "OwnerOrganization" },
+    stored: ["procedure_version_id", "procedure", "version_number", "title", "status", "issued_at", "modified_at", "created_by_agent", "modified_by_agent", "new_version_motivation", "changelog_description", "is_current", "evaluation_context", "semantic_type_iri", "expected_duration_value", "expected_duration_unit", "standardization_driver"],
     compute: (row: any) => computeProcedureVersions(row as ProcedureVersionsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -36083,14 +36194,20 @@ export const erbTables: TableSpec[] = [
       { field: "declared_first_step_count", op: "COUNTIFS", table: "steps", criteria: [{ range: "procedure_version", kind: "field", field: "procedure_version_id" }, { range: "is_declared_first_step", kind: "literal", literal: vB(true) }] },
       { field: "graph_entry_step_count", op: "COUNTIFS", table: "steps", criteria: [{ range: "procedure_version", kind: "field", field: "procedure_version_id" }, { range: "is_entry_step", kind: "literal", literal: vB(true) }] },] },
   { name: "ProcedureVersionLinks", file: "procedure_version_links", rulebookRows: 2, fields: procedureVersionLinksFieldTypes,
+    columns: { procedure_version_link_id: "ProcedureVersionLinkId", name: "Name", previous_procedure_version: "PreviousProcedureVersion", next_procedure_version: "NextProcedureVersion", relation_iri: "RelationIri", change_summary: "ChangeSummary", superseded_version_key: "SupersededVersionKey" },
+    stored: ["procedure_version_link_id", "previous_procedure_version", "next_procedure_version", "relation_iri", "change_summary"],
     compute: (row: any) => computeProcedureVersionLinks(row as ProcedureVersionLinksRow),
     lookups: [],
     aggregations: [] },
   { name: "ProcedureStatusChanges", file: "procedure_status_changes", rulebookRows: 13, fields: procedureStatusChangesFieldTypes,
+    columns: { procedure_status_change_id: "ProcedureStatusChangeId", name: "Name", procedure_version: "ProcedureVersion", from_status: "FromStatus", to_status: "ToStatus", changed_at: "ChangedAt", changed_by_agent: "ChangedByAgent", motivation: "Motivation", semantic_type_iri: "SemanticTypeIri", change_kind: "ChangeKind", procedure_execution: "ProcedureExecution", is_unattributed_change: "IsUnattributedChange", change_kind_contradicts_target: "ChangeKindContradictsTarget" },
+    stored: ["procedure_status_change_id", "procedure_version", "from_status", "to_status", "changed_at", "changed_by_agent", "motivation", "semantic_type_iri", "change_kind", "procedure_execution"],
     compute: (row: any) => computeProcedureStatusChanges(row as ProcedureStatusChangesRow),
     lookups: [],
     aggregations: [] },
   { name: "Steps", file: "steps", rulebookRows: 41, fields: stepsFieldTypes,
+    columns: { step_id: "StepId", name: "Name", procedure_version: "ProcedureVersion", step_number: "StepNumber", title: "Title", step_kind: "StepKind", assigned_role: "AssignedRole", assigned_role_label: "AssignedRoleLabel", assigned_agent_kind: "AssignedAgentKind", instruction: "Instruction", expected_duration_minutes: "ExpectedDurationMinutes", expertise_level: "ExpertiseLevel", requires_human_confirmation: "RequiresHumanConfirmation", blocking_requirement_count: "BlockingRequirementCount", stale_binding_count: "StaleBindingCount", authoritative_stale_count: "AuthoritativeStaleCount", available_exception_count: "AvailableExceptionCount", declared_verification_count: "DeclaredVerificationCount", is_preparation_step: "IsPreparationStep", is_approval_step: "IsApprovalStep", stale_authoritative_binding_count: "StaleAuthoritativeBindingCount", inputs_are_fresh: "InputsAreFresh", is_software_assigned: "IsSoftwareAssigned", is_human_approval_gate: "IsHumanApprovalGate", gate_held_by_human: "GateHeldByHuman", binding_boundary_count: "BindingBoundaryCount", assigned_role_is_ungoverned: "AssignedRoleIsUngoverned", unusable_binding_count: "UnusableBindingCount", all_sources_usable: "AllSourcesUsable", control_kind: "ControlKind", unwarranted_boundary_count: "UnwarrantedBoundaryCount", is_governed_by_unwarranted_boundary: "IsGovernedByUnwarrantedBoundary", software_execution_count: "SoftwareExecutionCount", has_been_approached_by_software: "HasBeenApproachedBySoftware", is_unexercised_human_gate: "IsUnexercisedHumanGate", is_demonstrated_human_gate: "IsDemonstratedHumanGate", unexercised_gate_version_key: "UnexercisedGateVersionKey", has_declared_control_kind: "HasDeclaredControlKind", undeclared_control_version_key: "UndeclaredControlVersionKey", approval_step_is_software_assigned: "ApprovalStepIsSoftwareAssigned", unwitnessed_blocking_count: "UnwitnessedBlockingCount", reachable_step_count: "ReachableStepCount", reached_from_step_count: "ReachedFromStepCount", self_reach_count: "SelfReachCount", is_on_rework_loop: "IsOnReworkLoop", is_blocking_control_on_rework_loop: "IsBlockingControlOnReworkLoop", incoming_transition_count: "IncomingTransitionCount", is_entry_step: "IsEntryStep", entry_step_key: "EntryStepKey", version_entry_step_id: "VersionEntryStepId", gate_free_reach_from_entry_count: "GateFreeReachFromEntryCount", is_reachable_from_entry_without_human_gate: "IsReachableFromEntryWithoutHumanGate", is_gate_bypassed_publication: "IsGateBypassedPublication", semantic_type_iri: "SemanticTypeIri", parent_step: "ParentStep", first_child_step: "FirstChildStep", verifies_step: "VerifiesStep", remedy_for_error: "RemedyForError", calls_procedure: "CallsProcedure", isolates_energy_source: "IsolatesEnergySource", prerequisite_step: "PrerequisiteStep", min_repetitions: "MinRepetitions", max_repetitions: "MaxRepetitions", description: "Description", child_step_count: "ChildStepCount", parent_step_kind: "ParentStepKind", is_composite_without_children: "IsCompositeWithoutChildren", precondition_count: "PreconditionCount", postcondition_count: "PostconditionCount", invariant_count: "InvariantCount", safety_critical_condition_count: "SafetyCriticalConditionCount", failure_mode_count: "FailureModeCount", cue_count: "CueCount", danger_cue_count: "DangerCueCount", decision_point_count: "DecisionPointCount", knowledge_fragment_count: "KnowledgeFragmentCount", has_instruction_only: "HasInstructionOnly", input_variable_count: "InputVariableCount", output_variable_count: "OutputVariableCount", required_lock_count: "RequiredLockCount", required_protective_equipment_count: "RequiredProtectiveEquipmentCount", is_isolation_without_lock: "IsIsolationWithoutLock", referenced_resource_count: "ReferencedResourceCount", untyped_version_key: "UntypedVersionKey", is_accountable_to_software: "IsAccountableToSoftware", has_downstream_steps: "HasDownstreamSteps", incompleteness_cue_count: "IncompletenessCueCount", has_incompleteness_cue: "HasIncompletenessCue", has_postcondition: "HasPostcondition", accountable_agent: "AccountableAgent", has_no_accountable_agent: "HasNoAccountableAgent", conditionless_version_key: "ConditionlessVersionKey", prerequisite_downstream_count: "PrerequisiteDownstreamCount", prerequisite_is_downstream: "PrerequisiteIsDownstream", states_operational_knowledge: "StatesOperationalKnowledge", bottleneck_allocation_count: "BottleneckAllocationCount", is_bottleneck_step: "IsBottleneckStep", stage: "Stage", detail_level: "DetailLevel", coarse_top_level_version_key: "CoarseTopLevelVersionKey", fine_top_level_version_key: "FineTopLevelVersionKey", context_sensitivity_count: "ContextSensitivityCount", unscoped_sensitivity_count: "UnscopedSensitivityCount", is_context_sensitive_but_unscoped: "IsContextSensitiveButUnscoped", version_procedure: "VersionProcedure", assigned_role_does_compliance_review: "AssignedRoleDoesComplianceReview", compliance_review_procedure_key: "ComplianceReviewProcedureKey", step_procedure_type: "StepProcedureType", is_release_approval_gate: "IsReleaseApprovalGate", regulatory_requirement_count: "RegulatoryRequirementCount", tool_function_count: "ToolFunctionCount", parseable_condition_count: "ParseableConditionCount", dmn_decision_count: "DmnDecisionCount", tool_use_rules_only_in_prose: "ToolUseRulesOnlyInProse", open_outdated_flag_count: "OpenOutdatedFlagCount", has_reported_reality_mismatch: "HasReportedRealityMismatch", deviated_run_count: "DeviatedRunCount", is_drifted_from_practice: "IsDriftedFromPractice", ai_failure_count: "AiFailureCount", is_ai_failure_point: "IsAiFailurePoint", ai_artifact_input_count: "AiArtifactInputCount", consumes_ai_agent_artifact: "ConsumesAiAgentArtifact", collection_evidence_count: "CollectionEvidenceCount", has_collection_evidence: "HasCollectionEvidence", activity_origin_trace_count: "ActivityOriginTraceCount", version_model_trace_count: "VersionModelTraceCount", is_untraced_activity_in_traced_model: "IsUntracedActivityInTracedModel", elicited_validation_count: "ElicitedValidationCount", elicited_extension_count: "ElicitedExtensionCount", downstream_artifact_step_count: "DownstreamArtifactStepCount", is_declared_first_step: "IsDeclaredFirstStep", is_declared_fallback_step: "IsDeclaredFallbackStep", declared_first_step_key: "DeclaredFirstStepKey", declared_fallback_step_key: "DeclaredFallbackStepKey", owner_organization: "OwnerOrganization" },
+    stored: ["step_id", "procedure_version", "step_number", "title", "step_kind", "assigned_role", "instruction", "expected_duration_minutes", "expertise_level", "requires_human_confirmation", "control_kind", "semantic_type_iri", "parent_step", "first_child_step", "verifies_step", "remedy_for_error", "calls_procedure", "isolates_energy_source", "prerequisite_step", "min_repetitions", "max_repetitions", "description", "stage", "detail_level", "is_declared_first_step", "is_declared_fallback_step"],
     compute: (row: any) => computeSteps(row as StepsRow),
     lookups: [
       { field: "assigned_role_label", target: "roles", ret: "label", key: "assigned_role", match: "role_id" },
@@ -36154,7 +36271,9 @@ export const erbTables: TableSpec[] = [
       { field: "elicited_validation_count", op: "COUNTIFS", table: "knowledge_traces", criteria: [{ range: "step", kind: "field", field: "step_id" }, { range: "trace_role", kind: "literal", literal: vS("Validates") }, { range: "source_is_people_capture", kind: "literal", literal: vB(true) }] },
       { field: "elicited_extension_count", op: "COUNTIFS", table: "knowledge_traces", criteria: [{ range: "step", kind: "field", field: "step_id" }, { range: "trace_role", kind: "literal", literal: vS("Extends") }, { range: "source_is_people_capture", kind: "literal", literal: vB(true) }] },
       { field: "downstream_artifact_step_count", op: "COUNTIFS", table: "vw_artifact_handoffs_closure", criteria: [{ range: "from_id", kind: "field", field: "step_id" }] },] },
-  { name: "StepTransitions", file: "step_transitions", rulebookRows: 43, fields: stepTransitionsFieldTypes,
+  { name: "StepTransitions", file: "step_transitions", rulebookRows: 44, fields: stepTransitionsFieldTypes,
+    columns: { step_transition_id: "StepTransitionId", name: "Name", procedure_version: "ProcedureVersion", from_step: "FromStep", to_step: "ToStep", transition_kind: "TransitionKind", condition: "Condition", priority: "Priority", is_recovery_path: "IsRecoveryPath", count_of_from_step_executions: "CountOfFromStepExecutions", count_of_to_step_executions: "CountOfToStepExecutions", has_reachable_origin: "HasReachableOrigin", has_reachable_target: "HasReachableTarget", is_never_exercised: "IsNeverExercised", is_untested_recovery_path: "IsUntestedRecoveryPath", count_of_observed_traversals: "CountOfObservedTraversals", has_been_traversed: "HasBeenTraversed", is_unwalked_recovery_path: "IsUnwalkedRecoveryPath", target_blocking_requirement_count: "TargetBlockingRequirementCount", target_carries_blocking_control: "TargetCarriesBlockingControl", is_unrehearsed_control_entry: "IsUnrehearsedControlEntry", unrehearsed_control_version_key: "UnrehearsedControlVersionKey", leads_to_closure: "LeadsToClosure", from_step_is_human_approval_gate: "FromStepIsHumanApprovalGate", to_step_is_human_approval_gate: "ToStepIsHumanApprovalGate", avoids_human_approval_gate: "AvoidsHumanApprovalGate", leads_without_human_gate_closure: "LeadsWithoutHumanGateClosure", semantic_type_iri: "SemanticTypeIri", decision_point_count: "DecisionPointCount", is_undocumented_branch: "IsUndocumentedBranch" },
+    stored: ["step_transition_id", "procedure_version", "from_step", "to_step", "transition_kind", "condition", "priority", "semantic_type_iri"],
     compute: (row: any) => computeStepTransitions(row as StepTransitionsRow),
     lookups: [
       { field: "target_blocking_requirement_count", target: "steps", ret: "blocking_requirement_count", key: "to_step", match: "step_id" },
@@ -36166,30 +36285,44 @@ export const erbTables: TableSpec[] = [
       { field: "count_of_observed_traversals", op: "COUNTIFS", table: "observed_transitions", criteria: [{ range: "step_transition", kind: "field", field: "step_transition_id" }] },
       { field: "decision_point_count", op: "COUNTIFS", table: "decision_points", criteria: [{ range: "governing_transition", kind: "field", field: "step_transition_id" }] },] },
   { name: "Actions", file: "actions", rulebookRows: 10, fields: actionsFieldTypes,
+    columns: { action_id: "ActionId", name: "Name", label: "Label", definition: "Definition", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["action_id", "label", "definition", "semantic_type_iri"],
     compute: (row: any) => computeActions(row as ActionsRow),
     lookups: [],
     aggregations: [] },
   { name: "Functions", file: "functions", rulebookRows: 11, fields: functionsFieldTypes,
+    columns: { function_id: "FunctionId", name: "Name", label: "Label", definition: "Definition", implementation_key: "ImplementationKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["function_id", "label", "definition", "implementation_key", "semantic_type_iri"],
     compute: (row: any) => computeFunctions(row as FunctionsRow),
     lookups: [],
     aggregations: [] },
   { name: "Tools", file: "tools", rulebookRows: 9, fields: toolsFieldTypes,
+    columns: { tool_id: "ToolId", name: "Name", label: "Label", purpose: "Purpose", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["tool_id", "label", "purpose", "semantic_type_iri"],
     compute: (row: any) => computeTools(row as ToolsRow),
     lookups: [],
     aggregations: [] },
   { name: "StepActions", file: "step_actions", rulebookRows: 10, fields: stepActionsFieldTypes,
+    columns: { step_action_id: "StepActionId", name: "Name", step: "Step", action: "Action" },
+    stored: ["step_action_id", "step", "action"],
     compute: (row: any) => computeStepActions(row as StepActionsRow),
     lookups: [],
     aggregations: [] },
   { name: "StepFunctions", file: "step_functions", rulebookRows: 10, fields: stepFunctionsFieldTypes,
+    columns: { step_function_id: "StepFunctionId", name: "Name", step: "Step", function: "Function" },
+    stored: ["step_function_id", "step", "function"],
     compute: (row: any) => computeStepFunctions(row as StepFunctionsRow),
     lookups: [],
     aggregations: [] },
   { name: "StepTools", file: "step_tools", rulebookRows: 11, fields: stepToolsFieldTypes,
+    columns: { step_tool_id: "StepToolId", name: "Name", step: "Step", tool: "Tool" },
+    stored: ["step_tool_id", "step", "tool"],
     compute: (row: any) => computeStepTools(row as StepToolsRow),
     lookups: [],
     aggregations: [] },
   { name: "Requirements", file: "requirements", rulebookRows: 16, fields: requirementsFieldTypes,
+    columns: { requirement_id: "RequirementId", name: "Name", label: "Label", requirement_type: "RequirementType", statement: "Statement", rationale: "Rationale", is_blocking: "IsBlocking", satisfaction_record_count: "SatisfactionRecordCount", step_binding_count: "StepBindingCount", is_bound_to_any_step: "IsBoundToAnyStep", has_ever_been_evaluated: "HasEverBeenEvaluated", negative_outcome_count: "NegativeOutcomeCount", is_inoperative_control: "IsInoperativeControl", is_decorative_control: "IsDecorativeControl", has_computed_witness: "HasComputedWitness", witness_field_name: "WitnessFieldName", has_ever_produced_negative: "HasEverProducedNegative", is_unfalsified_control: "IsUnfalsifiedControl", claims_a_witness_field: "ClaimsAWitnessField", named_witness_field_exists: "NamedWitnessFieldExists", derived_has_computed_witness: "DerivedHasComputedWitness", witness_claim_is_unverified: "WitnessClaimIsUnverified", is_unwitnessed_blocking_control: "IsUnwitnessedBlockingControl", witness_fire_count: "WitnessFireCount", witness_has_never_fired: "WitnessHasNeverFired", evaluation_sample_size: "EvaluationSampleSize", has_meaningful_sample: "HasMeaningfulSample", minimum_sample_for_assurance: "MinimumSampleForAssurance", is_untested_witness: "IsUntestedWitness", is_evidenced_holding_control: "IsEvidencedHoldingControl", control_assurance_state: "ControlAssuranceState", unexercised_binding_count: "UnexercisedBindingCount", witness_is_partially_scoped: "WitnessIsPartiallyScoped", accountable_role: "AccountableRole", accountable_agent: "AccountableAgent", has_named_owner: "HasNamedOwner", is_orphaned_blocking_control: "IsOrphanedBlockingControl", is_unwatched_and_unowned: "IsUnwatchedAndUnowned", attestation_exposure_note: "AttestationExposureNote", unwatched_unowned_flag: "UnwatchedUnownedFlag", controlled_term: "ControlledTerm", uses_controlled_vocabulary: "UsesControlledVocabulary", semantic_type_iri: "SemanticTypeIri", regulatory_framework: "RegulatoryFramework", is_regulatory_requirement: "IsRegulatoryRequirement", constraint_trace_count: "ConstraintTraceCount", is_untraced_bound_constraint: "IsUntracedBoundConstraint", recorded_pass_count: "RecordedPassCount", is_passed_but_never_evaluated: "IsPassedButNeverEvaluated", failed_check_count: "FailedCheckCount", is_breached_but_never_failed: "IsBreachedButNeverFailed" },
+    stored: ["requirement_id", "label", "requirement_type", "statement", "rationale", "is_blocking", "has_computed_witness", "witness_field_name", "minimum_sample_for_assurance", "accountable_role", "controlled_term", "semantic_type_iri", "regulatory_framework"],
     compute: (row: any) => computeRequirements(row as RequirementsRow),
     lookups: [
       { field: "named_witness_field_exists", target: "rulebook_fields", ret: "is_derived", key: "witness_field_name", match: "rulebook_field_id" },
@@ -36199,28 +36332,41 @@ export const erbTables: TableSpec[] = [
       { field: "step_binding_count", op: "COUNTIFS", table: "step_requirements", criteria: [{ range: "requirement", kind: "field", field: "requirement_id" }] },
       { field: "negative_outcome_count", op: "COUNTIFS", table: "requirement_satisfactions", criteria: [{ range: "negative_outcome_requirement_key", kind: "field", field: "requirement_id" }] },
       { field: "unexercised_binding_count", op: "COUNTIFS", table: "step_requirements", criteria: [{ range: "unexercised_binding_requirement_key", kind: "field", field: "requirement_id" }] },
-      { field: "constraint_trace_count", op: "COUNTIFS", table: "knowledge_traces", criteria: [{ range: "requirement", kind: "field", field: "requirement_id" }, { range: "target_kind", kind: "literal", literal: vS("Constraint") }] },] },
+      { field: "constraint_trace_count", op: "COUNTIFS", table: "knowledge_traces", criteria: [{ range: "requirement", kind: "field", field: "requirement_id" }, { range: "target_kind", kind: "literal", literal: vS("Constraint") }] },
+      { field: "recorded_pass_count", op: "SUM", table: "step_requirements", target: "pass_count_on_step", criteria: [{ range: "requirement", kind: "field", field: "requirement_id" }] },
+      { field: "failed_check_count", op: "COUNTIFS", table: "condition_checks", criteria: [{ range: "failed_check_requirement_key", kind: "field", field: "requirement_id" }] },] },
   { name: "StepRequirements", file: "step_requirements", rulebookRows: 18, fields: stepRequirementsFieldTypes,
+    columns: { step_requirement_id: "StepRequirementId", name: "Name", step: "Step", requirement: "Requirement", requirement_is_blocking: "RequirementIsBlocking", blocking_step_key: "BlockingStepKey", step_when_blocking: "StepWhenBlocking", requirement_lacks_witness: "RequirementLacksWitness", unwitnessed_step_key: "UnwitnessedStepKey", satisfaction_count_for_binding: "SatisfactionCountForBinding", binding_was_ever_exercised: "BindingWasEverExercised", is_unexercised_blocking_binding: "IsUnexercisedBlockingBinding", unexercised_binding_requirement_key: "UnexercisedBindingRequirementKey", requirement_is_regulatory: "RequirementIsRegulatory", pass_count_on_step: "PassCountOnStep" },
+    stored: ["step_requirement_id", "step", "requirement"],
     compute: (row: any) => computeStepRequirements(row as StepRequirementsRow),
     lookups: [
       { field: "requirement_is_blocking", target: "requirements", ret: "is_blocking", key: "requirement", match: "requirement_id" },
       { field: "requirement_lacks_witness", target: "requirements", ret: "is_unwitnessed_blocking_control", key: "requirement", match: "requirement_id" },
       { field: "requirement_is_regulatory", target: "requirements", ret: "is_regulatory_requirement", key: "requirement", match: "requirement_id" },],
     aggregations: [
-      { field: "satisfaction_count_for_binding", op: "COUNTIFS", table: "requirement_satisfactions", criteria: [{ range: "binding_key", kind: "field", field: "step_requirement_id" }] },] },
+      { field: "satisfaction_count_for_binding", op: "COUNTIFS", table: "requirement_satisfactions", criteria: [{ range: "binding_key", kind: "field", field: "step_requirement_id" }] },
+      { field: "pass_count_on_step", op: "COUNTIFS", table: "step_executions", criteria: [{ range: "step", kind: "field", field: "step" }, { range: "verification_result", kind: "literal", literal: vS("PASS") }] },] },
   { name: "StepVerifications", file: "step_verifications", rulebookRows: 11, fields: stepVerificationsFieldTypes,
+    columns: { step_verification_id: "StepVerificationId", name: "Name", step: "Step", verification_kind: "VerificationKind", signal_identifier: "SignalIdentifier", expected_signal_value: "ExpectedSignalValue", instruction: "Instruction", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["step_verification_id", "step", "verification_kind", "signal_identifier", "expected_signal_value", "instruction", "semantic_type_iri"],
     compute: (row: any) => computeStepVerifications(row as StepVerificationsRow),
     lookups: [],
     aggregations: [] },
   { name: "Rationales", file: "rationales", rulebookRows: 4, fields: rationalesFieldTypes,
+    columns: { rationale_id: "RationaleId", name: "Name", procedure_version: "ProcedureVersion", step: "Step", title: "Title", statement: "Statement", status: "Status", authority_role: "AuthorityRole", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["rationale_id", "procedure_version", "step", "title", "statement", "status", "authority_role", "semantic_type_iri"],
     compute: (row: any) => computeRationales(row as RationalesRow),
     lookups: [],
     aggregations: [] },
   { name: "Exceptions", file: "exceptions", rulebookRows: 4, fields: exceptionsFieldTypes,
+    columns: { exception_id: "ExceptionId", name: "Name", procedure_version: "ProcedureVersion", trigger_step: "TriggerStep", condition: "Condition", handling: "Handling", approval_role: "ApprovalRole", fallback_role: "FallbackRole", status: "Status", active_exception_step_key: "ActiveExceptionStepKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["exception_id", "procedure_version", "trigger_step", "condition", "handling", "approval_role", "fallback_role", "status", "semantic_type_iri"],
     compute: (row: any) => computeExceptions(row as ExceptionsRow),
     lookups: [],
     aggregations: [] },
   { name: "Resources", file: "resources", rulebookRows: 19, fields: resourcesFieldTypes,
+    columns: { resource_id: "ResourceId", name: "Name", title: "Title", resource_kind: "ResourceKind", external_uri: "ExternalUri", created_at: "CreatedAt", modified_at: "ModifiedAt", description: "Description", approval_status: "ApprovalStatus", is_approved_source: "IsApprovedSource", semantic_type_iri: "SemanticTypeIri", language: "Language", keywords: "Keywords", format: "Format", created_by_agent: "CreatedByAgent", modified_by_agent: "ModifiedByAgent", extracted_from_resource: "ExtractedFromResource", source_modified_at: "SourceModifiedAt", is_stale_extraction: "IsStaleExtraction", referencing_step_count: "ReferencingStepCount", referencing_version_count: "ReferencingVersionCount", is_unused_resource: "IsUnusedResource", artifact_type_concept: "ArtifactTypeConcept", is_content_without_organization: "IsContentWithoutOrganization", trailing_practice_count: "TrailingPracticeCount", is_behind_current_practice: "IsBehindCurrentPractice", catalog_entry_for: "CatalogEntryFor", compliance_record_for: "ComplianceRecordFor" },
+    stored: ["resource_id", "title", "resource_kind", "external_uri", "created_at", "modified_at", "description", "approval_status", "semantic_type_iri", "language", "keywords", "format", "created_by_agent", "modified_by_agent", "extracted_from_resource", "artifact_type_concept", "catalog_entry_for", "compliance_record_for"],
     compute: (row: any) => computeResources(row as ResourcesRow),
     lookups: [
       { field: "source_modified_at", target: "resources", ret: "modified_at", key: "extracted_from_resource", match: "resource_id" },],
@@ -36229,11 +36375,15 @@ export const erbTables: TableSpec[] = [
       { field: "referencing_version_count", op: "COUNTIFS", table: "procedure_resources", criteria: [{ range: "resource", kind: "field", field: "resource_id" }] },
       { field: "trailing_practice_count", op: "COUNTIFS", table: "knowledge_traces", criteria: [{ range: "contradicted_document", kind: "field", field: "resource_id" }, { range: "is_document_trailing_practice", kind: "literal", literal: vB(true) }] },] },
   { name: "ProcedureResources", file: "procedure_resources", rulebookRows: 12, fields: procedureResourcesFieldTypes,
+    columns: { procedure_resource_id: "ProcedureResourceId", name: "Name", procedure_version: "ProcedureVersion", resource: "Resource", relation: "Relation", relation_iri: "RelationIri", resource_modified_at: "ResourceModifiedAt" },
+    stored: ["procedure_resource_id", "procedure_version", "resource", "relation"],
     compute: (row: any) => computeProcedureResources(row as ProcedureResourcesRow),
     lookups: [
       { field: "resource_modified_at", target: "resources", ret: "modified_at", key: "resource", match: "resource_id" },],
     aggregations: [] },
   { name: "ElicitationSessions", file: "elicitation_sessions", rulebookRows: 13, fields: elicitationSessionsFieldTypes,
+    columns: { elicitation_session_id: "ElicitationSessionId", name: "Name", procedure_version: "ProcedureVersion", method: "Method", started_at: "StartedAt", ended_at: "EndedAt", practitioner_agent: "PractitionerAgent", facilitator_agent: "FacilitatorAgent", summary: "Summary", status: "Status", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", days_since_elicited: "DaysSinceElicited", is_single_witness_method: "IsSingleWitnessMethod", practitioner_is_still_engaged: "PractitionerIsStillEngaged", valid_fragments_produced: "ValidFragmentsProduced", is_high_yield_session: "IsHighYieldSession", is_concentrated_single_witness: "IsConcentratedSingleWitness", is_stale_concentrated_witness: "IsStaleConcentratedWitness", concentrated_session_version_key: "ConcentratedSessionVersionKey", semantic_type_iri: "SemanticTypeIri", observer_stance: "ObserverStance", setting: "Setting", recording_reference: "RecordingReference", practitioner_reviewed_at: "PractitionerReviewedAt", elicitation_mode: "ElicitationMode", is_interview: "IsInterview", is_workshop: "IsWorkshop", why_probe_count: "WhyProbeCount", shortfall_probe_count: "ShortfallProbeCount", is_interview_without_why_probe: "IsInterviewWithoutWhyProbe", is_interview_without_shortfall_probe: "IsInterviewWithoutShortfallProbe", initiator_count: "InitiatorCount", executor_count: "ExecutorCount", dependent_count: "DependentCount", uninvited_participant_count: "UninvitedParticipantCount", gathers_whole_process_chain: "GathersWholeProcessChain", is_workshop_without_usual_outsiders: "IsWorkshopWithoutUsualOutsiders", method_family: "MethodFamily", facilitator_knowledge_engineer_role_count: "FacilitatorKnowledgeEngineerRoleCount", facilitator_is_knowledge_engineer: "FacilitatorIsKnowledgeEngineer", is_generic_or_unskilled_capture: "IsGenericOrUnskilledCapture", is_ke_field_session: "IsKeFieldSession", is_reviewed_recording: "IsReviewedRecording" },
+    stored: ["elicitation_session_id", "procedure_version", "method", "started_at", "ended_at", "practitioner_agent", "facilitator_agent", "summary", "status", "evaluation_context", "semantic_type_iri", "observer_stance", "setting", "recording_reference", "practitioner_reviewed_at"],
     compute: (row: any) => computeElicitationSessions(row as ElicitationSessionsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -36249,6 +36399,8 @@ export const erbTables: TableSpec[] = [
       { field: "uninvited_participant_count", op: "COUNTIFS", table: "elicitation_participants", criteria: [{ range: "elicitation_session", kind: "field", field: "elicitation_session_id" }, { range: "is_usually_invited", kind: "literal", literal: vB(false) }] },
       { field: "facilitator_knowledge_engineer_role_count", op: "COUNTIFS", table: "roles", criteria: [{ range: "current_agent", kind: "field", field: "facilitator_agent" }, { range: "role_id", kind: "literal", literal: vS("knowledge-engineer") }] },] },
   { name: "KnowledgeFragments", file: "knowledge_fragments", rulebookRows: 12, fields: knowledgeFragmentsFieldTypes,
+    columns: { knowledge_fragment_id: "KnowledgeFragmentId", name: "Name", procedure_version: "ProcedureVersion", step: "Step", knowledge_form: "KnowledgeForm", statement: "Statement", elicitation_session: "ElicitationSession", source_agent: "SourceAgent", confidence: "Confidence", valid_from: "ValidFrom", valid_to: "ValidTo", status: "Status", owner_role: "OwnerRole", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", is_currently_valid: "IsCurrentlyValid", source_agent_is_still_engaged: "SourceAgentIsStillEngaged", source_agent_kind: "SourceAgentKind", has_human_source: "HasHumanSource", has_orphaned_provenance: "HasOrphanedProvenance", is_undefendable_tacit_claim: "IsUndefendableTacitClaim", is_approved: "IsApproved", is_within_validity_window: "IsWithinValidityWindow", is_relied_upon: "IsReliedUpon", step_procedure_version_status: "StepProcedureVersionStatus", is_attached_to_live_version: "IsAttachedToLiveVersion", is_unapproved_but_relied_on: "IsUnapprovedButReliedOn", evidence_age_days: "EvidenceAgeDays", has_recorded_elicitation: "HasRecordedElicitation", is_from_single_witness: "IsFromSingleWitness", evidence_expiry_days: "EvidenceExpiryDays", evidence_has_expired: "EvidenceHasExpired", owner_agent: "OwnerAgent", is_awaiting_approval: "IsAwaitingApproval", owner_is_me: "OwnerIsMe", is_my_unfinished_approval: "IsMyUnfinishedApproval", is_invoked_by_an_exception: "IsInvokedByAnException", has_operational_reliance: "HasOperationalReliance", is_unapproved_and_operationally_live: "IsUnapprovedAndOperationallyLive", age_days: "AgeDays", is_low_confidence: "IsLowConfidence", owning_version_cadence_days: "OwningVersionCadenceDays", exceeds_owning_cadence: "ExceedsOwningCadence", is_aging_low_confidence_claim: "IsAgingLowConfidenceClaim", owner_role_agent_kind: "OwnerRoleAgentKind", is_human_owned: "IsHumanOwned", is_ai_validated_by_ai: "IsAiValidatedByAi", review_cadence_days: "ReviewCadenceDays", is_overdue_for_review: "IsOverdueForReview", predates_current_role_holder: "PredatesCurrentRoleHolder", owner_role_assignment_valid_from: "OwnerRoleAssignmentValidFrom", last_reviewed_at: "LastReviewedAt", fragility_signal_count: "FragilitySignalCount", is_compound_fragile: "IsCompoundFragile", is_single_point_of_failure: "IsSinglePointOfFailure", is_expiring_single_point_of_failure: "IsExpiringSinglePointOfFailure", compound_fragile_version_key: "CompoundFragileVersionKey", valid_fragment_session_key: "ValidFragmentSessionKey", consuming_step_is_software_assigned: "ConsumingStepIsSoftwareAssigned", consuming_step_agent_kind: "ConsumingStepAgentKind", is_unapproved_and_machine_consumed: "IsUnapprovedAndMachineConsumed", is_unapproved_and_human_consumed: "IsUnapprovedAndHumanConsumed", machine_consumed_unapproved_version_key: "MachineConsumedUnapprovedVersionKey", has_review_record: "HasReviewRecord", days_since_actual_review: "DaysSinceActualReview", is_unreviewed_since_authoring: "IsUnreviewedSinceAuthoring", is_genuinely_overdue: "IsGenuinelyOverdue", review_recency_is_inferred: "ReviewRecencyIsInferred", inference_disagrees_with_record: "InferenceDisagreesWithRecord", genuinely_overdue_version_key: "GenuinelyOverdueVersionKey", ratified_boundary_count: "RatifiedBoundaryCount", reliance_surface_count: "RelianceSurfaceCount", days_awaiting_my_approval: "DaysAwaitingMyApproval", is_high_blast_radius_unapproved: "IsHighBlastRadiusUnapproved", is_long_unapproved: "IsLongUnapproved", unapproved_load_bearing_version_key: "UnapprovedLoadBearingVersionKey", owner_role_is_vacated: "OwnerRoleIsVacated", is_orphaned_by_role: "IsOrphanedByRole", valid_fragment_version_key: "ValidFragmentVersionKey", semantic_type_iri: "SemanticTypeIri", cognitive_basis: "CognitiveBasis", tacitness_degree: "TacitnessDegree", lost_in_translation: "LostInTranslation", encoded_as: "EncodedAs", stated_conditions: "StatedConditions", is_flattened_to_brittle_rule: "IsFlattenedToBrittleRule", corroboration_count: "CorroborationCount", rests_on_single_data_point: "RestsOnSingleDataPoint", owner_organization: "OwnerOrganization" },
+    stored: ["knowledge_fragment_id", "procedure_version", "step", "knowledge_form", "statement", "elicitation_session", "source_agent", "confidence", "valid_from", "valid_to", "status", "owner_role", "evaluation_context", "last_reviewed_at", "semantic_type_iri", "cognitive_basis", "tacitness_degree", "lost_in_translation", "encoded_as", "stated_conditions"],
     compute: (row: any) => computeKnowledgeFragments(row as KnowledgeFragmentsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -36272,6 +36424,8 @@ export const erbTables: TableSpec[] = [
       { field: "ratified_boundary_count", op: "COUNTIFS", table: "authority_boundaries", criteria: [{ range: "ratifying_fragment_key", kind: "field", field: "knowledge_fragment_id" }] },
       { field: "corroboration_count", op: "COUNTIFS", table: "fragment_corroborations", criteria: [{ range: "knowledge_fragment", kind: "field", field: "knowledge_fragment_id" }, { range: "agrees", kind: "literal", literal: vB(true) }] },] },
   { name: "KnowledgeGaps", file: "knowledge_gaps", rulebookRows: 15, fields: knowledgeGapsFieldTypes,
+    columns: { knowledge_gap_id: "KnowledgeGapId", name: "Name", procedure_version: "ProcedureVersion", step: "Step", statement: "Statement", severity: "Severity", blocking_kind: "BlockingKind", status: "Status", owner_role: "OwnerRole", identified_at: "IdentifiedAt", resolution_plan: "ResolutionPlan", is_open: "IsOpen", open_gap_version_key: "OpenGapVersionKey", is_blocking: "IsBlocking", is_open_and_blocking: "IsOpenAndBlocking", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", days_open: "DaysOpen", tolerance_days: "ToleranceDays", is_overdue_gap: "IsOverdueGap", owner_agent: "OwnerAgent", owner_is_still_engaged: "OwnerIsStillEngaged", has_resolution_plan: "HasResolutionPlan", is_abandoned_unknown: "IsAbandonedUnknown", open_blocking_gap_version_key: "OpenBlockingGapVersionKey", owner_role_is_vacated: "OwnerRoleIsVacated", is_ownerless_open_gap: "IsOwnerlessOpenGap", semantic_type_iri: "SemanticTypeIri", gap_cause: "GapCause", holder_declined_to_share: "HolderDeclinedToShare", siloed_within: "SiloedWithin", drawn_out_by_session: "DrawnOutBySession", codified_as_fragment: "CodifiedAsFragment", is_known_and_unresolved: "IsKnownAndUnresolved", is_gatekeeping_or_sabotage: "IsGatekeepingOrSabotage", is_unattributed_gatekeeping: "IsUnattributedGatekeeping", is_required_gatekept_uncodified: "IsRequiredGatekeptUncodified", owner_organization: "OwnerOrganization", answered_by_model_change_request: "AnsweredByModelChangeRequest", answering_change_title: "AnsweringChangeTitle", answering_change_status: "AnsweringChangeStatus" },
+    stored: ["knowledge_gap_id", "procedure_version", "step", "statement", "severity", "blocking_kind", "status", "owner_role", "identified_at", "resolution_plan", "evaluation_context", "semantic_type_iri", "gap_cause", "holder_declined_to_share", "siloed_within", "drawn_out_by_session", "codified_as_fragment", "answered_by_model_change_request"],
     compute: (row: any) => computeKnowledgeGaps(row as KnowledgeGapsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -36283,15 +36437,21 @@ export const erbTables: TableSpec[] = [
       { field: "answering_change_status", target: "model_change_requests", ret: "status", key: "answered_by_model_change_request", match: "model_change_request_id" },],
     aggregations: [] },
   { name: "FAQs", file: "fa_qs", rulebookRows: 4, fields: fAQsFieldTypes,
+    columns: { faq_id: "FaqId", name: "Name", procedure_version: "ProcedureVersion", step: "Step", category: "Category", target_kind: "TargetKind", question: "Question", answer: "Answer", semantic_type_iri: "SemanticTypeIri", resource: "Resource", resolution_count: "ResolutionCount", is_unused_faq: "IsUnusedFaq" },
+    stored: ["faq_id", "procedure_version", "step", "category", "target_kind", "question", "answer", "semantic_type_iri", "resource"],
     compute: (row: any) => computeFAQs(row as FAQsRow),
     lookups: [],
     aggregations: [
       { field: "resolution_count", op: "COUNTIFS", table: "user_questions", criteria: [{ range: "resolved_by_faq", kind: "field", field: "faq_id" }] },] },
   { name: "Explanations", file: "explanations", rulebookRows: 2, fields: explanationsFieldTypes,
+    columns: { explanation_id: "ExplanationId", name: "Name", procedure_version: "ProcedureVersion", step: "Step", title: "Title", description: "Description", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["explanation_id", "procedure_version", "step", "title", "description", "semantic_type_iri"],
     compute: (row: any) => computeExplanations(row as ExplanationsRow),
     lookups: [],
     aggregations: [] },
   { name: "ProcedureExecutions", file: "procedure_executions", rulebookRows: 10, fields: procedureExecutionsFieldTypes,
+    columns: { procedure_execution_id: "ProcedureExecutionId", name: "Name", procedure_version: "ProcedureVersion", execution_status: "ExecutionStatus", started_at: "StartedAt", ended_at: "EndedAt", executed_by_agent: "ExecutedByAgent", context: "Context", operational_record_uri: "OperationalRecordUri", expected_step_count: "ExpectedStepCount", completed_step_count: "CompletedStepCount", control_breach_count: "ControlBreachCount", late_step_count: "LateStepCount", is_structurally_complete: "IsStructurallyComplete", diverged_from_specification: "DivergedFromSpecification", all_blocking_controls_evaluated: "AllBlockingControlsEvaluated", unevaluated_blocking_total: "UnevaluatedBlockingTotal", separation_of_duties_held: "SeparationOfDutiesHeld", separation_violation_count: "SeparationViolationCount", is_attestation_ready: "IsAttestationReady", attestation_blocker_summary: "AttestationBlockerSummary", executed_version_is_fit: "ExecutedVersionIsFit", signed_against_unfit_version: "SignedAgainstUnfitVersion", asserted_only_control_count: "AssertedOnlyControlCount", assurance_is_mostly_asserted: "AssuranceIsMostlyAsserted", unreachable_handling_failure_count: "UnreachableHandlingFailureCount", retention_breach_count: "RetentionBreachCount", cleared_legal_review_count: "ClearedLegalReviewCount", has_cleared_legal_review: "HasClearedLegalReview", abandoned_failure_count: "AbandonedFailureCount", delivered_count: "DeliveredCount", total_delivery_attempt_count: "TotalDeliveryAttemptCount", has_abandoned_failures: "HasAbandonedFailures", mishandled_refusal_count: "MishandledRefusalCount", unclean_step_count: "UncleanStepCount", ran_clean: "RanClean", count_of_approval_executions: "CountOfApprovalExecutions", has_human_approval: "HasHumanApproval", count_of_delivery_executions: "CountOfDeliveryExecutions", has_delivered: "HasDelivered", delivered_without_approval: "DeliveredWithoutApproval", invalid_approval_count: "InvalidApprovalCount", approval_chain_is_complete: "ApprovalChainIsComplete", vacuously_clean_step_count: "VacuouslyCleanStepCount", preparation_step_count: "PreparationStepCount", approval_step_count: "ApprovalStepCount", separation_was_testable: "SeparationWasTestable", separation_held_under_test: "SeparationHeldUnderTest", separation_is_vacuously_green: "SeparationIsVacuouslyGreen", separation_assurance_note: "SeparationAssuranceNote", ungoverned_divergence_count: "UngovernedDivergenceCount", divergence_was_fully_governed: "DivergenceWasFullyGoverned", computedly_witnessed_control_count: "ComputedlyWitnessedControlCount", evaluated_control_count: "EvaluatedControlCount", computed_assurance_ratio: "ComputedAssuranceRatio", interested_party_assertion_count: "InterestedPartyAssertionCount", assurance_grade: "AssuranceGrade", attestation_would_be_weakly_based: "AttestationWouldBeWeaklyBased", independent_human_observation_count: "IndependentHumanObservationCount", has_any_independent_observation: "HasAnyIndependentObservation", self_attested_approval_count: "SelfAttestedApprovalCount", assurance_chain_is_circular: "AssuranceChainIsCircular", latest_attestation_instant: "LatestAttestationInstant", has_been_attested: "HasBeenAttested", attestation_count: "AttestationCount", post_attestation_score_count: "PostAttestationScoreCount", basis_changed_after_signature: "BasisChangedAfterSignature", requires_re_attestation: "RequiresReAttestation", intended_recipient_count: "IntendedRecipientCount", reached_recipient_count: "ReachedRecipientCount", silently_dropped_count: "SilentlyDroppedCount", delivery_yield_percent: "DeliveryYieldPercent", campaign_silently_lost_audience: "CampaignSilentlyLostAudience", unrecorded_refusal_count: "UnrecordedRefusalCount", has_unrecorded_refusals: "HasUnrecordedRefusals", independently_confirmed_intent_count: "IndependentlyConfirmedIntentCount", send_decisions_are_entirely_self_witnessed: "SendDecisionsAreEntirelySelfWitnessed", semantic_type_iri: "SemanticTypeIri", title: "Title", description: "Description", confirmed_by_agent: "ConfirmedByAgent", facility: "Facility", shift: "Shift", executed_on_machine: "ExecutedOnMachine", observations: "Observations", outcome: "Outcome", participant_count: "ParticipantCount", deviating_step_count: "DeviatingStepCount", has_step_deviation: "HasStepDeviation", deviating_facility_key: "DeviatingFacilityKey", clean_facility_key: "CleanFacilityKey", deviating_day_version_key: "DeviatingDayVersionKey", deviating_night_version_key: "DeviatingNightVersionKey", status_change_count: "StatusChangeCount", claims_completion_without_all_steps: "ClaimsCompletionWithoutAllSteps", is_unconfirmed_completion: "IsUnconfirmedCompletion", has_no_recorded_outcome: "HasNoRecordedOutcome", feedback_count: "FeedbackCount", is_unreported_mistake: "IsUnreportedMistake", owner_organization: "OwnerOrganization", stopped_at_knowledge_gap: "StoppedAtKnowledgeGap", stopped_at_gap_statement: "StoppedAtGapStatement", stopped_at_gap_status: "StoppedAtGapStatus", stopped_at_gap_change_title: "StoppedAtGapChangeTitle", stopped_at_gap_change_status: "StoppedAtGapChangeStatus" },
+    stored: ["procedure_execution_id", "procedure_version", "execution_status", "started_at", "ended_at", "executed_by_agent", "context", "operational_record_uri", "semantic_type_iri", "title", "description", "confirmed_by_agent", "facility", "shift", "executed_on_machine", "observations", "outcome", "stopped_at_knowledge_gap"],
     compute: (row: any) => computeProcedureExecutions(row as ProcedureExecutionsRow),
     lookups: [
       { field: "expected_step_count", target: "procedure_versions", ret: "specified_step_count", key: "procedure_version", match: "procedure_version_id" },
@@ -36340,6 +36500,8 @@ export const erbTables: TableSpec[] = [
       { field: "status_change_count", op: "COUNTIFS", table: "procedure_status_changes", criteria: [{ range: "procedure_execution", kind: "field", field: "procedure_execution_id" }] },
       { field: "feedback_count", op: "COUNTIFS", table: "user_feedback", criteria: [{ range: "procedure_execution", kind: "field", field: "procedure_execution_id" }] },] },
   { name: "StepExecutions", file: "step_executions", rulebookRows: 70, fields: stepExecutionsFieldTypes,
+    columns: { step_execution_id: "StepExecutionId", name: "Name", procedure_execution: "ProcedureExecution", step: "Step", executed_by_agent: "ExecutedByAgent", execution_status: "ExecutionStatus", started_at: "StartedAt", ended_at: "EndedAt", verification_result: "VerificationResult", deviation: "Deviation", actual_duration_minutes: "ActualDurationMinutes", expected_duration_minutes: "ExpectedDurationMinutes", is_late: "IsLate", blocking_unmet_count: "BlockingUnmetCount", blocking_unmet_count_safe: "BlockingUnmetCountSafe", proceeded_past_blocking_control: "ProceededPastBlockingControl", expected_blocking_count: "ExpectedBlockingCount", evaluated_blocking_count: "EvaluatedBlockingCount", unevaluated_blocking_count: "UnevaluatedBlockingCount", has_unevaluated_blocking_control: "HasUnevaluatedBlockingControl", stale_authoritative_source_count: "StaleAuthoritativeSourceCount", ran_on_stale_authoritative_source: "RanOnStaleAuthoritativeSource", has_deviation_note: "HasDeviationNote", is_late_and_unexplained: "IsLateAndUnexplained", available_exception_count_for_step: "AvailableExceptionCountForStep", had_uninvoked_exception_available: "HadUninvokedExceptionAvailable", expected_verification_count: "ExpectedVerificationCount", performed_verification_count: "PerformedVerificationCount", skipped_verification_count: "SkippedVerificationCount", has_skipped_verification: "HasSkippedVerification", claims_pass_without_evidence: "ClaimsPassWithoutEvidence", step_is_preparation: "StepIsPreparation", step_is_approval: "StepIsApproval", preparer_agent_key: "PreparerAgentKey", approver_agent_key: "ApproverAgentKey", prepared_by_this_agent_count: "PreparedByThisAgentCount", violates_separation_of_duties: "ViolatesSeparationOfDuties", required_role_for_step: "RequiredRoleForStep", executor_role_key: "ExecutorRoleKey", executor_authority_count: "ExecutorAuthorityCount", executor_held_required_role: "ExecutorHeldRequiredRole", is_unauthorized_approval: "IsUnauthorizedApproval", completed_execution_key: "CompletedExecutionKey", control_breach_execution_key: "ControlBreachExecutionKey", late_execution_key: "LateExecutionKey", executor_agent_kind: "ExecutorAgentKind", executor_is_human: "ExecutorIsHuman", step_requires_human_confirmation: "StepRequiresHumanConfirmation", non_human_ran_human_step: "NonHumanRanHumanStep", non_human_approval: "NonHumanApproval", unevaluated_blocking_execution_key: "UnevaluatedBlockingExecutionKey", separation_violation_execution_key: "SeparationViolationExecutionKey", self_witnessed_verification_count: "SelfWitnessedVerificationCount", unbacked_verification_count: "UnbackedVerificationCount", approval_rests_on_self_attestation: "ApprovalRestsOnSelfAttestation", exception_invocation_count: "ExceptionInvocationCount", ran_under_exception: "RanUnderException", is_completed: "IsCompleted", is_verification_passed: "IsVerificationPassed", is_legal_review_step: "IsLegalReviewStep", cleared_legal_review_key: "ClearedLegalReviewKey", assigned_role: "AssignedRole", role_current_agent: "RoleCurrentAgent", executor_is_designated_agent: "ExecutorIsDesignatedAgent", inputs_were_fresh_at_run: "InputsWereFreshAtRun", ran_on_stale_inputs: "RanOnStaleInputs", unresolved_issue_count: "UnresolvedIssueCount", has_deviation: "HasDeviation", is_clean: "IsClean", procedure_execution_when_unclean: "ProcedureExecutionWhenUnclean", evaluated_requirement_count: "EvaluatedRequirementCount", required_blocking_count: "RequiredBlockingCount", has_unevaluated_blocking_requirement: "HasUnevaluatedBlockingRequirement", executing_agent_kind: "ExecutingAgentKind", was_executed_by_software: "WasExecutedBySoftware", step_is_software_assigned: "StepIsSoftwareAssigned", software_did_human_work: "SoftwareDidHumanWork", is_approval_execution: "IsApprovalExecution", is_verified: "IsVerified", unconfirmed_non_human_decision_count: "UnconfirmedNonHumanDecisionCount", requires_human_confirmation: "RequiresHumanConfirmation", human_confirmation_missing: "HumanConfirmationMissing", drafted_from_unusable_source: "DraftedFromUnusableSource", inputs_were_usable: "InputsWereUsable", software_execution_step_key: "SoftwareExecutionStepKey", step_control_kind: "StepControlKind", unfalsified_clearance_count: "UnfalsifiedClearanceCount", all_clearances_are_unfalsified: "AllClearancesAreUnfalsified", stale_at_run_count: "StaleAtRunCount", was_stale_when_i_ran_it: "WasStaleWhenIRanIt", staleness_answer_is_tense_dependent: "StalenessAnswerIsTenseDependent", has_any_declared_check: "HasAnyDeclaredCheck", performed_check_count: "PerformedCheckCount", declared_check_count: "DeclaredCheckCount", is_unchecked_by_design: "IsUncheckedByDesign", is_vacuously_clean: "IsVacuouslyClean", is_substantively_clean: "IsSubstantivelyClean", vacuously_clean_execution_key: "VacuouslyCleanExecutionKey", uncorroborated_pass_count: "UncorroboratedPassCount", evidence_position_is_weak: "EvidencePositionIsWeak", preparation_execution_key: "PreparationExecutionKey", approval_execution_key: "ApprovalExecutionKey", has_governing_instrument: "HasGoverningInstrument", has_approved_change_coverage: "HasApprovedChangeCoverage", version_of_step: "VersionOfStep", is_ungoverned_divergence: "IsUngovernedDivergence", ungoverned_divergence_execution_key: "UngovernedDivergenceExecutionKey", self_attested_approval_execution_key: "SelfAttestedApprovalExecutionKey", semantic_type_iri: "SemanticTypeIri", previous_step_execution: "PreviousStepExecution", confirmed_by_agent: "ConfirmedByAgent", description: "Description", previous_executed_step: "PreviousExecutedStep", specified_transition_from_previous_count: "SpecifiedTransitionFromPreviousCount", is_out_of_specified_order: "IsOutOfSpecifiedOrder", execution_version: "ExecutionVersion", executes_step_of_other_version: "ExecutesStepOfOtherVersion", repetition_count: "RepetitionCount", step_max_repetitions: "StepMaxRepetitions", exceeds_max_repetitions: "ExceedsMaxRepetitions", lacks_required_confirmation: "LacksRequiredConfirmation", failed_precondition_count: "FailedPreconditionCount", violated_invariant_count: "ViolatedInvariantCount", proceeded_despite_failed_precondition: "ProceededDespiteFailedPrecondition", unescalated_danger_cue_count: "UnescalatedDangerCueCount", ignored_danger_cue: "IgnoredDangerCue", used_entity_count: "UsedEntityCount", generated_entity_count: "GeneratedEntityCount", step_input_variable_count: "StepInputVariableCount", ran_without_declared_inputs: "RanWithoutDeclaredInputs", step_prerequisite: "StepPrerequisite", completed_prerequisite_run_count: "CompletedPrerequisiteRunCount", ran_before_prerequisite_completed: "RanBeforePrerequisiteCompleted", deviation_execution_key: "DeviationExecutionKey", broke_invariant: "BrokeInvariant", is_blocked_by_incomplete_prerequisite: "IsBlockedByIncompletePrerequisite", owner_organization: "OwnerOrganization", incomplete_cue_observation_count: "IncompleteCueObservationCount", is_blocked_by_observed_cue: "IsBlockedByObservedCue", is_blocked_by_failed_precondition: "IsBlockedByFailedPrecondition" },
+    stored: ["step_execution_id", "procedure_execution", "step", "executed_by_agent", "execution_status", "started_at", "ended_at", "verification_result", "deviation", "semantic_type_iri", "previous_step_execution", "confirmed_by_agent", "description"],
     compute: (row: any) => computeStepExecutions(row as StepExecutionsRow),
     lookups: [
       { field: "expected_duration_minutes", target: "steps", ret: "expected_duration_minutes", key: "step", match: "step_id" },
@@ -36396,6 +36558,8 @@ export const erbTables: TableSpec[] = [
       { field: "completed_prerequisite_run_count", op: "COUNTIFS", table: "step_executions", criteria: [{ range: "step", kind: "field", field: "step_prerequisite" }, { range: "procedure_execution", kind: "field", field: "procedure_execution" }, { range: "execution_status", kind: "literal", literal: vS("Completed") }] },
       { field: "incomplete_cue_observation_count", op: "COUNTIFS", table: "cue_observations", criteria: [{ range: "step_execution", kind: "field", field: "step_execution_id" }, { range: "cue_signals_incomplete_step", kind: "literal", literal: vB(true) }] },] },
   { name: "RequirementSatisfactions", file: "requirement_satisfactions", rulebookRows: 8, fields: requirementSatisfactionsFieldTypes,
+    columns: { requirement_satisfaction_id: "RequirementSatisfactionId", name: "Name", step_execution: "StepExecution", requirement: "Requirement", satisfaction_level: "SatisfactionLevel", evidence: "Evidence", evaluated_by_agent: "EvaluatedByAgent", evaluated_at: "EvaluatedAt", requirement_is_blocking: "RequirementIsBlocking", is_fully_satisfied: "IsFullySatisfied", is_blocking_and_unmet: "IsBlockingAndUnmet", blocking_unmet_step_key: "BlockingUnmetStepKey", blocking_satisfaction_step_key: "BlockingSatisfactionStepKey", negative_outcome_requirement_key: "NegativeOutcomeRequirementKey", evaluator_agent_kind: "EvaluatorAgentKind", non_human_evaluated_human_control: "NonHumanEvaluatedHumanControl", requirement_has_computed_witness: "RequirementHasComputedWitness", is_asserted_only: "IsAssertedOnly", asserted_only_execution_key: "AssertedOnlyExecutionKey", parent_procedure_execution: "ParentProcedureExecution", step_execution_when_scored: "StepExecutionWhenScored", is_human_evaluated: "IsHumanEvaluated", requirement_is_approval_type: "RequirementIsApprovalType", is_invalid_approval: "IsInvalidApproval", procedure_execution_of_satisfaction: "ProcedureExecutionOfSatisfaction", run_when_invalid_approval: "RunWhenInvalidApproval", requirement_is_unfalsified: "RequirementIsUnfalsified", is_clearance_by_unfalsified_control: "IsClearanceByUnfalsifiedControl", unfalsified_clearance_step_key: "UnfalsifiedClearanceStepKey", spec_step_of_execution: "SpecStepOfExecution", binding_key: "BindingKey", scored_step_executor_agent: "ScoredStepExecutorAgent", evaluator_is_step_executor: "EvaluatorIsStepExecutor", run_owner_agent: "RunOwnerAgent", evaluator_owns_the_run: "EvaluatorOwnsTheRun", is_interested_party_assertion: "IsInterestedPartyAssertion", has_written_evidence: "HasWrittenEvidence", is_bare_assertion: "IsBareAssertion", interested_assertion_execution_key: "InterestedAssertionExecutionKey", is_computedly_witnessed: "IsComputedlyWitnessed", computed_witness_execution_key: "ComputedWitnessExecutionKey", step_executor_agent: "StepExecutorAgent", was_scored_after_attestation: "WasScoredAfterAttestation", attestation_instant_for_run: "AttestationInstantForRun", post_attestation_score_execution_key: "PostAttestationScoreExecutionKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["requirement_satisfaction_id", "step_execution", "requirement", "satisfaction_level", "evidence", "evaluated_by_agent", "evaluated_at", "semantic_type_iri"],
     compute: (row: any) => computeRequirementSatisfactions(row as RequirementSatisfactionsRow),
     lookups: [
       { field: "requirement_is_blocking", target: "requirements", ret: "is_blocking", key: "requirement", match: "requirement_id" },
@@ -36413,12 +36577,16 @@ export const erbTables: TableSpec[] = [
       { field: "attestation_instant_for_run", target: "procedure_executions", ret: "latest_attestation_instant", key: "parent_procedure_execution", match: "procedure_execution_id" },],
     aggregations: [] },
   { name: "Errors", file: "errors", rulebookRows: 4, fields: errorsFieldTypes,
+    columns: { error_id: "ErrorId", name: "Name", label: "Label", error_code: "ErrorCode", error_cause: "ErrorCause", semantic_type_iri: "SemanticTypeIri", description: "Description", remedy_step_count: "RemedyStepCount", occurrence_count: "OccurrenceCount", has_no_remedy_step: "HasNoRemedyStep" },
+    stored: ["error_id", "label", "error_code", "error_cause", "semantic_type_iri", "description"],
     compute: (row: any) => computeErrors(row as ErrorsRow),
     lookups: [],
     aggregations: [
       { field: "remedy_step_count", op: "COUNTIFS", table: "steps", criteria: [{ range: "remedy_for_error", kind: "field", field: "error_id" }] },
       { field: "occurrence_count", op: "COUNTIFS", table: "issue_occurrences", criteria: [{ range: "error", kind: "field", field: "error_id" }] },] },
   { name: "IssueOccurrences", file: "issue_occurrences", rulebookRows: 4, fields: issueOccurrencesFieldTypes,
+    columns: { issue_occurrence_id: "IssueOccurrenceId", name: "Name", step_execution: "StepExecution", error: "Error", encountered_by_agent: "EncounteredByAgent", occurred_at: "OccurredAt", issue_cause: "IssueCause", issue_solution: "IssueSolution", status: "Status", is_unresolved: "IsUnresolved", step_execution_when_unresolved: "StepExecutionWhenUnresolved", semantic_type_iri: "SemanticTypeIri", executed_step: "ExecutedStep", failed_condition_count_on_run: "FailedConditionCountOnRun", coincided_with_failed_condition: "CoincidedWithFailedCondition", has_no_recorded_solution: "HasNoRecordedSolution", redesign_change_request: "RedesignChangeRequest", redesign_implemented_at: "RedesignImplementedAt", is_failure_without_landed_redesign: "IsFailureWithoutLandedRedesign", improvement_cycle_path: "ImprovementCyclePath" },
+    stored: ["issue_occurrence_id", "step_execution", "error", "encountered_by_agent", "occurred_at", "issue_cause", "issue_solution", "status", "semantic_type_iri", "redesign_change_request"],
     compute: (row: any) => computeIssueOccurrences(row as IssueOccurrencesRow),
     lookups: [
       { field: "executed_step", target: "step_executions", ret: "step", key: "step_execution", match: "step_execution_id" },
@@ -36426,21 +36594,29 @@ export const erbTables: TableSpec[] = [
     aggregations: [
       { field: "failed_condition_count_on_run", op: "SUM", table: "step_executions", target: "failed_precondition_count", criteria: [{ range: "step_execution_id", kind: "field", field: "step_execution" }] },] },
   { name: "UserQuestions", file: "user_questions", rulebookRows: 4, fields: userQuestionsFieldTypes,
+    columns: { user_question_id: "UserQuestionId", name: "Name", step_execution: "StepExecution", asked_by_agent: "AskedByAgent", asked_at: "AskedAt", question_text: "QuestionText", resolved_by_faq: "ResolvedByFaq", addressed_by_resource: "AddressedByResource", status: "Status", semantic_type_iri: "SemanticTypeIri", is_unaddressed_question: "IsUnaddressedQuestion" },
+    stored: ["user_question_id", "step_execution", "asked_by_agent", "asked_at", "question_text", "resolved_by_faq", "addressed_by_resource", "status", "semantic_type_iri"],
     compute: (row: any) => computeUserQuestions(row as UserQuestionsRow),
     lookups: [],
     aggregations: [] },
   { name: "UserFeedback", file: "user_feedback", rulebookRows: 6, fields: userFeedbackFieldTypes,
+    columns: { user_feedback_id: "UserFeedbackId", name: "Name", procedure_execution: "ProcedureExecution", provided_by_agent: "ProvidedByAgent", provided_at: "ProvidedAt", feedback_text: "FeedbackText", disposition: "Disposition", change_request_key: "ChangeRequestKey", semantic_type_iri: "SemanticTypeIri", feedback_on_procedure: "FeedbackOnProcedure", feedback_on_execution: "FeedbackOnExecution", is_unactioned_procedure_critique: "IsUnactionedProcedureCritique", reveals_tacit_knowledge: "RevealsTacitKnowledge", collection_follow_up_count: "CollectionFollowUpCount", is_tacit_signal_not_fed_into_collection: "IsTacitSignalNotFedIntoCollection" },
+    stored: ["user_feedback_id", "procedure_execution", "provided_by_agent", "provided_at", "feedback_text", "disposition", "change_request_key", "semantic_type_iri", "feedback_on_procedure", "feedback_on_execution", "reveals_tacit_knowledge"],
     compute: (row: any) => computeUserFeedback(row as UserFeedbackRow),
     lookups: [],
     aggregations: [
       { field: "collection_follow_up_count", op: "COUNTIFS", table: "collected_source_materials", criteria: [{ range: "prompted_by_feedback", kind: "field", field: "user_feedback_id" }] },] },
   { name: "StewardshipAssignments", file: "stewardship_assignments", rulebookRows: 2, fields: stewardshipAssignmentsFieldTypes,
+    columns: { stewardship_assignment_id: "StewardshipAssignmentId", name: "Name", procedure_version: "ProcedureVersion", steward_role: "StewardRole", authority_role: "AuthorityRole", valid_from: "ValidFrom", valid_to: "ValidTo", review_cadence_days: "ReviewCadenceDays", count_of_review_events: "CountOfReviewEvents", has_ever_been_reviewed: "HasEverBeenReviewed", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", is_current_assignment: "IsCurrentAssignment", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["stewardship_assignment_id", "procedure_version", "steward_role", "authority_role", "valid_from", "valid_to", "review_cadence_days", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeStewardshipAssignments(row as StewardshipAssignmentsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },],
     aggregations: [
       { field: "count_of_review_events", op: "COUNTIFS", table: "review_events", criteria: [{ range: "procedure_version", kind: "field", field: "procedure_version" }] },] },
   { name: "ChangeRequests", file: "change_requests", rulebookRows: 4, fields: changeRequestsFieldTypes,
+    columns: { change_request_id: "ChangeRequestId", name: "Name", procedure_version: "ProcedureVersion", title: "Title", change_kind: "ChangeKind", status: "Status", requested_by_agent: "RequestedByAgent", authority_role: "AuthorityRole", requested_at: "RequestedAt", decided_at: "DecidedAt", impact_assessment: "ImpactAssessment", is_open: "IsOpen", open_change_version_key: "OpenChangeVersionKey", is_decided: "IsDecided", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", days_pending: "DaysPending", is_still_pending: "IsStillPending", is_stalled: "IsStalled", authority_agent: "AuthorityAgent", requester_is_authority: "RequesterIsAuthority", awaits_authority_decision: "AwaitsAuthorityDecision", authority_role_label: "AuthorityRoleLabel", touches_live_version: "TouchesLiveVersion", is_live_decision_backlog: "IsLiveDecisionBacklog", blocks_an_open_gap: "BlocksAnOpenGap", implemented_at: "ImplementedAt", backlog_version_key: "BacklogVersionKey", is_my_pending_decision: "IsMyPendingDecision", is_my_blocking_backlog: "IsMyBlockingBacklog", is_my_overdue_backlog: "IsMyOverdueBacklog", is_implemented: "IsImplemented", is_my_decided_request: "IsMyDecidedRequest", is_my_decided_but_unlanded: "IsMyDecidedButUnlanded", decision_latency_days: "DecisionLatencyDays", implementation_latency_days: "ImplementationLatencyDays", delay_is_downstream_of_me: "DelayIsDownstreamOfMe", unlanded_version_key: "UnlandedVersionKey", is_approved_not_implemented: "IsApprovedNotImplemented", days_since_approval: "DaysSinceApproval", is_stalled_implementation: "IsStalledImplementation", stalled_implementation_version_key: "StalledImplementationVersionKey", approved_version_key: "ApprovedVersionKey", is_approved_decision: "IsApprovedDecision", semantic_type_iri: "SemanticTypeIri", owner_organization: "OwnerOrganization" },
+    stored: ["change_request_id", "procedure_version", "title", "change_kind", "status", "requested_by_agent", "authority_role", "requested_at", "decided_at", "impact_assessment", "evaluation_context", "implemented_at", "semantic_type_iri"],
     compute: (row: any) => computeChangeRequests(row as ChangeRequestsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -36450,6 +36626,8 @@ export const erbTables: TableSpec[] = [
       { field: "owner_organization", target: "procedure_versions", ret: "owner_organization", key: "procedure_version", match: "procedure_version_id" },],
     aggregations: [] },
   { name: "ReviewEvents", file: "review_events", rulebookRows: 3, fields: reviewEventsFieldTypes,
+    columns: { review_event_id: "ReviewEventId", name: "Name", procedure_version: "ProcedureVersion", review_kind: "ReviewKind", reviewed_at: "ReviewedAt", reviewed_by_agent: "ReviewedByAgent", outcome: "Outcome", related_change_request: "RelatedChangeRequest", next_review_due: "NextReviewDue", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", is_overdue: "IsOverdue", overdue_version_key: "OverdueVersionKey", promised_cadence_days: "PromisedCadenceDays", days_since_reviewed: "DaysSinceReviewed", exceeds_promised_cadence: "ExceedsPromisedCadence", cadence_drift_days: "CadenceDriftDays", promise_and_behavior_disagree: "PromiseAndBehaviorDisagree", cadence_breach_version_key: "CadenceBreachVersionKey", semantic_type_iri: "SemanticTypeIri", version_modified_at: "VersionModifiedAt", review_did_not_refresh_modified: "ReviewDidNotRefreshModified" },
+    stored: ["review_event_id", "procedure_version", "review_kind", "reviewed_at", "reviewed_by_agent", "outcome", "related_change_request", "next_review_due", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeReviewEvents(row as ReviewEventsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -36457,22 +36635,30 @@ export const erbTables: TableSpec[] = [
       { field: "version_modified_at", target: "procedure_versions", ret: "modified_at", key: "procedure_version", match: "procedure_version_id" },],
     aggregations: [] },
   { name: "LearningActivities", file: "learning_activities", rulebookRows: 2, fields: learningActivitiesFieldTypes,
+    columns: { learning_activity_id: "LearningActivityId", name: "Name", community_of_practice: "CommunityOfPractice", procedure_version: "ProcedureVersion", activity_kind: "ActivityKind", occurred_at: "OccurredAt", facilitator_agent: "FacilitatorAgent", outcome: "Outcome", evidence_resource: "EvidenceResource", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["learning_activity_id", "community_of_practice", "procedure_version", "activity_kind", "occurred_at", "facilitator_agent", "outcome", "evidence_resource", "semantic_type_iri"],
     compute: (row: any) => computeLearningActivities(row as LearningActivitiesRow),
     lookups: [],
     aggregations: [] },
   { name: "OperationalBindings", file: "operational_bindings", rulebookRows: 5, fields: operationalBindingsFieldTypes,
+    columns: { operational_binding_id: "OperationalBindingId", name: "Name", procedure_version: "ProcedureVersion", step: "Step", resource: "Resource", access_mode: "AccessMode", record_or_schema_key: "RecordOrSchemaKey", last_observed_at: "LastObservedAt", freshness_sla_minutes: "FreshnessSlaMinutes", is_authoritative: "IsAuthoritative", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", age_minutes: "AgeMinutes", is_fresh: "IsFresh", stale_binding_step_key: "StaleBindingStepKey", authoritative_stale_step_key: "AuthoritativeStaleStepKey", is_stale_and_authoritative: "IsStaleAndAuthoritative", step_when_stale: "StepWhenStale", resource_is_approved: "ResourceIsApproved", is_usable_for_drafting: "IsUsableForDrafting", step_when_unusable: "StepWhenUnusable", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["operational_binding_id", "procedure_version", "step", "resource", "access_mode", "record_or_schema_key", "last_observed_at", "freshness_sla_minutes", "is_authoritative", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeOperationalBindings(row as OperationalBindingsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
       { field: "resource_is_approved", target: "resources", ret: "is_approved_source", key: "resource", match: "resource_id" },],
     aggregations: [] },
   { name: "CommunicationPolicies", file: "communication_policies", rulebookRows: 2, fields: communicationPoliciesFieldTypes,
+    columns: { communication_policy_id: "CommunicationPolicyId", name: "Name", procedure_version: "ProcedureVersion", channel: "Channel", audience_rule: "AudienceRule", consent_required: "ConsentRequired", quiet_hours_start: "QuietHoursStart", quiet_hours_end: "QuietHoursEnd", max_message_length: "MaxMessageLength", max_segments: "MaxSegments", retention_days: "RetentionDays", approval_role: "ApprovalRole", required_content: "RequiredContent", authority_statement: "AuthorityStatement", status: "Status", consent_violation_count: "ConsentViolationCount", quiet_hours_start_hour: "QuietHoursStartHour", quiet_hours_end_hour: "QuietHoursEndHour", quiet_hours_violation_count: "QuietHoursViolationCount", required_opt_out_phrase: "RequiredOptOutPhrase", is_active_policy: "IsActivePolicy", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["communication_policy_id", "procedure_version", "channel", "audience_rule", "consent_required", "quiet_hours_start", "quiet_hours_end", "max_message_length", "max_segments", "retention_days", "approval_role", "required_content", "authority_statement", "status", "quiet_hours_start_hour", "quiet_hours_end_hour", "required_opt_out_phrase", "semantic_type_iri"],
     compute: (row: any) => computeCommunicationPolicies(row as CommunicationPoliciesRow),
     lookups: [],
     aggregations: [
       { field: "consent_violation_count", op: "COUNTIFS", table: "message_deliveries", criteria: [{ range: "policy_channel", kind: "field", field: "communication_policy_id" }, { range: "is_consent_violation", kind: "literal", literal: vB(true) }] },
       { field: "quiet_hours_violation_count", op: "COUNTIFS", table: "message_deliveries", criteria: [{ range: "quiet_hours_violation_policy_key", kind: "field", field: "communication_policy_id" }] },] },
   { name: "MessageTemplates", file: "message_templates", rulebookRows: 2, fields: messageTemplatesFieldTypes,
+    columns: { message_template_id: "MessageTemplateId", name: "Name", communication_policy: "CommunicationPolicy", resource: "Resource", subject_template: "SubjectTemplate", body_template: "BodyTemplate", locale: "Locale", status: "Status", policy_max_message_length: "PolicyMaxMessageLength", policy_max_segments: "PolicyMaxSegments", body_template_length: "BodyTemplateLength", is_template_over_length: "IsTemplateOverLength", valid_approval_count: "ValidApprovalCount", has_valid_approval: "HasValidApproval", is_claiming_unbacked_approval: "IsClaimingUnbackedApproval", current_body_hash: "CurrentBodyHash", last_approved_body_hash: "LastApprovedBodyHash", last_valid_approval: "LastValidApproval", has_body_drifted: "HasBodyDrifted", is_sendable_under_approval: "IsSendableUnderApproval", drifted_send_count: "DriftedSendCount", unanswered_delivery_count: "UnansweredDeliveryCount", transmitted_delivery_count: "TransmittedDeliveryCount", template_draws_no_response: "TemplateDrawsNoResponse", last_approval_at: "LastApprovalAt", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["message_template_id", "communication_policy", "resource", "subject_template", "body_template", "locale", "status", "current_body_hash", "last_valid_approval", "semantic_type_iri"],
     compute: (row: any) => computeMessageTemplates(row as MessageTemplatesRow),
     lookups: [
       { field: "policy_max_message_length", target: "communication_policies", ret: "max_message_length", key: "communication_policy", match: "communication_policy_id" },
@@ -36485,26 +36671,36 @@ export const erbTables: TableSpec[] = [
       { field: "unanswered_delivery_count", op: "COUNTIFS", table: "message_deliveries", criteria: [{ range: "unanswered_template_key", kind: "field", field: "message_template_id" }] },
       { field: "transmitted_delivery_count", op: "COUNTIFS", table: "message_deliveries", criteria: [{ range: "transmitted_template_key", kind: "field", field: "message_template_id" }] },] },
   { name: "SemanticMappings", file: "semantic_mappings", rulebookRows: 357, fields: semanticMappingsFieldTypes,
+    columns: { semantic_mapping_id: "SemanticMappingId", name: "Name", source_path: "SourcePath", mapping_kind: "MappingKind", target_iri: "TargetIri", mapping_relation: "MappingRelation", ontology_profile: "OntologyProfile", profile_namespace_dereferences: "ProfileNamespaceDereferences", notes: "Notes", available_standard_iri: "AvailableStandardIri", reinvents_standard_term: "ReinventsStandardTerm", is_non_resolvable_term_iri: "IsNonResolvableTermIri" },
+    stored: ["semantic_mapping_id", "source_path", "mapping_kind", "target_iri", "mapping_relation", "ontology_profile", "notes", "available_standard_iri"],
     compute: (row: any) => computeSemanticMappings(row as SemanticMappingsRow),
     lookups: [
       { field: "profile_namespace_dereferences", target: "ontology_profiles", ret: "namespace_dereferences", key: "ontology_profile", match: "ontology_profile_id" },],
     aggregations: [] },
-  { name: "WitnessLoops", file: "witness_loops", rulebookRows: 16, fields: witnessLoopsFieldTypes,
+  { name: "WitnessLoops", file: "witness_loops", rulebookRows: 19, fields: witnessLoopsFieldTypes,
+    columns: { witness_loop_id: "WitnessLoopId", name: "Name", loop_number: "LoopNumber", title: "Title", premise: "Premise", started_at: "StartedAt", completed_at: "CompletedAt", question_count: "QuestionCount", is_complete: "IsComplete", fields_after: "FieldsAfter", derived_after: "DerivedAfter", witnessed_after: "WitnessedAfter", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["witness_loop_id", "loop_number", "title", "premise", "started_at", "completed_at", "fields_after", "derived_after", "witnessed_after", "semantic_type_iri"],
     compute: (row: any) => computeWitnessLoops(row as WitnessLoopsRow),
     lookups: [],
     aggregations: [
       { field: "question_count", op: "COUNTIFS", table: "role_questions", criteria: [{ range: "witness_loop", kind: "field", field: "witness_loop_id" }] },] },
-  { name: "RoleQuestions", file: "role_questions", rulebookRows: 442, fields: roleQuestionsFieldTypes,
+  { name: "RoleQuestions", file: "role_questions", rulebookRows: 446, fields: roleQuestionsFieldTypes,
+    columns: { role_question_id: "RoleQuestionId", name: "Name", asking_role: "AskingRole", witness_loop: "WitnessLoop", question_text: "QuestionText", why_it_matters: "WhyItMatters", answerable_before: "AnswerableBefore", predicate_count: "PredicateCount", is_answered: "IsAnswered", witnessed_answer: "WitnessedAnswer", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["role_question_id", "asking_role", "witness_loop", "question_text", "why_it_matters", "answerable_before", "witnessed_answer", "semantic_type_iri"],
     compute: (row: any) => computeRoleQuestions(row as RoleQuestionsRow),
     lookups: [],
     aggregations: [
       { field: "predicate_count", op: "COUNTIFS", table: "rulebook_fields", criteria: [{ range: "invented_for_question", kind: "field", field: "role_question_id" }] },] },
-  { name: "RulebookFields", file: "rulebook_fields", rulebookRows: 5185, fields: rulebookFieldsFieldTypes,
+  { name: "RulebookFields", file: "rulebook_fields", rulebookRows: 5199, fields: rulebookFieldsFieldTypes,
+    columns: { rulebook_field_id: "RulebookFieldId", name: "Name", target_table: "TargetTable", field_name: "FieldName", field_type: "FieldType", datatype: "Datatype", formula: "Formula", related_to: "RelatedTo", invented_for_question: "InventedForQuestion", is_derived: "IsDerived", is_witness: "IsWitness", disagreeing_substrate_count: "DisagreeingSubstrateCount", is_substrate_contested: "IsSubstrateContested", measured_substantive_count: "MeasuredSubstantiveCount", measured_distinct_value_count: "MeasuredDistinctValueCount", has_measured_data: "HasMeasuredData", is_discriminating: "IsDiscriminating", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["rulebook_field_id", "target_table", "field_name", "field_type", "datatype", "formula", "related_to", "invented_for_question", "measured_substantive_count", "measured_distinct_value_count", "semantic_type_iri"],
     compute: (row: any) => computeRulebookFields(row as RulebookFieldsRow),
     lookups: [],
     aggregations: [
       { field: "disagreeing_substrate_count", op: "COUNTIFS", table: "field_disagreements", criteria: [{ range: "rulebook_field", kind: "field", field: "rulebook_field_id" }] },] },
   { name: "TestSuites", file: "test_suites", rulebookRows: 6, fields: testSuitesFieldTypes,
+    columns: { test_suite_id: "TestSuiteId", name: "Name", label: "Label", test_count: "TestCount", pass_count: "PassCount", blocking_fail_count: "BlockingFailCount", is_green: "IsGreen", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["test_suite_id", "label", "semantic_type_iri"],
     compute: (row: any) => computeTestSuites(row as TestSuitesRow),
     lookups: [],
     aggregations: [
@@ -36512,22 +36708,32 @@ export const erbTables: TableSpec[] = [
       { field: "pass_count", op: "COUNTIFS", table: "test_cases", criteria: [{ range: "passing_suite_key", kind: "field", field: "test_suite_id" }] },
       { field: "blocking_fail_count", op: "COUNTIFS", table: "test_cases", criteria: [{ range: "needs_attention_suite_key", kind: "field", field: "test_suite_id" }] },] },
   { name: "TestCases", file: "test_cases", rulebookRows: 1794, fields: testCasesFieldTypes,
+    columns: { test_case_id: "TestCaseId", name: "Name", test_kind: "TestKind", subject: "Subject", target_table: "TargetTable", target_field: "TargetField", assertion: "Assertion", defends_question: "DefendsQuestion", suite: "Suite", severity: "Severity", is_blocking: "IsBlocking", last_outcome: "LastOutcome", last_detail: "LastDetail", last_run_at: "LastRunAt", is_passing: "IsPassing", is_failing: "IsFailing", needs_attention: "NeedsAttention", passing_suite_key: "PassingSuiteKey", needs_attention_suite_key: "NeedsAttentionSuiteKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["test_case_id", "test_kind", "subject", "target_table", "target_field", "assertion", "defends_question", "suite", "severity", "last_outcome", "last_detail", "last_run_at", "semantic_type_iri"],
     compute: (row: any) => computeTestCases(row as TestCasesRow),
     lookups: [],
     aggregations: [] },
   { name: "ERBVersions", file: "erb_versions", rulebookRows: 1, fields: eRBVersionsFieldTypes,
+    columns: { erb_version_id: "ERBVersionId", base_id: "BaseId", name: "Name", message: "Message", notes: "Notes", commit_date: "CommitDate", is_published: "IsPublished" },
+    stored: ["erb_version_id", "base_id", "name", "message", "notes", "commit_date", "is_published"],
     compute: (row: any) => computeERBVersions(row as ERBVersionsRow),
     lookups: [],
     aggregations: [] },
   { name: "ERBCustomizations", file: "erb_customizations", rulebookRows: 0, fields: eRBCustomizationsFieldTypes,
+    columns: { erb_customization_id: "ERBCustomizationId", name: "Name", title: "Title", sql_code: "SQLCode", sql_target: "SQLTarget", customization_type: "CustomizationType" },
+    stored: ["erb_customization_id", "name", "title", "sql_code", "sql_target", "customization_type"],
     compute: (row: any) => computeERBCustomizations(row as ERBCustomizationsRow),
     lookups: [],
     aggregations: [] },
   { name: "__meta__", file: "__meta__", rulebookRows: 19, fields: __meta__FieldTypes,
+    columns: { meta_key: "MetaKey", name: "Name", value_type: "ValueType", string_value: "StringValue", json_value: "JsonValue" },
+    stored: ["meta_key", "value_type", "string_value", "json_value"],
     compute: (row: any) => compute__meta__(row as __meta__Row),
     lookups: [],
     aggregations: [] },
   { name: "ExceptionInvocations", file: "exception_invocations", rulebookRows: 1, fields: exceptionInvocationsFieldTypes,
+    columns: { exception_invocation_id: "ExceptionInvocationId", name: "Name", step_execution: "StepExecution", exception: "Exception", invoked_by_agent: "InvokedByAgent", approved_by_agent: "ApprovedByAgent", invoked_at: "InvokedAt", handling_applied: "HandlingApplied", expected_handling: "ExpectedHandling", required_approval_role: "RequiredApprovalRole", required_approval_role_holder: "RequiredApprovalRoleHolder", approval_role_matches: "ApprovalRoleMatches", is_approved: "IsApproved", is_improperly_approved: "IsImproperlyApproved", invoker_agent_kind: "InvokerAgentKind", invoker_also_prepared_key: "InvokerAlsoPreparedKey", parent_procedure_execution: "ParentProcedureExecution", approver_prepared_count: "ApproverPreparedCount", delegated_to_preparer: "DelegatedToPreparer", is_ungoverned_invocation: "IsUngovernedInvocation", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["exception_invocation_id", "step_execution", "exception", "invoked_by_agent", "approved_by_agent", "invoked_at", "handling_applied", "semantic_type_iri"],
     compute: (row: any) => computeExceptionInvocations(row as ExceptionInvocationsRow),
     lookups: [
       { field: "expected_handling", target: "exceptions", ret: "handling", key: "exception", match: "exception_id" },
@@ -36538,6 +36744,8 @@ export const erbTables: TableSpec[] = [
     aggregations: [
       { field: "approver_prepared_count", op: "COUNTIFS", table: "step_executions", criteria: [{ range: "preparer_agent_key", kind: "field", field: "invoker_also_prepared_key" }] },] },
   { name: "VerificationOutcomes", file: "verification_outcomes", rulebookRows: 4, fields: verificationOutcomesFieldTypes,
+    columns: { verification_outcome_id: "VerificationOutcomeId", name: "Name", step_execution: "StepExecution", step_verification: "StepVerification", observed_signal_value: "ObservedSignalValue", observed_by_agent: "ObservedByAgent", observed_at: "ObservedAt", evidence_uri: "EvidenceUri", expected_signal_value: "ExpectedSignalValue", signal_identifier: "SignalIdentifier", signal_matches_expected: "SignalMatchesExpected", has_evidence: "HasEvidence", is_unbacked_observation: "IsUnbackedObservation", is_self_witnessed: "IsSelfWitnessed", step_executor_agent: "StepExecutorAgent", self_witnessed_step_key: "SelfWitnessedStepKey", unbacked_step_key: "UnbackedStepKey", is_self_witnessed_and_unbacked: "IsSelfWitnessedAndUnbacked", is_uncorroborated_pass: "IsUncorroboratedPass", uncorroborated_pass_step_key: "UncorroboratedPassStepKey", observer_is_non_human: "ObserverIsNonHuman", observer_is_independent_of_executor: "ObserverIsIndependentOfExecutor", is_independent_human_observation: "IsIndependentHumanObservation", independent_observation_execution_key: "IndependentObservationExecutionKey", parent_procedure_execution_of_outcome: "ParentProcedureExecutionOfOutcome", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["verification_outcome_id", "step_execution", "step_verification", "observed_signal_value", "observed_by_agent", "observed_at", "evidence_uri", "semantic_type_iri"],
     compute: (row: any) => computeVerificationOutcomes(row as VerificationOutcomesRow),
     lookups: [
       { field: "expected_signal_value", target: "step_verifications", ret: "expected_signal_value", key: "step_verification", match: "step_verification_id" },
@@ -36547,14 +36755,20 @@ export const erbTables: TableSpec[] = [
       { field: "parent_procedure_execution_of_outcome", target: "step_executions", ret: "procedure_execution", key: "step_execution", match: "step_execution_id" },],
     aggregations: [] },
   { name: "ObservedTransitions", file: "observed_transitions", rulebookRows: 10, fields: observedTransitionsFieldTypes,
+    columns: { observed_transition_id: "ObservedTransitionId", name: "Name", procedure_execution: "ProcedureExecution", step_transition: "StepTransition", arriving_step_execution: "ArrivingStepExecution", observed_at: "ObservedAt", trigger_reason: "TriggerReason", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["observed_transition_id", "procedure_execution", "step_transition", "arriving_step_execution", "observed_at", "trigger_reason", "semantic_type_iri"],
     compute: (row: any) => computeObservedTransitions(row as ObservedTransitionsRow),
     lookups: [],
     aggregations: [] },
   { name: "Recipients", file: "recipients", rulebookRows: 5, fields: recipientsFieldTypes,
+    columns: { recipient_id: "RecipientId", name: "Name", display_name: "DisplayName", organization: "Organization", email_address: "EmailAddress", mobile_number: "MobileNumber", sms_consent_status: "SmsConsentStatus", sms_consent_at: "SmsConsentAt", consent_binding: "ConsentBinding", has_sms_consent: "HasSmsConsent", is_email_reachable: "IsEmailReachable", is_sms_reachable: "IsSmsReachable", is_unreachable: "IsUnreachable", is_communicationally_stranded: "IsCommunicationallyStranded", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["recipient_id", "display_name", "organization", "email_address", "mobile_number", "sms_consent_status", "sms_consent_at", "consent_binding", "semantic_type_iri"],
     compute: (row: any) => computeRecipients(row as RecipientsRow),
     lookups: [],
     aggregations: [] },
   { name: "MessageDeliveries", file: "message_deliveries", rulebookRows: 6, fields: messageDeliveriesFieldTypes,
+    columns: { message_delivery_id: "MessageDeliveryId", name: "Name", procedure_execution: "ProcedureExecution", step_execution: "StepExecution", recipient: "Recipient", message_template: "MessageTemplate", sent_by_agent: "SentByAgent", rendered_body: "RenderedBody", sent_at: "SentAt", sent_at_local_hour: "SentAtLocalHour", delivery_status: "DeliveryStatus", suppression_reason: "SuppressionReason", invoked_exception: "InvokedException", acknowledged_at: "AcknowledgedAt", policy_channel: "PolicyChannel", channel_name: "ChannelName", policy_requires_consent: "PolicyRequiresConsent", recipient_has_sms_consent: "RecipientHasSmsConsent", was_actually_transmitted: "WasActuallyTransmitted", is_consent_violation: "IsConsentViolation", consent_violation_policy_key: "ConsentViolationPolicyKey", policy_quiet_hours_start_hour: "PolicyQuietHoursStartHour", policy_quiet_hours_end_hour: "PolicyQuietHoursEndHour", policy_has_quiet_hours: "PolicyHasQuietHours", quiet_window_wraps_midnight: "QuietWindowWrapsMidnight", is_inside_quiet_window: "IsInsideQuietWindow", is_quiet_hours_violation: "IsQuietHoursViolation", quiet_hours_violation_policy_key: "QuietHoursViolationPolicyKey", recipient_is_unreachable: "RecipientIsUnreachable", is_acknowledged: "IsAcknowledged", invoked_exception_condition: "InvokedExceptionCondition", has_unreachable_exception_invoked: "HasUnreachableExceptionInvoked", is_fabricated_acknowledgement: "IsFabricatedAcknowledgement", is_unhandled_unreachable: "IsUnhandledUnreachable", unreachable_failure_key: "UnreachableFailureKey", policy_retention_days: "PolicyRetentionDays", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", age_days: "AgeDays", is_within_retention_window: "IsWithinRetentionWindow", has_rendered_body: "HasRenderedBody", is_evidence_required: "IsEvidenceRequired", is_retention_breach: "IsRetentionBreach", retention_breach_execution_key: "RetentionBreachExecutionKey", sending_step_execution_step: "SendingStepExecutionStep", execution_has_cleared_legal_review: "ExecutionHasClearedLegalReview", is_unreviewed_send: "IsUnreviewedSend", rendered_body_length: "RenderedBodyLength", policy_max_message_length_at_send: "PolicyMaxMessageLengthAtSend", segment_count: "SegmentCount", policy_max_segments_at_send: "PolicyMaxSegmentsAtSend", is_over_segment_limit: "IsOverSegmentLimit", template_has_valid_approval: "TemplateHasValidApproval", is_unapproved_send: "IsUnapprovedSend", policy_required_opt_out_phrase: "PolicyRequiredOptOutPhrase", policy_requires_opt_out: "PolicyRequiresOptOut", opt_out_phrase_position: "OptOutPhrasePosition", has_opt_out_phrase: "HasOptOutPhrase", is_opt_out_in_first_segment: "IsOptOutInFirstSegment", is_missing_required_opt_out: "IsMissingRequiredOptOut", is_opt_out_at_risk_of_truncation: "IsOptOutAtRiskOfTruncation", is_failed_delivery: "IsFailedDelivery", is_suppressed: "IsSuppressed", is_triaged: "IsTriaged", is_abandoned_failure: "IsAbandonedFailure", abandoned_failure_execution_key: "AbandonedFailureExecutionKey", reached_execution_key: "ReachedExecutionKey", template_was_sendable: "TemplateWasSendable", is_drifted_send: "IsDriftedSend", drifted_send_template_key: "DriftedSendTemplateKey", was_sent_outside_business_hours: "WasSentOutsideBusinessHours", was_delivered_and_unanswered: "WasDeliveredAndUnanswered", is_poorly_timed_unanswered: "IsPoorlyTimedUnanswered", is_well_timed_unanswered: "IsWellTimedUnanswered", unanswered_template_key: "UnansweredTemplateKey", transmitted_template_key: "TransmittedTemplateKey", approving_agent_at_send: "ApprovingAgentAtSend", approving_role_at_send: "ApprovingRoleAtSend", approval_decided_at_send: "ApprovalDecidedAtSend", approval_preceded_send: "ApprovalPrecededSend", has_frozen_approval_evidence: "HasFrozenApprovalEvidence", provenance_is_live_derived: "ProvenanceIsLiveDerived", current_last_approval_at: "CurrentLastApprovalAt", template_reapproved_since_send: "TemplateReapprovedSinceSend", is_unprovable_approval_claim: "IsUnprovableApprovalClaim", reminder_sent_at: "ReminderSentAt", reminder_count: "ReminderCount", has_sent_reminder: "HasSentReminder", acknowledgement_is_outstanding: "AcknowledgementIsOutstanding", outstanding_age_days: "OutstandingAgeDays", is_unchased_acknowledgement: "IsUnchasedAcknowledgement", is_exhausted_follow_up: "IsExhaustedFollowUp", needs_human_escalation: "NeedsHumanEscalation", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["message_delivery_id", "procedure_execution", "step_execution", "recipient", "message_template", "sent_by_agent", "rendered_body", "sent_at", "sent_at_local_hour", "delivery_status", "suppression_reason", "invoked_exception", "acknowledged_at", "evaluation_context", "approving_agent_at_send", "approving_role_at_send", "approval_decided_at_send", "reminder_sent_at", "reminder_count", "semantic_type_iri"],
     compute: (row: any) => computeMessageDeliveries(row as MessageDeliveriesRow),
     lookups: [
       { field: "policy_channel", target: "message_templates", ret: "communication_policy", key: "message_template", match: "message_template_id" },
@@ -36577,12 +36791,16 @@ export const erbTables: TableSpec[] = [
       { field: "current_last_approval_at", target: "message_templates", ret: "last_approval_at", key: "message_template", match: "message_template_id" },],
     aggregations: [] },
   { name: "TemplateApprovals", file: "template_approvals", rulebookRows: 2, fields: templateApprovalsFieldTypes,
+    columns: { template_approval_id: "TemplateApprovalId", name: "Name", message_template: "MessageTemplate", decided_by_agent: "DecidedByAgent", decided_in_role: "DecidedInRole", decision: "Decision", decided_at: "DecidedAt", approved_body_hash: "ApprovedBodyHash", notes: "Notes", is_approval_decision: "IsApprovalDecision", template_policy: "TemplatePolicy", required_approval_role: "RequiredApprovalRole", is_decided_by_required_role: "IsDecidedByRequiredRole", valid_approval_template_key: "ValidApprovalTemplateKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["template_approval_id", "message_template", "decided_by_agent", "decided_in_role", "decision", "decided_at", "approved_body_hash", "notes", "semantic_type_iri"],
     compute: (row: any) => computeTemplateApprovals(row as TemplateApprovalsRow),
     lookups: [
       { field: "template_policy", target: "message_templates", ret: "communication_policy", key: "message_template", match: "message_template_id" },
       { field: "required_approval_role", target: "communication_policies", ret: "approval_role", key: "template_policy", match: "communication_policy_id" },],
     aggregations: [] },
   { name: "SendIntents", file: "send_intents", rulebookRows: 7, fields: sendIntentsFieldTypes,
+    columns: { send_intent_id: "SendIntentId", name: "Name", procedure_execution: "ProcedureExecution", step_execution: "StepExecution", recipient: "Recipient", message_template: "MessageTemplate", proposed_body: "ProposedBody", proposed_send_at_local_hour: "ProposedSendAtLocalHour", evaluated_at: "EvaluatedAt", resulting_delivery: "ResultingDelivery", intent_policy: "IntentPolicy", intent_channel: "IntentChannel", policy_is_active: "PolicyIsActive", intent_requires_consent: "IntentRequiresConsent", recipient_has_channel_consent: "RecipientHasChannelConsent", consent_gate_passed: "ConsentGatePassed", recipient_is_sms_reachable: "RecipientIsSmsReachable", recipient_is_email_reachable: "RecipientIsEmailReachable", reachability_gate_passed: "ReachabilityGatePassed", permission_gate_passed: "PermissionGatePassed", intent_quiet_start_hour: "IntentQuietStartHour", intent_quiet_end_hour: "IntentQuietEndHour", intent_policy_has_quiet_hours: "IntentPolicyHasQuietHours", intent_quiet_window_wraps: "IntentQuietWindowWraps", intent_is_inside_quiet_window: "IntentIsInsideQuietWindow", timing_gate_passed: "TimingGatePassed", hours_until_window_opens: "HoursUntilWindowOpens", intent_max_message_length: "IntentMaxMessageLength", intent_max_segments: "IntentMaxSegments", proposed_body_length: "ProposedBodyLength", proposed_segment_count: "ProposedSegmentCount", length_gate_passed: "LengthGatePassed", intent_required_opt_out_phrase: "IntentRequiredOptOutPhrase", proposed_opt_out_position: "ProposedOptOutPosition", opt_out_gate_passed: "OptOutGatePassed", content_gate_passed: "ContentGatePassed", template_is_sendable: "TemplateIsSendable", execution_has_legal_clearance: "ExecutionHasLegalClearance", intent_approval_role: "IntentApprovalRole", approval_role_agent_kind: "ApprovalRoleAgentKind", approval_is_human: "ApprovalIsHuman", authorization_gate_passed: "AuthorizationGatePassed", is_cleared_to_send: "IsClearedToSend", blocking_gate_name: "BlockingGateName", has_resulting_delivery: "HasResultingDelivery", resulting_delivery_was_transmitted: "ResultingDeliveryWasTransmitted", is_overridden_refusal: "IsOverriddenRefusal", is_silently_dropped: "IsSilentlyDropped", resulting_delivery_exception: "ResultingDeliveryException", refusal_cited_an_exception: "RefusalCitedAnException", is_properly_handled_refusal: "IsProperlyHandledRefusal", refusal_failure_execution_key: "RefusalFailureExecutionKey", intent_execution_key: "IntentExecutionKey", delivered_intent_execution_key: "DeliveredIntentExecutionKey", dropped_intent_execution_key: "DroppedIntentExecutionKey", my_approval_was_in_force: "MyApprovalWasInForce", refused_on_approved_content: "RefusedOnApprovedContent", refused_on_opt_out_only: "RefusedOnOptOutOnly", refusal_was_on_my_rules: "RefusalWasOnMyRules", refusal_was_outside_my_control: "RefusalWasOutsideMyControl", approver_was_notified: "ApproverWasNotified", is_unreported_refusal_on_my_rules: "IsUnreportedRefusalOnMyRules", is_approval_overridden_silently: "IsApprovalOverriddenSilently", alternate_channel_intent: "AlternateChannelIntent", has_alternate_channel_attempt: "HasAlternateChannelAttempt", alternate_attempt_was_cleared: "AlternateAttemptWasCleared", is_refused_with_no_alternative: "IsRefusedWithNoAlternative", exception_prescribed_an_alternative: "ExceptionPrescribedAnAlternative", prescribed_handling_was_performed: "PrescribedHandlingWasPerformed", is_suppression_without_remedy: "IsSuppressionWithoutRemedy", refusal_recorded_at: "RefusalRecordedAt", refusal_notified_role: "RefusalNotifiedRole", has_durable_refusal_record: "HasDurableRefusalRecord", refusal_was_escalated: "RefusalWasEscalated", is_unrecorded_refusal: "IsUnrecordedRefusal", is_unescalated_refusal: "IsUnescalatedRefusal", unescalated_refusal_role_key: "UnescalatedRefusalRoleKey", unrecorded_refusal_execution_key: "UnrecordedRefusalExecutionKey", retry_intent: "RetryIntent", was_deferred_on_timing: "WasDeferredOnTiming", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", window_has_since_reopened: "WindowHasSinceReopened", has_retry_attempt: "HasRetryAttempt", retry_was_cleared: "RetryWasCleared", is_abandoned_deferral: "IsAbandonedDeferral", deferral_age_hours: "DeferralAgeHours", is_stale_deferral: "IsStaleDeferral", evaluating_role_assignment: "EvaluatingRoleAssignment", enforced_by_unauthorized_agent: "EnforcedByUnauthorizedAgent", consent_input_was_resolvable: "ConsentInputWasResolvable", recipient_consent_status_raw: "RecipientConsentStatusRaw", policy_input_was_resolvable: "PolicyInputWasResolvable", all_gate_inputs_resolved: "AllGateInputsResolved", is_unevaluable_refusal: "IsUnevaluableRefusal", gate_result_was_independently_confirmed: "GateResultWasIndependentlyConfirmed", is_self_witnessed_decision: "IsSelfWitnessedDecision", is_independently_confirmed: "IsIndependentlyConfirmed", independently_confirmed_execution_key: "IndependentlyConfirmedExecutionKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["send_intent_id", "procedure_execution", "step_execution", "recipient", "message_template", "proposed_body", "proposed_send_at_local_hour", "evaluated_at", "resulting_delivery", "proposed_body_length", "proposed_segment_count", "proposed_opt_out_position", "approver_was_notified", "alternate_channel_intent", "refusal_recorded_at", "refusal_notified_role", "retry_intent", "evaluation_context", "evaluating_role_assignment", "gate_result_was_independently_confirmed", "semantic_type_iri"],
     compute: (row: any) => computeSendIntents(row as SendIntentsRow),
     lookups: [
       { field: "intent_policy", target: "message_templates", ret: "communication_policy", key: "message_template", match: "message_template_id" },
@@ -36610,6 +36828,8 @@ export const erbTables: TableSpec[] = [
       { field: "recipient_consent_status_raw", target: "recipients", ret: "sms_consent_status", key: "recipient", match: "recipient_id" },],
     aggregations: [] },
   { name: "AgentDecisionRecords", file: "agent_decision_records", rulebookRows: 3, fields: agentDecisionRecordsFieldTypes,
+    columns: { agent_decision_record_id: "AgentDecisionRecordId", name: "Name", step_execution: "StepExecution", deciding_agent: "DecidingAgent", decision_kind: "DecisionKind", decision_summary: "DecisionSummary", decided_at: "DecidedAt", materiality_band: "MaterialityBand", human_disposition: "HumanDisposition", reviewed_by_agent: "ReviewedByAgent", reviewed_at: "ReviewedAt", was_overridden: "WasOverridden", was_reviewed: "WasReviewed", deciding_agent_kind: "DecidingAgentKind", deciding_agent_when_overridden: "DecidingAgentWhenOverridden", under_role_assignment: "UnderRoleAssignment", role_assignment_when_scored: "RoleAssignmentWhenScored", role_assignment_when_overridden: "RoleAssignmentWhenOverridden", step_of_decision: "StepOfDecision", boundary_match_key: "BoundaryMatchKey", matching_boundary_count: "MatchingBoundaryCount", violated_authority_boundary: "ViolatedAuthorityBoundary", reviewer_agent_kind: "ReviewerAgentKind", has_human_confirmation: "HasHumanConfirmation", needs_human_confirmation: "NeedsHumanConfirmation", is_unconfirmed_non_human_decision: "IsUnconfirmedNonHumanDecision", step_execution_when_unconfirmed: "StepExecutionWhenUnconfirmed", agent_when_boundary_violated: "AgentWhenBoundaryViolated", review_latency_minutes: "ReviewLatencyMinutes", is_draft_kind: "IsDraftKind", agent_when_draft_overridden: "AgentWhenDraftOverridden", agent_when_draft: "AgentWhenDraft", override_reason_kind: "OverrideReasonKind", is_error_correction: "IsErrorCorrection", is_reserved_judgment_override: "IsReservedJudgmentOverride", override_reason_is_recorded: "OverrideReasonIsRecorded", is_unexplained_override: "IsUnexplainedOverride", error_correction_role_assignment_key: "ErrorCorrectionRoleAssignmentKey", boundary_violation_role_assignment_key: "BoundaryViolationRoleAssignmentKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["agent_decision_record_id", "step_execution", "deciding_agent", "decision_kind", "decision_summary", "decided_at", "materiality_band", "human_disposition", "reviewed_by_agent", "reviewed_at", "under_role_assignment", "override_reason_kind", "semantic_type_iri"],
     compute: (row: any) => computeAgentDecisionRecords(row as AgentDecisionRecordsRow),
     lookups: [
       { field: "deciding_agent_kind", target: "agents", ret: "agent_kind", key: "deciding_agent", match: "agent_id" },
@@ -36618,11 +36838,15 @@ export const erbTables: TableSpec[] = [
     aggregations: [
       { field: "matching_boundary_count", op: "COUNTIFS", table: "authority_boundaries", criteria: [{ range: "boundary_match_key", kind: "field", field: "boundary_match_key" }] },] },
   { name: "DeliveredCommunications", file: "delivered_communications", rulebookRows: 1, fields: deliveredCommunicationsFieldTypes,
+    columns: { delivered_communication_id: "DeliveredCommunicationId", name: "Name", procedure_execution: "ProcedureExecution", sending_step_execution: "SendingStepExecution", authorizing_step_execution: "AuthorizingStepExecution", message_template: "MessageTemplate", channel: "Channel", recipient_key: "RecipientKey", sent_at: "SentAt", rendered_content_hash: "RenderedContentHash", approved_content_hash: "ApprovedContentHash", delivery_status: "DeliveryStatus", semantic_type_iri: "SemanticTypeIri", has_authorization: "HasAuthorization", content_matches_approval: "ContentMatchesApproval", authorized_at: "AuthorizedAt", was_approved_before_sending: "WasApprovedBeforeSending", is_defensible: "IsDefensible" },
+    stored: ["delivered_communication_id", "procedure_execution", "sending_step_execution", "authorizing_step_execution", "message_template", "channel", "recipient_key", "sent_at", "rendered_content_hash", "approved_content_hash", "delivery_status", "semantic_type_iri"],
     compute: (row: any) => computeDeliveredCommunications(row as DeliveredCommunicationsRow),
     lookups: [
       { field: "authorized_at", target: "step_executions", ret: "ended_at", key: "authorizing_step_execution", match: "step_execution_id" },],
     aggregations: [] },
   { name: "AuthorityBoundaries", file: "authority_boundaries", rulebookRows: 3, fields: authorityBoundariesFieldTypes,
+    columns: { authority_boundary_id: "AuthorityBoundaryId", name: "Name", step: "Step", forbidden_agent_kind: "ForbiddenAgentKind", forbidden_decision_kind: "ForbiddenDecisionKind", ratified_by_knowledge_fragment: "RatifiedByKnowledgeFragment", enforcing_requirement: "EnforcingRequirement", authority_role: "AuthorityRole", valid_from: "ValidFrom", valid_to: "ValidTo", status: "Status", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", is_currently_binding: "IsCurrentlyBinding", ratifying_fragment_is_valid: "RatifyingFragmentIsValid", step_when_binding: "StepWhenBinding", boundary_match_key: "BoundaryMatchKey", violation_count: "ViolationCount", is_untested: "IsUntested", has_ratifying_fragment: "HasRatifyingFragment", is_unwarranted: "IsUnwarranted", ratifying_fragment_is_overdue: "RatifyingFragmentIsOverdue", ratifying_fragment_is_single_witness: "RatifyingFragmentIsSingleWitness", warrant_is_thin: "WarrantIsThin", is_unwarranted_and_untested: "IsUnwarrantedAndUntested", unwarranted_boundary_step_key: "UnwarrantedBoundaryStepKey", ratifying_fragment_key: "RatifyingFragmentKey", ratifying_fragment_status: "RatifyingFragmentStatus", ratification_lapsed: "RatificationLapsed", binds_despite_lapsed_ratification: "BindsDespiteLapsedRatification", is_ungrounded_and_untested: "IsUngroundedAndUntested", constrained_role_assignment_key: "ConstrainedRoleAssignmentKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["authority_boundary_id", "step", "forbidden_agent_kind", "forbidden_decision_kind", "ratified_by_knowledge_fragment", "enforcing_requirement", "authority_role", "valid_from", "valid_to", "status", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeAuthorityBoundaries(row as AuthorityBoundariesRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -36633,42 +36857,58 @@ export const erbTables: TableSpec[] = [
     aggregations: [
       { field: "violation_count", op: "COUNTIFS", table: "agent_decision_records", criteria: [{ range: "boundary_match_key", kind: "field", field: "boundary_match_key" }] },] },
   { name: "BindingObservations", file: "binding_observations", rulebookRows: 0, fields: bindingObservationsFieldTypes,
+    columns: { binding_observation_id: "BindingObservationId", name: "Name", step_execution: "StepExecution", operational_binding: "OperationalBinding", observed_source_timestamp: "ObservedSourceTimestamp", read_at: "ReadAt", sla_minutes_at_run: "SlaMinutesAtRun", age_at_run_minutes: "AgeAtRunMinutes", was_stale_at_run: "WasStaleAtRun", is_authoritative_binding: "IsAuthoritativeBinding", stale_at_run_step_key: "StaleAtRunStepKey" },
+    stored: ["binding_observation_id", "step_execution", "operational_binding", "observed_source_timestamp", "read_at"],
     compute: (row: any) => computeBindingObservations(row as BindingObservationsRow),
     lookups: [
       { field: "sla_minutes_at_run", target: "operational_bindings", ret: "freshness_sla_minutes", key: "operational_binding", match: "operational_binding_id" },
       { field: "is_authoritative_binding", target: "operational_bindings", ret: "is_authoritative", key: "operational_binding", match: "operational_binding_id" },],
     aggregations: [] },
   { name: "Attestations", file: "attestations", rulebookRows: 0, fields: attestationsFieldTypes,
+    columns: { attestation_id: "AttestationId", name: "Name", procedure_execution: "ProcedureExecution", signed_by_agent: "SignedByAgent", signed_at: "SignedAt", assurance_grade_at_signing: "AssuranceGradeAtSigning", version_was_fit_at_signing: "VersionWasFitAtSigning", version_is_fit_now: "VersionIsFitNow", fitness_verdict_has_drifted: "FitnessVerdictHasDrifted", assurance_grade_now: "AssuranceGradeNow", assurance_grade_has_drifted: "AssuranceGradeHasDrifted", would_not_survive_restatement: "WouldNotSurviveRestatement" },
+    stored: ["attestation_id", "procedure_execution", "signed_by_agent", "signed_at", "assurance_grade_at_signing", "version_was_fit_at_signing"],
     compute: (row: any) => computeAttestations(row as AttestationsRow),
     lookups: [
       { field: "version_is_fit_now", target: "procedure_executions", ret: "executed_version_is_fit", key: "procedure_execution", match: "procedure_execution_id" },
       { field: "assurance_grade_now", target: "procedure_executions", ret: "assurance_grade", key: "procedure_execution", match: "procedure_execution_id" },],
     aggregations: [] },
   { name: "AppRoleProfiles", file: "app_role_profiles", rulebookRows: 20, fields: appRoleProfilesFieldTypes,
+    columns: { app_role_profile_id: "AppRoleProfileId", name: "Name", role: "Role", display_label: "DisplayLabel", role_kind: "RoleKind", accent_color: "AccentColor", icon_mark: "IconMark", icon_png_base64: "IconPngBase64", pitch: "Pitch", sort_order: "SortOrder", route_count: "RouteCount", semantic_type_iri: "SemanticTypeIri", device: "Device", home_route: "HomeRoute", home_title: "HomeTitle" },
+    stored: ["app_role_profile_id", "role", "display_label", "role_kind", "accent_color", "icon_mark", "icon_png_base64", "pitch", "sort_order", "semantic_type_iri", "device", "home_route", "home_title"],
     compute: (row: any) => computeAppRoleProfiles(row as AppRoleProfilesRow),
     lookups: [],
     aggregations: [
       { field: "route_count", op: "COUNTIFS", table: "app_routes", criteria: [{ range: "owning_role", kind: "field", field: "role" }] },] },
   { name: "AppNavGroups", file: "app_nav_groups", rulebookRows: 23, fields: appNavGroupsFieldTypes,
+    columns: { app_nav_group_id: "AppNavGroupId", name: "Name", group_label: "GroupLabel", route_count: "RouteCount", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["app_nav_group_id", "group_label", "semantic_type_iri"],
     compute: (row: any) => computeAppNavGroups(row as AppNavGroupsRow),
     lookups: [],
     aggregations: [
       { field: "route_count", op: "COUNTIFS", table: "app_routes", criteria: [{ range: "nav_group", kind: "field", field: "app_nav_group_id" }] },] },
   { name: "AppRoutes", file: "app_routes", rulebookRows: 149, fields: appRoutesFieldTypes,
+    columns: { app_route_id: "AppRouteId", name: "Name", route_path: "RoutePath", route_name: "RouteName", surface: "Surface", owning_role: "OwningRole", nav_group: "NavGroup", nav_order: "NavOrder", route_kind: "RouteKind", purpose: "Purpose", layout_hints: "LayoutHints", is_in_nav: "IsInNav", is_shared: "IsShared", is_maintainer: "IsMaintainer", question_count: "QuestionCount", reference_count: "ReferenceCount", answers_no_question: "AnswersNoQuestion", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["app_route_id", "route_path", "route_name", "surface", "owning_role", "nav_group", "nav_order", "route_kind", "purpose", "layout_hints", "semantic_type_iri"],
     compute: (row: any) => computeAppRoutes(row as AppRoutesRow),
     lookups: [],
     aggregations: [
       { field: "question_count", op: "COUNTIFS", table: "app_route_questions", criteria: [{ range: "route", kind: "field", field: "app_route_id" }] },
       { field: "reference_count", op: "COUNTIFS", table: "app_route_references", criteria: [{ range: "from_route", kind: "field", field: "app_route_id" }] },] },
   { name: "AppRouteQuestions", file: "app_route_questions", rulebookRows: 151, fields: appRouteQuestionsFieldTypes,
+    columns: { app_route_question_id: "AppRouteQuestionId", name: "Name", route: "Route", question: "Question", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["app_route_question_id", "route", "question", "semantic_type_iri"],
     compute: (row: any) => computeAppRouteQuestions(row as AppRouteQuestionsRow),
     lookups: [],
     aggregations: [] },
   { name: "AppRouteReferences", file: "app_route_references", rulebookRows: 315, fields: appRouteReferencesFieldTypes,
+    columns: { app_route_reference_id: "AppRouteReferenceId", name: "Name", from_route: "FromRoute", to_route: "ToRoute", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["app_route_reference_id", "from_route", "to_route", "semantic_type_iri"],
     compute: (row: any) => computeAppRouteReferences(row as AppRouteReferencesRow),
     lookups: [],
     aggregations: [] },
   { name: "RulebookTables", file: "rulebook_tables", rulebookRows: 264, fields: rulebookTablesFieldTypes,
+    columns: { rulebook_table_id: "RulebookTableId", table_name: "TableName", name: "Name", physical_table: "PhysicalTable", physical_view: "PhysicalView", subject_area: "SubjectArea", is_extension: "IsExtension", field_count: "FieldCount", policy_count: "PolicyCount", is_unsecured: "IsUnsecured", disagreeing_substrate_count: "DisagreeingSubstrateCount", measured_row_count: "MeasuredRowCount", has_measured_rows: "HasMeasuredRows", semantic_type_iri: "SemanticTypeIri", organization_level: "OrganizationLevel", semantic_mapping_count: "SemanticMappingCount", meaning_is_only_tabular: "MeaningIsOnlyTabular", exact_mapping_count: "ExactMappingCount", aligned_mapping_count: "AlignedMappingCount", is_unaligned_to_standard: "IsUnalignedToStandard", semantic_type_iri_field_count: "SemanticTypeIriFieldCount", lacks_semantic_type_convention: "LacksSemanticTypeConvention", is_unsecured_governance_record: "IsUnsecuredGovernanceRecord", unrestricted_non_admin_policy_count: "UnrestrictedNonAdminPolicyCount", restricted_non_admin_policy_count: "RestrictedNonAdminPolicyCount", is_readable_in_full_by_non_admin: "IsReadableInFullByNonAdmin", is_controlled_for_every_non_admin: "IsControlledForEveryNonAdmin" },
+    stored: ["rulebook_table_id", "table_name", "physical_table", "physical_view", "subject_area", "is_extension", "measured_row_count", "semantic_type_iri", "organization_level"],
     compute: (row: any) => computeRulebookTables(row as RulebookTablesRow),
     lookups: [],
     aggregations: [
@@ -36682,6 +36922,8 @@ export const erbTables: TableSpec[] = [
       { field: "unrestricted_non_admin_policy_count", op: "COUNTIFS", table: "access_policies", criteria: [{ range: "target_table", kind: "field", field: "rulebook_table_id" }, { range: "is_unrestricted_non_admin_grant", kind: "literal", literal: vB(true) }] },
       { field: "restricted_non_admin_policy_count", op: "COUNTIFS", table: "access_policies", criteria: [{ range: "target_table", kind: "field", field: "rulebook_table_id" }, { range: "is_unrestricted_non_admin_grant", kind: "literal", literal: vB(false) }, { range: "principal_is_admin", kind: "literal", literal: vB(false) }] },] },
   { name: "AccessPrincipals", file: "access_principals", rulebookRows: 20, fields: accessPrincipalsFieldTypes,
+    columns: { access_principal_id: "AccessPrincipalId", name: "Name", label: "Label", domain_role: "DomainRole", pg_role_name: "PgRoleName", schema_name: "SchemaName", is_administrator: "IsAdministrator", organization_scope: "OrganizationScope", role_label: "RoleLabel", policy_count: "PolicyCount", grant_count: "GrantCount", visible_table_count: "VisibleTableCount", has_no_access: "HasNoAccess", is_over_privileged: "IsOverPrivileged", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["access_principal_id", "label", "domain_role", "pg_role_name", "schema_name", "is_administrator", "semantic_type_iri"],
     compute: (row: any) => computeAccessPrincipals(row as AccessPrincipalsRow),
     lookups: [
       { field: "organization_scope", target: "roles", ret: "organization", key: "domain_role", match: "role_id" },
@@ -36690,13 +36932,17 @@ export const erbTables: TableSpec[] = [
       { field: "policy_count", op: "COUNTIFS", table: "access_policies", criteria: [{ range: "principal", kind: "field", field: "access_principal_id" }] },
       { field: "grant_count", op: "COUNTIFS", table: "field_grants", criteria: [{ range: "principal", kind: "field", field: "access_principal_id" }] },
       { field: "visible_table_count", op: "COUNTIFS", table: "role_schema_views", criteria: [{ range: "principal", kind: "field", field: "access_principal_id" }] },] },
-  { name: "AccessPolicies", file: "access_policies", rulebookRows: 781, fields: accessPoliciesFieldTypes,
+  { name: "AccessPolicies", file: "access_policies", rulebookRows: 793, fields: accessPoliciesFieldTypes,
+    columns: { access_policy_id: "AccessPolicyId", name: "Name", principal: "Principal", target_table: "TargetTable", command: "Command", row_predicate: "RowPredicate", check_predicate: "CheckPredicate", rationale: "Rationale", references_inference: "ReferencesInference", is_write_command: "IsWriteCommand", is_unrestricted: "IsUnrestricted", principal_is_admin: "PrincipalIsAdmin", is_unrestricted_non_admin_grant: "IsUnrestrictedNonAdminGrant", is_unwitnessed_write: "IsUnwitnessedWrite", denial_test_count: "DenialTestCount", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["access_policy_id", "principal", "target_table", "command", "row_predicate", "check_predicate", "rationale", "references_inference", "semantic_type_iri"],
     compute: (row: any) => computeAccessPolicies(row as AccessPoliciesRow),
     lookups: [
       { field: "principal_is_admin", target: "access_principals", ret: "is_administrator", key: "principal", match: "access_principal_id" },],
     aggregations: [
       { field: "denial_test_count", op: "COUNTIFS", table: "access_denial_tests", criteria: [{ range: "target_policy", kind: "field", field: "access_policy_id" }] },] },
-  { name: "FieldGrants", file: "field_grants", rulebookRows: 18467, fields: fieldGrantsFieldTypes,
+  { name: "FieldGrants", file: "field_grants", rulebookRows: 18790, fields: fieldGrantsFieldTypes,
+    columns: { field_grant_id: "FieldGrantId", name: "Name", principal: "Principal", target_field: "TargetField", can_read: "CanRead", can_write: "CanWrite", mask_strategy: "MaskStrategy", field_table: "FieldTable", field_name: "FieldName", field_is_derived: "FieldIsDerived", is_writable_derived_field: "IsWritableDerivedField", is_masked: "IsMasked", grant_key_when_readable: "GrantKeyWhenReadable", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["field_grant_id", "principal", "target_field", "can_read", "can_write", "mask_strategy", "semantic_type_iri"],
     compute: (row: any) => computeFieldGrants(row as FieldGrantsRow),
     lookups: [
       { field: "field_table", target: "rulebook_fields", ret: "target_table", key: "target_field", match: "rulebook_field_id" },
@@ -36704,11 +36950,15 @@ export const erbTables: TableSpec[] = [
       { field: "field_is_derived", target: "rulebook_fields", ret: "is_derived", key: "target_field", match: "rulebook_field_id" },],
     aggregations: [] },
   { name: "RoleSchemas", file: "role_schemas", rulebookRows: 20, fields: roleSchemasFieldTypes,
+    columns: { role_schema_id: "RoleSchemaId", name: "Name", principal: "Principal", schema_name: "SchemaName", search_path: "SearchPath", is_sealed: "IsSealed", view_count: "ViewCount", is_empty_schema: "IsEmptySchema", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["role_schema_id", "principal", "schema_name", "is_sealed", "semantic_type_iri"],
     compute: (row: any) => computeRoleSchemas(row as RoleSchemasRow),
     lookups: [],
     aggregations: [
       { field: "view_count", op: "COUNTIFS", table: "role_schema_views", criteria: [{ range: "role_schema", kind: "field", field: "role_schema_id" }] },] },
-  { name: "RoleSchemaViews", file: "role_schema_views", rulebookRows: 762, fields: roleSchemaViewsFieldTypes,
+  { name: "RoleSchemaViews", file: "role_schema_views", rulebookRows: 771, fields: roleSchemaViewsFieldTypes,
+    columns: { role_schema_view_id: "RoleSchemaViewId", name: "Name", role_schema: "RoleSchema", principal: "Principal", target_table: "TargetTable", view_name: "ViewName", schema_name: "SchemaName", source_view: "SourceView", grant_key: "GrantKey", column_count: "ColumnCount", table_field_count: "TableFieldCount", is_full_width: "IsFullWidth", is_degenerate_view: "IsDegenerateView", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["role_schema_view_id", "role_schema", "principal", "target_table", "view_name", "semantic_type_iri"],
     compute: (row: any) => computeRoleSchemaViews(row as RoleSchemaViewsRow),
     lookups: [
       { field: "schema_name", target: "role_schemas", ret: "schema_name", key: "role_schema", match: "role_schema_id" },
@@ -36717,15 +36967,21 @@ export const erbTables: TableSpec[] = [
     aggregations: [
       { field: "column_count", op: "COUNTIFS", table: "field_grants", criteria: [{ range: "principal", kind: "field", field: "principal" }, { range: "can_read", kind: "literal", literal: vB(true) }, { range: "field_table", kind: "field", field: "target_table" }] },] },
   { name: "JwtClaimMappings", file: "jwt_claim_mappings", rulebookRows: 4, fields: jwtClaimMappingsFieldTypes,
+    columns: { jwt_claim_mapping_id: "JwtClaimMappingId", name: "Name", claim_name: "ClaimName", sql_accessor: "SqlAccessor", is_reserved_claim: "IsReservedClaim", maps_to_principal: "MapsToPrincipal", description2: "Description2", usage_count: "UsageCount", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["jwt_claim_mapping_id", "claim_name", "sql_accessor", "is_reserved_claim", "maps_to_principal", "description2", "semantic_type_iri"],
     compute: (row: any) => computeJwtClaimMappings(row as JwtClaimMappingsRow),
     lookups: [],
     aggregations: [
       { field: "usage_count", op: "COUNTIFS", table: "access_policies", criteria: [{ range: "row_predicate", kind: "field", field: "sql_accessor" }] },] },
   { name: "AccessDenialTests", file: "access_denial_tests", rulebookRows: 17, fields: accessDenialTestsFieldTypes,
+    columns: { access_denial_test_id: "AccessDenialTestId", name: "Name", target_policy: "TargetPolicy", principal: "Principal", target_table: "TargetTable", forbidden_row_id: "ForbiddenRowId", expected_visible: "ExpectedVisible", observed_visible: "ObservedVisible", last_run_at: "LastRunAt", has_run: "HasRun", is_passing: "IsPassing", is_leak: "IsLeak", is_unproven: "IsUnproven", rationale: "Rationale", is_positive_control: "IsPositiveControl", forbidden_table: "ForbiddenTable", forbidden_column: "ForbiddenColumn", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["access_denial_test_id", "target_policy", "principal", "target_table", "forbidden_row_id", "expected_visible", "observed_visible", "last_run_at", "rationale", "forbidden_table", "forbidden_column", "semantic_type_iri"],
     compute: (row: any) => computeAccessDenialTests(row as AccessDenialTestsRow),
     lookups: [],
     aggregations: [] },
   { name: "AppUsers", file: "app_users", rulebookRows: 20, fields: appUsersFieldTypes,
+    columns: { app_user_id: "AppUserId", name: "Name", email_address: "EmailAddress", display_name: "DisplayName", linked_agent: "LinkedAgent", is_enabled: "IsEnabled", agent_kind: "AgentKind", organization: "Organization", assignment_count: "AssignmentCount", has_no_principal: "HasNoPrincipal", holds_multiple_principals: "HoldsMultiplePrincipals", is_non_human_sign_in: "IsNonHumanSignIn", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["app_user_id", "email_address", "display_name", "linked_agent", "is_enabled", "semantic_type_iri"],
     compute: (row: any) => computeAppUsers(row as AppUsersRow),
     lookups: [
       { field: "agent_kind", target: "agents", ret: "agent_kind", key: "linked_agent", match: "agent_id" },
@@ -36733,6 +36989,8 @@ export const erbTables: TableSpec[] = [
     aggregations: [
       { field: "assignment_count", op: "COUNTIFS", table: "principal_assignments", criteria: [{ range: "app_user", kind: "field", field: "app_user_id" }] },] },
   { name: "PrincipalAssignments", file: "principal_assignments", rulebookRows: 22, fields: principalAssignmentsFieldTypes,
+    columns: { principal_assignment_id: "PrincipalAssignmentId", name: "Name", app_user: "AppUser", principal: "Principal", is_default: "IsDefault", granted_rationale: "GrantedRationale", principal_is_admin: "PrincipalIsAdmin", user_organization: "UserOrganization", principal_organization: "PrincipalOrganization", is_cross_organization_grant: "IsCrossOrganizationGrant", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["principal_assignment_id", "app_user", "principal", "is_default", "granted_rationale", "semantic_type_iri"],
     compute: (row: any) => computePrincipalAssignments(row as PrincipalAssignmentsRow),
     lookups: [
       { field: "principal_is_admin", target: "access_principals", ret: "is_administrator", key: "principal", match: "access_principal_id" },
@@ -36740,10 +36998,14 @@ export const erbTables: TableSpec[] = [
       { field: "principal_organization", target: "access_principals", ret: "organization_scope", key: "principal", match: "access_principal_id" },],
     aggregations: [] },
   { name: "IssuedTokens", file: "issued_tokens", rulebookRows: 0, fields: issuedTokensFieldTypes,
+    columns: { issued_token_id: "IssuedTokenId", name: "Name", app_user: "AppUser", principal: "Principal", issued_at: "IssuedAt", expires_at: "ExpiresAt", issuer: "Issuer", subject_claim: "SubjectClaim", claims_snapshot: "ClaimsSnapshot", is_dev_minted: "IsDevMinted", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["issued_token_id", "app_user", "principal", "issued_at", "expires_at", "issuer", "subject_claim", "claims_snapshot", "semantic_type_iri"],
     compute: (row: any) => computeIssuedTokens(row as IssuedTokensRow),
     lookups: [],
     aggregations: [] },
   { name: "ProcessMiningRuns", file: "process_mining_runs", rulebookRows: 5, fields: processMiningRunsFieldTypes,
+    columns: { process_mining_run_id: "ProcessMiningRunId", name: "Name", procedure_version: "ProcedureVersion", event_log_source: "EventLogSource", mined_at: "MinedAt", discovered_variant_count: "DiscoveredVariantCount", conforming_variant_count: "ConformingVariantCount", deviation_description: "DeviationDescription", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", conformance_rate: "ConformanceRate", is_conformant: "IsConformant", has_major_drift_from_documentation: "HasMajorDriftFromDocumentation", days_since_mined: "DaysSinceMined", is_stale_mining_evidence: "IsStaleMiningEvidence", procedure_version_is_live: "ProcedureVersionIsLive", is_drift_on_live_version: "IsDriftOnLiveVersion", drifted_mining_run_key: "DriftedMiningRunKey", semantic_type_iri: "SemanticTypeIri", people_capture_complement_count: "PeopleCaptureComplementCount", is_deviation_unexplained_by_people: "IsDeviationUnexplainedByPeople", undocumented_path_count: "UndocumentedPathCount", has_undocumented_enacted_path: "HasUndocumentedEnactedPath", conformance_percent: "ConformancePercent" },
+    stored: ["process_mining_run_id", "procedure_version", "event_log_source", "mined_at", "discovered_variant_count", "conforming_variant_count", "deviation_description", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeProcessMiningRuns(row as ProcessMiningRunsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -36752,6 +37014,8 @@ export const erbTables: TableSpec[] = [
       { field: "people_capture_complement_count", op: "COUNTIFS", table: "collected_source_materials", criteria: [{ range: "complements_mining_run", kind: "field", field: "process_mining_run_id" }, { range: "holds_reasoning_or_tacit_knowledge", kind: "literal", literal: vB(true) }] },
       { field: "undocumented_path_count", op: "COUNTIFS", table: "mined_flow_edges", criteria: [{ range: "process_mining_run", kind: "field", field: "process_mining_run_id" }, { range: "is_undocumented_path", kind: "literal", literal: vB(true) }] },] },
   { name: "Vocabularies", file: "vocabularies", rulebookRows: 12, fields: vocabulariesFieldTypes,
+    columns: { vocabulary_id: "VocabularyId", name: "Name", title: "Title", scheme_uri: "SchemeUri", governing_role: "GoverningRole", term_count: "TermCount", orphan_term_count: "OrphanTermCount", has_orphan_terms: "HasOrphanTerms", semantic_type_iri: "SemanticTypeIri", scheme_kind: "SchemeKind", model_layer: "ModelLayer", governed_dimension: "GovernedDimension", publication_format: "PublicationFormat", prefix: "Prefix", established_at: "EstablishedAt", ontology_modeling_started_at: "OntologyModelingStartedAt", governs_procedure: "GovernsProcedure", is_machine_accessible: "IsMachineAccessible", managed_scheme_procedure_key: "ManagedSchemeProcedureKey", organized_transcript_count: "OrganizedTranscriptCount", organized_field_notes_count: "OrganizedFieldNotesCount", organized_process_map_count: "OrganizedProcessMapCount", organized_mined_event_trace_count: "OrganizedMinedEventTraceCount", organized_document_excerpt_count: "OrganizedDocumentExcerptCount", organized_material_count: "OrganizedMaterialCount", organized_kind_count: "OrganizedKindCount", is_single_kind_frame: "IsSingleKindFrame", latest_organized_material_at: "LatestOrganizedMaterialAt", refinement_count: "RefinementCount", is_frozen_despite_new_collection: "IsFrozenDespiteNewCollection", ontology_preceded_vocabulary_control: "OntologyPrecededVocabularyControl" },
+    stored: ["vocabulary_id", "title", "scheme_uri", "governing_role", "semantic_type_iri", "scheme_kind", "model_layer", "governed_dimension", "publication_format", "prefix", "established_at", "ontology_modeling_started_at", "governs_procedure"],
     compute: (row: any) => computeVocabularies(row as VocabulariesRow),
     lookups: [],
     aggregations: [
@@ -36766,6 +37030,8 @@ export const erbTables: TableSpec[] = [
       { field: "latest_organized_material_at", op: "MAX", table: "collected_source_materials", target: "collected_at", criteria: [{ range: "organized_into_scheme", kind: "field", field: "vocabulary_id" }] },
       { field: "refinement_count", op: "COUNTIFS", table: "scheme_refinements", criteria: [{ range: "vocabulary", kind: "field", field: "vocabulary_id" }] },] },
   { name: "VocabularyTerms", file: "vocabulary_terms", rulebookRows: 44, fields: vocabularyTermsFieldTypes,
+    columns: { vocabulary_term_id: "VocabularyTermId", name: "Name", vocabulary: "Vocabulary", pref_label: "PrefLabel", alt_labels: "AltLabels", definition: "Definition", usage_count: "UsageCount", is_orphan_term: "IsOrphanTerm", is_widely_adopted_term: "IsWidelyAdoptedTerm", orphan_term_vocabulary_key: "OrphanTermVocabularyKey", semantic_type_iri: "SemanticTypeIri", scope_note: "ScopeNote", broader_term: "BroaderTerm", broader_term_parent: "BroaderTermParent", scheme_governed_dimension: "SchemeGovernedDimension", concept_iri: "ConceptIri", namespace_iri: "NamespaceIri", same_as_iri: "SameAsIri", introduced_in_release: "IntroducedInRelease", introduced_release_issued_at: "IntroducedReleaseIssuedAt", represents_role: "RepresentsRole", definition_revised_at: "DefinitionRevisedAt", latest_meaning_change_at: "LatestMeaningChangeAt", has_stale_definition: "HasStaleDefinition", structural_shift_count: "StructuralShiftCount", has_structural_sense_shift_across_years: "HasStructuralSenseShiftAcrossYears", pref_label_practitioner_mention_count: "PrefLabelPractitionerMentionCount", alt_label_practitioner_mention_count: "AltLabelPractitionerMentionCount", is_organized_around_official_term: "IsOrganizedAroundOfficialTerm", source_phrasing_count: "SourcePhrasingCount", unreconciled_phrasing_count: "UnreconciledPhrasingCount", has_unreconciled_variant_phrasings: "HasUnreconciledVariantPhrasings" },
+    stored: ["vocabulary_term_id", "vocabulary", "pref_label", "alt_labels", "definition", "semantic_type_iri", "scope_note", "broader_term", "concept_iri", "namespace_iri", "same_as_iri", "introduced_in_release", "represents_role", "definition_revised_at"],
     compute: (row: any) => computeVocabularyTerms(row as VocabularyTermsRow),
     lookups: [
       { field: "broader_term_parent", target: "vocabulary_terms", ret: "broader_term", key: "broader_term", match: "vocabulary_term_id" },
@@ -36780,6 +37046,8 @@ export const erbTables: TableSpec[] = [
       { field: "source_phrasing_count", op: "COUNTIFS", table: "source_term_mentions", criteria: [{ range: "intended_term", kind: "field", field: "vocabulary_term_id" }] },
       { field: "unreconciled_phrasing_count", op: "COUNTIFS", table: "source_term_mentions", criteria: [{ range: "unresolved_intended_term_key", kind: "field", field: "vocabulary_term_id" }] },] },
   { name: "KnowledgeBrokerLinks", file: "knowledge_broker_links", rulebookRows: 8, fields: knowledgeBrokerLinksFieldTypes,
+    columns: { knowledge_broker_link_id: "KnowledgeBrokerLinkId", name: "Name", seeker: "Seeker", broker: "Broker", topic: "Topic", frequency: "Frequency", last_consulted_at: "LastConsultedAt", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", days_since_consulted: "DaysSinceConsulted", is_active_reliance: "IsActiveReliance", broker_is_still_engaged: "BrokerIsStillEngaged", is_at_risk_reliance: "IsAtRiskReliance", active_reliance_broker_key: "ActiveRelianceBrokerKey", at_risk_broker_key: "AtRiskBrokerKey", semantic_type_iri: "SemanticTypeIri", points_to_know_how: "PointsToKnowHow", pointed_holder: "PointedHolder", locates_other_holder: "LocatesOtherHolder", seeker_vocabulary: "SeekerVocabulary", seeker_wording: "SeekerWording", holder_vocabulary: "HolderVocabulary", holder_wording: "HolderWording", translation_between_vocabularies: "TranslationBetweenVocabularies" },
+    stored: ["knowledge_broker_link_id", "seeker", "broker", "topic", "frequency", "last_consulted_at", "evaluation_context", "semantic_type_iri", "points_to_know_how", "seeker_vocabulary", "seeker_wording", "holder_vocabulary", "holder_wording"],
     compute: (row: any) => computeKnowledgeBrokerLinks(row as KnowledgeBrokerLinksRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -36787,6 +37055,8 @@ export const erbTables: TableSpec[] = [
       { field: "pointed_holder", target: "know_how_carriers", ret: "holder_agent", key: "points_to_know_how", match: "know_how_carrier_id" },],
     aggregations: [] },
   { name: "ConformanceSubstrates", file: "conformance_substrates", rulebookRows: 8, fields: conformanceSubstratesFieldTypes,
+    columns: { conformance_substrate_id: "ConformanceSubstrateId", name: "Name", label: "Label", transpiler: "Transpiler", output_folder: "OutputFolder", engine: "Engine", how_it_computes: "HowItComputes", role: "Role", sort_order: "SortOrder", is_graded: "IsGraded", run_count: "RunCount", latest_cells_tested: "LatestCellsTested", latest_cells_passed: "LatestCellsPassed", latest_harness_errors: "LatestHarnessErrors", latest_cells_failed: "LatestCellsFailed", latest_score: "LatestScore", disagreeing_field_count: "DisagreeingFieldCount", disagreeing_table_count: "DisagreeingTableCount", is_fully_conformant: "IsFullyConformant", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["conformance_substrate_id", "label", "transpiler", "output_folder", "engine", "how_it_computes", "role", "sort_order", "semantic_type_iri"],
     compute: (row: any) => computeConformanceSubstrates(row as ConformanceSubstratesRow),
     lookups: [],
     aggregations: [
@@ -36797,6 +37067,8 @@ export const erbTables: TableSpec[] = [
       { field: "disagreeing_field_count", op: "COUNTIFS", table: "field_disagreements", criteria: [{ range: "substrate", kind: "field", field: "conformance_substrate_id" }] },
       { field: "disagreeing_table_count", op: "COUNTIFS", table: "table_conformance", criteria: [{ range: "imperfect_substrate_key", kind: "field", field: "conformance_substrate_id" }] },] },
   { name: "ConformanceRuns", file: "conformance_runs", rulebookRows: 5, fields: conformanceRunsFieldTypes,
+    columns: { conformance_run_id: "ConformanceRunId", name: "Name", ran_on: "RanOn", rulebook_commit: "RulebookCommit", answer_key_author: "AnswerKeyAuthor", is_latest: "IsLatest", notes: "Notes", substrate_count: "SubstrateCount", perfect_substrate_count: "PerfectSubstrateCount", cells_tested: "CellsTested", cells_passed: "CellsPassed", cells_failed: "CellsFailed", overall_score: "OverallScore", imperfect_substrate_count: "ImperfectSubstrateCount", is_fully_conformant: "IsFullyConformant", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["conformance_run_id", "ran_on", "rulebook_commit", "answer_key_author", "is_latest", "notes", "semantic_type_iri"],
     compute: (row: any) => computeConformanceRuns(row as ConformanceRunsRow),
     lookups: [],
     aggregations: [
@@ -36805,12 +37077,16 @@ export const erbTables: TableSpec[] = [
       { field: "cells_tested", op: "SUM", table: "substrate_run_scores", target: "cells_tested", criteria: [{ range: "run", kind: "field", field: "conformance_run_id" }] },
       { field: "cells_passed", op: "SUM", table: "substrate_run_scores", target: "cells_passed", criteria: [{ range: "run", kind: "field", field: "conformance_run_id" }] },] },
   { name: "SubstrateRunScores", file: "substrate_run_scores", rulebookRows: 35, fields: substrateRunScoresFieldTypes,
+    columns: { substrate_run_score_id: "SubstrateRunScoreId", name: "Name", run: "Run", substrate: "Substrate", harness_error: "HarnessError", duration_seconds: "DurationSeconds", cells_tested: "CellsTested", cells_passed: "CellsPassed", calculated_tested: "CalculatedTested", calculated_passed: "CalculatedPassed", lookup_tested: "LookupTested", lookup_passed: "LookupPassed", aggregation_tested: "AggregationTested", aggregation_passed: "AggregationPassed", cells_failed: "CellsFailed", score: "Score", calculated_score: "CalculatedScore", lookup_score: "LookupScore", aggregation_score: "AggregationScore", is_perfect: "IsPerfect", perfect_run_key: "PerfectRunKey", is_in_latest_run: "IsInLatestRun", latest_cells_tested: "LatestCellsTested", latest_cells_passed: "LatestCellsPassed", latest_error_flag: "LatestErrorFlag", substrate_label: "SubstrateLabel", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["substrate_run_score_id", "run", "substrate", "harness_error", "duration_seconds", "cells_tested", "cells_passed", "calculated_tested", "calculated_passed", "lookup_tested", "lookup_passed", "aggregation_tested", "aggregation_passed", "semantic_type_iri"],
     compute: (row: any) => computeSubstrateRunScores(row as SubstrateRunScoresRow),
     lookups: [
       { field: "is_in_latest_run", target: "conformance_runs", ret: "is_latest", key: "run", match: "conformance_run_id" },
       { field: "substrate_label", target: "conformance_substrates", ret: "label", key: "substrate", match: "conformance_substrate_id" },],
     aggregations: [] },
   { name: "TableConformance", file: "table_conformance", rulebookRows: 623, fields: tableConformanceFieldTypes,
+    columns: { table_conformance_id: "TableConformanceId", name: "Name", run: "Run", substrate: "Substrate", rulebook_table: "RulebookTable", record_count: "RecordCount", derived_field_count: "DerivedFieldCount", cells_tested: "CellsTested", cells_passed: "CellsPassed", is_missing_answer_file: "IsMissingAnswerFile", cells_failed: "CellsFailed", score: "Score", is_perfect: "IsPerfect", imperfect_substrate_key: "ImperfectSubstrateKey", imperfect_table_key: "ImperfectTableKey", disagreeing_field_count: "DisagreeingFieldCount", substrate_label: "SubstrateLabel", subject_area: "SubjectArea", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["table_conformance_id", "run", "substrate", "rulebook_table", "record_count", "derived_field_count", "cells_tested", "cells_passed", "is_missing_answer_file", "semantic_type_iri"],
     compute: (row: any) => computeTableConformance(row as TableConformanceRow),
     lookups: [
       { field: "substrate_label", target: "conformance_substrates", ret: "label", key: "substrate", match: "conformance_substrate_id" },
@@ -36818,6 +37094,8 @@ export const erbTables: TableSpec[] = [
     aggregations: [
       { field: "disagreeing_field_count", op: "COUNTIFS", table: "field_disagreements", criteria: [{ range: "table_conformance", kind: "field", field: "table_conformance_id" }] },] },
   { name: "FieldDisagreements", file: "field_disagreements", rulebookRows: 27, fields: fieldDisagreementsFieldTypes,
+    columns: { field_disagreement_id: "FieldDisagreementId", name: "Name", substrate: "Substrate", rulebook_field: "RulebookField", table_conformance: "TableConformance", field_class: "FieldClass", cells_failed: "CellsFailed", dominant_reason: "DominantReason", sampled_cell_count: "SampledCellCount", is_fully_sampled: "IsFullySampled", formula: "Formula", substrate_label: "SubstrateLabel", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["field_disagreement_id", "substrate", "rulebook_field", "table_conformance", "field_class", "cells_failed", "dominant_reason", "semantic_type_iri"],
     compute: (row: any) => computeFieldDisagreements(row as FieldDisagreementsRow),
     lookups: [
       { field: "formula", target: "rulebook_fields", ret: "formula", key: "rulebook_field", match: "rulebook_field_id" },
@@ -36825,18 +37103,24 @@ export const erbTables: TableSpec[] = [
     aggregations: [
       { field: "sampled_cell_count", op: "COUNTIFS", table: "cell_disagreements", criteria: [{ range: "field_disagreement", kind: "field", field: "field_disagreement_id" }] },] },
   { name: "CellDisagreements", file: "cell_disagreements", rulebookRows: 205, fields: cellDisagreementsFieldTypes,
+    columns: { cell_disagreement_id: "CellDisagreementId", name: "Name", field_disagreement: "FieldDisagreement", record_id: "RecordId", expected_value: "ExpectedValue", actual_value: "ActualValue", reason: "Reason", substrate: "Substrate", rulebook_field: "RulebookField", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["cell_disagreement_id", "field_disagreement", "record_id", "expected_value", "actual_value", "reason", "semantic_type_iri"],
     compute: (row: any) => computeCellDisagreements(row as CellDisagreementsRow),
     lookups: [
       { field: "substrate", target: "field_disagreements", ret: "substrate", key: "field_disagreement", match: "field_disagreement_id" },
       { field: "rulebook_field", target: "field_disagreements", ret: "rulebook_field", key: "field_disagreement", match: "field_disagreement_id" },],
     aggregations: [] },
   { name: "KnowledgeMethods", file: "knowledge_methods", rulebookRows: 26, fields: knowledgeMethodsFieldTypes,
+    columns: { knowledge_method_id: "KnowledgeMethodId", name: "Name", label: "Label", method_family: "MethodFamily", summary: "Summary", origin_reference: "OriginReference", elicitation_use_count: "ElicitationUseCount", application_count: "ApplicationCount", usage_count: "UsageCount", is_applied: "IsApplied", elicitation_tradeoff: "ElicitationTradeoff", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_method_id", "label", "method_family", "summary", "origin_reference", "elicitation_tradeoff", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeMethods(row as KnowledgeMethodsRow),
     lookups: [],
     aggregations: [
       { field: "elicitation_use_count", op: "COUNTIFS", table: "elicitation_sessions", criteria: [{ range: "method", kind: "field", field: "knowledge_method_id" }] },
       { field: "application_count", op: "COUNTIFS", table: "method_applications", criteria: [{ range: "knowledge_method", kind: "field", field: "knowledge_method_id" }] },] },
   { name: "SourceArticles", file: "source_articles", rulebookRows: 5, fields: sourceArticlesFieldTypes,
+    columns: { source_article_id: "SourceArticleId", name: "Name", title: "Title", author: "Author", series: "Series", published_on: "PublishedOn", local_file_name: "LocalFileName", thesis: "Thesis", claim_count: "ClaimCount", covered_claim_count: "CoveredClaimCount", agreed_claim_count: "AgreedClaimCount", uncovered_claim_count: "UncoveredClaimCount", coverage_percent: "CoveragePercent", agreed_coverage_percent: "AgreedCoveragePercent", is_fully_covered: "IsFullyCovered", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["source_article_id", "title", "author", "series", "published_on", "local_file_name", "thesis", "semantic_type_iri"],
     compute: (row: any) => computeSourceArticles(row as SourceArticlesRow),
     lookups: [],
     aggregations: [
@@ -36844,6 +37128,8 @@ export const erbTables: TableSpec[] = [
       { field: "covered_claim_count", op: "COUNTIFS", table: "article_claims", criteria: [{ range: "source_article", kind: "field", field: "source_article_id" }, { range: "is_covered", kind: "literal", literal: vB(true) }] },
       { field: "agreed_claim_count", op: "COUNTIFS", table: "article_claims", criteria: [{ range: "source_article", kind: "field", field: "source_article_id" }, { range: "is_agreed", kind: "literal", literal: vB(true) }] },] },
   { name: "ArticleClaims", file: "article_claims", rulebookRows: 900, fields: articleClaimsFieldTypes,
+    columns: { article_claim_id: "ArticleClaimId", name: "Name", source_article: "SourceArticle", claim_kind: "ClaimKind", section_ref: "SectionRef", claim_text: "ClaimText", required_evidence: "RequiredEvidence", evidence_count: "EvidenceCount", valid_evidence_count: "ValidEvidenceCount", agreed_evidence_count: "AgreedEvidenceCount", is_covered: "IsCovered", is_agreed: "IsAgreed", has_rejected_evidence: "HasRejectedEvidence", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["article_claim_id", "source_article", "claim_kind", "section_ref", "claim_text", "semantic_type_iri"],
     compute: (row: any) => computeArticleClaims(row as ArticleClaimsRow),
     lookups: [],
     aggregations: [
@@ -36851,6 +37137,8 @@ export const erbTables: TableSpec[] = [
       { field: "valid_evidence_count", op: "COUNTIFS", table: "claim_evidence", criteria: [{ range: "article_claim", kind: "field", field: "article_claim_id" }, { range: "is_valid", kind: "literal", literal: vB(true) }] },
       { field: "agreed_evidence_count", op: "COUNTIFS", table: "claim_evidence", criteria: [{ range: "article_claim", kind: "field", field: "article_claim_id" }, { range: "is_agreed_evidence", kind: "literal", literal: vB(true) }] },] },
   { name: "ClaimEvidence", file: "claim_evidence", rulebookRows: 900, fields: claimEvidenceFieldTypes,
+    columns: { claim_evidence_id: "ClaimEvidenceId", name: "Name", article_claim: "ArticleClaim", evidence_kind: "EvidenceKind", rulebook_field: "RulebookField", rulebook_table: "RulebookTable", role_question: "RoleQuestion", ontology_profile: "OntologyProfile", knowledge_method: "KnowledgeMethod", procedure: "Procedure", justification: "Justification", claim_kind: "ClaimKind", field_catalog_name: "FieldCatalogName", field_is_witness: "FieldIsWitness", field_has_data: "FieldHasData", field_is_discriminating: "FieldIsDiscriminating", field_is_contested: "FieldIsContested", table_has_rows: "TableHasRows", question_is_answered: "QuestionIsAnswered", question_witnessed_answer: "QuestionWitnessedAnswer", profile_mapping_count: "ProfileMappingCount", method_is_applied: "MethodIsApplied", procedure_execution_count: "ProcedureExecutionCount", has_justification: "HasJustification", is_witness_proof: "IsWitnessProof", is_structural_proof: "IsStructuralProof", is_question_proof: "IsQuestionProof", is_standard_proof: "IsStandardProof", is_scenario_proof: "IsScenarioProof", is_valid: "IsValid", is_contested: "IsContested", is_agreed_evidence: "IsAgreedEvidence", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["claim_evidence_id", "article_claim", "evidence_kind", "rulebook_field", "rulebook_table", "role_question", "ontology_profile", "knowledge_method", "procedure", "justification", "semantic_type_iri"],
     compute: (row: any) => computeClaimEvidence(row as ClaimEvidenceRow),
     lookups: [
       { field: "claim_kind", target: "article_claims", ret: "claim_kind", key: "article_claim", match: "article_claim_id" },
@@ -36867,89 +37155,125 @@ export const erbTables: TableSpec[] = [
       { field: "procedure_execution_count", target: "procedures", ret: "execution_count", key: "procedure", match: "procedure_id" },],
     aggregations: [] },
   { name: "MethodApplications", file: "method_applications", rulebookRows: 20, fields: methodApplicationsFieldTypes,
+    columns: { method_application_id: "MethodApplicationId", name: "Name", knowledge_method: "KnowledgeMethod", applied_to: "AppliedTo", applied_at: "AppliedAt", applied_by_agent: "AppliedByAgent", applied_to_grounding_snapshot: "AppliedToGroundingSnapshot", identified_broker: "IdentifiedBroker", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["method_application_id", "knowledge_method", "applied_to", "applied_at", "applied_by_agent", "applied_to_grounding_snapshot", "identified_broker", "semantic_type_iri"],
     compute: (row: any) => computeMethodApplications(row as MethodApplicationsRow),
     lookups: [],
     aggregations: [] },
   { name: "LifecycleStatuses", file: "lifecycle_statuses", rulebookRows: 11, fields: lifecycleStatusesFieldTypes,
+    columns: { lifecycle_status_id: "LifecycleStatusId", name: "Name", label: "Label", status_scheme: "StatusScheme", broader_status: "BroaderStatus", is_pko_status: "IsPkoStatus", pko_iri: "PkoIri", version_use_count: "VersionUseCount", execution_use_count: "ExecutionUseCount", is_non_pko_status_in_use: "IsNonPkoStatusInUse", semantic_type_iri: "SemanticTypeIri", workflow_status_concept: "WorkflowStatusConcept" },
+    stored: ["lifecycle_status_id", "label", "status_scheme", "broader_status", "is_pko_status", "pko_iri", "semantic_type_iri", "workflow_status_concept"],
     compute: (row: any) => computeLifecycleStatuses(row as LifecycleStatusesRow),
     lookups: [],
     aggregations: [
       { field: "version_use_count", op: "COUNTIFS", table: "procedure_versions", criteria: [{ range: "status", kind: "field", field: "lifecycle_status_id" }] },
       { field: "execution_use_count", op: "COUNTIFS", table: "procedure_executions", criteria: [{ range: "execution_status", kind: "field", field: "lifecycle_status_id" }] },] },
   { name: "Facilities", file: "facilities", rulebookRows: 3, fields: facilitiesFieldTypes,
+    columns: { facility_id: "FacilityId", name: "Name", label: "Label", organization: "Organization", facility_kind: "FacilityKind", parent_facility: "ParentFacility", deviating_run_count: "DeviatingRunCount", clean_run_count: "CleanRunCount", is_deviation_only_facility: "IsDeviationOnlyFacility", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["facility_id", "label", "organization", "facility_kind", "parent_facility", "semantic_type_iri"],
     compute: (row: any) => computeFacilities(row as FacilitiesRow),
     lookups: [],
     aggregations: [
       { field: "deviating_run_count", op: "COUNTIFS", table: "procedure_executions", criteria: [{ range: "deviating_facility_key", kind: "field", field: "facility_id" }] },
       { field: "clean_run_count", op: "COUNTIFS", table: "procedure_executions", criteria: [{ range: "clean_facility_key", kind: "field", field: "facility_id" }] },] },
   { name: "MachineTypes", file: "machine_types", rulebookRows: 3, fields: machineTypesFieldTypes,
+    columns: { machine_type_id: "MachineTypeId", name: "Name", label: "Label", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["machine_type_id", "label", "semantic_type_iri"],
     compute: (row: any) => computeMachineTypes(row as MachineTypesRow),
     lookups: [],
     aggregations: [] },
   { name: "EnergySources", file: "energy_sources", rulebookRows: 4, fields: energySourcesFieldTypes,
+    columns: { energy_source_id: "EnergySourceId", name: "Name", label: "Label", pko_individual_iri: "PkoIndividualIri", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["energy_source_id", "label", "pko_individual_iri", "semantic_type_iri"],
     compute: (row: any) => computeEnergySources(row as EnergySourcesRow),
     lookups: [],
     aggregations: [] },
   { name: "Machines", file: "machines", rulebookRows: 3, fields: machinesFieldTypes,
+    columns: { machine_id: "MachineId", name: "Name", label: "Label", machine_type: "MachineType", facility: "Facility", manufactured_by: "ManufacturedBy", configuration_kind: "ConfigurationKind", governing_procedure_version: "GoverningProcedureVersion", energy_source_count: "EnergySourceCount", unisolated_energy_source_count: "UnisolatedEnergySourceCount", is_non_standard_configuration: "IsNonStandardConfiguration", has_unisolated_energy_source: "HasUnisolatedEnergySource", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["machine_id", "label", "machine_type", "facility", "manufactured_by", "configuration_kind", "governing_procedure_version", "semantic_type_iri"],
     compute: (row: any) => computeMachines(row as MachinesRow),
     lookups: [],
     aggregations: [
       { field: "energy_source_count", op: "COUNTIFS", table: "machine_energy_sources", criteria: [{ range: "machine", kind: "field", field: "machine_id" }] },
       { field: "unisolated_energy_source_count", op: "COUNTIFS", table: "machine_energy_sources", criteria: [{ range: "unisolated_machine_key", kind: "field", field: "machine_id" }] },] },
   { name: "MachineEnergySources", file: "machine_energy_sources", rulebookRows: 6, fields: machineEnergySourcesFieldTypes,
+    columns: { machine_energy_source_id: "MachineEnergySourceId", name: "Name", machine: "Machine", energy_source: "EnergySource", machine_procedure_version: "MachineProcedureVersion", isolation_step_count: "IsolationStepCount", is_unisolated_energy_source: "IsUnisolatedEnergySource", unisolated_machine_key: "UnisolatedMachineKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["machine_energy_source_id", "machine", "energy_source", "semantic_type_iri"],
     compute: (row: any) => computeMachineEnergySources(row as MachineEnergySourcesRow),
     lookups: [
       { field: "machine_procedure_version", target: "machines", ret: "governing_procedure_version", key: "machine", match: "machine_id" },],
     aggregations: [
       { field: "isolation_step_count", op: "COUNTIFS", table: "steps", criteria: [{ range: "isolates_energy_source", kind: "field", field: "energy_source" }, { range: "procedure_version", kind: "field", field: "machine_procedure_version" }] },] },
   { name: "LockDevices", file: "lock_devices", rulebookRows: 3, fields: lockDevicesFieldTypes,
+    columns: { lock_device_id: "LockDeviceId", name: "Name", label: "Label", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["lock_device_id", "label", "semantic_type_iri"],
     compute: (row: any) => computeLockDevices(row as LockDevicesRow),
     lookups: [],
     aggregations: [] },
   { name: "ProtectiveEquipment", file: "protective_equipment", rulebookRows: 3, fields: protectiveEquipmentFieldTypes,
+    columns: { protective_equipment_id: "ProtectiveEquipmentId", name: "Name", label: "Label", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["protective_equipment_id", "label", "semantic_type_iri"],
     compute: (row: any) => computeProtectiveEquipment(row as ProtectiveEquipmentRow),
     lookups: [],
     aggregations: [] },
   { name: "StepLockRequirements", file: "step_lock_requirements", rulebookRows: 3, fields: stepLockRequirementsFieldTypes,
+    columns: { step_lock_requirement_id: "StepLockRequirementId", name: "Name", step: "Step", lock_device: "LockDevice", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["step_lock_requirement_id", "step", "lock_device", "semantic_type_iri"],
     compute: (row: any) => computeStepLockRequirements(row as StepLockRequirementsRow),
     lookups: [],
     aggregations: [] },
   { name: "StepProtectiveEquipment", file: "step_protective_equipment", rulebookRows: 3, fields: stepProtectiveEquipmentFieldTypes,
+    columns: { step_protective_equipment_id: "StepProtectiveEquipmentId", name: "Name", step: "Step", protective_equipment: "ProtectiveEquipment", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["step_protective_equipment_id", "step", "protective_equipment", "semantic_type_iri"],
     compute: (row: any) => computeStepProtectiveEquipment(row as StepProtectiveEquipmentRow),
     lookups: [],
     aggregations: [] },
   { name: "RegulatoryFrameworks", file: "regulatory_frameworks", rulebookRows: 2, fields: regulatoryFrameworksFieldTypes,
+    columns: { regulatory_framework_id: "RegulatoryFrameworkId", name: "Name", label: "Label", jurisdiction: "Jurisdiction", requirement_count: "RequirementCount", required_procedure_count: "RequiredProcedureCount", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["regulatory_framework_id", "label", "jurisdiction", "semantic_type_iri"],
     compute: (row: any) => computeRegulatoryFrameworks(row as RegulatoryFrameworksRow),
     lookups: [],
     aggregations: [
       { field: "requirement_count", op: "COUNTIFS", table: "requirements", criteria: [{ range: "regulatory_framework", kind: "field", field: "regulatory_framework_id" }] },
       { field: "required_procedure_count", op: "COUNTIFS", table: "procedures", criteria: [{ range: "required_by_regulation", kind: "field", field: "regulatory_framework_id" }] },] },
   { name: "ProcedureTargets", file: "procedure_targets", rulebookRows: 6, fields: procedureTargetsFieldTypes,
+    columns: { procedure_target_id: "ProcedureTargetId", name: "Name", procedure: "Procedure", label: "Label", target_kind: "TargetKind", machine: "Machine", machine_is_non_standard: "MachineIsNonStandard", handling_failure_mode_count: "HandlingFailureModeCount", is_unhandled_non_standard_target: "IsUnhandledNonStandardTarget", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["procedure_target_id", "procedure", "label", "target_kind", "machine", "semantic_type_iri"],
     compute: (row: any) => computeProcedureTargets(row as ProcedureTargetsRow),
     lookups: [
       { field: "machine_is_non_standard", target: "machines", ret: "is_non_standard_configuration", key: "machine", match: "machine_id" },],
     aggregations: [
       { field: "handling_failure_mode_count", op: "COUNTIFS", table: "failure_modes", criteria: [{ range: "procedure_target", kind: "field", field: "procedure_target_id" }] },] },
   { name: "ProcedureAdoptions", file: "procedure_adoptions", rulebookRows: 3, fields: procedureAdoptionsFieldTypes,
+    columns: { procedure_adoption_id: "ProcedureAdoptionId", name: "Name", procedure: "Procedure", organization: "Organization", adopted_at: "AdoptedAt", adoption_mode: "AdoptionMode", is_adoption_mode_unstated: "IsAdoptionModeUnstated", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["procedure_adoption_id", "procedure", "organization", "adopted_at", "adoption_mode", "semantic_type_iri"],
     compute: (row: any) => computeProcedureAdoptions(row as ProcedureAdoptionsRow),
     lookups: [],
     aggregations: [] },
   { name: "ProcedureOutcomeCriteria", file: "procedure_outcome_criteria", rulebookRows: 5, fields: procedureOutcomeCriteriaFieldTypes,
+    columns: { procedure_outcome_criterion_id: "ProcedureOutcomeCriterionId", name: "Name", procedure: "Procedure", polarity: "Polarity", statement: "Statement", failure_procedure_key: "FailureProcedureKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["procedure_outcome_criterion_id", "procedure", "polarity", "statement", "semantic_type_iri"],
     compute: (row: any) => computeProcedureOutcomeCriteria(row as ProcedureOutcomeCriteriaRow),
     lookups: [],
     aggregations: [] },
   { name: "RelationTypes", file: "relation_types", rulebookRows: 11, fields: relationTypesFieldTypes,
+    columns: { relation_type_id: "RelationTypeId", name: "Name", label: "Label", family: "Family", inverse_label: "InverseLabel", is_defined: "IsDefined", realized_by: "RealizedBy", usage_count: "UsageCount", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["relation_type_id", "label", "family", "inverse_label", "is_defined", "realized_by", "semantic_type_iri"],
     compute: (row: any) => computeRelationTypes(row as RelationTypesRow),
     lookups: [],
     aggregations: [
       { field: "usage_count", op: "COUNTIFS", table: "activity_relations", criteria: [{ range: "relation_type", kind: "field", field: "relation_type_id" }] },] },
   { name: "ActivityRelations", file: "activity_relations", rulebookRows: 5, fields: activityRelationsFieldTypes,
+    columns: { activity_relation_id: "ActivityRelationId", name: "Name", from_step: "FromStep", relation_type: "RelationType", to_step: "ToStep", rationale: "Rationale", relation_type_is_defined: "RelationTypeIsDefined", uses_undefined_relation_type: "UsesUndefinedRelationType", from_step_version: "FromStepVersion", overlaps_version_key: "OverlapsVersionKey", enables_version_key: "EnablesVersionKey", prevents_version_key: "PreventsVersionKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["activity_relation_id", "from_step", "relation_type", "to_step", "rationale", "semantic_type_iri"],
     compute: (row: any) => computeActivityRelations(row as ActivityRelationsRow),
     lookups: [
       { field: "relation_type_is_defined", target: "relation_types", ret: "is_defined", key: "relation_type", match: "relation_type_id" },
       { field: "from_step_version", target: "steps", ret: "procedure_version", key: "from_step", match: "step_id" },],
     aggregations: [] },
   { name: "StepVariables", file: "step_variables", rulebookRows: 21, fields: stepVariablesFieldTypes,
+    columns: { step_variable_id: "StepVariableId", name: "Name", step: "Step", direction: "Direction", label: "Label", datatype: "Datatype", source_variable: "SourceVariable", is_external_input: "IsExternalInput", source_direction: "SourceDirection", source_step: "SourceStep", is_dangling_input: "IsDanglingInput", is_miswired_source: "IsMiswiredSource", consumer_count: "ConsumerCount", input_step_key: "InputStepKey", output_step_key: "OutputStepKey", semantic_type_iri: "SemanticTypeIri", expected_format: "ExpectedFormat", step_accountable_agent: "StepAccountableAgent", step_agent_kind: "StepAgentKind", consumer_role: "ConsumerRole", consumer_workflow: "ConsumerWorkflow", source_step_agent: "SourceStepAgent", source_step_agent_kind: "SourceStepAgentKind", is_input_from_ai_artifact: "IsInputFromAiArtifact", ai_artifact_consumer_has_no_accountable_agent: "AiArtifactConsumerHasNoAccountableAgent", ai_blast_radius_path: "AiBlastRadiusPath" },
+    stored: ["step_variable_id", "step", "direction", "label", "datatype", "source_variable", "is_external_input", "semantic_type_iri", "expected_format"],
     compute: (row: any) => computeStepVariables(row as StepVariablesRow),
     lookups: [
       { field: "source_direction", target: "step_variables", ret: "direction", key: "source_variable", match: "step_variable_id" },
@@ -36963,6 +37287,8 @@ export const erbTables: TableSpec[] = [
     aggregations: [
       { field: "consumer_count", op: "COUNTIFS", table: "step_variables", criteria: [{ range: "source_variable", kind: "field", field: "step_variable_id" }] },] },
   { name: "ExecutionEntities", file: "execution_entities", rulebookRows: 15, fields: executionEntitiesFieldTypes,
+    columns: { execution_entity_id: "ExecutionEntityId", name: "Name", step_execution: "StepExecution", step_variable: "StepVariable", usage: "Usage", entity_label: "EntityLabel", entity_uri: "EntityUri", variable_direction: "VariableDirection", variable_step: "VariableStep", executed_step: "ExecutedStep", is_usage_direction_mismatch: "IsUsageDirectionMismatch", is_foreign_variable: "IsForeignVariable", used_execution_key: "UsedExecutionKey", generated_execution_key: "GeneratedExecutionKey", semantic_type_iri: "SemanticTypeIri", recorded_datatype: "RecordedDatatype", recorded_format: "RecordedFormat", variable_datatype: "VariableDatatype", variable_expected_format: "VariableExpectedFormat", violates_declared_datatype_or_format: "ViolatesDeclaredDatatypeOrFormat", generating_agent: "GeneratingAgent", attributed_to_agent: "AttributedToAgent" },
+    stored: ["execution_entity_id", "step_execution", "step_variable", "usage", "entity_label", "entity_uri", "semantic_type_iri", "recorded_datatype", "recorded_format"],
     compute: (row: any) => computeExecutionEntities(row as ExecutionEntitiesRow),
     lookups: [
       { field: "variable_direction", target: "step_variables", ret: "direction", key: "step_variable", match: "step_variable_id" },
@@ -36973,28 +37299,43 @@ export const erbTables: TableSpec[] = [
       { field: "generating_agent", target: "step_executions", ret: "executed_by_agent", key: "step_execution", match: "step_execution_id" },],
     aggregations: [] },
   { name: "StepConditions", file: "step_conditions", rulebookRows: 7, fields: stepConditionsFieldTypes,
+    columns: { step_condition_id: "StepConditionId", name: "Name", step: "Step", condition_kind: "ConditionKind", statement: "Statement", is_safety_critical: "IsSafetyCritical", check_count: "CheckCount", is_never_checked: "IsNeverChecked", precondition_step_key: "PreconditionStepKey", postcondition_step_key: "PostconditionStepKey", invariant_step_key: "InvariantStepKey", safety_critical_step_key: "SafetyCriticalStepKey", semantic_type_iri: "SemanticTypeIri", machine_expression: "MachineExpression", is_machine_parseable: "IsMachineParseable", enforces_requirement: "EnforcesRequirement", enforced_requirement_is_computed: "EnforcedRequirementIsComputed", enforced_requirement_statement: "EnforcedRequirementStatement" },
+    stored: ["step_condition_id", "step", "condition_kind", "statement", "is_safety_critical", "semantic_type_iri", "machine_expression", "enforces_requirement"],
     compute: (row: any) => computeStepConditions(row as StepConditionsRow),
-    lookups: [],
+    lookups: [
+      { field: "enforced_requirement_is_computed", target: "requirements", ret: "derived_has_computed_witness", key: "enforces_requirement", match: "requirement_id" },
+      { field: "enforced_requirement_statement", target: "requirements", ret: "statement", key: "enforces_requirement", match: "requirement_id" },],
     aggregations: [
       { field: "check_count", op: "COUNTIFS", table: "condition_checks", criteria: [{ range: "step_condition", kind: "field", field: "step_condition_id" }] },] },
   { name: "ConditionChecks", file: "condition_checks", rulebookRows: 7, fields: conditionChecksFieldTypes,
+    columns: { condition_check_id: "ConditionCheckId", name: "Name", step_execution: "StepExecution", step_condition: "StepCondition", held: "Held", checked_at: "CheckedAt", checked_by_agent: "CheckedByAgent", condition_kind: "ConditionKind", is_failed_precondition: "IsFailedPrecondition", is_violated_invariant: "IsViolatedInvariant", failed_precondition_execution_key: "FailedPreconditionExecutionKey", violated_invariant_execution_key: "ViolatedInvariantExecutionKey", semantic_type_iri: "SemanticTypeIri", enforced_requirement: "EnforcedRequirement", failed_check_requirement_key: "FailedCheckRequirementKey", enforced_requirement_is_computed: "EnforcedRequirementIsComputed", enforced_requirement_statement: "EnforcedRequirementStatement", is_scored_breach: "IsScoredBreach" },
+    stored: ["condition_check_id", "step_execution", "step_condition", "held", "checked_at", "checked_by_agent", "semantic_type_iri"],
     compute: (row: any) => computeConditionChecks(row as ConditionChecksRow),
     lookups: [
-      { field: "condition_kind", target: "step_conditions", ret: "condition_kind", key: "step_condition", match: "step_condition_id" },],
+      { field: "condition_kind", target: "step_conditions", ret: "condition_kind", key: "step_condition", match: "step_condition_id" },
+      { field: "enforced_requirement", target: "step_conditions", ret: "enforces_requirement", key: "step_condition", match: "step_condition_id" },
+      { field: "enforced_requirement_is_computed", target: "step_conditions", ret: "enforced_requirement_is_computed", key: "step_condition", match: "step_condition_id" },
+      { field: "enforced_requirement_statement", target: "step_conditions", ret: "enforced_requirement_statement", key: "step_condition", match: "step_condition_id" },],
     aggregations: [] },
   { name: "FailureModes", file: "failure_modes", rulebookRows: 5, fields: failureModesFieldTypes,
+    columns: { failure_mode_id: "FailureModeId", name: "Name", step: "Step", procedure_target: "ProcedureTarget", description: "Description", response: "Response", requires_escalation: "RequiresEscalation", escalate_to_role: "EscalateToRole", escalation_role_has_no_holder: "EscalationRoleHasNoHolder", escalates_to_vacant_role: "EscalatesToVacantRole", has_no_response: "HasNoResponse", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["failure_mode_id", "step", "procedure_target", "description", "response", "requires_escalation", "escalate_to_role", "semantic_type_iri"],
     compute: (row: any) => computeFailureModes(row as FailureModesRow),
     lookups: [
       { field: "escalation_role_has_no_holder", target: "roles", ret: "has_no_current_holder", key: "escalate_to_role", match: "role_id" },],
     aggregations: [] },
-  { name: "StepCues", file: "step_cues", rulebookRows: 4, fields: stepCuesFieldTypes,
+  { name: "StepCues", file: "step_cues", rulebookRows: 5, fields: stepCuesFieldTypes,
+    columns: { step_cue_id: "StepCueId", name: "Name", step: "Step", cue_kind: "CueKind", description: "Description", signals_incomplete_step: "SignalsIncompleteStep", requires_escalation: "RequiresEscalation", escalate_to_role: "EscalateToRole", observation_count: "ObservationCount", unescalated_observation_count: "UnescalatedObservationCount", danger_cue_step_key: "DangerCueStepKey", incomplete_cue_step_key: "IncompleteCueStepKey", semantic_type_iri: "SemanticTypeIri", operator_question: "OperatorQuestion", signals_failure_mode: "SignalsFailureMode", failure_mode_response: "FailureModeResponse", is_unanswerable_sign: "IsUnanswerableSign" },
+    stored: ["step_cue_id", "step", "cue_kind", "description", "signals_incomplete_step", "requires_escalation", "escalate_to_role", "semantic_type_iri", "operator_question", "signals_failure_mode"],
     compute: (row: any) => computeStepCues(row as StepCuesRow),
     lookups: [
       { field: "failure_mode_response", target: "failure_modes", ret: "response", key: "signals_failure_mode", match: "failure_mode_id" },],
     aggregations: [
       { field: "observation_count", op: "COUNTIFS", table: "cue_observations", criteria: [{ range: "step_cue", kind: "field", field: "step_cue_id" }] },
       { field: "unescalated_observation_count", op: "COUNTIFS", table: "cue_observations", criteria: [{ range: "unescalated_cue_key", kind: "field", field: "step_cue_id" }] },] },
-  { name: "CueObservations", file: "cue_observations", rulebookRows: 3, fields: cueObservationsFieldTypes,
+  { name: "CueObservations", file: "cue_observations", rulebookRows: 4, fields: cueObservationsFieldTypes,
+    columns: { cue_observation_id: "CueObservationId", name: "Name", step_execution: "StepExecution", step_cue: "StepCue", observed_at: "ObservedAt", observed_by_agent: "ObservedByAgent", was_escalated: "WasEscalated", escalated_to_agent: "EscalatedToAgent", cue_requires_escalation: "CueRequiresEscalation", is_unescalated_danger_cue: "IsUnescalatedDangerCue", unescalated_cue_key: "UnescalatedCueKey", unescalated_execution_key: "UnescalatedExecutionKey", semantic_type_iri: "SemanticTypeIri", owner_organization: "OwnerOrganization", cue_signals_incomplete_step: "CueSignalsIncompleteStep", acknowledged_at: "AcknowledgedAt", is_awaiting_acknowledgement: "IsAwaitingAcknowledgement" },
+    stored: ["cue_observation_id", "step_execution", "step_cue", "observed_at", "observed_by_agent", "was_escalated", "escalated_to_agent", "semantic_type_iri", "acknowledged_at"],
     compute: (row: any) => computeCueObservations(row as CueObservationsRow),
     lookups: [
       { field: "cue_requires_escalation", target: "step_cues", ret: "requires_escalation", key: "step_cue", match: "step_cue_id" },
@@ -37002,102 +37343,146 @@ export const erbTables: TableSpec[] = [
       { field: "cue_signals_incomplete_step", target: "step_cues", ret: "signals_incomplete_step", key: "step_cue", match: "step_cue_id" },],
     aggregations: [] },
   { name: "DecisionPoints", file: "decision_points", rulebookRows: 5, fields: decisionPointsFieldTypes,
+    columns: { decision_point_id: "DecisionPointId", name: "Name", step: "Step", governing_transition: "GoverningTransition", question: "Question", deciding_factors: "DecidingFactors", default_outcome: "DefaultOutcome", dmn_decision_key: "DmnDecisionKey", has_no_deciding_factors: "HasNoDecidingFactors", semantic_type_iri: "SemanticTypeIri", is_dmn_encoded: "IsDmnEncoded" },
+    stored: ["decision_point_id", "step", "governing_transition", "question", "deciding_factors", "default_outcome", "dmn_decision_key", "semantic_type_iri"],
     compute: (row: any) => computeDecisionPoints(row as DecisionPointsRow),
     lookups: [],
     aggregations: [] },
   { name: "ExecutionParticipants", file: "execution_participants", rulebookRows: 4, fields: executionParticipantsFieldTypes,
+    columns: { execution_participant_id: "ExecutionParticipantId", name: "Name", procedure_execution: "ProcedureExecution", agent: "Agent", participation_role: "ParticipationRole", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["execution_participant_id", "procedure_execution", "agent", "participation_role", "semantic_type_iri"],
     compute: (row: any) => computeExecutionParticipants(row as ExecutionParticipantsRow),
     lookups: [],
     aggregations: [] },
   { name: "StepResources", file: "step_resources", rulebookRows: 2, fields: stepResourcesFieldTypes,
+    columns: { step_resource_id: "StepResourceId", name: "Name", step: "Step", resource: "Resource", relation: "Relation", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["step_resource_id", "step", "resource", "relation", "semantic_type_iri"],
     compute: (row: any) => computeStepResources(row as StepResourcesRow),
     lookups: [],
     aggregations: [] },
   { name: "FaqCategories", file: "faq_categories", rulebookRows: 4, fields: faqCategoriesFieldTypes,
+    columns: { faq_category_id: "FaqCategoryId", name: "Name", label: "Label", faq_count: "FaqCount", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["faq_category_id", "label", "semantic_type_iri"],
     compute: (row: any) => computeFaqCategories(row as FaqCategoriesRow),
     lookups: [],
     aggregations: [
       { field: "faq_count", op: "COUNTIFS", table: "fa_qs", criteria: [{ range: "category", kind: "field", field: "faq_category_id" }] },] },
   { name: "FaqTargets", file: "faq_targets", rulebookRows: 2, fields: faqTargetsFieldTypes,
+    columns: { faq_target_id: "FaqTargetId", name: "Name", label: "Label", faq_count: "FaqCount", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["faq_target_id", "label", "semantic_type_iri"],
     compute: (row: any) => computeFaqTargets(row as FaqTargetsRow),
     lookups: [],
     aggregations: [
       { field: "faq_count", op: "COUNTIFS", table: "fa_qs", criteria: [{ range: "target_kind", kind: "field", field: "faq_target_id" }] },] },
   { name: "AuthoringSubmissions", file: "authoring_submissions", rulebookRows: 3, fields: authoringSubmissionsFieldTypes,
+    columns: { authoring_submission_id: "AuthoringSubmissionId", name: "Name", procedure_version: "ProcedureVersion", submitted_by_agent: "SubmittedByAgent", submitted_at: "SubmittedAt", authoring_tool: "AuthoringTool", submitter_expertise: "SubmitterExpertise", step_count: "StepCount", profile_validation_passed: "ProfileValidationPassed", validation_error_count: "ValidationErrorCount", was_accepted: "WasAccepted", is_expert_authored_conforming: "IsExpertAuthoredConforming", is_non_conforming_accepted: "IsNonConformingAccepted", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["authoring_submission_id", "procedure_version", "submitted_by_agent", "submitted_at", "authoring_tool", "submitter_expertise", "step_count", "profile_validation_passed", "validation_error_count", "was_accepted", "semantic_type_iri"],
     compute: (row: any) => computeAuthoringSubmissions(row as AuthoringSubmissionsRow),
     lookups: [],
     aggregations: [] },
   { name: "ProcessKnowledgeLevels", file: "process_knowledge_levels", rulebookRows: 3, fields: processKnowledgeLevelsFieldTypes,
+    columns: { process_knowledge_level_id: "ProcessKnowledgeLevelId", name: "Name", label: "Label", planning_horizon: "PlanningHorizon", tacit_strategy_count: "TacitStrategyCount", explicit_strategy_count: "ExplicitStrategyCount", lacks_capture_strategy_for_either_form: "LacksCaptureStrategyForEitherForm", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["process_knowledge_level_id", "label", "planning_horizon", "semantic_type_iri"],
     compute: (row: any) => computeProcessKnowledgeLevels(row as ProcessKnowledgeLevelsRow),
     lookups: [],
     aggregations: [
       { field: "tacit_strategy_count", op: "COUNTIFS", table: "level_capture_strategies", criteria: [{ range: "level", kind: "field", field: "process_knowledge_level_id" }, { range: "knowledge_form", kind: "literal", literal: vS("Tacit") }] },
       { field: "explicit_strategy_count", op: "COUNTIFS", table: "level_capture_strategies", criteria: [{ range: "level", kind: "field", field: "process_knowledge_level_id" }, { range: "knowledge_form", kind: "literal", literal: vS("Explicit") }] },] },
   { name: "LevelCaptureStrategies", file: "level_capture_strategies", rulebookRows: 5, fields: levelCaptureStrategiesFieldTypes,
+    columns: { level_capture_strategy_id: "LevelCaptureStrategyId", name: "Name", level: "Level", knowledge_form: "KnowledgeForm", knowledge_method: "KnowledgeMethod", transfer_mode: "TransferMode", description: "Description", contradicts_knowledge_form: "ContradictsKnowledgeForm", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["level_capture_strategy_id", "level", "knowledge_form", "knowledge_method", "transfer_mode", "description", "semantic_type_iri"],
     compute: (row: any) => computeLevelCaptureStrategies(row as LevelCaptureStrategiesRow),
     lookups: [],
     aggregations: [] },
   { name: "LevelPyramidQuestions", file: "level_pyramid_questions", rulebookRows: 5, fields: levelPyramidQuestionsFieldTypes,
+    columns: { level_pyramid_question_id: "LevelPyramidQuestionId", name: "Name", level: "Level", question_kind: "QuestionKind", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["level_pyramid_question_id", "level", "question_kind", "semantic_type_iri"],
     compute: (row: any) => computeLevelPyramidQuestions(row as LevelPyramidQuestionsRow),
     lookups: [],
     aggregations: [] },
   { name: "ProcessLevelStatements", file: "process_level_statements", rulebookRows: 8, fields: processLevelStatementsFieldTypes,
+    columns: { process_level_statement_id: "ProcessLevelStatementId", name: "Name", procedure: "Procedure", level: "Level", question_kind: "QuestionKind", statement: "Statement", level_question_key: "LevelQuestionKey", pyramid_match_count: "PyramidMatchCount", is_filed_at_wrong_level: "IsFiledAtWrongLevel", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["process_level_statement_id", "procedure", "level", "question_kind", "statement", "semantic_type_iri"],
     compute: (row: any) => computeProcessLevelStatements(row as ProcessLevelStatementsRow),
     lookups: [],
     aggregations: [
       { field: "pyramid_match_count", op: "COUNTIFS", table: "level_pyramid_questions", criteria: [{ range: "level_pyramid_question_id", kind: "field", field: "level_question_key" }] },] },
   { name: "TacticalResourceAllocations", file: "tactical_resource_allocations", rulebookRows: 5, fields: tacticalResourceAllocationsFieldTypes,
+    columns: { tactical_resource_allocation_id: "TacticalResourceAllocationId", name: "Name", step: "Step", facility: "Facility", resource_label: "ResourceLabel", resource_kind: "ResourceKind", available_units_per_week: "AvailableUnitsPerWeek", demanded_units_per_week: "DemandedUnitsPerWeek", adjustment_decision: "AdjustmentDecision", utilization_percent: "UtilizationPercent", is_bottleneck: "IsBottleneck", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["tactical_resource_allocation_id", "step", "facility", "resource_label", "resource_kind", "available_units_per_week", "demanded_units_per_week", "adjustment_decision", "semantic_type_iri"],
     compute: (row: any) => computeTacticalResourceAllocations(row as TacticalResourceAllocationsRow),
     lookups: [],
     aggregations: [] },
   { name: "ProcessStrategicAlignments", file: "process_strategic_alignments", rulebookRows: 4, fields: processStrategicAlignmentsFieldTypes,
+    columns: { process_strategic_alignment_id: "ProcessStrategicAlignmentId", name: "Name", procedure: "Procedure", organization: "Organization", mission_statement: "MissionStatement", rationale: "Rationale", value_created: "ValueCreated", trade_offs: "TradeOffs", states_no_trade_off: "StatesNoTradeOff", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["process_strategic_alignment_id", "procedure", "organization", "mission_statement", "rationale", "value_created", "trade_offs", "semantic_type_iri"],
     compute: (row: any) => computeProcessStrategicAlignments(row as ProcessStrategicAlignmentsRow),
     lookups: [],
     aggregations: [] },
   { name: "BusinessOutcomes", file: "business_outcomes", rulebookRows: 3, fields: businessOutcomesFieldTypes,
+    columns: { business_outcome_id: "BusinessOutcomeId", name: "Name", label: "Label", owner_role: "OwnerRole", strategic_objective: "StrategicObjective", linked_measure_count: "LinkedMeasureCount", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["business_outcome_id", "label", "owner_role", "strategic_objective", "semantic_type_iri"],
     compute: (row: any) => computeBusinessOutcomes(row as BusinessOutcomesRow),
     lookups: [],
     aggregations: [
       { field: "linked_measure_count", op: "COUNTIFS", table: "process_outcome_measures", criteria: [{ range: "business_outcome", kind: "field", field: "business_outcome_id" }] },] },
   { name: "ProcessOutcomeMeasures", file: "process_outcome_measures", rulebookRows: 5, fields: processOutcomeMeasuresFieldTypes,
+    columns: { process_outcome_measure_id: "ProcessOutcomeMeasureId", name: "Name", procedure: "Procedure", label: "Label", unit: "Unit", target_value: "TargetValue", observed_value: "ObservedValue", measured_over_period: "MeasuredOverPeriod", business_outcome: "BusinessOutcome", link_rationale: "LinkRationale", is_unlinked_to_business_outcome: "IsUnlinkedToBusinessOutcome", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["process_outcome_measure_id", "procedure", "label", "unit", "target_value", "observed_value", "measured_over_period", "business_outcome", "link_rationale", "semantic_type_iri"],
     compute: (row: any) => computeProcessOutcomeMeasures(row as ProcessOutcomeMeasuresRow),
     lookups: [],
     aggregations: [] },
   { name: "ProcessStages", file: "process_stages", rulebookRows: 7, fields: processStagesFieldTypes,
+    columns: { process_stage_id: "ProcessStageId", name: "Name", procedure_version: "ProcedureVersion", label: "Label", sequence: "Sequence", owner_role: "OwnerRole", step_count: "StepCount", owner_has_no_holder: "OwnerHasNoHolder", is_unowned_or_empty_stage: "IsUnownedOrEmptyStage", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["process_stage_id", "procedure_version", "label", "sequence", "owner_role", "semantic_type_iri"],
     compute: (row: any) => computeProcessStages(row as ProcessStagesRow),
     lookups: [
       { field: "owner_has_no_holder", target: "roles", ret: "has_no_current_holder", key: "owner_role", match: "role_id" },],
     aggregations: [
       { field: "step_count", op: "COUNTIFS", table: "steps", criteria: [{ range: "stage", kind: "field", field: "process_stage_id" }] },] },
   { name: "ProcessInterdependencies", file: "process_interdependencies", rulebookRows: 4, fields: processInterdependenciesFieldTypes,
+    columns: { process_interdependency_id: "ProcessInterdependencyId", name: "Name", from_procedure: "FromProcedure", to_procedure: "ToProcedure", effect: "Effect", mechanism: "Mechanism", evidence_note: "EvidenceNote", is_hindering_dependency: "IsHinderingDependency", hindered_procedure_key: "HinderedProcedureKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["process_interdependency_id", "from_procedure", "to_procedure", "effect", "mechanism", "evidence_note", "semantic_type_iri"],
     compute: (row: any) => computeProcessInterdependencies(row as ProcessInterdependenciesRow),
     lookups: [],
     aggregations: [] },
   { name: "StakeholderLenses", file: "stakeholder_lenses", rulebookRows: 9, fields: stakeholderLensesFieldTypes,
+    columns: { stakeholder_lens_id: "StakeholderLensId", name: "Name", label: "Label", exemplar_role: "ExemplarRole", needs_step_guidance: "NeedsStepGuidance", needs_metrics: "NeedsMetrics", needs_exception_handling: "NeedsExceptionHandling", needs_compliance_evidence: "NeedsComplianceEvidence", needs_structured_constraints: "NeedsStructuredConstraints", required_granularity: "RequiredGranularity", preferred_form: "PreferredForm", granularity_rank: "GranularityRank", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["stakeholder_lens_id", "label", "exemplar_role", "needs_step_guidance", "needs_metrics", "needs_exception_handling", "needs_compliance_evidence", "needs_structured_constraints", "required_granularity", "preferred_form", "semantic_type_iri"],
     compute: (row: any) => computeStakeholderLenses(row as StakeholderLensesRow),
     lookups: [],
     aggregations: [] },
   { name: "ProcedureLensViews", file: "procedure_lens_views", rulebookRows: 15, fields: procedureLensViewsFieldTypes,
+    columns: { procedure_lens_view_id: "ProcedureLensViewId", name: "Name", procedure: "Procedure", stakeholder_lens: "StakeholderLens", projects_version: "ProjectsVersion", granularity: "Granularity", form: "Form", procedure_current_version: "ProcedureCurrentVersion", lens_granularity_rank: "LensGranularityRank", view_granularity_rank: "ViewGranularityRank", is_granularity_misfit: "IsGranularityMisfit", is_disconnected_silo: "IsDisconnectedSilo", step_level_procedure_key: "StepLevelProcedureKey", category_level_procedure_key: "CategoryLevelProcedureKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["procedure_lens_view_id", "procedure", "stakeholder_lens", "projects_version", "granularity", "form", "semantic_type_iri"],
     compute: (row: any) => computeProcedureLensViews(row as ProcedureLensViewsRow),
     lookups: [
       { field: "procedure_current_version", target: "procedures", ret: "current_version_key", key: "procedure", match: "procedure_id" },
       { field: "lens_granularity_rank", target: "stakeholder_lenses", ret: "granularity_rank", key: "stakeholder_lens", match: "stakeholder_lens_id" },],
     aggregations: [] },
   { name: "ApplicabilityScopes", file: "applicability_scopes", rulebookRows: 5, fields: applicabilityScopesFieldTypes,
+    columns: { applicability_scope_id: "ApplicabilityScopeId", name: "Name", label: "Label", business_unit: "BusinessUnit", geography: "Geography", customer_segment: "CustomerSegment", regulatory_regime: "RegulatoryRegime", applies_when: "AppliesWhen", exclusion_condition: "ExclusionCondition", named_graph_iri: "NamedGraphIri", dimension_count: "DimensionCount", states_conditions: "StatesConditions", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["applicability_scope_id", "label", "business_unit", "geography", "customer_segment", "regulatory_regime", "applies_when", "exclusion_condition", "named_graph_iri", "semantic_type_iri"],
     compute: (row: any) => computeApplicabilityScopes(row as ApplicabilityScopesRow),
     lookups: [],
     aggregations: [] },
   { name: "StepContextSensitivities", file: "step_context_sensitivities", rulebookRows: 4, fields: stepContextSensitivitiesFieldTypes,
+    columns: { step_context_sensitivity_id: "StepContextSensitivityId", name: "Name", step: "Step", context_factor: "ContextFactor", description: "Description", effect_on_significance: "EffectOnSignificance", applicability_scope: "ApplicabilityScope", unscoped_step_key: "UnscopedStepKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["step_context_sensitivity_id", "step", "context_factor", "description", "effect_on_significance", "applicability_scope", "semantic_type_iri"],
     compute: (row: any) => computeStepContextSensitivities(row as StepContextSensitivitiesRow),
     lookups: [],
     aggregations: [] },
   { name: "SituationalVariants", file: "situational_variants", rulebookRows: 4, fields: situationalVariantsFieldTypes,
+    columns: { situational_variant_id: "SituationalVariantId", name: "Name", procedure: "Procedure", label: "Label", situation: "Situation", adaptation: "Adaptation", applicability_scope: "ApplicabilityScope", expert_agent: "ExpertAgent", scope_dimension_count: "ScopeDimensionCount", scope_states_conditions: "ScopeStatesConditions", has_no_applicability_dimension: "HasNoApplicabilityDimension", diverges_without_stated_conditions: "DivergesWithoutStatedConditions", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["situational_variant_id", "procedure", "label", "situation", "adaptation", "applicability_scope", "expert_agent", "semantic_type_iri"],
     compute: (row: any) => computeSituationalVariants(row as SituationalVariantsRow),
     lookups: [
       { field: "scope_dimension_count", target: "applicability_scopes", ret: "dimension_count", key: "applicability_scope", match: "applicability_scope_id" },
       { field: "scope_states_conditions", target: "applicability_scopes", ret: "states_conditions", key: "applicability_scope", match: "applicability_scope_id" },],
     aggregations: [] },
   { name: "CollectedSourceMaterials", file: "collected_source_materials", rulebookRows: 15, fields: collectedSourceMaterialsFieldTypes,
+    columns: { collected_source_material_id: "CollectedSourceMaterialId", name: "Name", label: "Label", material_kind: "MaterialKind", procedure: "Procedure", collected_at: "CollectedAt", organized_into_scheme: "OrganizedIntoScheme", organized_at: "OrganizedAt", encoded_into_version: "EncodedIntoVersion", encoded_at: "EncodedAt", is_modeled_before_organized: "IsModeledBeforeOrganized", semantic_type_iri: "SemanticTypeIri", source_document: "SourceDocument", source_document_revised_at: "SourceDocumentRevisedAt", is_document_source: "IsDocumentSource", is_people_capture: "IsPeopleCapture", is_practice_evidence: "IsPracticeEvidence", holds_reasoning_or_tacit_knowledge: "HoldsReasoningOrTacitKnowledge", complements_mining_run: "ComplementsMiningRun", captured_during_execution: "CapturedDuringExecution", is_captured_in_flow_of_work: "IsCapturedInFlowOfWork", collected_at_occasion: "CollectedAtOccasion", prompted_by_feedback: "PromptedByFeedback", produced_by_method_application: "ProducedByMethodApplication", contributing_expert: "ContributingExpert", expert_effort_hours: "ExpertEffortHours", dependent_trace_count: "DependentTraceCount", is_dependency_invisible_to_change: "IsDependencyInvisibleToChange", changed_dependent_count: "ChangedDependentCount", has_knowledge_affected_by_source_change: "HasKnowledgeAffectedBySourceChange" },
+    stored: ["collected_source_material_id", "label", "material_kind", "procedure", "collected_at", "organized_into_scheme", "organized_at", "encoded_into_version", "encoded_at", "semantic_type_iri", "source_document", "holds_reasoning_or_tacit_knowledge", "complements_mining_run", "captured_during_execution", "collected_at_occasion", "prompted_by_feedback", "produced_by_method_application", "contributing_expert", "expert_effort_hours"],
     compute: (row: any) => computeCollectedSourceMaterials(row as CollectedSourceMaterialsRow),
     lookups: [
       { field: "source_document_revised_at", target: "resources", ret: "modified_at", key: "source_document", match: "resource_id" },],
@@ -37105,10 +37490,14 @@ export const erbTables: TableSpec[] = [
       { field: "dependent_trace_count", op: "COUNTIFS", table: "knowledge_traces", criteria: [{ range: "source_material", kind: "field", field: "collected_source_material_id" }] },
       { field: "changed_dependent_count", op: "COUNTIFS", table: "knowledge_traces", criteria: [{ range: "source_material", kind: "field", field: "collected_source_material_id" }, { range: "is_source_changed_since_taken", kind: "literal", literal: vB(true) }] },] },
   { name: "SchemeRefinements", file: "scheme_refinements", rulebookRows: 2, fields: schemeRefinementsFieldTypes,
+    columns: { scheme_refinement_id: "SchemeRefinementId", name: "Name", vocabulary: "Vocabulary", refined_at: "RefinedAt", triggered_by_material: "TriggeredByMaterial", change_summary: "ChangeSummary", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["scheme_refinement_id", "vocabulary", "refined_at", "triggered_by_material", "change_summary", "semantic_type_iri"],
     compute: (row: any) => computeSchemeRefinements(row as SchemeRefinementsRow),
     lookups: [],
     aggregations: [] },
   { name: "TermLabelVariants", file: "term_label_variants", rulebookRows: 53, fields: termLabelVariantsFieldTypes,
+    columns: { term_label_variant_id: "TermLabelVariantId", name: "Name", vocabulary_term: "VocabularyTerm", label_kind: "LabelKind", wording: "Wording", term_scheme: "TermScheme", term_pref_label: "TermPrefLabel", wording_key: "WordingKey", pref_wording_key: "PrefWordingKey", concepts_sharing_wording: "ConceptsSharingWording", is_ambiguous_label: "IsAmbiguousLabel", practitioner_mention_count: "PractitionerMentionCount", pref_wording: "PrefWording", same_pref_wording_count: "SamePrefWordingCount", is_cross_scheme_duplicate_pref: "IsCrossSchemeDuplicatePref", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["term_label_variant_id", "vocabulary_term", "label_kind", "wording", "semantic_type_iri"],
     compute: (row: any) => computeTermLabelVariants(row as TermLabelVariantsRow),
     lookups: [
       { field: "term_scheme", target: "vocabulary_terms", ret: "vocabulary", key: "vocabulary_term", match: "vocabulary_term_id" },
@@ -37118,6 +37507,8 @@ export const erbTables: TableSpec[] = [
       { field: "practitioner_mention_count", op: "COUNTIFS", table: "source_term_mentions", criteria: [{ range: "wording_key", kind: "field", field: "wording_key" }, { range: "mention_origin", kind: "literal", literal: vS("Practitioner") }] },
       { field: "same_pref_wording_count", op: "COUNTIFS", table: "term_label_variants", criteria: [{ range: "pref_wording", kind: "field", field: "pref_wording" }] },] },
   { name: "AiLabelingRuns", file: "ai_labeling_runs", rulebookRows: 3, fields: aiLabelingRunsFieldTypes,
+    columns: { ai_labeling_run_id: "AiLabelingRunId", name: "Name", agent: "Agent", grounding_scheme: "GroundingScheme", run_at: "RunAt", task_description: "TaskDescription", output_count: "OutputCount", non_canonical_output_count: "NonCanonicalOutputCount", grounding_scheme_is_machine_accessible: "GroundingSchemeIsMachineAccessible", is_ungrounded_synonym_sprawl: "IsUngroundedSynonymSprawl", grounded_in_non_machine_readable_scheme: "GroundedInNonMachineReadableScheme", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["ai_labeling_run_id", "agent", "grounding_scheme", "run_at", "task_description", "semantic_type_iri"],
     compute: (row: any) => computeAiLabelingRuns(row as AiLabelingRunsRow),
     lookups: [
       { field: "grounding_scheme_is_machine_accessible", target: "vocabularies", ret: "is_machine_accessible", key: "grounding_scheme", match: "vocabulary_id" },],
@@ -37125,6 +37516,8 @@ export const erbTables: TableSpec[] = [
       { field: "output_count", op: "COUNTIFS", table: "source_term_mentions", criteria: [{ range: "ai_labeling_run", kind: "field", field: "ai_labeling_run_id" }] },
       { field: "non_canonical_output_count", op: "COUNTIFS", table: "source_term_mentions", criteria: [{ range: "ai_labeling_run", kind: "field", field: "ai_labeling_run_id" }, { range: "is_non_canonical_generated_value", kind: "literal", literal: vB(true) }] },] },
   { name: "SourceTermMentions", file: "source_term_mentions", rulebookRows: 25, fields: sourceTermMentionsFieldTypes,
+    columns: { source_term_mention_id: "SourceTermMentionId", name: "Name", source_material: "SourceMaterial", ai_labeling_run: "AiLabelingRun", concept_scheme: "ConceptScheme", wording: "Wording", mention_origin: "MentionOrigin", intended_term: "IntendedTerm", wording_key: "WordingKey", matching_label_count: "MatchingLabelCount", matching_pref_label_count: "MatchingPrefLabelCount", is_uncontrolled_wording: "IsUncontrolledWording", is_non_canonical_generated_value: "IsNonCanonicalGeneratedValue", intended_term_role: "IntendedTermRole", unresolved_intended_term_key: "UnresolvedIntendedTermKey", unresolved_role_key: "UnresolvedRoleKey", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["source_term_mention_id", "source_material", "ai_labeling_run", "concept_scheme", "wording", "mention_origin", "intended_term", "semantic_type_iri"],
     compute: (row: any) => computeSourceTermMentions(row as SourceTermMentionsRow),
     lookups: [
       { field: "intended_term_role", target: "vocabulary_terms", ret: "represents_role", key: "intended_term", match: "vocabulary_term_id" },],
@@ -37132,15 +37525,21 @@ export const erbTables: TableSpec[] = [
       { field: "matching_label_count", op: "COUNTIFS", table: "term_label_variants", criteria: [{ range: "wording_key", kind: "field", field: "wording_key" }] },
       { field: "matching_pref_label_count", op: "COUNTIFS", table: "term_label_variants", criteria: [{ range: "pref_wording_key", kind: "field", field: "wording_key" }] },] },
   { name: "TermRelations", file: "term_relations", rulebookRows: 4, fields: termRelationsFieldTypes,
+    columns: { term_relation_id: "TermRelationId", name: "Name", from_term: "FromTerm", relation_kind: "RelationKind", to_term: "ToTerm", note: "Note", from_term_grandparent: "FromTermGrandparent", asserts_indirect_link_as_direct: "AssertsIndirectLinkAsDirect", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["term_relation_id", "from_term", "relation_kind", "to_term", "note", "semantic_type_iri"],
     compute: (row: any) => computeTermRelations(row as TermRelationsRow),
     lookups: [
       { field: "from_term_grandparent", target: "vocabulary_terms", ret: "broader_term_parent", key: "from_term", match: "vocabulary_term_id" },],
     aggregations: [] },
   { name: "TermMeaningChanges", file: "term_meaning_changes", rulebookRows: 3, fields: termMeaningChangesFieldTypes,
+    columns: { term_meaning_change_id: "TermMeaningChangeId", name: "Name", vocabulary_term: "VocabularyTerm", prior_meaning_since: "PriorMeaningSince", changed_at: "ChangedAt", prior_meaning: "PriorMeaning", new_meaning: "NewMeaning", is_structural_change: "IsStructuralChange", recorded_by_agent: "RecordedByAgent", span_days: "SpanDays", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["term_meaning_change_id", "vocabulary_term", "prior_meaning_since", "changed_at", "prior_meaning", "new_meaning", "is_structural_change", "recorded_by_agent", "semantic_type_iri"],
     compute: (row: any) => computeTermMeaningChanges(row as TermMeaningChangesRow),
     lookups: [],
     aggregations: [] },
   { name: "ExternalStandardTerms", file: "external_standard_terms", rulebookRows: 9, fields: externalStandardTermsFieldTypes,
+    columns: { external_standard_term_id: "ExternalStandardTermId", name: "Name", ontology_profile: "OntologyProfile", term_iri: "TermIri", previous_term_iri: "PreviousTermIri", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", deprecated_by_source: "DeprecatedBySource", deprecated_at: "DeprecatedAt", still_resolves: "StillResolves", alignment_updated_at: "AlignmentUpdatedAt", model_still_needs_term: "ModelStillNeedsTerm", rehomed_as_term: "RehomedAsTerm", rehomed_term_same_as: "RehomedTermSameAs", rehomed_term_namespace: "RehomedTermNamespace", rehomed_term_release_issued_at: "RehomedTermReleaseIssuedAt", profile_namespace_iri: "ProfileNamespaceIri", days_since_deprecated: "DaysSinceDeprecated", is_recent_deprecation: "IsRecentDeprecation", using_mapping_count: "UsingMappingCount", stale_identifier_mapping_count: "StaleIdentifierMappingCount", is_adopted_but_deprecated: "IsAdoptedButDeprecated", is_alignment_stale_after_deprecation: "IsAlignmentStaleAfterDeprecation", is_needed_deprecated_term_not_rehomed: "IsNeededDeprecatedTermNotRehomed", is_rehomed_without_identity_link: "IsRehomedWithoutIdentityLink", is_rehomed_without_new_release: "IsRehomedWithoutNewRelease", has_unpropagated_identifier_change: "HasUnpropagatedIdentifierChange", rehoming_kept_external_namespace: "RehomingKeptExternalNamespace", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["external_standard_term_id", "ontology_profile", "term_iri", "previous_term_iri", "evaluation_context", "deprecated_by_source", "deprecated_at", "still_resolves", "alignment_updated_at", "model_still_needs_term", "rehomed_as_term", "semantic_type_iri"],
     compute: (row: any) => computeExternalStandardTerms(row as ExternalStandardTermsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -37152,31 +37551,43 @@ export const erbTables: TableSpec[] = [
       { field: "using_mapping_count", op: "COUNTIFS", table: "semantic_mappings", criteria: [{ range: "target_iri", kind: "field", field: "term_iri" }] },
       { field: "stale_identifier_mapping_count", op: "COUNTIFS", table: "semantic_mappings", criteria: [{ range: "target_iri", kind: "field", field: "previous_term_iri" }] },] },
   { name: "RoleCapabilityTags", file: "role_capability_tags", rulebookRows: 9, fields: roleCapabilityTagsFieldTypes,
+    columns: { role_capability_tag_id: "RoleCapabilityTagId", name: "Name", role: "Role", capability_term: "CapabilityTerm", capability_scheme_dimension: "CapabilitySchemeDimension", is_tag_outside_capability_scheme: "IsTagOutsideCapabilityScheme", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["role_capability_tag_id", "role", "capability_term", "semantic_type_iri"],
     compute: (row: any) => computeRoleCapabilityTags(row as RoleCapabilityTagsRow),
     lookups: [
       { field: "capability_scheme_dimension", target: "vocabulary_terms", ret: "scheme_governed_dimension", key: "capability_term", match: "vocabulary_term_id" },],
     aggregations: [] },
   { name: "ClassificationFacets", file: "classification_facets", rulebookRows: 4, fields: classificationFacetsFieldTypes,
+    columns: { classification_facet_id: "ClassificationFacetId", name: "Name", label: "Label", dimension_description: "DimensionDescription", assignment_count: "AssignmentCount", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["classification_facet_id", "label", "dimension_description", "semantic_type_iri"],
     compute: (row: any) => computeClassificationFacets(row as ClassificationFacetsRow),
     lookups: [],
     aggregations: [
       { field: "assignment_count", op: "COUNTIFS", table: "procedure_facet_assignments", criteria: [{ range: "facet", kind: "field", field: "classification_facet_id" }] },] },
   { name: "ProcedureFacetAssignments", file: "procedure_facet_assignments", rulebookRows: 12, fields: procedureFacetAssignmentsFieldTypes,
+    columns: { procedure_facet_assignment_id: "ProcedureFacetAssignmentId", name: "Name", procedure: "Procedure", facet: "Facet", facet_value: "FacetValue", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["procedure_facet_assignment_id", "procedure", "facet", "facet_value", "semantic_type_iri"],
     compute: (row: any) => computeProcedureFacetAssignments(row as ProcedureFacetAssignmentsRow),
     lookups: [],
     aggregations: [] },
   { name: "EncodingLifecycleStages", file: "encoding_lifecycle_stages", rulebookRows: 6, fields: encodingLifecycleStagesFieldTypes,
+    columns: { encoding_lifecycle_stage_id: "EncodingLifecycleStageId", name: "Name", label: "Label", stage_order: "StageOrder", activity: "Activity", annotation_count: "AnnotationCount", is_stage_without_feedback: "IsStageWithoutFeedback", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["encoding_lifecycle_stage_id", "label", "stage_order", "activity", "semantic_type_iri"],
     compute: (row: any) => computeEncodingLifecycleStages(row as EncodingLifecycleStagesRow),
     lookups: [],
     aggregations: [
       { field: "annotation_count", op: "COUNTIFS", table: "model_annotations", criteria: [{ range: "lifecycle_stage", kind: "field", field: "encoding_lifecycle_stage_id" }] },] },
   { name: "KnowledgeConsumerSystems", file: "knowledge_consumer_systems", rulebookRows: 8, fields: knowledgeConsumerSystemsFieldTypes,
+    columns: { knowledge_consumer_system_id: "KnowledgeConsumerSystemId", name: "Name", label: "Label", system_kind: "SystemKind", organization: "Organization", audience: "Audience", holds_procedure_knowledge: "HoldsProcedureKnowledge", exports_standard_format: "ExportsStandardFormat", export_format: "ExportFormat", has_reasoner: "HasReasoner", has_semantic_storage: "HasSemanticStorage", has_graph_algorithms: "HasGraphAlgorithms", has_machine_learning: "HasMachineLearning", has_taxonomy: "HasTaxonomy", has_thesaurus: "HasThesaurus", has_ontology: "HasOntology", has_metadata_schema: "HasMetadataSchema", model_sync_count: "ModelSyncCount", integration_count: "IntegrationCount", is_knowledge_silo: "IsKnowledgeSilo", is_unlinked_toolchain_component: "IsUnlinkedToolchainComponent", semantic_layer_component_count: "SemanticLayerComponentCount", platform_capability_count: "PlatformCapabilityCount", is_immature_graph_platform: "IsImmatureGraphPlatform", semantic_type_iri: "SemanticTypeIri", is_computationally_queryable: "IsComputationallyQueryable", is_computationally_validatable: "IsComputationallyValidatable", holds_computationally_encoded_procedure_knowledge: "HoldsComputationallyEncodedProcedureKnowledge", stores_procedure_knowledge_without_computational_access: "StoresProcedureKnowledgeWithoutComputationalAccess" },
+    stored: ["knowledge_consumer_system_id", "label", "system_kind", "organization", "audience", "holds_procedure_knowledge", "exports_standard_format", "export_format", "has_reasoner", "has_semantic_storage", "has_graph_algorithms", "has_machine_learning", "has_taxonomy", "has_thesaurus", "has_ontology", "has_metadata_schema", "semantic_type_iri", "is_computationally_queryable", "is_computationally_validatable"],
     compute: (row: any) => computeKnowledgeConsumerSystems(row as KnowledgeConsumerSystemsRow),
     lookups: [],
     aggregations: [
       { field: "model_sync_count", op: "COUNTIFS", table: "consumer_system_syncs", criteria: [{ range: "consumer_system", kind: "field", field: "knowledge_consumer_system_id" }] },
       { field: "integration_count", op: "COUNTIFS", table: "agent_integrations", criteria: [{ range: "knowledge_system", kind: "field", field: "knowledge_consumer_system_id" }] },] },
   { name: "ConsumerSystemSyncs", file: "consumer_system_syncs", rulebookRows: 6, fields: consumerSystemSyncsFieldTypes,
+    columns: { consumer_system_sync_id: "ConsumerSystemSyncId", name: "Name", consumer_system: "ConsumerSystem", loaded_version: "LoadedVersion", synced_at: "SyncedAt", source_resource: "SourceResource", carries_provenance: "CarriesProvenance", system_audience: "SystemAudience", loaded_procedure: "LoadedProcedure", canonical_version: "CanonicalVersion", canonical_version_modified_at: "CanonicalVersionModifiedAt", loaded_version_creator: "LoadedVersionCreator", is_behind_canonical_version: "IsBehindCanonicalVersion", predates_version_change: "PredatesVersionChange", is_ai_fed_from_forked_copy: "IsAiFedFromForkedCopy", drops_provenance_in_transit: "DropsProvenanceInTransit", reaches_humans: "ReachesHumans", reaches_machines: "ReachesMachines", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["consumer_system_sync_id", "consumer_system", "loaded_version", "synced_at", "source_resource", "carries_provenance", "semantic_type_iri"],
     compute: (row: any) => computeConsumerSystemSyncs(row as ConsumerSystemSyncsRow),
     lookups: [
       { field: "system_audience", target: "knowledge_consumer_systems", ret: "audience", key: "consumer_system", match: "knowledge_consumer_system_id" },
@@ -37186,11 +37597,15 @@ export const erbTables: TableSpec[] = [
       { field: "loaded_version_creator", target: "procedure_versions", ret: "created_by_agent", key: "loaded_version", match: "procedure_version_id" },],
     aggregations: [] },
   { name: "IntegrationPathways", file: "integration_pathways", rulebookRows: 4, fields: integrationPathwaysFieldTypes,
+    columns: { integration_pathway_id: "IntegrationPathwayId", name: "Name", label: "Label", protocol: "Protocol", integration_count_on_pathway: "IntegrationCountOnPathway", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["integration_pathway_id", "label", "protocol", "semantic_type_iri"],
     compute: (row: any) => computeIntegrationPathways(row as IntegrationPathwaysRow),
     lookups: [],
     aggregations: [
       { field: "integration_count_on_pathway", op: "COUNTIFS", table: "agent_integrations", criteria: [{ range: "pathway", kind: "field", field: "integration_pathway_id" }] },] },
   { name: "AgentIntegrations", file: "agent_integrations", rulebookRows: 7, fields: agentIntegrationsFieldTypes,
+    columns: { agent_integration_id: "AgentIntegrationId", name: "Name", agent: "Agent", knowledge_system: "KnowledgeSystem", pathway: "Pathway", serves_snapshot: "ServesSnapshot", delivery_mode: "DeliveryMode", registry_entry_key: "RegistryEntryKey", connected_at: "ConnectedAt", pathway_integration_count: "PathwayIntegrationCount", observed_answer_count: "ObservedAnswerCount", is_shadow_integration: "IsShadowIntegration", is_one_off_connection: "IsOneOffConnection", snapshot_is_governed: "SnapshotIsGoverned", is_deployed_on_ungoverned_graph: "IsDeployedOnUngovernedGraph", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["agent_integration_id", "agent", "knowledge_system", "pathway", "serves_snapshot", "delivery_mode", "registry_entry_key", "connected_at", "semantic_type_iri"],
     compute: (row: any) => computeAgentIntegrations(row as AgentIntegrationsRow),
     lookups: [
       { field: "pathway_integration_count", target: "integration_pathways", ret: "integration_count_on_pathway", key: "pathway", match: "integration_pathway_id" },
@@ -37198,6 +37613,8 @@ export const erbTables: TableSpec[] = [
     aggregations: [
       { field: "observed_answer_count", op: "COUNTIFS", table: "assistant_answers", criteria: [{ range: "via_integration", kind: "field", field: "agent_integration_id" }] },] },
   { name: "GroundingSnapshots", file: "grounding_snapshots", rulebookRows: 3, fields: groundingSnapshotsFieldTypes,
+    columns: { grounding_snapshot_id: "GroundingSnapshotId", name: "Name", label: "Label", built_at: "BuiltAt", served_from: "ServedFrom", served_to: "ServedTo", steward_role: "StewardRole", governance_reviewed_at: "GovernanceReviewedAt", is_governed: "IsGoverned", reasoner_run_count: "ReasonerRunCount", consistent_reasoner_run_count: "ConsistentReasonerRunCount", latest_materialized_at: "LatestMaterializedAt", served_without_consistency_check: "ServedWithoutConsistencyCheck", served_before_materialization: "ServedBeforeMaterialization", assertion_count: "AssertionCount", stale_assignment_assertion_count: "StaleAssignmentAssertionCount", serves_stale_role_assignments: "ServesStaleRoleAssignments", deprecated_as_current_count: "DeprecatedAsCurrentCount", serves_deprecated_as_current: "ServesDeprecatedAsCurrent", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["grounding_snapshot_id", "label", "built_at", "served_from", "served_to", "steward_role", "governance_reviewed_at", "semantic_type_iri"],
     compute: (row: any) => computeGroundingSnapshots(row as GroundingSnapshotsRow),
     lookups: [],
     aggregations: [
@@ -37208,10 +37625,14 @@ export const erbTables: TableSpec[] = [
       { field: "stale_assignment_assertion_count", op: "COUNTIFS", table: "snapshot_assertions", criteria: [{ range: "snapshot", kind: "field", field: "grounding_snapshot_id" }, { range: "is_stale_role_assertion", kind: "literal", literal: vB(true) }] },
       { field: "deprecated_as_current_count", op: "COUNTIFS", table: "snapshot_assertions", criteria: [{ range: "snapshot", kind: "field", field: "grounding_snapshot_id" }, { range: "presents_deprecated_as_current", kind: "literal", literal: vB(true) }] },] },
   { name: "ReasonerRuns", file: "reasoner_runs", rulebookRows: 5, fields: reasonerRunsFieldTypes,
+    columns: { reasoner_run_id: "ReasonerRunId", name: "Name", snapshot: "Snapshot", reasoner_profile: "ReasonerProfile", ran_at: "RanAt", materialized_at: "MaterializedAt", is_consistent: "IsConsistent", inferred_triple_count: "InferredTripleCount", duration_seconds: "DurationSeconds", time_budget_seconds: "TimeBudgetSeconds", dropped_axiom_count: "DroppedAxiomCount", schema_validation_passed: "SchemaValidationPassed", is_richness_tractability_failure: "IsRichnessTractabilityFailure", passes_schema_but_fails_reasoner: "PassesSchemaButFailsReasoner", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["reasoner_run_id", "snapshot", "reasoner_profile", "ran_at", "materialized_at", "is_consistent", "inferred_triple_count", "duration_seconds", "time_budget_seconds", "dropped_axiom_count", "schema_validation_passed", "semantic_type_iri"],
     compute: (row: any) => computeReasonerRuns(row as ReasonerRunsRow),
     lookups: [],
     aggregations: [] },
   { name: "SnapshotAssertions", file: "snapshot_assertions", rulebookRows: 15, fields: snapshotAssertionsFieldTypes,
+    columns: { snapshot_assertion_id: "SnapshotAssertionId", name: "Name", snapshot: "Snapshot", subject_identifier: "SubjectIdentifier", predicate: "Predicate", object_value: "ObjectValue", is_inferred: "IsInferred", source_procedure_version: "SourceProcedureVersion", source_step: "SourceStep", source_role_assignment: "SourceRoleAssignment", about_agent: "AboutAgent", provenance_uri: "ProvenanceUri", dc_title: "DcTitle", dc_description: "DcDescription", presented_status: "PresentedStatus", source_version_status: "SourceVersionStatus", source_assignment_is_current: "SourceAssignmentIsCurrent", snapshot_consistent_run_count: "SnapshotConsistentRunCount", snapshot_is_reasoned: "SnapshotIsReasoned", is_stale_role_assertion: "IsStaleRoleAssertion", presents_deprecated_as_current: "PresentsDeprecatedAsCurrent", lacks_provenance: "LacksProvenance", has_opaque_identifier: "HasOpaqueIdentifier", lacks_dublin_core: "LacksDublinCore", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["snapshot_assertion_id", "snapshot", "subject_identifier", "predicate", "object_value", "is_inferred", "source_procedure_version", "source_step", "source_role_assignment", "about_agent", "provenance_uri", "dc_title", "dc_description", "presented_status", "semantic_type_iri"],
     compute: (row: any) => computeSnapshotAssertions(row as SnapshotAssertionsRow),
     lookups: [
       { field: "source_version_status", target: "procedure_versions", ret: "status", key: "source_procedure_version", match: "procedure_version_id" },
@@ -37219,6 +37640,8 @@ export const erbTables: TableSpec[] = [
       { field: "snapshot_consistent_run_count", target: "grounding_snapshots", ret: "consistent_reasoner_run_count", key: "snapshot", match: "grounding_snapshot_id" },],
     aggregations: [] },
   { name: "RetrievalSegments", file: "retrieval_segments", rulebookRows: 9, fields: retrievalSegmentsFieldTypes,
+    columns: { retrieval_segment_id: "RetrievalSegmentId", name: "Name", procedure_version: "ProcedureVersion", step: "Step", decision_point: "DecisionPoint", boundary_kind: "BoundaryKind", character_count: "CharacterCount", position_in_process: "PositionInProcess", applicability_condition: "ApplicabilityCondition", related_segment: "RelatedSegment", source_resource: "SourceResource", segment_text: "SegmentText", is_indexed: "IsIndexed", authored_by_agent: "AuthoredByAgent", accountable_role: "AccountableRole", contradicts_segment: "ContradictsSegment", author_agent_kind: "AuthorAgentKind", related_from_count: "RelatedFromCount", is_isolated_chunk: "IsIsolatedChunk", contradicted_is_indexed: "ContradictedIsIndexed", is_inconsistent_grounding: "IsInconsistentGrounding", is_machine_held_knowledge: "IsMachineHeldKnowledge", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["retrieval_segment_id", "procedure_version", "step", "decision_point", "boundary_kind", "character_count", "position_in_process", "applicability_condition", "related_segment", "source_resource", "segment_text", "is_indexed", "authored_by_agent", "accountable_role", "contradicts_segment", "semantic_type_iri"],
     compute: (row: any) => computeRetrievalSegments(row as RetrievalSegmentsRow),
     lookups: [
       { field: "author_agent_kind", target: "agents", ret: "agent_kind", key: "authored_by_agent", match: "agent_id" },
@@ -37226,15 +37649,21 @@ export const erbTables: TableSpec[] = [
     aggregations: [
       { field: "related_from_count", op: "COUNTIFS", table: "retrieval_segments", criteria: [{ range: "related_segment", kind: "field", field: "retrieval_segment_id" }] },] },
   { name: "KnowledgeQueryDefinitions", file: "knowledge_query_definitions", rulebookRows: 4, fields: knowledgeQueryDefinitionsFieldTypes,
+    columns: { knowledge_query_definition_id: "KnowledgeQueryDefinitionId", name: "Name", label: "Label", query_language: "QueryLanguage", query_text: "QueryText", target_procedure_version: "TargetProcedureVersion", needs_ontology_and_instances: "NeedsOntologyAndInstances", traverses_ontology_layer: "TraversesOntologyLayer", traverses_instance_layer: "TraversesInstanceLayer", ran_over_consolidated_copy: "RanOverConsolidatedCopy", last_run_at: "LastRunAt", source_system_count: "SourceSystemCount", misses_a_layer: "MissesALayer", consolidated_distributed_sources: "ConsolidatedDistributedSources", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_query_definition_id", "label", "query_language", "query_text", "target_procedure_version", "needs_ontology_and_instances", "traverses_ontology_layer", "traverses_instance_layer", "ran_over_consolidated_copy", "last_run_at", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeQueryDefinitions(row as KnowledgeQueryDefinitionsRow),
     lookups: [],
     aggregations: [
       { field: "source_system_count", op: "COUNTIFS", table: "knowledge_query_sources", criteria: [{ range: "query_definition", kind: "field", field: "knowledge_query_definition_id" }] },] },
   { name: "KnowledgeQuerySources", file: "knowledge_query_sources", rulebookRows: 6, fields: knowledgeQuerySourcesFieldTypes,
+    columns: { knowledge_query_source_id: "KnowledgeQuerySourceId", name: "Name", query_definition: "QueryDefinition", consumer_system: "ConsumerSystem", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_query_source_id", "query_definition", "consumer_system", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeQuerySources(row as KnowledgeQuerySourcesRow),
     lookups: [],
     aggregations: [] },
   { name: "AssistantAnswers", file: "assistant_answers", rulebookRows: 13, fields: assistantAnswersFieldTypes,
+    columns: { assistant_answer_id: "AssistantAnswerId", name: "Name", answering_agent: "AnsweringAgent", asked_by_agent: "AskedByAgent", via_integration: "ViaIntegration", step_execution: "StepExecution", asked_at: "AskedAt", answered_at: "AnsweredAt", answer_kind: "AnswerKind", question_topic: "QuestionTopic", question_text: "QuestionText", answer_text: "AnswerText", retrieval_mode: "RetrievalMode", derivation_performed_by: "DerivationPerformedBy", needs_inference: "NeedsInference", assumed_current_step: "AssumedCurrentStep", asserted_next_step: "AssertedNextStep", recommended_step: "RecommendedStep", raised_safety_concern: "RaisedSafetyConcern", delivery_disposition: "DeliveryDisposition", was_acted_on: "WasActedOn", human_reviewed_by: "HumanReviewedBy", reviewed_for_initiative: "ReviewedForInitiative", was_correct: "WasCorrect", documented_inaccuracy: "DocumentedInaccuracy", task_outcome: "TaskOutcome", grounding_count: "GroundingCount", own_knowledge_grounding_count: "OwnKnowledgeGroundingCount", cited_grounding_count: "CitedGroundingCount", stale_grounding_count: "StaleGroundingCount", is_not_from_own_knowledge: "IsNotFromOwnKnowledge", is_untraceable_to_source: "IsUntraceableToSource", context_unescalated_danger_cue_count: "ContextUnescalatedDangerCueCount", stayed_silent_on_safety_problem: "StayedSilentOnSafetyProblem", context_step_ended_at: "ContextStepEndedAt", arrived_after_step_ended: "ArrivedAfterStepEnded", execution_of_context: "ExecutionOfContext", context_step: "ContextStep", assumed_step_completed_count: "AssumedStepCompletedCount", lost_track_of_state: "LostTrackOfState", specified_transition_count: "SpecifiedTransitionCount", contradicts_shared_model: "ContradictsSharedModel", is_explicitly_grounded_recommendation: "IsExplicitlyGroundedRecommendation", recommendation_rests_on_nothing_explicit: "RecommendationRestsOnNothingExplicit", recommended_step_regulatory_count: "RecommendedStepRegulatoryCount", requirement_check_count: "RequirementCheckCount", conflict_count: "ConflictCount", conflicts_with_regulation: "ConflictsWithRegulation", is_unchecked_regulated_recommendation: "IsUncheckedRegulatedRecommendation", delivered_despite_conflict: "DeliveredDespiteConflict", recommended_step_needs_human: "RecommendedStepNeedsHuman", acted_on_without_human_judgment: "ActedOnWithoutHumanJudgment", answered_compliance_question_from_documents: "AnsweredComplianceQuestionFromDocuments", document_interpretation_erred: "DocumentInterpretationErred", model_did_the_reasoning: "ModelDidTheReasoning", wrong_because_graph_was_stale: "WrongBecauseGraphWasStale", semantic_type_iri: "SemanticTypeIri", owner_organization: "OwnerOrganization", model_reasoned_and_task_failed: "ModelReasonedAndTaskFailed" },
+    stored: ["assistant_answer_id", "answering_agent", "asked_by_agent", "via_integration", "step_execution", "asked_at", "answered_at", "answer_kind", "question_topic", "question_text", "answer_text", "retrieval_mode", "derivation_performed_by", "needs_inference", "assumed_current_step", "asserted_next_step", "recommended_step", "raised_safety_concern", "delivery_disposition", "was_acted_on", "human_reviewed_by", "reviewed_for_initiative", "was_correct", "documented_inaccuracy", "task_outcome", "semantic_type_iri"],
     compute: (row: any) => computeAssistantAnswers(row as AssistantAnswersRow),
     lookups: [
       { field: "context_unescalated_danger_cue_count", target: "step_executions", ret: "unescalated_danger_cue_count", key: "step_execution", match: "step_execution_id" },
@@ -37254,16 +37683,22 @@ export const erbTables: TableSpec[] = [
       { field: "requirement_check_count", op: "COUNTIFS", table: "answer_requirement_checks", criteria: [{ range: "assistant_answer", kind: "field", field: "assistant_answer_id" }] },
       { field: "conflict_count", op: "COUNTIFS", table: "answer_requirement_checks", criteria: [{ range: "assistant_answer", kind: "field", field: "assistant_answer_id" }, { range: "verdict", kind: "literal", literal: vS("Conflicts") }] },] },
   { name: "AnswerGroundings", file: "answer_groundings", rulebookRows: 14, fields: answerGroundingsFieldTypes,
+    columns: { answer_grounding_id: "AnswerGroundingId", name: "Name", assistant_answer: "AssistantAnswer", snapshot_assertion: "SnapshotAssertion", retrieval_segment: "RetrievalSegment", external_source_uri: "ExternalSourceUri", cited_to_user: "CitedToUser", is_from_own_knowledge: "IsFromOwnKnowledge", assertion_is_stale: "AssertionIsStale", assertion_presents_deprecated: "AssertionPresentsDeprecated", grounds_on_stale_assertion: "GroundsOnStaleAssertion", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["answer_grounding_id", "assistant_answer", "snapshot_assertion", "retrieval_segment", "external_source_uri", "cited_to_user", "semantic_type_iri"],
     compute: (row: any) => computeAnswerGroundings(row as AnswerGroundingsRow),
     lookups: [
       { field: "assertion_is_stale", target: "snapshot_assertions", ret: "is_stale_role_assertion", key: "snapshot_assertion", match: "snapshot_assertion_id" },
       { field: "assertion_presents_deprecated", target: "snapshot_assertions", ret: "presents_deprecated_as_current", key: "snapshot_assertion", match: "snapshot_assertion_id" },],
     aggregations: [] },
   { name: "AnswerRequirementChecks", file: "answer_requirement_checks", rulebookRows: 2, fields: answerRequirementChecksFieldTypes,
+    columns: { answer_requirement_check_id: "AnswerRequirementCheckId", name: "Name", assistant_answer: "AssistantAnswer", requirement: "Requirement", verdict: "Verdict", checked_at: "CheckedAt", checked_by_agent: "CheckedByAgent", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["answer_requirement_check_id", "assistant_answer", "requirement", "verdict", "checked_at", "checked_by_agent", "semantic_type_iri"],
     compute: (row: any) => computeAnswerRequirementChecks(row as AnswerRequirementChecksRow),
     lookups: [],
     aggregations: [] },
   { name: "AiToolInvocations", file: "ai_tool_invocations", rulebookRows: 3, fields: aiToolInvocationsFieldTypes,
+    columns: { ai_tool_invocation_id: "AiToolInvocationId", name: "Name", invoking_agent: "InvokingAgent", step_execution: "StepExecution", function: "Function", invoked_at: "InvokedAt", supplied_input_count: "SuppliedInputCount", executed_step: "ExecutedStep", declared_function_count: "DeclaredFunctionCount", is_undeclared_tool_use: "IsUndeclaredToolUse", declared_input_count: "DeclaredInputCount", acted_without_declared_context: "ActedWithoutDeclaredContext", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["ai_tool_invocation_id", "invoking_agent", "step_execution", "function", "invoked_at", "supplied_input_count", "semantic_type_iri"],
     compute: (row: any) => computeAiToolInvocations(row as AiToolInvocationsRow),
     lookups: [
       { field: "executed_step", target: "step_executions", ret: "step", key: "step_execution", match: "step_execution_id" },
@@ -37271,29 +37706,41 @@ export const erbTables: TableSpec[] = [
     aggregations: [
       { field: "declared_function_count", op: "COUNTIFS", table: "step_functions", criteria: [{ range: "step", kind: "field", field: "executed_step" }, { range: "function", kind: "field", field: "function" }] },] },
   { name: "EmbeddingProbes", file: "embedding_probes", rulebookRows: 6, fields: embeddingProbesFieldTypes,
+    columns: { embedding_probe_id: "EmbeddingProbeId", name: "Name", term_a: "TermA", term_b: "TermB", expected_relation: "ExpectedRelation", embedding_model: "EmbeddingModel", cosine_similarity: "CosineSimilarity", probed_at: "ProbedAt", synonyms_not_similar: "SynonymsNotSimilar", opposites_not_opposed: "OppositesNotOpposed", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["embedding_probe_id", "term_a", "term_b", "expected_relation", "embedding_model", "cosine_similarity", "probed_at", "semantic_type_iri"],
     compute: (row: any) => computeEmbeddingProbes(row as EmbeddingProbesRow),
     lookups: [],
     aggregations: [] },
   { name: "PromptTemplates", file: "prompt_templates", rulebookRows: 5, fields: promptTemplatesFieldTypes,
+    columns: { prompt_template_id: "PromptTemplateId", name: "Name", label: "Label", layer: "Layer", parent_template: "ParentTemplate", source_procedure_version: "SourceProcedureVersion", library_status: "LibraryStatus", maintained_by_role: "MaintainedByRole", used_by_agent: "UsedByAgent", carries_procedure_instructions: "CarriesProcedureInstructions", includes_rare_detail: "IncludesRareDetail", token_budget: "TokenBudget", estimated_tokens: "EstimatedTokens", source_token_count: "SourceTokenCount", child_template_count: "ChildTemplateCount", is_disconnected_prompt_knowledge: "IsDisconnectedPromptKnowledge", is_unmanaged_prompt_in_use: "IsUnmanagedPromptInUse", spends_budget_on_rare_detail: "SpendsBudgetOnRareDetail", condensation_percent: "CondensationPercent", is_verbatim_dump: "IsVerbatimDump", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["prompt_template_id", "label", "layer", "parent_template", "source_procedure_version", "library_status", "maintained_by_role", "used_by_agent", "carries_procedure_instructions", "includes_rare_detail", "token_budget", "estimated_tokens", "source_token_count", "semantic_type_iri"],
     compute: (row: any) => computePromptTemplates(row as PromptTemplatesRow),
     lookups: [],
     aggregations: [
       { field: "child_template_count", op: "COUNTIFS", table: "prompt_templates", criteria: [{ range: "parent_template", kind: "field", field: "prompt_template_id" }] },] },
   { name: "KnowledgeProjections", file: "knowledge_projections", rulebookRows: 7, fields: knowledgeProjectionsFieldTypes,
+    columns: { knowledge_projection_id: "KnowledgeProjectionId", name: "Name", label: "Label", projection_kind: "ProjectionKind", notation: "Notation", procedure_version: "ProcedureVersion", output_path: "OutputPath", generated_by_tool: "GeneratedByTool", generated_at: "GeneratedAt", published_uri: "PublishedUri", audience_role: "AudienceRole", version_modified_at: "VersionModifiedAt", open_count: "OpenCount", diagram_can_diverge_from_model: "DiagramCanDivergeFromModel", narrative_not_generated_from_model: "NarrativeNotGeneratedFromModel", narrative_unreachable: "NarrativeUnreachable", is_published: "IsPublished", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_projection_id", "label", "projection_kind", "notation", "procedure_version", "output_path", "generated_by_tool", "generated_at", "published_uri", "audience_role", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeProjections(row as KnowledgeProjectionsRow),
     lookups: [
       { field: "version_modified_at", target: "procedure_versions", ret: "modified_at", key: "procedure_version", match: "procedure_version_id" },],
     aggregations: [
       { field: "open_count", op: "COUNTIFS", table: "knowledge_search_events", criteria: [{ range: "opened_projection", kind: "field", field: "knowledge_projection_id" }] },] },
   { name: "ModelAnnotations", file: "model_annotations", rulebookRows: 9, fields: modelAnnotationsFieldTypes,
+    columns: { model_annotation_id: "ModelAnnotationId", name: "Name", procedure_version: "ProcedureVersion", step: "Step", annotated_by_agent: "AnnotatedByAgent", annotated_at: "AnnotatedAt", annotation_kind: "AnnotationKind", body: "Body", status: "Status", entered_through: "EnteredThrough", stored_in: "StoredIn", lifecycle_stage: "LifecycleStage", promoted_to_fragment: "PromotedToFragment", raised_knowledge_gap: "RaisedKnowledgeGap", is_discussion_in_authoritative_model: "IsDiscussionInAuthoritativeModel", flag_bypassed_annotation_interface: "FlagBypassedAnnotationInterface", is_lost_new_knowledge: "IsLostNewKnowledge", is_friction_without_gap: "IsFrictionWithoutGap", is_open_outdated_flag: "IsOpenOutdatedFlag", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["model_annotation_id", "procedure_version", "step", "annotated_by_agent", "annotated_at", "annotation_kind", "body", "status", "entered_through", "stored_in", "lifecycle_stage", "promoted_to_fragment", "raised_knowledge_gap", "semantic_type_iri"],
     compute: (row: any) => computeModelAnnotations(row as ModelAnnotationsRow),
     lookups: [],
     aggregations: [] },
   { name: "KnowledgeSearchEvents", file: "knowledge_search_events", rulebookRows: 6, fields: knowledgeSearchEventsFieldTypes,
+    columns: { knowledge_search_event_id: "KnowledgeSearchEventId", name: "Name", searched_by_agent: "SearchedByAgent", searched_at: "SearchedAt", channel: "Channel", query_text: "QueryText", sought_procedure_version: "SoughtProcedureVersion", result_count: "ResultCount", opened_segment: "OpenedSegment", opened_projection: "OpenedProjection", was_abandoned: "WasAbandoned", seconds_before_abandoning: "SecondsBeforeAbandoning", dwell_seconds: "DwellSeconds", linked_knowledge_gap: "LinkedKnowledgeGap", linked_usability_barrier: "LinkedUsabilityBarrier", found_nothing_useful: "FoundNothingUseful", gave_up_after_seeing_results: "GaveUpAfterSeeingResults", is_unlinked_failed_search: "IsUnlinkedFailedSearch", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_search_event_id", "searched_by_agent", "searched_at", "channel", "query_text", "sought_procedure_version", "result_count", "opened_segment", "opened_projection", "was_abandoned", "seconds_before_abandoning", "dwell_seconds", "linked_knowledge_gap", "linked_usability_barrier", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeSearchEvents(row as KnowledgeSearchEventsRow),
     lookups: [],
     aggregations: [] },
   { name: "AiAdoptionInitiatives", file: "ai_adoption_initiatives", rulebookRows: 9, fields: aiAdoptionInitiativesFieldTypes,
+    columns: { ai_adoption_initiative_id: "AiAdoptionInitiativeId", name: "Name", label: "Label", organization: "Organization", agent: "Agent", target_procedure: "TargetProcedure", target_version: "TargetVersion", approach: "Approach", automation_level: "AutomationLevel", is_agentic: "IsAgentic", task_is_multi_step: "TaskIsMultiStep", depends_on_organizational_knowledge: "DependsOnOrganizationalKnowledge", preceding_initiative: "PrecedingInitiative", status: "Status", outcome: "Outcome", redesign_started_at: "RedesignStartedAt", connected_to_ai_at: "ConnectedToAiAt", model_layer_budget: "ModelLayerBudget", knowledge_layer_budget: "KnowledgeLayerBudget", measured_bottom_line_impact: "MeasuredBottomLineImpact", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", target_has_no_explicit_steps: "TargetHasNoExplicitSteps", target_version_issued_at: "TargetVersionIssuedAt", target_version_under_specified: "TargetVersionUnderSpecified", target_version_notation_only: "TargetVersionNotationOnly", target_elicitation_evidence_count: "TargetElicitationEvidenceCount", reviewed_output_count: "ReviewedOutputCount", preceding_reviewed_output_count: "PrecedingReviewedOutputCount", last_outcome_measured_at: "LastOutcomeMeasuredAt", days_since_outcome_measured: "DaysSinceOutcomeMeasured", ai_insight_count: "AiInsightCount", hands_tacit_procedure_to_agent: "HandsTacitProcedureToAgent", agent_on_under_specified_procedure: "AgentOnUnderSpecifiedProcedure", agent_on_notation_only_procedure: "AgentOnNotationOnlyProcedure", calls_for_process_knowledge_framework: "CallsForProcessKnowledgeFramework", redesigned_before_documented: "RedesignedBeforeDocumented", breaks_elicit_encode_connect_order: "BreaksElicitEncodeConnectOrder", went_full_without_reviewed_partial_stage: "WentFullWithoutReviewedPartialStage", underinvests_knowledge_layer: "UnderinvestsKnowledgeLayer", not_anchored_in_process_knowledge: "NotAnchoredInProcessKnowledge", agentic_without_knowledge_capture: "AgenticWithoutKnowledgeCapture", is_ai_outcome_unmeasured: "IsAiOutcomeUnmeasured", adopted_without_bottom_line_result: "AdoptedWithoutBottomLineResult", failed_without_formalized_knowledge: "FailedWithoutFormalizedKnowledge", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["ai_adoption_initiative_id", "label", "organization", "agent", "target_procedure", "target_version", "approach", "automation_level", "is_agentic", "task_is_multi_step", "depends_on_organizational_knowledge", "preceding_initiative", "status", "outcome", "redesign_started_at", "connected_to_ai_at", "model_layer_budget", "knowledge_layer_budget", "measured_bottom_line_impact", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeAiAdoptionInitiatives(row as AiAdoptionInitiativesRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -37308,6 +37755,8 @@ export const erbTables: TableSpec[] = [
       { field: "last_outcome_measured_at", op: "MAX", table: "knowledge_outcome_measurements", target: "measured_at", criteria: [{ range: "ai_initiative", kind: "field", field: "ai_adoption_initiative_id" }] },
       { field: "ai_insight_count", op: "COUNTIFS", table: "ai_insight_proposals", criteria: [{ range: "source_initiative", kind: "field", field: "ai_adoption_initiative_id" }] },] },
   { name: "KnowledgeOutcomeMeasurements", file: "knowledge_outcome_measurements", rulebookRows: 7, fields: knowledgeOutcomeMeasurementsFieldTypes,
+    columns: { knowledge_outcome_measurement_id: "KnowledgeOutcomeMeasurementId", name: "Name", label: "Label", measured_group: "MeasuredGroup", facility: "Facility", procedure_version: "ProcedureVersion", ai_initiative: "AiInitiative", knowledge_scope: "KnowledgeScope", measured_at: "MeasuredAt", knowledge_access_score: "KnowledgeAccessScore", error_rate_percent: "ErrorRatePercent", minutes_per_run: "MinutesPerRun", satisfaction_score: "SatisfactionScore", efficiency_gain_percent: "EfficiencyGainPercent", target_error_rate_percent: "TargetErrorRatePercent", informed_change_request: "InformedChangeRequest", informed_investment_decision: "InformedInvestmentDecision", comparison_baseline: "ComparisonBaseline", baseline_access_score: "BaselineAccessScore", baseline_error_rate: "BaselineErrorRate", baseline_minutes_per_run: "BaselineMinutesPerRun", baseline_satisfaction: "BaselineSatisfaction", higher_access_fewer_errors: "HigherAccessFewerErrors", higher_access_more_efficient: "HigherAccessMoreEfficient", higher_access_more_satisfied: "HigherAccessMoreSatisfied", is_unacted_adverse_outcome: "IsUnactedAdverseOutcome", is_gain_outside_procedural_scope: "IsGainOutsideProceduralScope", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_outcome_measurement_id", "label", "measured_group", "facility", "procedure_version", "ai_initiative", "knowledge_scope", "measured_at", "knowledge_access_score", "error_rate_percent", "minutes_per_run", "satisfaction_score", "efficiency_gain_percent", "target_error_rate_percent", "informed_change_request", "informed_investment_decision", "comparison_baseline", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeOutcomeMeasurements(row as KnowledgeOutcomeMeasurementsRow),
     lookups: [
       { field: "baseline_access_score", target: "knowledge_outcome_measurements", ret: "knowledge_access_score", key: "comparison_baseline", match: "knowledge_outcome_measurement_id" },
@@ -37316,15 +37765,21 @@ export const erbTables: TableSpec[] = [
       { field: "baseline_satisfaction", target: "knowledge_outcome_measurements", ret: "satisfaction_score", key: "comparison_baseline", match: "knowledge_outcome_measurement_id" },],
     aggregations: [] },
   { name: "AiInsightProposals", file: "ai_insight_proposals", rulebookRows: 6, fields: aiInsightProposalsFieldTypes,
+    columns: { ai_insight_proposal_id: "AiInsightProposalId", name: "Name", proposing_agent: "ProposingAgent", source_initiative: "SourceInitiative", target_procedure_version: "TargetProcedureVersion", insight_kind: "InsightKind", statement: "Statement", proposed_at: "ProposedAt", validated_by_agent: "ValidatedByAgent", validation_verdict: "ValidationVerdict", folded_into_change_request: "FoldedIntoChangeRequest", target_creator_kind: "TargetCreatorKind", is_unvalidated_or_stranded_insight: "IsUnvalidatedOrStrandedInsight", grew_model_without_human_seed: "GrewModelWithoutHumanSeed", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["ai_insight_proposal_id", "proposing_agent", "source_initiative", "target_procedure_version", "insight_kind", "statement", "proposed_at", "validated_by_agent", "validation_verdict", "folded_into_change_request", "semantic_type_iri"],
     compute: (row: any) => computeAiInsightProposals(row as AiInsightProposalsRow),
     lookups: [
       { field: "target_creator_kind", target: "procedure_versions", ret: "created_by_agent_kind", key: "target_procedure_version", match: "procedure_version_id" },],
     aggregations: [] },
   { name: "AssistantBenchmarks", file: "assistant_benchmarks", rulebookRows: 4, fields: assistantBenchmarksFieldTypes,
+    columns: { assistant_benchmark_id: "AssistantBenchmarkId", name: "Name", label: "Label", task_family: "TaskFamily", agent: "Agent", grounding_snapshot: "GroundingSnapshot", generates_database_queries: "GeneratesDatabaseQueries", ungrounded_accuracy_percent: "UngroundedAccuracyPercent", graph_grounded_accuracy_percent: "GraphGroundedAccuracyPercent", ran_at: "RanAt", accuracy_lift_points: "AccuracyLiftPoints", shows_spatial_lift_from_graph_queries: "ShowsSpatialLiftFromGraphQueries", shows_geospatial_retrieval_lift: "ShowsGeospatialRetrievalLift", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["assistant_benchmark_id", "label", "task_family", "agent", "grounding_snapshot", "generates_database_queries", "ungrounded_accuracy_percent", "graph_grounded_accuracy_percent", "ran_at", "semantic_type_iri"],
     compute: (row: any) => computeAssistantBenchmarks(row as AssistantBenchmarksRow),
     lookups: [],
     aggregations: [] },
   { name: "GovernedModels", file: "governed_models", rulebookRows: 7, fields: governedModelsFieldTypes,
+    columns: { governed_model_id: "GovernedModelId", name: "Name", label: "Label", model_kind: "ModelKind", procedure: "Procedure", domain_owning_organization: "DomainOwningOrganization", tooling_owner_role: "ToolingOwnerRole", organization_headcount: "OrganizationHeadcount", requirements_purpose: "RequirementsPurpose", intended_users: "IntendedUsers", registered_at: "RegisteredAt", first_control_adopted_at: "FirstControlAdoptedAt", current_charter: "CurrentCharter", current_release: "CurrentRelease", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", days_since_registered: "DaysSinceRegistered", charter_count: "CharterCount", current_charter_count: "CurrentCharterCount", current_steward_role: "CurrentStewardRole", current_steward_agent: "CurrentStewardAgent", current_authority_role: "CurrentAuthorityRole", current_authority_agent: "CurrentAuthorityAgent", is_ownerless: "IsOwnerless", is_ownerless_past_a_year: "IsOwnerlessPastAYear", governance_lapsed: "GovernanceLapsed", has_no_current_steward: "HasNoCurrentSteward", has_no_current_authority: "HasNoCurrentAuthority", is_procedure_without_change_authority: "IsProcedureWithoutChangeAuthority", last_steward_activity_at: "LastStewardActivityAt", days_since_steward_activity: "DaysSinceStewardActivity", is_unmaintained: "IsUnmaintained", documents_behind_count: "DocumentsBehindCount", is_not_kept_current: "IsNotKeptCurrent", open_practice_drift_count: "OpenPracticeDriftCount", has_open_practice_drift: "HasOpenPracticeDrift", is_neglected_and_drifting: "IsNeglectedAndDrifting", expert_found_drift_count: "ExpertFoundDriftCount", cq_review_count: "CqReviewCount", last_cq_review_at: "LastCqReviewAt", days_since_cq_review: "DaysSinceCqReview", cq_review_overdue: "CqReviewOverdue", degradation_hidden_until_wrong_answer: "DegradationHiddenUntilWrongAnswer", baseline_question_count: "BaselineQuestionCount", requirements_spec_incomplete: "RequirementsSpecIncomplete", collection_control_count: "CollectionControlCount", stewardship_control_count: "StewardshipControlCount", retrieval_control_count: "RetrievalControlCount", use_control_count: "UseControlCount", continuous_pipeline_stage_count: "ContinuousPipelineStageCount", lacks_lifecycle_stage_control: "LacksLifecycleStageControl", pipeline_not_continuous: "PipelineNotContinuous", procedure_has_no_explicit_steps: "ProcedureHasNoExplicitSteps", is_unmanageable_undocumented_work: "IsUnmanageableUndocumentedWork", semantic_type_iri: "SemanticTypeIri", originating_use_case: "OriginatingUseCase", is_without_originating_use_case: "IsWithoutOriginatingUseCase", pilot_count: "PilotCount", is_adopted_without_pilot: "IsAdoptedWithoutPilot", requirements_expert_count: "RequirementsExpertCount", implementation_expert_count: "ImplementationExpertCount", publication_expert_count: "PublicationExpertCount", maintenance_expert_count: "MaintenanceExpertCount", experts_not_involved_throughout: "ExpertsNotInvolvedThroughout", real_data_mapping_run_count: "RealDataMappingRunCount", is_implemented_without_real_data: "IsImplementedWithoutRealData" },
+    stored: ["governed_model_id", "label", "model_kind", "procedure", "domain_owning_organization", "tooling_owner_role", "organization_headcount", "requirements_purpose", "intended_users", "registered_at", "first_control_adopted_at", "current_charter", "current_release", "evaluation_context", "semantic_type_iri", "originating_use_case"],
     compute: (row: any) => computeGovernedModels(row as GovernedModelsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -37355,6 +37810,8 @@ export const erbTables: TableSpec[] = [
       { field: "maintenance_expert_count", op: "COUNTIFS", table: "model_activity_experts", criteria: [{ range: "governed_model", kind: "field", field: "governed_model_id" }, { range: "lot_activity", kind: "literal", literal: vS("Maintenance") }] },
       { field: "real_data_mapping_run_count", op: "COUNTIFS", table: "model_data_mapping_runs", criteria: [{ range: "governed_model", kind: "field", field: "governed_model_id" }, { range: "data_origin", kind: "literal", literal: vS("Real") }] },] },
   { name: "ModelCharters", file: "model_charters", rulebookRows: 8, fields: modelChartersFieldTypes,
+    columns: { model_charter_id: "ModelCharterId", name: "Name", governed_model: "GovernedModel", steward_role: "StewardRole", authority_role: "AuthorityRole", steward_responsibilities: "StewardResponsibilities", authority_approval_scope: "AuthorityApprovalScope", charter_template: "CharterTemplate", local_adaptation: "LocalAdaptation", valid_from: "ValidFrom", valid_to: "ValidTo", supersedes_charter: "SupersedesCharter", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", is_current: "IsCurrent", steward_agent: "StewardAgent", authority_agent: "AuthorityAgent", authority_organization: "AuthorityOrganization", model_kind: "ModelKind", model_domain_owner: "ModelDomainOwner", model_headcount: "ModelHeadcount", model_tooling_owner_role: "ModelToolingOwnerRole", model_first_control_adopted_at: "ModelFirstControlAdoptedAt", is_steward_unwritten: "IsStewardUnwritten", is_authority_scope_unstated: "IsAuthorityScopeUnstated", conflates_steward_and_authority: "ConflatesStewardAndAuthority", is_sanctioned_dual_holding: "IsSanctionedDualHolding", is_authority_outside_domain_owner: "IsAuthorityOutsideDomainOwner", controls_precede_ownership: "ControlsPrecedeOwnership", steward_activity_count: "StewardActivityCount", last_drift_watch_at: "LastDriftWatchAt", days_since_drift_watch: "DaysSinceDriftWatch", is_drift_watch_lapsed: "IsDriftWatchLapsed", procedure_decision_count: "ProcedureDecisionCount", model_review_count: "ModelReviewCount", is_named_but_unexercised: "IsNamedButUnexercised", steward_is_outside_tooling: "StewardIsOutsideTooling", adopted_template_without_adaptation: "AdoptedTemplateWithoutAdaptation", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["model_charter_id", "governed_model", "steward_role", "authority_role", "steward_responsibilities", "authority_approval_scope", "charter_template", "local_adaptation", "valid_from", "valid_to", "supersedes_charter", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeModelCharters(row as ModelChartersRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -37372,11 +37829,15 @@ export const erbTables: TableSpec[] = [
       { field: "procedure_decision_count", op: "COUNTIFS", table: "change_requests", criteria: [{ range: "authority_role", kind: "field", field: "authority_role" }, { range: "is_decided", kind: "literal", literal: vB(true) }] },
       { field: "model_review_count", op: "COUNTIFS", table: "model_change_requests", criteria: [{ range: "governed_model", kind: "field", field: "governed_model" }, { range: "has_authority_review", kind: "literal", literal: vB(true) }] },] },
   { name: "StewardActivities", file: "steward_activities", rulebookRows: 10, fields: stewardActivitiesFieldTypes,
+    columns: { steward_activity_id: "StewardActivityId", name: "Name", model_charter: "ModelCharter", duty_kind: "DutyKind", performed_at: "PerformedAt", performed_by_agent: "PerformedByAgent", subject: "Subject", release: "Release", activity_model: "ActivityModel", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["steward_activity_id", "model_charter", "duty_kind", "performed_at", "performed_by_agent", "subject", "release", "semantic_type_iri"],
     compute: (row: any) => computeStewardActivities(row as StewardActivitiesRow),
     lookups: [
       { field: "activity_model", target: "model_charters", ret: "governed_model", key: "model_charter", match: "model_charter_id" },],
     aggregations: [] },
   { name: "ModelChangeRequests", file: "model_change_requests", rulebookRows: 17, fields: modelChangeRequestsFieldTypes,
+    columns: { model_change_request_id: "ModelChangeRequestId", name: "Name", governed_model: "GovernedModel", title: "Title", stated_need: "StatedNeed", requested_by_agent: "RequestedByAgent", requested_at: "RequestedAt", motivating_question: "MotivatingQuestion", motivation_kind: "MotivationKind", change_layer: "ChangeLayer", change_operation: "ChangeOperation", classification: "Classification", route: "Route", declared_scale: "DeclaredScale", status: "Status", impact_assessment: "ImpactAssessment", coverage_checked_at: "CoverageCheckedAt", authority_reviewed_at: "AuthorityReviewedAt", approved_by_agent: "ApprovedByAgent", decided_at: "DecidedAt", implementation_placement: "ImplementationPlacement", placement_decided_by_agent: "PlacementDecidedByAgent", target_release: "TargetRelease", compliance_impact: "ComplianceImpact", effective_at: "EffectiveAt", steward_agent: "StewardAgent", authority_agent: "AuthorityAgent", rule_key: "RuleKey", required_route: "RequiredRoute", is_accepted: "IsAccepted", is_modeling_change: "IsModelingChange", is_schema_change: "IsSchemaChange", has_authority_review: "HasAuthorityReview", requires_authority_review: "RequiresAuthorityReview", is_minor_scope: "IsMinorScope", steward_own_change_unreviewed: "StewardOwnChangeUnreviewed", steward_approval_out_of_bounds: "StewardApprovalOutOfBounds", authority_review_skipped: "AuthorityReviewSkipped", placement_not_decided_by_authority: "PlacementNotDecidedByAuthority", is_misrouted: "IsMisrouted", lacks_motivating_question: "LacksMotivatingQuestion", unmotivated_and_not_returned: "UnmotivatedAndNotReturned", motivated_by_failing_question: "MotivatedByFailingQuestion", is_accepted_without_named_approver: "IsAcceptedWithoutNamedApprover", deployed_without_target_release: "DeployedWithoutTargetRelease", is_misclassified_agent_swap: "IsMisclassifiedAgentSwap", ai_to_human_move_without_compliance_review: "AiToHumanMoveWithoutComplianceReview", ai_to_human_move_unaudited: "AiToHumanMoveUnaudited", is_ai_to_human_move: "IsAiToHumanMove", lifecycle_change_by_unauthorized_agent: "LifecycleChangeByUnauthorizedAgent", assessed_inconsistent_count: "AssessedInconsistentCount", post_deploy_inconsistent_count: "PostDeployInconsistentCount", assessed_inference_count: "AssessedInferenceCount", post_deploy_inference_count: "PostDeployInferenceCount", assessed_query_result_count: "AssessedQueryResultCount", post_deploy_query_result_count: "PostDeployQueryResultCount", assessed_coverage_gap_count: "AssessedCoverageGapCount", would_make_instances_inconsistent: "WouldMakeInstancesInconsistent", would_alter_inferences: "WouldAlterInferences", would_alter_query_results: "WouldAlterQueryResults", would_leave_coverage_incomplete: "WouldLeaveCoverageIncomplete", missed_inconsistent_instances: "MissedInconsistentInstances", missed_altered_inferences: "MissedAlteredInferences", missed_altered_query_results: "MissedAlteredQueryResults", leaves_coverage_unchecked: "LeavesCoverageUnchecked", domain_change_spread_wrong_inferences: "DomainChangeSpreadWrongInferences", intuitive_disjointness_broke_individuals: "IntuitiveDisjointnessBrokeIndividuals", validation_run_count: "ValidationRunCount", acceptance_failure_total: "AcceptanceFailureTotal", structural_pass_count: "StructuralPassCount", vocabulary_pass_count: "VocabularyPassCount", accepted_without_test_run: "AcceptedWithoutTestRun", accepted_with_failing_suite: "AcceptedWithFailingSuite", accepted_without_structural_check: "AcceptedWithoutStructuralCheck", accepted_without_vocabulary_check: "AcceptedWithoutVocabularyCheck", integrity_check_count: "IntegrityCheckCount", human_integrity_check_count: "HumanIntegrityCheckCount", disjointness_check_count: "DisjointnessCheckCount", domain_inference_check_count: "DomainInferenceCheckCount", range_consistency_check_count: "RangeConsistencyCheckCount", integrity_decided_without_human: "IntegrityDecidedWithoutHuman", skipped_disjointness_review: "SkippedDisjointnessReview", skipped_domain_inference_review: "SkippedDomainInferenceReview", skipped_range_review: "SkippedRangeReview", unresolved_objection_count: "UnresolvedObjectionCount", approved_over_unresolved_objection: "ApprovedOverUnresolvedObjection", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["model_change_request_id", "governed_model", "title", "stated_need", "requested_by_agent", "requested_at", "motivating_question", "motivation_kind", "change_layer", "change_operation", "classification", "route", "declared_scale", "status", "impact_assessment", "coverage_checked_at", "authority_reviewed_at", "approved_by_agent", "decided_at", "implementation_placement", "placement_decided_by_agent", "target_release", "compliance_impact", "effective_at", "semantic_type_iri"],
     compute: (row: any) => computeModelChangeRequests(row as ModelChangeRequestsRow),
     lookups: [
       { field: "steward_agent", target: "governed_models", ret: "current_steward_agent", key: "governed_model", match: "governed_model_id" },
@@ -37401,24 +37862,34 @@ export const erbTables: TableSpec[] = [
       { field: "range_consistency_check_count", op: "COUNTIFS", table: "change_integrity_checks", criteria: [{ range: "model_change_request", kind: "field", field: "model_change_request_id" }, { range: "check_kind", kind: "literal", literal: vS("RangeConsistency") }] },
       { field: "unresolved_objection_count", op: "COUNTIFS", table: "change_objections", criteria: [{ range: "model_change_request", kind: "field", field: "model_change_request_id" }, { range: "is_unresolved", kind: "literal", literal: vB(true) }] },] },
   { name: "ChangeAuthorityRules", file: "change_authority_rules", rulebookRows: 4, fields: changeAuthorityRulesFieldTypes,
+    columns: { change_authority_rule_id: "ChangeAuthorityRuleId", name: "Name", governed_model: "GovernedModel", change_layer: "ChangeLayer", permitted_role: "PermittedRole", approval_role: "ApprovalRole", required_route: "RequiredRoute", when_permitted: "WhenPermitted", breakage_response: "BreakageResponse", misrouted_request_count: "MisroutedRequestCount", is_rule_bypassed: "IsRuleBypassed", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["change_authority_rule_id", "governed_model", "change_layer", "permitted_role", "approval_role", "required_route", "when_permitted", "breakage_response", "semantic_type_iri"],
     compute: (row: any) => computeChangeAuthorityRules(row as ChangeAuthorityRulesRow),
     lookups: [],
     aggregations: [
       { field: "misrouted_request_count", op: "COUNTIFS", table: "model_change_requests", criteria: [{ range: "rule_key", kind: "field", field: "change_authority_rule_id" }, { range: "is_misrouted", kind: "literal", literal: vB(true) }] },] },
   { name: "ChangeImpactFindings", file: "change_impact_findings", rulebookRows: 10, fields: changeImpactFindingsFieldTypes,
+    columns: { change_impact_finding_id: "ChangeImpactFindingId", name: "Name", model_change_request: "ModelChangeRequest", finding_kind: "FindingKind", finding_stage: "FindingStage", affected_table: "AffectedTable", affected_row_key: "AffectedRowKey", description: "Description", detected_by_query: "DetectedByQuery", query_language: "QueryLanguage", found_by_agent: "FoundByAgent", found_at: "FoundAt", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["change_impact_finding_id", "model_change_request", "finding_kind", "finding_stage", "affected_table", "affected_row_key", "description", "detected_by_query", "query_language", "found_by_agent", "found_at", "semantic_type_iri"],
     compute: (row: any) => computeChangeImpactFindings(row as ChangeImpactFindingsRow),
     lookups: [],
     aggregations: [] },
   { name: "ChangeIntegrityChecks", file: "change_integrity_checks", rulebookRows: 15, fields: changeIntegrityChecksFieldTypes,
+    columns: { change_integrity_check_id: "ChangeIntegrityCheckId", name: "Name", model_change_request: "ModelChangeRequest", check_kind: "CheckKind", checked_by_agent: "CheckedByAgent", checker_kind: "CheckerKind", checked_at: "CheckedAt", result: "Result", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["change_integrity_check_id", "model_change_request", "check_kind", "checked_by_agent", "checked_at", "result", "semantic_type_iri"],
     compute: (row: any) => computeChangeIntegrityChecks(row as ChangeIntegrityChecksRow),
     lookups: [
       { field: "checker_kind", target: "agents", ret: "agent_kind", key: "checked_by_agent", match: "agent_id" },],
     aggregations: [] },
   { name: "ChangeObjections", file: "change_objections", rulebookRows: 2, fields: changeObjectionsFieldTypes,
+    columns: { change_objection_id: "ChangeObjectionId", name: "Name", model_change_request: "ModelChangeRequest", raised_by_agent: "RaisedByAgent", raised_at: "RaisedAt", objection: "Objection", resolved_at: "ResolvedAt", resolved_by_agent: "ResolvedByAgent", resolution: "Resolution", is_unresolved: "IsUnresolved", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["change_objection_id", "model_change_request", "raised_by_agent", "raised_at", "objection", "resolved_at", "resolved_by_agent", "resolution", "semantic_type_iri"],
     compute: (row: any) => computeChangeObjections(row as ChangeObjectionsRow),
     lookups: [],
     aggregations: [] },
   { name: "ChangeValidationRuns", file: "change_validation_runs", rulebookRows: 8, fields: changeValidationRunsFieldTypes,
+    columns: { change_validation_run_id: "ChangeValidationRunId", name: "Name", model_change_request: "ModelChangeRequest", test_suite: "TestSuite", run_purpose: "RunPurpose", ran_at: "RanAt", test_count: "TestCount", failure_count: "FailureCount", failures_inspected_at: "FailuresInspectedAt", consistency_check_outcome: "ConsistencyCheckOutcome", structural_check_outcome: "StructuralCheckOutcome", vocabulary_check_outcome: "VocabularyCheckOutcome", release: "Release", expected_chain_count: "ExpectedChainCount", unproduced_chain_count: "UnproducedChainCount", has_uninspected_failures: "HasUninspectedFailures", is_unconfirmed_consistency: "IsUnconfirmedConsistency", misses_expected_inference: "MissesExpectedInference", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["change_validation_run_id", "model_change_request", "test_suite", "run_purpose", "ran_at", "test_count", "failure_count", "failures_inspected_at", "consistency_check_outcome", "structural_check_outcome", "vocabulary_check_outcome", "semantic_type_iri"],
     compute: (row: any) => computeChangeValidationRuns(row as ChangeValidationRunsRow),
     lookups: [
       { field: "release", target: "model_change_requests", ret: "target_release", key: "model_change_request", match: "model_change_request_id" },],
@@ -37426,34 +37897,48 @@ export const erbTables: TableSpec[] = [
       { field: "expected_chain_count", op: "COUNTIFS", table: "expected_inference_checks", criteria: [{ range: "change_validation_run", kind: "field", field: "change_validation_run_id" }] },
       { field: "unproduced_chain_count", op: "COUNTIFS", table: "expected_inference_checks", criteria: [{ range: "change_validation_run", kind: "field", field: "change_validation_run_id" }, { range: "is_unproduced", kind: "literal", literal: vB(true) }] },] },
   { name: "ExpectedInferenceChecks", file: "expected_inference_checks", rulebookRows: 4, fields: expectedInferenceChecksFieldTypes,
+    columns: { expected_inference_check_id: "ExpectedInferenceCheckId", name: "Name", change_validation_run: "ChangeValidationRun", chain_description: "ChainDescription", expected_field: "ExpectedField", expected_value: "ExpectedValue", produced_value: "ProducedValue", is_unproduced: "IsUnproduced", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["expected_inference_check_id", "change_validation_run", "chain_description", "expected_field", "expected_value", "produced_value", "semantic_type_iri"],
     compute: (row: any) => computeExpectedInferenceChecks(row as ExpectedInferenceChecksRow),
     lookups: [],
     aggregations: [] },
   { name: "ModelConsumers", file: "model_consumers", rulebookRows: 4, fields: modelConsumersFieldTypes,
+    columns: { model_consumer_id: "ModelConsumerId", name: "Name", label: "Label", consumer_kind: "ConsumerKind", depends_on_model: "DependsOnModel", conformance_substrate: "ConformanceSubstrate", owner_role: "OwnerRole", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["model_consumer_id", "label", "consumer_kind", "depends_on_model", "conformance_substrate", "owner_role", "semantic_type_iri"],
     compute: (row: any) => computeModelConsumers(row as ModelConsumersRow),
     lookups: [],
     aggregations: [] },
   { name: "ConsumerRevalidations", file: "consumer_revalidations", rulebookRows: 26, fields: consumerRevalidationsFieldTypes,
+    columns: { consumer_revalidation_id: "ConsumerRevalidationId", name: "Name", rulebook_release: "RulebookRelease", model_consumer: "ModelConsumer", was_notified: "WasNotified", notified_at: "NotifiedAt", passed_revalidation: "PassedRevalidation", revalidated_at: "RevalidatedAt", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["consumer_revalidation_id", "rulebook_release", "model_consumer", "was_notified", "notified_at", "passed_revalidation", "revalidated_at", "semantic_type_iri"],
     compute: (row: any) => computeConsumerRevalidations(row as ConsumerRevalidationsRow),
     lookups: [],
     aggregations: [] },
   { name: "ModelDocuments", file: "model_documents", rulebookRows: 5, fields: modelDocumentsFieldTypes,
+    columns: { model_document_id: "ModelDocumentId", name: "Name", governed_model: "GovernedModel", title: "Title", document_kind: "DocumentKind", documented_release: "DocumentedRelease", last_updated_at: "LastUpdatedAt", model_current_release: "ModelCurrentRelease", is_behind_current_release: "IsBehindCurrentRelease", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["model_document_id", "governed_model", "title", "document_kind", "documented_release", "last_updated_at", "semantic_type_iri"],
     compute: (row: any) => computeModelDocuments(row as ModelDocumentsRow),
     lookups: [
       { field: "model_current_release", target: "governed_models", ret: "current_release", key: "governed_model", match: "governed_model_id" },],
     aggregations: [] },
   { name: "StalenessQueryRuns", file: "staleness_query_runs", rulebookRows: 3, fields: stalenessQueryRunsFieldTypes,
+    columns: { staleness_query_run_id: "StalenessQueryRunId", name: "Name", governed_model: "GovernedModel", ran_at: "RanAt", ran_by_agent: "RanByAgent", runner_kind: "RunnerKind", threshold_days: "ThresholdDays", query_text: "QueryText", stale_workflow_count: "StaleWorkflowCount", surfaced_to_steward_at: "SurfacedToStewardAt", not_surfaced_to_steward: "NotSurfacedToSteward", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["staleness_query_run_id", "governed_model", "ran_at", "ran_by_agent", "threshold_days", "query_text", "stale_workflow_count", "surfaced_to_steward_at", "semantic_type_iri"],
     compute: (row: any) => computeStalenessQueryRuns(row as StalenessQueryRunsRow),
     lookups: [
       { field: "runner_kind", target: "agents", ret: "agent_kind", key: "ran_by_agent", match: "agent_id" },],
     aggregations: [] },
   { name: "ExternalDependencyRevisions", file: "external_dependency_revisions", rulebookRows: 3, fields: externalDependencyRevisionsFieldTypes,
+    columns: { external_dependency_revision_id: "ExternalDependencyRevisionId", name: "Name", ontology_profile: "OntologyProfile", revision_label: "RevisionLabel", revision_kind: "RevisionKind", published_at: "PublishedAt", affected_mapping_count: "AffectedMappingCount", tracked_at: "TrackedAt", tracked_by_agent: "TrackedByAgent", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", days_since_published: "DaysSincePublished", is_untracked_revision: "IsUntrackedRevision", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["external_dependency_revision_id", "ontology_profile", "revision_label", "revision_kind", "published_at", "tracked_at", "tracked_by_agent", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeExternalDependencyRevisions(row as ExternalDependencyRevisionsRow),
     lookups: [
       { field: "affected_mapping_count", target: "ontology_profiles", ret: "mapping_count", key: "ontology_profile", match: "ontology_profile_id" },
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },],
     aggregations: [] },
   { name: "StakeholderQuestions", file: "stakeholder_questions", rulebookRows: 6, fields: stakeholderQuestionsFieldTypes,
+    columns: { stakeholder_question_id: "StakeholderQuestionId", name: "Name", governed_model: "GovernedModel", channel: "Channel", use_case: "UseCase", question_text: "QuestionText", asked_by_agent: "AskedByAgent", asked_at: "AskedAt", answering_role_question: "AnsweringRoleQuestion", answered_by_agent: "AnsweredByAgent", answered_at: "AnsweredAt", triage_outcome: "TriageOutcome", triaged_by_agent: "TriagedByAgent", triager_kind: "TriagerKind", resulting_change_request: "ResultingChangeRequest", result_route: "ResultRoute", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", days_open: "DaysOpen", is_unanswered_past_due: "IsUnansweredPastDue", is_unanswerable_today: "IsUnanswerableToday", is_untriaged_unanswerable: "IsUntriagedUnanswerable", needs_structural_change: "NeedsStructuralChange", unanswerable_without_scope_request: "UnanswerableWithoutScopeRequest", is_misrouted_after_triage: "IsMisroutedAfterTriage", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["stakeholder_question_id", "governed_model", "channel", "use_case", "question_text", "asked_by_agent", "asked_at", "answering_role_question", "answered_by_agent", "answered_at", "triage_outcome", "triaged_by_agent", "resulting_change_request", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeStakeholderQuestions(row as StakeholderQuestionsRow),
     lookups: [
       { field: "triager_kind", target: "agents", ret: "agent_kind", key: "triaged_by_agent", match: "agent_id" },
@@ -37461,6 +37946,8 @@ export const erbTables: TableSpec[] = [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },],
     aggregations: [] },
   { name: "ModelExpansionRequests", file: "model_expansion_requests", rulebookRows: 3, fields: modelExpansionRequestsFieldTypes,
+    columns: { model_expansion_request_id: "ModelExpansionRequestId", name: "Name", governed_model: "GovernedModel", requesting_organization: "RequestingOrganization", requested_by_agent: "RequestedByAgent", workflow_description: "WorkflowDescription", requested_at: "RequestedAt", fit_decision: "FitDecision", decided_by_agent: "DecidedByAgent", decided_at: "DecidedAt", model_domain_owner: "ModelDomainOwner", concept_count: "ConceptCount", uncovered_concept_count: "UncoveredConceptCount", is_cross_function_expansion: "IsCrossFunctionExpansion", requires_schema_extension: "RequiresSchemaExtension", fit_decision_contradicts_concept_fit: "FitDecisionContradictsConceptFit", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["model_expansion_request_id", "governed_model", "requesting_organization", "requested_by_agent", "workflow_description", "requested_at", "fit_decision", "decided_by_agent", "decided_at", "semantic_type_iri"],
     compute: (row: any) => computeModelExpansionRequests(row as ModelExpansionRequestsRow),
     lookups: [
       { field: "model_domain_owner", target: "governed_models", ret: "domain_owning_organization", key: "governed_model", match: "governed_model_id" },],
@@ -37468,39 +37955,55 @@ export const erbTables: TableSpec[] = [
       { field: "concept_count", op: "COUNTIFS", table: "expansion_concept_fits", criteria: [{ range: "model_expansion_request", kind: "field", field: "model_expansion_request_id" }] },
       { field: "uncovered_concept_count", op: "COUNTIFS", table: "expansion_concept_fits", criteria: [{ range: "model_expansion_request", kind: "field", field: "model_expansion_request_id" }, { range: "is_uncovered", kind: "literal", literal: vB(true) }] },] },
   { name: "ExpansionConceptFits", file: "expansion_concept_fits", rulebookRows: 9, fields: expansionConceptFitsFieldTypes,
+    columns: { expansion_concept_fit_id: "ExpansionConceptFitId", name: "Name", model_expansion_request: "ModelExpansionRequest", concept_label: "ConceptLabel", covering_table: "CoveringTable", is_uncovered: "IsUncovered", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["expansion_concept_fit_id", "model_expansion_request", "concept_label", "covering_table", "semantic_type_iri"],
     compute: (row: any) => computeExpansionConceptFits(row as ExpansionConceptFitsRow),
     lookups: [],
     aggregations: [] },
   { name: "CompetencyQuestionSetEntries", file: "competency_question_set_entries", rulebookRows: 8, fields: competencyQuestionSetEntriesFieldTypes,
+    columns: { competency_question_set_entry_id: "CompetencyQuestionSetEntryId", name: "Name", governed_model: "GovernedModel", role_question: "RoleQuestion", is_original_baseline: "IsOriginalBaseline", added_at: "AddedAt", status: "Status", relevance_verdict: "RelevanceVerdict", used_for_scoping: "UsedForScoping", used_as_acceptance_criterion: "UsedAsAcceptanceCriterion", used_as_test_driver: "UsedAsTestDriver", used_for_governance: "UsedForGovernance", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", days_since_added: "DaysSinceAdded", is_outgrown_baseline_question: "IsOutgrownBaselineQuestion", irrelevant_but_still_active: "IrrelevantButStillActive", governance_use_count: "GovernanceUseCount", serves_every_governance_use: "ServesEveryGovernanceUse", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["competency_question_set_entry_id", "governed_model", "role_question", "is_original_baseline", "added_at", "status", "relevance_verdict", "used_for_scoping", "used_as_acceptance_criterion", "used_as_test_driver", "used_for_governance", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeCompetencyQuestionSetEntries(row as CompetencyQuestionSetEntriesRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },],
     aggregations: [] },
   { name: "CompetencyQuestionRuns", file: "competency_question_runs", rulebookRows: 10, fields: competencyQuestionRunsFieldTypes,
+    columns: { competency_question_run_id: "CompetencyQuestionRunId", name: "Name", cq_set_entry: "CqSetEntry", rulebook_release: "RulebookRelease", prior_run: "PriorRun", ran_at: "RanAt", was_answerable: "WasAnswerable", answer_outcome: "AnswerOutcome", defect_change_request: "DefectChangeRequest", entry_is_original: "EntryIsOriginal", prior_was_answerable: "PriorWasAnswerable", is_baseline_regression: "IsBaselineRegression", is_unfixed_wrong_answer: "IsUnfixedWrongAnswer", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["competency_question_run_id", "cq_set_entry", "rulebook_release", "prior_run", "ran_at", "was_answerable", "answer_outcome", "defect_change_request", "semantic_type_iri"],
     compute: (row: any) => computeCompetencyQuestionRuns(row as CompetencyQuestionRunsRow),
     lookups: [
       { field: "entry_is_original", target: "competency_question_set_entries", ret: "is_original_baseline", key: "cq_set_entry", match: "competency_question_set_entry_id" },
       { field: "prior_was_answerable", target: "competency_question_runs", ret: "was_answerable", key: "prior_run", match: "competency_question_run_id" },],
     aggregations: [] },
   { name: "CompetencyQuestionReviews", file: "competency_question_reviews", rulebookRows: 4, fields: competencyQuestionReviewsFieldTypes,
+    columns: { competency_question_review_id: "CompetencyQuestionReviewId", name: "Name", governed_model: "GovernedModel", reviewed_at: "ReviewedAt", reviewed_by_agent: "ReviewedByAgent", outcome: "Outcome", questions_added: "QuestionsAdded", deprecation_candidates_raised: "DeprecationCandidatesRaised", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["competency_question_review_id", "governed_model", "reviewed_at", "reviewed_by_agent", "outcome", "questions_added", "deprecation_candidates_raised", "semantic_type_iri"],
     compute: (row: any) => computeCompetencyQuestionReviews(row as CompetencyQuestionReviewsRow),
     lookups: [],
     aggregations: [] },
   { name: "QualityCriteria", file: "quality_criteria", rulebookRows: 8, fields: qualityCriteriaFieldTypes,
+    columns: { quality_criterion_id: "QualityCriterionId", name: "Name", label: "Label", definition: "Definition", is_stated: "IsStated", assessment_count: "AssessmentCount", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["quality_criterion_id", "label", "definition", "is_stated", "semantic_type_iri"],
     compute: (row: any) => computeQualityCriteria(row as QualityCriteriaRow),
     lookups: [],
     aggregations: [
       { field: "assessment_count", op: "COUNTIFS", table: "quality_assessments", criteria: [{ range: "quality_criterion", kind: "field", field: "quality_criterion_id" }] },] },
   { name: "QualityAssessments", file: "quality_assessments", rulebookRows: 11, fields: qualityAssessmentsFieldTypes,
+    columns: { quality_assessment_id: "QualityAssessmentId", name: "Name", rulebook_release: "RulebookRelease", quality_criterion: "QualityCriterion", score: "Score", method: "Method", assessed_by_agent: "AssessedByAgent", assessed_at: "AssessedAt", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["quality_assessment_id", "rulebook_release", "quality_criterion", "score", "method", "assessed_by_agent", "assessed_at", "semantic_type_iri"],
     compute: (row: any) => computeQualityAssessments(row as QualityAssessmentsRow),
     lookups: [],
     aggregations: [] },
   { name: "TermDefinitions", file: "term_definitions", rulebookRows: 3, fields: termDefinitionsFieldTypes,
+    columns: { term_definition_id: "TermDefinitionId", name: "Name", rulebook_table: "RulebookTable", includes: "Includes", excludes: "Excludes", neighboring_terms: "NeighboringTerms", drafted_by_agent: "DraftedByAgent", drafter_kind: "DrafterKind", drafted_at: "DraftedAt", revised_by_agent: "RevisedByAgent", revised_at: "RevisedAt", ai_draft_adopted_unrevised: "AiDraftAdoptedUnrevised", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["term_definition_id", "rulebook_table", "includes", "excludes", "neighboring_terms", "drafted_by_agent", "drafted_at", "revised_by_agent", "revised_at", "semantic_type_iri"],
     compute: (row: any) => computeTermDefinitions(row as TermDefinitionsRow),
     lookups: [
       { field: "drafter_kind", target: "agents", ret: "agent_kind", key: "drafted_by_agent", match: "agent_id" },],
     aggregations: [] },
   { name: "ModelProposals", file: "model_proposals", rulebookRows: 11, fields: modelProposalsFieldTypes,
+    columns: { model_proposal_id: "ModelProposalId", name: "Name", governed_model: "GovernedModel", proposal_kind: "ProposalKind", proposed_by_agent: "ProposedByAgent", proposed_at: "ProposedAt", source_document: "SourceDocument", content: "Content", quality_check_outcome: "QualityCheckOutcome", reviewed_by_agent: "ReviewedByAgent", reviewed_at: "ReviewedAt", review_outcome: "ReviewOutcome", committed_at: "CommittedAt", committed_by_agent: "CommittedByAgent", adopted_in_release: "AdoptedInRelease", adopted_in_data_version: "AdoptedInDataVersion", proposer_kind: "ProposerKind", reviewer_kind: "ReviewerKind", committer_kind: "CommitterKind", model_steward_agent: "ModelStewardAgent", is_ai_candidate: "IsAiCandidate", is_only_proposed: "IsOnlyProposed", committed_without_expert_review: "CommittedWithoutExpertReview", entered_without_quality_check: "EnteredWithoutQualityCheck", approver_unknown: "ApproverUnknown", committed_outside_any_version: "CommittedOutsideAnyVersion", ai_question_adopted_unvetted: "AiQuestionAdoptedUnvetted", ai_alignment_decided_by_ai: "AiAlignmentDecidedByAi", ai_axiom_without_human_review: "AiAxiomWithoutHumanReview", adoption_not_answered_by_person: "AdoptionNotAnsweredByPerson", has_no_human_touchpoint: "HasNoHumanTouchpoint", ai_instance_data_loaded_without_steward: "AiInstanceDataLoadedWithoutSteward", awaits_engineer_vetting: "AwaitsEngineerVetting", is_pending_alignment_decision: "IsPendingAlignmentDecision", awaits_steward_approval: "AwaitsStewardApproval", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["model_proposal_id", "governed_model", "proposal_kind", "proposed_by_agent", "proposed_at", "source_document", "content", "quality_check_outcome", "reviewed_by_agent", "reviewed_at", "review_outcome", "committed_at", "committed_by_agent", "adopted_in_release", "adopted_in_data_version", "semantic_type_iri"],
     compute: (row: any) => computeModelProposals(row as ModelProposalsRow),
     lookups: [
       { field: "proposer_kind", target: "agents", ret: "agent_kind", key: "proposed_by_agent", match: "agent_id" },
@@ -37509,6 +38012,8 @@ export const erbTables: TableSpec[] = [
       { field: "model_steward_agent", target: "governed_models", ret: "current_steward_agent", key: "governed_model", match: "governed_model_id" },],
     aggregations: [] },
   { name: "AssignmentInstantChecks", file: "assignment_instant_checks", rulebookRows: 4, fields: assignmentInstantChecksFieldTypes,
+    columns: { assignment_instant_check_id: "AssignmentInstantCheckId", name: "Name", audit_question: "AuditQuestion", step: "Step", audit_instant: "AuditInstant", role_assignment: "RoleAssignment", step_role: "StepRole", assignment_role: "AssignmentRole", assignment_valid_from: "AssignmentValidFrom", assignment_valid_to: "AssignmentValidTo", assignment_agent: "AssignmentAgent", assignment_agent_version: "AssignmentAgentVersion", held_step_at_instant: "HeldStepAtInstant", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["assignment_instant_check_id", "audit_question", "step", "audit_instant", "role_assignment", "semantic_type_iri"],
     compute: (row: any) => computeAssignmentInstantChecks(row as AssignmentInstantChecksRow),
     lookups: [
       { field: "step_role", target: "steps", ret: "assigned_role", key: "step", match: "step_id" },
@@ -37519,23 +38024,33 @@ export const erbTables: TableSpec[] = [
       { field: "assignment_agent_version", target: "role_assignments", ret: "agent_version_key", key: "role_assignment", match: "role_assignment_id" },],
     aggregations: [] },
   { name: "InstanceDataVersions", file: "instance_data_versions", rulebookRows: 2, fields: instanceDataVersionsFieldTypes,
+    columns: { instance_data_version_id: "InstanceDataVersionId", name: "Name", governed_model: "GovernedModel", data_version_label: "DataVersionLabel", snapshot_at: "SnapshotAt", conforms_to_release: "ConformsToRelease", logged_change_count: "LoggedChangeCount", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["instance_data_version_id", "governed_model", "data_version_label", "snapshot_at", "conforms_to_release", "semantic_type_iri"],
     compute: (row: any) => computeInstanceDataVersions(row as InstanceDataVersionsRow),
     lookups: [],
     aggregations: [
       { field: "logged_change_count", op: "COUNTIFS", table: "model_change_log_entries", criteria: [{ range: "instance_data_version", kind: "field", field: "instance_data_version_id" }] },] },
   { name: "DomainCoverageAreas", file: "domain_coverage_areas", rulebookRows: 4, fields: domainCoverageAreasFieldTypes,
+    columns: { domain_coverage_area_id: "DomainCoverageAreaId", name: "Name", governed_model: "GovernedModel", area_label: "AreaLabel", required_concept: "RequiredConcept", covering_table: "CoveringTable", is_uncovered_area: "IsUncoveredArea", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["domain_coverage_area_id", "governed_model", "area_label", "required_concept", "covering_table", "semantic_type_iri"],
     compute: (row: any) => computeDomainCoverageAreas(row as DomainCoverageAreasRow),
     lookups: [],
     aggregations: [] },
   { name: "GovernanceStageControls", file: "governance_stage_controls", rulebookRows: 20, fields: governanceStageControlsFieldTypes,
+    columns: { governance_stage_control_id: "GovernanceStageControlId", name: "Name", governed_model: "GovernedModel", stage: "Stage", control: "Control", is_continuous: "IsContinuous", is_continuous_pipeline_stage: "IsContinuousPipelineStage", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["governance_stage_control_id", "governed_model", "stage", "control", "is_continuous", "semantic_type_iri"],
     compute: (row: any) => computeGovernanceStageControls(row as GovernanceStageControlsRow),
     lookups: [],
     aggregations: [] },
   { name: "ProcessDesignDecisions", file: "process_design_decisions", rulebookRows: 3, fields: processDesignDecisionsFieldTypes,
+    columns: { process_design_decision_id: "ProcessDesignDecisionId", name: "Name", procedure_version: "ProcedureVersion", step: "Step", decision: "Decision", rationale: "Rationale", decided_by_agent: "DecidedByAgent", decided_at: "DecidedAt", recorded_at: "RecordedAt", is_commitment_without_rationale: "IsCommitmentWithoutRationale", days_before_recorded: "DaysBeforeRecorded", is_recorded_after_the_fact: "IsRecordedAfterTheFact", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["process_design_decision_id", "procedure_version", "step", "decision", "rationale", "decided_by_agent", "decided_at", "recorded_at", "semantic_type_iri"],
     compute: (row: any) => computeProcessDesignDecisions(row as ProcessDesignDecisionsRow),
     lookups: [],
     aggregations: [] },
   { name: "ModelChangeLogEntries", file: "model_change_log_entries", rulebookRows: 17, fields: modelChangeLogEntriesFieldTypes,
+    columns: { model_change_log_entry_id: "ModelChangeLogEntryId", name: "Name", governed_model: "GovernedModel", model_change_request: "ModelChangeRequest", release: "Release", instance_data_version: "InstanceDataVersion", change_layer: "ChangeLayer", change_operation: "ChangeOperation", change_summary: "ChangeSummary", rationale: "Rationale", terms_affected: "TermsAffected", affected_table: "AffectedTable", invalidates_instances: "InvalidatesInstances", logged_at: "LoggedAt", changed_by_agent: "ChangedByAgent", prior_state_commit: "PriorStateCommit", reverts_entry: "RevertsEntry", motivating_question: "MotivatingQuestion", release_version: "ReleaseVersion", release_decision_undocumented: "ReleaseDecisionUndocumented", alters_logical_model: "AltersLogicalModel", is_class_removal_or_rename: "IsClassRemovalOrRename", is_invalidating_domain_range_change: "IsInvalidatingDomainRangeChange", is_inconsistent_disjointness: "IsInconsistentDisjointness", is_backward_incompatible: "IsBackwardIncompatible", is_additive_schema_change: "IsAdditiveSchemaChange", is_unexplained_modification: "IsUnexplainedModification", rationale_without_question: "RationaleWithoutQuestion", is_schema_change_without_increment: "IsSchemaChangeWithoutIncrement", is_instance_change_in_schema_release: "IsInstanceChangeInSchemaRelease", schema_change_without_request: "SchemaChangeWithoutRequest", cannot_be_audited: "CannotBeAudited", cannot_be_rolled_back: "CannotBeRolledBack", is_untraceable_breaking_change: "IsUntraceableBreakingChange", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["model_change_log_entry_id", "governed_model", "model_change_request", "release", "instance_data_version", "change_layer", "change_operation", "change_summary", "rationale", "terms_affected", "affected_table", "invalidates_instances", "logged_at", "changed_by_agent", "prior_state_commit", "reverts_entry", "semantic_type_iri"],
     compute: (row: any) => computeModelChangeLogEntries(row as ModelChangeLogEntriesRow),
     lookups: [
       { field: "motivating_question", target: "model_change_requests", ret: "motivating_question", key: "model_change_request", match: "model_change_request_id" },
@@ -37543,12 +38058,16 @@ export const erbTables: TableSpec[] = [
       { field: "release_decision_undocumented", target: "rulebook_releases", ret: "is_undocumented_version_decision", key: "release", match: "rulebook_release_id" },],
     aggregations: [] },
   { name: "DriftObservations", file: "drift_observations", rulebookRows: 4, fields: driftObservationsFieldTypes,
+    columns: { drift_observation_id: "DriftObservationId", name: "Name", governed_model: "GovernedModel", procedure_version: "ProcedureVersion", observed_at: "ObservedAt", observed_by_agent: "ObservedByAgent", detected_by: "DetectedBy", drift_kind: "DriftKind", drift_cause: "DriftCause", description: "Description", since_release: "SinceRelease", resolved_at: "ResolvedAt", release_passed_validation: "ReleasePassedValidation", release_issued_at: "ReleaseIssuedAt", is_open_practice_mismatch: "IsOpenPracticeMismatch", went_undetected_by_passing_suite: "WentUndetectedByPassingSuite", drift_follows_clean_release: "DriftFollowsCleanRelease", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["drift_observation_id", "governed_model", "procedure_version", "observed_at", "observed_by_agent", "detected_by", "drift_kind", "drift_cause", "description", "since_release", "resolved_at", "semantic_type_iri"],
     compute: (row: any) => computeDriftObservations(row as DriftObservationsRow),
     lookups: [
       { field: "release_passed_validation", target: "rulebook_releases", ret: "passed_validation_at_release", key: "since_release", match: "rulebook_release_id" },
       { field: "release_issued_at", target: "rulebook_releases", ret: "issued_at", key: "since_release", match: "rulebook_release_id" },],
     aggregations: [] },
   { name: "SourcingFunctions", file: "sourcing_functions", rulebookRows: 12, fields: sourcingFunctionsFieldTypes,
+    columns: { sourcing_function_id: "SourcingFunctionId", name: "Name", label: "Label", client_organization: "ClientOrganization", procedure: "Procedure", sourcing_class: "SourcingClass", work_nature: "WorkNature", is_strategically_vital: "IsStrategicallyVital", delivers_own_product: "DeliversOwnProduct", executing_organization: "ExecutingOrganization", specification_holder: "SpecificationHolder", method_holder: "MethodHolder", sourced_since: "SourcedSince", sourcing_rationale: "SourcingRationale", is_outsourced: "IsOutsourced", is_business_process_outsourcing: "IsBusinessProcessOutsourcing", is_knowledge_process_outsourcing: "IsKnowledgeProcessOutsourcing", is_vital_expertise_classed_non_core: "IsVitalExpertiseClassedNonCore", is_what_how_split: "IsWhatHowSplit", is_method_knowledge_held_outside: "IsMethodKnowledgeHeldOutside", claims_how_without_doing: "ClaimsHowWithoutDoing", is_vital_expertise_process: "IsVitalExpertiseProcess", is_outsourced_vital_expertise_process: "IsOutsourcedVitalExpertiseProcess", audit_item_count: "AuditItemCount", dependency_count: "DependencyCount", coverage_gap_count: "CoverageGapCount", specification_audit_count: "SpecificationAuditCount", specification_shortfall_count: "SpecificationShortfallCount", method_shortfall_count: "MethodShortfallCount", provider_ip_documentation_count: "ProviderIpDocumentationCount", designs_what_it_cannot_build: "DesignsWhatItCannotBuild", is_unaudited_function: "IsUnauditedFunction", capture_initiative_count: "CaptureInitiativeCount", is_uncaptured_priority_process: "IsUncapturedPriorityProcess", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["sourcing_function_id", "label", "client_organization", "procedure", "sourcing_class", "work_nature", "is_strategically_vital", "delivers_own_product", "executing_organization", "specification_holder", "method_holder", "sourced_since", "sourcing_rationale", "semantic_type_iri"],
     compute: (row: any) => computeSourcingFunctions(row as SourcingFunctionsRow),
     lookups: [],
     aggregations: [
@@ -37561,24 +38080,34 @@ export const erbTables: TableSpec[] = [
       { field: "provider_ip_documentation_count", op: "COUNTIFS", table: "provider_engagements", criteria: [{ range: "sourcing_function", kind: "field", field: "sourcing_function_id" }, { range: "documentation_ownership", kind: "literal", literal: vS("ProviderIP") }] },
       { field: "capture_initiative_count", op: "COUNTIFS", table: "knowledge_capture_initiatives", criteria: [{ range: "sourcing_function", kind: "field", field: "sourcing_function_id" }] },] },
   { name: "KnowledgeAudits", file: "knowledge_audits", rulebookRows: 4, fields: knowledgeAuditsFieldTypes,
+    columns: { knowledge_audit_id: "KnowledgeAuditId", name: "Name", organization: "Organization", title: "Title", conducted_at: "ConductedAt", conducted_by_agent: "ConductedByAgent", problem_framing: "ProblemFraming", finding_count: "FindingCount", treats_deficit_as_cost_problem: "TreatsDeficitAsCostProblem", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_audit_id", "organization", "title", "conducted_at", "conducted_by_agent", "problem_framing", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeAudits(row as KnowledgeAuditsRow),
     lookups: [],
     aggregations: [
       { field: "finding_count", op: "COUNTIFS", table: "knowledge_audit_items", criteria: [{ range: "knowledge_audit", kind: "field", field: "knowledge_audit_id" }, { range: "has_internal_shortfall", kind: "literal", literal: vB(true) }] },] },
   { name: "KnowledgeAuditItems", file: "knowledge_audit_items", rulebookRows: 12, fields: knowledgeAuditItemsFieldTypes,
+    columns: { knowledge_audit_item_id: "KnowledgeAuditItemId", name: "Name", knowledge_audit: "KnowledgeAudit", sourcing_function: "SourcingFunction", knowledge_area: "KnowledgeArea", knowledge_kind: "KnowledgeKind", needed_level: "NeededLevel", held_internal_level: "HeldInternalLevel", provider_holding_knowledge: "ProviderHoldingKnowledge", provider_held_level: "ProviderHeldLevel", internal_holding_team_count: "InternalHoldingTeamCount", named_knowledge_gap: "NamedKnowledgeGap", client_organization: "ClientOrganization", has_internal_shortfall: "HasInternalShortfall", is_knowledge_dependency: "IsKnowledgeDependency", is_coverage_gap: "IsCoverageGap", is_unnamed_finding: "IsUnnamedFinding", is_single_team_silo: "IsSingleTeamSilo", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_audit_item_id", "knowledge_audit", "sourcing_function", "knowledge_area", "knowledge_kind", "needed_level", "held_internal_level", "provider_holding_knowledge", "provider_held_level", "internal_holding_team_count", "named_knowledge_gap", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeAuditItems(row as KnowledgeAuditItemsRow),
     lookups: [
       { field: "client_organization", target: "knowledge_audits", ret: "organization", key: "knowledge_audit", match: "knowledge_audit_id" },],
     aggregations: [] },
   { name: "KnowledgeCaptureInitiatives", file: "knowledge_capture_initiatives", rulebookRows: 3, fields: knowledgeCaptureInitiativesFieldTypes,
+    columns: { knowledge_capture_initiative_id: "KnowledgeCaptureInitiativeId", name: "Name", sourcing_function: "SourcingFunction", knowledge_method: "KnowledgeMethod", lead_agent: "LeadAgent", started_at: "StartedAt", status: "Status", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_capture_initiative_id", "sourcing_function", "knowledge_method", "lead_agent", "started_at", "status", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeCaptureInitiatives(row as KnowledgeCaptureInitiativesRow),
     lookups: [],
     aggregations: [] },
   { name: "KnowledgeWorkforcePositions", file: "knowledge_workforce_positions", rulebookRows: 4, fields: knowledgeWorkforcePositionsFieldTypes,
+    columns: { knowledge_workforce_position_id: "KnowledgeWorkforcePositionId", name: "Name", organization: "Organization", discipline: "Discipline", role: "Role", status: "Status", opened_at: "OpenedAt", filled_by_agent: "FilledByAgent", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_workforce_position_id", "organization", "discipline", "role", "status", "opened_at", "filled_by_agent", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeWorkforcePositions(row as KnowledgeWorkforcePositionsRow),
     lookups: [],
     aggregations: [] },
   { name: "ProviderEngagements", file: "provider_engagements", rulebookRows: 7, fields: providerEngagementsFieldTypes,
+    columns: { provider_engagement_id: "ProviderEngagementId", name: "Name", client_organization: "ClientOrganization", provider: "Provider", sourcing_function: "SourcingFunction", started_at: "StartedAt", term_months: "TermMonths", status: "Status", documentation_ownership: "DocumentationOwnership", knowledge_duty_terms: "KnowledgeDutyTerms", provider_treats_know_how_as_differentiator: "ProviderTreatsKnowHowAsDifferentiator", has_knowledge_access_clause: "HasKnowledgeAccessClause", knowledge_return_plan: "KnowledgeReturnPlan", is_active: "IsActive", relied_dependency_count: "ReliedDependencyCount", is_unplanned_knowledge_return: "IsUnplannedKnowledgeReturn", is_knowledge_access_unsecured: "IsKnowledgeAccessUnsecured", required_deliverable_count: "RequiredDeliverableCount", to_client_required_count: "ToClientRequiredCount", to_client_delivered_count: "ToClientDeliveredCount", to_provider_delivered_count: "ToProviderDeliveredCount", joint_deliverable_count: "JointDeliverableCount", lacks_knowledge_deliverables: "LacksKnowledgeDeliverables", is_one_way_learning: "IsOneWayLearning", is_short_term_without_joint_knowledge: "IsShortTermWithoutJointKnowledge", obliges_knowledge_flow_back: "ObligesKnowledgeFlowBack", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["provider_engagement_id", "client_organization", "provider", "sourcing_function", "started_at", "term_months", "status", "documentation_ownership", "knowledge_duty_terms", "provider_treats_know_how_as_differentiator", "has_knowledge_access_clause", "knowledge_return_plan", "semantic_type_iri"],
     compute: (row: any) => computeProviderEngagements(row as ProviderEngagementsRow),
     lookups: [],
     aggregations: [
@@ -37589,25 +38118,35 @@ export const erbTables: TableSpec[] = [
       { field: "to_provider_delivered_count", op: "COUNTIFS", table: "knowledge_deliverables", criteria: [{ range: "provider_engagement", kind: "field", field: "provider_engagement_id" }, { range: "direction", kind: "literal", literal: vS("ToProvider") }, { range: "is_delivered", kind: "literal", literal: vB(true) }] },
       { field: "joint_deliverable_count", op: "COUNTIFS", table: "knowledge_deliverables", criteria: [{ range: "provider_engagement", kind: "field", field: "provider_engagement_id" }, { range: "direction", kind: "literal", literal: vS("Joint") }] },] },
   { name: "KnowledgeDeliverables", file: "knowledge_deliverables", rulebookRows: 10, fields: knowledgeDeliverablesFieldTypes,
+    columns: { knowledge_deliverable_id: "KnowledgeDeliverableId", name: "Name", provider_engagement: "ProviderEngagement", direction: "Direction", title: "Title", due_at: "DueAt", delivered_at: "DeliveredAt", is_delivered: "IsDelivered", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_deliverable_id", "provider_engagement", "direction", "title", "due_at", "delivered_at", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeDeliverables(row as KnowledgeDeliverablesRow),
     lookups: [],
     aggregations: [] },
   { name: "CorporateGovernancePrograms", file: "corporate_governance_programs", rulebookRows: 3, fields: corporateGovernanceProgramsFieldTypes,
+    columns: { corporate_governance_program_id: "CorporateGovernanceProgramId", name: "Name", organization: "Organization", label: "Label", sponsor_discipline: "SponsorDiscipline", launched_at: "LaunchedAt", covers_compliance: "CoversCompliance", covers_data_quality: "CoversDataQuality", covers_information_management: "CoversInformationManagement", covers_knowledge_management: "CoversKnowledgeManagement", is_compliance_only: "IsComplianceOnly", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["corporate_governance_program_id", "organization", "label", "sponsor_discipline", "launched_at", "covers_compliance", "covers_data_quality", "covers_information_management", "covers_knowledge_management", "semantic_type_iri"],
     compute: (row: any) => computeCorporateGovernancePrograms(row as CorporateGovernanceProgramsRow),
     lookups: [],
     aggregations: [] },
   { name: "RecordsRetentionPolicies", file: "records_retention_policies", rulebookRows: 4, fields: recordsRetentionPoliciesFieldTypes,
+    columns: { records_retention_policy_id: "RecordsRetentionPolicyId", name: "Name", governance_program: "GovernanceProgram", record_class: "RecordClass", retention_driver: "RetentionDriver", retention_years: "RetentionYears", knowledge_useful_life_years: "KnowledgeUsefulLifeYears", program_sponsor_discipline: "ProgramSponsorDiscipline", is_legal_led_knowledge_destruction: "IsLegalLedKnowledgeDestruction", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["records_retention_policy_id", "governance_program", "record_class", "retention_driver", "retention_years", "knowledge_useful_life_years", "semantic_type_iri"],
     compute: (row: any) => computeRecordsRetentionPolicies(row as RecordsRetentionPoliciesRow),
     lookups: [
       { field: "program_sponsor_discipline", target: "corporate_governance_programs", ret: "sponsor_discipline", key: "governance_program", match: "corporate_governance_program_id" },],
     aggregations: [] },
   { name: "AiRegistryModelVersions", file: "ai_registry_model_versions", rulebookRows: 6, fields: aiRegistryModelVersionsFieldTypes,
+    columns: { ai_registry_model_version_id: "AiRegistryModelVersionId", name: "Name", registry_system: "RegistrySystem", dc_identifier: "DcIdentifier", dc_title: "DcTitle", dc_creator: "DcCreator", dc_date: "DcDate", dc_has_version: "DcHasVersion", dc_description: "DcDescription", feed_received_at: "FeedReceivedAt", graph_individual_count: "GraphIndividualCount", live_production_deployment_count: "LiveProductionDeploymentCount", is_live_but_unregistered_in_graph: "IsLiveButUnregisteredInGraph", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["ai_registry_model_version_id", "registry_system", "dc_identifier", "dc_title", "dc_creator", "dc_date", "dc_has_version", "dc_description", "feed_received_at", "semantic_type_iri"],
     compute: (row: any) => computeAiRegistryModelVersions(row as AiRegistryModelVersionsRow),
     lookups: [],
     aggregations: [
       { field: "graph_individual_count", op: "COUNTIFS", table: "agents", criteria: [{ range: "agent_id", kind: "field", field: "dc_identifier" }] },
       { field: "live_production_deployment_count", op: "COUNTIFS", table: "ai_model_deployments", criteria: [{ range: "model_version", kind: "field", field: "ai_registry_model_version_id" }, { range: "is_live_in_production", kind: "literal", literal: vB(true) }] },] },
   { name: "AiModelDeployments", file: "ai_model_deployments", rulebookRows: 6, fields: aiModelDeploymentsFieldTypes,
+    columns: { ai_model_deployment_id: "AiModelDeploymentId", name: "Name", model_version: "ModelVersion", environment: "Environment", deployed_at: "DeployedAt", retired_at: "RetiredAt", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", is_live_in_production: "IsLiveInProduction", agent_identifier: "AgentIdentifier", assignment_link_count: "AssignmentLinkCount", artifact_link_count: "ArtifactLinkCount", is_isolated_registry_fact: "IsIsolatedRegistryFact", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["ai_model_deployment_id", "model_version", "environment", "deployed_at", "retired_at", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeAiModelDeployments(row as AiModelDeploymentsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -37616,26 +38155,36 @@ export const erbTables: TableSpec[] = [
       { field: "assignment_link_count", op: "COUNTIFS", table: "role_assignments", criteria: [{ range: "agent", kind: "field", field: "agent_identifier" }] },
       { field: "artifact_link_count", op: "COUNTIFS", table: "execution_entities", criteria: [{ range: "attributed_to_agent", kind: "field", field: "agent_identifier" }] },] },
   { name: "AiModelEvaluations", file: "ai_model_evaluations", rulebookRows: 3, fields: aiModelEvaluationsFieldTypes,
+    columns: { ai_model_evaluation_id: "AiModelEvaluationId", name: "Name", model_version: "ModelVersion", evaluated_at: "EvaluatedAt", evaluation_suite: "EvaluationSuite", metric: "Metric", score: "Score", pass_threshold: "PassThreshold", passed: "Passed", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["ai_model_evaluation_id", "model_version", "evaluated_at", "evaluation_suite", "metric", "score", "pass_threshold", "semantic_type_iri"],
     compute: (row: any) => computeAiModelEvaluations(row as AiModelEvaluationsRow),
     lookups: [],
     aggregations: [] },
   { name: "AiAgentAccountabilities", file: "ai_agent_accountabilities", rulebookRows: 4, fields: aiAgentAccountabilitiesFieldTypes,
+    columns: { ai_agent_accountability_id: "AiAgentAccountabilityId", name: "Name", ai_agent: "AiAgent", accountable_agent: "AccountableAgent", valid_from: "ValidFrom", valid_to: "ValidTo", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", is_current: "IsCurrent", accountable_agent_kind: "AccountableAgentKind", is_accountable_to_non_person: "IsAccountableToNonPerson", is_current_human_accountability: "IsCurrentHumanAccountability", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["ai_agent_accountability_id", "ai_agent", "accountable_agent", "valid_from", "valid_to", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeAiAgentAccountabilities(row as AiAgentAccountabilitiesRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
       { field: "accountable_agent_kind", target: "agents", ret: "agent_kind", key: "accountable_agent", match: "agent_id" },],
     aggregations: [] },
   { name: "AgentUpgradeAssessments", file: "agent_upgrade_assessments", rulebookRows: 2, fields: agentUpgradeAssessmentsFieldTypes,
+    columns: { agent_upgrade_assessment_id: "AgentUpgradeAssessmentId", name: "Name", current_agent: "CurrentAgent", candidate_agent: "CandidateAgent", assessed_at: "AssessedAt", assessment_method: "AssessmentMethod", assessed_by_agent: "AssessedByAgent", listed_affected_step_count: "ListedAffectedStepCount", listed_affected_steps_note: "ListedAffectedStepsNote", attributed_artifact_count: "AttributedArtifactCount", traversed_downstream_step_count: "TraversedDownstreamStepCount", missed_traversed_impact: "MissedTraversedImpact", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["agent_upgrade_assessment_id", "current_agent", "candidate_agent", "assessed_at", "assessment_method", "assessed_by_agent", "listed_affected_step_count", "listed_affected_steps_note", "semantic_type_iri"],
     compute: (row: any) => computeAgentUpgradeAssessments(row as AgentUpgradeAssessmentsRow),
     lookups: [
       { field: "attributed_artifact_count", target: "agents", ret: "attributed_artifact_count", key: "current_agent", match: "agent_id" },
       { field: "traversed_downstream_step_count", target: "agents", ret: "artifact_blast_radius_step_count", key: "current_agent", match: "agent_id" },],
     aggregations: [] },
   { name: "AssignmentUpdatePolicies", file: "assignment_update_policies", rulebookRows: 3, fields: assignmentUpdatePoliciesFieldTypes,
+    columns: { assignment_update_policy_id: "AssignmentUpdatePolicyId", name: "Name", label: "Label", trigger_owner_role: "TriggerOwnerRole", update_sla_hours: "UpdateSlaHours", model_drives_routing: "ModelDrivesRouting", adopted_at: "AdoptedAt", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["assignment_update_policy_id", "label", "trigger_owner_role", "update_sla_hours", "model_drives_routing", "adopted_at", "semantic_type_iri"],
     compute: (row: any) => computeAssignmentUpdatePolicies(row as AssignmentUpdatePoliciesRow),
     lookups: [],
     aggregations: [] },
   { name: "RoleAssignmentUpdateTasks", file: "role_assignment_update_tasks", rulebookRows: 6, fields: roleAssignmentUpdateTasksFieldTypes,
+    columns: { role_assignment_update_task_id: "RoleAssignmentUpdateTaskId", name: "Name", role: "Role", governing_policy: "GoverningPolicy", trigger_event: "TriggerEvent", reason: "Reason", trigger_occurred_at: "TriggerOccurredAt", triggered_at: "TriggeredAt", triggered_by_agent: "TriggeredByAgent", completed_at: "CompletedAt", ending_assignment: "EndingAssignment", replacement_assignment: "ReplacementAssignment", dependent_execution: "DependentExecution", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", policy_trigger_owner_role: "PolicyTriggerOwnerRole", trigger_owner_cover_count: "TriggerOwnerCoverCount", lacks_named_trigger_owner: "LacksNamedTriggerOwner", policy_sla_hours: "PolicySlaHours", elapsed_minutes: "ElapsedMinutes", exceeded_update_sla: "ExceededUpdateSla", ending_role: "EndingRole", replacement_role: "ReplacementRole", changed_role_instead_of_assignment: "ChangedRoleInsteadOfAssignment", dependent_run_version: "DependentRunVersion", dependent_run_started_at: "DependentRunStartedAt", dependent_run_role_step_count: "DependentRunRoleStepCount", missed_next_dependent_run: "MissedNextDependentRun", failed_notice_count: "FailedNoticeCount", stale_assignment_broke_routing: "StaleAssignmentBrokeRouting", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["role_assignment_update_task_id", "role", "governing_policy", "trigger_event", "reason", "trigger_occurred_at", "triggered_at", "triggered_by_agent", "completed_at", "ending_assignment", "replacement_assignment", "dependent_execution", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeRoleAssignmentUpdateTasks(row as RoleAssignmentUpdateTasksRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -37650,6 +38199,8 @@ export const erbTables: TableSpec[] = [
       { field: "dependent_run_role_step_count", op: "COUNTIFS", table: "steps", criteria: [{ range: "procedure_version", kind: "field", field: "dependent_run_version" }, { range: "assigned_role", kind: "field", field: "role" }] },
       { field: "failed_notice_count", op: "COUNTIFS", table: "assignment_routed_notices", criteria: [{ range: "procedure_execution", kind: "field", field: "dependent_execution" }, { range: "notice_role", kind: "field", field: "role" }, { range: "reached_wrong_person_or_nobody", kind: "literal", literal: vB(true) }] },] },
   { name: "AssignmentRoutedNotices", file: "assignment_routed_notices", rulebookRows: 6, fields: assignmentRoutedNoticesFieldTypes,
+    columns: { assignment_routed_notice_id: "AssignmentRoutedNoticeId", name: "Name", procedure_execution: "ProcedureExecution", notice_step: "NoticeStep", notice_kind: "NoticeKind", sent_at: "SentAt", routing_source: "RoutingSource", routed_to_agent: "RoutedToAgent", notice_role: "NoticeRole", recipient_role_key: "RecipientRoleKey", recipient_pair_assignment_count: "RecipientPairAssignmentCount", recipient_valid_from: "RecipientValidFrom", recipient_latest_valid_to: "RecipientLatestValidTo", recipient_open_ended_count: "RecipientOpenEndedCount", recipient_held_role_when_sent: "RecipientHeldRoleWhenSent", reached_wrong_person_or_nobody: "ReachedWrongPersonOrNobody", routed_around_model: "RoutedAroundModel", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["assignment_routed_notice_id", "procedure_execution", "notice_step", "notice_kind", "sent_at", "routing_source", "routed_to_agent", "semantic_type_iri"],
     compute: (row: any) => computeAssignmentRoutedNotices(row as AssignmentRoutedNoticesRow),
     lookups: [
       { field: "notice_role", target: "steps", ret: "assigned_role", key: "notice_step", match: "step_id" },],
@@ -37659,64 +38210,94 @@ export const erbTables: TableSpec[] = [
       { field: "recipient_latest_valid_to", op: "MAX", table: "role_assignments", target: "valid_to", criteria: [{ range: "agent_role_pair_key", kind: "field", field: "recipient_role_key" }] },
       { field: "recipient_open_ended_count", op: "COUNTIFS", table: "role_assignments", criteria: [{ range: "agent_role_pair_key", kind: "field", field: "recipient_role_key" }, { range: "is_open_ended", kind: "literal", literal: vB(true) }] },] },
   { name: "PractitionerExpertise", file: "practitioner_expertise", rulebookRows: 5, fields: practitionerExpertiseFieldTypes,
+    columns: { practitioner_expertise_id: "PractitionerExpertiseId", name: "Name", agent: "Agent", procedure: "Procedure", step: "Step", elicitation_session: "ElicitationSession", expert_kind: "ExpertKind", cue: "Cue", unstated_basis: "UnstatedBasis", reliable_call_count: "ReliableCallCount", foresight_confirmed: "ForesightConfirmed", knows_more_than_can_say: "KnowsMoreThanCanSay", is_unexplained_foresight: "IsUnexplainedForesight", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["practitioner_expertise_id", "agent", "procedure", "step", "elicitation_session", "expert_kind", "cue", "unstated_basis", "reliable_call_count", "foresight_confirmed", "semantic_type_iri"],
     compute: (row: any) => computePractitionerExpertise(row as PractitionerExpertiseRow),
     lookups: [],
     aggregations: [] },
   { name: "CriticalIncidents", file: "critical_incidents", rulebookRows: 3, fields: criticalIncidentsFieldTypes,
+    columns: { critical_incident_id: "CriticalIncidentId", name: "Name", procedure_version: "ProcedureVersion", step: "Step", elicitation_session: "ElicitationSession", narrator: "Narrator", occurred_at: "OccurredAt", outcome: "Outcome", account: "Account", revealed_judgment: "RevealedJudgment", judgment_fragment: "JudgmentFragment", is_adverse_or_improvised: "IsAdverseOrImprovised", has_surfaced_judgment: "HasSurfacedJudgment", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["critical_incident_id", "procedure_version", "step", "elicitation_session", "narrator", "occurred_at", "outcome", "account", "revealed_judgment", "judgment_fragment", "semantic_type_iri"],
     compute: (row: any) => computeCriticalIncidents(row as CriticalIncidentsRow),
     lookups: [],
     aggregations: [] },
   { name: "InterviewProbes", file: "interview_probes", rulebookRows: 4, fields: interviewProbesFieldTypes,
+    columns: { interview_probe_id: "InterviewProbeId", name: "Name", elicitation_session: "ElicitationSession", step: "Step", probe_kind: "ProbeKind", prompt: "Prompt", answer: "Answer", why_answer: "WhyAnswer", shortfall_answer: "ShortfallAnswer", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["interview_probe_id", "elicitation_session", "step", "probe_kind", "prompt", "answer", "semantic_type_iri"],
     compute: (row: any) => computeInterviewProbes(row as InterviewProbesRow),
     lookups: [],
     aggregations: [] },
   { name: "ObservedActions", file: "observed_actions", rulebookRows: 5, fields: observedActionsFieldTypes,
+    columns: { observed_action_id: "ObservedActionId", name: "Name", elicitation_session: "ElicitationSession", step: "Step", practitioner: "Practitioner", action_description: "ActionDescription", action_kind: "ActionKind", mentioned_in_own_account: "MentionedInOwnAccount", stated_reason: "StatedReason", counterfactual_condition: "CounterfactualCondition", counterfactual_answer: "CounterfactualAnswer", captured_as_fragment: "CapturedAsFragment", is_small_choice: "IsSmallChoice", is_unofficial_workaround: "IsUnofficialWorkaround", is_omitted_from_own_account: "IsOmittedFromOwnAccount", is_missed_step_left_uncaptured: "IsMissedStepLeftUncaptured", is_watched_not_questioned: "IsWatchedNotQuestioned", has_recorded_reason: "HasRecordedReason", has_counterfactual_answer: "HasCounterfactualAnswer", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["observed_action_id", "elicitation_session", "step", "practitioner", "action_description", "action_kind", "mentioned_in_own_account", "stated_reason", "counterfactual_condition", "counterfactual_answer", "captured_as_fragment", "semantic_type_iri"],
     compute: (row: any) => computeObservedActions(row as ObservedActionsRow),
     lookups: [],
     aggregations: [] },
   { name: "ElicitationParticipants", file: "elicitation_participants", rulebookRows: 7, fields: elicitationParticipantsFieldTypes,
+    columns: { elicitation_participant_id: "ElicitationParticipantId", name: "Name", elicitation_session: "ElicitationSession", agent: "Agent", participation_role: "ParticipationRole", knowledge_flow: "KnowledgeFlow", process_stake: "ProcessStake", is_usually_invited: "IsUsuallyInvited", is_practitioner: "IsPractitioner", is_subject_matter_expert: "IsSubjectMatterExpert", is_knowledge_engineer: "IsKnowledgeEngineer", is_knowledge_producer: "IsKnowledgeProducer", is_knowledge_consumer: "IsKnowledgeConsumer", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["elicitation_participant_id", "elicitation_session", "agent", "participation_role", "knowledge_flow", "process_stake", "is_usually_invited", "semantic_type_iri"],
     compute: (row: any) => computeElicitationParticipants(row as ElicitationParticipantsRow),
     lookups: [],
     aggregations: [] },
   { name: "RepresentationReviews", file: "representation_reviews", rulebookRows: 4, fields: representationReviewsFieldTypes,
+    columns: { representation_review_id: "RepresentationReviewId", name: "Name", procedure_version: "ProcedureVersion", reviewer_agent: "ReviewerAgent", review_purpose: "ReviewPurpose", reviewer_is_affected_sme: "ReviewerIsAffectedSme", decision: "Decision", reviewed_at: "ReviewedAt", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["representation_review_id", "procedure_version", "reviewer_agent", "review_purpose", "reviewer_is_affected_sme", "decision", "reviewed_at", "semantic_type_iri"],
     compute: (row: any) => computeRepresentationReviews(row as RepresentationReviewsRow),
     lookups: [],
     aggregations: [] },
   { name: "WorkflowViewDivergences", file: "workflow_view_divergences", rulebookRows: 2, fields: workflowViewDivergencesFieldTypes,
+    columns: { workflow_view_divergence_id: "WorkflowViewDivergenceId", name: "Name", elicitation_session: "ElicitationSession", procedure_version: "ProcedureVersion", step: "Step", view_a: "ViewA", holder_a: "HolderA", view_b: "ViewB", holder_b: "HolderB", reconciled_statement: "ReconciledStatement", reconciled_at: "ReconciledAt", reconciled_into_fragment: "ReconciledIntoFragment", is_reconciled: "IsReconciled", is_surfaced_but_unreconciled: "IsSurfacedButUnreconciled", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["workflow_view_divergence_id", "elicitation_session", "procedure_version", "step", "view_a", "holder_a", "view_b", "holder_b", "reconciled_statement", "reconciled_at", "reconciled_into_fragment", "semantic_type_iri"],
     compute: (row: any) => computeWorkflowViewDivergences(row as WorkflowViewDivergencesRow),
     lookups: [],
     aggregations: [] },
   { name: "ExpertCognitions", file: "expert_cognitions", rulebookRows: 3, fields: expertCognitionsFieldTypes,
+    columns: { expert_cognition_id: "ExpertCognitionId", name: "Name", agent: "Agent", step: "Step", elicitation_session: "ElicitationSession", cognition_kind: "CognitionKind", statement: "Statement", applied_automatically: "AppliedAutomatically", expert_stated_exceptions: "ExpertStatedExceptions", captured_exceptions: "CapturedExceptions", is_mental_model: "IsMentalModel", is_automatic_heuristic: "IsAutomaticHeuristic", is_heuristic_oversimplified: "IsHeuristicOversimplified", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["expert_cognition_id", "agent", "step", "elicitation_session", "cognition_kind", "statement", "applied_automatically", "expert_stated_exceptions", "captured_exceptions", "semantic_type_iri"],
     compute: (row: any) => computeExpertCognitions(row as ExpertCognitionsRow),
     lookups: [],
     aggregations: [] },
   { name: "ConceptLadderRungs", file: "concept_ladder_rungs", rulebookRows: 5, fields: conceptLadderRungsFieldTypes,
+    columns: { concept_ladder_rung_id: "ConceptLadderRungId", name: "Name", elicitation_session: "ElicitationSession", step: "Step", ladder_level: "LadderLevel", rung_kind: "RungKind", statement: "Statement", step_top_level: "StepTopLevel", is_ultimate_goal: "IsUltimateGoal", is_decomposition_rung: "IsDecompositionRung", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["concept_ladder_rung_id", "elicitation_session", "step", "ladder_level", "rung_kind", "statement", "semantic_type_iri"],
     compute: (row: any) => computeConceptLadderRungs(row as ConceptLadderRungsRow),
     lookups: [],
     aggregations: [
       { field: "step_top_level", op: "MAX", table: "concept_ladder_rungs", target: "ladder_level", criteria: [{ range: "step", kind: "field", field: "step" }] },] },
   { name: "RepertoryGridConstructs", file: "repertory_grid_constructs", rulebookRows: 3, fields: repertoryGridConstructsFieldTypes,
+    columns: { repertory_grid_construct_id: "RepertoryGridConstructId", name: "Name", elicitation_session: "ElicitationSession", agent: "Agent", situations_compared: "SituationsCompared", pole_a: "PoleA", pole_b: "PoleB", was_stated_unprompted: "WasStatedUnprompted", separates_situations: "SeparatesSituations", dimension: "Dimension", is_never_stated_dimension: "IsNeverStatedDimension", is_recorded_discriminating_dimension: "IsRecordedDiscriminatingDimension", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["repertory_grid_construct_id", "elicitation_session", "agent", "situations_compared", "pole_a", "pole_b", "was_stated_unprompted", "separates_situations", "semantic_type_iri"],
     compute: (row: any) => computeRepertoryGridConstructs(row as RepertoryGridConstructsRow),
     lookups: [],
     aggregations: [] },
   { name: "KnowledgeConversions", file: "knowledge_conversions", rulebookRows: 5, fields: knowledgeConversionsFieldTypes,
+    columns: { knowledge_conversion_id: "KnowledgeConversionId", name: "Name", elicitation_session: "ElicitationSession", result_fragment: "ResultFragment", conversion_mode: "ConversionMode", from_form: "FromForm", to_form: "ToForm", description: "Description", occurred_at: "OccurredAt", is_mode_inconsistent_with_forms: "IsModeInconsistentWithForms", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_conversion_id", "elicitation_session", "result_fragment", "conversion_mode", "from_form", "to_form", "description", "occurred_at", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeConversions(row as KnowledgeConversionsRow),
     lookups: [],
     aggregations: [] },
   { name: "KnowledgeHoldings", file: "knowledge_holdings", rulebookRows: 10, fields: knowledgeHoldingsFieldTypes,
+    columns: { knowledge_holding_id: "KnowledgeHoldingId", name: "Name", procedure_version: "ProcedureVersion", step: "Step", snapshot: "Snapshot", knowledge_form: "KnowledgeForm", carrier: "Carrier", holder_agent: "HolderAgent", statement: "Statement", is_unsaid_in_sop: "IsUnsaidInSop", holder_is_veteran: "HolderIsVeteran", handles_exception_or_discretion: "HandlesExceptionOrDiscretion", formalized_as: "FormalizedAs", formalized_fragment_session: "FormalizedFragmentSession", is_unformalized_process_knowledge: "IsUnformalizedProcessKnowledge", is_procedural_knowledge: "IsProceduralKnowledge", is_judgment_outside_document: "IsJudgmentOutsideDocument", is_veteran_discretion: "IsVeteranDiscretion", is_formalized_without_elicitation_work: "IsFormalizedWithoutElicitationWork", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_holding_id", "procedure_version", "step", "snapshot", "knowledge_form", "carrier", "holder_agent", "statement", "is_unsaid_in_sop", "holder_is_veteran", "handles_exception_or_discretion", "formalized_as", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeHoldings(row as KnowledgeHoldingsRow),
     lookups: [
       { field: "formalized_fragment_session", target: "knowledge_fragments", ret: "elicitation_session", key: "formalized_as", match: "knowledge_fragment_id" },],
     aggregations: [] },
   { name: "FragmentCorroborations", file: "fragment_corroborations", rulebookRows: 4, fields: fragmentCorroborationsFieldTypes,
+    columns: { fragment_corroboration_id: "FragmentCorroborationId", name: "Name", knowledge_fragment: "KnowledgeFragment", elicitation_session: "ElicitationSession", agent: "Agent", agrees: "Agrees", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["fragment_corroboration_id", "knowledge_fragment", "elicitation_session", "agent", "agrees", "semantic_type_iri"],
     compute: (row: any) => computeFragmentCorroborations(row as FragmentCorroborationsRow),
     lookups: [],
     aggregations: [] },
   { name: "KnowledgeTestOutcomes", file: "knowledge_test_outcomes", rulebookRows: 5, fields: knowledgeTestOutcomesFieldTypes,
+    columns: { knowledge_test_outcome_id: "KnowledgeTestOutcomeId", name: "Name", procedure: "Procedure", outcome_area: "OutcomeArea", measure: "Measure", baseline_value: "BaselineValue", after_test_value: "AfterTestValue", higher_is_better: "HigherIsBetter", is_improved: "IsImproved", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_test_outcome_id", "procedure", "outcome_area", "measure", "baseline_value", "after_test_value", "higher_is_better", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeTestOutcomes(row as KnowledgeTestOutcomesRow),
     lookups: [],
     aggregations: [] },
   { name: "KnowHowCarriers", file: "know_how_carriers", rulebookRows: 13, fields: knowHowCarriersFieldTypes,
+    columns: { know_how_carrier_id: "KnowHowCarrierId", name: "Name", topic: "Topic", organization: "Organization", procedure: "Procedure", community_of_practice: "CommunityOfPractice", carrier_kind: "CarrierKind", holder_agent: "HolderAgent", holder_facility: "HolderFacility", know_how_kind: "KnowHowKind", is_in_written_procedure: "IsInWrittenProcedure", is_trained_skill: "IsTrainedSkill", work_medium: "WorkMedium", held_since: "HeldSince", builds_on_know_how: "BuildsOnKnowHow", is_in_public_references: "IsInPublicReferences", replacement_plan: "ReplacementPlan", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", holder_is_still_engaged: "HolderIsStillEngaged", holder_service_started_at: "HolderServiceStartedAt", holder_departure_at: "HolderDepartureAt", days_until_holder_departure: "DaysUntilHolderDeparture", days_served_to_as_of: "DaysServedToAsOf", days_served_to_departure: "DaysServedToDeparture", holder_tenure_years: "HolderTenureYears", is_veteran_held: "IsVeteranHeld", is_holder_leaving_soon: "IsHolderLeavingSoon", transfer_count: "TransferCount", repository_entry_count: "RepositoryEntryCount", source_relationship_count: "SourceRelationshipCount", is_held_in_both_forms: "IsHeldInBothForms", is_held_by_current_practitioner: "IsHeldByCurrentPractitioner", is_untransferred_veteran_know_how: "IsUntransferredVeteranKnowHow", is_at_risk_of_imminent_loss: "IsAtRiskOfImminentLoss", is_held_only_by_departed: "IsHeldOnlyByDeparted", is_held_by_departed_holder: "IsHeldByDepartedHolder", is_captured: "IsCaptured", must_be_relearned_if_holder_leaves: "MustBeRelearnedIfHolderLeaves", is_overlooked_living_holder: "IsOverlookedLivingHolder", transfer_stops_without_veteran: "TransferStopsWithoutVeteran", dependency_community: "DependencyCommunity", builds_on_same_community_know_how: "BuildsOnSameCommunityKnowHow", lost_accumulation_years: "LostAccumulationYears", is_delegated_to_unfit_source: "IsDelegatedToUnfitSource", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["know_how_carrier_id", "topic", "organization", "procedure", "community_of_practice", "carrier_kind", "holder_agent", "holder_facility", "know_how_kind", "is_in_written_procedure", "is_trained_skill", "work_medium", "held_since", "builds_on_know_how", "is_in_public_references", "replacement_plan", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeKnowHowCarriers(row as KnowHowCarriersRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -37729,6 +38310,8 @@ export const erbTables: TableSpec[] = [
       { field: "repository_entry_count", op: "COUNTIFS", table: "knowledge_repository_entries", criteria: [{ range: "know_how", kind: "field", field: "know_how_carrier_id" }] },
       { field: "source_relationship_count", op: "COUNTIFS", table: "source_relationships", criteria: [{ range: "source_agent", kind: "field", field: "holder_agent" }, { range: "procedure", kind: "field", field: "procedure" }] },] },
   { name: "KnowledgeTransfers", file: "knowledge_transfers", rulebookRows: 9, fields: knowledgeTransfersFieldTypes,
+    columns: { knowledge_transfer_id: "KnowledgeTransferId", name: "Name", know_how: "KnowHow", from_agent: "FromAgent", recipient_agent: "RecipientAgent", channel: "Channel", community_of_practice: "CommunityOfPractice", occurred_at: "OccurredAt", on_allocated_time: "OnAllocatedTime", from_organization: "FromOrganization", recipient_role_count: "RecipientRoleCount", is_traditional_channel: "IsTraditionalChannel", is_social_network_channel: "IsSocialNetworkChannel", is_ambient_absorption_by_non_practitioner: "IsAmbientAbsorptionByNonPractitioner", semantic_type_iri: "SemanticTypeIri", know_how_topic: "KnowHowTopic" },
+    stored: ["knowledge_transfer_id", "know_how", "from_agent", "recipient_agent", "channel", "community_of_practice", "occurred_at", "on_allocated_time", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeTransfers(row as KnowledgeTransfersRow),
     lookups: [
       { field: "from_organization", target: "agents", ret: "organization", key: "from_agent", match: "agent_id" },
@@ -37736,6 +38319,8 @@ export const erbTables: TableSpec[] = [
       { field: "know_how_topic", target: "know_how_carriers", ret: "topic", key: "know_how", match: "know_how_carrier_id" },],
     aggregations: [] },
   { name: "KnowledgeRepositoryEntries", file: "knowledge_repository_entries", rulebookRows: 8, fields: knowledgeRepositoryEntriesFieldTypes,
+    columns: { knowledge_repository_entry_id: "KnowledgeRepositoryEntryId", name: "Name", title: "Title", procedure: "Procedure", know_how: "KnowHow", author_agent: "AuthorAgent", source_expert: "SourceExpert", credits_source_expert: "CreditsSourceExpert", written_for_audience: "WrittenForAudience", authored_on_allocated_time: "AuthoredOnAllocatedTime", fed_from_execution: "FedFromExecution", created_at: "CreatedAt", last_updated_at: "LastUpdatedAt", review_interval_days: "ReviewIntervalDays", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", author_is_still_engaged: "AuthorIsStillEngaged", author_agent_kind: "AuthorAgentKind", owner_organization: "OwnerOrganization", days_since_updated: "DaysSinceUpdated", is_stale: "IsStale", is_execution_feedback: "IsExecutionFeedback", is_machine_authored: "IsMachineAuthored", outlives_author_tenure: "OutlivesAuthorTenure", is_uncredited_expert_know_how: "IsUncreditedExpertKnowHow", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_repository_entry_id", "title", "procedure", "know_how", "author_agent", "source_expert", "credits_source_expert", "written_for_audience", "authored_on_allocated_time", "fed_from_execution", "created_at", "last_updated_at", "review_interval_days", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeRepositoryEntries(row as KnowledgeRepositoryEntriesRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -37744,21 +38329,29 @@ export const erbTables: TableSpec[] = [
       { field: "owner_organization", target: "procedures", ret: "owner_organization", key: "procedure", match: "procedure_id" },],
     aggregations: [] },
   { name: "CommunityMemberships", file: "community_memberships", rulebookRows: 9, fields: communityMembershipsFieldTypes,
+    columns: { community_membership_id: "CommunityMembershipId", name: "Name", community_of_practice: "CommunityOfPractice", agent: "Agent", is_specialist: "IsSpecialist", joined_at: "JoinedAt", member_organization: "MemberOrganization", community_organization: "CommunityOrganization", is_external_member: "IsExternalMember", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["community_membership_id", "community_of_practice", "agent", "is_specialist", "joined_at", "semantic_type_iri"],
     compute: (row: any) => computeCommunityMemberships(row as CommunityMembershipsRow),
     lookups: [
       { field: "member_organization", target: "agents", ret: "organization", key: "agent", match: "agent_id" },
       { field: "community_organization", target: "communities_of_practice", ret: "organization", key: "community_of_practice", match: "community_of_practice_id" },],
     aggregations: [] },
   { name: "SourceRelationships", file: "source_relationships", rulebookRows: 4, fields: sourceRelationshipsFieldTypes,
+    columns: { source_relationship_id: "SourceRelationshipId", name: "Name", knowledge_engineer: "KnowledgeEngineer", source_agent: "SourceAgent", procedure: "Procedure", source_standing: "SourceStanding", power_dynamic: "PowerDynamic", negotiated_agreement: "NegotiatedAgreement", trust_level: "TrustLevel", trust_building_practice: "TrustBuildingPractice", withholding_observed: "WithholdingObserved", withholding_motive: "WithholdingMotive", started_at: "StartedAt", is_unnegotiated_power_gap: "IsUnnegotiatedPowerGap", is_extractive_relationship: "IsExtractiveRelationship", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["source_relationship_id", "knowledge_engineer", "source_agent", "procedure", "source_standing", "power_dynamic", "negotiated_agreement", "trust_level", "trust_building_practice", "withholding_observed", "withholding_motive", "started_at", "semantic_type_iri"],
     compute: (row: any) => computeSourceRelationships(row as SourceRelationshipsRow),
     lookups: [],
     aggregations: [] },
   { name: "DepartmentProcessAccounts", file: "department_process_accounts", rulebookRows: 5, fields: departmentProcessAccountsFieldTypes,
+    columns: { department_process_account_id: "DepartmentProcessAccountId", name: "Name", procedure: "Procedure", department: "Department", stakeholder_agent: "StakeholderAgent", engaged_at: "EngagedAt", account_summary: "AccountSummary", shaping_interest: "ShapingInterest", conflicts_with_account: "ConflictsWithAccount", resolution_practice: "ResolutionPractice", resolved_at: "ResolvedAt", conflicting_department: "ConflictingDepartment", is_awaiting_engagement: "IsAwaitingEngagement", is_conflicting_account: "IsConflictingAccount", is_unresolved_disagreement: "IsUnresolvedDisagreement", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["department_process_account_id", "procedure", "department", "stakeholder_agent", "engaged_at", "account_summary", "shaping_interest", "conflicts_with_account", "resolution_practice", "resolved_at", "semantic_type_iri"],
     compute: (row: any) => computeDepartmentProcessAccounts(row as DepartmentProcessAccountsRow),
     lookups: [
       { field: "conflicting_department", target: "department_process_accounts", ret: "department", key: "conflicts_with_account", match: "department_process_account_id" },],
     aggregations: [] },
   { name: "ProblemOccurrences", file: "problem_occurrences", rulebookRows: 5, fields: problemOccurrencesFieldTypes,
+    columns: { problem_occurrence_id: "ProblemOccurrenceId", name: "Name", problem_signature: "ProblemSignature", procedure: "Procedure", occurred_at: "OccurredAt", solved_by_agent: "SolvedByAgent", solved_at: "SolvedAt", solution_entry: "SolutionEntry", prior_occurrence: "PriorOccurrence", solver_is_still_engaged: "SolverIsStillEngaged", is_solved: "IsSolved", prior_was_solved: "PriorWasSolved", prior_solution_entry: "PriorSolutionEntry", prior_solver: "PriorSolver", prior_solver_is_still_engaged: "PriorSolverIsStillEngaged", is_solved_without_recorded_solution: "IsSolvedWithoutRecordedSolution", has_been_solved_before: "HasBeenSolvedBefore", has_consultable_specialist: "HasConsultableSpecialist", is_relearned_solved_problem: "IsRelearnedSolvedProblem", is_turnover_regression: "IsTurnoverRegression", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["problem_occurrence_id", "problem_signature", "procedure", "occurred_at", "solved_by_agent", "solved_at", "solution_entry", "prior_occurrence", "semantic_type_iri"],
     compute: (row: any) => computeProblemOccurrences(row as ProblemOccurrencesRow),
     lookups: [
       { field: "solver_is_still_engaged", target: "agents", ret: "is_still_engaged", key: "solved_by_agent", match: "agent_id" },
@@ -37768,6 +38361,8 @@ export const erbTables: TableSpec[] = [
       { field: "prior_solver_is_still_engaged", target: "problem_occurrences", ret: "solver_is_still_engaged", key: "prior_occurrence", match: "problem_occurrence_id" },],
     aggregations: [] },
   { name: "OnboardingRecords", file: "onboarding_records", rulebookRows: 7, fields: onboardingRecordsFieldTypes,
+    columns: { onboarding_record_id: "OnboardingRecordId", name: "Name", new_starter: "NewStarter", procedure: "Procedure", started_at: "StartedAt", proficient_at: "ProficientAt", used_captured_knowledge: "UsedCapturedKnowledge", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", is_proficient: "IsProficient", days_to_proficiency: "DaysToProficiency", days_since_start: "DaysSinceStart", is_recent_start: "IsRecentStart", procedure_repository_entry_count: "ProcedureRepositoryEntryCount", procedure_departed_only_count: "ProcedureDepartedOnlyCount", is_starting_from_nothing: "IsStartingFromNothing", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["onboarding_record_id", "new_starter", "procedure", "started_at", "proficient_at", "used_captured_knowledge", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeOnboardingRecords(row as OnboardingRecordsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },
@@ -37775,16 +38370,22 @@ export const erbTables: TableSpec[] = [
       { field: "procedure_departed_only_count", target: "procedures", ret: "departed_only_know_how_count", key: "procedure", match: "procedure_id" },],
     aggregations: [] },
   { name: "SharingRecognitions", file: "sharing_recognitions", rulebookRows: 2, fields: sharingRecognitionsFieldTypes,
+    columns: { sharing_recognition_id: "SharingRecognitionId", name: "Name", recognized_agent: "RecognizedAgent", organization: "Organization", recognition_kind: "RecognitionKind", for_contribution: "ForContribution", awarded_at: "AwardedAt", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["sharing_recognition_id", "recognized_agent", "organization", "recognition_kind", "for_contribution", "awarded_at", "semantic_type_iri"],
     compute: (row: any) => computeSharingRecognitions(row as SharingRecognitionsRow),
     lookups: [],
     aggregations: [] },
   { name: "CapabilityDeclines", file: "capability_declines", rulebookRows: 4, fields: capabilityDeclinesFieldTypes,
+    columns: { capability_decline_id: "CapabilityDeclineId", name: "Name", organization: "Organization", stage: "Stage", decline_started_at: "DeclineStartedAt", preceding_stage_decline: "PrecedingStageDecline", evidence: "Evidence", preceding_stage: "PrecedingStage", preceding_decline_started_at: "PrecedingDeclineStartedAt", follows_preceding_stage_decline: "FollowsPrecedingStageDecline", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["capability_decline_id", "organization", "stage", "decline_started_at", "preceding_stage_decline", "evidence", "semantic_type_iri"],
     compute: (row: any) => computeCapabilityDeclines(row as CapabilityDeclinesRow),
     lookups: [
       { field: "preceding_stage", target: "capability_declines", ret: "stage", key: "preceding_stage_decline", match: "capability_decline_id" },
       { field: "preceding_decline_started_at", target: "capability_declines", ret: "decline_started_at", key: "preceding_stage_decline", match: "capability_decline_id" },],
     aggregations: [] },
   { name: "KnowledgeTraces", file: "knowledge_traces", rulebookRows: 15, fields: knowledgeTracesFieldTypes,
+    columns: { knowledge_trace_id: "KnowledgeTraceId", name: "Name", target_kind: "TargetKind", procedure_version: "ProcedureVersion", step: "Step", requirement: "Requirement", source_material: "SourceMaterial", trace_role: "TraceRole", traced_aspect: "TracedAspect", source_statement: "SourceStatement", derivation_route: "DerivationRoute", derived_by_agent: "DerivedByAgent", validated_by_agent: "ValidatedByAgent", validated_at: "ValidatedAt", source_stated_duration_minutes: "SourceStatedDurationMinutes", contradicted_document: "ContradictedDocument", source_material_kind: "SourceMaterialKind", source_collected_at: "SourceCollectedAt", source_revised_at: "SourceRevisedAt", source_is_document: "SourceIsDocument", source_is_people_capture: "SourceIsPeopleCapture", source_is_practice_evidence: "SourceIsPracticeEvidence", is_source_changed_since_taken: "IsSourceChangedSinceTaken", modeled_duration_minutes: "ModeledDurationMinutes", is_unfaithful_to_source: "IsUnfaithfulToSource", derived_by_agent_kind: "DerivedByAgentKind", is_machine_derived: "IsMachineDerived", is_self_validated: "IsSelfValidated", has_incomplete_provenance: "HasIncompleteProvenance", provenance_statement: "ProvenanceStatement", is_aspect_unsupported_by_source_kind: "IsAspectUnsupportedBySourceKind", is_document_origin: "IsDocumentOrigin", step_elicited_validation_count: "StepElicitedValidationCount", step_elicited_extension_count: "StepElicitedExtensionCount", is_document_start_never_validated: "IsDocumentStartNeverValidated", is_document_start_never_extended: "IsDocumentStartNeverExtended", contradicted_document_revised_at: "ContradictedDocumentRevisedAt", is_document_trailing_practice: "IsDocumentTrailingPractice", prescribed_versus_enacted: "PrescribedVersusEnacted", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["knowledge_trace_id", "target_kind", "procedure_version", "step", "requirement", "source_material", "trace_role", "traced_aspect", "source_statement", "derivation_route", "derived_by_agent", "validated_by_agent", "validated_at", "source_stated_duration_minutes", "contradicted_document", "semantic_type_iri"],
     compute: (row: any) => computeKnowledgeTraces(row as KnowledgeTracesRow),
     lookups: [
       { field: "source_material_kind", target: "collected_source_materials", ret: "material_kind", key: "source_material", match: "collected_source_material_id" },
@@ -37800,42 +38401,58 @@ export const erbTables: TableSpec[] = [
       { field: "contradicted_document_revised_at", target: "resources", ret: "modified_at", key: "contradicted_document", match: "resource_id" },],
     aggregations: [] },
   { name: "MinedFlowEdges", file: "mined_flow_edges", rulebookRows: 6, fields: minedFlowEdgesFieldTypes,
+    columns: { mined_flow_edge_id: "MinedFlowEdgeId", name: "Name", process_mining_run: "ProcessMiningRun", from_step: "FromStep", to_step: "ToStep", observed_case_count: "ObservedCaseCount", median_wait_minutes: "MedianWaitMinutes", recorded_stance: "RecordedStance", intent_decision_by: "IntentDecisionBy", documented_transition_count: "DocumentedTransitionCount", is_undocumented_path: "IsUndocumentedPath", to_step_expected_minutes: "ToStepExpectedMinutes", is_bottleneck: "IsBottleneck", is_mined_path_recorded_as_intent_without_decision: "IsMinedPathRecordedAsIntentWithoutDecision", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["mined_flow_edge_id", "process_mining_run", "from_step", "to_step", "observed_case_count", "median_wait_minutes", "recorded_stance", "intent_decision_by", "semantic_type_iri"],
     compute: (row: any) => computeMinedFlowEdges(row as MinedFlowEdgesRow),
     lookups: [
       { field: "to_step_expected_minutes", target: "steps", ret: "expected_duration_minutes", key: "to_step", match: "step_id" },],
     aggregations: [
       { field: "documented_transition_count", op: "COUNTIFS", table: "step_transitions", criteria: [{ range: "from_step", kind: "field", field: "from_step" }, { range: "to_step", kind: "field", field: "to_step" }] },] },
   { name: "CollectionOccasions", file: "collection_occasions", rulebookRows: 3, fields: collectionOccasionsFieldTypes,
+    columns: { collection_occasion_id: "CollectionOccasionId", name: "Name", label: "Label", occasion_kind: "OccasionKind", procedure: "Procedure", cadence_days: "CadenceDays", last_held_at: "LastHeldAt", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", days_since_held: "DaysSinceHeld", is_lapsed: "IsLapsed", captured_material_count: "CapturedMaterialCount", is_held_without_capture: "IsHeldWithoutCapture", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["collection_occasion_id", "label", "occasion_kind", "procedure", "cadence_days", "last_held_at", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeCollectionOccasions(row as CollectionOccasionsRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },],
     aggregations: [
       { field: "captured_material_count", op: "COUNTIFS", table: "collected_source_materials", criteria: [{ range: "collected_at_occasion", kind: "field", field: "collection_occasion_id" }] },] },
   { name: "StakeholderPerspectives", file: "stakeholder_perspectives", rulebookRows: 5, fields: stakeholderPerspectivesFieldTypes,
+    columns: { stakeholder_perspective_id: "StakeholderPerspectiveId", name: "Name", procedure_version: "ProcedureVersion", step: "Step", holder_role: "HolderRole", position: "Position", source_material: "SourceMaterial", conflicts_with_perspective: "ConflictsWithPerspective", disposition: "Disposition", source_material_kind: "SourceMaterialKind", conflict_partner_count: "ConflictPartnerCount", is_in_conflict: "IsInConflict", is_dissenting_view_not_kept_with_source: "IsDissentingViewNotKeptWithSource", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["stakeholder_perspective_id", "procedure_version", "step", "holder_role", "position", "source_material", "conflicts_with_perspective", "disposition", "semantic_type_iri"],
     compute: (row: any) => computeStakeholderPerspectives(row as StakeholderPerspectivesRow),
     lookups: [
       { field: "source_material_kind", target: "collected_source_materials", ret: "material_kind", key: "source_material", match: "collected_source_material_id" },],
     aggregations: [
       { field: "conflict_partner_count", op: "COUNTIFS", table: "stakeholder_perspectives", criteria: [{ range: "conflicts_with_perspective", kind: "field", field: "stakeholder_perspective_id" }] },] },
   { name: "ModelPilots", file: "model_pilots", rulebookRows: 3, fields: modelPilotsFieldTypes,
+    columns: { model_pilot_id: "ModelPilotId", name: "Name", governed_model: "GovernedModel", site: "Site", started_at: "StartedAt", finding: "Finding", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["model_pilot_id", "governed_model", "site", "started_at", "finding", "semantic_type_iri"],
     compute: (row: any) => computeModelPilots(row as ModelPilotsRow),
     lookups: [],
     aggregations: [] },
   { name: "ModelActivityExperts", file: "model_activity_experts", rulebookRows: 16, fields: modelActivityExpertsFieldTypes,
+    columns: { model_activity_expert_id: "ModelActivityExpertId", name: "Name", governed_model: "GovernedModel", lot_activity: "LotActivity", expert: "Expert", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["model_activity_expert_id", "governed_model", "lot_activity", "expert", "semantic_type_iri"],
     compute: (row: any) => computeModelActivityExperts(row as ModelActivityExpertsRow),
     lookups: [],
     aggregations: [] },
   { name: "ModelDataMappingRuns", file: "model_data_mapping_runs", rulebookRows: 4, fields: modelDataMappingRunsFieldTypes,
+    columns: { model_data_mapping_run_id: "ModelDataMappingRunId", name: "Name", governed_model: "GovernedModel", data_origin: "DataOrigin", triples_produced: "TriplesProduced", ran_at: "RanAt", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["model_data_mapping_run_id", "governed_model", "data_origin", "triples_produced", "ran_at", "semantic_type_iri"],
     compute: (row: any) => computeModelDataMappingRuns(row as ModelDataMappingRunsRow),
     lookups: [],
     aggregations: [] },
   { name: "ArtifactHandoffs", file: "artifact_handoffs", rulebookRows: 12, fields: artifactHandoffsFieldTypes,
+    columns: { artifact_handoff_id: "ArtifactHandoffId", name: "Name", step_variable: "StepVariable", from_step: "FromStep", to_step: "ToStep", declared_source_step: "DeclaredSourceStep", declared_consumer_step: "DeclaredConsumerStep", disagrees_with_declared_variable: "DisagreesWithDeclaredVariable", handoff_closure: "HandoffClosure", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["artifact_handoff_id", "step_variable", "from_step", "to_step", "semantic_type_iri"],
     compute: (row: any) => computeArtifactHandoffs(row as ArtifactHandoffsRow),
     lookups: [
       { field: "declared_source_step", target: "step_variables", ret: "source_step", key: "step_variable", match: "step_variable_id" },
       { field: "declared_consumer_step", target: "step_variables", ret: "step", key: "step_variable", match: "step_variable_id" },],
     aggregations: [] },
-  { name: "AppActions", file: "app_actions", rulebookRows: 20, fields: appActionsFieldTypes,
+  { name: "AppActions", file: "app_actions", rulebookRows: 23, fields: appActionsFieldTypes,
+    columns: { app_action_id: "AppActionId", name: "Name", label: "Label", owning_role: "OwningRole", route_path: "RoutePath", target_table: "TargetTable", operation: "Operation", policy: "Policy", watched_field: "WatchedField", story_episode: "StoryEpisode", description: "Description", policy_command: "PolicyCommand", policy_denial_test_count: "PolicyDenialTestCount", watched_field_is_witness: "WatchedFieldIsWitness", input_field_count: "InputFieldCount", is_unpermitted: "IsUnpermitted", policy_command_disagrees: "PolicyCommandDisagrees", is_unproven_write: "IsUnprovenWrite", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["app_action_id", "label", "owning_role", "route_path", "target_table", "operation", "policy", "watched_field", "story_episode", "description", "semantic_type_iri"],
     compute: (row: any) => computeAppActions(row as AppActionsRow),
     lookups: [
       { field: "policy_command", target: "access_policies", ret: "command", key: "policy", match: "access_policy_id" },
@@ -37843,17 +38460,23 @@ export const erbTables: TableSpec[] = [
       { field: "watched_field_is_witness", target: "rulebook_fields", ret: "is_witness", key: "watched_field", match: "rulebook_field_id" },],
     aggregations: [
       { field: "input_field_count", op: "COUNTIFS", table: "app_action_fields", criteria: [{ range: "app_action", kind: "field", field: "app_action_id" }] },] },
-  { name: "AppActionFields", file: "app_action_fields", rulebookRows: 100, fields: appActionFieldsFieldTypes,
+  { name: "AppActionFields", file: "app_action_fields", rulebookRows: 117, fields: appActionFieldsFieldTypes,
+    columns: { app_action_field_id: "AppActionFieldId", name: "Name", app_action: "AppAction", target_field: "TargetField", field_label: "FieldLabel", input_kind: "InputKind", fixed_value: "FixedValue", choices_from: "ChoicesFrom", sort_order: "SortOrder", target_field_type: "TargetFieldType", writes_derived_field: "WritesDerivedField", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["app_action_field_id", "app_action", "target_field", "field_label", "input_kind", "fixed_value", "choices_from", "sort_order", "semantic_type_iri"],
     compute: (row: any) => computeAppActionFields(row as AppActionFieldsRow),
     lookups: [
       { field: "target_field_type", target: "rulebook_fields", ret: "field_type", key: "target_field", match: "rulebook_field_id" },],
     aggregations: [] },
   { name: "AbundantKnowledgeGaps", file: "abundant_knowledge_gaps", rulebookRows: 3, fields: abundantKnowledgeGapsFieldTypes,
+    columns: { abundant_knowledge_gap_id: "AbundantKnowledgeGapId", name: "Name", label: "Label", gap_kind: "GapKind", description: "Description", why_abundance_does_not_supply_it: "WhyAbundanceDoesNotSupplyIt", represented_by_table: "RepresentedByTable", representing_table_row_count: "RepresentingTableRowCount", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["abundant_knowledge_gap_id", "label", "gap_kind", "description", "why_abundance_does_not_supply_it", "represented_by_table", "semantic_type_iri"],
     compute: (row: any) => computeAbundantKnowledgeGaps(row as AbundantKnowledgeGapsRow),
     lookups: [
       { field: "representing_table_row_count", target: "rulebook_tables", ret: "measured_row_count", key: "represented_by_table", match: "rulebook_table_id" },],
     aggregations: [] },
   { name: "OntologySupportProgrammes", file: "ontology_support_programmes", rulebookRows: 2, fields: ontologySupportProgrammesFieldTypes,
+    columns: { ontology_support_programme_id: "OntologySupportProgrammeId", name: "Name", label: "Label", acronym: "Acronym", funder: "Funder", grant_reference: "GrantReference", programme_iri: "ProgrammeIri", coordinator: "Coordinator", started_on: "StartedOn", ends_on: "EndsOn", is_industry_focused: "IsIndustryFocused", our_successor_steward: "OurSuccessorSteward", why_recorded: "WhyRecorded", evaluation_context: "EvaluationContext", as_of_instant: "AsOfInstant", supported_profile_count: "SupportedProfileCount", has_ended: "HasEnded", days_until_programme_ends: "DaysUntilProgrammeEnds", is_ended_with_no_steward_named: "IsEndedWithNoStewardNamed", is_ending_soon_with_no_steward_named: "IsEndingSoonWithNoStewardNamed", semantic_type_iri: "SemanticTypeIri" },
+    stored: ["ontology_support_programme_id", "label", "acronym", "funder", "grant_reference", "programme_iri", "coordinator", "started_on", "ends_on", "is_industry_focused", "our_successor_steward", "why_recorded", "evaluation_context", "semantic_type_iri"],
     compute: (row: any) => computeOntologySupportProgrammes(row as OntologySupportProgrammesRow),
     lookups: [
       { field: "as_of_instant", target: "evaluation_contexts", ret: "as_of_instant", key: "evaluation_context", match: "evaluation_context_id" },],
@@ -37867,3 +38490,14 @@ export const erbClosures: ClosureSpec[] = [
   { view: "vw_step_transitions_closure", source: "step_transitions", from: "from_step", to: "to_step", filter: null },
   { view: "vw_step_transitions_closure_where_avoids_human_approval_gate", source: "step_transitions", from: "from_step", to: "to_step", filter: "avoids_human_approval_gate" },
 ];
+
+/**
+ * Computes every field of every table from the stored (raw and relationship)
+ * values given, keyed by the rulebook's own table and field names, and returns
+ * every table the same way. Call it again whenever a row changes: a change of
+ * data is a new call, never a new SDK. The conformance runner (main.ts) runs
+ * the same computation over files. Throws ErbError naming what it cannot do.
+ */
+export function evaluate(rows: Record<string, Array<Record<string, unknown>>>): Record<string, Array<Record<string, unknown>>> {
+  return erbEvaluate(erbTables, erbClosures, calculatedFieldCount, rows);
+}

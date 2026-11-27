@@ -4,19 +4,19 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Fields Tested | 273809 |
-| Passed | 273809 |
+| Total Fields Tested | 276656 |
+| Passed | 276656 |
 | Failed | 0 |
 | Score | 100.0% |
-| Duration | 13s |
+| Duration | 4s |
 
 ## Score by Field Class
 
 | Class | Passed | Tested | Score |
 |-------|--------|--------|-------|
-| Scalar (calculated) | 172087 | 172087 | 100.0% |
-| Lookup (INDEX/MATCH) | 78017 | 78017 | 100.0% |
-| Aggregation (COUNTIFS/SUMIFS) | 23705 | 23705 | 100.0% |
+| Scalar (calculated) | 173757 | 173757 | 100.0% |
+| Lookup (INDEX/MATCH) | 79093 | 79093 | 100.0% |
+| Aggregation (COUNTIFS/SUMIFS) | 23806 | 23806 | 100.0% |
 
 ## Results by Entity
 
@@ -97,7 +97,7 @@
 
 ### step_transitions
 
-- Fields: 860/860 (100.0%)
+- Fields: 880/880 (100.0%)
 - Computed columns: name, is_recovery_path, count_of_from_step_executions, count_of_to_step_executions, has_reachable_origin, has_reachable_target, is_never_exercised, is_untested_recovery_path, count_of_observed_traversals, has_been_traversed, is_unwalked_recovery_path, target_blocking_requirement_count, target_carries_blocking_control, is_unrehearsed_control_entry, unrehearsed_control_version_key, from_step_is_human_approval_gate, to_step_is_human_approval_gate, avoids_human_approval_gate, decision_point_count, is_undocumented_branch
 
 ### actions
@@ -132,13 +132,13 @@
 
 ### requirements
 
-- Fields: 544/544 (100.0%)
-- Computed columns: name, satisfaction_record_count, step_binding_count, is_bound_to_any_step, has_ever_been_evaluated, negative_outcome_count, is_inoperative_control, is_decorative_control, has_ever_produced_negative, is_unfalsified_control, claims_a_witness_field, named_witness_field_exists, derived_has_computed_witness, witness_claim_is_unverified, is_unwitnessed_blocking_control, witness_fire_count, witness_has_never_fired, evaluation_sample_size, has_meaningful_sample, is_untested_witness, is_evidenced_holding_control, control_assurance_state, unexercised_binding_count, witness_is_partially_scoped, accountable_agent, has_named_owner, is_orphaned_blocking_control, is_unwatched_and_unowned, attestation_exposure_note, unwatched_unowned_flag, uses_controlled_vocabulary, is_regulatory_requirement, constraint_trace_count, is_untraced_bound_constraint
+- Fields: 608/608 (100.0%)
+- Computed columns: name, satisfaction_record_count, step_binding_count, is_bound_to_any_step, has_ever_been_evaluated, negative_outcome_count, is_inoperative_control, is_decorative_control, has_ever_produced_negative, is_unfalsified_control, claims_a_witness_field, named_witness_field_exists, derived_has_computed_witness, witness_claim_is_unverified, is_unwitnessed_blocking_control, witness_fire_count, witness_has_never_fired, evaluation_sample_size, has_meaningful_sample, is_untested_witness, is_evidenced_holding_control, control_assurance_state, unexercised_binding_count, witness_is_partially_scoped, accountable_agent, has_named_owner, is_orphaned_blocking_control, is_unwatched_and_unowned, attestation_exposure_note, unwatched_unowned_flag, uses_controlled_vocabulary, is_regulatory_requirement, constraint_trace_count, is_untraced_bound_constraint, recorded_pass_count, is_passed_but_never_evaluated, failed_check_count, is_breached_but_never_failed
 
 ### step_requirements
 
-- Fields: 198/198 (100.0%)
-- Computed columns: name, requirement_is_blocking, blocking_step_key, step_when_blocking, requirement_lacks_witness, unwitnessed_step_key, satisfaction_count_for_binding, binding_was_ever_exercised, is_unexercised_blocking_binding, unexercised_binding_requirement_key, requirement_is_regulatory
+- Fields: 216/216 (100.0%)
+- Computed columns: name, requirement_is_blocking, blocking_step_key, step_when_blocking, requirement_lacks_witness, unwitnessed_step_key, satisfaction_count_for_binding, binding_was_ever_exercised, is_unexercised_blocking_binding, unexercised_binding_requirement_key, requirement_is_regulatory, pass_count_on_step
 
 ### step_verifications
 
@@ -197,8 +197,8 @@
 
 ### step_executions
 
-- Fields: 8820/8820 (100.0%)
-- Computed columns: name, actual_duration_minutes, expected_duration_minutes, is_late, blocking_unmet_count, blocking_unmet_count_safe, proceeded_past_blocking_control, expected_blocking_count, evaluated_blocking_count, unevaluated_blocking_count, has_unevaluated_blocking_control, stale_authoritative_source_count, ran_on_stale_authoritative_source, has_deviation_note, is_late_and_unexplained, available_exception_count_for_step, had_uninvoked_exception_available, expected_verification_count, performed_verification_count, skipped_verification_count, has_skipped_verification, claims_pass_without_evidence, step_is_preparation, step_is_approval, preparer_agent_key, approver_agent_key, prepared_by_this_agent_count, violates_separation_of_duties, required_role_for_step, executor_role_key, executor_authority_count, executor_held_required_role, is_unauthorized_approval, completed_execution_key, control_breach_execution_key, late_execution_key, executor_agent_kind, executor_is_human, step_requires_human_confirmation, non_human_ran_human_step, non_human_approval, unevaluated_blocking_execution_key, separation_violation_execution_key, self_witnessed_verification_count, unbacked_verification_count, approval_rests_on_self_attestation, exception_invocation_count, ran_under_exception, is_completed, is_verification_passed, is_legal_review_step, cleared_legal_review_key, assigned_role, role_current_agent, executor_is_designated_agent, inputs_were_fresh_at_run, ran_on_stale_inputs, unresolved_issue_count, has_deviation, is_clean, procedure_execution_when_unclean, evaluated_requirement_count, required_blocking_count, has_unevaluated_blocking_requirement, executing_agent_kind, was_executed_by_software, step_is_software_assigned, software_did_human_work, is_approval_execution, is_verified, unconfirmed_non_human_decision_count, requires_human_confirmation, human_confirmation_missing, drafted_from_unusable_source, inputs_were_usable, software_execution_step_key, step_control_kind, unfalsified_clearance_count, all_clearances_are_unfalsified, stale_at_run_count, was_stale_when_i_ran_it, staleness_answer_is_tense_dependent, has_any_declared_check, performed_check_count, declared_check_count, is_unchecked_by_design, is_vacuously_clean, is_substantively_clean, vacuously_clean_execution_key, uncorroborated_pass_count, evidence_position_is_weak, preparation_execution_key, approval_execution_key, has_governing_instrument, has_approved_change_coverage, version_of_step, is_ungoverned_divergence, ungoverned_divergence_execution_key, self_attested_approval_execution_key, previous_executed_step, specified_transition_from_previous_count, is_out_of_specified_order, execution_version, executes_step_of_other_version, repetition_count, step_max_repetitions, exceeds_max_repetitions, lacks_required_confirmation, failed_precondition_count, violated_invariant_count, proceeded_despite_failed_precondition, unescalated_danger_cue_count, ignored_danger_cue, used_entity_count, generated_entity_count, step_input_variable_count, ran_without_declared_inputs, step_prerequisite, completed_prerequisite_run_count, ran_before_prerequisite_completed, deviation_execution_key, broke_invariant, is_blocked_by_incomplete_prerequisite, owner_organization, incomplete_cue_observation_count, is_blocked_by_observed_cue
+- Fields: 8890/8890 (100.0%)
+- Computed columns: name, actual_duration_minutes, expected_duration_minutes, is_late, blocking_unmet_count, blocking_unmet_count_safe, proceeded_past_blocking_control, expected_blocking_count, evaluated_blocking_count, unevaluated_blocking_count, has_unevaluated_blocking_control, stale_authoritative_source_count, ran_on_stale_authoritative_source, has_deviation_note, is_late_and_unexplained, available_exception_count_for_step, had_uninvoked_exception_available, expected_verification_count, performed_verification_count, skipped_verification_count, has_skipped_verification, claims_pass_without_evidence, step_is_preparation, step_is_approval, preparer_agent_key, approver_agent_key, prepared_by_this_agent_count, violates_separation_of_duties, required_role_for_step, executor_role_key, executor_authority_count, executor_held_required_role, is_unauthorized_approval, completed_execution_key, control_breach_execution_key, late_execution_key, executor_agent_kind, executor_is_human, step_requires_human_confirmation, non_human_ran_human_step, non_human_approval, unevaluated_blocking_execution_key, separation_violation_execution_key, self_witnessed_verification_count, unbacked_verification_count, approval_rests_on_self_attestation, exception_invocation_count, ran_under_exception, is_completed, is_verification_passed, is_legal_review_step, cleared_legal_review_key, assigned_role, role_current_agent, executor_is_designated_agent, inputs_were_fresh_at_run, ran_on_stale_inputs, unresolved_issue_count, has_deviation, is_clean, procedure_execution_when_unclean, evaluated_requirement_count, required_blocking_count, has_unevaluated_blocking_requirement, executing_agent_kind, was_executed_by_software, step_is_software_assigned, software_did_human_work, is_approval_execution, is_verified, unconfirmed_non_human_decision_count, requires_human_confirmation, human_confirmation_missing, drafted_from_unusable_source, inputs_were_usable, software_execution_step_key, step_control_kind, unfalsified_clearance_count, all_clearances_are_unfalsified, stale_at_run_count, was_stale_when_i_ran_it, staleness_answer_is_tense_dependent, has_any_declared_check, performed_check_count, declared_check_count, is_unchecked_by_design, is_vacuously_clean, is_substantively_clean, vacuously_clean_execution_key, uncorroborated_pass_count, evidence_position_is_weak, preparation_execution_key, approval_execution_key, has_governing_instrument, has_approved_change_coverage, version_of_step, is_ungoverned_divergence, ungoverned_divergence_execution_key, self_attested_approval_execution_key, previous_executed_step, specified_transition_from_previous_count, is_out_of_specified_order, execution_version, executes_step_of_other_version, repetition_count, step_max_repetitions, exceeds_max_repetitions, lacks_required_confirmation, failed_precondition_count, violated_invariant_count, proceeded_despite_failed_precondition, unescalated_danger_cue_count, ignored_danger_cue, used_entity_count, generated_entity_count, step_input_variable_count, ran_without_declared_inputs, step_prerequisite, completed_prerequisite_run_count, ran_before_prerequisite_completed, deviation_execution_key, broke_invariant, is_blocked_by_incomplete_prerequisite, owner_organization, incomplete_cue_observation_count, is_blocked_by_observed_cue, is_blocked_by_failed_precondition
 
 ### requirement_satisfactions
 
@@ -267,17 +267,17 @@
 
 ### witness_loops
 
-- Fields: 48/48 (100.0%)
+- Fields: 57/57 (100.0%)
 - Computed columns: name, question_count, is_complete
 
 ### role_questions
 
-- Fields: 1326/1326 (100.0%)
+- Fields: 1338/1338 (100.0%)
 - Computed columns: name, predicate_count, is_answered
 
 ### rulebook_fields
 
-- Fields: 36295/36295 (100.0%)
+- Fields: 36393/36393 (100.0%)
 - Computed columns: name, is_derived, is_witness, disagreeing_substrate_count, is_substrate_contested, has_measured_data, is_discriminating
 
 ### test_suites
@@ -377,12 +377,12 @@
 
 ### access_policies
 
-- Fields: 5467/5467 (100.0%)
+- Fields: 5551/5551 (100.0%)
 - Computed columns: name, is_write_command, is_unrestricted, principal_is_admin, is_unrestricted_non_admin_grant, is_unwitnessed_write, denial_test_count
 
 ### field_grants
 
-- Fields: 129269/129269 (100.0%)
+- Fields: 131530/131530 (100.0%)
 - Computed columns: name, field_table, field_name, field_is_derived, is_writable_derived_field, is_masked, grant_key_when_readable
 
 ### role_schemas
@@ -392,7 +392,7 @@
 
 ### role_schema_views
 
-- Fields: 6096/6096 (100.0%)
+- Fields: 6168/6168 (100.0%)
 - Computed columns: name, schema_name, source_view, grant_key, column_count, table_field_count, is_full_width, is_degenerate_view
 
 ### jwt_claim_mappings
@@ -582,13 +582,13 @@
 
 ### step_conditions
 
-- Fields: 56/56 (100.0%)
-- Computed columns: name, check_count, is_never_checked, precondition_step_key, postcondition_step_key, invariant_step_key, safety_critical_step_key, is_machine_parseable
+- Fields: 70/70 (100.0%)
+- Computed columns: name, check_count, is_never_checked, precondition_step_key, postcondition_step_key, invariant_step_key, safety_critical_step_key, is_machine_parseable, enforced_requirement_is_computed, enforced_requirement_statement
 
 ### condition_checks
 
-- Fields: 42/42 (100.0%)
-- Computed columns: name, condition_kind, is_failed_precondition, is_violated_invariant, failed_precondition_execution_key, violated_invariant_execution_key
+- Fields: 77/77 (100.0%)
+- Computed columns: name, condition_kind, is_failed_precondition, is_violated_invariant, failed_precondition_execution_key, violated_invariant_execution_key, enforced_requirement, failed_check_requirement_key, enforced_requirement_is_computed, enforced_requirement_statement, is_scored_breach
 
 ### failure_modes
 
@@ -597,12 +597,12 @@
 
 ### step_cues
 
-- Fields: 28/28 (100.0%)
+- Fields: 35/35 (100.0%)
 - Computed columns: name, observation_count, unescalated_observation_count, danger_cue_step_key, incomplete_cue_step_key, failure_mode_response, is_unanswerable_sign
 
 ### cue_observations
 
-- Fields: 24/24 (100.0%)
+- Fields: 32/32 (100.0%)
 - Computed columns: name, cue_requires_escalation, is_unescalated_danger_cue, unescalated_cue_key, unescalated_execution_key, owner_organization, cue_signals_incomplete_step, is_awaiting_acknowledgement
 
 ### decision_points
@@ -1292,12 +1292,12 @@
 
 ### app_actions
 
-- Fields: 160/160 (100.0%)
+- Fields: 184/184 (100.0%)
 - Computed columns: name, policy_command, policy_denial_test_count, watched_field_is_witness, input_field_count, is_unpermitted, policy_command_disagrees, is_unproven_write
 
 ### app_action_fields
 
-- Fields: 300/300 (100.0%)
+- Fields: 351/351 (100.0%)
 - Computed columns: name, target_field_type, writes_derived_field
 
 ### abundant_knowledge_gaps

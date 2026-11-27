@@ -19,6 +19,23 @@
     "acknowledged_at": null
   },
   {
+    "cue_observation_id": "obs-0709-die-moved",
+    "step_execution": "se-loto0709-07",
+    "step_cue": "cue-loto07-movement",
+    "observed_at": "2026-07-10T03:00:00-05:00",
+    "observed_by_agent": "ken-watanabe",
+    "was_escalated": false,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CueObservation",
+    "name": null,
+    "cue_requires_escalation": null,
+    "is_unescalated_danger_cue": null,
+    "unescalated_cue_key": null,
+    "unescalated_execution_key": null,
+    "owner_organization": null,
+    "cue_signals_incomplete_step": null,
+    "is_awaiting_acknowledgement": null
+  },
+  {
     "cue_observation_id": "obs-0709-hiss",
     "step_execution": "se-loto0709-04b",
     "step_cue": "cue-loto04b-hiss",

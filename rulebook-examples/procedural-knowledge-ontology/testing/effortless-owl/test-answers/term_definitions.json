@@ -1,0 +1,46 @@
+[
+  {
+    "term_definition_id": "td-model-charters",
+    "includes": "A period during which named roles steward and hold authority over one governed model.",
+    "excludes": "Role assignments of individual agents; review events.",
+    "neighboring_terms": "Sits beside RoleAssignments and StewardshipAssignments.",
+    "drafted_at": "2026-06-20 14:00:00+00:00",
+    "revised_at": "2026-06-22 14:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermDefinition",
+    "name": "ModelCharters definition",
+    "rulebook_table": "ModelCharters",
+    "drafted_by_agent": "ontology-assistant-1-2",
+    "drafter_kind": "AIAgent",
+    "revised_by_agent": "sam-adeyemi",
+    "ai_draft_adopted_unrevised": false
+  },
+  {
+    "term_definition_id": "td-drift-observations",
+    "includes": "Any observed gap between the model and the organization.",
+    "excludes": "Nothing.",
+    "neighboring_terms": "Related to issues.",
+    "drafted_at": "2026-07-01 14:00:00+00:00",
+    "revised_at": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermDefinition",
+    "name": "DriftObservations definition",
+    "rulebook_table": "DriftObservations",
+    "drafted_by_agent": "ontology-assistant-1-2",
+    "drafter_kind": "AIAgent",
+    "ai_draft_adopted_unrevised": true
+  },
+  {
+    "term_definition_id": "td-procedure-versions",
+    "includes": "A versioned specification of a procedure.",
+    "excludes": "Executions of that specification.",
+    "neighboring_terms": "Specialized by nothing; linked to Procedures and ProcedureExecutions.",
+    "drafted_at": "2026-05-02 14:00:00+00:00",
+    "revised_at": "2026-05-04 14:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TermDefinition",
+    "name": "ProcedureVersions definition",
+    "rulebook_table": "ProcedureVersions",
+    "drafted_by_agent": "sam-adeyemi",
+    "drafter_kind": "Human",
+    "revised_by_agent": "nadia-petrova",
+    "ai_draft_adopted_unrevised": false
+  }
+]

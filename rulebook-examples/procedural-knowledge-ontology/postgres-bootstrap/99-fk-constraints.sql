@@ -128,9 +128,6 @@ ALTER TABLE procedures ADD CONSTRAINT fk_procedures_owner_organization
 ALTER TABLE procedures DROP CONSTRAINT IF EXISTS fk_procedures_adopted_by_organization;
 ALTER TABLE procedures ADD CONSTRAINT fk_procedures_adopted_by_organization
   FOREIGN KEY (adopted_by_organization) REFERENCES organizations (organization_id);
-ALTER TABLE procedures DROP CONSTRAINT IF EXISTS fk_procedures_current_version_key;
-ALTER TABLE procedures ADD CONSTRAINT fk_procedures_current_version_key
-  FOREIGN KEY (current_version_key) REFERENCES procedure_versions (procedure_version_id);
 ALTER TABLE procedures DROP CONSTRAINT IF EXISTS fk_procedures_template_procedure;
 ALTER TABLE procedures ADD CONSTRAINT fk_procedures_template_procedure
   FOREIGN KEY (template_procedure) REFERENCES procedures (procedure_id);
@@ -281,9 +278,6 @@ ALTER TABLE rationales ADD CONSTRAINT fk_rationales_procedure_version
 ALTER TABLE rationales DROP CONSTRAINT IF EXISTS fk_rationales_step;
 ALTER TABLE rationales ADD CONSTRAINT fk_rationales_step
   FOREIGN KEY (step) REFERENCES steps (step_id);
-ALTER TABLE rationales DROP CONSTRAINT IF EXISTS fk_rationales_status;
-ALTER TABLE rationales ADD CONSTRAINT fk_rationales_status
-  FOREIGN KEY (status) REFERENCES lifecycle_statuses (lifecycle_status_id);
 ALTER TABLE rationales DROP CONSTRAINT IF EXISTS fk_rationales_authority_role;
 ALTER TABLE rationales ADD CONSTRAINT fk_rationales_authority_role
   FOREIGN KEY (authority_role) REFERENCES roles (role_id);
@@ -303,9 +297,6 @@ ALTER TABLE exceptions ADD CONSTRAINT fk_exceptions_fallback_role
   FOREIGN KEY (fallback_role) REFERENCES roles (role_id);
 
 -- Resources
-ALTER TABLE resources DROP CONSTRAINT IF EXISTS fk_resources_approval_status;
-ALTER TABLE resources ADD CONSTRAINT fk_resources_approval_status
-  FOREIGN KEY (approval_status) REFERENCES lifecycle_statuses (lifecycle_status_id);
 ALTER TABLE resources DROP CONSTRAINT IF EXISTS fk_resources_created_by_agent;
 ALTER TABLE resources ADD CONSTRAINT fk_resources_created_by_agent
   FOREIGN KEY (created_by_agent) REFERENCES agents (agent_id);
@@ -346,9 +337,6 @@ ALTER TABLE elicitation_sessions ADD CONSTRAINT fk_elicitation_sessions_practiti
 ALTER TABLE elicitation_sessions DROP CONSTRAINT IF EXISTS fk_elicitation_sessions_facilitator_agent;
 ALTER TABLE elicitation_sessions ADD CONSTRAINT fk_elicitation_sessions_facilitator_agent
   FOREIGN KEY (facilitator_agent) REFERENCES agents (agent_id);
-ALTER TABLE elicitation_sessions DROP CONSTRAINT IF EXISTS fk_elicitation_sessions_status;
-ALTER TABLE elicitation_sessions ADD CONSTRAINT fk_elicitation_sessions_status
-  FOREIGN KEY (status) REFERENCES lifecycle_statuses (lifecycle_status_id);
 ALTER TABLE elicitation_sessions DROP CONSTRAINT IF EXISTS fk_elicitation_sessions_evaluation_context;
 ALTER TABLE elicitation_sessions ADD CONSTRAINT fk_elicitation_sessions_evaluation_context
   FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
@@ -454,9 +442,6 @@ ALTER TABLE step_executions ADD CONSTRAINT fk_step_executions_step
 ALTER TABLE step_executions DROP CONSTRAINT IF EXISTS fk_step_executions_executed_by_agent;
 ALTER TABLE step_executions ADD CONSTRAINT fk_step_executions_executed_by_agent
   FOREIGN KEY (executed_by_agent) REFERENCES agents (agent_id);
-ALTER TABLE step_executions DROP CONSTRAINT IF EXISTS fk_step_executions_execution_status;
-ALTER TABLE step_executions ADD CONSTRAINT fk_step_executions_execution_status
-  FOREIGN KEY (execution_status) REFERENCES lifecycle_statuses (lifecycle_status_id);
 ALTER TABLE step_executions DROP CONSTRAINT IF EXISTS fk_step_executions_previous_step_execution;
 ALTER TABLE step_executions ADD CONSTRAINT fk_step_executions_previous_step_execution
   FOREIGN KEY (previous_step_execution) REFERENCES step_executions (step_execution_id);
@@ -510,9 +495,6 @@ ALTER TABLE user_feedback ADD CONSTRAINT fk_user_feedback_procedure_execution
 ALTER TABLE user_feedback DROP CONSTRAINT IF EXISTS fk_user_feedback_provided_by_agent;
 ALTER TABLE user_feedback ADD CONSTRAINT fk_user_feedback_provided_by_agent
   FOREIGN KEY (provided_by_agent) REFERENCES agents (agent_id);
-ALTER TABLE user_feedback DROP CONSTRAINT IF EXISTS fk_user_feedback_change_request_key;
-ALTER TABLE user_feedback ADD CONSTRAINT fk_user_feedback_change_request_key
-  FOREIGN KEY (change_request_key) REFERENCES change_requests (change_request_id);
 
 -- StewardshipAssignments
 ALTER TABLE stewardship_assignments DROP CONSTRAINT IF EXISTS fk_stewardship_assignments_procedure_version;
@@ -599,9 +581,6 @@ ALTER TABLE message_templates ADD CONSTRAINT fk_message_templates_communication_
 ALTER TABLE message_templates DROP CONSTRAINT IF EXISTS fk_message_templates_resource;
 ALTER TABLE message_templates ADD CONSTRAINT fk_message_templates_resource
   FOREIGN KEY (resource) REFERENCES resources (resource_id);
-ALTER TABLE message_templates DROP CONSTRAINT IF EXISTS fk_message_templates_status;
-ALTER TABLE message_templates ADD CONSTRAINT fk_message_templates_status
-  FOREIGN KEY (status) REFERENCES lifecycle_statuses (lifecycle_status_id);
 ALTER TABLE message_templates DROP CONSTRAINT IF EXISTS fk_message_templates_last_valid_approval;
 ALTER TABLE message_templates ADD CONSTRAINT fk_message_templates_last_valid_approval
   FOREIGN KEY (last_valid_approval) REFERENCES template_approvals (template_approval_id);
@@ -620,17 +599,11 @@ ALTER TABLE role_questions ADD CONSTRAINT fk_role_questions_witness_loop
   FOREIGN KEY (witness_loop) REFERENCES witness_loops (witness_loop_id);
 
 -- RulebookFields
-ALTER TABLE rulebook_fields DROP CONSTRAINT IF EXISTS fk_rulebook_fields_target_table;
-ALTER TABLE rulebook_fields ADD CONSTRAINT fk_rulebook_fields_target_table
-  FOREIGN KEY (target_table) REFERENCES rulebook_tables (rulebook_table_id);
 ALTER TABLE rulebook_fields DROP CONSTRAINT IF EXISTS fk_rulebook_fields_invented_for_question;
 ALTER TABLE rulebook_fields ADD CONSTRAINT fk_rulebook_fields_invented_for_question
   FOREIGN KEY (invented_for_question) REFERENCES role_questions (role_question_id);
 
 -- TestCases
-ALTER TABLE test_cases DROP CONSTRAINT IF EXISTS fk_test_cases_target_table;
-ALTER TABLE test_cases ADD CONSTRAINT fk_test_cases_target_table
-  FOREIGN KEY (target_table) REFERENCES rulebook_tables (rulebook_table_id);
 ALTER TABLE test_cases DROP CONSTRAINT IF EXISTS fk_test_cases_defends_question;
 ALTER TABLE test_cases ADD CONSTRAINT fk_test_cases_defends_question
   FOREIGN KEY (defends_question) REFERENCES role_questions (role_question_id);
@@ -715,9 +688,6 @@ ALTER TABLE template_approvals ADD CONSTRAINT fk_template_approvals_decided_by_a
 ALTER TABLE template_approvals DROP CONSTRAINT IF EXISTS fk_template_approvals_decided_in_role;
 ALTER TABLE template_approvals ADD CONSTRAINT fk_template_approvals_decided_in_role
   FOREIGN KEY (decided_in_role) REFERENCES roles (role_id);
-ALTER TABLE template_approvals DROP CONSTRAINT IF EXISTS fk_template_approvals_decision;
-ALTER TABLE template_approvals ADD CONSTRAINT fk_template_approvals_decision
-  FOREIGN KEY (decision) REFERENCES lifecycle_statuses (lifecycle_status_id);
 
 -- SendIntents
 ALTER TABLE send_intents DROP CONSTRAINT IF EXISTS fk_send_intents_procedure_execution;
@@ -792,9 +762,6 @@ ALTER TABLE authority_boundaries ADD CONSTRAINT fk_authority_boundaries_enforcin
 ALTER TABLE authority_boundaries DROP CONSTRAINT IF EXISTS fk_authority_boundaries_authority_role;
 ALTER TABLE authority_boundaries ADD CONSTRAINT fk_authority_boundaries_authority_role
   FOREIGN KEY (authority_role) REFERENCES roles (role_id);
-ALTER TABLE authority_boundaries DROP CONSTRAINT IF EXISTS fk_authority_boundaries_status;
-ALTER TABLE authority_boundaries ADD CONSTRAINT fk_authority_boundaries_status
-  FOREIGN KEY (status) REFERENCES lifecycle_statuses (lifecycle_status_id);
 ALTER TABLE authority_boundaries DROP CONSTRAINT IF EXISTS fk_authority_boundaries_evaluation_context;
 ALTER TABLE authority_boundaries ADD CONSTRAINT fk_authority_boundaries_evaluation_context
   FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
@@ -843,11 +810,6 @@ ALTER TABLE app_route_references ADD CONSTRAINT fk_app_route_references_from_rou
 ALTER TABLE app_route_references DROP CONSTRAINT IF EXISTS fk_app_route_references_to_route;
 ALTER TABLE app_route_references ADD CONSTRAINT fk_app_route_references_to_route
   FOREIGN KEY (to_route) REFERENCES app_routes (app_route_id);
-
--- RulebookTables
-ALTER TABLE rulebook_tables DROP CONSTRAINT IF EXISTS fk_rulebook_tables_table_name;
-ALTER TABLE rulebook_tables ADD CONSTRAINT fk_rulebook_tables_table_name
-  FOREIGN KEY (table_name) REFERENCES rulebook_tables (rulebook_table_id);
 
 -- AccessPrincipals
 ALTER TABLE access_principals DROP CONSTRAINT IF EXISTS fk_access_principals_domain_role;
@@ -1054,9 +1016,6 @@ ALTER TABLE method_applications ADD CONSTRAINT fk_method_applications_identified
   FOREIGN KEY (identified_broker) REFERENCES agents (agent_id);
 
 -- LifecycleStatuses
-ALTER TABLE lifecycle_statuses DROP CONSTRAINT IF EXISTS fk_lifecycle_statuses_label;
-ALTER TABLE lifecycle_statuses ADD CONSTRAINT fk_lifecycle_statuses_label
-  FOREIGN KEY (label) REFERENCES lifecycle_statuses (lifecycle_status_id);
 ALTER TABLE lifecycle_statuses DROP CONSTRAINT IF EXISTS fk_lifecycle_statuses_workflow_status_concept;
 ALTER TABLE lifecycle_statuses ADD CONSTRAINT fk_lifecycle_statuses_workflow_status_concept
   FOREIGN KEY (workflow_status_concept) REFERENCES vocabulary_terms (vocabulary_term_id);
@@ -1234,16 +1193,6 @@ ALTER TABLE step_resources DROP CONSTRAINT IF EXISTS fk_step_resources_resource;
 ALTER TABLE step_resources ADD CONSTRAINT fk_step_resources_resource
   FOREIGN KEY (resource) REFERENCES resources (resource_id);
 
--- FaqCategories
-ALTER TABLE faq_categories DROP CONSTRAINT IF EXISTS fk_faq_categories_label;
-ALTER TABLE faq_categories ADD CONSTRAINT fk_faq_categories_label
-  FOREIGN KEY (label) REFERENCES faq_categories (faq_category_id);
-
--- FaqTargets
-ALTER TABLE faq_targets DROP CONSTRAINT IF EXISTS fk_faq_targets_label;
-ALTER TABLE faq_targets ADD CONSTRAINT fk_faq_targets_label
-  FOREIGN KEY (label) REFERENCES faq_targets (faq_target_id);
-
 -- AuthoringSubmissions
 ALTER TABLE authoring_submissions DROP CONSTRAINT IF EXISTS fk_authoring_submissions_procedure_version;
 ALTER TABLE authoring_submissions ADD CONSTRAINT fk_authoring_submissions_procedure_version
@@ -1254,11 +1203,6 @@ ALTER TABLE authoring_submissions ADD CONSTRAINT fk_authoring_submissions_submit
 ALTER TABLE authoring_submissions DROP CONSTRAINT IF EXISTS fk_authoring_submissions_authoring_tool;
 ALTER TABLE authoring_submissions ADD CONSTRAINT fk_authoring_submissions_authoring_tool
   FOREIGN KEY (authoring_tool) REFERENCES tools (tool_id);
-
--- ProcessKnowledgeLevels
-ALTER TABLE process_knowledge_levels DROP CONSTRAINT IF EXISTS fk_process_knowledge_levels_label;
-ALTER TABLE process_knowledge_levels ADD CONSTRAINT fk_process_knowledge_levels_label
-  FOREIGN KEY (label) REFERENCES process_knowledge_levels (process_knowledge_level_id);
 
 -- LevelCaptureStrategies
 ALTER TABLE level_capture_strategies DROP CONSTRAINT IF EXISTS fk_level_capture_strategies_level;
@@ -1478,11 +1422,6 @@ ALTER TABLE procedure_facet_assignments ADD CONSTRAINT fk_procedure_facet_assign
 ALTER TABLE procedure_facet_assignments DROP CONSTRAINT IF EXISTS fk_procedure_facet_assignments_facet;
 ALTER TABLE procedure_facet_assignments ADD CONSTRAINT fk_procedure_facet_assignments_facet
   FOREIGN KEY (facet) REFERENCES classification_facets (classification_facet_id);
-
--- EncodingLifecycleStages
-ALTER TABLE encoding_lifecycle_stages DROP CONSTRAINT IF EXISTS fk_encoding_lifecycle_stages_label;
-ALTER TABLE encoding_lifecycle_stages ADD CONSTRAINT fk_encoding_lifecycle_stages_label
-  FOREIGN KEY (label) REFERENCES encoding_lifecycle_stages (encoding_lifecycle_stage_id);
 
 -- KnowledgeConsumerSystems
 ALTER TABLE knowledge_consumer_systems DROP CONSTRAINT IF EXISTS fk_knowledge_consumer_systems_organization;
@@ -1776,9 +1715,6 @@ ALTER TABLE governed_models ADD CONSTRAINT fk_governed_models_tooling_owner_role
 ALTER TABLE governed_models DROP CONSTRAINT IF EXISTS fk_governed_models_current_charter;
 ALTER TABLE governed_models ADD CONSTRAINT fk_governed_models_current_charter
   FOREIGN KEY (current_charter) REFERENCES model_charters (model_charter_id);
-ALTER TABLE governed_models DROP CONSTRAINT IF EXISTS fk_governed_models_current_release;
-ALTER TABLE governed_models ADD CONSTRAINT fk_governed_models_current_release
-  FOREIGN KEY (current_release) REFERENCES rulebook_releases (rulebook_release_id);
 ALTER TABLE governed_models DROP CONSTRAINT IF EXISTS fk_governed_models_evaluation_context;
 ALTER TABLE governed_models ADD CONSTRAINT fk_governed_models_evaluation_context
   FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
@@ -2363,9 +2299,6 @@ ALTER TABLE representation_reviews ADD CONSTRAINT fk_representation_reviews_proc
 ALTER TABLE representation_reviews DROP CONSTRAINT IF EXISTS fk_representation_reviews_reviewer_agent;
 ALTER TABLE representation_reviews ADD CONSTRAINT fk_representation_reviews_reviewer_agent
   FOREIGN KEY (reviewer_agent) REFERENCES agents (agent_id);
-ALTER TABLE representation_reviews DROP CONSTRAINT IF EXISTS fk_representation_reviews_decision;
-ALTER TABLE representation_reviews ADD CONSTRAINT fk_representation_reviews_decision
-  FOREIGN KEY (decision) REFERENCES lifecycle_statuses (lifecycle_status_id);
 
 -- WorkflowViewDivergences
 ALTER TABLE workflow_view_divergences DROP CONSTRAINT IF EXISTS fk_workflow_view_divergences_elicitation_session;
@@ -2702,11 +2635,8 @@ ALTER TABLE abundant_knowledge_gaps ADD CONSTRAINT fk_abundant_knowledge_gaps_re
   FOREIGN KEY (represented_by_table) REFERENCES rulebook_tables (rulebook_table_id);
 
 -- OntologySupportProgrammes
-ALTER TABLE ontology_support_programmes DROP CONSTRAINT IF EXISTS fk_ontology_support_programmes_acronym;
-ALTER TABLE ontology_support_programmes ADD CONSTRAINT fk_ontology_support_programmes_acronym
-  FOREIGN KEY (acronym) REFERENCES ontology_support_programmes (ontology_support_programme_id);
 ALTER TABLE ontology_support_programmes DROP CONSTRAINT IF EXISTS fk_ontology_support_programmes_evaluation_context;
 ALTER TABLE ontology_support_programmes ADD CONSTRAINT fk_ontology_support_programmes_evaluation_context
   FOREIGN KEY (evaluation_context) REFERENCES evaluation_contexts (evaluation_context_id);
 
--- 741 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 721 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

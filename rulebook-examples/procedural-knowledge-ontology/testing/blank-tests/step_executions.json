@@ -135,7 +135,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-close02",
@@ -273,7 +274,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-close03",
@@ -411,7 +413,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-close04",
@@ -549,7 +552,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-close05",
@@ -687,7 +691,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-close06",
@@ -825,7 +830,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-close07",
@@ -963,7 +969,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-close08",
@@ -1101,7 +1108,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0105-01",
@@ -1242,7 +1250,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0105-02",
@@ -1383,7 +1392,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0105-03",
@@ -1524,7 +1534,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0105-04",
@@ -1665,7 +1676,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0105-05",
@@ -1806,7 +1818,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0301-01",
@@ -1947,7 +1960,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0301-02",
@@ -2088,7 +2102,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0301-03",
@@ -2229,7 +2244,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0301-04",
@@ -2370,7 +2386,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0301-05",
@@ -2511,7 +2528,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0714-01",
@@ -2652,7 +2670,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0714-02",
@@ -2793,7 +2812,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0714-04",
@@ -2934,7 +2954,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-01",
@@ -3075,7 +3096,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-02",
@@ -3216,7 +3238,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-03",
@@ -3357,7 +3380,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-04",
@@ -3498,7 +3522,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-04a",
@@ -3639,7 +3664,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-04b",
@@ -3780,7 +3806,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-04c",
@@ -3921,7 +3948,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-05",
@@ -4062,7 +4090,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-06",
@@ -4203,7 +4232,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-06b",
@@ -4344,7 +4374,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-07",
@@ -4485,7 +4516,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-08",
@@ -4626,7 +4658,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-01",
@@ -4634,8 +4667,8 @@
     "step": "loto-01",
     "executed_by_agent": "ken-watanabe",
     "execution_status": "Completed",
-    "started_at": "2026-07-09T07:00:00-05:00",
-    "ended_at": "2026-07-09T07:05:00-05:00",
+    "started_at": "2026-07-09T22:00:00-05:00",
+    "ended_at": "2026-07-09T22:05:00-05:00",
     "verification_result": "PASS",
     "deviation": "",
     "previous_step_execution": null,
@@ -4767,7 +4800,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-02",
@@ -4775,8 +4809,8 @@
     "step": "loto1-01",
     "executed_by_agent": "ken-watanabe",
     "execution_status": "Completed",
-    "started_at": "2026-07-09T07:07:00-05:00",
-    "ended_at": "2026-07-09T07:12:00-05:00",
+    "started_at": "2026-07-09T22:07:00-05:00",
+    "ended_at": "2026-07-09T22:12:00-05:00",
     "verification_result": "PASS",
     "deviation": "Followed the 2019 checklist's shutdown step",
     "previous_step_execution": "se-loto0709-01",
@@ -4908,7 +4942,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-03",
@@ -4916,8 +4951,8 @@
     "step": "loto-03",
     "executed_by_agent": "ken-watanabe",
     "execution_status": "Completed",
-    "started_at": "2026-07-09T08:14:00-05:00",
-    "ended_at": "2026-07-09T08:19:00-05:00",
+    "started_at": "2026-07-09T23:14:00-05:00",
+    "ended_at": "2026-07-09T23:19:00-05:00",
     "verification_result": "PASS",
     "deviation": "",
     "previous_step_execution": "se-loto0709-02",
@@ -5049,7 +5084,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-04",
@@ -5057,8 +5093,8 @@
     "step": "loto-04",
     "executed_by_agent": "ken-watanabe",
     "execution_status": "Completed",
-    "started_at": "2026-07-09T08:21:00-05:00",
-    "ended_at": "2026-07-09T08:26:00-05:00",
+    "started_at": "2026-07-09T23:21:00-05:00",
+    "ended_at": "2026-07-09T23:26:00-05:00",
     "verification_result": "PASS",
     "deviation": "",
     "previous_step_execution": "se-loto0709-03",
@@ -5190,7 +5226,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-04a",
@@ -5198,8 +5235,8 @@
     "step": "loto-04a",
     "executed_by_agent": "ken-watanabe",
     "execution_status": "Completed",
-    "started_at": "2026-07-09T09:28:00-05:00",
-    "ended_at": "2026-07-09T09:33:00-05:00",
+    "started_at": "2026-07-10T00:28:00-05:00",
+    "ended_at": "2026-07-10T00:33:00-05:00",
     "verification_result": "PASS",
     "deviation": "",
     "previous_step_execution": "se-loto0709-04",
@@ -5331,7 +5368,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-04b",
@@ -5339,8 +5377,8 @@
     "step": "loto-04b",
     "executed_by_agent": "ken-watanabe",
     "execution_status": "Completed",
-    "started_at": "2026-07-09T09:35:00-05:00",
-    "ended_at": "2026-07-09T09:40:00-05:00",
+    "started_at": "2026-07-10T00:35:00-05:00",
+    "ended_at": "2026-07-10T00:40:00-05:00",
     "verification_result": "PASS",
     "deviation": "Heard a hiss after closing the valve and carried on",
     "previous_step_execution": "se-loto0709-04a",
@@ -5472,7 +5510,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-04c",
@@ -5480,8 +5519,8 @@
     "step": "loto-04c",
     "executed_by_agent": "ken-watanabe",
     "execution_status": "Completed",
-    "started_at": "2026-07-09T10:42:00-05:00",
-    "ended_at": "2026-07-09T10:47:00-05:00",
+    "started_at": "2026-07-10T01:42:00-05:00",
+    "ended_at": "2026-07-10T01:47:00-05:00",
     "verification_result": "PASS",
     "deviation": "",
     "previous_step_execution": "se-loto0709-04b",
@@ -5613,7 +5652,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-05",
@@ -5621,8 +5661,8 @@
     "step": "loto-05",
     "executed_by_agent": "ken-watanabe",
     "execution_status": "Completed",
-    "started_at": "2026-07-09T10:49:00-05:00",
-    "ended_at": "2026-07-09T10:54:00-05:00",
+    "started_at": "2026-07-10T01:49:00-05:00",
+    "ended_at": "2026-07-10T01:54:00-05:00",
     "verification_result": "PASS",
     "deviation": "",
     "previous_step_execution": "se-loto0709-04c",
@@ -5754,7 +5794,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-06",
@@ -5762,8 +5803,8 @@
     "step": "loto-06",
     "executed_by_agent": "ken-watanabe",
     "execution_status": "Completed",
-    "started_at": "2026-07-09T11:03:00-05:00",
-    "ended_at": "2026-07-09T11:08:00-05:00",
+    "started_at": "2026-07-10T03:03:00-05:00",
+    "ended_at": "2026-07-10T03:08:00-05:00",
     "verification_result": "PASS",
     "deviation": "",
     "previous_step_execution": "se-loto0709-07",
@@ -5895,7 +5936,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-06b",
@@ -5903,8 +5945,8 @@
     "step": "loto-06",
     "executed_by_agent": "ken-watanabe",
     "execution_status": "Completed",
-    "started_at": "2026-07-09T12:10:00-05:00",
-    "ended_at": "2026-07-09T12:15:00-05:00",
+    "started_at": "2026-07-10T03:10:00-05:00",
+    "ended_at": "2026-07-10T03:15:00-05:00",
     "verification_result": "PASS",
     "deviation": "",
     "previous_step_execution": "se-loto0709-06",
@@ -6036,7 +6078,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-06c",
@@ -6044,8 +6087,8 @@
     "step": "loto-06",
     "executed_by_agent": "ken-watanabe",
     "execution_status": "Completed",
-    "started_at": "2026-07-09T12:17:00-05:00",
-    "ended_at": "2026-07-09T12:22:00-05:00",
+    "started_at": "2026-07-10T03:17:00-05:00",
+    "ended_at": "2026-07-10T03:22:00-05:00",
     "verification_result": "PASS",
     "deviation": "Third verification after residual energy found",
     "previous_step_execution": "se-loto0709-06b",
@@ -6177,7 +6220,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-07",
@@ -6185,13 +6229,13 @@
     "step": "loto-07",
     "executed_by_agent": "ken-watanabe",
     "execution_status": "Completed",
-    "started_at": "2026-07-09T11:56:00-05:00",
-    "ended_at": "2026-07-09T11:01:00-05:00",
+    "started_at": "2026-07-10T01:56:00-05:00",
+    "ended_at": "2026-07-10T03:01:00-05:00",
     "verification_result": "PASS",
     "deviation": "Maintenance started before zero energy was confirmed",
     "previous_step_execution": "se-loto0709-05",
     "confirmed_by_agent": null,
-    "description": "Residual hydraulic energy released during maintenance; work stopped",
+    "description": "Residual hydraulic energy released during maintenance; the die dropped; work stopped",
     "semantic_type_iri": "https://w3id.org/pko#StepExecution",
     "name": null,
     "actual_duration_minutes": null,
@@ -6318,7 +6362,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-08",
@@ -6326,8 +6371,8 @@
     "step": "loto-08",
     "executed_by_agent": "ken-watanabe",
     "execution_status": "Completed",
-    "started_at": "2026-07-09T13:24:00-05:00",
-    "ended_at": "2026-07-09T13:29:00-05:00",
+    "started_at": "2026-07-10T04:24:00-05:00",
+    "ended_at": "2026-07-10T04:29:00-05:00",
     "verification_result": "PASS",
     "deviation": "",
     "previous_step_execution": "se-loto0709-06c",
@@ -6459,7 +6504,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-01",
@@ -6600,7 +6646,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-02",
@@ -6741,7 +6788,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-03",
@@ -6882,7 +6930,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-04",
@@ -7023,7 +7072,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-04a",
@@ -7164,7 +7214,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-04b",
@@ -7305,7 +7356,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-04c",
@@ -7446,7 +7498,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-05",
@@ -7587,7 +7640,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-06",
@@ -7728,7 +7782,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-07",
@@ -7869,7 +7924,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-08",
@@ -8010,7 +8066,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-01",
@@ -8151,7 +8208,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-02",
@@ -8292,7 +8350,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-03",
@@ -8433,7 +8492,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-04",
@@ -8574,7 +8634,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-04a",
@@ -8715,7 +8776,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-04b",
@@ -8856,7 +8918,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-04c",
@@ -8997,7 +9060,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-05",
@@ -9138,7 +9202,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-06",
@@ -9279,7 +9344,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-policy01",
@@ -9417,7 +9483,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-policy02",
@@ -9555,7 +9622,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-policy03",
@@ -9693,7 +9761,8 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-policy04",
@@ -9831,6 +9900,7 @@
     "is_blocked_by_incomplete_prerequisite": null,
     "owner_organization": null,
     "incomplete_cue_observation_count": null,
-    "is_blocked_by_observed_cue": null
+    "is_blocked_by_observed_cue": null,
+    "is_blocked_by_failed_precondition": null
   }
 ]

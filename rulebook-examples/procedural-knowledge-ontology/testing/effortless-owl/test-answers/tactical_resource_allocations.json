@@ -1,0 +1,70 @@
+[
+  {
+    "tactical_resource_allocation_id": "tra-loto05-padlocks-north",
+    "resource_label": "Personal padlocks at the north lockout station",
+    "resource_kind": "Equipment",
+    "available_units_per_week": 40,
+    "demanded_units_per_week": 46,
+    "adjustment_decision": "Order twelve padlocks and reconcile the station inventory every shift.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TacticalResourceAllocation",
+    "name": "loto-05 / Personal padlocks at the north lockout station",
+    "step": "loto-05",
+    "facility": "plant-north",
+    "utilization_percent": 115.0,
+    "is_bottleneck": true
+  },
+  {
+    "tactical_resource_allocation_id": "tra-loto06-night-verifier",
+    "resource_label": "Night-shift zero-energy verifier hours",
+    "resource_kind": "People",
+    "available_units_per_week": 2,
+    "demanded_units_per_week": 6,
+    "adjustment_decision": "Fill the night safety deputy role before adding night lockouts.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TacticalResourceAllocation",
+    "name": "loto-06 / Night-shift zero-energy verifier hours",
+    "step": "loto-06",
+    "facility": "plant-south",
+    "utilization_percent": 300.0,
+    "is_bottleneck": true
+  },
+  {
+    "tactical_resource_allocation_id": "tra-loto06-gauges",
+    "resource_label": "Calibrated pressure gauges",
+    "resource_kind": "Tooling",
+    "available_units_per_week": 10,
+    "demanded_units_per_week": 6,
+    "adjustment_decision": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TacticalResourceAllocation",
+    "name": "loto-06 / Calibrated pressure gauges",
+    "step": "loto-06",
+    "facility": "plant-north",
+    "utilization_percent": 60.0,
+    "is_bottleneck": false
+  },
+  {
+    "tactical_resource_allocation_id": "tra-deploy03-approver",
+    "resource_label": "Release manager approval slots",
+    "resource_kind": "People",
+    "available_units_per_week": 20,
+    "demanded_units_per_week": 12,
+    "adjustment_decision": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TacticalResourceAllocation",
+    "name": "deploy-03 / Release manager approval slots",
+    "step": "deploy-03",
+    "utilization_percent": 60.0,
+    "is_bottleneck": false
+  },
+  {
+    "tactical_resource_allocation_id": "tra-deploy01-runners",
+    "resource_label": "CI runner hours",
+    "resource_kind": "Equipment",
+    "available_units_per_week": 400,
+    "demanded_units_per_week": 320,
+    "adjustment_decision": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#TacticalResourceAllocation",
+    "name": "deploy-01 / CI runner hours",
+    "step": "deploy-01",
+    "utilization_percent": 80.0,
+    "is_bottleneck": false
+  }
+]

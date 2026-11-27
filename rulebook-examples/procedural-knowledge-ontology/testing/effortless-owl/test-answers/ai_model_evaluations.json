@@ -1,0 +1,38 @@
+[
+  {
+    "ai_model_evaluation_id": "eval-risk-2.4.1-holdout",
+    "evaluated_at": "2026-01-07 06:00:00+00:00",
+    "evaluation_suite": "Change history holdout 2025",
+    "metric": "HighRiskRecall",
+    "score": "0.91",
+    "pass_threshold": "0.85",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiModelEvaluation",
+    "name": "reg-risk-classifier-2.4.1 HighRiskRecall",
+    "model_version": "reg-risk-classifier-2.4.1",
+    "passed": true
+  },
+  {
+    "ai_model_evaluation_id": "eval-risk-2.5.0-holdout",
+    "evaluated_at": "2026-07-08 05:00:00+00:00",
+    "evaluation_suite": "Change history holdout 2026",
+    "metric": "HighRiskRecall",
+    "score": "0.94",
+    "pass_threshold": "0.85",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiModelEvaluation",
+    "name": "reg-risk-classifier-2.5.0-rc3 HighRiskRecall",
+    "model_version": "reg-risk-classifier-2.5.0-rc3",
+    "passed": true
+  },
+  {
+    "ai_model_evaluation_id": "eval-health-1.2.0-replay",
+    "evaluated_at": "2025-12-05 06:00:00+00:00",
+    "evaluation_suite": "Degraded rollout replay",
+    "metric": "DegradationDetectionRate",
+    "score": "0.6",
+    "pass_threshold": "0.95",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#AiModelEvaluation",
+    "name": "reg-health-check-1.2.0 DegradationDetectionRate",
+    "model_version": "reg-health-check-1.2.0",
+    "passed": false
+  }
+]

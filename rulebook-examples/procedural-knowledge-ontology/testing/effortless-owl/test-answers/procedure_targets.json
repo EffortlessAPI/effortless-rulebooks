@@ -1,0 +1,68 @@
+[
+  {
+    "procedure_target_id": "target-loto-conveyor3",
+    "label": "Conveyor line 3",
+    "target_kind": "Machine",
+    "semantic_type_iri": "https://w3id.org/pko#ProcedureTarget",
+    "name": "Conveyor line 3",
+    "procedure": "lockout-tagout",
+    "machine": "conveyor-3",
+    "machine_is_non_standard": false,
+    "handling_failure_mode_count": 0,
+    "is_unhandled_non_standard_target": false
+  },
+  {
+    "procedure_target_id": "target-loto-press7",
+    "label": "Press 7",
+    "target_kind": "Machine",
+    "semantic_type_iri": "https://w3id.org/pko#ProcedureTarget",
+    "name": "Press 7",
+    "procedure": "lockout-tagout",
+    "machine": "press-7",
+    "machine_is_non_standard": true,
+    "handling_failure_mode_count": 1,
+    "is_unhandled_non_standard_target": false
+  },
+  {
+    "procedure_target_id": "target-loto-mixer2",
+    "label": "Mixer 2",
+    "target_kind": "Machine",
+    "semantic_type_iri": "https://w3id.org/pko#ProcedureTarget",
+    "name": "Mixer 2",
+    "procedure": "lockout-tagout",
+    "machine": "mixer-2",
+    "machine_is_non_standard": true,
+    "handling_failure_mode_count": 0,
+    "is_unhandled_non_standard_target": true
+  },
+  {
+    "procedure_target_id": "target-deploy-platform",
+    "label": "Customer-facing platform",
+    "target_kind": "Service",
+    "semantic_type_iri": "https://w3id.org/pko#ProcedureTarget",
+    "name": "Customer-facing platform",
+    "procedure": "production-deployment",
+    "handling_failure_mode_count": 0,
+    "is_unhandled_non_standard_target": false
+  },
+  {
+    "procedure_target_id": "target-close-ledger",
+    "label": "Corporate general ledger",
+    "target_kind": "DataSystem",
+    "semantic_type_iri": "https://w3id.org/pko#ProcedureTarget",
+    "name": "Corporate general ledger",
+    "procedure": "quarter-end-close",
+    "handling_failure_mode_count": 0,
+    "is_unhandled_non_standard_target": false
+  },
+  {
+    "procedure_target_id": "target-policy-workforce",
+    "label": "Affected workforce",
+    "target_kind": "Population",
+    "semantic_type_iri": "https://w3id.org/pko#ProcedureTarget",
+    "name": "Affected workforce",
+    "procedure": "workforce-policy-notification",
+    "handling_failure_mode_count": 0,
+    "is_unhandled_non_standard_target": false
+  }
+]

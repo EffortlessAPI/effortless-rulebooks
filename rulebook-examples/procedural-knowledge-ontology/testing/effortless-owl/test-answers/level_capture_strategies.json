@@ -1,0 +1,57 @@
+[
+  {
+    "level_capture_strategy_id": "lcs-operational-tacit",
+    "knowledge_form": "Tacit",
+    "transfer_mode": "InPerson",
+    "description": "New technicians shadow veterans through lockouts on retrofitted machines.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelCaptureStrategy",
+    "name": "operational Tacit: New technicians shadow veterans through ",
+    "level": "operational",
+    "knowledge_method": "Shadowing",
+    "contradicts_knowledge_form": false
+  },
+  {
+    "level_capture_strategy_id": "lcs-operational-explicit",
+    "knowledge_form": "Explicit",
+    "transfer_mode": "Codified",
+    "description": "Steps, conditions and cues encoded from the SOP into the procedure register.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelCaptureStrategy",
+    "name": "operational Explicit: Steps, conditions and cues encoded from ",
+    "level": "operational",
+    "knowledge_method": "DocumentAnalysis",
+    "contradicts_knowledge_form": false
+  },
+  {
+    "level_capture_strategy_id": "lcs-tactical-tacit",
+    "knowledge_form": "Tacit",
+    "transfer_mode": "Codified",
+    "description": "Shift planners' heuristics for staffing verifiers written up once as a wiki page.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelCaptureStrategy",
+    "name": "tactical Tacit: Shift planners' heuristics for staffing ",
+    "level": "tactical",
+    "knowledge_method": "CriticalIncidentTechnique",
+    "contradicts_knowledge_form": true
+  },
+  {
+    "level_capture_strategy_id": "lcs-tactical-explicit",
+    "knowledge_form": "Explicit",
+    "transfer_mode": "Codified",
+    "description": "Waiting time per step mined from the maintenance system's event log.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelCaptureStrategy",
+    "name": "tactical Explicit: Waiting time per step mined from the mai",
+    "level": "tactical",
+    "knowledge_method": "ProcessMining",
+    "contradicts_knowledge_form": false
+  },
+  {
+    "level_capture_strategy_id": "lcs-strategic-explicit",
+    "knowledge_form": "Explicit",
+    "transfer_mode": "Codified",
+    "description": "Annual safety strategy memos and board risk reports.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#LevelCaptureStrategy",
+    "name": "strategic Explicit: Annual safety strategy memos and board r",
+    "level": "strategic",
+    "knowledge_method": "DocumentAnalysis",
+    "contradicts_knowledge_form": false
+  }
+]

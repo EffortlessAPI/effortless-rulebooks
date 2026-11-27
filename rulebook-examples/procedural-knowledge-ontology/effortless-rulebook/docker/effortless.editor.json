@@ -17,6 +17,7 @@
       "RelativePath": "/postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json -p mode=check-add",
       "IsDisabled": false,
+      "Category": "QuickBuild",
       "Description": "Generate Postgres SQL from the mounted rulebook. mode=check-add is pinned rather than left to the tool's default because this container rebuilds against a live database: check-add emits CREATE TABLE IF NOT EXISTS + ADD COLUMN IF NOT EXISTS + CREATE OR REPLACE + ON CONFLICT DO UPDATE, so a rulebook change adds what is new and upserts rulebook rows without dropping a table or deleting a row. mode=drop-all would wipe every row the user added through the editor; run-rulebook-db-reset.sh refuses to apply drop-all SQL to a running container."
     },
     {
@@ -41,6 +42,7 @@
       "RelativePath": "/postgres",
       "CommandLine": "-exec ./chmod-initdb.sh",
       "IsDisabled": false,
+      "Category": "QuickBuild",
       "Description": "Prepare the generated database reset script and the stable selector wrapper for execution. The -exec engine accepts only one command token, so this uses a no-argument helper placed in /postgres by container-entrypoint.sh."
     },
     {
@@ -49,6 +51,7 @@
       "RelativePath": "/postgres",
       "CommandLine": "-exec ./run-rulebook-db-reset.sh",
       "IsDisabled": false,
+      "Category": "QuickBuild",
       "Description": "Apply the generated SQL to the in-container Postgres DB. The first apply after a container start builds from scratch (the cluster is empty at boot); every rebuild after that is additive -- new tables and columns appear, rulebook rows are upserted, and rows that exist only in the database are left alone. The wrapper refuses the step outright if the generated SQL would drop a table or delete rows, rather than applying it. Uses reset-rulebook-db.sh when present, with legacy init-db.sh compatibility for older rulebook-to-postgres versions. Connection string comes from the DATABASE_URL env var exported by container-entrypoint.sh."
     },
     {
@@ -57,6 +60,7 @@
       "RelativePath": "/api",
       "CommandLine": "rulebook-to-node-postgres-api -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
+      "Category": "QuickBuild",
       "Description": "Generate the read-only Node/Express API"
     },
     {
@@ -65,6 +69,7 @@
       "RelativePath": "/admin-portal",
       "CommandLine": "rulebook-to-vite-admin-portal -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
+      "Category": "QuickBuild",
       "Description": "Generate the read-only Vite admin UI, unified with tabs for the Postgres schema, RuleSpeak® (EN/DE), and XLSX export"
     },
     {
@@ -73,7 +78,17 @@
       "RelativePath": "/admin-portal/public",
       "CommandLine": "rulebook-to-explainer-dag -i ../../effortless-rulebook/effortless-rulebook.json -p languages=all",
       "IsDisabled": false,
+      "Category": "QuickBuild",
       "Description": "Generate the Explainer DAG -- the baked provenance graph the portal uses to make every derived cell clickable (hover for RuleSpeak®, double-click for the full field DAG). The tool namespaces its own output folder, so this lands in admin-portal/public/rulebook-explainer-dag and Vite serves it at /rulebook-explainer-dag/* alongside the portal. NOT optional chrome: the portal loads these five assets from its index.html and its Provenance tab renders nothing without them. Listed AFTER the portal step because it writes inside that step's output directory."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktotypescript",
+      "RelativePath": "/admin-portal/public/rulebook-explainer-dag/typescript",
+      "CommandLine": "rulebook-to-typescript -i ../../../../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "Category": "QuickBuild",
+      "Description": "Generate the rulebook as a TypeScript program, written INSIDE the Explainer DAG's folder (admin-portal/public/rulebook-explainer-dag/typescript). The explainer finds it there by itself and uses it for the witness: one row's value, the rule step that applied, and every value it came from down to the stored ones, computed in the page by this program. Listed AFTER the Explainer DAG step because it writes inside that step's output folder. If this step fails the build goes on and the explainer simply shows no witness."
     },
     {
       "IsSSoTTranspiler": false,
@@ -89,6 +104,7 @@
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-rulebook.json -p languages=en,de,ja,hi",
       "IsDisabled": false,
+      "Category": "QuickBuild",
       "Description": "Generate the RuleSpeak® document in the four core languages -- English, German, Japanese, Hindi (rulespeak.html, in-doc language selector), served under the portal's RuleSpeak® tab. Enabled by default: a focused set keeps the container build fast, and the every-language step below is one click away in the portal's language picker. Rendering is local and deterministic -- no network, no translation service. The portal's language list is derived from the languages= parameter on whichever of these steps is enabled, so editing that list here is all it takes to change what the picker offers."
     },
     {
@@ -106,14 +122,6 @@
       "CommandLine": "rulebook-to-xlsx -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
       "Description": "Generate an Excel workbook snapshot of the rulebook's tables, offered as a download from the portal's Export tab. Enabled by default."
-    },
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "rulebooktoprogressreport",
-      "RelativePath": "/progress-report",
-      "CommandLine": "rulebook-to-progress-report -i ../effortless-rulebook/effortless-rulebook.json",
-      "IsDisabled": true,
-      "Description": "Delivery module: render the Progress Report (progress-report.html, narrative.html) from the ERBUserStories / ERBAcceptanceCriteria / ERBBuildPhases tables, shown under the portal's Progress Report tab. Disabled until the Delivery module is switched on in the Modules page."
     }
   ]
 }

@@ -12,7 +12,12 @@
     "is_violated_invariant": false,
     "failed_precondition_execution_key": "",
     "violated_invariant_execution_key": "",
-    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck",
+    "enforced_requirement": null,
+    "failed_check_requirement_key": "",
+    "enforced_requirement_is_computed": false,
+    "enforced_requirement_statement": null,
+    "is_scored_breach": false
   },
   {
     "condition_check_id": "cc-0708-07-locks",
@@ -27,7 +32,12 @@
     "is_violated_invariant": false,
     "failed_precondition_execution_key": "",
     "violated_invariant_execution_key": "",
-    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck",
+    "enforced_requirement": "req-loto-personal-lock",
+    "failed_check_requirement_key": "",
+    "enforced_requirement_is_computed": false,
+    "enforced_requirement_statement": "Every person working on the machine applies and removes their own lock.",
+    "is_scored_breach": false
   },
   {
     "condition_check_id": "cc-0708-07-zero",
@@ -42,7 +52,12 @@
     "is_violated_invariant": false,
     "failed_precondition_execution_key": "",
     "violated_invariant_execution_key": "",
-    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck",
+    "enforced_requirement": "req-loto-zero-energy",
+    "failed_check_requirement_key": "",
+    "enforced_requirement_is_computed": false,
+    "enforced_requirement_statement": "No maintenance starts until zero energy is verified at every isolation point.",
+    "is_scored_breach": false
   },
   {
     "condition_check_id": "cc-0709-03-notified",
@@ -57,7 +72,12 @@
     "is_violated_invariant": false,
     "failed_precondition_execution_key": "",
     "violated_invariant_execution_key": "",
-    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck",
+    "enforced_requirement": null,
+    "failed_check_requirement_key": "",
+    "enforced_requirement_is_computed": false,
+    "enforced_requirement_statement": null,
+    "is_scored_breach": false
   },
   {
     "condition_check_id": "cc-0709-07-locks",
@@ -65,14 +85,19 @@
     "step_execution": "se-loto0709-07",
     "step_condition": "cond-loto07-inv-locks",
     "held": false,
-    "checked_at": "2026-07-10T01:30:00-05:00",
+    "checked_at": "2026-07-10T02:30:00-05:00",
     "checked_by_agent": "ken-watanabe",
     "condition_kind": "Invariant",
     "is_failed_precondition": false,
     "is_violated_invariant": true,
     "failed_precondition_execution_key": "",
     "violated_invariant_execution_key": "se-loto0709-07",
-    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck",
+    "enforced_requirement": "req-loto-personal-lock",
+    "failed_check_requirement_key": "req-loto-personal-lock",
+    "enforced_requirement_is_computed": false,
+    "enforced_requirement_statement": "Every person working on the machine applies and removes their own lock.",
+    "is_scored_breach": false
   },
   {
     "condition_check_id": "cc-0709-07-zero",
@@ -87,7 +112,12 @@
     "is_violated_invariant": false,
     "failed_precondition_execution_key": "se-loto0709-07",
     "violated_invariant_execution_key": "",
-    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck",
+    "enforced_requirement": "req-loto-zero-energy",
+    "failed_check_requirement_key": "req-loto-zero-energy",
+    "enforced_requirement_is_computed": false,
+    "enforced_requirement_statement": "No maintenance starts until zero energy is verified at every isolation point.",
+    "is_scored_breach": false
   },
   {
     "condition_check_id": "cc-dep0301-04-approved",
@@ -102,6 +132,11 @@
     "is_violated_invariant": false,
     "failed_precondition_execution_key": "",
     "violated_invariant_execution_key": "",
-    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck"
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ConditionCheck",
+    "enforced_requirement": null,
+    "failed_check_requirement_key": "",
+    "enforced_requirement_is_computed": false,
+    "enforced_requirement_statement": null,
+    "is_scored_breach": false
   }
 ]

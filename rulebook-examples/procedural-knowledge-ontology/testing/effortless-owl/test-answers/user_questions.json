@@ -1,0 +1,52 @@
+[
+  {
+    "user_question_id": "q-close-fx",
+    "asked_at": "2026-07-01 18:10:00+00:00",
+    "question_text": "Why did the FX variance appear only after the cutover?",
+    "status": "Answered",
+    "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
+    "name": "Why did the FX variance appear only after the cutover?",
+    "step_execution": "se-close04",
+    "asked_by_agent": "devon-okafor",
+    "resolved_by_faq": "faq-close-workpapers",
+    "addressed_by_resource": "res-close-sop-pdf",
+    "is_unaddressed_question": false
+  },
+  {
+    "user_question_id": "q-policy-ai",
+    "asked_at": "2026-07-18 18:20:00+00:00",
+    "question_text": "Can the drafting AI add a new legal exception if it seems reasonable?",
+    "status": "Answered",
+    "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
+    "name": "Can the drafting AI add a new legal exception if it seems reasonable?",
+    "step_execution": "se-policy03",
+    "asked_by_agent": "elena-garcia",
+    "resolved_by_faq": "faq-policy-ai",
+    "addressed_by_resource": "res-policy-source",
+    "is_unaddressed_question": false
+  },
+  {
+    "user_question_id": "uq-loto-gauge",
+    "asked_at": "2026-07-14 15:30:00+00:00",
+    "question_text": "The gauge flickers just above zero. Is that zero?",
+    "status": "Answered",
+    "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
+    "name": "The gauge flickers just above zero. Is that zero?",
+    "step_execution": "se-loto0714-06",
+    "asked_by_agent": "aisha-bello",
+    "resolved_by_faq": "faq-loto-gauge",
+    "addressed_by_resource": "res-loto-v2-spec",
+    "is_unaddressed_question": false
+  },
+  {
+    "user_question_id": "uq-loto-press7",
+    "asked_at": "2026-07-10 03:20:00+00:00",
+    "question_text": "Does the press-7 retrofit use the standard isolation map?",
+    "status": "Open",
+    "semantic_type_iri": "https://w3id.org/pko#UserQuestionOccurrence",
+    "name": "Does the press-7 retrofit use the standard isolation map?",
+    "step_execution": "se-loto0709-03",
+    "asked_by_agent": "ken-watanabe",
+    "is_unaddressed_question": true
+  }
+]

@@ -77,8 +77,23 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsBool(F.Memo(this, "IsMachineParseable", () => F.IsNotBlank(F.Of(this.MachineExpression)))); set { }
         }
 
+        // Formula EnforcedRequirementIsComputed (rulebook: =INDEX(Requirements!{{DerivedHasComputedWitness}}, MATCH({{EnforcesRequirement}}, Requirements!{{RequirementId}}, 0)))
+        [NotMapped]
+        public bool? EnforcedRequirementIsComputed
+        {
+            get => F.AsBool(F.Memo(this, "EnforcedRequirementIsComputed", () => F.Lookup<Requirement>(this, "Requirements", "RequirementId", __c => __c.Requirements, __r => F.Of(__r.RequirementId), F.Of(this.EnforcesRequirement), __r => F.Of(__r.DerivedHasComputedWitness), () => F.Of(new Requirement().DerivedHasComputedWitness)))); set { }
+        }
+
+        // Formula EnforcedRequirementStatement (rulebook: =INDEX(Requirements!{{Statement}}, MATCH({{EnforcesRequirement}}, Requirements!{{RequirementId}}, 0)))
+        [NotMapped]
+        public string? EnforcedRequirementStatement
+        {
+            get => F.AsString(F.Memo(this, "EnforcedRequirementStatement", () => F.Lookup<Requirement>(this, "Requirements", "RequirementId", __c => __c.Requirements, __r => F.Of(__r.RequirementId), F.Of(this.EnforcesRequirement), __r => F.Of(__r.Statement), () => F.Of(new Requirement().Statement)))); set { }
+        }
+
 
         public string? Step { get; set; }
+        public string? EnforcesRequirement { get; set; }
 
         private Step _stepRef;
 
@@ -119,6 +134,50 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
                     if (_stepRef != null)
                     {
                         Step = _stepRef.StepId;
+                    }
+                }
+            }
+        }
+
+        private Requirement _requirement;
+
+        [ForeignKey("EnforcesRequirement")]
+        public virtual Requirement Requirement
+        {
+            get
+            {
+                if (_requirement == null && !string.IsNullOrEmpty(EnforcesRequirement))
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access Requirement - no database context is set. EnforcesRequirement: " + EnforcesRequirement + ".");
+                        }
+                        return null;
+                    }
+                    _requirement = base.SoAContext.Requirements.Find(EnforcesRequirement);
+                    if (_requirement != null)
+                    {
+                        base.SoAContext.Attach(_requirement);
+                    }
+                }
+                return _requirement;
+            }
+            set
+            {
+                if (_requirement != value)
+                {
+                    _requirement = value;
+                    // Only push the FK when associating a real parent. EF's relationship fixup
+                    // assigns this navigation to null whenever the parent isn't tracked yet (e.g.
+                    // while a query is materializing children before parents); nulling the scalar
+                    // FK there would CORRUPT the raw fact (the row's FK silently becomes null),
+                    // which then breaks every SUMIFS/COUNTIFS that filters on it. Assigning a
+                    // non-null parent still keeps the FK in sync.
+                    if (_requirement != null)
+                    {
+                        EnforcesRequirement = _requirement.RequirementId;
                     }
                 }
             }
@@ -183,6 +242,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         protected override void LazyLoadProperties()
         {
             _ = this.StepRef;
+            _ = this.Requirement;
             _ = this.ConditionChecks;
         }
 

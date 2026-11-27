@@ -48,6 +48,77 @@ RETURNS TEXT AS $$
               ELSE n::text END;
 $$ LANGUAGE sql IMMUTABLE;
 
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
 
 -- ============================================================================
 -- LOOKUP FUNCTIONS
@@ -529,7 +600,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_is_increment_inconsistent_with_scale(p_rulebook_release_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(previous_release, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE(COALESCE((SELECT version_major FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), 0) <> COALESCE(calc_rulebook_releases_expected_major(p_rulebook_release_id), 0), FALSE) OR COALESCE(COALESCE((SELECT version_minor FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), 0) <> COALESCE(calc_rulebook_releases_expected_minor(p_rulebook_release_id), 0), FALSE) OR COALESCE(COALESCE((SELECT version_patch FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), 0) <> COALESCE(calc_rulebook_releases_expected_patch(p_rulebook_release_id), 0), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(previous_release, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NOT NULL AND ((SELECT NULLIF(previous_release, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text <> ''), FALSE) AND COALESCE((COALESCE(COALESCE((SELECT version_major FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), 0) <> COALESCE(calc_rulebook_releases_expected_major(p_rulebook_release_id), 0), FALSE) OR COALESCE(COALESCE((SELECT version_minor FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), 0) <> COALESCE(calc_rulebook_releases_expected_minor(p_rulebook_release_id), 0), FALSE) OR COALESCE(COALESCE((SELECT version_patch FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), 0) <> COALESCE(calc_rulebook_releases_expected_patch(p_rulebook_release_id), 0), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_days_since_previous_release
@@ -539,7 +610,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_days_since_previous_release(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(previous_release, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NULL THEN (0)::text ELSE (((((SELECT issued_at::timestamptz FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::timestamptz AT TIME ZONE 'UTC')::date - ((calc_rulebook_releases_prev_issued_at(p_rulebook_release_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT NULLIF(previous_release, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NULL OR ((SELECT NULLIF(previous_release, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text = '') THEN (0)::text ELSE (((((SELECT issued_at::timestamptz FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::timestamptz AT TIME ZONE 'UTC')::date - ((calc_rulebook_releases_prev_issued_at(p_rulebook_release_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_is_long_release_cycle
@@ -559,7 +630,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_is_declared_current_release(p_rulebook_release_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_releases_model_current_release(p_rulebook_release_id) AS val) SELECT ((COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), '') = COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_releases_model_current_release(p_rulebook_release_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), '') = COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_log_entry_count
@@ -579,7 +650,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_logical_change_count(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM model_change_log_entries WHERE release = (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) AND calc_model_change_log_entries_alters_logical_model(model_change_log_entry_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM model_change_log_entries erb_r1 WHERE release = (SELECT (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) AND ((SELECT ((COALESCE(COALESCE(NULLIF(erb_r1.change_layer, ''), '') = 'Schema', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.change_layer, ''), '') = 'Vocabulary', FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_non_additive_change_count
@@ -589,7 +660,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_non_additive_change_count(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM model_change_log_entries WHERE release = (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) AND calc_model_change_log_entries_is_backward_incompatible(model_change_log_entry_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM model_change_log_entries erb_r1 WHERE release = (SELECT (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) AND ((SELECT ((COALESCE(calc_model_change_log_entries_is_class_removal_or_rename(erb_r1.model_change_log_entry_id), FALSE) OR COALESCE(COALESCE(erb_r1.invalidates_instances, FALSE), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_class_removal_or_rename_count
@@ -599,7 +670,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_class_removal_or_rename_count(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM model_change_log_entries WHERE release = (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) AND calc_model_change_log_entries_is_class_removal_or_rename(model_change_log_entry_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM model_change_log_entries erb_r1 WHERE release = (SELECT (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) AND ((SELECT ((COALESCE(COALESCE(NULLIF(erb_r1.change_operation, ''), '') = 'RemoveClass', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.change_operation, ''), '') = 'RenameClass', FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_invalidating_domain_range_count
@@ -609,7 +680,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_invalidating_domain_range_count(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM model_change_log_entries WHERE release = (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) AND calc_model_change_log_entries_is_invalidating_domain_range_chan(model_change_log_entry_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM model_change_log_entries erb_r1 WHERE release = (SELECT (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) AND ((SELECT ((COALESCE(COALESCE(NULLIF(erb_r1.change_operation, ''), '') = 'ChangeDomainRange', FALSE) AND COALESCE(COALESCE(erb_r1.invalidates_instances, FALSE), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_inconsistent_disjointness_count
@@ -619,7 +690,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_inconsistent_disjointness_count(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM model_change_log_entries WHERE release = (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) AND calc_model_change_log_entries_is_inconsistent_disjointness(model_change_log_entry_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM model_change_log_entries erb_r1 WHERE release = (SELECT (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) AND ((SELECT ((COALESCE(COALESCE(NULLIF(erb_r1.change_operation, ''), '') = 'AddDisjointness', FALSE) AND COALESCE(COALESCE(erb_r1.invalidates_instances, FALSE), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_schema_addition_count
@@ -629,7 +700,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_schema_addition_count(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM model_change_log_entries WHERE release = (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) AND calc_model_change_log_entries_is_additive_schema_change(model_change_log_entry_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM model_change_log_entries erb_r1 WHERE release = (SELECT (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) AND ((SELECT ((COALESCE(COALESCE(NULLIF(erb_r1.change_layer, ''), '') = 'Schema', FALSE) AND COALESCE((COALESCE(COALESCE(NULLIF(erb_r1.change_operation, ''), '') = 'AddClass', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.change_operation, ''), '') = 'AddProperty', FALSE)), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_suite_update_count
@@ -679,7 +750,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_validation_run_count(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM change_validation_runs WHERE calc_change_validation_runs_release(change_validation_run_id) = (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM change_validation_runs erb_r1 WHERE ((SELECT (SELECT target_release::text FROM model_change_requests WHERE model_change_request_id = erb_r1.model_change_request)))::text = (SELECT (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_validation_failure_total
@@ -689,7 +760,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_validation_failure_total(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((failure_count)::numeric), 0) FROM change_validation_runs WHERE calc_change_validation_runs_release(change_validation_run_id) = p_rulebook_release_id AND run_purpose = 'Acceptance'))::integer;
+  SELECT ((SELECT COALESCE(SUM((failure_count)::numeric), 0) FROM change_validation_runs erb_r1 WHERE ((SELECT (SELECT target_release::text FROM model_change_requests WHERE model_change_request_id = erb_r1.model_change_request)))::text = p_rulebook_release_id AND run_purpose = 'Acceptance'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_consistent_run_count
@@ -699,7 +770,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_consistent_run_count(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM change_validation_runs WHERE calc_change_validation_runs_release(change_validation_run_id) = (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) AND consistency_check_outcome = 'Consistent'))::integer;
+  SELECT ((SELECT COUNT(*) FROM change_validation_runs erb_r1 WHERE ((SELECT (SELECT target_release::text FROM model_change_requests WHERE model_change_request_id = erb_r1.model_change_request)))::text = (SELECT (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) AND consistency_check_outcome = 'Consistent'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_cq_run_count
@@ -707,7 +778,7 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_rulebook_releases_cq_run_count(p_rulebook_release_id TEXT)
+CREATE OR REPLACE FUNCTION calc_rulebook_releases_cq_run_count__compute(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)))::integer;
 $$ LANGUAGE sql STABLE;
@@ -729,7 +800,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_regressed_baseline_count(p_rulebook_release_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) AND calc_competency_question_runs_is_baseline_regression(competency_question_run_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM competency_question_runs WHERE rulebook_release = (SELECT (SELECT NULLIF(rulebook_release_id, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) AND calc_competency_question_runs_is_baseline_regression(competency_question_run_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_cq_coverage_percent
@@ -737,7 +808,7 @@ $$ LANGUAGE sql STABLE;
 -- Type: calculated | DataType: number | Returns: NUMERIC
 
 
-CREATE OR REPLACE FUNCTION calc_rulebook_releases_cq_coverage_percent(p_rulebook_release_id TEXT)
+CREATE OR REPLACE FUNCTION calc_rulebook_releases_cq_coverage_percent__compute(p_rulebook_release_id TEXT)
 RETURNS NUMERIC AS $$
   WITH __erb_dedup_v1 AS (SELECT calc_rulebook_releases_cq_run_count(p_rulebook_release_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_releases_answerable_cq_run_count(p_rulebook_release_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
@@ -839,7 +910,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_breaking_release_without_migration_plan(p_rulebook_release_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_rulebook_releases_is_breaking_release(p_rulebook_release_id), FALSE) AND COALESCE((SELECT NULLIF(migration_plan, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_rulebook_releases_is_breaking_release(p_rulebook_release_id), FALSE) AND COALESCE((((SELECT NULLIF(migration_plan, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NULL OR ((SELECT NULLIF(migration_plan, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_is_undocumented_version_decision
@@ -849,7 +920,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_is_undocumented_version_decision(p_rulebook_release_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT NULLIF(version_decision_rationale, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NULL, FALSE) OR COALESCE((SELECT NULLIF(version_decided_by_agent, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NULL, FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NOT NULL AND ((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text <> ''), FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(version_decision_rationale, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NULL OR ((SELECT NULLIF(version_decision_rationale, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text = ''), FALSE) OR COALESCE((((SELECT NULLIF(version_decided_by_agent, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NULL OR ((SELECT NULLIF(version_decided_by_agent, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text = ''), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_is_unannounced_to_dependents
@@ -869,7 +940,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_is_release_without_recorded_changes(p_rulebook_release_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(previous_release, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_rulebook_releases_log_entry_count(p_rulebook_release_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(previous_release, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NOT NULL AND ((SELECT NULLIF(previous_release, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_rulebook_releases_log_entry_count(p_rulebook_release_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_suite_lags_release
@@ -889,7 +960,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_is_untagged_release(p_rulebook_release_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NOT NULL, FALSE) AND COALESCE((SELECT NULLIF(rulebook_commit, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NOT NULL AND ((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(rulebook_commit, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NULL OR ((SELECT NULLIF(rulebook_commit, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_published_without_approval
@@ -899,7 +970,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_published_without_approval(p_rulebook_release_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), '') = 'Released', FALSE) AND COALESCE((SELECT NULLIF(approved_by_agent, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id), '') = 'Released', FALSE) AND COALESCE((((SELECT NULLIF(approved_by_agent, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NULL OR ((SELECT NULLIF(approved_by_agent, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_released_despite_failed_validation
@@ -919,7 +990,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_released_without_consistency_check(p_rulebook_release_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_rulebook_releases_consistent_run_count(p_rulebook_release_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NOT NULL AND ((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_rulebook_releases_consistent_run_count(p_rulebook_release_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_passed_validation_at_release
@@ -939,7 +1010,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_cq_coverage_declined(p_rulebook_release_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(previous_release, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_rulebook_releases_prev_cq_run_count(p_rulebook_release_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((calc_rulebook_releases_cq_run_count(p_rulebook_release_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE(calc_rulebook_releases_cq_coverage_percent(p_rulebook_release_id), 0) < COALESCE(calc_rulebook_releases_prev_cq_coverage_percent(p_rulebook_release_id), 0), FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(previous_release, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NOT NULL AND ((SELECT NULLIF(previous_release, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_rulebook_releases_prev_cq_run_count(p_rulebook_release_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((calc_rulebook_releases_cq_run_count(p_rulebook_release_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE(calc_rulebook_releases_cq_coverage_percent(p_rulebook_release_id), 0) < COALESCE(calc_rulebook_releases_prev_cq_coverage_percent(p_rulebook_release_id), 0), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_has_baseline_regression
@@ -959,7 +1030,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_released_without_cq_task_test(p_rulebook_release_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_rulebook_releases_cq_run_count(p_rulebook_release_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NOT NULL AND ((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_rulebook_releases_cq_run_count(p_rulebook_release_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_well_formed_but_requirements_unshown
@@ -979,7 +1050,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_is_not_scored_against_criteria(p_rulebook_release_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_rulebook_releases_scored_criterion_count(p_rulebook_release_id), 0) < COALESCE(calc_rulebook_releases_stated_criterion_count(p_rulebook_release_id), 0), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NOT NULL AND ((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_rulebook_releases_scored_criterion_count(p_rulebook_release_id), 0) < COALESCE(calc_rulebook_releases_stated_criterion_count(p_rulebook_release_id), 0), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_releases_is_released_without_licence_or_permanent
@@ -989,7 +1060,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_releases_is_released_without_licence_or_permanent(p_rulebook_release_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT NULLIF(license, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NULL, FALSE) OR COALESCE((SELECT NULLIF(permanent_iri, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id) IS NULL, FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NOT NULL AND ((SELECT NULLIF(governed_model, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text <> ''), FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(license, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NULL OR ((SELECT NULLIF(license, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text = ''), FALSE) OR COALESCE((((SELECT NULLIF(permanent_iri, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id)) IS NULL OR ((SELECT NULLIF(permanent_iri, '') FROM rulebook_releases WHERE rulebook_release_id = p_rulebook_release_id))::text = ''), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_profiles_as_of_instant
@@ -1320,7 +1391,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_profiles_days_since_last_revision(p_ontology_profile_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT last_revised_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id) IS NULL THEN (0)::text ELSE ((((calc_ontology_profiles_as_of_instant(p_ontology_profile_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT last_revised_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT last_revised_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id)) IS NULL OR ((SELECT last_revised_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::text = '') THEN (0)::text ELSE ((((calc_ontology_profiles_as_of_instant(p_ontology_profile_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT last_revised_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_profiles_days_since_major_revision
@@ -1330,7 +1401,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_profiles_days_since_major_revision(p_ontology_profile_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT last_major_revision_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id) IS NULL THEN (0)::text ELSE ((((calc_ontology_profiles_as_of_instant(p_ontology_profile_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT last_major_revision_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT last_major_revision_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id)) IS NULL OR ((SELECT last_major_revision_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::text = '') THEN (0)::text ELSE ((((calc_ontology_profiles_as_of_instant(p_ontology_profile_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT last_major_revision_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_profiles_days_since_dependency_reviewed
@@ -1340,7 +1411,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_profiles_days_since_dependency_reviewed(p_ontology_profile_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT dependency_reviewed_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id) IS NULL THEN (0)::text ELSE ((((calc_ontology_profiles_as_of_instant(p_ontology_profile_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT dependency_reviewed_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT dependency_reviewed_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id)) IS NULL OR ((SELECT dependency_reviewed_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::text = '') THEN (0)::text ELSE ((((calc_ontology_profiles_as_of_instant(p_ontology_profile_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT dependency_reviewed_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_profiles_recent_deprecation_count
@@ -1350,7 +1421,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_profiles_recent_deprecation_count(p_ontology_profile_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM external_standard_terms WHERE ontology_profile = (SELECT NULLIF(ontology_profile_id, '') FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id) AND calc_external_standard_terms_is_recent_deprecation(external_standard_term_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM external_standard_terms erb_r1 WHERE ontology_profile = (SELECT (SELECT NULLIF(ontology_profile_id, '') FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id)) AND ((SELECT ((COALESCE(COALESCE(erb_r1.deprecated_by_source, FALSE), FALSE) AND COALESCE(((erb_r1.deprecated_at::timestamptz) IS NOT NULL AND (erb_r1.deprecated_at::timestamptz)::text <> ''), FALSE) AND COALESCE(COALESCE((calc_external_standard_terms_days_since_deprecated(erb_r1.external_standard_term_id))::NUMERIC, 0) <= 730, FALSE)))))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_profiles_requires_frequent_review
@@ -1360,7 +1431,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_profiles_requires_frequent_review(p_ontology_profile_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((calc_ontology_profiles_recent_deprecation_count(p_ontology_profile_id))::NUMERIC, 0) >= 2, FALSE) OR COALESCE((COALESCE((SELECT last_major_revision_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_ontology_profiles_days_since_major_revision(p_ontology_profile_id))::NUMERIC, 0) < 730, FALSE)), FALSE)));
+  SELECT ((COALESCE(COALESCE((calc_ontology_profiles_recent_deprecation_count(p_ontology_profile_id))::NUMERIC, 0) >= 2, FALSE) OR COALESCE((COALESCE((((SELECT last_major_revision_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id)) IS NOT NULL AND ((SELECT last_major_revision_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_ontology_profiles_days_since_major_revision(p_ontology_profile_id))::NUMERIC, 0) < 730, FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_profiles_change_rate_profile
@@ -1370,7 +1441,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_profiles_change_rate_profile(p_ontology_profile_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN COALESCE((calc_ontology_profiles_recent_deprecation_count(p_ontology_profile_id))::NUMERIC, 0) >= 2 THEN ('FrequentDeprecation')::text ELSE (CASE WHEN (COALESCE((SELECT last_major_revision_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_ontology_profiles_days_since_major_revision(p_ontology_profile_id))::NUMERIC, 0) < 730, FALSE)) THEN ('RecentMajorRevision')::text ELSE (CASE WHEN (COALESCE((SELECT last_revised_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_ontology_profiles_days_since_last_revision(p_ontology_profile_id))::NUMERIC, 0) > 3650, FALSE)) THEN ('Dormant')::text ELSE ('Unassessed')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN COALESCE((calc_ontology_profiles_recent_deprecation_count(p_ontology_profile_id))::NUMERIC, 0) >= 2 THEN ('FrequentDeprecation')::text ELSE (CASE WHEN (COALESCE((((SELECT last_major_revision_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id)) IS NOT NULL AND ((SELECT last_major_revision_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_ontology_profiles_days_since_major_revision(p_ontology_profile_id))::NUMERIC, 0) < 730, FALSE)) THEN ('RecentMajorRevision')::text ELSE (CASE WHEN (COALESCE((((SELECT last_revised_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id)) IS NOT NULL AND ((SELECT last_revised_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_ontology_profiles_days_since_last_revision(p_ontology_profile_id))::NUMERIC, 0) > 3650, FALSE)) THEN ('Dormant')::text ELSE ('Unassessed')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_profiles_is_review_overdue_for_change_rate
@@ -1380,7 +1451,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_profiles_is_review_overdue_for_change_rate(p_ontology_profile_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_ontology_profiles_requires_frequent_review(p_ontology_profile_id), FALSE) AND COALESCE((COALESCE((SELECT dependency_reviewed_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id) IS NULL, FALSE) OR COALESCE(COALESCE((calc_ontology_profiles_days_since_dependency_reviewed(p_ontology_profile_id))::NUMERIC, 0) > 180, FALSE)), FALSE)));
+  SELECT ((COALESCE(calc_ontology_profiles_requires_frequent_review(p_ontology_profile_id), FALSE) AND COALESCE((COALESCE((((SELECT dependency_reviewed_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id)) IS NULL OR ((SELECT dependency_reviewed_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::text = ''), FALSE) OR COALESCE(COALESCE((calc_ontology_profiles_days_since_dependency_reviewed(p_ontology_profile_id))::NUMERIC, 0) > 180, FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_profiles_skips_adoption_path
@@ -1390,7 +1461,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_profiles_skips_adoption_path(p_ontology_profile_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_ontology_profiles_prerequisite_adopted_at(p_ontology_profile_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT adoption_stage FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::NUMERIC, 0) > 1, FALSE) AND COALESCE((COALESCE((SELECT NULLIF(prerequisite_profile, '') FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id) IS NULL, FALSE) OR COALESCE((SELECT val FROM __erb_dedup_v1) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) > (SELECT adopted_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id)), FALSE), FALSE)), FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_ontology_profiles_prerequisite_adopted_at(p_ontology_profile_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT adoption_stage FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::NUMERIC, 0) > 1, FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(prerequisite_profile, '') FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id)) IS NULL OR ((SELECT NULLIF(prerequisite_profile, '') FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id))::text = ''), FALSE) OR COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) > (SELECT adopted_at::timestamptz FROM ontology_profiles WHERE ontology_profile_id = p_ontology_profile_id)), FALSE), FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_profiles_namespace_is_http
@@ -1480,7 +1551,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_contexts_model_reasoned_answer_count(p_evaluation_context_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM assistant_answers WHERE calc_assistant_answers_model_did_the_reasoning(assistant_answer_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM assistant_answers erb_r1 WHERE ((SELECT ((COALESCE(COALESCE(erb_r1.needs_inference, FALSE), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.derivation_performed_by, ''), '') = 'LanguageModel', FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_contexts_otherwise_reasoned_answer_count
@@ -1490,7 +1561,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_contexts_otherwise_reasoned_answer_count(p_evaluation_context_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM assistant_answers WHERE calc_assistant_answers_model_did_the_reasoning(assistant_answer_id) = FALSE))::integer;
+  SELECT ((SELECT COUNT(*) FROM assistant_answers erb_r1 WHERE ((SELECT ((COALESCE(COALESCE(erb_r1.needs_inference, FALSE), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.derivation_performed_by, ''), '') = 'LanguageModel', FALSE)))::boolean))::boolean = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_contexts_assistant_answer_count
@@ -1510,7 +1581,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_contexts_model_reasoned_failed_answer_count(p_evaluation_context_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM assistant_answers WHERE calc_assistant_answers_model_reasoned_and_task_failed(assistant_answer_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM assistant_answers erb_r1 WHERE ((SELECT ((COALESCE(calc_assistant_answers_model_did_the_reasoning(erb_r1.assistant_answer_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.task_outcome, ''), '') = 'Failed', FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_contexts_out_of_order_step_execution_count
@@ -1640,7 +1711,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_organizations_provider_held_delivery_method_count(p_organization_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM sourcing_functions WHERE client_organization = (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id) AND delivers_own_product = TRUE AND calc_sourcing_functions_is_method_knowledge_held_outside(sourcing_function_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM sourcing_functions erb_r1 WHERE client_organization = (SELECT (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id)) AND delivers_own_product = TRUE AND ((SELECT (COALESCE(NULLIF(erb_r1.method_holder, ''), '') <> COALESCE(NULLIF(erb_r1.client_organization, ''), ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_organizations_is_hollowed_out_firm
@@ -1660,7 +1731,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_organizations_audit_finding_count(p_organization_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_audit_items WHERE calc_knowledge_audit_items_client_organization(knowledge_audit_item_id) = (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id) AND calc_knowledge_audit_items_has_internal_shortfall(knowledge_audit_item_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_audit_items erb_r1 WHERE ((SELECT (SELECT organization::text FROM knowledge_audits WHERE knowledge_audit_id = erb_r1.knowledge_audit)))::text = (SELECT (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id)) AND ((SELECT (COALESCE((erb_r1.held_internal_level < erb_r1.needed_level), FALSE))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_organizations_filled_knowledge_position_count
@@ -1690,7 +1761,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_organizations_departed_holder_know_how_count(p_organization_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM know_how_carriers WHERE organization = (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id) AND calc_know_how_carriers_is_held_by_departed_holder(know_how_carrier_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM know_how_carriers WHERE organization = (SELECT (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id)) AND calc_know_how_carriers_is_held_by_departed_holder(know_how_carrier_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_organizations_lost_departed_know_how_count
@@ -1700,7 +1771,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_organizations_lost_departed_know_how_count(p_organization_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM know_how_carriers WHERE organization = (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id) AND calc_know_how_carriers_is_held_only_by_departed(know_how_carrier_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM know_how_carriers WHERE organization = (SELECT (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id)) AND calc_know_how_carriers_is_held_only_by_departed(know_how_carrier_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_organizations_retained_departed_know_how_percent
@@ -1730,7 +1801,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_organizations_captured_own_know_how_count(p_organization_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM know_how_carriers WHERE organization = (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id) AND calc_know_how_carriers_is_captured(know_how_carrier_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM know_how_carriers WHERE organization = (SELECT (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id)) AND calc_know_how_carriers_is_captured(know_how_carrier_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_organizations_documentation_entry_count
@@ -1740,7 +1811,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_organizations_documentation_entry_count(p_organization_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_repository_entries WHERE calc_knowledge_repository_entries_owner_organization(knowledge_repository_entry_id) = (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_repository_entries erb_r1 WHERE ((SELECT (SELECT owner_organization::text FROM procedures WHERE procedure_id = erb_r1.procedure)))::text = (SELECT (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_organizations_unallocated_documentation_count
@@ -1750,7 +1821,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_organizations_unallocated_documentation_count(p_organization_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_repository_entries WHERE calc_knowledge_repository_entries_owner_organization(knowledge_repository_entry_id) = (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id) AND authored_on_allocated_time = FALSE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_repository_entries erb_r1 WHERE ((SELECT (SELECT owner_organization::text FROM procedures WHERE procedure_id = erb_r1.procedure)))::text = (SELECT (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id)) AND authored_on_allocated_time = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_organizations_transfer_given_count
@@ -1760,7 +1831,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_organizations_transfer_given_count(p_organization_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_transfers WHERE calc_knowledge_transfers_from_organization(knowledge_transfer_id) = (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_transfers erb_r1 WHERE ((SELECT (SELECT organization::text FROM agents WHERE agent_id = erb_r1.from_agent)))::text = (SELECT (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_organizations_unallocated_transfer_count
@@ -1770,7 +1841,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_organizations_unallocated_transfer_count(p_organization_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_transfers WHERE calc_knowledge_transfers_from_organization(knowledge_transfer_id) = (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id) AND on_allocated_time = FALSE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_transfers erb_r1 WHERE ((SELECT (SELECT organization::text FROM agents WHERE agent_id = erb_r1.from_agent)))::text = (SELECT (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id)) AND on_allocated_time = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_organizations_treats_knowledge_work_as_unvalued
@@ -1830,7 +1901,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_organizations_staged_decline_count(p_organization_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM capability_declines WHERE organization = (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id) AND calc_capability_declines_follows_preceding_stage_decline(capability_decline_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM capability_declines WHERE organization = (SELECT (SELECT NULLIF(organization_id, '') FROM organizations WHERE organization_id = p_organization_id)) AND calc_capability_declines_follows_preceding_stage_decline(capability_decline_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_organizations_eroded_in_stages
@@ -1896,7 +1967,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_count_of_current_role_assignments(p_agent_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_current_agent_key(role_assignment_id) = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_current_agent_key(role_assignment_id) = (SELECT (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_is_still_engaged
@@ -1926,7 +1997,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_overridden_decision_count(p_agent_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_deciding_agent_when_overridden(agent_decision_record_id) = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records erb_r1 WHERE ((SELECT (CASE WHEN calc_agent_decision_records_was_overridden(erb_r1.agent_decision_record_id) THEN (NULLIF(erb_r1.deciding_agent, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_override_rate_percent
@@ -1956,7 +2027,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_boundary_violation_count(p_agent_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_agent_when_boundary_violated(agent_decision_record_id) = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records erb_r1 WHERE ((SELECT (CASE WHEN calc_agent_decision_records_violated_authority_boundary(erb_r1.agent_decision_record_id) THEN (NULLIF(erb_r1.deciding_agent, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_is_operating_outside_boundary
@@ -1976,7 +2047,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_draft_decision_count(p_agent_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_agent_when_draft(agent_decision_record_id) = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records erb_r1 WHERE ((SELECT (CASE WHEN calc_agent_decision_records_is_draft_kind(erb_r1.agent_decision_record_id) THEN (NULLIF(erb_r1.deciding_agent, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_overridden_draft_count
@@ -1986,7 +2057,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_overridden_draft_count(p_agent_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_agent_when_draft_overridden(agent_decision_record_id) = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records erb_r1 WHERE ((SELECT (CASE WHEN (COALESCE(calc_agent_decision_records_is_draft_kind(erb_r1.agent_decision_record_id), FALSE) AND COALESCE(calc_agent_decision_records_was_overridden(erb_r1.agent_decision_record_id), FALSE)) THEN (NULLIF(erb_r1.deciding_agent, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_draft_rewrite_rate_percent
@@ -2006,7 +2077,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_times_named_as_broker(p_agent_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_broker_links WHERE calc_knowledge_broker_links_active_reliance_broker_key(knowledge_broker_link_id) = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM knowledge_broker_links erb_r1 WHERE ((SELECT (CASE WHEN calc_knowledge_broker_links_is_active_reliance(erb_r1.knowledge_broker_link_id) THEN (NULLIF(erb_r1.broker, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_is_recognized_broker
@@ -2026,7 +2097,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_at_risk_reliance_count(p_agent_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_broker_links WHERE calc_knowledge_broker_links_at_risk_broker_key(knowledge_broker_link_id) = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM knowledge_broker_links erb_r1 WHERE ((SELECT (CASE WHEN calc_knowledge_broker_links_is_at_risk_reliance(erb_r1.knowledge_broker_link_id) THEN (NULLIF(erb_r1.broker, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_has_at_risk_knowledge_reliance
@@ -2046,7 +2117,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_is_organization_agent(p_agent_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(represents_organization, '') FROM agents WHERE agent_id = p_agent_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(represents_organization, '') FROM agents WHERE agent_id = p_agent_id)) IS NOT NULL AND ((SELECT NULLIF(represents_organization, '') FROM agents WHERE agent_id = p_agent_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_answer_count
@@ -2176,7 +2247,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_is_ai_agent_without_model_version(p_agent_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(agent_kind, '') FROM agents WHERE agent_id = p_agent_id), '') = 'AIAgent', FALSE) AND COALESCE((SELECT NULLIF(version_or_employment_key, '') FROM agents WHERE agent_id = p_agent_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(agent_kind, '') FROM agents WHERE agent_id = p_agent_id), '') = 'AIAgent', FALSE) AND COALESCE((((SELECT NULLIF(version_or_employment_key, '') FROM agents WHERE agent_id = p_agent_id)) IS NULL OR ((SELECT NULLIF(version_or_employment_key, '') FROM agents WHERE agent_id = p_agent_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_attributed_artifact_count
@@ -2186,7 +2257,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_attributed_artifact_count(p_agent_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM execution_entities WHERE calc_execution_entities_attributed_to_agent(execution_entity_id) = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM execution_entities erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.usage, ''), '') = 'Generated' THEN (calc_execution_entities_generating_agent(erb_r1.execution_entity_id))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_has_produced_artifacts
@@ -2236,7 +2307,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_current_accountable_human_count(p_agent_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM ai_agent_accountabilities WHERE ai_agent = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id) AND calc_ai_agent_accountabilities_is_current_human_accountability(ai_agent_accountability_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM ai_agent_accountabilities erb_r1 WHERE ai_agent = (SELECT (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)) AND ((SELECT ((COALESCE(calc_ai_agent_accountabilities_is_current(erb_r1.ai_agent_accountability_id), FALSE) AND COALESCE(COALESCE(calc_ai_agent_accountabilities_accountable_agent_kind(erb_r1.ai_agent_accountability_id), '') = 'Human', FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_is_ai_agent_without_accountable_human
@@ -2296,7 +2367,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_located_know_how_count(p_agent_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_broker_links WHERE broker = (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id) AND calc_knowledge_broker_links_locates_other_holder(knowledge_broker_link_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_broker_links erb_r1 WHERE broker = (SELECT (SELECT NULLIF(agent_id, '') FROM agents WHERE agent_id = p_agent_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_knowledge_broker_links_pointed_holder(erb_r1.knowledge_broker_link_id) AS val) SELECT ((COALESCE(((NULLIF(erb_r1.points_to_know_how, '')) IS NOT NULL AND (NULLIF(erb_r1.points_to_know_how, ''))::text <> ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> COALESCE(NULLIF(erb_r1.broker, ''), ''), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_required_mentoring_hours_per_week
@@ -2306,7 +2377,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agents_required_mentoring_hours_per_week(p_agent_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((expected_weekly_hours)::numeric), 0) FROM mentorships WHERE mentor_agent = p_agent_id AND calc_mentorships_is_active(mentorship_id) = TRUE))::numeric;
+  SELECT ((SELECT COALESCE(SUM((expected_weekly_hours)::numeric), 0) FROM mentorships erb_r1 WHERE mentor_agent = p_agent_id AND ((WITH __erb_dedup_v1 AS (SELECT calc_mentorships_as_of_instant(erb_r1.mentorship_id) AS val) SELECT ((COALESCE(((erb_r1.valid_from::timestamptz) IS NOT NULL AND (erb_r1.valid_from::timestamptz)::text <> ''), FALSE) AND COALESCE(COALESCE((erb_r1.valid_from::timestamptz <= (SELECT val FROM __erb_dedup_v1)), ((erb_r1.valid_from::timestamptz) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE(((erb_r1.valid_to::timestamptz) IS NULL OR (erb_r1.valid_to::timestamptz)::text = ''), FALSE) OR COALESCE(COALESCE((erb_r1.valid_to::timestamptz >= (SELECT val FROM __erb_dedup_v1)), ((erb_r1.valid_to::timestamptz) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE)), FALSE)))::boolean))::boolean = TRUE))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agents_lacks_time_to_mentor
@@ -2624,7 +2695,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_currently_covered_assignment_count(p_role_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_role_when_covering(role_assignment_id) = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_role_when_covering(role_assignment_id) = (SELECT (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_has_no_current_holder
@@ -2674,7 +2745,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_departed_assignment_count(p_role_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_departed_role_key(role_assignment_id) = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_departed_role_key(role_assignment_id) = (SELECT (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_has_lost_a_holder
@@ -2704,7 +2775,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_ungrounded_boundary_count(p_role_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM authority_boundaries WHERE calc_authority_boundaries_constrained_role_assignment_key(authority_boundary_id) = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM authority_boundaries erb_r1 WHERE ((SELECT (CASE WHEN calc_authority_boundaries_binds_despite_lapsed_ratification(erb_r1.authority_boundary_id) THEN (NULLIF(erb_r1.authority_role, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_is_governed_by_lapsed_authority
@@ -2714,7 +2785,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_is_governed_by_lapsed_authority(p_role_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_roles_ungrounded_boundary_count(p_role_id) > 0))::boolean;
+  SELECT ((COALESCE((calc_roles_ungrounded_boundary_count(p_role_id))::NUMERIC, 0) > 0));
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_unescalated_refusal_count
@@ -2724,7 +2795,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_unescalated_refusal_count(p_role_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_unescalated_refusal_role_key(send_intent_id) = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_unescalated_refusal_role_key(send_intent_id) = (SELECT (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_unauthorized_enforcement_assignment_count
@@ -2734,7 +2805,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_unauthorized_enforcement_assignment_count(p_role_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_unauthorized_enforcement_role_key(role_assignment_id) = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_unauthorized_enforcement_role_key(role_assignment_id) = (SELECT (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_is_ungoverned_enforcement_role
@@ -2744,7 +2815,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_is_ungoverned_enforcement_role(p_role_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_roles_unauthorized_enforcement_assignment_count(p_role_id) > 0))::boolean;
+  SELECT ((COALESCE((calc_roles_unauthorized_enforcement_assignment_count(p_role_id))::NUMERIC, 0) > 0));
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_specialization_count
@@ -2774,7 +2845,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_is_senior_variant_not_specialization(p_role_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(seniority_level, '') FROM roles WHERE role_id = p_role_id), '') = 'Senior', FALSE) AND COALESCE((COALESCE((SELECT NULLIF(specializes_role, '') FROM roles WHERE role_id = p_role_id) IS NULL, FALSE) OR COALESCE(COALESCE(calc_roles_specialized_role_family(p_role_id), '') <> COALESCE((SELECT NULLIF(role_family, '') FROM roles WHERE role_id = p_role_id), ''), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(seniority_level, '') FROM roles WHERE role_id = p_role_id), '') = 'Senior', FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(specializes_role, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(specializes_role, '') FROM roles WHERE role_id = p_role_id))::text = ''), FALSE) OR COALESCE(COALESCE(calc_roles_specialized_role_family(p_role_id), '') <> COALESCE((SELECT NULLIF(role_family, '') FROM roles WHERE role_id = p_role_id), ''), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_is_not_housed_in_department
@@ -2824,7 +2895,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_role_mention_count(p_role_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM source_term_mentions WHERE calc_source_term_mentions_intended_term_role(source_term_mention_id) = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM source_term_mentions erb_r1 WHERE ((SELECT (SELECT represents_role::text FROM vocabulary_terms WHERE vocabulary_term_id = erb_r1.intended_term)))::text = (SELECT (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_unresolved_role_mention_count
@@ -2834,7 +2905,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_unresolved_role_mention_count(p_role_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM source_term_mentions WHERE calc_source_term_mentions_unresolved_role_key(source_term_mention_id) = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM source_term_mentions erb_r1 WHERE ((SELECT (CASE WHEN COALESCE((calc_source_term_mentions_matching_label_count(erb_r1.source_term_mention_id))::NUMERIC, 0) = 0 THEN (calc_source_term_mentions_intended_term_role(erb_r1.source_term_mention_id))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_is_missed_by_phrase_query
@@ -2854,7 +2925,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_has_escalation_backup(p_role_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(escalation_backup_role, '') FROM roles WHERE role_id = p_role_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(escalation_backup_role, '') FROM roles WHERE role_id = p_role_id)) IS NOT NULL AND ((SELECT NULLIF(escalation_backup_role, '') FROM roles WHERE role_id = p_role_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_has_unfilled_escalation_backup
@@ -2864,7 +2935,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_has_unfilled_escalation_backup(p_role_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(escalation_backup_role, '') FROM roles WHERE role_id = p_role_id) IS NOT NULL, FALSE) AND COALESCE(calc_roles_backup_role_holder(p_role_id) IS NULL, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_roles_backup_role_holder(p_role_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(escalation_backup_role, '') FROM roles WHERE role_id = p_role_id)) IS NOT NULL AND ((SELECT NULLIF(escalation_backup_role, '') FROM roles WHERE role_id = p_role_id))::text <> ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_release_approval_step_count
@@ -2874,7 +2945,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_release_approval_step_count(p_role_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM steps WHERE assigned_role = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id) AND calc_steps_is_release_approval_gate(step_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM steps WHERE assigned_role = (SELECT (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id)) AND calc_steps_is_release_approval_gate(step_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_is_production_release_approver
@@ -2914,7 +2985,7 @@ $$ LANGUAGE sql STABLE;
 -- Lookup: AgentKind from related Agents
 
 
-CREATE OR REPLACE FUNCTION calc_role_assignments_agent_kind(p_role_assignment_id TEXT)
+CREATE OR REPLACE FUNCTION calc_role_assignments_agent_kind__compute(p_role_assignment_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT agent_kind::text FROM agents WHERE agent_id = (SELECT agent FROM role_assignments WHERE role_assignment_id = p_role_assignment_id));
 $$ LANGUAGE sql STABLE;
@@ -3195,7 +3266,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_is_current(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_as_of_instant(p_role_assignment_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_as_of_instant(p_role_assignment_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_current_agent_key
@@ -3215,7 +3286,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_is_currently_valid(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id), '') = 'Active', FALSE) AND COALESCE((COALESCE((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > calc_role_assignments_as_of_instant(p_role_assignment_id)), FALSE), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id), '') = 'Active', FALSE) AND COALESCE((COALESCE((((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > calc_role_assignments_as_of_instant(p_role_assignment_id)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_agent_role_key
@@ -3235,7 +3306,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_has_departed(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_as_of_instant(p_role_assignment_id) AS val) SELECT ((COALESCE((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_as_of_instant(p_role_assignment_id) AS val) SELECT ((COALESCE((((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NOT NULL AND ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_covers_now
@@ -3245,7 +3316,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_covers_now(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_as_of_instant(p_role_assignment_id) AS val) SELECT ((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id), '') = 'Active', FALSE) AND COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_as_of_instant(p_role_assignment_id) AS val) SELECT ((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id), '') = 'Active', FALSE) AND COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_role_when_covering
@@ -3295,7 +3366,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_was_authorized_by_change_request(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_role_assignments_has_approving_authority(p_role_assignment_id), FALSE) AND COALESCE((SELECT NULLIF(authorizing_change_request, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_role_assignments_has_approving_authority(p_role_assignment_id), FALSE) AND COALESCE((((SELECT NULLIF(authorizing_change_request, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NOT NULL AND ((SELECT NULLIF(authorizing_change_request, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_decision_count
@@ -3303,9 +3374,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: number | Returns: NUMERIC
 
 
-CREATE OR REPLACE FUNCTION calc_role_assignments_decision_count(p_role_assignment_id TEXT)
+CREATE OR REPLACE FUNCTION calc_role_assignments_decision_count__compute(p_role_assignment_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_scored(agent_decision_record_id) = (SELECT NULLIF(role_assignment_id, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records erb_r1 WHERE ((SELECT (CASE WHEN ((NULLIF(erb_r1.under_role_assignment, '')) IS NOT NULL AND (NULLIF(erb_r1.under_role_assignment, ''))::text <> '') THEN (NULLIF(erb_r1.under_role_assignment, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(role_assignment_id, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_overridden_decision_count
@@ -3315,7 +3386,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_overridden_decision_count(p_role_assignment_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_role_assignment_when_overridden(agent_decision_record_id) = (SELECT NULLIF(role_assignment_id, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records erb_r1 WHERE ((SELECT (CASE WHEN calc_agent_decision_records_was_overridden(erb_r1.agent_decision_record_id) THEN (NULLIF(erb_r1.under_role_assignment, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(role_assignment_id, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_override_rate_percent
@@ -3323,7 +3394,7 @@ $$ LANGUAGE sql STABLE;
 -- Type: calculated | DataType: number | Returns: NUMERIC
 
 
-CREATE OR REPLACE FUNCTION calc_role_assignments_override_rate_percent(p_role_assignment_id TEXT)
+CREATE OR REPLACE FUNCTION calc_role_assignments_override_rate_percent__compute(p_role_assignment_id TEXT)
 RETURNS NUMERIC AS $$
   WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_decision_count(p_role_assignment_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_role_assignments_overridden_decision_count(p_role_assignment_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(100, 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
@@ -3335,7 +3406,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_quality_regressed_vs_predecessor(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(supersedes_assignment, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_role_assignments_override_rate_percent(p_role_assignment_id), 0) > COALESCE(calc_role_assignments_predecessor_override_rate_percent(p_role_assignment_id), 0), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(supersedes_assignment, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NOT NULL AND ((SELECT NULLIF(supersedes_assignment, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_role_assignments_override_rate_percent(p_role_assignment_id), 0) > COALESCE(calc_role_assignments_predecessor_override_rate_percent(p_role_assignment_id), 0), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_departed_role_key
@@ -3415,7 +3486,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_error_correction_count(p_role_assignment_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_error_correction_role_assignment_ke(agent_decision_record_id) = (SELECT NULLIF(role_assignment_id, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records erb_r1 WHERE ((SELECT (CASE WHEN calc_agent_decision_records_is_error_correction(erb_r1.agent_decision_record_id) THEN (NULLIF(erb_r1.under_role_assignment, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(role_assignment_id, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_error_rate_percent
@@ -3435,7 +3506,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_has_dated_authorization(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(approving_authority_role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL, FALSE) AND COALESCE((SELECT authorization_decided_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(approving_authority_role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NOT NULL AND ((SELECT NULLIF(approving_authority_role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text <> ''), FALSE) AND COALESCE((((SELECT authorization_decided_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NOT NULL AND ((SELECT authorization_decided_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_days_since_authorization_review
@@ -3445,7 +3516,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_days_since_authorization_review(p_role_assignment_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_as_of_instant(p_role_assignment_id) AS val) SELECT (CASE WHEN (SELECT authorization_reviewed_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL THEN (((((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT authorization_reviewed_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::timestamptz AT TIME ZONE 'UTC')::date))::text ELSE (((((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_as_of_instant(p_role_assignment_id) AS val) SELECT (CASE WHEN (((SELECT authorization_reviewed_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NOT NULL AND ((SELECT authorization_reviewed_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text <> '') THEN (((((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT authorization_reviewed_at::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::timestamptz AT TIME ZONE 'UTC')::date))::text ELSE (((((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_authorization_is_overdue_for_review
@@ -3495,7 +3566,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_boundary_violation_count_for_assignment(p_role_assignment_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_boundary_violation_role_assignment_(agent_decision_record_id) = (SELECT NULLIF(role_assignment_id, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records erb_r1 WHERE ((SELECT (CASE WHEN calc_agent_decision_records_violated_authority_boundary(erb_r1.agent_decision_record_id) THEN (NULLIF(erb_r1.under_role_assignment, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(role_assignment_id, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_has_any_boundary_violation
@@ -3505,7 +3576,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_has_any_boundary_violation(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_role_assignments_boundary_violation_count_for_assignment(p_role_assignment_id) > 0))::boolean;
+  SELECT ((COALESCE((calc_role_assignments_boundary_violation_count_for_assignment(p_role_assignment_id))::NUMERIC, 0) > 0));
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_suspension_condition_met
@@ -3545,7 +3616,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_has_approving_authority(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(approving_authority_role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(approving_authority_role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NOT NULL AND ((SELECT NULLIF(approving_authority_role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_has_authorizing_change_request
@@ -3555,7 +3626,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_has_authorizing_change_request(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(authorizing_change_request, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(authorizing_change_request, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NOT NULL AND ((SELECT NULLIF(authorizing_change_request, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_is_unauthorized_enforcement_agent
@@ -3605,7 +3676,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_predecessor_lacks_validity_end(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(supersedes_assignment, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NOT NULL, FALSE) AND COALESCE(calc_role_assignments_predecessor_valid_to(p_role_assignment_id) IS NULL, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_role_assignments_predecessor_valid_to(p_role_assignment_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(supersedes_assignment, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NOT NULL AND ((SELECT NULLIF(supersedes_assignment, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text <> ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_agent_role_pair_key
@@ -3625,7 +3696,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_is_open_ended(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) IS NULL)::boolean;
+  SELECT ((((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_receives_approval_notices_now
@@ -3745,7 +3816,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_communities_of_practice_has_own_vocabulary_and_norms(p_community_of_practice_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(own_vocabulary, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id) IS NOT NULL, FALSE) AND COALESCE((SELECT NULLIF(norms, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id) IS NOT NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(own_vocabulary, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id)) IS NOT NULL AND ((SELECT NULLIF(own_vocabulary, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(norms, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id)) IS NOT NULL AND ((SELECT NULLIF(norms, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_communities_of_practice_sharing_event_count
@@ -3765,7 +3836,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_communities_of_practice_is_mandated_without_sharing_norm(p_community_of_practice_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(origin, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(origin, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id), '') <> 'Grassroots', FALSE) AND COALESCE(COALESCE((calc_communities_of_practice_sharing_event_count(p_community_of_practice_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(origin, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id)) IS NOT NULL AND ((SELECT NULLIF(origin, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(origin, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id), '') <> 'Grassroots', FALSE) AND COALESCE(COALESCE((calc_communities_of_practice_sharing_event_count(p_community_of_practice_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_communities_of_practice_interconnected_know_how_count
@@ -3775,7 +3846,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_communities_of_practice_interconnected_know_how_count(p_community_of_practice_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM know_how_carriers WHERE community_of_practice = (SELECT NULLIF(community_of_practice_id, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id) AND calc_know_how_carriers_builds_on_same_community_know_how(know_how_carrier_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM know_how_carriers WHERE community_of_practice = (SELECT (SELECT NULLIF(community_of_practice_id, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id)) AND calc_know_how_carriers_builds_on_same_community_know_how(know_how_carrier_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_communities_of_practice_physical_know_how_count
@@ -3825,7 +3896,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_communities_of_practice_external_member_count(p_community_of_practice_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM community_memberships WHERE community_of_practice = (SELECT NULLIF(community_of_practice_id, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id) AND calc_community_memberships_is_external_member(community_membership_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM community_memberships erb_r1 WHERE community_of_practice = (SELECT (SELECT NULLIF(community_of_practice_id, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_community_memberships_member_organization(erb_r1.community_membership_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> COALESCE(calc_community_memberships_community_organization(erb_r1.community_membership_id), ''), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_communities_of_practice_specialist_member_count
@@ -3865,7 +3936,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_communities_of_practice_recent_apprenticeship_count(p_community_of_practice_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM mentorships WHERE community_of_practice = (SELECT NULLIF(community_of_practice_id, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id) AND calc_mentorships_is_recent_apprenticeship(mentorship_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM mentorships erb_r1 WHERE community_of_practice = (SELECT (SELECT NULLIF(community_of_practice_id, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_mentorships_days_since_started(erb_r1.mentorship_id) AS val) SELECT ((COALESCE(COALESCE(NULLIF(erb_r1.mentorship_form, ''), '') = 'Apprenticeship', FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 0, FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) <= 1095, FALSE)))))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_communities_of_practice_is_circulation_ending_for_lack_of_
@@ -3885,7 +3956,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_communities_of_practice_ambient_absorption_count(p_community_of_practice_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_transfers WHERE community_of_practice = (SELECT NULLIF(community_of_practice_id, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id) AND calc_knowledge_transfers_is_ambient_absorption_by_non_practitio(knowledge_transfer_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_transfers erb_r1 WHERE community_of_practice = (SELECT (SELECT NULLIF(community_of_practice_id, '') FROM communities_of_practice WHERE community_of_practice_id = p_community_of_practice_id)) AND ((SELECT ((COALESCE(((NULLIF(erb_r1.recipient_agent, '')) IS NOT NULL AND (NULLIF(erb_r1.recipient_agent, ''))::text <> ''), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.channel, ''), '') = 'AmbientExposure', FALSE) AND COALESCE(COALESCE((calc_knowledge_transfers_recipient_role_count(erb_r1.knowledge_transfer_id))::NUMERIC, 0) = 0, FALSE)))))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_communities_of_practice_has_ambient_trade_know_how
@@ -4009,7 +4080,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mentorships_is_active(p_mentorship_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_mentorships_as_of_instant(p_mentorship_id) AS val) SELECT ((COALESCE((SELECT valid_from::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((SELECT valid_to::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id) >= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_to::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_mentorships_as_of_instant(p_mentorship_id) AS val) SELECT ((COALESCE((((SELECT valid_from::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id)) IS NOT NULL AND ((SELECT valid_from::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((((SELECT valid_to::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id) >= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_to::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mentorships_days_since_started
@@ -4019,7 +4090,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mentorships_days_since_started(p_mentorship_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT valid_from::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id) IS NULL THEN (99999)::text ELSE ((((calc_mentorships_as_of_instant(p_mentorship_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT valid_from::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT valid_from::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id)) IS NULL OR ((SELECT valid_from::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id))::text = '') THEN (99999)::text ELSE ((((calc_mentorships_as_of_instant(p_mentorship_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT valid_from::timestamptz FROM mentorships WHERE mentorship_id = p_mentorship_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mentorships_is_recent_apprenticeship
@@ -4150,9 +4221,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
 
 
-CREATE OR REPLACE FUNCTION calc_procedure_types_is_detached_from_taxonomy(p_procedure_type_id TEXT)
+CREATE OR REPLACE FUNCTION calc_procedure_types_is_detached_from_taxonomy__compute(p_procedure_type_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(taxonomy_rank, '') FROM procedure_types WHERE procedure_type_id = p_procedure_type_id), '') <> 'FunctionalDomain', FALSE) AND COALESCE((SELECT NULLIF(broader_procedure_type, '') FROM procedure_types WHERE procedure_type_id = p_procedure_type_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(taxonomy_rank, '') FROM procedure_types WHERE procedure_type_id = p_procedure_type_id), '') <> 'FunctionalDomain', FALSE) AND COALESCE((((SELECT NULLIF(broader_procedure_type, '') FROM procedure_types WHERE procedure_type_id = p_procedure_type_id)) IS NULL OR ((SELECT NULLIF(broader_procedure_type, '') FROM procedure_types WHERE procedure_type_id = p_procedure_type_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_types_is_unreachable_by_navigation
@@ -4162,7 +4233,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_types_is_unreachable_by_navigation(p_procedure_type_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_procedure_types_is_detached_from_taxonomy(p_procedure_type_id), FALSE) OR COALESCE((COALESCE((SELECT NULLIF(broader_procedure_type, '') FROM procedure_types WHERE procedure_type_id = p_procedure_type_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_procedure_types_broader_is_detached(p_procedure_type_id), FALSE) = TRUE, FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE(calc_procedure_types_is_detached_from_taxonomy(p_procedure_type_id), FALSE) OR COALESCE((COALESCE((((SELECT NULLIF(broader_procedure_type, '') FROM procedure_types WHERE procedure_type_id = p_procedure_type_id)) IS NOT NULL AND ((SELECT NULLIF(broader_procedure_type, '') FROM procedure_types WHERE procedure_type_id = p_procedure_type_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_procedure_types_broader_is_detached(p_procedure_type_id), FALSE) = TRUE, FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_types_member_count
@@ -4182,7 +4253,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_types_members_lacking_distinction_count(p_procedure_type_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM procedures WHERE calc_procedures_lacks_distinction_type_key(procedure_id) = (SELECT NULLIF(procedure_type_id, '') FROM procedure_types WHERE procedure_type_id = p_procedure_type_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM procedures erb_r1 WHERE ((SELECT (CASE WHEN calc_procedures_lacks_type_distinction(erb_r1.procedure_id) THEN (NULLIF(erb_r1.procedure_type, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_type_id, '') FROM procedure_types WHERE procedure_type_id = p_procedure_type_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_types_is_arbitrary_grouping
@@ -4192,7 +4263,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_types_is_arbitrary_grouping(p_procedure_type_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_procedure_types_member_count(p_procedure_type_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0, FALSE) AND COALESCE((COALESCE((SELECT NULLIF(distinguishing_facet, '') FROM procedure_types WHERE procedure_type_id = p_procedure_type_id) IS NULL, FALSE) OR COALESCE(COALESCE(calc_procedure_types_members_lacking_distinction_count(p_procedure_type_id), 0) = COALESCE((SELECT val FROM __erb_dedup_v1), 0), FALSE)), FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_procedure_types_member_count(p_procedure_type_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0, FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(distinguishing_facet, '') FROM procedure_types WHERE procedure_type_id = p_procedure_type_id)) IS NULL OR ((SELECT NULLIF(distinguishing_facet, '') FROM procedure_types WHERE procedure_type_id = p_procedure_type_id))::text = ''), FALSE) OR COALESCE(COALESCE(calc_procedure_types_members_lacking_distinction_count(p_procedure_type_id), 0) = COALESCE((SELECT val FROM __erb_dedup_v1), 0), FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_procedure_type_rank
@@ -4337,7 +4408,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_execution_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_procedure_versions_execution_count(procedure_version_id))::numeric), 0) FROM procedure_versions WHERE procedure = p_procedure_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COUNT(*) FROM procedure_executions WHERE procedure_version = NULLIF(erb_r1.procedure_version_id, '')))::integer))::integer)::numeric), 0) FROM procedure_versions erb_r1 WHERE procedure = p_procedure_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_is_template_instance
@@ -4347,7 +4418,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_is_template_instance(p_procedure_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(template_procedure, '') FROM procedures WHERE procedure_id = p_procedure_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(template_procedure, '') FROM procedures WHERE procedure_id = p_procedure_id)) IS NOT NULL AND ((SELECT NULLIF(template_procedure, '') FROM procedures WHERE procedure_id = p_procedure_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_target_count
@@ -4377,7 +4448,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_specified_step_total(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_procedure_versions_count_of_steps(procedure_version_id))::numeric), 0) FROM procedure_versions WHERE procedure = p_procedure_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COUNT(*) FROM steps WHERE procedure_version = NULLIF(erb_r1.procedure_version_id, '')))::integer))::integer)::numeric), 0) FROM procedure_versions erb_r1 WHERE procedure = p_procedure_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_has_no_explicit_steps
@@ -4417,7 +4488,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_failure_criterion_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM procedure_outcome_criteria WHERE calc_procedure_outcome_criteria_failure_procedure_key(procedure_outcome_criterion_id) = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM procedure_outcome_criteria erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.polarity, ''), '') = 'Failure' THEN (NULLIF(erb_r1.procedure, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_has_no_failure_criterion
@@ -4457,7 +4528,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_step_level_view_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM procedure_lens_views WHERE calc_procedure_lens_views_step_level_procedure_key(procedure_lens_view_id) = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM procedure_lens_views erb_r1 WHERE ((SELECT (CASE WHEN COALESCE((calc_procedure_lens_views_lens_granularity_rank(erb_r1.procedure_lens_view_id))::NUMERIC, 0) = 3 THEN (NULLIF(erb_r1.procedure, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_category_level_view_count
@@ -4467,7 +4538,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_category_level_view_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM procedure_lens_views WHERE calc_procedure_lens_views_category_level_procedure_key(procedure_lens_view_id) = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM procedure_lens_views erb_r1 WHERE ((SELECT (CASE WHEN COALESCE((calc_procedure_lens_views_lens_granularity_rank(erb_r1.procedure_lens_view_id))::NUMERIC, 0) = 1 THEN (NULLIF(erb_r1.procedure, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_has_step_and_category_resolutions
@@ -4487,7 +4558,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_is_missing_demanded_resolution(p_procedure_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((COALESCE(COALESCE((calc_procedures_step_level_view_count(p_procedure_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(calc_procedures_has_no_explicit_steps(p_procedure_id), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((calc_procedures_category_level_view_count(p_procedure_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE((COALESCE((SELECT NULLIF(procedure_type, '') FROM procedures WHERE procedure_id = p_procedure_id) IS NULL, FALSE) OR COALESCE(COALESCE(calc_procedures_procedure_type_rank(p_procedure_id), '') <> 'ProcessType', FALSE)), FALSE)), FALSE)));
+  SELECT ((COALESCE((COALESCE(COALESCE((calc_procedures_step_level_view_count(p_procedure_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(calc_procedures_has_no_explicit_steps(p_procedure_id), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((calc_procedures_category_level_view_count(p_procedure_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(procedure_type, '') FROM procedures WHERE procedure_id = p_procedure_id)) IS NULL OR ((SELECT NULLIF(procedure_type, '') FROM procedures WHERE procedure_id = p_procedure_id))::text = ''), FALSE) OR COALESCE(COALESCE(calc_procedures_procedure_type_rank(p_procedure_id), '') <> 'ProcessType', FALSE)), FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_is_inconsistently_categorized
@@ -4497,7 +4568,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_is_inconsistently_categorized(p_procedure_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(procedure_type, '') FROM procedures WHERE procedure_id = p_procedure_id) IS NULL, FALSE) OR COALESCE(COALESCE(calc_procedures_procedure_type_rank(p_procedure_id), '') <> 'ProcessType', FALSE) OR COALESCE(calc_procedures_procedure_type_definition(p_procedure_id) IS NULL, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_procedures_procedure_type_definition(p_procedure_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(procedure_type, '') FROM procedures WHERE procedure_id = p_procedure_id)) IS NULL OR ((SELECT NULLIF(procedure_type, '') FROM procedures WHERE procedure_id = p_procedure_id))::text = ''), FALSE) OR COALESCE(COALESCE(calc_procedures_procedure_type_rank(p_procedure_id), '') <> 'ProcessType', FALSE) OR COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_strategic_alignment_count
@@ -4537,7 +4608,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_unlinked_measure_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM process_outcome_measures WHERE procedure = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id) AND calc_process_outcome_measures_is_unlinked_to_business_outcome(process_outcome_measure_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM process_outcome_measures erb_r1 WHERE procedure = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)) AND ((SELECT (((NULLIF(erb_r1.business_outcome, '')) IS NULL OR (NULLIF(erb_r1.business_outcome, ''))::text = ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_measures_performance_without_business_link
@@ -4557,7 +4628,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_hindered_by_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM process_interdependencies WHERE calc_process_interdependencies_hindered_procedure_key(process_interdependency_id) = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM process_interdependencies erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.effect, ''), '') = 'Hinders' THEN (NULLIF(erb_r1.to_procedure, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_is_hindered_by_another_operation
@@ -4577,7 +4648,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_matching_distinction_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM procedure_facet_assignments WHERE procedure = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id) AND facet = calc_procedures_type_distinguishing_facet(p_procedure_id) AND facet_value = calc_procedures_type_distinguishing_value(p_procedure_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM procedure_facet_assignments WHERE procedure = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)) AND facet = (SELECT calc_procedures_type_distinguishing_facet(p_procedure_id)) AND facet_value = (SELECT calc_procedures_type_distinguishing_value(p_procedure_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_lacks_type_distinction
@@ -4587,7 +4658,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_lacks_type_distinction(p_procedure_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(procedure_type, '') FROM procedures WHERE procedure_id = p_procedure_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_procedures_matching_distinction_count(p_procedure_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(procedure_type, '') FROM procedures WHERE procedure_id = p_procedure_id)) IS NOT NULL AND ((SELECT NULLIF(procedure_type, '') FROM procedures WHERE procedure_id = p_procedure_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_procedures_matching_distinction_count(p_procedure_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_lacks_distinction_type_key
@@ -4607,7 +4678,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_managed_vocabulary_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM vocabularies WHERE calc_vocabularies_managed_scheme_procedure_key(vocabulary_id) = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM vocabularies erb_r1 WHERE ((SELECT (CASE WHEN (COALESCE(((NULLIF(erb_r1.governing_role, '')) IS NOT NULL AND (NULLIF(erb_r1.governing_role, ''))::text <> ''), FALSE) AND COALESCE(((erb_r1.established_at::timestamptz) IS NOT NULL AND (erb_r1.established_at::timestamptz)::text <> ''), FALSE)) THEN (NULLIF(erb_r1.governs_procedure, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_lacks_managed_controlled_vocabulary
@@ -4627,7 +4698,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_compliance_review_step_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM steps WHERE calc_steps_compliance_review_procedure_key(step_id) = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM steps WHERE calc_steps_compliance_review_procedure_key(step_id) = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_involves_compliance_review_role
@@ -4647,7 +4718,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_is_regulated_but_unformalized(p_procedure_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(required_by_regulation, '') FROM procedures WHERE procedure_id = p_procedure_id) IS NOT NULL, FALSE) AND COALESCE(calc_procedures_has_no_explicit_steps(p_procedure_id), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(required_by_regulation, '') FROM procedures WHERE procedure_id = p_procedure_id)) IS NOT NULL AND ((SELECT NULLIF(required_by_regulation, '') FROM procedures WHERE procedure_id = p_procedure_id))::text <> ''), FALSE) AND COALESCE(calc_procedures_has_no_explicit_steps(p_procedure_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_agent_intended_count
@@ -4687,7 +4758,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_stale_entry_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_repository_entries WHERE procedure = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id) AND calc_knowledge_repository_entries_is_stale(knowledge_repository_entry_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_repository_entries erb_r1 WHERE procedure = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)) AND ((SELECT ((COALESCE(COALESCE((erb_r1.review_interval_days)::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE(calc_knowledge_repository_entries_days_since_updated(erb_r1.knowledge_repository_entry_id), 0) > COALESCE(erb_r1.review_interval_days, 0), FALSE)))))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_departed_only_know_how_count
@@ -4697,7 +4768,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_departed_only_know_how_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM know_how_carriers WHERE procedure = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id) AND calc_know_how_carriers_is_held_only_by_departed(know_how_carrier_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM know_how_carriers WHERE procedure = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)) AND calc_know_how_carriers_is_held_only_by_departed(know_how_carrier_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_has_decayed_transfer_channel
@@ -4717,7 +4788,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_execution_feedback_entry_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_repository_entries WHERE procedure = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id) AND calc_knowledge_repository_entries_is_execution_feedback(knowledge_repository_entry_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_repository_entries erb_r1 WHERE procedure = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)) AND ((SELECT (((NULLIF(erb_r1.fed_from_execution, '')) IS NOT NULL AND (NULLIF(erb_r1.fed_from_execution, ''))::text <> ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_is_executed_without_feedback_loop
@@ -4737,7 +4808,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_machine_authored_entry_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_repository_entries WHERE procedure = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id) AND calc_knowledge_repository_entries_is_machine_authored(knowledge_repository_entry_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_repository_entries erb_r1 WHERE procedure = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_knowledge_repository_entries_author_agent_kind(erb_r1.knowledge_repository_entry_id) AS val) SELECT ((COALESCE(((NULLIF(erb_r1.author_agent, '')) IS NOT NULL AND (NULLIF(erb_r1.author_agent, ''))::text <> ''), FALSE) AND COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'AIAgent', FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'AutomatedPipeline', FALSE)), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_practitioner_relationship_count
@@ -4767,7 +4838,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_unengaged_stakeholder_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM department_process_accounts WHERE procedure = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id) AND calc_department_process_accounts_is_awaiting_engagement(department_process_account_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM department_process_accounts WHERE procedure = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)) AND calc_department_process_accounts_is_awaiting_engagement(department_process_account_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_has_unengaged_stakeholder
@@ -4787,7 +4858,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_recent_starter_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM onboarding_records WHERE procedure = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id) AND calc_onboarding_records_is_recent_start(onboarding_record_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM onboarding_records erb_r1 WHERE procedure = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_onboarding_records_days_since_start(erb_r1.onboarding_record_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 0, FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) <= 180, FALSE)))))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_untransferred_veteran_know_how_count
@@ -4797,7 +4868,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_untransferred_veteran_know_how_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM know_how_carriers WHERE procedure = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id) AND calc_know_how_carriers_is_untransferred_veteran_know_how(know_how_carrier_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM know_how_carriers WHERE procedure = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)) AND calc_know_how_carriers_is_untransferred_veteran_know_how(know_how_carrier_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_departing_veteran_know_how_count
@@ -4807,7 +4878,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_departing_veteran_know_how_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM know_how_carriers WHERE procedure = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id) AND calc_know_how_carriers_is_at_risk_of_imminent_loss(know_how_carrier_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM know_how_carriers WHERE procedure = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)) AND calc_know_how_carriers_is_at_risk_of_imminent_loss(know_how_carrier_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_has_transfer_shortfall_exposure
@@ -4827,7 +4898,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_proficient_with_capture_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM onboarding_records WHERE procedure = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id) AND calc_onboarding_records_is_proficient(onboarding_record_id) = TRUE AND used_captured_knowledge = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM onboarding_records erb_r1 WHERE procedure = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)) AND ((SELECT (((erb_r1.proficient_at::timestamptz) IS NOT NULL AND (erb_r1.proficient_at::timestamptz)::text <> ''))::boolean))::boolean = TRUE AND used_captured_knowledge = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_proficient_without_capture_count
@@ -4837,7 +4908,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_proficient_without_capture_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM onboarding_records WHERE procedure = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id) AND calc_onboarding_records_is_proficient(onboarding_record_id) = TRUE AND used_captured_knowledge = FALSE))::integer;
+  SELECT ((SELECT COUNT(*) FROM onboarding_records erb_r1 WHERE procedure = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)) AND ((SELECT (((erb_r1.proficient_at::timestamptz) IS NOT NULL AND (erb_r1.proficient_at::timestamptz)::text <> ''))::boolean))::boolean = TRUE AND used_captured_knowledge = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_days_with_capture_total
@@ -4847,7 +4918,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_days_with_capture_total(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_onboarding_records_days_to_proficiency(onboarding_record_id))::numeric), 0) FROM onboarding_records WHERE procedure = p_procedure_id AND calc_onboarding_records_is_proficient(onboarding_record_id) = TRUE AND used_captured_knowledge = TRUE))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(((erb_r1.started_at::timestamptz) IS NULL OR (erb_r1.started_at::timestamptz)::text = ''), FALSE) OR COALESCE(((erb_r1.proficient_at::timestamptz) IS NULL OR (erb_r1.proficient_at::timestamptz)::text = ''), FALSE)) THEN (0)::text ELSE ((((erb_r1.proficient_at::timestamptz)::timestamptz AT TIME ZONE 'UTC')::date - ((erb_r1.started_at::timestamptz)::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer))::integer)::numeric), 0) FROM onboarding_records erb_r1 WHERE procedure = p_procedure_id AND ((SELECT (((erb_r1.proficient_at::timestamptz) IS NOT NULL AND (erb_r1.proficient_at::timestamptz)::text <> ''))::boolean))::boolean = TRUE AND used_captured_knowledge = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_days_without_capture_total
@@ -4857,7 +4928,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_days_without_capture_total(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_onboarding_records_days_to_proficiency(onboarding_record_id))::numeric), 0) FROM onboarding_records WHERE procedure = p_procedure_id AND calc_onboarding_records_is_proficient(onboarding_record_id) = TRUE AND used_captured_knowledge = FALSE))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(((erb_r1.started_at::timestamptz) IS NULL OR (erb_r1.started_at::timestamptz)::text = ''), FALSE) OR COALESCE(((erb_r1.proficient_at::timestamptz) IS NULL OR (erb_r1.proficient_at::timestamptz)::text = ''), FALSE)) THEN (0)::text ELSE ((((erb_r1.proficient_at::timestamptz)::timestamptz AT TIME ZONE 'UTC')::date - ((erb_r1.started_at::timestamptz)::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer))::integer)::numeric), 0) FROM onboarding_records erb_r1 WHERE procedure = p_procedure_id AND ((SELECT (((erb_r1.proficient_at::timestamptz) IS NOT NULL AND (erb_r1.proficient_at::timestamptz)::text <> ''))::boolean))::boolean = TRUE AND used_captured_knowledge = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_avg_days_to_proficiency_with_capture
@@ -4907,7 +4978,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedures_in_work_capture_count(p_procedure_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM collected_source_materials WHERE procedure = (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id) AND calc_collected_source_materials_is_captured_in_flow_of_work(collected_source_material_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM collected_source_materials erb_r1 WHERE procedure = (SELECT (SELECT NULLIF(procedure_id, '') FROM procedures WHERE procedure_id = p_procedure_id)) AND ((SELECT (((NULLIF(erb_r1.captured_during_execution, '')) IS NOT NULL AND (NULLIF(erb_r1.captured_during_execution, ''))::text <> ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedures_is_capture_separate_from_work
@@ -5117,7 +5188,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_overdue_review_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM review_events WHERE calc_review_events_overdue_version_key(review_event_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM review_events erb_r1 WHERE ((SELECT (CASE WHEN calc_review_events_is_overdue(erb_r1.review_event_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_open_change_request_count
@@ -5127,7 +5198,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_open_change_request_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM change_requests WHERE calc_change_requests_open_change_version_key(change_request_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM change_requests erb_r1 WHERE ((SELECT (CASE WHEN calc_change_requests_is_open(erb_r1.change_request_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_open_high_severity_gap_count
@@ -5137,7 +5208,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_open_high_severity_gap_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_gaps WHERE calc_knowledge_gaps_open_gap_version_key(knowledge_gap_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM knowledge_gaps erb_r1 WHERE ((SELECT (CASE WHEN (COALESCE(calc_knowledge_gaps_is_open(erb_r1.knowledge_gap_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.severity, ''), '') = 'High', FALSE)) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_is_fit_to_execute
@@ -5217,7 +5288,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_count_of_open_blocking_gaps(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_gaps WHERE calc_knowledge_gaps_is_open_and_blocking(knowledge_gap_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_gaps erb_r1 WHERE ((SELECT ((COALESCE(calc_knowledge_gaps_is_open(erb_r1.knowledge_gap_id), FALSE) AND COALESCE(calc_knowledge_gaps_is_blocking(erb_r1.knowledge_gap_id), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_has_open_blocking_gap
@@ -5257,7 +5328,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_count_of_unapproved_reliance_fragments(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_fragments WHERE calc_knowledge_fragments_is_unapproved_but_relied_on(knowledge_fragment_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_fragments erb_r1 WHERE ((SELECT ((COALESCE(calc_knowledge_fragments_is_relied_upon(erb_r1.knowledge_fragment_id), FALSE) AND COALESCE(calc_knowledge_fragments_is_attached_to_live_version(erb_r1.knowledge_fragment_id), FALSE) AND COALESCE(NOT (COALESCE(calc_knowledge_fragments_is_approved(erb_r1.knowledge_fragment_id), FALSE)), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_runs_on_unapproved_knowledge
@@ -5277,7 +5348,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_count_of_overdue_gaps(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_gaps WHERE calc_knowledge_gaps_is_overdue_gap(knowledge_gap_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_gaps erb_r1 WHERE ((SELECT (COALESCE(calc_knowledge_gaps_days_open(erb_r1.knowledge_gap_id), 0) > COALESCE(calc_knowledge_gaps_tolerance_days(erb_r1.knowledge_gap_id), 0))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_count_of_change_requests
@@ -5327,7 +5398,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_days_since_last_review(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((((calc_procedure_versions_as_of_instant(p_procedure_version_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT MAX(reviewed_at) FROM review_events WHERE procedure_version = p_procedure_version_id))::timestamptz AT TIME ZONE 'UTC')::date))::integer;
+  SELECT ((((calc_procedure_versions_as_of_instant(p_procedure_version_id))::timestamptz AT TIME ZONE 'UTC')::date - ((((SELECT MAX(reviewed_at) FROM review_events WHERE procedure_version = p_procedure_version_id)))::timestamptz AT TIME ZONE 'UTC')::date))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_was_modified_since_last_review
@@ -5357,7 +5428,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_count_of_stale_fragments(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_fragments WHERE calc_knowledge_fragments_exceeds_owning_cadence(knowledge_fragment_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_fragments erb_r1 WHERE ((SELECT (COALESCE(calc_knowledge_fragments_age_days(erb_r1.knowledge_fragment_id), 0) > COALESCE(calc_knowledge_fragments_owning_version_cadence_days(erb_r1.knowledge_fragment_id), 0))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_knowledge_is_staler_than_cadence
@@ -5377,7 +5448,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_compound_fragile_fragment_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_fragments WHERE calc_knowledge_fragments_compound_fragile_version_key(knowledge_fragment_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM knowledge_fragments erb_r1 WHERE ((SELECT (CASE WHEN calc_knowledge_fragments_is_compound_fragile(erb_r1.knowledge_fragment_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_rests_on_compound_fragile_knowledge
@@ -5397,7 +5468,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_concentrated_witness_session_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM elicitation_sessions WHERE calc_elicitation_sessions_concentrated_session_version_key(elicitation_session_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM elicitation_sessions erb_r1 WHERE ((SELECT (CASE WHEN calc_elicitation_sessions_is_concentrated_single_witness(erb_r1.elicitation_session_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_knowledge_base_is_concentrated
@@ -5417,7 +5488,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_machine_consumed_unapproved_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_fragments WHERE calc_knowledge_fragments_machine_consumed_unapproved_version_ke(knowledge_fragment_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM knowledge_fragments erb_r1 WHERE ((SELECT (CASE WHEN calc_knowledge_fragments_is_unapproved_and_machine_consumed(erb_r1.knowledge_fragment_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_feeds_unapproved_knowledge_to_machines
@@ -5437,7 +5508,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_genuinely_overdue_fragment_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_fragments WHERE calc_knowledge_fragments_genuinely_overdue_version_key(knowledge_fragment_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM knowledge_fragments erb_r1 WHERE ((SELECT (CASE WHEN calc_knowledge_fragments_is_genuinely_overdue(erb_r1.knowledge_fragment_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_awaited_decision_count
@@ -5447,7 +5518,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_awaited_decision_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM change_requests WHERE calc_change_requests_backlog_version_key(change_request_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM change_requests erb_r1 WHERE ((SELECT (CASE WHEN calc_change_requests_is_live_decision_backlog(erb_r1.change_request_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_scoped_open_blocking_gap_count
@@ -5457,7 +5528,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_scoped_open_blocking_gap_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_gaps WHERE calc_knowledge_gaps_open_blocking_gap_version_key(knowledge_gap_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM knowledge_gaps erb_r1 WHERE ((SELECT (CASE WHEN calc_knowledge_gaps_is_open_and_blocking(erb_r1.knowledge_gap_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_is_blocked_on_pending_decision
@@ -5477,7 +5548,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_unexercised_human_gate_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM steps WHERE calc_steps_unexercised_gate_version_key(step_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM steps WHERE calc_steps_unexercised_gate_version_key(step_id) = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_ai_boundary_is_unevidenced
@@ -5497,7 +5568,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_load_bearing_unapproved_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_fragments WHERE calc_knowledge_fragments_unapproved_load_bearing_version_key(knowledge_fragment_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM knowledge_fragments erb_r1 WHERE ((SELECT (CASE WHEN calc_knowledge_fragments_is_high_blast_radius_unapproved(erb_r1.knowledge_fragment_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_unlanded_decision_count
@@ -5507,7 +5578,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_unlanded_decision_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM change_requests WHERE calc_change_requests_unlanded_version_key(change_request_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM change_requests erb_r1 WHERE ((SELECT (CASE WHEN calc_change_requests_is_my_decided_but_unlanded(erb_r1.change_request_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_unrehearsed_control_entry_count
@@ -5517,7 +5588,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_unrehearsed_control_entry_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_transitions WHERE calc_step_transitions_unrehearsed_control_version_key(step_transition_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_transitions erb_r1 WHERE ((SELECT (CASE WHEN calc_step_transitions_is_unrehearsed_control_entry(erb_r1.step_transition_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_has_unrehearsed_control_entry
@@ -5547,7 +5618,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_cadence_breach_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM review_events WHERE calc_review_events_cadence_breach_version_key(review_event_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM review_events erb_r1 WHERE ((SELECT (CASE WHEN calc_review_events_exceeds_promised_cadence(erb_r1.review_event_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_is_in_cadence_breach
@@ -5607,7 +5678,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_valid_fragment_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_fragments WHERE calc_knowledge_fragments_valid_fragment_version_key(knowledge_fragment_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM knowledge_fragments erb_r1 WHERE ((SELECT (CASE WHEN calc_knowledge_fragments_is_currently_valid(erb_r1.knowledge_fragment_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_still_owns_valid_knowledge
@@ -5627,7 +5698,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_incoming_supersession_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM procedure_version_links WHERE calc_procedure_version_links_superseded_version_key(procedure_version_link_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM procedure_version_links erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.relation_iri, ''), '') = 'https://w3id.org/pko#nextVersion' THEN (NULLIF(erb_r1.previous_procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_is_still_referenced
@@ -5667,7 +5738,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_stalled_implementation_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM change_requests WHERE calc_change_requests_stalled_implementation_version_key(change_request_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM change_requests erb_r1 WHERE ((SELECT (CASE WHEN calc_change_requests_is_stalled_implementation(erb_r1.change_request_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_is_held_unfit_by_landed_decisions
@@ -5687,7 +5758,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_undeclared_control_kind_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM steps WHERE calc_steps_undeclared_control_version_key(step_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM steps WHERE calc_steps_undeclared_control_version_key(step_id) = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_control_taxonomy_is_incomplete
@@ -5717,7 +5788,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_approved_change_request_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM change_requests WHERE calc_change_requests_approved_version_key(change_request_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM change_requests erb_r1 WHERE ((SELECT (CASE WHEN calc_change_requests_is_approved_decision(erb_r1.change_request_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_unwatched_unowned_control_count
@@ -5727,7 +5798,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_unwatched_unowned_control_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM requirements WHERE calc_requirements_unwatched_unowned_flag(requirement_id) = 'unwatched-unowned'))::numeric;
+  SELECT ((SELECT COUNT(*) FROM requirements erb_r1 WHERE ((SELECT (CASE WHEN calc_requirements_is_unwatched_and_unowned(erb_r1.requirement_id) THEN ('unwatched-unowned')::text ELSE ('')::text END)::text))::text = 'unwatched-unowned'))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_mining_run_count
@@ -5747,7 +5818,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_drifted_mining_run_count(p_procedure_version_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM process_mining_runs WHERE calc_process_mining_runs_drifted_mining_run_key(process_mining_run_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM process_mining_runs erb_r1 WHERE ((SELECT (CASE WHEN calc_process_mining_runs_is_drift_on_live_version(erb_r1.process_mining_run_id) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_has_unresolved_mining_drift
@@ -5837,7 +5908,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_latest_source_document_modified_at(p_procedure_version_id TEXT)
 RETURNS TIMESTAMPTZ AS $$
-  SELECT ((SELECT MAX(calc_procedure_resources_resource_modified_at(procedure_resource_id)) FROM procedure_resources WHERE procedure_version = p_procedure_version_id))::timestamptz;
+  SELECT ((SELECT MAX(((SELECT (SELECT modified_at::timestamptz FROM resources WHERE resource_id = erb_r1.resource)))::timestamptz) FROM procedure_resources erb_r1 WHERE procedure_version = p_procedure_version_id))::timestamptz;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_days_document_trails_version
@@ -5847,7 +5918,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_days_document_trails_version(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_procedure_versions_latest_source_document_modified_at(p_procedure_version_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN (0)::text ELSE (((((SELECT modified_at::timestamptz FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_procedure_versions_latest_source_document_modified_at(p_procedure_version_id) AS val) SELECT (CASE WHEN (((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '') THEN (0)::text ELSE (((((SELECT modified_at::timestamptz FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_document_lags_practice
@@ -5857,7 +5928,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_document_lags_practice(p_procedure_version_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_procedure_versions_latest_source_document_modified_at(p_procedure_version_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_procedure_versions_days_document_trails_version(p_procedure_version_id))::NUMERIC, 0) > 60, FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_procedure_versions_latest_source_document_modified_at(p_procedure_version_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_procedure_versions_days_document_trails_version(p_procedure_version_id))::NUMERIC, 0) > 60, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_human_step_count
@@ -5867,7 +5938,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_human_step_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM steps WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_steps_assigned_agent_kind(step_id) = 'Human'))::integer;
+  SELECT ((SELECT COUNT(*) FROM steps WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND calc_steps_assigned_agent_kind(step_id) = 'Human'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_non_human_step_count
@@ -5917,7 +5988,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_day_deviating_run_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM procedure_executions WHERE calc_procedure_executions_deviating_day_version_key(procedure_execution_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM procedure_executions erb_r1 WHERE ((SELECT (CASE WHEN (COALESCE(calc_procedure_executions_has_step_deviation(erb_r1.procedure_execution_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.shift, ''), '') = 'Day', FALSE)) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_night_deviating_run_count
@@ -5927,7 +5998,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_night_deviating_run_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM procedure_executions WHERE calc_procedure_executions_deviating_night_version_key(procedure_execution_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM procedure_executions erb_r1 WHERE ((SELECT (CASE WHEN (COALESCE(calc_procedure_executions_has_step_deviation(erb_r1.procedure_execution_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.shift, ''), '') = 'Night', FALSE)) THEN (NULLIF(erb_r1.procedure_version, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_is_inconsistent_across_shifts
@@ -5947,7 +6018,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_overlaps_relation_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM activity_relations WHERE calc_activity_relations_overlaps_version_key(activity_relation_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM activity_relations erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.relation_type, ''), '') = 'Overlaps' THEN (calc_activity_relations_from_step_version(erb_r1.activity_relation_id))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_enables_relation_count
@@ -5957,7 +6028,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_enables_relation_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM activity_relations WHERE calc_activity_relations_enables_version_key(activity_relation_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM activity_relations erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.relation_type, ''), '') = 'Enables' THEN (calc_activity_relations_from_step_version(erb_r1.activity_relation_id))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_prevents_relation_count
@@ -5967,7 +6038,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_prevents_relation_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM activity_relations WHERE calc_activity_relations_prevents_version_key(activity_relation_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM activity_relations erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.relation_type, ''), '') = 'Prevents' THEN (calc_activity_relations_from_step_version(erb_r1.activity_relation_id))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_steps_without_ontology_type_count
@@ -5977,7 +6048,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_steps_without_ontology_type_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM steps WHERE calc_steps_untyped_version_key(step_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM steps WHERE calc_steps_untyped_version_key(step_id) = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_rests_on_notation_only
@@ -5997,7 +6068,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_is_current_without_motivation(p_procedure_version_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT is_current FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id), FALSE), FALSE) AND COALESCE((SELECT NULLIF(new_version_motivation, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT is_current FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id), FALSE), FALSE) AND COALESCE((((SELECT NULLIF(new_version_motivation, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) IS NULL OR ((SELECT NULLIF(new_version_motivation, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_conditionless_step_count
@@ -6007,7 +6078,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_conditionless_step_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM steps WHERE calc_steps_conditionless_version_key(step_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM steps WHERE calc_steps_conditionless_version_key(step_id) = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_is_under_specified_for_execution
@@ -6027,7 +6098,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_coarse_top_level_step_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM steps WHERE calc_steps_coarse_top_level_version_key(step_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM steps WHERE calc_steps_coarse_top_level_version_key(step_id) = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_fine_top_level_step_count
@@ -6037,7 +6108,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_fine_top_level_step_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM steps WHERE calc_steps_fine_top_level_version_key(step_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM steps WHERE calc_steps_fine_top_level_version_key(step_id) = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_mixes_granularity_at_one_level
@@ -6107,7 +6178,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_successful_search_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_search_events WHERE sought_procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_knowledge_search_events_found_nothing_useful(knowledge_search_event_id) = FALSE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_search_events erb_r1 WHERE sought_procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((SELECT ((COALESCE(COALESCE((erb_r1.result_count)::NUMERIC, 0) = 0, FALSE) OR COALESCE((COALESCE(((NULLIF(erb_r1.opened_segment, '')) IS NULL OR (NULLIF(erb_r1.opened_segment, ''))::text = ''), FALSE) AND COALESCE(((NULLIF(erb_r1.opened_projection, '')) IS NULL OR (NULLIF(erb_r1.opened_projection, ''))::text = ''), FALSE)), FALSE)))))::boolean = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_search_success_percent
@@ -6187,7 +6258,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_reasoned_assertion_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM snapshot_assertions WHERE source_procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_snapshot_assertions_snapshot_is_reasoned(snapshot_assertion_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM snapshot_assertions erb_r1 WHERE source_procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((SELECT (COALESCE((calc_snapshot_assertions_snapshot_consistent_run_count(erb_r1.snapshot_assertion_id))::NUMERIC, 0) > 0)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_is_not_query_validate_reason_ready
@@ -6207,7 +6278,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_published_projection_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_projections WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_knowledge_projections_is_published(knowledge_projection_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_projections erb_r1 WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((SELECT (((NULLIF(erb_r1.published_uri, '')) IS NOT NULL AND (NULLIF(erb_r1.published_uri, ''))::text <> ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_consumer_sync_count
@@ -6237,7 +6308,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_human_sync_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM consumer_system_syncs WHERE loaded_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_consumer_system_syncs_reaches_humans(consumer_system_sync_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM consumer_system_syncs erb_r1 WHERE loaded_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_consumer_system_syncs_system_audience(erb_r1.consumer_system_sync_id) AS val) SELECT ((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Human', FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Both', FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_machine_sync_count
@@ -6247,7 +6318,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_machine_sync_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM consumer_system_syncs WHERE loaded_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_consumer_system_syncs_reaches_machines(consumer_system_sync_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM consumer_system_syncs erb_r1 WHERE loaded_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_consumer_system_syncs_system_audience(erb_r1.consumer_system_sync_id) AS val) SELECT ((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'AI', FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Both', FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_human_channel_count
@@ -6287,7 +6358,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_fresh_mining_run_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM process_mining_runs WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_process_mining_runs_is_stale_mining_evidence(process_mining_run_id) = FALSE))::integer;
+  SELECT ((SELECT COUNT(*) FROM process_mining_runs erb_r1 WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((SELECT (COALESCE((calc_process_mining_runs_days_since_mined(erb_r1.process_mining_run_id))::NUMERIC, 0) > 180)::boolean))::boolean = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_lacks_continuous_drift_detection
@@ -6387,7 +6458,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_ai_artifact_consuming_input_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_variables WHERE calc_step_variables_consumer_workflow(step_variable_id) = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_step_variables_is_input_from_ai_artifact(step_variable_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_variables WHERE calc_step_variables_consumer_workflow(step_variable_id) = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND calc_step_variables_is_input_from_ai_artifact(step_variable_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_contains_steps_affected_by_ai_agent_cha
@@ -6407,7 +6478,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_interview_session_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM elicitation_sessions WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_elicitation_sessions_elicitation_mode(elicitation_session_id) = 'Interview'))::integer;
+  SELECT ((SELECT COUNT(*) FROM elicitation_sessions erb_r1 WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'PractitionerInterview' THEN ('Interview')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'Shadowing' THEN ('Observation')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'FacilitatedWorkshop' THEN ('Workshop')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'CriticalIncidentTechnique' THEN ('Incident')::text ELSE (CASE WHEN (COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'ThinkAloudProtocol', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'RetrospectiveProtocol', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'ConceptLaddering', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'RepertoryGrid', FALSE)) THEN ('Protocol')::text ELSE ('Other')::text END)::text END)::text END)::text END)::text END)::text))::text = 'Interview'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_observation_session_count
@@ -6417,7 +6488,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_observation_session_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM elicitation_sessions WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_elicitation_sessions_elicitation_mode(elicitation_session_id) = 'Observation'))::integer;
+  SELECT ((SELECT COUNT(*) FROM elicitation_sessions erb_r1 WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'PractitionerInterview' THEN ('Interview')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'Shadowing' THEN ('Observation')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'FacilitatedWorkshop' THEN ('Workshop')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'CriticalIncidentTechnique' THEN ('Incident')::text ELSE (CASE WHEN (COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'ThinkAloudProtocol', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'RetrospectiveProtocol', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'ConceptLaddering', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'RepertoryGrid', FALSE)) THEN ('Protocol')::text ELSE ('Other')::text END)::text END)::text END)::text END)::text END)::text))::text = 'Observation'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_workshop_session_count
@@ -6427,7 +6498,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_workshop_session_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM elicitation_sessions WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_elicitation_sessions_elicitation_mode(elicitation_session_id) = 'Workshop'))::integer;
+  SELECT ((SELECT COUNT(*) FROM elicitation_sessions erb_r1 WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'PractitionerInterview' THEN ('Interview')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'Shadowing' THEN ('Observation')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'FacilitatedWorkshop' THEN ('Workshop')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'CriticalIncidentTechnique' THEN ('Incident')::text ELSE (CASE WHEN (COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'ThinkAloudProtocol', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'RetrospectiveProtocol', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'ConceptLaddering', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'RepertoryGrid', FALSE)) THEN ('Protocol')::text ELSE ('Other')::text END)::text END)::text END)::text END)::text END)::text))::text = 'Workshop'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_protocol_session_count
@@ -6437,7 +6508,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_protocol_session_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM elicitation_sessions WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_elicitation_sessions_elicitation_mode(elicitation_session_id) = 'Protocol'))::integer;
+  SELECT ((SELECT COUNT(*) FROM elicitation_sessions erb_r1 WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'PractitionerInterview' THEN ('Interview')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'Shadowing' THEN ('Observation')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'FacilitatedWorkshop' THEN ('Workshop')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'CriticalIncidentTechnique' THEN ('Incident')::text ELSE (CASE WHEN (COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'ThinkAloudProtocol', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'RetrospectiveProtocol', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'ConceptLaddering', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'RepertoryGrid', FALSE)) THEN ('Protocol')::text ELSE ('Other')::text END)::text END)::text END)::text END)::text END)::text))::text = 'Protocol'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_incident_session_count
@@ -6447,7 +6518,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_incident_session_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM elicitation_sessions WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_elicitation_sessions_elicitation_mode(elicitation_session_id) = 'Incident'))::integer;
+  SELECT ((SELECT COUNT(*) FROM elicitation_sessions erb_r1 WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'PractitionerInterview' THEN ('Interview')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'Shadowing' THEN ('Observation')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'FacilitatedWorkshop' THEN ('Workshop')::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.method, ''), '') = 'CriticalIncidentTechnique' THEN ('Incident')::text ELSE (CASE WHEN (COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'ThinkAloudProtocol', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'RetrospectiveProtocol', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'ConceptLaddering', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.method, ''), '') = 'RepertoryGrid', FALSE)) THEN ('Protocol')::text ELSE ('Other')::text END)::text END)::text END)::text END)::text END)::text))::text = 'Incident'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_reconciled_divergence_count
@@ -6457,7 +6528,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_reconciled_divergence_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM workflow_view_divergences WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_workflow_view_divergences_is_reconciled(workflow_view_divergence_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM workflow_view_divergences erb_r1 WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((SELECT (((NULLIF(erb_r1.reconciled_statement, '')) IS NOT NULL AND (NULLIF(erb_r1.reconciled_statement, ''))::text <> ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_complementary_method_count
@@ -6557,7 +6628,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_ke_session_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM elicitation_sessions WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_elicitation_sessions_facilitator_is_knowledge_engineer(elicitation_session_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM elicitation_sessions erb_r1 WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((SELECT (COALESCE((calc_elicitation_sessions_facilitator_knowledge_engineer_role_c(erb_r1.elicitation_session_id))::NUMERIC, 0) > 0)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_ke_field_session_count
@@ -6567,7 +6638,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_ke_field_session_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM elicitation_sessions WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_elicitation_sessions_is_ke_field_session(elicitation_session_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM elicitation_sessions erb_r1 WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((SELECT ((COALESCE(calc_elicitation_sessions_facilitator_is_knowledge_engineer(erb_r1.elicitation_session_id), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.setting, ''), '') = 'InSitu', FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_is_studied_only_from_the_desk
@@ -6587,7 +6658,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_judgment_held_outside_sop_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_holdings WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_knowledge_holdings_is_judgment_outside_document(knowledge_holding_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_holdings erb_r1 WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((SELECT ((COALESCE(COALESCE(erb_r1.is_unsaid_in_sop, FALSE), FALSE) AND COALESCE(calc_knowledge_holdings_is_unformalized_process_knowledge(erb_r1.knowledge_holding_id), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_tacit_holding_count
@@ -6627,7 +6698,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_hands_held_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_holdings WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND carrier = 'OperatorMemory' AND calc_knowledge_holdings_is_unformalized_process_knowledge(knowledge_holding_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_holdings erb_r1 WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND carrier = 'OperatorMemory' AND ((SELECT ((COALESCE(((NULLIF(erb_r1.formalized_as, '')) IS NULL OR (NULLIF(erb_r1.formalized_as, ''))::text = ''), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.carrier, ''), '') <> 'ProcedureRulebook', FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_negotiated_practice_count
@@ -6637,7 +6708,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_negotiated_practice_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_holdings WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND carrier = 'UnspokenCrewAgreement' AND calc_knowledge_holdings_is_unformalized_process_knowledge(knowledge_holding_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_holdings erb_r1 WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND carrier = 'UnspokenCrewAgreement' AND ((SELECT ((COALESCE(((NULLIF(erb_r1.formalized_as, '')) IS NULL OR (NULLIF(erb_r1.formalized_as, ''))::text = ''), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.carrier, ''), '') <> 'ProcedureRulebook', FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_lives_in_hands_silence_and_negotiation
@@ -6677,7 +6748,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_trailing_practice_trace_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_traces WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_knowledge_traces_is_document_trailing_practice(knowledge_trace_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_traces erb_r1 WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND ((SELECT ((COALESCE(COALESCE(NULLIF(erb_r1.trace_role, ''), '') = 'Contradicts', FALSE) AND COALESCE(((NULLIF(erb_r1.contradicted_document, '')) IS NOT NULL AND (NULLIF(erb_r1.contradicted_document, ''))::text <> ''), FALSE) AND COALESCE(calc_knowledge_traces_source_is_practice_evidence(erb_r1.knowledge_trace_id), FALSE) AND COALESCE(COALESCE((calc_knowledge_traces_source_collected_at(erb_r1.knowledge_trace_id) > calc_knowledge_traces_contradicted_document_revised_at(erb_r1.knowledge_trace_id)), FALSE), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_versions_is_documented_behind_practice
@@ -6787,7 +6858,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_versions_graph_entry_step_count(p_procedure_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM steps WHERE procedure_version = (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id) AND calc_steps_is_entry_step(step_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM steps WHERE procedure_version = (SELECT (SELECT NULLIF(procedure_version_id, '') FROM procedure_versions WHERE procedure_version_id = p_procedure_version_id)) AND calc_steps_is_entry_step(step_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_version_links_name
@@ -6917,7 +6988,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_status_changes_is_unattributed_change(p_procedure_status_change_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(changed_by_agent, '') FROM procedure_status_changes WHERE procedure_status_change_id = p_procedure_status_change_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(changed_by_agent, '') FROM procedure_status_changes WHERE procedure_status_change_id = p_procedure_status_change_id)) IS NULL OR ((SELECT NULLIF(changed_by_agent, '') FROM procedure_status_changes WHERE procedure_status_change_id = p_procedure_status_change_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_status_changes_change_kind_contradicts_target
@@ -7302,7 +7373,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_blocking_requirement_count(p_step_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_requirements WHERE calc_step_requirements_blocking_step_key(step_requirement_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_requirements erb_r1 WHERE ((SELECT (CASE WHEN calc_step_requirements_requirement_is_blocking(erb_r1.step_requirement_id) THEN (NULLIF(erb_r1.step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_stale_binding_count
@@ -7312,7 +7383,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_stale_binding_count(p_step_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM operational_bindings WHERE calc_operational_bindings_stale_binding_step_key(operational_binding_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM operational_bindings erb_r1 WHERE ((SELECT (CASE WHEN NOT (COALESCE(calc_operational_bindings_is_fresh(erb_r1.operational_binding_id), FALSE)) THEN (NULLIF(erb_r1.step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_authoritative_stale_count
@@ -7322,7 +7393,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_authoritative_stale_count(p_step_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM operational_bindings WHERE calc_operational_bindings_authoritative_stale_step_key(operational_binding_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM operational_bindings erb_r1 WHERE ((SELECT (CASE WHEN (COALESCE(NOT (COALESCE(calc_operational_bindings_is_fresh(erb_r1.operational_binding_id), FALSE)), FALSE) AND COALESCE(COALESCE(erb_r1.is_authoritative, FALSE), FALSE)) THEN (NULLIF(erb_r1.step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_available_exception_count
@@ -7332,7 +7403,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_available_exception_count(p_step_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM exceptions WHERE calc_exceptions_active_exception_step_key(exception_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM exceptions erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.status, ''), '') = 'Active' THEN (NULLIF(erb_r1.trigger_step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_declared_verification_count
@@ -7372,7 +7443,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_stale_authoritative_binding_count(p_step_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM operational_bindings WHERE calc_operational_bindings_step_when_stale(operational_binding_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM operational_bindings erb_r1 WHERE ((SELECT (CASE WHEN calc_operational_bindings_is_stale_and_authoritative(erb_r1.operational_binding_id) THEN (NULLIF(erb_r1.step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_inputs_are_fresh
@@ -7422,7 +7493,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_binding_boundary_count(p_step_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM authority_boundaries WHERE calc_authority_boundaries_step_when_binding(authority_boundary_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM authority_boundaries erb_r1 WHERE ((SELECT (CASE WHEN calc_authority_boundaries_is_currently_binding(erb_r1.authority_boundary_id) THEN (NULLIF(erb_r1.step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_unusable_binding_count
@@ -7432,7 +7503,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_unusable_binding_count(p_step_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM operational_bindings WHERE calc_operational_bindings_step_when_unusable(operational_binding_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM operational_bindings erb_r1 WHERE ((SELECT (CASE WHEN calc_operational_bindings_is_usable_for_drafting(erb_r1.operational_binding_id) THEN ('')::text ELSE (NULLIF(erb_r1.step, ''))::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_all_sources_usable
@@ -7452,7 +7523,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_unwarranted_boundary_count(p_step_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM authority_boundaries WHERE calc_authority_boundaries_unwarranted_boundary_step_key(authority_boundary_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM authority_boundaries erb_r1 WHERE ((SELECT (CASE WHEN calc_authority_boundaries_is_unwarranted(erb_r1.authority_boundary_id) THEN (NULLIF(erb_r1.step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_is_governed_by_unwarranted_boundary
@@ -7472,7 +7543,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_software_execution_count(p_step_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_software_execution_step_key(step_execution_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_software_execution_step_key(step_execution_id) = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_has_been_approached_by_software
@@ -7522,7 +7593,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_has_declared_control_kind(p_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(control_kind, '') FROM steps WHERE step_id = p_step_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(control_kind, '') FROM steps WHERE step_id = p_step_id)) IS NOT NULL AND ((SELECT NULLIF(control_kind, '') FROM steps WHERE step_id = p_step_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_undeclared_control_version_key
@@ -7552,7 +7623,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_unwitnessed_blocking_count(p_step_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_requirements WHERE calc_step_requirements_unwitnessed_step_key(step_requirement_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_requirements erb_r1 WHERE ((SELECT (CASE WHEN calc_step_requirements_requirement_lacks_witness(erb_r1.step_requirement_id) THEN (NULLIF(erb_r1.step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_reachable_step_count
@@ -7642,7 +7713,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_gate_free_reach_from_entry_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM vw_step_transitions_closure_where_avoids_human_approval_gate WHERE from_id = calc_steps_version_entry_step_id(p_step_id) AND to_id = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM vw_step_transitions_closure_where_avoids_human_approval_gate WHERE from_id = (SELECT calc_steps_version_entry_step_id(p_step_id)) AND to_id = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_is_reachable_from_entry_without_human_gate
@@ -7692,7 +7763,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_precondition_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_conditions WHERE calc_step_conditions_precondition_step_key(step_condition_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_conditions erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.condition_kind, ''), '') = 'Precondition' THEN (NULLIF(erb_r1.step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_postcondition_count
@@ -7702,7 +7773,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_postcondition_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_conditions WHERE calc_step_conditions_postcondition_step_key(step_condition_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_conditions erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.condition_kind, ''), '') = 'Postcondition' THEN (NULLIF(erb_r1.step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_invariant_count
@@ -7712,7 +7783,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_invariant_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_conditions WHERE calc_step_conditions_invariant_step_key(step_condition_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_conditions erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.condition_kind, ''), '') = 'Invariant' THEN (NULLIF(erb_r1.step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_safety_critical_condition_count
@@ -7722,7 +7793,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_safety_critical_condition_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_conditions WHERE calc_step_conditions_safety_critical_step_key(step_condition_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_conditions erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(erb_r1.is_safety_critical, FALSE) THEN (NULLIF(erb_r1.step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_failure_mode_count
@@ -7752,7 +7823,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_danger_cue_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_cues WHERE calc_step_cues_danger_cue_step_key(step_cue_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_cues erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(erb_r1.requires_escalation, FALSE) THEN (NULLIF(erb_r1.step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_decision_point_count
@@ -7792,7 +7863,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_input_variable_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_variables WHERE calc_step_variables_input_step_key(step_variable_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_variables WHERE calc_step_variables_input_step_key(step_variable_id) = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_output_variable_count
@@ -7802,7 +7873,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_output_variable_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_variables WHERE calc_step_variables_output_step_key(step_variable_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_variables WHERE calc_step_variables_output_step_key(step_variable_id) = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_required_lock_count
@@ -7832,7 +7903,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_is_isolation_without_lock(p_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(isolates_energy_source, '') FROM steps WHERE step_id = p_step_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_steps_required_lock_count(p_step_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(isolates_energy_source, '') FROM steps WHERE step_id = p_step_id)) IS NOT NULL AND ((SELECT NULLIF(isolates_energy_source, '') FROM steps WHERE step_id = p_step_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_steps_required_lock_count(p_step_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_referenced_resource_count
@@ -7852,7 +7923,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_untyped_version_key(p_step_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(semantic_type_iri, '') FROM steps WHERE step_id = p_step_id) IS NULL THEN ((SELECT NULLIF(procedure_version, '') FROM steps WHERE step_id = p_step_id))::text ELSE ('')::text END)::text;
+  SELECT (CASE WHEN (((SELECT NULLIF(semantic_type_iri, '') FROM steps WHERE step_id = p_step_id)) IS NULL OR ((SELECT NULLIF(semantic_type_iri, '') FROM steps WHERE step_id = p_step_id))::text = '') THEN ((SELECT NULLIF(procedure_version, '') FROM steps WHERE step_id = p_step_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_is_accountable_to_software
@@ -7862,7 +7933,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_is_accountable_to_software(p_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_steps_assigned_agent_kind(p_step_id) AS val) SELECT ((COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'Human', FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_steps_assigned_agent_kind(p_step_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'Human', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_has_downstream_steps
@@ -7882,7 +7953,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_incompleteness_cue_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_cues WHERE calc_step_cues_incomplete_cue_step_key(step_cue_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_cues erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(erb_r1.signals_incomplete_step, FALSE) THEN (NULLIF(erb_r1.step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_has_incompleteness_cue
@@ -7912,7 +7983,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_has_no_accountable_agent(p_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_steps_accountable_agent(p_step_id) IS NULL)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_steps_accountable_agent(p_step_id) AS val) SELECT ((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_conditionless_version_key
@@ -7942,7 +8013,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_prerequisite_is_downstream(p_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(prerequisite_step, '') FROM steps WHERE step_id = p_step_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_steps_prerequisite_downstream_count(p_step_id))::NUMERIC, 0) > 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(prerequisite_step, '') FROM steps WHERE step_id = p_step_id)) IS NOT NULL AND ((SELECT NULLIF(prerequisite_step, '') FROM steps WHERE step_id = p_step_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_steps_prerequisite_downstream_count(p_step_id))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_states_operational_knowledge
@@ -7952,7 +8023,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_states_operational_knowledge(p_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(prerequisite_step, '') FROM steps WHERE step_id = p_step_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_steps_precondition_count(p_step_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((calc_steps_reached_from_step_count(p_step_id))::NUMERIC, 0) > 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(prerequisite_step, '') FROM steps WHERE step_id = p_step_id)) IS NOT NULL AND ((SELECT NULLIF(prerequisite_step, '') FROM steps WHERE step_id = p_step_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_steps_precondition_count(p_step_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((calc_steps_reached_from_step_count(p_step_id))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_bottleneck_allocation_count
@@ -7962,7 +8033,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_bottleneck_allocation_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM tactical_resource_allocations WHERE step = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id) AND calc_tactical_resource_allocations_is_bottleneck(tactical_resource_allocation_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM tactical_resource_allocations erb_r1 WHERE step = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)) AND ((SELECT (COALESCE((erb_r1.demanded_units_per_week > erb_r1.available_units_per_week), FALSE))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_is_bottleneck_step
@@ -7982,7 +8053,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_coarse_top_level_version_key(p_step_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (COALESCE((SELECT NULLIF(parent_step, '') FROM steps WHERE step_id = p_step_id) IS NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(detail_level, '') FROM steps WHERE step_id = p_step_id), '') = 'Activity', FALSE)) THEN ((SELECT NULLIF(procedure_version, '') FROM steps WHERE step_id = p_step_id))::text ELSE ('')::text END)::text;
+  SELECT (CASE WHEN (COALESCE((((SELECT NULLIF(parent_step, '') FROM steps WHERE step_id = p_step_id)) IS NULL OR ((SELECT NULLIF(parent_step, '') FROM steps WHERE step_id = p_step_id))::text = ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(detail_level, '') FROM steps WHERE step_id = p_step_id), '') = 'Activity', FALSE)) THEN ((SELECT NULLIF(procedure_version, '') FROM steps WHERE step_id = p_step_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_fine_top_level_version_key
@@ -7992,7 +8063,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_fine_top_level_version_key(p_step_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (COALESCE((SELECT NULLIF(parent_step, '') FROM steps WHERE step_id = p_step_id) IS NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(detail_level, '') FROM steps WHERE step_id = p_step_id), '') = 'Action', FALSE)) THEN ((SELECT NULLIF(procedure_version, '') FROM steps WHERE step_id = p_step_id))::text ELSE ('')::text END)::text;
+  SELECT (CASE WHEN (COALESCE((((SELECT NULLIF(parent_step, '') FROM steps WHERE step_id = p_step_id)) IS NULL OR ((SELECT NULLIF(parent_step, '') FROM steps WHERE step_id = p_step_id))::text = ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(detail_level, '') FROM steps WHERE step_id = p_step_id), '') = 'Action', FALSE)) THEN ((SELECT NULLIF(procedure_version, '') FROM steps WHERE step_id = p_step_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_context_sensitivity_count
@@ -8012,7 +8083,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_unscoped_sensitivity_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_context_sensitivities WHERE calc_step_context_sensitivities_unscoped_step_key(step_context_sensitivity_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_context_sensitivities erb_r1 WHERE ((SELECT (CASE WHEN ((NULLIF(erb_r1.applicability_scope, '')) IS NULL OR (NULLIF(erb_r1.applicability_scope, ''))::text = '') THEN (NULLIF(erb_r1.step, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_is_context_sensitive_but_unscoped
@@ -8052,7 +8123,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_regulatory_requirement_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_requirements WHERE step = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id) AND calc_step_requirements_requirement_is_regulatory(step_requirement_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_requirements erb_r1 WHERE step = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)) AND ((SELECT calc_requirements_is_regulatory_requirement(erb_r1.requirement)))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_tool_function_count
@@ -8072,7 +8143,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_parseable_condition_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_conditions WHERE step = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id) AND calc_step_conditions_is_machine_parseable(step_condition_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_conditions erb_r1 WHERE step = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)) AND ((SELECT (((NULLIF(erb_r1.machine_expression, '')) IS NOT NULL AND (NULLIF(erb_r1.machine_expression, ''))::text <> ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_dmn_decision_count
@@ -8082,7 +8153,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_dmn_decision_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM decision_points WHERE step = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id) AND calc_decision_points_is_dmn_encoded(decision_point_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM decision_points erb_r1 WHERE step = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)) AND ((SELECT (((NULLIF(erb_r1.dmn_decision_key, '')) IS NOT NULL AND (NULLIF(erb_r1.dmn_decision_key, ''))::text <> ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_tool_use_rules_only_in_prose
@@ -8102,7 +8173,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_open_outdated_flag_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM model_annotations WHERE step = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id) AND calc_model_annotations_is_open_outdated_flag(model_annotation_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM model_annotations erb_r1 WHERE step = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)) AND ((SELECT ((COALESCE(COALESCE(NULLIF(erb_r1.annotation_kind, ''), '') = 'FlagOutdated', FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.status, ''), '') = 'Open', FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_has_reported_reality_mismatch
@@ -8122,7 +8193,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_deviated_run_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE step = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id) AND calc_step_executions_has_deviation(step_execution_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE step = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)) AND calc_step_executions_has_deviation(step_execution_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_is_drifted_from_practice
@@ -8142,7 +8213,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_ai_failure_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM assistant_answers WHERE calc_assistant_answers_context_step(assistant_answer_id) = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id) AND task_outcome = 'Failed'))::integer;
+  SELECT ((SELECT COUNT(*) FROM assistant_answers erb_r1 WHERE ((SELECT (SELECT step::text FROM step_executions WHERE step_execution_id = erb_r1.step_execution)))::text = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)) AND task_outcome = 'Failed'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_is_ai_failure_point
@@ -8162,7 +8233,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_ai_artifact_input_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_variables WHERE step = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id) AND calc_step_variables_is_input_from_ai_artifact(step_variable_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_variables WHERE step = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)) AND calc_step_variables_is_input_from_ai_artifact(step_variable_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_consumes_ai_agent_artifact
@@ -8222,7 +8293,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_elicited_validation_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_traces WHERE step = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id) AND trace_role = 'Validates' AND calc_knowledge_traces_source_is_people_capture(knowledge_trace_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_traces erb_r1 WHERE step = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)) AND trace_role = 'Validates' AND ((SELECT calc_collected_source_materials_is_people_capture(erb_r1.source_material)))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_elicited_extension_count
@@ -8232,7 +8303,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_steps_elicited_extension_count(p_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_traces WHERE step = (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id) AND trace_role = 'Extends' AND calc_knowledge_traces_source_is_people_capture(knowledge_trace_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_traces erb_r1 WHERE step = (SELECT (SELECT NULLIF(step_id, '') FROM steps WHERE step_id = p_step_id)) AND trace_role = 'Extends' AND ((SELECT calc_collected_source_materials_is_people_capture(erb_r1.source_material)))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steps_downstream_artifact_step_count
@@ -8859,7 +8930,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_requirements_negative_outcome_count(p_requirement_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE calc_requirement_satisfactions_negative_outcome_requirement_key(requirement_satisfaction_id) = (SELECT NULLIF(requirement_id, '') FROM requirements WHERE requirement_id = p_requirement_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions erb_r1 WHERE ((SELECT (CASE WHEN NOT (COALESCE(calc_requirement_satisfactions_is_fully_satisfied(erb_r1.requirement_satisfaction_id), FALSE)) THEN (NULLIF(erb_r1.requirement, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(requirement_id, '') FROM requirements WHERE requirement_id = p_requirement_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_requirements_is_inoperative_control
@@ -8909,7 +8980,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_requirements_claims_a_witness_field(p_requirement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(witness_field_name, '') FROM requirements WHERE requirement_id = p_requirement_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(witness_field_name, '') FROM requirements WHERE requirement_id = p_requirement_id)) IS NOT NULL AND ((SELECT NULLIF(witness_field_name, '') FROM requirements WHERE requirement_id = p_requirement_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_requirements_derived_has_computed_witness
@@ -9019,7 +9090,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_requirements_unexercised_binding_count(p_requirement_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_requirements WHERE calc_step_requirements_unexercised_binding_requirement_key(step_requirement_id) = (SELECT NULLIF(requirement_id, '') FROM requirements WHERE requirement_id = p_requirement_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_requirements erb_r1 WHERE ((SELECT (CASE WHEN calc_step_requirements_is_unexercised_blocking_binding(erb_r1.step_requirement_id) THEN (NULLIF(erb_r1.requirement, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(requirement_id, '') FROM requirements WHERE requirement_id = p_requirement_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_requirements_witness_is_partially_scoped
@@ -9039,7 +9110,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_requirements_has_named_owner(p_requirement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(accountable_role, '') FROM requirements WHERE requirement_id = p_requirement_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(accountable_role, '') FROM requirements WHERE requirement_id = p_requirement_id)) IS NOT NULL AND ((SELECT NULLIF(accountable_role, '') FROM requirements WHERE requirement_id = p_requirement_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_requirements_is_orphaned_blocking_control
@@ -9089,7 +9160,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_requirements_uses_controlled_vocabulary(p_requirement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(controlled_term, '') FROM requirements WHERE requirement_id = p_requirement_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(controlled_term, '') FROM requirements WHERE requirement_id = p_requirement_id)) IS NOT NULL AND ((SELECT NULLIF(controlled_term, '') FROM requirements WHERE requirement_id = p_requirement_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_requirements_is_regulatory_requirement
@@ -9099,7 +9170,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_requirements_is_regulatory_requirement(p_requirement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(regulatory_framework, '') FROM requirements WHERE requirement_id = p_requirement_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(regulatory_framework, '') FROM requirements WHERE requirement_id = p_requirement_id)) IS NOT NULL AND ((SELECT NULLIF(regulatory_framework, '') FROM requirements WHERE requirement_id = p_requirement_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_requirements_constraint_trace_count
@@ -9129,7 +9200,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_requirements_recorded_pass_count(p_requirement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_step_requirements_pass_count_on_step(step_requirement_id))::numeric), 0) FROM step_requirements WHERE requirement = p_requirement_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COUNT(*) FROM step_executions WHERE step = NULLIF(erb_r1.step, '') AND verification_result = 'PASS'))::integer))::integer)::numeric), 0) FROM step_requirements erb_r1 WHERE requirement = p_requirement_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_requirements_is_passed_but_never_evaluated
@@ -9149,7 +9220,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_requirements_failed_check_count(p_requirement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM condition_checks WHERE calc_condition_checks_failed_check_requirement_key(condition_check_id) = (SELECT NULLIF(requirement_id, '') FROM requirements WHERE requirement_id = p_requirement_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM condition_checks erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(erb_r1.held, FALSE) = FALSE THEN (calc_condition_checks_enforced_requirement(erb_r1.condition_check_id))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(requirement_id, '') FROM requirements WHERE requirement_id = p_requirement_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_requirements_is_breached_but_never_failed
@@ -9323,7 +9394,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_requirements_satisfaction_count_for_binding(p_step_requirement_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE calc_requirement_satisfactions_binding_key(requirement_satisfaction_id) = (SELECT NULLIF(step_requirement_id, '') FROM step_requirements WHERE step_requirement_id = p_step_requirement_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions erb_r1 WHERE ((SELECT (SELECT step_requirement_id::text FROM step_requirements WHERE step_requirement_id = erb_r1.requirement_satisfaction_id)))::text = (SELECT (SELECT NULLIF(step_requirement_id, '') FROM step_requirements WHERE step_requirement_id = p_step_requirement_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_requirements_binding_was_ever_exercised
@@ -9543,7 +9614,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_resources_is_stale_extraction(p_resource_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(extracted_from_resource, '') FROM resources WHERE resource_id = p_resource_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_resources_source_modified_at(p_resource_id) > (SELECT modified_at::timestamptz FROM resources WHERE resource_id = p_resource_id)), FALSE), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(extracted_from_resource, '') FROM resources WHERE resource_id = p_resource_id)) IS NOT NULL AND ((SELECT NULLIF(extracted_from_resource, '') FROM resources WHERE resource_id = p_resource_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_resources_source_modified_at(p_resource_id) > (SELECT modified_at::timestamptz FROM resources WHERE resource_id = p_resource_id)), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_resources_referencing_step_count
@@ -9583,7 +9654,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_resources_is_content_without_organization(p_resource_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(description, '') FROM resources WHERE resource_id = p_resource_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT NULLIF(artifact_type_concept, '') FROM resources WHERE resource_id = p_resource_id) IS NULL, FALSE) OR COALESCE((SELECT NULLIF(keywords, '') FROM resources WHERE resource_id = p_resource_id) IS NULL, FALSE) OR COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_resources_referencing_step_count(p_resource_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_resources_referencing_version_count(p_resource_id)) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) = 0, FALSE)), FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(description, '') FROM resources WHERE resource_id = p_resource_id)) IS NOT NULL AND ((SELECT NULLIF(description, '') FROM resources WHERE resource_id = p_resource_id))::text <> ''), FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(artifact_type_concept, '') FROM resources WHERE resource_id = p_resource_id)) IS NULL OR ((SELECT NULLIF(artifact_type_concept, '') FROM resources WHERE resource_id = p_resource_id))::text = ''), FALSE) OR COALESCE((((SELECT NULLIF(keywords, '') FROM resources WHERE resource_id = p_resource_id)) IS NULL OR ((SELECT NULLIF(keywords, '') FROM resources WHERE resource_id = p_resource_id))::text = ''), FALSE) OR COALESCE(COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_resources_referencing_step_count(p_resource_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_resources_referencing_version_count(p_resource_id)) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) = 0, FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_resources_trailing_practice_count
@@ -9593,7 +9664,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_resources_trailing_practice_count(p_resource_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_traces WHERE contradicted_document = (SELECT NULLIF(resource_id, '') FROM resources WHERE resource_id = p_resource_id) AND calc_knowledge_traces_is_document_trailing_practice(knowledge_trace_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_traces erb_r1 WHERE contradicted_document = (SELECT (SELECT NULLIF(resource_id, '') FROM resources WHERE resource_id = p_resource_id)) AND ((SELECT ((COALESCE(COALESCE(NULLIF(erb_r1.trace_role, ''), '') = 'Contradicts', FALSE) AND COALESCE(((NULLIF(erb_r1.contradicted_document, '')) IS NOT NULL AND (NULLIF(erb_r1.contradicted_document, ''))::text <> ''), FALSE) AND COALESCE(calc_knowledge_traces_source_is_practice_evidence(erb_r1.knowledge_trace_id), FALSE) AND COALESCE(COALESCE((calc_knowledge_traces_source_collected_at(erb_r1.knowledge_trace_id) > calc_knowledge_traces_contradicted_document_revised_at(erb_r1.knowledge_trace_id)), FALSE), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_resources_is_behind_current_practice
@@ -9761,7 +9832,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_elicitation_sessions_valid_fragments_produced(p_elicitation_session_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_fragments WHERE calc_knowledge_fragments_valid_fragment_session_key(knowledge_fragment_id) = (SELECT NULLIF(elicitation_session_id, '') FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM knowledge_fragments erb_r1 WHERE ((SELECT (CASE WHEN calc_knowledge_fragments_is_currently_valid(erb_r1.knowledge_fragment_id) THEN (NULLIF(erb_r1.elicitation_session, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(elicitation_session_id, '') FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_elicitation_sessions_is_high_yield_session
@@ -9961,7 +10032,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_elicitation_sessions_is_generic_or_unskilled_capture(p_elicitation_session_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(method, '') FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE(COALESCE(calc_elicitation_sessions_method_family(p_elicitation_session_id), '') <> 'Elicitation', FALSE) OR COALESCE(NOT (COALESCE(calc_elicitation_sessions_facilitator_is_knowledge_engineer(p_elicitation_session_id), FALSE)), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(method, '') FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id)) IS NOT NULL AND ((SELECT NULLIF(method, '') FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id))::text <> ''), FALSE) AND COALESCE((COALESCE(COALESCE(calc_elicitation_sessions_method_family(p_elicitation_session_id), '') <> 'Elicitation', FALSE) OR COALESCE(NOT (COALESCE(calc_elicitation_sessions_facilitator_is_knowledge_engineer(p_elicitation_session_id), FALSE)), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_elicitation_sessions_is_ke_field_session
@@ -9981,7 +10052,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_elicitation_sessions_is_reviewed_recording(p_elicitation_session_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(recording_reference, '') FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id) IS NOT NULL, FALSE) AND COALESCE((SELECT practitioner_reviewed_at::timestamptz FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id) IS NOT NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(recording_reference, '') FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id)) IS NOT NULL AND ((SELECT NULLIF(recording_reference, '') FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id))::text <> ''), FALSE) AND COALESCE((((SELECT practitioner_reviewed_at::timestamptz FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id)) IS NOT NULL AND ((SELECT practitioner_reviewed_at::timestamptz FROM elicitation_sessions WHERE elicitation_session_id = p_elicitation_session_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_as_of_instant
@@ -10258,7 +10329,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_currently_valid(p_knowledge_fragment_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(status, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id), '') = 'Approved', FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(status, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id), '') = 'Approved', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_has_human_source
@@ -10308,7 +10379,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_within_validity_window(p_knowledge_fragment_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_knowledge_fragments_as_of_instant(p_knowledge_fragment_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_is_relied_upon
@@ -10318,7 +10389,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_relied_upon(p_knowledge_fragment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(step, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) IS NOT NULL, FALSE) AND COALESCE(calc_knowledge_fragments_is_within_validity_window(p_knowledge_fragment_id), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(step, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)) IS NOT NULL AND ((SELECT NULLIF(step, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id))::text <> ''), FALSE) AND COALESCE(calc_knowledge_fragments_is_within_validity_window(p_knowledge_fragment_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_is_unapproved_but_relied_on
@@ -10338,7 +10409,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_has_recorded_elicitation(p_knowledge_fragment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(elicitation_session, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(elicitation_session, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)) IS NOT NULL AND ((SELECT NULLIF(elicitation_session, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_evidence_expiry_days
@@ -10498,7 +10569,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_predates_current_role_holder(p_knowledge_fragment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_knowledge_fragments_owner_role_agent_kind(p_knowledge_fragment_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) < calc_knowledge_fragments_owner_role_assignment_valid_from(p_knowledge_fragment_id)), FALSE), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_knowledge_fragments_owner_role_agent_kind(p_knowledge_fragment_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) < calc_knowledge_fragments_owner_role_assignment_valid_from(p_knowledge_fragment_id)), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_fragility_signal_count
@@ -10598,7 +10669,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_has_review_record(p_knowledge_fragment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT last_reviewed_at::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT last_reviewed_at::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)) IS NOT NULL AND ((SELECT last_reviewed_at::timestamptz FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_days_since_actual_review
@@ -10668,7 +10739,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_ratified_boundary_count(p_knowledge_fragment_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM authority_boundaries WHERE calc_authority_boundaries_ratifying_fragment_key(authority_boundary_id) = (SELECT NULLIF(knowledge_fragment_id, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM authority_boundaries erb_r1 WHERE ((SELECT (CASE WHEN calc_authority_boundaries_is_currently_binding(erb_r1.authority_boundary_id) THEN (NULLIF(erb_r1.ratified_by_knowledge_fragment, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(knowledge_fragment_id, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_reliance_surface_count
@@ -10748,7 +10819,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_fragments_is_flattened_to_brittle_rule(p_knowledge_fragment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(knowledge_form, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id), '') = 'Tacit', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(knowledge_form, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id), '') = 'SituatedJudgment', FALSE)), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(encoded_as, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id), '') = 'HardRule', FALSE) AND COALESCE((SELECT NULLIF(stated_conditions, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(knowledge_form, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id), '') = 'Tacit', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(knowledge_form, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id), '') = 'SituatedJudgment', FALSE)), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(encoded_as, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id), '') = 'HardRule', FALSE) AND COALESCE((((SELECT NULLIF(stated_conditions, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id)) IS NULL OR ((SELECT NULLIF(stated_conditions, '') FROM knowledge_fragments WHERE knowledge_fragment_id = p_knowledge_fragment_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_fragments_corroboration_count
@@ -11214,7 +11285,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_gaps_has_resolution_plan(p_knowledge_gap_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(resolution_plan, '') FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(resolution_plan, '') FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id)) IS NOT NULL AND ((SELECT NULLIF(resolution_plan, '') FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_gaps_is_abandoned_unknown
@@ -11254,7 +11325,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_gaps_is_known_and_unresolved(p_knowledge_gap_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT identified_at::timestamptz FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id) IS NOT NULL, FALSE) AND COALESCE(calc_knowledge_gaps_is_open(p_knowledge_gap_id), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT identified_at::timestamptz FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id)) IS NOT NULL AND ((SELECT identified_at::timestamptz FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id))::text <> ''), FALSE) AND COALESCE(calc_knowledge_gaps_is_open(p_knowledge_gap_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_gaps_is_gatekeeping_or_sabotage
@@ -11284,7 +11355,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_gaps_is_required_gatekept_uncodified(p_knowledge_gap_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_knowledge_gaps_is_gatekeeping_or_sabotage(p_knowledge_gap_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(blocking_kind, '') FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id), '') = 'Blocking', FALSE) AND COALESCE((SELECT NULLIF(codified_as_fragment, '') FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_knowledge_gaps_is_gatekeeping_or_sabotage(p_knowledge_gap_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(blocking_kind, '') FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id), '') = 'Blocking', FALSE) AND COALESCE((((SELECT NULLIF(codified_as_fragment, '') FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id)) IS NULL OR ((SELECT NULLIF(codified_as_fragment, '') FROM knowledge_gaps WHERE knowledge_gap_id = p_knowledge_gap_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_faq_categories_label
@@ -11601,7 +11672,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_completed_step_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_completed_execution_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_completed_execution_key(step_execution_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_control_breach_count
@@ -11611,7 +11682,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_control_breach_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_control_breach_execution_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_control_breach_execution_key(step_execution_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_late_step_count
@@ -11621,7 +11692,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_late_step_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_late_execution_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_late_execution_key(step_execution_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_is_structurally_complete
@@ -11661,7 +11732,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_unevaluated_blocking_total(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_unevaluated_blocking_execution_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_unevaluated_blocking_execution_key(step_execution_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_separation_of_duties_held
@@ -11681,7 +11752,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_separation_violation_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_separation_violation_execution_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_separation_violation_execution_key(step_execution_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_is_attestation_ready
@@ -11721,7 +11792,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_asserted_only_control_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE calc_requirement_satisfactions_asserted_only_execution_key(requirement_satisfaction_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions erb_r1 WHERE ((SELECT (CASE WHEN calc_requirement_satisfactions_is_asserted_only(erb_r1.requirement_satisfaction_id) THEN (calc_requirement_satisfactions_parent_procedure_execution(erb_r1.requirement_satisfaction_id))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_assurance_is_mostly_asserted
@@ -11741,7 +11812,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_unreachable_handling_failure_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_unreachable_failure_key(message_delivery_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM message_deliveries erb_r1 WHERE ((SELECT (CASE WHEN (COALESCE(calc_message_deliveries_is_fabricated_acknowledgement(erb_r1.message_delivery_id), FALSE) OR COALESCE(calc_message_deliveries_is_unhandled_unreachable(erb_r1.message_delivery_id), FALSE)) THEN (NULLIF(erb_r1.procedure_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_retention_breach_count
@@ -11751,7 +11822,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_retention_breach_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_retention_breach_execution_key(message_delivery_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM message_deliveries erb_r1 WHERE ((SELECT (CASE WHEN calc_message_deliveries_is_retention_breach(erb_r1.message_delivery_id) THEN (NULLIF(erb_r1.procedure_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_cleared_legal_review_count
@@ -11761,7 +11832,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_cleared_legal_review_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_cleared_legal_review_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_cleared_legal_review_key(step_execution_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_has_cleared_legal_review
@@ -11781,7 +11852,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_abandoned_failure_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_abandoned_failure_execution_key(message_delivery_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM message_deliveries erb_r1 WHERE ((SELECT (CASE WHEN calc_message_deliveries_is_abandoned_failure(erb_r1.message_delivery_id) THEN (NULLIF(erb_r1.procedure_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_delivered_count
@@ -11791,7 +11862,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_delivered_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_reached_execution_key(message_delivery_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM message_deliveries erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.delivery_status, ''), '') = 'Delivered' THEN (NULLIF(erb_r1.procedure_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_total_delivery_attempt_count
@@ -11821,7 +11892,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_mishandled_refusal_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_refusal_failure_execution_key(send_intent_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_refusal_failure_execution_key(send_intent_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_unclean_step_count
@@ -11831,7 +11902,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_unclean_step_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_procedure_execution_when_unclean(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_procedure_execution_when_unclean(step_execution_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_ran_clean
@@ -11901,7 +11972,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_invalid_approval_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE calc_requirement_satisfactions_run_when_invalid_approval(requirement_satisfaction_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions erb_r1 WHERE ((SELECT (CASE WHEN calc_requirement_satisfactions_is_invalid_approval(erb_r1.requirement_satisfaction_id) THEN (calc_requirement_satisfactions_procedure_execution_of_satisfact(erb_r1.requirement_satisfaction_id))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_approval_chain_is_complete
@@ -11921,7 +11992,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_vacuously_clean_step_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_vacuously_clean_execution_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_vacuously_clean_execution_key(step_execution_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_preparation_step_count
@@ -11931,7 +12002,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_preparation_step_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_preparation_execution_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_preparation_execution_key(step_execution_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_approval_step_count
@@ -11941,7 +12012,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_approval_step_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_approval_execution_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_approval_execution_key(step_execution_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_separation_was_testable
@@ -11991,7 +12062,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_ungoverned_divergence_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_ungoverned_divergence_execution_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_ungoverned_divergence_execution_key(step_execution_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_divergence_was_fully_governed
@@ -12011,7 +12082,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_computedly_witnessed_control_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE calc_requirement_satisfactions_computed_witness_execution_key(requirement_satisfaction_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions erb_r1 WHERE ((SELECT (CASE WHEN calc_requirement_satisfactions_is_computedly_witnessed(erb_r1.requirement_satisfaction_id) THEN (calc_requirement_satisfactions_parent_procedure_execution(erb_r1.requirement_satisfaction_id))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_evaluated_control_count
@@ -12041,7 +12112,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_interested_party_assertion_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE calc_requirement_satisfactions_interested_assertion_execution_k(requirement_satisfaction_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions erb_r1 WHERE ((SELECT (CASE WHEN calc_requirement_satisfactions_is_interested_party_assertion(erb_r1.requirement_satisfaction_id) THEN (calc_requirement_satisfactions_parent_procedure_execution(erb_r1.requirement_satisfaction_id))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_assurance_grade
@@ -12071,7 +12142,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_independent_human_observation_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM verification_outcomes WHERE calc_verification_outcomes_independent_observation_execution_ke(verification_outcome_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM verification_outcomes erb_r1 WHERE ((SELECT (CASE WHEN calc_verification_outcomes_is_independent_human_observation(erb_r1.verification_outcome_id) THEN (calc_verification_outcomes_parent_procedure_execution_of_outcom(erb_r1.verification_outcome_id))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_has_any_independent_observation
@@ -12091,7 +12162,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_self_attested_approval_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_self_attested_approval_execution_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_self_attested_approval_execution_key(step_execution_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_assurance_chain_is_circular
@@ -12141,7 +12212,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_post_attestation_score_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE calc_requirement_satisfactions_post_attestation_score_execution(requirement_satisfaction_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions erb_r1 WHERE ((SELECT (CASE WHEN calc_requirement_satisfactions_was_scored_after_attestation(erb_r1.requirement_satisfaction_id) THEN (calc_requirement_satisfactions_parent_procedure_execution(erb_r1.requirement_satisfaction_id))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_basis_changed_after_signature
@@ -12171,7 +12242,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_intended_recipient_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_intent_execution_key(send_intent_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_intent_execution_key(send_intent_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_reached_recipient_count
@@ -12181,7 +12252,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_reached_recipient_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_delivered_intent_execution_key(send_intent_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_delivered_intent_execution_key(send_intent_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_silently_dropped_count
@@ -12191,7 +12262,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_silently_dropped_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_dropped_intent_execution_key(send_intent_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_dropped_intent_execution_key(send_intent_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_delivery_yield_percent
@@ -12211,7 +12282,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_campaign_silently_lost_audience(p_procedure_execution_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_procedure_executions_silently_dropped_count(p_procedure_execution_id) > 0))::boolean;
+  SELECT ((COALESCE((calc_procedure_executions_silently_dropped_count(p_procedure_execution_id))::NUMERIC, 0) > 0));
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_unrecorded_refusal_count
@@ -12221,7 +12292,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_unrecorded_refusal_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_unrecorded_refusal_execution_key(send_intent_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_unrecorded_refusal_execution_key(send_intent_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_has_unrecorded_refusals
@@ -12231,7 +12302,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_has_unrecorded_refusals(p_procedure_execution_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_procedure_executions_unrecorded_refusal_count(p_procedure_execution_id) > 0))::boolean;
+  SELECT ((COALESCE((calc_procedure_executions_unrecorded_refusal_count(p_procedure_execution_id))::NUMERIC, 0) > 0));
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_independently_confirmed_intent_count
@@ -12241,7 +12312,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_independently_confirmed_intent_count(p_procedure_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_independently_confirmed_execution_key(send_intent_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM send_intents WHERE calc_send_intents_independently_confirmed_execution_key(send_intent_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_send_decisions_are_entirely_self_witn
@@ -12271,7 +12342,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_deviating_step_count(p_procedure_execution_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_deviation_execution_key(step_execution_id) = (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_deviation_execution_key(step_execution_id) = (SELECT (SELECT NULLIF(procedure_execution_id, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_has_step_deviation
@@ -12301,7 +12372,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_clean_facility_key(p_procedure_execution_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (COALESCE((SELECT NULLIF(facility, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_procedure_executions_has_step_deviation(p_procedure_execution_id), FALSE) = FALSE, FALSE)) THEN ((SELECT NULLIF(facility, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))::text ELSE ('')::text END)::text;
+  SELECT (CASE WHEN (COALESCE((((SELECT NULLIF(facility, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)) IS NOT NULL AND ((SELECT NULLIF(facility, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_procedure_executions_has_step_deviation(p_procedure_execution_id), FALSE) = FALSE, FALSE)) THEN ((SELECT NULLIF(facility, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_deviating_day_version_key
@@ -12351,7 +12422,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_is_unconfirmed_completion(p_procedure_execution_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(execution_status, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id), '') = 'Completed', FALSE) AND COALESCE((SELECT NULLIF(confirmed_by_agent, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(execution_status, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id), '') = 'Completed', FALSE) AND COALESCE((((SELECT NULLIF(confirmed_by_agent, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)) IS NULL OR ((SELECT NULLIF(confirmed_by_agent, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_has_no_recorded_outcome
@@ -12361,7 +12432,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_executions_has_no_recorded_outcome(p_procedure_execution_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(outcome, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(outcome, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id)) IS NULL OR ((SELECT NULLIF(outcome, '') FROM procedure_executions WHERE procedure_execution_id = p_procedure_execution_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_executions_feedback_count
@@ -12772,7 +12843,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_actual_duration_minutes(p_step_execution_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT ended_at::timestamptz FROM step_executions WHERE step_execution_id = p_step_execution_id) IS NULL THEN (0)::text ELSE ((EXTRACT(EPOCH FROM (((SELECT ended_at::timestamptz FROM step_executions WHERE step_execution_id = p_step_execution_id))::timestamptz - ((SELECT started_at::timestamptz FROM step_executions WHERE step_execution_id = p_step_execution_id))::timestamptz)) / 60))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT ended_at::timestamptz FROM step_executions WHERE step_execution_id = p_step_execution_id)) IS NULL OR ((SELECT ended_at::timestamptz FROM step_executions WHERE step_execution_id = p_step_execution_id))::text = '') THEN (0)::text ELSE ((EXTRACT(EPOCH FROM (((SELECT ended_at::timestamptz FROM step_executions WHERE step_execution_id = p_step_execution_id))::timestamptz - ((SELECT started_at::timestamptz FROM step_executions WHERE step_execution_id = p_step_execution_id))::timestamptz)) / 60))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_is_late
@@ -12792,7 +12863,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_blocking_unmet_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE step_execution = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) AND calc_requirement_satisfactions_is_blocking_and_unmet(requirement_satisfaction_id) = TRUE))::numeric;
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions erb_r1 WHERE step_execution = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)) AND ((SELECT ((COALESCE(calc_requirement_satisfactions_requirement_is_blocking(erb_r1.requirement_satisfaction_id), FALSE) AND COALESCE(NOT (COALESCE(calc_requirement_satisfactions_is_fully_satisfied(erb_r1.requirement_satisfaction_id), FALSE)), FALSE)))::boolean))::boolean = TRUE))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_blocking_unmet_count_safe
@@ -12802,7 +12873,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_blocking_unmet_count_safe(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE calc_requirement_satisfactions_blocking_unmet_step_key(requirement_satisfaction_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions erb_r1 WHERE ((SELECT (CASE WHEN calc_requirement_satisfactions_is_blocking_and_unmet(erb_r1.requirement_satisfaction_id) THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_proceeded_past_blocking_control
@@ -12822,7 +12893,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_evaluated_blocking_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE calc_requirement_satisfactions_blocking_satisfaction_step_key(requirement_satisfaction_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions erb_r1 WHERE ((SELECT (CASE WHEN calc_requirement_satisfactions_requirement_is_blocking(erb_r1.requirement_satisfaction_id) THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_unevaluated_blocking_count
@@ -12862,7 +12933,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_has_deviation_note(p_step_execution_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(deviation, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(deviation, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)) IS NOT NULL AND ((SELECT NULLIF(deviation, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_is_late_and_unexplained
@@ -12952,7 +13023,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_prepared_by_this_agent_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_preparer_agent_key(step_execution_id) = calc_step_executions_approver_agent_key(p_step_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_preparer_agent_key(step_execution_id) = (SELECT calc_step_executions_approver_agent_key(p_step_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_violates_separation_of_duties
@@ -12982,7 +13053,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_executor_authority_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_agent_role_key(role_assignment_id) = calc_step_executions_executor_role_key(p_step_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_agent_role_key(role_assignment_id) = (SELECT calc_step_executions_executor_role_key(p_step_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_executor_held_required_role
@@ -13092,7 +13163,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_self_witnessed_verification_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM verification_outcomes WHERE calc_verification_outcomes_self_witnessed_step_key(verification_outcome_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM verification_outcomes erb_r1 WHERE ((SELECT (CASE WHEN calc_verification_outcomes_is_self_witnessed(erb_r1.verification_outcome_id) THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_unbacked_verification_count
@@ -13102,7 +13173,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_unbacked_verification_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM verification_outcomes WHERE calc_verification_outcomes_unbacked_step_key(verification_outcome_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM verification_outcomes erb_r1 WHERE ((SELECT (CASE WHEN calc_verification_outcomes_is_unbacked_observation(erb_r1.verification_outcome_id) THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_approval_rests_on_self_attestation
@@ -13202,7 +13273,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_unresolved_issue_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM issue_occurrences WHERE calc_issue_occurrences_step_execution_when_unresolved(issue_occurrence_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM issue_occurrences erb_r1 WHERE ((SELECT (CASE WHEN calc_issue_occurrences_is_unresolved(erb_r1.issue_occurrence_id) THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_has_deviation
@@ -13212,7 +13283,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_has_deviation(p_step_execution_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(deviation, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(deviation, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)) IS NOT NULL AND ((SELECT NULLIF(deviation, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_is_clean
@@ -13242,7 +13313,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_evaluated_requirement_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE calc_requirement_satisfactions_step_execution_when_scored(requirement_satisfaction_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions erb_r1 WHERE ((SELECT (CASE WHEN ((NULLIF(erb_r1.satisfaction_level, '')) IS NOT NULL AND (NULLIF(erb_r1.satisfaction_level, ''))::text <> '') THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_has_unevaluated_blocking_requirement
@@ -13282,7 +13353,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_is_verified(p_step_execution_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(verification_result, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(verification_result, '') FROM step_executions WHERE step_execution_id = p_step_execution_id), '') <> 'PENDING', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(verification_result, '') FROM step_executions WHERE step_execution_id = p_step_execution_id), '') <> 'FAIL', FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(verification_result, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)) IS NOT NULL AND ((SELECT NULLIF(verification_result, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(verification_result, '') FROM step_executions WHERE step_execution_id = p_step_execution_id), '') <> 'PENDING', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(verification_result, '') FROM step_executions WHERE step_execution_id = p_step_execution_id), '') <> 'FAIL', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_unconfirmed_non_human_decision_count
@@ -13292,7 +13363,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_unconfirmed_non_human_decision_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_step_execution_when_unconfirmed(agent_decision_record_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records erb_r1 WHERE ((SELECT (CASE WHEN calc_agent_decision_records_is_unconfirmed_non_human_decision(erb_r1.agent_decision_record_id) THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_human_confirmation_missing
@@ -13332,7 +13403,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_unfalsified_clearance_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions WHERE calc_requirement_satisfactions_unfalsified_clearance_step_key(requirement_satisfaction_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM requirement_satisfactions erb_r1 WHERE ((SELECT (CASE WHEN (calc_requirement_satisfactions_is_clearance_by_unfalsified_cont(erb_r1.requirement_satisfaction_id) = 'true') THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_all_clearances_are_unfalsified
@@ -13352,7 +13423,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_stale_at_run_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM binding_observations WHERE calc_binding_observations_stale_at_run_step_key(binding_observation_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM binding_observations erb_r1 WHERE ((SELECT (CASE WHEN calc_binding_observations_was_stale_at_run(erb_r1.binding_observation_id) THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_was_stale_when_i_ran_it
@@ -13452,7 +13523,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_uncorroborated_pass_count(p_step_execution_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM verification_outcomes WHERE calc_verification_outcomes_uncorroborated_pass_step_key(verification_outcome_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM verification_outcomes erb_r1 WHERE ((SELECT (CASE WHEN calc_verification_outcomes_is_uncorroborated_pass(erb_r1.verification_outcome_id) THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_evidence_position_is_weak
@@ -13532,7 +13603,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_specified_transition_from_previous_count(p_step_execution_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_transitions WHERE from_step = calc_step_executions_previous_executed_step(p_step_execution_id) AND to_step = (SELECT NULLIF(step, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_transitions WHERE from_step = (SELECT calc_step_executions_previous_executed_step(p_step_execution_id)) AND to_step = (SELECT (SELECT NULLIF(step, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_is_out_of_specified_order
@@ -13542,7 +13613,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_is_out_of_specified_order(p_step_execution_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(previous_step_execution, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_step_executions_specified_transition_from_previous_count(p_step_execution_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(previous_step_execution, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)) IS NOT NULL AND ((SELECT NULLIF(previous_step_execution, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_step_executions_specified_transition_from_previous_count(p_step_execution_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_executes_step_of_other_version
@@ -13582,7 +13653,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_lacks_required_confirmation(p_step_execution_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_step_executions_step_requires_human_confirmation(p_step_execution_id), FALSE) AND COALESCE(calc_step_executions_is_completed(p_step_execution_id), FALSE) AND COALESCE((SELECT NULLIF(confirmed_by_agent, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_step_executions_step_requires_human_confirmation(p_step_execution_id), FALSE) AND COALESCE(calc_step_executions_is_completed(p_step_execution_id), FALSE) AND COALESCE((((SELECT NULLIF(confirmed_by_agent, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)) IS NULL OR ((SELECT NULLIF(confirmed_by_agent, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_failed_precondition_count
@@ -13592,7 +13663,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_failed_precondition_count(p_step_execution_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM condition_checks WHERE calc_condition_checks_failed_precondition_execution_key(condition_check_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM condition_checks erb_r1 WHERE ((SELECT (CASE WHEN calc_condition_checks_is_failed_precondition(erb_r1.condition_check_id) THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_violated_invariant_count
@@ -13602,7 +13673,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_violated_invariant_count(p_step_execution_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM condition_checks WHERE calc_condition_checks_violated_invariant_execution_key(condition_check_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM condition_checks erb_r1 WHERE ((SELECT (CASE WHEN calc_condition_checks_is_violated_invariant(erb_r1.condition_check_id) THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_proceeded_despite_failed_precondition
@@ -13622,7 +13693,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_unescalated_danger_cue_count(p_step_execution_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM cue_observations WHERE calc_cue_observations_unescalated_execution_key(cue_observation_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM cue_observations erb_r1 WHERE ((SELECT (CASE WHEN calc_cue_observations_is_unescalated_danger_cue(erb_r1.cue_observation_id) THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_ignored_danger_cue
@@ -13642,7 +13713,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_used_entity_count(p_step_execution_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM execution_entities WHERE calc_execution_entities_used_execution_key(execution_entity_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM execution_entities erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.usage, ''), '') = 'Used' THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_generated_entity_count
@@ -13652,7 +13723,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_generated_entity_count(p_step_execution_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM execution_entities WHERE calc_execution_entities_generated_execution_key(execution_entity_id) = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM execution_entities erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.usage, ''), '') = 'Generated' THEN (NULLIF(erb_r1.step_execution, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_ran_without_declared_inputs
@@ -13672,7 +13743,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_completed_prerequisite_run_count(p_step_execution_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE step = calc_step_executions_step_prerequisite(p_step_execution_id) AND procedure_execution = (SELECT NULLIF(procedure_execution, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) AND execution_status = 'Completed'))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE step = (SELECT calc_step_executions_step_prerequisite(p_step_execution_id)) AND procedure_execution = (SELECT (SELECT NULLIF(procedure_execution, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)) AND execution_status = 'Completed'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_ran_before_prerequisite_completed
@@ -13682,7 +13753,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_ran_before_prerequisite_completed(p_step_execution_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_step_executions_step_prerequisite(p_step_execution_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_step_executions_completed_prerequisite_run_count(p_step_execution_id))::NUMERIC, 0) = 0, FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_step_executions_step_prerequisite(p_step_execution_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_step_executions_completed_prerequisite_run_count(p_step_execution_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_deviation_execution_key
@@ -13712,7 +13783,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_is_blocked_by_incomplete_prerequisite(p_step_execution_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_step_executions_step_prerequisite(p_step_execution_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_step_executions_completed_prerequisite_run_count(p_step_execution_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(execution_status, '') FROM step_executions WHERE step_execution_id = p_step_execution_id), '') <> 'Completed', FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_step_executions_step_prerequisite(p_step_execution_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_step_executions_completed_prerequisite_run_count(p_step_execution_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(execution_status, '') FROM step_executions WHERE step_execution_id = p_step_execution_id), '') <> 'Completed', FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_incomplete_cue_observation_count
@@ -13722,7 +13793,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_executions_incomplete_cue_observation_count(p_step_execution_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM cue_observations WHERE step_execution = (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id) AND calc_cue_observations_cue_signals_incomplete_step(cue_observation_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM cue_observations erb_r1 WHERE step_execution = (SELECT (SELECT NULLIF(step_execution_id, '') FROM step_executions WHERE step_execution_id = p_step_execution_id)) AND ((SELECT (SELECT signals_incomplete_step::boolean FROM step_cues WHERE step_cue_id = erb_r1.step_cue)))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_executions_is_blocked_by_observed_cue
@@ -13985,7 +14056,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_step_execution_when_scored(p_requirement_satisfaction_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(satisfaction_level, '') FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id) IS NOT NULL THEN ((SELECT NULLIF(step_execution, '') FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id))::text ELSE ('')::text END)::text;
+  SELECT (CASE WHEN (((SELECT NULLIF(satisfaction_level, '') FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id)) IS NOT NULL AND ((SELECT NULLIF(satisfaction_level, '') FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id))::text <> '') THEN ((SELECT NULLIF(step_execution, '') FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_requirement_satisfactions_is_human_evaluated
@@ -14075,7 +14146,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_requirement_satisfactions_has_written_evidence(p_requirement_satisfaction_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(evidence, '') FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(evidence, '') FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id)) IS NOT NULL AND ((SELECT NULLIF(evidence, '') FROM requirement_satisfactions WHERE requirement_satisfaction_id = p_requirement_satisfaction_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_requirement_satisfactions_is_bare_assertion
@@ -14237,7 +14308,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_issue_occurrences_failed_condition_count_on_run(p_issue_occurrence_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_step_executions_failed_precondition_count(step_execution_id))::numeric), 0) FROM step_executions WHERE step_execution_id = (SELECT NULLIF(step_execution, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id)))::integer;
+  SELECT ((SELECT COALESCE(SUM((calc_step_executions_failed_precondition_count(step_execution_id))::numeric), 0) FROM step_executions WHERE step_execution_id = (SELECT (SELECT NULLIF(step_execution, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_issue_occurrences_coincided_with_failed_condition
@@ -14257,7 +14328,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_issue_occurrences_has_no_recorded_solution(p_issue_occurrence_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(issue_solution, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(issue_solution, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id)) IS NULL OR ((SELECT NULLIF(issue_solution, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_issue_occurrences_is_failure_without_landed_redesign
@@ -14267,7 +14338,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_issue_occurrences_is_failure_without_landed_redesign(p_issue_occurrence_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(redesign_change_request, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id) IS NULL, FALSE) OR COALESCE(calc_issue_occurrences_redesign_implemented_at(p_issue_occurrence_id) IS NULL, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_issue_occurrences_redesign_implemented_at(p_issue_occurrence_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(redesign_change_request, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id)) IS NULL OR ((SELECT NULLIF(redesign_change_request, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id))::text = ''), FALSE) OR COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_issue_occurrences_improvement_cycle_path
@@ -14277,7 +14348,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_issue_occurrences_improvement_cycle_path(p_issue_occurrence_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(redesign_change_request, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id) IS NULL THEN ('')::text ELSE (CONCAT('Observed at ', calc_issue_occurrences_executed_step(p_issue_occurrence_id), ' by ', (SELECT NULLIF(encountered_by_agent, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id), '; recorded as ', (SELECT NULLIF(error, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id), ' (', (SELECT NULLIF(issue_cause, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id), '); redesigned by ', (SELECT NULLIF(redesign_change_request, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id)))::text END)::text;
+  SELECT (CASE WHEN (((SELECT NULLIF(redesign_change_request, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id)) IS NULL OR ((SELECT NULLIF(redesign_change_request, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id))::text = '') THEN ('')::text ELSE (CONCAT('Observed at ', calc_issue_occurrences_executed_step(p_issue_occurrence_id), ' by ', (SELECT NULLIF(encountered_by_agent, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id), '; recorded as ', (SELECT NULLIF(error, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id), ' (', (SELECT NULLIF(issue_cause, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id), '); redesigned by ', (SELECT NULLIF(redesign_change_request, '') FROM issue_occurrences WHERE issue_occurrence_id = p_issue_occurrence_id)))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- get_faqs_question
@@ -14324,7 +14395,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_user_questions_is_unaddressed_question(p_user_question_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(addressed_by_resource, '') FROM user_questions WHERE user_question_id = p_user_question_id) IS NULL, FALSE) AND COALESCE((SELECT NULLIF(resolved_by_faq, '') FROM user_questions WHERE user_question_id = p_user_question_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(addressed_by_resource, '') FROM user_questions WHERE user_question_id = p_user_question_id)) IS NULL OR ((SELECT NULLIF(addressed_by_resource, '') FROM user_questions WHERE user_question_id = p_user_question_id))::text = ''), FALSE) AND COALESCE((((SELECT NULLIF(resolved_by_faq, '') FROM user_questions WHERE user_question_id = p_user_question_id)) IS NULL OR ((SELECT NULLIF(resolved_by_faq, '') FROM user_questions WHERE user_question_id = p_user_question_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_user_feedback_name
@@ -14344,7 +14415,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_user_feedback_is_unactioned_procedure_critique(p_user_feedback_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(feedback_on_procedure, '') FROM user_feedback WHERE user_feedback_id = p_user_feedback_id) IS NOT NULL, FALSE) AND COALESCE((SELECT NULLIF(change_request_key, '') FROM user_feedback WHERE user_feedback_id = p_user_feedback_id) IS NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(disposition, '') FROM user_feedback WHERE user_feedback_id = p_user_feedback_id), '') <> 'Declined', FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(feedback_on_procedure, '') FROM user_feedback WHERE user_feedback_id = p_user_feedback_id)) IS NOT NULL AND ((SELECT NULLIF(feedback_on_procedure, '') FROM user_feedback WHERE user_feedback_id = p_user_feedback_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(change_request_key, '') FROM user_feedback WHERE user_feedback_id = p_user_feedback_id)) IS NULL OR ((SELECT NULLIF(change_request_key, '') FROM user_feedback WHERE user_feedback_id = p_user_feedback_id))::text = ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(disposition, '') FROM user_feedback WHERE user_feedback_id = p_user_feedback_id), '') <> 'Declined', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_user_feedback_collection_follow_up_count
@@ -14415,7 +14486,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stewardship_assignments_is_current_assignment(p_stewardship_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_stewardship_assignments_as_of_instant(p_stewardship_assignment_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((SELECT valid_to::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_stewardship_assignments_as_of_instant(p_stewardship_assignment_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((((SELECT valid_to::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM stewardship_assignments WHERE stewardship_assignment_id = p_stewardship_assignment_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_requests_as_of_instant
@@ -14490,7 +14561,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_change_requests_is_open(p_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM change_requests WHERE change_request_id = p_change_request_id), '') = 'Draft', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(status, '') FROM change_requests WHERE change_request_id = p_change_request_id), '') = 'UnderReview', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(status, '') FROM change_requests WHERE change_request_id = p_change_request_id), '') = 'Approved', FALSE)), FALSE) AND COALESCE((SELECT implemented_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM change_requests WHERE change_request_id = p_change_request_id), '') = 'Draft', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(status, '') FROM change_requests WHERE change_request_id = p_change_request_id), '') = 'UnderReview', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(status, '') FROM change_requests WHERE change_request_id = p_change_request_id), '') = 'Approved', FALSE)), FALSE) AND COALESCE((((SELECT implemented_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id)) IS NULL OR ((SELECT implemented_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_requests_open_change_version_key
@@ -14510,7 +14581,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_change_requests_is_decided(p_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT decided_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT decided_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id)) IS NOT NULL AND ((SELECT decided_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_requests_days_pending
@@ -14630,7 +14701,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_change_requests_is_implemented(p_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT implemented_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT implemented_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id)) IS NOT NULL AND ((SELECT implemented_at::timestamptz FROM change_requests WHERE change_request_id = p_change_request_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_requests_is_my_decided_request
@@ -14873,7 +14944,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_review_events_review_did_not_refresh_modified(p_review_event_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_review_events_version_modified_at(p_review_event_id) AS val) SELECT ((COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT reviewed_at::timestamptz FROM review_events WHERE review_event_id = p_review_event_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_review_events_version_modified_at(p_review_event_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT reviewed_at::timestamptz FROM review_events WHERE review_event_id = p_review_event_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_learning_activities_name
@@ -15015,7 +15086,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_communication_policies_consent_violation_count(p_communication_policy_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_policy_channel(message_delivery_id) = (SELECT NULLIF(communication_policy_id, '') FROM communication_policies WHERE communication_policy_id = p_communication_policy_id) AND calc_message_deliveries_is_consent_violation(message_delivery_id) = TRUE))::numeric;
+  SELECT ((SELECT COUNT(*) FROM message_deliveries erb_r1 WHERE ((SELECT (SELECT communication_policy::text FROM message_templates WHERE message_template_id = erb_r1.message_template)))::text = (SELECT (SELECT NULLIF(communication_policy_id, '') FROM communication_policies WHERE communication_policy_id = p_communication_policy_id)) AND ((SELECT ((COALESCE(calc_message_deliveries_was_actually_transmitted(erb_r1.message_delivery_id), FALSE) AND COALESCE((COALESCE(calc_message_deliveries_policy_requires_consent(erb_r1.message_delivery_id), FALSE) AND COALESCE(NOT (COALESCE(calc_message_deliveries_recipient_has_sms_consent(erb_r1.message_delivery_id), FALSE)), FALSE)), FALSE)))::boolean))::boolean = TRUE))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_communication_policies_quiet_hours_violation_count
@@ -15025,7 +15096,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_communication_policies_quiet_hours_violation_count(p_communication_policy_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_quiet_hours_violation_policy_key(message_delivery_id) = (SELECT NULLIF(communication_policy_id, '') FROM communication_policies WHERE communication_policy_id = p_communication_policy_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM message_deliveries erb_r1 WHERE ((SELECT (CASE WHEN calc_message_deliveries_is_quiet_hours_violation(erb_r1.message_delivery_id) THEN (calc_message_deliveries_policy_channel(erb_r1.message_delivery_id))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(communication_policy_id, '') FROM communication_policies WHERE communication_policy_id = p_communication_policy_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_communication_policies_is_active_policy
@@ -15114,7 +15185,7 @@ $$ LANGUAGE sql STABLE;
 -- Used for join-free cross-table references in aggregations
 
 CREATE OR REPLACE FUNCTION get_communication_policies_quiet_hours_start(p_communication_policy_id TEXT)
-RETURNS DATE AS $$
+RETURNS TEXT AS $$
   SELECT (SELECT quiet_hours_start FROM communication_policies WHERE communication_policy_id = p_communication_policy_id);
 $$ LANGUAGE sql STABLE;
 
@@ -15123,7 +15194,7 @@ $$ LANGUAGE sql STABLE;
 -- Used for join-free cross-table references in aggregations
 
 CREATE OR REPLACE FUNCTION get_communication_policies_quiet_hours_end(p_communication_policy_id TEXT)
-RETURNS DATE AS $$
+RETURNS TEXT AS $$
   SELECT (SELECT quiet_hours_end FROM communication_policies WHERE communication_policy_id = p_communication_policy_id);
 $$ LANGUAGE sql STABLE;
 
@@ -15299,7 +15370,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_templates_valid_approval_count(p_message_template_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM template_approvals WHERE calc_template_approvals_valid_approval_template_key(template_approval_id) = (SELECT NULLIF(message_template_id, '') FROM message_templates WHERE message_template_id = p_message_template_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM template_approvals erb_r1 WHERE ((SELECT (CASE WHEN (COALESCE(calc_template_approvals_is_approval_decision(erb_r1.template_approval_id), FALSE) AND COALESCE(calc_template_approvals_is_decided_by_required_role(erb_r1.template_approval_id), FALSE)) THEN (NULLIF(erb_r1.message_template, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(message_template_id, '') FROM message_templates WHERE message_template_id = p_message_template_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_templates_has_valid_approval
@@ -15329,7 +15400,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_templates_has_body_drifted(p_message_template_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_message_templates_last_approved_body_hash(p_message_template_id) AS val) SELECT ((COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(current_body_hash, '') FROM message_templates WHERE message_template_id = p_message_template_id), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_message_templates_last_approved_body_hash(p_message_template_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(current_body_hash, '') FROM message_templates WHERE message_template_id = p_message_template_id), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_templates_is_sendable_under_approval
@@ -15349,7 +15420,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_templates_drifted_send_count(p_message_template_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_drifted_send_template_key(message_delivery_id) = (SELECT NULLIF(message_template_id, '') FROM message_templates WHERE message_template_id = p_message_template_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM message_deliveries erb_r1 WHERE ((SELECT (CASE WHEN calc_message_deliveries_is_drifted_send(erb_r1.message_delivery_id) THEN (NULLIF(erb_r1.message_template, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(message_template_id, '') FROM message_templates WHERE message_template_id = p_message_template_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_templates_unanswered_delivery_count
@@ -15359,7 +15430,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_templates_unanswered_delivery_count(p_message_template_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_unanswered_template_key(message_delivery_id) = (SELECT NULLIF(message_template_id, '') FROM message_templates WHERE message_template_id = p_message_template_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM message_deliveries erb_r1 WHERE ((SELECT (CASE WHEN calc_message_deliveries_was_delivered_and_unanswered(erb_r1.message_delivery_id) THEN (NULLIF(erb_r1.message_template, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(message_template_id, '') FROM message_templates WHERE message_template_id = p_message_template_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_templates_transmitted_delivery_count
@@ -15369,7 +15440,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_templates_transmitted_delivery_count(p_message_template_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM message_deliveries WHERE calc_message_deliveries_transmitted_template_key(message_delivery_id) = (SELECT NULLIF(message_template_id, '') FROM message_templates WHERE message_template_id = p_message_template_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM message_deliveries erb_r1 WHERE ((SELECT (CASE WHEN calc_message_deliveries_was_actually_transmitted(erb_r1.message_delivery_id) THEN (NULLIF(erb_r1.message_template, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(message_template_id, '') FROM message_templates WHERE message_template_id = p_message_template_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_templates_template_draws_no_response
@@ -15410,7 +15481,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_semantic_mappings_reinvents_standard_term(p_semantic_mapping_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(mapping_relation, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id), '') = 'extension', FALSE) AND COALESCE((SELECT NULLIF(available_standard_iri, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id) IS NOT NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(mapping_relation, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id), '') = 'extension', FALSE) AND COALESCE((((SELECT NULLIF(available_standard_iri, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id)) IS NOT NULL AND ((SELECT NULLIF(available_standard_iri, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_semantic_mappings_is_non_resolvable_term_iri
@@ -15420,7 +15491,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_semantic_mappings_is_non_resolvable_term_iri(p_semantic_mapping_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE(LEFT(((SELECT NULLIF(target_iri, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id))::text, (4)::integer), '') <> 'http', FALSE) OR COALESCE((COALESCE((SELECT NULLIF(ontology_profile, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_semantic_mappings_profile_namespace_dereferences(p_semantic_mapping_id), FALSE) = FALSE, FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE(LEFT(((SELECT NULLIF(target_iri, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id))::text, (4)::integer), '') <> 'http', FALSE) OR COALESCE((COALESCE((((SELECT NULLIF(ontology_profile, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id)) IS NOT NULL AND ((SELECT NULLIF(ontology_profile, '') FROM semantic_mappings WHERE semantic_mapping_id = p_semantic_mapping_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_semantic_mappings_profile_namespace_dereferences(p_semantic_mapping_id), FALSE) = FALSE, FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_witness_loops_name
@@ -15450,7 +15521,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_witness_loops_is_complete(p_witness_loop_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT completed_at::timestamptz FROM witness_loops WHERE witness_loop_id = p_witness_loop_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT completed_at::timestamptz FROM witness_loops WHERE witness_loop_id = p_witness_loop_id)) IS NOT NULL AND ((SELECT completed_at::timestamptz FROM witness_loops WHERE witness_loop_id = p_witness_loop_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_witness_loops_loop_number
@@ -15636,7 +15707,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_fields_is_witness(p_rulebook_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(invented_for_question, '') FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(invented_for_question, '') FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id)) IS NOT NULL AND ((SELECT NULLIF(invented_for_question, '') FROM rulebook_fields WHERE rulebook_field_id = p_rulebook_field_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_fields_disagreeing_substrate_count
@@ -15706,7 +15777,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_test_suites_pass_count(p_test_suite_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM test_cases WHERE calc_test_cases_passing_suite_key(test_case_id) = (SELECT NULLIF(test_suite_id, '') FROM test_suites WHERE test_suite_id = p_test_suite_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM test_cases erb_r1 WHERE ((SELECT (CASE WHEN calc_test_cases_is_passing(erb_r1.test_case_id) THEN (NULLIF(erb_r1.suite, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(test_suite_id, '') FROM test_suites WHERE test_suite_id = p_test_suite_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_test_suites_blocking_fail_count
@@ -15716,7 +15787,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_test_suites_blocking_fail_count(p_test_suite_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM test_cases WHERE calc_test_cases_needs_attention_suite_key(test_case_id) = (SELECT NULLIF(test_suite_id, '') FROM test_suites WHERE test_suite_id = p_test_suite_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM test_cases erb_r1 WHERE ((SELECT (CASE WHEN calc_test_cases_needs_attention(erb_r1.test_case_id) THEN (NULLIF(erb_r1.suite, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(test_suite_id, '') FROM test_suites WHERE test_suite_id = p_test_suite_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_test_suites_is_green
@@ -15935,7 +16006,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_exception_invocations_is_approved(p_exception_invocation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(approved_by_agent, '') FROM exception_invocations WHERE exception_invocation_id = p_exception_invocation_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(approved_by_agent, '') FROM exception_invocations WHERE exception_invocation_id = p_exception_invocation_id)) IS NOT NULL AND ((SELECT NULLIF(approved_by_agent, '') FROM exception_invocations WHERE exception_invocation_id = p_exception_invocation_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_exception_invocations_is_improperly_approved
@@ -15965,7 +16036,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_exception_invocations_approver_prepared_count(p_exception_invocation_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_preparer_agent_key(step_execution_id) = calc_exception_invocations_invoker_also_prepared_key(p_exception_invocation_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE calc_step_executions_preparer_agent_key(step_execution_id) = (SELECT calc_exception_invocations_invoker_also_prepared_key(p_exception_invocation_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_exception_invocations_delegated_to_preparer
@@ -16115,7 +16186,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_verification_outcomes_has_evidence(p_verification_outcome_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(evidence_uri, '') FROM verification_outcomes WHERE verification_outcome_id = p_verification_outcome_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(evidence_uri, '') FROM verification_outcomes WHERE verification_outcome_id = p_verification_outcome_id)) IS NOT NULL AND ((SELECT NULLIF(evidence_uri, '') FROM verification_outcomes WHERE verification_outcome_id = p_verification_outcome_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_verification_outcomes_is_unbacked_observation
@@ -16345,7 +16416,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_recipients_is_email_reachable(p_recipient_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(email_address, '') FROM recipients WHERE recipient_id = p_recipient_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(email_address, '') FROM recipients WHERE recipient_id = p_recipient_id)) IS NOT NULL AND ((SELECT NULLIF(email_address, '') FROM recipients WHERE recipient_id = p_recipient_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_recipients_is_sms_reachable
@@ -16355,7 +16426,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_recipients_is_sms_reachable(p_recipient_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(mobile_number, '') FROM recipients WHERE recipient_id = p_recipient_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(mobile_number, '') FROM recipients WHERE recipient_id = p_recipient_id)) IS NOT NULL AND ((SELECT NULLIF(mobile_number, '') FROM recipients WHERE recipient_id = p_recipient_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_recipients_is_unreachable
@@ -16790,7 +16861,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_deliveries_is_acknowledged(p_message_delivery_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT acknowledged_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT acknowledged_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)) IS NOT NULL AND ((SELECT acknowledged_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_deliveries_has_unreachable_exception_invoked
@@ -16860,7 +16931,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_deliveries_has_rendered_body(p_message_delivery_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(rendered_body, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(rendered_body, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)) IS NOT NULL AND ((SELECT NULLIF(rendered_body, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_deliveries_is_evidence_required
@@ -16950,7 +17021,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_deliveries_policy_requires_opt_out(p_message_delivery_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_message_deliveries_policy_required_opt_out_phrase(p_message_delivery_id) IS NOT NULL)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_message_deliveries_policy_required_opt_out_phrase(p_message_delivery_id) AS val) SELECT ((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_deliveries_opt_out_phrase_position
@@ -17030,7 +17101,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_deliveries_is_triaged(p_message_delivery_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(invoked_exception, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(invoked_exception, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)) IS NOT NULL AND ((SELECT NULLIF(invoked_exception, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_deliveries_is_abandoned_failure
@@ -17150,7 +17221,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_deliveries_approval_preceded_send(p_message_delivery_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT approval_decided_at_send::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT sent_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) > (SELECT approval_decided_at_send::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)), FALSE), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT approval_decided_at_send::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)) IS NOT NULL AND ((SELECT approval_decided_at_send::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT sent_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) > (SELECT approval_decided_at_send::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_deliveries_has_frozen_approval_evidence
@@ -17160,7 +17231,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_deliveries_has_frozen_approval_evidence(p_message_delivery_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(approving_agent_at_send, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) IS NOT NULL, FALSE) AND COALESCE((SELECT approval_decided_at_send::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id) IS NOT NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(approving_agent_at_send, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)) IS NOT NULL AND ((SELECT NULLIF(approving_agent_at_send, '') FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::text <> ''), FALSE) AND COALESCE((((SELECT approval_decided_at_send::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)) IS NOT NULL AND ((SELECT approval_decided_at_send::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_deliveries_provenance_is_live_derived
@@ -17180,7 +17251,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_message_deliveries_template_reapproved_since_send(p_message_delivery_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_message_deliveries_current_last_approval_at(p_message_delivery_id) AS val) SELECT ((COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) > (SELECT sent_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)), FALSE), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_message_deliveries_current_last_approval_at(p_message_delivery_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) > (SELECT sent_at::timestamptz FROM message_deliveries WHERE message_delivery_id = p_message_delivery_id)), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_message_deliveries_is_unprovable_approval_claim
@@ -17900,7 +17971,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_send_intents_opt_out_gate_passed(p_send_intent_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_send_intents_intent_required_opt_out_phrase(p_send_intent_id) IS NULL, FALSE) OR COALESCE((COALESCE(COALESCE(((SELECT proposed_opt_out_position FROM send_intents WHERE send_intent_id = p_send_intent_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((SELECT proposed_opt_out_position FROM send_intents WHERE send_intent_id = p_send_intent_id), 0) <= COALESCE(calc_send_intents_intent_max_message_length(p_send_intent_id), 0), FALSE)), FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_send_intents_intent_required_opt_out_phrase(p_send_intent_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE) OR COALESCE((COALESCE(COALESCE(((SELECT proposed_opt_out_position FROM send_intents WHERE send_intent_id = p_send_intent_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((SELECT proposed_opt_out_position FROM send_intents WHERE send_intent_id = p_send_intent_id), 0) <= COALESCE(calc_send_intents_intent_max_message_length(p_send_intent_id), 0), FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_content_gate_passed
@@ -17938,7 +18009,7 @@ $$ LANGUAGE sql STABLE;
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
 
 
-CREATE OR REPLACE FUNCTION calc_send_intents_is_cleared_to_send(p_send_intent_id TEXT)
+CREATE OR REPLACE FUNCTION calc_send_intents_is_cleared_to_send__compute(p_send_intent_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT ((COALESCE(calc_send_intents_permission_gate_passed(p_send_intent_id), FALSE) AND COALESCE((COALESCE(calc_send_intents_timing_gate_passed(p_send_intent_id), FALSE) AND COALESCE((COALESCE(calc_send_intents_content_gate_passed(p_send_intent_id), FALSE) AND COALESCE(calc_send_intents_authorization_gate_passed(p_send_intent_id), FALSE)), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
@@ -17960,7 +18031,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_send_intents_has_resulting_delivery(p_send_intent_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(resulting_delivery, '') FROM send_intents WHERE send_intent_id = p_send_intent_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(resulting_delivery, '') FROM send_intents WHERE send_intent_id = p_send_intent_id)) IS NOT NULL AND ((SELECT NULLIF(resulting_delivery, '') FROM send_intents WHERE send_intent_id = p_send_intent_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_is_overridden_refusal
@@ -17990,7 +18061,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_send_intents_refusal_cited_an_exception(p_send_intent_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_send_intents_resulting_delivery_exception(p_send_intent_id) IS NOT NULL)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_send_intents_resulting_delivery_exception(p_send_intent_id) AS val) SELECT ((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_is_properly_handled_refusal
@@ -18120,7 +18191,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_send_intents_has_alternate_channel_attempt(p_send_intent_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(alternate_channel_intent, '') FROM send_intents WHERE send_intent_id = p_send_intent_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(alternate_channel_intent, '') FROM send_intents WHERE send_intent_id = p_send_intent_id)) IS NOT NULL AND ((SELECT NULLIF(alternate_channel_intent, '') FROM send_intents WHERE send_intent_id = p_send_intent_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_is_refused_with_no_alternative
@@ -18140,7 +18211,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_send_intents_exception_prescribed_an_alternative(p_send_intent_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_send_intents_refusal_cited_an_exception(p_send_intent_id), FALSE) AND COALESCE(calc_send_intents_resulting_delivery_exception(p_send_intent_id) IS NOT NULL, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_send_intents_resulting_delivery_exception(p_send_intent_id) AS val) SELECT ((COALESCE(calc_send_intents_refusal_cited_an_exception(p_send_intent_id), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_prescribed_handling_was_performed
@@ -18170,7 +18241,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_send_intents_has_durable_refusal_record(p_send_intent_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT refusal_recorded_at::timestamptz FROM send_intents WHERE send_intent_id = p_send_intent_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT refusal_recorded_at::timestamptz FROM send_intents WHERE send_intent_id = p_send_intent_id)) IS NOT NULL AND ((SELECT refusal_recorded_at::timestamptz FROM send_intents WHERE send_intent_id = p_send_intent_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_refusal_was_escalated
@@ -18180,7 +18251,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_send_intents_refusal_was_escalated(p_send_intent_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(refusal_notified_role, '') FROM send_intents WHERE send_intent_id = p_send_intent_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(refusal_notified_role, '') FROM send_intents WHERE send_intent_id = p_send_intent_id)) IS NOT NULL AND ((SELECT NULLIF(refusal_notified_role, '') FROM send_intents WHERE send_intent_id = p_send_intent_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_is_unrecorded_refusal
@@ -18250,7 +18321,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_send_intents_has_retry_attempt(p_send_intent_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(retry_intent, '') FROM send_intents WHERE send_intent_id = p_send_intent_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(retry_intent, '') FROM send_intents WHERE send_intent_id = p_send_intent_id)) IS NOT NULL AND ((SELECT NULLIF(retry_intent, '') FROM send_intents WHERE send_intent_id = p_send_intent_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_is_abandoned_deferral
@@ -18290,7 +18361,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_send_intents_consent_input_was_resolvable(p_send_intent_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_send_intents_recipient_consent_status_raw(p_send_intent_id) IS NOT NULL)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_send_intents_recipient_consent_status_raw(p_send_intent_id) AS val) SELECT ((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_policy_input_was_resolvable
@@ -18300,7 +18371,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_send_intents_policy_input_was_resolvable(p_send_intent_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_send_intents_intent_policy(p_send_intent_id) IS NOT NULL)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_send_intents_intent_policy(p_send_intent_id) AS val) SELECT ((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_send_intents_all_gate_inputs_resolved
@@ -18413,7 +18484,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agent_decision_records_was_reviewed(p_agent_decision_record_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(human_disposition, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(human_disposition, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id), '') <> 'NotReviewed', FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(human_disposition, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id)) IS NOT NULL AND ((SELECT NULLIF(human_disposition, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(human_disposition, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id), '') <> 'NotReviewed', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agent_decision_records_deciding_agent_when_overridden
@@ -18433,7 +18504,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agent_decision_records_role_assignment_when_scored(p_agent_decision_record_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(under_role_assignment, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) IS NOT NULL THEN ((SELECT NULLIF(under_role_assignment, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text ELSE ('')::text END)::text;
+  SELECT (CASE WHEN (((SELECT NULLIF(under_role_assignment, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id)) IS NOT NULL AND ((SELECT NULLIF(under_role_assignment, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text <> '') THEN ((SELECT NULLIF(under_role_assignment, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agent_decision_records_role_assignment_when_overridden
@@ -18463,7 +18534,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agent_decision_records_matching_boundary_count(p_agent_decision_record_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM authority_boundaries WHERE calc_authority_boundaries_boundary_match_key(authority_boundary_id) = calc_agent_decision_records_boundary_match_key(p_agent_decision_record_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM authority_boundaries erb_r1 WHERE ((SELECT (CONCAT(NULLIF(erb_r1.step, ''), '|', NULLIF(erb_r1.forbidden_agent_kind, ''), '|', NULLIF(erb_r1.forbidden_decision_kind, '')))::text))::text = (SELECT calc_agent_decision_records_boundary_match_key(p_agent_decision_record_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agent_decision_records_violated_authority_boundary
@@ -18483,7 +18554,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agent_decision_records_has_human_confirmation(p_agent_decision_record_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE(calc_agent_decision_records_reviewer_agent_kind(p_agent_decision_record_id), '') = 'Human', FALSE) AND COALESCE((SELECT NULLIF(human_disposition, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(human_disposition, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id), '') <> 'NotReviewed', FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE(calc_agent_decision_records_reviewer_agent_kind(p_agent_decision_record_id), '') = 'Human', FALSE) AND COALESCE((((SELECT NULLIF(human_disposition, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id)) IS NOT NULL AND ((SELECT NULLIF(human_disposition, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(human_disposition, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id), '') <> 'NotReviewed', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agent_decision_records_needs_human_confirmation
@@ -18533,7 +18604,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agent_decision_records_review_latency_minutes(p_agent_decision_record_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT reviewed_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) IS NULL THEN (0)::text ELSE ((EXTRACT(EPOCH FROM (((SELECT reviewed_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::timestamptz - ((SELECT decided_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::timestamptz)) / 60))::text END)::numeric;
+  SELECT (CASE WHEN (((SELECT reviewed_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id)) IS NULL OR ((SELECT reviewed_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text = '') THEN (0)::text ELSE ((EXTRACT(EPOCH FROM (((SELECT reviewed_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::timestamptz - ((SELECT decided_at::timestamptz FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::timestamptz)) / 60))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agent_decision_records_is_draft_kind
@@ -18593,7 +18664,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agent_decision_records_override_reason_is_recorded(p_agent_decision_record_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_agent_decision_records_was_overridden(p_agent_decision_record_id), FALSE) AND COALESCE((SELECT NULLIF(override_reason_kind, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id) IS NOT NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_agent_decision_records_was_overridden(p_agent_decision_record_id), FALSE) AND COALESCE((((SELECT NULLIF(override_reason_kind, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id)) IS NOT NULL AND ((SELECT NULLIF(override_reason_kind, '') FROM agent_decision_records WHERE agent_decision_record_id = p_agent_decision_record_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_agent_decision_records_is_unexplained_override
@@ -18654,7 +18725,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_delivered_communications_has_authorization(p_delivered_communication_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(authorizing_step_execution, '') FROM delivered_communications WHERE delivered_communication_id = p_delivered_communication_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(authorizing_step_execution, '') FROM delivered_communications WHERE delivered_communication_id = p_delivered_communication_id)) IS NOT NULL AND ((SELECT NULLIF(authorizing_step_execution, '') FROM delivered_communications WHERE delivered_communication_id = p_delivered_communication_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_delivered_communications_content_matches_approval
@@ -18759,7 +18830,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_authority_boundaries_is_currently_binding(p_authority_boundary_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_authority_boundaries_as_of_instant(p_authority_boundary_id) AS val) SELECT ((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id), '') = 'Approved', FALSE) AND COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((SELECT valid_to::timestamptz FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_authority_boundaries_as_of_instant(p_authority_boundary_id) AS val) SELECT ((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id), '') = 'Approved', FALSE) AND COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((((SELECT valid_to::timestamptz FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_authority_boundaries_step_when_binding
@@ -18789,7 +18860,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_authority_boundaries_violation_count(p_authority_boundary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM agent_decision_records WHERE calc_agent_decision_records_boundary_match_key(agent_decision_record_id) = calc_authority_boundaries_boundary_match_key(p_authority_boundary_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM agent_decision_records erb_r1 WHERE ((SELECT (CONCAT(calc_agent_decision_records_step_of_decision(erb_r1.agent_decision_record_id), '|', calc_agent_decision_records_deciding_agent_kind(erb_r1.agent_decision_record_id), '|', NULLIF(erb_r1.decision_kind, '')))::text))::text = (SELECT calc_authority_boundaries_boundary_match_key(p_authority_boundary_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_authority_boundaries_is_untested
@@ -18809,7 +18880,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_authority_boundaries_has_ratifying_fragment(p_authority_boundary_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(ratified_by_knowledge_fragment, '') FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(ratified_by_knowledge_fragment, '') FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id)) IS NOT NULL AND ((SELECT NULLIF(ratified_by_knowledge_fragment, '') FROM authority_boundaries WHERE authority_boundary_id = p_authority_boundary_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_authority_boundaries_is_unwarranted
@@ -19101,7 +19172,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_app_routes_is_in_nav(p_app_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(nav_group, '') FROM app_routes WHERE app_route_id = p_app_route_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(nav_group, '') FROM app_routes WHERE app_route_id = p_app_route_id)) IS NOT NULL AND ((SELECT NULLIF(nav_group, '') FROM app_routes WHERE app_route_id = p_app_route_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_app_routes_is_shared
@@ -19111,7 +19182,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_app_routes_is_shared(p_app_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(owning_role, '') FROM app_routes WHERE app_route_id = p_app_route_id) IS NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(surface, '') FROM app_routes WHERE app_route_id = p_app_route_id), '') = 'domain', FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(owning_role, '') FROM app_routes WHERE app_route_id = p_app_route_id)) IS NULL OR ((SELECT NULLIF(owning_role, '') FROM app_routes WHERE app_route_id = p_app_route_id))::text = ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(surface, '') FROM app_routes WHERE app_route_id = p_app_route_id), '') = 'domain', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_app_routes_is_maintainer
@@ -19293,7 +19364,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_tables_disagreeing_substrate_count(p_rulebook_table_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM table_conformance WHERE calc_table_conformance_imperfect_table_key(table_conformance_id) = (SELECT NULLIF(rulebook_table_id, '') FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM table_conformance erb_r1 WHERE ((SELECT (CASE WHEN calc_table_conformance_is_perfect(erb_r1.table_conformance_id) THEN ('')::text ELSE (NULLIF(erb_r1.rulebook_table, ''))::text END)::text))::text = (SELECT (SELECT NULLIF(rulebook_table_id, '') FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_tables_has_measured_rows
@@ -19393,7 +19464,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_tables_unrestricted_non_admin_policy_count(p_rulebook_table_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM access_policies WHERE target_table = (SELECT NULLIF(rulebook_table_id, '') FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id) AND calc_access_policies_is_unrestricted_non_admin_grant(access_policy_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM access_policies erb_r1 WHERE target_table = (SELECT (SELECT NULLIF(rulebook_table_id, '') FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id)) AND ((SELECT ((COALESCE(calc_access_policies_is_unrestricted(erb_r1.access_policy_id), FALSE) AND COALESCE(NOT (COALESCE(calc_access_policies_principal_is_admin(erb_r1.access_policy_id), FALSE)), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_tables_restricted_non_admin_policy_count
@@ -19403,7 +19474,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_tables_restricted_non_admin_policy_count(p_rulebook_table_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM access_policies WHERE target_table = (SELECT NULLIF(rulebook_table_id, '') FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id) AND calc_access_policies_is_unrestricted_non_admin_grant(access_policy_id) = FALSE AND calc_access_policies_principal_is_admin(access_policy_id) = FALSE))::integer;
+  SELECT ((SELECT COUNT(*) FROM access_policies erb_r1 WHERE target_table = (SELECT (SELECT NULLIF(rulebook_table_id, '') FROM rulebook_tables WHERE rulebook_table_id = p_rulebook_table_id)) AND ((SELECT ((COALESCE(calc_access_policies_is_unrestricted(erb_r1.access_policy_id), FALSE) AND COALESCE(NOT (COALESCE(calc_access_policies_principal_is_admin(erb_r1.access_policy_id), FALSE)), FALSE)))::boolean))::boolean = FALSE AND ((SELECT (SELECT is_administrator::boolean FROM access_principals WHERE access_principal_id = erb_r1.principal)))::boolean = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_tables_is_readable_in_full_by_non_admin
@@ -19663,7 +19734,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_access_policies_is_unrestricted(p_access_policy_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(row_predicate, '') FROM access_policies WHERE access_policy_id = p_access_policy_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(row_predicate, '') FROM access_policies WHERE access_policy_id = p_access_policy_id)) IS NULL OR ((SELECT NULLIF(row_predicate, '') FROM access_policies WHERE access_policy_id = p_access_policy_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_access_policies_is_unrestricted_non_admin_grant
@@ -19756,7 +19827,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_field_grants_is_masked(p_field_grant_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(mask_strategy, '') FROM field_grants WHERE field_grant_id = p_field_grant_id), '') <> 'plain', FALSE) AND COALESCE((SELECT NULLIF(mask_strategy, '') FROM field_grants WHERE field_grant_id = p_field_grant_id) IS NOT NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(mask_strategy, '') FROM field_grants WHERE field_grant_id = p_field_grant_id), '') <> 'plain', FALSE) AND COALESCE((((SELECT NULLIF(mask_strategy, '') FROM field_grants WHERE field_grant_id = p_field_grant_id)) IS NOT NULL AND ((SELECT NULLIF(mask_strategy, '') FROM field_grants WHERE field_grant_id = p_field_grant_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_field_grants_grant_key_when_readable
@@ -19896,7 +19967,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_schema_views_column_count(p_role_schema_view_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM field_grants WHERE principal = (SELECT NULLIF(principal, '') FROM role_schema_views WHERE role_schema_view_id = p_role_schema_view_id) AND can_read = TRUE AND calc_field_grants_field_table(field_grant_id) = (SELECT NULLIF(target_table, '') FROM role_schema_views WHERE role_schema_view_id = p_role_schema_view_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM field_grants erb_r1 WHERE principal = (SELECT (SELECT NULLIF(principal, '') FROM role_schema_views WHERE role_schema_view_id = p_role_schema_view_id)) AND can_read = TRUE AND ((SELECT (SELECT target_table::text FROM rulebook_fields WHERE rulebook_field_id = erb_r1.target_field)))::text = (SELECT (SELECT NULLIF(target_table, '') FROM role_schema_views WHERE role_schema_view_id = p_role_schema_view_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_schema_views_is_full_width
@@ -20010,7 +20081,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_access_denial_tests_has_run(p_access_denial_test_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT last_run_at::timestamptz FROM access_denial_tests WHERE access_denial_test_id = p_access_denial_test_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT last_run_at::timestamptz FROM access_denial_tests WHERE access_denial_test_id = p_access_denial_test_id)) IS NOT NULL AND ((SELECT last_run_at::timestamptz FROM access_denial_tests WHERE access_denial_test_id = p_access_denial_test_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_access_denial_tests_is_passing
@@ -20211,7 +20282,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_principal_assignments_is_cross_organization_grant(p_principal_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_principal_assignments_user_organization(p_principal_assignment_id) AS val), __erb_dedup_v2 AS (SELECT calc_principal_assignments_principal_organization(p_principal_assignment_id) AS val) SELECT ((COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v2) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> COALESCE((SELECT val FROM __erb_dedup_v2), ''), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_principal_assignments_user_organization(p_principal_assignment_id) AS val), __erb_dedup_v2 AS (SELECT calc_principal_assignments_principal_organization(p_principal_assignment_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v2)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v2))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> COALESCE((SELECT val FROM __erb_dedup_v2), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_issued_tokens_name
@@ -20363,7 +20434,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_process_mining_runs_undocumented_path_count(p_process_mining_run_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM mined_flow_edges WHERE process_mining_run = (SELECT NULLIF(process_mining_run_id, '') FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id) AND calc_mined_flow_edges_is_undocumented_path(mined_flow_edge_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM mined_flow_edges erb_r1 WHERE process_mining_run = (SELECT (SELECT NULLIF(process_mining_run_id, '') FROM process_mining_runs WHERE process_mining_run_id = p_process_mining_run_id)) AND ((SELECT (COALESCE((calc_mined_flow_edges_documented_transition_count(erb_r1.mined_flow_edge_id))::NUMERIC, 0) = 0)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_process_mining_runs_has_undocumented_enacted_path
@@ -20413,7 +20484,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_vocabularies_orphan_term_count(p_vocabulary_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM vocabulary_terms WHERE calc_vocabulary_terms_orphan_term_vocabulary_key(vocabulary_term_id) = (SELECT NULLIF(vocabulary_id, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM vocabulary_terms WHERE calc_vocabulary_terms_orphan_term_vocabulary_key(vocabulary_term_id) = (SELECT (SELECT NULLIF(vocabulary_id, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vocabularies_has_orphan_terms
@@ -20433,7 +20504,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_vocabularies_is_machine_accessible(p_vocabulary_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(scheme_uri, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(publication_format, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id), '') = 'SKOS Turtle', FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(scheme_uri, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id)) IS NOT NULL AND ((SELECT NULLIF(scheme_uri, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(publication_format, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id), '') = 'SKOS Turtle', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vocabularies_managed_scheme_procedure_key
@@ -20443,7 +20514,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_vocabularies_managed_scheme_procedure_key(p_vocabulary_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (COALESCE((SELECT NULLIF(governing_role, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id) IS NOT NULL, FALSE) AND COALESCE((SELECT established_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id) IS NOT NULL, FALSE)) THEN ((SELECT NULLIF(governs_procedure, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id))::text ELSE ('')::text END)::text;
+  SELECT (CASE WHEN (COALESCE((((SELECT NULLIF(governing_role, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id)) IS NOT NULL AND ((SELECT NULLIF(governing_role, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id))::text <> ''), FALSE) AND COALESCE((((SELECT established_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id)) IS NOT NULL AND ((SELECT established_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id))::text <> ''), FALSE)) THEN ((SELECT NULLIF(governs_procedure, '') FROM vocabularies WHERE vocabulary_id = p_vocabulary_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vocabularies_organized_transcript_count
@@ -20553,7 +20624,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_vocabularies_is_frozen_despite_new_collection(p_vocabulary_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_vocabularies_latest_organized_material_at(p_vocabulary_id) AS val) SELECT ((COALESCE((SELECT established_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id) IS NOT NULL, FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) > (SELECT established_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id)), FALSE), FALSE) AND COALESCE(COALESCE((calc_vocabularies_refinement_count(p_vocabulary_id))::NUMERIC, 0) = 0, FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_vocabularies_latest_organized_material_at(p_vocabulary_id) AS val) SELECT ((COALESCE((((SELECT established_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id)) IS NOT NULL AND ((SELECT established_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id))::text <> ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) > (SELECT established_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id)), FALSE), FALSE) AND COALESCE(COALESCE((calc_vocabularies_refinement_count(p_vocabulary_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_vocabularies_ontology_preceded_vocabulary_control
@@ -20563,7 +20634,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_vocabularies_ontology_preceded_vocabulary_control(p_vocabulary_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT ontology_modeling_started_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT established_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT ontology_modeling_started_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id) < (SELECT established_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id)), FALSE), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT ontology_modeling_started_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id)) IS NOT NULL AND ((SELECT ontology_modeling_started_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id))::text <> ''), FALSE) AND COALESCE((COALESCE((((SELECT established_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id)) IS NULL OR ((SELECT established_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT ontology_modeling_started_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id) < (SELECT established_at::timestamptz FROM vocabularies WHERE vocabulary_id = p_vocabulary_id)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vocabulary_terms_broader_term_parent
@@ -20666,7 +20737,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_vocabulary_terms_has_stale_definition(p_vocabulary_term_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_vocabulary_terms_latest_meaning_change_at(p_vocabulary_term_id) AS val) SELECT ((COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT definition_revised_at::timestamptz FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT definition_revised_at::timestamptz FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id) < (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_vocabulary_terms_latest_meaning_change_at(p_vocabulary_term_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE((COALESCE((((SELECT definition_revised_at::timestamptz FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id)) IS NULL OR ((SELECT definition_revised_at::timestamptz FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT definition_revised_at::timestamptz FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id) < (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vocabulary_terms_structural_shift_count
@@ -20676,7 +20747,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_vocabulary_terms_structural_shift_count(p_vocabulary_term_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM term_meaning_changes WHERE vocabulary_term = (SELECT NULLIF(vocabulary_term_id, '') FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id) AND is_structural_change = TRUE AND (calc_term_meaning_changes_span_days(term_meaning_change_id))::numeric >= (700)::numeric))::integer;
+  SELECT ((SELECT COUNT(*) FROM term_meaning_changes erb_r1 WHERE vocabulary_term = (SELECT (SELECT NULLIF(vocabulary_term_id, '') FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id)) AND is_structural_change = TRUE AND (((SELECT (CASE WHEN ((erb_r1.prior_meaning_since::timestamptz) IS NULL OR (erb_r1.prior_meaning_since::timestamptz)::text = '') THEN (0)::text ELSE ((((erb_r1.changed_at::timestamptz)::timestamptz AT TIME ZONE 'UTC')::date - ((erb_r1.prior_meaning_since::timestamptz)::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer))::integer)::numeric >= (700)::numeric))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vocabulary_terms_has_structural_sense_shift_across_years
@@ -20696,7 +20767,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_vocabulary_terms_pref_label_practitioner_mention_count(p_vocabulary_term_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_term_label_variants_practitioner_mention_count(term_label_variant_id))::numeric), 0) FROM term_label_variants WHERE vocabulary_term = p_vocabulary_term_id AND label_kind = 'pref'))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COUNT(*) FROM source_term_mentions WHERE calc_source_term_mentions_wording_key(source_term_mention_id) = calc_term_label_variants_wording_key(erb_r1.term_label_variant_id) AND mention_origin = 'Practitioner'))::integer))::integer)::numeric), 0) FROM term_label_variants erb_r1 WHERE vocabulary_term = p_vocabulary_term_id AND label_kind = 'pref'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vocabulary_terms_alt_label_practitioner_mention_count
@@ -20706,7 +20777,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_vocabulary_terms_alt_label_practitioner_mention_count(p_vocabulary_term_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_term_label_variants_practitioner_mention_count(term_label_variant_id))::numeric), 0) FROM term_label_variants WHERE vocabulary_term = p_vocabulary_term_id AND label_kind = 'alt'))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COUNT(*) FROM source_term_mentions WHERE calc_source_term_mentions_wording_key(source_term_mention_id) = calc_term_label_variants_wording_key(erb_r1.term_label_variant_id) AND mention_origin = 'Practitioner'))::integer))::integer)::numeric), 0) FROM term_label_variants erb_r1 WHERE vocabulary_term = p_vocabulary_term_id AND label_kind = 'alt'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vocabulary_terms_is_organized_around_official_term
@@ -20736,7 +20807,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_vocabulary_terms_unreconciled_phrasing_count(p_vocabulary_term_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM source_term_mentions WHERE calc_source_term_mentions_unresolved_intended_term_key(source_term_mention_id) = (SELECT NULLIF(vocabulary_term_id, '') FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM source_term_mentions erb_r1 WHERE ((SELECT (CASE WHEN COALESCE((calc_source_term_mentions_matching_label_count(erb_r1.source_term_mention_id))::NUMERIC, 0) = 0 THEN (NULLIF(erb_r1.intended_term, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(vocabulary_term_id, '') FROM vocabulary_terms WHERE vocabulary_term_id = p_vocabulary_term_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vocabulary_terms_has_unreconciled_variant_phrasings
@@ -20939,7 +21010,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_broker_links_locates_other_holder(p_knowledge_broker_link_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_knowledge_broker_links_pointed_holder(p_knowledge_broker_link_id) AS val) SELECT ((COALESCE((SELECT NULLIF(points_to_know_how, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id) IS NOT NULL, FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> COALESCE((SELECT NULLIF(broker, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), ''), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_knowledge_broker_links_pointed_holder(p_knowledge_broker_link_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(points_to_know_how, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id)) IS NOT NULL AND ((SELECT NULLIF(points_to_know_how, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id))::text <> ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> COALESCE((SELECT NULLIF(broker, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_broker_links_translation_between_vocabularies
@@ -20949,7 +21020,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_broker_links_translation_between_vocabularies(p_knowledge_broker_link_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (COALESCE((SELECT NULLIF(seeker_vocabulary, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id) IS NOT NULL, FALSE) AND COALESCE((SELECT NULLIF(holder_vocabulary, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(seeker_vocabulary, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), '') <> COALESCE((SELECT NULLIF(holder_vocabulary, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), ''), FALSE)) THEN (CONCAT((SELECT NULLIF(seeker_wording, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), ' (', (SELECT NULLIF(seeker_vocabulary, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), ') = ', (SELECT NULLIF(holder_wording, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), ' (', (SELECT NULLIF(holder_vocabulary, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), ')'))::text ELSE ('')::text END)::text;
+  SELECT (CASE WHEN (COALESCE((((SELECT NULLIF(seeker_vocabulary, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id)) IS NOT NULL AND ((SELECT NULLIF(seeker_vocabulary, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(holder_vocabulary, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id)) IS NOT NULL AND ((SELECT NULLIF(holder_vocabulary, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(seeker_vocabulary, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), '') <> COALESCE((SELECT NULLIF(holder_vocabulary, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), ''), FALSE)) THEN (CONCAT((SELECT NULLIF(seeker_wording, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), ' (', (SELECT NULLIF(seeker_vocabulary, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), ') = ', (SELECT NULLIF(holder_wording, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), ' (', (SELECT NULLIF(holder_vocabulary, '') FROM knowledge_broker_links WHERE knowledge_broker_link_id = p_knowledge_broker_link_id), ')'))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_substrates_name
@@ -20989,7 +21060,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_substrates_latest_cells_tested(p_conformance_substrate_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_substrate_run_scores_latest_cells_tested(substrate_run_score_id))::numeric), 0) FROM substrate_run_scores WHERE substrate = p_conformance_substrate_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_substrate_run_scores_is_in_latest_run(erb_r1.substrate_run_score_id) THEN (erb_r1.cells_tested)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM substrate_run_scores erb_r1 WHERE substrate = p_conformance_substrate_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_substrates_latest_cells_passed
@@ -20999,7 +21070,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_substrates_latest_cells_passed(p_conformance_substrate_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_substrate_run_scores_latest_cells_passed(substrate_run_score_id))::numeric), 0) FROM substrate_run_scores WHERE substrate = p_conformance_substrate_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_substrate_run_scores_is_in_latest_run(erb_r1.substrate_run_score_id) THEN (erb_r1.cells_passed)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM substrate_run_scores erb_r1 WHERE substrate = p_conformance_substrate_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_substrates_latest_harness_errors
@@ -21009,7 +21080,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_substrates_latest_harness_errors(p_conformance_substrate_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_substrate_run_scores_latest_error_flag(substrate_run_score_id))::numeric), 0) FROM substrate_run_scores WHERE substrate = p_conformance_substrate_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_substrate_run_scores_is_in_latest_run(erb_r1.substrate_run_score_id), FALSE) AND COALESCE(((NULLIF(erb_r1.harness_error, '')) IS NOT NULL AND (NULLIF(erb_r1.harness_error, ''))::text <> ''), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM substrate_run_scores erb_r1 WHERE substrate = p_conformance_substrate_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_substrates_latest_cells_failed
@@ -21049,7 +21120,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_substrates_disagreeing_table_count(p_conformance_substrate_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM table_conformance WHERE calc_table_conformance_imperfect_substrate_key(table_conformance_id) = (SELECT NULLIF(conformance_substrate_id, '') FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM table_conformance erb_r1 WHERE ((SELECT (CASE WHEN calc_table_conformance_is_perfect(erb_r1.table_conformance_id) THEN ('')::text ELSE (NULLIF(erb_r1.substrate, ''))::text END)::text))::text = (SELECT (SELECT NULLIF(conformance_substrate_id, '') FROM conformance_substrates WHERE conformance_substrate_id = p_conformance_substrate_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_substrates_is_fully_conformant
@@ -21161,7 +21232,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_runs_perfect_substrate_count(p_conformance_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM substrate_run_scores WHERE calc_substrate_run_scores_perfect_run_key(substrate_run_score_id) = (SELECT NULLIF(conformance_run_id, '') FROM conformance_runs WHERE conformance_run_id = p_conformance_run_id)))::numeric;
+  SELECT ((SELECT COUNT(*) FROM substrate_run_scores erb_r1 WHERE ((SELECT (CASE WHEN calc_substrate_run_scores_is_perfect(erb_r1.substrate_run_score_id) THEN (NULLIF(erb_r1.run, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(conformance_run_id, '') FROM conformance_runs WHERE conformance_run_id = p_conformance_run_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_runs_cells_tested
@@ -21358,7 +21429,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_run_scores_is_perfect(p_substrate_run_score_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(harness_error, '') FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id) IS NULL, FALSE) AND COALESCE(COALESCE(((SELECT cells_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((calc_substrate_run_scores_cells_failed(p_substrate_run_score_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(harness_error, '') FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) IS NULL OR ((SELECT NULLIF(harness_error, '') FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::text = ''), FALSE) AND COALESCE(COALESCE(((SELECT cells_tested FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((calc_substrate_run_scores_cells_failed(p_substrate_run_score_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_run_scores_perfect_run_key
@@ -21398,7 +21469,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_run_scores_latest_error_flag(p_substrate_run_score_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (COALESCE(calc_substrate_run_scores_is_in_latest_run(p_substrate_run_score_id), FALSE) AND COALESCE((SELECT NULLIF(harness_error, '') FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id) IS NOT NULL, FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(calc_substrate_run_scores_is_in_latest_run(p_substrate_run_score_id), FALSE) AND COALESCE((((SELECT NULLIF(harness_error, '') FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id)) IS NOT NULL AND ((SELECT NULLIF(harness_error, '') FROM substrate_run_scores WHERE substrate_run_score_id = p_substrate_run_score_id))::text <> ''), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_table_conformance_substrate_label
@@ -21744,7 +21815,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_source_articles_covered_claim_count(p_source_article_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM article_claims WHERE source_article = (SELECT NULLIF(source_article_id, '') FROM source_articles WHERE source_article_id = p_source_article_id) AND calc_article_claims_is_covered(article_claim_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM article_claims erb_r1 WHERE source_article = (SELECT (SELECT NULLIF(source_article_id, '') FROM source_articles WHERE source_article_id = p_source_article_id)) AND ((SELECT (COALESCE((calc_article_claims_valid_evidence_count(erb_r1.article_claim_id))::NUMERIC, 0) > 0)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_source_articles_agreed_claim_count
@@ -21754,7 +21825,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_source_articles_agreed_claim_count(p_source_article_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM article_claims WHERE source_article = (SELECT NULLIF(source_article_id, '') FROM source_articles WHERE source_article_id = p_source_article_id) AND calc_article_claims_is_agreed(article_claim_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM article_claims erb_r1 WHERE source_article = (SELECT (SELECT NULLIF(source_article_id, '') FROM source_articles WHERE source_article_id = p_source_article_id)) AND ((SELECT (COALESCE((calc_article_claims_agreed_evidence_count(erb_r1.article_claim_id))::NUMERIC, 0) > 0)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_source_articles_uncovered_claim_count
@@ -21897,7 +21968,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_article_claims_valid_evidence_count(p_article_claim_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM claim_evidence WHERE article_claim = (SELECT NULLIF(article_claim_id, '') FROM article_claims WHERE article_claim_id = p_article_claim_id) AND calc_claim_evidence_is_valid(claim_evidence_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM claim_evidence erb_r1 WHERE article_claim = (SELECT (SELECT NULLIF(article_claim_id, '') FROM article_claims WHERE article_claim_id = p_article_claim_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_claim_evidence_claim_kind(erb_r1.claim_evidence_id) AS val) SELECT ((COALESCE(calc_claim_evidence_has_justification(erb_r1.claim_evidence_id), FALSE) AND COALESCE((COALESCE((COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Prescription', FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Illustration', FALSE)), FALSE) AND COALESCE(calc_claim_evidence_is_witness_proof(erb_r1.claim_evidence_id), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Concept', FALSE) AND COALESCE(calc_claim_evidence_is_structural_proof(erb_r1.claim_evidence_id), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'CompetencyQuestion', FALSE) AND COALESCE(calc_claim_evidence_is_question_proof(erb_r1.claim_evidence_id), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Standard', FALSE) AND COALESCE(calc_claim_evidence_is_standard_proof(erb_r1.claim_evidence_id), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Scenario', FALSE) AND COALESCE(calc_claim_evidence_is_scenario_proof(erb_r1.claim_evidence_id), FALSE)), FALSE)), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_article_claims_agreed_evidence_count
@@ -21907,7 +21978,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_article_claims_agreed_evidence_count(p_article_claim_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM claim_evidence WHERE article_claim = (SELECT NULLIF(article_claim_id, '') FROM article_claims WHERE article_claim_id = p_article_claim_id) AND calc_claim_evidence_is_agreed_evidence(claim_evidence_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM claim_evidence erb_r1 WHERE article_claim = (SELECT (SELECT NULLIF(article_claim_id, '') FROM article_claims WHERE article_claim_id = p_article_claim_id)) AND ((SELECT ((COALESCE(calc_claim_evidence_is_valid(erb_r1.claim_evidence_id), FALSE) AND COALESCE(COALESCE(calc_claim_evidence_is_contested(erb_r1.claim_evidence_id), FALSE) = FALSE, FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_article_claims_is_covered
@@ -22125,7 +22196,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claim_evidence_has_justification(p_claim_evidence_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(justification, '') FROM claim_evidence WHERE claim_evidence_id = p_claim_evidence_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(justification, '') FROM claim_evidence WHERE claim_evidence_id = p_claim_evidence_id)) IS NOT NULL AND ((SELECT NULLIF(justification, '') FROM claim_evidence WHERE claim_evidence_id = p_claim_evidence_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claim_evidence_is_witness_proof
@@ -22135,7 +22206,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claim_evidence_is_witness_proof(p_claim_evidence_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(evidence_kind, '') FROM claim_evidence WHERE claim_evidence_id = p_claim_evidence_id), '') = 'Field', FALSE) AND COALESCE(calc_claim_evidence_field_catalog_name(p_claim_evidence_id) IS NOT NULL, FALSE) AND COALESCE(calc_claim_evidence_field_is_witness(p_claim_evidence_id), FALSE) AND COALESCE(calc_claim_evidence_field_is_discriminating(p_claim_evidence_id), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_claim_evidence_field_catalog_name(p_claim_evidence_id) AS val) SELECT ((COALESCE(COALESCE((SELECT NULLIF(evidence_kind, '') FROM claim_evidence WHERE claim_evidence_id = p_claim_evidence_id), '') = 'Field', FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(calc_claim_evidence_field_is_witness(p_claim_evidence_id), FALSE) AND COALESCE(calc_claim_evidence_field_is_discriminating(p_claim_evidence_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claim_evidence_is_structural_proof
@@ -22145,7 +22216,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claim_evidence_is_structural_proof(p_claim_evidence_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(evidence_kind, '') FROM claim_evidence WHERE claim_evidence_id = p_claim_evidence_id), '') = 'Table', FALSE) AND COALESCE(calc_claim_evidence_table_has_rows(p_claim_evidence_id), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT NULLIF(evidence_kind, '') FROM claim_evidence WHERE claim_evidence_id = p_claim_evidence_id), '') = 'Field', FALSE) AND COALESCE(calc_claim_evidence_field_catalog_name(p_claim_evidence_id) IS NOT NULL, FALSE) AND COALESCE(calc_claim_evidence_field_has_data(p_claim_evidence_id), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_claim_evidence_field_catalog_name(p_claim_evidence_id) AS val) SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(evidence_kind, '') FROM claim_evidence WHERE claim_evidence_id = p_claim_evidence_id), '') = 'Table', FALSE) AND COALESCE(calc_claim_evidence_table_has_rows(p_claim_evidence_id), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT NULLIF(evidence_kind, '') FROM claim_evidence WHERE claim_evidence_id = p_claim_evidence_id), '') = 'Field', FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(calc_claim_evidence_field_has_data(p_claim_evidence_id), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claim_evidence_is_question_proof
@@ -22155,7 +22226,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claim_evidence_is_question_proof(p_claim_evidence_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(evidence_kind, '') FROM claim_evidence WHERE claim_evidence_id = p_claim_evidence_id), '') = 'RoleQuestion', FALSE) AND COALESCE(calc_claim_evidence_question_is_answered(p_claim_evidence_id), FALSE) AND COALESCE(calc_claim_evidence_question_witnessed_answer(p_claim_evidence_id) IS NOT NULL, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_claim_evidence_question_witnessed_answer(p_claim_evidence_id) AS val) SELECT ((COALESCE(COALESCE((SELECT NULLIF(evidence_kind, '') FROM claim_evidence WHERE claim_evidence_id = p_claim_evidence_id), '') = 'RoleQuestion', FALSE) AND COALESCE(calc_claim_evidence_question_is_answered(p_claim_evidence_id), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claim_evidence_is_standard_proof
@@ -22329,7 +22400,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_facilities_deviating_run_count(p_facility_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM procedure_executions WHERE calc_procedure_executions_deviating_facility_key(procedure_execution_id) = (SELECT NULLIF(facility_id, '') FROM facilities WHERE facility_id = p_facility_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM procedure_executions erb_r1 WHERE ((SELECT (CASE WHEN calc_procedure_executions_has_step_deviation(erb_r1.procedure_execution_id) THEN (NULLIF(erb_r1.facility, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(facility_id, '') FROM facilities WHERE facility_id = p_facility_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_facilities_clean_run_count
@@ -22339,7 +22410,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_facilities_clean_run_count(p_facility_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM procedure_executions WHERE calc_procedure_executions_clean_facility_key(procedure_execution_id) = (SELECT NULLIF(facility_id, '') FROM facilities WHERE facility_id = p_facility_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM procedure_executions erb_r1 WHERE ((SELECT (CASE WHEN (COALESCE(((NULLIF(erb_r1.facility, '')) IS NOT NULL AND (NULLIF(erb_r1.facility, ''))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_procedure_executions_has_step_deviation(erb_r1.procedure_execution_id), FALSE) = FALSE, FALSE)) THEN (NULLIF(erb_r1.facility, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(facility_id, '') FROM facilities WHERE facility_id = p_facility_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_facilities_is_deviation_only_facility
@@ -22417,7 +22488,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_machines_unisolated_energy_source_count(p_machine_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM machine_energy_sources WHERE calc_machine_energy_sources_unisolated_machine_key(machine_energy_source_id) = (SELECT NULLIF(machine_id, '') FROM machines WHERE machine_id = p_machine_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM machine_energy_sources erb_r1 WHERE ((SELECT (CASE WHEN calc_machine_energy_sources_is_unisolated_energy_source(erb_r1.machine_energy_source_id) THEN (NULLIF(erb_r1.machine, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(machine_id, '') FROM machines WHERE machine_id = p_machine_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_machines_is_non_standard_configuration
@@ -22468,7 +22539,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_machine_energy_sources_isolation_step_count(p_machine_energy_source_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM steps WHERE isolates_energy_source = (SELECT NULLIF(energy_source, '') FROM machine_energy_sources WHERE machine_energy_source_id = p_machine_energy_source_id) AND procedure_version = calc_machine_energy_sources_machine_procedure_version(p_machine_energy_source_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM steps WHERE isolates_energy_source = (SELECT (SELECT NULLIF(energy_source, '') FROM machine_energy_sources WHERE machine_energy_source_id = p_machine_energy_source_id)) AND procedure_version = (SELECT calc_machine_energy_sources_machine_procedure_version(p_machine_energy_source_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_machine_energy_sources_is_unisolated_energy_source
@@ -22655,7 +22726,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_adoptions_is_adoption_mode_unstated(p_procedure_adoption_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(adoption_mode, '') FROM procedure_adoptions WHERE procedure_adoption_id = p_procedure_adoption_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(adoption_mode, '') FROM procedure_adoptions WHERE procedure_adoption_id = p_procedure_adoption_id)) IS NULL OR ((SELECT NULLIF(adoption_mode, '') FROM procedure_adoptions WHERE procedure_adoption_id = p_procedure_adoption_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_outcome_criteria_name
@@ -22983,7 +23054,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_variables_is_dangling_input(p_step_variable_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(direction, '') FROM step_variables WHERE step_variable_id = p_step_variable_id), '') = 'Input', FALSE) AND COALESCE((SELECT NULLIF(source_variable, '') FROM step_variables WHERE step_variable_id = p_step_variable_id) IS NULL, FALSE) AND COALESCE(COALESCE((SELECT is_external_input FROM step_variables WHERE step_variable_id = p_step_variable_id), FALSE) = FALSE, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(direction, '') FROM step_variables WHERE step_variable_id = p_step_variable_id), '') = 'Input', FALSE) AND COALESCE((((SELECT NULLIF(source_variable, '') FROM step_variables WHERE step_variable_id = p_step_variable_id)) IS NULL OR ((SELECT NULLIF(source_variable, '') FROM step_variables WHERE step_variable_id = p_step_variable_id))::text = ''), FALSE) AND COALESCE(COALESCE((SELECT is_external_input FROM step_variables WHERE step_variable_id = p_step_variable_id), FALSE) = FALSE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_variables_is_miswired_source
@@ -22993,7 +23064,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_variables_is_miswired_source(p_step_variable_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(source_variable, '') FROM step_variables WHERE step_variable_id = p_step_variable_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_step_variables_source_direction(p_step_variable_id), '') <> 'Output', FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(source_variable, '') FROM step_variables WHERE step_variable_id = p_step_variable_id)) IS NOT NULL AND ((SELECT NULLIF(source_variable, '') FROM step_variables WHERE step_variable_id = p_step_variable_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_step_variables_source_direction(p_step_variable_id), '') <> 'Output', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_variables_consumer_count
@@ -23043,7 +23114,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_variables_ai_artifact_consumer_has_no_accountable_age(p_step_variable_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_step_variables_is_input_from_ai_artifact(p_step_variable_id), FALSE) AND COALESCE(calc_step_variables_step_accountable_agent(p_step_variable_id) IS NULL, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_step_variables_step_accountable_agent(p_step_variable_id) AS val) SELECT ((COALESCE(calc_step_variables_is_input_from_ai_artifact(p_step_variable_id), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_variables_ai_blast_radius_path
@@ -23179,7 +23250,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_entities_violates_declared_datatype_or_format(p_execution_entity_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_execution_entities_variable_expected_format(p_execution_entity_id) AS val) SELECT ((COALESCE((COALESCE((SELECT NULLIF(recorded_datatype, '') FROM execution_entities WHERE execution_entity_id = p_execution_entity_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(recorded_datatype, '') FROM execution_entities WHERE execution_entity_id = p_execution_entity_id), '') <> COALESCE(calc_execution_entities_variable_datatype(p_execution_entity_id), ''), FALSE)), FALSE) OR COALESCE((COALESCE((SELECT NULLIF(recorded_format, '') FROM execution_entities WHERE execution_entity_id = p_execution_entity_id) IS NOT NULL, FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(recorded_format, '') FROM execution_entities WHERE execution_entity_id = p_execution_entity_id), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_execution_entities_variable_expected_format(p_execution_entity_id) AS val) SELECT ((COALESCE((COALESCE((((SELECT NULLIF(recorded_datatype, '') FROM execution_entities WHERE execution_entity_id = p_execution_entity_id)) IS NOT NULL AND ((SELECT NULLIF(recorded_datatype, '') FROM execution_entities WHERE execution_entity_id = p_execution_entity_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(recorded_datatype, '') FROM execution_entities WHERE execution_entity_id = p_execution_entity_id), '') <> COALESCE(calc_execution_entities_variable_datatype(p_execution_entity_id), ''), FALSE)), FALSE) OR COALESCE((COALESCE((((SELECT NULLIF(recorded_format, '') FROM execution_entities WHERE execution_entity_id = p_execution_entity_id)) IS NOT NULL AND ((SELECT NULLIF(recorded_format, '') FROM execution_entities WHERE execution_entity_id = p_execution_entity_id))::text <> ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(recorded_format, '') FROM execution_entities WHERE execution_entity_id = p_execution_entity_id), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_entities_attributed_to_agent
@@ -23291,7 +23362,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_conditions_is_machine_parseable(p_step_condition_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(machine_expression, '') FROM step_conditions WHERE step_condition_id = p_step_condition_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(machine_expression, '') FROM step_conditions WHERE step_condition_id = p_step_condition_id)) IS NOT NULL AND ((SELECT NULLIF(machine_expression, '') FROM step_conditions WHERE step_condition_id = p_step_condition_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_condition_checks_condition_kind
@@ -23518,7 +23589,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_failure_modes_has_no_response(p_failure_mode_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(response, '') FROM failure_modes WHERE failure_mode_id = p_failure_mode_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(response, '') FROM failure_modes WHERE failure_mode_id = p_failure_mode_id)) IS NULL OR ((SELECT NULLIF(response, '') FROM failure_modes WHERE failure_mode_id = p_failure_mode_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_cues_failure_mode_response
@@ -23595,7 +23666,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_cues_unescalated_observation_count(p_step_cue_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM cue_observations WHERE calc_cue_observations_unescalated_cue_key(cue_observation_id) = (SELECT NULLIF(step_cue_id, '') FROM step_cues WHERE step_cue_id = p_step_cue_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM cue_observations erb_r1 WHERE ((SELECT (CASE WHEN calc_cue_observations_is_unescalated_danger_cue(erb_r1.cue_observation_id) THEN (NULLIF(erb_r1.step_cue, ''))::text ELSE ('')::text END)::text))::text = (SELECT (SELECT NULLIF(step_cue_id, '') FROM step_cues WHERE step_cue_id = p_step_cue_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_cues_danger_cue_step_key
@@ -23625,7 +23696,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_cues_is_unanswerable_sign(p_step_cue_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT signals_incomplete_step FROM step_cues WHERE step_cue_id = p_step_cue_id), FALSE) = TRUE, FALSE) AND COALESCE((SELECT NULLIF(signals_failure_mode, '') FROM step_cues WHERE step_cue_id = p_step_cue_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT signals_incomplete_step FROM step_cues WHERE step_cue_id = p_step_cue_id), FALSE) = TRUE, FALSE) AND COALESCE((((SELECT NULLIF(signals_failure_mode, '') FROM step_cues WHERE step_cue_id = p_step_cue_id)) IS NULL OR ((SELECT NULLIF(signals_failure_mode, '') FROM step_cues WHERE step_cue_id = p_step_cue_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_cue_observations_cue_requires_escalation
@@ -23762,7 +23833,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_cue_observations_is_awaiting_acknowledgement(p_cue_observation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT was_escalated FROM cue_observations WHERE cue_observation_id = p_cue_observation_id), FALSE) = TRUE, FALSE) AND COALESCE((SELECT acknowledged_at::timestamptz FROM cue_observations WHERE cue_observation_id = p_cue_observation_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT was_escalated FROM cue_observations WHERE cue_observation_id = p_cue_observation_id), FALSE) = TRUE, FALSE) AND COALESCE((((SELECT acknowledged_at::timestamptz FROM cue_observations WHERE cue_observation_id = p_cue_observation_id)) IS NULL OR ((SELECT acknowledged_at::timestamptz FROM cue_observations WHERE cue_observation_id = p_cue_observation_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_decision_points_name
@@ -23782,7 +23853,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_decision_points_has_no_deciding_factors(p_decision_point_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(deciding_factors, '') FROM decision_points WHERE decision_point_id = p_decision_point_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(deciding_factors, '') FROM decision_points WHERE decision_point_id = p_decision_point_id)) IS NULL OR ((SELECT NULLIF(deciding_factors, '') FROM decision_points WHERE decision_point_id = p_decision_point_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_decision_points_is_dmn_encoded
@@ -23792,7 +23863,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_decision_points_is_dmn_encoded(p_decision_point_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(dmn_decision_key, '') FROM decision_points WHERE decision_point_id = p_decision_point_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(dmn_decision_key, '') FROM decision_points WHERE decision_point_id = p_decision_point_id)) IS NOT NULL AND ((SELECT NULLIF(dmn_decision_key, '') FROM decision_points WHERE decision_point_id = p_decision_point_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_participants_name
@@ -24009,7 +24080,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_process_level_statements_pyramid_match_count(p_process_level_statement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM level_pyramid_questions WHERE level_pyramid_question_id = calc_process_level_statements_level_question_key(p_process_level_statement_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM level_pyramid_questions WHERE level_pyramid_question_id = (SELECT calc_process_level_statements_level_question_key(p_process_level_statement_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_process_level_statements_is_filed_at_wrong_level
@@ -24069,7 +24140,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_process_strategic_alignments_states_no_trade_off(p_process_strategic_alignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(trade_offs, '') FROM process_strategic_alignments WHERE process_strategic_alignment_id = p_process_strategic_alignment_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(trade_offs, '') FROM process_strategic_alignments WHERE process_strategic_alignment_id = p_process_strategic_alignment_id)) IS NULL OR ((SELECT NULLIF(trade_offs, '') FROM process_strategic_alignments WHERE process_strategic_alignment_id = p_process_strategic_alignment_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_business_outcomes_name
@@ -24136,7 +24207,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_process_outcome_measures_is_unlinked_to_business_outcome(p_process_outcome_measure_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(business_outcome, '') FROM process_outcome_measures WHERE process_outcome_measure_id = p_process_outcome_measure_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(business_outcome, '') FROM process_outcome_measures WHERE process_outcome_measure_id = p_process_outcome_measure_id)) IS NULL OR ((SELECT NULLIF(business_outcome, '') FROM process_outcome_measures WHERE process_outcome_measure_id = p_process_outcome_measure_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_process_stages_owner_has_no_holder
@@ -24177,7 +24248,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_process_stages_is_unowned_or_empty_stage(p_process_stage_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(owner_role, '') FROM process_stages WHERE process_stage_id = p_process_stage_id) IS NULL, FALSE) OR COALESCE(calc_process_stages_owner_has_no_holder(p_process_stage_id), FALSE) OR COALESCE(COALESCE((calc_process_stages_step_count(p_process_stage_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(owner_role, '') FROM process_stages WHERE process_stage_id = p_process_stage_id)) IS NULL OR ((SELECT NULLIF(owner_role, '') FROM process_stages WHERE process_stage_id = p_process_stage_id))::text = ''), FALSE) OR COALESCE(calc_process_stages_owner_has_no_holder(p_process_stage_id), FALSE) OR COALESCE(COALESCE((calc_process_stages_step_count(p_process_stage_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_process_interdependencies_name
@@ -24370,7 +24441,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_procedure_lens_views_is_disconnected_silo(p_procedure_lens_view_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(projects_version, '') FROM procedure_lens_views WHERE procedure_lens_view_id = p_procedure_lens_view_id) IS NULL, FALSE) OR COALESCE(COALESCE((SELECT NULLIF(projects_version, '') FROM procedure_lens_views WHERE procedure_lens_view_id = p_procedure_lens_view_id), '') <> COALESCE(calc_procedure_lens_views_procedure_current_version(p_procedure_lens_view_id), ''), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(projects_version, '') FROM procedure_lens_views WHERE procedure_lens_view_id = p_procedure_lens_view_id)) IS NULL OR ((SELECT NULLIF(projects_version, '') FROM procedure_lens_views WHERE procedure_lens_view_id = p_procedure_lens_view_id))::text = ''), FALSE) OR COALESCE(COALESCE((SELECT NULLIF(projects_version, '') FROM procedure_lens_views WHERE procedure_lens_view_id = p_procedure_lens_view_id), '') <> COALESCE(calc_procedure_lens_views_procedure_current_version(p_procedure_lens_view_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_procedure_lens_views_step_level_procedure_key
@@ -24410,7 +24481,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_applicability_scopes_dimension_count(p_applicability_scope_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT NULLIF(business_unit, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id) IS NOT NULL THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT NULLIF(geography, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id) IS NOT NULL THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT NULLIF(customer_segment, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id) IS NOT NULL THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT NULLIF(regulatory_regime, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id) IS NOT NULL THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (((SELECT NULLIF(business_unit, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id)) IS NOT NULL AND ((SELECT NULLIF(business_unit, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id))::text <> '') THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (((SELECT NULLIF(geography, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id)) IS NOT NULL AND ((SELECT NULLIF(geography, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id))::text <> '') THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (((SELECT NULLIF(customer_segment, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id)) IS NOT NULL AND ((SELECT NULLIF(customer_segment, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id))::text <> '') THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (((SELECT NULLIF(regulatory_regime, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id)) IS NOT NULL AND ((SELECT NULLIF(regulatory_regime, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id))::text <> '') THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_applicability_scopes_states_conditions
@@ -24420,7 +24491,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_applicability_scopes_states_conditions(p_applicability_scope_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(applies_when, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id) IS NOT NULL, FALSE) OR COALESCE((SELECT NULLIF(exclusion_condition, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id) IS NOT NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(applies_when, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id)) IS NOT NULL AND ((SELECT NULLIF(applies_when, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id))::text <> ''), FALSE) OR COALESCE((((SELECT NULLIF(exclusion_condition, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id)) IS NOT NULL AND ((SELECT NULLIF(exclusion_condition, '') FROM applicability_scopes WHERE applicability_scope_id = p_applicability_scope_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_applicability_scopes_label
@@ -24503,7 +24574,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_step_context_sensitivities_unscoped_step_key(p_step_context_sensitivity_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(applicability_scope, '') FROM step_context_sensitivities WHERE step_context_sensitivity_id = p_step_context_sensitivity_id) IS NULL THEN ((SELECT NULLIF(step, '') FROM step_context_sensitivities WHERE step_context_sensitivity_id = p_step_context_sensitivity_id))::text ELSE ('')::text END)::text;
+  SELECT (CASE WHEN (((SELECT NULLIF(applicability_scope, '') FROM step_context_sensitivities WHERE step_context_sensitivity_id = p_step_context_sensitivity_id)) IS NULL OR ((SELECT NULLIF(applicability_scope, '') FROM step_context_sensitivities WHERE step_context_sensitivity_id = p_step_context_sensitivity_id))::text = '') THEN ((SELECT NULLIF(step, '') FROM step_context_sensitivities WHERE step_context_sensitivity_id = p_step_context_sensitivity_id))::text ELSE ('')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_situational_variants_scope_dimension_count
@@ -24545,7 +24616,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_situational_variants_has_no_applicability_dimension(p_situational_variant_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(applicability_scope, '') FROM situational_variants WHERE situational_variant_id = p_situational_variant_id) IS NULL, FALSE) OR COALESCE(COALESCE((calc_situational_variants_scope_dimension_count(p_situational_variant_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(applicability_scope, '') FROM situational_variants WHERE situational_variant_id = p_situational_variant_id)) IS NULL OR ((SELECT NULLIF(applicability_scope, '') FROM situational_variants WHERE situational_variant_id = p_situational_variant_id))::text = ''), FALSE) OR COALESCE(COALESCE((calc_situational_variants_scope_dimension_count(p_situational_variant_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_situational_variants_diverges_without_stated_conditions
@@ -24555,7 +24626,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_situational_variants_diverges_without_stated_conditions(p_situational_variant_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(adaptation, '') FROM situational_variants WHERE situational_variant_id = p_situational_variant_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT NULLIF(applicability_scope, '') FROM situational_variants WHERE situational_variant_id = p_situational_variant_id) IS NULL, FALSE) OR COALESCE(COALESCE(calc_situational_variants_scope_states_conditions(p_situational_variant_id), FALSE) = FALSE, FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(adaptation, '') FROM situational_variants WHERE situational_variant_id = p_situational_variant_id)) IS NOT NULL AND ((SELECT NULLIF(adaptation, '') FROM situational_variants WHERE situational_variant_id = p_situational_variant_id))::text <> ''), FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(applicability_scope, '') FROM situational_variants WHERE situational_variant_id = p_situational_variant_id)) IS NULL OR ((SELECT NULLIF(applicability_scope, '') FROM situational_variants WHERE situational_variant_id = p_situational_variant_id))::text = ''), FALSE) OR COALESCE(COALESCE(calc_situational_variants_scope_states_conditions(p_situational_variant_id), FALSE) = FALSE, FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_collected_source_materials_source_document_revised_at
@@ -24784,7 +24855,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_collected_source_materials_is_modeled_before_organized(p_collected_source_material_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(encoded_into_version, '') FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT organized_at::timestamptz FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT encoded_at::timestamptz FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id) < (SELECT organized_at::timestamptz FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id)), FALSE), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(encoded_into_version, '') FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id)) IS NOT NULL AND ((SELECT NULLIF(encoded_into_version, '') FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id))::text <> ''), FALSE) AND COALESCE((COALESCE((((SELECT organized_at::timestamptz FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id)) IS NULL OR ((SELECT organized_at::timestamptz FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT encoded_at::timestamptz FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id) < (SELECT organized_at::timestamptz FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_collected_source_materials_is_document_source
@@ -24824,7 +24895,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_collected_source_materials_is_captured_in_flow_of_work(p_collected_source_material_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(captured_during_execution, '') FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(captured_during_execution, '') FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id)) IS NOT NULL AND ((SELECT NULLIF(captured_during_execution, '') FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_collected_source_materials_dependent_trace_count
@@ -24844,7 +24915,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_collected_source_materials_is_dependency_invisible_to_chan(p_collected_source_material_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(encoded_into_version, '') FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_collected_source_materials_dependent_trace_count(p_collected_source_material_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(encoded_into_version, '') FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id)) IS NOT NULL AND ((SELECT NULLIF(encoded_into_version, '') FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_collected_source_materials_dependent_trace_count(p_collected_source_material_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_collected_source_materials_changed_dependent_count
@@ -24854,7 +24925,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_collected_source_materials_changed_dependent_count(p_collected_source_material_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_traces WHERE source_material = (SELECT NULLIF(collected_source_material_id, '') FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id) AND calc_knowledge_traces_is_source_changed_since_taken(knowledge_trace_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_traces erb_r1 WHERE source_material = (SELECT (SELECT NULLIF(collected_source_material_id, '') FROM collected_source_materials WHERE collected_source_material_id = p_collected_source_material_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_knowledge_traces_source_revised_at(erb_r1.knowledge_trace_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) > calc_knowledge_traces_source_collected_at(erb_r1.knowledge_trace_id)), FALSE), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_collected_source_materials_has_knowledge_affected_by_sourc
@@ -25008,7 +25079,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_term_label_variants_concepts_sharing_wording(p_term_label_variant_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM term_label_variants WHERE calc_term_label_variants_wording_key(term_label_variant_id) = calc_term_label_variants_wording_key(p_term_label_variant_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM term_label_variants erb_r1 WHERE ((SELECT (CONCAT(calc_term_label_variants_term_scheme(erb_r1.term_label_variant_id), '|', NULLIF(erb_r1.wording, '')))::text))::text = (SELECT calc_term_label_variants_wording_key(p_term_label_variant_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_term_label_variants_is_ambiguous_label
@@ -25028,7 +25099,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_term_label_variants_practitioner_mention_count(p_term_label_variant_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM source_term_mentions WHERE calc_source_term_mentions_wording_key(source_term_mention_id) = calc_term_label_variants_wording_key(p_term_label_variant_id) AND mention_origin = 'Practitioner'))::integer;
+  SELECT ((SELECT COUNT(*) FROM source_term_mentions erb_r1 WHERE ((SELECT (CONCAT(NULLIF(erb_r1.concept_scheme, ''), '|', NULLIF(erb_r1.wording, '')))::text))::text = (SELECT calc_term_label_variants_wording_key(p_term_label_variant_id)) AND mention_origin = 'Practitioner'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_term_label_variants_pref_wording
@@ -25048,7 +25119,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_term_label_variants_same_pref_wording_count(p_term_label_variant_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM term_label_variants WHERE calc_term_label_variants_pref_wording(term_label_variant_id) = calc_term_label_variants_pref_wording(p_term_label_variant_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM term_label_variants erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.label_kind, ''), '') = 'pref' THEN (NULLIF(erb_r1.wording, ''))::text ELSE ('')::text END)::text))::text = (SELECT calc_term_label_variants_pref_wording(p_term_label_variant_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_term_label_variants_is_cross_scheme_duplicate_pref
@@ -25099,7 +25170,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_labeling_runs_non_canonical_output_count(p_ai_labeling_run_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM source_term_mentions WHERE ai_labeling_run = (SELECT NULLIF(ai_labeling_run_id, '') FROM ai_labeling_runs WHERE ai_labeling_run_id = p_ai_labeling_run_id) AND calc_source_term_mentions_is_non_canonical_generated_value(source_term_mention_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM source_term_mentions erb_r1 WHERE ai_labeling_run = (SELECT (SELECT NULLIF(ai_labeling_run_id, '') FROM ai_labeling_runs WHERE ai_labeling_run_id = p_ai_labeling_run_id)) AND ((SELECT ((COALESCE(COALESCE(NULLIF(erb_r1.mention_origin, ''), '') = 'AIGenerated', FALSE) AND COALESCE(COALESCE((calc_source_term_mentions_matching_pref_label_count(erb_r1.source_term_mention_id))::NUMERIC, 0) = 0, FALSE)))))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_labeling_runs_is_ungrounded_synonym_sprawl
@@ -25109,7 +25180,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_labeling_runs_is_ungrounded_synonym_sprawl(p_ai_labeling_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(grounding_scheme, '') FROM ai_labeling_runs WHERE ai_labeling_run_id = p_ai_labeling_run_id) IS NULL, FALSE) AND COALESCE(COALESCE((calc_ai_labeling_runs_non_canonical_output_count(p_ai_labeling_run_id))::NUMERIC, 0) > 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(grounding_scheme, '') FROM ai_labeling_runs WHERE ai_labeling_run_id = p_ai_labeling_run_id)) IS NULL OR ((SELECT NULLIF(grounding_scheme, '') FROM ai_labeling_runs WHERE ai_labeling_run_id = p_ai_labeling_run_id))::text = ''), FALSE) AND COALESCE(COALESCE((calc_ai_labeling_runs_non_canonical_output_count(p_ai_labeling_run_id))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_labeling_runs_grounded_in_non_machine_readable_scheme
@@ -25119,7 +25190,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_labeling_runs_grounded_in_non_machine_readable_scheme(p_ai_labeling_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(grounding_scheme, '') FROM ai_labeling_runs WHERE ai_labeling_run_id = p_ai_labeling_run_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_ai_labeling_runs_grounding_scheme_is_machine_accessible(p_ai_labeling_run_id), FALSE) = FALSE, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(grounding_scheme, '') FROM ai_labeling_runs WHERE ai_labeling_run_id = p_ai_labeling_run_id)) IS NOT NULL AND ((SELECT NULLIF(grounding_scheme, '') FROM ai_labeling_runs WHERE ai_labeling_run_id = p_ai_labeling_run_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_ai_labeling_runs_grounding_scheme_is_machine_accessible(p_ai_labeling_run_id), FALSE) = FALSE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_source_term_mentions_intended_term_role
@@ -25187,7 +25258,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_source_term_mentions_matching_label_count(p_source_term_mention_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM term_label_variants WHERE calc_term_label_variants_wording_key(term_label_variant_id) = calc_source_term_mentions_wording_key(p_source_term_mention_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM term_label_variants erb_r1 WHERE ((SELECT (CONCAT(calc_term_label_variants_term_scheme(erb_r1.term_label_variant_id), '|', NULLIF(erb_r1.wording, '')))::text))::text = (SELECT calc_source_term_mentions_wording_key(p_source_term_mention_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_source_term_mentions_matching_pref_label_count
@@ -25197,7 +25268,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_source_term_mentions_matching_pref_label_count(p_source_term_mention_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM term_label_variants WHERE calc_term_label_variants_pref_wording_key(term_label_variant_id) = calc_source_term_mentions_wording_key(p_source_term_mention_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM term_label_variants erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.label_kind, ''), '') = 'pref' THEN (calc_term_label_variants_wording_key(erb_r1.term_label_variant_id))::text ELSE ('')::text END)::text))::text = (SELECT calc_source_term_mentions_wording_key(p_source_term_mention_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_source_term_mentions_is_uncontrolled_wording
@@ -25288,7 +25359,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_term_meaning_changes_span_days(p_term_meaning_change_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT prior_meaning_since::timestamptz FROM term_meaning_changes WHERE term_meaning_change_id = p_term_meaning_change_id) IS NULL THEN (0)::text ELSE (((((SELECT changed_at::timestamptz FROM term_meaning_changes WHERE term_meaning_change_id = p_term_meaning_change_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT prior_meaning_since::timestamptz FROM term_meaning_changes WHERE term_meaning_change_id = p_term_meaning_change_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT prior_meaning_since::timestamptz FROM term_meaning_changes WHERE term_meaning_change_id = p_term_meaning_change_id)) IS NULL OR ((SELECT prior_meaning_since::timestamptz FROM term_meaning_changes WHERE term_meaning_change_id = p_term_meaning_change_id))::text = '') THEN (0)::text ELSE (((((SELECT changed_at::timestamptz FROM term_meaning_changes WHERE term_meaning_change_id = p_term_meaning_change_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT prior_meaning_since::timestamptz FROM term_meaning_changes WHERE term_meaning_change_id = p_term_meaning_change_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_external_standard_terms_as_of_instant
@@ -25363,7 +25434,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_external_standard_terms_days_since_deprecated(p_external_standard_term_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT deprecated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id) IS NULL THEN (0)::text ELSE ((((calc_external_standard_terms_as_of_instant(p_external_standard_term_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT deprecated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT deprecated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id)) IS NULL OR ((SELECT deprecated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id))::text = '') THEN (0)::text ELSE ((((calc_external_standard_terms_as_of_instant(p_external_standard_term_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT deprecated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_external_standard_terms_is_recent_deprecation
@@ -25373,7 +25444,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_external_standard_terms_is_recent_deprecation(p_external_standard_term_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT deprecated_by_source FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id), FALSE), FALSE) AND COALESCE((SELECT deprecated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_external_standard_terms_days_since_deprecated(p_external_standard_term_id))::NUMERIC, 0) <= 730, FALSE)));
+  SELECT ((COALESCE(COALESCE((SELECT deprecated_by_source FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id), FALSE), FALSE) AND COALESCE((((SELECT deprecated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id)) IS NOT NULL AND ((SELECT deprecated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_external_standard_terms_days_since_deprecated(p_external_standard_term_id))::NUMERIC, 0) <= 730, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_external_standard_terms_using_mapping_count
@@ -25403,7 +25474,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_external_standard_terms_is_adopted_but_deprecated(p_external_standard_term_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT deprecated_by_source FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id), FALSE), FALSE) AND COALESCE((COALESCE(COALESCE((calc_external_standard_terms_using_mapping_count(p_external_standard_term_id))::NUMERIC, 0) > 0, FALSE) OR COALESCE((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id) IS NOT NULL, FALSE)), FALSE)));
+  SELECT ((COALESCE(COALESCE((SELECT deprecated_by_source FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id), FALSE), FALSE) AND COALESCE((COALESCE(COALESCE((calc_external_standard_terms_using_mapping_count(p_external_standard_term_id))::NUMERIC, 0) > 0, FALSE) OR COALESCE((((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id)) IS NOT NULL AND ((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id))::text <> ''), FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_external_standard_terms_is_alignment_stale_after_deprecati
@@ -25413,7 +25484,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_external_standard_terms_is_alignment_stale_after_deprecati(p_external_standard_term_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT deprecated_by_source FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id), FALSE), FALSE) AND COALESCE((COALESCE((SELECT alignment_updated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT alignment_updated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id) < (SELECT deprecated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id)), FALSE), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT deprecated_by_source FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id), FALSE), FALSE) AND COALESCE((COALESCE((((SELECT alignment_updated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id)) IS NULL OR ((SELECT alignment_updated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT alignment_updated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id) < (SELECT deprecated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_external_standard_terms_is_needed_deprecated_term_not_reho
@@ -25423,7 +25494,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_external_standard_terms_is_needed_deprecated_term_not_reho(p_external_standard_term_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT deprecated_by_source FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id), FALSE), FALSE) AND COALESCE(COALESCE((SELECT model_still_needs_term FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id), FALSE), FALSE) AND COALESCE((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT deprecated_by_source FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id), FALSE), FALSE) AND COALESCE(COALESCE((SELECT model_still_needs_term FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id), FALSE), FALSE) AND COALESCE((((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id)) IS NULL OR ((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_external_standard_terms_is_rehomed_without_identity_link
@@ -25433,7 +25504,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_external_standard_terms_is_rehomed_without_identity_link(p_external_standard_term_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_external_standard_terms_rehomed_term_same_as(p_external_standard_term_id) AS val) SELECT ((COALESCE((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT val FROM __erb_dedup_v1) IS NULL, FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> COALESCE((SELECT NULLIF(term_iri, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id), ''), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_external_standard_terms_rehomed_term_same_as(p_external_standard_term_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id)) IS NOT NULL AND ((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id))::text <> ''), FALSE) AND COALESCE((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> COALESCE((SELECT NULLIF(term_iri, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id), ''), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_external_standard_terms_is_rehomed_without_new_release
@@ -25443,7 +25514,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_external_standard_terms_is_rehomed_without_new_release(p_external_standard_term_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_external_standard_terms_rehomed_term_release_issued_at(p_external_standard_term_id) AS val) SELECT ((COALESCE((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT val FROM __erb_dedup_v1) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) < (SELECT deprecated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id)), FALSE), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_external_standard_terms_rehomed_term_release_issued_at(p_external_standard_term_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id)) IS NOT NULL AND ((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id))::text <> ''), FALSE) AND COALESCE((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) < (SELECT deprecated_at::timestamptz FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_external_standard_terms_has_unpropagated_identifier_change
@@ -25453,7 +25524,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_external_standard_terms_has_unpropagated_identifier_change(p_external_standard_term_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(previous_term_iri, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_external_standard_terms_stale_identifier_mapping_count(p_external_standard_term_id))::NUMERIC, 0) > 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(previous_term_iri, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id)) IS NOT NULL AND ((SELECT NULLIF(previous_term_iri, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_external_standard_terms_stale_identifier_mapping_count(p_external_standard_term_id))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_external_standard_terms_rehoming_kept_external_namespace
@@ -25463,7 +25534,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_external_standard_terms_rehoming_kept_external_namespace(p_external_standard_term_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_external_standard_terms_rehomed_term_namespace(p_external_standard_term_id), '') = COALESCE(calc_external_standard_terms_profile_namespace_iri(p_external_standard_term_id), ''), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id)) IS NOT NULL AND ((SELECT NULLIF(rehomed_as_term, '') FROM external_standard_terms WHERE external_standard_term_id = p_external_standard_term_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_external_standard_terms_rehomed_term_namespace(p_external_standard_term_id), '') = COALESCE(calc_external_standard_terms_profile_namespace_iri(p_external_standard_term_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_capability_tags_capability_scheme_dimension
@@ -25882,7 +25953,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consumer_system_syncs_is_behind_canonical_version(p_consumer_system_sync_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_consumer_system_syncs_canonical_version(p_consumer_system_sync_id) AS val) SELECT ((COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(loaded_version, '') FROM consumer_system_syncs WHERE consumer_system_sync_id = p_consumer_system_sync_id), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_consumer_system_syncs_canonical_version(p_consumer_system_sync_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(loaded_version, '') FROM consumer_system_syncs WHERE consumer_system_sync_id = p_consumer_system_sync_id), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consumer_system_syncs_predates_version_change
@@ -25902,7 +25973,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consumer_system_syncs_is_ai_fed_from_forked_copy(p_consumer_system_sync_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE(calc_consumer_system_syncs_system_audience(p_consumer_system_sync_id), '') <> 'Human', FALSE) AND COALESCE((SELECT NULLIF(source_resource, '') FROM consumer_system_syncs WHERE consumer_system_sync_id = p_consumer_system_sync_id) IS NOT NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE(calc_consumer_system_syncs_system_audience(p_consumer_system_sync_id), '') <> 'Human', FALSE) AND COALESCE((((SELECT NULLIF(source_resource, '') FROM consumer_system_syncs WHERE consumer_system_sync_id = p_consumer_system_sync_id)) IS NOT NULL AND ((SELECT NULLIF(source_resource, '') FROM consumer_system_syncs WHERE consumer_system_sync_id = p_consumer_system_sync_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consumer_system_syncs_drops_provenance_in_transit
@@ -25912,7 +25983,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consumer_system_syncs_drops_provenance_in_transit(p_consumer_system_sync_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_consumer_system_syncs_loaded_version_creator(p_consumer_system_sync_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT carries_provenance FROM consumer_system_syncs WHERE consumer_system_sync_id = p_consumer_system_sync_id), FALSE) = FALSE, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_consumer_system_syncs_loaded_version_creator(p_consumer_system_sync_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT carries_provenance FROM consumer_system_syncs WHERE consumer_system_sync_id = p_consumer_system_sync_id), FALSE) = FALSE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consumer_system_syncs_reaches_humans
@@ -26031,7 +26102,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agent_integrations_is_shadow_integration(p_agent_integration_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((calc_agent_integrations_observed_answer_count(p_agent_integration_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE((SELECT NULLIF(registry_entry_key, '') FROM agent_integrations WHERE agent_integration_id = p_agent_integration_id) IS NULL, FALSE)));
+  SELECT ((COALESCE(COALESCE((calc_agent_integrations_observed_answer_count(p_agent_integration_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE((((SELECT NULLIF(registry_entry_key, '') FROM agent_integrations WHERE agent_integration_id = p_agent_integration_id)) IS NULL OR ((SELECT NULLIF(registry_entry_key, '') FROM agent_integrations WHERE agent_integration_id = p_agent_integration_id))::text = ''), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_agent_integrations_is_one_off_connection
@@ -26051,7 +26122,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_agent_integrations_is_deployed_on_ungoverned_graph(p_agent_integration_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(serves_snapshot, '') FROM agent_integrations WHERE agent_integration_id = p_agent_integration_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_agent_integrations_snapshot_is_governed(p_agent_integration_id), FALSE) = FALSE, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(serves_snapshot, '') FROM agent_integrations WHERE agent_integration_id = p_agent_integration_id)) IS NOT NULL AND ((SELECT NULLIF(serves_snapshot, '') FROM agent_integrations WHERE agent_integration_id = p_agent_integration_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_agent_integrations_snapshot_is_governed(p_agent_integration_id), FALSE) = FALSE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_grounding_snapshots_name
@@ -26071,7 +26142,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_grounding_snapshots_is_governed(p_grounding_snapshot_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(steward_role, '') FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id) IS NOT NULL, FALSE) AND COALESCE((SELECT governance_reviewed_at::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT governance_reviewed_at::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id) <= (SELECT served_from::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id)), (((SELECT governance_reviewed_at::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id)) IS NULL AND ((SELECT served_from::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id)) IS NULL)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(steward_role, '') FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id)) IS NOT NULL AND ((SELECT NULLIF(steward_role, '') FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id))::text <> ''), FALSE) AND COALESCE((((SELECT governance_reviewed_at::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id)) IS NOT NULL AND ((SELECT governance_reviewed_at::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT governance_reviewed_at::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id) <= (SELECT served_from::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id)), (((SELECT governance_reviewed_at::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id)) IS NULL AND ((SELECT served_from::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id)) IS NULL)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_grounding_snapshots_reasoner_run_count
@@ -26111,7 +26182,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_grounding_snapshots_served_without_consistency_check(p_grounding_snapshot_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT served_from::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_grounding_snapshots_consistent_reasoner_run_count(p_grounding_snapshot_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT served_from::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id)) IS NOT NULL AND ((SELECT served_from::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_grounding_snapshots_consistent_reasoner_run_count(p_grounding_snapshot_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_grounding_snapshots_served_before_materialization
@@ -26121,7 +26192,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_grounding_snapshots_served_before_materialization(p_grounding_snapshot_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_grounding_snapshots_latest_materialized_at(p_grounding_snapshot_id) AS val) SELECT ((COALESCE((SELECT served_from::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT val FROM __erb_dedup_v1) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) > (SELECT served_from::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id)), FALSE), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_grounding_snapshots_latest_materialized_at(p_grounding_snapshot_id) AS val) SELECT ((COALESCE((((SELECT served_from::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id)) IS NOT NULL AND ((SELECT served_from::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id))::text <> ''), FALSE) AND COALESCE((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) > (SELECT served_from::timestamptz FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_grounding_snapshots_assertion_count
@@ -26141,7 +26212,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_grounding_snapshots_stale_assignment_assertion_count(p_grounding_snapshot_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM snapshot_assertions WHERE snapshot = (SELECT NULLIF(grounding_snapshot_id, '') FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id) AND calc_snapshot_assertions_is_stale_role_assertion(snapshot_assertion_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM snapshot_assertions erb_r1 WHERE snapshot = (SELECT (SELECT NULLIF(grounding_snapshot_id, '') FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id)) AND ((SELECT ((COALESCE(((NULLIF(erb_r1.source_role_assignment, '')) IS NOT NULL AND (NULLIF(erb_r1.source_role_assignment, ''))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_snapshot_assertions_source_assignment_is_current(erb_r1.snapshot_assertion_id), FALSE) = FALSE, FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_grounding_snapshots_serves_stale_role_assignments
@@ -26161,7 +26232,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_grounding_snapshots_deprecated_as_current_count(p_grounding_snapshot_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM snapshot_assertions WHERE snapshot = (SELECT NULLIF(grounding_snapshot_id, '') FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id) AND calc_snapshot_assertions_presents_deprecated_as_current(snapshot_assertion_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM snapshot_assertions erb_r1 WHERE snapshot = (SELECT (SELECT NULLIF(grounding_snapshot_id, '') FROM grounding_snapshots WHERE grounding_snapshot_id = p_grounding_snapshot_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_snapshot_assertions_source_version_status(erb_r1.snapshot_assertion_id) AS val) SELECT ((COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Deprecated', FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Archived', FALSE)), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.presented_status, ''), '') = 'Current', FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_grounding_snapshots_serves_deprecated_as_current
@@ -26264,7 +26335,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_snapshot_assertions_is_stale_role_assertion(p_snapshot_assertion_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(source_role_assignment, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_snapshot_assertions_source_assignment_is_current(p_snapshot_assertion_id), FALSE) = FALSE, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(source_role_assignment, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id)) IS NOT NULL AND ((SELECT NULLIF(source_role_assignment, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_snapshot_assertions_source_assignment_is_current(p_snapshot_assertion_id), FALSE) = FALSE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_snapshot_assertions_presents_deprecated_as_current
@@ -26284,7 +26355,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_snapshot_assertions_lacks_provenance(p_snapshot_assertion_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(provenance_uri, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id) IS NULL, FALSE) AND COALESCE((SELECT NULLIF(source_procedure_version, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id) IS NULL, FALSE) AND COALESCE((SELECT NULLIF(source_step, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id) IS NULL, FALSE) AND COALESCE((SELECT NULLIF(source_role_assignment, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(provenance_uri, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id)) IS NULL OR ((SELECT NULLIF(provenance_uri, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id))::text = ''), FALSE) AND COALESCE((((SELECT NULLIF(source_procedure_version, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id)) IS NULL OR ((SELECT NULLIF(source_procedure_version, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id))::text = ''), FALSE) AND COALESCE((((SELECT NULLIF(source_step, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id)) IS NULL OR ((SELECT NULLIF(source_step, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id))::text = ''), FALSE) AND COALESCE((((SELECT NULLIF(source_role_assignment, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id)) IS NULL OR ((SELECT NULLIF(source_role_assignment, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_snapshot_assertions_has_opaque_identifier
@@ -26304,7 +26375,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_snapshot_assertions_lacks_dublin_core(p_snapshot_assertion_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(dc_title, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id) IS NULL, FALSE) OR COALESCE((SELECT NULLIF(dc_description, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(dc_title, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id)) IS NULL OR ((SELECT NULLIF(dc_title, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id))::text = ''), FALSE) OR COALESCE((((SELECT NULLIF(dc_description, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id)) IS NULL OR ((SELECT NULLIF(dc_description, '') FROM snapshot_assertions WHERE snapshot_assertion_id = p_snapshot_assertion_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_retrieval_segments_author_agent_kind
@@ -26464,7 +26535,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_retrieval_segments_is_isolated_chunk(p_retrieval_segment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(position_in_process, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id) IS NULL, FALSE) AND COALESCE((SELECT NULLIF(applicability_condition, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id) IS NULL, FALSE) AND COALESCE((SELECT NULLIF(related_segment, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id) IS NULL, FALSE) AND COALESCE(COALESCE((calc_retrieval_segments_related_from_count(p_retrieval_segment_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(position_in_process, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id)) IS NULL OR ((SELECT NULLIF(position_in_process, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id))::text = ''), FALSE) AND COALESCE((((SELECT NULLIF(applicability_condition, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id)) IS NULL OR ((SELECT NULLIF(applicability_condition, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id))::text = ''), FALSE) AND COALESCE((((SELECT NULLIF(related_segment, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id)) IS NULL OR ((SELECT NULLIF(related_segment, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id))::text = ''), FALSE) AND COALESCE(COALESCE((calc_retrieval_segments_related_from_count(p_retrieval_segment_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_retrieval_segments_is_inconsistent_grounding
@@ -26474,7 +26545,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_retrieval_segments_is_inconsistent_grounding(p_retrieval_segment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT is_indexed FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id), FALSE), FALSE) AND COALESCE((SELECT NULLIF(contradicts_segment, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id) IS NOT NULL, FALSE) AND COALESCE(calc_retrieval_segments_contradicted_is_indexed(p_retrieval_segment_id), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT is_indexed FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id), FALSE), FALSE) AND COALESCE((((SELECT NULLIF(contradicts_segment, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id)) IS NOT NULL AND ((SELECT NULLIF(contradicts_segment, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id))::text <> ''), FALSE) AND COALESCE(calc_retrieval_segments_contradicted_is_indexed(p_retrieval_segment_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_retrieval_segments_is_machine_held_knowledge
@@ -26484,7 +26555,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_retrieval_segments_is_machine_held_knowledge(p_retrieval_segment_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_retrieval_segments_author_agent_kind(p_retrieval_segment_id) AS val) SELECT ((COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'Human', FALSE) AND COALESCE((SELECT NULLIF(accountable_role, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id) IS NULL, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_retrieval_segments_author_agent_kind(p_retrieval_segment_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'Human', FALSE) AND COALESCE((((SELECT NULLIF(accountable_role, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id)) IS NULL OR ((SELECT NULLIF(accountable_role, '') FROM retrieval_segments WHERE retrieval_segment_id = p_retrieval_segment_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_query_definitions_name
@@ -26884,7 +26955,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assistant_answers_own_knowledge_grounding_count(p_assistant_answer_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM answer_groundings WHERE assistant_answer = (SELECT NULLIF(assistant_answer_id, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id) AND calc_answer_groundings_is_from_own_knowledge(answer_grounding_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM answer_groundings erb_r1 WHERE assistant_answer = (SELECT (SELECT NULLIF(assistant_answer_id, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id)) AND ((SELECT ((COALESCE(((NULLIF(erb_r1.external_source_uri, '')) IS NULL OR (NULLIF(erb_r1.external_source_uri, ''))::text = ''), FALSE) AND COALESCE((COALESCE(((NULLIF(erb_r1.snapshot_assertion, '')) IS NOT NULL AND (NULLIF(erb_r1.snapshot_assertion, ''))::text <> ''), FALSE) OR COALESCE(((NULLIF(erb_r1.retrieval_segment, '')) IS NOT NULL AND (NULLIF(erb_r1.retrieval_segment, ''))::text <> ''), FALSE)), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assistant_answers_cited_grounding_count
@@ -26904,7 +26975,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assistant_answers_stale_grounding_count(p_assistant_answer_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM answer_groundings WHERE assistant_answer = (SELECT NULLIF(assistant_answer_id, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id) AND calc_answer_groundings_grounds_on_stale_assertion(answer_grounding_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM answer_groundings erb_r1 WHERE assistant_answer = (SELECT (SELECT NULLIF(assistant_answer_id, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id)) AND ((SELECT ((COALESCE(((NULLIF(erb_r1.snapshot_assertion, '')) IS NOT NULL AND (NULLIF(erb_r1.snapshot_assertion, ''))::text <> ''), FALSE) AND COALESCE((COALESCE(calc_answer_groundings_assertion_is_stale(erb_r1.answer_grounding_id), FALSE) OR COALESCE(calc_answer_groundings_assertion_presents_deprecated(erb_r1.answer_grounding_id), FALSE)), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assistant_answers_is_not_from_own_knowledge
@@ -26944,7 +27015,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assistant_answers_arrived_after_step_ended(p_assistant_answer_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_assistant_answers_context_step_ended_at(p_assistant_answer_id) AS val) SELECT ((COALESCE(COALESCE((SELECT NULLIF(answer_kind, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id), '') = 'Guidance', FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT answered_at::timestamptz FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_assistant_answers_context_step_ended_at(p_assistant_answer_id) AS val) SELECT ((COALESCE(COALESCE((SELECT NULLIF(answer_kind, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id), '') = 'Guidance', FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT answered_at::timestamptz FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assistant_answers_assumed_step_completed_count
@@ -26954,7 +27025,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assistant_answers_assumed_step_completed_count(p_assistant_answer_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_executions WHERE procedure_execution = calc_assistant_answers_execution_of_context(p_assistant_answer_id) AND step = (SELECT NULLIF(assumed_current_step, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id) AND execution_status = 'Completed'))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_executions WHERE procedure_execution = (SELECT calc_assistant_answers_execution_of_context(p_assistant_answer_id)) AND step = (SELECT (SELECT NULLIF(assumed_current_step, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id)) AND execution_status = 'Completed'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assistant_answers_lost_track_of_state
@@ -26964,7 +27035,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assistant_answers_lost_track_of_state(p_assistant_answer_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(assumed_current_step, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id) IS NOT NULL, FALSE) AND COALESCE(calc_assistant_answers_execution_of_context(p_assistant_answer_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_assistant_answers_assumed_step_completed_count(p_assistant_answer_id))::NUMERIC, 0) = 0, FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_assistant_answers_execution_of_context(p_assistant_answer_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(assumed_current_step, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id)) IS NOT NULL AND ((SELECT NULLIF(assumed_current_step, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id))::text <> ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_assistant_answers_assumed_step_completed_count(p_assistant_answer_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_assistant_answers_specified_transition_count
@@ -26984,7 +27055,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assistant_answers_contradicts_shared_model(p_assistant_answer_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(asserted_next_step, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_assistant_answers_specified_transition_count(p_assistant_answer_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(asserted_next_step, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id)) IS NOT NULL AND ((SELECT NULLIF(asserted_next_step, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_assistant_answers_specified_transition_count(p_assistant_answer_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_assistant_answers_is_explicitly_grounded_recommendation
@@ -27064,7 +27135,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assistant_answers_acted_on_without_human_judgment(p_assistant_answer_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_assistant_answers_recommended_step_needs_human(p_assistant_answer_id), FALSE) AND COALESCE(COALESCE((SELECT was_acted_on FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id), FALSE), FALSE) AND COALESCE((SELECT NULLIF(human_reviewed_by, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_assistant_answers_recommended_step_needs_human(p_assistant_answer_id), FALSE) AND COALESCE(COALESCE((SELECT was_acted_on FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id), FALSE), FALSE) AND COALESCE((((SELECT NULLIF(human_reviewed_by, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id)) IS NULL OR ((SELECT NULLIF(human_reviewed_by, '') FROM assistant_answers WHERE assistant_answer_id = p_assistant_answer_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assistant_answers_answered_compliance_question_from_docume
@@ -27381,7 +27452,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_answer_groundings_is_from_own_knowledge(p_answer_grounding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(external_source_uri, '') FROM answer_groundings WHERE answer_grounding_id = p_answer_grounding_id) IS NULL, FALSE) AND COALESCE((COALESCE((SELECT NULLIF(snapshot_assertion, '') FROM answer_groundings WHERE answer_grounding_id = p_answer_grounding_id) IS NOT NULL, FALSE) OR COALESCE((SELECT NULLIF(retrieval_segment, '') FROM answer_groundings WHERE answer_grounding_id = p_answer_grounding_id) IS NOT NULL, FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(external_source_uri, '') FROM answer_groundings WHERE answer_grounding_id = p_answer_grounding_id)) IS NULL OR ((SELECT NULLIF(external_source_uri, '') FROM answer_groundings WHERE answer_grounding_id = p_answer_grounding_id))::text = ''), FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(snapshot_assertion, '') FROM answer_groundings WHERE answer_grounding_id = p_answer_grounding_id)) IS NOT NULL AND ((SELECT NULLIF(snapshot_assertion, '') FROM answer_groundings WHERE answer_grounding_id = p_answer_grounding_id))::text <> ''), FALSE) OR COALESCE((((SELECT NULLIF(retrieval_segment, '') FROM answer_groundings WHERE answer_grounding_id = p_answer_grounding_id)) IS NOT NULL AND ((SELECT NULLIF(retrieval_segment, '') FROM answer_groundings WHERE answer_grounding_id = p_answer_grounding_id))::text <> ''), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_answer_groundings_grounds_on_stale_assertion
@@ -27391,7 +27462,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_answer_groundings_grounds_on_stale_assertion(p_answer_grounding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(snapshot_assertion, '') FROM answer_groundings WHERE answer_grounding_id = p_answer_grounding_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE(calc_answer_groundings_assertion_is_stale(p_answer_grounding_id), FALSE) OR COALESCE(calc_answer_groundings_assertion_presents_deprecated(p_answer_grounding_id), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(snapshot_assertion, '') FROM answer_groundings WHERE answer_grounding_id = p_answer_grounding_id)) IS NOT NULL AND ((SELECT NULLIF(snapshot_assertion, '') FROM answer_groundings WHERE answer_grounding_id = p_answer_grounding_id))::text <> ''), FALSE) AND COALESCE((COALESCE(calc_answer_groundings_assertion_is_stale(p_answer_grounding_id), FALSE) OR COALESCE(calc_answer_groundings_assertion_presents_deprecated(p_answer_grounding_id), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_answer_requirement_checks_name
@@ -27443,7 +27514,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_tool_invocations_declared_function_count(p_ai_tool_invocation_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM step_functions WHERE step = calc_ai_tool_invocations_executed_step(p_ai_tool_invocation_id) AND function = (SELECT NULLIF(function, '') FROM ai_tool_invocations WHERE ai_tool_invocation_id = p_ai_tool_invocation_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM step_functions WHERE step = (SELECT calc_ai_tool_invocations_executed_step(p_ai_tool_invocation_id)) AND function = (SELECT (SELECT NULLIF(function, '') FROM ai_tool_invocations WHERE ai_tool_invocation_id = p_ai_tool_invocation_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_tool_invocations_is_undeclared_tool_use
@@ -27604,7 +27675,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_prompt_templates_is_disconnected_prompt_knowledge(p_prompt_template_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT carries_procedure_instructions FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id), FALSE), FALSE) AND COALESCE((SELECT NULLIF(source_procedure_version, '') FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT carries_procedure_instructions FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id), FALSE), FALSE) AND COALESCE((((SELECT NULLIF(source_procedure_version, '') FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id)) IS NULL OR ((SELECT NULLIF(source_procedure_version, '') FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_prompt_templates_is_unmanaged_prompt_in_use
@@ -27614,7 +27685,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_prompt_templates_is_unmanaged_prompt_in_use(p_prompt_template_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(used_by_agent, '') FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE(COALESCE((SELECT NULLIF(library_status, '') FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id), '') <> 'Maintained', FALSE) OR COALESCE((SELECT NULLIF(maintained_by_role, '') FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id) IS NULL, FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(used_by_agent, '') FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id)) IS NOT NULL AND ((SELECT NULLIF(used_by_agent, '') FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id))::text <> ''), FALSE) AND COALESCE((COALESCE(COALESCE((SELECT NULLIF(library_status, '') FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id), '') <> 'Maintained', FALSE) OR COALESCE((((SELECT NULLIF(maintained_by_role, '') FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id)) IS NULL OR ((SELECT NULLIF(maintained_by_role, '') FROM prompt_templates WHERE prompt_template_id = p_prompt_template_id))::text = ''), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_prompt_templates_spends_budget_on_rare_detail
@@ -27685,7 +27756,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_projections_diagram_can_diverge_from_model(p_knowledge_projection_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(projection_kind, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id), '') = 'Diagram', FALSE) AND COALESCE((COALESCE((SELECT NULLIF(generated_by_tool, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT generated_at::timestamptz FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id) < calc_knowledge_projections_version_modified_at(p_knowledge_projection_id)), FALSE), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(projection_kind, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id), '') = 'Diagram', FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(generated_by_tool, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id)) IS NULL OR ((SELECT NULLIF(generated_by_tool, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT generated_at::timestamptz FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id) < calc_knowledge_projections_version_modified_at(p_knowledge_projection_id)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_projections_narrative_not_generated_from_model
@@ -27695,7 +27766,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_projections_narrative_not_generated_from_model(p_knowledge_projection_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(projection_kind, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id), '') = 'Narrative', FALSE) AND COALESCE((COALESCE((SELECT NULLIF(generated_by_tool, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT generated_at::timestamptz FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id) < calc_knowledge_projections_version_modified_at(p_knowledge_projection_id)), FALSE), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(projection_kind, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id), '') = 'Narrative', FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(generated_by_tool, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id)) IS NULL OR ((SELECT NULLIF(generated_by_tool, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT generated_at::timestamptz FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id) < calc_knowledge_projections_version_modified_at(p_knowledge_projection_id)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_projections_narrative_unreachable
@@ -27705,7 +27776,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_projections_narrative_unreachable(p_knowledge_projection_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(projection_kind, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id), '') = 'Narrative', FALSE) AND COALESCE((SELECT NULLIF(published_uri, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id) IS NULL, FALSE) AND COALESCE(COALESCE((calc_knowledge_projections_open_count(p_knowledge_projection_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(projection_kind, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id), '') = 'Narrative', FALSE) AND COALESCE((((SELECT NULLIF(published_uri, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id)) IS NULL OR ((SELECT NULLIF(published_uri, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id))::text = ''), FALSE) AND COALESCE(COALESCE((calc_knowledge_projections_open_count(p_knowledge_projection_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_projections_is_published
@@ -27715,7 +27786,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_projections_is_published(p_knowledge_projection_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(published_uri, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(published_uri, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id)) IS NOT NULL AND ((SELECT NULLIF(published_uri, '') FROM knowledge_projections WHERE knowledge_projection_id = p_knowledge_projection_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_encoding_lifecycle_stages_label
@@ -27791,7 +27862,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_annotations_is_lost_new_knowledge(p_model_annotation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(annotation_kind, '') FROM model_annotations WHERE model_annotation_id = p_model_annotation_id), '') = 'NewKnowledge', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(status, '') FROM model_annotations WHERE model_annotation_id = p_model_annotation_id), '') <> 'Declined', FALSE) AND COALESCE((SELECT NULLIF(promoted_to_fragment, '') FROM model_annotations WHERE model_annotation_id = p_model_annotation_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(annotation_kind, '') FROM model_annotations WHERE model_annotation_id = p_model_annotation_id), '') = 'NewKnowledge', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(status, '') FROM model_annotations WHERE model_annotation_id = p_model_annotation_id), '') <> 'Declined', FALSE) AND COALESCE((((SELECT NULLIF(promoted_to_fragment, '') FROM model_annotations WHERE model_annotation_id = p_model_annotation_id)) IS NULL OR ((SELECT NULLIF(promoted_to_fragment, '') FROM model_annotations WHERE model_annotation_id = p_model_annotation_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_annotations_is_friction_without_gap
@@ -27801,7 +27872,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_annotations_is_friction_without_gap(p_model_annotation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(annotation_kind, '') FROM model_annotations WHERE model_annotation_id = p_model_annotation_id), '') = 'MissingKnowledge', FALSE) AND COALESCE((SELECT NULLIF(raised_knowledge_gap, '') FROM model_annotations WHERE model_annotation_id = p_model_annotation_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(annotation_kind, '') FROM model_annotations WHERE model_annotation_id = p_model_annotation_id), '') = 'MissingKnowledge', FALSE) AND COALESCE((((SELECT NULLIF(raised_knowledge_gap, '') FROM model_annotations WHERE model_annotation_id = p_model_annotation_id)) IS NULL OR ((SELECT NULLIF(raised_knowledge_gap, '') FROM model_annotations WHERE model_annotation_id = p_model_annotation_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_annotations_is_open_outdated_flag
@@ -27903,7 +27974,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_search_events_found_nothing_useful(p_knowledge_search_event_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE(((SELECT result_count FROM knowledge_search_events WHERE knowledge_search_event_id = p_knowledge_search_event_id))::NUMERIC, 0) = 0, FALSE) OR COALESCE((COALESCE((SELECT NULLIF(opened_segment, '') FROM knowledge_search_events WHERE knowledge_search_event_id = p_knowledge_search_event_id) IS NULL, FALSE) AND COALESCE((SELECT NULLIF(opened_projection, '') FROM knowledge_search_events WHERE knowledge_search_event_id = p_knowledge_search_event_id) IS NULL, FALSE)), FALSE)));
+  SELECT ((COALESCE(COALESCE(((SELECT result_count FROM knowledge_search_events WHERE knowledge_search_event_id = p_knowledge_search_event_id))::NUMERIC, 0) = 0, FALSE) OR COALESCE((COALESCE((((SELECT NULLIF(opened_segment, '') FROM knowledge_search_events WHERE knowledge_search_event_id = p_knowledge_search_event_id)) IS NULL OR ((SELECT NULLIF(opened_segment, '') FROM knowledge_search_events WHERE knowledge_search_event_id = p_knowledge_search_event_id))::text = ''), FALSE) AND COALESCE((((SELECT NULLIF(opened_projection, '') FROM knowledge_search_events WHERE knowledge_search_event_id = p_knowledge_search_event_id)) IS NULL OR ((SELECT NULLIF(opened_projection, '') FROM knowledge_search_events WHERE knowledge_search_event_id = p_knowledge_search_event_id))::text = ''), FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_search_events_gave_up_after_seeing_results
@@ -27923,7 +27994,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_search_events_is_unlinked_failed_search(p_knowledge_search_event_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_knowledge_search_events_found_nothing_useful(p_knowledge_search_event_id), FALSE) AND COALESCE((SELECT NULLIF(linked_knowledge_gap, '') FROM knowledge_search_events WHERE knowledge_search_event_id = p_knowledge_search_event_id) IS NULL, FALSE) AND COALESCE((SELECT NULLIF(linked_usability_barrier, '') FROM knowledge_search_events WHERE knowledge_search_event_id = p_knowledge_search_event_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_knowledge_search_events_found_nothing_useful(p_knowledge_search_event_id), FALSE) AND COALESCE((((SELECT NULLIF(linked_knowledge_gap, '') FROM knowledge_search_events WHERE knowledge_search_event_id = p_knowledge_search_event_id)) IS NULL OR ((SELECT NULLIF(linked_knowledge_gap, '') FROM knowledge_search_events WHERE knowledge_search_event_id = p_knowledge_search_event_id))::text = ''), FALSE) AND COALESCE((((SELECT NULLIF(linked_usability_barrier, '') FROM knowledge_search_events WHERE knowledge_search_event_id = p_knowledge_search_event_id)) IS NULL OR ((SELECT NULLIF(linked_usability_barrier, '') FROM knowledge_search_events WHERE knowledge_search_event_id = p_knowledge_search_event_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_adoption_initiatives_as_of_instant
@@ -28018,7 +28089,7 @@ $$ LANGUAGE sql STABLE;
 -- Type: aggregation | DataType: integer | Returns: INTEGER
 
 
-CREATE OR REPLACE FUNCTION calc_ai_adoption_initiatives_reviewed_output_count(p_ai_adoption_initiative_id TEXT)
+CREATE OR REPLACE FUNCTION calc_ai_adoption_initiatives_reviewed_output_count__compute(p_ai_adoption_initiative_id TEXT)
 RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM assistant_answers WHERE reviewed_for_initiative = (SELECT NULLIF(ai_adoption_initiative_id, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id)))::integer;
 $$ LANGUAGE sql STABLE;
@@ -28040,7 +28111,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_adoption_initiatives_days_since_outcome_measured(p_ai_adoption_initiative_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_ai_adoption_initiatives_last_outcome_measured_at(p_ai_adoption_initiative_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN (0)::text ELSE ((((calc_ai_adoption_initiatives_as_of_instant(p_ai_adoption_initiative_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_ai_adoption_initiatives_last_outcome_measured_at(p_ai_adoption_initiative_id) AS val) SELECT (CASE WHEN (((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '') THEN (0)::text ELSE ((((calc_ai_adoption_initiatives_as_of_instant(p_ai_adoption_initiative_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_adoption_initiatives_ai_insight_count
@@ -28060,7 +28131,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_adoption_initiatives_hands_tacit_procedure_to_agent(p_ai_adoption_initiative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT is_agentic FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), FALSE), FALSE) AND COALESCE((SELECT NULLIF(target_procedure, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) IS NOT NULL, FALSE) AND COALESCE(calc_ai_adoption_initiatives_target_has_no_explicit_steps(p_ai_adoption_initiative_id), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT is_agentic FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), FALSE), FALSE) AND COALESCE((((SELECT NULLIF(target_procedure, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id)) IS NOT NULL AND ((SELECT NULLIF(target_procedure, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id))::text <> ''), FALSE) AND COALESCE(calc_ai_adoption_initiatives_target_has_no_explicit_steps(p_ai_adoption_initiative_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_adoption_initiatives_agent_on_under_specified_procedure
@@ -28070,7 +28141,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_adoption_initiatives_agent_on_under_specified_procedure(p_ai_adoption_initiative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT is_agentic FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), FALSE), FALSE) AND COALESCE((SELECT NULLIF(target_version, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) IS NOT NULL, FALSE) AND COALESCE(calc_ai_adoption_initiatives_target_version_under_specified(p_ai_adoption_initiative_id), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT is_agentic FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), FALSE), FALSE) AND COALESCE((((SELECT NULLIF(target_version, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id)) IS NOT NULL AND ((SELECT NULLIF(target_version, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id))::text <> ''), FALSE) AND COALESCE(calc_ai_adoption_initiatives_target_version_under_specified(p_ai_adoption_initiative_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_adoption_initiatives_agent_on_notation_only_procedure
@@ -28080,7 +28151,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_adoption_initiatives_agent_on_notation_only_procedure(p_ai_adoption_initiative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT is_agentic FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), FALSE), FALSE) AND COALESCE((SELECT NULLIF(target_version, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) IS NOT NULL, FALSE) AND COALESCE(calc_ai_adoption_initiatives_target_version_notation_only(p_ai_adoption_initiative_id), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT is_agentic FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), FALSE), FALSE) AND COALESCE((((SELECT NULLIF(target_version, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id)) IS NOT NULL AND ((SELECT NULLIF(target_version, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id))::text <> ''), FALSE) AND COALESCE(calc_ai_adoption_initiatives_target_version_notation_only(p_ai_adoption_initiative_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_adoption_initiatives_calls_for_process_knowledge_framew
@@ -28100,7 +28171,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_adoption_initiatives_redesigned_before_documented(p_ai_adoption_initiative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT redesign_started_at::timestamptz FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT NULLIF(target_version, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT redesign_started_at::timestamptz FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) < calc_ai_adoption_initiatives_target_version_issued_at(p_ai_adoption_initiative_id)), FALSE), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT redesign_started_at::timestamptz FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id)) IS NOT NULL AND ((SELECT redesign_started_at::timestamptz FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id))::text <> ''), FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(target_version, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id)) IS NULL OR ((SELECT NULLIF(target_version, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT redesign_started_at::timestamptz FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) < calc_ai_adoption_initiatives_target_version_issued_at(p_ai_adoption_initiative_id)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_adoption_initiatives_breaks_elicit_encode_connect_order
@@ -28110,7 +28181,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_adoption_initiatives_breaks_elicit_encode_connect_order(p_ai_adoption_initiative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT connected_to_ai_at::timestamptz FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT NULLIF(target_version, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) IS NULL, FALSE) OR COALESCE(COALESCE((calc_ai_adoption_initiatives_target_elicitation_evidence_count(p_ai_adoption_initiative_id))::NUMERIC, 0) = 0, FALSE) OR COALESCE(COALESCE(((SELECT connected_to_ai_at::timestamptz FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) < calc_ai_adoption_initiatives_target_version_issued_at(p_ai_adoption_initiative_id)), FALSE), FALSE)), FALSE)));
+  SELECT ((COALESCE((((SELECT connected_to_ai_at::timestamptz FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id)) IS NOT NULL AND ((SELECT connected_to_ai_at::timestamptz FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id))::text <> ''), FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(target_version, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id)) IS NULL OR ((SELECT NULLIF(target_version, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id))::text = ''), FALSE) OR COALESCE(COALESCE((calc_ai_adoption_initiatives_target_elicitation_evidence_count(p_ai_adoption_initiative_id))::NUMERIC, 0) = 0, FALSE) OR COALESCE(COALESCE(((SELECT connected_to_ai_at::timestamptz FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) < calc_ai_adoption_initiatives_target_version_issued_at(p_ai_adoption_initiative_id)), FALSE), FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_adoption_initiatives_went_full_without_reviewed_partial
@@ -28120,7 +28191,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_adoption_initiatives_went_full_without_reviewed_partial(p_ai_adoption_initiative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(automation_level, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), '') = 'Full', FALSE) AND COALESCE((COALESCE((SELECT NULLIF(preceding_initiative, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) IS NULL, FALSE) OR COALESCE(COALESCE((calc_ai_adoption_initiatives_preceding_reviewed_output_count(p_ai_adoption_initiative_id))::NUMERIC, 0) = 0, FALSE)), FALSE)));
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(automation_level, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), '') = 'Full', FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(preceding_initiative, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id)) IS NULL OR ((SELECT NULLIF(preceding_initiative, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id))::text = ''), FALSE) OR COALESCE(COALESCE((calc_ai_adoption_initiatives_preceding_reviewed_output_count(p_ai_adoption_initiative_id))::NUMERIC, 0) = 0, FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_adoption_initiatives_underinvests_knowledge_layer
@@ -28140,7 +28211,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_adoption_initiatives_not_anchored_in_process_knowledge(p_ai_adoption_initiative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), '') <> 'Proposed', FALSE) AND COALESCE((SELECT NULLIF(target_procedure, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), '') <> 'Proposed', FALSE) AND COALESCE((((SELECT NULLIF(target_procedure, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id)) IS NULL OR ((SELECT NULLIF(target_procedure, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_adoption_initiatives_agentic_without_knowledge_capture
@@ -28160,7 +28231,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_adoption_initiatives_is_ai_outcome_unmeasured(p_ai_adoption_initiative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), '') = 'Pilot', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(status, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), '') = 'InProduction', FALSE)), FALSE) AND COALESCE((COALESCE(calc_ai_adoption_initiatives_last_outcome_measured_at(p_ai_adoption_initiative_id) IS NULL, FALSE) OR COALESCE(COALESCE((calc_ai_adoption_initiatives_days_since_outcome_measured(p_ai_adoption_initiative_id))::NUMERIC, 0) > 30, FALSE)), FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_ai_adoption_initiatives_last_outcome_measured_at(p_ai_adoption_initiative_id) AS val) SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), '') = 'Pilot', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(status, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), '') = 'InProduction', FALSE)), FALSE) AND COALESCE((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE) OR COALESCE(COALESCE((calc_ai_adoption_initiatives_days_since_outcome_measured(p_ai_adoption_initiative_id))::NUMERIC, 0) > 30, FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_adoption_initiatives_adopted_without_bottom_line_result
@@ -28180,7 +28251,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_adoption_initiatives_failed_without_formalized_knowledg(p_ai_adoption_initiative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(outcome, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), '') = 'Failed', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(approach, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), '') = 'PromptOnly', FALSE) AND COALESCE((COALESCE((SELECT NULLIF(target_procedure, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) IS NULL, FALSE) OR COALESCE((COALESCE((SELECT NULLIF(target_procedure, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id) IS NOT NULL, FALSE) AND COALESCE(calc_ai_adoption_initiatives_target_has_no_explicit_steps(p_ai_adoption_initiative_id), FALSE)), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(outcome, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), '') = 'Failed', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(approach, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id), '') = 'PromptOnly', FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(target_procedure, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id)) IS NULL OR ((SELECT NULLIF(target_procedure, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id))::text = ''), FALSE) OR COALESCE((COALESCE((((SELECT NULLIF(target_procedure, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id)) IS NOT NULL AND ((SELECT NULLIF(target_procedure, '') FROM ai_adoption_initiatives WHERE ai_adoption_initiative_id = p_ai_adoption_initiative_id))::text <> ''), FALSE) AND COALESCE(calc_ai_adoption_initiatives_target_has_no_explicit_steps(p_ai_adoption_initiative_id), FALSE)), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_outcome_measurements_baseline_access_score
@@ -28352,7 +28423,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_outcome_measurements_higher_access_fewer_errors(p_knowledge_outcome_measurement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(comparison_baseline, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT knowledge_access_score FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id), 0) > COALESCE(calc_knowledge_outcome_measurements_baseline_access_score(p_knowledge_outcome_measurement_id), 0), FALSE) AND COALESCE(COALESCE((SELECT error_rate_percent FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id), 0) < COALESCE(calc_knowledge_outcome_measurements_baseline_error_rate(p_knowledge_outcome_measurement_id), 0), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(comparison_baseline, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id)) IS NOT NULL AND ((SELECT NULLIF(comparison_baseline, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT knowledge_access_score FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id), 0) > COALESCE(calc_knowledge_outcome_measurements_baseline_access_score(p_knowledge_outcome_measurement_id), 0), FALSE) AND COALESCE(COALESCE((SELECT error_rate_percent FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id), 0) < COALESCE(calc_knowledge_outcome_measurements_baseline_error_rate(p_knowledge_outcome_measurement_id), 0), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_outcome_measurements_higher_access_more_efficien
@@ -28362,7 +28433,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_outcome_measurements_higher_access_more_efficien(p_knowledge_outcome_measurement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(comparison_baseline, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT knowledge_access_score FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id), 0) > COALESCE(calc_knowledge_outcome_measurements_baseline_access_score(p_knowledge_outcome_measurement_id), 0), FALSE) AND COALESCE(COALESCE((SELECT minutes_per_run FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id), 0) < COALESCE(calc_knowledge_outcome_measurements_baseline_minutes_per_run(p_knowledge_outcome_measurement_id), 0), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(comparison_baseline, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id)) IS NOT NULL AND ((SELECT NULLIF(comparison_baseline, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT knowledge_access_score FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id), 0) > COALESCE(calc_knowledge_outcome_measurements_baseline_access_score(p_knowledge_outcome_measurement_id), 0), FALSE) AND COALESCE(COALESCE((SELECT minutes_per_run FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id), 0) < COALESCE(calc_knowledge_outcome_measurements_baseline_minutes_per_run(p_knowledge_outcome_measurement_id), 0), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_outcome_measurements_higher_access_more_satisfie
@@ -28372,7 +28443,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_outcome_measurements_higher_access_more_satisfie(p_knowledge_outcome_measurement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(comparison_baseline, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT knowledge_access_score FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id), 0) > COALESCE(calc_knowledge_outcome_measurements_baseline_access_score(p_knowledge_outcome_measurement_id), 0), FALSE) AND COALESCE(COALESCE((SELECT satisfaction_score FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id), 0) > COALESCE(calc_knowledge_outcome_measurements_baseline_satisfaction(p_knowledge_outcome_measurement_id), 0), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(comparison_baseline, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id)) IS NOT NULL AND ((SELECT NULLIF(comparison_baseline, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT knowledge_access_score FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id), 0) > COALESCE(calc_knowledge_outcome_measurements_baseline_access_score(p_knowledge_outcome_measurement_id), 0), FALSE) AND COALESCE(COALESCE((SELECT satisfaction_score FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id), 0) > COALESCE(calc_knowledge_outcome_measurements_baseline_satisfaction(p_knowledge_outcome_measurement_id), 0), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_outcome_measurements_is_unacted_adverse_outcome
@@ -28382,7 +28453,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_outcome_measurements_is_unacted_adverse_outcome(p_knowledge_outcome_measurement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE(((SELECT error_rate_percent FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id) > (SELECT target_error_rate_percent FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id)), FALSE), FALSE) AND COALESCE((SELECT NULLIF(informed_change_request, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id) IS NULL, FALSE) AND COALESCE((SELECT NULLIF(informed_investment_decision, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE(((SELECT error_rate_percent FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id) > (SELECT target_error_rate_percent FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id)), FALSE), FALSE) AND COALESCE((((SELECT NULLIF(informed_change_request, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id)) IS NULL OR ((SELECT NULLIF(informed_change_request, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id))::text = ''), FALSE) AND COALESCE((((SELECT NULLIF(informed_investment_decision, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id)) IS NULL OR ((SELECT NULLIF(informed_investment_decision, '') FROM knowledge_outcome_measurements WHERE knowledge_outcome_measurement_id = p_knowledge_outcome_measurement_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_outcome_measurements_is_gain_outside_procedural_
@@ -28423,7 +28494,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_insight_proposals_is_unvalidated_or_stranded_insight(p_ai_insight_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((COALESCE((SELECT NULLIF(folded_into_change_request, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id) IS NOT NULL, FALSE) AND COALESCE((SELECT NULLIF(validated_by_agent, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id) IS NULL, FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT NULLIF(validation_verdict, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id), '') = 'Valid', FALSE) AND COALESCE((SELECT NULLIF(folded_into_change_request, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id) IS NULL, FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((COALESCE((((SELECT NULLIF(folded_into_change_request, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id)) IS NOT NULL AND ((SELECT NULLIF(folded_into_change_request, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(validated_by_agent, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id)) IS NULL OR ((SELECT NULLIF(validated_by_agent, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id))::text = ''), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT NULLIF(validation_verdict, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id), '') = 'Valid', FALSE) AND COALESCE((((SELECT NULLIF(folded_into_change_request, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id)) IS NULL OR ((SELECT NULLIF(folded_into_change_request, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id))::text = ''), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_insight_proposals_grew_model_without_human_seed
@@ -28433,7 +28504,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_insight_proposals_grew_model_without_human_seed(p_ai_insight_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(insight_kind, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id), '') = 'ModelExtension', FALSE) AND COALESCE((COALESCE((SELECT NULLIF(target_procedure_version, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id) IS NULL, FALSE) OR COALESCE(COALESCE(calc_ai_insight_proposals_target_creator_kind(p_ai_insight_proposal_id), '') <> 'Human', FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(insight_kind, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id), '') = 'ModelExtension', FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(target_procedure_version, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id)) IS NULL OR ((SELECT NULLIF(target_procedure_version, '') FROM ai_insight_proposals WHERE ai_insight_proposal_id = p_ai_insight_proposal_id))::text = ''), FALSE) OR COALESCE(COALESCE(calc_ai_insight_proposals_target_creator_kind(p_ai_insight_proposal_id), '') <> 'Human', FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assistant_benchmarks_name
@@ -28642,7 +28713,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_governed_models_current_charter_count(p_governed_model_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM model_charters WHERE governed_model = (SELECT NULLIF(governed_model_id, '') FROM governed_models WHERE governed_model_id = p_governed_model_id) AND calc_model_charters_is_current(model_charter_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM model_charters erb_r1 WHERE governed_model = (SELECT (SELECT NULLIF(governed_model_id, '') FROM governed_models WHERE governed_model_id = p_governed_model_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_model_charters_as_of_instant(erb_r1.model_charter_id) AS val) SELECT ((COALESCE(COALESCE((erb_r1.valid_from::timestamptz <= (SELECT val FROM __erb_dedup_v1)), ((erb_r1.valid_from::timestamptz) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE(((erb_r1.valid_to::timestamptz) IS NULL OR (erb_r1.valid_to::timestamptz)::text = ''), FALSE) OR COALESCE(COALESCE((erb_r1.valid_to::timestamptz > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_governed_models_is_ownerless
@@ -28682,7 +28753,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_governed_models_has_no_current_steward(p_governed_model_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_governed_models_current_steward_agent(p_governed_model_id) IS NULL)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_governed_models_current_steward_agent(p_governed_model_id) AS val) SELECT ((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_governed_models_has_no_current_authority
@@ -28692,7 +28763,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_governed_models_has_no_current_authority(p_governed_model_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_governed_models_current_authority_agent(p_governed_model_id) IS NULL)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_governed_models_current_authority_agent(p_governed_model_id) AS val) SELECT ((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_governed_models_is_procedure_without_change_authority
@@ -28702,7 +28773,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_governed_models_is_procedure_without_change_authority(p_governed_model_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(model_kind, '') FROM governed_models WHERE governed_model_id = p_governed_model_id), '') = 'ProcedureFamily', FALSE) AND COALESCE(calc_governed_models_current_authority_agent(p_governed_model_id) IS NULL, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_governed_models_current_authority_agent(p_governed_model_id) AS val) SELECT ((COALESCE(COALESCE((SELECT NULLIF(model_kind, '') FROM governed_models WHERE governed_model_id = p_governed_model_id), '') = 'ProcedureFamily', FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_governed_models_last_steward_activity_at
@@ -28712,7 +28783,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_governed_models_last_steward_activity_at(p_governed_model_id TEXT)
 RETURNS TIMESTAMPTZ AS $$
-  SELECT ((SELECT MAX(performed_at) FROM steward_activities WHERE calc_steward_activities_activity_model(steward_activity_id) = p_governed_model_id))::timestamptz;
+  SELECT ((SELECT MAX(performed_at) FROM steward_activities erb_r1 WHERE ((SELECT (SELECT governed_model::text FROM model_charters WHERE model_charter_id = erb_r1.model_charter)))::text = p_governed_model_id))::timestamptz;
 $$ LANGUAGE sql STABLE;
 
 -- calc_governed_models_days_since_steward_activity
@@ -28722,7 +28793,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_governed_models_days_since_steward_activity(p_governed_model_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_governed_models_last_steward_activity_at(p_governed_model_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN (calc_governed_models_days_since_registered(p_governed_model_id))::text ELSE ((((calc_governed_models_as_of_instant(p_governed_model_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_governed_models_last_steward_activity_at(p_governed_model_id) AS val) SELECT (CASE WHEN (((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '') THEN (calc_governed_models_days_since_registered(p_governed_model_id))::text ELSE ((((calc_governed_models_as_of_instant(p_governed_model_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_governed_models_is_unmaintained
@@ -28742,7 +28813,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_governed_models_documents_behind_count(p_governed_model_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM model_documents WHERE governed_model = (SELECT NULLIF(governed_model_id, '') FROM governed_models WHERE governed_model_id = p_governed_model_id) AND calc_model_documents_is_behind_current_release(model_document_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM model_documents erb_r1 WHERE governed_model = (SELECT (SELECT NULLIF(governed_model_id, '') FROM governed_models WHERE governed_model_id = p_governed_model_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_model_documents_model_current_release(erb_r1.model_document_id) AS val) SELECT ((COALESCE(((NULLIF(erb_r1.documented_release, '')) IS NOT NULL AND (NULLIF(erb_r1.documented_release, ''))::text <> ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.documented_release, ''), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_governed_models_is_not_kept_current
@@ -28762,7 +28833,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_governed_models_open_practice_drift_count(p_governed_model_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM drift_observations WHERE governed_model = (SELECT NULLIF(governed_model_id, '') FROM governed_models WHERE governed_model_id = p_governed_model_id) AND calc_drift_observations_is_open_practice_mismatch(drift_observation_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM drift_observations erb_r1 WHERE governed_model = (SELECT (SELECT NULLIF(governed_model_id, '') FROM governed_models WHERE governed_model_id = p_governed_model_id)) AND ((SELECT ((COALESCE(COALESCE(NULLIF(erb_r1.drift_kind, ''), '') = 'PracticeMismatch', FALSE) AND COALESCE(((erb_r1.resolved_at::timestamptz) IS NULL OR (erb_r1.resolved_at::timestamptz)::text = ''), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_governed_models_has_open_practice_drift
@@ -28822,7 +28893,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_governed_models_days_since_cq_review(p_governed_model_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_governed_models_last_cq_review_at(p_governed_model_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN (calc_governed_models_days_since_registered(p_governed_model_id))::text ELSE ((((calc_governed_models_as_of_instant(p_governed_model_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_governed_models_last_cq_review_at(p_governed_model_id) AS val) SELECT (CASE WHEN (((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '') THEN (calc_governed_models_days_since_registered(p_governed_model_id))::text ELSE ((((calc_governed_models_as_of_instant(p_governed_model_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_governed_models_cq_review_overdue
@@ -28862,7 +28933,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_governed_models_requirements_spec_incomplete(p_governed_model_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(requirements_purpose, '') FROM governed_models WHERE governed_model_id = p_governed_model_id) IS NULL, FALSE) OR COALESCE((SELECT NULLIF(intended_users, '') FROM governed_models WHERE governed_model_id = p_governed_model_id) IS NULL, FALSE) OR COALESCE(COALESCE((calc_governed_models_baseline_question_count(p_governed_model_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(requirements_purpose, '') FROM governed_models WHERE governed_model_id = p_governed_model_id)) IS NULL OR ((SELECT NULLIF(requirements_purpose, '') FROM governed_models WHERE governed_model_id = p_governed_model_id))::text = ''), FALSE) OR COALESCE((((SELECT NULLIF(intended_users, '') FROM governed_models WHERE governed_model_id = p_governed_model_id)) IS NULL OR ((SELECT NULLIF(intended_users, '') FROM governed_models WHERE governed_model_id = p_governed_model_id))::text = ''), FALSE) OR COALESCE(COALESCE((calc_governed_models_baseline_question_count(p_governed_model_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_governed_models_collection_control_count
@@ -28912,7 +28983,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_governed_models_continuous_pipeline_stage_count(p_governed_model_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM governance_stage_controls WHERE governed_model = (SELECT NULLIF(governed_model_id, '') FROM governed_models WHERE governed_model_id = p_governed_model_id) AND calc_governance_stage_controls_is_continuous_pipeline_stage(governance_stage_control_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM governance_stage_controls erb_r1 WHERE governed_model = (SELECT (SELECT NULLIF(governed_model_id, '') FROM governed_models WHERE governed_model_id = p_governed_model_id)) AND ((SELECT ((COALESCE((COALESCE(COALESCE(NULLIF(erb_r1.stage, ''), '') = 'Collection', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.stage, ''), '') = 'Organization', FALSE) OR COALESCE(COALESCE(NULLIF(erb_r1.stage, ''), '') = 'Encoding', FALSE)), FALSE) AND COALESCE(COALESCE(erb_r1.is_continuous, FALSE), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_governed_models_lacks_lifecycle_stage_control
@@ -28942,7 +29013,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_governed_models_is_unmanageable_undocumented_work(p_governed_model_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(model_kind, '') FROM governed_models WHERE governed_model_id = p_governed_model_id), '') = 'ProcedureFamily', FALSE) AND COALESCE((SELECT NULLIF(procedure, '') FROM governed_models WHERE governed_model_id = p_governed_model_id) IS NOT NULL, FALSE) AND COALESCE(calc_governed_models_procedure_has_no_explicit_steps(p_governed_model_id), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(model_kind, '') FROM governed_models WHERE governed_model_id = p_governed_model_id), '') = 'ProcedureFamily', FALSE) AND COALESCE((((SELECT NULLIF(procedure, '') FROM governed_models WHERE governed_model_id = p_governed_model_id)) IS NOT NULL AND ((SELECT NULLIF(procedure, '') FROM governed_models WHERE governed_model_id = p_governed_model_id))::text <> ''), FALSE) AND COALESCE(calc_governed_models_procedure_has_no_explicit_steps(p_governed_model_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_governed_models_is_without_originating_use_case
@@ -28952,7 +29023,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_governed_models_is_without_originating_use_case(p_governed_model_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(model_kind, '') FROM governed_models WHERE governed_model_id = p_governed_model_id), '') <> 'Vocabulary', FALSE) AND COALESCE((SELECT NULLIF(originating_use_case, '') FROM governed_models WHERE governed_model_id = p_governed_model_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(model_kind, '') FROM governed_models WHERE governed_model_id = p_governed_model_id), '') <> 'Vocabulary', FALSE) AND COALESCE((((SELECT NULLIF(originating_use_case, '') FROM governed_models WHERE governed_model_id = p_governed_model_id)) IS NULL OR ((SELECT NULLIF(originating_use_case, '') FROM governed_models WHERE governed_model_id = p_governed_model_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_governed_models_pilot_count
@@ -29161,7 +29232,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_charters_is_current(p_model_charter_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_model_charters_as_of_instant(p_model_charter_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM model_charters WHERE model_charter_id = p_model_charter_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM model_charters WHERE model_charter_id = p_model_charter_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((SELECT valid_to::timestamptz FROM model_charters WHERE model_charter_id = p_model_charter_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM model_charters WHERE model_charter_id = p_model_charter_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_charters_as_of_instant(p_model_charter_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM model_charters WHERE model_charter_id = p_model_charter_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM model_charters WHERE model_charter_id = p_model_charter_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((((SELECT valid_to::timestamptz FROM model_charters WHERE model_charter_id = p_model_charter_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM model_charters WHERE model_charter_id = p_model_charter_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM model_charters WHERE model_charter_id = p_model_charter_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_charters_is_steward_unwritten
@@ -29171,7 +29242,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_charters_is_steward_unwritten(p_model_charter_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(steward_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id) IS NULL, FALSE) OR COALESCE((SELECT NULLIF(steward_responsibilities, '') FROM model_charters WHERE model_charter_id = p_model_charter_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(steward_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id)) IS NULL OR ((SELECT NULLIF(steward_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id))::text = ''), FALSE) OR COALESCE((((SELECT NULLIF(steward_responsibilities, '') FROM model_charters WHERE model_charter_id = p_model_charter_id)) IS NULL OR ((SELECT NULLIF(steward_responsibilities, '') FROM model_charters WHERE model_charter_id = p_model_charter_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_charters_is_authority_scope_unstated
@@ -29181,7 +29252,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_charters_is_authority_scope_unstated(p_model_charter_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(authority_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id) IS NULL, FALSE) OR COALESCE((SELECT NULLIF(authority_approval_scope, '') FROM model_charters WHERE model_charter_id = p_model_charter_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(authority_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id)) IS NULL OR ((SELECT NULLIF(authority_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id))::text = ''), FALSE) OR COALESCE((((SELECT NULLIF(authority_approval_scope, '') FROM model_charters WHERE model_charter_id = p_model_charter_id)) IS NULL OR ((SELECT NULLIF(authority_approval_scope, '') FROM model_charters WHERE model_charter_id = p_model_charter_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_charters_conflates_steward_and_authority
@@ -29191,7 +29262,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_charters_conflates_steward_and_authority(p_model_charter_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(steward_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(steward_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id), '') = COALESCE((SELECT NULLIF(authority_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id), ''), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(steward_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id)) IS NOT NULL AND ((SELECT NULLIF(steward_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(steward_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id), '') = COALESCE((SELECT NULLIF(authority_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_charters_is_sanctioned_dual_holding
@@ -29201,7 +29272,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_charters_is_sanctioned_dual_holding(p_model_charter_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_model_charters_steward_agent(p_model_charter_id) AS val) SELECT ((COALESCE(COALESCE((SELECT NULLIF(steward_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id), '') <> COALESCE((SELECT NULLIF(authority_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id), ''), FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = COALESCE(calc_model_charters_authority_agent(p_model_charter_id), ''), FALSE) AND COALESCE(COALESCE((calc_model_charters_model_headcount(p_model_charter_id))::NUMERIC, 0) <= 50, FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_model_charters_steward_agent(p_model_charter_id) AS val) SELECT ((COALESCE(COALESCE((SELECT NULLIF(steward_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id), '') <> COALESCE((SELECT NULLIF(authority_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id), ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = COALESCE(calc_model_charters_authority_agent(p_model_charter_id), ''), FALSE) AND COALESCE(COALESCE((calc_model_charters_model_headcount(p_model_charter_id))::NUMERIC, 0) <= 50, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_charters_is_authority_outside_domain_owner
@@ -29211,7 +29282,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_charters_is_authority_outside_domain_owner(p_model_charter_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_model_charters_authority_organization(p_model_charter_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_charters_model_domain_owner(p_model_charter_id) AS val) SELECT ((COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v2) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> COALESCE((SELECT val FROM __erb_dedup_v2), ''), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_charters_authority_organization(p_model_charter_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_charters_model_domain_owner(p_model_charter_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v2)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v2))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> COALESCE((SELECT val FROM __erb_dedup_v2), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_charters_controls_precede_ownership
@@ -29221,7 +29292,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_charters_controls_precede_ownership(p_model_charter_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_model_charters_model_first_control_adopted_at(p_model_charter_id) AS val) SELECT ((COALESCE((SELECT NULLIF(supersedes_charter, '') FROM model_charters WHERE model_charter_id = p_model_charter_id) IS NULL, FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) < (SELECT valid_from::timestamptz FROM model_charters WHERE model_charter_id = p_model_charter_id)), FALSE), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_charters_model_first_control_adopted_at(p_model_charter_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(supersedes_charter, '') FROM model_charters WHERE model_charter_id = p_model_charter_id)) IS NULL OR ((SELECT NULLIF(supersedes_charter, '') FROM model_charters WHERE model_charter_id = p_model_charter_id))::text = ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) < (SELECT valid_from::timestamptz FROM model_charters WHERE model_charter_id = p_model_charter_id)), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_charters_steward_activity_count
@@ -29251,7 +29322,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_charters_days_since_drift_watch(p_model_charter_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_model_charters_last_drift_watch_at(p_model_charter_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_charters_as_of_instant(p_model_charter_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN (((((SELECT val FROM __erb_dedup_v2))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT valid_from::timestamptz FROM model_charters WHERE model_charter_id = p_model_charter_id))::timestamptz AT TIME ZONE 'UTC')::date))::text ELSE (((((SELECT val FROM __erb_dedup_v2))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_charters_last_drift_watch_at(p_model_charter_id) AS val), __erb_dedup_v2 AS (SELECT calc_model_charters_as_of_instant(p_model_charter_id) AS val) SELECT (CASE WHEN (((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '') THEN (((((SELECT val FROM __erb_dedup_v2))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT valid_from::timestamptz FROM model_charters WHERE model_charter_id = p_model_charter_id))::timestamptz AT TIME ZONE 'UTC')::date))::text ELSE (((((SELECT val FROM __erb_dedup_v2))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_charters_is_drift_watch_lapsed
@@ -29271,7 +29342,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_charters_procedure_decision_count(p_model_charter_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM change_requests WHERE authority_role = (SELECT NULLIF(authority_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id) AND calc_change_requests_is_decided(change_request_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM change_requests erb_r1 WHERE authority_role = (SELECT (SELECT NULLIF(authority_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id)) AND ((SELECT (((erb_r1.decided_at::timestamptz) IS NOT NULL AND (erb_r1.decided_at::timestamptz)::text <> ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_charters_model_review_count
@@ -29281,7 +29352,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_charters_model_review_count(p_model_charter_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM model_change_requests WHERE governed_model = (SELECT NULLIF(governed_model, '') FROM model_charters WHERE model_charter_id = p_model_charter_id) AND calc_model_change_requests_has_authority_review(model_change_request_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM model_change_requests erb_r1 WHERE governed_model = (SELECT (SELECT NULLIF(governed_model, '') FROM model_charters WHERE model_charter_id = p_model_charter_id)) AND ((SELECT (((erb_r1.authority_reviewed_at::timestamptz) IS NOT NULL AND (erb_r1.authority_reviewed_at::timestamptz)::text <> ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_charters_is_named_but_unexercised
@@ -29301,7 +29372,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_charters_steward_is_outside_tooling(p_model_charter_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_model_charters_model_tooling_owner_role(p_model_charter_id) AS val) SELECT ((COALESCE(COALESCE(calc_model_charters_model_kind(p_model_charter_id), '') = 'Ontology', FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(steward_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_charters_model_tooling_owner_role(p_model_charter_id) AS val) SELECT ((COALESCE(COALESCE(calc_model_charters_model_kind(p_model_charter_id), '') = 'Ontology', FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(steward_role, '') FROM model_charters WHERE model_charter_id = p_model_charter_id), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_charters_adopted_template_without_adaptation
@@ -29311,7 +29382,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_charters_adopted_template_without_adaptation(p_model_charter_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(charter_template, '') FROM model_charters WHERE model_charter_id = p_model_charter_id) IS NOT NULL, FALSE) AND COALESCE((SELECT NULLIF(local_adaptation, '') FROM model_charters WHERE model_charter_id = p_model_charter_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(charter_template, '') FROM model_charters WHERE model_charter_id = p_model_charter_id)) IS NOT NULL AND ((SELECT NULLIF(charter_template, '') FROM model_charters WHERE model_charter_id = p_model_charter_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(local_adaptation, '') FROM model_charters WHERE model_charter_id = p_model_charter_id)) IS NULL OR ((SELECT NULLIF(local_adaptation, '') FROM model_charters WHERE model_charter_id = p_model_charter_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_steward_activities_activity_model
@@ -29470,7 +29541,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_has_authority_review(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT authority_reviewed_at::timestamptz FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT authority_reviewed_at::timestamptz FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) IS NOT NULL AND ((SELECT authority_reviewed_at::timestamptz FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_requires_authority_review
@@ -29500,7 +29571,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_steward_own_change_unreviewed(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_model_change_requests_steward_agent(p_model_change_request_id) AS val) SELECT ((COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(requested_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE) AND COALESCE(COALESCE(calc_model_change_requests_is_minor_scope(p_model_change_request_id), FALSE) = FALSE, FALSE) AND COALESCE(COALESCE(calc_model_change_requests_has_authority_review(p_model_change_request_id), FALSE) = FALSE, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_change_requests_steward_agent(p_model_change_request_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(requested_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE) AND COALESCE(COALESCE(calc_model_change_requests_is_minor_scope(p_model_change_request_id), FALSE) = FALSE, FALSE) AND COALESCE(COALESCE(calc_model_change_requests_has_authority_review(p_model_change_request_id), FALSE) = FALSE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_steward_approval_out_of_bounds
@@ -29510,7 +29581,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_steward_approval_out_of_bounds(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = COALESCE(calc_model_change_requests_steward_agent(p_model_change_request_id), ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') <> COALESCE(calc_model_change_requests_authority_agent(p_model_change_request_id), ''), FALSE) AND COALESCE(COALESCE(calc_model_change_requests_is_minor_scope(p_model_change_request_id), FALSE) = FALSE, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) IS NOT NULL AND ((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = COALESCE(calc_model_change_requests_steward_agent(p_model_change_request_id), ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') <> COALESCE(calc_model_change_requests_authority_agent(p_model_change_request_id), ''), FALSE) AND COALESCE(COALESCE(calc_model_change_requests_is_minor_scope(p_model_change_request_id), FALSE) = FALSE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_authority_review_skipped
@@ -29530,7 +29601,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_placement_not_decided_by_authority(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(implementation_placement, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(placement_decided_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') <> COALESCE(calc_model_change_requests_authority_agent(p_model_change_request_id), ''), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(implementation_placement, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) IS NOT NULL AND ((SELECT NULLIF(implementation_placement, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(placement_decided_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') <> COALESCE(calc_model_change_requests_authority_agent(p_model_change_request_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_is_misrouted
@@ -29540,7 +29611,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_is_misrouted(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_model_change_requests_required_route(p_model_change_request_id) AS val) SELECT ((COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(route, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_change_requests_required_route(p_model_change_request_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(route, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_lacks_motivating_question
@@ -29550,7 +29621,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_lacks_motivating_question(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(motivating_question, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(motivating_question, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) IS NULL OR ((SELECT NULLIF(motivating_question, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_unmotivated_and_not_returned
@@ -29570,7 +29641,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_motivated_by_failing_question(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(motivating_question, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(motivation_kind, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'ExistingQuestionNowFails', FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(motivating_question, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) IS NOT NULL AND ((SELECT NULLIF(motivating_question, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(motivation_kind, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'ExistingQuestionNowFails', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_is_accepted_without_named_approver
@@ -29580,7 +29651,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_is_accepted_without_named_approver(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_model_change_requests_is_accepted(p_model_change_request_id), FALSE) AND COALESCE((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_model_change_requests_is_accepted(p_model_change_request_id), FALSE) AND COALESCE((((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) IS NULL OR ((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_deployed_without_target_release
@@ -29590,7 +29661,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_deployed_without_target_release(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'Deployed', FALSE) AND COALESCE(calc_model_change_requests_is_schema_change(p_model_change_request_id), FALSE) AND COALESCE((SELECT NULLIF(target_release, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'Deployed', FALSE) AND COALESCE(calc_model_change_requests_is_schema_change(p_model_change_request_id), FALSE) AND COALESCE((((SELECT NULLIF(target_release, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) IS NULL OR ((SELECT NULLIF(target_release, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_is_misclassified_agent_swap
@@ -29610,7 +29681,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_ai_to_human_move_without_compliance_(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_operation, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'MoveStepToHuman', FALSE) AND COALESCE((SELECT NULLIF(compliance_impact, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_operation, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'MoveStepToHuman', FALSE) AND COALESCE((((SELECT NULLIF(compliance_impact, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) IS NULL OR ((SELECT NULLIF(compliance_impact, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_ai_to_human_move_unaudited
@@ -29620,7 +29691,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_ai_to_human_move_unaudited(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_operation, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'MoveStepToHuman', FALSE) AND COALESCE((COALESCE((SELECT effective_at::timestamptz FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) IS NULL, FALSE) OR COALESCE((SELECT NULLIF(stated_need, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) IS NULL, FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_operation, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'MoveStepToHuman', FALSE) AND COALESCE((COALESCE((((SELECT effective_at::timestamptz FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) IS NULL OR ((SELECT effective_at::timestamptz FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id))::text = ''), FALSE) OR COALESCE((((SELECT NULLIF(stated_need, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) IS NULL OR ((SELECT NULLIF(stated_need, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id))::text = ''), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_is_ai_to_human_move
@@ -29630,7 +29701,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_is_ai_to_human_move(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_operation, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'MoveStepToHuman', FALSE) AND COALESCE((SELECT effective_at::timestamptz FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) IS NOT NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_operation, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'MoveStepToHuman', FALSE) AND COALESCE((((SELECT effective_at::timestamptz FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) IS NOT NULL AND ((SELECT effective_at::timestamptz FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_lifecycle_change_by_unauthorized_age
@@ -29640,7 +29711,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_lifecycle_change_by_unauthorized_age(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(change_operation, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'CreateDefinition', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(change_operation, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'ModifyDefinition', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(change_operation, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'RetireDefinition', FALSE)), FALSE) AND COALESCE((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') <> COALESCE(calc_model_change_requests_steward_agent(p_model_change_request_id), ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') <> COALESCE(calc_model_change_requests_authority_agent(p_model_change_request_id), ''), FALSE)))::boolean;
+  SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(change_operation, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'CreateDefinition', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(change_operation, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'ModifyDefinition', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(change_operation, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') = 'RetireDefinition', FALSE)), FALSE) AND COALESCE((((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) IS NOT NULL AND ((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') <> COALESCE(calc_model_change_requests_steward_agent(p_model_change_request_id), ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(approved_by_agent, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id), '') <> COALESCE(calc_model_change_requests_authority_agent(p_model_change_request_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_assessed_inconsistent_count
@@ -29790,7 +29861,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_leaves_coverage_unchecked(p_model_change_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_model_change_requests_is_accepted(p_model_change_request_id), FALSE) AND COALESCE(calc_model_change_requests_is_modeling_change(p_model_change_request_id), FALSE) AND COALESCE((SELECT coverage_checked_at::timestamptz FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_model_change_requests_is_accepted(p_model_change_request_id), FALSE) AND COALESCE(calc_model_change_requests_is_modeling_change(p_model_change_request_id), FALSE) AND COALESCE((((SELECT coverage_checked_at::timestamptz FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) IS NULL OR ((SELECT coverage_checked_at::timestamptz FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_domain_change_spread_wrong_inference
@@ -29910,7 +29981,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_human_integrity_check_count(p_model_change_request_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM change_integrity_checks WHERE model_change_request = (SELECT NULLIF(model_change_request_id, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) AND calc_change_integrity_checks_checker_kind(change_integrity_check_id) = 'Human'))::integer;
+  SELECT ((SELECT COUNT(*) FROM change_integrity_checks erb_r1 WHERE model_change_request = (SELECT (SELECT NULLIF(model_change_request_id, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) AND ((SELECT (SELECT agent_kind::text FROM agents WHERE agent_id = erb_r1.checked_by_agent)))::text = 'Human'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_disjointness_check_count
@@ -29990,7 +30061,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_requests_unresolved_objection_count(p_model_change_request_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM change_objections WHERE model_change_request = (SELECT NULLIF(model_change_request_id, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id) AND calc_change_objections_is_unresolved(change_objection_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM change_objections erb_r1 WHERE model_change_request = (SELECT (SELECT NULLIF(model_change_request_id, '') FROM model_change_requests WHERE model_change_request_id = p_model_change_request_id)) AND ((SELECT (((erb_r1.resolved_at::timestamptz) IS NULL OR (erb_r1.resolved_at::timestamptz)::text = ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_requests_approved_over_unresolved_objection
@@ -30020,7 +30091,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_change_authority_rules_misrouted_request_count(p_change_authority_rule_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM model_change_requests WHERE calc_model_change_requests_rule_key(model_change_request_id) = (SELECT NULLIF(change_authority_rule_id, '') FROM change_authority_rules WHERE change_authority_rule_id = p_change_authority_rule_id) AND calc_model_change_requests_is_misrouted(model_change_request_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM model_change_requests erb_r1 WHERE ((SELECT (CONCAT(NULLIF(erb_r1.governed_model, ''), '|', NULLIF(erb_r1.change_layer, '')))::text))::text = (SELECT (SELECT NULLIF(change_authority_rule_id, '') FROM change_authority_rules WHERE change_authority_rule_id = p_change_authority_rule_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_model_change_requests_required_route(erb_r1.model_change_request_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.route, ''), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_authority_rules_is_rule_bypassed
@@ -30081,7 +30152,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_change_objections_is_unresolved(p_change_objection_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT resolved_at::timestamptz FROM change_objections WHERE change_objection_id = p_change_objection_id) IS NULL)::boolean;
+  SELECT ((((SELECT resolved_at::timestamptz FROM change_objections WHERE change_objection_id = p_change_objection_id)) IS NULL OR ((SELECT resolved_at::timestamptz FROM change_objections WHERE change_objection_id = p_change_objection_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_validation_runs_release
@@ -30122,7 +30193,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_change_validation_runs_unproduced_chain_count(p_change_validation_run_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM expected_inference_checks WHERE change_validation_run = (SELECT NULLIF(change_validation_run_id, '') FROM change_validation_runs WHERE change_validation_run_id = p_change_validation_run_id) AND calc_expected_inference_checks_is_unproduced(expected_inference_check_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM expected_inference_checks erb_r1 WHERE change_validation_run = (SELECT (SELECT NULLIF(change_validation_run_id, '') FROM change_validation_runs WHERE change_validation_run_id = p_change_validation_run_id)) AND ((SELECT (COALESCE(NULLIF(erb_r1.produced_value, ''), '') <> COALESCE(NULLIF(erb_r1.expected_value, ''), ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_validation_runs_has_uninspected_failures
@@ -30132,7 +30203,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_change_validation_runs_has_uninspected_failures(p_change_validation_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE(((SELECT failure_count FROM change_validation_runs WHERE change_validation_run_id = p_change_validation_run_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE((SELECT failures_inspected_at::timestamptz FROM change_validation_runs WHERE change_validation_run_id = p_change_validation_run_id) IS NULL, FALSE)));
+  SELECT ((COALESCE(COALESCE(((SELECT failure_count FROM change_validation_runs WHERE change_validation_run_id = p_change_validation_run_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE((((SELECT failures_inspected_at::timestamptz FROM change_validation_runs WHERE change_validation_run_id = p_change_validation_run_id)) IS NULL OR ((SELECT failures_inspected_at::timestamptz FROM change_validation_runs WHERE change_validation_run_id = p_change_validation_run_id))::text = ''), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_validation_runs_is_unconfirmed_consistency
@@ -30331,7 +30402,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_documents_is_behind_current_release(p_model_document_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_model_documents_model_current_release(p_model_document_id) AS val) SELECT ((COALESCE((SELECT NULLIF(documented_release, '') FROM model_documents WHERE model_document_id = p_model_document_id) IS NOT NULL, FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(documented_release, '') FROM model_documents WHERE model_document_id = p_model_document_id), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_documents_model_current_release(p_model_document_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(documented_release, '') FROM model_documents WHERE model_document_id = p_model_document_id)) IS NOT NULL AND ((SELECT NULLIF(documented_release, '') FROM model_documents WHERE model_document_id = p_model_document_id))::text <> ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(documented_release, '') FROM model_documents WHERE model_document_id = p_model_document_id), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_staleness_query_runs_runner_kind
@@ -30362,7 +30433,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_staleness_query_runs_not_surfaced_to_steward(p_staleness_query_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE(((SELECT stale_workflow_count FROM staleness_query_runs WHERE staleness_query_run_id = p_staleness_query_run_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE((SELECT surfaced_to_steward_at::timestamptz FROM staleness_query_runs WHERE staleness_query_run_id = p_staleness_query_run_id) IS NULL, FALSE)));
+  SELECT ((COALESCE(COALESCE(((SELECT stale_workflow_count FROM staleness_query_runs WHERE staleness_query_run_id = p_staleness_query_run_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE((((SELECT surfaced_to_steward_at::timestamptz FROM staleness_query_runs WHERE staleness_query_run_id = p_staleness_query_run_id)) IS NULL OR ((SELECT surfaced_to_steward_at::timestamptz FROM staleness_query_runs WHERE staleness_query_run_id = p_staleness_query_run_id))::text = ''), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_external_dependency_revisions_affected_mapping_count
@@ -30414,7 +30485,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_external_dependency_revisions_is_untracked_revision(p_external_dependency_revision_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT tracked_at::timestamptz FROM external_dependency_revisions WHERE external_dependency_revision_id = p_external_dependency_revision_id) IS NULL, FALSE) AND COALESCE(COALESCE((calc_external_dependency_revisions_affected_mapping_count(p_external_dependency_revision_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((calc_external_dependency_revisions_days_since_published(p_external_dependency_revision_id))::NUMERIC, 0) > 30, FALSE)));
+  SELECT ((COALESCE((((SELECT tracked_at::timestamptz FROM external_dependency_revisions WHERE external_dependency_revision_id = p_external_dependency_revision_id)) IS NULL OR ((SELECT tracked_at::timestamptz FROM external_dependency_revisions WHERE external_dependency_revision_id = p_external_dependency_revision_id))::text = ''), FALSE) AND COALESCE(COALESCE((calc_external_dependency_revisions_affected_mapping_count(p_external_dependency_revision_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((calc_external_dependency_revisions_days_since_published(p_external_dependency_revision_id))::NUMERIC, 0) > 30, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_stakeholder_questions_triager_kind
@@ -30467,7 +30538,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stakeholder_questions_days_open(p_stakeholder_question_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT answered_at::timestamptz FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id) IS NULL THEN ((((calc_stakeholder_questions_as_of_instant(p_stakeholder_question_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT asked_at::timestamptz FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id))::timestamptz AT TIME ZONE 'UTC')::date))::text ELSE (((((SELECT answered_at::timestamptz FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT asked_at::timestamptz FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT answered_at::timestamptz FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id)) IS NULL OR ((SELECT answered_at::timestamptz FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id))::text = '') THEN ((((calc_stakeholder_questions_as_of_instant(p_stakeholder_question_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT asked_at::timestamptz FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id))::timestamptz AT TIME ZONE 'UTC')::date))::text ELSE (((((SELECT answered_at::timestamptz FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT asked_at::timestamptz FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stakeholder_questions_is_unanswered_past_due
@@ -30477,7 +30548,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stakeholder_questions_is_unanswered_past_due(p_stakeholder_question_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT answered_at::timestamptz FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id) IS NULL, FALSE) AND COALESCE(COALESCE((calc_stakeholder_questions_days_open(p_stakeholder_question_id))::NUMERIC, 0) > 14, FALSE)));
+  SELECT ((COALESCE((((SELECT answered_at::timestamptz FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id)) IS NULL OR ((SELECT answered_at::timestamptz FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id))::text = ''), FALSE) AND COALESCE(COALESCE((calc_stakeholder_questions_days_open(p_stakeholder_question_id))::NUMERIC, 0) > 14, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_stakeholder_questions_is_unanswerable_today
@@ -30487,7 +30558,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stakeholder_questions_is_unanswerable_today(p_stakeholder_question_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(answering_role_question, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(answering_role_question, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id)) IS NULL OR ((SELECT NULLIF(answering_role_question, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stakeholder_questions_is_untriaged_unanswerable
@@ -30497,7 +30568,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stakeholder_questions_is_untriaged_unanswerable(p_stakeholder_question_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_stakeholder_questions_is_unanswerable_today(p_stakeholder_question_id), FALSE) AND COALESCE((SELECT NULLIF(triage_outcome, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_stakeholder_questions_is_unanswerable_today(p_stakeholder_question_id), FALSE) AND COALESCE((((SELECT NULLIF(triage_outcome, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id)) IS NULL OR ((SELECT NULLIF(triage_outcome, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stakeholder_questions_needs_structural_change
@@ -30517,7 +30588,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stakeholder_questions_unanswerable_without_scope_request(p_stakeholder_question_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_stakeholder_questions_is_unanswerable_today(p_stakeholder_question_id), FALSE) AND COALESCE((SELECT NULLIF(resulting_change_request, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_stakeholder_questions_is_unanswerable_today(p_stakeholder_question_id), FALSE) AND COALESCE((((SELECT NULLIF(resulting_change_request, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id)) IS NULL OR ((SELECT NULLIF(resulting_change_request, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_stakeholder_questions_is_misrouted_after_triage
@@ -30527,7 +30598,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stakeholder_questions_is_misrouted_after_triage(p_stakeholder_question_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_stakeholder_questions_result_route(p_stakeholder_question_id) AS val) SELECT ((COALESCE((SELECT NULLIF(resulting_change_request, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((COALESCE(COALESCE((SELECT NULLIF(triage_outcome, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id), '') = 'MoreData', FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'DataOperations', FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT NULLIF(triage_outcome, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id), '') <> 'MoreData', FALSE) AND COALESCE((SELECT NULLIF(triage_outcome, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'Governance', FALSE)), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_stakeholder_questions_result_route(p_stakeholder_question_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(resulting_change_request, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id)) IS NOT NULL AND ((SELECT NULLIF(resulting_change_request, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id))::text <> ''), FALSE) AND COALESCE((COALESCE((COALESCE(COALESCE((SELECT NULLIF(triage_outcome, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id), '') = 'MoreData', FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'DataOperations', FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT NULLIF(triage_outcome, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id), '') <> 'MoreData', FALSE) AND COALESCE((((SELECT NULLIF(triage_outcome, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id)) IS NOT NULL AND ((SELECT NULLIF(triage_outcome, '') FROM stakeholder_questions WHERE stakeholder_question_id = p_stakeholder_question_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'Governance', FALSE)), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_expansion_requests_model_domain_owner
@@ -30568,7 +30639,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_expansion_requests_uncovered_concept_count(p_model_expansion_request_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM expansion_concept_fits WHERE model_expansion_request = (SELECT NULLIF(model_expansion_request_id, '') FROM model_expansion_requests WHERE model_expansion_request_id = p_model_expansion_request_id) AND calc_expansion_concept_fits_is_uncovered(expansion_concept_fit_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM expansion_concept_fits erb_r1 WHERE model_expansion_request = (SELECT (SELECT NULLIF(model_expansion_request_id, '') FROM model_expansion_requests WHERE model_expansion_request_id = p_model_expansion_request_id)) AND ((SELECT (((NULLIF(erb_r1.covering_table, '')) IS NULL OR (NULLIF(erb_r1.covering_table, ''))::text = ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_expansion_requests_is_cross_function_expansion
@@ -30578,7 +30649,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_expansion_requests_is_cross_function_expansion(p_model_expansion_request_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_model_expansion_requests_model_domain_owner(p_model_expansion_request_id) AS val) SELECT ((COALESCE((SELECT NULLIF(requesting_organization, '') FROM model_expansion_requests WHERE model_expansion_request_id = p_model_expansion_request_id) IS NOT NULL, FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(requesting_organization, '') FROM model_expansion_requests WHERE model_expansion_request_id = p_model_expansion_request_id), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_expansion_requests_model_domain_owner(p_model_expansion_request_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(requesting_organization, '') FROM model_expansion_requests WHERE model_expansion_request_id = p_model_expansion_request_id)) IS NOT NULL AND ((SELECT NULLIF(requesting_organization, '') FROM model_expansion_requests WHERE model_expansion_request_id = p_model_expansion_request_id))::text <> ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(requesting_organization, '') FROM model_expansion_requests WHERE model_expansion_request_id = p_model_expansion_request_id), '') <> COALESCE((SELECT val FROM __erb_dedup_v1), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_expansion_requests_requires_schema_extension
@@ -30663,7 +30734,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_expansion_concept_fits_is_uncovered(p_expansion_concept_fit_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(covering_table, '') FROM expansion_concept_fits WHERE expansion_concept_fit_id = p_expansion_concept_fit_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(covering_table, '') FROM expansion_concept_fits WHERE expansion_concept_fit_id = p_expansion_concept_fit_id)) IS NULL OR ((SELECT NULLIF(covering_table, '') FROM expansion_concept_fits WHERE expansion_concept_fit_id = p_expansion_concept_fit_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_competency_question_set_entries_as_of_instant
@@ -30893,7 +30964,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_competency_question_runs_is_baseline_regression(p_competency_question_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_competency_question_runs_entry_is_original(p_competency_question_run_id), FALSE) AND COALESCE((SELECT NULLIF(prior_run, '') FROM competency_question_runs WHERE competency_question_run_id = p_competency_question_run_id) IS NOT NULL, FALSE) AND COALESCE(calc_competency_question_runs_prior_was_answerable(p_competency_question_run_id), FALSE) AND COALESCE(COALESCE((SELECT was_answerable FROM competency_question_runs WHERE competency_question_run_id = p_competency_question_run_id), FALSE) = FALSE, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_competency_question_runs_entry_is_original(p_competency_question_run_id), FALSE) AND COALESCE((((SELECT NULLIF(prior_run, '') FROM competency_question_runs WHERE competency_question_run_id = p_competency_question_run_id)) IS NOT NULL AND ((SELECT NULLIF(prior_run, '') FROM competency_question_runs WHERE competency_question_run_id = p_competency_question_run_id))::text <> ''), FALSE) AND COALESCE(calc_competency_question_runs_prior_was_answerable(p_competency_question_run_id), FALSE) AND COALESCE(COALESCE((SELECT was_answerable FROM competency_question_runs WHERE competency_question_run_id = p_competency_question_run_id), FALSE) = FALSE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_competency_question_runs_is_unfixed_wrong_answer
@@ -30903,7 +30974,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_competency_question_runs_is_unfixed_wrong_answer(p_competency_question_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(answer_outcome, '') FROM competency_question_runs WHERE competency_question_run_id = p_competency_question_run_id), '') = 'Wrong', FALSE) AND COALESCE((SELECT NULLIF(defect_change_request, '') FROM competency_question_runs WHERE competency_question_run_id = p_competency_question_run_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(answer_outcome, '') FROM competency_question_runs WHERE competency_question_run_id = p_competency_question_run_id), '') = 'Wrong', FALSE) AND COALESCE((((SELECT NULLIF(defect_change_request, '') FROM competency_question_runs WHERE competency_question_run_id = p_competency_question_run_id)) IS NULL OR ((SELECT NULLIF(defect_change_request, '') FROM competency_question_runs WHERE competency_question_run_id = p_competency_question_run_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_competency_question_reviews_name
@@ -31010,7 +31081,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_term_definitions_ai_draft_adopted_unrevised(p_term_definition_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE(calc_term_definitions_drafter_kind(p_term_definition_id), '') = 'AIAgent', FALSE) AND COALESCE((SELECT NULLIF(revised_by_agent, '') FROM term_definitions WHERE term_definition_id = p_term_definition_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE(calc_term_definitions_drafter_kind(p_term_definition_id), '') = 'AIAgent', FALSE) AND COALESCE((((SELECT NULLIF(revised_by_agent, '') FROM term_definitions WHERE term_definition_id = p_term_definition_id)) IS NULL OR ((SELECT NULLIF(revised_by_agent, '') FROM term_definitions WHERE term_definition_id = p_term_definition_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_proposals_proposer_kind
@@ -31111,7 +31182,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_proposals_is_only_proposed(p_model_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NULL)::boolean;
+  SELECT ((((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NULL OR ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_proposals_committed_without_expert_review
@@ -31121,7 +31192,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_proposals_committed_without_expert_review(p_model_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE((SELECT reviewed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NULL, FALSE) OR COALESCE(COALESCE(calc_model_proposals_reviewer_kind(p_model_proposal_id), '') <> 'Human', FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NOT NULL AND ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text <> ''), FALSE) AND COALESCE((COALESCE((((SELECT reviewed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NULL OR ((SELECT reviewed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text = ''), FALSE) OR COALESCE(COALESCE(calc_model_proposals_reviewer_kind(p_model_proposal_id), '') <> 'Human', FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_proposals_entered_without_quality_check
@@ -31131,7 +31202,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_proposals_entered_without_quality_check(p_model_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(quality_check_outcome, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') <> 'Pass', FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NOT NULL AND ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(quality_check_outcome, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') <> 'Pass', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_proposals_approver_unknown
@@ -31141,7 +31212,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_proposals_approver_unknown(p_model_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NOT NULL, FALSE) AND COALESCE((SELECT NULLIF(reviewed_by_agent, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NOT NULL AND ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(reviewed_by_agent, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NULL OR ((SELECT NULLIF(reviewed_by_agent, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_proposals_committed_outside_any_version
@@ -31151,7 +31222,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_proposals_committed_outside_any_version(p_model_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NOT NULL, FALSE) AND COALESCE((SELECT NULLIF(adopted_in_release, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NULL, FALSE) AND COALESCE((SELECT NULLIF(adopted_in_data_version, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NOT NULL AND ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(adopted_in_release, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NULL OR ((SELECT NULLIF(adopted_in_release, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text = ''), FALSE) AND COALESCE((((SELECT NULLIF(adopted_in_data_version, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NULL OR ((SELECT NULLIF(adopted_in_data_version, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_proposals_ai_question_adopted_unvetted
@@ -31161,7 +31232,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_proposals_ai_question_adopted_unvetted(p_model_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_model_proposals_is_ai_candidate(p_model_proposal_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'CompetencyQuestion', FALSE) AND COALESCE((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NOT NULL, FALSE) AND COALESCE((SELECT reviewed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_model_proposals_is_ai_candidate(p_model_proposal_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'CompetencyQuestion', FALSE) AND COALESCE((((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NOT NULL AND ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text <> ''), FALSE) AND COALESCE((((SELECT reviewed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NULL OR ((SELECT reviewed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_proposals_ai_alignment_decided_by_ai
@@ -31171,7 +31242,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_proposals_ai_alignment_decided_by_ai(p_model_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_model_proposals_is_ai_candidate(p_model_proposal_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'Alignment', FALSE) AND COALESCE((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_model_proposals_committer_kind(p_model_proposal_id), '') <> 'Human', FALSE)))::boolean;
+  SELECT ((COALESCE(calc_model_proposals_is_ai_candidate(p_model_proposal_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'Alignment', FALSE) AND COALESCE((((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NOT NULL AND ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_model_proposals_committer_kind(p_model_proposal_id), '') <> 'Human', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_proposals_ai_axiom_without_human_review
@@ -31181,7 +31252,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_proposals_ai_axiom_without_human_review(p_model_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_model_proposals_is_ai_candidate(p_model_proposal_id), FALSE) AND COALESCE((COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'Axiom', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'Disjointness', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'DomainRange', FALSE)), FALSE) AND COALESCE((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_model_proposals_reviewer_kind(p_model_proposal_id), '') <> 'Human', FALSE)))::boolean;
+  SELECT ((COALESCE(calc_model_proposals_is_ai_candidate(p_model_proposal_id), FALSE) AND COALESCE((COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'Axiom', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'Disjointness', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'DomainRange', FALSE)), FALSE) AND COALESCE((((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NOT NULL AND ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_model_proposals_reviewer_kind(p_model_proposal_id), '') <> 'Human', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_proposals_adoption_not_answered_by_person
@@ -31191,7 +31262,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_proposals_adoption_not_answered_by_person(p_model_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_model_proposals_is_ai_candidate(p_model_proposal_id), FALSE) AND COALESCE((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_model_proposals_committer_kind(p_model_proposal_id), '') <> 'Human', FALSE)))::boolean;
+  SELECT ((COALESCE(calc_model_proposals_is_ai_candidate(p_model_proposal_id), FALSE) AND COALESCE((((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NOT NULL AND ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_model_proposals_committer_kind(p_model_proposal_id), '') <> 'Human', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_proposals_has_no_human_touchpoint
@@ -31201,7 +31272,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_proposals_has_no_human_touchpoint(p_model_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_model_proposals_proposer_kind(p_model_proposal_id), '') <> 'Human', FALSE) AND COALESCE(COALESCE(calc_model_proposals_reviewer_kind(p_model_proposal_id), '') <> 'Human', FALSE) AND COALESCE(COALESCE(calc_model_proposals_committer_kind(p_model_proposal_id), '') <> 'Human', FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NOT NULL AND ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_model_proposals_proposer_kind(p_model_proposal_id), '') <> 'Human', FALSE) AND COALESCE(COALESCE(calc_model_proposals_reviewer_kind(p_model_proposal_id), '') <> 'Human', FALSE) AND COALESCE(COALESCE(calc_model_proposals_committer_kind(p_model_proposal_id), '') <> 'Human', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_proposals_ai_instance_data_loaded_without_steward
@@ -31211,7 +31282,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_proposals_ai_instance_data_loaded_without_steward(p_model_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_model_proposals_is_ai_candidate(p_model_proposal_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'InstanceData', FALSE) AND COALESCE((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(reviewed_by_agent, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') <> COALESCE(calc_model_proposals_model_steward_agent(p_model_proposal_id), ''), FALSE)))::boolean;
+  SELECT ((COALESCE(calc_model_proposals_is_ai_candidate(p_model_proposal_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'InstanceData', FALSE) AND COALESCE((((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NOT NULL AND ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(reviewed_by_agent, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') <> COALESCE(calc_model_proposals_model_steward_agent(p_model_proposal_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_proposals_awaits_engineer_vetting
@@ -31221,7 +31292,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_proposals_awaits_engineer_vetting(p_model_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_model_proposals_is_ai_candidate(p_model_proposal_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'CompetencyQuestion', FALSE) AND COALESCE((SELECT NULLIF(source_document, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NOT NULL, FALSE) AND COALESCE((SELECT reviewed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NULL, FALSE) AND COALESCE((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_model_proposals_is_ai_candidate(p_model_proposal_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'CompetencyQuestion', FALSE) AND COALESCE((((SELECT NULLIF(source_document, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NOT NULL AND ((SELECT NULLIF(source_document, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text <> ''), FALSE) AND COALESCE((((SELECT reviewed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NULL OR ((SELECT reviewed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text = ''), FALSE) AND COALESCE((((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NULL OR ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_proposals_is_pending_alignment_decision
@@ -31231,7 +31302,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_proposals_is_pending_alignment_decision(p_model_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'Alignment', FALSE) AND COALESCE((SELECT NULLIF(review_outcome, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NULL, FALSE) AND COALESCE((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'Alignment', FALSE) AND COALESCE((((SELECT NULLIF(review_outcome, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NULL OR ((SELECT NULLIF(review_outcome, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text = ''), FALSE) AND COALESCE((((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NULL OR ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_proposals_awaits_steward_approval
@@ -31241,7 +31312,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_proposals_awaits_steward_approval(p_model_proposal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'InstanceData', FALSE) AND COALESCE((SELECT reviewed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NULL, FALSE) AND COALESCE((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(proposal_kind, '') FROM model_proposals WHERE model_proposal_id = p_model_proposal_id), '') = 'InstanceData', FALSE) AND COALESCE((((SELECT reviewed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NULL OR ((SELECT reviewed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text = ''), FALSE) AND COALESCE((((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id)) IS NULL OR ((SELECT committed_at::timestamptz FROM model_proposals WHERE model_proposal_id = p_model_proposal_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assignment_instant_checks_step_role
@@ -31327,7 +31398,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assignment_instant_checks_held_step_at_instant(p_assignment_instant_check_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_assignment_instant_checks_assignment_valid_from(p_assignment_instant_check_id) AS val), __erb_dedup_v2 AS (SELECT calc_assignment_instant_checks_assignment_valid_to(p_assignment_instant_check_id) AS val) SELECT ((COALESCE(COALESCE(calc_assignment_instant_checks_assignment_role(p_assignment_instant_check_id), '') = COALESCE(calc_assignment_instant_checks_step_role(p_assignment_instant_check_id), ''), FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) <= (SELECT audit_instant::timestamptz FROM assignment_instant_checks WHERE assignment_instant_check_id = p_assignment_instant_check_id)), (((SELECT val FROM __erb_dedup_v1)) IS NULL AND ((SELECT audit_instant::timestamptz FROM assignment_instant_checks WHERE assignment_instant_check_id = p_assignment_instant_check_id)) IS NULL)), FALSE) AND COALESCE((COALESCE((SELECT val FROM __erb_dedup_v2) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v2) > (SELECT audit_instant::timestamptz FROM assignment_instant_checks WHERE assignment_instant_check_id = p_assignment_instant_check_id)), FALSE), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_assignment_instant_checks_assignment_valid_from(p_assignment_instant_check_id) AS val), __erb_dedup_v2 AS (SELECT calc_assignment_instant_checks_assignment_valid_to(p_assignment_instant_check_id) AS val) SELECT ((COALESCE(COALESCE(calc_assignment_instant_checks_assignment_role(p_assignment_instant_check_id), '') = COALESCE(calc_assignment_instant_checks_step_role(p_assignment_instant_check_id), ''), FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) <= (SELECT audit_instant::timestamptz FROM assignment_instant_checks WHERE assignment_instant_check_id = p_assignment_instant_check_id)), (((SELECT val FROM __erb_dedup_v1)) IS NULL AND ((SELECT audit_instant::timestamptz FROM assignment_instant_checks WHERE assignment_instant_check_id = p_assignment_instant_check_id)) IS NULL)), FALSE) AND COALESCE((COALESCE((((SELECT val FROM __erb_dedup_v2)) IS NULL OR ((SELECT val FROM __erb_dedup_v2))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v2) > (SELECT audit_instant::timestamptz FROM assignment_instant_checks WHERE assignment_instant_check_id = p_assignment_instant_check_id)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_instance_data_versions_name
@@ -31367,7 +31438,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_domain_coverage_areas_is_uncovered_area(p_domain_coverage_area_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(covering_table, '') FROM domain_coverage_areas WHERE domain_coverage_area_id = p_domain_coverage_area_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(covering_table, '') FROM domain_coverage_areas WHERE domain_coverage_area_id = p_domain_coverage_area_id)) IS NULL OR ((SELECT NULLIF(covering_table, '') FROM domain_coverage_areas WHERE domain_coverage_area_id = p_domain_coverage_area_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_governance_stage_controls_name
@@ -31407,7 +31478,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_process_design_decisions_is_commitment_without_rationale(p_process_design_decision_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(decision, '') FROM process_design_decisions WHERE process_design_decision_id = p_process_design_decision_id) IS NOT NULL, FALSE) AND COALESCE((SELECT NULLIF(rationale, '') FROM process_design_decisions WHERE process_design_decision_id = p_process_design_decision_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(decision, '') FROM process_design_decisions WHERE process_design_decision_id = p_process_design_decision_id)) IS NOT NULL AND ((SELECT NULLIF(decision, '') FROM process_design_decisions WHERE process_design_decision_id = p_process_design_decision_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(rationale, '') FROM process_design_decisions WHERE process_design_decision_id = p_process_design_decision_id)) IS NULL OR ((SELECT NULLIF(rationale, '') FROM process_design_decisions WHERE process_design_decision_id = p_process_design_decision_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_process_design_decisions_days_before_recorded
@@ -31621,7 +31692,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_log_entries_is_unexplained_modification(p_model_change_log_entry_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(change_layer, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id), '') = 'Schema', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(change_layer, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id), '') = 'Instance', FALSE)), FALSE) AND COALESCE((SELECT NULLIF(rationale, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(change_layer, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id), '') = 'Schema', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(change_layer, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id), '') = 'Instance', FALSE)), FALSE) AND COALESCE((((SELECT NULLIF(rationale, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id)) IS NULL OR ((SELECT NULLIF(rationale, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_log_entries_rationale_without_question
@@ -31631,7 +31702,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_log_entries_rationale_without_question(p_model_change_log_entry_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(rationale, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id) IS NOT NULL, FALSE) AND COALESCE(calc_model_change_log_entries_motivating_question(p_model_change_log_entry_id) IS NULL, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_model_change_log_entries_motivating_question(p_model_change_log_entry_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(rationale, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id)) IS NOT NULL AND ((SELECT NULLIF(rationale, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id))::text <> ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_log_entries_is_schema_change_without_incremen
@@ -31641,7 +31712,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_log_entries_is_schema_change_without_incremen(p_model_change_log_entry_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_layer, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id), '') = 'Schema', FALSE) AND COALESCE((SELECT NULLIF(release, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_layer, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id), '') = 'Schema', FALSE) AND COALESCE((((SELECT NULLIF(release, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id)) IS NULL OR ((SELECT NULLIF(release, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_log_entries_is_instance_change_in_schema_rele
@@ -31651,7 +31722,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_log_entries_is_instance_change_in_schema_rele(p_model_change_log_entry_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_layer, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id), '') = 'Instance', FALSE) AND COALESCE((SELECT NULLIF(release, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id) IS NOT NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_layer, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id), '') = 'Instance', FALSE) AND COALESCE((((SELECT NULLIF(release, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id)) IS NOT NULL AND ((SELECT NULLIF(release, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_log_entries_schema_change_without_request
@@ -31661,7 +31732,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_log_entries_schema_change_without_request(p_model_change_log_entry_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_layer, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id), '') = 'Schema', FALSE) AND COALESCE((SELECT NULLIF(model_change_request, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_layer, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id), '') = 'Schema', FALSE) AND COALESCE((((SELECT NULLIF(model_change_request, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id)) IS NULL OR ((SELECT NULLIF(model_change_request, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_log_entries_cannot_be_audited
@@ -31671,7 +31742,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_log_entries_cannot_be_audited(p_model_change_log_entry_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(changed_by_agent, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id) IS NULL, FALSE) OR COALESCE((COALESCE((SELECT NULLIF(release, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id) IS NULL, FALSE) AND COALESCE((SELECT NULLIF(instance_data_version, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id) IS NULL, FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(changed_by_agent, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id)) IS NULL OR ((SELECT NULLIF(changed_by_agent, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id))::text = ''), FALSE) OR COALESCE((COALESCE((((SELECT NULLIF(release, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id)) IS NULL OR ((SELECT NULLIF(release, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id))::text = ''), FALSE) AND COALESCE((((SELECT NULLIF(instance_data_version, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id)) IS NULL OR ((SELECT NULLIF(instance_data_version, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id))::text = ''), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_log_entries_cannot_be_rolled_back
@@ -31681,7 +31752,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_log_entries_cannot_be_rolled_back(p_model_change_log_entry_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(prior_state_commit, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(prior_state_commit, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id)) IS NULL OR ((SELECT NULLIF(prior_state_commit, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_change_log_entries_is_untraceable_breaking_change
@@ -31691,7 +31762,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_model_change_log_entries_is_untraceable_breaking_change(p_model_change_log_entry_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_model_change_log_entries_is_backward_incompatible(p_model_change_log_entry_id), FALSE) AND COALESCE((COALESCE((SELECT NULLIF(release, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id) IS NULL, FALSE) OR COALESCE(calc_model_change_log_entries_release_decision_undocumented(p_model_change_log_entry_id), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE(calc_model_change_log_entries_is_backward_incompatible(p_model_change_log_entry_id), FALSE) AND COALESCE((COALESCE((((SELECT NULLIF(release, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id)) IS NULL OR ((SELECT NULLIF(release, '') FROM model_change_log_entries WHERE model_change_log_entry_id = p_model_change_log_entry_id))::text = ''), FALSE) OR COALESCE(calc_model_change_log_entries_release_decision_undocumented(p_model_change_log_entry_id), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_drift_observations_release_passed_validation
@@ -31733,7 +31804,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_drift_observations_is_open_practice_mismatch(p_drift_observation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(drift_kind, '') FROM drift_observations WHERE drift_observation_id = p_drift_observation_id), '') = 'PracticeMismatch', FALSE) AND COALESCE((SELECT resolved_at::timestamptz FROM drift_observations WHERE drift_observation_id = p_drift_observation_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(drift_kind, '') FROM drift_observations WHERE drift_observation_id = p_drift_observation_id), '') = 'PracticeMismatch', FALSE) AND COALESCE((((SELECT resolved_at::timestamptz FROM drift_observations WHERE drift_observation_id = p_drift_observation_id)) IS NULL OR ((SELECT resolved_at::timestamptz FROM drift_observations WHERE drift_observation_id = p_drift_observation_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_drift_observations_went_undetected_by_passing_suite
@@ -31743,7 +31814,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_drift_observations_went_undetected_by_passing_suite(p_drift_observation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(since_release, '') FROM drift_observations WHERE drift_observation_id = p_drift_observation_id) IS NOT NULL, FALSE) AND COALESCE(calc_drift_observations_release_passed_validation(p_drift_observation_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(detected_by, '') FROM drift_observations WHERE drift_observation_id = p_drift_observation_id), '') <> 'ValidationSuite', FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(since_release, '') FROM drift_observations WHERE drift_observation_id = p_drift_observation_id)) IS NOT NULL AND ((SELECT NULLIF(since_release, '') FROM drift_observations WHERE drift_observation_id = p_drift_observation_id))::text <> ''), FALSE) AND COALESCE(calc_drift_observations_release_passed_validation(p_drift_observation_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(detected_by, '') FROM drift_observations WHERE drift_observation_id = p_drift_observation_id), '') <> 'ValidationSuite', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_drift_observations_drift_follows_clean_release
@@ -31753,7 +31824,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_drift_observations_drift_follows_clean_release(p_drift_observation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(since_release, '') FROM drift_observations WHERE drift_observation_id = p_drift_observation_id) IS NOT NULL, FALSE) AND COALESCE(calc_drift_observations_release_passed_validation(p_drift_observation_id), FALSE) AND COALESCE(COALESCE(((SELECT observed_at::timestamptz FROM drift_observations WHERE drift_observation_id = p_drift_observation_id) > calc_drift_observations_release_issued_at(p_drift_observation_id)), FALSE), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(since_release, '') FROM drift_observations WHERE drift_observation_id = p_drift_observation_id)) IS NOT NULL AND ((SELECT NULLIF(since_release, '') FROM drift_observations WHERE drift_observation_id = p_drift_observation_id))::text <> ''), FALSE) AND COALESCE(calc_drift_observations_release_passed_validation(p_drift_observation_id), FALSE) AND COALESCE(COALESCE(((SELECT observed_at::timestamptz FROM drift_observations WHERE drift_observation_id = p_drift_observation_id) > calc_drift_observations_release_issued_at(p_drift_observation_id)), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_sourcing_functions_name
@@ -31873,7 +31944,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_sourcing_functions_dependency_count(p_sourcing_function_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_audit_items WHERE sourcing_function = (SELECT NULLIF(sourcing_function_id, '') FROM sourcing_functions WHERE sourcing_function_id = p_sourcing_function_id) AND calc_knowledge_audit_items_is_knowledge_dependency(knowledge_audit_item_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_audit_items erb_r1 WHERE sourcing_function = (SELECT (SELECT NULLIF(sourcing_function_id, '') FROM sourcing_functions WHERE sourcing_function_id = p_sourcing_function_id)) AND ((SELECT ((COALESCE(calc_knowledge_audit_items_has_internal_shortfall(erb_r1.knowledge_audit_item_id), FALSE) AND COALESCE(((NULLIF(erb_r1.provider_holding_knowledge, '')) IS NOT NULL AND (NULLIF(erb_r1.provider_holding_knowledge, ''))::text <> ''), FALSE) AND COALESCE(COALESCE((erb_r1.provider_held_level >= erb_r1.needed_level), ((erb_r1.provider_held_level) IS NULL AND (erb_r1.needed_level) IS NULL)), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_sourcing_functions_coverage_gap_count
@@ -31883,7 +31954,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_sourcing_functions_coverage_gap_count(p_sourcing_function_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_audit_items WHERE sourcing_function = (SELECT NULLIF(sourcing_function_id, '') FROM sourcing_functions WHERE sourcing_function_id = p_sourcing_function_id) AND calc_knowledge_audit_items_is_coverage_gap(knowledge_audit_item_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_audit_items erb_r1 WHERE sourcing_function = (SELECT (SELECT NULLIF(sourcing_function_id, '') FROM sourcing_functions WHERE sourcing_function_id = p_sourcing_function_id)) AND ((SELECT ((COALESCE(calc_knowledge_audit_items_has_internal_shortfall(erb_r1.knowledge_audit_item_id), FALSE) AND COALESCE(NOT (COALESCE(calc_knowledge_audit_items_is_knowledge_dependency(erb_r1.knowledge_audit_item_id), FALSE)), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_sourcing_functions_specification_audit_count
@@ -31903,7 +31974,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_sourcing_functions_specification_shortfall_count(p_sourcing_function_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_audit_items WHERE sourcing_function = (SELECT NULLIF(sourcing_function_id, '') FROM sourcing_functions WHERE sourcing_function_id = p_sourcing_function_id) AND knowledge_kind = 'Specification' AND calc_knowledge_audit_items_has_internal_shortfall(knowledge_audit_item_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_audit_items erb_r1 WHERE sourcing_function = (SELECT (SELECT NULLIF(sourcing_function_id, '') FROM sourcing_functions WHERE sourcing_function_id = p_sourcing_function_id)) AND knowledge_kind = 'Specification' AND ((SELECT (COALESCE((erb_r1.held_internal_level < erb_r1.needed_level), FALSE))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_sourcing_functions_method_shortfall_count
@@ -31913,7 +31984,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_sourcing_functions_method_shortfall_count(p_sourcing_function_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_audit_items WHERE sourcing_function = (SELECT NULLIF(sourcing_function_id, '') FROM sourcing_functions WHERE sourcing_function_id = p_sourcing_function_id) AND knowledge_kind = 'Method' AND calc_knowledge_audit_items_has_internal_shortfall(knowledge_audit_item_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_audit_items erb_r1 WHERE sourcing_function = (SELECT (SELECT NULLIF(sourcing_function_id, '') FROM sourcing_functions WHERE sourcing_function_id = p_sourcing_function_id)) AND knowledge_kind = 'Method' AND ((SELECT (COALESCE((erb_r1.held_internal_level < erb_r1.needed_level), FALSE))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_sourcing_functions_provider_ip_documentation_count
@@ -31983,7 +32054,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_audits_finding_count(p_knowledge_audit_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_audit_items WHERE knowledge_audit = (SELECT NULLIF(knowledge_audit_id, '') FROM knowledge_audits WHERE knowledge_audit_id = p_knowledge_audit_id) AND calc_knowledge_audit_items_has_internal_shortfall(knowledge_audit_item_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_audit_items erb_r1 WHERE knowledge_audit = (SELECT (SELECT NULLIF(knowledge_audit_id, '') FROM knowledge_audits WHERE knowledge_audit_id = p_knowledge_audit_id)) AND ((SELECT (COALESCE((erb_r1.held_internal_level < erb_r1.needed_level), FALSE))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_audits_treats_deficit_as_cost_problem
@@ -32142,7 +32213,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_audit_items_is_knowledge_dependency(p_knowledge_audit_item_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_knowledge_audit_items_has_internal_shortfall(p_knowledge_audit_item_id), FALSE) AND COALESCE((SELECT NULLIF(provider_holding_knowledge, '') FROM knowledge_audit_items WHERE knowledge_audit_item_id = p_knowledge_audit_item_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT provider_held_level FROM knowledge_audit_items WHERE knowledge_audit_item_id = p_knowledge_audit_item_id) >= (SELECT needed_level FROM knowledge_audit_items WHERE knowledge_audit_item_id = p_knowledge_audit_item_id)), (((SELECT provider_held_level FROM knowledge_audit_items WHERE knowledge_audit_item_id = p_knowledge_audit_item_id)) IS NULL AND ((SELECT needed_level FROM knowledge_audit_items WHERE knowledge_audit_item_id = p_knowledge_audit_item_id)) IS NULL)), FALSE)))::boolean;
+  SELECT ((COALESCE(calc_knowledge_audit_items_has_internal_shortfall(p_knowledge_audit_item_id), FALSE) AND COALESCE((((SELECT NULLIF(provider_holding_knowledge, '') FROM knowledge_audit_items WHERE knowledge_audit_item_id = p_knowledge_audit_item_id)) IS NOT NULL AND ((SELECT NULLIF(provider_holding_knowledge, '') FROM knowledge_audit_items WHERE knowledge_audit_item_id = p_knowledge_audit_item_id))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT provider_held_level FROM knowledge_audit_items WHERE knowledge_audit_item_id = p_knowledge_audit_item_id) >= (SELECT needed_level FROM knowledge_audit_items WHERE knowledge_audit_item_id = p_knowledge_audit_item_id)), (((SELECT provider_held_level FROM knowledge_audit_items WHERE knowledge_audit_item_id = p_knowledge_audit_item_id)) IS NULL AND ((SELECT needed_level FROM knowledge_audit_items WHERE knowledge_audit_item_id = p_knowledge_audit_item_id)) IS NULL)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_audit_items_is_coverage_gap
@@ -32162,7 +32233,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_audit_items_is_unnamed_finding(p_knowledge_audit_item_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_knowledge_audit_items_has_internal_shortfall(p_knowledge_audit_item_id), FALSE) AND COALESCE((SELECT NULLIF(named_knowledge_gap, '') FROM knowledge_audit_items WHERE knowledge_audit_item_id = p_knowledge_audit_item_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_knowledge_audit_items_has_internal_shortfall(p_knowledge_audit_item_id), FALSE) AND COALESCE((((SELECT NULLIF(named_knowledge_gap, '') FROM knowledge_audit_items WHERE knowledge_audit_item_id = p_knowledge_audit_item_id)) IS NULL OR ((SELECT NULLIF(named_knowledge_gap, '') FROM knowledge_audit_items WHERE knowledge_audit_item_id = p_knowledge_audit_item_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_audit_items_is_single_team_silo
@@ -32222,7 +32293,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_provider_engagements_relied_dependency_count(p_provider_engagement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_audit_items WHERE provider_holding_knowledge = (SELECT NULLIF(provider, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id) AND calc_knowledge_audit_items_client_organization(knowledge_audit_item_id) = (SELECT NULLIF(client_organization, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id) AND calc_knowledge_audit_items_is_knowledge_dependency(knowledge_audit_item_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_audit_items erb_r1 WHERE provider_holding_knowledge = (SELECT (SELECT NULLIF(provider, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id)) AND ((SELECT (SELECT organization::text FROM knowledge_audits WHERE knowledge_audit_id = erb_r1.knowledge_audit)))::text = (SELECT (SELECT NULLIF(client_organization, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id)) AND ((SELECT ((COALESCE(calc_knowledge_audit_items_has_internal_shortfall(erb_r1.knowledge_audit_item_id), FALSE) AND COALESCE(((NULLIF(erb_r1.provider_holding_knowledge, '')) IS NOT NULL AND (NULLIF(erb_r1.provider_holding_knowledge, ''))::text <> ''), FALSE) AND COALESCE(COALESCE((erb_r1.provider_held_level >= erb_r1.needed_level), ((erb_r1.provider_held_level) IS NULL AND (erb_r1.needed_level) IS NULL)), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_provider_engagements_is_unplanned_knowledge_return
@@ -32232,7 +32303,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_provider_engagements_is_unplanned_knowledge_return(p_provider_engagement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((calc_provider_engagements_relied_dependency_count(p_provider_engagement_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(documentation_ownership, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id), '') = 'ProviderIP', FALSE) AND COALESCE((SELECT NULLIF(knowledge_return_plan, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id) IS NULL, FALSE)));
+  SELECT ((COALESCE(COALESCE((calc_provider_engagements_relied_dependency_count(p_provider_engagement_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(documentation_ownership, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id), '') = 'ProviderIP', FALSE) AND COALESCE((((SELECT NULLIF(knowledge_return_plan, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id)) IS NULL OR ((SELECT NULLIF(knowledge_return_plan, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id))::text = ''), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_provider_engagements_is_knowledge_access_unsecured
@@ -32272,7 +32343,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_provider_engagements_to_client_delivered_count(p_provider_engagement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_deliverables WHERE provider_engagement = (SELECT NULLIF(provider_engagement_id, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id) AND direction = 'ToClient' AND calc_knowledge_deliverables_is_delivered(knowledge_deliverable_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_deliverables erb_r1 WHERE provider_engagement = (SELECT (SELECT NULLIF(provider_engagement_id, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id)) AND direction = 'ToClient' AND ((SELECT (((erb_r1.delivered_at::timestamptz) IS NOT NULL AND (erb_r1.delivered_at::timestamptz)::text <> ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_provider_engagements_to_provider_delivered_count
@@ -32282,7 +32353,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_provider_engagements_to_provider_delivered_count(p_provider_engagement_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM knowledge_deliverables WHERE provider_engagement = (SELECT NULLIF(provider_engagement_id, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id) AND direction = 'ToProvider' AND calc_knowledge_deliverables_is_delivered(knowledge_deliverable_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM knowledge_deliverables erb_r1 WHERE provider_engagement = (SELECT (SELECT NULLIF(provider_engagement_id, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id)) AND direction = 'ToProvider' AND ((SELECT (((erb_r1.delivered_at::timestamptz) IS NOT NULL AND (erb_r1.delivered_at::timestamptz)::text <> ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_provider_engagements_joint_deliverable_count
@@ -32332,7 +32403,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_provider_engagements_obliges_knowledge_flow_back(p_provider_engagement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((calc_provider_engagements_to_client_required_count(p_provider_engagement_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE((SELECT NULLIF(knowledge_return_plan, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id) IS NOT NULL, FALSE)));
+  SELECT ((COALESCE(COALESCE((calc_provider_engagements_to_client_required_count(p_provider_engagement_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE((((SELECT NULLIF(knowledge_return_plan, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id)) IS NOT NULL AND ((SELECT NULLIF(knowledge_return_plan, '') FROM provider_engagements WHERE provider_engagement_id = p_provider_engagement_id))::text <> ''), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- get_provider_engagements_started_at
@@ -32433,7 +32504,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_deliverables_is_delivered(p_knowledge_deliverable_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT delivered_at::timestamptz FROM knowledge_deliverables WHERE knowledge_deliverable_id = p_knowledge_deliverable_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT delivered_at::timestamptz FROM knowledge_deliverables WHERE knowledge_deliverable_id = p_knowledge_deliverable_id)) IS NOT NULL AND ((SELECT delivered_at::timestamptz FROM knowledge_deliverables WHERE knowledge_deliverable_id = p_knowledge_deliverable_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corporate_governance_programs_name
@@ -32586,7 +32657,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_registry_model_versions_live_production_deployment_coun(p_ai_registry_model_version_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM ai_model_deployments WHERE model_version = (SELECT NULLIF(ai_registry_model_version_id, '') FROM ai_registry_model_versions WHERE ai_registry_model_version_id = p_ai_registry_model_version_id) AND calc_ai_model_deployments_is_live_in_production(ai_model_deployment_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM ai_model_deployments erb_r1 WHERE model_version = (SELECT (SELECT NULLIF(ai_registry_model_version_id, '') FROM ai_registry_model_versions WHERE ai_registry_model_version_id = p_ai_registry_model_version_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_ai_model_deployments_as_of_instant(erb_r1.ai_model_deployment_id) AS val) SELECT ((COALESCE(COALESCE(NULLIF(erb_r1.environment, ''), '') = 'Production', FALSE) AND COALESCE(COALESCE((erb_r1.deployed_at::timestamptz <= (SELECT val FROM __erb_dedup_v1)), ((erb_r1.deployed_at::timestamptz) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE(((erb_r1.retired_at::timestamptz) IS NULL OR (erb_r1.retired_at::timestamptz)::text = ''), FALSE) OR COALESCE(COALESCE((erb_r1.retired_at::timestamptz > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_registry_model_versions_is_live_but_unregistered_in_gra
@@ -32719,7 +32790,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_model_deployments_is_live_in_production(p_ai_model_deployment_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_ai_model_deployments_as_of_instant(p_ai_model_deployment_id) AS val) SELECT ((COALESCE(COALESCE((SELECT NULLIF(environment, '') FROM ai_model_deployments WHERE ai_model_deployment_id = p_ai_model_deployment_id), '') = 'Production', FALSE) AND COALESCE(COALESCE(((SELECT deployed_at::timestamptz FROM ai_model_deployments WHERE ai_model_deployment_id = p_ai_model_deployment_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT deployed_at::timestamptz FROM ai_model_deployments WHERE ai_model_deployment_id = p_ai_model_deployment_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((SELECT retired_at::timestamptz FROM ai_model_deployments WHERE ai_model_deployment_id = p_ai_model_deployment_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT retired_at::timestamptz FROM ai_model_deployments WHERE ai_model_deployment_id = p_ai_model_deployment_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_ai_model_deployments_as_of_instant(p_ai_model_deployment_id) AS val) SELECT ((COALESCE(COALESCE((SELECT NULLIF(environment, '') FROM ai_model_deployments WHERE ai_model_deployment_id = p_ai_model_deployment_id), '') = 'Production', FALSE) AND COALESCE(COALESCE(((SELECT deployed_at::timestamptz FROM ai_model_deployments WHERE ai_model_deployment_id = p_ai_model_deployment_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT deployed_at::timestamptz FROM ai_model_deployments WHERE ai_model_deployment_id = p_ai_model_deployment_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((((SELECT retired_at::timestamptz FROM ai_model_deployments WHERE ai_model_deployment_id = p_ai_model_deployment_id)) IS NULL OR ((SELECT retired_at::timestamptz FROM ai_model_deployments WHERE ai_model_deployment_id = p_ai_model_deployment_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT retired_at::timestamptz FROM ai_model_deployments WHERE ai_model_deployment_id = p_ai_model_deployment_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_model_deployments_assignment_link_count
@@ -32729,7 +32800,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_model_deployments_assignment_link_count(p_ai_model_deployment_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE agent = calc_ai_model_deployments_agent_identifier(p_ai_model_deployment_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE agent = (SELECT calc_ai_model_deployments_agent_identifier(p_ai_model_deployment_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_model_deployments_artifact_link_count
@@ -32739,7 +32810,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_model_deployments_artifact_link_count(p_ai_model_deployment_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM execution_entities WHERE calc_execution_entities_attributed_to_agent(execution_entity_id) = calc_ai_model_deployments_agent_identifier(p_ai_model_deployment_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM execution_entities erb_r1 WHERE ((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.usage, ''), '') = 'Generated' THEN (calc_execution_entities_generating_agent(erb_r1.execution_entity_id))::text ELSE ('')::text END)::text))::text = (SELECT calc_ai_model_deployments_agent_identifier(p_ai_model_deployment_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_model_deployments_is_isolated_registry_fact
@@ -32811,7 +32882,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_agent_accountabilities_is_current(p_ai_agent_accountability_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_ai_agent_accountabilities_as_of_instant(p_ai_agent_accountability_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM ai_agent_accountabilities WHERE ai_agent_accountability_id = p_ai_agent_accountability_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM ai_agent_accountabilities WHERE ai_agent_accountability_id = p_ai_agent_accountability_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((SELECT valid_to::timestamptz FROM ai_agent_accountabilities WHERE ai_agent_accountability_id = p_ai_agent_accountability_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM ai_agent_accountabilities WHERE ai_agent_accountability_id = p_ai_agent_accountability_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_ai_agent_accountabilities_as_of_instant(p_ai_agent_accountability_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM ai_agent_accountabilities WHERE ai_agent_accountability_id = p_ai_agent_accountability_id) <= (SELECT val FROM __erb_dedup_v1)), (((SELECT valid_from::timestamptz FROM ai_agent_accountabilities WHERE ai_agent_accountability_id = p_ai_agent_accountability_id)) IS NULL AND ((SELECT val FROM __erb_dedup_v1)) IS NULL)), FALSE) AND COALESCE((COALESCE((((SELECT valid_to::timestamptz FROM ai_agent_accountabilities WHERE ai_agent_accountability_id = p_ai_agent_accountability_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM ai_agent_accountabilities WHERE ai_agent_accountability_id = p_ai_agent_accountability_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM ai_agent_accountabilities WHERE ai_agent_accountability_id = p_ai_agent_accountability_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ai_agent_accountabilities_is_accountable_to_non_person
@@ -33036,7 +33107,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignment_update_tasks_lacks_named_trigger_owner(p_role_assignment_update_task_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_role_assignment_update_tasks_policy_trigger_owner_role(p_role_assignment_update_task_id) IS NULL, FALSE) OR COALESCE(COALESCE((calc_role_assignment_update_tasks_trigger_owner_cover_count(p_role_assignment_update_task_id))::NUMERIC, 0) = 0, FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_role_assignment_update_tasks_policy_trigger_owner_role(p_role_assignment_update_task_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE) OR COALESCE(COALESCE((calc_role_assignment_update_tasks_trigger_owner_cover_count(p_role_assignment_update_task_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignment_update_tasks_elapsed_minutes
@@ -33046,7 +33117,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignment_update_tasks_elapsed_minutes(p_role_assignment_update_task_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT completed_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id) IS NULL THEN ((EXTRACT(EPOCH FROM ((calc_role_assignment_update_tasks_as_of_instant(p_role_assignment_update_task_id))::timestamptz - ((SELECT trigger_occurred_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id))::timestamptz)) / 60))::text ELSE ((EXTRACT(EPOCH FROM (((SELECT completed_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id))::timestamptz - ((SELECT trigger_occurred_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id))::timestamptz)) / 60))::text END)::numeric;
+  SELECT (CASE WHEN (((SELECT completed_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id)) IS NULL OR ((SELECT completed_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id))::text = '') THEN ((EXTRACT(EPOCH FROM ((calc_role_assignment_update_tasks_as_of_instant(p_role_assignment_update_task_id))::timestamptz - ((SELECT trigger_occurred_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id))::timestamptz)) / 60))::text ELSE ((EXTRACT(EPOCH FROM (((SELECT completed_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id))::timestamptz - ((SELECT trigger_occurred_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id))::timestamptz)) / 60))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignment_update_tasks_exceeded_update_sla
@@ -33066,7 +33137,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignment_update_tasks_changed_role_instead_of_assig(p_role_assignment_update_task_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(replacement_assignment, '') FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_role_assignment_update_tasks_replacement_role(p_role_assignment_update_task_id), '') <> COALESCE(calc_role_assignment_update_tasks_ending_role(p_role_assignment_update_task_id), ''), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(replacement_assignment, '') FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id)) IS NOT NULL AND ((SELECT NULLIF(replacement_assignment, '') FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_role_assignment_update_tasks_replacement_role(p_role_assignment_update_task_id), '') <> COALESCE(calc_role_assignment_update_tasks_ending_role(p_role_assignment_update_task_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignment_update_tasks_dependent_run_role_step_count
@@ -33076,7 +33147,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignment_update_tasks_dependent_run_role_step_count(p_role_assignment_update_task_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM steps WHERE procedure_version = calc_role_assignment_update_tasks_dependent_run_version(p_role_assignment_update_task_id) AND assigned_role = (SELECT NULLIF(role, '') FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM steps WHERE procedure_version = (SELECT calc_role_assignment_update_tasks_dependent_run_version(p_role_assignment_update_task_id)) AND assigned_role = (SELECT (SELECT NULLIF(role, '') FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignment_update_tasks_missed_next_dependent_run
@@ -33086,7 +33157,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignment_update_tasks_missed_next_dependent_run(p_role_assignment_update_task_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_role_assignment_update_tasks_dependent_run_started_at(p_role_assignment_update_task_id) AS val) SELECT ((COALESCE(COALESCE((calc_role_assignment_update_tasks_dependent_run_role_step_count(p_role_assignment_update_task_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) > (SELECT trigger_occurred_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id)), FALSE), FALSE) AND COALESCE((COALESCE((SELECT completed_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id) IS NULL, FALSE) OR COALESCE(COALESCE(((SELECT completed_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_role_assignment_update_tasks_dependent_run_started_at(p_role_assignment_update_task_id) AS val) SELECT ((COALESCE(COALESCE((calc_role_assignment_update_tasks_dependent_run_role_step_count(p_role_assignment_update_task_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) > (SELECT trigger_occurred_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id)), FALSE), FALSE) AND COALESCE((COALESCE((((SELECT completed_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id)) IS NULL OR ((SELECT completed_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT completed_at::timestamptz FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id) > (SELECT val FROM __erb_dedup_v1)), FALSE), FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignment_update_tasks_failed_notice_count
@@ -33096,7 +33167,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignment_update_tasks_failed_notice_count(p_role_assignment_update_task_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM assignment_routed_notices WHERE procedure_execution = (SELECT NULLIF(dependent_execution, '') FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id) AND calc_assignment_routed_notices_notice_role(assignment_routed_notice_id) = (SELECT NULLIF(role, '') FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id) AND calc_assignment_routed_notices_reached_wrong_person_or_nobody(assignment_routed_notice_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM assignment_routed_notices erb_r1 WHERE procedure_execution = (SELECT (SELECT NULLIF(dependent_execution, '') FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id)) AND ((SELECT (SELECT assigned_role::text FROM steps WHERE step_id = erb_r1.notice_step)))::text = (SELECT (SELECT NULLIF(role, '') FROM role_assignment_update_tasks WHERE role_assignment_update_task_id = p_role_assignment_update_task_id)) AND ((SELECT (NOT (COALESCE(calc_assignment_routed_notices_recipient_held_role_when_sent(erb_r1.assignment_routed_notice_id), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignment_update_tasks_stale_assignment_broke_routin
@@ -33147,7 +33218,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assignment_routed_notices_recipient_pair_assignment_count(p_assignment_routed_notice_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_agent_role_pair_key(role_assignment_id) = calc_assignment_routed_notices_recipient_role_key(p_assignment_routed_notice_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_agent_role_pair_key(role_assignment_id) = (SELECT calc_assignment_routed_notices_recipient_role_key(p_assignment_routed_notice_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assignment_routed_notices_recipient_valid_from
@@ -33157,7 +33228,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assignment_routed_notices_recipient_valid_from(p_assignment_routed_notice_id TEXT)
 RETURNS TIMESTAMPTZ AS $$
-  SELECT ((SELECT MAX(valid_from) FROM role_assignments WHERE calc_role_assignments_agent_role_pair_key(role_assignment_id) = calc_assignment_routed_notices_recipient_role_key(p_assignment_routed_notice_id)))::timestamptz;
+  SELECT ((SELECT MAX(valid_from) FROM role_assignments WHERE calc_role_assignments_agent_role_pair_key(role_assignment_id) = (SELECT calc_assignment_routed_notices_recipient_role_key(p_assignment_routed_notice_id))))::timestamptz;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assignment_routed_notices_recipient_latest_valid_to
@@ -33167,7 +33238,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assignment_routed_notices_recipient_latest_valid_to(p_assignment_routed_notice_id TEXT)
 RETURNS TIMESTAMPTZ AS $$
-  SELECT ((SELECT MAX(valid_to) FROM role_assignments WHERE calc_role_assignments_agent_role_pair_key(role_assignment_id) = calc_assignment_routed_notices_recipient_role_key(p_assignment_routed_notice_id)))::timestamptz;
+  SELECT ((SELECT MAX(valid_to) FROM role_assignments WHERE calc_role_assignments_agent_role_pair_key(role_assignment_id) = (SELECT calc_assignment_routed_notices_recipient_role_key(p_assignment_routed_notice_id))))::timestamptz;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assignment_routed_notices_recipient_open_ended_count
@@ -33177,7 +33248,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assignment_routed_notices_recipient_open_ended_count(p_assignment_routed_notice_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_agent_role_pair_key(role_assignment_id) = calc_assignment_routed_notices_recipient_role_key(p_assignment_routed_notice_id) AND calc_role_assignments_is_open_ended(role_assignment_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_agent_role_pair_key(role_assignment_id) = (SELECT calc_assignment_routed_notices_recipient_role_key(p_assignment_routed_notice_id)) AND calc_role_assignments_is_open_ended(role_assignment_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assignment_routed_notices_recipient_held_role_when_sent
@@ -33187,7 +33258,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assignment_routed_notices_recipient_held_role_when_sent(p_assignment_routed_notice_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_assignment_routed_notices_recipient_valid_from(p_assignment_routed_notice_id) AS val) SELECT ((COALESCE((SELECT NULLIF(routed_to_agent, '') FROM assignment_routed_notices WHERE assignment_routed_notice_id = p_assignment_routed_notice_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_assignment_routed_notices_recipient_pair_assignment_count(p_assignment_routed_notice_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) <= (SELECT sent_at::timestamptz FROM assignment_routed_notices WHERE assignment_routed_notice_id = p_assignment_routed_notice_id)), (((SELECT val FROM __erb_dedup_v1)) IS NULL AND ((SELECT sent_at::timestamptz FROM assignment_routed_notices WHERE assignment_routed_notice_id = p_assignment_routed_notice_id)) IS NULL)), FALSE) AND COALESCE((COALESCE(COALESCE((calc_assignment_routed_notices_recipient_open_ended_count(p_assignment_routed_notice_id))::NUMERIC, 0) > 0, FALSE) OR COALESCE(COALESCE((calc_assignment_routed_notices_recipient_latest_valid_to(p_assignment_routed_notice_id) > (SELECT sent_at::timestamptz FROM assignment_routed_notices WHERE assignment_routed_notice_id = p_assignment_routed_notice_id)), FALSE), FALSE)), FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_assignment_routed_notices_recipient_valid_from(p_assignment_routed_notice_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(routed_to_agent, '') FROM assignment_routed_notices WHERE assignment_routed_notice_id = p_assignment_routed_notice_id)) IS NOT NULL AND ((SELECT NULLIF(routed_to_agent, '') FROM assignment_routed_notices WHERE assignment_routed_notice_id = p_assignment_routed_notice_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_assignment_routed_notices_recipient_pair_assignment_count(p_assignment_routed_notice_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) <= (SELECT sent_at::timestamptz FROM assignment_routed_notices WHERE assignment_routed_notice_id = p_assignment_routed_notice_id)), (((SELECT val FROM __erb_dedup_v1)) IS NULL AND ((SELECT sent_at::timestamptz FROM assignment_routed_notices WHERE assignment_routed_notice_id = p_assignment_routed_notice_id)) IS NULL)), FALSE) AND COALESCE((COALESCE(COALESCE((calc_assignment_routed_notices_recipient_open_ended_count(p_assignment_routed_notice_id))::NUMERIC, 0) > 0, FALSE) OR COALESCE(COALESCE((calc_assignment_routed_notices_recipient_latest_valid_to(p_assignment_routed_notice_id) > (SELECT sent_at::timestamptz FROM assignment_routed_notices WHERE assignment_routed_notice_id = p_assignment_routed_notice_id)), FALSE), FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_assignment_routed_notices_reached_wrong_person_or_nobody
@@ -33227,7 +33298,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_practitioner_expertise_knows_more_than_can_say(p_practitioner_expertise_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(expert_kind, '') FROM practitioner_expertise WHERE practitioner_expertise_id = p_practitioner_expertise_id), '') = 'Detection', FALSE) AND COALESCE((SELECT NULLIF(unstated_basis, '') FROM practitioner_expertise WHERE practitioner_expertise_id = p_practitioner_expertise_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT reliable_call_count FROM practitioner_expertise WHERE practitioner_expertise_id = p_practitioner_expertise_id))::NUMERIC, 0) >= 3, FALSE)));
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(expert_kind, '') FROM practitioner_expertise WHERE practitioner_expertise_id = p_practitioner_expertise_id), '') = 'Detection', FALSE) AND COALESCE((((SELECT NULLIF(unstated_basis, '') FROM practitioner_expertise WHERE practitioner_expertise_id = p_practitioner_expertise_id)) IS NOT NULL AND ((SELECT NULLIF(unstated_basis, '') FROM practitioner_expertise WHERE practitioner_expertise_id = p_practitioner_expertise_id))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT reliable_call_count FROM practitioner_expertise WHERE practitioner_expertise_id = p_practitioner_expertise_id))::NUMERIC, 0) >= 3, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_practitioner_expertise_is_unexplained_foresight
@@ -33237,7 +33308,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_practitioner_expertise_is_unexplained_foresight(p_practitioner_expertise_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(expert_kind, '') FROM practitioner_expertise WHERE practitioner_expertise_id = p_practitioner_expertise_id), '') = 'DesignForesight', FALSE) AND COALESCE((SELECT NULLIF(unstated_basis, '') FROM practitioner_expertise WHERE practitioner_expertise_id = p_practitioner_expertise_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT foresight_confirmed FROM practitioner_expertise WHERE practitioner_expertise_id = p_practitioner_expertise_id), FALSE), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(expert_kind, '') FROM practitioner_expertise WHERE practitioner_expertise_id = p_practitioner_expertise_id), '') = 'DesignForesight', FALSE) AND COALESCE((((SELECT NULLIF(unstated_basis, '') FROM practitioner_expertise WHERE practitioner_expertise_id = p_practitioner_expertise_id)) IS NOT NULL AND ((SELECT NULLIF(unstated_basis, '') FROM practitioner_expertise WHERE practitioner_expertise_id = p_practitioner_expertise_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT foresight_confirmed FROM practitioner_expertise WHERE practitioner_expertise_id = p_practitioner_expertise_id), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_critical_incidents_name
@@ -33267,7 +33338,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_critical_incidents_has_surfaced_judgment(p_critical_incident_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(revealed_judgment, '') FROM critical_incidents WHERE critical_incident_id = p_critical_incident_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(revealed_judgment, '') FROM critical_incidents WHERE critical_incident_id = p_critical_incident_id)) IS NOT NULL AND ((SELECT NULLIF(revealed_judgment, '') FROM critical_incidents WHERE critical_incident_id = p_critical_incident_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_interview_probes_name
@@ -33337,7 +33408,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_observed_actions_is_omitted_from_own_account(p_observed_action_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(elicitation_session, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id) IS NOT NULL, FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT mentioned_in_own_account FROM observed_actions WHERE observed_action_id = p_observed_action_id), FALSE), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(elicitation_session, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id)) IS NOT NULL AND ((SELECT NULLIF(elicitation_session, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id))::text <> ''), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT mentioned_in_own_account FROM observed_actions WHERE observed_action_id = p_observed_action_id), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_observed_actions_is_missed_step_left_uncaptured
@@ -33347,7 +33418,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_observed_actions_is_missed_step_left_uncaptured(p_observed_action_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_observed_actions_is_omitted_from_own_account(p_observed_action_id), FALSE) AND COALESCE((SELECT NULLIF(captured_as_fragment, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_observed_actions_is_omitted_from_own_account(p_observed_action_id), FALSE) AND COALESCE((((SELECT NULLIF(captured_as_fragment, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id)) IS NULL OR ((SELECT NULLIF(captured_as_fragment, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_observed_actions_is_watched_not_questioned
@@ -33357,7 +33428,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_observed_actions_is_watched_not_questioned(p_observed_action_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(action_kind, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id), '') = 'SmallChoice', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(action_kind, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id), '') = 'Workaround', FALSE)), FALSE) AND COALESCE((SELECT NULLIF(stated_reason, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((COALESCE(COALESCE((SELECT NULLIF(action_kind, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id), '') = 'SmallChoice', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(action_kind, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id), '') = 'Workaround', FALSE)), FALSE) AND COALESCE((((SELECT NULLIF(stated_reason, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id)) IS NULL OR ((SELECT NULLIF(stated_reason, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_observed_actions_has_recorded_reason
@@ -33367,7 +33438,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_observed_actions_has_recorded_reason(p_observed_action_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(stated_reason, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(stated_reason, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id)) IS NOT NULL AND ((SELECT NULLIF(stated_reason, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_observed_actions_has_counterfactual_answer
@@ -33377,7 +33448,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_observed_actions_has_counterfactual_answer(p_observed_action_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(counterfactual_condition, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id) IS NOT NULL, FALSE) AND COALESCE((SELECT NULLIF(counterfactual_answer, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id) IS NOT NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(counterfactual_condition, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id)) IS NOT NULL AND ((SELECT NULLIF(counterfactual_condition, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(counterfactual_answer, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id)) IS NOT NULL AND ((SELECT NULLIF(counterfactual_answer, '') FROM observed_actions WHERE observed_action_id = p_observed_action_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_elicitation_participants_name
@@ -33467,7 +33538,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_view_divergences_is_reconciled(p_workflow_view_divergence_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(reconciled_statement, '') FROM workflow_view_divergences WHERE workflow_view_divergence_id = p_workflow_view_divergence_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(reconciled_statement, '') FROM workflow_view_divergences WHERE workflow_view_divergence_id = p_workflow_view_divergence_id)) IS NOT NULL AND ((SELECT NULLIF(reconciled_statement, '') FROM workflow_view_divergences WHERE workflow_view_divergence_id = p_workflow_view_divergence_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_view_divergences_is_surfaced_but_unreconciled
@@ -33477,7 +33548,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_view_divergences_is_surfaced_but_unreconciled(p_workflow_view_divergence_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(view_a, '') FROM workflow_view_divergences WHERE workflow_view_divergence_id = p_workflow_view_divergence_id) IS NOT NULL, FALSE) AND COALESCE((SELECT NULLIF(view_b, '') FROM workflow_view_divergences WHERE workflow_view_divergence_id = p_workflow_view_divergence_id) IS NOT NULL, FALSE) AND COALESCE((SELECT NULLIF(reconciled_statement, '') FROM workflow_view_divergences WHERE workflow_view_divergence_id = p_workflow_view_divergence_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(view_a, '') FROM workflow_view_divergences WHERE workflow_view_divergence_id = p_workflow_view_divergence_id)) IS NOT NULL AND ((SELECT NULLIF(view_a, '') FROM workflow_view_divergences WHERE workflow_view_divergence_id = p_workflow_view_divergence_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(view_b, '') FROM workflow_view_divergences WHERE workflow_view_divergence_id = p_workflow_view_divergence_id)) IS NOT NULL AND ((SELECT NULLIF(view_b, '') FROM workflow_view_divergences WHERE workflow_view_divergence_id = p_workflow_view_divergence_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(reconciled_statement, '') FROM workflow_view_divergences WHERE workflow_view_divergence_id = p_workflow_view_divergence_id)) IS NULL OR ((SELECT NULLIF(reconciled_statement, '') FROM workflow_view_divergences WHERE workflow_view_divergence_id = p_workflow_view_divergence_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_expert_cognitions_name
@@ -33517,7 +33588,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_expert_cognitions_is_heuristic_oversimplified(p_expert_cognition_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(cognition_kind, '') FROM expert_cognitions WHERE expert_cognition_id = p_expert_cognition_id), '') = 'DecisionHeuristic', FALSE) AND COALESCE(COALESCE((SELECT expert_stated_exceptions FROM expert_cognitions WHERE expert_cognition_id = p_expert_cognition_id), FALSE), FALSE) AND COALESCE((SELECT NULLIF(captured_exceptions, '') FROM expert_cognitions WHERE expert_cognition_id = p_expert_cognition_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(cognition_kind, '') FROM expert_cognitions WHERE expert_cognition_id = p_expert_cognition_id), '') = 'DecisionHeuristic', FALSE) AND COALESCE(COALESCE((SELECT expert_stated_exceptions FROM expert_cognitions WHERE expert_cognition_id = p_expert_cognition_id), FALSE), FALSE) AND COALESCE((((SELECT NULLIF(captured_exceptions, '') FROM expert_cognitions WHERE expert_cognition_id = p_expert_cognition_id)) IS NULL OR ((SELECT NULLIF(captured_exceptions, '') FROM expert_cognitions WHERE expert_cognition_id = p_expert_cognition_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_concept_ladder_rungs_name
@@ -33587,7 +33658,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_repertory_grid_constructs_is_never_stated_dimension(p_repertory_grid_construct_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(pole_a, '') FROM repertory_grid_constructs WHERE repertory_grid_construct_id = p_repertory_grid_construct_id) IS NOT NULL, FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT was_stated_unprompted FROM repertory_grid_constructs WHERE repertory_grid_construct_id = p_repertory_grid_construct_id), FALSE), FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(pole_a, '') FROM repertory_grid_constructs WHERE repertory_grid_construct_id = p_repertory_grid_construct_id)) IS NOT NULL AND ((SELECT NULLIF(pole_a, '') FROM repertory_grid_constructs WHERE repertory_grid_construct_id = p_repertory_grid_construct_id))::text <> ''), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT was_stated_unprompted FROM repertory_grid_constructs WHERE repertory_grid_construct_id = p_repertory_grid_construct_id), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_repertory_grid_constructs_is_recorded_discriminating_dimen
@@ -33597,7 +33668,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_repertory_grid_constructs_is_recorded_discriminating_dimen(p_repertory_grid_construct_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(pole_a, '') FROM repertory_grid_constructs WHERE repertory_grid_construct_id = p_repertory_grid_construct_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT separates_situations FROM repertory_grid_constructs WHERE repertory_grid_construct_id = p_repertory_grid_construct_id), FALSE), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(pole_a, '') FROM repertory_grid_constructs WHERE repertory_grid_construct_id = p_repertory_grid_construct_id)) IS NOT NULL AND ((SELECT NULLIF(pole_a, '') FROM repertory_grid_constructs WHERE repertory_grid_construct_id = p_repertory_grid_construct_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT separates_situations FROM repertory_grid_constructs WHERE repertory_grid_construct_id = p_repertory_grid_construct_id), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_conversions_name
@@ -33648,7 +33719,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_holdings_is_unformalized_process_knowledge(p_knowledge_holding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(formalized_as, '') FROM knowledge_holdings WHERE knowledge_holding_id = p_knowledge_holding_id) IS NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(carrier, '') FROM knowledge_holdings WHERE knowledge_holding_id = p_knowledge_holding_id), '') <> 'ProcedureRulebook', FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(formalized_as, '') FROM knowledge_holdings WHERE knowledge_holding_id = p_knowledge_holding_id)) IS NULL OR ((SELECT NULLIF(formalized_as, '') FROM knowledge_holdings WHERE knowledge_holding_id = p_knowledge_holding_id))::text = ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(carrier, '') FROM knowledge_holdings WHERE knowledge_holding_id = p_knowledge_holding_id), '') <> 'ProcedureRulebook', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_holdings_is_procedural_knowledge
@@ -33658,7 +33729,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_holdings_is_procedural_knowledge(p_knowledge_holding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(formalized_as, '') FROM knowledge_holdings WHERE knowledge_holding_id = p_knowledge_holding_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(formalized_as, '') FROM knowledge_holdings WHERE knowledge_holding_id = p_knowledge_holding_id)) IS NOT NULL AND ((SELECT NULLIF(formalized_as, '') FROM knowledge_holdings WHERE knowledge_holding_id = p_knowledge_holding_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_holdings_is_judgment_outside_document
@@ -33688,7 +33759,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_holdings_is_formalized_without_elicitation_work(p_knowledge_holding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(formalized_as, '') FROM knowledge_holdings WHERE knowledge_holding_id = p_knowledge_holding_id) IS NOT NULL, FALSE) AND COALESCE(calc_knowledge_holdings_formalized_fragment_session(p_knowledge_holding_id) IS NULL, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_knowledge_holdings_formalized_fragment_session(p_knowledge_holding_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(formalized_as, '') FROM knowledge_holdings WHERE knowledge_holding_id = p_knowledge_holding_id)) IS NOT NULL AND ((SELECT NULLIF(formalized_as, '') FROM knowledge_holdings WHERE knowledge_holding_id = p_knowledge_holding_id))::text <> ''), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_fragment_corroborations_name
@@ -33793,7 +33864,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_know_how_carriers_days_until_holder_departure(p_know_how_carrier_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_know_how_carriers_holder_departure_at(p_know_how_carrier_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN (99999)::text ELSE (((((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date - ((calc_know_how_carriers_as_of_instant(p_know_how_carrier_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_know_how_carriers_holder_departure_at(p_know_how_carrier_id) AS val) SELECT (CASE WHEN (((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '') THEN (99999)::text ELSE (((((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date - ((calc_know_how_carriers_as_of_instant(p_know_how_carrier_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_know_how_carriers_days_served_to_as_of
@@ -33803,7 +33874,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_know_how_carriers_days_served_to_as_of(p_know_how_carrier_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_know_how_carriers_holder_service_started_at(p_know_how_carrier_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN (0)::text ELSE ((((calc_know_how_carriers_as_of_instant(p_know_how_carrier_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_know_how_carriers_holder_service_started_at(p_know_how_carrier_id) AS val) SELECT (CASE WHEN (((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '') THEN (0)::text ELSE ((((calc_know_how_carriers_as_of_instant(p_know_how_carrier_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_know_how_carriers_days_served_to_departure
@@ -33813,7 +33884,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_know_how_carriers_days_served_to_departure(p_know_how_carrier_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_know_how_carriers_holder_service_started_at(p_know_how_carrier_id) AS val), __erb_dedup_v2 AS (SELECT calc_know_how_carriers_holder_departure_at(p_know_how_carrier_id) AS val) SELECT (CASE WHEN (COALESCE((SELECT val FROM __erb_dedup_v1) IS NULL, FALSE) OR COALESCE((SELECT val FROM __erb_dedup_v2) IS NULL, FALSE)) THEN (0)::text ELSE (((((SELECT val FROM __erb_dedup_v2))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_know_how_carriers_holder_service_started_at(p_know_how_carrier_id) AS val), __erb_dedup_v2 AS (SELECT calc_know_how_carriers_holder_departure_at(p_know_how_carrier_id) AS val) SELECT (CASE WHEN (COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE) OR COALESCE((((SELECT val FROM __erb_dedup_v2)) IS NULL OR ((SELECT val FROM __erb_dedup_v2))::text = ''), FALSE)) THEN (0)::text ELSE (((((SELECT val FROM __erb_dedup_v2))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT val FROM __erb_dedup_v1))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_know_how_carriers_holder_tenure_years
@@ -33823,7 +33894,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_know_how_carriers_holder_tenure_years(p_know_how_carrier_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (COALESCE(calc_know_how_carriers_holder_departure_at(p_know_how_carrier_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_days_until_holder_departure(p_know_how_carrier_id))::NUMERIC, 0) < 0, FALSE)) THEN (calc_know_how_carriers_days_served_to_departure(p_know_how_carrier_id))::text ELSE (calc_know_how_carriers_days_served_to_as_of(p_know_how_carrier_id))::text END) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(365, 0), 0)))::NUMERIC, (1)::INTEGER))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_know_how_carriers_holder_departure_at(p_know_how_carrier_id) AS val) SELECT (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_days_until_holder_departure(p_know_how_carrier_id))::NUMERIC, 0) < 0, FALSE)) THEN (calc_know_how_carriers_days_served_to_departure(p_know_how_carrier_id))::text ELSE (calc_know_how_carriers_days_served_to_as_of(p_know_how_carrier_id))::text END) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(365, 0), 0)))::NUMERIC, (1)::INTEGER))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_know_how_carriers_is_veteran_held
@@ -33833,7 +33904,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_know_how_carriers_is_veteran_held(p_know_how_carrier_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_holder_tenure_years(p_know_how_carrier_id))::NUMERIC, 0) >= 10, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id)) IS NOT NULL AND ((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_holder_tenure_years(p_know_how_carrier_id))::NUMERIC, 0) >= 10, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_know_how_carriers_is_holder_leaving_soon
@@ -33843,7 +33914,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_know_how_carriers_is_holder_leaving_soon(p_know_how_carrier_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_know_how_carriers_days_until_holder_departure(p_know_how_carrier_id) AS val) SELECT ((COALESCE(calc_know_how_carriers_holder_departure_at(p_know_how_carrier_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 0, FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) <= 120, FALSE)));
+  WITH __erb_dedup_v1 AS (SELECT calc_know_how_carriers_holder_departure_at(p_know_how_carrier_id) AS val), __erb_dedup_v2 AS (SELECT calc_know_how_carriers_days_until_holder_departure(p_know_how_carrier_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v2))::NUMERIC, 0) >= 0, FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v2))::NUMERIC, 0) <= 120, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_know_how_carriers_transfer_count
@@ -33893,7 +33964,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_know_how_carriers_is_held_by_current_practitioner(p_know_how_carrier_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_know_how_carriers_holder_is_still_engaged(p_know_how_carrier_id), FALSE) = TRUE, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id)) IS NOT NULL AND ((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_know_how_carriers_holder_is_still_engaged(p_know_how_carrier_id), FALSE) = TRUE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_know_how_carriers_is_untransferred_veteran_know_how
@@ -33923,7 +33994,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_know_how_carriers_is_held_only_by_departed(p_know_how_carrier_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_know_how_carriers_holder_is_still_engaged(p_know_how_carrier_id), FALSE) = FALSE, FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_transfer_count(p_know_how_carrier_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_repository_entry_count(p_know_how_carrier_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id)) IS NOT NULL AND ((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_know_how_carriers_holder_is_still_engaged(p_know_how_carrier_id), FALSE) = FALSE, FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_transfer_count(p_know_how_carrier_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_repository_entry_count(p_know_how_carrier_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_know_how_carriers_is_held_by_departed_holder
@@ -33933,7 +34004,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_know_how_carriers_is_held_by_departed_holder(p_know_how_carrier_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_know_how_carriers_holder_is_still_engaged(p_know_how_carrier_id), FALSE) = FALSE, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id)) IS NOT NULL AND ((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_know_how_carriers_holder_is_still_engaged(p_know_how_carrier_id), FALSE) = FALSE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_know_how_carriers_is_captured
@@ -33953,7 +34024,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_know_how_carriers_must_be_relearned_if_holder_leaves(p_know_how_carrier_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_know_how_carriers_holder_is_still_engaged(p_know_how_carrier_id), FALSE) = TRUE, FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_repository_entry_count(p_know_how_carrier_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id)) IS NOT NULL AND ((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_know_how_carriers_holder_is_still_engaged(p_know_how_carrier_id), FALSE) = TRUE, FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_repository_entry_count(p_know_how_carrier_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_know_how_carriers_is_overlooked_living_holder
@@ -33963,7 +34034,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_know_how_carriers_is_overlooked_living_holder(p_know_how_carrier_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_know_how_carriers_holder_is_still_engaged(p_know_how_carrier_id), FALSE) = TRUE, FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_repository_entry_count(p_know_how_carrier_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_source_relationship_count(p_know_how_carrier_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id)) IS NOT NULL AND ((SELECT NULLIF(holder_agent, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_know_how_carriers_holder_is_still_engaged(p_know_how_carrier_id), FALSE) = TRUE, FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_repository_entry_count(p_know_how_carrier_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_know_how_carriers_source_relationship_count(p_know_how_carrier_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_know_how_carriers_transfer_stops_without_veteran
@@ -33983,7 +34054,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_know_how_carriers_builds_on_same_community_know_how(p_know_how_carrier_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(builds_on_know_how, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id) IS NOT NULL, FALSE) AND COALESCE((SELECT NULLIF(community_of_practice, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_know_how_carriers_dependency_community(p_know_how_carrier_id), '') = COALESCE((SELECT NULLIF(community_of_practice, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id), ''), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(builds_on_know_how, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id)) IS NOT NULL AND ((SELECT NULLIF(builds_on_know_how, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(community_of_practice, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id)) IS NOT NULL AND ((SELECT NULLIF(community_of_practice, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_know_how_carriers_dependency_community(p_know_how_carrier_id), '') = COALESCE((SELECT NULLIF(community_of_practice, '') FROM know_how_carriers WHERE know_how_carrier_id = p_know_how_carrier_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_know_how_carriers_lost_accumulation_years
@@ -34076,7 +34147,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_transfers_is_ambient_absorption_by_non_practitio(p_knowledge_transfer_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(recipient_agent, '') FROM knowledge_transfers WHERE knowledge_transfer_id = p_knowledge_transfer_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(channel, '') FROM knowledge_transfers WHERE knowledge_transfer_id = p_knowledge_transfer_id), '') = 'AmbientExposure', FALSE) AND COALESCE(COALESCE((calc_knowledge_transfers_recipient_role_count(p_knowledge_transfer_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(recipient_agent, '') FROM knowledge_transfers WHERE knowledge_transfer_id = p_knowledge_transfer_id)) IS NOT NULL AND ((SELECT NULLIF(recipient_agent, '') FROM knowledge_transfers WHERE knowledge_transfer_id = p_knowledge_transfer_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(channel, '') FROM knowledge_transfers WHERE knowledge_transfer_id = p_knowledge_transfer_id), '') = 'AmbientExposure', FALSE) AND COALESCE(COALESCE((calc_knowledge_transfers_recipient_role_count(p_knowledge_transfer_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_repository_entries_as_of_instant
@@ -34140,7 +34211,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_repository_entries_days_since_updated(p_knowledge_repository_entry_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT last_updated_at::timestamptz FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id) IS NULL THEN (0)::text ELSE ((((calc_knowledge_repository_entries_as_of_instant(p_knowledge_repository_entry_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT last_updated_at::timestamptz FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT last_updated_at::timestamptz FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id)) IS NULL OR ((SELECT last_updated_at::timestamptz FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id))::text = '') THEN (0)::text ELSE ((((calc_knowledge_repository_entries_as_of_instant(p_knowledge_repository_entry_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT last_updated_at::timestamptz FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_repository_entries_is_stale
@@ -34160,7 +34231,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_repository_entries_is_execution_feedback(p_knowledge_repository_entry_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(fed_from_execution, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(fed_from_execution, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id)) IS NOT NULL AND ((SELECT NULLIF(fed_from_execution, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_repository_entries_is_machine_authored
@@ -34170,7 +34241,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_repository_entries_is_machine_authored(p_knowledge_repository_entry_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_knowledge_repository_entries_author_agent_kind(p_knowledge_repository_entry_id) AS val) SELECT ((COALESCE((SELECT NULLIF(author_agent, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id) IS NOT NULL, FALSE) AND COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'AIAgent', FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'AutomatedPipeline', FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_knowledge_repository_entries_author_agent_kind(p_knowledge_repository_entry_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(author_agent, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id)) IS NOT NULL AND ((SELECT NULLIF(author_agent, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id))::text <> ''), FALSE) AND COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'AIAgent', FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'AutomatedPipeline', FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_repository_entries_outlives_author_tenure
@@ -34180,7 +34251,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_repository_entries_outlives_author_tenure(p_knowledge_repository_entry_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(author_agent, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_knowledge_repository_entries_author_is_still_engaged(p_knowledge_repository_entry_id), FALSE) = FALSE, FALSE) AND COALESCE(COALESCE(calc_knowledge_repository_entries_is_stale(p_knowledge_repository_entry_id), FALSE) = FALSE, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(author_agent, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id)) IS NOT NULL AND ((SELECT NULLIF(author_agent, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_knowledge_repository_entries_author_is_still_engaged(p_knowledge_repository_entry_id), FALSE) = FALSE, FALSE) AND COALESCE(COALESCE(calc_knowledge_repository_entries_is_stale(p_knowledge_repository_entry_id), FALSE) = FALSE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_repository_entries_is_uncredited_expert_know_how
@@ -34190,7 +34261,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_repository_entries_is_uncredited_expert_know_how(p_knowledge_repository_entry_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(source_expert, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(source_expert, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id), '') <> COALESCE((SELECT NULLIF(author_agent, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id), ''), FALSE) AND COALESCE(COALESCE((SELECT credits_source_expert FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id), FALSE) = FALSE, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(source_expert, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id)) IS NOT NULL AND ((SELECT NULLIF(source_expert, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(source_expert, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id), '') <> COALESCE((SELECT NULLIF(author_agent, '') FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id), ''), FALSE) AND COALESCE(COALESCE((SELECT credits_source_expert FROM knowledge_repository_entries WHERE knowledge_repository_entry_id = p_knowledge_repository_entry_id), FALSE) = FALSE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_community_memberships_member_organization
@@ -34232,7 +34303,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_community_memberships_is_external_member(p_community_membership_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_community_memberships_member_organization(p_community_membership_id) AS val) SELECT ((COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> COALESCE(calc_community_memberships_community_organization(p_community_membership_id), ''), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_community_memberships_member_organization(p_community_membership_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> COALESCE(calc_community_memberships_community_organization(p_community_membership_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_source_relationships_name
@@ -34252,7 +34323,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_source_relationships_is_unnegotiated_power_gap(p_source_relationship_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(power_dynamic, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(power_dynamic, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id), '') <> 'Balanced', FALSE) AND COALESCE((SELECT NULLIF(negotiated_agreement, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(power_dynamic, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id)) IS NOT NULL AND ((SELECT NULLIF(power_dynamic, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(power_dynamic, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id), '') <> 'Balanced', FALSE) AND COALESCE((((SELECT NULLIF(negotiated_agreement, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id)) IS NULL OR ((SELECT NULLIF(negotiated_agreement, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_source_relationships_is_extractive_relationship
@@ -34262,7 +34333,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_source_relationships_is_extractive_relationship(p_source_relationship_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(trust_level, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(trust_level, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id), '') <> 'Established', FALSE) AND COALESCE((SELECT NULLIF(trust_building_practice, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(trust_level, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id)) IS NOT NULL AND ((SELECT NULLIF(trust_level, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(trust_level, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id), '') <> 'Established', FALSE) AND COALESCE((((SELECT NULLIF(trust_building_practice, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id)) IS NULL OR ((SELECT NULLIF(trust_building_practice, '') FROM source_relationships WHERE source_relationship_id = p_source_relationship_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_department_process_accounts_conflicting_department
@@ -34347,7 +34418,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_department_process_accounts_is_awaiting_engagement(p_department_process_account_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT engaged_at::timestamptz FROM department_process_accounts WHERE department_process_account_id = p_department_process_account_id) IS NULL)::boolean;
+  SELECT ((((SELECT engaged_at::timestamptz FROM department_process_accounts WHERE department_process_account_id = p_department_process_account_id)) IS NULL OR ((SELECT engaged_at::timestamptz FROM department_process_accounts WHERE department_process_account_id = p_department_process_account_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_department_process_accounts_is_conflicting_account
@@ -34357,7 +34428,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_department_process_accounts_is_conflicting_account(p_department_process_account_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(conflicts_with_account, '') FROM department_process_accounts WHERE department_process_account_id = p_department_process_account_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_department_process_accounts_conflicting_department(p_department_process_account_id), '') <> COALESCE((SELECT NULLIF(department, '') FROM department_process_accounts WHERE department_process_account_id = p_department_process_account_id), ''), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(conflicts_with_account, '') FROM department_process_accounts WHERE department_process_account_id = p_department_process_account_id)) IS NOT NULL AND ((SELECT NULLIF(conflicts_with_account, '') FROM department_process_accounts WHERE department_process_account_id = p_department_process_account_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_department_process_accounts_conflicting_department(p_department_process_account_id), '') <> COALESCE((SELECT NULLIF(department, '') FROM department_process_accounts WHERE department_process_account_id = p_department_process_account_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_department_process_accounts_is_unresolved_disagreement
@@ -34367,7 +34438,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_department_process_accounts_is_unresolved_disagreement(p_department_process_account_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_department_process_accounts_is_conflicting_account(p_department_process_account_id), FALSE) AND COALESCE((SELECT NULLIF(resolution_practice, '') FROM department_process_accounts WHERE department_process_account_id = p_department_process_account_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_department_process_accounts_is_conflicting_account(p_department_process_account_id), FALSE) AND COALESCE((((SELECT NULLIF(resolution_practice, '') FROM department_process_accounts WHERE department_process_account_id = p_department_process_account_id)) IS NULL OR ((SELECT NULLIF(resolution_practice, '') FROM department_process_accounts WHERE department_process_account_id = p_department_process_account_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_problem_occurrences_solver_is_still_engaged
@@ -34376,7 +34447,7 @@ $$ LANGUAGE sql STABLE;
 -- Lookup: IsStillEngaged from related Agents
 
 
-CREATE OR REPLACE FUNCTION calc_problem_occurrences_solver_is_still_engaged(p_problem_occurrence_id TEXT)
+CREATE OR REPLACE FUNCTION calc_problem_occurrences_solver_is_still_engaged__compute(p_problem_occurrence_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT calc_agents_is_still_engaged((SELECT solved_by_agent FROM problem_occurrences WHERE problem_occurrence_id = p_problem_occurrence_id));
 $$ LANGUAGE sql STABLE;
@@ -34548,9 +34619,9 @@ $$ LANGUAGE sql STABLE;
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
 
 
-CREATE OR REPLACE FUNCTION calc_problem_occurrences_is_solved(p_problem_occurrence_id TEXT)
+CREATE OR REPLACE FUNCTION calc_problem_occurrences_is_solved__compute(p_problem_occurrence_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT solved_at::timestamptz FROM problem_occurrences WHERE problem_occurrence_id = p_problem_occurrence_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT solved_at::timestamptz FROM problem_occurrences WHERE problem_occurrence_id = p_problem_occurrence_id)) IS NOT NULL AND ((SELECT solved_at::timestamptz FROM problem_occurrences WHERE problem_occurrence_id = p_problem_occurrence_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_problem_occurrences_is_solved_without_recorded_solution
@@ -34560,7 +34631,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_problem_occurrences_is_solved_without_recorded_solution(p_problem_occurrence_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_problem_occurrences_is_solved(p_problem_occurrence_id), FALSE) AND COALESCE((SELECT NULLIF(solution_entry, '') FROM problem_occurrences WHERE problem_occurrence_id = p_problem_occurrence_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_problem_occurrences_is_solved(p_problem_occurrence_id), FALSE) AND COALESCE((((SELECT NULLIF(solution_entry, '') FROM problem_occurrences WHERE problem_occurrence_id = p_problem_occurrence_id)) IS NULL OR ((SELECT NULLIF(solution_entry, '') FROM problem_occurrences WHERE problem_occurrence_id = p_problem_occurrence_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_problem_occurrences_has_been_solved_before
@@ -34570,7 +34641,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_problem_occurrences_has_been_solved_before(p_problem_occurrence_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(prior_occurrence, '') FROM problem_occurrences WHERE problem_occurrence_id = p_problem_occurrence_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_problem_occurrences_prior_was_solved(p_problem_occurrence_id), FALSE) = TRUE, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(prior_occurrence, '') FROM problem_occurrences WHERE problem_occurrence_id = p_problem_occurrence_id)) IS NOT NULL AND ((SELECT NULLIF(prior_occurrence, '') FROM problem_occurrences WHERE problem_occurrence_id = p_problem_occurrence_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_problem_occurrences_prior_was_solved(p_problem_occurrence_id), FALSE) = TRUE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_problem_occurrences_has_consultable_specialist
@@ -34580,7 +34651,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_problem_occurrences_has_consultable_specialist(p_problem_occurrence_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_problem_occurrences_has_been_solved_before(p_problem_occurrence_id), FALSE) AND COALESCE(calc_problem_occurrences_prior_solver(p_problem_occurrence_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_problem_occurrences_prior_solver_is_still_engaged(p_problem_occurrence_id), FALSE) = TRUE, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_problem_occurrences_prior_solver(p_problem_occurrence_id) AS val) SELECT ((COALESCE(calc_problem_occurrences_has_been_solved_before(p_problem_occurrence_id), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_problem_occurrences_prior_solver_is_still_engaged(p_problem_occurrence_id), FALSE) = TRUE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_problem_occurrences_is_relearned_solved_problem
@@ -34590,7 +34661,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_problem_occurrences_is_relearned_solved_problem(p_problem_occurrence_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_problem_occurrences_has_been_solved_before(p_problem_occurrence_id), FALSE) AND COALESCE(calc_problem_occurrences_prior_solution_entry(p_problem_occurrence_id) IS NULL, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_problem_occurrences_prior_solution_entry(p_problem_occurrence_id) AS val) SELECT ((COALESCE(calc_problem_occurrences_has_been_solved_before(p_problem_occurrence_id), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_problem_occurrences_is_turnover_regression
@@ -34600,7 +34671,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_problem_occurrences_is_turnover_regression(p_problem_occurrence_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_problem_occurrences_is_relearned_solved_problem(p_problem_occurrence_id), FALSE) AND COALESCE(calc_problem_occurrences_prior_solver(p_problem_occurrence_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_problem_occurrences_prior_solver_is_still_engaged(p_problem_occurrence_id), FALSE) = FALSE, FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_problem_occurrences_prior_solver(p_problem_occurrence_id) AS val) SELECT ((COALESCE(calc_problem_occurrences_is_relearned_solved_problem(p_problem_occurrence_id), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_problem_occurrences_prior_solver_is_still_engaged(p_problem_occurrence_id), FALSE) = FALSE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_onboarding_records_as_of_instant
@@ -34653,7 +34724,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_onboarding_records_is_proficient(p_onboarding_record_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT proficient_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT proficient_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id)) IS NOT NULL AND ((SELECT proficient_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_onboarding_records_days_to_proficiency
@@ -34663,7 +34734,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_onboarding_records_days_to_proficiency(p_onboarding_record_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (COALESCE((SELECT started_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id) IS NULL, FALSE) OR COALESCE((SELECT proficient_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id) IS NULL, FALSE)) THEN (0)::text ELSE (((((SELECT proficient_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT started_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  SELECT (CASE WHEN (COALESCE((((SELECT started_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id)) IS NULL OR ((SELECT started_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id))::text = ''), FALSE) OR COALESCE((((SELECT proficient_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id)) IS NULL OR ((SELECT proficient_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id))::text = ''), FALSE)) THEN (0)::text ELSE (((((SELECT proficient_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT started_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_onboarding_records_days_since_start
@@ -34673,7 +34744,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_onboarding_records_days_since_start(p_onboarding_record_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT started_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id) IS NULL THEN (99999)::text ELSE ((((calc_onboarding_records_as_of_instant(p_onboarding_record_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT started_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT started_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id)) IS NULL OR ((SELECT started_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id))::text = '') THEN (99999)::text ELSE ((((calc_onboarding_records_as_of_instant(p_onboarding_record_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT started_at::timestamptz FROM onboarding_records WHERE onboarding_record_id = p_onboarding_record_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_onboarding_records_is_recent_start
@@ -34781,7 +34852,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_capability_declines_follows_preceding_stage_decline(p_capability_decline_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_capability_declines_preceding_stage(p_capability_decline_id) AS val) SELECT ((COALESCE((SELECT NULLIF(preceding_stage_decline, '') FROM capability_declines WHERE capability_decline_id = p_capability_decline_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_capability_declines_preceding_decline_started_at(p_capability_decline_id) < (SELECT decline_started_at::timestamptz FROM capability_declines WHERE capability_decline_id = p_capability_decline_id)), FALSE), FALSE) AND COALESCE((COALESCE((COALESCE(COALESCE((SELECT NULLIF(stage, '') FROM capability_declines WHERE capability_decline_id = p_capability_decline_id), '') = 'EngineerTraining', FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'FacilityInvestment', FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT NULLIF(stage, '') FROM capability_declines WHERE capability_decline_id = p_capability_decline_id), '') = 'KnowHowUpkeep', FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'EngineerTraining', FALSE)), FALSE)), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_capability_declines_preceding_stage(p_capability_decline_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(preceding_stage_decline, '') FROM capability_declines WHERE capability_decline_id = p_capability_decline_id)) IS NOT NULL AND ((SELECT NULLIF(preceding_stage_decline, '') FROM capability_declines WHERE capability_decline_id = p_capability_decline_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_capability_declines_preceding_decline_started_at(p_capability_decline_id) < (SELECT decline_started_at::timestamptz FROM capability_declines WHERE capability_decline_id = p_capability_decline_id)), FALSE), FALSE) AND COALESCE((COALESCE((COALESCE(COALESCE((SELECT NULLIF(stage, '') FROM capability_declines WHERE capability_decline_id = p_capability_decline_id), '') = 'EngineerTraining', FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'FacilityInvestment', FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT NULLIF(stage, '') FROM capability_declines WHERE capability_decline_id = p_capability_decline_id), '') = 'KnowHowUpkeep', FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'EngineerTraining', FALSE)), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_traces_source_material_kind
@@ -34922,7 +34993,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_traces_is_source_changed_since_taken(p_knowledge_trace_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_knowledge_traces_source_revised_at(p_knowledge_trace_id) AS val) SELECT ((COALESCE((SELECT val FROM __erb_dedup_v1) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) > calc_knowledge_traces_source_collected_at(p_knowledge_trace_id)), FALSE), FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_knowledge_traces_source_revised_at(p_knowledge_trace_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) > calc_knowledge_traces_source_collected_at(p_knowledge_trace_id)), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_traces_is_unfaithful_to_source
@@ -34932,7 +35003,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_traces_is_unfaithful_to_source(p_knowledge_trace_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(step, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT source_stated_duration_minutes FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE(calc_knowledge_traces_modeled_duration_minutes(p_knowledge_trace_id), 0) <> COALESCE((SELECT source_stated_duration_minutes FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id), 0), FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(step, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id)) IS NOT NULL AND ((SELECT NULLIF(step, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT source_stated_duration_minutes FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE(calc_knowledge_traces_modeled_duration_minutes(p_knowledge_trace_id), 0) <> COALESCE((SELECT source_stated_duration_minutes FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id), 0), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_traces_is_machine_derived
@@ -34942,7 +35013,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_traces_is_machine_derived(p_knowledge_trace_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(derived_by_agent, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(calc_knowledge_traces_derived_by_agent_kind(p_knowledge_trace_id), '') <> 'Human', FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(derived_by_agent, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id)) IS NOT NULL AND ((SELECT NULLIF(derived_by_agent, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id))::text <> ''), FALSE) AND COALESCE(COALESCE(calc_knowledge_traces_derived_by_agent_kind(p_knowledge_trace_id), '') <> 'Human', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_traces_is_self_validated
@@ -34952,7 +35023,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_traces_is_self_validated(p_knowledge_trace_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(validated_by_agent, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(validated_by_agent, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id), '') = COALESCE((SELECT NULLIF(derived_by_agent, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id), ''), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(validated_by_agent, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id)) IS NOT NULL AND ((SELECT NULLIF(validated_by_agent, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(validated_by_agent, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id), '') = COALESCE((SELECT NULLIF(derived_by_agent, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_traces_has_incomplete_provenance
@@ -34962,7 +35033,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_traces_has_incomplete_provenance(p_knowledge_trace_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(source_material, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id) IS NULL, FALSE) OR COALESCE((SELECT NULLIF(derivation_route, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id) IS NULL, FALSE) OR COALESCE((SELECT NULLIF(validated_by_agent, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(source_material, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id)) IS NULL OR ((SELECT NULLIF(source_material, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id))::text = ''), FALSE) OR COALESCE((((SELECT NULLIF(derivation_route, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id)) IS NULL OR ((SELECT NULLIF(derivation_route, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id))::text = ''), FALSE) OR COALESCE((((SELECT NULLIF(validated_by_agent, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id)) IS NULL OR ((SELECT NULLIF(validated_by_agent, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_traces_provenance_statement
@@ -35002,7 +35073,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_traces_is_document_start_never_validated(p_knowledge_trace_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_knowledge_traces_is_document_origin(p_knowledge_trace_id), FALSE) AND COALESCE((SELECT NULLIF(step, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_knowledge_traces_step_elicited_validation_count(p_knowledge_trace_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE(calc_knowledge_traces_is_document_origin(p_knowledge_trace_id), FALSE) AND COALESCE((((SELECT NULLIF(step, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id)) IS NOT NULL AND ((SELECT NULLIF(step, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_knowledge_traces_step_elicited_validation_count(p_knowledge_trace_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_traces_is_document_start_never_extended
@@ -35012,7 +35083,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_traces_is_document_start_never_extended(p_knowledge_trace_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_knowledge_traces_is_document_origin(p_knowledge_trace_id), FALSE) AND COALESCE((SELECT NULLIF(step, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_knowledge_traces_step_elicited_extension_count(p_knowledge_trace_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE(calc_knowledge_traces_is_document_origin(p_knowledge_trace_id), FALSE) AND COALESCE((((SELECT NULLIF(step, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id)) IS NOT NULL AND ((SELECT NULLIF(step, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_knowledge_traces_step_elicited_extension_count(p_knowledge_trace_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_traces_is_document_trailing_practice
@@ -35022,7 +35093,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_traces_is_document_trailing_practice(p_knowledge_trace_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(trace_role, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id), '') = 'Contradicts', FALSE) AND COALESCE((SELECT NULLIF(contradicted_document, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id) IS NOT NULL, FALSE) AND COALESCE(calc_knowledge_traces_source_is_practice_evidence(p_knowledge_trace_id), FALSE) AND COALESCE(COALESCE((calc_knowledge_traces_source_collected_at(p_knowledge_trace_id) > calc_knowledge_traces_contradicted_document_revised_at(p_knowledge_trace_id)), FALSE), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(trace_role, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id), '') = 'Contradicts', FALSE) AND COALESCE((((SELECT NULLIF(contradicted_document, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id)) IS NOT NULL AND ((SELECT NULLIF(contradicted_document, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id))::text <> ''), FALSE) AND COALESCE(calc_knowledge_traces_source_is_practice_evidence(p_knowledge_trace_id), FALSE) AND COALESCE(COALESCE((calc_knowledge_traces_source_collected_at(p_knowledge_trace_id) > calc_knowledge_traces_contradicted_document_revised_at(p_knowledge_trace_id)), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_knowledge_traces_prescribed_versus_enacted
@@ -35032,7 +35103,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_knowledge_traces_prescribed_versus_enacted(p_knowledge_trace_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(contradicted_document, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id) IS NULL THEN ('')::text ELSE (CONCAT('Prescribed in ', (SELECT NULLIF(contradicted_document, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id), '; enacted per ', (SELECT NULLIF(source_material, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id), ': ', (SELECT NULLIF(source_statement, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id)))::text END)::text;
+  SELECT (CASE WHEN (((SELECT NULLIF(contradicted_document, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id)) IS NULL OR ((SELECT NULLIF(contradicted_document, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id))::text = '') THEN ('')::text ELSE (CONCAT('Prescribed in ', (SELECT NULLIF(contradicted_document, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id), '; enacted per ', (SELECT NULLIF(source_material, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id), ': ', (SELECT NULLIF(source_statement, '') FROM knowledge_traces WHERE knowledge_trace_id = p_knowledge_trace_id)))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mined_flow_edges_to_step_expected_minutes
@@ -35093,7 +35164,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mined_flow_edges_is_mined_path_recorded_as_intent_without_(p_mined_flow_edge_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE((SELECT NULLIF(recorded_stance, '') FROM mined_flow_edges WHERE mined_flow_edge_id = p_mined_flow_edge_id), '') = 'Intended', FALSE) AND COALESCE((SELECT NULLIF(intent_decision_by, '') FROM mined_flow_edges WHERE mined_flow_edge_id = p_mined_flow_edge_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(recorded_stance, '') FROM mined_flow_edges WHERE mined_flow_edge_id = p_mined_flow_edge_id), '') = 'Intended', FALSE) AND COALESCE((((SELECT NULLIF(intent_decision_by, '') FROM mined_flow_edges WHERE mined_flow_edge_id = p_mined_flow_edge_id)) IS NULL OR ((SELECT NULLIF(intent_decision_by, '') FROM mined_flow_edges WHERE mined_flow_edge_id = p_mined_flow_edge_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_collection_occasions_as_of_instant
@@ -35124,7 +35195,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_collection_occasions_days_since_held(p_collection_occasion_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT last_held_at::timestamptz FROM collection_occasions WHERE collection_occasion_id = p_collection_occasion_id) IS NULL THEN (0)::text ELSE ((((calc_collection_occasions_as_of_instant(p_collection_occasion_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT last_held_at::timestamptz FROM collection_occasions WHERE collection_occasion_id = p_collection_occasion_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT last_held_at::timestamptz FROM collection_occasions WHERE collection_occasion_id = p_collection_occasion_id)) IS NULL OR ((SELECT last_held_at::timestamptz FROM collection_occasions WHERE collection_occasion_id = p_collection_occasion_id))::text = '') THEN (0)::text ELSE ((((calc_collection_occasions_as_of_instant(p_collection_occasion_id))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT last_held_at::timestamptz FROM collection_occasions WHERE collection_occasion_id = p_collection_occasion_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_collection_occasions_is_lapsed
@@ -35154,7 +35225,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_collection_occasions_is_held_without_capture(p_collection_occasion_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT last_held_at::timestamptz FROM collection_occasions WHERE collection_occasion_id = p_collection_occasion_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_collection_occasions_captured_material_count(p_collection_occasion_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT last_held_at::timestamptz FROM collection_occasions WHERE collection_occasion_id = p_collection_occasion_id)) IS NOT NULL AND ((SELECT last_held_at::timestamptz FROM collection_occasions WHERE collection_occasion_id = p_collection_occasion_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_collection_occasions_captured_material_count(p_collection_occasion_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_stakeholder_perspectives_source_material_kind
@@ -35222,7 +35293,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stakeholder_perspectives_is_in_conflict(p_stakeholder_perspective_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(conflicts_with_perspective, '') FROM stakeholder_perspectives WHERE stakeholder_perspective_id = p_stakeholder_perspective_id) IS NOT NULL, FALSE) OR COALESCE(COALESCE((calc_stakeholder_perspectives_conflict_partner_count(p_stakeholder_perspective_id))::NUMERIC, 0) > 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(conflicts_with_perspective, '') FROM stakeholder_perspectives WHERE stakeholder_perspective_id = p_stakeholder_perspective_id)) IS NOT NULL AND ((SELECT NULLIF(conflicts_with_perspective, '') FROM stakeholder_perspectives WHERE stakeholder_perspective_id = p_stakeholder_perspective_id))::text <> ''), FALSE) OR COALESCE(COALESCE((calc_stakeholder_perspectives_conflict_partner_count(p_stakeholder_perspective_id))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_stakeholder_perspectives_is_dissenting_view_not_kept_with_
@@ -35232,7 +35303,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_stakeholder_perspectives_is_dissenting_view_not_kept_with_(p_stakeholder_perspective_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_stakeholder_perspectives_is_in_conflict(p_stakeholder_perspective_id), FALSE) AND COALESCE((COALESCE(COALESCE((SELECT NULLIF(disposition, '') FROM stakeholder_perspectives WHERE stakeholder_perspective_id = p_stakeholder_perspective_id), '') = 'OverriddenByConsensus', FALSE) OR COALESCE((SELECT NULLIF(source_material, '') FROM stakeholder_perspectives WHERE stakeholder_perspective_id = p_stakeholder_perspective_id) IS NULL, FALSE)), FALSE)))::boolean;
+  SELECT ((COALESCE(calc_stakeholder_perspectives_is_in_conflict(p_stakeholder_perspective_id), FALSE) AND COALESCE((COALESCE(COALESCE((SELECT NULLIF(disposition, '') FROM stakeholder_perspectives WHERE stakeholder_perspective_id = p_stakeholder_perspective_id), '') = 'OverriddenByConsensus', FALSE) OR COALESCE((((SELECT NULLIF(source_material, '') FROM stakeholder_perspectives WHERE stakeholder_perspective_id = p_stakeholder_perspective_id)) IS NULL OR ((SELECT NULLIF(source_material, '') FROM stakeholder_perspectives WHERE stakeholder_perspective_id = p_stakeholder_perspective_id))::text = ''), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_pilots_name
@@ -35367,7 +35438,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_app_actions_is_unpermitted(p_app_action_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(policy, '') FROM app_actions WHERE app_action_id = p_app_action_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(policy, '') FROM app_actions WHERE app_action_id = p_app_action_id)) IS NULL OR ((SELECT NULLIF(policy, '') FROM app_actions WHERE app_action_id = p_app_action_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_app_actions_policy_command_disagrees
@@ -35377,7 +35448,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_app_actions_policy_command_disagrees(p_app_action_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(policy, '') FROM app_actions WHERE app_action_id = p_app_action_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(operation, '') FROM app_actions WHERE app_action_id = p_app_action_id), '') <> COALESCE(calc_app_actions_policy_command(p_app_action_id), ''), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(policy, '') FROM app_actions WHERE app_action_id = p_app_action_id)) IS NOT NULL AND ((SELECT NULLIF(policy, '') FROM app_actions WHERE app_action_id = p_app_action_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(operation, '') FROM app_actions WHERE app_action_id = p_app_action_id), '') <> COALESCE(calc_app_actions_policy_command(p_app_action_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_app_actions_is_unproven_write
@@ -35387,7 +35458,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_app_actions_is_unproven_write(p_app_action_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(policy, '') FROM app_actions WHERE app_action_id = p_app_action_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_app_actions_policy_denial_test_count(p_app_action_id))::NUMERIC, 0) = 0, FALSE)));
+  SELECT ((COALESCE((((SELECT NULLIF(policy, '') FROM app_actions WHERE app_action_id = p_app_action_id)) IS NOT NULL AND ((SELECT NULLIF(policy, '') FROM app_actions WHERE app_action_id = p_app_action_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_app_actions_policy_denial_test_count(p_app_action_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_app_action_fields_target_field_type
@@ -35472,7 +35543,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_app_action_fields_writes_derived_field(p_app_action_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_app_action_fields_target_field_type(p_app_action_field_id) AS val) SELECT ((COALESCE((SELECT NULLIF(target_field, '') FROM app_action_fields WHERE app_action_field_id = p_app_action_field_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'raw', FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'relationship', FALSE)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_app_action_fields_target_field_type(p_app_action_field_id) AS val) SELECT ((COALESCE((((SELECT NULLIF(target_field, '') FROM app_action_fields WHERE app_action_field_id = p_app_action_field_id)) IS NOT NULL AND ((SELECT NULLIF(target_field, '') FROM app_action_fields WHERE app_action_field_id = p_app_action_field_id))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'raw', FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'relationship', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_abundant_knowledge_gaps_representing_table_row_count
@@ -35534,7 +35605,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_support_programmes_has_ended(p_ontology_support_programme_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE(((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id) < calc_ontology_support_programmes_as_of_instant(p_ontology_support_programme_id)), FALSE), FALSE)))::boolean;
+  SELECT ((COALESCE((((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id)) IS NOT NULL AND ((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id))::text <> ''), FALSE) AND COALESCE(COALESCE(((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id) < calc_ontology_support_programmes_as_of_instant(p_ontology_support_programme_id)), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_support_programmes_days_until_programme_ends
@@ -35544,7 +35615,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_support_programmes_days_until_programme_ends(p_ontology_support_programme_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id) IS NULL THEN (0)::text ELSE (((((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id))::timestamptz AT TIME ZONE 'UTC')::date - ((calc_ontology_support_programmes_as_of_instant(p_ontology_support_programme_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id)) IS NULL OR ((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id))::text = '') THEN (0)::text ELSE (((((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id))::timestamptz AT TIME ZONE 'UTC')::date - ((calc_ontology_support_programmes_as_of_instant(p_ontology_support_programme_id))::timestamptz AT TIME ZONE 'UTC')::date))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_support_programmes_is_ended_with_no_steward_named
@@ -35554,7 +35625,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_support_programmes_is_ended_with_no_steward_named(p_ontology_support_programme_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_ontology_support_programmes_has_ended(p_ontology_support_programme_id), FALSE) AND COALESCE((SELECT NULLIF(our_successor_steward, '') FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id) IS NULL, FALSE)))::boolean;
+  SELECT ((COALESCE(calc_ontology_support_programmes_has_ended(p_ontology_support_programme_id), FALSE) AND COALESCE((((SELECT NULLIF(our_successor_steward, '') FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id)) IS NULL OR ((SELECT NULLIF(our_successor_steward, '') FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_support_programmes_is_ending_soon_with_no_steward
@@ -35564,7 +35635,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_support_programmes_is_ending_soon_with_no_steward(p_ontology_support_programme_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(COALESCE(calc_ontology_support_programmes_has_ended(p_ontology_support_programme_id), FALSE) = FALSE, FALSE) AND COALESCE((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id) IS NOT NULL, FALSE) AND COALESCE(COALESCE((calc_ontology_support_programmes_days_until_programme_ends(p_ontology_support_programme_id))::NUMERIC, 0) <= 180, FALSE) AND COALESCE((SELECT NULLIF(our_successor_steward, '') FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id) IS NULL, FALSE)));
+  SELECT ((COALESCE(COALESCE(calc_ontology_support_programmes_has_ended(p_ontology_support_programme_id), FALSE) = FALSE, FALSE) AND COALESCE((((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id)) IS NOT NULL AND ((SELECT ends_on::timestamptz FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id))::text <> ''), FALSE) AND COALESCE(COALESCE((calc_ontology_support_programmes_days_until_programme_ends(p_ontology_support_programme_id))::NUMERIC, 0) <= 180, FALSE) AND COALESCE((((SELECT NULLIF(our_successor_steward, '') FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id)) IS NULL OR ((SELECT NULLIF(our_successor_steward, '') FROM ontology_support_programmes WHERE ontology_support_programme_id = p_ontology_support_programme_id))::text = ''), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================
@@ -35577,3 +35648,391 @@ $$ LANGUAGE sql STABLE;
 -- These functions perform reverse FK lookups for inverse-side relationships
 -- ============================================================================
 
+
+-- ============================================================================
+-- SELF-REFERENCING LOOKUPS — memoised evaluation (see 06-refresh-memos.sql)
+-- A table whose lookup reads its own rows recomputes every ancestor row on each
+-- call. The original function is kept as <name>__compute; <name> now returns the
+-- memoised value when present and otherwise falls back to __compute. A write to a
+-- table the value depends on empties the memo (never stale) and refills it through
+-- erb_refresh_memos() once 06-refresh-memos.sql has defined it.
+-- ============================================================================
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_rulebook_releases_cq_coverage_percent (id TEXT PRIMARY KEY, val NUMERIC);
+CREATE OR REPLACE FUNCTION calc_rulebook_releases_cq_coverage_percent(p_rulebook_release_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_rulebook_releases_cq_coverage_percent WHERE id = p_rulebook_release_id::text)
+              THEN (SELECT val FROM erb_memo_rulebook_releases_cq_coverage_percent WHERE id = p_rulebook_release_id::text)
+              ELSE calc_rulebook_releases_cq_coverage_percent__compute(p_rulebook_release_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_rulebook_releases_cq_run_count (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_rulebook_releases_cq_run_count(p_rulebook_release_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_rulebook_releases_cq_run_count WHERE id = p_rulebook_release_id::text)
+              THEN (SELECT val FROM erb_memo_rulebook_releases_cq_run_count WHERE id = p_rulebook_release_id::text)
+              ELSE calc_rulebook_releases_cq_run_count__compute(p_rulebook_release_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_role_assignments_agent_kind (id TEXT PRIMARY KEY, val TEXT);
+CREATE OR REPLACE FUNCTION calc_role_assignments_agent_kind(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_role_assignments_agent_kind WHERE id = p_role_assignment_id::text)
+              THEN (SELECT val FROM erb_memo_role_assignments_agent_kind WHERE id = p_role_assignment_id::text)
+              ELSE calc_role_assignments_agent_kind__compute(p_role_assignment_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_role_assignments_override_rate_percent (id TEXT PRIMARY KEY, val NUMERIC);
+CREATE OR REPLACE FUNCTION calc_role_assignments_override_rate_percent(p_role_assignment_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_role_assignments_override_rate_percent WHERE id = p_role_assignment_id::text)
+              THEN (SELECT val FROM erb_memo_role_assignments_override_rate_percent WHERE id = p_role_assignment_id::text)
+              ELSE calc_role_assignments_override_rate_percent__compute(p_role_assignment_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_role_assignments_decision_count (id TEXT PRIMARY KEY, val NUMERIC);
+CREATE OR REPLACE FUNCTION calc_role_assignments_decision_count(p_role_assignment_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_role_assignments_decision_count WHERE id = p_role_assignment_id::text)
+              THEN (SELECT val FROM erb_memo_role_assignments_decision_count WHERE id = p_role_assignment_id::text)
+              ELSE calc_role_assignments_decision_count__compute(p_role_assignment_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_procedure_types_is_detached_from_taxonomy (id TEXT PRIMARY KEY, val BOOLEAN);
+CREATE OR REPLACE FUNCTION calc_procedure_types_is_detached_from_taxonomy(p_procedure_type_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_procedure_types_is_detached_from_taxonomy WHERE id = p_procedure_type_id::text)
+              THEN (SELECT val FROM erb_memo_procedure_types_is_detached_from_taxonomy WHERE id = p_procedure_type_id::text)
+              ELSE calc_procedure_types_is_detached_from_taxonomy__compute(p_procedure_type_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_send_intents_is_cleared_to_send (id TEXT PRIMARY KEY, val BOOLEAN);
+CREATE OR REPLACE FUNCTION calc_send_intents_is_cleared_to_send(p_send_intent_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_send_intents_is_cleared_to_send WHERE id = p_send_intent_id::text)
+              THEN (SELECT val FROM erb_memo_send_intents_is_cleared_to_send WHERE id = p_send_intent_id::text)
+              ELSE calc_send_intents_is_cleared_to_send__compute(p_send_intent_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_ai_adoption_initiatives_reviewed_output_count (id TEXT PRIMARY KEY, val INTEGER);
+CREATE OR REPLACE FUNCTION calc_ai_adoption_initiatives_reviewed_output_count(p_ai_adoption_initiative_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_ai_adoption_initiatives_reviewed_output_count WHERE id = p_ai_adoption_initiative_id::text)
+              THEN (SELECT val FROM erb_memo_ai_adoption_initiatives_reviewed_output_count WHERE id = p_ai_adoption_initiative_id::text)
+              ELSE calc_ai_adoption_initiatives_reviewed_output_count__compute(p_ai_adoption_initiative_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_problem_occurrences_is_solved (id TEXT PRIMARY KEY, val BOOLEAN);
+CREATE OR REPLACE FUNCTION calc_problem_occurrences_is_solved(p_problem_occurrence_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_problem_occurrences_is_solved WHERE id = p_problem_occurrence_id::text)
+              THEN (SELECT val FROM erb_memo_problem_occurrences_is_solved WHERE id = p_problem_occurrence_id::text)
+              ELSE calc_problem_occurrences_is_solved__compute(p_problem_occurrence_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE UNLOGGED TABLE IF NOT EXISTS erb_memo_problem_occurrences_solver_is_still_engaged (id TEXT PRIMARY KEY, val BOOLEAN);
+CREATE OR REPLACE FUNCTION calc_problem_occurrences_solver_is_still_engaged(p_problem_occurrence_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT CASE WHEN EXISTS (SELECT 1 FROM erb_memo_problem_occurrences_solver_is_still_engaged WHERE id = p_problem_occurrence_id::text)
+              THEN (SELECT val FROM erb_memo_problem_occurrences_solver_is_still_engaged WHERE id = p_problem_occurrence_id::text)
+              ELSE calc_problem_occurrences_solver_is_still_engaged__compute(p_problem_occurrence_id) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_memo_invalidate() RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+  IF EXISTS (SELECT 1 FROM erb_memo_rulebook_releases_cq_coverage_percent) THEN DELETE FROM erb_memo_rulebook_releases_cq_coverage_percent; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_rulebook_releases_cq_run_count) THEN DELETE FROM erb_memo_rulebook_releases_cq_run_count; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_role_assignments_agent_kind) THEN DELETE FROM erb_memo_role_assignments_agent_kind; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_role_assignments_override_rate_percent) THEN DELETE FROM erb_memo_role_assignments_override_rate_percent; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_role_assignments_decision_count) THEN DELETE FROM erb_memo_role_assignments_decision_count; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_procedure_types_is_detached_from_taxonomy) THEN DELETE FROM erb_memo_procedure_types_is_detached_from_taxonomy; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_send_intents_is_cleared_to_send) THEN DELETE FROM erb_memo_send_intents_is_cleared_to_send; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_ai_adoption_initiatives_reviewed_output_count) THEN DELETE FROM erb_memo_ai_adoption_initiatives_reviewed_output_count; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_problem_occurrences_is_solved) THEN DELETE FROM erb_memo_problem_occurrences_is_solved; END IF;
+  IF EXISTS (SELECT 1 FROM erb_memo_problem_occurrences_solver_is_still_engaged) THEN DELETE FROM erb_memo_problem_occurrences_solver_is_still_engaged; END IF;
+  IF to_regproc('erb_refresh_memos') IS NOT NULL THEN PERFORM erb_refresh_memos(); END IF;
+  RETURN NULL;
+END $$;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON rulebook_releases;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON rulebook_releases FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON ontology_profiles;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON evaluation_contexts;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON evaluation_contexts FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON organizations;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON organizations FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON agents;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON agents FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON roles;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON roles FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON role_assignments;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON role_assignments FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON communities_of_practice;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON mentorships;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON procedure_types;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON procedure_types FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON procedures;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON procedures FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON procedure_versions;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON procedure_versions FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON procedure_version_links;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON procedure_status_changes;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON steps;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON step_transitions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON actions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON functions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON tools;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON step_actions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON step_functions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON step_tools;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON requirements;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON step_requirements;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON step_verifications;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON rationales;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON exceptions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON resources;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON procedure_resources;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON elicitation_sessions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_fragments;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_gaps;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON faqs;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON explanations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON procedure_executions;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON procedure_executions FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON step_executions;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON step_executions FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON requirement_satisfactions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON errors;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON issue_occurrences;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON user_questions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON user_feedback;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON stewardship_assignments;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON change_requests;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON change_requests FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON review_events;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON learning_activities;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON operational_bindings;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON communication_policies;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON communication_policies FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON message_templates;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON message_templates FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON semantic_mappings;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON witness_loops;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON role_questions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON rulebook_fields;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON test_suites;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON test_cases;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON exception_invocations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON verification_outcomes;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON observed_transitions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON recipients;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON recipients FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON message_deliveries;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON message_deliveries FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON template_approvals;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON send_intents;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON send_intents FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON agent_decision_records;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON delivered_communications;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON authority_boundaries;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON binding_observations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON attestations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON app_role_profiles;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON app_nav_groups;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON app_routes;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON app_route_questions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON app_route_references;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON rulebook_tables;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON access_principals;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON access_policies;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON field_grants;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON role_schemas;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON role_schema_views;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON jwt_claim_mappings;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON access_denial_tests;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON app_users;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON principal_assignments;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON issued_tokens;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON process_mining_runs;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON vocabularies;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON vocabulary_terms;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_broker_links;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON conformance_substrates;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON conformance_runs;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON substrate_run_scores;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON table_conformance;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON field_disagreements;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON cell_disagreements;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_methods;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON source_articles;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON article_claims;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON claim_evidence;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON method_applications;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON lifecycle_statuses;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON facilities;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON machine_types;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON energy_sources;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON machines;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON machine_energy_sources;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON lock_devices;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON protective_equipment;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON step_lock_requirements;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON step_protective_equipment;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON regulatory_frameworks;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON procedure_targets;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON procedure_adoptions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON procedure_outcome_criteria;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON relation_types;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON activity_relations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON step_variables;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON execution_entities;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON step_conditions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON condition_checks;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON failure_modes;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON step_cues;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON cue_observations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON decision_points;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON execution_participants;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON step_resources;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON faq_categories;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON faq_targets;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON authoring_submissions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON process_knowledge_levels;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON level_capture_strategies;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON level_pyramid_questions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON process_level_statements;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON tactical_resource_allocations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON process_strategic_alignments;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON business_outcomes;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON process_outcome_measures;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON process_stages;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON process_interdependencies;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON stakeholder_lenses;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON procedure_lens_views;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON applicability_scopes;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON step_context_sensitivities;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON situational_variants;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON collected_source_materials;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON scheme_refinements;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON term_label_variants;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON ai_labeling_runs;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON source_term_mentions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON term_relations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON term_meaning_changes;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON external_standard_terms;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON role_capability_tags;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON classification_facets;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON classification_facets FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON procedure_facet_assignments;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON encoding_lifecycle_stages;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_consumer_systems;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON consumer_system_syncs;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON integration_pathways;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON agent_integrations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON grounding_snapshots;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON reasoner_runs;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON snapshot_assertions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON retrieval_segments;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_query_definitions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_query_sources;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON assistant_answers;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON answer_groundings;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON answer_requirement_checks;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON ai_tool_invocations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON embedding_probes;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON prompt_templates;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_projections;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON model_annotations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_search_events;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON ai_adoption_initiatives;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON ai_adoption_initiatives FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_outcome_measurements;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON ai_insight_proposals;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON assistant_benchmarks;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON governed_models;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON governed_models FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON model_charters;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON steward_activities;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON model_change_requests;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON change_authority_rules;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON change_impact_findings;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON change_integrity_checks;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON change_objections;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON change_validation_runs;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON expected_inference_checks;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON model_consumers;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON consumer_revalidations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON model_documents;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON staleness_query_runs;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON external_dependency_revisions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON stakeholder_questions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON model_expansion_requests;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON expansion_concept_fits;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON competency_question_set_entries;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON competency_question_runs;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON competency_question_reviews;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON quality_criteria;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON quality_assessments;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON term_definitions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON model_proposals;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON assignment_instant_checks;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON instance_data_versions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON domain_coverage_areas;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON governance_stage_controls;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON process_design_decisions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON model_change_log_entries;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON drift_observations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON sourcing_functions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_audits;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_audit_items;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_capture_initiatives;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_workforce_positions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON provider_engagements;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_deliverables;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON corporate_governance_programs;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON records_retention_policies;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON ai_registry_model_versions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON ai_model_deployments;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON ai_model_evaluations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON ai_agent_accountabilities;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON agent_upgrade_assessments;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON assignment_update_policies;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON role_assignment_update_tasks;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON assignment_routed_notices;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON practitioner_expertise;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON critical_incidents;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON interview_probes;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON observed_actions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON elicitation_participants;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON representation_reviews;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON workflow_view_divergences;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON expert_cognitions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON concept_ladder_rungs;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON repertory_grid_constructs;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_conversions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_holdings;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON fragment_corroborations;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_test_outcomes;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON know_how_carriers;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_transfers;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_repository_entries;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON knowledge_repository_entries FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON community_memberships;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON source_relationships;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON department_process_accounts;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON problem_occurrences;
+CREATE TRIGGER erb_memo_invalidate AFTER INSERT OR UPDATE OR DELETE OR TRUNCATE ON problem_occurrences FOR EACH STATEMENT EXECUTE FUNCTION erb_memo_invalidate();
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON onboarding_records;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON sharing_recognitions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON capability_declines;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON knowledge_traces;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON mined_flow_edges;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON collection_occasions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON stakeholder_perspectives;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON model_pilots;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON model_activity_experts;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON model_data_mapping_runs;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON artifact_handoffs;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON app_actions;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON app_action_fields;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON abundant_knowledge_gaps;
+DROP TRIGGER IF EXISTS erb_memo_invalidate ON ontology_support_programmes;

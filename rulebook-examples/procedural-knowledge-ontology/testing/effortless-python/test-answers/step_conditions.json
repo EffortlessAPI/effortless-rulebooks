@@ -13,7 +13,9 @@
     "postcondition_step_key": null,
     "invariant_step_key": null,
     "safety_critical_step_key": null,
-    "is_machine_parseable": false
+    "is_machine_parseable": false,
+    "enforced_requirement_is_computed": false,
+    "enforced_requirement_statement": null
   },
   {
     "step_condition_id": "cond-loto03-pre-notified",
@@ -29,7 +31,9 @@
     "postcondition_step_key": null,
     "invariant_step_key": null,
     "safety_critical_step_key": null,
-    "is_machine_parseable": false
+    "is_machine_parseable": false,
+    "enforced_requirement_is_computed": false,
+    "enforced_requirement_statement": null
   },
   {
     "step_condition_id": "cond-loto05-inv-inventory",
@@ -46,7 +50,9 @@
     "postcondition_step_key": null,
     "invariant_step_key": "loto-05",
     "safety_critical_step_key": "loto-05",
-    "is_machine_parseable": true
+    "is_machine_parseable": true,
+    "enforced_requirement_is_computed": false,
+    "enforced_requirement_statement": null
   },
   {
     "step_condition_id": "cond-loto06-post-zero",
@@ -62,7 +68,10 @@
     "postcondition_step_key": "loto-06",
     "invariant_step_key": null,
     "safety_critical_step_key": "loto-06",
-    "is_machine_parseable": false
+    "is_machine_parseable": false,
+    "enforces_requirement": "req-loto-zero-energy",
+    "enforced_requirement_is_computed": false,
+    "enforced_requirement_statement": "No maintenance starts until zero energy is verified at every isolation point."
   },
   {
     "step_condition_id": "cond-loto07-inv-locks",
@@ -78,7 +87,10 @@
     "postcondition_step_key": null,
     "invariant_step_key": "loto-07",
     "safety_critical_step_key": "loto-07",
-    "is_machine_parseable": false
+    "is_machine_parseable": false,
+    "enforces_requirement": "req-loto-personal-lock",
+    "enforced_requirement_is_computed": false,
+    "enforced_requirement_statement": "Every person working on the machine applies and removes their own lock."
   },
   {
     "step_condition_id": "cond-loto07-pre-zeroenergy",
@@ -94,7 +106,10 @@
     "postcondition_step_key": null,
     "invariant_step_key": null,
     "safety_critical_step_key": "loto-07",
-    "is_machine_parseable": false
+    "is_machine_parseable": false,
+    "enforces_requirement": "req-loto-zero-energy",
+    "enforced_requirement_is_computed": false,
+    "enforced_requirement_statement": "No maintenance starts until zero energy is verified at every isolation point."
   },
   {
     "step_condition_id": "cond-loto08-pre-clear",
@@ -110,6 +125,8 @@
     "postcondition_step_key": null,
     "invariant_step_key": null,
     "safety_critical_step_key": "loto-08",
-    "is_machine_parseable": false
+    "is_machine_parseable": false,
+    "enforced_requirement_is_computed": false,
+    "enforced_requirement_statement": null
   }
 ]

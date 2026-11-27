@@ -136,6 +136,7 @@
     "owner_organization": "acme-finance",
     "incomplete_cue_observation_count": 0,
     "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null,
     "previous_step_execution": null,
     "confirmed_by_agent": null,
     "description": null
@@ -277,6 +278,7 @@
     "owner_organization": "acme-finance",
     "incomplete_cue_observation_count": 0,
     "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null,
     "previous_step_execution": null,
     "confirmed_by_agent": null,
     "description": null
@@ -418,6 +420,7 @@
     "owner_organization": "acme-finance",
     "incomplete_cue_observation_count": 0,
     "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null,
     "previous_step_execution": null,
     "confirmed_by_agent": null,
     "description": null
@@ -559,6 +562,7 @@
     "owner_organization": "acme-finance",
     "incomplete_cue_observation_count": 0,
     "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null,
     "previous_step_execution": null,
     "confirmed_by_agent": null,
     "description": null
@@ -700,6 +704,7 @@
     "owner_organization": "acme-finance",
     "incomplete_cue_observation_count": 0,
     "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null,
     "previous_step_execution": null,
     "confirmed_by_agent": null,
     "description": null
@@ -841,6 +846,7 @@
     "owner_organization": "acme-finance",
     "incomplete_cue_observation_count": 0,
     "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null,
     "previous_step_execution": null,
     "confirmed_by_agent": null,
     "description": null
@@ -982,6 +988,7 @@
     "owner_organization": "acme-finance",
     "incomplete_cue_observation_count": 0,
     "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null,
     "previous_step_execution": null,
     "confirmed_by_agent": null,
     "description": null
@@ -1123,6 +1130,7 @@
     "owner_organization": "acme-finance",
     "incomplete_cue_observation_count": 0,
     "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null,
     "previous_step_execution": null,
     "confirmed_by_agent": null,
     "description": null
@@ -1266,7 +1274,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-engineering",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0105-02",
@@ -1407,7 +1416,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-engineering",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0105-03",
@@ -1548,7 +1558,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-engineering",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0105-04",
@@ -1689,7 +1700,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-engineering",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0105-05",
@@ -1830,7 +1842,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-engineering",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0301-01",
@@ -1971,7 +1984,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-engineering",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0301-02",
@@ -2112,7 +2126,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-engineering",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0301-03",
@@ -2253,7 +2268,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-engineering",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0301-04",
@@ -2394,7 +2410,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-engineering",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0301-05",
@@ -2535,7 +2552,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-engineering",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0714-01",
@@ -2676,7 +2694,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-engineering",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0714-02",
@@ -2817,7 +2836,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-engineering",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-dep0714-04",
@@ -2958,7 +2978,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-engineering",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-01",
@@ -3099,7 +3120,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-02",
@@ -3240,7 +3262,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-03",
@@ -3381,7 +3404,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-04",
@@ -3522,7 +3546,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-04a",
@@ -3663,7 +3688,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-04b",
@@ -3804,7 +3830,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-04c",
@@ -3945,7 +3972,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-05",
@@ -4086,7 +4114,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-06",
@@ -4227,7 +4256,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 1,
-    "is_blocked_by_observed_cue": true
+    "is_blocked_by_observed_cue": true,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-06b",
@@ -4368,7 +4398,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-07",
@@ -4509,7 +4540,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0708-08",
@@ -4650,7 +4682,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-01",
@@ -4791,7 +4824,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-02",
@@ -4932,7 +4966,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-03",
@@ -5073,7 +5108,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-04",
@@ -5214,7 +5250,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-04a",
@@ -5355,7 +5392,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-04b",
@@ -5496,7 +5534,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 1,
-    "is_blocked_by_observed_cue": true
+    "is_blocked_by_observed_cue": true,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-04c",
@@ -5637,7 +5676,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-05",
@@ -5778,7 +5818,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-06",
@@ -5919,7 +5960,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-06b",
@@ -6060,7 +6102,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-06c",
@@ -6201,7 +6244,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-07",
@@ -6342,7 +6386,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0709-08",
@@ -6483,7 +6528,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-01",
@@ -6624,7 +6670,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-02",
@@ -6765,7 +6812,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-03",
@@ -6906,7 +6954,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-04",
@@ -7047,7 +7096,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-04a",
@@ -7188,7 +7238,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-04b",
@@ -7329,7 +7380,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-04c",
@@ -7470,7 +7522,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-05",
@@ -7611,7 +7664,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-06",
@@ -7752,7 +7806,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-07",
@@ -7893,7 +7948,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0714-08",
@@ -8034,7 +8090,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-01",
@@ -8175,7 +8232,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-02",
@@ -8316,7 +8374,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-03",
@@ -8457,7 +8516,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-04",
@@ -8598,7 +8658,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-04a",
@@ -8739,7 +8800,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-04b",
@@ -8880,7 +8942,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-04c",
@@ -9021,7 +9084,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-05",
@@ -9162,7 +9226,8 @@
     "is_blocked_by_incomplete_prerequisite": false,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-loto0716-06",
@@ -9303,7 +9368,8 @@
     "is_blocked_by_incomplete_prerequisite": true,
     "owner_organization": "acme-plant",
     "incomplete_cue_observation_count": 0,
-    "is_blocked_by_observed_cue": false
+    "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null
   },
   {
     "step_execution_id": "se-policy01",
@@ -9442,6 +9508,7 @@
     "owner_organization": "acme-people",
     "incomplete_cue_observation_count": 0,
     "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null,
     "previous_step_execution": null,
     "confirmed_by_agent": null,
     "description": null
@@ -9583,6 +9650,7 @@
     "owner_organization": "acme-people",
     "incomplete_cue_observation_count": 0,
     "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null,
     "previous_step_execution": null,
     "confirmed_by_agent": null,
     "description": null
@@ -9724,6 +9792,7 @@
     "owner_organization": "acme-people",
     "incomplete_cue_observation_count": 0,
     "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null,
     "previous_step_execution": null,
     "confirmed_by_agent": null,
     "description": null
@@ -9865,6 +9934,7 @@
     "owner_organization": "acme-people",
     "incomplete_cue_observation_count": 0,
     "is_blocked_by_observed_cue": false,
+    "is_blocked_by_failed_precondition": null,
     "previous_step_execution": null,
     "confirmed_by_agent": null,
     "description": null

@@ -93,6 +93,13 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsBool(F.Memo(this, "RequirementIsRegulatory", () => F.Lookup<Requirement>(this, "Requirements", "RequirementId", __c => __c.Requirements, __r => F.Of(__r.RequirementId), F.Of(this.Requirement), __r => F.Of(__r.IsRegulatoryRequirement), () => F.Of(new Requirement().IsRegulatoryRequirement)))); set { }
         }
 
+        // Formula PassCountOnStep (rulebook: =COUNTIFS(StepExecutions!{{Step}}, {{Step}}, StepExecutions!{{VerificationResult}}, "PASS"))
+        [NotMapped]
+        public int? PassCountOnStep
+        {
+            get => F.AsInt(F.Memo(this, "PassCountOnStep", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<StepExecution>(base.SoAContext, "StepExecutions", __c => __c.StepExecutions), __r => F.CritField(F.Of(__r.Step), F.Of(this.Step)) && F.CritLiteral(F.Of(__r.VerificationResult), F.S("PASS"))))))); set { }
+        }
+
 
         public string? Step { get; set; }
         public string? Requirement { get; set; }

@@ -12,7 +12,12 @@
     "is_failed_precondition": false,
     "is_violated_invariant": false,
     "failed_precondition_execution_key": null,
-    "violated_invariant_execution_key": null
+    "violated_invariant_execution_key": null,
+    "enforced_requirement": null,
+    "failed_check_requirement_key": null,
+    "enforced_requirement_is_computed": null,
+    "enforced_requirement_statement": null,
+    "is_scored_breach": null
   },
   {
     "condition_check_id": "cc-0708-07-locks",
@@ -27,7 +32,12 @@
     "is_failed_precondition": false,
     "is_violated_invariant": false,
     "failed_precondition_execution_key": null,
-    "violated_invariant_execution_key": null
+    "violated_invariant_execution_key": null,
+    "enforced_requirement": null,
+    "failed_check_requirement_key": null,
+    "enforced_requirement_is_computed": null,
+    "enforced_requirement_statement": null,
+    "is_scored_breach": null
   },
   {
     "condition_check_id": "cc-0708-07-zero",
@@ -42,7 +52,12 @@
     "is_failed_precondition": false,
     "is_violated_invariant": false,
     "failed_precondition_execution_key": null,
-    "violated_invariant_execution_key": null
+    "violated_invariant_execution_key": null,
+    "enforced_requirement": null,
+    "failed_check_requirement_key": null,
+    "enforced_requirement_is_computed": null,
+    "enforced_requirement_statement": null,
+    "is_scored_breach": null
   },
   {
     "condition_check_id": "cc-0709-03-notified",
@@ -57,7 +72,12 @@
     "is_failed_precondition": false,
     "is_violated_invariant": false,
     "failed_precondition_execution_key": null,
-    "violated_invariant_execution_key": null
+    "violated_invariant_execution_key": null,
+    "enforced_requirement": null,
+    "failed_check_requirement_key": null,
+    "enforced_requirement_is_computed": null,
+    "enforced_requirement_statement": null,
+    "is_scored_breach": null
   },
   {
     "condition_check_id": "cc-0709-07-locks",
@@ -72,7 +92,12 @@
     "is_failed_precondition": false,
     "is_violated_invariant": true,
     "failed_precondition_execution_key": null,
-    "violated_invariant_execution_key": "se-loto0709-07"
+    "violated_invariant_execution_key": "se-loto0709-07",
+    "enforced_requirement": null,
+    "failed_check_requirement_key": null,
+    "enforced_requirement_is_computed": null,
+    "enforced_requirement_statement": null,
+    "is_scored_breach": null
   },
   {
     "condition_check_id": "cc-0709-07-zero",
@@ -87,7 +112,12 @@
     "is_failed_precondition": true,
     "is_violated_invariant": false,
     "failed_precondition_execution_key": "se-loto0709-07",
-    "violated_invariant_execution_key": null
+    "violated_invariant_execution_key": null,
+    "enforced_requirement": null,
+    "failed_check_requirement_key": null,
+    "enforced_requirement_is_computed": null,
+    "enforced_requirement_statement": null,
+    "is_scored_breach": null
   },
   {
     "condition_check_id": "cc-dep0301-04-approved",
@@ -102,6 +132,11 @@
     "is_failed_precondition": false,
     "is_violated_invariant": false,
     "failed_precondition_execution_key": null,
-    "violated_invariant_execution_key": null
+    "violated_invariant_execution_key": null,
+    "enforced_requirement": null,
+    "failed_check_requirement_key": null,
+    "enforced_requirement_is_computed": null,
+    "enforced_requirement_statement": null,
+    "is_scored_breach": null
   }
 ]

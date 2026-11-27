@@ -1813,6 +1813,11 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
                 .WithMany(f => f.StepConditions)
                 .HasForeignKey(f => f.Step)
                 .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<StepCondition>()
+                .HasOne(e => e.Requirement)
+                .WithMany(f => f.StepConditions)
+                .HasForeignKey(f => f.EnforcesRequirement)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ConditionCheck>()
                 .HasOne(e => e.StepExecutionRef)
                 .WithMany(f => f.ConditionChecks)

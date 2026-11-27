@@ -1,0 +1,123 @@
+[
+  {
+    "quality_assessment_id": "qa-100-accuracy",
+    "score": 4,
+    "method": "Expert panel with pitfall scan",
+    "assessed_at": "2026-07-19 15:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityAssessment",
+    "name": "pko-release-1.0.0 / qc-accuracy",
+    "rulebook_release": "pko-release-1.0.0",
+    "quality_criterion": "qc-accuracy",
+    "assessed_by_agent": "nadia-petrova"
+  },
+  {
+    "quality_assessment_id": "qa-100-clarity",
+    "score": 4,
+    "method": "Expert panel with pitfall scan",
+    "assessed_at": "2026-07-19 15:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityAssessment",
+    "name": "pko-release-1.0.0 / qc-clarity",
+    "rulebook_release": "pko-release-1.0.0",
+    "quality_criterion": "qc-clarity",
+    "assessed_by_agent": "nadia-petrova"
+  },
+  {
+    "quality_assessment_id": "qa-100-adaptability",
+    "score": 3,
+    "method": "Expert panel with pitfall scan",
+    "assessed_at": "2026-07-19 15:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityAssessment",
+    "name": "pko-release-1.0.0 / qc-adaptability",
+    "rulebook_release": "pko-release-1.0.0",
+    "quality_criterion": "qc-adaptability",
+    "assessed_by_agent": "nadia-petrova"
+  },
+  {
+    "quality_assessment_id": "qa-100-completeness",
+    "score": 4,
+    "method": "Expert panel with pitfall scan",
+    "assessed_at": "2026-07-19 15:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityAssessment",
+    "name": "pko-release-1.0.0 / qc-completeness",
+    "rulebook_release": "pko-release-1.0.0",
+    "quality_criterion": "qc-completeness",
+    "assessed_by_agent": "nadia-petrova"
+  },
+  {
+    "quality_assessment_id": "qa-100-efficiency",
+    "score": 5,
+    "method": "Expert panel with pitfall scan",
+    "assessed_at": "2026-07-19 15:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityAssessment",
+    "name": "pko-release-1.0.0 / qc-efficiency",
+    "rulebook_release": "pko-release-1.0.0",
+    "quality_criterion": "qc-efficiency",
+    "assessed_by_agent": "nadia-petrova"
+  },
+  {
+    "quality_assessment_id": "qa-100-conciseness",
+    "score": 3,
+    "method": "Expert panel with pitfall scan",
+    "assessed_at": "2026-07-19 15:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityAssessment",
+    "name": "pko-release-1.0.0 / qc-conciseness",
+    "rulebook_release": "pko-release-1.0.0",
+    "quality_criterion": "qc-conciseness",
+    "assessed_by_agent": "nadia-petrova"
+  },
+  {
+    "quality_assessment_id": "qa-100-consistency",
+    "score": 4,
+    "method": "Expert panel with pitfall scan",
+    "assessed_at": "2026-07-19 15:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityAssessment",
+    "name": "pko-release-1.0.0 / qc-consistency",
+    "rulebook_release": "pko-release-1.0.0",
+    "quality_criterion": "qc-consistency",
+    "assessed_by_agent": "nadia-petrova"
+  },
+  {
+    "quality_assessment_id": "qa-100-organizational-fitness",
+    "score": 4,
+    "method": "Expert panel with pitfall scan",
+    "assessed_at": "2026-07-19 15:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityAssessment",
+    "name": "pko-release-1.0.0 / qc-organizational-fitness",
+    "rulebook_release": "pko-release-1.0.0",
+    "quality_criterion": "qc-organizational-fitness",
+    "assessed_by_agent": "nadia-petrova"
+  },
+  {
+    "quality_assessment_id": "qa-090-accuracy",
+    "score": 4,
+    "method": "Steward self-assessment",
+    "assessed_at": "2026-04-20 15:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityAssessment",
+    "name": "pko-release-0.9.0 / qc-accuracy",
+    "rulebook_release": "pko-release-0.9.0",
+    "quality_criterion": "qc-accuracy",
+    "assessed_by_agent": "elena-garcia"
+  },
+  {
+    "quality_assessment_id": "qa-090-consistency",
+    "score": 4,
+    "method": "Steward self-assessment",
+    "assessed_at": "2026-04-20 15:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityAssessment",
+    "name": "pko-release-0.9.0 / qc-consistency",
+    "rulebook_release": "pko-release-0.9.0",
+    "quality_criterion": "qc-consistency",
+    "assessed_by_agent": "elena-garcia"
+  },
+  {
+    "quality_assessment_id": "qa-090-completeness",
+    "score": 4,
+    "method": "Steward self-assessment",
+    "assessed_at": "2026-04-20 15:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#QualityAssessment",
+    "name": "pko-release-0.9.0 / qc-completeness",
+    "rulebook_release": "pko-release-0.9.0",
+    "quality_criterion": "qc-completeness",
+    "assessed_by_agent": "elena-garcia"
+  }
+]

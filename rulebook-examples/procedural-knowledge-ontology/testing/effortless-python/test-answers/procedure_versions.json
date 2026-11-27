@@ -1273,7 +1273,7 @@
     "uses_non_pko_status": false,
     "first_step_disagrees_with_graph": false,
     "exception_count": 0,
-    "fallback_transition_count": 1,
+    "fallback_transition_count": 2,
     "alternative_transition_count": 2,
     "has_no_exception_handling": false,
     "latest_source_document_modified_at": "2026-05-20T09:00:00-05:00",

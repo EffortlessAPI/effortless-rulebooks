@@ -1,0 +1,81 @@
+[
+  {
+    "expansion_concept_fit_id": "ecf-hr-checklist",
+    "concept_label": "Onboarding checklist",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpansionConceptFit",
+    "name": "exp-hr-onboarding: Onboarding checklist",
+    "model_expansion_request": "exp-hr-onboarding",
+    "covering_table": "Procedures",
+    "is_uncovered": false
+  },
+  {
+    "expansion_concept_fit_id": "ecf-hr-buddy",
+    "concept_label": "Buddy assignment",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpansionConceptFit",
+    "name": "exp-hr-onboarding: Buddy assignment",
+    "model_expansion_request": "exp-hr-onboarding",
+    "covering_table": "RoleAssignments",
+    "is_uncovered": false
+  },
+  {
+    "expansion_concept_fit_id": "ecf-hr-orientation",
+    "concept_label": "Orientation session",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpansionConceptFit",
+    "name": "exp-hr-onboarding: Orientation session",
+    "model_expansion_request": "exp-hr-onboarding",
+    "covering_table": "ProcedureExecutions",
+    "is_uncovered": false
+  },
+  {
+    "expansion_concept_fit_id": "ecf-ai-run",
+    "concept_label": "Evaluation run",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpansionConceptFit",
+    "name": "exp-ai-eval-pipeline: Evaluation run",
+    "model_expansion_request": "exp-ai-eval-pipeline",
+    "covering_table": "ProcedureExecutions",
+    "is_uncovered": false
+  },
+  {
+    "expansion_concept_fit_id": "ecf-ai-benchmark",
+    "concept_label": "Benchmark suite",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpansionConceptFit",
+    "name": "exp-ai-eval-pipeline: Benchmark suite",
+    "model_expansion_request": "exp-ai-eval-pipeline",
+    "is_uncovered": true
+  },
+  {
+    "expansion_concept_fit_id": "ecf-ai-candidate",
+    "concept_label": "Candidate model version",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpansionConceptFit",
+    "name": "exp-ai-eval-pipeline: Candidate model version",
+    "model_expansion_request": "exp-ai-eval-pipeline",
+    "covering_table": "Agents",
+    "is_uncovered": false
+  },
+  {
+    "expansion_concept_fit_id": "ecf-audit-procedure",
+    "concept_label": "Audit procedure",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpansionConceptFit",
+    "name": "exp-internal-audit: Audit procedure",
+    "model_expansion_request": "exp-internal-audit",
+    "covering_table": "Procedures",
+    "is_uncovered": false
+  },
+  {
+    "expansion_concept_fit_id": "ecf-audit-finding",
+    "concept_label": "Audit finding",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpansionConceptFit",
+    "name": "exp-internal-audit: Audit finding",
+    "model_expansion_request": "exp-internal-audit",
+    "covering_table": "IssueOccurrences",
+    "is_uncovered": false
+  },
+  {
+    "expansion_concept_fit_id": "ecf-audit-severity",
+    "concept_label": "Finding severity scale",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExpansionConceptFit",
+    "name": "exp-internal-audit: Finding severity scale",
+    "model_expansion_request": "exp-internal-audit",
+    "is_uncovered": true
+  }
+]

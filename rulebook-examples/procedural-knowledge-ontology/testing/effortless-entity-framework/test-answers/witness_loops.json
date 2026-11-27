@@ -46,7 +46,7 @@
     "witness_loop_id": "loop-04",
     "loop_number": 4,
     "title": "Structure the executions cannot show",
-    "premise": "Every witness in loops 1-3 reads either a single row or a single edge: whether this transition was traversed, whether this control was satisfied. The step graph itself is cyclic (Fallback and Alternative transitions send work back to earlier steps), and questions about its shape (which steps can be re-entered, which controls must hold on every pass) are reachability over paths of any length. Transitive closure is provably not expressible in first-order logic with aggregates, so no formula answers them. Loop 4 declares the closure of StepTransitions as a first-class `closure` field in the rulebook — every substrate emits it — and asks the questions only it makes askable.",
+    "premise": "Every witness in loops 1-3 reads either a single row or a single edge: whether this transition was traversed, whether this control was satisfied. The step graph itself is cyclic (Fallback and Alternative transitions send work back to earlier steps), and questions about its shape (which steps can be re-entered, which controls must hold on every pass) are reachability over paths of any length. Transitive closure is provably not expressible in first-order logic with aggregates, so no formula answers them. Loop 4 declares the closure of StepTransitions as a first-class \u0060closure\u0060 field in the rulebook \u2014 every substrate emits it \u2014 and asks the questions only it makes askable.",
     "started_at": "2026-09-13T18:00:00-05:00",
     "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WitnessLoop",
     "name": "Loop 4: Structure the executions cannot show",
@@ -174,6 +174,36 @@
     "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WitnessLoop",
     "name": "Loop 17: What is read aloud must be on a page",
     "question_count": 6,
+    "is_complete": false
+  },
+  {
+    "witness_loop_id": "loop-18",
+    "loop_number": 18,
+    "title": "A check you have never seen fail is a check you have never seen work",
+    "premise": "Loops 10 and 11 gave each blocking control a health verdict and loop 15 let people act in the app. Read together, they showed the lockout control that stands between a person and a live machine reading Inoperative while the execution record held a failed check of the very condition it exists to enforce, every step still marked PASS. The question \u0027has this control ever been seen to fail, when the book says it did\u0027 only became askable once both halves existed.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WitnessLoop",
+    "name": "Loop 18: A check you have never seen fail is a check you have never seen work",
+    "question_count": 2,
+    "is_complete": false
+  },
+  {
+    "witness_loop_id": "loop-19",
+    "loop_number": 19,
+    "title": "The die moved, and the record said PASS",
+    "premise": "Loop 18 read the July 9 lockout as a failed check nobody joined to its control. Reading the same run\u0027s deviation note, \u0027residual hydraulic energy released during maintenance; work stopped\u0027, with the safety officer\u0027s eyes showed the register was holding a near miss as a footnote: the die moved while the technician was inside the gap. The record already had a vocabulary for that (a warning sign that requires escalation) and had never used it for this.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WitnessLoop",
+    "name": "Loop 19: The die moved, and the record said PASS",
+    "question_count": 0,
+    "is_complete": false
+  },
+  {
+    "witness_loop_id": "loop-20",
+    "loop_number": 20,
+    "title": "A no cannot become a done",
+    "premise": "Loop 18 joined a failed check to the control it breached and loop 19 recorded the near miss that followed. Reading those together with the technician\u0027s runner showed the exact moment the register failed the technician: it accepted \u0027done\u0027 on a step whose own check had just recorded \u0027no\u0027, and the safety officer\u0027s desk had no place where a breach the register could already compute would appear. Both questions only became askable once a check could name the rule it enforces and a rule could name the column that computes it.",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WitnessLoop",
+    "name": "Loop 20: A no cannot become a done",
+    "question_count": 2,
     "is_complete": false
   }
 ]

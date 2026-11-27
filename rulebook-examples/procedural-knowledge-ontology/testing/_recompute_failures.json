@@ -8264,6 +8264,14 @@
     "severity": "drift"
   },
   {
+    "entity": "StepTransitions",
+    "field": "UnrehearsedControlVersionKey",
+    "formula": "=IF({{IsUnrehearsedControlEntry}}, {{ProcedureVersion}}, \"\")",
+    "record_id": "loto-07-fallback-loto-09",
+    "error": "drift: stored=None python-recompute=''",
+    "severity": "drift"
+  },
+  {
     "entity": "Requirements",
     "field": "HasMeaningfulSample",
     "formula": "={{EvaluationSampleSize}} >= {{MinimumSampleForAssurance}}",
@@ -14155,14 +14163,6 @@
     "entity": "StepExecutions",
     "field": "ControlBreachExecutionKey",
     "formula": "=IF(OR({{ProceededPastBlockingControl}}, {{ViolatesSeparationOfDuties}}, {{IsUnauthorizedApproval}}, {{ClaimsPassWithoutEvidence}}), {{ProcedureExecution}}, \"\")",
-    "record_id": "se-loto0709-07",
-    "error": "drift: stored=None python-recompute=''",
-    "severity": "drift"
-  },
-  {
-    "entity": "StepExecutions",
-    "field": "LateExecutionKey",
-    "formula": "=IF({{IsLate}}, {{ProcedureExecution}}, \"\")",
     "record_id": "se-loto0709-07",
     "error": "drift: stored=None python-recompute=''",
     "severity": "drift"
@@ -20932,6 +20932,30 @@
     "field": "IsComplete",
     "formula": "={{CompletedAt}} <> \"\"",
     "record_id": "loop-17",
+    "error": "drift: stored=False python-recompute=True",
+    "severity": "drift"
+  },
+  {
+    "entity": "WitnessLoops",
+    "field": "IsComplete",
+    "formula": "={{CompletedAt}} <> \"\"",
+    "record_id": "loop-18",
+    "error": "drift: stored=False python-recompute=True",
+    "severity": "drift"
+  },
+  {
+    "entity": "WitnessLoops",
+    "field": "IsComplete",
+    "formula": "={{CompletedAt}} <> \"\"",
+    "record_id": "loop-19",
+    "error": "drift: stored=False python-recompute=True",
+    "severity": "drift"
+  },
+  {
+    "entity": "WitnessLoops",
+    "field": "IsComplete",
+    "formula": "={{CompletedAt}} <> \"\"",
+    "record_id": "loop-20",
     "error": "drift: stored=False python-recompute=True",
     "severity": "drift"
   },
@@ -62289,6 +62313,14 @@
   },
   {
     "entity": "ConditionChecks",
+    "field": "FailedCheckRequirementKey",
+    "formula": "=IF({{Held}} = FALSE, {{EnforcedRequirement}}, \"\")",
+    "record_id": "cc-0708-03-notified",
+    "error": "drift: stored=None python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ConditionChecks",
     "field": "FailedPreconditionExecutionKey",
     "formula": "=IF({{IsFailedPrecondition}}, {{StepExecution}}, \"\")",
     "record_id": "cc-0708-07-zero",
@@ -62299,6 +62331,14 @@
     "entity": "ConditionChecks",
     "field": "ViolatedInvariantExecutionKey",
     "formula": "=IF({{IsViolatedInvariant}}, {{StepExecution}}, \"\")",
+    "record_id": "cc-0708-07-zero",
+    "error": "drift: stored=None python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ConditionChecks",
+    "field": "FailedCheckRequirementKey",
+    "formula": "=IF({{Held}} = FALSE, {{EnforcedRequirement}}, \"\")",
     "record_id": "cc-0708-07-zero",
     "error": "drift: stored=None python-recompute=''",
     "severity": "drift"
@@ -62315,6 +62355,14 @@
     "entity": "ConditionChecks",
     "field": "ViolatedInvariantExecutionKey",
     "formula": "=IF({{IsViolatedInvariant}}, {{StepExecution}}, \"\")",
+    "record_id": "cc-0708-07-locks",
+    "error": "drift: stored=None python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ConditionChecks",
+    "field": "FailedCheckRequirementKey",
+    "formula": "=IF({{Held}} = FALSE, {{EnforcedRequirement}}, \"\")",
     "record_id": "cc-0708-07-locks",
     "error": "drift: stored=None python-recompute=''",
     "severity": "drift"
@@ -62331,6 +62379,14 @@
     "entity": "ConditionChecks",
     "field": "ViolatedInvariantExecutionKey",
     "formula": "=IF({{IsViolatedInvariant}}, {{StepExecution}}, \"\")",
+    "record_id": "cc-0709-03-notified",
+    "error": "drift: stored=None python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ConditionChecks",
+    "field": "FailedCheckRequirementKey",
+    "formula": "=IF({{Held}} = FALSE, {{EnforcedRequirement}}, \"\")",
     "record_id": "cc-0709-03-notified",
     "error": "drift: stored=None python-recompute=''",
     "severity": "drift"
@@ -62363,6 +62419,14 @@
     "entity": "ConditionChecks",
     "field": "ViolatedInvariantExecutionKey",
     "formula": "=IF({{IsViolatedInvariant}}, {{StepExecution}}, \"\")",
+    "record_id": "cc-dep0301-04-approved",
+    "error": "drift: stored=None python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ConditionChecks",
+    "field": "FailedCheckRequirementKey",
+    "formula": "=IF({{Held}} = FALSE, {{EnforcedRequirement}}, \"\")",
     "record_id": "cc-dep0301-04-approved",
     "error": "drift: stored=None python-recompute=''",
     "severity": "drift"

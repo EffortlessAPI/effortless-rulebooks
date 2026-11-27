@@ -238,5 +238,50 @@
     "derived_after": null,
     "witnessed_after": null,
     "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WitnessLoop"
+  },
+  {
+    "witness_loop_id": "loop-18",
+    "name": "Loop 18: A check you have never seen fail is a check you have never seen work",
+    "loop_number": 18,
+    "title": "A check you have never seen fail is a check you have never seen work",
+    "premise": "Loops 10 and 11 gave each blocking control a health verdict and loop 15 let people act in the app. Read together, they showed the lockout control that stands between a person and a live machine reading Inoperative while the execution record held a failed check of the very condition it exists to enforce, every step still marked PASS. The question 'has this control ever been seen to fail, when the book says it did' only became askable once both halves existed.",
+    "started_at": null,
+    "completed_at": null,
+    "question_count": 2,
+    "is_complete": false,
+    "fields_after": null,
+    "derived_after": null,
+    "witnessed_after": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WitnessLoop"
+  },
+  {
+    "witness_loop_id": "loop-19",
+    "name": "Loop 19: The die moved, and the record said PASS",
+    "loop_number": 19,
+    "title": "The die moved, and the record said PASS",
+    "premise": "Loop 18 read the July 9 lockout as a failed check nobody joined to its control. Reading the same run's deviation note, 'residual hydraulic energy released during maintenance; work stopped', with the safety officer's eyes showed the register was holding a near miss as a footnote: the die moved while the technician was inside the gap. The record already had a vocabulary for that (a warning sign that requires escalation) and had never used it for this.",
+    "started_at": null,
+    "completed_at": null,
+    "question_count": 0,
+    "is_complete": false,
+    "fields_after": null,
+    "derived_after": null,
+    "witnessed_after": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WitnessLoop"
+  },
+  {
+    "witness_loop_id": "loop-20",
+    "name": "Loop 20: A no cannot become a done",
+    "loop_number": 20,
+    "title": "A no cannot become a done",
+    "premise": "Loop 18 joined a failed check to the control it breached and loop 19 recorded the near miss that followed. Reading those together with the technician's runner showed the exact moment the register failed the technician: it accepted 'done' on a step whose own check had just recorded 'no', and the safety officer's desk had no place where a breach the register could already compute would appear. Both questions only became askable once a check could name the rule it enforces and a rule could name the column that computes it.",
+    "started_at": null,
+    "completed_at": null,
+    "question_count": 2,
+    "is_complete": false,
+    "fields_after": null,
+    "derived_after": null,
+    "witnessed_after": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#WitnessLoop"
   }
 ]

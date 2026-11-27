@@ -1,0 +1,112 @@
+[
+  {
+    "knowledge_deliverable_id": "kd-quillstone-digest",
+    "direction": "ToClient",
+    "title": "Quarterly regulatory interpretation digest",
+    "due_at": "2026-04-01 05:00:00+00:00",
+    "delivered_at": "2026-04-03 05:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeDeliverable",
+    "name": "pe-hb-quillstone ToClient: Quarterly regulatory interpretation digest",
+    "provider_engagement": "pe-hb-quillstone",
+    "is_delivered": true
+  },
+  {
+    "knowledge_deliverable_id": "kd-harborline-changelog",
+    "direction": "ToClient",
+    "title": "Monthly invoice process change log",
+    "due_at": "2026-06-30 05:00:00+00:00",
+    "delivered_at": "2026-07-01 05:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeDeliverable",
+    "name": "pe-hb-harborline ToClient: Monthly invoice process change log",
+    "provider_engagement": "pe-hb-harborline",
+    "is_delivered": true
+  },
+  {
+    "knowledge_deliverable_id": "kd-harborline-policy",
+    "direction": "ToProvider",
+    "title": "Payables policy updates",
+    "due_at": "2026-02-01 06:00:00+00:00",
+    "delivered_at": "2026-01-28 06:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeDeliverable",
+    "name": "pe-hb-harborline ToProvider: Payables policy updates",
+    "provider_engagement": "pe-hb-harborline",
+    "is_delivered": true
+  },
+  {
+    "knowledge_deliverable_id": "kd-baxter-procedures",
+    "direction": "ToClient",
+    "title": "Press overhaul procedure pack",
+    "due_at": "2026-05-31 05:00:00+00:00",
+    "delivered_at": "2026-05-29 05:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeDeliverable",
+    "name": "pe-plant-baxter ToClient: Press overhaul procedure pack",
+    "provider_engagement": "pe-plant-baxter",
+    "is_delivered": true
+  },
+  {
+    "knowledge_deliverable_id": "kd-baxter-incidents",
+    "direction": "ToProvider",
+    "title": "Press 7 incident and gauge data",
+    "due_at": "2026-07-15 05:00:00+00:00",
+    "delivered_at": "2026-07-12 05:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeDeliverable",
+    "name": "pe-plant-baxter ToProvider: Press 7 incident and gauge data",
+    "provider_engagement": "pe-plant-baxter",
+    "is_delivered": true
+  },
+  {
+    "knowledge_deliverable_id": "kd-baxter-failure-catalog",
+    "direction": "Joint",
+    "title": "Shared hydraulic failure-mode catalog",
+    "due_at": "2026-07-01 05:00:00+00:00",
+    "delivered_at": null,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeDeliverable",
+    "name": "pe-plant-baxter Joint: Shared hydraulic failure-mode catalog",
+    "provider_engagement": "pe-plant-baxter",
+    "is_delivered": false
+  },
+  {
+    "knowledge_deliverable_id": "kd-northstar-history",
+    "direction": "ToProvider",
+    "title": "Labelled change history export",
+    "due_at": "2025-09-01 05:00:00+00:00",
+    "delivered_at": "2025-08-28 05:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeDeliverable",
+    "name": "pe-eng-northstar ToProvider: Labelled change history export",
+    "provider_engagement": "pe-eng-northstar",
+    "is_delivered": true
+  },
+  {
+    "knowledge_deliverable_id": "kd-lattice-models",
+    "direction": "ToClient",
+    "title": "Valuation model hand-over",
+    "due_at": "2025-06-30 05:00:00+00:00",
+    "delivered_at": "2025-06-30 05:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeDeliverable",
+    "name": "pe-corp-lattice ToClient: Valuation model hand-over",
+    "provider_engagement": "pe-corp-lattice",
+    "is_delivered": true
+  },
+  {
+    "knowledge_deliverable_id": "kd-lattice-context",
+    "direction": "ToProvider",
+    "title": "Integration history of prior acquisitions",
+    "due_at": "2024-03-01 06:00:00+00:00",
+    "delivered_at": "2024-03-01 06:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeDeliverable",
+    "name": "pe-corp-lattice ToProvider: Integration history of prior acquisitions",
+    "provider_engagement": "pe-corp-lattice",
+    "is_delivered": true
+  },
+  {
+    "knowledge_deliverable_id": "kd-lattice-playbook",
+    "direction": "Joint",
+    "title": "Joint diligence playbook",
+    "due_at": "2025-12-31 06:00:00+00:00",
+    "delivered_at": "2025-12-15 06:00:00+00:00",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#KnowledgeDeliverable",
+    "name": "pe-corp-lattice Joint: Joint diligence playbook",
+    "provider_engagement": "pe-corp-lattice",
+    "is_delivered": true
+  }
+]

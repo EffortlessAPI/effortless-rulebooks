@@ -1325,8 +1325,8 @@ ALTER TABLE communication_policies ADD COLUMN IF NOT EXISTS procedure_version TE
 ALTER TABLE communication_policies ADD COLUMN IF NOT EXISTS channel TEXT;                           -- Email, SMS, Push, Postal, or another declared channel.
 ALTER TABLE communication_policies ADD COLUMN IF NOT EXISTS audience_rule TEXT;                     -- Rule that identifies eligible recipients.
 ALTER TABLE communication_policies ADD COLUMN IF NOT EXISTS consent_required BOOLEAN;               -- Whether active consent is required.
-ALTER TABLE communication_policies ADD COLUMN IF NOT EXISTS quiet_hours_start DATE;                 -- Recipient-local quiet-hours start.
-ALTER TABLE communication_policies ADD COLUMN IF NOT EXISTS quiet_hours_end DATE;                   -- Recipient-local quiet-hours end.
+ALTER TABLE communication_policies ADD COLUMN IF NOT EXISTS quiet_hours_start TEXT;                 -- Recipient-local quiet-hours start.
+ALTER TABLE communication_policies ADD COLUMN IF NOT EXISTS quiet_hours_end TEXT;                   -- Recipient-local quiet-hours end.
 ALTER TABLE communication_policies ADD COLUMN IF NOT EXISTS max_message_length INTEGER;             -- Maximum message length for one unit.
 ALTER TABLE communication_policies ADD COLUMN IF NOT EXISTS max_segments INTEGER;                   -- Maximum number of channel segments.
 ALTER TABLE communication_policies ADD COLUMN IF NOT EXISTS retention_days INTEGER;                 -- Retention period for rendered messages and delivery records.
@@ -1546,6 +1546,7 @@ ALTER TABLE exception_invocations ADD COLUMN IF NOT EXISTS approved_by_agent TEX
 ALTER TABLE exception_invocations ADD COLUMN IF NOT EXISTS invoked_at TIMESTAMPTZ;                  -- When the exception was invoked.
 ALTER TABLE exception_invocations ADD COLUMN IF NOT EXISTS handling_applied TEXT;                   -- What was actually done, in the invoker's words.
 ALTER TABLE exception_invocations ADD COLUMN IF NOT EXISTS semantic_type_iri TEXT;                  -- Extension IRI — PKO does not define exception invocation.
+ALTER TABLE exception_invocations ALTER COLUMN semantic_type_iri SET DEFAULT 'https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#ExceptionInvocation';
 COMMENT ON TABLE exception_invocations IS 'ExceptionInvocations (added by witness loop 1).';
 COMMENT ON COLUMN exception_invocations.exception_invocation_id IS 'Stored logical identifier for one ExceptionInvocations row.';
 COMMENT ON COLUMN exception_invocations.step_execution IS 'The execution during which the exception was invoked.';
@@ -1569,6 +1570,7 @@ ALTER TABLE verification_outcomes ADD COLUMN IF NOT EXISTS observed_by_agent TEX
 ALTER TABLE verification_outcomes ADD COLUMN IF NOT EXISTS observed_at TIMESTAMPTZ;                 -- When the signal was observed.
 ALTER TABLE verification_outcomes ADD COLUMN IF NOT EXISTS evidence_uri TEXT;                       -- Pointer to the retained artifact backing the observation.
 ALTER TABLE verification_outcomes ADD COLUMN IF NOT EXISTS semantic_type_iri TEXT;                  -- Extension IRI — PKO 2.0.0 has no execution-side verification outcome class.
+ALTER TABLE verification_outcomes ALTER COLUMN semantic_type_iri SET DEFAULT 'https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#VerificationOutcome';
 COMMENT ON TABLE verification_outcomes IS 'VerificationOutcomes (added by witness loop 1).';
 COMMENT ON COLUMN verification_outcomes.verification_outcome_id IS 'Stored logical identifier for one VerificationOutcomes row.';
 COMMENT ON COLUMN verification_outcomes.step_execution IS 'The execution during which the verification was performed.';
@@ -6742,7 +6744,6 @@ CREATE INDEX IF NOT EXISTS idx_procedure_types_distinguishing_facet ON procedure
 CREATE INDEX IF NOT EXISTS idx_procedures_procedure_type ON procedures (procedure_type);
 CREATE INDEX IF NOT EXISTS idx_procedures_owner_organization ON procedures (owner_organization);
 CREATE INDEX IF NOT EXISTS idx_procedures_adopted_by_organization ON procedures (adopted_by_organization);
-CREATE INDEX IF NOT EXISTS idx_procedures_current_version_key ON procedures (current_version_key);
 CREATE INDEX IF NOT EXISTS idx_procedures_template_procedure ON procedures (template_procedure);
 CREATE INDEX IF NOT EXISTS idx_procedures_required_by_regulation ON procedures (required_by_regulation);
 
@@ -6809,7 +6810,6 @@ CREATE INDEX IF NOT EXISTS idx_step_verifications_step ON step_verifications (st
 -- Rationales
 CREATE INDEX IF NOT EXISTS idx_rationales_procedure_version ON rationales (procedure_version);
 CREATE INDEX IF NOT EXISTS idx_rationales_step ON rationales (step);
-CREATE INDEX IF NOT EXISTS idx_rationales_status ON rationales (status);
 CREATE INDEX IF NOT EXISTS idx_rationales_authority_role ON rationales (authority_role);
 
 -- Exceptions
@@ -6819,7 +6819,6 @@ CREATE INDEX IF NOT EXISTS idx_exceptions_approval_role ON exceptions (approval_
 CREATE INDEX IF NOT EXISTS idx_exceptions_fallback_role ON exceptions (fallback_role);
 
 -- Resources
-CREATE INDEX IF NOT EXISTS idx_resources_approval_status ON resources (approval_status);
 CREATE INDEX IF NOT EXISTS idx_resources_created_by_agent ON resources (created_by_agent);
 CREATE INDEX IF NOT EXISTS idx_resources_modified_by_agent ON resources (modified_by_agent);
 CREATE INDEX IF NOT EXISTS idx_resources_extracted_from_resource ON resources (extracted_from_resource);
@@ -6836,7 +6835,6 @@ CREATE INDEX IF NOT EXISTS idx_elicitation_sessions_procedure_version ON elicita
 CREATE INDEX IF NOT EXISTS idx_elicitation_sessions_method ON elicitation_sessions (method);
 CREATE INDEX IF NOT EXISTS idx_elicitation_sessions_practitioner_agent ON elicitation_sessions (practitioner_agent);
 CREATE INDEX IF NOT EXISTS idx_elicitation_sessions_facilitator_agent ON elicitation_sessions (facilitator_agent);
-CREATE INDEX IF NOT EXISTS idx_elicitation_sessions_status ON elicitation_sessions (status);
 CREATE INDEX IF NOT EXISTS idx_elicitation_sessions_evaluation_context ON elicitation_sessions (evaluation_context);
 
 -- KnowledgeFragments
@@ -6880,7 +6878,6 @@ CREATE INDEX IF NOT EXISTS idx_procedure_executions_stopped_at_knowledge_gap ON 
 CREATE INDEX IF NOT EXISTS idx_step_executions_procedure_execution ON step_executions (procedure_execution);
 CREATE INDEX IF NOT EXISTS idx_step_executions_step ON step_executions (step);
 CREATE INDEX IF NOT EXISTS idx_step_executions_executed_by_agent ON step_executions (executed_by_agent);
-CREATE INDEX IF NOT EXISTS idx_step_executions_execution_status ON step_executions (execution_status);
 CREATE INDEX IF NOT EXISTS idx_step_executions_previous_step_execution ON step_executions (previous_step_execution);
 CREATE INDEX IF NOT EXISTS idx_step_executions_confirmed_by_agent ON step_executions (confirmed_by_agent);
 
@@ -6904,7 +6901,6 @@ CREATE INDEX IF NOT EXISTS idx_user_questions_addressed_by_resource ON user_ques
 -- UserFeedback
 CREATE INDEX IF NOT EXISTS idx_user_feedback_procedure_execution ON user_feedback (procedure_execution);
 CREATE INDEX IF NOT EXISTS idx_user_feedback_provided_by_agent ON user_feedback (provided_by_agent);
-CREATE INDEX IF NOT EXISTS idx_user_feedback_change_request_key ON user_feedback (change_request_key);
 
 -- StewardshipAssignments
 CREATE INDEX IF NOT EXISTS idx_stewardship_assignments_procedure_version ON stewardship_assignments (procedure_version);
@@ -6943,7 +6939,6 @@ CREATE INDEX IF NOT EXISTS idx_communication_policies_approval_role ON communica
 -- MessageTemplates
 CREATE INDEX IF NOT EXISTS idx_message_templates_communication_policy ON message_templates (communication_policy);
 CREATE INDEX IF NOT EXISTS idx_message_templates_resource ON message_templates (resource);
-CREATE INDEX IF NOT EXISTS idx_message_templates_status ON message_templates (status);
 CREATE INDEX IF NOT EXISTS idx_message_templates_last_valid_approval ON message_templates (last_valid_approval);
 
 -- SemanticMappings
@@ -6954,11 +6949,9 @@ CREATE INDEX IF NOT EXISTS idx_role_questions_asking_role ON role_questions (ask
 CREATE INDEX IF NOT EXISTS idx_role_questions_witness_loop ON role_questions (witness_loop);
 
 -- RulebookFields
-CREATE INDEX IF NOT EXISTS idx_rulebook_fields_target_table ON rulebook_fields (target_table);
 CREATE INDEX IF NOT EXISTS idx_rulebook_fields_invented_for_question ON rulebook_fields (invented_for_question);
 
 -- TestCases
-CREATE INDEX IF NOT EXISTS idx_test_cases_target_table ON test_cases (target_table);
 CREATE INDEX IF NOT EXISTS idx_test_cases_defends_question ON test_cases (defends_question);
 CREATE INDEX IF NOT EXISTS idx_test_cases_suite ON test_cases (suite);
 
@@ -6995,7 +6988,6 @@ CREATE INDEX IF NOT EXISTS idx_message_deliveries_evaluation_context ON message_
 CREATE INDEX IF NOT EXISTS idx_template_approvals_message_template ON template_approvals (message_template);
 CREATE INDEX IF NOT EXISTS idx_template_approvals_decided_by_agent ON template_approvals (decided_by_agent);
 CREATE INDEX IF NOT EXISTS idx_template_approvals_decided_in_role ON template_approvals (decided_in_role);
-CREATE INDEX IF NOT EXISTS idx_template_approvals_decision ON template_approvals (decision);
 
 -- SendIntents
 CREATE INDEX IF NOT EXISTS idx_send_intents_procedure_execution ON send_intents (procedure_execution);
@@ -7026,7 +7018,6 @@ CREATE INDEX IF NOT EXISTS idx_authority_boundaries_step ON authority_boundaries
 CREATE INDEX IF NOT EXISTS idx_authority_boundaries_ratified_by_knowledge_fragment ON authority_boundaries (ratified_by_knowledge_fragment);
 CREATE INDEX IF NOT EXISTS idx_authority_boundaries_enforcing_requirement ON authority_boundaries (enforcing_requirement);
 CREATE INDEX IF NOT EXISTS idx_authority_boundaries_authority_role ON authority_boundaries (authority_role);
-CREATE INDEX IF NOT EXISTS idx_authority_boundaries_status ON authority_boundaries (status);
 CREATE INDEX IF NOT EXISTS idx_authority_boundaries_evaluation_context ON authority_boundaries (evaluation_context);
 
 -- BindingObservations
@@ -7051,9 +7042,6 @@ CREATE INDEX IF NOT EXISTS idx_app_route_questions_question ON app_route_questio
 -- AppRouteReferences
 CREATE INDEX IF NOT EXISTS idx_app_route_references_from_route ON app_route_references (from_route);
 CREATE INDEX IF NOT EXISTS idx_app_route_references_to_route ON app_route_references (to_route);
-
--- RulebookTables
-CREATE INDEX IF NOT EXISTS idx_rulebook_tables_table_name ON rulebook_tables (table_name);
 
 -- AccessPrincipals
 CREATE INDEX IF NOT EXISTS idx_access_principals_domain_role ON access_principals (domain_role);
@@ -7152,7 +7140,6 @@ CREATE INDEX IF NOT EXISTS idx_method_applications_applied_to_grounding_snapshot
 CREATE INDEX IF NOT EXISTS idx_method_applications_identified_broker ON method_applications (identified_broker);
 
 -- LifecycleStatuses
-CREATE INDEX IF NOT EXISTS idx_lifecycle_statuses_label ON lifecycle_statuses (label);
 CREATE INDEX IF NOT EXISTS idx_lifecycle_statuses_workflow_status_concept ON lifecycle_statuses (workflow_status_concept);
 
 -- Facilities
@@ -7238,19 +7225,10 @@ CREATE INDEX IF NOT EXISTS idx_execution_participants_agent ON execution_partici
 CREATE INDEX IF NOT EXISTS idx_step_resources_step ON step_resources (step);
 CREATE INDEX IF NOT EXISTS idx_step_resources_resource ON step_resources (resource);
 
--- FaqCategories
-CREATE INDEX IF NOT EXISTS idx_faq_categories_label ON faq_categories (label);
-
--- FaqTargets
-CREATE INDEX IF NOT EXISTS idx_faq_targets_label ON faq_targets (label);
-
 -- AuthoringSubmissions
 CREATE INDEX IF NOT EXISTS idx_authoring_submissions_procedure_version ON authoring_submissions (procedure_version);
 CREATE INDEX IF NOT EXISTS idx_authoring_submissions_submitted_by_agent ON authoring_submissions (submitted_by_agent);
 CREATE INDEX IF NOT EXISTS idx_authoring_submissions_authoring_tool ON authoring_submissions (authoring_tool);
-
--- ProcessKnowledgeLevels
-CREATE INDEX IF NOT EXISTS idx_process_knowledge_levels_label ON process_knowledge_levels (label);
 
 -- LevelCaptureStrategies
 CREATE INDEX IF NOT EXISTS idx_level_capture_strategies_level ON level_capture_strategies (level);
@@ -7356,9 +7334,6 @@ CREATE INDEX IF NOT EXISTS idx_role_capability_tags_capability_term ON role_capa
 -- ProcedureFacetAssignments
 CREATE INDEX IF NOT EXISTS idx_procedure_facet_assignments_procedure ON procedure_facet_assignments (procedure);
 CREATE INDEX IF NOT EXISTS idx_procedure_facet_assignments_facet ON procedure_facet_assignments (facet);
-
--- EncodingLifecycleStages
-CREATE INDEX IF NOT EXISTS idx_encoding_lifecycle_stages_label ON encoding_lifecycle_stages (label);
 
 -- KnowledgeConsumerSystems
 CREATE INDEX IF NOT EXISTS idx_knowledge_consumer_systems_organization ON knowledge_consumer_systems (organization);
@@ -7486,7 +7461,6 @@ CREATE INDEX IF NOT EXISTS idx_governed_models_procedure ON governed_models (pro
 CREATE INDEX IF NOT EXISTS idx_governed_models_domain_owning_organization ON governed_models (domain_owning_organization);
 CREATE INDEX IF NOT EXISTS idx_governed_models_tooling_owner_role ON governed_models (tooling_owner_role);
 CREATE INDEX IF NOT EXISTS idx_governed_models_current_charter ON governed_models (current_charter);
-CREATE INDEX IF NOT EXISTS idx_governed_models_current_release ON governed_models (current_release);
 CREATE INDEX IF NOT EXISTS idx_governed_models_evaluation_context ON governed_models (evaluation_context);
 
 -- ModelCharters
@@ -7751,7 +7725,6 @@ CREATE INDEX IF NOT EXISTS idx_elicitation_participants_agent ON elicitation_par
 -- RepresentationReviews
 CREATE INDEX IF NOT EXISTS idx_representation_reviews_procedure_version ON representation_reviews (procedure_version);
 CREATE INDEX IF NOT EXISTS idx_representation_reviews_reviewer_agent ON representation_reviews (reviewer_agent);
-CREATE INDEX IF NOT EXISTS idx_representation_reviews_decision ON representation_reviews (decision);
 
 -- WorkflowViewDivergences
 CREATE INDEX IF NOT EXISTS idx_workflow_view_divergences_elicitation_session ON workflow_view_divergences (elicitation_session);
@@ -7904,7 +7877,6 @@ CREATE INDEX IF NOT EXISTS idx_app_action_fields_target_field ON app_action_fiel
 CREATE INDEX IF NOT EXISTS idx_abundant_knowledge_gaps_represented_by_table ON abundant_knowledge_gaps (represented_by_table);
 
 -- OntologySupportProgrammes
-CREATE INDEX IF NOT EXISTS idx_ontology_support_programmes_acronym ON ontology_support_programmes (acronym);
 CREATE INDEX IF NOT EXISTS idx_ontology_support_programmes_evaluation_context ON ontology_support_programmes (evaluation_context);
 
--- 741 FK index(es) declared.
+-- 721 FK index(es) declared.

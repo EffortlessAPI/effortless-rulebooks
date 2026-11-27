@@ -263,6 +263,34 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             get => F.AsBool(F.Memo(this, "IsUntracedBoundConstraint", () => F.And(F.Bool3(F.Of(this.IsBoundToAnyStep)), F.Bool3(F.Eq(F.Of(this.ConstraintTraceCount), F.I(0)))))); set { }
         }
 
+        // Formula RecordedPassCount (rulebook: =SUMIFS(StepRequirements!{{PassCountOnStep}}, StepRequirements!{{Requirement}}, {{RequirementId}}))
+        [NotMapped]
+        public int? RecordedPassCount
+        {
+            get => F.AsInt(F.Memo(this, "RecordedPassCount", () => F.Integer((base.SoAContext == null ? F.Null : F.SumIfs(F.Rows<StepRequirement>(base.SoAContext, "StepRequirements", __c => __c.StepRequirements), __r => F.CritField(F.Of(__r.Requirement), F.Of(this.RequirementId)), __r => F.Of(__r.PassCountOnStep), null))))); set { }
+        }
+
+        // Formula IsPassedButNeverEvaluated (rulebook: =AND({{IsInoperativeControl}}, {{RecordedPassCount}} > 0))
+        [NotMapped]
+        public bool? IsPassedButNeverEvaluated
+        {
+            get => F.AsBool(F.Memo(this, "IsPassedButNeverEvaluated", () => F.And(F.Bool3(F.Of(this.IsInoperativeControl)), F.Bool3(F.Cmp(F.Of(this.RecordedPassCount), ">", F.I(0)))))); set { }
+        }
+
+        // Formula FailedCheckCount (rulebook: =COUNTIFS(ConditionChecks!{{FailedCheckRequirementKey}}, {{RequirementId}}))
+        [NotMapped]
+        public int? FailedCheckCount
+        {
+            get => F.AsInt(F.Memo(this, "FailedCheckCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Rows<ConditionCheck>(base.SoAContext, "ConditionChecks", __c => __c.ConditionChecks), __r => F.CritField(F.Of(__r.FailedCheckRequirementKey), F.Of(this.RequirementId))))))); set { }
+        }
+
+        // Formula IsBreachedButNeverFailed (rulebook: =AND({{FailedCheckCount}} > 0, NOT({{HasEverProducedNegative}})))
+        [NotMapped]
+        public bool? IsBreachedButNeverFailed
+        {
+            get => F.AsBool(F.Memo(this, "IsBreachedButNeverFailed", () => F.And(F.Bool3(F.Cmp(F.Of(this.FailedCheckCount), ">", F.I(0))), F.Bool3(F.Not(F.Bool3(F.Of(this.HasEverProducedNegative))))))); set { }
+        }
+
 
         public string? AccountableRole { get; set; }
         public string? ControlledTerm { get; set; }
@@ -565,6 +593,61 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             }
         }
 
+        private ObservableCollection<StepCondition> _stepConditions;
+
+        [InverseProperty("Requirement")]
+        public virtual ObservableCollection<StepCondition> StepConditions
+        {
+            get
+            {
+                if (_stepConditions == null)
+                {
+                    if (base.SoAContext == null)
+                    {
+                        if (SoAEFContext.ThrowErrorOnContextMissing)
+                        {
+                            throw new InvalidOperationException("Cannot access StepConditions - no database context is set. RequirementId: " + this.RequirementId + ".");
+                        }
+                        _stepConditions = new ObservableCollection<StepCondition>();
+                    }
+                    else
+                    {
+                        var items = base.SoAContext.StepConditions.Where(x => x.EnforcesRequirement == this.RequirementId).ToList<StepCondition>();
+                        _stepConditions = new ObservableCollection<StepCondition>(items);
+                        if (items.Any())
+                        {
+                            base.SoAContext.AttachRange(items);
+                        }
+                    }
+                    _stepConditions.CollectionChanged += StepConditions_CollectionChanged;
+                }
+                return _stepConditions;
+            }
+            private set
+            {
+                if (_stepConditions != null)
+                {
+                    _stepConditions.CollectionChanged -= StepConditions_CollectionChanged;
+                }
+                _stepConditions = value;
+                if (_stepConditions != null)
+                {
+                    _stepConditions.CollectionChanged += StepConditions_CollectionChanged;
+                }
+            }
+        }
+
+        private void StepConditions_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e?.NewItems != null)
+            {
+                foreach (var item in e.NewItems.Cast<StepCondition>())
+                {
+                    item.EnforcesRequirement = this.RequirementId;
+                }
+            }
+        }
+
         private ObservableCollection<AnswerRequirementCheck> _answerRequirementChecks;
 
         [InverseProperty("RequirementRef")]
@@ -684,6 +767,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
             _ = this.StepRequirements;
             _ = this.RequirementSatisfactions;
             _ = this.AuthorityBoundaries;
+            _ = this.StepConditions;
             _ = this.AnswerRequirementChecks;
             _ = this.KnowledgeTraces;
         }

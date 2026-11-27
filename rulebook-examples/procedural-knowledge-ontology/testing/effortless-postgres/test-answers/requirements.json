@@ -46,7 +46,11 @@
     "regulatory_framework": null,
     "is_regulatory_requirement": false,
     "constraint_trace_count": 0,
-    "is_untraced_bound_constraint": true
+    "is_untraced_bound_constraint": true,
+    "recorded_pass_count": 1,
+    "is_passed_but_never_evaluated": false,
+    "failed_check_count": 0,
+    "is_breached_but_never_failed": false
   },
   {
     "requirement_id": "req-close-cutoff",
@@ -95,7 +99,11 @@
     "regulatory_framework": null,
     "is_regulatory_requirement": false,
     "constraint_trace_count": 0,
-    "is_untraced_bound_constraint": true
+    "is_untraced_bound_constraint": true,
+    "recorded_pass_count": 1,
+    "is_passed_but_never_evaluated": false,
+    "failed_check_count": 0,
+    "is_breached_but_never_failed": false
   },
   {
     "requirement_id": "req-close-evidence",
@@ -144,7 +152,11 @@
     "regulatory_framework": null,
     "is_regulatory_requirement": false,
     "constraint_trace_count": 0,
-    "is_untraced_bound_constraint": true
+    "is_untraced_bound_constraint": true,
+    "recorded_pass_count": 2,
+    "is_passed_but_never_evaluated": false,
+    "failed_check_count": 0,
+    "is_breached_but_never_failed": false
   },
   {
     "requirement_id": "req-close-human-approval",
@@ -193,7 +205,11 @@
     "regulatory_framework": null,
     "is_regulatory_requirement": false,
     "constraint_trace_count": 0,
-    "is_untraced_bound_constraint": true
+    "is_untraced_bound_constraint": true,
+    "recorded_pass_count": 1,
+    "is_passed_but_never_evaluated": false,
+    "failed_check_count": 0,
+    "is_breached_but_never_failed": false
   },
   {
     "requirement_id": "req-close-separation",
@@ -242,7 +258,11 @@
     "regulatory_framework": null,
     "is_regulatory_requirement": false,
     "constraint_trace_count": 0,
-    "is_untraced_bound_constraint": true
+    "is_untraced_bound_constraint": true,
+    "recorded_pass_count": 1,
+    "is_passed_but_never_evaluated": false,
+    "failed_check_count": 0,
+    "is_breached_but_never_failed": false
   },
   {
     "requirement_id": "req-deploy-approval",
@@ -291,7 +311,11 @@
     "regulatory_framework": "reg-change-control",
     "is_regulatory_requirement": true,
     "constraint_trace_count": 1,
-    "is_untraced_bound_constraint": false
+    "is_untraced_bound_constraint": false,
+    "recorded_pass_count": 2,
+    "is_passed_but_never_evaluated": true,
+    "failed_check_count": 0,
+    "is_breached_but_never_failed": false
   },
   {
     "requirement_id": "req-loto-personal-lock",
@@ -340,7 +364,11 @@
     "regulatory_framework": "reg-hazardous-energy",
     "is_regulatory_requirement": true,
     "constraint_trace_count": 0,
-    "is_untraced_bound_constraint": true
+    "is_untraced_bound_constraint": true,
+    "recorded_pass_count": 3,
+    "is_passed_but_never_evaluated": true,
+    "failed_check_count": 1,
+    "is_breached_but_never_failed": true
   },
   {
     "requirement_id": "req-loto-zero-energy",
@@ -389,7 +417,11 @@
     "regulatory_framework": "reg-hazardous-energy",
     "is_regulatory_requirement": true,
     "constraint_trace_count": 1,
-    "is_untraced_bound_constraint": false
+    "is_untraced_bound_constraint": false,
+    "recorded_pass_count": 6,
+    "is_passed_but_never_evaluated": true,
+    "failed_check_count": 1,
+    "is_breached_but_never_failed": true
   },
   {
     "requirement_id": "req-policy-accessibility",
@@ -438,7 +470,11 @@
     "regulatory_framework": null,
     "is_regulatory_requirement": false,
     "constraint_trace_count": 0,
-    "is_untraced_bound_constraint": true
+    "is_untraced_bound_constraint": true,
+    "recorded_pass_count": 0,
+    "is_passed_but_never_evaluated": false,
+    "failed_check_count": 0,
+    "is_breached_but_never_failed": false
   },
   {
     "requirement_id": "req-policy-consent",
@@ -487,7 +523,11 @@
     "regulatory_framework": null,
     "is_regulatory_requirement": false,
     "constraint_trace_count": 0,
-    "is_untraced_bound_constraint": true
+    "is_untraced_bound_constraint": true,
+    "recorded_pass_count": 0,
+    "is_passed_but_never_evaluated": false,
+    "failed_check_count": 0,
+    "is_breached_but_never_failed": false
   },
   {
     "requirement_id": "req-policy-human-approval",
@@ -536,7 +576,11 @@
     "regulatory_framework": null,
     "is_regulatory_requirement": false,
     "constraint_trace_count": 0,
-    "is_untraced_bound_constraint": true
+    "is_untraced_bound_constraint": true,
+    "recorded_pass_count": 0,
+    "is_passed_but_never_evaluated": false,
+    "failed_check_count": 0,
+    "is_breached_but_never_failed": false
   },
   {
     "requirement_id": "req-policy-legal",
@@ -585,7 +629,11 @@
     "regulatory_framework": null,
     "is_regulatory_requirement": false,
     "constraint_trace_count": 0,
-    "is_untraced_bound_constraint": true
+    "is_untraced_bound_constraint": true,
+    "recorded_pass_count": 1,
+    "is_passed_but_never_evaluated": false,
+    "failed_check_count": 0,
+    "is_breached_but_never_failed": false
   },
   {
     "requirement_id": "req-policy-optout",
@@ -634,7 +682,11 @@
     "regulatory_framework": null,
     "is_regulatory_requirement": false,
     "constraint_trace_count": 0,
-    "is_untraced_bound_constraint": true
+    "is_untraced_bound_constraint": true,
+    "recorded_pass_count": 0,
+    "is_passed_but_never_evaluated": false,
+    "failed_check_count": 0,
+    "is_breached_but_never_failed": false
   },
   {
     "requirement_id": "req-policy-quiet-hours",
@@ -683,7 +735,11 @@
     "regulatory_framework": null,
     "is_regulatory_requirement": false,
     "constraint_trace_count": 0,
-    "is_untraced_bound_constraint": true
+    "is_untraced_bound_constraint": true,
+    "recorded_pass_count": 0,
+    "is_passed_but_never_evaluated": false,
+    "failed_check_count": 0,
+    "is_breached_but_never_failed": false
   },
   {
     "requirement_id": "req-policy-retention",
@@ -732,7 +788,11 @@
     "regulatory_framework": null,
     "is_regulatory_requirement": false,
     "constraint_trace_count": 0,
-    "is_untraced_bound_constraint": true
+    "is_untraced_bound_constraint": true,
+    "recorded_pass_count": 0,
+    "is_passed_but_never_evaluated": false,
+    "failed_check_count": 0,
+    "is_breached_but_never_failed": false
   },
   {
     "requirement_id": "req-policy-source",
@@ -781,6 +841,10 @@
     "regulatory_framework": null,
     "is_regulatory_requirement": false,
     "constraint_trace_count": 0,
-    "is_untraced_bound_constraint": true
+    "is_untraced_bound_constraint": true,
+    "recorded_pass_count": 1,
+    "is_passed_but_never_evaluated": false,
+    "failed_check_count": 0,
+    "is_breached_but_never_failed": false
   }
 ]

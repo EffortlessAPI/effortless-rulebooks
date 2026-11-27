@@ -1,0 +1,41 @@
+[
+  {
+    "domain_coverage_area_id": "dca-procedures",
+    "area_label": "Procedure specifications",
+    "required_concept": "What should happen",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#DomainCoverageArea",
+    "name": "Procedure specifications",
+    "governed_model": "gm-pko-rulebook",
+    "covering_table": "Procedures",
+    "is_uncovered_area": false
+  },
+  {
+    "domain_coverage_area_id": "dca-executions",
+    "area_label": "Procedure executions",
+    "required_concept": "What did happen",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#DomainCoverageArea",
+    "name": "Procedure executions",
+    "governed_model": "gm-pko-rulebook",
+    "covering_table": "ProcedureExecutions",
+    "is_uncovered_area": false
+  },
+  {
+    "domain_coverage_area_id": "dca-governance",
+    "area_label": "Model change control",
+    "required_concept": "How the model itself changes",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#DomainCoverageArea",
+    "name": "Model change control",
+    "governed_model": "gm-pko-rulebook",
+    "covering_table": "ModelChangeRequests",
+    "is_uncovered_area": false
+  },
+  {
+    "domain_coverage_area_id": "dca-onboarding",
+    "area_label": "Onboarding orientation surveys",
+    "required_concept": "Outcome of a first-week orientation survey",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#DomainCoverageArea",
+    "name": "Onboarding orientation surveys",
+    "governed_model": "gm-pko-rulebook",
+    "is_uncovered_area": true
+  }
+]

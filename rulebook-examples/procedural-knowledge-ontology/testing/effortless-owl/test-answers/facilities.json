@@ -1,0 +1,37 @@
+[
+  {
+    "facility_id": "acme-plant-site",
+    "label": "ACME appliance plant site",
+    "facility_kind": "Site",
+    "semantic_type_iri": "https://w3id.org/pko/industry#Site",
+    "name": "ACME appliance plant site",
+    "organization": "acme-plant",
+    "deviating_run_count": 0,
+    "clean_run_count": 0,
+    "is_deviation_only_facility": false
+  },
+  {
+    "facility_id": "plant-north",
+    "label": "North assembly hall",
+    "facility_kind": "Factory",
+    "semantic_type_iri": "https://w3id.org/pko/industry#Site",
+    "name": "North assembly hall",
+    "organization": "acme-plant",
+    "parent_facility": "acme-plant-site",
+    "deviating_run_count": 0,
+    "clean_run_count": 4,
+    "is_deviation_only_facility": false
+  },
+  {
+    "facility_id": "plant-south",
+    "label": "South press hall",
+    "facility_kind": "Factory",
+    "semantic_type_iri": "https://w3id.org/pko/industry#Site",
+    "name": "South press hall",
+    "organization": "acme-plant",
+    "parent_facility": "acme-plant-site",
+    "deviating_run_count": 1,
+    "clean_run_count": 0,
+    "is_deviation_only_facility": true
+  }
+]

@@ -19,6 +19,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"math/big"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -773,6 +774,26 @@ func erbIf(cond Value, then func() Value, otherwise func() Value) Value {
 	return otherwise()
 }
 
+// erbSwitchArm is one pattern/result pair of a SWITCH, both computed only when reached.
+type erbSwitchArm struct {
+	Pattern func() Value
+	Result  func() Value
+}
+
+// erbSwitch is SWITCH(expr, pattern, result, ..., [default]): CASE WHEN
+// (expr)::text = (pattern)::text THEN result ... ELSE default END, as
+// erb_runtime.py's erb_switch. A NULL never matches and only the branch taken is
+// computed. CASE x WHEN ... and CHOOSE arrive here too (the parser rewrites them).
+func erbSwitch(subject Value, arms []erbSwitchArm, otherwise func() Value) Value {
+	for _, arm := range arms {
+		candidate := arm.Pattern()
+		if !subject.IsNull() && !candidate.IsNull() && erbText(candidate).S == erbText(subject).S {
+			return arm.Result()
+		}
+	}
+	return otherwise()
+}
+
 func isBlank(v Value) bool { return v.K == KNull || (v.K == KStr && v.S == "") }
 
 func erbIsBlank(v Value) Value    { return vB(isBlank(v)) }
@@ -1296,6 +1317,164 @@ func erbText(v Value) Value {
 	return vS(v.S)
 }
 
+// ───────────────────────────── TEXT(value, format) ─────────────────────────────
+//
+// docs/ERB-TEXT-FUNCTION.md. The generator checked the format and passes it
+// parsed: a date format as parts (tokens and literals), a number format as
+// decimals / grouped / percent.
+
+// textPart is one piece of a date format: a token (yyyy yy MM M dd d HH H mm m
+// ss; MM/M = month, mm/m = minutes) or literal text.
+type textPart struct {
+	Token bool
+	Text  string
+}
+
+var textISODatetime = regexp.MustCompile(
+	`^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)?$`)
+var textPlainNumber = regexp.MustCompile(`^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$`)
+
+func textDateToken(t time.Time, token string) string {
+	switch token {
+	case "yyyy":
+		return fmt.Sprintf("%04d", t.Year())
+	case "yy":
+		return fmt.Sprintf("%02d", t.Year()%100)
+	case "MM":
+		return fmt.Sprintf("%02d", int(t.Month()))
+	case "M":
+		return strconv.Itoa(int(t.Month()))
+	case "dd":
+		return fmt.Sprintf("%02d", t.Day())
+	case "d":
+		return strconv.Itoa(t.Day())
+	case "HH":
+		return fmt.Sprintf("%02d", t.Hour())
+	case "H":
+		return strconv.Itoa(t.Hour())
+	case "mm":
+		return fmt.Sprintf("%02d", t.Minute())
+	case "m":
+		return strconv.Itoa(t.Minute())
+	case "ss":
+		return fmt.Sprintf("%02d", t.Second())
+	}
+	panic(fmt.Sprintf("TEXT(): unknown date token %q", token))
+}
+
+// erbTextDate is TEXT(value, date format). A date or datetime (or ISO text) is
+// formatted in erbTimezone; a number or boolean comes back as `&` renders it;
+// other text unchanged; blank is NULL.
+func erbTextDate(v Value, parts []textPart) Value {
+	var t time.Time
+	switch v.K {
+	case KNull:
+		return Null
+	case KBool, KNum:
+		return erbText(v)
+	case KTime:
+		t = inZone(v)
+	case KStr:
+		text := strings.TrimSpace(v.S)
+		if dateOnlyText.MatchString(text) {
+			d, err := time.Parse("2006-01-02", text)
+			if err != nil {
+				return v
+			}
+			t = d
+		} else if textISODatetime.MatchString(text) {
+			text = strings.Replace(text, " ", "T", 1)
+			if strings.HasSuffix(text, "z") {
+				text = text[:len(text)-1] + "Z"
+			}
+			t = inZone(vS(text))
+		} else {
+			return v
+		}
+	default:
+		return erbText(v)
+	}
+	var sb strings.Builder
+	for _, p := range parts {
+		if p.Token {
+			sb.WriteString(textDateToken(t, p.Text))
+		} else {
+			sb.WriteString(p.Text)
+		}
+	}
+	return vS(sb.String())
+}
+
+// erbTextNumber is TEXT(value, number format): round half away from zero on the
+// exact decimal value (a float's shortest repr, never its binary expansion),
+// optional ',' groups and percent. A value that is not a number or plain numeric
+// text comes back as `&` renders it.
+func erbTextNumber(v Value, decimals int, grouped, percent bool) Value {
+	var decimal string
+	switch v.K {
+	case KNull:
+		return Null
+	case KNum:
+		if math.IsNaN(v.N) || math.IsInf(v.N, 0) {
+			return erbText(v)
+		}
+		if v.IsInt {
+			decimal = strconv.FormatInt(int64(v.N), 10)
+		} else {
+			decimal = strconv.FormatFloat(v.N, 'g', -1, 64)
+		}
+	case KStr:
+		if !textPlainNumber.MatchString(v.S) {
+			return v
+		}
+		decimal = strings.TrimPrefix(strings.TrimSpace(v.S), "+")
+		if strings.HasSuffix(decimal, ".") {
+			decimal += "0"
+		}
+	default:
+		return erbText(v)
+	}
+	number, ok := new(big.Rat).SetString(decimal)
+	if !ok {
+		panic(fmt.Sprintf("TEXT(): cannot read %q as a decimal", decimal))
+	}
+	if percent {
+		number.Mul(number, big.NewRat(100, 1))
+	}
+	scaled := new(big.Int).Mul(number.Num(), new(big.Int).Exp(big.NewInt(10), big.NewInt(int64(decimals)), nil))
+	quotient, remainder := new(big.Int).QuoRem(new(big.Int).Abs(scaled), number.Denom(), new(big.Int))
+	if new(big.Int).Lsh(remainder, 1).Cmp(number.Denom()) >= 0 {
+		quotient.Add(quotient, big.NewInt(1))
+	}
+	negative := scaled.Sign() < 0 && quotient.Sign() != 0
+	digits := quotient.String()
+	for len(digits) <= decimals {
+		digits = "0" + digits
+	}
+	whole, fraction := digits[:len(digits)-decimals], digits[len(digits)-decimals:]
+	if grouped {
+		var sb strings.Builder
+		for i, c := range whole {
+			if i > 0 && (len(whole)-i)%3 == 0 {
+				sb.WriteByte(',')
+			}
+			sb.WriteRune(c)
+		}
+		whole = sb.String()
+	}
+	out := whole
+	if negative {
+		out = "-" + out
+	}
+	if decimals > 0 {
+		out += "." + fraction
+	}
+	if percent {
+		out += "%"
+	}
+	return vS(out)
+}
+
 // ───────────────────────────── records & tables ─────────────────────────────
 
 // Record is one row of a generated table struct.
@@ -1330,16 +1509,23 @@ type Criterion struct {
 	Op      string
 }
 
-// AggregateSpec is a COUNTIFS / SUMIFS / AVERAGEIFS / MINIFS / MAXIFS call, a
-// bare SUM/AVERAGE/COUNT/MIN/MAX over a table, or — with Scalar set — a
+// AggregateSpec is a COUNTIFS / SUMIFS / AVERAGEIFS / MINIFS / MAXIFS / ARRAYJOIN
+// call, a bare SUM/AVERAGE/COUNT/MIN/MAX over a table, or — with Scalar set — a
 // scalar formula wrapped around such calls, computed into placeholders first.
+// Expr, when set, is a target that is an expression rather than a field
+// (ARRAYJOIN(IF(T!{{Kind}} = "x", T!{{Name}}, BLANK()), ...)): computed on each
+// matching row with the record the field belongs to; a BLANK() is NULL.
 type AggregateSpec struct {
 	Field      string
-	Op         string // COUNTIFS | SUM | AVERAGE | COUNT | MIN | MAX | COMPOSITE
+	Op         string // COUNTIFS | SUM | AVERAGE | COUNT | MIN | MAX | ARRAYJOIN | COMPOSITE
 	Table      string
 	Target     string
+	Expr       func(row Record, record Record) Value
 	Criteria   []Criterion
 	Suffix     func(Value) Value
+	// Empty is the value over no rows: vI(0) where the oracle writes COALESCE(agg(..)::numeric, 0)
+	// (AVERAGE, and MIN/MAX of a target that is not text or a date), else Null.
+	Empty      Value
 	Parts      []AggregateSpec
 	Scalar     func(r Record) Value
 	Error      string
@@ -1540,7 +1726,11 @@ func blankAsEmpty(v Value) Value {
 func criterionMatches(c Criterion, row Record, record Record) bool {
 	cell := row.erbGet(c.Range)
 	switch c.Kind {
-	case "field":
+	case "field", "raw_field":
+		// A blank RAW key never matches: the oracle compares against NULLIF(own, '').
+		if c.Kind == "raw_field" && isBlank(record.erbGet(c.Field)) {
+			return false
+		}
 		return pyEqual(blankAsEmpty(cell), blankAsEmpty(record.erbGet(c.Field)))
 	case "op":
 		if isBlank(cell) {
@@ -1601,18 +1791,34 @@ func (d *dataset) aggregateValue(spec AggregateSpec, record Record) Value {
 			matching = append(matching, row)
 		}
 	}
+	target := func(row Record) Value {
+		if spec.Expr != nil {
+			return spec.Expr(row, record)
+		}
+		return row.erbGet(spec.Target)
+	}
 	switch spec.Op {
 	case "COUNTIFS", "COUNT":
 		return vI(len(matching))
+	case "ARRAYJOIN":
+		// COALESCE(string_agg(target::text, ', '), ''): NULLs skipped, rows in table order,
+		// and "" when nothing is left, as rulebook-to-postgres writes it.
+		parts := make([]string, 0, len(matching))
+		for _, row := range matching {
+			if v := target(row); !v.IsNull() {
+				parts = append(parts, erbText(v).S)
+			}
+		}
+		return vS(strings.Join(parts, ", "))
 	case "MIN", "MAX":
 		values := make([]Value, 0, len(matching))
 		for _, row := range matching {
-			if v := row.erbGet(spec.Target); !isBlank(v) {
+			if v := target(row); !isBlank(v) {
 				values = append(values, v)
 			}
 		}
 		if len(values) == 0 {
-			return Null
+			return spec.Empty
 		}
 		best := values[0]
 		for _, v := range values[1:] {
@@ -1625,7 +1831,7 @@ func (d *dataset) aggregateValue(spec AggregateSpec, record Record) Value {
 	}
 	numbers := make([]Value, 0, len(matching))
 	for _, row := range matching {
-		raw := row.erbGet(spec.Target)
+		raw := target(row)
 		if isBlank(raw) {
 			continue
 		}
@@ -1656,7 +1862,7 @@ func (d *dataset) aggregateValue(spec AggregateSpec, record Record) Value {
 		return total
 	}
 	if len(numbers) == 0 {
-		return Null
+		return spec.Empty
 	}
 	total := 0.0
 	for _, n := range numbers {

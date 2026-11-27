@@ -760,7 +760,7 @@
       "decision_point_count",
       "is_undocumented_branch"
     ],
-    "record_count": 43
+    "record_count": 44
   },
   "actions": {
     "primary_key": "action_id",
@@ -840,7 +840,11 @@
       "uses_controlled_vocabulary",
       "is_regulatory_requirement",
       "constraint_trace_count",
-      "is_untraced_bound_constraint"
+      "is_untraced_bound_constraint",
+      "recorded_pass_count",
+      "is_passed_but_never_evaluated",
+      "failed_check_count",
+      "is_breached_but_never_failed"
     ],
     "record_count": 16
   },
@@ -857,7 +861,8 @@
       "binding_was_ever_exercised",
       "is_unexercised_blocking_binding",
       "unexercised_binding_requirement_key",
-      "requirement_is_regulatory"
+      "requirement_is_regulatory",
+      "pass_count_on_step"
     ],
     "record_count": 18
   },
@@ -1284,7 +1289,8 @@
       "is_blocked_by_incomplete_prerequisite",
       "owner_organization",
       "incomplete_cue_observation_count",
-      "is_blocked_by_observed_cue"
+      "is_blocked_by_observed_cue",
+      "is_blocked_by_failed_precondition"
     ],
     "record_count": 70
   },
@@ -1517,7 +1523,7 @@
       "question_count",
       "is_complete"
     ],
-    "record_count": 16
+    "record_count": 19
   },
   "role_questions": {
     "primary_key": "role_question_id",
@@ -1526,7 +1532,7 @@
       "predicate_count",
       "is_answered"
     ],
-    "record_count": 442
+    "record_count": 446
   },
   "rulebook_fields": {
     "primary_key": "rulebook_field_id",
@@ -1539,7 +1545,7 @@
       "has_measured_data",
       "is_discriminating"
     ],
-    "record_count": 5185
+    "record_count": 5199
   },
   "test_suites": {
     "primary_key": "test_suite_id",
@@ -1968,7 +1974,7 @@
       "is_unwitnessed_write",
       "denial_test_count"
     ],
-    "record_count": 781
+    "record_count": 793
   },
   "field_grants": {
     "primary_key": "field_grant_id",
@@ -1981,7 +1987,7 @@
       "is_masked",
       "grant_key_when_readable"
     ],
-    "record_count": 18467
+    "record_count": 18790
   },
   "role_schemas": {
     "primary_key": "role_schema_id",
@@ -2005,7 +2011,7 @@
       "is_full_width",
       "is_degenerate_view"
     ],
-    "record_count": 762
+    "record_count": 771
   },
   "jwt_claim_mappings": {
     "primary_key": "jwt_claim_mapping_id",
@@ -2489,7 +2495,9 @@
       "postcondition_step_key",
       "invariant_step_key",
       "safety_critical_step_key",
-      "is_machine_parseable"
+      "is_machine_parseable",
+      "enforced_requirement_is_computed",
+      "enforced_requirement_statement"
     ],
     "record_count": 7
   },
@@ -2501,7 +2509,12 @@
       "is_failed_precondition",
       "is_violated_invariant",
       "failed_precondition_execution_key",
-      "violated_invariant_execution_key"
+      "violated_invariant_execution_key",
+      "enforced_requirement",
+      "failed_check_requirement_key",
+      "enforced_requirement_is_computed",
+      "enforced_requirement_statement",
+      "is_scored_breach"
     ],
     "record_count": 7
   },
@@ -2526,7 +2539,7 @@
       "failure_mode_response",
       "is_unanswerable_sign"
     ],
-    "record_count": 4
+    "record_count": 5
   },
   "cue_observations": {
     "primary_key": "cue_observation_id",
@@ -2540,7 +2553,7 @@
       "cue_signals_incomplete_step",
       "is_awaiting_acknowledgement"
     ],
-    "record_count": 3
+    "record_count": 4
   },
   "decision_points": {
     "primary_key": "decision_point_id",
@@ -4246,7 +4259,7 @@
       "policy_command_disagrees",
       "is_unproven_write"
     ],
-    "record_count": 20
+    "record_count": 23
   },
   "app_action_fields": {
     "primary_key": "app_action_field_id",
@@ -4255,7 +4268,7 @@
       "target_field_type",
       "writes_derived_field"
     ],
-    "record_count": 100
+    "record_count": 117
   },
   "abundant_knowledge_gaps": {
     "primary_key": "abundant_knowledge_gap_id",

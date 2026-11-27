@@ -619,17 +619,86 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.Formulas
 
         public static V Cast(V v) => Truthy(v) ? S(PyStr(v)) : S("");
 
-        public static V Text(V v, V format)
+        // ───────────── TEXT(value, format) — docs/ERB-TEXT-FUNCTION.md ─────────────
+        // The generator checked the format and passes it parsed: a date format as
+        // (isToken, text) parts, a number format as decimals / grouped / percent.
+
+        static readonly Regex TextIsoDate = new Regex(@"^\d{4}-\d{2}-\d{2}$", RegexOptions.Compiled);
+        static readonly Regex TextIsoDatetime = new Regex(
+            @"^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)?$", RegexOptions.Compiled);
+        static readonly Regex TextPlainNumber = new Regex(@"^\s*[+-]?([0-9]+(\.[0-9]*)?|\.[0-9]+)\s*$", RegexOptions.Compiled);
+
+        /// <summary>TEXT(value, date format). A date or datetime (or ISO text) is formatted in
+        /// erbTimezone; a number or boolean comes back as <c>&amp;</c> renders it; other text
+        /// unchanged; blank is NULL.</summary>
+        public static V TextDate(V v, (bool IsToken, string Text)[] parts)
         {
-            if (v.K == VK.Null) return S("");
-            var fmt = format.K == VK.Str ? format.S : "";
-            if (v.K == VK.Time) return S(FormatDate(v.T, fmt));
-            if (ToNumber(v, out var n) && fmt.Length > 0)
+            DateTime dt;
+            switch (v.K)
             {
-                int decimals = fmt.Contains('.') ? fmt.Length - fmt.IndexOf('.') - 1 : 0;
-                return S(n.N.ToString("F" + decimals, CultureInfo.InvariantCulture));
+                case VK.Null: return Null;
+                case VK.Time: dt = InZone(v).DateTime; break;
+                case VK.Str:
+                    var s = v.S.Trim();
+                    if (TextIsoDate.IsMatch(s))
+                        dt = DateTime.ParseExact(s, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    else if (TextIsoDatetime.IsMatch(s))
+                        dt = InZone(S(s.ToUpperInvariant())).DateTime;
+                    else
+                        return v;
+                    break;
+                default: return Text(v);
             }
-            return S(PyStr(v));
+            var sb = new StringBuilder();
+            foreach (var (isToken, text) in parts)
+            {
+                if (!isToken) { sb.Append(text); continue; }
+                sb.Append(text switch
+                {
+                    "yyyy" => dt.Year.ToString("D4", CultureInfo.InvariantCulture),
+                    "yy" => (dt.Year % 100).ToString("D2", CultureInfo.InvariantCulture),
+                    "MM" => dt.Month.ToString("D2", CultureInfo.InvariantCulture),
+                    "M" => dt.Month.ToString(CultureInfo.InvariantCulture),
+                    "dd" => dt.Day.ToString("D2", CultureInfo.InvariantCulture),
+                    "d" => dt.Day.ToString(CultureInfo.InvariantCulture),
+                    "HH" => dt.Hour.ToString("D2", CultureInfo.InvariantCulture),
+                    "H" => dt.Hour.ToString(CultureInfo.InvariantCulture),
+                    "mm" => dt.Minute.ToString("D2", CultureInfo.InvariantCulture),
+                    "m" => dt.Minute.ToString(CultureInfo.InvariantCulture),
+                    "ss" => dt.Second.ToString("D2", CultureInfo.InvariantCulture),
+                    _ => throw new InvalidOperationException($"TEXT(): unknown date token '{text}'")
+                });
+            }
+            return S(sb.ToString());
+        }
+
+        /// <summary>TEXT(value, number format): round half away from zero on the exact decimal
+        /// value (a double's shortest round-trip string), optional ',' groups and percent. A value
+        /// that is not a number or plain numeric text comes back as <c>&amp;</c> renders it.</summary>
+        public static V TextNumber(V v, int decimals, bool grouped, bool percent)
+        {
+            decimal number;
+            switch (v.K)
+            {
+                case VK.Null: return Null;
+                case VK.Num:
+                    if (double.IsNaN(v.N) || double.IsInfinity(v.N)) return Text(v);
+                    number = v.IsInt
+                        ? (decimal)(long)v.N
+                        : decimal.Parse(v.N.ToString("R", CultureInfo.InvariantCulture), NumberStyles.Float, CultureInfo.InvariantCulture);
+                    break;
+                case VK.Str:
+                    if (!TextPlainNumber.IsMatch(v.S)) return v;
+                    var t = v.S.Trim();
+                    number = decimal.Parse(t.EndsWith(".") ? t + "0" : t, NumberStyles.Float, CultureInfo.InvariantCulture);
+                    break;
+                default: return Text(v);
+            }
+            if (percent) number *= 100;
+            var rounded = Math.Round(number, decimals, MidpointRounding.AwayFromZero);
+            var negative = rounded < 0;
+            var digits = Math.Abs(rounded).ToString((grouped ? "N" : "F") + decimals, CultureInfo.InvariantCulture);
+            return S((negative ? "-" : "") + digits + (percent ? "%" : ""));
         }
 
         // ───────────────────────────── dates ─────────────────────────────
@@ -671,6 +740,9 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.Formulas
         static bool DateOrNone(V v, out DateTime t)
         {
             t = default;
+            // A datetime property (DateTimeOffset / DateTime) is date arithmetic too: its wall
+            // clock as stored, offset dropped, as erb_date_or_none reads "…+hh:mm" text.
+            if (v.K == VK.Time) { t = WallClock(v.T); return true; }
             if (v.K != VK.Str) return false;
             var s = v.S.Trim();
             if (!DatePrefix.IsMatch(s)) return false;

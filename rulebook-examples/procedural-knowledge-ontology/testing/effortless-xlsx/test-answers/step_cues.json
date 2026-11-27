@@ -74,5 +74,24 @@
     "failure_mode_response": null,
     "is_unanswerable_sign": false,
     "signals_failure_mode": null
+  },
+  {
+    "step_cue_id": "cue-loto07-movement",
+    "step": "loto-07",
+    "cue_kind": "Visual",
+    "description": "The ram or die moves while the machine is locked out.",
+    "signals_incomplete_step": true,
+    "requires_escalation": true,
+    "escalate_to_role": "plant-safety-officer",
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#StepCue",
+    "operator_question": "The die just moved. Is this machine really dead?",
+    "signals_failure_mode": "fm-loto06-residual",
+    "name": null,
+    "observation_count": null,
+    "unescalated_observation_count": null,
+    "danger_cue_step_key": null,
+    "incomplete_cue_step_key": null,
+    "failure_mode_response": null,
+    "is_unanswerable_sign": null
   }
 ]

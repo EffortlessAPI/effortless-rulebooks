@@ -1,0 +1,4 @@
+{
+  "ran": false,
+  "reason": "the Docker image obolibrary/robot is not here (docker pull obolibrary/robot), or Docker is not running"
+}

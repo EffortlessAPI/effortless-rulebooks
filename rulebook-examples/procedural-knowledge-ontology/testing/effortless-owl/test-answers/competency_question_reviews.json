@@ -1,0 +1,46 @@
+[
+  {
+    "competency_question_review_id": "cqrev-pko-0410",
+    "reviewed_at": "2026-04-10 14:00:00+00:00",
+    "outcome": "Baseline confirmed.",
+    "questions_added": 0,
+    "deprecation_candidates_raised": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CompetencyQuestionReview",
+    "name": "gm-pko-rulebook question review",
+    "governed_model": "gm-pko-rulebook",
+    "reviewed_by_agent": "elena-garcia"
+  },
+  {
+    "competency_question_review_id": "cqrev-pko-0630",
+    "reviewed_at": "2026-06-30 14:00:00+00:00",
+    "outcome": "Added the documentation-lag question.",
+    "questions_added": 1,
+    "deprecation_candidates_raised": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CompetencyQuestionReview",
+    "name": "gm-pko-rulebook question review",
+    "governed_model": "gm-pko-rulebook",
+    "reviewed_by_agent": "sam-adeyemi"
+  },
+  {
+    "competency_question_review_id": "cqrev-close-0315",
+    "reviewed_at": "2026-03-15 14:00:00+00:00",
+    "outcome": "Two original questions outgrown.",
+    "questions_added": 0,
+    "deprecation_candidates_raised": 1,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CompetencyQuestionReview",
+    "name": "gm-quarter-end-close question review",
+    "governed_model": "gm-quarter-end-close",
+    "reviewed_by_agent": "elena-garcia"
+  },
+  {
+    "competency_question_review_id": "cqrev-policy-0705",
+    "reviewed_at": "2026-07-05 14:00:00+00:00",
+    "outcome": "Questions still fit.",
+    "questions_added": 0,
+    "deprecation_candidates_raised": 0,
+    "semantic_type_iri": "https://effortlessapi.github.io/effortless-rulebooks/ns/pko-extension#CompetencyQuestionReview",
+    "name": "gm-workforce-policy question review",
+    "governed_model": "gm-workforce-policy",
+    "reviewed_by_agent": "elena-garcia"
+  }
+]

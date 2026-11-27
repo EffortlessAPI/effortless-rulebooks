@@ -536,7 +536,7 @@
     "facility": "plant-south",
     "shift": "Night",
     "executed_on_machine": "press-7",
-    "observations": "Hiss after the valve closed; carried on to maintenance.",
+    "observations": "Hiss after the valve closed; carried on to maintenance. The die dropped during the work; stepped clear; nobody hurt.",
     "outcome": "",
     "semantic_type_iri": "https://w3id.org/pko#ProcedureExecution",
     "name": null,

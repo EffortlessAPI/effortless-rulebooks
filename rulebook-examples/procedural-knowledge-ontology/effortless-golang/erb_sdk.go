@@ -8905,6 +8905,10 @@ type Requirement struct {
 	IsRegulatoryRequirement *bool `json:"is_regulatory_requirement"` // TRUE when a regulation imposes the requirement.
 	ConstraintTraceCount *int `json:"constraint_trace_count"` // Traces of this requirement as a constraint.
 	IsUntracedBoundConstraint *bool `json:"is_untraced_bound_constraint"` // TRUE when a constraint bound to a step traces to no collection activity.
+	RecordedPassCount *int `json:"recorded_pass_count"` // PASS marks recorded on every step this control is bound to. Set beside SatisfactionRecordCount, it says how often somebody passed the step against how often anybody asked whether the control held.
+	IsPassedButNeverEvaluated *bool `json:"is_passed_but_never_evaluated"` // TRUE for a blocking control whose steps carry PASS marks while the control itself has never once been evaluated. The green on those steps says nothing about the control.
+	FailedCheckCount *int `json:"failed_check_count"` // Checks on record, of a condition that enforces this control, that found the condition did not hold.
+	IsBreachedButNeverFailed *bool `json:"is_breached_but_never_failed"` // TRUE when the book holds a failed check of a condition this control enforces, and the control's own record still says it has never failed. The breach is on record; the control never heard about it.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -9098,6 +9102,20 @@ func (tc *Requirement) CalcIsUntracedBoundConstraint() *bool {
 	return toBoolPtr(erbAnd(erbBool3(vBool(tc.IsBoundToAnyStep)), erbBool3(erbEq(vInt(tc.ConstraintTraceCount), vI(0)))))
 }
 
+// CalcIsPassedButNeverEvaluated computes the IsPassedButNeverEvaluated calculated field
+// TRUE for a blocking control whose steps carry PASS marks while the control itself has never once been evaluated. The green on those steps says nothing about the control.
+// Formula: =AND({{IsInoperativeControl}}, {{RecordedPassCount}} > 0)
+func (tc *Requirement) CalcIsPassedButNeverEvaluated() *bool {
+	return toBoolPtr(erbAnd(erbBool3(vBool(tc.IsInoperativeControl)), erbBool3(erbCmp(vInt(tc.RecordedPassCount), ">", vI(0)))))
+}
+
+// CalcIsBreachedButNeverFailed computes the IsBreachedButNeverFailed calculated field
+// TRUE when the book holds a failed check of a condition this control enforces, and the control's own record still says it has never failed. The breach is on record; the control never heard about it.
+// Formula: =AND({{FailedCheckCount}} > 0, NOT({{HasEverProducedNegative}}))
+func (tc *Requirement) CalcIsBreachedButNeverFailed() *bool {
+	return toBoolPtr(erbAnd(erbBool3(erbCmp(vInt(tc.FailedCheckCount), ">", vI(0))), erbBool3(erbNot(erbBool3(vBool(tc.HasEverProducedNegative))))))
+}
+
 // erbComputeCalculations computes every calculated field of the row in dependency order.
 func (tc *Requirement) erbComputeCalculations() {
 	// Level 1
@@ -9122,6 +9140,7 @@ func (tc *Requirement) erbComputeCalculations() {
 	calcGuard(tc, "is_orphaned_blocking_control", func() { tc.IsOrphanedBlockingControl = tc.CalcIsOrphanedBlockingControl() })
 	calcGuard(tc, "is_unwatched_and_unowned", func() { tc.IsUnwatchedAndUnowned = tc.CalcIsUnwatchedAndUnowned() })
 	calcGuard(tc, "is_untraced_bound_constraint", func() { tc.IsUntracedBoundConstraint = tc.CalcIsUntracedBoundConstraint() })
+	calcGuard(tc, "is_breached_but_never_failed", func() { tc.IsBreachedButNeverFailed = tc.CalcIsBreachedButNeverFailed() })
 	// Level 3
 	calcGuard(tc, "witness_claim_is_unverified", func() { tc.WitnessClaimIsUnverified = tc.CalcWitnessClaimIsUnverified() })
 	calcGuard(tc, "is_unwitnessed_blocking_control", func() { tc.IsUnwitnessedBlockingControl = tc.CalcIsUnwitnessedBlockingControl() })
@@ -9130,6 +9149,7 @@ func (tc *Requirement) erbComputeCalculations() {
 	calcGuard(tc, "control_assurance_state", func() { tc.ControlAssuranceState = tc.CalcControlAssuranceState() })
 	calcGuard(tc, "attestation_exposure_note", func() { tc.AttestationExposureNote = tc.CalcAttestationExposureNote() })
 	calcGuard(tc, "unwatched_unowned_flag", func() { tc.UnwatchedUnownedFlag = tc.CalcUnwatchedUnownedFlag() })
+	calcGuard(tc, "is_passed_but_never_evaluated", func() { tc.IsPassedButNeverEvaluated = tc.CalcIsPassedButNeverEvaluated() })
 }
 
 // ComputeAll computes every calculated field from the row's current inputs.
@@ -9234,6 +9254,14 @@ func (tc *Requirement) erbGet(field string) Value {
 		return vInt(tc.ConstraintTraceCount)
 	case "is_untraced_bound_constraint":
 		return vBool(tc.IsUntracedBoundConstraint)
+	case "recorded_pass_count":
+		return vInt(tc.RecordedPassCount)
+	case "is_passed_but_never_evaluated":
+		return vBool(tc.IsPassedButNeverEvaluated)
+	case "failed_check_count":
+		return vInt(tc.FailedCheckCount)
+	case "is_breached_but_never_failed":
+		return vBool(tc.IsBreachedButNeverFailed)
 	}
 	panic("Requirements has no field " + field)
 }
@@ -9334,6 +9362,14 @@ func (tc *Requirement) erbSet(field string, v Value) {
 		tc.ConstraintTraceCount = toIntPtr(v)
 	case "is_untraced_bound_constraint":
 		tc.IsUntracedBoundConstraint = toBoolPtr(v)
+	case "recorded_pass_count":
+		tc.RecordedPassCount = toIntPtr(v)
+	case "is_passed_but_never_evaluated":
+		tc.IsPassedButNeverEvaluated = toBoolPtr(v)
+	case "failed_check_count":
+		tc.FailedCheckCount = toIntPtr(v)
+	case "is_breached_but_never_failed":
+		tc.IsBreachedButNeverFailed = toBoolPtr(v)
 	default:
 		panic("Requirements has no field " + field)
 	}
@@ -9342,7 +9378,7 @@ func (tc *Requirement) erbSet(field string, v Value) {
 func (tc *Requirement) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "requirement_id", "name", "label", "requirement_type", "statement", "rationale", "is_blocking", "satisfaction_record_count", "step_binding_count", "is_bound_to_any_step", "has_ever_been_evaluated", "negative_outcome_count", "is_inoperative_control", "is_decorative_control", "has_computed_witness", "witness_field_name", "has_ever_produced_negative", "is_unfalsified_control", "claims_a_witness_field", "named_witness_field_exists", "derived_has_computed_witness", "witness_claim_is_unverified", "is_unwitnessed_blocking_control", "witness_fire_count", "witness_has_never_fired", "evaluation_sample_size", "has_meaningful_sample", "minimum_sample_for_assurance", "is_untested_witness", "is_evidenced_holding_control", "control_assurance_state", "unexercised_binding_count", "witness_is_partially_scoped", "accountable_role", "accountable_agent", "has_named_owner", "is_orphaned_blocking_control", "is_unwatched_and_unowned", "attestation_exposure_note", "unwatched_unowned_flag", "controlled_term", "uses_controlled_vocabulary", "semantic_type_iri", "regulatory_framework", "is_regulatory_requirement", "constraint_trace_count", "is_untraced_bound_constraint":
+		case "requirement_id", "name", "label", "requirement_type", "statement", "rationale", "is_blocking", "satisfaction_record_count", "step_binding_count", "is_bound_to_any_step", "has_ever_been_evaluated", "negative_outcome_count", "is_inoperative_control", "is_decorative_control", "has_computed_witness", "witness_field_name", "has_ever_produced_negative", "is_unfalsified_control", "claims_a_witness_field", "named_witness_field_exists", "derived_has_computed_witness", "witness_claim_is_unverified", "is_unwitnessed_blocking_control", "witness_fire_count", "witness_has_never_fired", "evaluation_sample_size", "has_meaningful_sample", "minimum_sample_for_assurance", "is_untested_witness", "is_evidenced_holding_control", "control_assurance_state", "unexercised_binding_count", "witness_is_partially_scoped", "accountable_role", "accountable_agent", "has_named_owner", "is_orphaned_blocking_control", "is_unwatched_and_unowned", "attestation_exposure_note", "unwatched_unowned_flag", "controlled_term", "uses_controlled_vocabulary", "semantic_type_iri", "regulatory_framework", "is_regulatory_requirement", "constraint_trace_count", "is_untraced_bound_constraint", "recorded_pass_count", "is_passed_but_never_evaluated", "failed_check_count", "is_breached_but_never_failed":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -9400,6 +9436,7 @@ type StepRequirement struct {
 	IsUnexercisedBlockingBinding *bool `json:"is_unexercised_blocking_binding"` // TRUE for a blocking control bound to a step where it has never actually been evaluated.
 	UnexercisedBindingRequirementKey *string `json:"unexercised_binding_requirement_key"` // Echoes the requirement id when this binding has never been exercised.
 	RequirementIsRegulatory *bool `json:"requirement_is_regulatory"` // Whether a regulation imposes the requirement.
+	PassCountOnStep *int `json:"pass_count_on_step"` // How many executions of this binding's step were recorded as PASS.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -9503,6 +9540,8 @@ func (tc *StepRequirement) erbGet(field string) Value {
 		return vStr(tc.UnexercisedBindingRequirementKey)
 	case "requirement_is_regulatory":
 		return vBool(tc.RequirementIsRegulatory)
+	case "pass_count_on_step":
+		return vInt(tc.PassCountOnStep)
 	}
 	panic("StepRequirements has no field " + field)
 }
@@ -9537,6 +9576,8 @@ func (tc *StepRequirement) erbSet(field string, v Value) {
 		tc.UnexercisedBindingRequirementKey = toStringPtr(v)
 	case "requirement_is_regulatory":
 		tc.RequirementIsRegulatory = toBoolPtr(v)
+	case "pass_count_on_step":
+		tc.PassCountOnStep = toIntPtr(v)
 	default:
 		panic("StepRequirements has no field " + field)
 	}
@@ -9545,7 +9586,7 @@ func (tc *StepRequirement) erbSet(field string, v Value) {
 func (tc *StepRequirement) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "step_requirement_id", "name", "step", "requirement", "requirement_is_blocking", "blocking_step_key", "step_when_blocking", "requirement_lacks_witness", "unwitnessed_step_key", "satisfaction_count_for_binding", "binding_was_ever_exercised", "is_unexercised_blocking_binding", "unexercised_binding_requirement_key", "requirement_is_regulatory":
+		case "step_requirement_id", "name", "step", "requirement", "requirement_is_blocking", "blocking_step_key", "step_when_blocking", "requirement_lacks_witness", "unwitnessed_step_key", "satisfaction_count_for_binding", "binding_was_ever_exercised", "is_unexercised_blocking_binding", "unexercised_binding_requirement_key", "requirement_is_regulatory", "pass_count_on_step":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -13506,6 +13547,7 @@ type StepExecution struct {
 	OwnerOrganization *string `json:"owner_organization"` // The organization that owns the procedure this row belongs to, one hop at a time from Procedures.OwnerOrganization. A row policy compares it to the caller's organization, so a plant sign-in never sees the finance close.
 	IncompleteCueObservationCount *int `json:"incomplete_cue_observation_count"` // Warning signs observed on this step execution that mean the step is not finished.
 	IsBlockedByObservedCue *bool `json:"is_blocked_by_observed_cue"` // A warning sign that means 'not finished' was seen on this step execution, so the normal next step must not be offered; only a fallback is.
+	IsBlockedByFailedPrecondition *bool `json:"is_blocked_by_failed_precondition"` // A check on this step recorded that a precondition did not hold. The step may not be marked done; only a fallback is offered, exactly as for an observed warning sign.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -14028,6 +14070,13 @@ func (tc *StepExecution) CalcIsBlockedByObservedCue() *bool {
 	return toBoolPtr(erbCmp(vInt(tc.IncompleteCueObservationCount), ">", vI(0)))
 }
 
+// CalcIsBlockedByFailedPrecondition computes the IsBlockedByFailedPrecondition calculated field
+// A check on this step recorded that a precondition did not hold. The step may not be marked done; only a fallback is offered, exactly as for an observed warning sign.
+// Formula: ={{FailedPreconditionCount}} > 0
+func (tc *StepExecution) CalcIsBlockedByFailedPrecondition() *bool {
+	return toBoolPtr(erbCmp(vInt(tc.FailedPreconditionCount), ">", vI(0)))
+}
+
 // erbComputeCalculations computes every calculated field of the row in dependency order.
 func (tc *StepExecution) erbComputeCalculations() {
 	// Level 1
@@ -14073,6 +14122,7 @@ func (tc *StepExecution) erbComputeCalculations() {
 	calcGuard(tc, "broke_invariant", func() { tc.BrokeInvariant = tc.CalcBrokeInvariant() })
 	calcGuard(tc, "is_blocked_by_incomplete_prerequisite", func() { tc.IsBlockedByIncompletePrerequisite = tc.CalcIsBlockedByIncompletePrerequisite() })
 	calcGuard(tc, "is_blocked_by_observed_cue", func() { tc.IsBlockedByObservedCue = tc.CalcIsBlockedByObservedCue() })
+	calcGuard(tc, "is_blocked_by_failed_precondition", func() { tc.IsBlockedByFailedPrecondition = tc.CalcIsBlockedByFailedPrecondition() })
 	// Level 2
 	calcGuard(tc, "is_late", func() { tc.IsLate = tc.CalcIsLate() })
 	calcGuard(tc, "has_unevaluated_blocking_control", func() { tc.HasUnevaluatedBlockingControl = tc.CalcHasUnevaluatedBlockingControl() })
@@ -14397,6 +14447,8 @@ func (tc *StepExecution) erbGet(field string) Value {
 		return vInt(tc.IncompleteCueObservationCount)
 	case "is_blocked_by_observed_cue":
 		return vBool(tc.IsBlockedByObservedCue)
+	case "is_blocked_by_failed_precondition":
+		return vBool(tc.IsBlockedByFailedPrecondition)
 	}
 	panic("StepExecutions has no field " + field)
 }
@@ -14681,6 +14733,8 @@ func (tc *StepExecution) erbSet(field string, v Value) {
 		tc.IncompleteCueObservationCount = toIntPtr(v)
 	case "is_blocked_by_observed_cue":
 		tc.IsBlockedByObservedCue = toBoolPtr(v)
+	case "is_blocked_by_failed_precondition":
+		tc.IsBlockedByFailedPrecondition = toBoolPtr(v)
 	default:
 		panic("StepExecutions has no field " + field)
 	}
@@ -14689,7 +14743,7 @@ func (tc *StepExecution) erbSet(field string, v Value) {
 func (tc *StepExecution) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "step_execution_id", "name", "procedure_execution", "step", "executed_by_agent", "execution_status", "started_at", "ended_at", "verification_result", "deviation", "actual_duration_minutes", "expected_duration_minutes", "is_late", "blocking_unmet_count", "blocking_unmet_count_safe", "proceeded_past_blocking_control", "expected_blocking_count", "evaluated_blocking_count", "unevaluated_blocking_count", "has_unevaluated_blocking_control", "stale_authoritative_source_count", "ran_on_stale_authoritative_source", "has_deviation_note", "is_late_and_unexplained", "available_exception_count_for_step", "had_uninvoked_exception_available", "expected_verification_count", "performed_verification_count", "skipped_verification_count", "has_skipped_verification", "claims_pass_without_evidence", "step_is_preparation", "step_is_approval", "preparer_agent_key", "approver_agent_key", "prepared_by_this_agent_count", "violates_separation_of_duties", "required_role_for_step", "executor_role_key", "executor_authority_count", "executor_held_required_role", "is_unauthorized_approval", "completed_execution_key", "control_breach_execution_key", "late_execution_key", "executor_agent_kind", "executor_is_human", "step_requires_human_confirmation", "non_human_ran_human_step", "non_human_approval", "unevaluated_blocking_execution_key", "separation_violation_execution_key", "self_witnessed_verification_count", "unbacked_verification_count", "approval_rests_on_self_attestation", "exception_invocation_count", "ran_under_exception", "is_completed", "is_verification_passed", "is_legal_review_step", "cleared_legal_review_key", "assigned_role", "role_current_agent", "executor_is_designated_agent", "inputs_were_fresh_at_run", "ran_on_stale_inputs", "unresolved_issue_count", "has_deviation", "is_clean", "procedure_execution_when_unclean", "evaluated_requirement_count", "required_blocking_count", "has_unevaluated_blocking_requirement", "executing_agent_kind", "was_executed_by_software", "step_is_software_assigned", "software_did_human_work", "is_approval_execution", "is_verified", "unconfirmed_non_human_decision_count", "requires_human_confirmation", "human_confirmation_missing", "drafted_from_unusable_source", "inputs_were_usable", "software_execution_step_key", "step_control_kind", "unfalsified_clearance_count", "all_clearances_are_unfalsified", "stale_at_run_count", "was_stale_when_i_ran_it", "staleness_answer_is_tense_dependent", "has_any_declared_check", "performed_check_count", "declared_check_count", "is_unchecked_by_design", "is_vacuously_clean", "is_substantively_clean", "vacuously_clean_execution_key", "uncorroborated_pass_count", "evidence_position_is_weak", "preparation_execution_key", "approval_execution_key", "has_governing_instrument", "has_approved_change_coverage", "version_of_step", "is_ungoverned_divergence", "ungoverned_divergence_execution_key", "self_attested_approval_execution_key", "semantic_type_iri", "previous_step_execution", "confirmed_by_agent", "description", "previous_executed_step", "specified_transition_from_previous_count", "is_out_of_specified_order", "execution_version", "executes_step_of_other_version", "repetition_count", "step_max_repetitions", "exceeds_max_repetitions", "lacks_required_confirmation", "failed_precondition_count", "violated_invariant_count", "proceeded_despite_failed_precondition", "unescalated_danger_cue_count", "ignored_danger_cue", "used_entity_count", "generated_entity_count", "step_input_variable_count", "ran_without_declared_inputs", "step_prerequisite", "completed_prerequisite_run_count", "ran_before_prerequisite_completed", "deviation_execution_key", "broke_invariant", "is_blocked_by_incomplete_prerequisite", "owner_organization", "incomplete_cue_observation_count", "is_blocked_by_observed_cue":
+		case "step_execution_id", "name", "procedure_execution", "step", "executed_by_agent", "execution_status", "started_at", "ended_at", "verification_result", "deviation", "actual_duration_minutes", "expected_duration_minutes", "is_late", "blocking_unmet_count", "blocking_unmet_count_safe", "proceeded_past_blocking_control", "expected_blocking_count", "evaluated_blocking_count", "unevaluated_blocking_count", "has_unevaluated_blocking_control", "stale_authoritative_source_count", "ran_on_stale_authoritative_source", "has_deviation_note", "is_late_and_unexplained", "available_exception_count_for_step", "had_uninvoked_exception_available", "expected_verification_count", "performed_verification_count", "skipped_verification_count", "has_skipped_verification", "claims_pass_without_evidence", "step_is_preparation", "step_is_approval", "preparer_agent_key", "approver_agent_key", "prepared_by_this_agent_count", "violates_separation_of_duties", "required_role_for_step", "executor_role_key", "executor_authority_count", "executor_held_required_role", "is_unauthorized_approval", "completed_execution_key", "control_breach_execution_key", "late_execution_key", "executor_agent_kind", "executor_is_human", "step_requires_human_confirmation", "non_human_ran_human_step", "non_human_approval", "unevaluated_blocking_execution_key", "separation_violation_execution_key", "self_witnessed_verification_count", "unbacked_verification_count", "approval_rests_on_self_attestation", "exception_invocation_count", "ran_under_exception", "is_completed", "is_verification_passed", "is_legal_review_step", "cleared_legal_review_key", "assigned_role", "role_current_agent", "executor_is_designated_agent", "inputs_were_fresh_at_run", "ran_on_stale_inputs", "unresolved_issue_count", "has_deviation", "is_clean", "procedure_execution_when_unclean", "evaluated_requirement_count", "required_blocking_count", "has_unevaluated_blocking_requirement", "executing_agent_kind", "was_executed_by_software", "step_is_software_assigned", "software_did_human_work", "is_approval_execution", "is_verified", "unconfirmed_non_human_decision_count", "requires_human_confirmation", "human_confirmation_missing", "drafted_from_unusable_source", "inputs_were_usable", "software_execution_step_key", "step_control_kind", "unfalsified_clearance_count", "all_clearances_are_unfalsified", "stale_at_run_count", "was_stale_when_i_ran_it", "staleness_answer_is_tense_dependent", "has_any_declared_check", "performed_check_count", "declared_check_count", "is_unchecked_by_design", "is_vacuously_clean", "is_substantively_clean", "vacuously_clean_execution_key", "uncorroborated_pass_count", "evidence_position_is_weak", "preparation_execution_key", "approval_execution_key", "has_governing_instrument", "has_approved_change_coverage", "version_of_step", "is_ungoverned_divergence", "ungoverned_divergence_execution_key", "self_attested_approval_execution_key", "semantic_type_iri", "previous_step_execution", "confirmed_by_agent", "description", "previous_executed_step", "specified_transition_from_previous_count", "is_out_of_specified_order", "execution_version", "executes_step_of_other_version", "repetition_count", "step_max_repetitions", "exceeds_max_repetitions", "lacks_required_confirmation", "failed_precondition_count", "violated_invariant_count", "proceeded_despite_failed_precondition", "unescalated_danger_cue_count", "ignored_danger_cue", "used_entity_count", "generated_entity_count", "step_input_variable_count", "ran_without_declared_inputs", "step_prerequisite", "completed_prerequisite_run_count", "ran_before_prerequisite_completed", "deviation_execution_key", "broke_invariant", "is_blocked_by_incomplete_prerequisite", "owner_organization", "incomplete_cue_observation_count", "is_blocked_by_observed_cue", "is_blocked_by_failed_precondition":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -32146,6 +32200,9 @@ type StepCondition struct {
 	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI.
 	MachineExpression *string `json:"machine_expression"` // The condition as an expression an agent or constraint engine can evaluate.
 	IsMachineParseable *bool `json:"is_machine_parseable"` // TRUE when the condition is stored as an expression, not only prose.
+	EnforcesRequirement *string `json:"enforces_requirement"` // The blocking requirement this condition is the physical check of, when it is one. A failed check of the condition is then a failure of that requirement.
+	EnforcedRequirementIsComputed *bool `json:"enforced_requirement_is_computed"` // Whether the requirement this condition enforces has a computed witness (loop 18): a failed check of it is then a breach the register counts on its own.
+	EnforcedRequirementStatement *string `json:"enforced_requirement_statement"` // The statement of the requirement this condition enforces, for the desk that shows a breach.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -32249,6 +32306,12 @@ func (tc *StepCondition) erbGet(field string) Value {
 		return vStr(tc.MachineExpression)
 	case "is_machine_parseable":
 		return vBool(tc.IsMachineParseable)
+	case "enforces_requirement":
+		return vStr(tc.EnforcesRequirement)
+	case "enforced_requirement_is_computed":
+		return vBool(tc.EnforcedRequirementIsComputed)
+	case "enforced_requirement_statement":
+		return vStr(tc.EnforcedRequirementStatement)
 	}
 	panic("StepConditions has no field " + field)
 }
@@ -32285,6 +32348,12 @@ func (tc *StepCondition) erbSet(field string, v Value) {
 		tc.MachineExpression = toStringPtr(v)
 	case "is_machine_parseable":
 		tc.IsMachineParseable = toBoolPtr(v)
+	case "enforces_requirement":
+		tc.EnforcesRequirement = toStringPtr(v)
+	case "enforced_requirement_is_computed":
+		tc.EnforcedRequirementIsComputed = toBoolPtr(v)
+	case "enforced_requirement_statement":
+		tc.EnforcedRequirementStatement = toStringPtr(v)
 	default:
 		panic("StepConditions has no field " + field)
 	}
@@ -32293,7 +32362,7 @@ func (tc *StepCondition) erbSet(field string, v Value) {
 func (tc *StepCondition) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "step_condition_id", "name", "step", "condition_kind", "statement", "is_safety_critical", "check_count", "is_never_checked", "precondition_step_key", "postcondition_step_key", "invariant_step_key", "safety_critical_step_key", "semantic_type_iri", "machine_expression", "is_machine_parseable":
+		case "step_condition_id", "name", "step", "condition_kind", "statement", "is_safety_critical", "check_count", "is_never_checked", "precondition_step_key", "postcondition_step_key", "invariant_step_key", "safety_critical_step_key", "semantic_type_iri", "machine_expression", "is_machine_parseable", "enforces_requirement", "enforced_requirement_is_computed", "enforced_requirement_statement":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -32350,6 +32419,11 @@ type ConditionCheck struct {
 	FailedPreconditionExecutionKey *string `json:"failed_precondition_execution_key"` // Step execution key when a precondition failed.
 	ViolatedInvariantExecutionKey *string `json:"violated_invariant_execution_key"` // Step execution key when an invariant failed.
 	SemanticTypeIri *string `json:"semantic_type_iri"` // Semantic type IRI.
+	EnforcedRequirement *string `json:"enforced_requirement"` // The requirement the checked condition enforces, copied from the condition.
+	FailedCheckRequirementKey *string `json:"failed_check_requirement_key"` // Echoes the enforced requirement's id when this check recorded that the condition did not hold; blank otherwise.
+	EnforcedRequirementIsComputed *bool `json:"enforced_requirement_is_computed"` // Copied from the checked condition: the rule it enforces has a computed witness.
+	EnforcedRequirementStatement *string `json:"enforced_requirement_statement"` // Copied from the checked condition: the rule it enforces, in its own words.
+	IsScoredBreach *bool `json:"is_scored_breach"` // This check recorded that the condition did not hold, and the rule it enforces is computed by the register: a breach counted by the register itself, not by a person looking.
 	ErbErrors map[string]string `json:"_erb_errors,omitempty"`
 	erbAggregates map[string]Value
 }
@@ -32389,12 +32463,28 @@ func (tc *ConditionCheck) CalcViolatedInvariantExecutionKey() *string {
 	return toStringPtr(erbIf(erbBool3(vBool(tc.IsViolatedInvariant)), func() Value { return vStr(tc.StepExecution) }, func() Value { return vS("") }))
 }
 
+// CalcFailedCheckRequirementKey computes the FailedCheckRequirementKey calculated field
+// Echoes the enforced requirement's id when this check recorded that the condition did not hold; blank otherwise.
+// Formula: =IF({{Held}} = FALSE, {{EnforcedRequirement}}, "")
+func (tc *ConditionCheck) CalcFailedCheckRequirementKey() *string {
+	return toStringPtr(erbIf(erbBool3(erbEq(erbNullif(vBool(tc.Held)), vB(false))), func() Value { return vStr(tc.EnforcedRequirement) }, func() Value { return vS("") }))
+}
+
+// CalcIsScoredBreach computes the IsScoredBreach calculated field
+// This check recorded that the condition did not hold, and the rule it enforces is computed by the register: a breach counted by the register itself, not by a person looking.
+// Formula: =AND({{Held}} = FALSE, {{EnforcedRequirementIsComputed}})
+func (tc *ConditionCheck) CalcIsScoredBreach() *bool {
+	return toBoolPtr(erbAnd(erbBool3(erbEq(erbNullif(vBool(tc.Held)), vB(false))), erbBool3(vBool(tc.EnforcedRequirementIsComputed))))
+}
+
 // erbComputeCalculations computes every calculated field of the row in dependency order.
 func (tc *ConditionCheck) erbComputeCalculations() {
 	// Level 1
 	calcGuard(tc, "name", func() { tc.Name = tc.CalcName() })
 	calcGuard(tc, "is_failed_precondition", func() { tc.IsFailedPrecondition = tc.CalcIsFailedPrecondition() })
 	calcGuard(tc, "is_violated_invariant", func() { tc.IsViolatedInvariant = tc.CalcIsViolatedInvariant() })
+	calcGuard(tc, "failed_check_requirement_key", func() { tc.FailedCheckRequirementKey = tc.CalcFailedCheckRequirementKey() })
+	calcGuard(tc, "is_scored_breach", func() { tc.IsScoredBreach = tc.CalcIsScoredBreach() })
 	// Level 2
 	calcGuard(tc, "failed_precondition_execution_key", func() { tc.FailedPreconditionExecutionKey = tc.CalcFailedPreconditionExecutionKey() })
 	calcGuard(tc, "violated_invariant_execution_key", func() { tc.ViolatedInvariantExecutionKey = tc.CalcViolatedInvariantExecutionKey() })
@@ -32434,6 +32524,16 @@ func (tc *ConditionCheck) erbGet(field string) Value {
 		return vStr(tc.ViolatedInvariantExecutionKey)
 	case "semantic_type_iri":
 		return vStr(tc.SemanticTypeIri)
+	case "enforced_requirement":
+		return vStr(tc.EnforcedRequirement)
+	case "failed_check_requirement_key":
+		return vStr(tc.FailedCheckRequirementKey)
+	case "enforced_requirement_is_computed":
+		return vBool(tc.EnforcedRequirementIsComputed)
+	case "enforced_requirement_statement":
+		return vStr(tc.EnforcedRequirementStatement)
+	case "is_scored_breach":
+		return vBool(tc.IsScoredBreach)
 	}
 	panic("ConditionChecks has no field " + field)
 }
@@ -32466,6 +32566,16 @@ func (tc *ConditionCheck) erbSet(field string, v Value) {
 		tc.ViolatedInvariantExecutionKey = toStringPtr(v)
 	case "semantic_type_iri":
 		tc.SemanticTypeIri = toStringPtr(v)
+	case "enforced_requirement":
+		tc.EnforcedRequirement = toStringPtr(v)
+	case "failed_check_requirement_key":
+		tc.FailedCheckRequirementKey = toStringPtr(v)
+	case "enforced_requirement_is_computed":
+		tc.EnforcedRequirementIsComputed = toBoolPtr(v)
+	case "enforced_requirement_statement":
+		tc.EnforcedRequirementStatement = toStringPtr(v)
+	case "is_scored_breach":
+		tc.IsScoredBreach = toBoolPtr(v)
 	default:
 		panic("ConditionChecks has no field " + field)
 	}
@@ -32474,7 +32584,7 @@ func (tc *ConditionCheck) erbSet(field string, v Value) {
 func (tc *ConditionCheck) erbLoad(row map[string]any) {
 	for key, value := range row {
 		switch key {
-		case "condition_check_id", "name", "step_execution", "step_condition", "held", "checked_at", "checked_by_agent", "condition_kind", "is_failed_precondition", "is_violated_invariant", "failed_precondition_execution_key", "violated_invariant_execution_key", "semantic_type_iri":
+		case "condition_check_id", "name", "step_execution", "step_condition", "held", "checked_at", "checked_by_agent", "condition_kind", "is_failed_precondition", "is_violated_invariant", "failed_precondition_execution_key", "violated_invariant_execution_key", "semantic_type_iri", "enforced_requirement", "failed_check_requirement_key", "enforced_requirement_is_computed", "enforced_requirement_statement", "is_scored_breach":
 			tc.erbSet(key, fromJSON(value))
 		}
 	}
@@ -59509,7 +59619,7 @@ func LoadOntologySupportProgrammeRecords(path string) ([]OntologySupportProgramm
 }
 
 // calculatedFieldCount bounds the runner's passes over the dataset.
-const calculatedFieldCount = 1702
+const calculatedFieldCount = 1707
 
 // erbTables is every table, in rulebook order.
 var erbTables = []TableSpec{
@@ -59523,32 +59633,32 @@ var erbTables = []TableSpec{
 			{Field: "prev_cq_coverage_percent", Target: "rulebook_releases", Return: "cq_coverage_percent", Key: "previous_release", Match: "rulebook_release_id"},
 			{Field: "prev_cq_run_count", Target: "rulebook_releases", Return: "cq_run_count", Key: "previous_release", Match: "rulebook_release_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "log_entry_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "release", Kind: "field", Field: "rulebook_release_id"}}},
-			{Field: "logical_change_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "release", Kind: "field", Field: "rulebook_release_id"}, {Range: "alters_logical_model", Kind: "literal", Literal: vB(true)}}},
-			{Field: "non_additive_change_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "release", Kind: "field", Field: "rulebook_release_id"}, {Range: "is_backward_incompatible", Kind: "literal", Literal: vB(true)}}},
-			{Field: "class_removal_or_rename_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "release", Kind: "field", Field: "rulebook_release_id"}, {Range: "is_class_removal_or_rename", Kind: "literal", Literal: vB(true)}}},
-			{Field: "invalidating_domain_range_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "release", Kind: "field", Field: "rulebook_release_id"}, {Range: "is_invalidating_domain_range_change", Kind: "literal", Literal: vB(true)}}},
-			{Field: "inconsistent_disjointness_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "release", Kind: "field", Field: "rulebook_release_id"}, {Range: "is_inconsistent_disjointness", Kind: "literal", Literal: vB(true)}}},
-			{Field: "schema_addition_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "release", Kind: "field", Field: "rulebook_release_id"}, {Range: "is_additive_schema_change", Kind: "literal", Literal: vB(true)}}},
-			{Field: "suite_update_count", Op: "COUNTIFS", Table: "steward_activities", Criteria: []Criterion{{Range: "release", Kind: "field", Field: "rulebook_release_id"}, {Range: "duty_kind", Kind: "literal", Literal: vS("ValidationSuiteUpdate")}}},
-			{Field: "consumer_count", Op: "COUNTIFS", Table: "model_consumers", Criteria: []Criterion{{Range: "depends_on_model", Kind: "field", Field: "governed_model"}}},
-			{Field: "notified_consumer_count", Op: "COUNTIFS", Table: "consumer_revalidations", Criteria: []Criterion{{Range: "rulebook_release", Kind: "field", Field: "rulebook_release_id"}, {Range: "was_notified", Kind: "literal", Literal: vB(true)}}},
-			{Field: "revalidated_consumer_count", Op: "COUNTIFS", Table: "consumer_revalidations", Criteria: []Criterion{{Range: "rulebook_release", Kind: "field", Field: "rulebook_release_id"}, {Range: "passed_revalidation", Kind: "literal", Literal: vB(true)}}},
-			{Field: "validation_run_count", Op: "COUNTIFS", Table: "change_validation_runs", Criteria: []Criterion{{Range: "release", Kind: "field", Field: "rulebook_release_id"}}},
-			{Field: "validation_failure_total", Op: "SUM", Table: "change_validation_runs", Target: "failure_count", Criteria: []Criterion{{Range: "release", Kind: "field", Field: "rulebook_release_id"}, {Range: "run_purpose", Kind: "literal", Literal: vS("Acceptance")}}},
-			{Field: "consistent_run_count", Op: "COUNTIFS", Table: "change_validation_runs", Criteria: []Criterion{{Range: "release", Kind: "field", Field: "rulebook_release_id"}, {Range: "consistency_check_outcome", Kind: "literal", Literal: vS("Consistent")}}},
-			{Field: "cq_run_count", Op: "COUNTIFS", Table: "competency_question_runs", Criteria: []Criterion{{Range: "rulebook_release", Kind: "field", Field: "rulebook_release_id"}}},
-			{Field: "answerable_cq_run_count", Op: "COUNTIFS", Table: "competency_question_runs", Criteria: []Criterion{{Range: "rulebook_release", Kind: "field", Field: "rulebook_release_id"}, {Range: "was_answerable", Kind: "literal", Literal: vB(true)}}},
-			{Field: "regressed_baseline_count", Op: "COUNTIFS", Table: "competency_question_runs", Criteria: []Criterion{{Range: "rulebook_release", Kind: "field", Field: "rulebook_release_id"}, {Range: "is_baseline_regression", Kind: "literal", Literal: vB(true)}}},
-			{Field: "scored_criterion_count", Op: "COUNTIFS", Table: "quality_assessments", Criteria: []Criterion{{Range: "rulebook_release", Kind: "field", Field: "rulebook_release_id"}}},
+			{Field: "log_entry_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "release", Kind: "raw_field", Field: "rulebook_release_id"}}},
+			{Field: "logical_change_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "release", Kind: "raw_field", Field: "rulebook_release_id"}, {Range: "alters_logical_model", Kind: "literal", Literal: vB(true)}}},
+			{Field: "non_additive_change_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "release", Kind: "raw_field", Field: "rulebook_release_id"}, {Range: "is_backward_incompatible", Kind: "literal", Literal: vB(true)}}},
+			{Field: "class_removal_or_rename_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "release", Kind: "raw_field", Field: "rulebook_release_id"}, {Range: "is_class_removal_or_rename", Kind: "literal", Literal: vB(true)}}},
+			{Field: "invalidating_domain_range_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "release", Kind: "raw_field", Field: "rulebook_release_id"}, {Range: "is_invalidating_domain_range_change", Kind: "literal", Literal: vB(true)}}},
+			{Field: "inconsistent_disjointness_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "release", Kind: "raw_field", Field: "rulebook_release_id"}, {Range: "is_inconsistent_disjointness", Kind: "literal", Literal: vB(true)}}},
+			{Field: "schema_addition_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "release", Kind: "raw_field", Field: "rulebook_release_id"}, {Range: "is_additive_schema_change", Kind: "literal", Literal: vB(true)}}},
+			{Field: "suite_update_count", Op: "COUNTIFS", Table: "steward_activities", Criteria: []Criterion{{Range: "release", Kind: "raw_field", Field: "rulebook_release_id"}, {Range: "duty_kind", Kind: "literal", Literal: vS("ValidationSuiteUpdate")}}},
+			{Field: "consumer_count", Op: "COUNTIFS", Table: "model_consumers", Criteria: []Criterion{{Range: "depends_on_model", Kind: "raw_field", Field: "governed_model"}}},
+			{Field: "notified_consumer_count", Op: "COUNTIFS", Table: "consumer_revalidations", Criteria: []Criterion{{Range: "rulebook_release", Kind: "raw_field", Field: "rulebook_release_id"}, {Range: "was_notified", Kind: "literal", Literal: vB(true)}}},
+			{Field: "revalidated_consumer_count", Op: "COUNTIFS", Table: "consumer_revalidations", Criteria: []Criterion{{Range: "rulebook_release", Kind: "raw_field", Field: "rulebook_release_id"}, {Range: "passed_revalidation", Kind: "literal", Literal: vB(true)}}},
+			{Field: "validation_run_count", Op: "COUNTIFS", Table: "change_validation_runs", Criteria: []Criterion{{Range: "release", Kind: "raw_field", Field: "rulebook_release_id"}}},
+			{Field: "validation_failure_total", Op: "SUM", Table: "change_validation_runs", Target: "failure_count", Criteria: []Criterion{{Range: "release", Kind: "raw_field", Field: "rulebook_release_id"}, {Range: "run_purpose", Kind: "literal", Literal: vS("Acceptance")}}},
+			{Field: "consistent_run_count", Op: "COUNTIFS", Table: "change_validation_runs", Criteria: []Criterion{{Range: "release", Kind: "raw_field", Field: "rulebook_release_id"}, {Range: "consistency_check_outcome", Kind: "literal", Literal: vS("Consistent")}}},
+			{Field: "cq_run_count", Op: "COUNTIFS", Table: "competency_question_runs", Criteria: []Criterion{{Range: "rulebook_release", Kind: "raw_field", Field: "rulebook_release_id"}}},
+			{Field: "answerable_cq_run_count", Op: "COUNTIFS", Table: "competency_question_runs", Criteria: []Criterion{{Range: "rulebook_release", Kind: "raw_field", Field: "rulebook_release_id"}, {Range: "was_answerable", Kind: "literal", Literal: vB(true)}}},
+			{Field: "regressed_baseline_count", Op: "COUNTIFS", Table: "competency_question_runs", Criteria: []Criterion{{Range: "rulebook_release", Kind: "raw_field", Field: "rulebook_release_id"}, {Range: "is_baseline_regression", Kind: "literal", Literal: vB(true)}}},
+			{Field: "scored_criterion_count", Op: "COUNTIFS", Table: "quality_assessments", Criteria: []Criterion{{Range: "rulebook_release", Kind: "raw_field", Field: "rulebook_release_id"}}},
 			{Field: "stated_criterion_count", Op: "COUNTIFS", Table: "quality_criteria", Criteria: []Criterion{{Range: "is_stated", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "OntologyProfiles", File: "ontology_profiles", RulebookRows: 27, New: func() Record { return &OntologyProfile{} },
 		Lookups: []LookupSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
 			{Field: "prerequisite_adopted_at", Target: "ontology_profiles", Return: "adopted_at", Key: "prerequisite_profile", Match: "ontology_profile_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "ontology_profile", Kind: "field", Field: "ontology_profile_id"}}},
-			{Field: "recent_deprecation_count", Op: "COUNTIFS", Table: "external_standard_terms", Criteria: []Criterion{{Range: "ontology_profile", Kind: "field", Field: "ontology_profile_id"}, {Range: "is_recent_deprecation", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "ontology_profile", Kind: "raw_field", Field: "ontology_profile_id"}}},
+			{Field: "recent_deprecation_count", Op: "COUNTIFS", Table: "external_standard_terms", Criteria: []Criterion{{Range: "ontology_profile", Kind: "raw_field", Field: "ontology_profile_id"}, {Range: "is_recent_deprecation", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "EvaluationContexts", File: "evaluation_contexts", RulebookRows: 1, New: func() Record { return &EvaluationContext{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
@@ -59568,50 +59678,50 @@ var erbTables = []TableSpec{
 	{Name: "Organizations", File: "organizations", RulebookRows: 18, New: func() Record { return &Organization{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "failed_ai_initiative_count", Op: "COUNTIFS", Table: "ai_adoption_initiatives", Criteria: []Criterion{{Range: "organization", Kind: "field", Field: "organization_id"}, {Range: "outcome", Kind: "literal", Literal: vS("Failed")}}},
-			{Field: "owned_procedure_count", Op: "COUNTIFS", Table: "procedures", Criteria: []Criterion{{Range: "owner_organization", Kind: "field", Field: "organization_id"}}},
-			{Field: "product_delivery_function_count", Op: "COUNTIFS", Table: "sourcing_functions", Criteria: []Criterion{{Range: "client_organization", Kind: "field", Field: "organization_id"}, {Range: "delivers_own_product", Kind: "literal", Literal: vB(true)}}},
-			{Field: "provider_held_delivery_method_count", Op: "COUNTIFS", Table: "sourcing_functions", Criteria: []Criterion{{Range: "client_organization", Kind: "field", Field: "organization_id"}, {Range: "delivers_own_product", Kind: "literal", Literal: vB(true)}, {Range: "is_method_knowledge_held_outside", Kind: "literal", Literal: vB(true)}}},
-			{Field: "audit_finding_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "client_organization", Kind: "field", Field: "organization_id"}, {Range: "has_internal_shortfall", Kind: "literal", Literal: vB(true)}}},
-			{Field: "filled_knowledge_position_count", Op: "COUNTIFS", Table: "knowledge_workforce_positions", Criteria: []Criterion{{Range: "organization", Kind: "field", Field: "organization_id"}, {Range: "status", Kind: "literal", Literal: vS("Filled")}}},
-			{Field: "departed_holder_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "organization", Kind: "field", Field: "organization_id"}, {Range: "is_held_by_departed_holder", Kind: "literal", Literal: vB(true)}}},
-			{Field: "lost_departed_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "organization", Kind: "field", Field: "organization_id"}, {Range: "is_held_only_by_departed", Kind: "literal", Literal: vB(true)}}},
-			{Field: "captured_own_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "organization", Kind: "field", Field: "organization_id"}, {Range: "is_captured", Kind: "literal", Literal: vB(true)}}},
-			{Field: "documentation_entry_count", Op: "COUNTIFS", Table: "knowledge_repository_entries", Criteria: []Criterion{{Range: "owner_organization", Kind: "field", Field: "organization_id"}}},
-			{Field: "unallocated_documentation_count", Op: "COUNTIFS", Table: "knowledge_repository_entries", Criteria: []Criterion{{Range: "owner_organization", Kind: "field", Field: "organization_id"}, {Range: "authored_on_allocated_time", Kind: "literal", Literal: vB(false)}}},
-			{Field: "transfer_given_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "from_organization", Kind: "field", Field: "organization_id"}}},
-			{Field: "unallocated_transfer_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "from_organization", Kind: "field", Field: "organization_id"}, {Range: "on_allocated_time", Kind: "literal", Literal: vB(false)}}},
-			{Field: "person_carried_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "organization", Kind: "field", Field: "organization_id"}, {Range: "carrier_kind", Kind: "literal", Literal: vS("Person")}}},
-			{Field: "facility_carried_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "organization", Kind: "field", Field: "organization_id"}, {Range: "carrier_kind", Kind: "literal", Literal: vS("Facility")}}},
-			{Field: "system_carried_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "organization", Kind: "field", Field: "organization_id"}, {Range: "carrier_kind", Kind: "literal", Literal: vS("System")}}},
-			{Field: "staged_decline_count", Op: "COUNTIFS", Table: "capability_declines", Criteria: []Criterion{{Range: "organization", Kind: "field", Field: "organization_id"}, {Range: "follows_preceding_stage_decline", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "failed_ai_initiative_count", Op: "COUNTIFS", Table: "ai_adoption_initiatives", Criteria: []Criterion{{Range: "organization", Kind: "raw_field", Field: "organization_id"}, {Range: "outcome", Kind: "literal", Literal: vS("Failed")}}},
+			{Field: "owned_procedure_count", Op: "COUNTIFS", Table: "procedures", Criteria: []Criterion{{Range: "owner_organization", Kind: "raw_field", Field: "organization_id"}}},
+			{Field: "product_delivery_function_count", Op: "COUNTIFS", Table: "sourcing_functions", Criteria: []Criterion{{Range: "client_organization", Kind: "raw_field", Field: "organization_id"}, {Range: "delivers_own_product", Kind: "literal", Literal: vB(true)}}},
+			{Field: "provider_held_delivery_method_count", Op: "COUNTIFS", Table: "sourcing_functions", Criteria: []Criterion{{Range: "client_organization", Kind: "raw_field", Field: "organization_id"}, {Range: "delivers_own_product", Kind: "literal", Literal: vB(true)}, {Range: "is_method_knowledge_held_outside", Kind: "literal", Literal: vB(true)}}},
+			{Field: "audit_finding_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "client_organization", Kind: "raw_field", Field: "organization_id"}, {Range: "has_internal_shortfall", Kind: "literal", Literal: vB(true)}}},
+			{Field: "filled_knowledge_position_count", Op: "COUNTIFS", Table: "knowledge_workforce_positions", Criteria: []Criterion{{Range: "organization", Kind: "raw_field", Field: "organization_id"}, {Range: "status", Kind: "literal", Literal: vS("Filled")}}},
+			{Field: "departed_holder_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "organization", Kind: "raw_field", Field: "organization_id"}, {Range: "is_held_by_departed_holder", Kind: "literal", Literal: vB(true)}}},
+			{Field: "lost_departed_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "organization", Kind: "raw_field", Field: "organization_id"}, {Range: "is_held_only_by_departed", Kind: "literal", Literal: vB(true)}}},
+			{Field: "captured_own_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "organization", Kind: "raw_field", Field: "organization_id"}, {Range: "is_captured", Kind: "literal", Literal: vB(true)}}},
+			{Field: "documentation_entry_count", Op: "COUNTIFS", Table: "knowledge_repository_entries", Criteria: []Criterion{{Range: "owner_organization", Kind: "raw_field", Field: "organization_id"}}},
+			{Field: "unallocated_documentation_count", Op: "COUNTIFS", Table: "knowledge_repository_entries", Criteria: []Criterion{{Range: "owner_organization", Kind: "raw_field", Field: "organization_id"}, {Range: "authored_on_allocated_time", Kind: "literal", Literal: vB(false)}}},
+			{Field: "transfer_given_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "from_organization", Kind: "raw_field", Field: "organization_id"}}},
+			{Field: "unallocated_transfer_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "from_organization", Kind: "raw_field", Field: "organization_id"}, {Range: "on_allocated_time", Kind: "literal", Literal: vB(false)}}},
+			{Field: "person_carried_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "organization", Kind: "raw_field", Field: "organization_id"}, {Range: "carrier_kind", Kind: "literal", Literal: vS("Person")}}},
+			{Field: "facility_carried_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "organization", Kind: "raw_field", Field: "organization_id"}, {Range: "carrier_kind", Kind: "literal", Literal: vS("Facility")}}},
+			{Field: "system_carried_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "organization", Kind: "raw_field", Field: "organization_id"}, {Range: "carrier_kind", Kind: "literal", Literal: vS("System")}}},
+			{Field: "staged_decline_count", Op: "COUNTIFS", Table: "capability_declines", Criteria: []Criterion{{Range: "organization", Kind: "raw_field", Field: "organization_id"}, {Range: "follows_preceding_stage_decline", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "Agents", File: "agents", RulebookRows: 55, New: func() Record { return &Agent{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "count_of_current_role_assignments", Op: "COUNTIFS", Table: "role_assignments", Criteria: []Criterion{{Range: "current_agent_key", Kind: "field", Field: "agent_id"}}},
-			{Field: "decision_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "deciding_agent", Kind: "field", Field: "agent_id"}}},
-			{Field: "overridden_decision_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "deciding_agent_when_overridden", Kind: "field", Field: "agent_id"}}},
-			{Field: "boundary_violation_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "agent_when_boundary_violated", Kind: "field", Field: "agent_id"}}},
-			{Field: "draft_decision_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "agent_when_draft", Kind: "field", Field: "agent_id"}}},
-			{Field: "overridden_draft_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "agent_when_draft_overridden", Kind: "field", Field: "agent_id"}}},
-			{Field: "times_named_as_broker", Op: "COUNTIFS", Table: "knowledge_broker_links", Criteria: []Criterion{{Range: "active_reliance_broker_key", Kind: "field", Field: "agent_id"}}},
-			{Field: "at_risk_reliance_count", Op: "COUNTIFS", Table: "knowledge_broker_links", Criteria: []Criterion{{Range: "at_risk_broker_key", Kind: "field", Field: "agent_id"}}},
-			{Field: "answer_count", Op: "COUNTIFS", Table: "assistant_answers", Criteria: []Criterion{{Range: "answering_agent", Kind: "field", Field: "agent_id"}}},
-			{Field: "ai_task_completed_count", Op: "COUNTIFS", Table: "assistant_answers", Criteria: []Criterion{{Range: "answering_agent", Kind: "field", Field: "agent_id"}, {Range: "task_outcome", Kind: "literal", Literal: vS("Completed")}}},
-			{Field: "runtime_integration_count", Op: "COUNTIFS", Table: "agent_integrations", Criteria: []Criterion{{Range: "agent", Kind: "field", Field: "agent_id"}, {Range: "delivery_mode", Kind: "literal", Literal: vS("Runtime")}}},
-			{Field: "search_event_count", Op: "COUNTIFS", Table: "knowledge_search_events", Criteria: []Criterion{{Range: "searched_by_agent", Kind: "field", Field: "agent_id"}}},
-			{Field: "accountability_assertion_count", Op: "COUNTIFS", Table: "snapshot_assertions", Criteria: []Criterion{{Range: "about_agent", Kind: "field", Field: "agent_id"}, {Range: "is_inferred", Kind: "literal", Literal: vB(false)}}},
-			{Field: "inferred_category_count", Op: "COUNTIFS", Table: "snapshot_assertions", Criteria: []Criterion{{Range: "about_agent", Kind: "field", Field: "agent_id"}, {Range: "is_inferred", Kind: "literal", Literal: vB(true)}}},
-			{Field: "attributed_artifact_count", Op: "COUNTIFS", Table: "execution_entities", Criteria: []Criterion{{Range: "attributed_to_agent", Kind: "field", Field: "agent_id"}}},
-			{Field: "registry_version_match_count", Op: "COUNTIFS", Table: "ai_registry_model_versions", Criteria: []Criterion{{Range: "dc_identifier", Kind: "field", Field: "agent_id"}, {Range: "dc_has_version", Kind: "field", Field: "version_or_employment_key"}}},
-			{Field: "current_accountable_human_count", Op: "COUNTIFS", Table: "ai_agent_accountabilities", Criteria: []Criterion{{Range: "ai_agent", Kind: "field", Field: "agent_id"}, {Range: "is_current_human_accountability", Kind: "literal", Literal: vB(true)}}},
-			{Field: "community_count", Op: "COUNTIFS", Table: "community_memberships", Criteria: []Criterion{{Range: "agent", Kind: "field", Field: "agent_id"}}},
-			{Field: "sna_identification_count", Op: "COUNTIFS", Table: "method_applications", Criteria: []Criterion{{Range: "identified_broker", Kind: "field", Field: "agent_id"}}},
-			{Field: "located_know_how_count", Op: "COUNTIFS", Table: "knowledge_broker_links", Criteria: []Criterion{{Range: "broker", Kind: "field", Field: "agent_id"}, {Range: "locates_other_holder", Kind: "literal", Literal: vB(true)}}},
-			{Field: "required_mentoring_hours_per_week", Op: "SUM", Table: "mentorships", Target: "expected_weekly_hours", Criteria: []Criterion{{Range: "mentor_agent", Kind: "field", Field: "agent_id"}, {Range: "is_active", Kind: "literal", Literal: vB(true)}}},
-			{Field: "transfers_given_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "from_agent", Kind: "field", Field: "agent_id"}}},
-			{Field: "recognition_count", Op: "COUNTIFS", Table: "sharing_recognitions", Criteria: []Criterion{{Range: "recognized_agent", Kind: "field", Field: "agent_id"}}},
-			{Field: "downstream_of_held_steps_count", Op: "SUM", Table: "steps", Target: "downstream_artifact_step_count", Criteria: []Criterion{{Range: "accountable_agent", Kind: "field", Field: "agent_id"}}},}},
+			{Field: "count_of_current_role_assignments", Op: "COUNTIFS", Table: "role_assignments", Criteria: []Criterion{{Range: "current_agent_key", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "decision_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "deciding_agent", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "overridden_decision_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "deciding_agent_when_overridden", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "boundary_violation_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "agent_when_boundary_violated", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "draft_decision_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "agent_when_draft", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "overridden_draft_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "agent_when_draft_overridden", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "times_named_as_broker", Op: "COUNTIFS", Table: "knowledge_broker_links", Criteria: []Criterion{{Range: "active_reliance_broker_key", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "at_risk_reliance_count", Op: "COUNTIFS", Table: "knowledge_broker_links", Criteria: []Criterion{{Range: "at_risk_broker_key", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "answer_count", Op: "COUNTIFS", Table: "assistant_answers", Criteria: []Criterion{{Range: "answering_agent", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "ai_task_completed_count", Op: "COUNTIFS", Table: "assistant_answers", Criteria: []Criterion{{Range: "answering_agent", Kind: "raw_field", Field: "agent_id"}, {Range: "task_outcome", Kind: "literal", Literal: vS("Completed")}}},
+			{Field: "runtime_integration_count", Op: "COUNTIFS", Table: "agent_integrations", Criteria: []Criterion{{Range: "agent", Kind: "raw_field", Field: "agent_id"}, {Range: "delivery_mode", Kind: "literal", Literal: vS("Runtime")}}},
+			{Field: "search_event_count", Op: "COUNTIFS", Table: "knowledge_search_events", Criteria: []Criterion{{Range: "searched_by_agent", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "accountability_assertion_count", Op: "COUNTIFS", Table: "snapshot_assertions", Criteria: []Criterion{{Range: "about_agent", Kind: "raw_field", Field: "agent_id"}, {Range: "is_inferred", Kind: "literal", Literal: vB(false)}}},
+			{Field: "inferred_category_count", Op: "COUNTIFS", Table: "snapshot_assertions", Criteria: []Criterion{{Range: "about_agent", Kind: "raw_field", Field: "agent_id"}, {Range: "is_inferred", Kind: "literal", Literal: vB(true)}}},
+			{Field: "attributed_artifact_count", Op: "COUNTIFS", Table: "execution_entities", Criteria: []Criterion{{Range: "attributed_to_agent", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "registry_version_match_count", Op: "COUNTIFS", Table: "ai_registry_model_versions", Criteria: []Criterion{{Range: "dc_identifier", Kind: "raw_field", Field: "agent_id"}, {Range: "dc_has_version", Kind: "raw_field", Field: "version_or_employment_key"}}},
+			{Field: "current_accountable_human_count", Op: "COUNTIFS", Table: "ai_agent_accountabilities", Criteria: []Criterion{{Range: "ai_agent", Kind: "raw_field", Field: "agent_id"}, {Range: "is_current_human_accountability", Kind: "literal", Literal: vB(true)}}},
+			{Field: "community_count", Op: "COUNTIFS", Table: "community_memberships", Criteria: []Criterion{{Range: "agent", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "sna_identification_count", Op: "COUNTIFS", Table: "method_applications", Criteria: []Criterion{{Range: "identified_broker", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "located_know_how_count", Op: "COUNTIFS", Table: "knowledge_broker_links", Criteria: []Criterion{{Range: "broker", Kind: "raw_field", Field: "agent_id"}, {Range: "locates_other_holder", Kind: "literal", Literal: vB(true)}}},
+			{Field: "required_mentoring_hours_per_week", Op: "SUM", Table: "mentorships", Target: "expected_weekly_hours", Criteria: []Criterion{{Range: "mentor_agent", Kind: "raw_field", Field: "agent_id"}, {Range: "is_active", Kind: "literal", Literal: vB(true)}}},
+			{Field: "transfers_given_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "from_agent", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "recognition_count", Op: "COUNTIFS", Table: "sharing_recognitions", Criteria: []Criterion{{Range: "recognized_agent", Kind: "raw_field", Field: "agent_id"}}},
+			{Field: "downstream_of_held_steps_count", Op: "SUM", Table: "steps", Target: "downstream_artifact_step_count", Criteria: []Criterion{{Range: "accountable_agent", Kind: "raw_field", Field: "agent_id"}}},}},
 	{Name: "Roles", File: "roles", RulebookRows: 33, New: func() Record { return &Role{} },
 		Lookups: []LookupSpec{
 			{Field: "current_agent_kind", Target: "agents", Return: "agent_kind", Key: "current_agent", Match: "agent_id"},
@@ -59621,20 +59731,20 @@ var erbTables = []TableSpec{
 			{Field: "current_holder_name", Target: "agents", Return: "display_name", Key: "current_agent", Match: "agent_id"},
 			{Field: "backup_role_holder", Target: "roles", Return: "current_agent", Key: "escalation_backup_role", Match: "role_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "active_assignment_count", Op: "COUNTIFS", Table: "role_assignments", Criteria: []Criterion{{Range: "role", Kind: "field", Field: "role_id"}}},
-			{Field: "currently_covered_assignment_count", Op: "COUNTIFS", Table: "role_assignments", Criteria: []Criterion{{Range: "role_when_covering", Kind: "field", Field: "role_id"}}},
-			{Field: "count_of_awaited_decisions", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "authority_role", Kind: "field", Field: "role_id"}}},
-			{Field: "departed_assignment_count", Op: "COUNTIFS", Table: "role_assignments", Criteria: []Criterion{{Range: "departed_role_key", Kind: "field", Field: "role_id"}}},
-			{Field: "ungrounded_boundary_count", Op: "COUNTIFS", Table: "authority_boundaries", Criteria: []Criterion{{Range: "constrained_role_assignment_key", Kind: "field", Field: "role_id"}}},
-			{Field: "unescalated_refusal_count", Op: "COUNTIFS", Table: "send_intents", Criteria: []Criterion{{Range: "unescalated_refusal_role_key", Kind: "field", Field: "role_id"}}},
-			{Field: "unauthorized_enforcement_assignment_count", Op: "COUNTIFS", Table: "role_assignments", Criteria: []Criterion{{Range: "unauthorized_enforcement_role_key", Kind: "field", Field: "role_id"}}},
-			{Field: "specialization_count", Op: "COUNTIFS", Table: "roles", Criteria: []Criterion{{Range: "specializes_role", Kind: "field", Field: "role_id"}}},
-			{Field: "capability_tag_count", Op: "COUNTIFS", Table: "role_capability_tags", Criteria: []Criterion{{Range: "role", Kind: "field", Field: "role_id"}}},
-			{Field: "compliance_review_tag_count", Op: "COUNTIFS", Table: "role_capability_tags", Criteria: []Criterion{{Range: "role", Kind: "field", Field: "role_id"}, {Range: "capability_term", Kind: "literal", Literal: vS("vt-cap-compliance-review")}}},
-			{Field: "role_mention_count", Op: "COUNTIFS", Table: "source_term_mentions", Criteria: []Criterion{{Range: "intended_term_role", Kind: "field", Field: "role_id"}}},
-			{Field: "unresolved_role_mention_count", Op: "COUNTIFS", Table: "source_term_mentions", Criteria: []Criterion{{Range: "unresolved_role_key", Kind: "field", Field: "role_id"}}},
-			{Field: "release_approval_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "assigned_role", Kind: "field", Field: "role_id"}, {Range: "is_release_approval_gate", Kind: "literal", Literal: vB(true)}}},
-			{Field: "approval_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "assigned_role", Kind: "field", Field: "role_id"}, {Range: "control_kind", Kind: "literal", Literal: vS("Approval")}}},}},
+			{Field: "active_assignment_count", Op: "COUNTIFS", Table: "role_assignments", Criteria: []Criterion{{Range: "role", Kind: "raw_field", Field: "role_id"}}},
+			{Field: "currently_covered_assignment_count", Op: "COUNTIFS", Table: "role_assignments", Criteria: []Criterion{{Range: "role_when_covering", Kind: "raw_field", Field: "role_id"}}},
+			{Field: "count_of_awaited_decisions", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "authority_role", Kind: "raw_field", Field: "role_id"}}},
+			{Field: "departed_assignment_count", Op: "COUNTIFS", Table: "role_assignments", Criteria: []Criterion{{Range: "departed_role_key", Kind: "raw_field", Field: "role_id"}}},
+			{Field: "ungrounded_boundary_count", Op: "COUNTIFS", Table: "authority_boundaries", Criteria: []Criterion{{Range: "constrained_role_assignment_key", Kind: "raw_field", Field: "role_id"}}},
+			{Field: "unescalated_refusal_count", Op: "COUNTIFS", Table: "send_intents", Criteria: []Criterion{{Range: "unescalated_refusal_role_key", Kind: "raw_field", Field: "role_id"}}},
+			{Field: "unauthorized_enforcement_assignment_count", Op: "COUNTIFS", Table: "role_assignments", Criteria: []Criterion{{Range: "unauthorized_enforcement_role_key", Kind: "raw_field", Field: "role_id"}}},
+			{Field: "specialization_count", Op: "COUNTIFS", Table: "roles", Criteria: []Criterion{{Range: "specializes_role", Kind: "raw_field", Field: "role_id"}}},
+			{Field: "capability_tag_count", Op: "COUNTIFS", Table: "role_capability_tags", Criteria: []Criterion{{Range: "role", Kind: "raw_field", Field: "role_id"}}},
+			{Field: "compliance_review_tag_count", Op: "COUNTIFS", Table: "role_capability_tags", Criteria: []Criterion{{Range: "role", Kind: "raw_field", Field: "role_id"}, {Range: "capability_term", Kind: "literal", Literal: vS("vt-cap-compliance-review")}}},
+			{Field: "role_mention_count", Op: "COUNTIFS", Table: "source_term_mentions", Criteria: []Criterion{{Range: "intended_term_role", Kind: "raw_field", Field: "role_id"}}},
+			{Field: "unresolved_role_mention_count", Op: "COUNTIFS", Table: "source_term_mentions", Criteria: []Criterion{{Range: "unresolved_role_key", Kind: "raw_field", Field: "role_id"}}},
+			{Field: "release_approval_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "assigned_role", Kind: "raw_field", Field: "role_id"}, {Range: "is_release_approval_gate", Kind: "literal", Literal: vB(true)}}},
+			{Field: "approval_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "assigned_role", Kind: "raw_field", Field: "role_id"}, {Range: "control_kind", Kind: "literal", Literal: vS("Approval")}}},}},
 	{Name: "RoleAssignments", File: "role_assignments", RulebookRows: 36, New: func() Record { return &RoleAssignment{} },
 		Lookups: []LookupSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
@@ -59648,23 +59758,23 @@ var erbTables = []TableSpec{
 			{Field: "agent_version_key", Target: "agents", Return: "version_or_employment_key", Key: "agent", Match: "agent_id"},
 			{Field: "role_approval_step_count", Target: "roles", Return: "approval_step_count", Key: "role", Match: "role_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "decision_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "role_assignment_when_scored", Kind: "field", Field: "role_assignment_id"}}},
-			{Field: "overridden_decision_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "role_assignment_when_overridden", Kind: "field", Field: "role_assignment_id"}}},
-			{Field: "error_correction_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "error_correction_role_assignment_key", Kind: "field", Field: "role_assignment_id"}}},
-			{Field: "boundary_violation_count_for_assignment", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "boundary_violation_role_assignment_key", Kind: "field", Field: "role_assignment_id"}}},}},
+			{Field: "decision_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "role_assignment_when_scored", Kind: "raw_field", Field: "role_assignment_id"}}},
+			{Field: "overridden_decision_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "role_assignment_when_overridden", Kind: "raw_field", Field: "role_assignment_id"}}},
+			{Field: "error_correction_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "error_correction_role_assignment_key", Kind: "raw_field", Field: "role_assignment_id"}}},
+			{Field: "boundary_violation_count_for_assignment", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "boundary_violation_role_assignment_key", Kind: "raw_field", Field: "role_assignment_id"}}},}},
 	{Name: "CommunitiesOfPractice", File: "communities_of_practice", RulebookRows: 7, New: func() Record { return &CommunitiesOfPractice{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "sharing_event_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "field", Field: "community_of_practice_id"}}},
-			{Field: "interconnected_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "field", Field: "community_of_practice_id"}, {Range: "builds_on_same_community_know_how", Kind: "literal", Literal: vB(true)}}},
-			{Field: "physical_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "field", Field: "community_of_practice_id"}, {Range: "work_medium", Kind: "literal", Literal: vS("Physical")}}},
-			{Field: "digital_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "field", Field: "community_of_practice_id"}, {Range: "work_medium", Kind: "literal", Literal: vS("Digital")}}},
-			{Field: "person_carried_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "field", Field: "community_of_practice_id"}, {Range: "carrier_kind", Kind: "literal", Literal: vS("Person")}}},
-			{Field: "external_member_count", Op: "COUNTIFS", Table: "community_memberships", Criteria: []Criterion{{Range: "community_of_practice", Kind: "field", Field: "community_of_practice_id"}, {Range: "is_external_member", Kind: "literal", Literal: vB(true)}}},
-			{Field: "specialist_member_count", Op: "COUNTIFS", Table: "community_memberships", Criteria: []Criterion{{Range: "community_of_practice", Kind: "field", Field: "community_of_practice_id"}, {Range: "is_specialist", Kind: "literal", Literal: vB(true)}}},
-			{Field: "employer_move_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "field", Field: "community_of_practice_id"}, {Range: "channel", Kind: "literal", Literal: vS("EmployerChange")}}},
-			{Field: "recent_apprenticeship_count", Op: "COUNTIFS", Table: "mentorships", Criteria: []Criterion{{Range: "community_of_practice", Kind: "field", Field: "community_of_practice_id"}, {Range: "is_recent_apprenticeship", Kind: "literal", Literal: vB(true)}}},
-			{Field: "ambient_absorption_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "field", Field: "community_of_practice_id"}, {Range: "is_ambient_absorption_by_non_practitioner", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "sharing_event_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "raw_field", Field: "community_of_practice_id"}}},
+			{Field: "interconnected_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "raw_field", Field: "community_of_practice_id"}, {Range: "builds_on_same_community_know_how", Kind: "literal", Literal: vB(true)}}},
+			{Field: "physical_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "raw_field", Field: "community_of_practice_id"}, {Range: "work_medium", Kind: "literal", Literal: vS("Physical")}}},
+			{Field: "digital_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "raw_field", Field: "community_of_practice_id"}, {Range: "work_medium", Kind: "literal", Literal: vS("Digital")}}},
+			{Field: "person_carried_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "raw_field", Field: "community_of_practice_id"}, {Range: "carrier_kind", Kind: "literal", Literal: vS("Person")}}},
+			{Field: "external_member_count", Op: "COUNTIFS", Table: "community_memberships", Criteria: []Criterion{{Range: "community_of_practice", Kind: "raw_field", Field: "community_of_practice_id"}, {Range: "is_external_member", Kind: "literal", Literal: vB(true)}}},
+			{Field: "specialist_member_count", Op: "COUNTIFS", Table: "community_memberships", Criteria: []Criterion{{Range: "community_of_practice", Kind: "raw_field", Field: "community_of_practice_id"}, {Range: "is_specialist", Kind: "literal", Literal: vB(true)}}},
+			{Field: "employer_move_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "raw_field", Field: "community_of_practice_id"}, {Range: "channel", Kind: "literal", Literal: vS("EmployerChange")}}},
+			{Field: "recent_apprenticeship_count", Op: "COUNTIFS", Table: "mentorships", Criteria: []Criterion{{Range: "community_of_practice", Kind: "raw_field", Field: "community_of_practice_id"}, {Range: "is_recent_apprenticeship", Kind: "literal", Literal: vB(true)}}},
+			{Field: "ambient_absorption_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "community_of_practice", Kind: "raw_field", Field: "community_of_practice_id"}, {Range: "is_ambient_absorption_by_non_practitioner", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "Mentorships", File: "mentorships", RulebookRows: 5, New: func() Record { return &Mentorship{} },
 		Lookups: []LookupSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
@@ -59674,9 +59784,9 @@ var erbTables = []TableSpec{
 		Lookups: []LookupSpec{
 			{Field: "broader_is_detached", Target: "procedure_types", Return: "is_detached_from_taxonomy", Key: "broader_procedure_type", Match: "procedure_type_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "narrower_type_count", Op: "COUNTIFS", Table: "procedure_types", Criteria: []Criterion{{Range: "broader_procedure_type", Kind: "field", Field: "procedure_type_id"}}},
-			{Field: "member_count", Op: "COUNTIFS", Table: "procedures", Criteria: []Criterion{{Range: "procedure_type", Kind: "field", Field: "procedure_type_id"}}},
-			{Field: "members_lacking_distinction_count", Op: "COUNTIFS", Table: "procedures", Criteria: []Criterion{{Range: "lacks_distinction_type_key", Kind: "field", Field: "procedure_type_id"}}},}},
+			{Field: "narrower_type_count", Op: "COUNTIFS", Table: "procedure_types", Criteria: []Criterion{{Range: "broader_procedure_type", Kind: "raw_field", Field: "procedure_type_id"}}},
+			{Field: "member_count", Op: "COUNTIFS", Table: "procedures", Criteria: []Criterion{{Range: "procedure_type", Kind: "raw_field", Field: "procedure_type_id"}}},
+			{Field: "members_lacking_distinction_count", Op: "COUNTIFS", Table: "procedures", Criteria: []Criterion{{Range: "lacks_distinction_type_key", Kind: "raw_field", Field: "procedure_type_id"}}},}},
 	{Name: "Procedures", File: "procedures", RulebookRows: 10, New: func() Record { return &Procedure{} },
 		Lookups: []LookupSpec{
 			{Field: "procedure_type_rank", Target: "procedure_types", Return: "taxonomy_rank", Key: "procedure_type", Match: "procedure_type_id"},
@@ -59684,41 +59794,41 @@ var erbTables = []TableSpec{
 			{Field: "type_distinguishing_facet", Target: "procedure_types", Return: "distinguishing_facet", Key: "procedure_type", Match: "procedure_type_id"},
 			{Field: "type_distinguishing_value", Target: "procedure_types", Return: "distinguishing_value", Key: "procedure_type", Match: "procedure_type_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "execution_count", Op: "SUM", Table: "procedure_versions", Target: "execution_count", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}}},
-			{Field: "target_count", Op: "COUNTIFS", Table: "procedure_targets", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}}},
-			{Field: "adoption_count", Op: "COUNTIFS", Table: "procedure_adoptions", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}}},
-			{Field: "specified_step_total", Op: "SUM", Table: "procedure_versions", Target: "count_of_steps", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}}},
-			{Field: "called_by_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "calls_procedure", Kind: "field", Field: "procedure_id"}}},
-			{Field: "failure_criterion_count", Op: "COUNTIFS", Table: "procedure_outcome_criteria", Criteria: []Criterion{{Range: "failure_procedure_key", Kind: "field", Field: "procedure_id"}}},
-			{Field: "lens_view_count", Op: "COUNTIFS", Table: "procedure_lens_views", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}}},
-			{Field: "step_level_view_count", Op: "COUNTIFS", Table: "procedure_lens_views", Criteria: []Criterion{{Range: "step_level_procedure_key", Kind: "field", Field: "procedure_id"}}},
-			{Field: "category_level_view_count", Op: "COUNTIFS", Table: "procedure_lens_views", Criteria: []Criterion{{Range: "category_level_procedure_key", Kind: "field", Field: "procedure_id"}}},
-			{Field: "strategic_alignment_count", Op: "COUNTIFS", Table: "process_strategic_alignments", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}}},
-			{Field: "outcome_measure_count", Op: "COUNTIFS", Table: "process_outcome_measures", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}}},
-			{Field: "unlinked_measure_count", Op: "COUNTIFS", Table: "process_outcome_measures", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_unlinked_to_business_outcome", Kind: "literal", Literal: vB(true)}}},
-			{Field: "hindered_by_count", Op: "COUNTIFS", Table: "process_interdependencies", Criteria: []Criterion{{Range: "hindered_procedure_key", Kind: "field", Field: "procedure_id"}}},
-			{Field: "matching_distinction_count", Op: "COUNTIFS", Table: "procedure_facet_assignments", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "facet", Kind: "field", Field: "type_distinguishing_facet"}, {Range: "facet_value", Kind: "field", Field: "type_distinguishing_value"}}},
-			{Field: "managed_vocabulary_count", Op: "COUNTIFS", Table: "vocabularies", Criteria: []Criterion{{Range: "managed_scheme_procedure_key", Kind: "field", Field: "procedure_id"}}},
-			{Field: "compliance_review_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "compliance_review_procedure_key", Kind: "field", Field: "procedure_id"}}},
-			{Field: "agent_intended_count", Op: "COUNTIFS", Table: "ai_adoption_initiatives", Criteria: []Criterion{{Range: "target_procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_agentic", Kind: "literal", Literal: vB(true)}}},
-			{Field: "repository_entry_count", Op: "COUNTIFS", Table: "knowledge_repository_entries", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}}},
-			{Field: "stale_entry_count", Op: "COUNTIFS", Table: "knowledge_repository_entries", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_stale", Kind: "literal", Literal: vB(true)}}},
-			{Field: "departed_only_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_held_only_by_departed", Kind: "literal", Literal: vB(true)}}},
-			{Field: "execution_feedback_entry_count", Op: "COUNTIFS", Table: "knowledge_repository_entries", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_execution_feedback", Kind: "literal", Literal: vB(true)}}},
-			{Field: "machine_authored_entry_count", Op: "COUNTIFS", Table: "knowledge_repository_entries", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_machine_authored", Kind: "literal", Literal: vB(true)}}},
-			{Field: "practitioner_relationship_count", Op: "COUNTIFS", Table: "source_relationships", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}}},
-			{Field: "unengaged_stakeholder_count", Op: "COUNTIFS", Table: "department_process_accounts", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_awaiting_engagement", Kind: "literal", Literal: vB(true)}}},
-			{Field: "recent_starter_count", Op: "COUNTIFS", Table: "onboarding_records", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_recent_start", Kind: "literal", Literal: vB(true)}}},
-			{Field: "untransferred_veteran_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_untransferred_veteran_know_how", Kind: "literal", Literal: vB(true)}}},
-			{Field: "departing_veteran_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_at_risk_of_imminent_loss", Kind: "literal", Literal: vB(true)}}},
-			{Field: "proficient_with_capture_count", Op: "COUNTIFS", Table: "onboarding_records", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_proficient", Kind: "literal", Literal: vB(true)}, {Range: "used_captured_knowledge", Kind: "literal", Literal: vB(true)}}},
-			{Field: "proficient_without_capture_count", Op: "COUNTIFS", Table: "onboarding_records", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_proficient", Kind: "literal", Literal: vB(true)}, {Range: "used_captured_knowledge", Kind: "literal", Literal: vB(false)}}},
-			{Field: "days_with_capture_total", Op: "SUM", Table: "onboarding_records", Target: "days_to_proficiency", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_proficient", Kind: "literal", Literal: vB(true)}, {Range: "used_captured_knowledge", Kind: "literal", Literal: vB(true)}}},
-			{Field: "days_without_capture_total", Op: "SUM", Table: "onboarding_records", Target: "days_to_proficiency", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_proficient", Kind: "literal", Literal: vB(true)}, {Range: "used_captured_knowledge", Kind: "literal", Literal: vB(false)}}},
-			{Field: "collected_material_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}}},
-			{Field: "in_work_capture_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}, {Range: "is_captured_in_flow_of_work", Kind: "literal", Literal: vB(true)}}},
-			{Field: "expert_acquisition_hours", Op: "SUM", Table: "collected_source_materials", Target: "expert_effort_hours", Criteria: []Criterion{{Range: "procedure", Kind: "field", Field: "procedure_id"}}},
-			{Field: "compliance_document_count", Op: "COUNTIFS", Table: "resources", Criteria: []Criterion{{Range: "compliance_record_for", Kind: "field", Field: "procedure_id"}}},}},
+			{Field: "execution_count", Op: "SUM", Table: "procedure_versions", Target: "execution_count", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "target_count", Op: "COUNTIFS", Table: "procedure_targets", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "adoption_count", Op: "COUNTIFS", Table: "procedure_adoptions", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "specified_step_total", Op: "SUM", Table: "procedure_versions", Target: "count_of_steps", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "called_by_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "calls_procedure", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "failure_criterion_count", Op: "COUNTIFS", Table: "procedure_outcome_criteria", Criteria: []Criterion{{Range: "failure_procedure_key", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "lens_view_count", Op: "COUNTIFS", Table: "procedure_lens_views", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "step_level_view_count", Op: "COUNTIFS", Table: "procedure_lens_views", Criteria: []Criterion{{Range: "step_level_procedure_key", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "category_level_view_count", Op: "COUNTIFS", Table: "procedure_lens_views", Criteria: []Criterion{{Range: "category_level_procedure_key", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "strategic_alignment_count", Op: "COUNTIFS", Table: "process_strategic_alignments", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "outcome_measure_count", Op: "COUNTIFS", Table: "process_outcome_measures", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "unlinked_measure_count", Op: "COUNTIFS", Table: "process_outcome_measures", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_unlinked_to_business_outcome", Kind: "literal", Literal: vB(true)}}},
+			{Field: "hindered_by_count", Op: "COUNTIFS", Table: "process_interdependencies", Criteria: []Criterion{{Range: "hindered_procedure_key", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "matching_distinction_count", Op: "COUNTIFS", Table: "procedure_facet_assignments", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "facet", Kind: "field", Field: "type_distinguishing_facet"}, {Range: "facet_value", Kind: "field", Field: "type_distinguishing_value"}}},
+			{Field: "managed_vocabulary_count", Op: "COUNTIFS", Table: "vocabularies", Criteria: []Criterion{{Range: "managed_scheme_procedure_key", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "compliance_review_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "compliance_review_procedure_key", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "agent_intended_count", Op: "COUNTIFS", Table: "ai_adoption_initiatives", Criteria: []Criterion{{Range: "target_procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_agentic", Kind: "literal", Literal: vB(true)}}},
+			{Field: "repository_entry_count", Op: "COUNTIFS", Table: "knowledge_repository_entries", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "stale_entry_count", Op: "COUNTIFS", Table: "knowledge_repository_entries", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_stale", Kind: "literal", Literal: vB(true)}}},
+			{Field: "departed_only_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_held_only_by_departed", Kind: "literal", Literal: vB(true)}}},
+			{Field: "execution_feedback_entry_count", Op: "COUNTIFS", Table: "knowledge_repository_entries", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_execution_feedback", Kind: "literal", Literal: vB(true)}}},
+			{Field: "machine_authored_entry_count", Op: "COUNTIFS", Table: "knowledge_repository_entries", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_machine_authored", Kind: "literal", Literal: vB(true)}}},
+			{Field: "practitioner_relationship_count", Op: "COUNTIFS", Table: "source_relationships", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "unengaged_stakeholder_count", Op: "COUNTIFS", Table: "department_process_accounts", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_awaiting_engagement", Kind: "literal", Literal: vB(true)}}},
+			{Field: "recent_starter_count", Op: "COUNTIFS", Table: "onboarding_records", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_recent_start", Kind: "literal", Literal: vB(true)}}},
+			{Field: "untransferred_veteran_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_untransferred_veteran_know_how", Kind: "literal", Literal: vB(true)}}},
+			{Field: "departing_veteran_know_how_count", Op: "COUNTIFS", Table: "know_how_carriers", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_at_risk_of_imminent_loss", Kind: "literal", Literal: vB(true)}}},
+			{Field: "proficient_with_capture_count", Op: "COUNTIFS", Table: "onboarding_records", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_proficient", Kind: "literal", Literal: vB(true)}, {Range: "used_captured_knowledge", Kind: "literal", Literal: vB(true)}}},
+			{Field: "proficient_without_capture_count", Op: "COUNTIFS", Table: "onboarding_records", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_proficient", Kind: "literal", Literal: vB(true)}, {Range: "used_captured_knowledge", Kind: "literal", Literal: vB(false)}}},
+			{Field: "days_with_capture_total", Op: "SUM", Table: "onboarding_records", Target: "days_to_proficiency", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_proficient", Kind: "literal", Literal: vB(true)}, {Range: "used_captured_knowledge", Kind: "literal", Literal: vB(true)}}},
+			{Field: "days_without_capture_total", Op: "SUM", Table: "onboarding_records", Target: "days_to_proficiency", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_proficient", Kind: "literal", Literal: vB(true)}, {Range: "used_captured_knowledge", Kind: "literal", Literal: vB(false)}}},
+			{Field: "collected_material_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "in_work_capture_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}, {Range: "is_captured_in_flow_of_work", Kind: "literal", Literal: vB(true)}}},
+			{Field: "expert_acquisition_hours", Op: "SUM", Table: "collected_source_materials", Target: "expert_effort_hours", Criteria: []Criterion{{Range: "procedure", Kind: "raw_field", Field: "procedure_id"}}},
+			{Field: "compliance_document_count", Op: "COUNTIFS", Table: "resources", Criteria: []Criterion{{Range: "compliance_record_for", Kind: "raw_field", Field: "procedure_id"}}},}},
 	{Name: "ProcedureVersions", File: "procedure_versions", RulebookRows: 9, New: func() Record { return &ProcedureVersion{} },
 		Lookups: []LookupSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
@@ -59728,102 +59838,102 @@ var erbTables = []TableSpec{
 			{Field: "created_by_agent_kind", Target: "agents", Return: "agent_kind", Key: "created_by_agent", Match: "agent_id"},
 			{Field: "owner_organization", Target: "procedures", Return: "owner_organization", Key: "procedure", Match: "procedure_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "count_of_steps", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "count_of_open_knowledge_gaps", Op: "COUNTIFS", Table: "knowledge_gaps", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "status", Kind: "literal", Literal: vS("Open")}}},
-			{Field: "specified_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "overdue_review_count", Op: "COUNTIFS", Table: "review_events", Criteria: []Criterion{{Range: "overdue_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "open_change_request_count", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "open_change_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "open_high_severity_gap_count", Op: "COUNTIFS", Table: "knowledge_gaps", Criteria: []Criterion{{Range: "open_gap_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "steward_review_cadence_days", Op: "SUM", Table: "stewardship_assignments", Target: "review_cadence_days", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "count_of_stewardship_assignments", Op: "COUNTIFS", Table: "stewardship_assignments", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
+			{Field: "count_of_steps", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "count_of_open_knowledge_gaps", Op: "COUNTIFS", Table: "knowledge_gaps", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "status", Kind: "literal", Literal: vS("Open")}}},
+			{Field: "specified_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "overdue_review_count", Op: "COUNTIFS", Table: "review_events", Criteria: []Criterion{{Range: "overdue_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "open_change_request_count", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "open_change_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "open_high_severity_gap_count", Op: "COUNTIFS", Table: "knowledge_gaps", Criteria: []Criterion{{Range: "open_gap_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "steward_review_cadence_days", Op: "SUM", Table: "stewardship_assignments", Target: "review_cadence_days", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "count_of_stewardship_assignments", Op: "COUNTIFS", Table: "stewardship_assignments", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
 			{Field: "count_of_open_blocking_gaps", Op: "COUNTIFS", Table: "knowledge_gaps", Criteria: []Criterion{{Range: "is_open_and_blocking", Kind: "literal", Literal: vB(true)}}},
 			{Field: "count_of_unapproved_reliance_fragments", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "is_unapproved_but_relied_on", Kind: "literal", Literal: vB(true)}}},
 			{Field: "count_of_overdue_gaps", Op: "COUNTIFS", Table: "knowledge_gaps", Criteria: []Criterion{{Range: "is_overdue_gap", Kind: "literal", Literal: vB(true)}}},
-			{Field: "count_of_change_requests", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "count_of_review_events", Op: "COUNTIFS", Table: "review_events", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "days_since_last_review", Op: "COMPOSITE", Parts: []AggregateSpec{{Field: "erb_aggregate0", Op: "MAX", Table: "review_events", Target: "reviewed_at", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}}}, Scalar: func(r Record) Value { tc := r.(*ProcedureVersion); _ = tc; return erbInteger(erbDatetimeDiff(vStr(tc.AsOfInstant), tc.erbAggregate("erb_aggregate0"), vS("days"))) }},
+			{Field: "count_of_change_requests", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "count_of_review_events", Op: "COUNTIFS", Table: "review_events", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "days_since_last_review", Op: "COMPOSITE", Parts: []AggregateSpec{{Field: "erb_aggregate0", Op: "MAX", Table: "review_events", Target: "reviewed_at", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}}}, Scalar: func(r Record) Value { tc := r.(*ProcedureVersion); _ = tc; return erbInteger(erbDatetimeDiff(vStr(tc.AsOfInstant), tc.erbAggregate("erb_aggregate0"), vS("days"))) }},
 			{Field: "count_of_stale_fragments", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "exceeds_owning_cadence", Kind: "literal", Literal: vB(true)}}},
-			{Field: "compound_fragile_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "compound_fragile_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "concentrated_witness_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "concentrated_session_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "machine_consumed_unapproved_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "machine_consumed_unapproved_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "genuinely_overdue_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "genuinely_overdue_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "awaited_decision_count", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "backlog_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "scoped_open_blocking_gap_count", Op: "COUNTIFS", Table: "knowledge_gaps", Criteria: []Criterion{{Range: "open_blocking_gap_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "unexercised_human_gate_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "unexercised_gate_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "load_bearing_unapproved_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "unapproved_load_bearing_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "unlanded_decision_count", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "unlanded_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "unrehearsed_control_entry_count", Op: "COUNTIFS", Table: "step_transitions", Criteria: []Criterion{{Range: "unrehearsed_control_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "cadence_breach_count", Op: "COUNTIFS", Table: "review_events", Criteria: []Criterion{{Range: "cadence_breach_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "valid_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "valid_fragment_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "incoming_supersession_count", Op: "COUNTIFS", Table: "procedure_version_links", Criteria: []Criterion{{Range: "superseded_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "stalled_implementation_count", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "stalled_implementation_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "undeclared_control_kind_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "undeclared_control_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "approved_change_request_count", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "approved_version_key", Kind: "field", Field: "procedure_version_id"}}},
+			{Field: "compound_fragile_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "compound_fragile_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "concentrated_witness_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "concentrated_session_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "machine_consumed_unapproved_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "machine_consumed_unapproved_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "genuinely_overdue_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "genuinely_overdue_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "awaited_decision_count", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "backlog_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "scoped_open_blocking_gap_count", Op: "COUNTIFS", Table: "knowledge_gaps", Criteria: []Criterion{{Range: "open_blocking_gap_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "unexercised_human_gate_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "unexercised_gate_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "load_bearing_unapproved_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "unapproved_load_bearing_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "unlanded_decision_count", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "unlanded_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "unrehearsed_control_entry_count", Op: "COUNTIFS", Table: "step_transitions", Criteria: []Criterion{{Range: "unrehearsed_control_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "cadence_breach_count", Op: "COUNTIFS", Table: "review_events", Criteria: []Criterion{{Range: "cadence_breach_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "valid_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "valid_fragment_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "incoming_supersession_count", Op: "COUNTIFS", Table: "procedure_version_links", Criteria: []Criterion{{Range: "superseded_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "stalled_implementation_count", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "stalled_implementation_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "undeclared_control_kind_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "undeclared_control_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "approved_change_request_count", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "approved_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
 			{Field: "unwatched_unowned_control_count", Op: "COUNTIFS", Table: "requirements", Criteria: []Criterion{{Range: "unwatched_unowned_flag", Kind: "literal", Literal: vS("unwatched-unowned")}}},
-			{Field: "mining_run_count", Op: "COUNTIFS", Table: "process_mining_runs", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "drifted_mining_run_count", Op: "COUNTIFS", Table: "process_mining_runs", Criteria: []Criterion{{Range: "drifted_mining_run_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "entry_step_id", Op: "MAX", Table: "steps", Target: "entry_step_key", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "execution_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "exception_count", Op: "COUNTIFS", Table: "exceptions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "fallback_transition_count", Op: "COUNTIFS", Table: "step_transitions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "transition_kind", Kind: "literal", Literal: vS("Fallback")}}},
-			{Field: "alternative_transition_count", Op: "COUNTIFS", Table: "step_transitions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "transition_kind", Kind: "literal", Literal: vS("Alternative")}}},
-			{Field: "latest_source_document_modified_at", Op: "MAX", Table: "procedure_resources", Target: "resource_modified_at", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "human_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "assigned_agent_kind", Kind: "literal", Literal: vS("Human")}}},
-			{Field: "day_run_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "shift", Kind: "literal", Literal: vS("Day")}}},
-			{Field: "night_run_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "shift", Kind: "literal", Literal: vS("Night")}}},
-			{Field: "day_deviating_run_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "deviating_day_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "night_deviating_run_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "deviating_night_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "overlaps_relation_count", Op: "COUNTIFS", Table: "activity_relations", Criteria: []Criterion{{Range: "overlaps_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "enables_relation_count", Op: "COUNTIFS", Table: "activity_relations", Criteria: []Criterion{{Range: "enables_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "prevents_relation_count", Op: "COUNTIFS", Table: "activity_relations", Criteria: []Criterion{{Range: "prevents_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "steps_without_ontology_type_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "untyped_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "conditionless_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "conditionless_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "coarse_top_level_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "coarse_top_level_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "fine_top_level_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "fine_top_level_version_key", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "elicitation_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "expert_capture_count", Op: "COUNTIFS", Table: "authoring_submissions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "submitter_expertise", Kind: "literal", Literal: vS("DomainExpert")}}},
-			{Field: "indexed_segment_count", Op: "COUNTIFS", Table: "retrieval_segments", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "is_indexed", Kind: "literal", Literal: vB(true)}}},
-			{Field: "search_count", Op: "COUNTIFS", Table: "knowledge_search_events", Criteria: []Criterion{{Range: "sought_procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "successful_search_count", Op: "COUNTIFS", Table: "knowledge_search_events", Criteria: []Criterion{{Range: "sought_procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "found_nothing_useful", Kind: "literal", Literal: vB(false)}}},
-			{Field: "open_question_annotation_count", Op: "COUNTIFS", Table: "model_annotations", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "annotation_kind", Kind: "literal", Literal: vS("Question")}, {Range: "status", Kind: "literal", Literal: vS("Open")}}},
-			{Field: "served_assertion_count", Op: "COUNTIFS", Table: "snapshot_assertions", Criteria: []Criterion{{Range: "source_procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "structured_query_count", Op: "COUNTIFS", Table: "knowledge_query_definitions", Criteria: []Criterion{{Range: "target_procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "profile_validated_submission_count", Op: "COUNTIFS", Table: "authoring_submissions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "profile_validation_passed", Kind: "literal", Literal: vB(true)}}},
-			{Field: "reasoned_assertion_count", Op: "COUNTIFS", Table: "snapshot_assertions", Criteria: []Criterion{{Range: "source_procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "snapshot_is_reasoned", Kind: "literal", Literal: vB(true)}}},
-			{Field: "published_projection_count", Op: "COUNTIFS", Table: "knowledge_projections", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "is_published", Kind: "literal", Literal: vB(true)}}},
-			{Field: "consumer_sync_count", Op: "COUNTIFS", Table: "consumer_system_syncs", Criteria: []Criterion{{Range: "loaded_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "human_sync_count", Op: "COUNTIFS", Table: "consumer_system_syncs", Criteria: []Criterion{{Range: "loaded_version", Kind: "field", Field: "procedure_version_id"}, {Range: "reaches_humans", Kind: "literal", Literal: vB(true)}}},
-			{Field: "machine_sync_count", Op: "COUNTIFS", Table: "consumer_system_syncs", Criteria: []Criterion{{Range: "loaded_version", Kind: "field", Field: "procedure_version_id"}, {Range: "reaches_machines", Kind: "literal", Literal: vB(true)}}},
-			{Field: "fresh_mining_run_count", Op: "COUNTIFS", Table: "process_mining_runs", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "is_stale_mining_evidence", Kind: "literal", Literal: vB(false)}}},
-			{Field: "outcome_measurement_count", Op: "COUNTIFS", Table: "knowledge_outcome_measurements", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "ai_contribution_count", Op: "COUNTIFS", Table: "ai_insight_proposals", Criteria: []Criterion{{Range: "target_procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "design_decision_count", Op: "COUNTIFS", Table: "process_design_decisions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "ai_artifact_consuming_input_count", Op: "COUNTIFS", Table: "step_variables", Criteria: []Criterion{{Range: "consumer_workflow", Kind: "field", Field: "procedure_version_id"}, {Range: "is_input_from_ai_artifact", Kind: "literal", Literal: vB(true)}}},
-			{Field: "interview_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "elicitation_mode", Kind: "literal", Literal: vS("Interview")}}},
-			{Field: "observation_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "elicitation_mode", Kind: "literal", Literal: vS("Observation")}}},
-			{Field: "workshop_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "elicitation_mode", Kind: "literal", Literal: vS("Workshop")}}},
-			{Field: "protocol_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "elicitation_mode", Kind: "literal", Literal: vS("Protocol")}}},
-			{Field: "incident_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "elicitation_mode", Kind: "literal", Literal: vS("Incident")}}},
-			{Field: "reconciled_divergence_count", Op: "COUNTIFS", Table: "workflow_view_divergences", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "is_reconciled", Kind: "literal", Literal: vB(true)}}},
-			{Field: "critical_incident_count", Op: "COUNTIFS", Table: "critical_incidents", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "sme_approval_count", Op: "COUNTIFS", Table: "representation_reviews", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "review_purpose", Kind: "literal", Literal: vS("RepresentationApproval")}, {Range: "reviewer_is_affected_sme", Kind: "literal", Literal: vB(true)}, {Range: "decision", Kind: "literal", Literal: vS("Approved")}}},
-			{Field: "sme_ai_evaluation_count", Op: "COUNTIFS", Table: "representation_reviews", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "review_purpose", Kind: "literal", Literal: vS("AiEvaluation")}, {Range: "reviewer_is_affected_sme", Kind: "literal", Literal: vB(true)}}},
-			{Field: "ke_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "facilitator_is_knowledge_engineer", Kind: "literal", Literal: vB(true)}}},
-			{Field: "ke_field_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "is_ke_field_session", Kind: "literal", Literal: vB(true)}}},
-			{Field: "judgment_held_outside_sop_count", Op: "COUNTIFS", Table: "knowledge_holdings", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "is_judgment_outside_document", Kind: "literal", Literal: vB(true)}}},
-			{Field: "tacit_holding_count", Op: "COUNTIFS", Table: "knowledge_holdings", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "knowledge_form", Kind: "literal", Literal: vS("Tacit")}}},
-			{Field: "explicit_holding_count", Op: "COUNTIFS", Table: "knowledge_holdings", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "knowledge_form", Kind: "literal", Literal: vS("Explicit")}}},
-			{Field: "hands_held_count", Op: "COUNTIFS", Table: "knowledge_holdings", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "carrier", Kind: "literal", Literal: vS("OperatorMemory")}, {Range: "is_unformalized_process_knowledge", Kind: "literal", Literal: vB(true)}}},
-			{Field: "negotiated_practice_count", Op: "COUNTIFS", Table: "knowledge_holdings", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "carrier", Kind: "literal", Literal: vS("UnspokenCrewAgreement")}, {Range: "is_unformalized_process_knowledge", Kind: "literal", Literal: vB(true)}}},
-			{Field: "process_model_trace_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "target_kind", Kind: "literal", Literal: vS("ProcessModel")}, {Range: "trace_role", Kind: "literal", Literal: vS("Origin")}}},
-			{Field: "trailing_practice_trace_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "is_document_trailing_practice", Kind: "literal", Literal: vB(true)}}},
-			{Field: "tacit_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "knowledge_form", Kind: "literal", Literal: vS("Tacit")}}},
-			{Field: "tacit_form_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "knowledge_form", Kind: "literal", Literal: vS("Tacit")}}},
-			{Field: "situated_judgment_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "knowledge_form", Kind: "literal", Literal: vS("SituatedJudgment")}}},
-			{Field: "first_step", Op: "MAX", Table: "steps", Target: "declared_first_step_key", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "fallback_step", Op: "MAX", Table: "steps", Target: "declared_fallback_step_key", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}}},
-			{Field: "declared_first_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "is_declared_first_step", Kind: "literal", Literal: vB(true)}}},
-			{Field: "graph_entry_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version_id"}, {Range: "is_entry_step", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "mining_run_count", Op: "COUNTIFS", Table: "process_mining_runs", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "drifted_mining_run_count", Op: "COUNTIFS", Table: "process_mining_runs", Criteria: []Criterion{{Range: "drifted_mining_run_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "entry_step_id", Op: "MAX", Table: "steps", Target: "entry_step_key", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "execution_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "exception_count", Op: "COUNTIFS", Table: "exceptions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "fallback_transition_count", Op: "COUNTIFS", Table: "step_transitions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "transition_kind", Kind: "literal", Literal: vS("Fallback")}}},
+			{Field: "alternative_transition_count", Op: "COUNTIFS", Table: "step_transitions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "transition_kind", Kind: "literal", Literal: vS("Alternative")}}},
+			{Field: "latest_source_document_modified_at", Op: "MAX", Table: "procedure_resources", Target: "resource_modified_at", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "human_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "assigned_agent_kind", Kind: "literal", Literal: vS("Human")}}},
+			{Field: "day_run_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "shift", Kind: "literal", Literal: vS("Day")}}},
+			{Field: "night_run_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "shift", Kind: "literal", Literal: vS("Night")}}},
+			{Field: "day_deviating_run_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "deviating_day_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "night_deviating_run_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "deviating_night_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "overlaps_relation_count", Op: "COUNTIFS", Table: "activity_relations", Criteria: []Criterion{{Range: "overlaps_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "enables_relation_count", Op: "COUNTIFS", Table: "activity_relations", Criteria: []Criterion{{Range: "enables_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "prevents_relation_count", Op: "COUNTIFS", Table: "activity_relations", Criteria: []Criterion{{Range: "prevents_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "steps_without_ontology_type_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "untyped_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "conditionless_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "conditionless_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "coarse_top_level_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "coarse_top_level_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "fine_top_level_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "fine_top_level_version_key", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "elicitation_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "expert_capture_count", Op: "COUNTIFS", Table: "authoring_submissions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "submitter_expertise", Kind: "literal", Literal: vS("DomainExpert")}}},
+			{Field: "indexed_segment_count", Op: "COUNTIFS", Table: "retrieval_segments", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "is_indexed", Kind: "literal", Literal: vB(true)}}},
+			{Field: "search_count", Op: "COUNTIFS", Table: "knowledge_search_events", Criteria: []Criterion{{Range: "sought_procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "successful_search_count", Op: "COUNTIFS", Table: "knowledge_search_events", Criteria: []Criterion{{Range: "sought_procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "found_nothing_useful", Kind: "literal", Literal: vB(false)}}},
+			{Field: "open_question_annotation_count", Op: "COUNTIFS", Table: "model_annotations", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "annotation_kind", Kind: "literal", Literal: vS("Question")}, {Range: "status", Kind: "literal", Literal: vS("Open")}}},
+			{Field: "served_assertion_count", Op: "COUNTIFS", Table: "snapshot_assertions", Criteria: []Criterion{{Range: "source_procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "structured_query_count", Op: "COUNTIFS", Table: "knowledge_query_definitions", Criteria: []Criterion{{Range: "target_procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "profile_validated_submission_count", Op: "COUNTIFS", Table: "authoring_submissions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "profile_validation_passed", Kind: "literal", Literal: vB(true)}}},
+			{Field: "reasoned_assertion_count", Op: "COUNTIFS", Table: "snapshot_assertions", Criteria: []Criterion{{Range: "source_procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "snapshot_is_reasoned", Kind: "literal", Literal: vB(true)}}},
+			{Field: "published_projection_count", Op: "COUNTIFS", Table: "knowledge_projections", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "is_published", Kind: "literal", Literal: vB(true)}}},
+			{Field: "consumer_sync_count", Op: "COUNTIFS", Table: "consumer_system_syncs", Criteria: []Criterion{{Range: "loaded_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "human_sync_count", Op: "COUNTIFS", Table: "consumer_system_syncs", Criteria: []Criterion{{Range: "loaded_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "reaches_humans", Kind: "literal", Literal: vB(true)}}},
+			{Field: "machine_sync_count", Op: "COUNTIFS", Table: "consumer_system_syncs", Criteria: []Criterion{{Range: "loaded_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "reaches_machines", Kind: "literal", Literal: vB(true)}}},
+			{Field: "fresh_mining_run_count", Op: "COUNTIFS", Table: "process_mining_runs", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "is_stale_mining_evidence", Kind: "literal", Literal: vB(false)}}},
+			{Field: "outcome_measurement_count", Op: "COUNTIFS", Table: "knowledge_outcome_measurements", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "ai_contribution_count", Op: "COUNTIFS", Table: "ai_insight_proposals", Criteria: []Criterion{{Range: "target_procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "design_decision_count", Op: "COUNTIFS", Table: "process_design_decisions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "ai_artifact_consuming_input_count", Op: "COUNTIFS", Table: "step_variables", Criteria: []Criterion{{Range: "consumer_workflow", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "is_input_from_ai_artifact", Kind: "literal", Literal: vB(true)}}},
+			{Field: "interview_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "elicitation_mode", Kind: "literal", Literal: vS("Interview")}}},
+			{Field: "observation_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "elicitation_mode", Kind: "literal", Literal: vS("Observation")}}},
+			{Field: "workshop_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "elicitation_mode", Kind: "literal", Literal: vS("Workshop")}}},
+			{Field: "protocol_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "elicitation_mode", Kind: "literal", Literal: vS("Protocol")}}},
+			{Field: "incident_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "elicitation_mode", Kind: "literal", Literal: vS("Incident")}}},
+			{Field: "reconciled_divergence_count", Op: "COUNTIFS", Table: "workflow_view_divergences", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "is_reconciled", Kind: "literal", Literal: vB(true)}}},
+			{Field: "critical_incident_count", Op: "COUNTIFS", Table: "critical_incidents", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "sme_approval_count", Op: "COUNTIFS", Table: "representation_reviews", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "review_purpose", Kind: "literal", Literal: vS("RepresentationApproval")}, {Range: "reviewer_is_affected_sme", Kind: "literal", Literal: vB(true)}, {Range: "decision", Kind: "literal", Literal: vS("Approved")}}},
+			{Field: "sme_ai_evaluation_count", Op: "COUNTIFS", Table: "representation_reviews", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "review_purpose", Kind: "literal", Literal: vS("AiEvaluation")}, {Range: "reviewer_is_affected_sme", Kind: "literal", Literal: vB(true)}}},
+			{Field: "ke_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "facilitator_is_knowledge_engineer", Kind: "literal", Literal: vB(true)}}},
+			{Field: "ke_field_session_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "is_ke_field_session", Kind: "literal", Literal: vB(true)}}},
+			{Field: "judgment_held_outside_sop_count", Op: "COUNTIFS", Table: "knowledge_holdings", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "is_judgment_outside_document", Kind: "literal", Literal: vB(true)}}},
+			{Field: "tacit_holding_count", Op: "COUNTIFS", Table: "knowledge_holdings", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "knowledge_form", Kind: "literal", Literal: vS("Tacit")}}},
+			{Field: "explicit_holding_count", Op: "COUNTIFS", Table: "knowledge_holdings", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "knowledge_form", Kind: "literal", Literal: vS("Explicit")}}},
+			{Field: "hands_held_count", Op: "COUNTIFS", Table: "knowledge_holdings", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "carrier", Kind: "literal", Literal: vS("OperatorMemory")}, {Range: "is_unformalized_process_knowledge", Kind: "literal", Literal: vB(true)}}},
+			{Field: "negotiated_practice_count", Op: "COUNTIFS", Table: "knowledge_holdings", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "carrier", Kind: "literal", Literal: vS("UnspokenCrewAgreement")}, {Range: "is_unformalized_process_knowledge", Kind: "literal", Literal: vB(true)}}},
+			{Field: "process_model_trace_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "target_kind", Kind: "literal", Literal: vS("ProcessModel")}, {Range: "trace_role", Kind: "literal", Literal: vS("Origin")}}},
+			{Field: "trailing_practice_trace_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "is_document_trailing_practice", Kind: "literal", Literal: vB(true)}}},
+			{Field: "tacit_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "knowledge_form", Kind: "literal", Literal: vS("Tacit")}}},
+			{Field: "tacit_form_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "knowledge_form", Kind: "literal", Literal: vS("Tacit")}}},
+			{Field: "situated_judgment_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "knowledge_form", Kind: "literal", Literal: vS("SituatedJudgment")}}},
+			{Field: "first_step", Op: "MAX", Table: "steps", Target: "declared_first_step_key", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "fallback_step", Op: "MAX", Table: "steps", Target: "declared_fallback_step_key", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}}},
+			{Field: "declared_first_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "is_declared_first_step", Kind: "literal", Literal: vB(true)}}},
+			{Field: "graph_entry_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version_id"}, {Range: "is_entry_step", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "ProcedureVersionLinks", File: "procedure_version_links", RulebookRows: 2, New: func() Record { return &ProcedureVersionLink{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -59844,65 +59954,65 @@ var erbTables = []TableSpec{
 			{Field: "version_model_trace_count", Target: "procedure_versions", Return: "process_model_trace_count", Key: "procedure_version", Match: "procedure_version_id"},
 			{Field: "owner_organization", Target: "procedure_versions", Return: "owner_organization", Key: "procedure_version", Match: "procedure_version_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "blocking_requirement_count", Op: "COUNTIFS", Table: "step_requirements", Criteria: []Criterion{{Range: "blocking_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "stale_binding_count", Op: "COUNTIFS", Table: "operational_bindings", Criteria: []Criterion{{Range: "stale_binding_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "authoritative_stale_count", Op: "COUNTIFS", Table: "operational_bindings", Criteria: []Criterion{{Range: "authoritative_stale_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "available_exception_count", Op: "COUNTIFS", Table: "exceptions", Criteria: []Criterion{{Range: "active_exception_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "declared_verification_count", Op: "COUNTIFS", Table: "step_verifications", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}}},
-			{Field: "stale_authoritative_binding_count", Op: "COUNTIFS", Table: "operational_bindings", Criteria: []Criterion{{Range: "step_when_stale", Kind: "field", Field: "step_id"}}},
-			{Field: "binding_boundary_count", Op: "COUNTIFS", Table: "authority_boundaries", Criteria: []Criterion{{Range: "step_when_binding", Kind: "field", Field: "step_id"}}},
-			{Field: "unusable_binding_count", Op: "COUNTIFS", Table: "operational_bindings", Criteria: []Criterion{{Range: "step_when_unusable", Kind: "field", Field: "step_id"}}},
-			{Field: "unwarranted_boundary_count", Op: "COUNTIFS", Table: "authority_boundaries", Criteria: []Criterion{{Range: "unwarranted_boundary_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "software_execution_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "software_execution_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "unwitnessed_blocking_count", Op: "COUNTIFS", Table: "step_requirements", Criteria: []Criterion{{Range: "unwitnessed_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "reachable_step_count", Op: "COUNTIFS", Table: "vw_step_transitions_closure", Criteria: []Criterion{{Range: "from_id", Kind: "field", Field: "step_id"}}},
-			{Field: "reached_from_step_count", Op: "COUNTIFS", Table: "vw_step_transitions_closure", Criteria: []Criterion{{Range: "to_id", Kind: "field", Field: "step_id"}}},
-			{Field: "self_reach_count", Op: "COUNTIFS", Table: "vw_step_transitions_closure", Criteria: []Criterion{{Range: "from_id", Kind: "field", Field: "step_id"}, {Range: "to_id", Kind: "field", Field: "step_id"}}},
-			{Field: "incoming_transition_count", Op: "COUNTIFS", Table: "step_transitions", Criteria: []Criterion{{Range: "to_step", Kind: "field", Field: "step_id"}}},
-			{Field: "gate_free_reach_from_entry_count", Op: "COUNTIFS", Table: "vw_step_transitions_closure_where_avoids_human_approval_gate", Criteria: []Criterion{{Range: "from_id", Kind: "field", Field: "version_entry_step_id"}, {Range: "to_id", Kind: "field", Field: "step_id"}}},
-			{Field: "child_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "parent_step", Kind: "field", Field: "step_id"}}},
-			{Field: "precondition_count", Op: "COUNTIFS", Table: "step_conditions", Criteria: []Criterion{{Range: "precondition_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "postcondition_count", Op: "COUNTIFS", Table: "step_conditions", Criteria: []Criterion{{Range: "postcondition_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "invariant_count", Op: "COUNTIFS", Table: "step_conditions", Criteria: []Criterion{{Range: "invariant_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "safety_critical_condition_count", Op: "COUNTIFS", Table: "step_conditions", Criteria: []Criterion{{Range: "safety_critical_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "failure_mode_count", Op: "COUNTIFS", Table: "failure_modes", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}}},
-			{Field: "cue_count", Op: "COUNTIFS", Table: "step_cues", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}}},
-			{Field: "danger_cue_count", Op: "COUNTIFS", Table: "step_cues", Criteria: []Criterion{{Range: "danger_cue_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "decision_point_count", Op: "COUNTIFS", Table: "decision_points", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}}},
-			{Field: "knowledge_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}}},
-			{Field: "input_variable_count", Op: "COUNTIFS", Table: "step_variables", Criteria: []Criterion{{Range: "input_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "output_variable_count", Op: "COUNTIFS", Table: "step_variables", Criteria: []Criterion{{Range: "output_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "required_lock_count", Op: "COUNTIFS", Table: "step_lock_requirements", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}}},
-			{Field: "required_protective_equipment_count", Op: "COUNTIFS", Table: "step_protective_equipment", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}}},
-			{Field: "referenced_resource_count", Op: "COUNTIFS", Table: "step_resources", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}}},
-			{Field: "incompleteness_cue_count", Op: "COUNTIFS", Table: "step_cues", Criteria: []Criterion{{Range: "incomplete_cue_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "prerequisite_downstream_count", Op: "COUNTIFS", Table: "vw_step_transitions_closure", Criteria: []Criterion{{Range: "from_id", Kind: "field", Field: "step_id"}, {Range: "to_id", Kind: "field", Field: "prerequisite_step"}}},
-			{Field: "bottleneck_allocation_count", Op: "COUNTIFS", Table: "tactical_resource_allocations", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}, {Range: "is_bottleneck", Kind: "literal", Literal: vB(true)}}},
-			{Field: "context_sensitivity_count", Op: "COUNTIFS", Table: "step_context_sensitivities", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}}},
-			{Field: "unscoped_sensitivity_count", Op: "COUNTIFS", Table: "step_context_sensitivities", Criteria: []Criterion{{Range: "unscoped_step_key", Kind: "field", Field: "step_id"}}},
-			{Field: "regulatory_requirement_count", Op: "COUNTIFS", Table: "step_requirements", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}, {Range: "requirement_is_regulatory", Kind: "literal", Literal: vB(true)}}},
-			{Field: "tool_function_count", Op: "COUNTIFS", Table: "step_functions", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}}},
-			{Field: "parseable_condition_count", Op: "COUNTIFS", Table: "step_conditions", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}, {Range: "is_machine_parseable", Kind: "literal", Literal: vB(true)}}},
-			{Field: "dmn_decision_count", Op: "COUNTIFS", Table: "decision_points", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}, {Range: "is_dmn_encoded", Kind: "literal", Literal: vB(true)}}},
-			{Field: "open_outdated_flag_count", Op: "COUNTIFS", Table: "model_annotations", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}, {Range: "is_open_outdated_flag", Kind: "literal", Literal: vB(true)}}},
-			{Field: "deviated_run_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}, {Range: "has_deviation", Kind: "literal", Literal: vB(true)}}},
-			{Field: "ai_failure_count", Op: "COUNTIFS", Table: "assistant_answers", Criteria: []Criterion{{Range: "context_step", Kind: "field", Field: "step_id"}, {Range: "task_outcome", Kind: "literal", Literal: vS("Failed")}}},
-			{Field: "ai_artifact_input_count", Op: "COUNTIFS", Table: "step_variables", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}, {Range: "is_input_from_ai_artifact", Kind: "literal", Literal: vB(true)}}},
-			{Field: "collection_evidence_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}}},
-			{Field: "activity_origin_trace_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}, {Range: "target_kind", Kind: "literal", Literal: vS("ActivityDefinition")}, {Range: "trace_role", Kind: "literal", Literal: vS("Origin")}}},
-			{Field: "elicited_validation_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}, {Range: "trace_role", Kind: "literal", Literal: vS("Validates")}, {Range: "source_is_people_capture", Kind: "literal", Literal: vB(true)}}},
-			{Field: "elicited_extension_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_id"}, {Range: "trace_role", Kind: "literal", Literal: vS("Extends")}, {Range: "source_is_people_capture", Kind: "literal", Literal: vB(true)}}},
-			{Field: "downstream_artifact_step_count", Op: "COUNTIFS", Table: "vw_artifact_handoffs_closure", Criteria: []Criterion{{Range: "from_id", Kind: "field", Field: "step_id"}}},}},
-	{Name: "StepTransitions", File: "step_transitions", RulebookRows: 43, New: func() Record { return &StepTransition{} },
+			{Field: "blocking_requirement_count", Op: "COUNTIFS", Table: "step_requirements", Criteria: []Criterion{{Range: "blocking_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "stale_binding_count", Op: "COUNTIFS", Table: "operational_bindings", Criteria: []Criterion{{Range: "stale_binding_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "authoritative_stale_count", Op: "COUNTIFS", Table: "operational_bindings", Criteria: []Criterion{{Range: "authoritative_stale_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "available_exception_count", Op: "COUNTIFS", Table: "exceptions", Criteria: []Criterion{{Range: "active_exception_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "declared_verification_count", Op: "COUNTIFS", Table: "step_verifications", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "stale_authoritative_binding_count", Op: "COUNTIFS", Table: "operational_bindings", Criteria: []Criterion{{Range: "step_when_stale", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "binding_boundary_count", Op: "COUNTIFS", Table: "authority_boundaries", Criteria: []Criterion{{Range: "step_when_binding", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "unusable_binding_count", Op: "COUNTIFS", Table: "operational_bindings", Criteria: []Criterion{{Range: "step_when_unusable", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "unwarranted_boundary_count", Op: "COUNTIFS", Table: "authority_boundaries", Criteria: []Criterion{{Range: "unwarranted_boundary_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "software_execution_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "software_execution_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "unwitnessed_blocking_count", Op: "COUNTIFS", Table: "step_requirements", Criteria: []Criterion{{Range: "unwitnessed_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "reachable_step_count", Op: "COUNTIFS", Table: "vw_step_transitions_closure", Criteria: []Criterion{{Range: "from_id", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "reached_from_step_count", Op: "COUNTIFS", Table: "vw_step_transitions_closure", Criteria: []Criterion{{Range: "to_id", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "self_reach_count", Op: "COUNTIFS", Table: "vw_step_transitions_closure", Criteria: []Criterion{{Range: "from_id", Kind: "raw_field", Field: "step_id"}, {Range: "to_id", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "incoming_transition_count", Op: "COUNTIFS", Table: "step_transitions", Criteria: []Criterion{{Range: "to_step", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "gate_free_reach_from_entry_count", Op: "COUNTIFS", Table: "vw_step_transitions_closure_where_avoids_human_approval_gate", Criteria: []Criterion{{Range: "from_id", Kind: "field", Field: "version_entry_step_id"}, {Range: "to_id", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "child_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "parent_step", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "precondition_count", Op: "COUNTIFS", Table: "step_conditions", Criteria: []Criterion{{Range: "precondition_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "postcondition_count", Op: "COUNTIFS", Table: "step_conditions", Criteria: []Criterion{{Range: "postcondition_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "invariant_count", Op: "COUNTIFS", Table: "step_conditions", Criteria: []Criterion{{Range: "invariant_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "safety_critical_condition_count", Op: "COUNTIFS", Table: "step_conditions", Criteria: []Criterion{{Range: "safety_critical_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "failure_mode_count", Op: "COUNTIFS", Table: "failure_modes", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "cue_count", Op: "COUNTIFS", Table: "step_cues", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "danger_cue_count", Op: "COUNTIFS", Table: "step_cues", Criteria: []Criterion{{Range: "danger_cue_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "decision_point_count", Op: "COUNTIFS", Table: "decision_points", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "knowledge_fragment_count", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "input_variable_count", Op: "COUNTIFS", Table: "step_variables", Criteria: []Criterion{{Range: "input_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "output_variable_count", Op: "COUNTIFS", Table: "step_variables", Criteria: []Criterion{{Range: "output_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "required_lock_count", Op: "COUNTIFS", Table: "step_lock_requirements", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "required_protective_equipment_count", Op: "COUNTIFS", Table: "step_protective_equipment", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "referenced_resource_count", Op: "COUNTIFS", Table: "step_resources", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "incompleteness_cue_count", Op: "COUNTIFS", Table: "step_cues", Criteria: []Criterion{{Range: "incomplete_cue_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "prerequisite_downstream_count", Op: "COUNTIFS", Table: "vw_step_transitions_closure", Criteria: []Criterion{{Range: "from_id", Kind: "raw_field", Field: "step_id"}, {Range: "to_id", Kind: "raw_field", Field: "prerequisite_step"}}},
+			{Field: "bottleneck_allocation_count", Op: "COUNTIFS", Table: "tactical_resource_allocations", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}, {Range: "is_bottleneck", Kind: "literal", Literal: vB(true)}}},
+			{Field: "context_sensitivity_count", Op: "COUNTIFS", Table: "step_context_sensitivities", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "unscoped_sensitivity_count", Op: "COUNTIFS", Table: "step_context_sensitivities", Criteria: []Criterion{{Range: "unscoped_step_key", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "regulatory_requirement_count", Op: "COUNTIFS", Table: "step_requirements", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}, {Range: "requirement_is_regulatory", Kind: "literal", Literal: vB(true)}}},
+			{Field: "tool_function_count", Op: "COUNTIFS", Table: "step_functions", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "parseable_condition_count", Op: "COUNTIFS", Table: "step_conditions", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}, {Range: "is_machine_parseable", Kind: "literal", Literal: vB(true)}}},
+			{Field: "dmn_decision_count", Op: "COUNTIFS", Table: "decision_points", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}, {Range: "is_dmn_encoded", Kind: "literal", Literal: vB(true)}}},
+			{Field: "open_outdated_flag_count", Op: "COUNTIFS", Table: "model_annotations", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}, {Range: "is_open_outdated_flag", Kind: "literal", Literal: vB(true)}}},
+			{Field: "deviated_run_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}, {Range: "has_deviation", Kind: "literal", Literal: vB(true)}}},
+			{Field: "ai_failure_count", Op: "COUNTIFS", Table: "assistant_answers", Criteria: []Criterion{{Range: "context_step", Kind: "raw_field", Field: "step_id"}, {Range: "task_outcome", Kind: "literal", Literal: vS("Failed")}}},
+			{Field: "ai_artifact_input_count", Op: "COUNTIFS", Table: "step_variables", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}, {Range: "is_input_from_ai_artifact", Kind: "literal", Literal: vB(true)}}},
+			{Field: "collection_evidence_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}}},
+			{Field: "activity_origin_trace_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}, {Range: "target_kind", Kind: "literal", Literal: vS("ActivityDefinition")}, {Range: "trace_role", Kind: "literal", Literal: vS("Origin")}}},
+			{Field: "elicited_validation_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}, {Range: "trace_role", Kind: "literal", Literal: vS("Validates")}, {Range: "source_is_people_capture", Kind: "literal", Literal: vB(true)}}},
+			{Field: "elicited_extension_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step_id"}, {Range: "trace_role", Kind: "literal", Literal: vS("Extends")}, {Range: "source_is_people_capture", Kind: "literal", Literal: vB(true)}}},
+			{Field: "downstream_artifact_step_count", Op: "COUNTIFS", Table: "vw_artifact_handoffs_closure", Criteria: []Criterion{{Range: "from_id", Kind: "raw_field", Field: "step_id"}}},}},
+	{Name: "StepTransitions", File: "step_transitions", RulebookRows: 44, New: func() Record { return &StepTransition{} },
 		Lookups: []LookupSpec{
 			{Field: "target_blocking_requirement_count", Target: "steps", Return: "blocking_requirement_count", Key: "to_step", Match: "step_id"},
 			{Field: "from_step_is_human_approval_gate", Target: "steps", Return: "is_human_approval_gate", Key: "from_step", Match: "step_id"},
 			{Field: "to_step_is_human_approval_gate", Target: "steps", Return: "is_human_approval_gate", Key: "to_step", Match: "step_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "count_of_from_step_executions", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "from_step"}}},
-			{Field: "count_of_to_step_executions", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "to_step"}}},
-			{Field: "count_of_observed_traversals", Op: "COUNTIFS", Table: "observed_transitions", Criteria: []Criterion{{Range: "step_transition", Kind: "field", Field: "step_transition_id"}}},
-			{Field: "decision_point_count", Op: "COUNTIFS", Table: "decision_points", Criteria: []Criterion{{Range: "governing_transition", Kind: "field", Field: "step_transition_id"}}},}},
+			{Field: "count_of_from_step_executions", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "from_step"}}},
+			{Field: "count_of_to_step_executions", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "to_step"}}},
+			{Field: "count_of_observed_traversals", Op: "COUNTIFS", Table: "observed_transitions", Criteria: []Criterion{{Range: "step_transition", Kind: "raw_field", Field: "step_transition_id"}}},
+			{Field: "decision_point_count", Op: "COUNTIFS", Table: "decision_points", Criteria: []Criterion{{Range: "governing_transition", Kind: "raw_field", Field: "step_transition_id"}}},}},
 	{Name: "Actions", File: "actions", RulebookRows: 10, New: func() Record { return &Action{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -59926,18 +60036,21 @@ var erbTables = []TableSpec{
 			{Field: "named_witness_field_exists", Target: "rulebook_fields", Return: "is_derived", Key: "witness_field_name", Match: "rulebook_field_id"},
 			{Field: "accountable_agent", Target: "roles", Return: "current_agent", Key: "accountable_role", Match: "role_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "satisfaction_record_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "requirement", Kind: "field", Field: "requirement_id"}}},
-			{Field: "step_binding_count", Op: "COUNTIFS", Table: "step_requirements", Criteria: []Criterion{{Range: "requirement", Kind: "field", Field: "requirement_id"}}},
-			{Field: "negative_outcome_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "negative_outcome_requirement_key", Kind: "field", Field: "requirement_id"}}},
-			{Field: "unexercised_binding_count", Op: "COUNTIFS", Table: "step_requirements", Criteria: []Criterion{{Range: "unexercised_binding_requirement_key", Kind: "field", Field: "requirement_id"}}},
-			{Field: "constraint_trace_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "requirement", Kind: "field", Field: "requirement_id"}, {Range: "target_kind", Kind: "literal", Literal: vS("Constraint")}}},}},
+			{Field: "satisfaction_record_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "requirement", Kind: "raw_field", Field: "requirement_id"}}},
+			{Field: "step_binding_count", Op: "COUNTIFS", Table: "step_requirements", Criteria: []Criterion{{Range: "requirement", Kind: "raw_field", Field: "requirement_id"}}},
+			{Field: "negative_outcome_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "negative_outcome_requirement_key", Kind: "raw_field", Field: "requirement_id"}}},
+			{Field: "unexercised_binding_count", Op: "COUNTIFS", Table: "step_requirements", Criteria: []Criterion{{Range: "unexercised_binding_requirement_key", Kind: "raw_field", Field: "requirement_id"}}},
+			{Field: "constraint_trace_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "requirement", Kind: "raw_field", Field: "requirement_id"}, {Range: "target_kind", Kind: "literal", Literal: vS("Constraint")}}},
+			{Field: "recorded_pass_count", Op: "SUM", Table: "step_requirements", Target: "pass_count_on_step", Criteria: []Criterion{{Range: "requirement", Kind: "raw_field", Field: "requirement_id"}}},
+			{Field: "failed_check_count", Op: "COUNTIFS", Table: "condition_checks", Criteria: []Criterion{{Range: "failed_check_requirement_key", Kind: "raw_field", Field: "requirement_id"}}},}},
 	{Name: "StepRequirements", File: "step_requirements", RulebookRows: 18, New: func() Record { return &StepRequirement{} },
 		Lookups: []LookupSpec{
 			{Field: "requirement_is_blocking", Target: "requirements", Return: "is_blocking", Key: "requirement", Match: "requirement_id"},
 			{Field: "requirement_lacks_witness", Target: "requirements", Return: "is_unwitnessed_blocking_control", Key: "requirement", Match: "requirement_id"},
 			{Field: "requirement_is_regulatory", Target: "requirements", Return: "is_regulatory_requirement", Key: "requirement", Match: "requirement_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "satisfaction_count_for_binding", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "binding_key", Kind: "field", Field: "step_requirement_id"}}},}},
+			{Field: "satisfaction_count_for_binding", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "binding_key", Kind: "raw_field", Field: "step_requirement_id"}}},
+			{Field: "pass_count_on_step", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step"}, {Range: "verification_result", Kind: "literal", Literal: vS("PASS")}}},}},
 	{Name: "StepVerifications", File: "step_verifications", RulebookRows: 11, New: func() Record { return &StepVerification{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -59951,9 +60064,9 @@ var erbTables = []TableSpec{
 		Lookups: []LookupSpec{
 			{Field: "source_modified_at", Target: "resources", Return: "modified_at", Key: "extracted_from_resource", Match: "resource_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "referencing_step_count", Op: "COUNTIFS", Table: "step_resources", Criteria: []Criterion{{Range: "resource", Kind: "field", Field: "resource_id"}}},
-			{Field: "referencing_version_count", Op: "COUNTIFS", Table: "procedure_resources", Criteria: []Criterion{{Range: "resource", Kind: "field", Field: "resource_id"}}},
-			{Field: "trailing_practice_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "contradicted_document", Kind: "field", Field: "resource_id"}, {Range: "is_document_trailing_practice", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "referencing_step_count", Op: "COUNTIFS", Table: "step_resources", Criteria: []Criterion{{Range: "resource", Kind: "raw_field", Field: "resource_id"}}},
+			{Field: "referencing_version_count", Op: "COUNTIFS", Table: "procedure_resources", Criteria: []Criterion{{Range: "resource", Kind: "raw_field", Field: "resource_id"}}},
+			{Field: "trailing_practice_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "contradicted_document", Kind: "raw_field", Field: "resource_id"}, {Range: "is_document_trailing_practice", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "ProcedureResources", File: "procedure_resources", RulebookRows: 12, New: func() Record { return &ProcedureResource{} },
 		Lookups: []LookupSpec{
 			{Field: "resource_modified_at", Target: "resources", Return: "modified_at", Key: "resource", Match: "resource_id"},},
@@ -59964,14 +60077,14 @@ var erbTables = []TableSpec{
 			{Field: "practitioner_is_still_engaged", Target: "agents", Return: "is_still_engaged", Key: "practitioner_agent", Match: "agent_id"},
 			{Field: "method_family", Target: "knowledge_methods", Return: "method_family", Key: "method", Match: "knowledge_method_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "valid_fragments_produced", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "valid_fragment_session_key", Kind: "field", Field: "elicitation_session_id"}}},
-			{Field: "why_probe_count", Op: "COUNTIFS", Table: "interview_probes", Criteria: []Criterion{{Range: "elicitation_session", Kind: "field", Field: "elicitation_session_id"}, {Range: "probe_kind", Kind: "literal", Literal: vS("Why")}}},
-			{Field: "shortfall_probe_count", Op: "COUNTIFS", Table: "interview_probes", Criteria: []Criterion{{Range: "elicitation_session", Kind: "field", Field: "elicitation_session_id"}, {Range: "probe_kind", Kind: "literal", Literal: vS("ProcedureFallsShort")}}},
-			{Field: "initiator_count", Op: "COUNTIFS", Table: "elicitation_participants", Criteria: []Criterion{{Range: "elicitation_session", Kind: "field", Field: "elicitation_session_id"}, {Range: "process_stake", Kind: "literal", Literal: vS("Initiates")}}},
-			{Field: "executor_count", Op: "COUNTIFS", Table: "elicitation_participants", Criteria: []Criterion{{Range: "elicitation_session", Kind: "field", Field: "elicitation_session_id"}, {Range: "process_stake", Kind: "literal", Literal: vS("Executes")}}},
-			{Field: "dependent_count", Op: "COUNTIFS", Table: "elicitation_participants", Criteria: []Criterion{{Range: "elicitation_session", Kind: "field", Field: "elicitation_session_id"}, {Range: "process_stake", Kind: "literal", Literal: vS("DependsOnResults")}}},
-			{Field: "uninvited_participant_count", Op: "COUNTIFS", Table: "elicitation_participants", Criteria: []Criterion{{Range: "elicitation_session", Kind: "field", Field: "elicitation_session_id"}, {Range: "is_usually_invited", Kind: "literal", Literal: vB(false)}}},
-			{Field: "facilitator_knowledge_engineer_role_count", Op: "COUNTIFS", Table: "roles", Criteria: []Criterion{{Range: "current_agent", Kind: "field", Field: "facilitator_agent"}, {Range: "role_id", Kind: "literal", Literal: vS("knowledge-engineer")}}},}},
+			{Field: "valid_fragments_produced", Op: "COUNTIFS", Table: "knowledge_fragments", Criteria: []Criterion{{Range: "valid_fragment_session_key", Kind: "raw_field", Field: "elicitation_session_id"}}},
+			{Field: "why_probe_count", Op: "COUNTIFS", Table: "interview_probes", Criteria: []Criterion{{Range: "elicitation_session", Kind: "raw_field", Field: "elicitation_session_id"}, {Range: "probe_kind", Kind: "literal", Literal: vS("Why")}}},
+			{Field: "shortfall_probe_count", Op: "COUNTIFS", Table: "interview_probes", Criteria: []Criterion{{Range: "elicitation_session", Kind: "raw_field", Field: "elicitation_session_id"}, {Range: "probe_kind", Kind: "literal", Literal: vS("ProcedureFallsShort")}}},
+			{Field: "initiator_count", Op: "COUNTIFS", Table: "elicitation_participants", Criteria: []Criterion{{Range: "elicitation_session", Kind: "raw_field", Field: "elicitation_session_id"}, {Range: "process_stake", Kind: "literal", Literal: vS("Initiates")}}},
+			{Field: "executor_count", Op: "COUNTIFS", Table: "elicitation_participants", Criteria: []Criterion{{Range: "elicitation_session", Kind: "raw_field", Field: "elicitation_session_id"}, {Range: "process_stake", Kind: "literal", Literal: vS("Executes")}}},
+			{Field: "dependent_count", Op: "COUNTIFS", Table: "elicitation_participants", Criteria: []Criterion{{Range: "elicitation_session", Kind: "raw_field", Field: "elicitation_session_id"}, {Range: "process_stake", Kind: "literal", Literal: vS("DependsOnResults")}}},
+			{Field: "uninvited_participant_count", Op: "COUNTIFS", Table: "elicitation_participants", Criteria: []Criterion{{Range: "elicitation_session", Kind: "raw_field", Field: "elicitation_session_id"}, {Range: "is_usually_invited", Kind: "literal", Literal: vB(false)}}},
+			{Field: "facilitator_knowledge_engineer_role_count", Op: "COUNTIFS", Table: "roles", Criteria: []Criterion{{Range: "current_agent", Kind: "raw_field", Field: "facilitator_agent"}, {Range: "role_id", Kind: "literal", Literal: vS("knowledge-engineer")}}},}},
 	{Name: "KnowledgeFragments", File: "knowledge_fragments", RulebookRows: 12, New: func() Record { return &KnowledgeFragment{} },
 		Lookups: []LookupSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
@@ -59991,9 +60104,9 @@ var erbTables = []TableSpec{
 			{Field: "owner_role_is_vacated", Target: "roles", Return: "is_vacated_role", Key: "owner_role", Match: "role_id"},
 			{Field: "owner_organization", Target: "procedure_versions", Return: "owner_organization", Key: "procedure_version", Match: "procedure_version_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "is_invoked_by_an_exception", Op: "COUNTIFS", Table: "exceptions", Criteria: []Criterion{{Range: "trigger_step", Kind: "field", Field: "step"}}},
-			{Field: "ratified_boundary_count", Op: "COUNTIFS", Table: "authority_boundaries", Criteria: []Criterion{{Range: "ratifying_fragment_key", Kind: "field", Field: "knowledge_fragment_id"}}},
-			{Field: "corroboration_count", Op: "COUNTIFS", Table: "fragment_corroborations", Criteria: []Criterion{{Range: "knowledge_fragment", Kind: "field", Field: "knowledge_fragment_id"}, {Range: "agrees", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "is_invoked_by_an_exception", Op: "COUNTIFS", Table: "exceptions", Criteria: []Criterion{{Range: "trigger_step", Kind: "raw_field", Field: "step"}}},
+			{Field: "ratified_boundary_count", Op: "COUNTIFS", Table: "authority_boundaries", Criteria: []Criterion{{Range: "ratifying_fragment_key", Kind: "raw_field", Field: "knowledge_fragment_id"}}},
+			{Field: "corroboration_count", Op: "COUNTIFS", Table: "fragment_corroborations", Criteria: []Criterion{{Range: "knowledge_fragment", Kind: "raw_field", Field: "knowledge_fragment_id"}, {Range: "agrees", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "KnowledgeGaps", File: "knowledge_gaps", RulebookRows: 15, New: func() Record { return &KnowledgeGap{} },
 		Lookups: []LookupSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
@@ -60007,7 +60120,7 @@ var erbTables = []TableSpec{
 	{Name: "FAQs", File: "fa_qs", RulebookRows: 4, New: func() Record { return &FAQ{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "resolution_count", Op: "COUNTIFS", Table: "user_questions", Criteria: []Criterion{{Range: "resolved_by_faq", Kind: "field", Field: "faq_id"}}},}},
+			{Field: "resolution_count", Op: "COUNTIFS", Table: "user_questions", Criteria: []Criterion{{Range: "resolved_by_faq", Kind: "raw_field", Field: "faq_id"}}},}},
 	{Name: "Explanations", File: "explanations", RulebookRows: 2, New: func() Record { return &Explanation{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60021,43 +60134,43 @@ var erbTables = []TableSpec{
 			{Field: "stopped_at_gap_change_title", Target: "knowledge_gaps", Return: "answering_change_title", Key: "stopped_at_knowledge_gap", Match: "knowledge_gap_id"},
 			{Field: "stopped_at_gap_change_status", Target: "knowledge_gaps", Return: "answering_change_status", Key: "stopped_at_knowledge_gap", Match: "knowledge_gap_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "completed_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "completed_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "control_breach_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "control_breach_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "late_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "late_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "unevaluated_blocking_total", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "unevaluated_blocking_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "separation_violation_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "separation_violation_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "asserted_only_control_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "asserted_only_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "unreachable_handling_failure_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "unreachable_failure_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "retention_breach_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "retention_breach_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "cleared_legal_review_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "cleared_legal_review_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "abandoned_failure_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "abandoned_failure_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "delivered_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "reached_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "total_delivery_attempt_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "procedure_execution", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "mishandled_refusal_count", Op: "COUNTIFS", Table: "send_intents", Criteria: []Criterion{{Range: "refusal_failure_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "unclean_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "procedure_execution_when_unclean", Kind: "field", Field: "procedure_execution_id"}}},
+			{Field: "completed_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "completed_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "control_breach_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "control_breach_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "late_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "late_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "unevaluated_blocking_total", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "unevaluated_blocking_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "separation_violation_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "separation_violation_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "asserted_only_control_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "asserted_only_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "unreachable_handling_failure_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "unreachable_failure_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "retention_breach_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "retention_breach_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "cleared_legal_review_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "cleared_legal_review_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "abandoned_failure_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "abandoned_failure_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "delivered_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "reached_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "total_delivery_attempt_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "procedure_execution", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "mishandled_refusal_count", Op: "COUNTIFS", Table: "send_intents", Criteria: []Criterion{{Range: "refusal_failure_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "unclean_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "procedure_execution_when_unclean", Kind: "raw_field", Field: "procedure_execution_id"}}},
 			{Field: "count_of_approval_executions", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "is_approval_execution", Kind: "literal", Literal: vB(true)}}},
 			{Field: "count_of_delivery_executions", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "step", Kind: "literal", Literal: vS("policy-07")}}},
-			{Field: "invalid_approval_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "run_when_invalid_approval", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "vacuously_clean_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "vacuously_clean_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "preparation_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "preparation_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "approval_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "approval_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "ungoverned_divergence_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "ungoverned_divergence_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "computedly_witnessed_control_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "computed_witness_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "interested_party_assertion_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "interested_assertion_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "independent_human_observation_count", Op: "COUNTIFS", Table: "verification_outcomes", Criteria: []Criterion{{Range: "independent_observation_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "self_attested_approval_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "self_attested_approval_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "latest_attestation_instant", Op: "MAX", Table: "attestations", Target: "signed_at", Criteria: []Criterion{{Range: "procedure_execution", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "attestation_count", Op: "COUNTIFS", Table: "attestations", Criteria: []Criterion{{Range: "procedure_execution", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "post_attestation_score_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "post_attestation_score_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "intended_recipient_count", Op: "COUNTIFS", Table: "send_intents", Criteria: []Criterion{{Range: "intent_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "reached_recipient_count", Op: "COUNTIFS", Table: "send_intents", Criteria: []Criterion{{Range: "delivered_intent_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "silently_dropped_count", Op: "COUNTIFS", Table: "send_intents", Criteria: []Criterion{{Range: "dropped_intent_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "unrecorded_refusal_count", Op: "COUNTIFS", Table: "send_intents", Criteria: []Criterion{{Range: "unrecorded_refusal_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "independently_confirmed_intent_count", Op: "COUNTIFS", Table: "send_intents", Criteria: []Criterion{{Range: "independently_confirmed_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "participant_count", Op: "COUNTIFS", Table: "execution_participants", Criteria: []Criterion{{Range: "procedure_execution", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "deviating_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "deviation_execution_key", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "status_change_count", Op: "COUNTIFS", Table: "procedure_status_changes", Criteria: []Criterion{{Range: "procedure_execution", Kind: "field", Field: "procedure_execution_id"}}},
-			{Field: "feedback_count", Op: "COUNTIFS", Table: "user_feedback", Criteria: []Criterion{{Range: "procedure_execution", Kind: "field", Field: "procedure_execution_id"}}},}},
+			{Field: "invalid_approval_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "run_when_invalid_approval", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "vacuously_clean_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "vacuously_clean_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "preparation_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "preparation_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "approval_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "approval_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "ungoverned_divergence_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "ungoverned_divergence_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "computedly_witnessed_control_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "computed_witness_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "interested_party_assertion_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "interested_assertion_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "independent_human_observation_count", Op: "COUNTIFS", Table: "verification_outcomes", Criteria: []Criterion{{Range: "independent_observation_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "self_attested_approval_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "self_attested_approval_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "latest_attestation_instant", Op: "MAX", Table: "attestations", Target: "signed_at", Criteria: []Criterion{{Range: "procedure_execution", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "attestation_count", Op: "COUNTIFS", Table: "attestations", Criteria: []Criterion{{Range: "procedure_execution", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "post_attestation_score_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "post_attestation_score_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "intended_recipient_count", Op: "COUNTIFS", Table: "send_intents", Criteria: []Criterion{{Range: "intent_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "reached_recipient_count", Op: "COUNTIFS", Table: "send_intents", Criteria: []Criterion{{Range: "delivered_intent_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "silently_dropped_count", Op: "COUNTIFS", Table: "send_intents", Criteria: []Criterion{{Range: "dropped_intent_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "unrecorded_refusal_count", Op: "COUNTIFS", Table: "send_intents", Criteria: []Criterion{{Range: "unrecorded_refusal_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "independently_confirmed_intent_count", Op: "COUNTIFS", Table: "send_intents", Criteria: []Criterion{{Range: "independently_confirmed_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "participant_count", Op: "COUNTIFS", Table: "execution_participants", Criteria: []Criterion{{Range: "procedure_execution", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "deviating_step_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "deviation_execution_key", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "status_change_count", Op: "COUNTIFS", Table: "procedure_status_changes", Criteria: []Criterion{{Range: "procedure_execution", Kind: "raw_field", Field: "procedure_execution_id"}}},
+			{Field: "feedback_count", Op: "COUNTIFS", Table: "user_feedback", Criteria: []Criterion{{Range: "procedure_execution", Kind: "raw_field", Field: "procedure_execution_id"}}},}},
 	{Name: "StepExecutions", File: "step_executions", RulebookRows: 70, New: func() Record { return &StepExecution{} },
 		Lookups: []LookupSpec{
 			{Field: "expected_duration_minutes", Target: "steps", Return: "expected_duration_minutes", Key: "step", Match: "step_id"},
@@ -60089,30 +60202,30 @@ var erbTables = []TableSpec{
 			{Field: "step_prerequisite", Target: "steps", Return: "prerequisite_step", Key: "step", Match: "step_id"},
 			{Field: "owner_organization", Target: "procedure_executions", Return: "owner_organization", Key: "procedure_execution", Match: "procedure_execution_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "blocking_unmet_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "step_execution", Kind: "field", Field: "step_execution_id"}, {Range: "is_blocking_and_unmet", Kind: "literal", Literal: vB(true)}}},
-			{Field: "blocking_unmet_count_safe", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "blocking_unmet_step_key", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "evaluated_blocking_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "blocking_satisfaction_step_key", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "performed_verification_count", Op: "COUNTIFS", Table: "verification_outcomes", Criteria: []Criterion{{Range: "step_execution", Kind: "field", Field: "step_execution_id"}}},
+			{Field: "blocking_unmet_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "step_execution", Kind: "raw_field", Field: "step_execution_id"}, {Range: "is_blocking_and_unmet", Kind: "literal", Literal: vB(true)}}},
+			{Field: "blocking_unmet_count_safe", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "blocking_unmet_step_key", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "evaluated_blocking_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "blocking_satisfaction_step_key", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "performed_verification_count", Op: "COUNTIFS", Table: "verification_outcomes", Criteria: []Criterion{{Range: "step_execution", Kind: "raw_field", Field: "step_execution_id"}}},
 			{Field: "prepared_by_this_agent_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "preparer_agent_key", Kind: "field", Field: "approver_agent_key"}}},
 			{Field: "executor_authority_count", Op: "COUNTIFS", Table: "role_assignments", Criteria: []Criterion{{Range: "agent_role_key", Kind: "field", Field: "executor_role_key"}}},
-			{Field: "self_witnessed_verification_count", Op: "COUNTIFS", Table: "verification_outcomes", Criteria: []Criterion{{Range: "self_witnessed_step_key", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "unbacked_verification_count", Op: "COUNTIFS", Table: "verification_outcomes", Criteria: []Criterion{{Range: "unbacked_step_key", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "exception_invocation_count", Op: "COUNTIFS", Table: "exception_invocations", Criteria: []Criterion{{Range: "step_execution", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "unresolved_issue_count", Op: "COUNTIFS", Table: "issue_occurrences", Criteria: []Criterion{{Range: "step_execution_when_unresolved", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "evaluated_requirement_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "step_execution_when_scored", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "unconfirmed_non_human_decision_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "step_execution_when_unconfirmed", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "unfalsified_clearance_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "unfalsified_clearance_step_key", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "stale_at_run_count", Op: "COUNTIFS", Table: "binding_observations", Criteria: []Criterion{{Range: "stale_at_run_step_key", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "uncorroborated_pass_count", Op: "COUNTIFS", Table: "verification_outcomes", Criteria: []Criterion{{Range: "uncorroborated_pass_step_key", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "specified_transition_from_previous_count", Op: "COUNTIFS", Table: "step_transitions", Criteria: []Criterion{{Range: "from_step", Kind: "field", Field: "previous_executed_step"}, {Range: "to_step", Kind: "field", Field: "step"}}},
-			{Field: "repetition_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step"}, {Range: "procedure_execution", Kind: "field", Field: "procedure_execution"}}},
-			{Field: "failed_precondition_count", Op: "COUNTIFS", Table: "condition_checks", Criteria: []Criterion{{Range: "failed_precondition_execution_key", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "violated_invariant_count", Op: "COUNTIFS", Table: "condition_checks", Criteria: []Criterion{{Range: "violated_invariant_execution_key", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "unescalated_danger_cue_count", Op: "COUNTIFS", Table: "cue_observations", Criteria: []Criterion{{Range: "unescalated_execution_key", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "used_entity_count", Op: "COUNTIFS", Table: "execution_entities", Criteria: []Criterion{{Range: "used_execution_key", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "generated_entity_count", Op: "COUNTIFS", Table: "execution_entities", Criteria: []Criterion{{Range: "generated_execution_key", Kind: "field", Field: "step_execution_id"}}},
-			{Field: "completed_prerequisite_run_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_prerequisite"}, {Range: "procedure_execution", Kind: "field", Field: "procedure_execution"}, {Range: "execution_status", Kind: "literal", Literal: vS("Completed")}}},
-			{Field: "incomplete_cue_observation_count", Op: "COUNTIFS", Table: "cue_observations", Criteria: []Criterion{{Range: "step_execution", Kind: "field", Field: "step_execution_id"}, {Range: "cue_signals_incomplete_step", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "self_witnessed_verification_count", Op: "COUNTIFS", Table: "verification_outcomes", Criteria: []Criterion{{Range: "self_witnessed_step_key", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "unbacked_verification_count", Op: "COUNTIFS", Table: "verification_outcomes", Criteria: []Criterion{{Range: "unbacked_step_key", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "exception_invocation_count", Op: "COUNTIFS", Table: "exception_invocations", Criteria: []Criterion{{Range: "step_execution", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "unresolved_issue_count", Op: "COUNTIFS", Table: "issue_occurrences", Criteria: []Criterion{{Range: "step_execution_when_unresolved", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "evaluated_requirement_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "step_execution_when_scored", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "unconfirmed_non_human_decision_count", Op: "COUNTIFS", Table: "agent_decision_records", Criteria: []Criterion{{Range: "step_execution_when_unconfirmed", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "unfalsified_clearance_count", Op: "COUNTIFS", Table: "requirement_satisfactions", Criteria: []Criterion{{Range: "unfalsified_clearance_step_key", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "stale_at_run_count", Op: "COUNTIFS", Table: "binding_observations", Criteria: []Criterion{{Range: "stale_at_run_step_key", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "uncorroborated_pass_count", Op: "COUNTIFS", Table: "verification_outcomes", Criteria: []Criterion{{Range: "uncorroborated_pass_step_key", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "specified_transition_from_previous_count", Op: "COUNTIFS", Table: "step_transitions", Criteria: []Criterion{{Range: "from_step", Kind: "field", Field: "previous_executed_step"}, {Range: "to_step", Kind: "raw_field", Field: "step"}}},
+			{Field: "repetition_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step"}, {Range: "procedure_execution", Kind: "raw_field", Field: "procedure_execution"}}},
+			{Field: "failed_precondition_count", Op: "COUNTIFS", Table: "condition_checks", Criteria: []Criterion{{Range: "failed_precondition_execution_key", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "violated_invariant_count", Op: "COUNTIFS", Table: "condition_checks", Criteria: []Criterion{{Range: "violated_invariant_execution_key", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "unescalated_danger_cue_count", Op: "COUNTIFS", Table: "cue_observations", Criteria: []Criterion{{Range: "unescalated_execution_key", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "used_entity_count", Op: "COUNTIFS", Table: "execution_entities", Criteria: []Criterion{{Range: "used_execution_key", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "generated_entity_count", Op: "COUNTIFS", Table: "execution_entities", Criteria: []Criterion{{Range: "generated_execution_key", Kind: "raw_field", Field: "step_execution_id"}}},
+			{Field: "completed_prerequisite_run_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step_prerequisite"}, {Range: "procedure_execution", Kind: "raw_field", Field: "procedure_execution"}, {Range: "execution_status", Kind: "literal", Literal: vS("Completed")}}},
+			{Field: "incomplete_cue_observation_count", Op: "COUNTIFS", Table: "cue_observations", Criteria: []Criterion{{Range: "step_execution", Kind: "raw_field", Field: "step_execution_id"}, {Range: "cue_signals_incomplete_step", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "RequirementSatisfactions", File: "requirement_satisfactions", RulebookRows: 8, New: func() Record { return &RequirementSatisfaction{} },
 		Lookups: []LookupSpec{
 			{Field: "requirement_is_blocking", Target: "requirements", Return: "is_blocking", Key: "requirement", Match: "requirement_id"},
@@ -60132,26 +60245,26 @@ var erbTables = []TableSpec{
 	{Name: "Errors", File: "errors", RulebookRows: 4, New: func() Record { return &Error{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "remedy_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "remedy_for_error", Kind: "field", Field: "error_id"}}},
-			{Field: "occurrence_count", Op: "COUNTIFS", Table: "issue_occurrences", Criteria: []Criterion{{Range: "error", Kind: "field", Field: "error_id"}}},}},
+			{Field: "remedy_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "remedy_for_error", Kind: "raw_field", Field: "error_id"}}},
+			{Field: "occurrence_count", Op: "COUNTIFS", Table: "issue_occurrences", Criteria: []Criterion{{Range: "error", Kind: "raw_field", Field: "error_id"}}},}},
 	{Name: "IssueOccurrences", File: "issue_occurrences", RulebookRows: 4, New: func() Record { return &IssueOccurrence{} },
 		Lookups: []LookupSpec{
 			{Field: "executed_step", Target: "step_executions", Return: "step", Key: "step_execution", Match: "step_execution_id"},
 			{Field: "redesign_implemented_at", Target: "change_requests", Return: "implemented_at", Key: "redesign_change_request", Match: "change_request_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "failed_condition_count_on_run", Op: "SUM", Table: "step_executions", Target: "failed_precondition_count", Criteria: []Criterion{{Range: "step_execution_id", Kind: "field", Field: "step_execution"}}},}},
+			{Field: "failed_condition_count_on_run", Op: "SUM", Table: "step_executions", Target: "failed_precondition_count", Criteria: []Criterion{{Range: "step_execution_id", Kind: "raw_field", Field: "step_execution"}}},}},
 	{Name: "UserQuestions", File: "user_questions", RulebookRows: 4, New: func() Record { return &UserQuestion{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
 	{Name: "UserFeedback", File: "user_feedback", RulebookRows: 6, New: func() Record { return &UserFeedback{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "collection_follow_up_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "prompted_by_feedback", Kind: "field", Field: "user_feedback_id"}}},}},
+			{Field: "collection_follow_up_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "prompted_by_feedback", Kind: "raw_field", Field: "user_feedback_id"}}},}},
 	{Name: "StewardshipAssignments", File: "stewardship_assignments", RulebookRows: 2, New: func() Record { return &StewardshipAssignment{} },
 		Lookups: []LookupSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "count_of_review_events", Op: "COUNTIFS", Table: "review_events", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "procedure_version"}}},}},
+			{Field: "count_of_review_events", Op: "COUNTIFS", Table: "review_events", Criteria: []Criterion{{Range: "procedure_version", Kind: "raw_field", Field: "procedure_version"}}},}},
 	{Name: "ChangeRequests", File: "change_requests", RulebookRows: 4, New: func() Record { return &ChangeRequest{} },
 		Lookups: []LookupSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
@@ -60177,8 +60290,8 @@ var erbTables = []TableSpec{
 	{Name: "CommunicationPolicies", File: "communication_policies", RulebookRows: 2, New: func() Record { return &CommunicationPolicie{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "consent_violation_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "policy_channel", Kind: "field", Field: "communication_policy_id"}, {Range: "is_consent_violation", Kind: "literal", Literal: vB(true)}}},
-			{Field: "quiet_hours_violation_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "quiet_hours_violation_policy_key", Kind: "field", Field: "communication_policy_id"}}},}},
+			{Field: "consent_violation_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "policy_channel", Kind: "raw_field", Field: "communication_policy_id"}, {Range: "is_consent_violation", Kind: "literal", Literal: vB(true)}}},
+			{Field: "quiet_hours_violation_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "quiet_hours_violation_policy_key", Kind: "raw_field", Field: "communication_policy_id"}}},}},
 	{Name: "MessageTemplates", File: "message_templates", RulebookRows: 2, New: func() Record { return &MessageTemplate{} },
 		Lookups: []LookupSpec{
 			{Field: "policy_max_message_length", Target: "communication_policies", Return: "max_message_length", Key: "communication_policy", Match: "communication_policy_id"},
@@ -60186,32 +60299,32 @@ var erbTables = []TableSpec{
 			{Field: "last_approved_body_hash", Target: "template_approvals", Return: "approved_body_hash", Key: "last_valid_approval", Match: "template_approval_id"},
 			{Field: "last_approval_at", Target: "template_approvals", Return: "decided_at", Key: "last_valid_approval", Match: "template_approval_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "valid_approval_count", Op: "COUNTIFS", Table: "template_approvals", Criteria: []Criterion{{Range: "valid_approval_template_key", Kind: "field", Field: "message_template_id"}}},
-			{Field: "drifted_send_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "drifted_send_template_key", Kind: "field", Field: "message_template_id"}}},
-			{Field: "unanswered_delivery_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "unanswered_template_key", Kind: "field", Field: "message_template_id"}}},
-			{Field: "transmitted_delivery_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "transmitted_template_key", Kind: "field", Field: "message_template_id"}}},}},
+			{Field: "valid_approval_count", Op: "COUNTIFS", Table: "template_approvals", Criteria: []Criterion{{Range: "valid_approval_template_key", Kind: "raw_field", Field: "message_template_id"}}},
+			{Field: "drifted_send_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "drifted_send_template_key", Kind: "raw_field", Field: "message_template_id"}}},
+			{Field: "unanswered_delivery_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "unanswered_template_key", Kind: "raw_field", Field: "message_template_id"}}},
+			{Field: "transmitted_delivery_count", Op: "COUNTIFS", Table: "message_deliveries", Criteria: []Criterion{{Range: "transmitted_template_key", Kind: "raw_field", Field: "message_template_id"}}},}},
 	{Name: "SemanticMappings", File: "semantic_mappings", RulebookRows: 357, New: func() Record { return &SemanticMapping{} },
 		Lookups: []LookupSpec{
 			{Field: "profile_namespace_dereferences", Target: "ontology_profiles", Return: "namespace_dereferences", Key: "ontology_profile", Match: "ontology_profile_id"},},
 		Aggregations: []AggregateSpec{}},
-	{Name: "WitnessLoops", File: "witness_loops", RulebookRows: 16, New: func() Record { return &WitnessLoop{} },
+	{Name: "WitnessLoops", File: "witness_loops", RulebookRows: 19, New: func() Record { return &WitnessLoop{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "question_count", Op: "COUNTIFS", Table: "role_questions", Criteria: []Criterion{{Range: "witness_loop", Kind: "field", Field: "witness_loop_id"}}},}},
-	{Name: "RoleQuestions", File: "role_questions", RulebookRows: 442, New: func() Record { return &RoleQuestion{} },
+			{Field: "question_count", Op: "COUNTIFS", Table: "role_questions", Criteria: []Criterion{{Range: "witness_loop", Kind: "raw_field", Field: "witness_loop_id"}}},}},
+	{Name: "RoleQuestions", File: "role_questions", RulebookRows: 446, New: func() Record { return &RoleQuestion{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "predicate_count", Op: "COUNTIFS", Table: "rulebook_fields", Criteria: []Criterion{{Range: "invented_for_question", Kind: "field", Field: "role_question_id"}}},}},
-	{Name: "RulebookFields", File: "rulebook_fields", RulebookRows: 5185, New: func() Record { return &RulebookField{} },
+			{Field: "predicate_count", Op: "COUNTIFS", Table: "rulebook_fields", Criteria: []Criterion{{Range: "invented_for_question", Kind: "raw_field", Field: "role_question_id"}}},}},
+	{Name: "RulebookFields", File: "rulebook_fields", RulebookRows: 5199, New: func() Record { return &RulebookField{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "disagreeing_substrate_count", Op: "COUNTIFS", Table: "field_disagreements", Criteria: []Criterion{{Range: "rulebook_field", Kind: "field", Field: "rulebook_field_id"}}},}},
+			{Field: "disagreeing_substrate_count", Op: "COUNTIFS", Table: "field_disagreements", Criteria: []Criterion{{Range: "rulebook_field", Kind: "raw_field", Field: "rulebook_field_id"}}},}},
 	{Name: "TestSuites", File: "test_suites", RulebookRows: 6, New: func() Record { return &TestSuite{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "test_count", Op: "COUNTIFS", Table: "test_cases", Criteria: []Criterion{{Range: "suite", Kind: "field", Field: "test_suite_id"}}},
-			{Field: "pass_count", Op: "COUNTIFS", Table: "test_cases", Criteria: []Criterion{{Range: "passing_suite_key", Kind: "field", Field: "test_suite_id"}}},
-			{Field: "blocking_fail_count", Op: "COUNTIFS", Table: "test_cases", Criteria: []Criterion{{Range: "needs_attention_suite_key", Kind: "field", Field: "test_suite_id"}}},}},
+			{Field: "test_count", Op: "COUNTIFS", Table: "test_cases", Criteria: []Criterion{{Range: "suite", Kind: "raw_field", Field: "test_suite_id"}}},
+			{Field: "pass_count", Op: "COUNTIFS", Table: "test_cases", Criteria: []Criterion{{Range: "passing_suite_key", Kind: "raw_field", Field: "test_suite_id"}}},
+			{Field: "blocking_fail_count", Op: "COUNTIFS", Table: "test_cases", Criteria: []Criterion{{Range: "needs_attention_suite_key", Kind: "raw_field", Field: "test_suite_id"}}},}},
 	{Name: "TestCases", File: "test_cases", RulebookRows: 1794, New: func() Record { return &TestCase{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60332,16 +60445,16 @@ var erbTables = []TableSpec{
 	{Name: "AppRoleProfiles", File: "app_role_profiles", RulebookRows: 20, New: func() Record { return &AppRoleProfile{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "route_count", Op: "COUNTIFS", Table: "app_routes", Criteria: []Criterion{{Range: "owning_role", Kind: "field", Field: "role"}}},}},
+			{Field: "route_count", Op: "COUNTIFS", Table: "app_routes", Criteria: []Criterion{{Range: "owning_role", Kind: "raw_field", Field: "role"}}},}},
 	{Name: "AppNavGroups", File: "app_nav_groups", RulebookRows: 23, New: func() Record { return &AppNavGroup{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "route_count", Op: "COUNTIFS", Table: "app_routes", Criteria: []Criterion{{Range: "nav_group", Kind: "field", Field: "app_nav_group_id"}}},}},
+			{Field: "route_count", Op: "COUNTIFS", Table: "app_routes", Criteria: []Criterion{{Range: "nav_group", Kind: "raw_field", Field: "app_nav_group_id"}}},}},
 	{Name: "AppRoutes", File: "app_routes", RulebookRows: 149, New: func() Record { return &AppRoute{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "question_count", Op: "COUNTIFS", Table: "app_route_questions", Criteria: []Criterion{{Range: "route", Kind: "field", Field: "app_route_id"}}},
-			{Field: "reference_count", Op: "COUNTIFS", Table: "app_route_references", Criteria: []Criterion{{Range: "from_route", Kind: "field", Field: "app_route_id"}}},}},
+			{Field: "question_count", Op: "COUNTIFS", Table: "app_route_questions", Criteria: []Criterion{{Range: "route", Kind: "raw_field", Field: "app_route_id"}}},
+			{Field: "reference_count", Op: "COUNTIFS", Table: "app_route_references", Criteria: []Criterion{{Range: "from_route", Kind: "raw_field", Field: "app_route_id"}}},}},
 	{Name: "AppRouteQuestions", File: "app_route_questions", RulebookRows: 151, New: func() Record { return &AppRouteQuestion{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60351,29 +60464,29 @@ var erbTables = []TableSpec{
 	{Name: "RulebookTables", File: "rulebook_tables", RulebookRows: 264, New: func() Record { return &RulebookTable{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "field_count", Op: "COUNTIFS", Table: "rulebook_fields", Criteria: []Criterion{{Range: "target_table", Kind: "field", Field: "rulebook_table_id"}}},
-			{Field: "policy_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "target_table", Kind: "field", Field: "rulebook_table_id"}}},
-			{Field: "disagreeing_substrate_count", Op: "COUNTIFS", Table: "table_conformance", Criteria: []Criterion{{Range: "imperfect_table_key", Kind: "field", Field: "rulebook_table_id"}}},
-			{Field: "semantic_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "source_path", Kind: "field", Field: "rulebook_table_id"}}},
-			{Field: "exact_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "source_path", Kind: "field", Field: "rulebook_table_id"}, {Range: "mapping_relation", Kind: "literal", Literal: vS("exact")}}},
-			{Field: "aligned_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "source_path", Kind: "field", Field: "rulebook_table_id"}, {Range: "mapping_relation", Kind: "literal", Literal: vS("aligned")}}},
-			{Field: "semantic_type_iri_field_count", Op: "COUNTIFS", Table: "rulebook_fields", Criteria: []Criterion{{Range: "target_table", Kind: "field", Field: "rulebook_table_id"}, {Range: "field_name", Kind: "literal", Literal: vS("SemanticTypeIri")}}},
-			{Field: "unrestricted_non_admin_policy_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "target_table", Kind: "field", Field: "rulebook_table_id"}, {Range: "is_unrestricted_non_admin_grant", Kind: "literal", Literal: vB(true)}}},
-			{Field: "restricted_non_admin_policy_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "target_table", Kind: "field", Field: "rulebook_table_id"}, {Range: "is_unrestricted_non_admin_grant", Kind: "literal", Literal: vB(false)}, {Range: "principal_is_admin", Kind: "literal", Literal: vB(false)}}},}},
+			{Field: "field_count", Op: "COUNTIFS", Table: "rulebook_fields", Criteria: []Criterion{{Range: "target_table", Kind: "raw_field", Field: "rulebook_table_id"}}},
+			{Field: "policy_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "target_table", Kind: "raw_field", Field: "rulebook_table_id"}}},
+			{Field: "disagreeing_substrate_count", Op: "COUNTIFS", Table: "table_conformance", Criteria: []Criterion{{Range: "imperfect_table_key", Kind: "raw_field", Field: "rulebook_table_id"}}},
+			{Field: "semantic_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "source_path", Kind: "raw_field", Field: "rulebook_table_id"}}},
+			{Field: "exact_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "source_path", Kind: "raw_field", Field: "rulebook_table_id"}, {Range: "mapping_relation", Kind: "literal", Literal: vS("exact")}}},
+			{Field: "aligned_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "source_path", Kind: "raw_field", Field: "rulebook_table_id"}, {Range: "mapping_relation", Kind: "literal", Literal: vS("aligned")}}},
+			{Field: "semantic_type_iri_field_count", Op: "COUNTIFS", Table: "rulebook_fields", Criteria: []Criterion{{Range: "target_table", Kind: "raw_field", Field: "rulebook_table_id"}, {Range: "field_name", Kind: "literal", Literal: vS("SemanticTypeIri")}}},
+			{Field: "unrestricted_non_admin_policy_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "target_table", Kind: "raw_field", Field: "rulebook_table_id"}, {Range: "is_unrestricted_non_admin_grant", Kind: "literal", Literal: vB(true)}}},
+			{Field: "restricted_non_admin_policy_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "target_table", Kind: "raw_field", Field: "rulebook_table_id"}, {Range: "is_unrestricted_non_admin_grant", Kind: "literal", Literal: vB(false)}, {Range: "principal_is_admin", Kind: "literal", Literal: vB(false)}}},}},
 	{Name: "AccessPrincipals", File: "access_principals", RulebookRows: 20, New: func() Record { return &AccessPrincipal{} },
 		Lookups: []LookupSpec{
 			{Field: "organization_scope", Target: "roles", Return: "organization", Key: "domain_role", Match: "role_id"},
 			{Field: "role_label", Target: "roles", Return: "label", Key: "domain_role", Match: "role_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "policy_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "principal", Kind: "field", Field: "access_principal_id"}}},
-			{Field: "grant_count", Op: "COUNTIFS", Table: "field_grants", Criteria: []Criterion{{Range: "principal", Kind: "field", Field: "access_principal_id"}}},
-			{Field: "visible_table_count", Op: "COUNTIFS", Table: "role_schema_views", Criteria: []Criterion{{Range: "principal", Kind: "field", Field: "access_principal_id"}}},}},
-	{Name: "AccessPolicies", File: "access_policies", RulebookRows: 781, New: func() Record { return &AccessPolicie{} },
+			{Field: "policy_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "principal", Kind: "raw_field", Field: "access_principal_id"}}},
+			{Field: "grant_count", Op: "COUNTIFS", Table: "field_grants", Criteria: []Criterion{{Range: "principal", Kind: "raw_field", Field: "access_principal_id"}}},
+			{Field: "visible_table_count", Op: "COUNTIFS", Table: "role_schema_views", Criteria: []Criterion{{Range: "principal", Kind: "raw_field", Field: "access_principal_id"}}},}},
+	{Name: "AccessPolicies", File: "access_policies", RulebookRows: 793, New: func() Record { return &AccessPolicie{} },
 		Lookups: []LookupSpec{
 			{Field: "principal_is_admin", Target: "access_principals", Return: "is_administrator", Key: "principal", Match: "access_principal_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "denial_test_count", Op: "COUNTIFS", Table: "access_denial_tests", Criteria: []Criterion{{Range: "target_policy", Kind: "field", Field: "access_policy_id"}}},}},
-	{Name: "FieldGrants", File: "field_grants", RulebookRows: 18467, New: func() Record { return &FieldGrant{} },
+			{Field: "denial_test_count", Op: "COUNTIFS", Table: "access_denial_tests", Criteria: []Criterion{{Range: "target_policy", Kind: "raw_field", Field: "access_policy_id"}}},}},
+	{Name: "FieldGrants", File: "field_grants", RulebookRows: 18790, New: func() Record { return &FieldGrant{} },
 		Lookups: []LookupSpec{
 			{Field: "field_table", Target: "rulebook_fields", Return: "target_table", Key: "target_field", Match: "rulebook_field_id"},
 			{Field: "field_name", Target: "rulebook_fields", Return: "field_name", Key: "target_field", Match: "rulebook_field_id"},
@@ -60382,18 +60495,18 @@ var erbTables = []TableSpec{
 	{Name: "RoleSchemas", File: "role_schemas", RulebookRows: 20, New: func() Record { return &RoleSchema{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "view_count", Op: "COUNTIFS", Table: "role_schema_views", Criteria: []Criterion{{Range: "role_schema", Kind: "field", Field: "role_schema_id"}}},}},
-	{Name: "RoleSchemaViews", File: "role_schema_views", RulebookRows: 762, New: func() Record { return &RoleSchemaView{} },
+			{Field: "view_count", Op: "COUNTIFS", Table: "role_schema_views", Criteria: []Criterion{{Range: "role_schema", Kind: "raw_field", Field: "role_schema_id"}}},}},
+	{Name: "RoleSchemaViews", File: "role_schema_views", RulebookRows: 771, New: func() Record { return &RoleSchemaView{} },
 		Lookups: []LookupSpec{
 			{Field: "schema_name", Target: "role_schemas", Return: "schema_name", Key: "role_schema", Match: "role_schema_id"},
 			{Field: "source_view", Target: "rulebook_tables", Return: "physical_view", Key: "target_table", Match: "rulebook_table_id"},
 			{Field: "table_field_count", Target: "rulebook_tables", Return: "field_count", Key: "target_table", Match: "rulebook_table_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "column_count", Op: "COUNTIFS", Table: "field_grants", Criteria: []Criterion{{Range: "principal", Kind: "field", Field: "principal"}, {Range: "can_read", Kind: "literal", Literal: vB(true)}, {Range: "field_table", Kind: "field", Field: "target_table"}}},}},
+			{Field: "column_count", Op: "COUNTIFS", Table: "field_grants", Criteria: []Criterion{{Range: "principal", Kind: "raw_field", Field: "principal"}, {Range: "can_read", Kind: "literal", Literal: vB(true)}, {Range: "field_table", Kind: "raw_field", Field: "target_table"}}},}},
 	{Name: "JwtClaimMappings", File: "jwt_claim_mappings", RulebookRows: 4, New: func() Record { return &JwtClaimMapping{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "usage_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "row_predicate", Kind: "field", Field: "sql_accessor"}}},}},
+			{Field: "usage_count", Op: "COUNTIFS", Table: "access_policies", Criteria: []Criterion{{Range: "row_predicate", Kind: "raw_field", Field: "sql_accessor"}}},}},
 	{Name: "AccessDenialTests", File: "access_denial_tests", RulebookRows: 17, New: func() Record { return &AccessDenialTest{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60402,7 +60515,7 @@ var erbTables = []TableSpec{
 			{Field: "agent_kind", Target: "agents", Return: "agent_kind", Key: "linked_agent", Match: "agent_id"},
 			{Field: "organization", Target: "agents", Return: "organization", Key: "linked_agent", Match: "agent_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "assignment_count", Op: "COUNTIFS", Table: "principal_assignments", Criteria: []Criterion{{Range: "app_user", Kind: "field", Field: "app_user_id"}}},}},
+			{Field: "assignment_count", Op: "COUNTIFS", Table: "principal_assignments", Criteria: []Criterion{{Range: "app_user", Kind: "raw_field", Field: "app_user_id"}}},}},
 	{Name: "PrincipalAssignments", File: "principal_assignments", RulebookRows: 22, New: func() Record { return &PrincipalAssignment{} },
 		Lookups: []LookupSpec{
 			{Field: "principal_is_admin", Target: "access_principals", Return: "is_administrator", Key: "principal", Match: "access_principal_id"},
@@ -60417,34 +60530,34 @@ var erbTables = []TableSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
 			{Field: "procedure_version_is_live", Target: "procedure_versions", Return: "is_live", Key: "procedure_version", Match: "procedure_version_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "people_capture_complement_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "complements_mining_run", Kind: "field", Field: "process_mining_run_id"}, {Range: "holds_reasoning_or_tacit_knowledge", Kind: "literal", Literal: vB(true)}}},
-			{Field: "undocumented_path_count", Op: "COUNTIFS", Table: "mined_flow_edges", Criteria: []Criterion{{Range: "process_mining_run", Kind: "field", Field: "process_mining_run_id"}, {Range: "is_undocumented_path", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "people_capture_complement_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "complements_mining_run", Kind: "raw_field", Field: "process_mining_run_id"}, {Range: "holds_reasoning_or_tacit_knowledge", Kind: "literal", Literal: vB(true)}}},
+			{Field: "undocumented_path_count", Op: "COUNTIFS", Table: "mined_flow_edges", Criteria: []Criterion{{Range: "process_mining_run", Kind: "raw_field", Field: "process_mining_run_id"}, {Range: "is_undocumented_path", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "Vocabularies", File: "vocabularies", RulebookRows: 12, New: func() Record { return &Vocabularie{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "term_count", Op: "COUNTIFS", Table: "vocabulary_terms", Criteria: []Criterion{{Range: "vocabulary", Kind: "field", Field: "vocabulary_id"}}},
-			{Field: "orphan_term_count", Op: "COUNTIFS", Table: "vocabulary_terms", Criteria: []Criterion{{Range: "orphan_term_vocabulary_key", Kind: "field", Field: "vocabulary_id"}}},
-			{Field: "organized_transcript_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "organized_into_scheme", Kind: "field", Field: "vocabulary_id"}, {Range: "material_kind", Kind: "literal", Literal: vS("Transcript")}}},
-			{Field: "organized_field_notes_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "organized_into_scheme", Kind: "field", Field: "vocabulary_id"}, {Range: "material_kind", Kind: "literal", Literal: vS("FieldNotes")}}},
-			{Field: "organized_process_map_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "organized_into_scheme", Kind: "field", Field: "vocabulary_id"}, {Range: "material_kind", Kind: "literal", Literal: vS("ProcessMap")}}},
-			{Field: "organized_mined_event_trace_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "organized_into_scheme", Kind: "field", Field: "vocabulary_id"}, {Range: "material_kind", Kind: "literal", Literal: vS("MinedEventTrace")}}},
-			{Field: "organized_document_excerpt_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "organized_into_scheme", Kind: "field", Field: "vocabulary_id"}, {Range: "material_kind", Kind: "literal", Literal: vS("DocumentExcerpt")}}},
-			{Field: "organized_material_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "organized_into_scheme", Kind: "field", Field: "vocabulary_id"}}},
-			{Field: "latest_organized_material_at", Op: "MAX", Table: "collected_source_materials", Target: "collected_at", Criteria: []Criterion{{Range: "organized_into_scheme", Kind: "field", Field: "vocabulary_id"}}},
-			{Field: "refinement_count", Op: "COUNTIFS", Table: "scheme_refinements", Criteria: []Criterion{{Range: "vocabulary", Kind: "field", Field: "vocabulary_id"}}},}},
+			{Field: "term_count", Op: "COUNTIFS", Table: "vocabulary_terms", Criteria: []Criterion{{Range: "vocabulary", Kind: "raw_field", Field: "vocabulary_id"}}},
+			{Field: "orphan_term_count", Op: "COUNTIFS", Table: "vocabulary_terms", Criteria: []Criterion{{Range: "orphan_term_vocabulary_key", Kind: "raw_field", Field: "vocabulary_id"}}},
+			{Field: "organized_transcript_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "organized_into_scheme", Kind: "raw_field", Field: "vocabulary_id"}, {Range: "material_kind", Kind: "literal", Literal: vS("Transcript")}}},
+			{Field: "organized_field_notes_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "organized_into_scheme", Kind: "raw_field", Field: "vocabulary_id"}, {Range: "material_kind", Kind: "literal", Literal: vS("FieldNotes")}}},
+			{Field: "organized_process_map_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "organized_into_scheme", Kind: "raw_field", Field: "vocabulary_id"}, {Range: "material_kind", Kind: "literal", Literal: vS("ProcessMap")}}},
+			{Field: "organized_mined_event_trace_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "organized_into_scheme", Kind: "raw_field", Field: "vocabulary_id"}, {Range: "material_kind", Kind: "literal", Literal: vS("MinedEventTrace")}}},
+			{Field: "organized_document_excerpt_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "organized_into_scheme", Kind: "raw_field", Field: "vocabulary_id"}, {Range: "material_kind", Kind: "literal", Literal: vS("DocumentExcerpt")}}},
+			{Field: "organized_material_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "organized_into_scheme", Kind: "raw_field", Field: "vocabulary_id"}}},
+			{Field: "latest_organized_material_at", Op: "MAX", Table: "collected_source_materials", Target: "collected_at", Criteria: []Criterion{{Range: "organized_into_scheme", Kind: "raw_field", Field: "vocabulary_id"}}},
+			{Field: "refinement_count", Op: "COUNTIFS", Table: "scheme_refinements", Criteria: []Criterion{{Range: "vocabulary", Kind: "raw_field", Field: "vocabulary_id"}}},}},
 	{Name: "VocabularyTerms", File: "vocabulary_terms", RulebookRows: 44, New: func() Record { return &VocabularyTerm{} },
 		Lookups: []LookupSpec{
 			{Field: "broader_term_parent", Target: "vocabulary_terms", Return: "broader_term", Key: "broader_term", Match: "vocabulary_term_id"},
 			{Field: "scheme_governed_dimension", Target: "vocabularies", Return: "governed_dimension", Key: "vocabulary", Match: "vocabulary_id"},
 			{Field: "introduced_release_issued_at", Target: "rulebook_releases", Return: "issued_at", Key: "introduced_in_release", Match: "rulebook_release_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "usage_count", Op: "COUNTIFS", Table: "requirements", Criteria: []Criterion{{Range: "controlled_term", Kind: "field", Field: "vocabulary_term_id"}}},
-			{Field: "latest_meaning_change_at", Op: "MAX", Table: "term_meaning_changes", Target: "changed_at", Criteria: []Criterion{{Range: "vocabulary_term", Kind: "field", Field: "vocabulary_term_id"}}},
-			{Field: "structural_shift_count", Op: "COUNTIFS", Table: "term_meaning_changes", Criteria: []Criterion{{Range: "vocabulary_term", Kind: "field", Field: "vocabulary_term_id"}, {Range: "is_structural_change", Kind: "literal", Literal: vB(true)}, {Range: "span_days", Kind: "op", Op: ">=", Literal: vI(700)}}},
-			{Field: "pref_label_practitioner_mention_count", Op: "SUM", Table: "term_label_variants", Target: "practitioner_mention_count", Criteria: []Criterion{{Range: "vocabulary_term", Kind: "field", Field: "vocabulary_term_id"}, {Range: "label_kind", Kind: "literal", Literal: vS("pref")}}},
-			{Field: "alt_label_practitioner_mention_count", Op: "SUM", Table: "term_label_variants", Target: "practitioner_mention_count", Criteria: []Criterion{{Range: "vocabulary_term", Kind: "field", Field: "vocabulary_term_id"}, {Range: "label_kind", Kind: "literal", Literal: vS("alt")}}},
-			{Field: "source_phrasing_count", Op: "COUNTIFS", Table: "source_term_mentions", Criteria: []Criterion{{Range: "intended_term", Kind: "field", Field: "vocabulary_term_id"}}},
-			{Field: "unreconciled_phrasing_count", Op: "COUNTIFS", Table: "source_term_mentions", Criteria: []Criterion{{Range: "unresolved_intended_term_key", Kind: "field", Field: "vocabulary_term_id"}}},}},
+			{Field: "usage_count", Op: "COUNTIFS", Table: "requirements", Criteria: []Criterion{{Range: "controlled_term", Kind: "raw_field", Field: "vocabulary_term_id"}}},
+			{Field: "latest_meaning_change_at", Op: "MAX", Table: "term_meaning_changes", Target: "changed_at", Criteria: []Criterion{{Range: "vocabulary_term", Kind: "raw_field", Field: "vocabulary_term_id"}}},
+			{Field: "structural_shift_count", Op: "COUNTIFS", Table: "term_meaning_changes", Criteria: []Criterion{{Range: "vocabulary_term", Kind: "raw_field", Field: "vocabulary_term_id"}, {Range: "is_structural_change", Kind: "literal", Literal: vB(true)}, {Range: "span_days", Kind: "op", Op: ">=", Literal: vI(700)}}},
+			{Field: "pref_label_practitioner_mention_count", Op: "SUM", Table: "term_label_variants", Target: "practitioner_mention_count", Criteria: []Criterion{{Range: "vocabulary_term", Kind: "raw_field", Field: "vocabulary_term_id"}, {Range: "label_kind", Kind: "literal", Literal: vS("pref")}}},
+			{Field: "alt_label_practitioner_mention_count", Op: "SUM", Table: "term_label_variants", Target: "practitioner_mention_count", Criteria: []Criterion{{Range: "vocabulary_term", Kind: "raw_field", Field: "vocabulary_term_id"}, {Range: "label_kind", Kind: "literal", Literal: vS("alt")}}},
+			{Field: "source_phrasing_count", Op: "COUNTIFS", Table: "source_term_mentions", Criteria: []Criterion{{Range: "intended_term", Kind: "raw_field", Field: "vocabulary_term_id"}}},
+			{Field: "unreconciled_phrasing_count", Op: "COUNTIFS", Table: "source_term_mentions", Criteria: []Criterion{{Range: "unresolved_intended_term_key", Kind: "raw_field", Field: "vocabulary_term_id"}}},}},
 	{Name: "KnowledgeBrokerLinks", File: "knowledge_broker_links", RulebookRows: 8, New: func() Record { return &KnowledgeBrokerLink{} },
 		Lookups: []LookupSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
@@ -60454,19 +60567,19 @@ var erbTables = []TableSpec{
 	{Name: "ConformanceSubstrates", File: "conformance_substrates", RulebookRows: 8, New: func() Record { return &ConformanceSubstrate{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "run_count", Op: "COUNTIFS", Table: "substrate_run_scores", Criteria: []Criterion{{Range: "substrate", Kind: "field", Field: "conformance_substrate_id"}}},
-			{Field: "latest_cells_tested", Op: "SUM", Table: "substrate_run_scores", Target: "latest_cells_tested", Criteria: []Criterion{{Range: "substrate", Kind: "field", Field: "conformance_substrate_id"}}},
-			{Field: "latest_cells_passed", Op: "SUM", Table: "substrate_run_scores", Target: "latest_cells_passed", Criteria: []Criterion{{Range: "substrate", Kind: "field", Field: "conformance_substrate_id"}}},
-			{Field: "latest_harness_errors", Op: "SUM", Table: "substrate_run_scores", Target: "latest_error_flag", Criteria: []Criterion{{Range: "substrate", Kind: "field", Field: "conformance_substrate_id"}}},
-			{Field: "disagreeing_field_count", Op: "COUNTIFS", Table: "field_disagreements", Criteria: []Criterion{{Range: "substrate", Kind: "field", Field: "conformance_substrate_id"}}},
-			{Field: "disagreeing_table_count", Op: "COUNTIFS", Table: "table_conformance", Criteria: []Criterion{{Range: "imperfect_substrate_key", Kind: "field", Field: "conformance_substrate_id"}}},}},
+			{Field: "run_count", Op: "COUNTIFS", Table: "substrate_run_scores", Criteria: []Criterion{{Range: "substrate", Kind: "raw_field", Field: "conformance_substrate_id"}}},
+			{Field: "latest_cells_tested", Op: "SUM", Table: "substrate_run_scores", Target: "latest_cells_tested", Criteria: []Criterion{{Range: "substrate", Kind: "raw_field", Field: "conformance_substrate_id"}}},
+			{Field: "latest_cells_passed", Op: "SUM", Table: "substrate_run_scores", Target: "latest_cells_passed", Criteria: []Criterion{{Range: "substrate", Kind: "raw_field", Field: "conformance_substrate_id"}}},
+			{Field: "latest_harness_errors", Op: "SUM", Table: "substrate_run_scores", Target: "latest_error_flag", Criteria: []Criterion{{Range: "substrate", Kind: "raw_field", Field: "conformance_substrate_id"}}},
+			{Field: "disagreeing_field_count", Op: "COUNTIFS", Table: "field_disagreements", Criteria: []Criterion{{Range: "substrate", Kind: "raw_field", Field: "conformance_substrate_id"}}},
+			{Field: "disagreeing_table_count", Op: "COUNTIFS", Table: "table_conformance", Criteria: []Criterion{{Range: "imperfect_substrate_key", Kind: "raw_field", Field: "conformance_substrate_id"}}},}},
 	{Name: "ConformanceRuns", File: "conformance_runs", RulebookRows: 5, New: func() Record { return &ConformanceRun{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "substrate_count", Op: "COUNTIFS", Table: "substrate_run_scores", Criteria: []Criterion{{Range: "run", Kind: "field", Field: "conformance_run_id"}}},
-			{Field: "perfect_substrate_count", Op: "COUNTIFS", Table: "substrate_run_scores", Criteria: []Criterion{{Range: "perfect_run_key", Kind: "field", Field: "conformance_run_id"}}},
-			{Field: "cells_tested", Op: "SUM", Table: "substrate_run_scores", Target: "cells_tested", Criteria: []Criterion{{Range: "run", Kind: "field", Field: "conformance_run_id"}}},
-			{Field: "cells_passed", Op: "SUM", Table: "substrate_run_scores", Target: "cells_passed", Criteria: []Criterion{{Range: "run", Kind: "field", Field: "conformance_run_id"}}},}},
+			{Field: "substrate_count", Op: "COUNTIFS", Table: "substrate_run_scores", Criteria: []Criterion{{Range: "run", Kind: "raw_field", Field: "conformance_run_id"}}},
+			{Field: "perfect_substrate_count", Op: "COUNTIFS", Table: "substrate_run_scores", Criteria: []Criterion{{Range: "perfect_run_key", Kind: "raw_field", Field: "conformance_run_id"}}},
+			{Field: "cells_tested", Op: "SUM", Table: "substrate_run_scores", Target: "cells_tested", Criteria: []Criterion{{Range: "run", Kind: "raw_field", Field: "conformance_run_id"}}},
+			{Field: "cells_passed", Op: "SUM", Table: "substrate_run_scores", Target: "cells_passed", Criteria: []Criterion{{Range: "run", Kind: "raw_field", Field: "conformance_run_id"}}},}},
 	{Name: "SubstrateRunScores", File: "substrate_run_scores", RulebookRows: 35, New: func() Record { return &SubstrateRunScore{} },
 		Lookups: []LookupSpec{
 			{Field: "is_in_latest_run", Target: "conformance_runs", Return: "is_latest", Key: "run", Match: "conformance_run_id"},
@@ -60477,13 +60590,13 @@ var erbTables = []TableSpec{
 			{Field: "substrate_label", Target: "conformance_substrates", Return: "label", Key: "substrate", Match: "conformance_substrate_id"},
 			{Field: "subject_area", Target: "rulebook_tables", Return: "subject_area", Key: "rulebook_table", Match: "rulebook_table_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "disagreeing_field_count", Op: "COUNTIFS", Table: "field_disagreements", Criteria: []Criterion{{Range: "table_conformance", Kind: "field", Field: "table_conformance_id"}}},}},
+			{Field: "disagreeing_field_count", Op: "COUNTIFS", Table: "field_disagreements", Criteria: []Criterion{{Range: "table_conformance", Kind: "raw_field", Field: "table_conformance_id"}}},}},
 	{Name: "FieldDisagreements", File: "field_disagreements", RulebookRows: 27, New: func() Record { return &FieldDisagreement{} },
 		Lookups: []LookupSpec{
 			{Field: "formula", Target: "rulebook_fields", Return: "formula", Key: "rulebook_field", Match: "rulebook_field_id"},
 			{Field: "substrate_label", Target: "conformance_substrates", Return: "label", Key: "substrate", Match: "conformance_substrate_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "sampled_cell_count", Op: "COUNTIFS", Table: "cell_disagreements", Criteria: []Criterion{{Range: "field_disagreement", Kind: "field", Field: "field_disagreement_id"}}},}},
+			{Field: "sampled_cell_count", Op: "COUNTIFS", Table: "cell_disagreements", Criteria: []Criterion{{Range: "field_disagreement", Kind: "raw_field", Field: "field_disagreement_id"}}},}},
 	{Name: "CellDisagreements", File: "cell_disagreements", RulebookRows: 205, New: func() Record { return &CellDisagreement{} },
 		Lookups: []LookupSpec{
 			{Field: "substrate", Target: "field_disagreements", Return: "substrate", Key: "field_disagreement", Match: "field_disagreement_id"},
@@ -60492,20 +60605,20 @@ var erbTables = []TableSpec{
 	{Name: "KnowledgeMethods", File: "knowledge_methods", RulebookRows: 26, New: func() Record { return &KnowledgeMethod{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "elicitation_use_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "method", Kind: "field", Field: "knowledge_method_id"}}},
-			{Field: "application_count", Op: "COUNTIFS", Table: "method_applications", Criteria: []Criterion{{Range: "knowledge_method", Kind: "field", Field: "knowledge_method_id"}}},}},
+			{Field: "elicitation_use_count", Op: "COUNTIFS", Table: "elicitation_sessions", Criteria: []Criterion{{Range: "method", Kind: "raw_field", Field: "knowledge_method_id"}}},
+			{Field: "application_count", Op: "COUNTIFS", Table: "method_applications", Criteria: []Criterion{{Range: "knowledge_method", Kind: "raw_field", Field: "knowledge_method_id"}}},}},
 	{Name: "SourceArticles", File: "source_articles", RulebookRows: 5, New: func() Record { return &SourceArticle{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "claim_count", Op: "COUNTIFS", Table: "article_claims", Criteria: []Criterion{{Range: "source_article", Kind: "field", Field: "source_article_id"}}},
-			{Field: "covered_claim_count", Op: "COUNTIFS", Table: "article_claims", Criteria: []Criterion{{Range: "source_article", Kind: "field", Field: "source_article_id"}, {Range: "is_covered", Kind: "literal", Literal: vB(true)}}},
-			{Field: "agreed_claim_count", Op: "COUNTIFS", Table: "article_claims", Criteria: []Criterion{{Range: "source_article", Kind: "field", Field: "source_article_id"}, {Range: "is_agreed", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "claim_count", Op: "COUNTIFS", Table: "article_claims", Criteria: []Criterion{{Range: "source_article", Kind: "raw_field", Field: "source_article_id"}}},
+			{Field: "covered_claim_count", Op: "COUNTIFS", Table: "article_claims", Criteria: []Criterion{{Range: "source_article", Kind: "raw_field", Field: "source_article_id"}, {Range: "is_covered", Kind: "literal", Literal: vB(true)}}},
+			{Field: "agreed_claim_count", Op: "COUNTIFS", Table: "article_claims", Criteria: []Criterion{{Range: "source_article", Kind: "raw_field", Field: "source_article_id"}, {Range: "is_agreed", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "ArticleClaims", File: "article_claims", RulebookRows: 900, New: func() Record { return &ArticleClaim{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "evidence_count", Op: "COUNTIFS", Table: "claim_evidence", Criteria: []Criterion{{Range: "article_claim", Kind: "field", Field: "article_claim_id"}}},
-			{Field: "valid_evidence_count", Op: "COUNTIFS", Table: "claim_evidence", Criteria: []Criterion{{Range: "article_claim", Kind: "field", Field: "article_claim_id"}, {Range: "is_valid", Kind: "literal", Literal: vB(true)}}},
-			{Field: "agreed_evidence_count", Op: "COUNTIFS", Table: "claim_evidence", Criteria: []Criterion{{Range: "article_claim", Kind: "field", Field: "article_claim_id"}, {Range: "is_agreed_evidence", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "evidence_count", Op: "COUNTIFS", Table: "claim_evidence", Criteria: []Criterion{{Range: "article_claim", Kind: "raw_field", Field: "article_claim_id"}}},
+			{Field: "valid_evidence_count", Op: "COUNTIFS", Table: "claim_evidence", Criteria: []Criterion{{Range: "article_claim", Kind: "raw_field", Field: "article_claim_id"}, {Range: "is_valid", Kind: "literal", Literal: vB(true)}}},
+			{Field: "agreed_evidence_count", Op: "COUNTIFS", Table: "claim_evidence", Criteria: []Criterion{{Range: "article_claim", Kind: "raw_field", Field: "article_claim_id"}, {Range: "is_agreed_evidence", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "ClaimEvidence", File: "claim_evidence", RulebookRows: 900, New: func() Record { return &ClaimEvidence{} },
 		Lookups: []LookupSpec{
 			{Field: "claim_kind", Target: "article_claims", Return: "claim_kind", Key: "article_claim", Match: "article_claim_id"},
@@ -60527,13 +60640,13 @@ var erbTables = []TableSpec{
 	{Name: "LifecycleStatuses", File: "lifecycle_statuses", RulebookRows: 11, New: func() Record { return &LifecycleStatuse{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "version_use_count", Op: "COUNTIFS", Table: "procedure_versions", Criteria: []Criterion{{Range: "status", Kind: "field", Field: "lifecycle_status_id"}}},
-			{Field: "execution_use_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "execution_status", Kind: "field", Field: "lifecycle_status_id"}}},}},
+			{Field: "version_use_count", Op: "COUNTIFS", Table: "procedure_versions", Criteria: []Criterion{{Range: "status", Kind: "raw_field", Field: "lifecycle_status_id"}}},
+			{Field: "execution_use_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "execution_status", Kind: "raw_field", Field: "lifecycle_status_id"}}},}},
 	{Name: "Facilities", File: "facilities", RulebookRows: 3, New: func() Record { return &Facilitie{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "deviating_run_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "deviating_facility_key", Kind: "field", Field: "facility_id"}}},
-			{Field: "clean_run_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "clean_facility_key", Kind: "field", Field: "facility_id"}}},}},
+			{Field: "deviating_run_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "deviating_facility_key", Kind: "raw_field", Field: "facility_id"}}},
+			{Field: "clean_run_count", Op: "COUNTIFS", Table: "procedure_executions", Criteria: []Criterion{{Range: "clean_facility_key", Kind: "raw_field", Field: "facility_id"}}},}},
 	{Name: "MachineTypes", File: "machine_types", RulebookRows: 3, New: func() Record { return &MachineType{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60543,13 +60656,13 @@ var erbTables = []TableSpec{
 	{Name: "Machines", File: "machines", RulebookRows: 3, New: func() Record { return &Machine{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "energy_source_count", Op: "COUNTIFS", Table: "machine_energy_sources", Criteria: []Criterion{{Range: "machine", Kind: "field", Field: "machine_id"}}},
-			{Field: "unisolated_energy_source_count", Op: "COUNTIFS", Table: "machine_energy_sources", Criteria: []Criterion{{Range: "unisolated_machine_key", Kind: "field", Field: "machine_id"}}},}},
+			{Field: "energy_source_count", Op: "COUNTIFS", Table: "machine_energy_sources", Criteria: []Criterion{{Range: "machine", Kind: "raw_field", Field: "machine_id"}}},
+			{Field: "unisolated_energy_source_count", Op: "COUNTIFS", Table: "machine_energy_sources", Criteria: []Criterion{{Range: "unisolated_machine_key", Kind: "raw_field", Field: "machine_id"}}},}},
 	{Name: "MachineEnergySources", File: "machine_energy_sources", RulebookRows: 6, New: func() Record { return &MachineEnergySource{} },
 		Lookups: []LookupSpec{
 			{Field: "machine_procedure_version", Target: "machines", Return: "governing_procedure_version", Key: "machine", Match: "machine_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "isolation_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "isolates_energy_source", Kind: "field", Field: "energy_source"}, {Range: "procedure_version", Kind: "field", Field: "machine_procedure_version"}}},}},
+			{Field: "isolation_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "isolates_energy_source", Kind: "raw_field", Field: "energy_source"}, {Range: "procedure_version", Kind: "field", Field: "machine_procedure_version"}}},}},
 	{Name: "LockDevices", File: "lock_devices", RulebookRows: 3, New: func() Record { return &LockDevice{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60565,13 +60678,13 @@ var erbTables = []TableSpec{
 	{Name: "RegulatoryFrameworks", File: "regulatory_frameworks", RulebookRows: 2, New: func() Record { return &RegulatoryFramework{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "requirement_count", Op: "COUNTIFS", Table: "requirements", Criteria: []Criterion{{Range: "regulatory_framework", Kind: "field", Field: "regulatory_framework_id"}}},
-			{Field: "required_procedure_count", Op: "COUNTIFS", Table: "procedures", Criteria: []Criterion{{Range: "required_by_regulation", Kind: "field", Field: "regulatory_framework_id"}}},}},
+			{Field: "requirement_count", Op: "COUNTIFS", Table: "requirements", Criteria: []Criterion{{Range: "regulatory_framework", Kind: "raw_field", Field: "regulatory_framework_id"}}},
+			{Field: "required_procedure_count", Op: "COUNTIFS", Table: "procedures", Criteria: []Criterion{{Range: "required_by_regulation", Kind: "raw_field", Field: "regulatory_framework_id"}}},}},
 	{Name: "ProcedureTargets", File: "procedure_targets", RulebookRows: 6, New: func() Record { return &ProcedureTarget{} },
 		Lookups: []LookupSpec{
 			{Field: "machine_is_non_standard", Target: "machines", Return: "is_non_standard_configuration", Key: "machine", Match: "machine_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "handling_failure_mode_count", Op: "COUNTIFS", Table: "failure_modes", Criteria: []Criterion{{Range: "procedure_target", Kind: "field", Field: "procedure_target_id"}}},}},
+			{Field: "handling_failure_mode_count", Op: "COUNTIFS", Table: "failure_modes", Criteria: []Criterion{{Range: "procedure_target", Kind: "raw_field", Field: "procedure_target_id"}}},}},
 	{Name: "ProcedureAdoptions", File: "procedure_adoptions", RulebookRows: 3, New: func() Record { return &ProcedureAdoption{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60581,7 +60694,7 @@ var erbTables = []TableSpec{
 	{Name: "RelationTypes", File: "relation_types", RulebookRows: 11, New: func() Record { return &RelationType{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "usage_count", Op: "COUNTIFS", Table: "activity_relations", Criteria: []Criterion{{Range: "relation_type", Kind: "field", Field: "relation_type_id"}}},}},
+			{Field: "usage_count", Op: "COUNTIFS", Table: "activity_relations", Criteria: []Criterion{{Range: "relation_type", Kind: "raw_field", Field: "relation_type_id"}}},}},
 	{Name: "ActivityRelations", File: "activity_relations", RulebookRows: 5, New: func() Record { return &ActivityRelation{} },
 		Lookups: []LookupSpec{
 			{Field: "relation_type_is_defined", Target: "relation_types", Return: "is_defined", Key: "relation_type", Match: "relation_type_id"},
@@ -60598,7 +60711,7 @@ var erbTables = []TableSpec{
 			{Field: "source_step_agent", Target: "steps", Return: "accountable_agent", Key: "source_step", Match: "step_id"},
 			{Field: "source_step_agent_kind", Target: "steps", Return: "assigned_agent_kind", Key: "source_step", Match: "step_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "consumer_count", Op: "COUNTIFS", Table: "step_variables", Criteria: []Criterion{{Range: "source_variable", Kind: "field", Field: "step_variable_id"}}},}},
+			{Field: "consumer_count", Op: "COUNTIFS", Table: "step_variables", Criteria: []Criterion{{Range: "source_variable", Kind: "raw_field", Field: "step_variable_id"}}},}},
 	{Name: "ExecutionEntities", File: "execution_entities", RulebookRows: 15, New: func() Record { return &ExecutionEntitie{} },
 		Lookups: []LookupSpec{
 			{Field: "variable_direction", Target: "step_variables", Return: "direction", Key: "step_variable", Match: "step_variable_id"},
@@ -60609,24 +60722,29 @@ var erbTables = []TableSpec{
 			{Field: "generating_agent", Target: "step_executions", Return: "executed_by_agent", Key: "step_execution", Match: "step_execution_id"},},
 		Aggregations: []AggregateSpec{}},
 	{Name: "StepConditions", File: "step_conditions", RulebookRows: 7, New: func() Record { return &StepCondition{} },
-		Lookups: []LookupSpec{},
+		Lookups: []LookupSpec{
+			{Field: "enforced_requirement_is_computed", Target: "requirements", Return: "derived_has_computed_witness", Key: "enforces_requirement", Match: "requirement_id"},
+			{Field: "enforced_requirement_statement", Target: "requirements", Return: "statement", Key: "enforces_requirement", Match: "requirement_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "check_count", Op: "COUNTIFS", Table: "condition_checks", Criteria: []Criterion{{Range: "step_condition", Kind: "field", Field: "step_condition_id"}}},}},
+			{Field: "check_count", Op: "COUNTIFS", Table: "condition_checks", Criteria: []Criterion{{Range: "step_condition", Kind: "raw_field", Field: "step_condition_id"}}},}},
 	{Name: "ConditionChecks", File: "condition_checks", RulebookRows: 7, New: func() Record { return &ConditionCheck{} },
 		Lookups: []LookupSpec{
-			{Field: "condition_kind", Target: "step_conditions", Return: "condition_kind", Key: "step_condition", Match: "step_condition_id"},},
+			{Field: "condition_kind", Target: "step_conditions", Return: "condition_kind", Key: "step_condition", Match: "step_condition_id"},
+			{Field: "enforced_requirement", Target: "step_conditions", Return: "enforces_requirement", Key: "step_condition", Match: "step_condition_id"},
+			{Field: "enforced_requirement_is_computed", Target: "step_conditions", Return: "enforced_requirement_is_computed", Key: "step_condition", Match: "step_condition_id"},
+			{Field: "enforced_requirement_statement", Target: "step_conditions", Return: "enforced_requirement_statement", Key: "step_condition", Match: "step_condition_id"},},
 		Aggregations: []AggregateSpec{}},
 	{Name: "FailureModes", File: "failure_modes", RulebookRows: 5, New: func() Record { return &FailureMode{} },
 		Lookups: []LookupSpec{
 			{Field: "escalation_role_has_no_holder", Target: "roles", Return: "has_no_current_holder", Key: "escalate_to_role", Match: "role_id"},},
 		Aggregations: []AggregateSpec{}},
-	{Name: "StepCues", File: "step_cues", RulebookRows: 4, New: func() Record { return &StepCue{} },
+	{Name: "StepCues", File: "step_cues", RulebookRows: 5, New: func() Record { return &StepCue{} },
 		Lookups: []LookupSpec{
 			{Field: "failure_mode_response", Target: "failure_modes", Return: "response", Key: "signals_failure_mode", Match: "failure_mode_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "observation_count", Op: "COUNTIFS", Table: "cue_observations", Criteria: []Criterion{{Range: "step_cue", Kind: "field", Field: "step_cue_id"}}},
-			{Field: "unescalated_observation_count", Op: "COUNTIFS", Table: "cue_observations", Criteria: []Criterion{{Range: "unescalated_cue_key", Kind: "field", Field: "step_cue_id"}}},}},
-	{Name: "CueObservations", File: "cue_observations", RulebookRows: 3, New: func() Record { return &CueObservation{} },
+			{Field: "observation_count", Op: "COUNTIFS", Table: "cue_observations", Criteria: []Criterion{{Range: "step_cue", Kind: "raw_field", Field: "step_cue_id"}}},
+			{Field: "unescalated_observation_count", Op: "COUNTIFS", Table: "cue_observations", Criteria: []Criterion{{Range: "unescalated_cue_key", Kind: "raw_field", Field: "step_cue_id"}}},}},
+	{Name: "CueObservations", File: "cue_observations", RulebookRows: 4, New: func() Record { return &CueObservation{} },
 		Lookups: []LookupSpec{
 			{Field: "cue_requires_escalation", Target: "step_cues", Return: "requires_escalation", Key: "step_cue", Match: "step_cue_id"},
 			{Field: "owner_organization", Target: "step_executions", Return: "owner_organization", Key: "step_execution", Match: "step_execution_id"},
@@ -60644,19 +60762,19 @@ var erbTables = []TableSpec{
 	{Name: "FaqCategories", File: "faq_categories", RulebookRows: 4, New: func() Record { return &FaqCategorie{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "faq_count", Op: "COUNTIFS", Table: "fa_qs", Criteria: []Criterion{{Range: "category", Kind: "field", Field: "faq_category_id"}}},}},
+			{Field: "faq_count", Op: "COUNTIFS", Table: "fa_qs", Criteria: []Criterion{{Range: "category", Kind: "raw_field", Field: "faq_category_id"}}},}},
 	{Name: "FaqTargets", File: "faq_targets", RulebookRows: 2, New: func() Record { return &FaqTarget{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "faq_count", Op: "COUNTIFS", Table: "fa_qs", Criteria: []Criterion{{Range: "target_kind", Kind: "field", Field: "faq_target_id"}}},}},
+			{Field: "faq_count", Op: "COUNTIFS", Table: "fa_qs", Criteria: []Criterion{{Range: "target_kind", Kind: "raw_field", Field: "faq_target_id"}}},}},
 	{Name: "AuthoringSubmissions", File: "authoring_submissions", RulebookRows: 3, New: func() Record { return &AuthoringSubmission{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
 	{Name: "ProcessKnowledgeLevels", File: "process_knowledge_levels", RulebookRows: 3, New: func() Record { return &ProcessKnowledgeLevel{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "tacit_strategy_count", Op: "COUNTIFS", Table: "level_capture_strategies", Criteria: []Criterion{{Range: "level", Kind: "field", Field: "process_knowledge_level_id"}, {Range: "knowledge_form", Kind: "literal", Literal: vS("Tacit")}}},
-			{Field: "explicit_strategy_count", Op: "COUNTIFS", Table: "level_capture_strategies", Criteria: []Criterion{{Range: "level", Kind: "field", Field: "process_knowledge_level_id"}, {Range: "knowledge_form", Kind: "literal", Literal: vS("Explicit")}}},}},
+			{Field: "tacit_strategy_count", Op: "COUNTIFS", Table: "level_capture_strategies", Criteria: []Criterion{{Range: "level", Kind: "raw_field", Field: "process_knowledge_level_id"}, {Range: "knowledge_form", Kind: "literal", Literal: vS("Tacit")}}},
+			{Field: "explicit_strategy_count", Op: "COUNTIFS", Table: "level_capture_strategies", Criteria: []Criterion{{Range: "level", Kind: "raw_field", Field: "process_knowledge_level_id"}, {Range: "knowledge_form", Kind: "literal", Literal: vS("Explicit")}}},}},
 	{Name: "LevelCaptureStrategies", File: "level_capture_strategies", RulebookRows: 5, New: func() Record { return &LevelCaptureStrategie{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60676,7 +60794,7 @@ var erbTables = []TableSpec{
 	{Name: "BusinessOutcomes", File: "business_outcomes", RulebookRows: 3, New: func() Record { return &BusinessOutcome{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "linked_measure_count", Op: "COUNTIFS", Table: "process_outcome_measures", Criteria: []Criterion{{Range: "business_outcome", Kind: "field", Field: "business_outcome_id"}}},}},
+			{Field: "linked_measure_count", Op: "COUNTIFS", Table: "process_outcome_measures", Criteria: []Criterion{{Range: "business_outcome", Kind: "raw_field", Field: "business_outcome_id"}}},}},
 	{Name: "ProcessOutcomeMeasures", File: "process_outcome_measures", RulebookRows: 5, New: func() Record { return &ProcessOutcomeMeasure{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60684,7 +60802,7 @@ var erbTables = []TableSpec{
 		Lookups: []LookupSpec{
 			{Field: "owner_has_no_holder", Target: "roles", Return: "has_no_current_holder", Key: "owner_role", Match: "role_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "stage", Kind: "field", Field: "process_stage_id"}}},}},
+			{Field: "step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "stage", Kind: "raw_field", Field: "process_stage_id"}}},}},
 	{Name: "ProcessInterdependencies", File: "process_interdependencies", RulebookRows: 4, New: func() Record { return &ProcessInterdependencie{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60711,8 +60829,8 @@ var erbTables = []TableSpec{
 		Lookups: []LookupSpec{
 			{Field: "source_document_revised_at", Target: "resources", Return: "modified_at", Key: "source_document", Match: "resource_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "dependent_trace_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "source_material", Kind: "field", Field: "collected_source_material_id"}}},
-			{Field: "changed_dependent_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "source_material", Kind: "field", Field: "collected_source_material_id"}, {Range: "is_source_changed_since_taken", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "dependent_trace_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "source_material", Kind: "raw_field", Field: "collected_source_material_id"}}},
+			{Field: "changed_dependent_count", Op: "COUNTIFS", Table: "knowledge_traces", Criteria: []Criterion{{Range: "source_material", Kind: "raw_field", Field: "collected_source_material_id"}, {Range: "is_source_changed_since_taken", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "SchemeRefinements", File: "scheme_refinements", RulebookRows: 2, New: func() Record { return &SchemeRefinement{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60728,8 +60846,8 @@ var erbTables = []TableSpec{
 		Lookups: []LookupSpec{
 			{Field: "grounding_scheme_is_machine_accessible", Target: "vocabularies", Return: "is_machine_accessible", Key: "grounding_scheme", Match: "vocabulary_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "output_count", Op: "COUNTIFS", Table: "source_term_mentions", Criteria: []Criterion{{Range: "ai_labeling_run", Kind: "field", Field: "ai_labeling_run_id"}}},
-			{Field: "non_canonical_output_count", Op: "COUNTIFS", Table: "source_term_mentions", Criteria: []Criterion{{Range: "ai_labeling_run", Kind: "field", Field: "ai_labeling_run_id"}, {Range: "is_non_canonical_generated_value", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "output_count", Op: "COUNTIFS", Table: "source_term_mentions", Criteria: []Criterion{{Range: "ai_labeling_run", Kind: "raw_field", Field: "ai_labeling_run_id"}}},
+			{Field: "non_canonical_output_count", Op: "COUNTIFS", Table: "source_term_mentions", Criteria: []Criterion{{Range: "ai_labeling_run", Kind: "raw_field", Field: "ai_labeling_run_id"}, {Range: "is_non_canonical_generated_value", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "SourceTermMentions", File: "source_term_mentions", RulebookRows: 25, New: func() Record { return &SourceTermMention{} },
 		Lookups: []LookupSpec{
 			{Field: "intended_term_role", Target: "vocabulary_terms", Return: "represents_role", Key: "intended_term", Match: "vocabulary_term_id"},},
@@ -60751,8 +60869,8 @@ var erbTables = []TableSpec{
 			{Field: "rehomed_term_release_issued_at", Target: "vocabulary_terms", Return: "introduced_release_issued_at", Key: "rehomed_as_term", Match: "vocabulary_term_id"},
 			{Field: "profile_namespace_iri", Target: "ontology_profiles", Return: "namespace_iri", Key: "ontology_profile", Match: "ontology_profile_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "using_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "target_iri", Kind: "field", Field: "term_iri"}}},
-			{Field: "stale_identifier_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "target_iri", Kind: "field", Field: "previous_term_iri"}}},}},
+			{Field: "using_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "target_iri", Kind: "raw_field", Field: "term_iri"}}},
+			{Field: "stale_identifier_mapping_count", Op: "COUNTIFS", Table: "semantic_mappings", Criteria: []Criterion{{Range: "target_iri", Kind: "raw_field", Field: "previous_term_iri"}}},}},
 	{Name: "RoleCapabilityTags", File: "role_capability_tags", RulebookRows: 9, New: func() Record { return &RoleCapabilityTag{} },
 		Lookups: []LookupSpec{
 			{Field: "capability_scheme_dimension", Target: "vocabulary_terms", Return: "scheme_governed_dimension", Key: "capability_term", Match: "vocabulary_term_id"},},
@@ -60760,19 +60878,19 @@ var erbTables = []TableSpec{
 	{Name: "ClassificationFacets", File: "classification_facets", RulebookRows: 4, New: func() Record { return &ClassificationFacet{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "assignment_count", Op: "COUNTIFS", Table: "procedure_facet_assignments", Criteria: []Criterion{{Range: "facet", Kind: "field", Field: "classification_facet_id"}}},}},
+			{Field: "assignment_count", Op: "COUNTIFS", Table: "procedure_facet_assignments", Criteria: []Criterion{{Range: "facet", Kind: "raw_field", Field: "classification_facet_id"}}},}},
 	{Name: "ProcedureFacetAssignments", File: "procedure_facet_assignments", RulebookRows: 12, New: func() Record { return &ProcedureFacetAssignment{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
 	{Name: "EncodingLifecycleStages", File: "encoding_lifecycle_stages", RulebookRows: 6, New: func() Record { return &EncodingLifecycleStage{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "annotation_count", Op: "COUNTIFS", Table: "model_annotations", Criteria: []Criterion{{Range: "lifecycle_stage", Kind: "field", Field: "encoding_lifecycle_stage_id"}}},}},
+			{Field: "annotation_count", Op: "COUNTIFS", Table: "model_annotations", Criteria: []Criterion{{Range: "lifecycle_stage", Kind: "raw_field", Field: "encoding_lifecycle_stage_id"}}},}},
 	{Name: "KnowledgeConsumerSystems", File: "knowledge_consumer_systems", RulebookRows: 8, New: func() Record { return &KnowledgeConsumerSystem{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "model_sync_count", Op: "COUNTIFS", Table: "consumer_system_syncs", Criteria: []Criterion{{Range: "consumer_system", Kind: "field", Field: "knowledge_consumer_system_id"}}},
-			{Field: "integration_count", Op: "COUNTIFS", Table: "agent_integrations", Criteria: []Criterion{{Range: "knowledge_system", Kind: "field", Field: "knowledge_consumer_system_id"}}},}},
+			{Field: "model_sync_count", Op: "COUNTIFS", Table: "consumer_system_syncs", Criteria: []Criterion{{Range: "consumer_system", Kind: "raw_field", Field: "knowledge_consumer_system_id"}}},
+			{Field: "integration_count", Op: "COUNTIFS", Table: "agent_integrations", Criteria: []Criterion{{Range: "knowledge_system", Kind: "raw_field", Field: "knowledge_consumer_system_id"}}},}},
 	{Name: "ConsumerSystemSyncs", File: "consumer_system_syncs", RulebookRows: 6, New: func() Record { return &ConsumerSystemSync{} },
 		Lookups: []LookupSpec{
 			{Field: "system_audience", Target: "knowledge_consumer_systems", Return: "audience", Key: "consumer_system", Match: "knowledge_consumer_system_id"},
@@ -60784,22 +60902,22 @@ var erbTables = []TableSpec{
 	{Name: "IntegrationPathways", File: "integration_pathways", RulebookRows: 4, New: func() Record { return &IntegrationPathway{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "integration_count_on_pathway", Op: "COUNTIFS", Table: "agent_integrations", Criteria: []Criterion{{Range: "pathway", Kind: "field", Field: "integration_pathway_id"}}},}},
+			{Field: "integration_count_on_pathway", Op: "COUNTIFS", Table: "agent_integrations", Criteria: []Criterion{{Range: "pathway", Kind: "raw_field", Field: "integration_pathway_id"}}},}},
 	{Name: "AgentIntegrations", File: "agent_integrations", RulebookRows: 7, New: func() Record { return &AgentIntegration{} },
 		Lookups: []LookupSpec{
 			{Field: "pathway_integration_count", Target: "integration_pathways", Return: "integration_count_on_pathway", Key: "pathway", Match: "integration_pathway_id"},
 			{Field: "snapshot_is_governed", Target: "grounding_snapshots", Return: "is_governed", Key: "serves_snapshot", Match: "grounding_snapshot_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "observed_answer_count", Op: "COUNTIFS", Table: "assistant_answers", Criteria: []Criterion{{Range: "via_integration", Kind: "field", Field: "agent_integration_id"}}},}},
+			{Field: "observed_answer_count", Op: "COUNTIFS", Table: "assistant_answers", Criteria: []Criterion{{Range: "via_integration", Kind: "raw_field", Field: "agent_integration_id"}}},}},
 	{Name: "GroundingSnapshots", File: "grounding_snapshots", RulebookRows: 3, New: func() Record { return &GroundingSnapshot{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "reasoner_run_count", Op: "COUNTIFS", Table: "reasoner_runs", Criteria: []Criterion{{Range: "snapshot", Kind: "field", Field: "grounding_snapshot_id"}}},
-			{Field: "consistent_reasoner_run_count", Op: "COUNTIFS", Table: "reasoner_runs", Criteria: []Criterion{{Range: "snapshot", Kind: "field", Field: "grounding_snapshot_id"}, {Range: "is_consistent", Kind: "literal", Literal: vB(true)}}},
-			{Field: "latest_materialized_at", Op: "MAX", Table: "reasoner_runs", Target: "materialized_at", Criteria: []Criterion{{Range: "snapshot", Kind: "field", Field: "grounding_snapshot_id"}}},
-			{Field: "assertion_count", Op: "COUNTIFS", Table: "snapshot_assertions", Criteria: []Criterion{{Range: "snapshot", Kind: "field", Field: "grounding_snapshot_id"}}},
-			{Field: "stale_assignment_assertion_count", Op: "COUNTIFS", Table: "snapshot_assertions", Criteria: []Criterion{{Range: "snapshot", Kind: "field", Field: "grounding_snapshot_id"}, {Range: "is_stale_role_assertion", Kind: "literal", Literal: vB(true)}}},
-			{Field: "deprecated_as_current_count", Op: "COUNTIFS", Table: "snapshot_assertions", Criteria: []Criterion{{Range: "snapshot", Kind: "field", Field: "grounding_snapshot_id"}, {Range: "presents_deprecated_as_current", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "reasoner_run_count", Op: "COUNTIFS", Table: "reasoner_runs", Criteria: []Criterion{{Range: "snapshot", Kind: "raw_field", Field: "grounding_snapshot_id"}}},
+			{Field: "consistent_reasoner_run_count", Op: "COUNTIFS", Table: "reasoner_runs", Criteria: []Criterion{{Range: "snapshot", Kind: "raw_field", Field: "grounding_snapshot_id"}, {Range: "is_consistent", Kind: "literal", Literal: vB(true)}}},
+			{Field: "latest_materialized_at", Op: "MAX", Table: "reasoner_runs", Target: "materialized_at", Criteria: []Criterion{{Range: "snapshot", Kind: "raw_field", Field: "grounding_snapshot_id"}}},
+			{Field: "assertion_count", Op: "COUNTIFS", Table: "snapshot_assertions", Criteria: []Criterion{{Range: "snapshot", Kind: "raw_field", Field: "grounding_snapshot_id"}}},
+			{Field: "stale_assignment_assertion_count", Op: "COUNTIFS", Table: "snapshot_assertions", Criteria: []Criterion{{Range: "snapshot", Kind: "raw_field", Field: "grounding_snapshot_id"}, {Range: "is_stale_role_assertion", Kind: "literal", Literal: vB(true)}}},
+			{Field: "deprecated_as_current_count", Op: "COUNTIFS", Table: "snapshot_assertions", Criteria: []Criterion{{Range: "snapshot", Kind: "raw_field", Field: "grounding_snapshot_id"}, {Range: "presents_deprecated_as_current", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "ReasonerRuns", File: "reasoner_runs", RulebookRows: 5, New: func() Record { return &ReasonerRun{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60814,11 +60932,11 @@ var erbTables = []TableSpec{
 			{Field: "author_agent_kind", Target: "agents", Return: "agent_kind", Key: "authored_by_agent", Match: "agent_id"},
 			{Field: "contradicted_is_indexed", Target: "retrieval_segments", Return: "is_indexed", Key: "contradicts_segment", Match: "retrieval_segment_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "related_from_count", Op: "COUNTIFS", Table: "retrieval_segments", Criteria: []Criterion{{Range: "related_segment", Kind: "field", Field: "retrieval_segment_id"}}},}},
+			{Field: "related_from_count", Op: "COUNTIFS", Table: "retrieval_segments", Criteria: []Criterion{{Range: "related_segment", Kind: "raw_field", Field: "retrieval_segment_id"}}},}},
 	{Name: "KnowledgeQueryDefinitions", File: "knowledge_query_definitions", RulebookRows: 4, New: func() Record { return &KnowledgeQueryDefinition{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "source_system_count", Op: "COUNTIFS", Table: "knowledge_query_sources", Criteria: []Criterion{{Range: "query_definition", Kind: "field", Field: "knowledge_query_definition_id"}}},}},
+			{Field: "source_system_count", Op: "COUNTIFS", Table: "knowledge_query_sources", Criteria: []Criterion{{Range: "query_definition", Kind: "raw_field", Field: "knowledge_query_definition_id"}}},}},
 	{Name: "KnowledgeQuerySources", File: "knowledge_query_sources", RulebookRows: 6, New: func() Record { return &KnowledgeQuerySource{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60832,14 +60950,14 @@ var erbTables = []TableSpec{
 			{Field: "recommended_step_needs_human", Target: "steps", Return: "requires_human_confirmation", Key: "recommended_step", Match: "step_id"},
 			{Field: "owner_organization", Target: "step_executions", Return: "owner_organization", Key: "step_execution", Match: "step_execution_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "grounding_count", Op: "COUNTIFS", Table: "answer_groundings", Criteria: []Criterion{{Range: "assistant_answer", Kind: "field", Field: "assistant_answer_id"}}},
-			{Field: "own_knowledge_grounding_count", Op: "COUNTIFS", Table: "answer_groundings", Criteria: []Criterion{{Range: "assistant_answer", Kind: "field", Field: "assistant_answer_id"}, {Range: "is_from_own_knowledge", Kind: "literal", Literal: vB(true)}}},
-			{Field: "cited_grounding_count", Op: "COUNTIFS", Table: "answer_groundings", Criteria: []Criterion{{Range: "assistant_answer", Kind: "field", Field: "assistant_answer_id"}, {Range: "cited_to_user", Kind: "literal", Literal: vB(true)}}},
-			{Field: "stale_grounding_count", Op: "COUNTIFS", Table: "answer_groundings", Criteria: []Criterion{{Range: "assistant_answer", Kind: "field", Field: "assistant_answer_id"}, {Range: "grounds_on_stale_assertion", Kind: "literal", Literal: vB(true)}}},
-			{Field: "assumed_step_completed_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "procedure_execution", Kind: "field", Field: "execution_of_context"}, {Range: "step", Kind: "field", Field: "assumed_current_step"}, {Range: "execution_status", Kind: "literal", Literal: vS("Completed")}}},
-			{Field: "specified_transition_count", Op: "COUNTIFS", Table: "step_transitions", Criteria: []Criterion{{Range: "from_step", Kind: "field", Field: "assumed_current_step"}, {Range: "to_step", Kind: "field", Field: "asserted_next_step"}}},
-			{Field: "requirement_check_count", Op: "COUNTIFS", Table: "answer_requirement_checks", Criteria: []Criterion{{Range: "assistant_answer", Kind: "field", Field: "assistant_answer_id"}}},
-			{Field: "conflict_count", Op: "COUNTIFS", Table: "answer_requirement_checks", Criteria: []Criterion{{Range: "assistant_answer", Kind: "field", Field: "assistant_answer_id"}, {Range: "verdict", Kind: "literal", Literal: vS("Conflicts")}}},}},
+			{Field: "grounding_count", Op: "COUNTIFS", Table: "answer_groundings", Criteria: []Criterion{{Range: "assistant_answer", Kind: "raw_field", Field: "assistant_answer_id"}}},
+			{Field: "own_knowledge_grounding_count", Op: "COUNTIFS", Table: "answer_groundings", Criteria: []Criterion{{Range: "assistant_answer", Kind: "raw_field", Field: "assistant_answer_id"}, {Range: "is_from_own_knowledge", Kind: "literal", Literal: vB(true)}}},
+			{Field: "cited_grounding_count", Op: "COUNTIFS", Table: "answer_groundings", Criteria: []Criterion{{Range: "assistant_answer", Kind: "raw_field", Field: "assistant_answer_id"}, {Range: "cited_to_user", Kind: "literal", Literal: vB(true)}}},
+			{Field: "stale_grounding_count", Op: "COUNTIFS", Table: "answer_groundings", Criteria: []Criterion{{Range: "assistant_answer", Kind: "raw_field", Field: "assistant_answer_id"}, {Range: "grounds_on_stale_assertion", Kind: "literal", Literal: vB(true)}}},
+			{Field: "assumed_step_completed_count", Op: "COUNTIFS", Table: "step_executions", Criteria: []Criterion{{Range: "procedure_execution", Kind: "field", Field: "execution_of_context"}, {Range: "step", Kind: "raw_field", Field: "assumed_current_step"}, {Range: "execution_status", Kind: "literal", Literal: vS("Completed")}}},
+			{Field: "specified_transition_count", Op: "COUNTIFS", Table: "step_transitions", Criteria: []Criterion{{Range: "from_step", Kind: "raw_field", Field: "assumed_current_step"}, {Range: "to_step", Kind: "raw_field", Field: "asserted_next_step"}}},
+			{Field: "requirement_check_count", Op: "COUNTIFS", Table: "answer_requirement_checks", Criteria: []Criterion{{Range: "assistant_answer", Kind: "raw_field", Field: "assistant_answer_id"}}},
+			{Field: "conflict_count", Op: "COUNTIFS", Table: "answer_requirement_checks", Criteria: []Criterion{{Range: "assistant_answer", Kind: "raw_field", Field: "assistant_answer_id"}, {Range: "verdict", Kind: "literal", Literal: vS("Conflicts")}}},}},
 	{Name: "AnswerGroundings", File: "answer_groundings", RulebookRows: 14, New: func() Record { return &AnswerGrounding{} },
 		Lookups: []LookupSpec{
 			{Field: "assertion_is_stale", Target: "snapshot_assertions", Return: "is_stale_role_assertion", Key: "snapshot_assertion", Match: "snapshot_assertion_id"},
@@ -60853,19 +60971,19 @@ var erbTables = []TableSpec{
 			{Field: "executed_step", Target: "step_executions", Return: "step", Key: "step_execution", Match: "step_execution_id"},
 			{Field: "declared_input_count", Target: "step_executions", Return: "step_input_variable_count", Key: "step_execution", Match: "step_execution_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "declared_function_count", Op: "COUNTIFS", Table: "step_functions", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "executed_step"}, {Range: "function", Kind: "field", Field: "function"}}},}},
+			{Field: "declared_function_count", Op: "COUNTIFS", Table: "step_functions", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "executed_step"}, {Range: "function", Kind: "raw_field", Field: "function"}}},}},
 	{Name: "EmbeddingProbes", File: "embedding_probes", RulebookRows: 6, New: func() Record { return &EmbeddingProbe{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
 	{Name: "PromptTemplates", File: "prompt_templates", RulebookRows: 5, New: func() Record { return &PromptTemplate{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "child_template_count", Op: "COUNTIFS", Table: "prompt_templates", Criteria: []Criterion{{Range: "parent_template", Kind: "field", Field: "prompt_template_id"}}},}},
+			{Field: "child_template_count", Op: "COUNTIFS", Table: "prompt_templates", Criteria: []Criterion{{Range: "parent_template", Kind: "raw_field", Field: "prompt_template_id"}}},}},
 	{Name: "KnowledgeProjections", File: "knowledge_projections", RulebookRows: 7, New: func() Record { return &KnowledgeProjection{} },
 		Lookups: []LookupSpec{
 			{Field: "version_modified_at", Target: "procedure_versions", Return: "modified_at", Key: "procedure_version", Match: "procedure_version_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "open_count", Op: "COUNTIFS", Table: "knowledge_search_events", Criteria: []Criterion{{Range: "opened_projection", Kind: "field", Field: "knowledge_projection_id"}}},}},
+			{Field: "open_count", Op: "COUNTIFS", Table: "knowledge_search_events", Criteria: []Criterion{{Range: "opened_projection", Kind: "raw_field", Field: "knowledge_projection_id"}}},}},
 	{Name: "ModelAnnotations", File: "model_annotations", RulebookRows: 9, New: func() Record { return &ModelAnnotation{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60882,9 +61000,9 @@ var erbTables = []TableSpec{
 			{Field: "target_elicitation_evidence_count", Target: "procedure_versions", Return: "elicitation_evidence_count", Key: "target_version", Match: "procedure_version_id"},
 			{Field: "preceding_reviewed_output_count", Target: "ai_adoption_initiatives", Return: "reviewed_output_count", Key: "preceding_initiative", Match: "ai_adoption_initiative_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "reviewed_output_count", Op: "COUNTIFS", Table: "assistant_answers", Criteria: []Criterion{{Range: "reviewed_for_initiative", Kind: "field", Field: "ai_adoption_initiative_id"}}},
-			{Field: "last_outcome_measured_at", Op: "MAX", Table: "knowledge_outcome_measurements", Target: "measured_at", Criteria: []Criterion{{Range: "ai_initiative", Kind: "field", Field: "ai_adoption_initiative_id"}}},
-			{Field: "ai_insight_count", Op: "COUNTIFS", Table: "ai_insight_proposals", Criteria: []Criterion{{Range: "source_initiative", Kind: "field", Field: "ai_adoption_initiative_id"}}},}},
+			{Field: "reviewed_output_count", Op: "COUNTIFS", Table: "assistant_answers", Criteria: []Criterion{{Range: "reviewed_for_initiative", Kind: "raw_field", Field: "ai_adoption_initiative_id"}}},
+			{Field: "last_outcome_measured_at", Op: "MAX", Table: "knowledge_outcome_measurements", Target: "measured_at", Criteria: []Criterion{{Range: "ai_initiative", Kind: "raw_field", Field: "ai_adoption_initiative_id"}}},
+			{Field: "ai_insight_count", Op: "COUNTIFS", Table: "ai_insight_proposals", Criteria: []Criterion{{Range: "source_initiative", Kind: "raw_field", Field: "ai_adoption_initiative_id"}}},}},
 	{Name: "KnowledgeOutcomeMeasurements", File: "knowledge_outcome_measurements", RulebookRows: 7, New: func() Record { return &KnowledgeOutcomeMeasurement{} },
 		Lookups: []LookupSpec{
 			{Field: "baseline_access_score", Target: "knowledge_outcome_measurements", Return: "knowledge_access_score", Key: "comparison_baseline", Match: "knowledge_outcome_measurement_id"},
@@ -60908,26 +61026,26 @@ var erbTables = []TableSpec{
 			{Field: "current_authority_agent", Target: "model_charters", Return: "authority_agent", Key: "current_charter", Match: "model_charter_id"},
 			{Field: "procedure_has_no_explicit_steps", Target: "procedures", Return: "has_no_explicit_steps", Key: "procedure", Match: "procedure_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "charter_count", Op: "COUNTIFS", Table: "model_charters", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}}},
-			{Field: "current_charter_count", Op: "COUNTIFS", Table: "model_charters", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "is_current", Kind: "literal", Literal: vB(true)}}},
-			{Field: "last_steward_activity_at", Op: "MAX", Table: "steward_activities", Target: "performed_at", Criteria: []Criterion{{Range: "activity_model", Kind: "field", Field: "governed_model_id"}}},
-			{Field: "documents_behind_count", Op: "COUNTIFS", Table: "model_documents", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "is_behind_current_release", Kind: "literal", Literal: vB(true)}}},
-			{Field: "open_practice_drift_count", Op: "COUNTIFS", Table: "drift_observations", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "is_open_practice_mismatch", Kind: "literal", Literal: vB(true)}}},
-			{Field: "expert_found_drift_count", Op: "COUNTIFS", Table: "drift_observations", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "detected_by", Kind: "literal", Literal: vS("ExpertWrongAnswer")}}},
-			{Field: "cq_review_count", Op: "COUNTIFS", Table: "competency_question_reviews", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}}},
-			{Field: "last_cq_review_at", Op: "MAX", Table: "competency_question_reviews", Target: "reviewed_at", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}}},
-			{Field: "baseline_question_count", Op: "COUNTIFS", Table: "competency_question_set_entries", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "is_original_baseline", Kind: "literal", Literal: vB(true)}}},
-			{Field: "collection_control_count", Op: "COUNTIFS", Table: "governance_stage_controls", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "stage", Kind: "literal", Literal: vS("Collection")}}},
-			{Field: "stewardship_control_count", Op: "COUNTIFS", Table: "governance_stage_controls", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "stage", Kind: "literal", Literal: vS("Stewardship")}}},
-			{Field: "retrieval_control_count", Op: "COUNTIFS", Table: "governance_stage_controls", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "stage", Kind: "literal", Literal: vS("Retrieval")}}},
-			{Field: "use_control_count", Op: "COUNTIFS", Table: "governance_stage_controls", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "stage", Kind: "literal", Literal: vS("Use")}}},
-			{Field: "continuous_pipeline_stage_count", Op: "COUNTIFS", Table: "governance_stage_controls", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "is_continuous_pipeline_stage", Kind: "literal", Literal: vB(true)}}},
-			{Field: "pilot_count", Op: "COUNTIFS", Table: "model_pilots", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}}},
-			{Field: "requirements_expert_count", Op: "COUNTIFS", Table: "model_activity_experts", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "lot_activity", Kind: "literal", Literal: vS("RequirementsSpecification")}}},
-			{Field: "implementation_expert_count", Op: "COUNTIFS", Table: "model_activity_experts", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "lot_activity", Kind: "literal", Literal: vS("Implementation")}}},
-			{Field: "publication_expert_count", Op: "COUNTIFS", Table: "model_activity_experts", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "lot_activity", Kind: "literal", Literal: vS("Publication")}}},
-			{Field: "maintenance_expert_count", Op: "COUNTIFS", Table: "model_activity_experts", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "lot_activity", Kind: "literal", Literal: vS("Maintenance")}}},
-			{Field: "real_data_mapping_run_count", Op: "COUNTIFS", Table: "model_data_mapping_runs", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model_id"}, {Range: "data_origin", Kind: "literal", Literal: vS("Real")}}},}},
+			{Field: "charter_count", Op: "COUNTIFS", Table: "model_charters", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}}},
+			{Field: "current_charter_count", Op: "COUNTIFS", Table: "model_charters", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "is_current", Kind: "literal", Literal: vB(true)}}},
+			{Field: "last_steward_activity_at", Op: "MAX", Table: "steward_activities", Target: "performed_at", Criteria: []Criterion{{Range: "activity_model", Kind: "raw_field", Field: "governed_model_id"}}},
+			{Field: "documents_behind_count", Op: "COUNTIFS", Table: "model_documents", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "is_behind_current_release", Kind: "literal", Literal: vB(true)}}},
+			{Field: "open_practice_drift_count", Op: "COUNTIFS", Table: "drift_observations", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "is_open_practice_mismatch", Kind: "literal", Literal: vB(true)}}},
+			{Field: "expert_found_drift_count", Op: "COUNTIFS", Table: "drift_observations", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "detected_by", Kind: "literal", Literal: vS("ExpertWrongAnswer")}}},
+			{Field: "cq_review_count", Op: "COUNTIFS", Table: "competency_question_reviews", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}}},
+			{Field: "last_cq_review_at", Op: "MAX", Table: "competency_question_reviews", Target: "reviewed_at", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}}},
+			{Field: "baseline_question_count", Op: "COUNTIFS", Table: "competency_question_set_entries", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "is_original_baseline", Kind: "literal", Literal: vB(true)}}},
+			{Field: "collection_control_count", Op: "COUNTIFS", Table: "governance_stage_controls", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "stage", Kind: "literal", Literal: vS("Collection")}}},
+			{Field: "stewardship_control_count", Op: "COUNTIFS", Table: "governance_stage_controls", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "stage", Kind: "literal", Literal: vS("Stewardship")}}},
+			{Field: "retrieval_control_count", Op: "COUNTIFS", Table: "governance_stage_controls", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "stage", Kind: "literal", Literal: vS("Retrieval")}}},
+			{Field: "use_control_count", Op: "COUNTIFS", Table: "governance_stage_controls", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "stage", Kind: "literal", Literal: vS("Use")}}},
+			{Field: "continuous_pipeline_stage_count", Op: "COUNTIFS", Table: "governance_stage_controls", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "is_continuous_pipeline_stage", Kind: "literal", Literal: vB(true)}}},
+			{Field: "pilot_count", Op: "COUNTIFS", Table: "model_pilots", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}}},
+			{Field: "requirements_expert_count", Op: "COUNTIFS", Table: "model_activity_experts", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "lot_activity", Kind: "literal", Literal: vS("RequirementsSpecification")}}},
+			{Field: "implementation_expert_count", Op: "COUNTIFS", Table: "model_activity_experts", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "lot_activity", Kind: "literal", Literal: vS("Implementation")}}},
+			{Field: "publication_expert_count", Op: "COUNTIFS", Table: "model_activity_experts", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "lot_activity", Kind: "literal", Literal: vS("Publication")}}},
+			{Field: "maintenance_expert_count", Op: "COUNTIFS", Table: "model_activity_experts", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "lot_activity", Kind: "literal", Literal: vS("Maintenance")}}},
+			{Field: "real_data_mapping_run_count", Op: "COUNTIFS", Table: "model_data_mapping_runs", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model_id"}, {Range: "data_origin", Kind: "literal", Literal: vS("Real")}}},}},
 	{Name: "ModelCharters", File: "model_charters", RulebookRows: 8, New: func() Record { return &ModelCharter{} },
 		Lookups: []LookupSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
@@ -60940,10 +61058,10 @@ var erbTables = []TableSpec{
 			{Field: "model_tooling_owner_role", Target: "governed_models", Return: "tooling_owner_role", Key: "governed_model", Match: "governed_model_id"},
 			{Field: "model_first_control_adopted_at", Target: "governed_models", Return: "first_control_adopted_at", Key: "governed_model", Match: "governed_model_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "steward_activity_count", Op: "COUNTIFS", Table: "steward_activities", Criteria: []Criterion{{Range: "model_charter", Kind: "field", Field: "model_charter_id"}}},
-			{Field: "last_drift_watch_at", Op: "MAX", Table: "steward_activities", Target: "performed_at", Criteria: []Criterion{{Range: "model_charter", Kind: "field", Field: "model_charter_id"}, {Range: "duty_kind", Kind: "literal", Literal: vS("DriftWatch")}}},
-			{Field: "procedure_decision_count", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "authority_role", Kind: "field", Field: "authority_role"}, {Range: "is_decided", Kind: "literal", Literal: vB(true)}}},
-			{Field: "model_review_count", Op: "COUNTIFS", Table: "model_change_requests", Criteria: []Criterion{{Range: "governed_model", Kind: "field", Field: "governed_model"}, {Range: "has_authority_review", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "steward_activity_count", Op: "COUNTIFS", Table: "steward_activities", Criteria: []Criterion{{Range: "model_charter", Kind: "raw_field", Field: "model_charter_id"}}},
+			{Field: "last_drift_watch_at", Op: "MAX", Table: "steward_activities", Target: "performed_at", Criteria: []Criterion{{Range: "model_charter", Kind: "raw_field", Field: "model_charter_id"}, {Range: "duty_kind", Kind: "literal", Literal: vS("DriftWatch")}}},
+			{Field: "procedure_decision_count", Op: "COUNTIFS", Table: "change_requests", Criteria: []Criterion{{Range: "authority_role", Kind: "raw_field", Field: "authority_role"}, {Range: "is_decided", Kind: "literal", Literal: vB(true)}}},
+			{Field: "model_review_count", Op: "COUNTIFS", Table: "model_change_requests", Criteria: []Criterion{{Range: "governed_model", Kind: "raw_field", Field: "governed_model"}, {Range: "has_authority_review", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "StewardActivities", File: "steward_activities", RulebookRows: 10, New: func() Record { return &StewardActivitie{} },
 		Lookups: []LookupSpec{
 			{Field: "activity_model", Target: "model_charters", Return: "governed_model", Key: "model_charter", Match: "model_charter_id"},},
@@ -60954,27 +61072,27 @@ var erbTables = []TableSpec{
 			{Field: "authority_agent", Target: "governed_models", Return: "current_authority_agent", Key: "governed_model", Match: "governed_model_id"},
 			{Field: "required_route", Target: "change_authority_rules", Return: "required_route", Key: "rule_key", Match: "change_authority_rule_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "assessed_inconsistent_count", Op: "COUNTIFS", Table: "change_impact_findings", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "finding_kind", Kind: "literal", Literal: vS("InconsistentInstance")}, {Range: "finding_stage", Kind: "literal", Literal: vS("Assessment")}}},
-			{Field: "post_deploy_inconsistent_count", Op: "COUNTIFS", Table: "change_impact_findings", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "finding_kind", Kind: "literal", Literal: vS("InconsistentInstance")}, {Range: "finding_stage", Kind: "literal", Literal: vS("PostDeployment")}}},
-			{Field: "assessed_inference_count", Op: "COUNTIFS", Table: "change_impact_findings", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "finding_kind", Kind: "literal", Literal: vS("AlteredInference")}, {Range: "finding_stage", Kind: "literal", Literal: vS("Assessment")}}},
-			{Field: "post_deploy_inference_count", Op: "COUNTIFS", Table: "change_impact_findings", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "finding_kind", Kind: "literal", Literal: vS("AlteredInference")}, {Range: "finding_stage", Kind: "literal", Literal: vS("PostDeployment")}}},
-			{Field: "assessed_query_result_count", Op: "COUNTIFS", Table: "change_impact_findings", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "finding_kind", Kind: "literal", Literal: vS("AlteredQueryResult")}, {Range: "finding_stage", Kind: "literal", Literal: vS("Assessment")}}},
-			{Field: "post_deploy_query_result_count", Op: "COUNTIFS", Table: "change_impact_findings", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "finding_kind", Kind: "literal", Literal: vS("AlteredQueryResult")}, {Range: "finding_stage", Kind: "literal", Literal: vS("PostDeployment")}}},
-			{Field: "assessed_coverage_gap_count", Op: "COUNTIFS", Table: "change_impact_findings", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "finding_kind", Kind: "literal", Literal: vS("CoverageGap")}, {Range: "finding_stage", Kind: "literal", Literal: vS("Assessment")}}},
-			{Field: "validation_run_count", Op: "COUNTIFS", Table: "change_validation_runs", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}}},
-			{Field: "acceptance_failure_total", Op: "SUM", Table: "change_validation_runs", Target: "failure_count", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "run_purpose", Kind: "literal", Literal: vS("Acceptance")}}},
-			{Field: "structural_pass_count", Op: "COUNTIFS", Table: "change_validation_runs", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "structural_check_outcome", Kind: "literal", Literal: vS("Pass")}}},
-			{Field: "vocabulary_pass_count", Op: "COUNTIFS", Table: "change_validation_runs", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "vocabulary_check_outcome", Kind: "literal", Literal: vS("Pass")}}},
-			{Field: "integrity_check_count", Op: "COUNTIFS", Table: "change_integrity_checks", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}}},
-			{Field: "human_integrity_check_count", Op: "COUNTIFS", Table: "change_integrity_checks", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "checker_kind", Kind: "literal", Literal: vS("Human")}}},
-			{Field: "disjointness_check_count", Op: "COUNTIFS", Table: "change_integrity_checks", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "check_kind", Kind: "literal", Literal: vS("Disjointness")}}},
-			{Field: "domain_inference_check_count", Op: "COUNTIFS", Table: "change_integrity_checks", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "check_kind", Kind: "literal", Literal: vS("DomainInference")}}},
-			{Field: "range_consistency_check_count", Op: "COUNTIFS", Table: "change_integrity_checks", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "check_kind", Kind: "literal", Literal: vS("RangeConsistency")}}},
-			{Field: "unresolved_objection_count", Op: "COUNTIFS", Table: "change_objections", Criteria: []Criterion{{Range: "model_change_request", Kind: "field", Field: "model_change_request_id"}, {Range: "is_unresolved", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "assessed_inconsistent_count", Op: "COUNTIFS", Table: "change_impact_findings", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "finding_kind", Kind: "literal", Literal: vS("InconsistentInstance")}, {Range: "finding_stage", Kind: "literal", Literal: vS("Assessment")}}},
+			{Field: "post_deploy_inconsistent_count", Op: "COUNTIFS", Table: "change_impact_findings", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "finding_kind", Kind: "literal", Literal: vS("InconsistentInstance")}, {Range: "finding_stage", Kind: "literal", Literal: vS("PostDeployment")}}},
+			{Field: "assessed_inference_count", Op: "COUNTIFS", Table: "change_impact_findings", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "finding_kind", Kind: "literal", Literal: vS("AlteredInference")}, {Range: "finding_stage", Kind: "literal", Literal: vS("Assessment")}}},
+			{Field: "post_deploy_inference_count", Op: "COUNTIFS", Table: "change_impact_findings", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "finding_kind", Kind: "literal", Literal: vS("AlteredInference")}, {Range: "finding_stage", Kind: "literal", Literal: vS("PostDeployment")}}},
+			{Field: "assessed_query_result_count", Op: "COUNTIFS", Table: "change_impact_findings", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "finding_kind", Kind: "literal", Literal: vS("AlteredQueryResult")}, {Range: "finding_stage", Kind: "literal", Literal: vS("Assessment")}}},
+			{Field: "post_deploy_query_result_count", Op: "COUNTIFS", Table: "change_impact_findings", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "finding_kind", Kind: "literal", Literal: vS("AlteredQueryResult")}, {Range: "finding_stage", Kind: "literal", Literal: vS("PostDeployment")}}},
+			{Field: "assessed_coverage_gap_count", Op: "COUNTIFS", Table: "change_impact_findings", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "finding_kind", Kind: "literal", Literal: vS("CoverageGap")}, {Range: "finding_stage", Kind: "literal", Literal: vS("Assessment")}}},
+			{Field: "validation_run_count", Op: "COUNTIFS", Table: "change_validation_runs", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}}},
+			{Field: "acceptance_failure_total", Op: "SUM", Table: "change_validation_runs", Target: "failure_count", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "run_purpose", Kind: "literal", Literal: vS("Acceptance")}}},
+			{Field: "structural_pass_count", Op: "COUNTIFS", Table: "change_validation_runs", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "structural_check_outcome", Kind: "literal", Literal: vS("Pass")}}},
+			{Field: "vocabulary_pass_count", Op: "COUNTIFS", Table: "change_validation_runs", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "vocabulary_check_outcome", Kind: "literal", Literal: vS("Pass")}}},
+			{Field: "integrity_check_count", Op: "COUNTIFS", Table: "change_integrity_checks", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}}},
+			{Field: "human_integrity_check_count", Op: "COUNTIFS", Table: "change_integrity_checks", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "checker_kind", Kind: "literal", Literal: vS("Human")}}},
+			{Field: "disjointness_check_count", Op: "COUNTIFS", Table: "change_integrity_checks", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "check_kind", Kind: "literal", Literal: vS("Disjointness")}}},
+			{Field: "domain_inference_check_count", Op: "COUNTIFS", Table: "change_integrity_checks", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "check_kind", Kind: "literal", Literal: vS("DomainInference")}}},
+			{Field: "range_consistency_check_count", Op: "COUNTIFS", Table: "change_integrity_checks", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "check_kind", Kind: "literal", Literal: vS("RangeConsistency")}}},
+			{Field: "unresolved_objection_count", Op: "COUNTIFS", Table: "change_objections", Criteria: []Criterion{{Range: "model_change_request", Kind: "raw_field", Field: "model_change_request_id"}, {Range: "is_unresolved", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "ChangeAuthorityRules", File: "change_authority_rules", RulebookRows: 4, New: func() Record { return &ChangeAuthorityRule{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "misrouted_request_count", Op: "COUNTIFS", Table: "model_change_requests", Criteria: []Criterion{{Range: "rule_key", Kind: "field", Field: "change_authority_rule_id"}, {Range: "is_misrouted", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "misrouted_request_count", Op: "COUNTIFS", Table: "model_change_requests", Criteria: []Criterion{{Range: "rule_key", Kind: "raw_field", Field: "change_authority_rule_id"}, {Range: "is_misrouted", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "ChangeImpactFindings", File: "change_impact_findings", RulebookRows: 10, New: func() Record { return &ChangeImpactFinding{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -60989,8 +61107,8 @@ var erbTables = []TableSpec{
 		Lookups: []LookupSpec{
 			{Field: "release", Target: "model_change_requests", Return: "target_release", Key: "model_change_request", Match: "model_change_request_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "expected_chain_count", Op: "COUNTIFS", Table: "expected_inference_checks", Criteria: []Criterion{{Range: "change_validation_run", Kind: "field", Field: "change_validation_run_id"}}},
-			{Field: "unproduced_chain_count", Op: "COUNTIFS", Table: "expected_inference_checks", Criteria: []Criterion{{Range: "change_validation_run", Kind: "field", Field: "change_validation_run_id"}, {Range: "is_unproduced", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "expected_chain_count", Op: "COUNTIFS", Table: "expected_inference_checks", Criteria: []Criterion{{Range: "change_validation_run", Kind: "raw_field", Field: "change_validation_run_id"}}},
+			{Field: "unproduced_chain_count", Op: "COUNTIFS", Table: "expected_inference_checks", Criteria: []Criterion{{Range: "change_validation_run", Kind: "raw_field", Field: "change_validation_run_id"}, {Range: "is_unproduced", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "ExpectedInferenceChecks", File: "expected_inference_checks", RulebookRows: 4, New: func() Record { return &ExpectedInferenceCheck{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -61023,8 +61141,8 @@ var erbTables = []TableSpec{
 		Lookups: []LookupSpec{
 			{Field: "model_domain_owner", Target: "governed_models", Return: "domain_owning_organization", Key: "governed_model", Match: "governed_model_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "concept_count", Op: "COUNTIFS", Table: "expansion_concept_fits", Criteria: []Criterion{{Range: "model_expansion_request", Kind: "field", Field: "model_expansion_request_id"}}},
-			{Field: "uncovered_concept_count", Op: "COUNTIFS", Table: "expansion_concept_fits", Criteria: []Criterion{{Range: "model_expansion_request", Kind: "field", Field: "model_expansion_request_id"}, {Range: "is_uncovered", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "concept_count", Op: "COUNTIFS", Table: "expansion_concept_fits", Criteria: []Criterion{{Range: "model_expansion_request", Kind: "raw_field", Field: "model_expansion_request_id"}}},
+			{Field: "uncovered_concept_count", Op: "COUNTIFS", Table: "expansion_concept_fits", Criteria: []Criterion{{Range: "model_expansion_request", Kind: "raw_field", Field: "model_expansion_request_id"}, {Range: "is_uncovered", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "ExpansionConceptFits", File: "expansion_concept_fits", RulebookRows: 9, New: func() Record { return &ExpansionConceptFit{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -61043,7 +61161,7 @@ var erbTables = []TableSpec{
 	{Name: "QualityCriteria", File: "quality_criteria", RulebookRows: 8, New: func() Record { return &QualityCriteria{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "assessment_count", Op: "COUNTIFS", Table: "quality_assessments", Criteria: []Criterion{{Range: "quality_criterion", Kind: "field", Field: "quality_criterion_id"}}},}},
+			{Field: "assessment_count", Op: "COUNTIFS", Table: "quality_assessments", Criteria: []Criterion{{Range: "quality_criterion", Kind: "raw_field", Field: "quality_criterion_id"}}},}},
 	{Name: "QualityAssessments", File: "quality_assessments", RulebookRows: 11, New: func() Record { return &QualityAssessment{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -61070,7 +61188,7 @@ var erbTables = []TableSpec{
 	{Name: "InstanceDataVersions", File: "instance_data_versions", RulebookRows: 2, New: func() Record { return &InstanceDataVersion{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "logged_change_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "instance_data_version", Kind: "field", Field: "instance_data_version_id"}}},}},
+			{Field: "logged_change_count", Op: "COUNTIFS", Table: "model_change_log_entries", Criteria: []Criterion{{Range: "instance_data_version", Kind: "raw_field", Field: "instance_data_version_id"}}},}},
 	{Name: "DomainCoverageAreas", File: "domain_coverage_areas", RulebookRows: 4, New: func() Record { return &DomainCoverageArea{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -61094,18 +61212,18 @@ var erbTables = []TableSpec{
 	{Name: "SourcingFunctions", File: "sourcing_functions", RulebookRows: 12, New: func() Record { return &SourcingFunction{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "audit_item_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "sourcing_function", Kind: "field", Field: "sourcing_function_id"}}},
-			{Field: "dependency_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "sourcing_function", Kind: "field", Field: "sourcing_function_id"}, {Range: "is_knowledge_dependency", Kind: "literal", Literal: vB(true)}}},
-			{Field: "coverage_gap_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "sourcing_function", Kind: "field", Field: "sourcing_function_id"}, {Range: "is_coverage_gap", Kind: "literal", Literal: vB(true)}}},
-			{Field: "specification_audit_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "sourcing_function", Kind: "field", Field: "sourcing_function_id"}, {Range: "knowledge_kind", Kind: "literal", Literal: vS("Specification")}}},
-			{Field: "specification_shortfall_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "sourcing_function", Kind: "field", Field: "sourcing_function_id"}, {Range: "knowledge_kind", Kind: "literal", Literal: vS("Specification")}, {Range: "has_internal_shortfall", Kind: "literal", Literal: vB(true)}}},
-			{Field: "method_shortfall_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "sourcing_function", Kind: "field", Field: "sourcing_function_id"}, {Range: "knowledge_kind", Kind: "literal", Literal: vS("Method")}, {Range: "has_internal_shortfall", Kind: "literal", Literal: vB(true)}}},
-			{Field: "provider_ip_documentation_count", Op: "COUNTIFS", Table: "provider_engagements", Criteria: []Criterion{{Range: "sourcing_function", Kind: "field", Field: "sourcing_function_id"}, {Range: "documentation_ownership", Kind: "literal", Literal: vS("ProviderIP")}}},
-			{Field: "capture_initiative_count", Op: "COUNTIFS", Table: "knowledge_capture_initiatives", Criteria: []Criterion{{Range: "sourcing_function", Kind: "field", Field: "sourcing_function_id"}}},}},
+			{Field: "audit_item_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "sourcing_function", Kind: "raw_field", Field: "sourcing_function_id"}}},
+			{Field: "dependency_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "sourcing_function", Kind: "raw_field", Field: "sourcing_function_id"}, {Range: "is_knowledge_dependency", Kind: "literal", Literal: vB(true)}}},
+			{Field: "coverage_gap_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "sourcing_function", Kind: "raw_field", Field: "sourcing_function_id"}, {Range: "is_coverage_gap", Kind: "literal", Literal: vB(true)}}},
+			{Field: "specification_audit_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "sourcing_function", Kind: "raw_field", Field: "sourcing_function_id"}, {Range: "knowledge_kind", Kind: "literal", Literal: vS("Specification")}}},
+			{Field: "specification_shortfall_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "sourcing_function", Kind: "raw_field", Field: "sourcing_function_id"}, {Range: "knowledge_kind", Kind: "literal", Literal: vS("Specification")}, {Range: "has_internal_shortfall", Kind: "literal", Literal: vB(true)}}},
+			{Field: "method_shortfall_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "sourcing_function", Kind: "raw_field", Field: "sourcing_function_id"}, {Range: "knowledge_kind", Kind: "literal", Literal: vS("Method")}, {Range: "has_internal_shortfall", Kind: "literal", Literal: vB(true)}}},
+			{Field: "provider_ip_documentation_count", Op: "COUNTIFS", Table: "provider_engagements", Criteria: []Criterion{{Range: "sourcing_function", Kind: "raw_field", Field: "sourcing_function_id"}, {Range: "documentation_ownership", Kind: "literal", Literal: vS("ProviderIP")}}},
+			{Field: "capture_initiative_count", Op: "COUNTIFS", Table: "knowledge_capture_initiatives", Criteria: []Criterion{{Range: "sourcing_function", Kind: "raw_field", Field: "sourcing_function_id"}}},}},
 	{Name: "KnowledgeAudits", File: "knowledge_audits", RulebookRows: 4, New: func() Record { return &KnowledgeAudit{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "finding_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "knowledge_audit", Kind: "field", Field: "knowledge_audit_id"}, {Range: "has_internal_shortfall", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "finding_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "knowledge_audit", Kind: "raw_field", Field: "knowledge_audit_id"}, {Range: "has_internal_shortfall", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "KnowledgeAuditItems", File: "knowledge_audit_items", RulebookRows: 12, New: func() Record { return &KnowledgeAuditItem{} },
 		Lookups: []LookupSpec{
 			{Field: "client_organization", Target: "knowledge_audits", Return: "organization", Key: "knowledge_audit", Match: "knowledge_audit_id"},},
@@ -61119,12 +61237,12 @@ var erbTables = []TableSpec{
 	{Name: "ProviderEngagements", File: "provider_engagements", RulebookRows: 7, New: func() Record { return &ProviderEngagement{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "relied_dependency_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "provider_holding_knowledge", Kind: "field", Field: "provider"}, {Range: "client_organization", Kind: "field", Field: "client_organization"}, {Range: "is_knowledge_dependency", Kind: "literal", Literal: vB(true)}}},
-			{Field: "required_deliverable_count", Op: "COUNTIFS", Table: "knowledge_deliverables", Criteria: []Criterion{{Range: "provider_engagement", Kind: "field", Field: "provider_engagement_id"}}},
-			{Field: "to_client_required_count", Op: "COUNTIFS", Table: "knowledge_deliverables", Criteria: []Criterion{{Range: "provider_engagement", Kind: "field", Field: "provider_engagement_id"}, {Range: "direction", Kind: "literal", Literal: vS("ToClient")}}},
-			{Field: "to_client_delivered_count", Op: "COUNTIFS", Table: "knowledge_deliverables", Criteria: []Criterion{{Range: "provider_engagement", Kind: "field", Field: "provider_engagement_id"}, {Range: "direction", Kind: "literal", Literal: vS("ToClient")}, {Range: "is_delivered", Kind: "literal", Literal: vB(true)}}},
-			{Field: "to_provider_delivered_count", Op: "COUNTIFS", Table: "knowledge_deliverables", Criteria: []Criterion{{Range: "provider_engagement", Kind: "field", Field: "provider_engagement_id"}, {Range: "direction", Kind: "literal", Literal: vS("ToProvider")}, {Range: "is_delivered", Kind: "literal", Literal: vB(true)}}},
-			{Field: "joint_deliverable_count", Op: "COUNTIFS", Table: "knowledge_deliverables", Criteria: []Criterion{{Range: "provider_engagement", Kind: "field", Field: "provider_engagement_id"}, {Range: "direction", Kind: "literal", Literal: vS("Joint")}}},}},
+			{Field: "relied_dependency_count", Op: "COUNTIFS", Table: "knowledge_audit_items", Criteria: []Criterion{{Range: "provider_holding_knowledge", Kind: "raw_field", Field: "provider"}, {Range: "client_organization", Kind: "raw_field", Field: "client_organization"}, {Range: "is_knowledge_dependency", Kind: "literal", Literal: vB(true)}}},
+			{Field: "required_deliverable_count", Op: "COUNTIFS", Table: "knowledge_deliverables", Criteria: []Criterion{{Range: "provider_engagement", Kind: "raw_field", Field: "provider_engagement_id"}}},
+			{Field: "to_client_required_count", Op: "COUNTIFS", Table: "knowledge_deliverables", Criteria: []Criterion{{Range: "provider_engagement", Kind: "raw_field", Field: "provider_engagement_id"}, {Range: "direction", Kind: "literal", Literal: vS("ToClient")}}},
+			{Field: "to_client_delivered_count", Op: "COUNTIFS", Table: "knowledge_deliverables", Criteria: []Criterion{{Range: "provider_engagement", Kind: "raw_field", Field: "provider_engagement_id"}, {Range: "direction", Kind: "literal", Literal: vS("ToClient")}, {Range: "is_delivered", Kind: "literal", Literal: vB(true)}}},
+			{Field: "to_provider_delivered_count", Op: "COUNTIFS", Table: "knowledge_deliverables", Criteria: []Criterion{{Range: "provider_engagement", Kind: "raw_field", Field: "provider_engagement_id"}, {Range: "direction", Kind: "literal", Literal: vS("ToProvider")}, {Range: "is_delivered", Kind: "literal", Literal: vB(true)}}},
+			{Field: "joint_deliverable_count", Op: "COUNTIFS", Table: "knowledge_deliverables", Criteria: []Criterion{{Range: "provider_engagement", Kind: "raw_field", Field: "provider_engagement_id"}, {Range: "direction", Kind: "literal", Literal: vS("Joint")}}},}},
 	{Name: "KnowledgeDeliverables", File: "knowledge_deliverables", RulebookRows: 10, New: func() Record { return &KnowledgeDeliverable{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -61138,8 +61256,8 @@ var erbTables = []TableSpec{
 	{Name: "AiRegistryModelVersions", File: "ai_registry_model_versions", RulebookRows: 6, New: func() Record { return &AiRegistryModelVersion{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "graph_individual_count", Op: "COUNTIFS", Table: "agents", Criteria: []Criterion{{Range: "agent_id", Kind: "field", Field: "dc_identifier"}}},
-			{Field: "live_production_deployment_count", Op: "COUNTIFS", Table: "ai_model_deployments", Criteria: []Criterion{{Range: "model_version", Kind: "field", Field: "ai_registry_model_version_id"}, {Range: "is_live_in_production", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "graph_individual_count", Op: "COUNTIFS", Table: "agents", Criteria: []Criterion{{Range: "agent_id", Kind: "raw_field", Field: "dc_identifier"}}},
+			{Field: "live_production_deployment_count", Op: "COUNTIFS", Table: "ai_model_deployments", Criteria: []Criterion{{Range: "model_version", Kind: "raw_field", Field: "ai_registry_model_version_id"}, {Range: "is_live_in_production", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "AiModelDeployments", File: "ai_model_deployments", RulebookRows: 6, New: func() Record { return &AiModelDeployment{} },
 		Lookups: []LookupSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},
@@ -61174,8 +61292,8 @@ var erbTables = []TableSpec{
 			{Field: "dependent_run_version", Target: "procedure_executions", Return: "procedure_version", Key: "dependent_execution", Match: "procedure_execution_id"},
 			{Field: "dependent_run_started_at", Target: "procedure_executions", Return: "started_at", Key: "dependent_execution", Match: "procedure_execution_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "dependent_run_role_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "dependent_run_version"}, {Range: "assigned_role", Kind: "field", Field: "role"}}},
-			{Field: "failed_notice_count", Op: "COUNTIFS", Table: "assignment_routed_notices", Criteria: []Criterion{{Range: "procedure_execution", Kind: "field", Field: "dependent_execution"}, {Range: "notice_role", Kind: "field", Field: "role"}, {Range: "reached_wrong_person_or_nobody", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "dependent_run_role_step_count", Op: "COUNTIFS", Table: "steps", Criteria: []Criterion{{Range: "procedure_version", Kind: "field", Field: "dependent_run_version"}, {Range: "assigned_role", Kind: "raw_field", Field: "role"}}},
+			{Field: "failed_notice_count", Op: "COUNTIFS", Table: "assignment_routed_notices", Criteria: []Criterion{{Range: "procedure_execution", Kind: "raw_field", Field: "dependent_execution"}, {Range: "notice_role", Kind: "raw_field", Field: "role"}, {Range: "reached_wrong_person_or_nobody", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "AssignmentRoutedNotices", File: "assignment_routed_notices", RulebookRows: 6, New: func() Record { return &AssignmentRoutedNotice{} },
 		Lookups: []LookupSpec{
 			{Field: "notice_role", Target: "steps", Return: "assigned_role", Key: "notice_step", Match: "step_id"},},
@@ -61211,7 +61329,7 @@ var erbTables = []TableSpec{
 	{Name: "ConceptLadderRungs", File: "concept_ladder_rungs", RulebookRows: 5, New: func() Record { return &ConceptLadderRung{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "step_top_level", Op: "MAX", Table: "concept_ladder_rungs", Target: "ladder_level", Criteria: []Criterion{{Range: "step", Kind: "field", Field: "step"}}},}},
+			{Field: "step_top_level", Op: "MAX", Table: "concept_ladder_rungs", Target: "ladder_level", Criteria: []Criterion{{Range: "step", Kind: "raw_field", Field: "step"}}, Empty: vI(0)},}},
 	{Name: "RepertoryGridConstructs", File: "repertory_grid_constructs", RulebookRows: 3, New: func() Record { return &RepertoryGridConstruct{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -61236,9 +61354,9 @@ var erbTables = []TableSpec{
 			{Field: "holder_departure_at", Target: "agents", Return: "departure_at", Key: "holder_agent", Match: "agent_id"},
 			{Field: "dependency_community", Target: "know_how_carriers", Return: "community_of_practice", Key: "builds_on_know_how", Match: "know_how_carrier_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "transfer_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "know_how", Kind: "field", Field: "know_how_carrier_id"}}},
-			{Field: "repository_entry_count", Op: "COUNTIFS", Table: "knowledge_repository_entries", Criteria: []Criterion{{Range: "know_how", Kind: "field", Field: "know_how_carrier_id"}}},
-			{Field: "source_relationship_count", Op: "COUNTIFS", Table: "source_relationships", Criteria: []Criterion{{Range: "source_agent", Kind: "field", Field: "holder_agent"}, {Range: "procedure", Kind: "field", Field: "procedure"}}},}},
+			{Field: "transfer_count", Op: "COUNTIFS", Table: "knowledge_transfers", Criteria: []Criterion{{Range: "know_how", Kind: "raw_field", Field: "know_how_carrier_id"}}},
+			{Field: "repository_entry_count", Op: "COUNTIFS", Table: "knowledge_repository_entries", Criteria: []Criterion{{Range: "know_how", Kind: "raw_field", Field: "know_how_carrier_id"}}},
+			{Field: "source_relationship_count", Op: "COUNTIFS", Table: "source_relationships", Criteria: []Criterion{{Range: "source_agent", Kind: "raw_field", Field: "holder_agent"}, {Range: "procedure", Kind: "raw_field", Field: "procedure"}}},}},
 	{Name: "KnowledgeTransfers", File: "knowledge_transfers", RulebookRows: 9, New: func() Record { return &KnowledgeTransfer{} },
 		Lookups: []LookupSpec{
 			{Field: "from_organization", Target: "agents", Return: "organization", Key: "from_agent", Match: "agent_id"},
@@ -61304,17 +61422,17 @@ var erbTables = []TableSpec{
 		Lookups: []LookupSpec{
 			{Field: "to_step_expected_minutes", Target: "steps", Return: "expected_duration_minutes", Key: "to_step", Match: "step_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "documented_transition_count", Op: "COUNTIFS", Table: "step_transitions", Criteria: []Criterion{{Range: "from_step", Kind: "field", Field: "from_step"}, {Range: "to_step", Kind: "field", Field: "to_step"}}},}},
+			{Field: "documented_transition_count", Op: "COUNTIFS", Table: "step_transitions", Criteria: []Criterion{{Range: "from_step", Kind: "raw_field", Field: "from_step"}, {Range: "to_step", Kind: "raw_field", Field: "to_step"}}},}},
 	{Name: "CollectionOccasions", File: "collection_occasions", RulebookRows: 3, New: func() Record { return &CollectionOccasion{} },
 		Lookups: []LookupSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "captured_material_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "collected_at_occasion", Kind: "field", Field: "collection_occasion_id"}}},}},
+			{Field: "captured_material_count", Op: "COUNTIFS", Table: "collected_source_materials", Criteria: []Criterion{{Range: "collected_at_occasion", Kind: "raw_field", Field: "collection_occasion_id"}}},}},
 	{Name: "StakeholderPerspectives", File: "stakeholder_perspectives", RulebookRows: 5, New: func() Record { return &StakeholderPerspective{} },
 		Lookups: []LookupSpec{
 			{Field: "source_material_kind", Target: "collected_source_materials", Return: "material_kind", Key: "source_material", Match: "collected_source_material_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "conflict_partner_count", Op: "COUNTIFS", Table: "stakeholder_perspectives", Criteria: []Criterion{{Range: "conflicts_with_perspective", Kind: "field", Field: "stakeholder_perspective_id"}}},}},
+			{Field: "conflict_partner_count", Op: "COUNTIFS", Table: "stakeholder_perspectives", Criteria: []Criterion{{Range: "conflicts_with_perspective", Kind: "raw_field", Field: "stakeholder_perspective_id"}}},}},
 	{Name: "ModelPilots", File: "model_pilots", RulebookRows: 3, New: func() Record { return &ModelPilot{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -61329,14 +61447,14 @@ var erbTables = []TableSpec{
 			{Field: "declared_source_step", Target: "step_variables", Return: "source_step", Key: "step_variable", Match: "step_variable_id"},
 			{Field: "declared_consumer_step", Target: "step_variables", Return: "step", Key: "step_variable", Match: "step_variable_id"},},
 		Aggregations: []AggregateSpec{}},
-	{Name: "AppActions", File: "app_actions", RulebookRows: 20, New: func() Record { return &AppAction{} },
+	{Name: "AppActions", File: "app_actions", RulebookRows: 23, New: func() Record { return &AppAction{} },
 		Lookups: []LookupSpec{
 			{Field: "policy_command", Target: "access_policies", Return: "command", Key: "policy", Match: "access_policy_id"},
 			{Field: "policy_denial_test_count", Target: "access_policies", Return: "denial_test_count", Key: "policy", Match: "access_policy_id"},
 			{Field: "watched_field_is_witness", Target: "rulebook_fields", Return: "is_witness", Key: "watched_field", Match: "rulebook_field_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "input_field_count", Op: "COUNTIFS", Table: "app_action_fields", Criteria: []Criterion{{Range: "app_action", Kind: "field", Field: "app_action_id"}}},}},
-	{Name: "AppActionFields", File: "app_action_fields", RulebookRows: 100, New: func() Record { return &AppActionField{} },
+			{Field: "input_field_count", Op: "COUNTIFS", Table: "app_action_fields", Criteria: []Criterion{{Range: "app_action", Kind: "raw_field", Field: "app_action_id"}}},}},
+	{Name: "AppActionFields", File: "app_action_fields", RulebookRows: 117, New: func() Record { return &AppActionField{} },
 		Lookups: []LookupSpec{
 			{Field: "target_field_type", Target: "rulebook_fields", Return: "field_type", Key: "target_field", Match: "rulebook_field_id"},},
 		Aggregations: []AggregateSpec{}},
@@ -61348,7 +61466,7 @@ var erbTables = []TableSpec{
 		Lookups: []LookupSpec{
 			{Field: "as_of_instant", Target: "evaluation_contexts", Return: "as_of_instant", Key: "evaluation_context", Match: "evaluation_context_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "supported_profile_count", Op: "COUNTIFS", Table: "ontology_profiles", Criteria: []Criterion{{Range: "supporting_programme", Kind: "field", Field: "ontology_support_programme_id"}}},}},
+			{Field: "supported_profile_count", Op: "COUNTIFS", Table: "ontology_profiles", Criteria: []Criterion{{Range: "supporting_programme", Kind: "raw_field", Field: "ontology_support_programme_id"}}},}},
 }
 
 // erbClosures materializes each vw_<entity>_closure view aggregations read.

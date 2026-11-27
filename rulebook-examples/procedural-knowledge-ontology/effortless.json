@@ -1,4 +1,8 @@
 {
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": "/effortless-rulebook",
+  "SSoTmeProjectFiles": null,
   "SSoTmeProjectId": "44233cef-0ec9-4a78-88d5-b3b942a96176",
   "Name": "procedural-knowledge-ontology",
   "Description": "PKO-Native Procedural Knowledge Rulebook — an Effortless Rulebook structurally aligned to the Procedural Knowledge Ontology (PKO) 2.0.0 and its industry module, proving one canonical model projects to docs, SOPs, policies, and governance.",
@@ -35,8 +39,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "compile-rulebook -i procedural-knowledge-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.15.1822",
-      "LastUrl": "https://effortless-compile-rulebook-v2026-09-14-2215-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.11.27.1356",
+      "LastUrl": "https://effortless-compile-rulebook-v2026-11-27-1356-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Compile the rulebook in place: bake every calculated/lookup/aggregation value into the hub's own data rows. Those stored values are the conformance answer keys every other substrate is graded against."
     },
     {
@@ -46,7 +50,7 @@
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.11.22.1524",
-      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-09-17-2011-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-11-22-1524-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Render the rulebook as plain-English RuleSpeak (HTML + Markdown)"
     },
     {
@@ -55,7 +59,8 @@
       "RelativePath": "/explainer",
       "CommandLine": "rulebook-to-explainer-dag -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1838"
+      "LastVersionUsed": "v2026.11.24.1636",
+      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-11-24-1636-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -63,8 +68,8 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json -p database=erb_procedural_knowledge_ontology",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.17.1626",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-17-0435-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.11.26.1400",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-11-26-1400-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -79,8 +84,8 @@
       "RelativePath": "/effortless-python",
       "CommandLine": "rulebook-to-python -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.15.1825",
-      "LastUrl": "https://effortless-rulebook-to-python-v2026-09-14-2218-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.11.27.1359",
+      "LastUrl": "https://effortless-rulebook-to-python-v2026-11-27-1359-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -88,8 +93,8 @@
       "RelativePath": "/effortless-golang",
       "CommandLine": "rulebook-to-go -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.15.1837",
-      "LastUrl": "https://effortless-rulebook-to-go-v2026-09-14-2221-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.11.23.1759",
+      "LastUrl": "https://effortless-rulebook-to-go-v2026-11-23-1759-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -98,7 +103,7 @@
       "CommandLine": "rulebook-to-entity-framework -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.11.15.1832",
-      "LastUrl": "https://effortless-rulebook-to-entity-fr-v2026-09-14-2203-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastUrl": "https://effortless-rulebook-to-entity-fr-v2026-11-15-1832-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -106,8 +111,8 @@
       "RelativePath": "/effortless-typescript",
       "CommandLine": "rulebook-to-typescript -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.15.1827",
-      "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-09-14-2224-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.11.26.1239",
+      "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-11-26-1239-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -115,17 +120,15 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i procedural-knowledge-ontology-rulebook.json -p rulebookPath=procedural-knowledge-ontology-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.0226",
-      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-17-2059-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.11.23.0835",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-11-23-0835-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebook-to-xlsx",
       "RelativePath": "/effortless-xlsx",
       "CommandLine": "rulebook-to-xlsx -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json",
-      "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.15.1835",
-      "LastUrl": "https://effortless-rulebook-to-xlsx-v2026-09-17-1646-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "IsDisabled": false
     },
     {
       "IsSSoTTranspiler": false,
@@ -133,12 +136,8 @@
       "RelativePath": "/effortless-owl",
       "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/procedural-knowledge-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.17.1018",
-      "LastUrl": "https://effortless-rulebook-to-owl-v2026-09-14-2309-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.11.27.1353",
+      "LastUrl": "https://effortless-rulebook-to-owl-v2026-11-27-1353-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
-  ],
-  "ShowHidden": false,
-  "ShowAllFiles": false,
-  "CurrentPath": "/effortless-rulebook",
-  "SSoTmeProjectFiles": null
+  ]
 }
