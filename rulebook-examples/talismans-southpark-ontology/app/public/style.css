@@ -238,10 +238,11 @@ header .rulebook-line.effortless-note { max-width: 66ch; }
   font-size: 0.82rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; cursor: default; }
 .version.dirty { border-style: dashed; }
 .tool-list li { background: var(--panel); }
-.tool-list li[data-tool="admin"] { border-left: 5px solid var(--onto); }
-.tool-list li[data-tool="concepts"] { border-left: 5px solid var(--concept); }
-.tool-list li[data-tool="admin"] a { color: var(--onto); }
-.tool-list li[data-tool="concepts"] a { color: var(--concept); }
+/* The two editors wear their colours wherever a panel names them (the ids are RulebookTools rows). */
+.tool-list li[data-tool="admin"], .tool-list li[data-tool="concept-ontology"] { border-left: 5px solid var(--onto); }
+.tool-list li[data-tool="concepts"], .tool-list li[data-tool="concept-admin"] { border-left: 5px solid var(--concept); }
+.tool-list li[data-tool="admin"] a, .tool-list li[data-tool="concept-ontology"] a { color: var(--onto); }
+.tool-list li[data-tool="concepts"] a, .tool-list li[data-tool="concept-admin"] a { color: var(--concept); }
 
 /* ---- 2a. a switch: one track, the chosen one filled */
 .switch { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border-radius: 999px; border: 1px solid var(--line);

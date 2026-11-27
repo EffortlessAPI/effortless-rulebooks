@@ -1,6 +1,6 @@
 // What the pages share (the explainer in app.js, the ontology form in admin.js, the concept
 // form in concepts.js): escaping, the rulebook's version, what each kind of control does,
-// the list of unsaved changes, and watching a server job.
+// a form's tools panel, Compare the engines, the list of unsaved changes, and watching a server job.
 window.RulebookAdmin = (function () {
   const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -16,6 +16,46 @@ window.RulebookAdmin = (function () {
   // stylesheet draws the kind's mark and this gives it the kind's words on hover.
   function nameKinds(T, texts, root = document) {
     for (const el of root.querySelectorAll('[data-kind]')) if (texts[`kind-${el.dataset.kind}`] != null) el.title = T(`kind-${el.dataset.kind}`);
+  }
+
+  // A form's tools panel: what each tool adds, and its link. 'editor' is the form's rulebook
+  // editor (a link when it is running); a tool that is the page it is listed on says so; a
+  // page of this app opens here, anything else (a generated page, a file) opens beside it.
+  function toolList(tools, { T, editor, editorOff }) {
+    const here = location.pathname === '/' ? '/index.html' : location.pathname;
+    return tools.map((t) => {
+      const [page, anchor] = (t.href || '').split('#');
+      let link = '';
+      if (t.href === 'editor') {
+        link = editor.running ? `<a href="${esc(editor.url)}" target="_blank" rel="noopener" data-kind="newtab">${esc(t.link_text)}</a>` : `<span class="off">${esc(T(editorOff))}</span>`;
+      } else if (page === here) {
+        link = anchor ? `<a href="#${esc(anchor)}">${esc(t.link_text)}</a>` : `<span class="off">${esc(T('tool-here'))}</span>`;
+      } else if (t.href) {
+        link = /^\/(admin|concepts)\.html/.test(t.href) ? `<a href="${esc(t.href)}" data-kind="page">${esc(t.link_text)}</a>`
+                                                      : `<a href="${esc(t.href)}" target="_blank" rel="noopener" data-kind="newtab">${esc(t.link_text)}</a>`;
+      }
+      return `<li data-tool="${esc(t.rulebook_tool_id)}"><b>${esc(t.label)}</b><span>${esc(t.adds)}</span>${link}</li>`;
+    }).join('');
+  }
+
+  // Compare the engines on the current facts, and say in the page's conformance box how they agree.
+  async function compareEngines({ api, T, box, show = 12 }) {
+    box.className = 'conformance';
+    box.textContent = T('conformance-running');
+    try {
+      const r = await api('POST', '/api/conformance');
+      const agree = r.differingCount === 0 && r.missingRowCount === 0;
+      box.className = 'conformance' + (agree ? '' : ' differ');
+      box.innerHTML = esc(agree ? T('conformance-agree', { engines: r.engines.length, cells: r.cells })
+                                : T('conformance-differ', { count: r.differingCount + r.missingRowCount, cells: r.cells })) +
+        `<div class="muted">${esc(r.engines.map((e) => `${e.label} ${e.ms} ms`).join(' \u00b7 '))}</div>` +
+        (r.skipped.length ? `<div class="muted">${r.skipped.map((s) => esc(T('engine-unavailable', { engine: s.label, reason: s.reason }))).join('<br>')}</div>` : '') +
+        (agree ? '' : '<ul>' + r.differing.slice(0, show).map((d) =>
+          `<li>${esc(d.table)}.${esc(d.field)} of ${esc(d.key)}: ${Object.entries(d.values).map(([k, v]) => `${esc(k)} = ${esc(JSON.stringify(v))}`).join(', ')}</li>`).join('') + '</ul>');
+    } catch (e) {
+      box.className = 'conformance differ';
+      box.textContent = e.message;
+    }
   }
 
   // The unsaved changes as list items: what differs from the rulebook file, a few per table.
@@ -63,5 +103,5 @@ window.RulebookAdmin = (function () {
     return { watch, start };
   }
 
-  return { esc, showVersion, nameKinds, changeLines, jobs };
+  return { esc, showVersion, nameKinds, toolList, compareEngines, changeLines, jobs };
 })();

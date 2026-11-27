@@ -81,6 +81,7 @@ app.post('/api/facts', action((req, engine) => explainer.addFact(engine, req.bod
 app.post('/api/rules/:id/switch', action((req) => explainer.switchRule(req.params.id, !!req.body.on)));
 app.post('/api/scenarios/:id/run', action((req, engine) => explainer.runScenario(engine, req.params.id)));
 app.post('/api/conformance', route(() => engines.compare()));
+app.get('/api/tools', route(async (req) => ({ tools: explainer.tools(String(req.query.form ?? '')) })));   // one form's tools panel
 
 // ------------------------------------------------------------------ admin: every table, every row
 const tableInfo = (t) => ({ name: t.name, description: t.description, key: t.key, rowCount: ws.rows(t.name).length,
@@ -392,6 +393,8 @@ app.use('/rulebook-explainer-dag', express.static(path.join(PROJECT, 'explainer/
 app.use('/rulespeak', express.static(path.join(PROJECT, 'rulespeak')));
 app.use('/effortless-xlsx', express.static(path.join(PROJECT, 'effortless-xlsx')));
 app.use('/rulebook', express.static(path.join(PROJECT, 'effortless-rulebook')));
+// The concept rulebook's folder: its file, its documentation and its explainer, as the build wrote them.
+app.use('/concept-rulebook', express.static(path.join(PROJECT, 'concept-rulebook'), { maxAge: 0 }));
 app.use('/', express.static(path.join(HERE, 'public')));
 
 app.listen(PORT, '127.0.0.1', () => console.log(`South Park explainer on http://localhost:${PORT} (rulebook ${path.relative(REPO, HUB)}, database ${DATABASE_URL})`));

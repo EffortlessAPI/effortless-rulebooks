@@ -275,17 +275,7 @@
     unsaved.textContent = P.unsaved === 1 ? T('unsaved-one') : P.unsaved ? T('unsaved', { count: P.unsaved }) : T('unsaved-none');
     unsaved.classList.toggle('dirty', P.unsaved > 0);
     window.RulebookAdmin.showVersion($('version'), T, P.version, P.unsaved);
-    $('tools').innerHTML = P.tools.map((t) => {
-      let link = '';
-      if (t.href === 'editor') {
-        link = editor.running ? `<a href="${esc(editor.url)}" target="_blank" rel="noopener" data-kind="newtab">${esc(t.link_text)}</a>` : `<span class="off">${esc(T('admin-editor-off'))}</span>`;
-      } else if (t.href) {
-        // A page of this app opens here; anything else (a generated page, a file) opens beside it.
-        link = /^\/(admin|concepts)\./.test(t.href) ? `<a href="${esc(t.href)}" data-kind="page">${esc(t.link_text)}</a>`
-                                                    : `<a href="${esc(t.href)}" target="_blank" rel="noopener" data-kind="newtab">${esc(t.link_text)}</a>`;
-      }
-      return `<li data-tool="${esc(t.rulebook_tool_id)}"><b>${esc(t.label)}</b><span>${esc(t.adds)}</span>${link}</li>`;
-    }).join('');
+    $('tools').innerHTML = window.RulebookAdmin.toolList(P.tools, { T, editor, editorOff: 'admin-editor-off' });
     window.RulebookAdmin.nameKinds(T, P.texts, $('tools'));
   }
 
@@ -304,26 +294,7 @@
     }
   }
 
-  async function compareEngines() {
-    const box = $('conformance');
-    box.className = 'conformance';
-    box.textContent = T('conformance-running');
-    try {
-      const r = await api('POST', '/api/conformance');
-      const agree = r.differingCount === 0 && r.missingRowCount === 0;
-      box.className = 'conformance' + (agree ? '' : ' differ');
-      const timings = r.engines.map((e) => `${e.label} ${e.ms} ms`).join(' \u00b7 ');
-      box.innerHTML = esc(agree ? T('conformance-agree', { engines: r.engines.length, cells: r.cells })
-                                 : T('conformance-differ', { count: r.differingCount + r.missingRowCount, cells: r.cells })) +
-        `<div class="muted">${esc(timings)}</div>` +
-        (r.skipped.length ? `<div class="muted">${r.skipped.map((s) => esc(T('engine-unavailable', { engine: s.label, reason: s.reason }))).join('<br>')}</div>` : '') +
-        (agree ? '' : '<ul>' + r.differing.slice(0, 12).map((d) =>
-          `<li>${esc(d.table)}.${esc(d.field)} of ${esc(d.key)}: ${Object.entries(d.values).map(([k, v]) => `${esc(k)} = ${esc(JSON.stringify(v))}`).join(', ')}</li>`).join('') + '</ul>');
-    } catch (e) {
-      box.className = 'conformance differ';
-      box.textContent = e.message;
-    }
-  }
+  const compareEngines = () => window.RulebookAdmin.compareEngines({ api, T, box: $('conformance') });
 
   // ---------------------------------------------------------------- events
   document.addEventListener('change', (e) => {

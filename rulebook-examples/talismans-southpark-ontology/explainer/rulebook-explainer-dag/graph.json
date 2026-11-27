@@ -91,6 +91,13 @@
         "StringValue": "Character and location portraits are Fandom images, linked from each Things row; South Park is the work of Trey Parker and Matt Stone.",
         "JsonValue": null,
         "Name": "image_credit"
+      },
+      {
+        "MetaKey": "rulebook-version",
+        "ValueType": "number",
+        "StringValue": "2",
+        "JsonValue": null,
+        "Name": "rulebook-version"
       }
     ]
   },
@@ -42756,6 +42763,31 @@
         "Name": "admin-build-failed"
       },
       {
+        "PageTextId": "admin-export-running",
+        "Text": "Exporting… {seconds} s",
+        "Name": "admin-export-running"
+      },
+      {
+        "PageTextId": "admin-exported",
+        "Text": "The workbook is ready: downloading {file}.",
+        "Name": "admin-exported"
+      },
+      {
+        "PageTextId": "admin-import-running",
+        "Text": "Importing… {seconds} s",
+        "Name": "admin-import-running"
+      },
+      {
+        "PageTextId": "admin-import-stale",
+        "Text": "The rows changed while the workbook was being read (an edit, a click on the explainer, or Discard), so nothing was imported: importing now would undo that change. Import the workbook again.",
+        "Name": "admin-import-stale"
+      },
+      {
+        "PageTextId": "admin-rebuild-running",
+        "Text": "Rebuilding… {seconds} s",
+        "Name": "admin-rebuild-running"
+      },
+      {
         "PageTextId": "record-class",
         "Text": "Person",
         "Name": "record-class"
@@ -42809,6 +42841,461 @@
         "PageTextId": "footer-credit",
         "Text": "A rebuild of Jessica Talisman’s South Park Ontology Explainer for Intentional Arrangement, made from a rulebook. The model, wording and layout follow her page. South Park is the work of Trey Parker and Matt Stone; the portraits are Fandom images.",
         "Name": "footer-credit"
+      },
+      {
+        "PageTextId": "form-switch-label",
+        "Text": "You are editing",
+        "Name": "form-switch-label"
+      },
+      {
+        "PageTextId": "form-switch-ontology",
+        "Text": "The ontology form",
+        "Name": "form-switch-ontology"
+      },
+      {
+        "PageTextId": "form-switch-concepts",
+        "Text": "The concept form",
+        "Name": "form-switch-concepts"
+      },
+      {
+        "PageTextId": "concepts-title",
+        "Text": "The concept form",
+        "Name": "concepts-title"
+      },
+      {
+        "PageTextId": "concepts-intro",
+        "Text": "The same ontology as ordinary tables: a table of individuals, a table for each class, and a table or a column for each property. An edit here is written straight to the rows the explainer runs on, as the matching change of its things, properties and statements; nothing is kept twice. What a table is comes from its fields. What its fields cannot say (a label, symmetric, inverse of) is on its row of ERBTables or ERBFields.",
+        "Name": "concepts-intro"
+      },
+      {
+        "PageTextId": "concepts-export",
+        "Text": "Export the concept workbook",
+        "Name": "concepts-export"
+      },
+      {
+        "PageTextId": "concepts-import",
+        "Text": "Import a concept workbook",
+        "Name": "concepts-import"
+      },
+      {
+        "PageTextId": "concepts-open-file",
+        "Text": "Open the concept rulebook",
+        "Name": "concepts-open-file"
+      },
+      {
+        "PageTextId": "concepts-see-page",
+        "Text": "See it on the explainer",
+        "Name": "concepts-see-page"
+      },
+      {
+        "PageTextId": "concepts-changes-heading",
+        "Text": "Unsaved changes, as rows of the ontology form",
+        "Name": "concepts-changes-heading"
+      },
+      {
+        "PageTextId": "concepts-applied",
+        "Text": "Applied to the ontology.",
+        "Name": "concepts-applied"
+      },
+      {
+        "PageTextId": "concepts-group-individuals",
+        "Text": "Individuals",
+        "Name": "concepts-group-individuals"
+      },
+      {
+        "PageTextId": "concepts-group-class",
+        "Text": "Classes",
+        "Name": "concepts-group-class"
+      },
+      {
+        "PageTextId": "concepts-group-relationship",
+        "Text": "Relationships",
+        "Name": "concepts-group-relationship"
+      },
+      {
+        "PageTextId": "concepts-group-values",
+        "Text": "Values",
+        "Name": "concepts-group-values"
+      },
+      {
+        "PageTextId": "concepts-group-attributes",
+        "Text": "What the fields cannot say",
+        "Name": "concepts-group-attributes"
+      },
+      {
+        "PageTextId": "concepts-group-support",
+        "Text": "Linked tables",
+        "Name": "concepts-group-support"
+      },
+      {
+        "PageTextId": "concepts-group-meta",
+        "Text": "About this rulebook",
+        "Name": "concepts-group-meta"
+      },
+      {
+        "PageTextId": "concepts-new-class",
+        "Text": "New class",
+        "Name": "concepts-new-class"
+      },
+      {
+        "PageTextId": "concepts-new-relationship",
+        "Text": "New relationship",
+        "Name": "concepts-new-relationship"
+      },
+      {
+        "PageTextId": "concepts-new-values",
+        "Text": "New value property",
+        "Name": "concepts-new-values"
+      },
+      {
+        "PageTextId": "concepts-new-class-intro",
+        "Text": "A class is a table of the individuals that belong to it.",
+        "Name": "concepts-new-class-intro"
+      },
+      {
+        "PageTextId": "concepts-new-relationship-intro",
+        "Text": "A relationship is a table of facts, each linking one thing to another. Point its subject or its object at a class to say what kind of thing it must be: the domain and range rule then concludes it.",
+        "Name": "concepts-new-relationship-intro"
+      },
+      {
+        "PageTextId": "concepts-new-values-intro",
+        "Text": "A value property is a table of facts, each giving a thing a value.",
+        "Name": "concepts-new-values-intro"
+      },
+      {
+        "PageTextId": "concepts-new-name",
+        "Text": "Name: letters and digits, like Concert or performsAt",
+        "Name": "concepts-new-name"
+      },
+      {
+        "PageTextId": "concepts-new-label",
+        "Text": "Wording on the page, like performs at",
+        "Name": "concepts-new-label"
+      },
+      {
+        "PageTextId": "concepts-add",
+        "Text": "Add",
+        "Name": "concepts-add"
+      },
+      {
+        "PageTextId": "concepts-cancel",
+        "Text": "Cancel",
+        "Name": "concepts-cancel"
+      },
+      {
+        "PageTextId": "concepts-any-thing",
+        "Text": "any thing",
+        "Name": "concepts-any-thing"
+      },
+      {
+        "PageTextId": "concepts-a-member",
+        "Text": "a {class}",
+        "Name": "concepts-a-member"
+      },
+      {
+        "PageTextId": "concepts-role-individuals",
+        "Text": "Every individual of the ontology. A class's table lists the ones that belong to it; a property's table says what is true of them.",
+        "Name": "concepts-role-individuals"
+      },
+      {
+        "PageTextId": "concepts-role-class",
+        "Text": "A class. Each row is an individual that belongs to it: because a fact says so (IsAsserted), or because a property whose subject or object must be a {label} was stated of it.",
+        "Name": "concepts-role-class"
+      },
+      {
+        "PageTextId": "concepts-role-relationship",
+        "Text": "A relationship between things (an object property). Each row is one fact in effect: {subject} {label} {object}.",
+        "Name": "concepts-role-relationship"
+      },
+      {
+        "PageTextId": "concepts-role-values",
+        "Text": "A value property (a datatype property). Each row is one fact in effect: {subject} {label} a {datatype} value.",
+        "Name": "concepts-role-values"
+      },
+      {
+        "PageTextId": "concepts-role-attributes",
+        "Text": "One row per table (ERBTables) and one per field (ERBFields), as the platform's Schema module keeps them. On the row of a class, a property or a column that is a property is what its fields cannot say: its label, its wording on the page, whether it is symmetric, its inverse, chain and disjoint properties. The other columns follow the table or field the row is about.",
+        "Name": "concepts-role-attributes"
+      },
+      {
+        "PageTextId": "concepts-role-support",
+        "Text": "A table the individuals link to.",
+        "Name": "concepts-role-support"
+      },
+      {
+        "PageTextId": "concepts-role-meta",
+        "Text": "Facts about the rulebook itself. The ontology-form row says this is the concept form.",
+        "Name": "concepts-role-meta"
+      },
+      {
+        "PageTextId": "concepts-label",
+        "Text": "Wording on the page",
+        "Name": "concepts-label"
+      },
+      {
+        "PageTextId": "concepts-subject-is",
+        "Text": "The subject is",
+        "Name": "concepts-subject-is"
+      },
+      {
+        "PageTextId": "concepts-object-is",
+        "Text": "The object is",
+        "Name": "concepts-object-is"
+      },
+      {
+        "PageTextId": "concepts-value-is",
+        "Text": "The value is",
+        "Name": "concepts-value-is"
+      },
+      {
+        "PageTextId": "concepts-symmetric",
+        "Text": "Symmetric: true in both directions",
+        "Name": "concepts-symmetric"
+      },
+      {
+        "PageTextId": "concepts-inverse-of",
+        "Text": "Inverse of",
+        "Name": "concepts-inverse-of"
+      },
+      {
+        "PageTextId": "concepts-chain",
+        "Text": "Concluded from a chain:",
+        "Name": "concepts-chain"
+      },
+      {
+        "PageTextId": "concepts-chain-then",
+        "Text": "then",
+        "Name": "concepts-chain-then"
+      },
+      {
+        "PageTextId": "concepts-disjoint-with",
+        "Text": "Never together with",
+        "Name": "concepts-disjoint-with"
+      },
+      {
+        "PageTextId": "concepts-disjoint-placeholder",
+        "Text": "property names, separated by commas",
+        "Name": "concepts-disjoint-placeholder"
+      },
+      {
+        "PageTextId": "concepts-user-addable",
+        "Text": "Offered in the page's Add fact form",
+        "Name": "concepts-user-addable"
+      },
+      {
+        "PageTextId": "concepts-none",
+        "Text": "(none)",
+        "Name": "concepts-none"
+      },
+      {
+        "PageTextId": "concepts-columns",
+        "Text": "Properties with one current value: columns of this table",
+        "Name": "concepts-columns"
+      },
+      {
+        "PageTextId": "concepts-no-columns",
+        "Text": "None yet.",
+        "Name": "concepts-no-columns"
+      },
+      {
+        "PageTextId": "concepts-column-name",
+        "Text": "Name: letters and digits, like favoriteFood",
+        "Name": "concepts-column-name"
+      },
+      {
+        "PageTextId": "concepts-column-label",
+        "Text": "Wording on the page, like favorite food",
+        "Name": "concepts-column-label"
+      },
+      {
+        "PageTextId": "concepts-add-column",
+        "Text": "Add a column",
+        "Name": "concepts-add-column"
+      },
+      {
+        "PageTextId": "concepts-holds-value",
+        "Text": "{datatype}",
+        "Name": "concepts-holds-value"
+      },
+      {
+        "PageTextId": "concepts-holds-link",
+        "Text": "a link to {table}",
+        "Name": "concepts-holds-link"
+      },
+      {
+        "PageTextId": "concepts-remove-column",
+        "Text": "Remove",
+        "Name": "concepts-remove-column"
+      },
+      {
+        "PageTextId": "concepts-remove-class",
+        "Text": "Remove this class",
+        "Name": "concepts-remove-class"
+      },
+      {
+        "PageTextId": "concepts-remove-property",
+        "Text": "Remove this property",
+        "Name": "concepts-remove-property"
+      },
+      {
+        "PageTextId": "concepts-remove-confirm",
+        "Text": "Click again to remove",
+        "Name": "concepts-remove-confirm"
+      },
+      {
+        "PageTextId": "concepts-editor",
+        "Text": "Open the concept rulebook editor",
+        "Name": "concepts-editor"
+      },
+      {
+        "PageTextId": "concepts-editor-off",
+        "Text": "The concept rulebook editor is not running. Start it with ./start.sh --concept-editor",
+        "Name": "concepts-editor-off"
+      },
+      {
+        "PageTextId": "concepts-load-file",
+        "Text": "Load the concept rulebook file",
+        "Name": "concepts-load-file"
+      },
+      {
+        "PageTextId": "concepts-write-file",
+        "Text": "Overwrite the file from these rows",
+        "Name": "concepts-write-file"
+      },
+      {
+        "PageTextId": "concepts-file-changed",
+        "Text": "The concept rulebook file ({file}) changed on disk: saved from its rulebook editor, or edited by hand. Load it to bring those edits into the ontology, or overwrite it from the rows here.",
+        "Name": "concepts-file-changed"
+      },
+      {
+        "PageTextId": "concepts-file-loaded",
+        "Text": "Loaded {file}: {rows} rows of the ontology differ from the rulebook file. Review them, then save.",
+        "Name": "concepts-file-loaded"
+      },
+      {
+        "PageTextId": "concepts-file-missing",
+        "Text": "There is no concept rulebook file yet ({file}). Save writes it.",
+        "Name": "concepts-file-missing"
+      },
+      {
+        "PageTextId": "concepts-file-written",
+        "Text": "The concept rulebook was written to {file}.",
+        "Name": "concepts-file-written"
+      },
+      {
+        "PageTextId": "concepts-file-kept",
+        "Text": "The concept rulebook file ({file}) changed on disk and was not overwritten: load it on the Concepts page, or overwrite it there.",
+        "Name": "concepts-file-kept"
+      },
+      {
+        "PageTextId": "concepts-file-failed",
+        "Text": "The concept rulebook file was not written: {reason}",
+        "Name": "concepts-file-failed"
+      },
+      {
+        "PageTextId": "kind-page",
+        "Text": "another page of this app",
+        "Name": "kind-page"
+      },
+      {
+        "PageTextId": "kind-newtab",
+        "Text": "opens in a new tab",
+        "Name": "kind-newtab"
+      },
+      {
+        "PageTextId": "kind-download",
+        "Text": "downloads a file",
+        "Name": "kind-download"
+      },
+      {
+        "PageTextId": "kind-upload",
+        "Text": "reads a file you pick",
+        "Name": "kind-upload"
+      },
+      {
+        "PageTextId": "version-label",
+        "Text": "Rulebook v{number}",
+        "Name": "version-label"
+      },
+      {
+        "PageTextId": "version-label-unsaved",
+        "Text": "Rulebook v{number} + unsaved changes",
+        "Name": "version-label-unsaved"
+      },
+      {
+        "PageTextId": "version-hint",
+        "Text": "The rulebook file is at version {number}. Each Save to the rulebook makes the next version.",
+        "Name": "version-hint"
+      },
+      {
+        "PageTextId": "form-ontology-what",
+        "Text": "Things, properties and statements: one row per fact, as the graph draws them.",
+        "Name": "form-ontology-what"
+      },
+      {
+        "PageTextId": "form-concepts-what",
+        "Text": "Ordinary tables: one per class, one per relationship, a column per value.",
+        "Name": "form-concepts-what"
+      },
+      {
+        "PageTextId": "group-rows",
+        "Text": "These rows",
+        "Name": "group-rows"
+      },
+      {
+        "PageTextId": "group-excel",
+        "Text": "Excel",
+        "Name": "group-excel"
+      },
+      {
+        "PageTextId": "group-file",
+        "Text": "The rulebook file",
+        "Name": "group-file"
+      },
+      {
+        "PageTextId": "group-editor",
+        "Text": "Rulebook editor",
+        "Name": "group-editor"
+      },
+      {
+        "PageTextId": "admin-open-file",
+        "Text": "Open the rulebook",
+        "Name": "admin-open-file"
+      },
+      {
+        "PageTextId": "effortless-tag",
+        "Text": "Effortless",
+        "Name": "effortless-tag"
+      },
+      {
+        "PageTextId": "effortless-legend",
+        "Text": "Added by Effortless. Everything else follows the original explainer.",
+        "Name": "effortless-legend"
+      },
+      {
+        "PageTextId": "admin-tools-heading",
+        "Text": "The rulebook's tools",
+        "Name": "admin-tools-heading"
+      },
+      {
+        "PageTextId": "admin-tools-text",
+        "Text": "Everything here is made from the rulebook file: these facts as things, properties and statements.",
+        "Name": "admin-tools-text"
+      },
+      {
+        "PageTextId": "concepts-tools-heading",
+        "Text": "The concept rulebook's tools",
+        "Name": "concepts-tools-heading"
+      },
+      {
+        "PageTextId": "concepts-tools-text",
+        "Text": "The same tools as the ontology form has, each made from the concept rulebook: the same facts as tables.",
+        "Name": "concepts-tools-text"
+      },
+      {
+        "PageTextId": "tool-here",
+        "Text": "You are on this page.",
+        "Name": "tool-here"
       }
     ]
   },
@@ -42897,7 +43384,7 @@
     ]
   },
   "RulebookTools": {
-    "Description": "What each rulebook tool adds to the original explainer; the tools panel lists them.",
+    "Description": "What each rulebook tool adds, for each form of the rulebook. The explainer page and the ontology form's editor list the ontology form's tools; the concept form's editor lists the concept form's. The two forms are the same facts, so they list the same tools.",
     "schema": [
       {
         "name": "RulebookToolId",
@@ -42918,14 +43405,14 @@
         "datatype": "string",
         "type": "raw",
         "nullable": false,
-        "Description": "What it adds to the original explainer."
+        "Description": "What it adds, for this form of the rulebook."
       },
       {
         "name": "Href",
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Where its link goes; 'editor' means the running rulebook editor."
+        "Description": "Where its link goes; 'editor' means this form's running rulebook editor."
       },
       {
         "name": "LinkText",
@@ -42940,6 +43427,13 @@
         "type": "raw",
         "nullable": false,
         "Description": "Position in the panel."
+      },
+      {
+        "name": "Form",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Which form of the rulebook the tool is about: ontology (things, properties, statements) or concept (tables)."
       },
       {
         "name": "Name",
@@ -42958,6 +43452,7 @@
         "Href": null,
         "LinkText": null,
         "SortOrder": 1,
+        "Form": "ontology",
         "Name": "Interchangeable engines"
       },
       {
@@ -42967,6 +43462,7 @@
         "Href": null,
         "LinkText": null,
         "SortOrder": 2,
+        "Form": "ontology",
         "Name": "Conformance"
       },
       {
@@ -42976,6 +43472,7 @@
         "Href": "/rulebook-explainer-dag/pages/index.html",
         "LinkText": "Open the explainer",
         "SortOrder": 3,
+        "Form": "ontology",
         "Name": "Explainer"
       },
       {
@@ -42985,16 +43482,28 @@
         "Href": "/rulespeak/rulespeak.html",
         "LinkText": "Read the documentation",
         "SortOrder": 4,
+        "Form": "ontology",
         "Name": "Documentation in 16 languages"
       },
       {
         "RulebookToolId": "admin",
-        "Label": "Admin",
+        "Label": "The ontology form",
         "Adds": "Every table of the rulebook as an editable grid: rules, properties and their wiring, wording, layouts, the cast. Edits apply at once; Save writes the rulebook file.",
         "Href": "/admin.html",
-        "LinkText": "Open the admin",
+        "LinkText": "Open the ontology form",
         "SortOrder": 5,
-        "Name": "Admin"
+        "Form": "ontology",
+        "Name": "The ontology form"
+      },
+      {
+        "RulebookToolId": "concepts",
+        "Label": "The concept form",
+        "Adds": "The same ontology as ordinary tables: a table of individuals, a table per class, a table or a column per property, with each property's attributes beside it. Add a person, a class, a relationship or a column there and this page shows it: every edit is written as the matching change of the rulebook's things, properties and statements.",
+        "Href": "/concepts.html",
+        "LinkText": "Open the concept form",
+        "SortOrder": 6,
+        "Form": "ontology",
+        "Name": "The concept form"
       },
       {
         "RulebookToolId": "xlsx",
@@ -43002,7 +43511,8 @@
         "Adds": "Export the current rows as a workbook with every rule as a live formula, edit it, and import it again.",
         "Href": "/admin.html#excel",
         "LinkText": "Export or import",
-        "SortOrder": 6,
+        "SortOrder": 7,
+        "Form": "ontology",
         "Name": "Excel, both ways"
       },
       {
@@ -43011,7 +43521,8 @@
         "Adds": "The generated editor for tables, fields and formulas, with its own database and API.",
         "Href": "editor",
         "LinkText": "Open the rulebook editor",
-        "SortOrder": 7,
+        "SortOrder": 8,
+        "Form": "ontology",
         "Name": "Rulebook editor"
       },
       {
@@ -43020,7 +43531,98 @@
         "Adds": "One JSON file holds the whole model. Everything on this page is built from it.",
         "Href": "/rulebook/talismans-southpark-ontology-rulebook.json",
         "LinkText": "Open the file",
+        "SortOrder": 9,
+        "Form": "ontology",
+        "Name": "The rulebook"
+      },
+      {
+        "RulebookToolId": "concept-engines",
+        "Label": "Interchangeable engines",
+        "Adds": "Which facts are in effect is computed by the Postgres views, the generated TypeScript or the generated OWL and SHACL rules, and these tables show the answer. Switch with the control above; nothing else changes.",
+        "Href": null,
+        "LinkText": null,
+        "SortOrder": 1,
+        "Form": "concept",
+        "Name": "Interchangeable engines"
+      },
+      {
+        "RulebookToolId": "concept-conformance",
+        "Label": "Conformance",
+        "Adds": "Every engine's answers for the current facts, compared value by value with the conformance harness's own rule for when two values are equal.",
+        "Href": null,
+        "LinkText": null,
+        "SortOrder": 2,
+        "Form": "concept",
+        "Name": "Conformance"
+      },
+      {
+        "RulebookToolId": "concept-explainer",
+        "Label": "Explainer",
+        "Adds": "The concept rulebook's own explainer: its tables and fields as a graph, with each one's rule in plain words and the values it comes from.",
+        "Href": "/concept-rulebook/explainer/rulebook-explainer-dag/pages/index.html",
+        "LinkText": "Open the explainer",
+        "SortOrder": 3,
+        "Form": "concept",
+        "Name": "Explainer"
+      },
+      {
+        "RulebookToolId": "concept-docs",
+        "Label": "Documentation in 16 languages",
+        "Adds": "Every table, field and rule of the concept rulebook in plain language, generated from it.",
+        "Href": "/concept-rulebook/rulespeak/rulespeak.html",
+        "LinkText": "Read the documentation",
+        "SortOrder": 4,
+        "Form": "concept",
+        "Name": "Documentation in 16 languages"
+      },
+      {
+        "RulebookToolId": "concept-ontology",
+        "Label": "The ontology form",
+        "Adds": "The same facts as things, properties and statements, one row per fact, with the page's rules, wording, layouts and cast.",
+        "Href": "/admin.html",
+        "LinkText": "Open the ontology form",
+        "SortOrder": 5,
+        "Form": "concept",
+        "Name": "The ontology form"
+      },
+      {
+        "RulebookToolId": "concept-admin",
+        "Label": "The concept form",
+        "Adds": "Every table of the concept rulebook as an editable grid, with each class's and each property's attributes beside it. Edits apply at once, as the matching change of the ontology; Save writes both rulebook files.",
+        "Href": "/concepts.html",
+        "LinkText": "Open the concept form",
+        "SortOrder": 6,
+        "Form": "concept",
+        "Name": "The concept form"
+      },
+      {
+        "RulebookToolId": "concept-xlsx",
+        "Label": "Excel, both ways",
+        "Adds": "Export the concept tables as a workbook, edit it, and import it again: the edits come back as the matching changes of the ontology.",
+        "Href": "/concepts.html#excel",
+        "LinkText": "Export or import",
+        "SortOrder": 7,
+        "Form": "concept",
+        "Name": "Excel, both ways"
+      },
+      {
+        "RulebookToolId": "concept-editor",
+        "Label": "Rulebook editor",
+        "Adds": "The generated editor for tables, fields and formulas, opened on the concept rulebook, with its own database and API.",
+        "Href": "editor",
+        "LinkText": "Open the concept rulebook editor",
         "SortOrder": 8,
+        "Form": "concept",
+        "Name": "Rulebook editor"
+      },
+      {
+        "RulebookToolId": "concept-rulebook",
+        "Label": "The rulebook",
+        "Adds": "One JSON file holds the concept rulebook. The build writes it from the rulebook, and so does Save.",
+        "Href": "/concept-rulebook/talismans-southpark-ontology-concepts.json",
+        "LinkText": "Open the file",
+        "SortOrder": 9,
+        "Form": "concept",
         "Name": "The rulebook"
       }
     ]

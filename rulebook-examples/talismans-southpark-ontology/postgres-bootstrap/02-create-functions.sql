@@ -15,12 +15,12 @@ SET check_function_bodies = off;
 
 -- ============================================================================
 -- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
--- erbBlankLogic=coerce, erbBlankValue=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
 -- ============================================================================
 
 CREATE OR REPLACE FUNCTION erb_build_parameters()
 RETURNS JSONB AS $$
-  SELECT '{"erbBlankLogic":"coerce","erbBlankValue":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
 $$ LANGUAGE sql IMMUTABLE;
 
 -- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.

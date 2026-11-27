@@ -316,3 +316,32 @@ test('the concept rulebook file: Save writes it, an edit made in it is loaded in
     app.stop();
   }
 });
+
+// The two forms are the same facts, so each has the same tools: an explainer, documentation,
+// Excel, a rulebook editor, the rulebook file. A tool that is listed has to be there.
+test('both forms of the rulebook list the same tools, and every link a tool gives answers', async () => {
+  const port = 43286;
+  const app = await startApp({ engine: 'typescript', port, env: { RULEBOOK_PATH: copyOfHub() } });
+  try {
+    const lists = {};
+    for (const form of ['ontology', 'concept']) lists[form] = (await app.api('GET', `/api/tools?form=${form}`)).tools;
+    assert.ok(lists.ontology.length >= 8, `the ontology form lists its tools: ${lists.ontology.length}`);
+    assert.deepEqual(lists.concept.map((t) => t.label).sort(), lists.ontology.map((t) => t.label).sort(), 'the same tools, by name, on both sides');
+    assert.deepEqual((await app.api('GET', '/api/page')).tools, lists.ontology, 'the explainer page lists the ontology form\'s tools');
+    for (const [form, tools] of Object.entries(lists)) {
+      for (const tool of tools) {
+        if (!tool.href || tool.href === 'editor') continue;   // the rulebook editor is a container, started on its own
+        const res = await fetch(`http://127.0.0.1:${port}${tool.href.split('#')[0]}`);
+        assert.equal(res.status, 200, `the ${form} form's "${tool.label}" links to ${tool.href}, which answered ${res.status}`);
+        assert.ok((await res.text()).length > 200, `${tool.href} has something in it`);
+      }
+    }
+    // The concept form's documentation and explainer are about the concept rulebook's own tables.
+    const hrefOf = (id) => lists.concept.find((t) => t.rulebook_tool_id === id).href;
+    for (const id of ['concept-docs', 'concept-explainer']) {
+      assert.notEqual(hrefOf(id), lists.ontology.find((t) => t.label === lists.concept.find((c) => c.rulebook_tool_id === id).label).href, `${id} is not the ontology form's page`);
+    }
+    assert.match(await (await fetch(`http://127.0.0.1:${port}${hrefOf('concept-docs')}`)).text(), /is ?parent ?of: one row per fact in effect/i, 'the concept documentation describes a property\'s table');
+    await assert.rejects(app.api('GET', '/api/tools?form=accounting'), /no form/);
+  } finally { app.stop(); }
+});

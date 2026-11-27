@@ -449,7 +449,7 @@ SELECT
 FROM engines t;
 
 -- ----------------------------------------------------------------------------
--- vw_rulebook_tools: What each rulebook tool adds to the original explainer; the tools panel lists them.
+-- vw_rulebook_tools: What each rulebook tool adds, for each form of the rulebook. The explainer page and the ontology form's editor list the ontology form's tools; the concept form's editor lists the concept form's. The two forms are the same facts, so they list the same tools.
 -- Combines base table columns with calculated/lookup/aggregation fields.
 -- ----------------------------------------------------------------------------
 DROP VIEW IF EXISTS vw_rulebook_tools CASCADE;
@@ -457,10 +457,11 @@ CREATE VIEW vw_rulebook_tools WITH (security_invoker = ON) AS
 SELECT
   t.rulebook_tool_id,                                                           -- Key of the tool.
   t.label,                                                                      -- The tool's name.
-  t.adds,                                                                       -- What it adds to the original explainer.
-  t.href,                                                                       -- Where its link goes; 'editor' means the running rulebook editor.
+  t.adds,                                                                       -- What it adds, for this form of the rulebook.
+  t.href,                                                                       -- Where its link goes; 'editor' means this form's running rulebook editor.
   t.link_text,                                                                  -- The link's text.
   t.sort_order,                                                                 -- Position in the panel.
+  t.form,                                                                       -- Which form of the rulebook the tool is about: ontology (things, properties, statements) or concept (tables).
   calc_rulebook_tools_name(t.rulebook_tool_id) AS name                          -- Order 1. The tool's name.
 FROM rulebook_tools t;
 

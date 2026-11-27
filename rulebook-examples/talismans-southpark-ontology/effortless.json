@@ -39,8 +39,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "compile-rulebook -i talismans-southpark-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.25.2214",
-      "LastUrl": "https://effortless-compile-rulebook-v2026-11-25-2214-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.11.27.1356",
+      "LastUrl": "https://effortless-compile-rulebook-v2026-11-27-1356-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Bake every calculated, lookup and aggregation value into the hub's own data rows; the conformance harness reads its answer keys from them."
     },
     {
@@ -69,8 +69,8 @@
       "RelativePath": "/effortless-python",
       "CommandLine": "rulebook-to-python -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.25.2221",
-      "LastUrl": "https://effortless-rulebook-to-python-v2026-11-25-2221-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.11.27.1359",
+      "LastUrl": "https://effortless-rulebook-to-python-v2026-11-27-1359-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Python substrate."
     },
     {
@@ -89,8 +89,8 @@
       "RelativePath": "/effortless-owl",
       "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/talismans-southpark-ontology-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.25.2217",
-      "LastUrl": "https://effortless-rulebook-to-owl-v2026-11-25-2217-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.11.27.1353",
+      "LastUrl": "https://effortless-rulebook-to-owl-v2026-11-27-1353-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "OWL ontology, individuals and SHACL rules: the app's OWL engine and the conformance harness run them."
     },
     {
@@ -150,6 +150,36 @@
       "LastVersionUsed": "v2026.11.23.0835",
       "LastUrl": "https://effortless-effortless-rulebook-e-v2026-11-23-0835-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "The generated rulebook editor on the concept rulebook: its own Postgres, API and admin UI in a second container (./start.sh --concept-editor). Its Save rewrites the concept rulebook file; the app's Concepts page loads that file back into the ontology."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "conceptrulebooktorulespeak",
+      "RelativePath": "/concept-rulebook/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../talismans-southpark-ontology-concepts.json -p languages=all",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.22.1524",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-11-22-1524-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "The concept rulebook's own documentation: the same tool as rulebooktorulespeak, on the concept rulebook the concept-rulebook step just wrote. The concept form's tools panel links to it."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "conceptrulebooktoexplainerdag",
+      "RelativePath": "/concept-rulebook/explainer",
+      "CommandLine": "rulebook-to-explainer-dag -i ../talismans-southpark-ontology-concepts.json -p languages=all",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.24.1636",
+      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-11-24-1636-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "The concept rulebook's own explainer: the same tool as rulebooktoexplainerdag, on the concept rulebook. The concept form's tools panel links to it."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "conceptexplainertypescript",
+      "RelativePath": "/concept-rulebook/explainer/rulebook-explainer-dag/typescript",
+      "CommandLine": "rulebook-to-typescript -i ../../../talismans-southpark-ontology-concepts.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.26.1239",
+      "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-11-26-1239-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "The TypeScript substrate of the concept rulebook inside its explainer's folder, where the explainer looks for it to compute witnesses in the page (as explainertypescript does for the rulebook)."
     },
     {
       "IsSSoTTranspiler": false,

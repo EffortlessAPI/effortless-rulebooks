@@ -1,0 +1,33 @@
+<!-- Drop into any host layout (Flask/Jinja, Rails, Vue index.html, etc.) -->
+<link rel="stylesheet" href="/rulebook-explainer-dag/dag.css">
+<script src="/rulebook-explainer-dag/embedded-graph.js"></script>
+<script src="/rulebook-explainer-dag/dag-resolver.js"></script>
+<script src="/rulebook-explainer-dag/routing.js"></script>
+<script src="/rulebook-explainer-dag/explainer-dag.js"></script>
+<script>
+  EffortlessExplainer.init({
+    // A field opens in an overlay; a table opens the explainer's own page
+    // (/rulebook-explainer-dag/pages/index.html). Nothing for the host to route.
+    // Other modes: page | hash | path | callback (see the tool's README). Choose
+    // "path" ONLY if the host really routes /dag, /dag/:table, /dag/:table/:field
+    // to pages/*.html; otherwise its own router answers those addresses.
+    mode: "modal",
+    // The control (provenance on/off, and the workbook download): two icons in
+    // this corner, opening on hover. top-left | top-right | bottom-left | bottom-right.
+    // To place it yourself instead: mountToggle: "#your-element".
+    corner: "bottom-right",
+    // The workbook rulebook-to-xlsx wrote for this project; adds the download icon.
+    // xlsx: "/your-project-rulebook.xlsx",
+    // Start with the ƒ badges off (the person's own choice then wins):
+    // provenance: "off",
+    // The witness: a popup and a field's page show one row's value and the values
+    // it came from, down to the stored ones, computed in the page by the project's
+    // generated TypeScript. On by itself when rulebook-to-typescript's output is in
+    // rulebook-explainer-dag/typescript/ ; name the folder only if it is elsewhere:
+    // typescript: "/rulebook-typescript",
+  });
+</script>
+
+<!-- Wrap derived values: <span data-er-dag="Table.Field">your value</span> -->
+<!-- For the witness, say which row the cell shows (the row's key):
+     <span data-er-dag="Table.Field" data-er-row="row-key">your value</span> -->

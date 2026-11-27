@@ -30,8 +30,10 @@
     <div class="engine-row">
       <span class="engine-label" data-text="engine-label"></span>
       <span id="engines" class="engine-choices switch"></span>
+      <button type="button" id="compare" data-text="conformance-button"></button>
     </div>
     <p id="engine-description" class="hint"></p>
+    <div id="conformance" role="status" aria-live="polite"></div>
   </section>
 
   <section class="card actions" id="excel" aria-label="Rulebook">
@@ -81,6 +83,12 @@
       </section>
     </div>
   </div>
+  <section class="card tools effortless" aria-label="Tools">
+    <span class="effortless-tag" data-text="effortless-tag"></span>
+    <h2 data-text="concepts-tools-heading"></h2>
+    <p class="hint" data-text="concepts-tools-text"></p>
+    <ul class="tool-list" id="tools"></ul>
+  </section>
 </div>
 <script src="/admin-shared.js"></script>
 <script src="/concepts.js"></script>

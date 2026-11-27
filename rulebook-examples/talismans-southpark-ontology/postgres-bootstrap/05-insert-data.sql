@@ -3073,6 +3073,21 @@ INSERT INTO page_texts (page_text_id, text)
 VALUES ('admin-build-failed', 'Rebuild failed; see the log.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
 
 INSERT INTO page_texts (page_text_id, text)
+VALUES ('admin-export-running', 'Exporting… {seconds} s') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('admin-exported', 'The workbook is ready: downloading {file}.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('admin-import-running', 'Importing… {seconds} s') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('admin-import-stale', 'The rows changed while the workbook was being read (an edit, a click on the explainer, or Discard), so nothing was imported: importing now would undo that change. Import the workbook again.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('admin-rebuild-running', 'Rebuilding… {seconds} s') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
 VALUES ('record-class', 'Person') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
 
 INSERT INTO page_texts (page_text_id, text)
@@ -3105,6 +3120,279 @@ VALUES ('credits-summary', 'Fandom supplies the character and location images') 
 INSERT INTO page_texts (page_text_id, text)
 VALUES ('footer-credit', 'A rebuild of Jessica Talisman’s South Park Ontology Explainer for Intentional Arrangement, made from a rulebook. The model, wording and layout follow her page. South Park is the work of Trey Parker and Matt Stone; the portraits are Fandom images.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
 
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('form-switch-label', 'You are editing') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('form-switch-ontology', 'The ontology form') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('form-switch-concepts', 'The concept form') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-title', 'The concept form') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-intro', 'The same ontology as ordinary tables: a table of individuals, a table for each class, and a table or a column for each property. An edit here is written straight to the rows the explainer runs on, as the matching change of its things, properties and statements; nothing is kept twice. What a table is comes from its fields. What its fields cannot say (a label, symmetric, inverse of) is on its row of ERBTables or ERBFields.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-export', 'Export the concept workbook') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-import', 'Import a concept workbook') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-open-file', 'Open the concept rulebook') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-see-page', 'See it on the explainer') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-changes-heading', 'Unsaved changes, as rows of the ontology form') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-applied', 'Applied to the ontology.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-group-individuals', 'Individuals') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-group-class', 'Classes') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-group-relationship', 'Relationships') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-group-values', 'Values') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-group-attributes', 'What the fields cannot say') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-group-support', 'Linked tables') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-group-meta', 'About this rulebook') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-new-class', 'New class') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-new-relationship', 'New relationship') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-new-values', 'New value property') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-new-class-intro', 'A class is a table of the individuals that belong to it.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-new-relationship-intro', 'A relationship is a table of facts, each linking one thing to another. Point its subject or its object at a class to say what kind of thing it must be: the domain and range rule then concludes it.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-new-values-intro', 'A value property is a table of facts, each giving a thing a value.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-new-name', 'Name: letters and digits, like Concert or performsAt') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-new-label', 'Wording on the page, like performs at') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-add', 'Add') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-cancel', 'Cancel') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-any-thing', 'any thing') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-a-member', 'a {class}') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-role-individuals', 'Every individual of the ontology. A class''s table lists the ones that belong to it; a property''s table says what is true of them.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-role-class', 'A class. Each row is an individual that belongs to it: because a fact says so (IsAsserted), or because a property whose subject or object must be a {label} was stated of it.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-role-relationship', 'A relationship between things (an object property). Each row is one fact in effect: {subject} {label} {object}.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-role-values', 'A value property (a datatype property). Each row is one fact in effect: {subject} {label} a {datatype} value.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-role-attributes', 'One row per table (ERBTables) and one per field (ERBFields), as the platform''s Schema module keeps them. On the row of a class, a property or a column that is a property is what its fields cannot say: its label, its wording on the page, whether it is symmetric, its inverse, chain and disjoint properties. The other columns follow the table or field the row is about.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-role-support', 'A table the individuals link to.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-role-meta', 'Facts about the rulebook itself. The ontology-form row says this is the concept form.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-label', 'Wording on the page') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-subject-is', 'The subject is') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-object-is', 'The object is') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-value-is', 'The value is') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-symmetric', 'Symmetric: true in both directions') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-inverse-of', 'Inverse of') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-chain', 'Concluded from a chain:') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-chain-then', 'then') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-disjoint-with', 'Never together with') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-disjoint-placeholder', 'property names, separated by commas') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-user-addable', 'Offered in the page''s Add fact form') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-none', '(none)') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-columns', 'Properties with one current value: columns of this table') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-no-columns', 'None yet.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-column-name', 'Name: letters and digits, like favoriteFood') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-column-label', 'Wording on the page, like favorite food') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-add-column', 'Add a column') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-holds-value', '{datatype}') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-holds-link', 'a link to {table}') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-remove-column', 'Remove') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-remove-class', 'Remove this class') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-remove-property', 'Remove this property') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-remove-confirm', 'Click again to remove') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-editor', 'Open the concept rulebook editor') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-editor-off', 'The concept rulebook editor is not running. Start it with ./start.sh --concept-editor') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-load-file', 'Load the concept rulebook file') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-write-file', 'Overwrite the file from these rows') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-file-changed', 'The concept rulebook file ({file}) changed on disk: saved from its rulebook editor, or edited by hand. Load it to bring those edits into the ontology, or overwrite it from the rows here.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-file-loaded', 'Loaded {file}: {rows} rows of the ontology differ from the rulebook file. Review them, then save.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-file-missing', 'There is no concept rulebook file yet ({file}). Save writes it.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-file-written', 'The concept rulebook was written to {file}.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-file-kept', 'The concept rulebook file ({file}) changed on disk and was not overwritten: load it on the Concepts page, or overwrite it there.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-file-failed', 'The concept rulebook file was not written: {reason}') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('kind-page', 'another page of this app') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('kind-newtab', 'opens in a new tab') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('kind-download', 'downloads a file') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('kind-upload', 'reads a file you pick') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('version-label', 'Rulebook v{number}') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('version-label-unsaved', 'Rulebook v{number} + unsaved changes') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('version-hint', 'The rulebook file is at version {number}. Each Save to the rulebook makes the next version.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('form-ontology-what', 'Things, properties and statements: one row per fact, as the graph draws them.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('form-concepts-what', 'Ordinary tables: one per class, one per relationship, a column per value.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('group-rows', 'These rows') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('group-excel', 'Excel') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('group-file', 'The rulebook file') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('group-editor', 'Rulebook editor') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('admin-open-file', 'Open the rulebook') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('effortless-tag', 'Effortless') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('effortless-legend', 'Added by Effortless. Everything else follows the original explainer.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('admin-tools-heading', 'The rulebook''s tools') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('admin-tools-text', 'Everything here is made from the rulebook file: these facts as things, properties and statements.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-tools-heading', 'The concept rulebook''s tools') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('concepts-tools-text', 'The same tools as the ontology form has, each made from the concept rulebook: the same facts as tables.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
+INSERT INTO page_texts (page_text_id, text)
+VALUES ('tool-here', 'You are on this page.') ON CONFLICT (page_text_id) DO UPDATE SET text = EXCLUDED.text;
+
 -- ----------------------------------------------------------------------------
 -- Engines: The execution engines the page can be computed by. Each is a build output of this rulebook.
 -- ----------------------------------------------------------------------------
@@ -3118,29 +3406,59 @@ INSERT INTO engines (engine_id, label, substrate, is_default, description, sort_
 VALUES ('owl', 'OWL and SHACL rules', 'effortless-owl', FALSE, 'The generated ontology and SHACL rules, run over the same rows by a SPARQL engine.', 3) ON CONFLICT (engine_id) DO UPDATE SET label = EXCLUDED.label, substrate = EXCLUDED.substrate, is_default = EXCLUDED.is_default, description = EXCLUDED.description, sort_order = EXCLUDED.sort_order;
 
 -- ----------------------------------------------------------------------------
--- RulebookTools: What each rulebook tool adds to the original explainer; the tools panel lists them.
+-- RulebookTools: What each rulebook tool adds, for each form of the rulebook. The explainer page and the ontology form's editor list the ontology form's tools; the concept form's editor lists the concept form's. The two forms are the same facts, so they list the same tools.
 -- ----------------------------------------------------------------------------
-INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order)
-VALUES ('engines', 'Interchangeable engines', 'The same page, computed by Postgres views, generated TypeScript or the generated OWL and SHACL rules. Switch with the control above; nothing else changes.', NULL, NULL, 1) ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order;
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('engines', 'Interchangeable engines', 'The same page, computed by Postgres views, generated TypeScript or the generated OWL and SHACL rules. Switch with the control above; nothing else changes.', NULL, NULL, 1, 'ontology') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
 
-INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order)
-VALUES ('conformance', 'Conformance', 'Every engine''s answers for the current facts, compared value by value with the conformance harness''s own rule for when two values are equal.', NULL, NULL, 2) ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order;
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('conformance', 'Conformance', 'Every engine''s answers for the current facts, compared value by value with the conformance harness''s own rule for when two values are equal.', NULL, NULL, 2, 'ontology') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
 
-INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order)
-VALUES ('explainer', 'Explainer', 'Hover a dotted value for its rule in plain words and its witness: the values it came from, down to the stated facts.', '/rulebook-explainer-dag/pages/index.html', 'Open the explainer', 3) ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order;
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('explainer', 'Explainer', 'Hover a dotted value for its rule in plain words and its witness: the values it came from, down to the stated facts.', '/rulebook-explainer-dag/pages/index.html', 'Open the explainer', 3, 'ontology') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
 
-INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order)
-VALUES ('docs', 'Documentation in 16 languages', 'Every rule of the model in plain language, generated from the rulebook.', '/rulespeak/rulespeak.html', 'Read the documentation', 4) ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order;
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('docs', 'Documentation in 16 languages', 'Every rule of the model in plain language, generated from the rulebook.', '/rulespeak/rulespeak.html', 'Read the documentation', 4, 'ontology') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
 
-INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order)
-VALUES ('admin', 'Admin', 'Every table of the rulebook as an editable grid: rules, properties and their wiring, wording, layouts, the cast. Edits apply at once; Save writes the rulebook file.', '/admin.html', 'Open the admin', 5) ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order;
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('admin', 'The ontology form', 'Every table of the rulebook as an editable grid: rules, properties and their wiring, wording, layouts, the cast. Edits apply at once; Save writes the rulebook file.', '/admin.html', 'Open the ontology form', 5, 'ontology') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
 
-INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order)
-VALUES ('xlsx', 'Excel, both ways', 'Export the current rows as a workbook with every rule as a live formula, edit it, and import it again.', '/admin.html#excel', 'Export or import', 6) ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order;
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('concepts', 'The concept form', 'The same ontology as ordinary tables: a table of individuals, a table per class, a table or a column per property, with each property''s attributes beside it. Add a person, a class, a relationship or a column there and this page shows it: every edit is written as the matching change of the rulebook''s things, properties and statements.', '/concepts.html', 'Open the concept form', 6, 'ontology') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
 
-INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order)
-VALUES ('editor', 'Rulebook editor', 'The generated editor for tables, fields and formulas, with its own database and API.', 'editor', 'Open the rulebook editor', 7) ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order;
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('xlsx', 'Excel, both ways', 'Export the current rows as a workbook with every rule as a live formula, edit it, and import it again.', '/admin.html#excel', 'Export or import', 7, 'ontology') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
 
-INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order)
-VALUES ('rulebook', 'The rulebook', 'One JSON file holds the whole model. Everything on this page is built from it.', '/rulebook/talismans-southpark-ontology-rulebook.json', 'Open the file', 8) ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order;
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('editor', 'Rulebook editor', 'The generated editor for tables, fields and formulas, with its own database and API.', 'editor', 'Open the rulebook editor', 8, 'ontology') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
+
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('rulebook', 'The rulebook', 'One JSON file holds the whole model. Everything on this page is built from it.', '/rulebook/talismans-southpark-ontology-rulebook.json', 'Open the file', 9, 'ontology') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
+
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('concept-engines', 'Interchangeable engines', 'Which facts are in effect is computed by the Postgres views, the generated TypeScript or the generated OWL and SHACL rules, and these tables show the answer. Switch with the control above; nothing else changes.', NULL, NULL, 1, 'concept') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
+
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('concept-conformance', 'Conformance', 'Every engine''s answers for the current facts, compared value by value with the conformance harness''s own rule for when two values are equal.', NULL, NULL, 2, 'concept') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
+
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('concept-explainer', 'Explainer', 'The concept rulebook''s own explainer: its tables and fields as a graph, with each one''s rule in plain words and the values it comes from.', '/concept-rulebook/explainer/rulebook-explainer-dag/pages/index.html', 'Open the explainer', 3, 'concept') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
+
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('concept-docs', 'Documentation in 16 languages', 'Every table, field and rule of the concept rulebook in plain language, generated from it.', '/concept-rulebook/rulespeak/rulespeak.html', 'Read the documentation', 4, 'concept') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
+
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('concept-ontology', 'The ontology form', 'The same facts as things, properties and statements, one row per fact, with the page''s rules, wording, layouts and cast.', '/admin.html', 'Open the ontology form', 5, 'concept') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
+
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('concept-admin', 'The concept form', 'Every table of the concept rulebook as an editable grid, with each class''s and each property''s attributes beside it. Edits apply at once, as the matching change of the ontology; Save writes both rulebook files.', '/concepts.html', 'Open the concept form', 6, 'concept') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
+
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('concept-xlsx', 'Excel, both ways', 'Export the concept tables as a workbook, edit it, and import it again: the edits come back as the matching changes of the ontology.', '/concepts.html#excel', 'Export or import', 7, 'concept') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
+
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('concept-editor', 'Rulebook editor', 'The generated editor for tables, fields and formulas, opened on the concept rulebook, with its own database and API.', 'editor', 'Open the concept rulebook editor', 8, 'concept') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
+
+INSERT INTO rulebook_tools (rulebook_tool_id, label, adds, href, link_text, sort_order, form)
+VALUES ('concept-rulebook', 'The rulebook', 'One JSON file holds the concept rulebook. The build writes it from the rulebook, and so does Save.', '/concept-rulebook/talismans-southpark-ontology-concepts.json', 'Open the file', 9, 'concept') ON CONFLICT (rulebook_tool_id) DO UPDATE SET label = EXCLUDED.label, adds = EXCLUDED.adds, href = EXCLUDED.href, link_text = EXCLUDED.link_text, sort_order = EXCLUDED.sort_order, form = EXCLUDED.form;
 

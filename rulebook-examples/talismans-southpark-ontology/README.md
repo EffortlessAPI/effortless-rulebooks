@@ -45,6 +45,15 @@ python3 ../../scripts/erb_project.py talismans-southpark-ontology --reset-db   #
 The tools list itself is the rulebook's `RulebookTools` table, and the engines are its
 `Engines` table.
 
+**Both forms of the rulebook have the same tools.** The ontology form (things, properties,
+statements) and the concept form (the same facts as tables) each have their own explainer,
+documentation in 16 languages, Excel export and import, rulebook editor and rulebook file,
+and both compare the engines. A tool row says which form it is about (`RulebookTools.Form`):
+the explainer page and the ontology form's editor list the ontology form's tools at the
+bottom, the concept form's editor lists the concept form's. The build makes the concept
+rulebook's documentation and explainer from the concept rulebook file, with the same two
+generators, into `concept-rulebook/rulespeak/` and `concept-rulebook/explainer/`.
+
 ### What is hers, what Effortless added, and what each control does
 
 - **One colour marks what Effortless added.** The bar on top, the "Computed by" card, the
@@ -298,6 +307,14 @@ an earlier one would need repeated rounds.
 - **Schema changes are not live.** The admin edits rows. Fields, formulas and tables
   change in the rulebook editor or the file, followed by a rebuild. (A new class, property
   or column of the ONTOLOGY is not a schema change: it is rows, made in the concept form.)
+- **The concept rulebook's explainer lists 6 of its 13 tables until the published explainer
+  tool is updated.** The explainer listed only tables whose names start with a capital
+  letter, and a property's table is named for the property (`isParentOf`, `attends`,
+  `hasAge`), so those were left out with nothing said. The concept rulebook's documentation
+  and its rulebook editor show all 13. Fixed with a test in `Versioned-Stable-SSoTme-Tools`
+  (bb10fdf7, 2026-11-27) and checked against this project's generated explainer (6 tables
+  before, 13 after); it reaches this project when `rulebook-to-explainer-dag` is published
+  and the project rebuilt.
 - **Only this app's Save makes a new rulebook version.** The rulebook editor's Save, an
   edit by hand and a build leave the number as it is. Earlier versions are not kept by the
   app: the number names a version, and the file's history is where it is found again.

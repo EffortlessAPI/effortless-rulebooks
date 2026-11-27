@@ -7,7 +7,7 @@
 // edits and the server answers with the concept rulebook as it now reads.
 (function () {
   const $ = (id) => document.getElementById(id);
-  const { esc, changeLines, showVersion, nameKinds } = window.RulebookAdmin;
+  const { esc, changeLines, showVersion, nameKinds, toolList, compareEngines } = window.RulebookAdmin;
   const MAX_ROWS = 300;
   const GROUPS = ['individuals', 'class', 'relationship', 'values', 'attributes', 'support', 'meta'];
   const NEW = { class: 'concepts-new-class', relationship: 'concepts-new-relationship', values: 'concepts-new-values' };
@@ -343,6 +343,10 @@
     await load();
     const ed = await api('GET', '/api/concepts/editor');
     if (ed.running) $('editor').href = ed.url; else { $('editor').removeAttribute('href'); $('editor').removeAttribute('data-kind'); $('editor').classList.add('off'); $('editor-note').textContent = T('concepts-editor-off'); }
+    // The concept form's tools: the same ones the ontology form has, made from the concept rulebook.
+    $('tools').innerHTML = toolList((await api('GET', '/api/tools?form=concept')).tools, { T, editor: ed, editorOff: 'concepts-editor-off' });
+    nameKinds(T, texts, $('tools'));
+    $('compare').addEventListener('click', () => compareEngines({ api, T, box: $('conformance'), show: 25 }));
     for (const kind of Object.keys(JOBS)) await jobs.watch(kind, false);
   })().catch((e) => { console.error(e); say(e.message, true); });
 })();

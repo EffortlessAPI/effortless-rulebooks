@@ -95,7 +95,7 @@
    {
     "MetaKey": "rulebook-version",
     "ValueType": "number",
-    "StringValue": "1",
+    "StringValue": "2",
     "JsonValue": null,
     "Name": "rulebook-version"
    }
@@ -43271,6 +43271,31 @@
     "PageTextId": "effortless-legend",
     "Text": "Added by Effortless. Everything else follows the original explainer.",
     "Name": "effortless-legend"
+   },
+   {
+    "PageTextId": "admin-tools-heading",
+    "Text": "The rulebook's tools",
+    "Name": "admin-tools-heading"
+   },
+   {
+    "PageTextId": "admin-tools-text",
+    "Text": "Everything here is made from the rulebook file: these facts as things, properties and statements.",
+    "Name": "admin-tools-text"
+   },
+   {
+    "PageTextId": "concepts-tools-heading",
+    "Text": "The concept rulebook's tools",
+    "Name": "concepts-tools-heading"
+   },
+   {
+    "PageTextId": "concepts-tools-text",
+    "Text": "The same tools as the ontology form has, each made from the concept rulebook: the same facts as tables.",
+    "Name": "concepts-tools-text"
+   },
+   {
+    "PageTextId": "tool-here",
+    "Text": "You are on this page.",
+    "Name": "tool-here"
    }
   ]
  },
@@ -43359,7 +43384,7 @@
   ]
  },
  "RulebookTools": {
-  "Description": "What each rulebook tool adds to the original explainer; the tools panel lists them.",
+  "Description": "What each rulebook tool adds, for each form of the rulebook. The explainer page and the ontology form's editor list the ontology form's tools; the concept form's editor lists the concept form's. The two forms are the same facts, so they list the same tools.",
   "schema": [
    {
     "name": "RulebookToolId",
@@ -43380,14 +43405,14 @@
     "datatype": "string",
     "type": "raw",
     "nullable": false,
-    "Description": "What it adds to the original explainer."
+    "Description": "What it adds, for this form of the rulebook."
    },
    {
     "name": "Href",
     "datatype": "string",
     "type": "raw",
     "nullable": true,
-    "Description": "Where its link goes; 'editor' means the running rulebook editor."
+    "Description": "Where its link goes; 'editor' means this form's running rulebook editor."
    },
    {
     "name": "LinkText",
@@ -43402,6 +43427,13 @@
     "type": "raw",
     "nullable": false,
     "Description": "Position in the panel."
+   },
+   {
+    "name": "Form",
+    "datatype": "string",
+    "type": "raw",
+    "nullable": false,
+    "Description": "Which form of the rulebook the tool is about: ontology (things, properties, statements) or concept (tables)."
    },
    {
     "name": "Name",
@@ -43420,6 +43452,7 @@
     "Href": null,
     "LinkText": null,
     "SortOrder": 1,
+    "Form": "ontology",
     "Name": "Interchangeable engines"
    },
    {
@@ -43429,6 +43462,7 @@
     "Href": null,
     "LinkText": null,
     "SortOrder": 2,
+    "Form": "ontology",
     "Name": "Conformance"
    },
    {
@@ -43438,6 +43472,7 @@
     "Href": "/rulebook-explainer-dag/pages/index.html",
     "LinkText": "Open the explainer",
     "SortOrder": 3,
+    "Form": "ontology",
     "Name": "Explainer"
    },
    {
@@ -43447,16 +43482,18 @@
     "Href": "/rulespeak/rulespeak.html",
     "LinkText": "Read the documentation",
     "SortOrder": 4,
+    "Form": "ontology",
     "Name": "Documentation in 16 languages"
    },
    {
     "RulebookToolId": "admin",
-    "Label": "Admin",
+    "Label": "The ontology form",
     "Adds": "Every table of the rulebook as an editable grid: rules, properties and their wiring, wording, layouts, the cast. Edits apply at once; Save writes the rulebook file.",
     "Href": "/admin.html",
-    "LinkText": "Open the admin",
+    "LinkText": "Open the ontology form",
     "SortOrder": 5,
-    "Name": "Admin"
+    "Form": "ontology",
+    "Name": "The ontology form"
    },
    {
     "RulebookToolId": "concepts",
@@ -43465,6 +43502,7 @@
     "Href": "/concepts.html",
     "LinkText": "Open the concept form",
     "SortOrder": 6,
+    "Form": "ontology",
     "Name": "The concept form"
    },
    {
@@ -43474,6 +43512,7 @@
     "Href": "/admin.html#excel",
     "LinkText": "Export or import",
     "SortOrder": 7,
+    "Form": "ontology",
     "Name": "Excel, both ways"
    },
    {
@@ -43483,6 +43522,7 @@
     "Href": "editor",
     "LinkText": "Open the rulebook editor",
     "SortOrder": 8,
+    "Form": "ontology",
     "Name": "Rulebook editor"
    },
    {
@@ -43492,6 +43532,97 @@
     "Href": "/rulebook/talismans-southpark-ontology-rulebook.json",
     "LinkText": "Open the file",
     "SortOrder": 9,
+    "Form": "ontology",
+    "Name": "The rulebook"
+   },
+   {
+    "RulebookToolId": "concept-engines",
+    "Label": "Interchangeable engines",
+    "Adds": "Which facts are in effect is computed by the Postgres views, the generated TypeScript or the generated OWL and SHACL rules, and these tables show the answer. Switch with the control above; nothing else changes.",
+    "Href": null,
+    "LinkText": null,
+    "SortOrder": 1,
+    "Form": "concept",
+    "Name": "Interchangeable engines"
+   },
+   {
+    "RulebookToolId": "concept-conformance",
+    "Label": "Conformance",
+    "Adds": "Every engine's answers for the current facts, compared value by value with the conformance harness's own rule for when two values are equal.",
+    "Href": null,
+    "LinkText": null,
+    "SortOrder": 2,
+    "Form": "concept",
+    "Name": "Conformance"
+   },
+   {
+    "RulebookToolId": "concept-explainer",
+    "Label": "Explainer",
+    "Adds": "The concept rulebook's own explainer: its tables and fields as a graph, with each one's rule in plain words and the values it comes from.",
+    "Href": "/concept-rulebook/explainer/rulebook-explainer-dag/pages/index.html",
+    "LinkText": "Open the explainer",
+    "SortOrder": 3,
+    "Form": "concept",
+    "Name": "Explainer"
+   },
+   {
+    "RulebookToolId": "concept-docs",
+    "Label": "Documentation in 16 languages",
+    "Adds": "Every table, field and rule of the concept rulebook in plain language, generated from it.",
+    "Href": "/concept-rulebook/rulespeak/rulespeak.html",
+    "LinkText": "Read the documentation",
+    "SortOrder": 4,
+    "Form": "concept",
+    "Name": "Documentation in 16 languages"
+   },
+   {
+    "RulebookToolId": "concept-ontology",
+    "Label": "The ontology form",
+    "Adds": "The same facts as things, properties and statements, one row per fact, with the page's rules, wording, layouts and cast.",
+    "Href": "/admin.html",
+    "LinkText": "Open the ontology form",
+    "SortOrder": 5,
+    "Form": "concept",
+    "Name": "The ontology form"
+   },
+   {
+    "RulebookToolId": "concept-admin",
+    "Label": "The concept form",
+    "Adds": "Every table of the concept rulebook as an editable grid, with each class's and each property's attributes beside it. Edits apply at once, as the matching change of the ontology; Save writes both rulebook files.",
+    "Href": "/concepts.html",
+    "LinkText": "Open the concept form",
+    "SortOrder": 6,
+    "Form": "concept",
+    "Name": "The concept form"
+   },
+   {
+    "RulebookToolId": "concept-xlsx",
+    "Label": "Excel, both ways",
+    "Adds": "Export the concept tables as a workbook, edit it, and import it again: the edits come back as the matching changes of the ontology.",
+    "Href": "/concepts.html#excel",
+    "LinkText": "Export or import",
+    "SortOrder": 7,
+    "Form": "concept",
+    "Name": "Excel, both ways"
+   },
+   {
+    "RulebookToolId": "concept-editor",
+    "Label": "Rulebook editor",
+    "Adds": "The generated editor for tables, fields and formulas, opened on the concept rulebook, with its own database and API.",
+    "Href": "editor",
+    "LinkText": "Open the concept rulebook editor",
+    "SortOrder": 8,
+    "Form": "concept",
+    "Name": "Rulebook editor"
+   },
+   {
+    "RulebookToolId": "concept-rulebook",
+    "Label": "The rulebook",
+    "Adds": "One JSON file holds the concept rulebook. The build writes it from the rulebook, and so does Save.",
+    "Href": "/concept-rulebook/talismans-southpark-ontology-concepts.json",
+    "LinkText": "Open the file",
+    "SortOrder": 9,
+    "Form": "concept",
     "Name": "The rulebook"
    }
   ]

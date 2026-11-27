@@ -3,7 +3,7 @@
 // chosen engine computes them. Save writes the rows back into the rulebook file.
 (function () {
   const $ = (id) => document.getElementById(id);
-  const { esc, changeLines, showVersion, nameKinds } = window.RulebookAdmin;   // shared with the other pages
+  const { esc, changeLines, showVersion, nameKinds, toolList, compareEngines } = window.RulebookAdmin;   // shared with the other pages
   const MAX_ROWS = 200, MAX_OPTIONS = 80;
   let texts = {}, live = {}, tables = [], current = null, rows = [], engines = [], explainerReady = false, version = null;
   let engineId = localStorage.getItem('erb.backend');
@@ -162,19 +162,7 @@
     jobs.start('import', body);
   });
   $('export').addEventListener('click', () => jobs.start('export'));
-  $('compare').addEventListener('click', async () => {
-    const box = $('conformance');
-    box.className = 'conformance'; box.textContent = T('conformance-running');
-    try {
-      const r = await api('POST', '/api/conformance');
-      const agree = r.differingCount === 0 && r.missingRowCount === 0;
-      box.className = 'conformance' + (agree ? '' : ' differ');
-      box.innerHTML = esc(agree ? T('conformance-agree', { engines: r.engines.length, cells: r.cells }) : T('conformance-differ', { count: r.differingCount + r.missingRowCount, cells: r.cells })) +
-        `<div class="muted">${esc(r.engines.map((x) => `${x.label} ${x.ms} ms`).join(' · '))}</div>` +
-        (r.skipped.length ? `<div class="muted">${r.skipped.map((s) => esc(T('engine-unavailable', { engine: s.label, reason: s.reason }))).join('<br>')}</div>` : '') +
-        (agree ? '' : '<ul>' + r.differing.slice(0, 25).map((d) => `<li>${esc(d.table)}.${esc(d.field)} of ${esc(d.key)}: ${Object.entries(d.values).map(([k, v]) => `${esc(k)} = ${esc(JSON.stringify(v))}`).join(', ')}</li>`).join('') + '</ul>');
-    } catch (err) { box.className = 'conformance differ'; box.textContent = err.message; }
-  });
+  $('compare').addEventListener('click', () => compareEngines({ api, T, box: $('conformance'), show: 25 }));
 
   // The long actions run on the server as jobs (RulebookAdmin.jobs starts and watches them).
   const JOBS = {
@@ -213,6 +201,9 @@
     await loadTable(tables.find((t) => t.name === 'Statements') ? 'Statements' : tables[0].name);
     const ed = await api('GET', '/api/admin/editor');
     if (ed.running) $('editor').href = ed.url; else { $('editor').removeAttribute('href'); $('editor').removeAttribute('data-kind'); $('editor').classList.add('off'); $('editor-note').textContent = T('admin-editor-off'); }
+    // The ontology form's tools, as the explainer page lists them.
+    $('tools').innerHTML = toolList((await api('GET', '/api/tools?form=ontology')).tools, { T, editor: ed, editorOff: 'admin-editor-off' });
+    nameKinds(T, texts, $('tools'));
     for (const kind of Object.keys(JOBS)) await jobs.watch(kind, false);
   })().catch((e) => { console.error(e); say(e.message, true); });
 })();

@@ -244,24 +244,10 @@ export function erbTextOr(v: Value): Value { return truthy(v) ? vS(pyStr(v)) : E
 /** `str(x if x is not None else "")`. */
 export function erbTextNotNull(v: Value): Value { return v.k === KNull ? EMPTY : vS(pyStr(v)); }
 
-/** CONCAT / `&` over parts already rendered by erbPart (or literals). A Null part,
- *  which only erbBlankValue=propagate produces, makes the result blank. */
 export function erbConcat(...parts: Value[]): Value {
   let out = "";
-  for (const p of parts) {
-    if (p.k === KNull) return Null;
-    out += p.s;
-  }
+  for (const p of parts) out += p.s;
   return vS(out);
-}
-
-/** One non-literal CONCAT / `&` operand as text (`render`, default erbText). A blank
- *  operand is "" under erbBlankValue=coerce and Null (it makes the whole join blank)
- *  under propagate. */
-export function erbPart(v: Value, render: (v: Value) => Value = erbText): Value {
-  if (v.k === KNull || (v.k === KStr && v.s === "")) return propagateValues() ? Null : EMPTY;
-  const text = render(v);
-  return text.k === KNull ? EMPTY : text;
 }
 
 // ───────────────────────────── numbers ─────────────────────────────
@@ -288,69 +274,38 @@ function toNumber(v: Value): Value | null {
 
 function numOrZero(v: Value): Value { return toNumber(v) ?? vI(0); }
 
-/** The operands of `+ - * /` as numbers, or null when the result is blank. coerce: a
- *  blank or non-numeric operand is 0. propagate: it makes the whole result blank. */
-function operands(...vs: Value[]): Value[] | null {
-  if (propagateValues()) {
-    const ns = vs.map(toNumber);
-    return ns.some((n) => n === null) ? null : (ns as Value[]);
-  }
-  return vs.map(numOrZero);
-}
-
 function arith(a: Value, b: Value, op: "+" | "-" | "*"): Value {
   const isInt = a.isInt && b.isInt;
   const n = op === "+" ? a.n + b.n : op === "-" ? a.n - b.n : a.n * b.n;
   return new Value(KNum, false, n, isInt);
 }
 
-/** Unary `-`. coerce: a blank (or non-numeric) operand is 0, so -blank is 0.
- *  propagate: -blank is blank. */
 export function erbNeg(v: Value): Value {
-  const o = operands(v);
-  if (o === null) return Null;
-  return new Value(KNum, false, -o[0].n, o[0].isInt);
-}
-
-/** A day count to add to a date, or null when the result is blank (a blank count under
- *  erbBlankValue=propagate). */
-function daysDelta(v: Value): number | null {
-  if (propagateValues() && toNumber(v) === null) return null;
-  return daysDeltaNanos(v);
+  if (!truthy(v)) return vI(0);
+  if (v.k !== KNum) fail(`bad operand type for unary -: ${pyRepr(v)}`);
+  return new Value(KNum, false, -v.n, v.isInt);
 }
 
 export function erbAdd(a: Value, b: Value): Value {
   const at = dateOrNone(a);
   const bt = dateOrNone(b);
-  if (at && !bt) { const d = daysDelta(b); return d === null ? Null : vT(addNanos(at, d)); }
-  if (bt && !at) { const d = daysDelta(a); return d === null ? Null : vT(addNanos(bt, d)); }
-  const o = operands(a, b);
-  return o === null ? Null : arith(o[0], o[1], "+");
+  if (at && !bt) return vT(addNanos(at, daysDeltaNanos(b)));
+  if (bt && !at) return vT(addNanos(bt, daysDeltaNanos(a)));
+  return arith(numOrZero(a), numOrZero(b), "+");
 }
 
 export function erbSub(a: Value, b: Value): Value {
   const at = dateOrNone(a);
-  if (at && !dateOrNone(b)) { const d = daysDelta(b); return d === null ? Null : vT(addNanos(at, -d)); }
-  const o = operands(a, b);
-  return o === null ? Null : arith(o[0], o[1], "-");
+  if (at && !dateOrNone(b)) return vT(addNanos(at, -daysDeltaNanos(b)));
+  return arith(numOrZero(a), numOrZero(b), "-");
 }
 
-/** A date-typed field plus (sign 1) or minus (sign -1) a count of days. A blank date
- *  gives a blank in both erbBlankValue settings (SQL's NULL::date + n). */
-export function erbAddDays(date: Value, days: Value, sign: number): Value {
-  if (date.k === KNull || (date.k === KStr && date.s === "")) return Null;
-  return sign > 0 ? erbAdd(date, days) : erbSub(date, days);
-}
-
-export function erbMul(a: Value, b: Value): Value {
-  const o = operands(a, b);
-  return o === null ? Null : arith(o[0], o[1], "*");
-}
+export function erbMul(a: Value, b: Value): Value { return arith(numOrZero(a), numOrZero(b), "*"); }
 
 export function erbDiv(a: Value, b: Value): Value {
-  const o = operands(a, b);
-  if (o === null || o[1].n === 0) return Null;
-  return vF(o[0].n / o[1].n);
+  const d = numOrZero(b);
+  if (d.n === 0) return Null;
+  return vF(numOrZero(a).n / d.n);
 }
 
 /** A day count as nanoseconds, truncated as Go's time.Duration conversion truncates. */
@@ -489,7 +444,6 @@ const erbParameterValues: Record<string, string[]> = {
   erbTimezone: ["UTC"], // or any IANA zone name
   erbDateTimeText: ["iso8601", "sql"],
   erbBlankLogic: ["coerce", "propagate"],
-  erbBlankValue: ["coerce", "propagate"],
   erbWholeNumber: ["by-field-type", "integer", "decimal"],
 };
 
@@ -534,11 +488,6 @@ function erbParam(name: string): string {
 }
 
 function coerceBlanks(): boolean { return erbParam("erbBlankLogic") === "coerce"; }
-
-/** erbBlankValue=propagate: a blank operand of an operator, or a blank part of a
- *  CONCAT / `&`, makes the result blank (not known), as SQL's NULL does. coerce
- *  (the default): a blank is 0 in arithmetic and "" in text. */
-function propagateValues(): boolean { return erbParam("erbBlankValue") === "propagate"; }
 
 /** The UTC offset, in seconds, erbTimezone has at the instant `instantSec`. */
 function zoneOffsetAt(instantSec: number): number {

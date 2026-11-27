@@ -23,6 +23,15 @@ const CONCLUSION_FIELDS = ['FiringId', 'Target', 'TargetSubjectLabel', 'TargetPr
 
 export function createExplainer({ ws }) {
   const texts = () => Object.fromEntries(ws.rows('PageTexts').map((r) => [r.PageTextId, r.Text]));
+
+  // The tools of one form of the rulebook (ontology or concept), in the panel's order. The
+  // two forms are the same facts, so each has the same tools, made from its own rulebook.
+  function tools(form) {
+    const all = ws.rows('RulebookTools');
+    const mine = all.filter((t) => t.Form === form);
+    if (!mine.length) throw new Error(`The rulebook has no form ${JSON.stringify(form)}: its tools are listed for ${[...new Set(all.map((t) => t.Form))].join(' and ')}`);
+    return mine.sort(bySort).map(snakeRow);
+  }
   const text = (key) => {
     const row = ws.get('PageTexts', key);
     if (!row) throw new Error(`The rulebook has no page text "${key}"`);
@@ -71,7 +80,7 @@ export function createExplainer({ ws }) {
       layouts,
       slots: [...ws.rows('LayoutSlots')].sort(bySort).map((r) => [r.X, r.Y]),
       names: [...new Set([...things.map((thing) => thing.Label), ...[...ws.rows('Portraits')].sort(bySort).map((p) => p.PortraitId)])],
-      tools: [...ws.rows('RulebookTools')].sort(bySort).map(snakeRow),
+      tools: tools('ontology'),
       record: recordSummary(facts),
       unsaved: ws.changes().total,
       version: ws.rulebookVersion(),
@@ -181,5 +190,5 @@ export function createExplainer({ ws }) {
     return { added: true, message, candidates };
   }
 
-  return { page, switchFact, switchRule, removeFact, runScenario, addFact, nextNumbers, text };
+  return { page, tools, switchFact, switchRule, removeFact, runScenario, addFact, nextNumbers, text };
 }

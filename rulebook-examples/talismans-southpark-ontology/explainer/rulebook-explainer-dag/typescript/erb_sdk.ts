@@ -38,12 +38,10 @@ import {
   erbDatetimeText,
   erbText,
   erbConcat,
-  erbPart,
   erbConfigure,
   erbNeg,
   erbAdd,
   erbSub,
-  erbAddDays,
   erbMul,
   erbDiv,
   erbInteger,
@@ -97,7 +95,7 @@ import type { ClosureSpec, FieldType, TableSpec } from "./erb_runtime.js";
 
 /** The ERB build parameters this SDK was generated under
  *  (docs/ERB-BUILD-PARAMETERS.md). The runtime refuses to run unconfigured. */
-export const erbBuildParameters: Record<string, string> = { "erbDateDiff": "calendar", "erbTimezone": "UTC", "erbDateTimeText": "iso8601", "erbBlankLogic": "coerce", "erbBlankValue": "coerce", "erbWholeNumber": "by-field-type" };
+export const erbBuildParameters: Record<string, string> = { "erbDateDiff": "calendar", "erbTimezone": "UTC", "erbDateTimeText": "iso8601", "erbBlankLogic": "coerce", "erbWholeNumber": "by-field-type" };
 erbConfigure(erbBuildParameters);
 
 // =============================================================================
@@ -959,14 +957,14 @@ export function calcStatementsObjectText(tc: StatementsRow): string | null {
  *  Order 3. The fact in words.
  *  Formula: =CONCAT({{SubjectLabel}}, " ", {{PropertyLabel}}, " ", {{ObjectText}}) */
 export function calcStatementsName(tc: StatementsRow): string | null {
-  return toStringPtr(erbConcat(erbPart(vStr(tc.subject_label)), vS(" "), erbPart(vStr(tc.property_label)), vS(" "), erbPart(vStr(tc.object_text))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.subject_label)), vS(" "), erbText(vStr(tc.property_label)), vS(" "), erbText(vStr(tc.object_text))));
 }
 
 /** Computes the Words calculated field.
  *  Order 2. The fact as a conclusion card quotes it, with a literal written in Turtle form.
  *  Formula: =CONCAT({{SubjectLabel}}, " ", {{PropertyLabel}}, " ", IF({{ObjectThing}} = "", CONCAT({{LiteralQuote}}, {{ObjectValue}}, {{LiteralQuote}}, {{LiteralTypeMarker}}, {{PropertyDatatype}}), {{ObjectLabel}})) */
 export function calcStatementsWords(tc: StatementsRow): string | null {
-  return toStringPtr(erbConcat(erbPart(vStr(tc.subject_label)), vS(" "), erbPart(vStr(tc.property_label)), vS(" "), erbPart(erbIf(erbBool3(erbIsBlank(vStr(tc.object_thing))), () => erbConcat(erbPart(vStr(tc.literal_quote)), erbPart(vStr(tc.object_value)), erbPart(vStr(tc.literal_quote)), erbPart(vStr(tc.literal_type_marker)), erbPart(vStr(tc.property_datatype))), () => vStr(tc.object_label)))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.subject_label)), vS(" "), erbText(vStr(tc.property_label)), vS(" "), erbText(erbIf(erbBool3(erbIsBlank(vStr(tc.object_thing))), () => erbConcat(erbText(vStr(tc.literal_quote)), erbText(vStr(tc.object_value)), erbText(vStr(tc.literal_quote)), erbText(vStr(tc.literal_type_marker)), erbText(vStr(tc.property_datatype))), () => vStr(tc.object_label)))));
 }
 
 /** Computes the Source calculated field.
@@ -980,7 +978,7 @@ export function calcStatementsSource(tc: StatementsRow): string | null {
  *  Order 1. Groups the values one subject has for one property.
  *  Formula: =CONCAT({{Subject}}, "|", {{Property}}) */
 export function calcStatementsSubjectPropertyKey(tc: StatementsRow): string | null {
-  return toStringPtr(erbConcat(erbPart(vStrPlain(tc.subject)), vS("|"), erbPart(vStrPlain(tc.property))));
+  return toStringPtr(erbConcat(erbText(vStrPlain(tc.subject)), vS("|"), erbText(vStrPlain(tc.property))));
 }
 
 /** Computes the IsInEffect calculated field.
@@ -1099,7 +1097,7 @@ export function calcStatementsSubjectNodeKey(tc: StatementsRow): string | null {
  *  Order 2. The graph node this fact points at: the thing, or one node per value and datatype.
  *  Formula: =IF({{ObjectThing}} = "", CONCAT("literal|", {{ObjectValue}}, "|", {{PropertyDatatype}}), {{ObjectThing}}) */
 export function calcStatementsObjectNodeKey(tc: StatementsRow): string | null {
-  return toStringPtr(erbIf(erbBool3(erbIsBlank(vStr(tc.object_thing))), () => erbConcat(vS("literal|"), erbPart(vStr(tc.object_value)), vS("|"), erbPart(vStr(tc.property_datatype))), () => vStr(tc.object_thing)));
+  return toStringPtr(erbIf(erbBool3(erbIsBlank(vStr(tc.object_thing))), () => erbConcat(vS("literal|"), erbText(vStr(tc.object_value)), vS("|"), erbText(vStr(tc.property_datatype))), () => vStr(tc.object_thing)));
 }
 
 /** Computes the ObjectNodeKind calculated field.
@@ -1380,7 +1378,7 @@ export function calcFiringsChosenUnit(tc: FiringsRow): number | null {
  *  Order 19. The conclusion card's provenance line, in the page's wording.
  *  Formula: =IF({{IsChosen}}, CONCAT("Worked out by the ", {{KindWording}}, " from “", {{FirstWords}}, "”", IF({{Kind}} = "chain", CONCAT(" and “", {{SecondWords}}, "”"), IF({{Kind}} = "domain", CONCAT(" and “", {{FirstProperty}}, " has domain ", {{FirstPropertyDomainClass}}, "”"), IF({{Kind}} = "range", CONCAT(" and “", {{FirstProperty}}, " has range ", {{FirstPropertyRangeClass}}, "”"), ""))), "."), "") */
 export function calcFiringsCardText(tc: FiringsRow): string | null {
-  return toStringPtr(erbIf(erbBool3(vBool(tc.is_chosen)), () => erbConcat(vS("Worked out by the "), erbPart(vStr(tc.kind_wording)), vS(" from “"), erbPart(vStr(tc.first_words)), vS("”"), erbPart(erbIf(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("chain"))), () => erbConcat(vS(" and “"), erbPart(vStr(tc.second_words)), vS("”")), () => erbIf(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("domain"))), () => erbConcat(vS(" and “"), erbPart(vStr(tc.first_property)), vS(" has domain "), erbPart(vStr(tc.first_property_domain_class)), vS("”")), () => erbIf(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("range"))), () => erbConcat(vS(" and “"), erbPart(vStr(tc.first_property)), vS(" has range "), erbPart(vStr(tc.first_property_range_class)), vS("”")), () => vS(""))))), vS(".")), () => vS("")));
+  return toStringPtr(erbIf(erbBool3(vBool(tc.is_chosen)), () => erbConcat(vS("Worked out by the "), erbText(vStr(tc.kind_wording)), vS(" from “"), erbText(vStr(tc.first_words)), vS("”"), erbText(erbIf(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("chain"))), () => erbConcat(vS(" and “"), erbText(vStr(tc.second_words)), vS("”")), () => erbIf(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("domain"))), () => erbConcat(vS(" and “"), erbText(vStr(tc.first_property)), vS(" has domain "), erbText(vStr(tc.first_property_domain_class)), vS("”")), () => erbIf(erbBool3(erbEq(erbNullif(vStrPlain(tc.kind)), vS("range"))), () => erbConcat(vS(" and “"), erbText(vStr(tc.first_property)), vS(" has range "), erbText(vStr(tc.first_property_range_class)), vS("”")), () => vS(""))))), vS(".")), () => vS("")));
 }
 
 /** Computes the Name calculated field.
@@ -1480,7 +1478,7 @@ export function calcDisjointChecksViolationUnit(tc: DisjointChecksRow): number |
  *  Order 18. The page's contradiction alert, blank when there is none.
  *  Formula: =IF({{ViolationUnit}} = 1, CONCAT("Contradiction found. ", {{SubjectLabel}}, " is recorded as both parent and spouse of ", {{ObjectLabel}}, ". Check those facts and the selected disjoint rule."), "") */
 export function calcDisjointChecksAlarmText(tc: DisjointChecksRow): string | null {
-  return toStringPtr(erbIf(erbBool3(erbEq(vInt(tc.violation_unit), vI(1))), () => erbConcat(vS("Contradiction found. "), erbPart(vStr(tc.subject_label)), vS(" is recorded as both parent and spouse of "), erbPart(vStr(tc.object_label)), vS(". Check those facts and the selected disjoint rule.")), () => vS("")));
+  return toStringPtr(erbIf(erbBool3(erbEq(vInt(tc.violation_unit), vI(1))), () => erbConcat(vS("Contradiction found. "), erbText(vStr(tc.subject_label)), vS(" is recorded as both parent and spouse of "), erbText(vStr(tc.object_label)), vS(". Check those facts and the selected disjoint rule.")), () => vS("")));
 }
 
 /** Computes the Name calculated field.
@@ -1886,7 +1884,7 @@ export function loadEnginesRows(file: string): EnginesRow[] {
 
 // =============================================================================
 // RULEBOOKTOOLS TABLE
-// What each rulebook tool adds to the original explainer; the tools panel lists them.
+// What each rulebook tool adds, for each form of the rulebook. The explainer page and the ontology form's editor list the ontology form's tools; the concept form's editor lists the concept form's. The two forms are the same facts, so they list the same tools.
 // =============================================================================
 
 /** A row in the RulebookTools table. */
@@ -1895,14 +1893,16 @@ export interface RulebookToolsRow {
   rulebook_tool_id: string;
   /** The tool's name. */
   label: string;
-  /** What it adds to the original explainer. */
+  /** What it adds, for this form of the rulebook. */
   adds: string;
-  /** Where its link goes; 'editor' means the running rulebook editor. */
+  /** Where its link goes; 'editor' means this form's running rulebook editor. */
   href: string | null;
   /** The link's text. */
   link_text: string | null;
   /** Position in the panel. */
   sort_order: number;
+  /** Which form of the rulebook the tool is about: ontology (things, properties, statements) or concept (tables). */
+  form: string;
   /** Order 1. The tool's name. */
   name: string | null;
   _erb_errors?: Record<string, string>;
@@ -1915,6 +1915,7 @@ const rulebookToolsFieldTypes: Record<string, FieldType> = {
   href: "*string",
   link_text: "*string",
   sort_order: "int",
+  form: "string",
   name: "*string",
 };
 
@@ -1942,7 +1943,7 @@ export const calculatedFieldCount = 68;
 
 /** Every table, in rulebook order. */
 export const erbTables: TableSpec[] = [
-  { name: "__meta__", file: "__meta__", rulebookRows: 7, fields: __meta__FieldTypes,
+  { name: "__meta__", file: "__meta__", rulebookRows: 8, fields: __meta__FieldTypes,
     columns: { meta_key: "MetaKey", name: "Name", value_type: "ValueType", string_value: "StringValue", json_value: "JsonValue" },
     stored: ["meta_key", "value_type", "string_value", "json_value"],
     compute: (row: any) => compute__meta__(row as __meta__Row),
@@ -2120,7 +2121,7 @@ export const erbTables: TableSpec[] = [
     compute: (row: any) => computeLayoutSlots(row as LayoutSlotsRow),
     lookups: [],
     aggregations: [] },
-  { name: "PageTexts", file: "page_texts", rulebookRows: 102, fields: pageTextsFieldTypes,
+  { name: "PageTexts", file: "page_texts", rulebookRows: 198, fields: pageTextsFieldTypes,
     columns: { page_text_id: "PageTextId", text: "Text", name: "Name" },
     stored: ["page_text_id", "text"],
     compute: (row: any) => computePageTexts(row as PageTextsRow),
@@ -2132,9 +2133,9 @@ export const erbTables: TableSpec[] = [
     compute: (row: any) => computeEngines(row as EnginesRow),
     lookups: [],
     aggregations: [] },
-  { name: "RulebookTools", file: "rulebook_tools", rulebookRows: 8, fields: rulebookToolsFieldTypes,
-    columns: { rulebook_tool_id: "RulebookToolId", label: "Label", adds: "Adds", href: "Href", link_text: "LinkText", sort_order: "SortOrder", name: "Name" },
-    stored: ["rulebook_tool_id", "label", "adds", "href", "link_text", "sort_order"],
+  { name: "RulebookTools", file: "rulebook_tools", rulebookRows: 18, fields: rulebookToolsFieldTypes,
+    columns: { rulebook_tool_id: "RulebookToolId", label: "Label", adds: "Adds", href: "Href", link_text: "LinkText", sort_order: "SortOrder", form: "Form", name: "Name" },
+    stored: ["rulebook_tool_id", "label", "adds", "href", "link_text", "sort_order", "form"],
     compute: (row: any) => computeRulebookTools(row as RulebookToolsRow),
     lookups: [],
     aggregations: [] },

@@ -115,6 +115,14 @@ them there. See "Two forms of one rulebook" in the README.
 - **Its rulebook editor** is `./start.sh --concept-editor`, a second container on ports
   43621 (API), 43622 (UI), 43623 (Postgres), generated into `concept-rulebook/` like the
   first one in `effortless-rulebook/`.
+- **Both forms have the same tools, each made from its own rulebook.** A `RulebookTools` row
+  says which form it is about (`Form`: `ontology` or `concept`); `GET /api/tools?form=` gives
+  one form's list and `toolList` (in `admin-shared.js`) draws it on all three pages. The
+  concept rulebook's documentation and explainer are build steps on the concept file
+  (`conceptrulebooktorulespeak`, `conceptrulebooktoexplainerdag`, `conceptexplainertypescript`,
+  after `concept-rulebook`), served under `/concept-rulebook/`. A tool added for one form is
+  added for the other: a test fails when the two lists differ by name, or when a listed link
+  does not answer.
 - Its wording is `concepts-*` in `PageTexts`. `node --test testing/app/concepts.test.mjs`
   covers it on each engine, through Excel and through the file;
   `python3 ../../scripts/tests/test_ontology_form.py` covers the mapping.
