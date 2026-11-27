@@ -13,6 +13,11 @@
 <body data-mode="tools" class="admin">
 <div class="wrap wide">
   <nav class="modebar"><a href="/" data-text="admin-back"></a></nav>
+  <nav class="formswitch" aria-label="Which form of the rulebook this page edits">
+    <span class="formswitch-label" data-text="form-switch-label"></span>
+    <a href="/admin.html" aria-current="page" data-text="form-switch-ontology"></a>
+    <a href="/concepts.html" data-text="form-switch-concepts"></a>
+  </nav>
   <header>
     <h1 data-text="admin-title"></h1>
     <p data-text="admin-intro"></p>
@@ -63,6 +68,7 @@
 <script src="/rulebook-explainer-dag/dag-resolver.js"></script>
 <script src="/rulebook-explainer-dag/routing.js"></script>
 <script src="/rulebook-explainer-dag/explainer-dag.js"></script>
+<script src="/admin-shared.js"></script>
 <script src="/admin.js"></script>
 </body>
 </html>

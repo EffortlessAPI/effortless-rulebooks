@@ -5672,7 +5672,7 @@
         "RulebookPath": "rulebook-examples/talismans-southpark-ontology/effortless-rulebook/talismans-southpark-ontology-rulebook.json",
         "ComplexityLevel": "advanced",
         "TableCount": "19",
-        "KeyFeatures": "her app on interchangeable engines (Postgres views, generated TypeScript, generated OWL/SHACL), live engine conformance, admin over every table with Save to the rulebook, candidate-row generator for new names, Excel export, rulebook editor, explainer, docs in 16 languages",
+        "KeyFeatures": "her app on interchangeable engines (Postgres views, generated TypeScript, generated OWL/SHACL), live engine conformance, admin over every table with Save to the rulebook, a concept form of the same rows (individuals, a table per class, a table or column per property, ERBTables and ERBFields) edited live, candidate-row generator for new names, Excel both ways on either form, rulebook editor, explainer, docs in 16 languages",
         "Purpose": "Jessica Talisman's interactive South Park ontology explainer rebuilt on a rulebook and opened up: the same page on three engines, the model editable from the page, an admin, the rulebook editor and Excel; tests drive her live page and this app through the same clicks on every engine.",
         "ProgressionNote": "Sibling of talismans-special-solutions: the same author's beginner explainer, anchored to her own web app.",
         "ParentDomainId": null,

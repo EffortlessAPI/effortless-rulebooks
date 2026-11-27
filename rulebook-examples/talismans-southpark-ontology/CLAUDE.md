@@ -84,6 +84,29 @@ reads the model tables here (`Graphs`, `Rules`, `FiringKinds`, `Things`, `Portra
 `PropertyAxioms`, `Statements`, `Firings`, `DisjointChecks`) as the shape any rulebook is written into. After changing
 any of their fields, run `python3 ../../scripts/tests/test_ontology_form.py` from here.
 
+## The concept form is a view of the same rows, never a second store
+
+`/concepts.html` shows the live rows as their concept rulebook (a table of individuals, a
+table per class, a table or a column per property, `ERBTables` and `ERBFields`) and edits
+them there. See "Two forms of one rulebook" in the README.
+
+- **The mapping is the platform's.** `orchestration/ontology_form.py` decides what a
+  concept table is, makes a class's and a property's table (`edit_concepts`), and turns a
+  concept rulebook back into ontology rows (`inject` over a base). `app/lib/concepts.mjs`
+  hands it the live rows and loads the answer; `app/public/concepts.js` sends the mapping's
+  own edits (`{ op: 'addClass' | 'addProperty' | 'addColumn' | 'retarget' | 'patch' | ... }`).
+  Never decide in the app what a table is, and never shape a concept table there.
+- **Nothing is computed for it.** The mapping needs which facts are in effect and the next
+  numbers a new fact takes. `concepts.mjs` reads `Statements.IsInEffect` and the `Graphs`
+  next numbers from the request's engine and hands them over.
+- **One store.** A concept edit ends in `ws.replaceAll` and `syncCandidates`, like an Excel
+  import. Do not keep a concept document in the server between requests.
+- **Vocabulary is tables and rows.** What structure cannot say goes in `ERBTables` and
+  `ERBFields`; `__meta__` says only which form the document is in.
+- Its wording is `concepts-*` in `PageTexts`. `node --test testing/app/concepts.test.mjs`
+  covers it on each engine and through Excel; `python3 ../../scripts/tests/test_ontology_form.py`
+  covers the mapping.
+
 ## Formula traps found here (all three engines must agree)
 
 - **Arithmetic on a blank, and a lookup through an empty link.** Postgres, TypeScript and

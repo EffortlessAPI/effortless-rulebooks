@@ -58,6 +58,7 @@ printf '%s\n' \
   "Experience: $EXPERIENCE_DESCRIPTION" \
   "App: $PRIMARY_URL" \
   "Admin: ${PRIMARY_URL}admin.html" \
+  "Concept form: ${PRIMARY_URL}concepts.html" \
   "Health: $HEALTH_URL" \
   "Rulebook editor (optional): ./start.sh --editor  ->  http://localhost:${EDITOR_UI_PORT}"
 # The server stays in the foreground: it reports each engine's state itself (a

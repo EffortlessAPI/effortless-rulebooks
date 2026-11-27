@@ -278,7 +278,7 @@
       if (t.href === 'editor') {
         link = editor.running ? `<a href="${esc(editor.url)}" target="_blank" rel="noopener">${esc(t.link_text)}</a>` : `<span class="off">${esc(T('admin-editor-off'))}</span>`;
       } else if (t.href) {
-        link = `<a href="${esc(t.href)}"${t.href.startsWith('/admin') ? '' : ' target="_blank" rel="noopener"'}>${esc(t.link_text)}</a>`;
+        link = `<a href="${esc(t.href)}"${/^\/(admin|concepts)\./.test(t.href) ? '' : ' target="_blank" rel="noopener"'}>${esc(t.link_text)}</a>`;
       }
       return `<li><b>${esc(t.label)}</b><span>${esc(t.adds)}</span>${link}</li>`;
     }).join('');

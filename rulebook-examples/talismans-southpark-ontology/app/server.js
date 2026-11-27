@@ -13,6 +13,7 @@ import { Workspace } from './lib/workspace.mjs';
 import { createEngines } from './lib/engines.mjs';
 import { createExplainer } from './lib/explainer.mjs';
 import { syncCandidates } from './lib/candidates.mjs';
+import { createConcepts } from './lib/concepts.mjs';
 import { rulebookWithRows, readHub, storedRows } from './lib/hub.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -32,6 +33,7 @@ const EDITOR_UI_URL = `http://localhost:${process.env.RULEBOOK_EDITOR_UI_PORT ||
 const ws = new Workspace(HUB);
 const engines = createEngines({ ws, projectDir: PROJECT, repoRoot: REPO, databaseUrl: DATABASE_URL });
 const explainer = createExplainer({ ws });
+const concepts = createConcepts({ ws, repoRoot: REPO });
 
 // Tables whose rows decide which candidate facts exist.
 const CANDIDATE_SOURCES = new Set(['Things', 'Properties', 'PropertyAxioms', 'FiringKinds', 'Statements']);
@@ -122,7 +124,7 @@ app.post('/api/admin/discard', route(() => write(async () => {
 // starts it and answers at once, GET /api/admin/jobs/<kind> says how it is going, and the
 // page polls that, so the page (and every other request) stays usable while it runs. One
 // job of each kind at a time; the last one's outcome stays readable until the next starts.
-const JOB_KINDS = new Set(['rebuild', 'export', 'import']);
+const JOB_KINDS = new Set(['rebuild', 'export', 'import', 'concept-export', 'concept-import']);
 const jobs = {};
 function startJob(kind, run) {
   if (jobs[kind]?.running) throw new Error(`An ${kind} is already running`);
@@ -202,9 +204,10 @@ app.post('/api/admin/jobs/export', route(async () => {
     return { file: `${SLUG}.xlsx`, bytes: fs.statSync(job.workbook).size };
   });
 }));
-app.get('/api/admin/jobs/export/download', (req, res) => {
-  const job = jobs.export;
-  if (!job || job.running || !job.ok) return res.status(400).json({ error: job?.running ? 'The export is still running' : 'There is no finished export: start one with POST /api/admin/jobs/export' });
+// The finished workbook of an export job (the ontology form's, or the concept form's).
+app.get('/api/admin/jobs/:kind/download', (req, res) => {
+  const kind = req.params.kind, job = jobs[kind];
+  if (!job || job.running || !job.ok || !job.workbook) return res.status(400).json({ error: job?.running ? 'The export is still running' : `There is no finished export: start one with POST /api/admin/jobs/${kind}` });
   res.download(job.workbook, job.result.file);
 });
 
@@ -247,6 +250,69 @@ app.post('/api/admin/jobs/import', express.raw({ type: () => true, limit: '30mb'
       ws.replaceAll(storedRows(imported));
       const changes = ws.changes();
       return { message: fill(explainer.text('admin-imported'), { rows: changes.total }), changes, schemaDiffers, summary };
+    });
+  });
+}));
+
+// ------------------------------------------------------------------ the concept form: the same ontology as ordinary tables
+// The rulebook is in the ontology form (things, properties, statements). lib/concepts.mjs shows
+// the same live rows as their concept rulebook (a table of individuals, a table per class, a
+// table or a column per property, ERBTables and ERBFields) and writes an edit made there as the
+// matching change of the ontology's rows. One store, two forms of it.
+const conceptView = async (engine) => ({ ...(await concepts.view(engine)), changes: ws.changes(), hubChangedOnDisk: ws.hubChangedOnDisk() });
+app.get('/api/concepts', route((req) => conceptView(engineOf(req))));
+app.post('/api/concepts/edit', route((req) => write(async () => {
+  const engine = engineOf(req);
+  const result = await concepts.edit(engine, req.body);
+  return { ...result, ...(await conceptView(engine)) };
+})));
+// The concept rulebook as a file of its own: what the tools that take a rulebook are handed.
+app.get('/api/concepts/rulebook.json', async (req, res) => {
+  try {
+    const { concepts: document } = await concepts.view(engineOf(req));
+    res.type('application/json').send(JSON.stringify(document, null, 1) + '\n');
+  } catch (e) {
+    console.error(e.message);
+    res.status(400).json({ error: e.message });
+  }
+});
+// A whole concept rulebook laid over the live rows (the body is the rulebook).
+app.post('/api/concepts/rulebook', route((req) => write(async () => {
+  const engine = engineOf(req);
+  const result = await concepts.lay(engine, req.body);
+  return { ...result, ...(await conceptView(engine)) };
+})));
+
+// Excel, both ways, on the concept rulebook: the same catalog tools, handed the concept form.
+app.post('/api/admin/jobs/concept-export', route(async (req) => {
+  const { concepts: document } = await concepts.view(engineOf(req));
+  return startJob('concept-export', async (job) => {
+    const dir = freshDir('concept-xlsx-export');
+    fs.writeFileSync(path.join(dir, 'working-concepts.json'), JSON.stringify(document, null, 1));
+    await effortless(['rulebook-to-xlsx', '-i', 'working-concepts.json'], dir);
+    const made = fs.readdirSync(dir).filter((f) => f.endsWith('.xlsx'));
+    if (made.length !== 1) throw new Error(`rulebook-to-xlsx left ${made.length} workbooks in ${dir}, expected one`);
+    job.workbook = path.join(dir, made[0]);
+    return { file: `${SLUG}-concepts.xlsx`, bytes: fs.statSync(job.workbook).size };
+  });
+}));
+app.post('/api/admin/jobs/concept-import', express.raw({ type: () => true, limit: '30mb' }), route(async (req) => {
+  if (!Buffer.isBuffer(req.body) || req.body.length === 0) throw new Error('Send the workbook as the request body');
+  const engine = engineOf(req);
+  const workbook = req.body, { concepts: document } = await concepts.view(engine), version = ws.version;
+  return startJob('concept-import', async () => {
+    const dir = freshDir('concept-xlsx-import');
+    const target = path.join(dir, 'working-concepts.json');
+    fs.writeFileSync(path.join(dir, 'upload.xlsx'), workbook);
+    fs.writeFileSync(target, JSON.stringify(document, null, 1));
+    await effortless(['xlsx-to-rulebook', '-i', 'upload.xlsx,working-concepts.json'], dir, IMPORT_TIMEOUT_MS);
+    if (!fs.existsSync(path.join(dir, 'xlsx-sync-summary.json'))) throw new Error('xlsx-to-rulebook returned no xlsx-sync-summary.json: the installed tool predates workbook-into-rulebook sync');
+    const synced = JSON.parse(fs.readFileSync(target, 'utf8'));
+    return write(async () => {
+      if (ws.version !== version) throw new Error(explainer.text('admin-import-stale'));
+      const result = await concepts.lay(engine, synced);
+      const changes = ws.changes();
+      return { ...result, message: fill(explainer.text('admin-imported'), { rows: changes.total }), changes };
     });
   });
 }));

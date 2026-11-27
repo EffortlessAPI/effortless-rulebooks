@@ -3,7 +3,7 @@
 // chosen engine computes them. Save writes the rows back into the rulebook file.
 (function () {
   const $ = (id) => document.getElementById(id);
-  const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const { esc, changeLines } = window.RulebookAdmin;   // shared with the concept form's page
   const MAX_ROWS = 200, MAX_OPTIONS = 80;
   let texts = {}, live = {}, tables = [], current = null, rows = [], engines = [], explainerReady = false;
   let engineId = localStorage.getItem('erb.backend');
@@ -41,18 +41,7 @@
     $('save').disabled = !changes.total;
     $('discard').disabled = !changes.total && !hubChangedOnDisk;
     $('changes').hidden = !changes.total;
-    const lines = [];
-    for (const [name, c] of Object.entries(changes.tables)) {
-      for (const k of c.added.slice(0, 15)) lines.push(`<li><b>${esc(name)}</b> + ${esc(k)}</li>`);
-      if (c.added.length > 15) lines.push(`<li><b>${esc(name)}</b> + ${c.added.length - 15} more rows</li>`);
-      for (const k of c.removed.slice(0, 15)) lines.push(`<li><b>${esc(name)}</b> − ${esc(k)}</li>`);
-      if (c.removed.length > 15) lines.push(`<li><b>${esc(name)}</b> − ${c.removed.length - 15} more rows</li>`);
-      for (const ch of c.changed.slice(0, 30)) {
-        lines.push(`<li><b>${esc(name)}</b> ${esc(ch.key)}: ${Object.entries(ch.fields).map(([f, [a, b]]) => `${esc(f)} ${esc(JSON.stringify(a))} → ${esc(JSON.stringify(b))}`).join(', ')}</li>`);
-      }
-      if (c.changed.length > 30) lines.push(`<li><b>${esc(name)}</b> ${c.changed.length - 30} more changed rows</li>`);
-    }
-    $('change-list').innerHTML = lines.join('');
+    $('change-list').innerHTML = changeLines(changes).join('');
   }
 
   // ---------------------------------------------------------------- tables and the grid
@@ -167,9 +156,9 @@
     if (!file) return;
     const body = await file.arrayBuffer();
     e.target.value = '';
-    startJob('import', body);
+    jobs.start('import', body);
   });
-  $('export').addEventListener('click', () => startJob('export'));
+  $('export').addEventListener('click', () => jobs.start('export'));
   $('compare').addEventListener('click', async () => {
     const box = $('conformance');
     box.className = 'conformance'; box.textContent = T('conformance-running');
@@ -184,12 +173,12 @@
     } catch (err) { box.className = 'conformance differ'; box.textContent = err.message; }
   });
 
-  // The long actions run on the server as jobs: the page starts one, then polls it, so it stays
-  // usable meanwhile. The job's button shows how long it has been running.
+  // The long actions run on the server as jobs (RulebookAdmin.jobs starts and watches them).
   const JOBS = {
     rebuild: {
       control: 'rebuild', text: 'rebuild', label: 'admin-rebuild', running: 'admin-rebuild-running',
       render(job) { $('buildlog').hidden = !job.startedAt; $('buildlog').textContent = job.tail.join('\n'); },
+      started() { say(T('admin-build-running')); },
       async done() { say(T('admin-build-done')); await loadTables(); await loadTable(current); },
       failed: () => T('admin-build-failed'),
     },
@@ -208,29 +197,8 @@
       failed: (job) => job.error,
     },
   };
-  function renderJob(kind, job) {
-    const j = JOBS[kind];
-    $(j.control).disabled = job.running;
-    $(j.text).closest('.buttonish')?.classList.toggle('off', job.running);
-    $(j.text).textContent = job.running ? T(j.running, { seconds: job.seconds }) : T(j.label);
-    if (j.render) j.render(job);
-  }
-  // announce: this page started (or saw running) the job, so it reports how it ended.
-  async function watchJob(kind, announce) {
-    const job = await api('GET', `/api/admin/jobs/${kind}`);
-    renderJob(kind, job);
-    if (job.running) { setTimeout(() => watchJob(kind, true).catch((e) => say(e.message, true)), 1000); return; }
-    if (announce && job.finishedAt) job.ok ? await JOBS[kind].done(job) : say(JOBS[kind].failed(job), true);
-  }
-  async function startJob(kind, body) {
-    say('');
-    try {
-      await api('POST', `/api/admin/jobs/${kind}`, null, body);
-      if (kind === 'rebuild') say(T('admin-build-running'));
-      await watchJob(kind, true);
-    } catch (e) { console.error(e); say(e.message, true); }
-  }
-  $('rebuild').addEventListener('click', () => startJob('rebuild'));
+  const jobs = window.RulebookAdmin.jobs({ api, say, T, $, kinds: JOBS });
+  $('rebuild').addEventListener('click', () => jobs.start('rebuild'));
 
   (async () => {
     const listed = await api('GET', '/api/engines');
@@ -242,6 +210,6 @@
     await loadTable(tables.find((t) => t.name === 'Statements') ? 'Statements' : tables[0].name);
     const ed = await api('GET', '/api/admin/editor');
     if (ed.running) $('editor').href = ed.url; else { $('editor').removeAttribute('href'); $('editor').classList.add('off'); $('editor-note').textContent = T('admin-editor-off'); }
-    for (const kind of Object.keys(JOBS)) await watchJob(kind, false);
+    for (const kind of Object.keys(JOBS)) await jobs.watch(kind, false);
   })().catch((e) => { console.error(e); say(e.message, true); });
 })();

@@ -25,7 +25,7 @@ rebuild of her explainer and links to the original.
 ```bash
 effortless build                                                               # every substrate
 python3 ../../scripts/erb_project.py talismans-southpark-ontology --reset-db   # load Postgres
-./start.sh                                                                     # the app: http://localhost:43210/  (admin at /admin.html)
+./start.sh                                                                     # the app: http://localhost:43210/  (admin at /admin.html, concept form at /concepts.html)
 ./start.sh --editor                                                            # optional: the rulebook editor, http://localhost:43612
 ```
 
@@ -38,7 +38,8 @@ python3 ../../scripts/erb_project.py talismans-southpark-ontology --reset-db   #
 | Explainer | Hover a dotted value for its rule in plain words and its witness: the values it came from, down to the stated facts. | Every computed value on the page and in the admin |
 | Documentation | Every rule in plain language, in 16 languages. | `/rulespeak/rulespeak.html` |
 | Admin | Every table of the rulebook as an editable grid: rules, properties and their wiring, wording, layouts, buttons, the cast, the engines themselves. Edits apply at once on every engine. Save writes the rulebook file. | `/admin.html` |
-| Excel | Export the current rows as a workbook with every rule as a live formula (about 30 s). Edit it in Excel and import it again (about 2 s): the edits arrive as unsaved changes. | The admin's Export and Import |
+| The concept form | The same ontology as ordinary tables: a table of individuals, a table per class, a table or a column per property, with each property's attributes beside it. Add a person, a class, a relationship or a column there and the page shows it. | `/concepts.html` |
+| Excel | Export the current rows as a workbook with every rule as a live formula (about 30 s). Edit it in Excel and import it again (about 2 s): the edits arrive as unsaved changes. The concept form exports and imports its own workbook the same way. | The admin's Export and Import |
 | Rulebook editor | The platform's generated editor for tables, fields and formulas, in its own container. | `./start.sh --editor` |
 
 The tools list itself is the rulebook's `RulebookTools` table, and the engines are its
@@ -123,6 +124,7 @@ the generator reads correctly; the generator's defect is finding `cr-28-01`.
 |---|---|---|
 | The page | Facts (any name, any value), rule switches, her buttons | At once |
 | The admin (`/admin.html`) | Any stored value of any row of any table; add and delete rows | At once, on every engine |
+| The concept form (`/concepts.html`) | The individuals, each class's members, each property's facts, and the vocabulary itself: a new class, relationship, value property or column; what a link points at (domain and range); symmetric, inverse of, chain, disjoint | At once, on every engine: each edit is written as the matching change of the rulebook's things, properties and statements |
 | Excel | The stored rows, in a workbook where every rule is a live formula | As unsaved changes in the admin, to review and save. A changed formula, field or table is reported, not applied |
 | The rulebook editor (`./start.sh --editor`) | Tables, fields, formulas, rows | Its Save writes the rulebook file; the app then says the file changed and reloads it on Discard; a formula change needs a rebuild |
 | The rulebook file | Anything | Rebuild |
@@ -141,6 +143,52 @@ disjoint (`PropertyAxioms`), her buttons and what each does (`Scenarios`, `Scena
 (`PageTexts`), the portraits and the names they answer to, the engines and the tools.
 Adding a property row and ticking its `IsSymmetric` box is enough for the Symmetric rule to
 apply to it, on all three engines.
+
+### Two forms of one rulebook
+
+The rulebook is in the **ontology form**: every individual and class is a row of `Things`,
+every property a row of `Properties`, every fact a row of `Statements`. That is the form
+her page teaches, and the form the rules are written over.
+
+The same ontology has a **concept form**, the shape an ordinary rulebook has:
+
+| In the concept form | Is, in the ontology form |
+|---|---|
+| A row of `Things` | An individual |
+| A table with `Thing` and `IsAsserted` (`Person`, `School`) | A class; each row is a member, asserted by a fact or implied by a property's domain or range |
+| A table with `Subject` and `Object` (`isParentOf`, `attends`) | An object property with many values; each row is a fact in effect |
+| A table with `Subject` and `Value` (`hasAge`) | A datatype property with many values |
+| A column of a class's table (`Person.hasGradeLevel`) | A property with one current value, whose domain is that class |
+| The table a `Subject` or an `Object` links to | The property's domain or range (`Things` for any thing) |
+| A row of `ERBTables` or `ERBFields` | What the structure cannot say: the label, the page's wording, symmetric, and the inverse, chain and disjoint axioms |
+
+`/concepts.html` shows the live rows in that form and edits them there. It is a view, not a
+copy: there is one set of rows, and an edit in the concept form is written at once as the
+matching change of `Things`, `Properties`, `PropertyAxioms` and `Statements`, so the page,
+the three engines, Save and the ontology-form admin all follow. The mapping is the
+platform's `orchestration/ontology_form.py` (the tools `oss-ontology-rulebook-to-rulebook`
+and `oss-rulebook-to-ontology-rulebook`); `app/lib/concepts.mjs` only hands it the live rows
+and loads what it gives back.
+
+It stays open world. `attends` links to `School`, and stating that Kyle attends something
+does not check that it is a school: it puts that thing in `School` with `IsAsserted` false,
+because the range implies it. Point the `Object` at `Things` instead and attending says
+nothing about what the thing is.
+
+What the page itself keeps (its rules, buttons, wording, layouts, and its record of each
+fact: listed, built in, when it was stated) is not a concept and is not in the concept
+form. A fact removed from a concept table is switched off and stays in the page's list.
+
+The concept rulebook is also a document: **Open the concept rulebook** gives it as JSON,
+and **Export / Import a concept workbook** take it through the same catalog tools as the
+ontology form's workbook. One cell changed in the concept workbook comes back as the
+matching change of the ontology's rows.
+
+What it cannot hold, it refuses in words: a calculated column (the ontology states facts
+and concludes by its five rules), an attribute the model has no field for, a table that is
+neither a class nor a property, a fact about a thing that is not in `Things`. A new KIND of
+axiom (transitive, functional) is a new rule: fields and formulas in the rulebook, then a
+rebuild.
 
 ### Candidate rows
 
@@ -215,7 +263,10 @@ an earlier one would need repeated rounds.
   the editor's Save (which rewrites the rulebook file) and a Discard here (which reloads
   it). A formula or table change also needs a rebuild.
 - **Schema changes are not live.** The admin edits rows. Fields, formulas and tables
-  change in the rulebook editor or the file, followed by a rebuild.
+  change in the rulebook editor or the file, followed by a rebuild. (A new class, property
+  or column of the ONTOLOGY is not a schema change: it is rows, made in the concept form.)
+- **The rulebook editor opens the ontology form only.** The concept rulebook has the admin
+  grid, the file and Excel both ways; the generated editor is not yet pointed at it.
 
 ## How the Excel import came to work
 

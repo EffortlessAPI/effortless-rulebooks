@@ -183,3 +183,32 @@ label.inline { display: inline-flex; align-items: center; gap: 6px; font-size: 0
 #grid td input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--pine); }
 #grid code { font-size: 0.8rem; }
 #new-row td { background: var(--flare-soft); }
+
+/* ---- the two forms of the rulebook: which one a page edits, and the concept form's page ---- */
+.formswitch { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.95rem; }
+.formswitch-label { color: var(--quiet); }
+.formswitch a { padding: 7px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--ink); font-weight: 600; text-decoration: none; }
+.formswitch a[aria-current="page"] { background: var(--ink); border-color: var(--ink); color: var(--panel); }
+.concept-main { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.table-list .group-title { margin: 10px 0 2px; padding: 0 10px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--quiet); }
+.table-list .group-title:first-child { margin-top: 0; }
+.table-list button.new-concept { color: var(--pine); font-weight: 600; }
+.table-list button.new-concept[aria-pressed="true"] { color: var(--panel); }
+.about > p { margin: 0 0 10px; max-width: 80ch; }
+.about h3 { font-family: var(--display); font-weight: 600; font-size: 0.95rem; margin: 12px 0 6px; }
+.about-lines { display: grid; gap: 8px 18px; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); align-items: center; }
+.about-line { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+.about-line > span { color: var(--quiet); min-width: 150px; }
+.about-line input[type="text"], .about-line select { width: auto; flex: 1; min-width: 0; padding: 5px 8px; font-size: 0.9rem; }
+.about-line input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--pine); }
+.about-line i { font-style: normal; color: var(--quiet); }
+.about-end { margin: 12px 0 0; }
+.chips { list-style: none; margin: 0 0 8px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.chips li { display: inline-flex; align-items: center; gap: 8px; padding: 4px 6px 4px 10px; border: 1px solid var(--line); border-radius: 10px; font-size: 0.88rem; }
+.chips li span { color: var(--quiet); }
+form.mini { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+form.mini input[type="text"] { width: 260px; padding: 6px 8px; font-size: 0.9rem; }
+form.mini select { width: auto; padding: 6px 8px; font-size: 0.9rem; }
+form.mini.tall { flex-direction: column; align-items: stretch; max-width: 520px; }
+form.mini.tall input[type="text"] { width: 100%; }
+button.danger { border-color: var(--alarm); color: var(--alarm); }

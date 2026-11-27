@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The concept form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body data-mode="tools" class="admin concepts">
+<div class="wrap wide">
+  <nav class="modebar"><a href="/" data-text="admin-back"></a></nav>
+  <nav class="formswitch" aria-label="Which form of the rulebook this page edits">
+    <span class="formswitch-label" data-text="form-switch-label"></span>
+    <a href="/admin.html" data-text="form-switch-ontology"></a>
+    <a href="/concepts.html" aria-current="page" data-text="form-switch-concepts"></a>
+  </nav>
+  <header>
+    <h1 data-text="concepts-title"></h1>
+    <p data-text="concepts-intro"></p>
+  </header>
+
+  <section class="card enginebar" aria-label="Engine">
+    <div class="engine-row">
+      <span class="engine-label" data-text="engine-label"></span>
+      <span id="engines" class="engine-choices"></span>
+    </div>
+    <p id="engine-description" class="hint"></p>
+  </section>
+
+  <section class="card actions" id="excel" aria-label="Rulebook">
+    <div class="action-row">
+      <span id="unsaved" class="unsaved"></span>
+      <button type="button" class="primary" id="save" data-text="admin-save"></button>
+      <button type="button" id="discard" data-text="admin-discard"></button>
+      <button type="button" id="export" data-text="concepts-export"></button>
+      <label class="buttonish" id="import-label"><span id="import-text" data-text="concepts-import"></span><input type="file" id="import" accept=".xlsx" hidden></label>
+      <a class="buttonish" id="file" href="/api/concepts/rulebook.json" target="_blank" rel="noopener" data-text="concepts-open-file"></a>
+      <a class="buttonish" href="/" data-text="concepts-see-page"></a>
+    </div>
+    <div id="message" class="form-message" role="status" aria-live="polite"></div>
+    <details id="changes"><summary data-text="concepts-changes-heading"></summary><ul id="change-list"></ul></details>
+  </section>
+
+  <div class="admin-grid">
+    <nav class="card table-list" id="tables" aria-label="Concept tables"></nav>
+    <div class="concept-main">
+      <section class="card about" id="about" aria-label="What this table is"></section>
+      <section class="card table-card">
+        <h2 id="table-name"></h2>
+        <p class="hint" id="table-description"></p>
+        <div class="table-tools">
+          <input type="text" id="filter" autocomplete="off">
+          <button type="button" id="add-row" data-text="admin-add-row"></button>
+          <span id="row-count" class="hint"></span>
+        </div>
+        <div class="scroll"><table id="grid"></table></div>
+      </section>
+    </div>
+  </div>
+</div>
+<script src="/admin-shared.js"></script>
+<script src="/concepts.js"></script>
+</body>
+</html>

@@ -42834,6 +42834,306 @@
     "PageTextId": "footer-credit",
     "Text": "A rebuild of Jessica Talisman’s South Park Ontology Explainer for Intentional Arrangement, made from a rulebook. The model, wording and layout follow her page. South Park is the work of Trey Parker and Matt Stone; the portraits are Fandom images.",
     "Name": "footer-credit"
+   },
+   {
+    "PageTextId": "form-switch-label",
+    "Text": "You are editing",
+    "Name": "form-switch-label"
+   },
+   {
+    "PageTextId": "form-switch-ontology",
+    "Text": "The ontology form",
+    "Name": "form-switch-ontology"
+   },
+   {
+    "PageTextId": "form-switch-concepts",
+    "Text": "The concept form",
+    "Name": "form-switch-concepts"
+   },
+   {
+    "PageTextId": "concepts-title",
+    "Text": "The concept form",
+    "Name": "concepts-title"
+   },
+   {
+    "PageTextId": "concepts-intro",
+    "Text": "The same ontology as ordinary tables: a table of individuals, a table for each class, and a table or a column for each property. An edit here is written straight to the rows the explainer runs on, as the matching change of its things, properties and statements; nothing is kept twice. What a table is comes from its fields. What its fields cannot say (a label, symmetric, inverse of) is a row of ERBTables or ERBFields.",
+    "Name": "concepts-intro"
+   },
+   {
+    "PageTextId": "concepts-export",
+    "Text": "Export the concept workbook",
+    "Name": "concepts-export"
+   },
+   {
+    "PageTextId": "concepts-import",
+    "Text": "Import a concept workbook",
+    "Name": "concepts-import"
+   },
+   {
+    "PageTextId": "concepts-open-file",
+    "Text": "Open the concept rulebook",
+    "Name": "concepts-open-file"
+   },
+   {
+    "PageTextId": "concepts-see-page",
+    "Text": "See it on the explainer",
+    "Name": "concepts-see-page"
+   },
+   {
+    "PageTextId": "concepts-changes-heading",
+    "Text": "Unsaved changes, as rows of the ontology form",
+    "Name": "concepts-changes-heading"
+   },
+   {
+    "PageTextId": "concepts-applied",
+    "Text": "Applied to the ontology.",
+    "Name": "concepts-applied"
+   },
+   {
+    "PageTextId": "concepts-group-individuals",
+    "Text": "Individuals",
+    "Name": "concepts-group-individuals"
+   },
+   {
+    "PageTextId": "concepts-group-class",
+    "Text": "Classes",
+    "Name": "concepts-group-class"
+   },
+   {
+    "PageTextId": "concepts-group-relationship",
+    "Text": "Relationships",
+    "Name": "concepts-group-relationship"
+   },
+   {
+    "PageTextId": "concepts-group-values",
+    "Text": "Values",
+    "Name": "concepts-group-values"
+   },
+   {
+    "PageTextId": "concepts-group-attributes",
+    "Text": "What the fields cannot say",
+    "Name": "concepts-group-attributes"
+   },
+   {
+    "PageTextId": "concepts-group-support",
+    "Text": "Linked tables",
+    "Name": "concepts-group-support"
+   },
+   {
+    "PageTextId": "concepts-group-meta",
+    "Text": "About this rulebook",
+    "Name": "concepts-group-meta"
+   },
+   {
+    "PageTextId": "concepts-new-class",
+    "Text": "New class",
+    "Name": "concepts-new-class"
+   },
+   {
+    "PageTextId": "concepts-new-relationship",
+    "Text": "New relationship",
+    "Name": "concepts-new-relationship"
+   },
+   {
+    "PageTextId": "concepts-new-values",
+    "Text": "New value property",
+    "Name": "concepts-new-values"
+   },
+   {
+    "PageTextId": "concepts-new-class-intro",
+    "Text": "A class is a table of the individuals that belong to it.",
+    "Name": "concepts-new-class-intro"
+   },
+   {
+    "PageTextId": "concepts-new-relationship-intro",
+    "Text": "A relationship is a table of facts, each linking one thing to another. Point its subject or its object at a class to say what kind of thing it must be: the domain and range rule then concludes it.",
+    "Name": "concepts-new-relationship-intro"
+   },
+   {
+    "PageTextId": "concepts-new-values-intro",
+    "Text": "A value property is a table of facts, each giving a thing a value.",
+    "Name": "concepts-new-values-intro"
+   },
+   {
+    "PageTextId": "concepts-new-name",
+    "Text": "Name: letters and digits, like Concert or performsAt",
+    "Name": "concepts-new-name"
+   },
+   {
+    "PageTextId": "concepts-new-label",
+    "Text": "Wording on the page, like performs at",
+    "Name": "concepts-new-label"
+   },
+   {
+    "PageTextId": "concepts-add",
+    "Text": "Add",
+    "Name": "concepts-add"
+   },
+   {
+    "PageTextId": "concepts-cancel",
+    "Text": "Cancel",
+    "Name": "concepts-cancel"
+   },
+   {
+    "PageTextId": "concepts-any-thing",
+    "Text": "any thing",
+    "Name": "concepts-any-thing"
+   },
+   {
+    "PageTextId": "concepts-a-member",
+    "Text": "a {class}",
+    "Name": "concepts-a-member"
+   },
+   {
+    "PageTextId": "concepts-role-individuals",
+    "Text": "Every individual of the ontology. A class's table lists the ones that belong to it; a property's table says what is true of them.",
+    "Name": "concepts-role-individuals"
+   },
+   {
+    "PageTextId": "concepts-role-class",
+    "Text": "A class. Each row is an individual that belongs to it: because a fact says so (IsAsserted), or because a property whose subject or object must be a {label} was stated of it.",
+    "Name": "concepts-role-class"
+   },
+   {
+    "PageTextId": "concepts-role-relationship",
+    "Text": "A relationship between things (an object property). Each row is one fact in effect: {subject} {label} {object}.",
+    "Name": "concepts-role-relationship"
+   },
+   {
+    "PageTextId": "concepts-role-values",
+    "Text": "A value property (a datatype property). Each row is one fact in effect: {subject} {label} a {datatype} value.",
+    "Name": "concepts-role-values"
+   },
+   {
+    "PageTextId": "concepts-role-attributes",
+    "Text": "What the tables' fields cannot say about a class or a property: its label, its wording on the page, whether it is symmetric, its inverse, chain and disjoint properties. One row per table (ERBTables) or per column that is a property (ERBFields). A row comes and goes with its table or column.",
+    "Name": "concepts-role-attributes"
+   },
+   {
+    "PageTextId": "concepts-role-support",
+    "Text": "A table the individuals link to.",
+    "Name": "concepts-role-support"
+   },
+   {
+    "PageTextId": "concepts-role-meta",
+    "Text": "Facts about the rulebook itself. The ontology-form row says this is the concept form.",
+    "Name": "concepts-role-meta"
+   },
+   {
+    "PageTextId": "concepts-label",
+    "Text": "Wording on the page",
+    "Name": "concepts-label"
+   },
+   {
+    "PageTextId": "concepts-subject-is",
+    "Text": "The subject is",
+    "Name": "concepts-subject-is"
+   },
+   {
+    "PageTextId": "concepts-object-is",
+    "Text": "The object is",
+    "Name": "concepts-object-is"
+   },
+   {
+    "PageTextId": "concepts-value-is",
+    "Text": "The value is",
+    "Name": "concepts-value-is"
+   },
+   {
+    "PageTextId": "concepts-symmetric",
+    "Text": "Symmetric: true in both directions",
+    "Name": "concepts-symmetric"
+   },
+   {
+    "PageTextId": "concepts-inverse-of",
+    "Text": "Inverse of",
+    "Name": "concepts-inverse-of"
+   },
+   {
+    "PageTextId": "concepts-chain",
+    "Text": "Concluded from a chain:",
+    "Name": "concepts-chain"
+   },
+   {
+    "PageTextId": "concepts-chain-then",
+    "Text": "then",
+    "Name": "concepts-chain-then"
+   },
+   {
+    "PageTextId": "concepts-disjoint-with",
+    "Text": "Never together with",
+    "Name": "concepts-disjoint-with"
+   },
+   {
+    "PageTextId": "concepts-disjoint-placeholder",
+    "Text": "property names, separated by commas",
+    "Name": "concepts-disjoint-placeholder"
+   },
+   {
+    "PageTextId": "concepts-user-addable",
+    "Text": "Offered in the page's Add fact form",
+    "Name": "concepts-user-addable"
+   },
+   {
+    "PageTextId": "concepts-none",
+    "Text": "(none)",
+    "Name": "concepts-none"
+   },
+   {
+    "PageTextId": "concepts-columns",
+    "Text": "Properties with one current value: columns of this table",
+    "Name": "concepts-columns"
+   },
+   {
+    "PageTextId": "concepts-no-columns",
+    "Text": "None yet.",
+    "Name": "concepts-no-columns"
+   },
+   {
+    "PageTextId": "concepts-column-name",
+    "Text": "Name: letters and digits, like favoriteFood",
+    "Name": "concepts-column-name"
+   },
+   {
+    "PageTextId": "concepts-column-label",
+    "Text": "Wording on the page, like favorite food",
+    "Name": "concepts-column-label"
+   },
+   {
+    "PageTextId": "concepts-add-column",
+    "Text": "Add a column",
+    "Name": "concepts-add-column"
+   },
+   {
+    "PageTextId": "concepts-holds-value",
+    "Text": "{datatype}",
+    "Name": "concepts-holds-value"
+   },
+   {
+    "PageTextId": "concepts-holds-link",
+    "Text": "a link to {table}",
+    "Name": "concepts-holds-link"
+   },
+   {
+    "PageTextId": "concepts-remove-column",
+    "Text": "Remove",
+    "Name": "concepts-remove-column"
+   },
+   {
+    "PageTextId": "concepts-remove-class",
+    "Text": "Remove this class",
+    "Name": "concepts-remove-class"
+   },
+   {
+    "PageTextId": "concepts-remove-property",
+    "Text": "Remove this property",
+    "Name": "concepts-remove-property"
+   },
+   {
+    "PageTextId": "concepts-remove-confirm",
+    "Text": "Click again to remove",
+    "Name": "concepts-remove-confirm"
    }
   ]
  },
@@ -43022,12 +43322,21 @@
     "Name": "Admin"
    },
    {
+    "RulebookToolId": "concepts",
+    "Label": "The concept form",
+    "Adds": "The same ontology as ordinary tables: a table of individuals, a table per class, a table or a column per property, with each property's attributes beside it. Add a person, a class, a relationship or a column there and this page shows it: every edit is written as the matching change of the rulebook's things, properties and statements.",
+    "Href": "/concepts.html",
+    "LinkText": "Open the concept form",
+    "SortOrder": 6,
+    "Name": "The concept form"
+   },
+   {
     "RulebookToolId": "xlsx",
     "Label": "Excel, both ways",
     "Adds": "Export the current rows as a workbook with every rule as a live formula, edit it, and import it again.",
     "Href": "/admin.html#excel",
     "LinkText": "Export or import",
-    "SortOrder": 6,
+    "SortOrder": 7,
     "Name": "Excel, both ways"
    },
    {
@@ -43036,7 +43345,7 @@
     "Adds": "The generated editor for tables, fields and formulas, with its own database and API.",
     "Href": "editor",
     "LinkText": "Open the rulebook editor",
-    "SortOrder": 7,
+    "SortOrder": 8,
     "Name": "Rulebook editor"
    },
    {
@@ -43045,7 +43354,7 @@
     "Adds": "One JSON file holds the whole model. Everything on this page is built from it.",
     "Href": "/rulebook/talismans-southpark-ontology-rulebook.json",
     "LinkText": "Open the file",
-    "SortOrder": 8,
+    "SortOrder": 9,
     "Name": "The rulebook"
    }
   ]
