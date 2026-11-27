@@ -16,12 +16,14 @@ import { spawn } from 'node:child_process';
 const norm = (name) => name.toLowerCase().replace(/_/g, '');
 
 // One value in the shape the page expects, whatever the engine's own spelling of it.
-// A blank is false for a yes/no field and 0 for a number: the project builds every
-// substrate with erbBlankLogic=coerce, and the engines spell a blank differently.
+// A blank yes/no field stays blank (null): the model is open world, so a fact that
+// nothing states or concludes is not known, never false (Statements.Holds). A blank
+// number is 0: the project builds every substrate with erbBlankValue=coerce, and the
+// engines spell a blank differently.
 const NUMERIC = new Set(['integer', 'number', 'decimal', 'float']);
 function normalize(value, datatype) {
   const blank = value === null || value === undefined || value === '';
-  if (datatype === 'boolean') return !blank && (value === true || value === 'true' || value === 't');
+  if (datatype === 'boolean') return blank ? null : (value === true || value === 'true' || value === 't');
   if (NUMERIC.has(datatype)) return blank ? 0 : Number(value);
   return blank ? null : String(value);
 }

@@ -664,7 +664,7 @@ multi-substrate lab, unchanged apart from its filename.
 
 ## Local transpiler bus (`127.0.0.1:4242`)
 
-> **All 11 local transpilers are hosted by the effortless CLI itself.** Start
+> **All 13 local transpilers are hosted by the effortless CLI itself.** Start
 > the bus with `effortless serve -port 4242` from the repo root; it serves every
 > tool under `effortless-tools/<name>/` — `oss-postgres-calculated-to-rulebook`,
 > `oss-rulebook-to-python`, `oss-rulebook-to-golang`, `oss-rulebook-to-cobol`,

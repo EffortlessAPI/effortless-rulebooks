@@ -54,6 +54,15 @@ call to the new tool with `react=true`. `python3 scripts/migrate-explainer-step.
 The `rulebook-to-rulespeak` steps are unchanged: that tool is now a call to `rulebook-to-documentation` and still writes
 `rulespeak/rulespeak.html` (with "Docs" wording and a note that RuleSpeak® is coming).
 
+## The ontology form: any rulebook in the South Park model, and back (2026-11-26)
+
+`oss-rulebook-to-ontology-rulebook` writes any rulebook in the ontology form of `rulebook-examples/talismans-southpark-ontology`
+(tables are classes in `Things`, records individuals, fields `Properties`, cells `Statements`); `oss-ontology-rulebook-to-rulebook`
+gives it back. Both call `orchestration/ontology_form.py`, the one mapping. The form's definition is the South Park rulebook itself,
+read at run time: a change to its model tables is a change to the form, so run `python3 scripts/tests/test_ontology_form.py`
+(the whole corpus round-trips identically, and South Park goes to concept tables and back). A formula outside the five rules
+rides along in `Properties.Formula`; candidate rows stay the job of `app/lib/candidates.mjs`.
+
 ## Consistency governance
 
 Inconsistency is pruned by working `ConsistencyFindings` to zero — not by editing prose. When you discover a repeatable trap, the fix goes to a place the whole team sees: a rule row + finding rows in the root rulebook, a guard in code, or this file. When you fix a finding, mark its `Status` `fixed` (never delete witnessed rows); when a rule was wrong, correct the rule and record that as a `cr-15` finding. Re-run `python3 scripts/scan-project-slots.py effortless-rulebook/effortless-rulebook.json .` after moving or creating projects; it refreshes `ProjectSlotWitnesses`, preserves finding history, and exits nonzero on malformed or ambiguous project artifacts.
@@ -67,7 +76,7 @@ Every new project must register `rulebooktorulespeak` and end its README with th
 
 ## Local transpiler bus (`127.0.0.1:4242`)
 
-> **All 11 local transpilers are hosted by the effortless CLI itself.** Start
+> **All 13 local transpilers are hosted by the effortless CLI itself.** Start
 > the bus with `effortless serve -port 4242` from the repo root; it serves every
 > tool under `effortless-tools/<name>/` — `oss-postgres-calculated-to-rulebook`,
 > `oss-rulebook-to-python`, `oss-rulebook-to-golang`, `oss-rulebook-to-cobol`,
@@ -208,13 +217,17 @@ and its logs are gitignored — the rulebook rows are the durable record.
 
 # The ERB build parameters are set once per project
 
-Five `ProjectSettings` entries in a project's `effortless.json` decide the
+Six `ProjectSettings` entries in a project's `effortless.json` decide the
 formula semantics every substrate is built under — `erbDateDiff`,
-`erbTimezone`, `erbDateTimeText`, `erbBlankLogic`, `erbWholeNumber` — and the
+`erbTimezone`, `erbDateTimeText`, `erbBlankLogic`, `erbBlankValue`,
+`erbWholeNumber` — and the
 CLI hands them to every transpiler as `cliParams`, so the substrates agree by
 construction. The contract (allowed values, defaults, the exact rule each value
 means) is `docs/ERB-BUILD-PARAMETERS.md` in `Versioned-Stable-SSoTme-Tools`.
-Set them explicitly (see `rulebook-examples/procedural-knowledge-ontology/effortless.json`)
+**An open-world project sets `erbBlankLogic` and `erbBlankValue` both to `propagate`**: a blank then
+stays "not known" through predicates, arithmetic and text joining (`erbBlankValue`, added 2026-11-27:
+under `coerce` a blank is 0 and ""), and the harness grades a blank boolean by the first and a blank
+number or string by the second (`compare_values`). Set them explicitly (see `rulebook-examples/procedural-knowledge-ontology/effortless.json`)
 rather than relying on the defaults, so a reader can see what the key was
 computed under. Never set one on a single transpiler's `CommandLine` — that
 is how two substrates end up built under different rules while both report

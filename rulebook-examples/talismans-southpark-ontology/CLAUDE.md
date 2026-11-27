@@ -60,6 +60,15 @@ engines. The README is the user-facing account; this file is how to work on it.
   `orchestration/live_substrates.py` (it reuses the harness's runner contract, OWL runner
   and `compare_values`); writing the rulebook file belongs in `app/lib/hub.mjs`.
 
+## Open world: a fact is TRUE or not known, never FALSE (2026-11-27)
+
+Her page: "Removing a statement alone does not say that its opposite is true." `Statements.Holds`,
+`HoldsBeforeChain`, `HoldsBeforeTyping` and `IsConclusion` are `IF(<condition>, TRUE())`: TRUE when stated or
+concluded, blank (not known) otherwise. Never write a formula that makes a fact about the cast FALSE. A
+predicate still reads a blank as FALSE (`erbBlankLogic=coerce`, kept on purpose: a premise that is not known never
+fires a rule, exactly as in her reasoner). `normalize()` in `app/lib/engines.mjs` keeps a blank boolean blank (null).
+`node --test testing/app/open-world.test.mjs` holds it on every engine.
+
 ## Candidate rows are data, with one generator
 
 `Statements`, `Firings` and `DisjointChecks` hold every candidate over the cast.
@@ -67,6 +76,13 @@ engines. The README is the user-facing account; this file is how to work on it.
 proves the rulebook file's own candidates are exactly its output. Anything that adds or
 removes a thing, a literal fact, a property or a property axiom must call `syncCandidates`
 afterwards (the admin's write path and the Add fact form do).
+
+## This rulebook is also the definition of the ontology form
+
+`orchestration/ontology_form.py` (the tools `oss-rulebook-to-ontology-rulebook` and `oss-ontology-rulebook-to-rulebook`)
+reads the model tables here (`Graphs`, `Rules`, `FiringKinds`, `Things`, `Portraits`, `PortraitAliases`, `Properties`,
+`PropertyAxioms`, `Statements`, `Firings`, `DisjointChecks`) as the shape any rulebook is written into. After changing
+any of their fields, run `python3 ../../scripts/tests/test_ontology_form.py` from here.
 
 ## Formula traps found here (all three engines must agree)
 

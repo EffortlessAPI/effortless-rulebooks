@@ -580,12 +580,12 @@ SET check_function_bodies = off;
 
 -- ============================================================================
 -- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
--- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- erbBlankLogic=coerce, erbBlankValue=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
 -- ============================================================================
 
 CREATE OR REPLACE FUNCTION erb_build_parameters()
 RETURNS JSONB AS $$
-  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+  SELECT '{"erbBlankLogic":"coerce","erbBlankValue":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
 $$ LANGUAGE sql IMMUTABLE;
 
 -- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
@@ -1695,7 +1695,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_holds_before_chain(p_statement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_statements_is_in_effect(p_statement_id), FALSE) OR COALESCE(COALESCE((calc_statements_count_of_inverse_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE) OR COALESCE(COALESCE((calc_statements_count_of_symmetric_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE)));
+  SELECT (CASE WHEN (COALESCE(calc_statements_is_in_effect(p_statement_id), FALSE) OR COALESCE(COALESCE((calc_statements_count_of_inverse_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE) OR COALESCE(COALESCE((calc_statements_count_of_symmetric_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE)) THEN TRUE ELSE NULL END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_count_of_chain_firings
@@ -1715,7 +1715,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_holds_before_typing(p_statement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_statements_holds_before_chain(p_statement_id), FALSE) OR COALESCE(COALESCE((calc_statements_count_of_chain_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE)));
+  SELECT (CASE WHEN (COALESCE(calc_statements_holds_before_chain(p_statement_id), FALSE) OR COALESCE(COALESCE((calc_statements_count_of_chain_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE)) THEN TRUE ELSE NULL END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_count_of_type_firings
@@ -1735,7 +1735,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_holds(p_statement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_statements_holds_before_typing(p_statement_id), FALSE) OR COALESCE(COALESCE((calc_statements_count_of_type_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE)));
+  SELECT (CASE WHEN (COALESCE(calc_statements_holds_before_typing(p_statement_id), FALSE) OR COALESCE(COALESCE((calc_statements_count_of_type_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE)) THEN TRUE ELSE NULL END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_is_conclusion
@@ -1745,7 +1745,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_is_conclusion(p_statement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_statements_holds(p_statement_id), FALSE) AND COALESCE(NOT (COALESCE(calc_statements_is_in_effect(p_statement_id), FALSE)), FALSE)))::boolean;
+  SELECT (CASE WHEN (COALESCE(calc_statements_holds(p_statement_id), FALSE) AND COALESCE(NOT (COALESCE(calc_statements_is_in_effect(p_statement_id), FALSE)), FALSE)) THEN TRUE ELSE NULL END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_holds_unit
@@ -2876,12 +2876,12 @@ SELECT
   calc_statements_is_next_to_add(t.statement_id) AS is_next_to_add,             -- Order 7. The fact the Add next fact button switches on.
   calc_statements_count_of_inverse_firings(t.statement_id) AS count_of_inverse_firings,-- Order 6. Inverse rule applications that conclude this fact.
   calc_statements_count_of_symmetric_firings(t.statement_id) AS count_of_symmetric_firings,-- Order 6. Symmetric rule applications that conclude this fact.
-  calc_statements_holds_before_chain(t.statement_id) AS holds_before_chain,     -- Order 7. Holds from facts in effect plus the inverse and symmetric rules.
+  calc_statements_holds_before_chain(t.statement_id) AS holds_before_chain,     -- Order 7. TRUE when the fact is in effect or the inverse or symmetric rule concludes it. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true).
   calc_statements_count_of_chain_firings(t.statement_id) AS count_of_chain_firings,-- Order 10. Property chain applications that conclude this fact.
-  calc_statements_holds_before_typing(t.statement_id) AS holds_before_typing,   -- Order 11. Holds before the domain and range rules apply.
+  calc_statements_holds_before_typing(t.statement_id) AS holds_before_typing,   -- Order 11. TRUE when the fact holds before the domain and range rules apply. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true).
   calc_statements_count_of_type_firings(t.statement_id) AS count_of_type_firings,-- Order 14. Domain and range applications that conclude this fact.
-  calc_statements_holds(t.statement_id) AS holds,                               -- Order 15. True when in effect or concluded by an enabled rule; the graph draws it.
-  calc_statements_is_conclusion(t.statement_id) AS is_conclusion,               -- Order 16. Holds only because a rule concluded it. Drawn dashed.
+  calc_statements_holds(t.statement_id) AS holds,                               -- Order 15. TRUE when in effect or concluded by an enabled rule; the graph draws it. Blank when nothing states or concludes it: not known, never FALSE (open world: removing a statement does not say that its opposite is true).
+  calc_statements_is_conclusion(t.statement_id) AS is_conclusion,               -- Order 16. TRUE when the fact holds only because a rule concluded it; drawn dashed. Blank otherwise: a stated fact is not a conclusion, and a fact nothing concludes is not known (never FALSE).
   calc_statements_holds_unit(t.statement_id) AS holds_unit,                     -- Order 16. 1 when the fact holds.
   calc_statements_conclusion_unit(t.statement_id) AS conclusion_unit,           -- Order 17. 1 when the fact is a conclusion.
   calc_statements_parent_unit(t.statement_id) AS parent_unit,                   -- Order 16. 1 for a holding parent link.

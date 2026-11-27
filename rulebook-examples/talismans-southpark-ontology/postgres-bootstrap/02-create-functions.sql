@@ -15,12 +15,12 @@ SET check_function_bodies = off;
 
 -- ============================================================================
 -- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
--- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- erbBlankLogic=coerce, erbBlankValue=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
 -- ============================================================================
 
 CREATE OR REPLACE FUNCTION erb_build_parameters()
 RETURNS JSONB AS $$
-  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+  SELECT '{"erbBlankLogic":"coerce","erbBlankValue":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
 $$ LANGUAGE sql IMMUTABLE;
 
 -- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
@@ -1130,7 +1130,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_holds_before_chain(p_statement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_statements_is_in_effect(p_statement_id), FALSE) OR COALESCE(COALESCE((calc_statements_count_of_inverse_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE) OR COALESCE(COALESCE((calc_statements_count_of_symmetric_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE)));
+  SELECT (CASE WHEN (COALESCE(calc_statements_is_in_effect(p_statement_id), FALSE) OR COALESCE(COALESCE((calc_statements_count_of_inverse_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE) OR COALESCE(COALESCE((calc_statements_count_of_symmetric_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE)) THEN TRUE ELSE NULL END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_count_of_chain_firings
@@ -1150,7 +1150,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_holds_before_typing(p_statement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_statements_holds_before_chain(p_statement_id), FALSE) OR COALESCE(COALESCE((calc_statements_count_of_chain_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE)));
+  SELECT (CASE WHEN (COALESCE(calc_statements_holds_before_chain(p_statement_id), FALSE) OR COALESCE(COALESCE((calc_statements_count_of_chain_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE)) THEN TRUE ELSE NULL END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_count_of_type_firings
@@ -1170,7 +1170,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_holds(p_statement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_statements_holds_before_typing(p_statement_id), FALSE) OR COALESCE(COALESCE((calc_statements_count_of_type_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE)));
+  SELECT (CASE WHEN (COALESCE(calc_statements_holds_before_typing(p_statement_id), FALSE) OR COALESCE(COALESCE((calc_statements_count_of_type_firings(p_statement_id))::NUMERIC, 0) > 0, FALSE)) THEN TRUE ELSE NULL END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_is_conclusion
@@ -1180,7 +1180,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_statements_is_conclusion(p_statement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_statements_holds(p_statement_id), FALSE) AND COALESCE(NOT (COALESCE(calc_statements_is_in_effect(p_statement_id), FALSE)), FALSE)))::boolean;
+  SELECT (CASE WHEN (COALESCE(calc_statements_holds(p_statement_id), FALSE) AND COALESCE(NOT (COALESCE(calc_statements_is_in_effect(p_statement_id), FALSE)), FALSE)) THEN TRUE ELSE NULL END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_statements_holds_unit
