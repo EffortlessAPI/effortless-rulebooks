@@ -117,9 +117,36 @@ app.post('/api/admin/discard', route(() => write(async () => {
   return { message: explainer.text('admin-discarded'), changes: ws.changes() };
 })));
 
-// ------------------------------------------------------------------ rebuild: effortless build, then the database
-const build = { running: false, startedAt: null, finishedAt: null, exitCode: null, log: path.join(RUN_DIR, 'build.log') };
-function runStep(cmd, args, cwd, logStream) {
+// ------------------------------------------------------------------ jobs: the long admin actions, in the background
+// Rebuild, Excel export and Excel import take seconds to minutes. Each is a job: its POST
+// starts it and answers at once, GET /api/admin/jobs/<kind> says how it is going, and the
+// page polls that, so the page (and every other request) stays usable while it runs. One
+// job of each kind at a time; the last one's outcome stays readable until the next starts.
+const JOB_KINDS = new Set(['rebuild', 'export', 'import']);
+const jobs = {};
+function startJob(kind, run) {
+  if (jobs[kind]?.running) throw new Error(`An ${kind} is already running`);
+  const job = jobs[kind] = { kind, running: true, startedAt: new Date().toISOString(), finishedAt: null, ok: null, error: null, result: null };
+  const finish = (fields) => Object.assign(job, fields, { running: false, finishedAt: new Date().toISOString() });
+  Promise.resolve().then(() => run(job)).then(
+    (result) => finish({ ok: true, result: result ?? null }),
+    (e) => { console.error(`${kind}: ${e.message}`); finish({ ok: false, error: e.message }); });
+  return jobView(job);
+}
+function jobView(job) {
+  const { workbook, ...shown } = job;   // server-side paths stay here
+  const until = job.finishedAt ? Date.parse(job.finishedAt) : Date.now();
+  return { ...shown, seconds: Math.round((until - Date.parse(job.startedAt)) / 1000) };
+}
+app.get('/api/admin/jobs/:kind', route(async (req) => {
+  const kind = req.params.kind;
+  if (!JOB_KINDS.has(kind)) throw new Error(`There is no job ${kind}; there are ${[...JOB_KINDS].join(', ')}`);
+  const view = jobs[kind] ? jobView(jobs[kind]) : { kind, running: false, startedAt: null, finishedAt: null, ok: null, error: null, result: null, seconds: 0 };
+  if (kind === 'rebuild') view.tail = fs.existsSync(BUILD_LOG) ? fs.readFileSync(BUILD_LOG, 'utf8').split('\n').filter((l) => /\*\*\*\*|rror|ailed|\$ |reset\]/.test(l)).slice(-25) : [];
+  return view;
+}));
+
+function spawnLogged(cmd, args, cwd, logStream) {
   return new Promise((resolve) => {
     logStream.write(`\n$ ${cmd} ${args.join(' ')}   (in ${cwd})\n`);
     const child = spawn(cmd, args, { cwd, stdio: ['ignore', 'pipe', 'pipe'] });
@@ -129,29 +156,6 @@ function runStep(cmd, args, cwd, logStream) {
     child.on('close', (code) => resolve(code ?? 1));
   });
 }
-app.post('/api/admin/rebuild', route(async () => {
-  if (build.running) throw new Error('A rebuild is already running');
-  if (ws.changes().total) throw new Error('There are unsaved changes: save them to the rulebook (or discard them) before rebuilding from it');
-  fs.mkdirSync(RUN_DIR, { recursive: true });
-  Object.assign(build, { running: true, startedAt: new Date().toISOString(), finishedAt: null, exitCode: null });
-  const log = fs.createWriteStream(build.log);
-  (async () => {
-    // The build's last step (init-db) fails when the CLI drops the reset script's
-    // executable bit (cr-20-02); the database is loaded by the shared runner instead.
-    await runStep('effortless', ['build'], PROJECT, log);
-    const code = await runStep('python3', [path.join(REPO, 'scripts/erb_project.py'), SLUG, '--reset-db'], REPO, log);
-    log.end();
-    if (code === 0) { ws.reload(); engines.forgetSchema(); }
-    Object.assign(build, { running: false, finishedAt: new Date().toISOString(), exitCode: code });
-  })();
-  return { started: true };
-}));
-app.get('/api/admin/build', route(async () => {
-  const tail = fs.existsSync(build.log) ? fs.readFileSync(build.log, 'utf8').split('\n').filter((l) => /\*\*\*\*|rror|ailed|\$ |reset\]/.test(l)).slice(-25) : [];
-  return { ...build, log: path.relative(PROJECT, build.log), tail };
-}));
-
-// ------------------------------------------------------------------ Excel, both ways (the catalog's own tools)
 function effortless(args, cwd, timeoutMs = 420000) {
   return new Promise((resolve, reject) => {
     const child = spawn('effortless', args, { cwd, stdio: ['ignore', 'pipe', 'pipe'] });
@@ -164,55 +168,88 @@ function effortless(args, cwd, timeoutMs = 420000) {
   });
 }
 const freshDir = (name) => { const dir = path.join(RUN_DIR, name); fs.rmSync(dir, { recursive: true, force: true }); fs.mkdirSync(dir, { recursive: true }); return dir; };
+// The live rows as a rulebook, taken when the job is asked for (not when it gets round to it).
+const liveRulebookText = () => JSON.stringify(rulebookWithRows(ws.hub, ws.data), null, 1);
 
-app.get('/api/admin/export.xlsx', async (req, res) => {
-  try {
+// ------------------------------------------------------------------ rebuild: effortless build, then the database
+const BUILD_LOG = path.join(RUN_DIR, 'build.log');
+app.post('/api/admin/jobs/rebuild', route(async () => {
+  if (ws.changes().total) throw new Error('There are unsaved changes: save them to the rulebook (or discard them) before rebuilding from it');
+  fs.mkdirSync(RUN_DIR, { recursive: true });
+  return startJob('rebuild', async () => {
+    const log = fs.createWriteStream(BUILD_LOG);
+    // The build's last step (init-db) fails when the CLI drops the reset script's
+    // executable bit (cr-20-02); the database is loaded by the shared runner instead.
+    await spawnLogged('effortless', ['build'], PROJECT, log);
+    const code = await spawnLogged('python3', [path.join(REPO, 'scripts/erb_project.py'), SLUG, '--reset-db'], REPO, log);
+    log.end();
+    if (code !== 0) throw new Error(`Loading the database exited ${code}; see ${path.relative(PROJECT, BUILD_LOG)}`);
+    await write(async () => { ws.reload(); engines.forgetSchema(); });
+  });
+}));
+
+// ------------------------------------------------------------------ Excel, both ways (the catalog's own tools)
+// Export: the live rows through rulebook-to-xlsx; when the job is done the page downloads the workbook.
+app.post('/api/admin/jobs/export', route(async () => {
+  const rulebook = liveRulebookText();
+  return startJob('export', async (job) => {
     const dir = freshDir('xlsx-export');
-    fs.writeFileSync(path.join(dir, 'working-rulebook.json'), JSON.stringify(rulebookWithRows(ws.hub, ws.data), null, 1));
+    fs.writeFileSync(path.join(dir, 'working-rulebook.json'), rulebook);
     await effortless(['rulebook-to-xlsx', '-i', 'working-rulebook.json'], dir);
     const made = fs.readdirSync(dir).filter((f) => f.endsWith('.xlsx'));
     if (made.length !== 1) throw new Error(`rulebook-to-xlsx left ${made.length} workbooks in ${dir}, expected one`);
-    res.download(path.join(dir, made[0]), `${SLUG}.xlsx`);
-  } catch (e) {
-    console.error(e.message);
-    res.status(400).json({ error: e.message });
-  }
+    job.workbook = path.join(dir, made[0]);
+    return { file: `${SLUG}.xlsx`, bytes: fs.statSync(job.workbook).size };
+  });
+}));
+app.get('/api/admin/jobs/export/download', (req, res) => {
+  const job = jobs.export;
+  if (!job || job.running || !job.ok) return res.status(400).json({ error: job?.running ? 'The export is still running' : 'There is no finished export: start one with POST /api/admin/jobs/export' });
+  res.download(job.workbook, job.result.file);
 });
 
-// The catalog's xlsx-to-rulebook syncs a workbook INTO a rulebook, so it is handed the
-// workbook and a copy of the live rulebook; what comes back is loaded as unsaved changes.
+// Import: the catalog's xlsx-to-rulebook syncs a workbook INTO a rulebook, so it is handed
+// the workbook and a copy of the live rulebook; what comes back is loaded as unsaved changes.
+// The tool runs outside the write queue, so edits are not held up meanwhile; if the rows
+// changed while it ran, loading its answer would undo that change, so the import refuses.
 const IMPORT_TIMEOUT_MS = Number(process.env.XLSX_IMPORT_TIMEOUT_MS || 240000);   // the tool answers this rulebook's workbook in about 2 s; a cold start adds up to a minute
 // The body is the workbook whatever its content-type, or none: a browser sends an ArrayBuffer
 // with NO content-type, and express.raw's '*/*' matches only a request that has one.
-app.post('/api/admin/import', express.raw({ type: () => true, limit: '30mb' }), route((req) => write(async () => {
+app.post('/api/admin/jobs/import', express.raw({ type: () => true, limit: '30mb' }), route(async (req) => {
   if (!Buffer.isBuffer(req.body) || req.body.length === 0) throw new Error('Send the workbook as the request body');
-  const dir = freshDir('xlsx-import');
-  const target = path.join(dir, 'working-rulebook.json');
-  fs.writeFileSync(path.join(dir, 'upload.xlsx'), req.body);
-  fs.writeFileSync(target, JSON.stringify(rulebookWithRows(ws.hub, ws.data), null, 1));
-  await effortless(['xlsx-to-rulebook', '-i', 'upload.xlsx,working-rulebook.json'], dir, IMPORT_TIMEOUT_MS);
-  // The tool replaces the rulebook it was handed with the synced one and says what it did
-  // in xlsx-sync-summary.json (the same contract the generated rulebook editor's import uses).
-  const summaryFile = path.join(dir, 'xlsx-sync-summary.json');
-  if (!fs.existsSync(summaryFile)) throw new Error('xlsx-to-rulebook returned no xlsx-sync-summary.json: the installed tool predates workbook-into-rulebook sync');
-  const summary = JSON.parse(fs.readFileSync(summaryFile, 'utf8'));
-  const imported = readHub(target);
-  // Tables, fields and formulas changed in the workbook are reported, not applied: this import loads stored rows.
-  const schemaDiffers = [];
-  for (const [name, table] of Object.entries(ws.tables)) {
-    const other = imported.tables[name];
-    if (!other) throw new Error(`The synced rulebook has no table ${name}`);
-    for (const f of table.fields) {
-      const o = other.byName[f.name];
-      if (!o) schemaDiffers.push(`${name}.${f.name} is missing`);
-      else if ((o.formula || '') !== (f.formula || '')) schemaDiffers.push(`${name}.${f.name}: formula changed`);
+  const workbook = req.body, rulebook = liveRulebookText(), version = ws.version;
+  return startJob('import', async () => {
+    const dir = freshDir('xlsx-import');
+    const target = path.join(dir, 'working-rulebook.json');
+    fs.writeFileSync(path.join(dir, 'upload.xlsx'), workbook);
+    fs.writeFileSync(target, rulebook);
+    await effortless(['xlsx-to-rulebook', '-i', 'upload.xlsx,working-rulebook.json'], dir, IMPORT_TIMEOUT_MS);
+    // The tool replaces the rulebook it was handed with the synced one and says what it did
+    // in xlsx-sync-summary.json (the same contract the generated rulebook editor's import uses).
+    const summaryFile = path.join(dir, 'xlsx-sync-summary.json');
+    if (!fs.existsSync(summaryFile)) throw new Error('xlsx-to-rulebook returned no xlsx-sync-summary.json: the installed tool predates workbook-into-rulebook sync');
+    const summary = JSON.parse(fs.readFileSync(summaryFile, 'utf8'));
+    const imported = readHub(target);
+    // Tables, fields and formulas changed in the workbook are reported, not applied: this import loads stored rows.
+    const schemaDiffers = [];
+    for (const [name, table] of Object.entries(ws.tables)) {
+      const other = imported.tables[name];
+      if (!other) throw new Error(`The synced rulebook has no table ${name}`);
+      for (const f of table.fields) {
+        const o = other.byName[f.name];
+        if (!o) schemaDiffers.push(`${name}.${f.name} is missing`);
+        else if ((o.formula || '') !== (f.formula || '')) schemaDiffers.push(`${name}.${f.name}: formula changed`);
+      }
+      for (const o of other.fields) if (!table.byName[o.name]) schemaDiffers.push(`${name}.${o.name} is new`);
     }
-    for (const o of other.fields) if (!table.byName[o.name]) schemaDiffers.push(`${name}.${o.name} is new`);
-  }
-  ws.replaceAll(storedRows(imported));
-  const changes = ws.changes();
-  return { message: fill(explainer.text('admin-imported'), { rows: changes.total }), changes, schemaDiffers, summary };
-})));
+    return write(async () => {
+      if (ws.version !== version) throw new Error(explainer.text('admin-import-stale'));
+      ws.replaceAll(storedRows(imported));
+      const changes = ws.changes();
+      return { message: fill(explainer.text('admin-imported'), { rows: changes.total }), changes, schemaDiffers, summary };
+    });
+  });
+}));
 
 // ------------------------------------------------------------------ the rulebook editor (its own container)
 app.get('/api/admin/editor', route(async () => {

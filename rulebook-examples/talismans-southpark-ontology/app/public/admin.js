@@ -162,16 +162,14 @@
   $('show-computed').addEventListener('change', () => busy(() => loadTable(current)));
   $('save').addEventListener('click', () => busy(async () => { const r = await api('POST', '/api/admin/save'); await loadTables(); say(r.message); }));
   $('discard').addEventListener('click', () => busy(async () => { const r = await api('POST', '/api/admin/discard'); await loadTables(); await loadTable(current); say(r.message); }));
-  $('import').addEventListener('change', (e) => {
+  $('import').addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    say('');
-    busy(async () => {
-      const r = await api('POST', '/api/admin/import', null, await file.arrayBuffer());
-      await loadTables(); await loadTable(current);
-      say(r.message + (r.schemaDiffers.length ? ' ' + T('admin-import-schema', { count: r.schemaDiffers.length, examples: r.schemaDiffers.slice(0, 3).join('; ') }) : ''));
-    }).finally(() => { e.target.value = ''; });
+    const body = await file.arrayBuffer();
+    e.target.value = '';
+    startJob('import', body);
   });
+  $('export').addEventListener('click', () => startJob('export'));
   $('compare').addEventListener('click', async () => {
     const box = $('conformance');
     box.className = 'conformance'; box.textContent = T('conformance-running');
@@ -186,17 +184,53 @@
     } catch (err) { box.className = 'conformance differ'; box.textContent = err.message; }
   });
 
-  // Rebuild: effortless build, then the database, with the log's milestones shown while it runs.
-  async function pollBuild() {
-    const b = await api('GET', '/api/admin/build');
-    const log = $('buildlog');
-    log.hidden = !b.startedAt;
-    log.textContent = b.tail.join('\n');
-    $('rebuild').disabled = b.running;
-    if (b.running) { say(T('admin-build-running')); setTimeout(pollBuild, 3000); }
-    else if (b.finishedAt) { say(T(b.exitCode === 0 ? 'admin-build-done' : 'admin-build-failed'), b.exitCode !== 0); await loadTables(); await loadTable(current); }
+  // The long actions run on the server as jobs: the page starts one, then polls it, so it stays
+  // usable meanwhile. The job's button shows how long it has been running.
+  const JOBS = {
+    rebuild: {
+      control: 'rebuild', text: 'rebuild', label: 'admin-rebuild', running: 'admin-rebuild-running',
+      render(job) { $('buildlog').hidden = !job.startedAt; $('buildlog').textContent = job.tail.join('\n'); },
+      async done() { say(T('admin-build-done')); await loadTables(); await loadTable(current); },
+      failed: () => T('admin-build-failed'),
+    },
+    export: {
+      control: 'export', text: 'export', label: 'admin-export', running: 'admin-export-running',
+      async done(job) { say(T('admin-exported', { file: job.result.file })); location.href = '/api/admin/jobs/export/download'; },
+      failed: (job) => job.error,
+    },
+    import: {
+      control: 'import', text: 'import-text', label: 'admin-import', running: 'admin-import-running',
+      async done(job) {
+        const r = job.result;
+        await loadTables(); await loadTable(current);
+        say(r.message + (r.schemaDiffers.length ? ' ' + T('admin-import-schema', { count: r.schemaDiffers.length, examples: r.schemaDiffers.slice(0, 3).join('; ') }) : ''));
+      },
+      failed: (job) => job.error,
+    },
+  };
+  function renderJob(kind, job) {
+    const j = JOBS[kind];
+    $(j.control).disabled = job.running;
+    $(j.text).closest('.buttonish')?.classList.toggle('off', job.running);
+    $(j.text).textContent = job.running ? T(j.running, { seconds: job.seconds }) : T(j.label);
+    if (j.render) j.render(job);
   }
-  $('rebuild').addEventListener('click', () => busy(async () => { await api('POST', '/api/admin/rebuild'); await pollBuild(); }));
+  // announce: this page started (or saw running) the job, so it reports how it ended.
+  async function watchJob(kind, announce) {
+    const job = await api('GET', `/api/admin/jobs/${kind}`);
+    renderJob(kind, job);
+    if (job.running) { setTimeout(() => watchJob(kind, true).catch((e) => say(e.message, true)), 1000); return; }
+    if (announce && job.finishedAt) job.ok ? await JOBS[kind].done(job) : say(JOBS[kind].failed(job), true);
+  }
+  async function startJob(kind, body) {
+    say('');
+    try {
+      await api('POST', `/api/admin/jobs/${kind}`, null, body);
+      if (kind === 'rebuild') say(T('admin-build-running'));
+      await watchJob(kind, true);
+    } catch (e) { console.error(e); say(e.message, true); }
+  }
+  $('rebuild').addEventListener('click', () => startJob('rebuild'));
 
   (async () => {
     const listed = await api('GET', '/api/engines');
@@ -208,7 +242,6 @@
     await loadTable(tables.find((t) => t.name === 'Statements') ? 'Statements' : tables[0].name);
     const ed = await api('GET', '/api/admin/editor');
     if (ed.running) $('editor').href = ed.url; else { $('editor').removeAttribute('href'); $('editor').classList.add('off'); $('editor-note').textContent = T('admin-editor-off'); }
-    const b = await api('GET', '/api/admin/build');
-    if (b.running) pollBuild();
+    for (const kind of Object.keys(JOBS)) await watchJob(kind, false);
   })().catch((e) => { console.error(e); say(e.message, true); });
 })();

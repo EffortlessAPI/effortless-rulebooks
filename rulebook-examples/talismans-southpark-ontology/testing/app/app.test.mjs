@@ -215,43 +215,77 @@ if hits != 1:
     sys.exit(f'expected the text once in the workbook, found it {hits} times')
 `;
 
-test('Excel round trip: the export with one cell edited imports as that one change, in seconds', async () => {
+// Export and import are jobs (2026-11-27: the page used to hang for the whole tool run, and an
+// import held every other write up until it finished). The request that starts one answers at
+// once; the page polls the job, exactly as runJob does here.
+async function runJob(base, kind, body) {
+  const started = Date.now();
+  const answer = await fetch(`${base}/api/admin/jobs/${kind}`, { method: 'POST', ...(body ? { body } : { headers: { 'content-type': 'application/json' } }) });
+  const job = await answer.json();
+  assert.equal(answer.status, 200, job.error);
+  assert.equal(job.running, true, `starting the ${kind} answers while it runs`);
+  assert.ok(Date.now() - started < 2000, `starting the ${kind} answered in ${Date.now() - started} ms, not at once`);
+  return { started, done: () => waitForJob(base, kind) };
+}
+async function waitForJob(base, kind) {
+  for (;;) {
+    const job = await (await fetch(`${base}/api/admin/jobs/${kind}`)).json();
+    if (!job.running) return job;
+    await new Promise((r) => setTimeout(r, 250));
+  }
+}
+
+test('Excel round trip, in the background: the export with one cell edited imports as that one change, in seconds', async () => {
   const file = copyOfHub();
   const port = 43295;
   const app = await startApp({ port, env: { RULEBOOK_PATH: file, XLSX_IMPORT_TIMEOUT_MS: '90000' } });
   try {
     const base = `http://127.0.0.1:${port}`;
-    const exported = await fetch(`${base}/api/admin/export.xlsx`);
-    assert.equal(exported.status, 200, 'the export answers');
+    const exportJob = await (await runJob(base, 'export')).done();
+    assert.equal(exportJob.ok, true, exportJob.error);
+    const exported = await fetch(`${base}/api/admin/jobs/export/download`);
+    assert.equal(exported.status, 200, 'the finished export downloads');
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'southpark-xlsx-'));
     const original = path.join(dir, 'exported.xlsx'), edited = path.join(dir, 'edited.xlsx');
     fs.writeFileSync(original, Buffer.from(await exported.arrayBuffer()));
+    assert.equal(fs.statSync(original).size, exportJob.result.bytes);
 
     const before = new Workspace(file).get('PageTexts', 'admin-title').Text;
     const after = `${before} (edited in Excel)`;
     const edit = spawnSync('python3', ['-c', EDIT_ONE_TEXT, original, edited, before, after], { encoding: 'utf8' });
     assert.equal(edit.status, 0, edit.stderr);
 
-    const started = Date.now();
     // Sent exactly as the admin page sends it (app/public/admin.js): the file's bytes as an
     // ArrayBuffer, with NO content-type header (a browser adds none for an ArrayBuffer body).
     // The test once sent application/octet-stream, so it passed while the page answered
     // "Send the workbook as the request body" (2026-11-26).
     const asThePageSendsIt = (file) => { const b = fs.readFileSync(file); return b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength); };
-    const answer = await fetch(`${base}/api/admin/import`, { method: 'POST', body: asThePageSendsIt(edited) });
-    const body = await answer.json();
-    const seconds = (Date.now() - started) / 1000;
-    assert.equal(answer.status, 200, body.error);
+
+    // While an import runs, an edit is not held up; and since loading the workbook's rows
+    // would then undo that edit, the import refuses instead.
+    const racing = await runJob(base, 'import', asThePageSendsIt(edited));
+    const editStarted = Date.now();
+    await app.api('PATCH', '/api/admin/tables/PageTexts/rows/admin-intro', { Text: 'Edited while the workbook was read' });
+    assert.ok(Date.now() - editStarted < 1500, `an edit during the import waited ${Date.now() - editStarted} ms`);
+    const refused = await racing.done();
+    assert.equal(refused.ok, false, 'the import refuses to undo the edit');
+    assert.equal(refused.error, new Workspace(file).get('PageTexts', 'admin-import-stale').Text);
+    assert.equal((await app.api('GET', '/api/admin/changes')).changes.total, 1, 'only the edit is pending');
+    await app.api('POST', '/api/admin/discard');
+
+    const imported = await runJob(base, 'import', asThePageSendsIt(edited));
+    const job = await imported.done();
+    const seconds = (Date.now() - imported.started) / 1000;
+    assert.equal(job.ok, true, job.error);
     assert.ok(seconds < 60, `the import took ${seconds.toFixed(0)} s`);
-    assert.deepEqual(body.changes, { total: 1, tables: { PageTexts: { added: [], changed: [{ key: 'admin-title', fields: { Text: [before, after] } }], removed: [] } } });
-    assert.deepEqual(body.schemaDiffers, []);
-    assert.deepEqual(body.summary.warnings, [], 'the workbook carried its stored results');
+    assert.deepEqual(job.result.changes, { total: 1, tables: { PageTexts: { added: [], changed: [{ key: 'admin-title', fields: { Text: [before, after] } }], removed: [] } } });
+    assert.deepEqual(job.result.schemaDiffers, []);
+    assert.deepEqual(job.result.summary.warnings, [], 'the workbook carried its stored results');
     // The same workbook unedited changes nothing.
     await app.api('POST', '/api/admin/discard');
-    const again = await fetch(`${base}/api/admin/import`, { method: 'POST', body: asThePageSendsIt(original) });
-    const same = await again.json();
-    assert.equal(again.status, 200, same.error);
-    assert.equal(same.changes.total, 0);
+    const same = await (await runJob(base, 'import', asThePageSendsIt(original))).done();
+    assert.equal(same.ok, true, same.error);
+    assert.equal(same.result.changes.total, 0);
   } finally {
     app.stop();
   }

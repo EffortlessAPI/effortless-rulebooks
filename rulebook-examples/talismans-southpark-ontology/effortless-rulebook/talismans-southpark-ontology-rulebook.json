@@ -42756,6 +42756,31 @@
     "Name": "admin-build-failed"
    },
    {
+    "PageTextId": "admin-export-running",
+    "Text": "Exporting… {seconds} s",
+    "Name": "admin-export-running"
+   },
+   {
+    "PageTextId": "admin-exported",
+    "Text": "The workbook is ready: downloading {file}.",
+    "Name": "admin-exported"
+   },
+   {
+    "PageTextId": "admin-import-running",
+    "Text": "Importing… {seconds} s",
+    "Name": "admin-import-running"
+   },
+   {
+    "PageTextId": "admin-import-stale",
+    "Text": "The rows changed while the workbook was being read (an edit, a click on the explainer, or Discard), so nothing was imported: importing now would undo that change. Import the workbook again.",
+    "Name": "admin-import-stale"
+   },
+   {
+    "PageTextId": "admin-rebuild-running",
+    "Text": "Rebuilding… {seconds} s",
+    "Name": "admin-rebuild-running"
+   },
+   {
     "PageTextId": "record-class",
     "Text": "Person",
     "Name": "record-class"
