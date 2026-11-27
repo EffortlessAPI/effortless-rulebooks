@@ -265,7 +265,7 @@ def main() -> None:
     ap.add_argument("--project-build", action="store_true",
                     help="run `effortless build` in the project directory before grading")
     ap.add_argument("--reset-db", action="store_true",
-                    help="createdb + postgres-bootstrap/reset-rulebook-db.sh before grading")
+                    help="recreate erb_<slug> + postgres-bootstrap/reset-rulebook-db.sh before grading")
     ap.add_argument("--allow-no-substrates", action="store_true",
                     help="a harness run that grades nothing is reported as zero substrates rather than "
                          "an error. Pass this ONLY when the project's TestSuites row declares "

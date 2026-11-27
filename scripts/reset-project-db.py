@@ -18,8 +18,8 @@ This file is committed with its executable bit and is never regenerated, so
 `-exec` token as one of its own options): the project is the folder whose
 effortless.json declares the build that is running, found by walking up from
 the step's working directory. The work itself is erb_project.reset_db, the one
-implementation the corpus runner and run-conformance.py also use: createdb if
-needed, then `bash reset-rulebook-db.sh <url>` against erb_<slug> (DATABASE_URL
+implementation the corpus runner and run-conformance.py also use: recreate the
+database, then `bash reset-rulebook-db.sh <url>` against erb_<slug> (DATABASE_URL
 overrides, as everywhere).
 
 fix-db-reset-step.py points every project's step here.

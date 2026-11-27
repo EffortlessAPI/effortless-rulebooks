@@ -163,7 +163,7 @@ Both generated scripts routinely come back **without the executable bit set** �
 
 `effortless -exec`/`-execute` is not a safe substitute for `bash <script>` on the currently-installed CLI (`ssotme`/`@effortlessapi/cli` v2026-06-09.06.13): its argument parser re-tokenizes the entire `-execute "..."` value word-by-word, so any token inside it that starts with `-` or `/` collides with the CLI's own option parser (e.g. `-execute "bash init-db.sh --help"` fails with `Unknown option "-help"`; an absolute path fails the same way). It also produced no visible output at all when given a bare `-execute "bash init-db.sh"` with no arguments, unlike running `bash init-db.sh` directly. Until a fixed CLI ships, use `bash <script>` directly, not `-exec`.
 
-The generated `01-*.sql` runs in check-add mode (`CREATE TABLE IF NOT EXISTS`, no `DROP`) even with `drop_all=true`, so rows whose PKs were removed from the rulebook survive a plain init. The root's `scripts/init-root-db.sh` therefore drops and recreates `erb_effortless_rulebooks` on every build; in child projects, `dropdb`/`createdb` before `init-db` after renaming or removing PKs. Keep `rulebooktopostgres` **unpinned** (`[latest]`) — a stale pin to a decommissioned host silently broke every build once.
+The generated `01-*.sql` runs in check-add mode (`CREATE TABLE IF NOT EXISTS`, no `DROP`) even with `drop_all=true`, so rows whose PKs were removed from the rulebook survive a plain init. The root's `scripts/init-root-db.sh` therefore drops and recreates `erb_effortless_rulebooks` on every build, and a project's database step (`erb_project.reset_db`, used by its build, the corpus runner and run-conformance.py) drops and recreates `erb_<slug>` the same way (since 2026-11-27: a function whose return type changed made `CREATE OR REPLACE FUNCTION` fail and stopped the corpus at its db phase). A database named by `DATABASE_URL` is reset in place, never dropped. Keep `rulebooktopostgres` **unpinned** (`[latest]`) — a stale pin to a decommissioned host silently broke every build once.
 
 The generated editor container builds its API with cloud tools (`rulebook-to-node-postgres-api` among them); when Control Plane is unhealthy it boots "degraded" with no API and the explorer's `/api` proxy answers 502. Run the tool locally (its `start.sh` under `Versioned-Stable-SSoTme-Tools/tools/effortless/`), then inside the container `docker exec <id> effortless -setUrl rulebook-to-node-postgres-api=http://host.docker.internal:<port>` and `touch /tmp/rebuild-trigger`; the override lives only in that container. Read `GET /__boot/errors` on the UI port to see which step failed.
 
@@ -201,7 +201,7 @@ python3 scripts/run-corpus.py --mode full --only acme-llc,star-trek
 ```
 
 Per project it walks three phases — `build` (`effortless build` in the project
-dir), `db` (`createdb` + `postgres-bootstrap/reset-rulebook-db.sh`) and
+dir), `db` (recreate `erb_<slug>` + `postgres-bootstrap/reset-rulebook-db.sh`) and
 `conformance` (delegated to `scripts/run-conformance.py`, which is not
 reimplemented). `scripts/erb_project.py` is the single implementation of the
 first two phases, shared with `run-conformance.py --project-build --reset-db`, so

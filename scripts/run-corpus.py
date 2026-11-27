@@ -7,7 +7,7 @@ three phases and writes the result after every transition so the run can be
 watched live and reattached to after a page reload:
 
     build       `effortless build` in the project directory
-    db          createdb + postgres-bootstrap/reset-rulebook-db.sh
+    db          recreate erb_<slug> + postgres-bootstrap/reset-rulebook-db.sh
     conformance the cross-substrate harness, via scripts/run-conformance.py
 
 Live artifact (the explorer tails this):

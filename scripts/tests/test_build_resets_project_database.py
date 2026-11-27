@@ -25,14 +25,17 @@ shared script, by a path that resolves from the step's working directory.
 """
 import importlib.util
 import json
+import os
+import shutil
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "scripts"))
-from erb_project import db_name  # noqa: E402
+from erb_project import db_name, reset_db  # noqa: E402
 
 spec = importlib.util.spec_from_file_location("fix_db_reset_step", REPO / "scripts" / "fix-db-reset-step.py")
 fix = importlib.util.module_from_spec(spec)
@@ -97,6 +100,68 @@ class FindingTheProject(unittest.TestCase):
     def test_outside_a_project_is_refused(self):
         with self.assertRaises(SystemExit):
             self.mod.project_dir(REPO / "scripts")
+
+
+def local_postgres() -> bool:
+    if shutil.which("psql") is None:
+        return False
+    probe = subprocess.run(["psql", "-Atqc", "select 1", "postgresql://postgres@localhost:5432/postgres"],
+                           capture_output=True, text=True)
+    return probe.returncode == 0
+
+
+@unittest.skipUnless(local_postgres(), "needs psql and a Postgres on localhost:5432")
+class ASecondResetAfterTheRulesChanged(unittest.TestCase):
+    """The database step must work on a database an older build left behind.
+
+    The generated 02-create-functions.sql says CREATE OR REPLACE FUNCTION, and
+    Postgres refuses that when a function's return type changed ("cannot change
+    return type of existing function"). reset_db only ran `createdb` (a no-op when
+    the database exists), so the first rulebook change that turned a field from a
+    number into text (procedural-knowledge-ontology, 2026-11-27:
+    get_communication_policies_quiet_hours_start) stopped the corpus runner at its
+    db phase and graded nothing. The root's init-root-db.sh already recreates its
+    database for the same reason; a project's database is derived the same way.
+    """
+    SLUG = "reset-probe-for-tests"
+
+    def setUp(self):
+        self.saved_url = os.environ.pop("DATABASE_URL", None)
+        self.dir = Path(tempfile.mkdtemp(prefix="erb-reset-"))
+        (self.dir / "effortless.json").write_text(json.dumps({"ProjectTranspilers": [
+            {"CommandLine": "rulebook-to-postgres -i x.json", "RelativePath": "/postgres-bootstrap"}]}))
+        out = self.dir / "postgres-bootstrap"
+        out.mkdir()
+        # What the generated script does that matters here: CREATE OR REPLACE a
+        # function whose return type comes from the rules.
+        (out / "reset-rulebook-db.sh").write_text(
+            'set -e\nRET=$(cat "$(dirname "$0")/return-type")\n'
+            'psql "$1" -v ON_ERROR_STOP=1 -qc "CREATE OR REPLACE FUNCTION get_probe() RETURNS $RET '
+            'LANGUAGE sql AS \\$\\$ SELECT NULL::$RET \\$\\$;"\n')
+        self.lines = []
+
+    def tearDown(self):
+        subprocess.run(["psql", "-qc", f"DROP DATABASE IF EXISTS {db_name(self.SLUG)} WITH (FORCE)",
+                        "postgresql://postgres@localhost:5432/postgres"], capture_output=True)
+        shutil.rmtree(self.dir, ignore_errors=True)
+        if self.saved_url is not None:
+            os.environ["DATABASE_URL"] = self.saved_url
+
+    def reset(self, return_type: str):
+        (self.dir / "postgres-bootstrap" / "return-type").write_text(return_type)
+        reset_db(self.SLUG, self.dir, self.lines.append)
+
+    def test_a_function_whose_return_type_changed_is_reset_too(self):
+        self.reset("numeric")
+        try:
+            self.reset("text")
+        except SystemExit as e:
+            self.fail(f"the second reset failed: {e}")
+        returns = subprocess.run(
+            ["psql", "-Atqc", "select pg_get_function_result('get_probe'::regproc)",
+             f"postgresql://postgres@localhost:5432/{db_name(self.SLUG)}"],
+            capture_output=True, text=True, check=True).stdout.strip()
+        self.assertEqual(returns, "text")
 
 
 class TheFix(unittest.TestCase):
