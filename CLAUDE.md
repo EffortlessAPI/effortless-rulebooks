@@ -217,13 +217,17 @@ and its logs are gitignored — the rulebook rows are the durable record.
 
 # The ERB build parameters are set once per project
 
-Five `ProjectSettings` entries in a project's `effortless.json` decide the
+Six `ProjectSettings` entries in a project's `effortless.json` decide the
 formula semantics every substrate is built under — `erbDateDiff`,
-`erbTimezone`, `erbDateTimeText`, `erbBlankLogic`, `erbWholeNumber` — and the
+`erbTimezone`, `erbDateTimeText`, `erbBlankLogic`, `erbBlankValue`,
+`erbWholeNumber` — and the
 CLI hands them to every transpiler as `cliParams`, so the substrates agree by
 construction. The contract (allowed values, defaults, the exact rule each value
 means) is `docs/ERB-BUILD-PARAMETERS.md` in `Versioned-Stable-SSoTme-Tools`.
-Set them explicitly (see `rulebook-examples/procedural-knowledge-ontology/effortless.json`)
+**An open-world project sets `erbBlankLogic` and `erbBlankValue` both to `propagate`**: a blank then
+stays "not known" through predicates, arithmetic and text joining (`erbBlankValue`, added 2026-11-27:
+under `coerce` a blank is 0 and ""), and the harness grades a blank boolean by the first and a blank
+number or string by the second (`compare_values`). Set them explicitly (see `rulebook-examples/procedural-knowledge-ontology/effortless.json`)
 rather than relying on the defaults, so a reader can see what the key was
 computed under. Never set one on a single transpiler's `CommandLine` — that
 is how two substrates end up built under different rules while both report

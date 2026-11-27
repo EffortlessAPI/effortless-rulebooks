@@ -95,30 +95,33 @@ def _resolve_rulebook_path():
 RULEBOOK_PATH = _resolve_rulebook_path()
 
 
-def _project_blank_logic():
-    """The project's erbBlankLogic, which decides what a blank boolean MEANS.
+def _project_blank_setting(name):
+    """The project's erbBlankLogic or erbBlankValue: what a blank MEANS.
 
-    Under `coerce` a blank in a predicate is FALSE, so a substrate that answers
-    false where another answers blank computed the same thing. Under `propagate`
-    (three-valued logic: open world) a blank is "not known", and answering false
-    for it is a different answer. A project that does not set it is built under
-    the contract's default, `coerce` (docs/ERB-BUILD-PARAMETERS.md in
-    Versioned-Stable-SSoTme-Tools; every generated SDK in this repo says the same).
+    erbBlankLogic governs a predicate (a boolean): under `coerce` a blank is FALSE,
+    so a substrate that answers false where another answers blank computed the same
+    thing. erbBlankValue governs arithmetic and text joining (a number, a string):
+    under `coerce` a blank is 0 and "". Under `propagate` (the open world) a blank
+    is "not known", and answering false, 0 or "" for it is a different answer. A
+    project that does not set one is built under the contract's default, `coerce`
+    (docs/ERB-BUILD-PARAMETERS.md in Versioned-Stable-SSoTme-Tools; every generated
+    SDK in this repo says the same).
     """
     path = os.path.join(DOMAIN_DIR, "effortless.json")
     if not os.path.isfile(path):
         return "coerce"
     with open(path, encoding="utf-8") as f:
         settings = json.load(f).get("ProjectSettings") or []
-    values = [s.get("Value") for s in settings if s.get("Name") == "erbBlankLogic"]
+    values = [s.get("Value") for s in settings if s.get("Name") == name]
     if not values:
         return "coerce"
     if len(values) > 1 or values[0] not in ("coerce", "propagate"):
-        raise ValueError(f"{path}: erbBlankLogic must be set once, to coerce or propagate; found {values}")
+        raise ValueError(f"{path}: {name} must be set once, to coerce or propagate; found {values}")
     return values[0]
 
 
-BLANK_LOGIC = _project_blank_logic()
+BLANK_LOGIC = _project_blank_setting("erbBlankLogic")
+BLANK_VALUE = _project_blank_setting("erbBlankValue")
 
 # All conformance artifacts live inside the domain folder so each rulebook
 # example is fully self-contained. The central testing/ folder at repo root
@@ -1028,7 +1031,8 @@ def _normalize_string(val) -> str:
     return s.lower()
 
 
-def compare_values(expected, actual, datatype: str = None, blank_logic: str = None) -> bool:
+def compare_values(expected, actual, datatype: str = None, blank_logic: str = None,
+                   blank_value: str = None) -> bool:
     """Compare two values forgivingly across the type-representation drift that
     naturally occurs between substrates (Python None vs SQL NULL vs CSV empty,
     int vs float, "1,000" vs 1000, " Internal " vs "internal", etc.).
@@ -1047,14 +1051,20 @@ def compare_values(expected, actual, datatype: str = None, blank_logic: str = No
     This is the conservative variant — it's still deterministic. Fuzzy/semantic
     grading is a separate tool (llm-fuzzy-grader.py).
 
-    `blank_logic` is the project's erbBlankLogic (BLANK_LOGIC when not given).
-    Under `coerce` a blank boolean is FALSE; under `propagate` a blank is "not
-    known" and equals only another blank, so a substrate that coerces a blank to
-    false fails an open-world project instead of passing it.
+    `blank_logic` and `blank_value` are the project's erbBlankLogic and
+    erbBlankValue (BLANK_LOGIC / BLANK_VALUE when not given). A boolean is graded
+    by erbBlankLogic, anything else by erbBlankValue. Under `coerce` a blank is
+    FALSE, 0 and ""; under `propagate` a blank is "not known" and equals only
+    another blank, so a substrate that coerces a blank fails an open-world project
+    instead of passing it.
     """
     blank_logic = blank_logic or BLANK_LOGIC
-    if blank_logic not in ("coerce", "propagate"):
-        raise ValueError(f"blank_logic must be coerce or propagate, not {blank_logic!r}")
+    blank_value = blank_value or BLANK_VALUE
+    for name, setting in (("blank_logic", blank_logic), ("blank_value", blank_value)):
+        if setting not in ("coerce", "propagate"):
+            raise ValueError(f"{name} must be coerce or propagate, not {setting!r}")
+    if (datatype or "").lower() != "boolean":
+        blank_logic = blank_value
     # Under coerce a blank, a zero and a false are one class (every substrate
     # coerces a blank to them); under propagate a blank is only ever a blank.
     nullish = _is_nullish if blank_logic == "coerce" else _is_blank

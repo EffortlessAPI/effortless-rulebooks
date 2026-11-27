@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The harness grades a blank by the project's erbBlankLogic.
+"""The harness grades a blank by the project's erbBlankLogic and erbBlankValue.
 
 Under `coerce` (every project today) a blank in a predicate is FALSE, so a
 substrate answering false where the answer key holds a blank computed the same
@@ -36,8 +36,9 @@ class BlankLogicGrading(unittest.TestCase):
         cls.harness = load_harness("talismans-southpark-ontology")
         cls.compare = staticmethod(cls.harness.compare_values)
 
-    def test_the_project_setting_is_read(self):
+    def test_the_project_settings_are_read(self):
         self.assertEqual(self.harness.BLANK_LOGIC, "coerce")
+        self.assertEqual(self.harness.BLANK_VALUE, "coerce")
 
     def test_coerce_a_blank_boolean_is_false(self):
         for blank in (None, ""):
@@ -55,15 +56,23 @@ class BlankLogicGrading(unittest.TestCase):
         self.assertTrue(self.compare(True, "t", "boolean", "propagate"))
 
     def test_coerce_a_blank_number_is_zero(self):
-        self.assertTrue(self.compare(0, None, "integer", "coerce"))
-        self.assertTrue(self.compare("0.00", "", "number", "coerce"))
+        self.assertTrue(self.compare(0, None, "integer", "coerce", "coerce"))
+        self.assertTrue(self.compare("0.00", "", "number", "coerce", "coerce"))
 
-    def test_propagate_a_blank_number_is_not_zero(self):
-        self.assertFalse(self.compare(0, None, "integer", "propagate"))
-        self.assertFalse(self.compare(None, "0E-20", "number", "propagate"))
-        self.assertTrue(self.compare(None, "", "number", "propagate"))
-        self.assertTrue(self.compare(None, "NULL", "number", "propagate"))
-        self.assertTrue(self.compare(0, "0.00", "number", "propagate"))
+    def test_a_number_is_graded_by_erb_blank_value(self):
+        # erbBlankValue=propagate: a blank number is not 0, whatever erbBlankLogic says.
+        for logic in ("coerce", "propagate"):
+            self.assertFalse(self.compare(0, None, "integer", logic, "propagate"))
+            self.assertFalse(self.compare(None, "0E-20", "number", logic, "propagate"))
+            self.assertTrue(self.compare(None, "", "number", logic, "propagate"))
+            self.assertTrue(self.compare(None, "NULL", "number", logic, "propagate"))
+            self.assertTrue(self.compare(0, "0.00", "number", logic, "propagate"))
+        # erbBlankValue=coerce keeps a blank number equal to 0 even when logic propagates.
+        self.assertTrue(self.compare(0, None, "integer", "propagate", "coerce"))
+
+    def test_a_boolean_is_graded_by_erb_blank_logic(self):
+        self.assertTrue(self.compare(False, None, "boolean", "coerce", "propagate"))
+        self.assertFalse(self.compare(False, None, "boolean", "propagate", "coerce"))
 
     def test_an_unknown_setting_is_refused(self):
         with self.assertRaises(ValueError):
@@ -78,10 +87,12 @@ class BlankLogicGrading(unittest.TestCase):
             (folder / "effortless-rulebook").mkdir(parents=True)
             (folder / "effortless-rulebook" / f"{domain}-rulebook.json").write_text("{}")
             (folder / "effortless.json").write_text(json.dumps(
-                {"ProjectSettings": [{"Name": "erbBlankLogic", "Value": "propagate"}]}))
+                {"ProjectSettings": [{"Name": "erbBlankLogic", "Value": "propagate"},
+                                     {"Name": "erbBlankValue", "Value": "propagate"}]}))
             harness = load_harness(domain)
-            self.assertEqual(harness.BLANK_LOGIC, "propagate")
+            self.assertEqual((harness.BLANK_LOGIC, harness.BLANK_VALUE), ("propagate", "propagate"))
             self.assertFalse(harness.compare_values(False, None, "boolean"))
+            self.assertFalse(harness.compare_values(0, None, "integer"))
         finally:
             for p in sorted(folder.rglob("*"), reverse=True):
                 p.unlink() if p.is_file() else p.rmdir()
