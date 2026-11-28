@@ -71,7 +71,8 @@
         "IsEnabled": true,
         "MaxPages": 3,
         "IsHeadless": true,
-        "BrowserChannel": null
+        "BrowserChannel": null,
+        "JobListings": 5
       },
       {
         "JobBoardId": "indeed",
@@ -80,7 +81,8 @@
         "IsEnabled": false,
         "MaxPages": 3,
         "IsHeadless": true,
-        "BrowserChannel": null
+        "BrowserChannel": null,
+        "JobListings": 0
       },
       {
         "JobBoardId": "linkedin",
@@ -89,7 +91,8 @@
         "IsEnabled": false,
         "MaxPages": 2,
         "IsHeadless": false,
-        "BrowserChannel": "msedge"
+        "BrowserChannel": "msedge",
+        "JobListings": 0
       },
       {
         "JobBoardId": "weworkremotely",
@@ -98,7 +101,8 @@
         "IsEnabled": false,
         "MaxPages": 3,
         "IsHeadless": true,
-        "BrowserChannel": null
+        "BrowserChannel": null,
+        "JobListings": 1
       }
     ]
   },
@@ -156,56 +160,64 @@
         "Name": "Staff Platform Architect - Remote",
         "JobBoard": "ziprecruiter",
         "Url": "https://www.ziprecruiter.com/jobs-search?search=staff+platform+architect&location=Remote+(USA)",
-        "IsEnabled": true
+        "IsEnabled": true,
+        "JobBoardName": "ZipRecruiter"
       },
       {
         "SearchUrlId": "zr-principal-data-platform",
         "Name": "Principal Engineer Data Platform - Remote",
         "JobBoard": "ziprecruiter",
         "Url": "https://www.ziprecruiter.com/jobs-search?search=principal+engineer+data+platform&location=Remote+(USA)",
-        "IsEnabled": true
+        "IsEnabled": true,
+        "JobBoardName": "ZipRecruiter"
       },
       {
         "SearchUrlId": "zr-devrel-engineer",
         "Name": "Developer Relations Engineer - Remote",
         "JobBoard": "ziprecruiter",
         "Url": "https://www.ziprecruiter.com/jobs-search?search=developer+relations+engineer&location=Remote+(USA)",
-        "IsEnabled": true
+        "IsEnabled": true,
+        "JobBoardName": "ZipRecruiter"
       },
       {
         "SearchUrlId": "indeed-staff-platform-architect",
         "Name": "Staff Platform Architect - Remote",
         "JobBoard": "indeed",
         "Url": "https://www.indeed.com/jobs?q=staff+platform+architect&l=Remote&sc=0kf%3Aattr%28DSQF7%29%3B",
-        "IsEnabled": true
+        "IsEnabled": true,
+        "JobBoardName": "Indeed"
       },
       {
         "SearchUrlId": "indeed-principal-data-platform",
         "Name": "Principal Engineer Data Platform - Remote",
         "JobBoard": "indeed",
         "Url": "https://www.indeed.com/jobs?q=principal+engineer+data+platform&l=Remote&sc=0kf%3Aattr%28DSQF7%29%3B",
-        "IsEnabled": true
+        "IsEnabled": true,
+        "JobBoardName": "Indeed"
       },
       {
         "SearchUrlId": "wwr-staff-engineer",
         "Name": "Staff Engineer",
         "JobBoard": "weworkremotely",
         "Url": "https://weworkremotely.com/remote-jobs/search?term=staff+engineer",
-        "IsEnabled": true
+        "IsEnabled": true,
+        "JobBoardName": "WeWorkRemotely"
       },
       {
         "SearchUrlId": "wwr-principal-architect",
         "Name": "Principal Architect",
         "JobBoard": "weworkremotely",
         "Url": "https://weworkremotely.com/remote-jobs/search?term=principal+architect",
-        "IsEnabled": true
+        "IsEnabled": true,
+        "JobBoardName": "WeWorkRemotely"
       },
       {
         "SearchUrlId": "li-staff-platform-architect",
         "Name": "Staff Platform Architect - Remote",
         "JobBoard": "linkedin",
         "Url": "https://www.linkedin.com/jobs/search/?keywords=staff+platform+architect&f_WT=2",
-        "IsEnabled": true
+        "IsEnabled": true,
+        "JobBoardName": "LinkedIn"
       }
     ]
   },
@@ -452,7 +464,9 @@
         "Name": "Platform Engineer - 2026 Q1",
         "Description": "Emphasizes distributed systems, platform architecture, and AI/ML infrastructure. Targets staff+ IC and architect roles.",
         "FilePath": "data/resume.md",
-        "IndexedAt": "2026-04-01T07:45:00Z"
+        "IndexedAt": "2026-04-01T07:45:00Z",
+        "ResumeSections": 8,
+        "SearchRuns": 1
       }
     ]
   },
@@ -518,7 +532,8 @@
         "Resume": "resume-platform-2026q1",
         "SectionOrder": 1,
         "Content": "## Summary\nSenior platform engineer with 15+ years building distributed systems, data pipelines, and AI/ML infrastructure. Track record of cross-team technical leadership at scale.",
-        "ChromaDocId": "resume-summary"
+        "ChromaDocId": "resume-summary",
+        "ResumeName": "Platform Engineer - 2026 Q1"
       },
       {
         "ResumeSectionId": "resume-platform-2026q1-core-strengths",
@@ -526,7 +541,8 @@
         "Resume": "resume-platform-2026q1",
         "SectionOrder": 2,
         "Content": "## Core Strengths\n- Distributed systems architecture (Kubernetes, gRPC, service mesh)\n- ML/AI platform engineering (model serving, training pipelines, vector stores)\n- Technical strategy and mentorship across 50+ engineer orgs\n- Data infrastructure (Kafka, Spark, Flink, dbt)",
-        "ChromaDocId": "resume-core-strengths"
+        "ChromaDocId": "resume-core-strengths",
+        "ResumeName": "Platform Engineer - 2026 Q1"
       },
       {
         "ResumeSectionId": "resume-platform-2026q1-experience",
@@ -534,7 +550,8 @@
         "Resume": "resume-platform-2026q1",
         "SectionOrder": 3,
         "Content": "## Experience\n### Staff Platform Engineer — CloudScale Inc (2022-2026)\nLed platform architecture for ML serving infrastructure. Designed multi-region Kubernetes deployment strategy. Reduced model inference latency 40%.\n### Senior Engineer — DataForge (2018-2022)\nBuilt real-time data pipelines processing 2M events/sec. Migrated monolith to event-driven microservices.",
-        "ChromaDocId": "resume-experience"
+        "ChromaDocId": "resume-experience",
+        "ResumeName": "Platform Engineer - 2026 Q1"
       },
       {
         "ResumeSectionId": "resume-platform-2026q1-earlier-roles",
@@ -542,7 +559,8 @@
         "Resume": "resume-platform-2026q1",
         "SectionOrder": 4,
         "Content": "## Earlier Roles\n### Software Engineer — StartupCo (2014-2018)\nFull-stack development, API design, early DevOps adoption.\n### Junior Developer — Agency LLC (2011-2014)\nWeb application development, client projects, learned software engineering fundamentals.",
-        "ChromaDocId": "resume-earlier-roles"
+        "ChromaDocId": "resume-earlier-roles",
+        "ResumeName": "Platform Engineer - 2026 Q1"
       }
     ]
   },

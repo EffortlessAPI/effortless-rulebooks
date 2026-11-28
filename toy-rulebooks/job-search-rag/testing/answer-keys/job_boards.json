@@ -6,7 +6,8 @@
     "is_enabled": false,
     "max_pages": 3,
     "is_headless": true,
-    "browser_channel": null
+    "browser_channel": null,
+    "job_listings": 0
   },
   {
     "job_board_id": "linkedin",
@@ -15,7 +16,8 @@
     "is_enabled": false,
     "max_pages": 2,
     "is_headless": false,
-    "browser_channel": "msedge"
+    "browser_channel": "msedge",
+    "job_listings": 0
   },
   {
     "job_board_id": "weworkremotely",
@@ -24,7 +26,8 @@
     "is_enabled": false,
     "max_pages": 3,
     "is_headless": true,
-    "browser_channel": null
+    "browser_channel": null,
+    "job_listings": 1
   },
   {
     "job_board_id": "ziprecruiter",
@@ -33,6 +36,7 @@
     "is_enabled": true,
     "max_pages": 3,
     "is_headless": true,
-    "browser_channel": null
+    "browser_channel": null,
+    "job_listings": 5
   }
 ]
