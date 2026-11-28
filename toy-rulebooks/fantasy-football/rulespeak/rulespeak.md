@@ -1,4 +1,4 @@
-# 📘 Fantasy Football — RuleSpeak®
+# 📘 Fantasy Football — Docs
 
 _Multi-hop DAG: raw player stats → roster aggregations → matchup scoring → standings & seeding._
 
@@ -15,6 +15,22 @@ _Multi-hop DAG: raw player stats → roster aggregations → matchup scoring →
 | Email | A defined attribute. | _User email (also PK)_ |
 | Name | The same as its email. | _Display name_ |
 | Role | A defined attribute. | _commissioner, owner, or spectator_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Email | Name ƒ | Role |
+|---|---|---|
+| commissioner@league.local | commissioner@league.local | commissioner |
+| owner@league.local | owner@league.local | owner |
+| spectator@league.local | spectator@league.local | spectator |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Player** | A player is identified by its name. | — |
 | Name | The same as its player ID. | _Display name_ |
 | Position | A defined attribute. | _QB, RB, WR, TE_ |
@@ -28,15 +44,47 @@ _Multi-hop DAG: raw player stats → roster aggregations → matchup scoring →
 | Received Touchdowns | A defined attribute. | _Season receiving TDs_ |
 | Total Touchdowns | Computed as the passing touchdowns plus the rushing touchdowns plus the received touchdowns. | _Sum of all TDs_ |
 | Projected Score | Computed as the passing yards divided by 25 plus the total touchdowns times 6 minus the interceptions times 2 rounded to 2 decimal place(s). | _Calculated fantasy points_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Position | Passing Yards | Passing Touchdowns | Interceptions | Rushing Yards | Rushing Touchdowns | Receptions | Received Yards | Received Touchdowns | Total Touchdowns ƒ | Projected Score ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| patrick-mahomes | QB | 5500 | 48 | 8 | 510 | 3 | 0 | 0 | 0 | 51 | 510.0 |
+| travis-kelce | TE | 0 | 0 | 0 | 0 | 0 | 110 | 1200 | 12 | 12 | 72.0 |
+| christian-mccaffrey | RB | 0 | 0 | 0 | 1500 | 15 | 90 | 650 | 3 | 18 | 108.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Roster** | A roster is identified by its name. | — |
 | Name | The same as its roster ID. | _Display name_ |
 | Owner | A defined attribute. | _Owner email_ |
 | Total Passing Yards | The total passing yards across the roster assignments related to the roster. | _Sum of QB passing yards on roster_ |
 | Total Rushing Yards | The total rushing yards across the roster assignments related to the roster. | _Sum of rushing yards on roster_ |
 | Total Receiving Yards | The total received yards across the roster assignments related to the roster. | _Sum of receiving yards on roster_ |
-| Total Touchdowns | The total total touchdowns across the roster assignments related to the roster. | _Sum of all TDs on roster_ |
+| Total Touchdowns | The total touchdowns across the roster assignments related to the roster. | _Sum of all TDs on roster_ |
 | Total Interceptions | The total interceptions across the roster assignments related to the roster. | _Sum of INTs on roster_ |
 | Projected Score | Computed as the total passing yards divided by 25 plus the total rushing yards divided by 10 plus the total receiving yards divided by 10 plus the total touchdowns times 6 minus the total interceptions times 2 rounded to 2 decimal place(s). | _Total roster fantasy points (2nd-order calc)_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Owner | Total Passing Yards ƒ | Total Rushing Yards ƒ | Total Receiving Yards ƒ | Total Touchdowns ƒ | Total Interceptions ƒ | Projected Score ƒ |
+|---|---|---|---|---|---|---|---|
+| mahomes-mob | commissioner@league.local | 5500 | 2010 | 1850 | 81 | 8 | 1076.0 |
+| hurts-hustlers | owner@league.local | 3800 | 3020 | 1720 | 71 | 5 | 1042.0 |
+| allens-arsenal | owner@league.local | 4500 | 2100 | 1950 | 61 | 8 | 935.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Roster Assignment** | A roster assignment is identified by its name and is related to a roster and a player. | — |
 | Name | The same as its assignment ID. | _Display name_ |
 | Roster | A defined attribute. | _Roster FK_ |
@@ -53,6 +101,22 @@ _Multi-hop DAG: raw player stats → roster aggregations → matchup scoring →
 | Received Touchdowns | Taken from the linked player. | _Player receiving TDs_ |
 | Total Touchdowns | Taken from the linked player. | _Player total TDs_ |
 | Projected Score | Taken from the linked player. | _Player projected score_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Player Name ƒ | Position ƒ | Passing Yards ƒ | Passing Touchdowns ƒ | Interceptions ƒ | Rushing Yards ƒ | Rushing Touchdowns ƒ | Receptions ƒ | Received Yards ƒ | Received Touchdowns ƒ | Total Touchdowns ƒ | Projected Score ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| mahomes-mob-qb | patrick-mahomes | QB | 5500 | 48 | 8 | 510 | 3 | 0 | 0 | 0 | 51 | 510.0 |
+| mahomes-mob-rb | christian-mccaffrey | RB | 0 | 0 | 0 | 1500 | 15 | 90 | 650 | 3 | 18 | 108.0 |
+| mahomes-mob-te | travis-kelce | TE | 0 | 0 | 0 | 0 | 0 | 110 | 1200 | 12 | 12 | 72.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Matchup** | A matchup is identified by its name and is related to a roster (its team1) and a roster (its team2). | — |
 | Name | The same as its matchup ID. | _Display name_ |
 | Week | A defined attribute. | _Week number_ |
@@ -64,6 +128,22 @@ _Multi-hop DAG: raw player stats → roster aggregations → matchup scoring →
 | Winner | Determined by priority: the team1 if the margin is greater than 0; in all other cases, the team2. | _Winning roster ID_ |
 | Loser | Determined by priority: the team2 if the margin is greater than 0; in all other cases, the team1. | _Losing roster ID_ |
 | Is Tie Game | True when the margin is 0. | _True if scores are equal_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Week | Team1 Score ƒ | Team2 Score ƒ | Margin ƒ | Winner ƒ | Loser ƒ | Is Tie Game ƒ |
+|---|---|---|---|---|---|---|---|
+| week1-mob-hustlers | 1 | 1076.0 | 1042.0 | 34.0 | mahomes-mob | hurts-hustlers | false |
+| week1-arsenal-dynasty | 1 | 935.0 | 775.0 | 160.0 | allens-arsenal | davantes-dynasty | false |
+| week1-limit-wins | 1 | 383.0 | 657.0 | -274.0 | defense-wins | hurts-limit | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Standing** | A standing is identified by its name. | — |
 | Name | Taken from the linked standing ID. | _Roster name_ |
 | Owner | Taken from the linked standing ID. | _Owner email_ |
@@ -76,6 +156,19 @@ _Multi-hop DAG: raw player stats → roster aggregations → matchup scoring →
 | Seed Rank | A defined attribute. | _Playoff seed (manually set)_ |
 | Playoff Bound | True when an empty string. | _True if seeded 1-6_ |
 | Champs Path | A defined attribute. | _If playoff-bound, path to championship_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Owner ƒ | Wins | Losses | Ties | Win Pct | Points for | Points Against | Seed Rank | Playoff Bound | Champs Path |
+|---|---|---|---|---|---|---|---|---|---|---|
+| mahomes-mob | commissioner@league.local | 6 | 0 | 0 | 1.0 | 6456.0 | 4727.0 | 1 | true | — |
+| hurts-hustlers | owner@league.local | 5 | 1 | 0 | 0.8333 | 6252.0 | 4761.0 | 2 | true | — |
+| davantes-dynasty | owner@league.local | 3 | 3 | 0 | 0.5 | 4650.0 | 4476.0 | 3 | true | — |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -120,7 +213,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-6 Total Passing Yards** | A roster's total passing yards is the total passing yards across the roster assignments related to the roster. |
 | **DR-7 Total Rushing Yards** | A roster's total rushing yards is the total rushing yards across the roster assignments related to the roster. |
 | **DR-8 Total Receiving Yards** | A roster's total receiving yards is the total received yards across the roster assignments related to the roster. |
-| **DR-9 Total Touchdowns** | A roster's total touchdowns is the total total touchdowns across the roster assignments related to the roster. |
+| **DR-9 Total Touchdowns** | A roster's total touchdowns is the total touchdowns across the roster assignments related to the roster. |
 | **DR-10 Total Interceptions** | A roster's total interceptions is the total interceptions across the roster assignments related to the roster. |
 | **DR-11 Projected Score** | A roster's projected score is computed as the total passing yards divided by 25 plus the total rushing yards divided by 10 plus the total receiving yards divided by 10 plus the total touchdowns times 6 minus the total interceptions times 2 rounded to 2 decimal place(s). |
 | **DR-12 Name** | A roster assignment's name is the same as its assignment ID. |
@@ -148,7 +241,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -189,8 +282,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

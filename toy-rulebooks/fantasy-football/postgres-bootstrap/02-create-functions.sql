@@ -14,6 +14,113 @@
 SET check_function_bodies = off;
 
 -- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+
+-- ============================================================================
 -- LOOKUP FUNCTIONS
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
@@ -45,7 +152,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_players_total_touchdowns(p_player_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT passing_touchdowns FROM players WHERE player_id = p_player_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT rushing_touchdowns FROM players WHERE player_id = p_player_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT received_touchdowns FROM players WHERE player_id = p_player_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT passing_touchdowns FROM players WHERE player_id = p_player_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT rushing_touchdowns FROM players WHERE player_id = p_player_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT received_touchdowns FROM players WHERE player_id = p_player_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_players_projected_score
@@ -55,7 +162,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_players_projected_score(p_player_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT passing_yards FROM players WHERE player_id = p_player_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE(25, 0), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_players_total_touchdowns(p_player_id)) AS v) __safe_numeric), 0) * COALESCE(6, 0))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT interceptions FROM players WHERE player_id = p_player_id)) AS v) __safe_numeric), 0) * COALESCE(2, 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::numeric;
+  SELECT (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT passing_yards FROM players WHERE player_id = p_player_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(25, 0), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_players_total_touchdowns(p_player_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(6, 0))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT interceptions FROM players WHERE player_id = p_player_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(2, 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rosters_name
@@ -75,7 +182,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rosters_total_passing_yards(p_roster_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_roster_assignments_passing_yards(assignment_id))::numeric), 0) FROM roster_assignments WHERE roster = p_roster_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (SELECT passing_yards::integer FROM players WHERE player_id = erb_r1.player)))::integer)::numeric), 0) FROM roster_assignments erb_r1 WHERE roster = p_roster_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rosters_total_rushing_yards
@@ -85,7 +192,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rosters_total_rushing_yards(p_roster_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_roster_assignments_rushing_yards(assignment_id))::numeric), 0) FROM roster_assignments WHERE roster = p_roster_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (SELECT rushing_yards::integer FROM players WHERE player_id = erb_r1.player)))::integer)::numeric), 0) FROM roster_assignments erb_r1 WHERE roster = p_roster_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rosters_total_receiving_yards
@@ -95,7 +202,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rosters_total_receiving_yards(p_roster_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_roster_assignments_received_yards(assignment_id))::numeric), 0) FROM roster_assignments WHERE roster = p_roster_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (SELECT received_yards::integer FROM players WHERE player_id = erb_r1.player)))::integer)::numeric), 0) FROM roster_assignments erb_r1 WHERE roster = p_roster_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rosters_total_touchdowns
@@ -105,7 +212,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rosters_total_touchdowns(p_roster_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_roster_assignments_total_touchdowns(assignment_id))::numeric), 0) FROM roster_assignments WHERE roster = p_roster_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT calc_players_total_touchdowns(erb_r1.player)))::integer)::numeric), 0) FROM roster_assignments erb_r1 WHERE roster = p_roster_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rosters_total_interceptions
@@ -115,7 +222,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rosters_total_interceptions(p_roster_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_roster_assignments_interceptions(assignment_id))::numeric), 0) FROM roster_assignments WHERE roster = p_roster_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (SELECT interceptions::integer FROM players WHERE player_id = erb_r1.player)))::integer)::numeric), 0) FROM roster_assignments erb_r1 WHERE roster = p_roster_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rosters_projected_score
@@ -125,7 +232,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rosters_projected_score(p_roster_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rosters_total_passing_yards(p_roster_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE(25, 0), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rosters_total_rushing_yards(p_roster_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE(10, 0), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rosters_total_receiving_yards(p_roster_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE(10, 0), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rosters_total_touchdowns(p_roster_id)) AS v) __safe_numeric), 0) * COALESCE(6, 0))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rosters_total_interceptions(p_roster_id)) AS v) __safe_numeric), 0) * COALESCE(2, 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::numeric;
+  SELECT (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rosters_total_passing_yards(p_roster_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(25, 0), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rosters_total_rushing_yards(p_roster_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(10, 0), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rosters_total_receiving_yards(p_roster_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(10, 0), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rosters_total_touchdowns(p_roster_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(6, 0))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rosters_total_interceptions(p_roster_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(2, 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roster_assignments_player_name
@@ -399,7 +506,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_matchups_margin(p_matchup_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_matchups_team1_score(p_matchup_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_matchups_team2_score(p_matchup_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_matchups_team1_score(p_matchup_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_matchups_team2_score(p_matchup_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_matchups_winner
@@ -409,7 +516,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_matchups_winner(p_matchup_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (calc_matchups_margin(p_matchup_id))::NUMERIC > 0 THEN ((SELECT NULLIF(team1, '') FROM matchups WHERE matchup_id = p_matchup_id))::text ELSE ((SELECT NULLIF(team2, '') FROM matchups WHERE matchup_id = p_matchup_id))::text END)::text;
+  SELECT (CASE WHEN COALESCE((calc_matchups_margin(p_matchup_id))::NUMERIC, 0) > 0 THEN ((SELECT NULLIF(team1, '') FROM matchups WHERE matchup_id = p_matchup_id))::text ELSE ((SELECT NULLIF(team2, '') FROM matchups WHERE matchup_id = p_matchup_id))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_matchups_loser
@@ -419,7 +526,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_matchups_loser(p_matchup_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (calc_matchups_margin(p_matchup_id))::NUMERIC > 0 THEN ((SELECT NULLIF(team2, '') FROM matchups WHERE matchup_id = p_matchup_id))::text ELSE ((SELECT NULLIF(team1, '') FROM matchups WHERE matchup_id = p_matchup_id))::text END)::text;
+  SELECT (CASE WHEN COALESCE((calc_matchups_margin(p_matchup_id))::NUMERIC, 0) > 0 THEN ((SELECT NULLIF(team2, '') FROM matchups WHERE matchup_id = p_matchup_id))::text ELSE ((SELECT NULLIF(team1, '') FROM matchups WHERE matchup_id = p_matchup_id))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_matchups_is_tie_game
@@ -429,7 +536,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_matchups_is_tie_game(p_matchup_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_matchups_margin(p_matchup_id))::NUMERIC = 0)::boolean;
+  SELECT (COALESCE((calc_matchups_margin(p_matchup_id))::NUMERIC, 0) = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_standings_name
