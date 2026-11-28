@@ -1,0 +1,501 @@
+{
+  "autoimmune_diseases": {
+    "primary_key": "autoimmune_disease_id",
+    "computed_columns": [
+      "name",
+      "relative_path",
+      "count_of_disease_stages",
+      "count_of_intervention_targets"
+    ],
+    "record_count": 3
+  },
+  "disease_stages": {
+    "primary_key": "disease_stage_id",
+    "computed_columns": [
+      "name",
+      "parent_path",
+      "relative_path",
+      "autoimmune_disease_disease_label",
+      "is_presymptomatic"
+    ],
+    "record_count": 6
+  },
+  "tissues": {
+    "primary_key": "tissue_id",
+    "computed_columns": [
+      "name",
+      "relative_path",
+      "count_of_omics_assays"
+    ],
+    "record_count": 5
+  },
+  "omics_modalities": {
+    "primary_key": "omics_modality_id",
+    "computed_columns": [
+      "name",
+      "relative_path",
+      "count_of_omics_assays"
+    ],
+    "record_count": 8
+  },
+  "federated_datasets": {
+    "primary_key": "federated_dataset_id",
+    "computed_columns": [
+      "name",
+      "relative_path",
+      "count_of_individuals"
+    ],
+    "record_count": 4
+  },
+  "variant_types": {
+    "primary_key": "variant_type_id",
+    "computed_columns": [
+      "name",
+      "relative_path",
+      "count_of_genomic_variants"
+    ],
+    "record_count": 5
+  },
+  "individuals": {
+    "primary_key": "individual_id",
+    "computed_columns": [
+      "name",
+      "slug",
+      "relative_path",
+      "federated_dataset_node_label",
+      "count_of_genomic_variants",
+      "count_of_causal_mechanisms",
+      "count_of_epistatic_interactions",
+      "rare_variant_burden_score",
+      "causal_architecture_score",
+      "is_development_window",
+      "is_aging_window",
+      "count_confirmed_causal_nodes",
+      "sum_confirmed_causal_confidence",
+      "count_cross_ancestry_confirmed_nodes",
+      "max_severity_score",
+      "count_high_severity_phenotypes",
+      "has_high_severity_phenotype",
+      "count_predicted_treatment_responses",
+      "has_predicted_treatment_response",
+      "count_serology_panels",
+      "count_pre_nephritic_signature_panels",
+      "is_in_pre_nephritic_signature_cluster",
+      "signature_strength",
+      "max_progression_state_order",
+      "latest_sledai_score",
+      "nephritis_progression_state_key",
+      "activity_tier",
+      "is_high_disease_activity",
+      "is_disease_progressing",
+      "target_pathway_code",
+      "target_pathway",
+      "current_progression_state_id",
+      "reachable_states_ahead"
+    ],
+    "record_count": 12
+  },
+  "genomic_variants": {
+    "primary_key": "genomic_variant_id",
+    "computed_columns": [
+      "name",
+      "parent_path",
+      "relative_path",
+      "variant_type_label",
+      "variant_class_is_rare",
+      "individual_ancestry_label",
+      "is_rare_variant",
+      "is_causal_candidate"
+    ],
+    "record_count": 12
+  },
+  "omics_assays": {
+    "primary_key": "omics_assay_id",
+    "computed_columns": [
+      "name",
+      "parent_path",
+      "relative_path",
+      "modality_label",
+      "tissue_label",
+      "has_batch_effect_risk",
+      "is_high_quality_assay"
+    ],
+    "record_count": 36
+  },
+  "evidence_items": {
+    "primary_key": "evidence_item_id",
+    "computed_columns": [
+      "name",
+      "parent_path",
+      "relative_path",
+      "assay_is_high_quality",
+      "z_stat",
+      "is_confound_controlled",
+      "is_qualified_evidence"
+    ],
+    "record_count": 36
+  },
+  "cohort_replications": {
+    "primary_key": "cohort_replication_id",
+    "computed_columns": [
+      "name",
+      "parent_path",
+      "relative_path",
+      "replicated_at_nominal_sig",
+      "mechanism_primary_ancestry",
+      "is_different_ancestry_replication",
+      "is_cross_ancestry_concordant"
+    ],
+    "record_count": 36
+  },
+  "negative_control_tests": {
+    "primary_key": "negative_control_test_id",
+    "computed_columns": [
+      "name",
+      "parent_path",
+      "relative_path",
+      "is_survived"
+    ],
+    "record_count": 24
+  },
+  "environmental_exposures": {
+    "primary_key": "environmental_exposure_id",
+    "computed_columns": [
+      "name",
+      "parent_path",
+      "relative_path",
+      "individual_ancestry_label",
+      "is_high_exposure"
+    ],
+    "record_count": 1
+  },
+  "treatments": {
+    "primary_key": "treatment_id",
+    "computed_columns": [
+      "name",
+      "parent_path",
+      "relative_path",
+      "autoimmune_disease_label",
+      "is_effective_treatment",
+      "is_mechanism_matched",
+      "is_treatment_response_predicted",
+      "treatment_response_deciding_factor"
+    ],
+    "record_count": 12
+  },
+  "clinical_phenotypes": {
+    "primary_key": "clinical_phenotype_id",
+    "computed_columns": [
+      "name",
+      "parent_path",
+      "relative_path",
+      "disease_stage_label",
+      "is_high_severity",
+      "is_presymptomatic_phenotype"
+    ],
+    "record_count": 12
+  },
+  "causal_mechanisms": {
+    "primary_key": "causal_mechanism_id",
+    "computed_columns": [
+      "target_pathway_code",
+      "name",
+      "parent_path",
+      "relative_path",
+      "individual_ancestry_label",
+      "count_qualified_evidence",
+      "count_modalities_supporting",
+      "count_intervention_targets",
+      "is_experimentally_falsifiable",
+      "count_replications",
+      "count_concordant_replications",
+      "count_cross_ancestry_concordant",
+      "replication_fraction",
+      "replicates_across_cohorts",
+      "count_neg_control_tests",
+      "count_neg_control_survived",
+      "survives_negative_controls",
+      "is_spurious_derived",
+      "causal_confidence",
+      "variant_is_causal_candidate",
+      "is_causal_architecture_node",
+      "is_ancestry_transportable"
+    ],
+    "record_count": 12
+  },
+  "epistatic_interactions": {
+    "primary_key": "epistatic_interaction_id",
+    "computed_columns": [
+      "name",
+      "parent_path",
+      "relative_path",
+      "is_high_order_epistasis"
+    ],
+    "record_count": 1
+  },
+  "counterfactual_trajectories": {
+    "primary_key": "counterfactual_trajectory_id",
+    "computed_columns": [
+      "name",
+      "parent_path",
+      "relative_path",
+      "autoimmune_disease_label",
+      "is_worsening_trajectory"
+    ],
+    "record_count": 1
+  },
+  "individual_predictions": {
+    "primary_key": "individual_prediction_id",
+    "computed_columns": [
+      "name",
+      "parent_path",
+      "relative_path",
+      "individual_ancestry_label",
+      "is_ancestry_holdout",
+      "individual_causal_mass",
+      "individual_confirmed_node_count",
+      "individual_cross_ancestry_node_count",
+      "individual_has_cryptic_relatedness",
+      "individual_max_severity_score",
+      "individual_has_high_severity_phenotype",
+      "individual_has_predicted_treatment_response",
+      "predicted_value",
+      "count_bins",
+      "count_well_calibrated_bins",
+      "sum_bin_abs_error",
+      "mean_bin_abs_error",
+      "well_calibrated_fraction",
+      "calibrated_uncertainty",
+      "rests_on_confirmed_mechanism",
+      "has_spurious_correlation_flag",
+      "is_falsifiability_backed",
+      "is_transportable_to_absent_ancestry",
+      "is_ancestry_transport_safe",
+      "transport_gate_status",
+      "is_high_confidence_prediction",
+      "patient_stratification_tier",
+      "predicted_severity_value",
+      "severity_tier",
+      "is_severity_actionable",
+      "severity_deciding_factor",
+      "is_treatment_response_actionable",
+      "treatment_response_deciding_factor",
+      "is_clinically_actionable",
+      "lifecycle_state_key",
+      "deciding_gate",
+      "individual_target_pathway",
+      "individual_progression_state_key",
+      "individual_is_disease_progressing",
+      "recommended_treatment_line",
+      "treatment_line_deciding_factor",
+      "progression_vs_actionability_disagree"
+    ],
+    "record_count": 12
+  },
+  "calibration_bins": {
+    "primary_key": "calibration_bin_id",
+    "computed_columns": [
+      "name",
+      "parent_path",
+      "relative_path",
+      "bin_abs_error",
+      "is_well_calibrated_bin"
+    ],
+    "record_count": 60
+  },
+  "intervention_targets": {
+    "primary_key": "intervention_target_id",
+    "computed_columns": [
+      "name",
+      "parent_path",
+      "relative_path",
+      "causal_mechanism_label",
+      "is_gene_based_therapy",
+      "is_cell_based_therapy"
+    ],
+    "record_count": 11
+  },
+  "axioms": {
+    "primary_key": "axiom_id",
+    "computed_columns": [
+      "name",
+      "relative_path"
+    ],
+    "record_count": 15
+  },
+  "tests_for_success": {
+    "primary_key": "test_for_success_id",
+    "computed_columns": [
+      "name",
+      "relative_path"
+    ],
+    "record_count": 10
+  },
+  "features": {
+    "primary_key": "feature_id",
+    "computed_columns": [
+      "name",
+      "relative_path",
+      "meta_line"
+    ],
+    "record_count": 24
+  },
+  "inference_kinds": {
+    "primary_key": "inference_kind_id",
+    "computed_columns": [
+      "name",
+      "relative_path"
+    ],
+    "record_count": 7
+  },
+  "open_questions": {
+    "primary_key": "open_question_id",
+    "computed_columns": [
+      "name",
+      "relative_path"
+    ],
+    "record_count": 4
+  },
+  "non_goals": {
+    "primary_key": "non_goal_id",
+    "computed_columns": [
+      "name",
+      "relative_path"
+    ],
+    "record_count": 5
+  },
+  "glossary_terms": {
+    "primary_key": "glossary_term_id",
+    "computed_columns": [
+      "name",
+      "relative_path"
+    ],
+    "record_count": 13
+  },
+  "effortless_loops": {
+    "primary_key": "effortless_loop_id",
+    "computed_columns": [
+      "name",
+      "relative_path",
+      "completedness",
+      "is_in_current_plan"
+    ],
+    "record_count": 16
+  },
+  "routing_and_navigation": {
+    "primary_key": "routing_and_navigation_id",
+    "computed_columns": [
+      "name",
+      "admin_can_create",
+      "admin_can_read",
+      "admin_can_update",
+      "admin_can_delete",
+      "intake_clinician_can_create",
+      "intake_clinician_can_read",
+      "intake_clinician_can_update",
+      "intake_clinician_can_delete",
+      "diagnosing_doctor_can_create",
+      "diagnosing_doctor_can_read",
+      "diagnosing_doctor_can_update",
+      "diagnosing_doctor_can_delete",
+      "external_llm_can_create",
+      "external_llm_can_read",
+      "external_llm_can_update",
+      "external_llm_can_delete",
+      "depth",
+      "full_path",
+      "handler_base_name",
+      "relative_path"
+    ],
+    "record_count": 24
+  },
+  "state_machines": {
+    "primary_key": "state_machine_id",
+    "computed_columns": [
+      "name",
+      "relative_path",
+      "state_count",
+      "transition_rule_count"
+    ],
+    "record_count": 2
+  },
+  "machine_states": {
+    "primary_key": "machine_state_id",
+    "computed_columns": [
+      "name",
+      "relative_path",
+      "reachable_state_count"
+    ],
+    "record_count": 13
+  },
+  "state_transition_rules": {
+    "primary_key": "state_transition_rule_id",
+    "computed_columns": [
+      "name",
+      "relative_path",
+      "from_state_key",
+      "to_state_key",
+      "is_forward_edge"
+    ],
+    "record_count": 14
+  },
+  "state_transitions": {
+    "primary_key": "state_transition_id",
+    "computed_columns": [
+      "name",
+      "relative_path",
+      "is_forward"
+    ],
+    "record_count": 72
+  },
+  "subject_state_instances": {
+    "primary_key": "subject_state_instance_id",
+    "computed_columns": [
+      "name",
+      "relative_path",
+      "is_current",
+      "has_complete_lineage",
+      "is_long_dwell"
+    ],
+    "record_count": 79
+  },
+  "disease_domain_concepts": {
+    "primary_key": "disease_domain_concept_id",
+    "computed_columns": [
+      "name",
+      "relative_path",
+      "is_deeply_modeled",
+      "is_schema_modeled"
+    ],
+    "record_count": 26
+  },
+  "serology_observations": {
+    "primary_key": "serology_observation_id",
+    "computed_columns": [
+      "prior_anti_ds_dna_iu",
+      "prior_c3",
+      "prior_c4",
+      "anti_ds_dna_trend",
+      "complement_trend",
+      "is_pre_nephritic_signature_panel",
+      "is_significant_proteinuria",
+      "is_nephrotic_range_proteinuria",
+      "sledai_renal_points",
+      "sledai_serology_points",
+      "sledai_score",
+      "progression_state_key",
+      "progression_state_order",
+      "name",
+      "relative_path"
+    ],
+    "record_count": 25
+  },
+  "therapy_options": {
+    "primary_key": "therapy_option_id",
+    "computed_columns": [
+      "name",
+      "relative_path"
+    ],
+    "record_count": 4
+  }
+}

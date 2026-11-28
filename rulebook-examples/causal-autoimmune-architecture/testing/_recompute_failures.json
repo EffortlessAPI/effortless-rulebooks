@@ -1,21 +1,5 @@
 [
   {
-    "entity": "Individuals",
-    "field": "FederatedDatasetNodeLabel",
-    "formula": "=IF({{FederatedDataset}} = \"\", \"\", INDEX(FederatedDatasets!{{NodeLabel}}, MATCH({{FederatedDataset}}, FederatedDatasets!{{FederatedDatasetId}}, 0)))",
-    "record_id": "ind-h-yamamoto",
-    "error": "SyntaxError: Unexpected character '!' at position 57",
-    "severity": "missing-value"
-  },
-  {
-    "entity": "Individuals",
-    "field": "FederatedDatasetNodeLabel",
-    "formula": "=IF({{FederatedDataset}} = \"\", \"\", INDEX(FederatedDatasets!{{NodeLabel}}, MATCH({{FederatedDataset}}, FederatedDatasets!{{FederatedDatasetId}}, 0)))",
-    "record_id": "ind-i-conteh",
-    "error": "SyntaxError: Unexpected character '!' at position 57",
-    "severity": "missing-value"
-  },
-  {
     "entity": "EvidenceItems",
     "field": "ZStat",
     "formula": "=IF({{StandardError}} > 0, {{EffectSize}} / {{StandardError}}, 0)",

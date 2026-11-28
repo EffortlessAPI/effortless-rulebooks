@@ -1,0 +1,16 @@
+[
+  {
+    "counterfactual_trajectory_id": "cf-context",
+    "trajectory_label": "Untreated SLE projection (context only)",
+    "individual": "ind-a-reyes",
+    "autoimmune_disease": "sle",
+    "projected_severity": 6,
+    "horizon_months": 12,
+    "intervention_applied": "none",
+    "name": null,
+    "parent_path": null,
+    "relative_path": null,
+    "autoimmune_disease_label": null,
+    "is_worsening_trajectory": null
+  }
+]

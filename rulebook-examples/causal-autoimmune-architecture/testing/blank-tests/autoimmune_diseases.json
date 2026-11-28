@@ -1,0 +1,47 @@
+[
+  {
+    "autoimmune_disease_id": "psa",
+    "disease_label": "Psoriatic Arthritis",
+    "is_complex_disease": true,
+    "name": null,
+    "relative_path": null,
+    "count_of_disease_stages": null,
+    "count_of_intervention_targets": null,
+    "disease_stages": null,
+    "treatments": null,
+    "clinical_phenotypes": null,
+    "individual_predictions": null,
+    "counterfactual_trajectories": null,
+    "intervention_targets": null
+  },
+  {
+    "autoimmune_disease_id": "ra",
+    "disease_label": "Rheumatoid Arthritis",
+    "is_complex_disease": true,
+    "name": null,
+    "relative_path": null,
+    "count_of_disease_stages": null,
+    "count_of_intervention_targets": null,
+    "disease_stages": null,
+    "treatments": null,
+    "clinical_phenotypes": null,
+    "individual_predictions": null,
+    "counterfactual_trajectories": null,
+    "intervention_targets": null
+  },
+  {
+    "autoimmune_disease_id": "sle",
+    "disease_label": "Systemic Lupus Erythematosus",
+    "is_complex_disease": true,
+    "name": null,
+    "relative_path": null,
+    "count_of_disease_stages": null,
+    "count_of_intervention_targets": null,
+    "disease_stages": null,
+    "treatments": null,
+    "clinical_phenotypes": null,
+    "individual_predictions": null,
+    "counterfactual_trajectories": null,
+    "intervention_targets": null
+  }
+]

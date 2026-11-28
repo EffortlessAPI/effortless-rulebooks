@@ -1,0 +1,15 @@
+[
+  {
+    "environmental_exposure_id": "exp-context",
+    "exposure_label": "Smoking pack-years (context only)",
+    "individual": "ind-a-reyes",
+    "exposure_level": 3,
+    "exposure_start_date": "2015-01-01",
+    "is_maternal_effect": false,
+    "name": null,
+    "parent_path": null,
+    "relative_path": null,
+    "individual_ancestry_label": null,
+    "is_high_exposure": null
+  }
+]

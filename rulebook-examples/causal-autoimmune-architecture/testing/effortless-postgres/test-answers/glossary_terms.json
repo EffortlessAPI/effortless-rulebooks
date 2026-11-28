@@ -1,0 +1,93 @@
+[
+  {
+    "glossary_term_id": "gt-corpus-discovery",
+    "term": "corpus discovery",
+    "definition": "The cohort-level surface where causal-hypothesis patterns EMERGE across many patients (vs v1's per-patient verdicts). Discovery is inherently corpus-level; this is the v2 reframe of the audit's 'you don't do discovery' critique.",
+    "name": "corpus discovery",
+    "relative_path": "/admin/glossary/gt-corpus-discovery"
+  },
+  {
+    "glossary_term_id": "gt-disease-progression-machine",
+    "term": "disease progression machine",
+    "definition": "A state machine on the polymorphic StateMachines substrate whose subject is a patient's disease course (presymptomatic -> serologic-active -> early-nephritis -> renal-flare-risk -> biopsy-indicated). Transitions are raw-leaf-triggered; current state is the derived IsCurrent occupancy.",
+    "name": "disease progression machine",
+    "relative_path": "/admin/glossary/gt-disease-progression-machine"
+  },
+  {
+    "glossary_term_id": "gt-disease-state-simulator",
+    "term": "disease state simulator",
+    "definition": "The v2 layer the audit asked for: disease modeled as a WITNESSED state machine whose transitions fire only on raw longitudinal observations (rising anti-dsDNA, falling C3/C4, proteinuria). Current state and dwell-time are derived & bitemporal \u2014 the contrast the audit drew with an 'evidence gate'.",
+    "name": "disease state simulator",
+    "relative_path": "/admin/glossary/gt-disease-state-simulator"
+  },
+  {
+    "glossary_term_id": "gt-dwell-time",
+    "term": "dwell time",
+    "definition": "Bitemporal derivation: how long a subject has been in a disease state (now - EnteredAt while current; ExitedAt - EnteredAt once left). The audit asked for 'how long has the patient/disease been in a state' \u2014 this is that, as a formula.",
+    "name": "dwell time",
+    "relative_path": "/admin/glossary/gt-dwell-time"
+  },
+  {
+    "glossary_term_id": "gt-evidence-gate",
+    "term": "evidence gate",
+    "definition": "The v1 layer: per-patient adjudication of whether a prediction is trustworthy enough to act on (the four gates + IsClinicallyActionable). v2 keeps this and adds the disease-state simulator above it on the same hub.",
+    "name": "evidence gate",
+    "relative_path": "/admin/glossary/gt-evidence-gate"
+  },
+  {
+    "glossary_term_id": "gt-fake-but-transparent",
+    "term": "fake-but-transparent",
+    "definition": "Test results are synthetic (the case is invented) but every number is visible, sourced to the case, and editable; nothing is hidden.",
+    "name": "fake-but-transparent",
+    "relative_path": "/admin/glossary/gt-fake-but-transparent"
+  },
+  {
+    "glossary_term_id": "gt-intake-clerk-lab",
+    "term": "intake clerk + lab",
+    "definition": "The only two roles the LLM plays: interpret intake facts (clerk) and produce the case's test results (lab). Never the diagnostician.",
+    "name": "intake clerk + lab",
+    "relative_path": "/admin/glossary/gt-intake-clerk-lab"
+  },
+  {
+    "glossary_term_id": "gt-knob",
+    "term": "knob",
+    "definition": "A literal, editable leaf value in the admin UI representing one choice the LLM (or a human) made; nudged, not re-prompted, when wrong.",
+    "name": "knob",
+    "relative_path": "/admin/glossary/gt-knob"
+  },
+  {
+    "glossary_term_id": "gt-laundering-objection",
+    "term": "laundering objection",
+    "definition": "The skeptic's claim that a deterministic function over LLM-chosen inputs just launders a hallucination; defeated by externalized knobs + independent witness.",
+    "name": "laundering objection",
+    "relative_path": "/admin/glossary/gt-laundering-objection"
+  },
+  {
+    "glossary_term_id": "gt-line-in-dag",
+    "term": "line in the DAG",
+    "definition": "The trust boundary, stated mechanically: fields with a formula belong to the model; raw-input leaf fields are the LLM's or a human's.",
+    "name": "line in the DAG",
+    "relative_path": "/admin/glossary/gt-line-in-dag"
+  },
+  {
+    "glossary_term_id": "gt-serology-trajectory",
+    "term": "serology trajectory",
+    "definition": "The raw longitudinal leaves driving progression: anti-dsDNA titre trend (rising/stable/falling), complement C3/C4 trend, proteinuria. The LLM/lab may emit these; everything above them is derived.",
+    "name": "serology trajectory",
+    "relative_path": "/admin/glossary/gt-serology-trajectory"
+  },
+  {
+    "glossary_term_id": "gt-three-panel-witness",
+    "term": "three-panel witness",
+    "definition": "Input case text | extracted facts with per-fact provenance | deterministic diagnosis + gate trace \u2014 the two halves checkable independently.",
+    "name": "three-panel witness",
+    "relative_path": "/admin/glossary/gt-three-panel-witness"
+  },
+  {
+    "glossary_term_id": "gt-treatment-line-recommendation",
+    "term": "treatment line recommendation",
+    "definition": "Derived field: given the patient's confirmed causal mechanism + current disease state, the recommended therapy (MMF vs belimumab vs anifrolumab) and the single deciding reason. The audit's second worked example.",
+    "name": "treatment line recommendation",
+    "relative_path": "/admin/glossary/gt-treatment-line-recommendation"
+  }
+]

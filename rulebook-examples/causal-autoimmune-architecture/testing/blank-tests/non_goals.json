@@ -1,0 +1,37 @@
+[
+  {
+    "non_goal_id": "ng-clinical-use",
+    "statement": "This is not validated clinical decision support and must never be used for clinical purposes.",
+    "why_excluded": "Demonstration of inference structure only; all patients synthetic, all figures literature ranges.",
+    "name": null,
+    "relative_path": null
+  },
+  {
+    "non_goal_id": "ng-crud-ui",
+    "statement": "This is not a CRUD UI.",
+    "why_excluded": "The home screen is the witnessed red/green harness; the payoff is a derived diagnosis writeup.",
+    "name": null,
+    "relative_path": null
+  },
+  {
+    "non_goal_id": "ng-full-breadth",
+    "statement": "The full omics breadth (counterfactual trajectories, most modalities, epistasis, exposures) is not on the keystone's dependency path.",
+    "why_excluded": "Kept as deliberate sparse context for breadth; pulled onto the path only when it earns its place (anti-hallucination rule).",
+    "name": null,
+    "relative_path": null
+  },
+  {
+    "non_goal_id": "ng-llm-reasoning",
+    "statement": "The LLM does not perform higher-order reasoning or render the diagnosis.",
+    "why_excluded": "All reasoning lives in the open, editable DAG; the LLM is intake clerk + lab only.",
+    "name": null,
+    "relative_path": null
+  },
+  {
+    "non_goal_id": "ng-publish-verbatim",
+    "statement": "Never publish the prospect's verbatim problem text.",
+    "why_excluded": "Anonymity / good manners; the public artifact uses a reworded generic grand-challenge prompt.",
+    "name": null,
+    "relative_path": null
+  }
+]

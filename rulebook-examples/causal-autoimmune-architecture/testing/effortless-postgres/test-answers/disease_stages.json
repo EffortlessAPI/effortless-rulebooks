@@ -1,0 +1,68 @@
+[
+  {
+    "disease_stage_id": "psa-active",
+    "stage_label": "Active",
+    "sort_order": 1,
+    "autoimmune_disease": "psa",
+    "name": "Psoriatic Arthritis \u2014 Active",
+    "parent_path": "/diseases/psa",
+    "relative_path": "/diseases/psa/stages/psa-active",
+    "autoimmune_disease_disease_label": "Psoriatic Arthritis",
+    "is_presymptomatic": false
+  },
+  {
+    "disease_stage_id": "ra-active",
+    "stage_label": "Active",
+    "sort_order": 1,
+    "autoimmune_disease": "ra",
+    "name": "Rheumatoid Arthritis \u2014 Active",
+    "parent_path": "/diseases/ra",
+    "relative_path": "/diseases/ra/stages/ra-active",
+    "autoimmune_disease_disease_label": "Rheumatoid Arthritis",
+    "is_presymptomatic": false
+  },
+  {
+    "disease_stage_id": "ra-remission",
+    "stage_label": "Remission",
+    "sort_order": 2,
+    "autoimmune_disease": "ra",
+    "name": "Rheumatoid Arthritis \u2014 Remission",
+    "parent_path": "/diseases/ra",
+    "relative_path": "/diseases/ra/stages/ra-remission",
+    "autoimmune_disease_disease_label": "Rheumatoid Arthritis",
+    "is_presymptomatic": false
+  },
+  {
+    "disease_stage_id": "sle-active",
+    "stage_label": "Active",
+    "sort_order": 2,
+    "autoimmune_disease": "sle",
+    "name": "Systemic Lupus Erythematosus \u2014 Active",
+    "parent_path": "/diseases/sle",
+    "relative_path": "/diseases/sle/stages/sle-active",
+    "autoimmune_disease_disease_label": "Systemic Lupus Erythematosus",
+    "is_presymptomatic": false
+  },
+  {
+    "disease_stage_id": "sle-presymptomatic",
+    "stage_label": "Presymptomatic",
+    "sort_order": 1,
+    "autoimmune_disease": "sle",
+    "name": "Systemic Lupus Erythematosus \u2014 Presymptomatic",
+    "parent_path": "/diseases/sle",
+    "relative_path": "/diseases/sle/stages/sle-presymptomatic",
+    "autoimmune_disease_disease_label": "Systemic Lupus Erythematosus",
+    "is_presymptomatic": true
+  },
+  {
+    "disease_stage_id": "sle-remission",
+    "stage_label": "Remission",
+    "sort_order": 3,
+    "autoimmune_disease": "sle",
+    "name": "Systemic Lupus Erythematosus \u2014 Remission",
+    "parent_path": "/diseases/sle",
+    "relative_path": "/diseases/sle/stages/sle-remission",
+    "autoimmune_disease_disease_label": "Systemic Lupus Erythematosus",
+    "is_presymptomatic": false
+  }
+]

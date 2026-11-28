@@ -1,0 +1,47 @@
+[
+  {
+    "variant_type_id": "coding",
+    "type_label": "Coding Variant",
+    "is_rare_variant_class": false,
+    "name": null,
+    "relative_path": null,
+    "count_of_genomic_variants": null,
+    "genomic_variants": null
+  },
+  {
+    "variant_type_id": "de-novo",
+    "type_label": "De Novo Mutation",
+    "is_rare_variant_class": true,
+    "name": null,
+    "relative_path": null,
+    "count_of_genomic_variants": null,
+    "genomic_variants": null
+  },
+  {
+    "variant_type_id": "hla-haplotype",
+    "type_label": "HLA Haplotype",
+    "is_rare_variant_class": false,
+    "name": null,
+    "relative_path": null,
+    "count_of_genomic_variants": null,
+    "genomic_variants": null
+  },
+  {
+    "variant_type_id": "regulatory",
+    "type_label": "Regulatory Variant",
+    "is_rare_variant_class": true,
+    "name": null,
+    "relative_path": null,
+    "count_of_genomic_variants": null,
+    "genomic_variants": null
+  },
+  {
+    "variant_type_id": "structural",
+    "type_label": "Structural Variant",
+    "is_rare_variant_class": true,
+    "name": null,
+    "relative_path": null,
+    "count_of_genomic_variants": null,
+    "genomic_variants": null
+  }
+]

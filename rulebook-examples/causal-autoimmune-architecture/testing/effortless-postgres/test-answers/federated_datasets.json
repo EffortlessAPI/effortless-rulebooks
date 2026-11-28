@@ -1,0 +1,50 @@
+[
+  {
+    "federated_dataset_id": "fed-amazon",
+    "node_label": "Amazon Indigenous Cohort",
+    "region": "Amazon Basin",
+    "is_privacy_preserving": true,
+    "name": "Amazon Indigenous Cohort",
+    "relative_path": "/datasets/fed-amazon",
+    "count_of_individuals": 4,
+    "individuals": null,
+    "omics_assays": null,
+    "cohort_replications": null
+  },
+  {
+    "federated_dataset_id": "fed-east-asia",
+    "node_label": "East Asia Federated Node",
+    "region": "East Asia",
+    "is_privacy_preserving": true,
+    "name": "East Asia Federated Node",
+    "relative_path": "/datasets/fed-east-asia",
+    "count_of_individuals": 1,
+    "individuals": null,
+    "omics_assays": null,
+    "cohort_replications": null
+  },
+  {
+    "federated_dataset_id": "fed-europe",
+    "node_label": "European Reference Node",
+    "region": "Europe",
+    "is_privacy_preserving": true,
+    "name": "European Reference Node",
+    "relative_path": "/datasets/fed-europe",
+    "count_of_individuals": 4,
+    "individuals": null,
+    "omics_assays": null,
+    "cohort_replications": null
+  },
+  {
+    "federated_dataset_id": "fed-west-africa",
+    "node_label": "West Africa Federated Node",
+    "region": "West Africa",
+    "is_privacy_preserving": true,
+    "name": "West Africa Federated Node",
+    "relative_path": "/datasets/fed-west-africa",
+    "count_of_individuals": 1,
+    "individuals": null,
+    "omics_assays": null,
+    "cohort_replications": null
+  }
+]

@@ -1,0 +1,641 @@
+# Test Results: effortless-postgres
+
+## Summary
+
+| Metric | Value |
+|--------|-------|
+| Total Fields Tested | 4731 |
+| Passed | 2449 |
+| Failed | 2282 |
+| Score | 51.8% |
+| Duration | 5s |
+
+## Score by Field Class
+
+| Class | Passed | Tested | Score |
+|-------|--------|--------|-------|
+| Scalar (calculated) | 1932 | 3771 | 51.2% |
+| Lookup (INDEX/MATCH) | 350 | 615 | 56.9% |
+| Aggregation (COUNTIFS/SUMIFS) | 167 | 345 | 48.4% |
+
+## Error
+
+```
+Script failed: 
+```
+
+## Results by Entity
+
+### autoimmune_diseases
+
+- Fields: 12/12 (100.0%)
+- Computed columns: name, relative_path, count_of_disease_stages, count_of_intervention_targets
+
+### disease_stages
+
+- Fields: 30/30 (100.0%)
+- Computed columns: name, parent_path, relative_path, autoimmune_disease_disease_label, is_presymptomatic
+
+### tissues
+
+- Fields: 4/15 (26.7%)
+- Computed columns: name, relative_path, count_of_omics_assays
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| blood | name | Blood | None |
+| blood | relative_path | /tissues/blood | None |
+| blood | count_of_omics_assays | 36 | None |
+| gut | name | Gut | None |
+| gut | relative_path | /tissues/gut | None |
+| kidney | name | Kidney | None |
+| kidney | relative_path | /tissues/kidney | None |
+| skin | name | Skin | None |
+| skin | relative_path | /tissues/skin | None |
+| synovium | name | Synovium | None |
+| synovium | relative_path | /tissues/synovium | None |
+
+### omics_modalities
+
+- Fields: 5/24 (20.8%)
+- Computed columns: name, relative_path, count_of_omics_assays
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| atac-seq | name | ATAC-seq | None |
+| atac-seq | relative_path | /omics-modalities/atac-seq | None |
+| atac-seq | count_of_omics_assays | 12 | None |
+| hi-c | name | Chromatin Conformation Hi-C (s | None |
+| hi-c | relative_path | /omics-modalities/hi-c | None |
+| long-read-genomes | name | Phased Telomere-to-Telomere Lo | None |
+| long-read-genomes | relative_path | /omics-modalities/long-read-ge | None |
+| methylome | name | Methylome (sparse context) | None |
+| methylome | relative_path | /omics-modalities/methylome | None |
+| microbiome | name | Microbiome | None |
+| microbiome | relative_path | /omics-modalities/microbiome | None |
+| proteomics | name | Proteomics | None |
+| proteomics | relative_path | /omics-modalities/proteomics | None |
+| proteomics | count_of_omics_assays | 12 | None |
+| rna-seq | name | RNA-seq | None |
+| rna-seq | relative_path | /omics-modalities/rna-seq | None |
+| rna-seq | count_of_omics_assays | 12 | None |
+| single-cell-rna | name | Single-Cell RNA-seq | None |
+| single-cell-rna | relative_path | /omics-modalities/single-cell- | None |
+
+### federated_datasets
+
+- Fields: 12/12 (100.0%)
+- Computed columns: name, relative_path, count_of_individuals
+
+### variant_types
+
+- Fields: 4/15 (26.7%)
+- Computed columns: name, relative_path, count_of_genomic_variants
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| coding | name | Coding Variant | None |
+| coding | relative_path | /variant-types/coding | None |
+| de-novo | name | De Novo Mutation | None |
+| de-novo | relative_path | /variant-types/de-novo | None |
+| hla-haplotype | name | HLA Haplotype | None |
+| hla-haplotype | relative_path | /variant-types/hla-haplotype | None |
+| regulatory | name | Regulatory Variant | None |
+| regulatory | relative_path | /variant-types/regulatory | None |
+| regulatory | count_of_genomic_variants | 12 | None |
+| structural | name | Structural Variant | None |
+| structural | relative_path | /variant-types/structural | None |
+
+### individuals
+
+- Fields: 112/396 (28.3%)
+- Computed columns: name, slug, relative_path, federated_dataset_node_label, count_of_genomic_variants, count_of_causal_mechanisms, count_of_epistatic_interactions, rare_variant_burden_score, causal_architecture_score, is_development_window, is_aging_window, count_confirmed_causal_nodes, sum_confirmed_causal_confidence, count_cross_ancestry_confirmed_nodes, max_severity_score, count_high_severity_phenotypes, has_high_severity_phenotype, count_predicted_treatment_responses, has_predicted_treatment_response, count_serology_panels, count_pre_nephritic_signature_panels, is_in_pre_nephritic_signature_cluster, signature_strength, max_progression_state_order, latest_sledai_score, nephritis_progression_state_key, activity_tier, is_high_disease_activity, is_disease_progressing, target_pathway_code, target_pathway, current_progression_state_id, reachable_states_ahead
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| ind-a-reyes | name | Ana Reyes | None |
+| ind-a-reyes | slug | reyes-ana | None |
+| ind-a-reyes | relative_path | /intake/new-patient/reyes-ana | None |
+| ind-a-reyes | federated_dataset_node_label | European Reference Node | None |
+| ind-a-reyes | count_of_genomic_variants | 1 | None |
+| ind-a-reyes | count_of_causal_mechanisms | 1 | None |
+| ind-a-reyes | count_of_epistatic_interactions | 1 | None |
+| ind-a-reyes | rare_variant_burden_score | 0.029411764705882353 | None |
+| ind-a-reyes | causal_architecture_score | 15.029411764705882 | None |
+| ind-a-reyes | count_confirmed_causal_nodes | 1 | None |
+| ind-a-reyes | sum_confirmed_causal_confidence | 0.7583333333333333 | None |
+| ind-a-reyes | count_cross_ancestry_confirmed_nodes | 1 | None |
+| ind-a-reyes | max_severity_score | 9 | None |
+| ind-a-reyes | count_high_severity_phenotypes | 1 | None |
+| ind-a-reyes | has_high_severity_phenotype | True | None |
+| ind-a-reyes | count_predicted_treatment_responses | 1 | None |
+| ind-a-reyes | has_predicted_treatment_response | True | None |
+| ind-a-reyes | count_serology_panels | 2 | None |
+| ind-a-reyes | count_pre_nephritic_signature_panels | 1 | None |
+| ind-a-reyes | is_in_pre_nephritic_signature_cluster | True | None |
+| ... | ... | (264 more) | ... |
+
+### genomic_variants
+
+- Fields: 96/96 (100.0%)
+- Computed columns: name, parent_path, relative_path, variant_type_label, variant_class_is_rare, individual_ancestry_label, is_rare_variant, is_causal_candidate
+
+### omics_assays
+
+- Fields: 36/252 (14.3%)
+- Computed columns: name, parent_path, relative_path, modality_label, tissue_label, has_batch_effect_risk, is_high_quality_assay
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| assay-a-atac | name | assay-a-atac | None |
+| assay-a-atac | parent_path | /intake/new-patient/reyes-ana | None |
+| assay-a-atac | relative_path | /intake/new-patient/reyes-ana/ | None |
+| assay-a-atac | modality_label | ATAC-seq | None |
+| assay-a-atac | tissue_label | Blood | None |
+| assay-a-atac | is_high_quality_assay | True | None |
+| assay-a-prot | name | assay-a-prot | None |
+| assay-a-prot | parent_path | /intake/new-patient/reyes-ana | None |
+| assay-a-prot | relative_path | /intake/new-patient/reyes-ana/ | None |
+| assay-a-prot | modality_label | Proteomics | None |
+| assay-a-prot | tissue_label | Blood | None |
+| assay-a-prot | is_high_quality_assay | True | None |
+| assay-a-rna | name | assay-a-rna | None |
+| assay-a-rna | parent_path | /intake/new-patient/reyes-ana | None |
+| assay-a-rna | relative_path | /intake/new-patient/reyes-ana/ | None |
+| assay-a-rna | modality_label | RNA-seq | None |
+| assay-a-rna | tissue_label | Blood | None |
+| assay-a-rna | is_high_quality_assay | True | None |
+| assay-b-atac | name | assay-b-atac | None |
+| assay-b-atac | parent_path | /intake/new-patient/okafor-bil | None |
+| ... | ... | (196 more) | ... |
+
+### evidence_items
+
+- Fields: 252/252 (100.0%)
+- Computed columns: name, parent_path, relative_path, assay_is_high_quality, z_stat, is_confound_controlled, is_qualified_evidence
+
+### cohort_replications
+
+- Fields: 252/252 (100.0%)
+- Computed columns: name, parent_path, relative_path, replicated_at_nominal_sig, mechanism_primary_ancestry, is_different_ancestry_replication, is_cross_ancestry_concordant
+
+### negative_control_tests
+
+- Fields: 1/96 (1.0%)
+- Computed columns: name, parent_path, relative_path, is_survived
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| nct-a-1 | name | nct-a-1 | None |
+| nct-a-1 | parent_path | /intake/new-patient/reyes-ana/ | None |
+| nct-a-1 | relative_path | /intake/new-patient/reyes-ana/ | None |
+| nct-a-1 | is_survived | True | None |
+| nct-a-2 | name | nct-a-2 | None |
+| nct-a-2 | parent_path | /intake/new-patient/reyes-ana/ | None |
+| nct-a-2 | relative_path | /intake/new-patient/reyes-ana/ | None |
+| nct-a-2 | is_survived | True | None |
+| nct-b-1 | name | nct-b-1 | None |
+| nct-b-1 | parent_path | /intake/new-patient/okafor-bil | None |
+| nct-b-1 | relative_path | /intake/new-patient/okafor-bil | None |
+| nct-b-1 | is_survived | True | None |
+| nct-b-2 | name | nct-b-2 | None |
+| nct-b-2 | parent_path | /intake/new-patient/okafor-bil | None |
+| nct-b-2 | relative_path | /intake/new-patient/okafor-bil | None |
+| nct-b-2 | is_survived | True | None |
+| nct-c-1 | name | nct-c-1 | None |
+| nct-c-1 | parent_path | /intake/new-patient/wei-chen/m | None |
+| nct-c-1 | relative_path | /intake/new-patient/wei-chen/m | None |
+| nct-c-1 | is_survived | True | None |
+| ... | ... | (75 more) | ... |
+
+### environmental_exposures
+
+- Fields: 5/5 (100.0%)
+- Computed columns: name, parent_path, relative_path, individual_ancestry_label, is_high_exposure
+
+### treatments
+
+- Fields: 13/96 (13.5%)
+- Computed columns: name, parent_path, relative_path, autoimmune_disease_label, is_effective_treatment, is_mechanism_matched, is_treatment_response_predicted, treatment_response_deciding_factor
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| tx-a | name | Anifrolumab (anti-IFNAR1) | None |
+| tx-a | parent_path | /intake/new-patient/reyes-ana | None |
+| tx-a | relative_path | /intake/new-patient/reyes-ana/ | None |
+| tx-a | autoimmune_disease_label | Systemic Lupus Erythematosus | None |
+| tx-a | is_effective_treatment | True | None |
+| tx-a | is_mechanism_matched | True | None |
+| tx-a | is_treatment_response_predicted | True | None |
+| tx-a | treatment_response_deciding_factor | EffectiveOnConfirmedMechanism | None |
+| tx-b | name | Anifrolumab (anti-IFNAR1) | None |
+| tx-b | parent_path | /intake/new-patient/okafor-bil | None |
+| tx-b | relative_path | /intake/new-patient/okafor-bil | None |
+| tx-b | autoimmune_disease_label | Systemic Lupus Erythematosus | None |
+| tx-b | is_effective_treatment | True | None |
+| tx-b | is_mechanism_matched | True | None |
+| tx-b | is_treatment_response_predicted | True | None |
+| tx-b | treatment_response_deciding_factor | EffectiveOnConfirmedMechanism | None |
+| tx-c | name | STAT4-pathway inhibitor (trial | None |
+| tx-c | parent_path | /intake/new-patient/wei-chen | None |
+| tx-c | relative_path | /intake/new-patient/wei-chen/t | None |
+| tx-c | autoimmune_disease_label | Systemic Lupus Erythematosus | None |
+| ... | ... | (63 more) | ... |
+
+### clinical_phenotypes
+
+- Fields: 72/72 (100.0%)
+- Computed columns: name, parent_path, relative_path, disease_stage_label, is_high_severity, is_presymptomatic_phenotype
+
+### causal_mechanisms
+
+- Fields: 264/264 (100.0%)
+- Computed columns: target_pathway_code, name, parent_path, relative_path, individual_ancestry_label, count_qualified_evidence, count_modalities_supporting, count_intervention_targets, is_experimentally_falsifiable, count_replications, count_concordant_replications, count_cross_ancestry_concordant, replication_fraction, replicates_across_cohorts, count_neg_control_tests, count_neg_control_survived, survives_negative_controls, is_spurious_derived, causal_confidence, variant_is_causal_candidate, is_causal_architecture_node, is_ancestry_transportable
+
+### epistatic_interactions
+
+- Fields: 4/4 (100.0%)
+- Computed columns: name, parent_path, relative_path, is_high_order_epistasis
+
+### counterfactual_trajectories
+
+- Fields: 5/5 (100.0%)
+- Computed columns: name, parent_path, relative_path, autoimmune_disease_label, is_worsening_trajectory
+
+### individual_predictions
+
+- Fields: 116/504 (23.0%)
+- Computed columns: name, parent_path, relative_path, individual_ancestry_label, is_ancestry_holdout, individual_causal_mass, individual_confirmed_node_count, individual_cross_ancestry_node_count, individual_has_cryptic_relatedness, individual_max_severity_score, individual_has_high_severity_phenotype, individual_has_predicted_treatment_response, predicted_value, count_bins, count_well_calibrated_bins, sum_bin_abs_error, mean_bin_abs_error, well_calibrated_fraction, calibrated_uncertainty, rests_on_confirmed_mechanism, has_spurious_correlation_flag, is_falsifiability_backed, is_transportable_to_absent_ancestry, is_ancestry_transport_safe, transport_gate_status, is_high_confidence_prediction, patient_stratification_tier, predicted_severity_value, severity_tier, is_severity_actionable, severity_deciding_factor, is_treatment_response_actionable, treatment_response_deciding_factor, is_clinically_actionable, lifecycle_state_key, deciding_gate, individual_target_pathway, individual_progression_state_key, individual_is_disease_progressing, recommended_treatment_line, treatment_line_deciding_factor, progression_vs_actionability_disagree
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| pred-a | name | pred-a | None |
+| pred-a | parent_path | /intake/new-patient/reyes-ana | None |
+| pred-a | relative_path | /intake/new-patient/reyes-ana/ | None |
+| pred-a | individual_ancestry_label | European | None |
+| pred-a | individual_causal_mass | 0.7583333333333333 | None |
+| pred-a | individual_confirmed_node_count | 1 | None |
+| pred-a | individual_cross_ancestry_node_count | 1 | None |
+| pred-a | individual_max_severity_score | 9 | None |
+| pred-a | individual_has_high_severity_phenotype | True | None |
+| pred-a | individual_has_predicted_treatment_response | True | None |
+| pred-a | predicted_value | 3.0166666666666666 | None |
+| pred-a | count_bins | 5 | None |
+| pred-a | count_well_calibrated_bins | 5 | None |
+| pred-a | sum_bin_abs_error | 0.06 | None |
+| pred-a | mean_bin_abs_error | 0.012 | None |
+| pred-a | well_calibrated_fraction | 1 | None |
+| pred-a | calibrated_uncertainty | 0.988 | None |
+| pred-a | rests_on_confirmed_mechanism | True | None |
+| pred-a | is_falsifiability_backed | True | None |
+| pred-a | is_ancestry_transport_safe | True | None |
+| ... | ... | (368 more) | ... |
+
+### calibration_bins
+
+- Fields: 300/300 (100.0%)
+- Computed columns: name, parent_path, relative_path, bin_abs_error, is_well_calibrated_bin
+
+### intervention_targets
+
+- Fields: 11/66 (16.7%)
+- Computed columns: name, parent_path, relative_path, causal_mechanism_label, is_gene_based_therapy, is_cell_based_therapy
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| it-a | name | IRF5 Regulatory Modulation | None |
+| it-a | parent_path | /intake/new-patient/reyes-ana/ | None |
+| it-a | relative_path | /intake/new-patient/reyes-ana/ | None |
+| it-a | causal_mechanism_label | IRF5 regulatory -> type-I IFN  | None |
+| it-a | is_gene_based_therapy | True | None |
+| it-b | name | IRF5 Regulatory Modulation | None |
+| it-b | parent_path | /intake/new-patient/okafor-bil | None |
+| it-b | relative_path | /intake/new-patient/okafor-bil | None |
+| it-b | causal_mechanism_label | IRF5 regulatory -> type-I IFN  | None |
+| it-b | is_gene_based_therapy | True | None |
+| it-c | name | STAT4 Pathway Modulation | None |
+| it-c | parent_path | /intake/new-patient/wei-chen/m | None |
+| it-c | relative_path | /intake/new-patient/wei-chen/m | None |
+| it-c | causal_mechanism_label | STAT4 regulatory -> Th1/IFN -> | None |
+| it-c | is_gene_based_therapy | True | None |
+| it-d | name | IRF5 Regulatory Modulation | None |
+| it-d | parent_path | /intake/new-patient/santos-die | None |
+| it-d | relative_path | /intake/new-patient/santos-die | None |
+| it-d | causal_mechanism_label | IRF5 regulatory -> type-I IFN  | None |
+| it-d | is_gene_based_therapy | True | None |
+| ... | ... | (35 more) | ... |
+
+### axioms
+
+- Fields: 30/30 (100.0%)
+- Computed columns: name, relative_path
+
+### tests_for_success
+
+- Fields: 0/20 (0.0%)
+- Computed columns: name, relative_path
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| tfs-all-seven | name | All seven oracle patients reso | None |
+| tfs-all-seven | relative_path | /admin/tests-for-success/tfs-a | None |
+| tfs-both-sides | name | The same machine produces TRUE | None |
+| tfs-both-sides | relative_path | /admin/tests-for-success/tfs-b | None |
+| tfs-extraction-faithful | name | Extracted leaf facts are check | None |
+| tfs-extraction-faithful | relative_path | /admin/tests-for-success/tfs-e | None |
+| tfs-no-hand-entry | name | Raw facts alone derive the key | None |
+| tfs-no-hand-entry | relative_path | /admin/tests-for-success/tfs-n | None |
+| tfs-one-gate-each | name | Five of seven patients fail, e | None |
+| tfs-one-gate-each | relative_path | /admin/tests-for-success/tfs-o | None |
+| tfs-report-cell-simple | name | No narrative fragment field tr | None |
+| tfs-report-cell-simple | relative_path | /admin/tests-for-success/tfs-r | None |
+| tfs-report-covers-every-dag-node | name | Every DAG node linked to a pat | None |
+| tfs-report-covers-every-dag-node | relative_path | /admin/tests-for-success/tfs-r | None |
+| tfs-report-covers-every-word | name | Every word the patient gave us | None |
+| tfs-report-covers-every-word | relative_path | /admin/tests-for-success/tfs-r | None |
+| tfs-report-deterministic | name | The same patient row always re | None |
+| tfs-report-deterministic | relative_path | /admin/tests-for-success/tfs-r | None |
+| tfs-witnessed-reasoning | name | Each derived node carries an e | None |
+| tfs-witnessed-reasoning | relative_path | /admin/tests-for-success/tfs-w | None |
+
+### features
+
+- Fields: 72/72 (100.0%)
+- Computed columns: name, relative_path, meta_line
+
+### inference_kinds
+
+- Fields: 0/14 (0.0%)
+- Computed columns: name, relative_path
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| ik-aggregation-rollup | name | Aggregation rollups | None |
+| ik-aggregation-rollup | relative_path | /admin/inference-kinds/ik-aggr | None |
+| ik-cross-substrate-conformance | name | Cross-substrate conformance | None |
+| ik-cross-substrate-conformance | relative_path | /admin/inference-kinds/ik-cros | None |
+| ik-higher-order | name | Higher-order inference (gates  | None |
+| ik-higher-order | relative_path | /admin/inference-kinds/ik-high | None |
+| ik-lookup-fk | name | Lookup / FK resolution | None |
+| ik-lookup-fk | relative_path | /admin/inference-kinds/ik-look | None |
+| ik-predicate-narrative | name | Predicate-gated narrative | None |
+| ik-predicate-narrative | relative_path | /admin/inference-kinds/ik-pred | None |
+| ik-state-machine | name | State-machine derivation | None |
+| ik-state-machine | relative_path | /admin/inference-kinds/ik-stat | None |
+| ik-transitive-closure | name | Transitive closure (reachabili | None |
+| ik-transitive-closure | relative_path | /admin/inference-kinds/ik-tran | None |
+
+### open_questions
+
+- Fields: 0/8 (0.0%)
+- Computed columns: name, relative_path
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| oq-extract-vs-invent | name | Does the LLM extract facts pre | None |
+| oq-extract-vs-invent | relative_path | /admin/open-questions/oq-extra | None |
+| oq-fragment-fields-where | name | On which tables do the narrati | None |
+| oq-fragment-fields-where | relative_path | /admin/open-questions/oq-fragm | None |
+| oq-publish-now | name | Publish README now as a design | None |
+| oq-publish-now | relative_path | /admin/open-questions/oq-publi | None |
+| oq-reworded-prompt | name | Confirm the reworded README pr | None |
+| oq-reworded-prompt | relative_path | /admin/open-questions/oq-rewor | None |
+
+### non_goals
+
+- Fields: 0/10 (0.0%)
+- Computed columns: name, relative_path
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| ng-clinical-use | name | This is not validated clinical | None |
+| ng-clinical-use | relative_path | /admin/non-goals/ng-clinical-u | None |
+| ng-crud-ui | name | This is not a CRUD UI. | None |
+| ng-crud-ui | relative_path | /admin/non-goals/ng-crud-ui | None |
+| ng-full-breadth | name | The full omics breadth (counte | None |
+| ng-full-breadth | relative_path | /admin/non-goals/ng-full-bread | None |
+| ng-llm-reasoning | name | The LLM does not perform highe | None |
+| ng-llm-reasoning | relative_path | /admin/non-goals/ng-llm-reason | None |
+| ng-publish-verbatim | name | Never publish the prospect's v | None |
+| ng-publish-verbatim | relative_path | /admin/non-goals/ng-publish-ve | None |
+
+### glossary_terms
+
+- Fields: 26/26 (100.0%)
+- Computed columns: name, relative_path
+
+### effortless_loops
+
+- Fields: 64/64 (100.0%)
+- Computed columns: name, relative_path, completedness, is_in_current_plan
+
+### routing_and_navigation
+
+- Fields: 270/504 (53.6%)
+- Computed columns: name, admin_can_create, admin_can_read, admin_can_update, admin_can_delete, intake_clinician_can_create, intake_clinician_can_read, intake_clinician_can_update, intake_clinician_can_delete, diagnosing_doctor_can_create, diagnosing_doctor_can_read, diagnosing_doctor_can_update, diagnosing_doctor_can_delete, external_llm_can_create, external_llm_can_read, external_llm_can_update, external_llm_can_delete, depth, full_path, handler_base_name, relative_path
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| nav-admin | name | admin | None |
+| nav-admin | admin_can_create | True | None |
+| nav-admin | admin_can_read | True | None |
+| nav-admin | admin_can_update | True | None |
+| nav-admin | admin_can_delete | True | None |
+| nav-admin | full_path | /admin | None |
+| nav-admin | handler_base_name | admin | None |
+| nav-admin | relative_path | /admin/routing/nav-admin | None |
+| nav-admin-cohort | name | cohort-discovery | None |
+| nav-admin-cohort | admin_can_create | True | None |
+| nav-admin-cohort | admin_can_read | True | None |
+| nav-admin-cohort | admin_can_update | True | None |
+| nav-admin-cohort | admin_can_delete | True | None |
+| nav-admin-cohort | full_path | /cohort | None |
+| nav-admin-cohort | handler_base_name | admin cohort | None |
+| nav-admin-cohort | relative_path | /admin/routing/nav-admin-cohor | None |
+| nav-admin-explainer | name | explainer-dag | None |
+| nav-admin-explainer | admin_can_create | True | None |
+| nav-admin-explainer | admin_can_read | True | None |
+| nav-admin-explainer | admin_can_update | True | None |
+| ... | ... | (214 more) | ... |
+
+### state_machines
+
+- Fields: 0/8 (0.0%)
+- Computed columns: name, relative_path, state_count, transition_rule_count
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| diagnosis-lifecycle | name | diagnosis-lifecycle | None |
+| diagnosis-lifecycle | relative_path | /admin/state-machine/diagnosis | None |
+| diagnosis-lifecycle | state_count | 7 | None |
+| diagnosis-lifecycle | transition_rule_count | 9 | None |
+| lupus-nephritis-progression | name | lupus-nephritis-progression | None |
+| lupus-nephritis-progression | relative_path | /admin/state-machine/lupus-nep | None |
+| lupus-nephritis-progression | state_count | 6 | None |
+| lupus-nephritis-progression | transition_rule_count | 5 | None |
+
+### machine_states
+
+- Fields: 4/39 (10.3%)
+- Computed columns: name, relative_path, reachable_state_count
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| diagnosis-lifecycle--actionable | name | diagnosis-lifecycle--actionabl | None |
+| diagnosis-lifecycle--actionable | relative_path | /admin/state-machine/states/di | None |
+| diagnosis-lifecycle--calibrationchecked | name | diagnosis-lifecycle--calibrati | None |
+| diagnosis-lifecycle--calibrationchecked | relative_path | /admin/state-machine/states/di | None |
+| diagnosis-lifecycle--calibrationchecked | reachable_state_count | 3 | None |
+| diagnosis-lifecycle--evidenceassessed | name | diagnosis-lifecycle--evidencea | None |
+| diagnosis-lifecycle--evidenceassessed | relative_path | /admin/state-machine/states/di | None |
+| diagnosis-lifecycle--evidenceassessed | reachable_state_count | 5 | None |
+| diagnosis-lifecycle--intake | name | diagnosis-lifecycle--intake | None |
+| diagnosis-lifecycle--intake | relative_path | /admin/state-machine/states/di | None |
+| diagnosis-lifecycle--intake | reachable_state_count | 6 | None |
+| diagnosis-lifecycle--mechanismconfirmed | name | diagnosis-lifecycle--mechanism | None |
+| diagnosis-lifecycle--mechanismconfirmed | relative_path | /admin/state-machine/states/di | None |
+| diagnosis-lifecycle--mechanismconfirmed | reachable_state_count | 4 | None |
+| diagnosis-lifecycle--notactionable | name | diagnosis-lifecycle--notaction | None |
+| diagnosis-lifecycle--notactionable | relative_path | /admin/state-machine/states/di | None |
+| diagnosis-lifecycle--transportchecked | name | diagnosis-lifecycle--transport | None |
+| diagnosis-lifecycle--transportchecked | relative_path | /admin/state-machine/states/di | None |
+| diagnosis-lifecycle--transportchecked | reachable_state_count | 2 | None |
+| lupus-nephritis-progression--biopsyindicated | name | lupus-nephritis-progression--b | None |
+| ... | ... | (15 more) | ... |
+
+### state_transition_rules
+
+- Fields: 0/70 (0.0%)
+- Computed columns: name, relative_path, from_state_key, to_state_key, is_forward_edge
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| diagnosis-lifecycle--calibrationchecked->notactionable | name | diagnosis-lifecycle--calibrati | None |
+| diagnosis-lifecycle--calibrationchecked->notactionable | relative_path | /admin/state-machine/rules/dia | None |
+| diagnosis-lifecycle--calibrationchecked->notactionable | from_state_key | CalibrationChecked | None |
+| diagnosis-lifecycle--calibrationchecked->notactionable | to_state_key | NotActionable | None |
+| diagnosis-lifecycle--calibrationchecked->notactionable | is_forward_edge | True | None |
+| diagnosis-lifecycle--calibrationchecked->transportchecked | name | diagnosis-lifecycle--calibrati | None |
+| diagnosis-lifecycle--calibrationchecked->transportchecked | relative_path | /admin/state-machine/rules/dia | None |
+| diagnosis-lifecycle--calibrationchecked->transportchecked | from_state_key | CalibrationChecked | None |
+| diagnosis-lifecycle--calibrationchecked->transportchecked | to_state_key | TransportChecked | None |
+| diagnosis-lifecycle--calibrationchecked->transportchecked | is_forward_edge | True | None |
+| diagnosis-lifecycle--evidenceassessed->mechanismconfirmed | name | diagnosis-lifecycle--evidencea | None |
+| diagnosis-lifecycle--evidenceassessed->mechanismconfirmed | relative_path | /admin/state-machine/rules/dia | None |
+| diagnosis-lifecycle--evidenceassessed->mechanismconfirmed | from_state_key | EvidenceAssessed | None |
+| diagnosis-lifecycle--evidenceassessed->mechanismconfirmed | to_state_key | MechanismConfirmed | None |
+| diagnosis-lifecycle--evidenceassessed->mechanismconfirmed | is_forward_edge | True | None |
+| diagnosis-lifecycle--evidenceassessed->notactionable | name | diagnosis-lifecycle--evidencea | None |
+| diagnosis-lifecycle--evidenceassessed->notactionable | relative_path | /admin/state-machine/rules/dia | None |
+| diagnosis-lifecycle--evidenceassessed->notactionable | from_state_key | EvidenceAssessed | None |
+| diagnosis-lifecycle--evidenceassessed->notactionable | to_state_key | NotActionable | None |
+| diagnosis-lifecycle--evidenceassessed->notactionable | is_forward_edge | True | None |
+| ... | ... | (50 more) | ... |
+
+### state_transitions
+
+- Fields: 5/216 (2.3%)
+- Computed columns: name, relative_path, is_forward
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| st-a-02-intake-to-evidenceassessed | name | st-a-02-intake-to-evidenceasse | None |
+| st-a-02-intake-to-evidenceassessed | relative_path | /admin/state-machine/transitio | None |
+| st-a-02-intake-to-evidenceassessed | is_forward | True | None |
+| st-a-03-evidenceassessed-to-mechanismconfirmed | name | st-a-03-evidenceassessed-to-me | None |
+| st-a-03-evidenceassessed-to-mechanismconfirmed | relative_path | /admin/state-machine/transitio | None |
+| st-a-03-evidenceassessed-to-mechanismconfirmed | is_forward | True | None |
+| st-a-04-mechanismconfirmed-to-calibrationchecked | name | st-a-04-mechanismconfirmed-to- | None |
+| st-a-04-mechanismconfirmed-to-calibrationchecked | relative_path | /admin/state-machine/transitio | None |
+| st-a-04-mechanismconfirmed-to-calibrationchecked | is_forward | True | None |
+| st-a-05-calibrationchecked-to-transportchecked | name | st-a-05-calibrationchecked-to- | None |
+| st-a-05-calibrationchecked-to-transportchecked | relative_path | /admin/state-machine/transitio | None |
+| st-a-05-calibrationchecked-to-transportchecked | is_forward | True | None |
+| st-a-06-transportchecked-to-actionable | name | st-a-06-transportchecked-to-ac | None |
+| st-a-06-transportchecked-to-actionable | relative_path | /admin/state-machine/transitio | None |
+| st-a-06-transportchecked-to-actionable | is_forward | True | None |
+| st-b-02-intake-to-evidenceassessed | name | st-b-02-intake-to-evidenceasse | None |
+| st-b-02-intake-to-evidenceassessed | relative_path | /admin/state-machine/transitio | None |
+| st-b-02-intake-to-evidenceassessed | is_forward | True | None |
+| st-b-03-evidenceassessed-to-mechanismconfirmed | name | st-b-03-evidenceassessed-to-me | None |
+| st-b-03-evidenceassessed-to-mechanismconfirmed | relative_path | /admin/state-machine/transitio | None |
+| ... | ... | (191 more) | ... |
+
+### subject_state_instances
+
+- Fields: 115/395 (29.1%)
+- Computed columns: name, relative_path, is_current, has_complete_lineage, is_long_dwell
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| ssi-ind-a-reyes-presymptomaticautoimmunity-1 | name | ssi-ind-a-reyes-presymptomatic | None |
+| ssi-ind-a-reyes-presymptomaticautoimmunity-1 | relative_path | /admin/state-machine/instances | None |
+| ssi-ind-a-reyes-presymptomaticautoimmunity-1 | has_complete_lineage | True | None |
+| ssi-ind-a-reyes-presymptomaticautoimmunity-1 | is_long_dwell | True | None |
+| ssi-ind-a-reyes-serologicactive-2 | name | ssi-ind-a-reyes-serologicactiv | None |
+| ssi-ind-a-reyes-serologicactive-2 | relative_path | /admin/state-machine/instances | None |
+| ssi-ind-a-reyes-serologicactive-2 | is_current | True | None |
+| ssi-ind-a-reyes-serologicactive-2 | has_complete_lineage | True | None |
+| ssi-ind-a-reyes-serologicactive-2 | is_long_dwell | True | None |
+| ssi-ind-b-okafor-presymptomaticautoimmunity-1 | name | ssi-ind-b-okafor-presymptomati | None |
+| ssi-ind-b-okafor-presymptomaticautoimmunity-1 | relative_path | /admin/state-machine/instances | None |
+| ssi-ind-b-okafor-presymptomaticautoimmunity-1 | is_current | True | None |
+| ssi-ind-b-okafor-presymptomaticautoimmunity-1 | has_complete_lineage | True | None |
+| ssi-ind-b-okafor-presymptomaticautoimmunity-1 | is_long_dwell | True | None |
+| ssi-ind-c-chen-presymptomaticautoimmunity-1 | name | ssi-ind-c-chen-presymptomatica | None |
+| ssi-ind-c-chen-presymptomaticautoimmunity-1 | relative_path | /admin/state-machine/instances | None |
+| ssi-ind-c-chen-presymptomaticautoimmunity-1 | has_complete_lineage | True | None |
+| ssi-ind-c-chen-presymptomaticautoimmunity-1 | is_long_dwell | True | None |
+| ssi-ind-c-chen-serologicactive-2 | name | ssi-ind-c-chen-serologicactive | None |
+| ssi-ind-c-chen-serologicactive-2 | relative_path | /admin/state-machine/instances | None |
+| ... | ... | (260 more) | ... |
+
+### disease_domain_concepts
+
+- Fields: 104/104 (100.0%)
+- Computed columns: name, relative_path, is_deeply_modeled, is_schema_modeled
+
+### serology_observations
+
+- Fields: 153/375 (40.8%)
+- Computed columns: prior_anti_ds_dna_iu, prior_c3, prior_c4, anti_ds_dna_trend, complement_trend, is_pre_nephritic_signature_panel, is_significant_proteinuria, is_nephrotic_range_proteinuria, sledai_renal_points, sledai_serology_points, sledai_score, progression_state_key, progression_state_order, name, relative_path
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| sero-ind-a-reyes-1 | anti_ds_dna_trend | Stable | None |
+| sero-ind-a-reyes-1 | complement_trend | Stable | None |
+| sero-ind-a-reyes-1 | progression_state_key | PresymptomaticAutoimmunity | None |
+| sero-ind-a-reyes-1 | progression_state_order | 1 | None |
+| sero-ind-a-reyes-1 | name | sero-ind-a-reyes-1 | None |
+| sero-ind-a-reyes-1 | relative_path | /admin/serology/sero-ind-a-rey | None |
+| sero-ind-a-reyes-2 | prior_anti_ds_dna_iu | 40 | None |
+| sero-ind-a-reyes-2 | prior_c3 | 110 | None |
+| sero-ind-a-reyes-2 | prior_c4 | 22 | None |
+| sero-ind-a-reyes-2 | anti_ds_dna_trend | Rising | None |
+| sero-ind-a-reyes-2 | complement_trend | Falling | None |
+| sero-ind-a-reyes-2 | is_pre_nephritic_signature_panel | True | None |
+| sero-ind-a-reyes-2 | sledai_serology_points | 4 | None |
+| sero-ind-a-reyes-2 | sledai_score | 4 | None |
+| sero-ind-a-reyes-2 | progression_state_key | SerologicActive | None |
+| sero-ind-a-reyes-2 | progression_state_order | 2 | None |
+| sero-ind-a-reyes-2 | name | sero-ind-a-reyes-2 | None |
+| sero-ind-a-reyes-2 | relative_path | /admin/serology/sero-ind-a-rey | None |
+| sero-ind-b-okafor-1 | anti_ds_dna_trend | Stable | None |
+| sero-ind-b-okafor-1 | complement_trend | Stable | None |
+| ... | ... | (202 more) | ... |
+
+### therapy_options
+
+- Fields: 0/8 (0.0%)
+- Computed columns: name, relative_path
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| anifrolumab | name | Anifrolumab (anti-IFNAR1) | None |
+| anifrolumab | relative_path | /admin/therapy-options/anifrol | None |
+| belimumab | name | Belimumab (anti-BLyS) | None |
+| belimumab | relative_path | /admin/therapy-options/belimum | None |
+| mmf | name | Mycophenolate (MMF) | None |
+| mmf | relative_path | /admin/therapy-options/mmf | None |
+| secukinumab | name | Secukinumab (anti-IL-17) | None |
+| secukinumab | relative_path | /admin/therapy-options/secukin | None |
