@@ -1,4 +1,4 @@
-# 📘 Volunteer Shift Scheduler — RuleSpeak®
+# 📘 Volunteer Shift Scheduler — Docs
 
 _Coverage status, volunteer load (under/ok/over), and event-level A–F staffing grade all fall out automatically._
 
@@ -19,6 +19,21 @@ _Coverage status, volunteer load (under/ok/over), and event-level A–F staffing
 | Total Slots Filled | The total filled count across the shifts related to the event. | _Sum of filled-count across all shifts in this event._ |
 | Coverage Percent | Determined by priority: the total slots filled divided by the total slots needed if the total slots needed is greater than 0; in all other cases, 0. | _TotalSlotsFilled / TotalSlotsNeeded (0..1)._ |
 | Staffing Grade | Determined by priority: “A” if the coverage percent is at least 0.95; “B” if the coverage percent is at least 0.85; “C” if the coverage percent is at least 0.70; “D” if the coverage percent is at least 0.50; in all other cases, “F”. | _A-F letter grade from CoveragePercent. A: >=95%, B: >=85%, C: >=70%, D: >=50%, F: below._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Event Date | Shift Count ƒ | Total Slots Needed ƒ | Total Slots Filled ƒ | Coverage Percent ƒ | Staffing Grade ƒ |
+|---|---|---|---|---|---|---|
+| Harvest Festival | 2026-10-12T09:00:00Z | 4 | 14 | 8 | 0.5714285714285714 | D |
+| Food Bank Saturday | 2026-11-07T08:00:00Z | 2 | 6 | 2 | 0.3333333333333333 | F |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Volunteer** | A volunteer is identified by its name. | — |
 | Name | Computed as the first name, followed by a space, followed by the last name. | _Display name._ |
 | First Name | A defined attribute. | — |
@@ -29,6 +44,22 @@ _Coverage status, volunteer load (under/ok/over), and event-level A–F staffing
 | Assignment Count | The number of assignments related to the volunteer. | _Number of shifts this volunteer is assigned to._ |
 | Assigned Hours | The total shift duration hours across the assignments related to the volunteer. | _Sum of DurationHours across this volunteer's assigned shifts._ |
 | Load Status | Determined by priority: “over” if the assigned hours is greater than the max hours, in all other cases “under” if the assigned hours is less than the max hours times 0.5, in all other cases “ok” if the max hours is greater than 0; in all other cases, “under”. | _under \| ok \| over. Under: <50% of MaxHours. Over: >100%. Otherwise ok._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | First Name | Last Name | Email Address | Reliability Score | Max Hours | Assignment Count ƒ | Assigned Hours ƒ | Load Status ƒ |
+|---|---|---|---|---|---|---|---|---|
+| Morgan Lee | Morgan | Lee | morgan@example.com | 0.95 | 10 | 3 | 10.0 | ok |
+| Sam Park | Sam | Park | sam@example.com | 0.8 | 8 | 3 | 10.0 | over |
+| Jamie Rivera | Jamie | Rivera | jamie@example.com | 0.9 | 12 | 2 | 6.0 | ok |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Shift** | A shift is identified by its name and is related to optionally an event. | — |
 | Name | A defined attribute. | _Short label (e.g. "Setup Morning")._ |
 | Event | A defined attribute. | _Parent event._ |
@@ -38,6 +69,22 @@ _Coverage status, volunteer load (under/ok/over), and event-level A–F staffing
 | Needed Count | A defined attribute. | _How many volunteers the coordinator wants on this shift._ |
 | Filled Count | The number of assignments related to the shift. | _Number of volunteers currently assigned._ |
 | Coverage Status | Determined by priority: “understaffed” if the filled count is less than the needed count; “overstaffed” if the filled count is greater than the needed count; in all other cases, “covered”. | _understaffed \| covered \| overstaffed._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Event Name ƒ | Required Skill | Duration Hours | Needed Count | Filled Count ƒ | Coverage Status ƒ |
+|---|---|---|---|---|---|---|
+| Setup Morning | Harvest Festival | setup | 3 | 4 | 3 | understaffed |
+| Intake Midday | Harvest Festival | intake | 4 | 3 | 3 | covered |
+| Food Service Afternoon | Harvest Festival | food-handler | 4 | 4 | 0 | understaffed |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Assignment** | An assignment is identified by its name and is related to optionally a volunteer and optionally a shift. | — |
 | Name | Computed as the volunteer name, followed by “ @ ”, followed by the shift name. | _Display label (VolunteerName @ ShiftName)._ |
 | Volunteer | A defined attribute. | — |
@@ -45,6 +92,19 @@ _Coverage status, volunteer load (under/ok/over), and event-level A–F staffing
 | Volunteer Name | Taken from the linked volunteer. | — |
 | Shift Name | Taken from the linked shift. | — |
 | Shift Duration Hours | Taken from the linked shift. | _Pulled through to support per-volunteer AssignedHours aggregation._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Volunteer Name ƒ | Shift Name ƒ | Shift Duration Hours ƒ |
+|---|---|---|---|
+| Morgan Lee @ Setup Morning | Morgan Lee | Setup Morning | 3.0 |
+| Morgan Lee @ Intake Midday | Morgan Lee | Intake Midday | 4.0 |
+| Sam Park @ Setup Morning | Sam Park | Setup Morning | 3.0 |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -87,7 +147,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -111,8 +171,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

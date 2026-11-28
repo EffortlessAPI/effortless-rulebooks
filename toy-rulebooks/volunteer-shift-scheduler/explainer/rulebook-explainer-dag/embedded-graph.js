@@ -8341,4 +8341,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Assignments": "assignment"
     }
   }
-} };
+}, stamp: "b71800929a6abdc2" };
