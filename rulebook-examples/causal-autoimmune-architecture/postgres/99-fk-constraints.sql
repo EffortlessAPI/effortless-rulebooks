@@ -38,9 +38,6 @@ ALTER TABLE disease_stages ADD CONSTRAINT fk_disease_stages_autoimmune_disease
   FOREIGN KEY (autoimmune_disease) REFERENCES autoimmune_diseases (autoimmune_disease_id);
 
 -- Tissues
-ALTER TABLE tissues DROP CONSTRAINT IF EXISTS fk_tissues_tissue_label;
-ALTER TABLE tissues ADD CONSTRAINT fk_tissues_tissue_label
-  FOREIGN KEY (tissue_label) REFERENCES tissues (tissue_id);
 ALTER TABLE tissues DROP CONSTRAINT IF EXISTS fk_tissues_omics_assays;
 ALTER TABLE tissues ADD CONSTRAINT fk_tissues_omics_assays
   FOREIGN KEY (omics_assays) REFERENCES omics_assays (omics_assay_id);
@@ -67,9 +64,6 @@ ALTER TABLE variant_types ADD CONSTRAINT fk_variant_types_genomic_variants
   FOREIGN KEY (genomic_variants) REFERENCES genomic_variants (genomic_variant_id);
 
 -- Individuals
-ALTER TABLE individuals DROP CONSTRAINT IF EXISTS fk_individuals_federated_dataset;
-ALTER TABLE individuals ADD CONSTRAINT fk_individuals_federated_dataset
-  FOREIGN KEY (federated_dataset) REFERENCES federated_datasets (federated_dataset_id);
 ALTER TABLE individuals DROP CONSTRAINT IF EXISTS fk_individuals_genomic_variants;
 ALTER TABLE individuals ADD CONSTRAINT fk_individuals_genomic_variants
   FOREIGN KEY (genomic_variants) REFERENCES genomic_variants (genomic_variant_id);
@@ -107,26 +101,17 @@ ALTER TABLE genomic_variants ADD CONSTRAINT fk_genomic_variants_variant_type
   FOREIGN KEY (variant_type) REFERENCES variant_types (variant_type_id);
 
 -- OmicsAssays
-ALTER TABLE omics_assays DROP CONSTRAINT IF EXISTS fk_omics_assays_assay_label;
-ALTER TABLE omics_assays ADD CONSTRAINT fk_omics_assays_assay_label
-  FOREIGN KEY (assay_label) REFERENCES omics_assays (omics_assay_id);
 ALTER TABLE omics_assays DROP CONSTRAINT IF EXISTS fk_omics_assays_individual;
 ALTER TABLE omics_assays ADD CONSTRAINT fk_omics_assays_individual
   FOREIGN KEY (individual) REFERENCES individuals (individual_id);
 ALTER TABLE omics_assays DROP CONSTRAINT IF EXISTS fk_omics_assays_omics_modality;
 ALTER TABLE omics_assays ADD CONSTRAINT fk_omics_assays_omics_modality
   FOREIGN KEY (omics_modality) REFERENCES omics_modalities (omics_modality_id);
-ALTER TABLE omics_assays DROP CONSTRAINT IF EXISTS fk_omics_assays_tissue;
-ALTER TABLE omics_assays ADD CONSTRAINT fk_omics_assays_tissue
-  FOREIGN KEY (tissue) REFERENCES tissues (tissue_id);
 ALTER TABLE omics_assays DROP CONSTRAINT IF EXISTS fk_omics_assays_evidence_items;
 ALTER TABLE omics_assays ADD CONSTRAINT fk_omics_assays_evidence_items
   FOREIGN KEY (evidence_items) REFERENCES evidence_items (evidence_item_id);
 
 -- EvidenceItems
-ALTER TABLE evidence_items DROP CONSTRAINT IF EXISTS fk_evidence_items_evidence_label;
-ALTER TABLE evidence_items ADD CONSTRAINT fk_evidence_items_evidence_label
-  FOREIGN KEY (evidence_label) REFERENCES evidence_items (evidence_item_id);
 ALTER TABLE evidence_items DROP CONSTRAINT IF EXISTS fk_evidence_items_causal_mechanism;
 ALTER TABLE evidence_items ADD CONSTRAINT fk_evidence_items_causal_mechanism
   FOREIGN KEY (causal_mechanism) REFERENCES causal_mechanisms (causal_mechanism_id);
@@ -135,9 +120,6 @@ ALTER TABLE evidence_items ADD CONSTRAINT fk_evidence_items_omics_assay
   FOREIGN KEY (omics_assay) REFERENCES omics_assays (omics_assay_id);
 
 -- CohortReplications
-ALTER TABLE cohort_replications DROP CONSTRAINT IF EXISTS fk_cohort_replications_replication_label;
-ALTER TABLE cohort_replications ADD CONSTRAINT fk_cohort_replications_replication_label
-  FOREIGN KEY (replication_label) REFERENCES cohort_replications (cohort_replication_id);
 ALTER TABLE cohort_replications DROP CONSTRAINT IF EXISTS fk_cohort_replications_causal_mechanism;
 ALTER TABLE cohort_replications ADD CONSTRAINT fk_cohort_replications_causal_mechanism
   FOREIGN KEY (causal_mechanism) REFERENCES causal_mechanisms (causal_mechanism_id);
@@ -146,9 +128,6 @@ ALTER TABLE cohort_replications ADD CONSTRAINT fk_cohort_replications_federated_
   FOREIGN KEY (federated_dataset) REFERENCES federated_datasets (federated_dataset_id);
 
 -- NegativeControlTests
-ALTER TABLE negative_control_tests DROP CONSTRAINT IF EXISTS fk_negative_control_tests_control_label;
-ALTER TABLE negative_control_tests ADD CONSTRAINT fk_negative_control_tests_control_label
-  FOREIGN KEY (control_label) REFERENCES negative_control_tests (negative_control_test_id);
 ALTER TABLE negative_control_tests DROP CONSTRAINT IF EXISTS fk_negative_control_tests_causal_mechanism;
 ALTER TABLE negative_control_tests ADD CONSTRAINT fk_negative_control_tests_causal_mechanism
   FOREIGN KEY (causal_mechanism) REFERENCES causal_mechanisms (causal_mechanism_id);
@@ -165,34 +144,16 @@ ALTER TABLE treatments ADD CONSTRAINT fk_treatments_individual
 ALTER TABLE treatments DROP CONSTRAINT IF EXISTS fk_treatments_autoimmune_disease;
 ALTER TABLE treatments ADD CONSTRAINT fk_treatments_autoimmune_disease
   FOREIGN KEY (autoimmune_disease) REFERENCES autoimmune_diseases (autoimmune_disease_id);
-ALTER TABLE treatments DROP CONSTRAINT IF EXISTS fk_treatments_targets_mechanism;
-ALTER TABLE treatments ADD CONSTRAINT fk_treatments_targets_mechanism
-  FOREIGN KEY (targets_mechanism) REFERENCES causal_mechanisms (causal_mechanism_id);
 
 -- ClinicalPhenotypes
 ALTER TABLE clinical_phenotypes DROP CONSTRAINT IF EXISTS fk_clinical_phenotypes_individual;
 ALTER TABLE clinical_phenotypes ADD CONSTRAINT fk_clinical_phenotypes_individual
   FOREIGN KEY (individual) REFERENCES individuals (individual_id);
-ALTER TABLE clinical_phenotypes DROP CONSTRAINT IF EXISTS fk_clinical_phenotypes_autoimmune_disease;
-ALTER TABLE clinical_phenotypes ADD CONSTRAINT fk_clinical_phenotypes_autoimmune_disease
-  FOREIGN KEY (autoimmune_disease) REFERENCES autoimmune_diseases (autoimmune_disease_id);
-ALTER TABLE clinical_phenotypes DROP CONSTRAINT IF EXISTS fk_clinical_phenotypes_disease_stage;
-ALTER TABLE clinical_phenotypes ADD CONSTRAINT fk_clinical_phenotypes_disease_stage
-  FOREIGN KEY (disease_stage) REFERENCES disease_stages (disease_stage_id);
-ALTER TABLE clinical_phenotypes DROP CONSTRAINT IF EXISTS fk_clinical_phenotypes_tissue;
-ALTER TABLE clinical_phenotypes ADD CONSTRAINT fk_clinical_phenotypes_tissue
-  FOREIGN KEY (tissue) REFERENCES tissues (tissue_id);
 
 -- CausalMechanisms
 ALTER TABLE causal_mechanisms DROP CONSTRAINT IF EXISTS fk_causal_mechanisms_individual;
 ALTER TABLE causal_mechanisms ADD CONSTRAINT fk_causal_mechanisms_individual
   FOREIGN KEY (individual) REFERENCES individuals (individual_id);
-ALTER TABLE causal_mechanisms DROP CONSTRAINT IF EXISTS fk_causal_mechanisms_genomic_variant;
-ALTER TABLE causal_mechanisms ADD CONSTRAINT fk_causal_mechanisms_genomic_variant
-  FOREIGN KEY (genomic_variant) REFERENCES genomic_variants (genomic_variant_id);
-ALTER TABLE causal_mechanisms DROP CONSTRAINT IF EXISTS fk_causal_mechanisms_mechanism_type;
-ALTER TABLE causal_mechanisms ADD CONSTRAINT fk_causal_mechanisms_mechanism_type
-  FOREIGN KEY (mechanism_type) REFERENCES variant_types (variant_type_id);
 ALTER TABLE causal_mechanisms DROP CONSTRAINT IF EXISTS fk_causal_mechanisms_intervention_targets;
 ALTER TABLE causal_mechanisms ADD CONSTRAINT fk_causal_mechanisms_intervention_targets
   FOREIGN KEY (intervention_targets) REFERENCES intervention_targets (intervention_target_id);
@@ -210,12 +171,6 @@ ALTER TABLE causal_mechanisms ADD CONSTRAINT fk_causal_mechanisms_negative_contr
 ALTER TABLE epistatic_interactions DROP CONSTRAINT IF EXISTS fk_epistatic_interactions_individual;
 ALTER TABLE epistatic_interactions ADD CONSTRAINT fk_epistatic_interactions_individual
   FOREIGN KEY (individual) REFERENCES individuals (individual_id);
-ALTER TABLE epistatic_interactions DROP CONSTRAINT IF EXISTS fk_epistatic_interactions_primary_variant;
-ALTER TABLE epistatic_interactions ADD CONSTRAINT fk_epistatic_interactions_primary_variant
-  FOREIGN KEY (primary_variant) REFERENCES genomic_variants (genomic_variant_id);
-ALTER TABLE epistatic_interactions DROP CONSTRAINT IF EXISTS fk_epistatic_interactions_secondary_variant;
-ALTER TABLE epistatic_interactions ADD CONSTRAINT fk_epistatic_interactions_secondary_variant
-  FOREIGN KEY (secondary_variant) REFERENCES genomic_variants (genomic_variant_id);
 
 -- CounterfactualTrajectories
 ALTER TABLE counterfactual_trajectories DROP CONSTRAINT IF EXISTS fk_counterfactual_trajectories_individual;
@@ -226,23 +181,14 @@ ALTER TABLE counterfactual_trajectories ADD CONSTRAINT fk_counterfactual_traject
   FOREIGN KEY (autoimmune_disease) REFERENCES autoimmune_diseases (autoimmune_disease_id);
 
 -- IndividualPredictions
-ALTER TABLE individual_predictions DROP CONSTRAINT IF EXISTS fk_individual_predictions_prediction_label;
-ALTER TABLE individual_predictions ADD CONSTRAINT fk_individual_predictions_prediction_label
-  FOREIGN KEY (prediction_label) REFERENCES individual_predictions (individual_prediction_id);
 ALTER TABLE individual_predictions DROP CONSTRAINT IF EXISTS fk_individual_predictions_individual;
 ALTER TABLE individual_predictions ADD CONSTRAINT fk_individual_predictions_individual
   FOREIGN KEY (individual) REFERENCES individuals (individual_id);
-ALTER TABLE individual_predictions DROP CONSTRAINT IF EXISTS fk_individual_predictions_autoimmune_disease;
-ALTER TABLE individual_predictions ADD CONSTRAINT fk_individual_predictions_autoimmune_disease
-  FOREIGN KEY (autoimmune_disease) REFERENCES autoimmune_diseases (autoimmune_disease_id);
 ALTER TABLE individual_predictions DROP CONSTRAINT IF EXISTS fk_individual_predictions_calibration_bins;
 ALTER TABLE individual_predictions ADD CONSTRAINT fk_individual_predictions_calibration_bins
   FOREIGN KEY (calibration_bins) REFERENCES calibration_bins (calibration_bin_id);
 
 -- CalibrationBins
-ALTER TABLE calibration_bins DROP CONSTRAINT IF EXISTS fk_calibration_bins_bin_label;
-ALTER TABLE calibration_bins ADD CONSTRAINT fk_calibration_bins_bin_label
-  FOREIGN KEY (bin_label) REFERENCES calibration_bins (calibration_bin_id);
 ALTER TABLE calibration_bins DROP CONSTRAINT IF EXISTS fk_calibration_bins_individual_prediction;
 ALTER TABLE calibration_bins ADD CONSTRAINT fk_calibration_bins_individual_prediction
   FOREIGN KEY (individual_prediction) REFERENCES individual_predictions (individual_prediction_id);
@@ -251,14 +197,6 @@ ALTER TABLE calibration_bins ADD CONSTRAINT fk_calibration_bins_individual_predi
 ALTER TABLE intervention_targets DROP CONSTRAINT IF EXISTS fk_intervention_targets_causal_mechanism;
 ALTER TABLE intervention_targets ADD CONSTRAINT fk_intervention_targets_causal_mechanism
   FOREIGN KEY (causal_mechanism) REFERENCES causal_mechanisms (causal_mechanism_id);
-ALTER TABLE intervention_targets DROP CONSTRAINT IF EXISTS fk_intervention_targets_autoimmune_disease;
-ALTER TABLE intervention_targets ADD CONSTRAINT fk_intervention_targets_autoimmune_disease
-  FOREIGN KEY (autoimmune_disease) REFERENCES autoimmune_diseases (autoimmune_disease_id);
-
--- Features
-ALTER TABLE features DROP CONSTRAINT IF EXISTS fk_features_assigned_loop;
-ALTER TABLE features ADD CONSTRAINT fk_features_assigned_loop
-  FOREIGN KEY (assigned_loop) REFERENCES effortless_loops (effortless_loop_id);
 
 -- StateMachines
 ALTER TABLE state_machines DROP CONSTRAINT IF EXISTS fk_state_machines_machine_states;
@@ -317,4 +255,4 @@ ALTER TABLE serology_observations DROP CONSTRAINT IF EXISTS fk_serology_observat
 ALTER TABLE serology_observations ADD CONSTRAINT fk_serology_observations_prior_observation
   FOREIGN KEY (prior_observation) REFERENCES serology_observations (serology_observation_id);
 
--- 83 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 63 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

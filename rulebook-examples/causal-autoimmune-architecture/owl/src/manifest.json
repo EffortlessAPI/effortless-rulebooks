@@ -1,0 +1,1987 @@
+{
+  "generator": "rulebook-to-owl",
+  "ontology": {
+    "iri": "https://w3id.org/effortless-ntwf",
+    "versionIri": null,
+    "namespace": "https://w3id.org/effortless-ntwf#",
+    "dataNamespace": "https://w3id.org/effortless-ntwf#",
+    "prefix": "effortless-ntwf",
+    "placeholder": false
+  },
+  "prefixes": {
+    "effortless-ntwf": "https://w3id.org/effortless-ntwf#",
+    "effortless-ntwf-shapes": "https://w3id.org/effortless-ntwf/shapes#",
+    "erb": "https://effortlessapi.com/ns/erb#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "keyProperty": "https://effortlessapi.com/ns/erb#key",
+  "derivedProperty": "https://effortlessapi.com/ns/erb#derived",
+  "tables": {
+    "AutoimmuneDiseases": {
+      "class": "https://w3id.org/effortless-ntwf#AutoimmuneDiseases",
+      "keyField": "AutoimmuneDiseaseId",
+      "fields": {
+        "AutoimmuneDiseaseId": "https://w3id.org/effortless-ntwf#autoimmuneDiseaseId",
+        "DiseaseLabel": "https://w3id.org/effortless-ntwf#diseaseLabel",
+        "IsComplexDisease": "https://w3id.org/effortless-ntwf#isComplexDisease",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "CountOfDiseaseStages": "https://w3id.org/effortless-ntwf#countOfDiseaseStages",
+        "CountOfInterventionTargets": "https://w3id.org/effortless-ntwf#countOfInterventionTargets",
+        "DiseaseStages": "https://w3id.org/effortless-ntwf#diseaseStages",
+        "Treatments": "https://w3id.org/effortless-ntwf#treatments",
+        "ClinicalPhenotypes": "https://w3id.org/effortless-ntwf#clinicalPhenotypes",
+        "IndividualPredictions": "https://w3id.org/effortless-ntwf#individualPredictions",
+        "CounterfactualTrajectories": "https://w3id.org/effortless-ntwf#counterfactualTrajectories",
+        "InterventionTargets": "https://w3id.org/effortless-ntwf#interventionTargets"
+      }
+    },
+    "DiseaseStages": {
+      "class": "https://w3id.org/effortless-ntwf#DiseaseStages",
+      "keyField": "DiseaseStageId",
+      "fields": {
+        "DiseaseStageId": "https://w3id.org/effortless-ntwf#diseaseStageId",
+        "StageLabel": "https://w3id.org/effortless-ntwf#stageLabel",
+        "SortOrder": "https://w3id.org/effortless-ntwf#sortOrder",
+        "AutoimmuneDisease": "https://w3id.org/effortless-ntwf#autoimmuneDisease",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "AutoimmuneDiseaseDiseaseLabel": "https://w3id.org/effortless-ntwf#autoimmuneDiseaseDiseaseLabel",
+        "IsPresymptomatic": "https://w3id.org/effortless-ntwf#isPresymptomatic"
+      }
+    },
+    "Tissues": {
+      "class": "https://w3id.org/effortless-ntwf#Tissues",
+      "keyField": "TissueId",
+      "fields": {
+        "TissueId": "https://w3id.org/effortless-ntwf#tissueId",
+        "TissueLabel": "https://w3id.org/effortless-ntwf#tissueLabel",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "CountOfOmicsAssays": "https://w3id.org/effortless-ntwf#countOfOmicsAssays",
+        "OmicsAssays": "https://w3id.org/effortless-ntwf#omicsAssays"
+      }
+    },
+    "OmicsModalities": {
+      "class": "https://w3id.org/effortless-ntwf#OmicsModalities",
+      "keyField": "OmicsModalityId",
+      "fields": {
+        "OmicsModalityId": "https://w3id.org/effortless-ntwf#omicsModalityId",
+        "ModalityLabel": "https://w3id.org/effortless-ntwf#modalityLabel",
+        "IsSingleCell": "https://w3id.org/effortless-ntwf#isSingleCell",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "CountOfOmicsAssays": "https://w3id.org/effortless-ntwf#countOfOmicsAssays",
+        "OmicsAssays": "https://w3id.org/effortless-ntwf#omicsAssays"
+      }
+    },
+    "FederatedDatasets": {
+      "class": "https://w3id.org/effortless-ntwf#FederatedDatasets",
+      "keyField": "FederatedDatasetId",
+      "fields": {
+        "FederatedDatasetId": "https://w3id.org/effortless-ntwf#federatedDatasetId",
+        "NodeLabel": "https://w3id.org/effortless-ntwf#nodeLabel",
+        "Region": "https://w3id.org/effortless-ntwf#region",
+        "IsPrivacyPreserving": "https://w3id.org/effortless-ntwf#isPrivacyPreserving",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "CountOfIndividuals": "https://w3id.org/effortless-ntwf#countOfIndividuals",
+        "Individuals": "https://w3id.org/effortless-ntwf#individuals",
+        "OmicsAssays": "https://w3id.org/effortless-ntwf#omicsAssays",
+        "CohortReplications": "https://w3id.org/effortless-ntwf#cohortReplications"
+      }
+    },
+    "VariantTypes": {
+      "class": "https://w3id.org/effortless-ntwf#VariantTypes",
+      "keyField": "VariantTypeId",
+      "fields": {
+        "VariantTypeId": "https://w3id.org/effortless-ntwf#variantTypeId",
+        "TypeLabel": "https://w3id.org/effortless-ntwf#typeLabel",
+        "IsRareVariantClass": "https://w3id.org/effortless-ntwf#isRareVariantClass",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "CountOfGenomicVariants": "https://w3id.org/effortless-ntwf#countOfGenomicVariants",
+        "GenomicVariants": "https://w3id.org/effortless-ntwf#genomicVariants"
+      }
+    },
+    "Individuals": {
+      "class": "https://w3id.org/effortless-ntwf#Individuals",
+      "keyField": "IndividualId",
+      "fields": {
+        "IndividualId": "https://w3id.org/effortless-ntwf#individualId",
+        "GivenName": "https://w3id.org/effortless-ntwf#givenName",
+        "FamilyName": "https://w3id.org/effortless-ntwf#familyName",
+        "AncestryLabel": "https://w3id.org/effortless-ntwf#ancestryLabel",
+        "AgeYears": "https://w3id.org/effortless-ntwf#ageYears",
+        "IsAncestryAbsentFromTraining": "https://w3id.org/effortless-ntwf#isAncestryAbsentFromTraining",
+        "FederatedDataset": "https://w3id.org/effortless-ntwf#federatedDataset",
+        "EnrollmentDate": "https://w3id.org/effortless-ntwf#enrollmentDate",
+        "HasCrypticRelatednessFlag": "https://w3id.org/effortless-ntwf#hasCrypticRelatednessFlag",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Slug": "https://w3id.org/effortless-ntwf#slug",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "FederatedDatasetNodeLabel": "https://w3id.org/effortless-ntwf#federatedDatasetNodeLabel",
+        "CountOfGenomicVariants": "https://w3id.org/effortless-ntwf#countOfGenomicVariants",
+        "CountOfCausalMechanisms": "https://w3id.org/effortless-ntwf#countOfCausalMechanisms",
+        "CountOfEpistaticInteractions": "https://w3id.org/effortless-ntwf#countOfEpistaticInteractions",
+        "RareVariantBurdenScore": "https://w3id.org/effortless-ntwf#rareVariantBurdenScore",
+        "CausalArchitectureScore": "https://w3id.org/effortless-ntwf#causalArchitectureScore",
+        "IsDevelopmentWindow": "https://w3id.org/effortless-ntwf#isDevelopmentWindow",
+        "IsAgingWindow": "https://w3id.org/effortless-ntwf#isAgingWindow",
+        "CountConfirmedCausalNodes": "https://w3id.org/effortless-ntwf#countConfirmedCausalNodes",
+        "SumConfirmedCausalConfidence": "https://w3id.org/effortless-ntwf#sumConfirmedCausalConfidence",
+        "CountCrossAncestryConfirmedNodes": "https://w3id.org/effortless-ntwf#countCrossAncestryConfirmedNodes",
+        "MaxSeverityScore": "https://w3id.org/effortless-ntwf#maxSeverityScore",
+        "CountHighSeverityPhenotypes": "https://w3id.org/effortless-ntwf#countHighSeverityPhenotypes",
+        "HasHighSeverityPhenotype": "https://w3id.org/effortless-ntwf#hasHighSeverityPhenotype",
+        "CountPredictedTreatmentResponses": "https://w3id.org/effortless-ntwf#countPredictedTreatmentResponses",
+        "HasPredictedTreatmentResponse": "https://w3id.org/effortless-ntwf#hasPredictedTreatmentResponse",
+        "GenomicVariants": "https://w3id.org/effortless-ntwf#genomicVariants",
+        "OmicsAssays": "https://w3id.org/effortless-ntwf#omicsAssays",
+        "EnvironmentalExposures": "https://w3id.org/effortless-ntwf#environmentalExposures",
+        "Treatments": "https://w3id.org/effortless-ntwf#treatments",
+        "ClinicalPhenotypes": "https://w3id.org/effortless-ntwf#clinicalPhenotypes",
+        "CausalMechanisms": "https://w3id.org/effortless-ntwf#causalMechanisms",
+        "EpistaticInteractions": "https://w3id.org/effortless-ntwf#epistaticInteractions",
+        "CounterfactualTrajectories": "https://w3id.org/effortless-ntwf#counterfactualTrajectories",
+        "IndividualPredictions": "https://w3id.org/effortless-ntwf#individualPredictions",
+        "CaseNarrative": "https://w3id.org/effortless-ntwf#caseNarrative",
+        "CountSerologyPanels": "https://w3id.org/effortless-ntwf#countSerologyPanels",
+        "CountPreNephriticSignaturePanels": "https://w3id.org/effortless-ntwf#countPreNephriticSignaturePanels",
+        "IsInPreNephriticSignatureCluster": "https://w3id.org/effortless-ntwf#isInPreNephriticSignatureCluster",
+        "SignatureStrength": "https://w3id.org/effortless-ntwf#signatureStrength",
+        "MaxProgressionStateOrder": "https://w3id.org/effortless-ntwf#maxProgressionStateOrder",
+        "LatestSledaiScore": "https://w3id.org/effortless-ntwf#latestSledaiScore",
+        "NephritisProgressionStateKey": "https://w3id.org/effortless-ntwf#nephritisProgressionStateKey",
+        "ActivityTier": "https://w3id.org/effortless-ntwf#activityTier",
+        "IsHighDiseaseActivity": "https://w3id.org/effortless-ntwf#isHighDiseaseActivity",
+        "IsDiseaseProgressing": "https://w3id.org/effortless-ntwf#isDiseaseProgressing",
+        "TargetPathwayCode": "https://w3id.org/effortless-ntwf#targetPathwayCode",
+        "TargetPathway": "https://w3id.org/effortless-ntwf#targetPathway",
+        "CurrentProgressionStateId": "https://w3id.org/effortless-ntwf#currentProgressionStateId",
+        "ReachableStatesAhead": "https://w3id.org/effortless-ntwf#reachableStatesAhead"
+      }
+    },
+    "GenomicVariants": {
+      "class": "https://w3id.org/effortless-ntwf#GenomicVariants",
+      "keyField": "GenomicVariantId",
+      "fields": {
+        "GenomicVariantId": "https://w3id.org/effortless-ntwf#genomicVariantId",
+        "VariantLabel": "https://w3id.org/effortless-ntwf#variantLabel",
+        "Individual": "https://w3id.org/effortless-ntwf#individual_GenomicVariants",
+        "VariantType": "https://w3id.org/effortless-ntwf#variantType",
+        "AlleleFrequency": "https://w3id.org/effortless-ntwf#alleleFrequency",
+        "HasAlleleSpecificExpression": "https://w3id.org/effortless-ntwf#hasAlleleSpecificExpression",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "VariantTypeLabel": "https://w3id.org/effortless-ntwf#variantTypeLabel",
+        "VariantClassIsRare": "https://w3id.org/effortless-ntwf#variantClassIsRare",
+        "IndividualAncestryLabel": "https://w3id.org/effortless-ntwf#individualAncestryLabel",
+        "IsRareVariant": "https://w3id.org/effortless-ntwf#isRareVariant",
+        "IsCausalCandidate": "https://w3id.org/effortless-ntwf#isCausalCandidate",
+        "SourceQuote": "https://w3id.org/effortless-ntwf#sourceQuote"
+      }
+    },
+    "OmicsAssays": {
+      "class": "https://w3id.org/effortless-ntwf#OmicsAssays",
+      "keyField": "OmicsAssayId",
+      "fields": {
+        "OmicsAssayId": "https://w3id.org/effortless-ntwf#omicsAssayId",
+        "AssayLabel": "https://w3id.org/effortless-ntwf#assayLabel",
+        "Individual": "https://w3id.org/effortless-ntwf#individual_OmicsAssays",
+        "OmicsModality": "https://w3id.org/effortless-ntwf#omicsModality",
+        "Tissue": "https://w3id.org/effortless-ntwf#tissue",
+        "FederatedDataset": "https://w3id.org/effortless-ntwf#federatedDataset",
+        "BatchId": "https://w3id.org/effortless-ntwf#batchId",
+        "MeasurementErrorScore": "https://w3id.org/effortless-ntwf#measurementErrorScore",
+        "HasCellStateSpecificEffect": "https://w3id.org/effortless-ntwf#hasCellStateSpecificEffect",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "ModalityLabel": "https://w3id.org/effortless-ntwf#modalityLabel",
+        "TissueLabel": "https://w3id.org/effortless-ntwf#tissueLabel",
+        "HasBatchEffectRisk": "https://w3id.org/effortless-ntwf#hasBatchEffectRisk",
+        "IsHighQualityAssay": "https://w3id.org/effortless-ntwf#isHighQualityAssay",
+        "EvidenceItems": "https://w3id.org/effortless-ntwf#evidenceItems"
+      }
+    },
+    "EvidenceItems": {
+      "class": "https://w3id.org/effortless-ntwf#EvidenceItems",
+      "keyField": "EvidenceItemId",
+      "fields": {
+        "EvidenceItemId": "https://w3id.org/effortless-ntwf#evidenceItemId",
+        "EvidenceLabel": "https://w3id.org/effortless-ntwf#evidenceLabel",
+        "CausalMechanism": "https://w3id.org/effortless-ntwf#causalMechanism",
+        "OmicsAssay": "https://w3id.org/effortless-ntwf#omicsAssay",
+        "EffectSize": "https://w3id.org/effortless-ntwf#effectSize",
+        "StandardError": "https://w3id.org/effortless-ntwf#standardError",
+        "IsCrossModality": "https://w3id.org/effortless-ntwf#isCrossModality",
+        "IsNegativeControlArm": "https://w3id.org/effortless-ntwf#isNegativeControlArm",
+        "IsAdjustedForAncestryPCs": "https://w3id.org/effortless-ntwf#isAdjustedForAncestryPCs",
+        "IsAdjustedForBatch": "https://w3id.org/effortless-ntwf#isAdjustedForBatch",
+        "IsSyntheticLeaf": "https://w3id.org/effortless-ntwf#isSyntheticLeaf",
+        "RepresentsAssayModality": "https://w3id.org/effortless-ntwf#representsAssayModality",
+        "IdentificationAssumption": "https://w3id.org/effortless-ntwf#identificationAssumption",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "AssayIsHighQuality": "https://w3id.org/effortless-ntwf#assayIsHighQuality",
+        "ZStat": "https://w3id.org/effortless-ntwf#zStat",
+        "IsConfoundControlled": "https://w3id.org/effortless-ntwf#isConfoundControlled",
+        "IsQualifiedEvidence": "https://w3id.org/effortless-ntwf#isQualifiedEvidence",
+        "SourceQuote": "https://w3id.org/effortless-ntwf#sourceQuote"
+      }
+    },
+    "CohortReplications": {
+      "class": "https://w3id.org/effortless-ntwf#CohortReplications",
+      "keyField": "CohortReplicationId",
+      "fields": {
+        "CohortReplicationId": "https://w3id.org/effortless-ntwf#cohortReplicationId",
+        "ReplicationLabel": "https://w3id.org/effortless-ntwf#replicationLabel",
+        "CausalMechanism": "https://w3id.org/effortless-ntwf#causalMechanism",
+        "FederatedDataset": "https://w3id.org/effortless-ntwf#federatedDataset",
+        "ReplicationEffectSign": "https://w3id.org/effortless-ntwf#replicationEffectSign",
+        "ReplicationPValue": "https://w3id.org/effortless-ntwf#replicationPValue",
+        "ReplicationAncestryLabel": "https://w3id.org/effortless-ntwf#replicationAncestryLabel",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "ReplicatedAtNominalSig": "https://w3id.org/effortless-ntwf#replicatedAtNominalSig",
+        "MechanismPrimaryAncestry": "https://w3id.org/effortless-ntwf#mechanismPrimaryAncestry",
+        "IsDifferentAncestryReplication": "https://w3id.org/effortless-ntwf#isDifferentAncestryReplication",
+        "IsCrossAncestryConcordant": "https://w3id.org/effortless-ntwf#isCrossAncestryConcordant",
+        "SourceQuote": "https://w3id.org/effortless-ntwf#sourceQuote"
+      }
+    },
+    "NegativeControlTests": {
+      "class": "https://w3id.org/effortless-ntwf#NegativeControlTests",
+      "keyField": "NegativeControlTestId",
+      "fields": {
+        "NegativeControlTestId": "https://w3id.org/effortless-ntwf#negativeControlTestId",
+        "ControlLabel": "https://w3id.org/effortless-ntwf#controlLabel",
+        "CausalMechanism": "https://w3id.org/effortless-ntwf#causalMechanism",
+        "TestKind": "https://w3id.org/effortless-ntwf#testKind",
+        "PermutationEffectSize": "https://w3id.org/effortless-ntwf#permutationEffectSize",
+        "NullThreshold": "https://w3id.org/effortless-ntwf#nullThreshold",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "IsSurvived": "https://w3id.org/effortless-ntwf#isSurvived",
+        "SourceQuote": "https://w3id.org/effortless-ntwf#sourceQuote"
+      }
+    },
+    "EnvironmentalExposures": {
+      "class": "https://w3id.org/effortless-ntwf#EnvironmentalExposures",
+      "keyField": "EnvironmentalExposureId",
+      "fields": {
+        "EnvironmentalExposureId": "https://w3id.org/effortless-ntwf#environmentalExposureId",
+        "ExposureLabel": "https://w3id.org/effortless-ntwf#exposureLabel",
+        "Individual": "https://w3id.org/effortless-ntwf#individual_EnvironmentalExposures",
+        "ExposureLevel": "https://w3id.org/effortless-ntwf#exposureLevel",
+        "ExposureStartDate": "https://w3id.org/effortless-ntwf#exposureStartDate",
+        "IsMaternalEffect": "https://w3id.org/effortless-ntwf#isMaternalEffect",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "IndividualAncestryLabel": "https://w3id.org/effortless-ntwf#individualAncestryLabel",
+        "IsHighExposure": "https://w3id.org/effortless-ntwf#isHighExposure"
+      }
+    },
+    "Treatments": {
+      "class": "https://w3id.org/effortless-ntwf#Treatments",
+      "keyField": "TreatmentId",
+      "fields": {
+        "TreatmentId": "https://w3id.org/effortless-ntwf#treatmentId",
+        "TreatmentLabel": "https://w3id.org/effortless-ntwf#treatmentLabel",
+        "Individual": "https://w3id.org/effortless-ntwf#individual_Treatments",
+        "AutoimmuneDisease": "https://w3id.org/effortless-ntwf#autoimmuneDisease",
+        "TargetsMechanism": "https://w3id.org/effortless-ntwf#targetsMechanism",
+        "TreatmentResponse": "https://w3id.org/effortless-ntwf#treatmentResponse",
+        "HasTreatmentInducedChange": "https://w3id.org/effortless-ntwf#hasTreatmentInducedChange",
+        "HasAdverseEffect": "https://w3id.org/effortless-ntwf#hasAdverseEffect",
+        "StartDate": "https://w3id.org/effortless-ntwf#startDate",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "AutoimmuneDiseaseLabel": "https://w3id.org/effortless-ntwf#autoimmuneDiseaseLabel",
+        "IsEffectiveTreatment": "https://w3id.org/effortless-ntwf#isEffectiveTreatment",
+        "IsMechanismMatched": "https://w3id.org/effortless-ntwf#isMechanismMatched",
+        "IsTreatmentResponsePredicted": "https://w3id.org/effortless-ntwf#isTreatmentResponsePredicted",
+        "TreatmentResponseDecidingFactor": "https://w3id.org/effortless-ntwf#treatmentResponseDecidingFactor"
+      }
+    },
+    "ClinicalPhenotypes": {
+      "class": "https://w3id.org/effortless-ntwf#ClinicalPhenotypes",
+      "keyField": "ClinicalPhenotypeId",
+      "fields": {
+        "ClinicalPhenotypeId": "https://w3id.org/effortless-ntwf#clinicalPhenotypeId",
+        "PhenotypeLabel": "https://w3id.org/effortless-ntwf#phenotypeLabel",
+        "Individual": "https://w3id.org/effortless-ntwf#individual_ClinicalPhenotypes",
+        "AutoimmuneDisease": "https://w3id.org/effortless-ntwf#autoimmuneDisease",
+        "DiseaseStage": "https://w3id.org/effortless-ntwf#diseaseStage",
+        "Tissue": "https://w3id.org/effortless-ntwf#tissue",
+        "SeverityScore": "https://w3id.org/effortless-ntwf#severityScore",
+        "MeasurementDate": "https://w3id.org/effortless-ntwf#measurementDate",
+        "HasImmuneDysfunction": "https://w3id.org/effortless-ntwf#hasImmuneDysfunction",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "DiseaseStageLabel": "https://w3id.org/effortless-ntwf#diseaseStageLabel",
+        "IsHighSeverity": "https://w3id.org/effortless-ntwf#isHighSeverity",
+        "IsPresymptomaticPhenotype": "https://w3id.org/effortless-ntwf#isPresymptomaticPhenotype"
+      }
+    },
+    "CausalMechanisms": {
+      "class": "https://w3id.org/effortless-ntwf#CausalMechanisms",
+      "keyField": "CausalMechanismId",
+      "fields": {
+        "CausalMechanismId": "https://w3id.org/effortless-ntwf#causalMechanismId",
+        "MechanismLabel": "https://w3id.org/effortless-ntwf#mechanismLabel",
+        "Individual": "https://w3id.org/effortless-ntwf#individual_CausalMechanisms",
+        "GenomicVariant": "https://w3id.org/effortless-ntwf#genomicVariant",
+        "EnvironmentalExposure": "https://w3id.org/effortless-ntwf#environmentalExposure",
+        "MechanismType": "https://w3id.org/effortless-ntwf#mechanismType",
+        "TargetPathway": "https://w3id.org/effortless-ntwf#targetPathway",
+        "TargetPathwayCode": "https://w3id.org/effortless-ntwf#targetPathwayCode",
+        "HasPleiotropy": "https://w3id.org/effortless-ntwf#hasPleiotropy",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "IndividualAncestryLabel": "https://w3id.org/effortless-ntwf#individualAncestryLabel",
+        "CountQualifiedEvidence": "https://w3id.org/effortless-ntwf#countQualifiedEvidence",
+        "CountModalitiesSupporting": "https://w3id.org/effortless-ntwf#countModalitiesSupporting",
+        "CountInterventionTargets": "https://w3id.org/effortless-ntwf#countInterventionTargets",
+        "IsExperimentallyFalsifiable": "https://w3id.org/effortless-ntwf#isExperimentallyFalsifiable",
+        "CountReplications": "https://w3id.org/effortless-ntwf#countReplications",
+        "CountConcordantReplications": "https://w3id.org/effortless-ntwf#countConcordantReplications",
+        "CountCrossAncestryConcordant": "https://w3id.org/effortless-ntwf#countCrossAncestryConcordant",
+        "ReplicationFraction": "https://w3id.org/effortless-ntwf#replicationFraction",
+        "ReplicatesAcrossCohorts": "https://w3id.org/effortless-ntwf#replicatesAcrossCohorts",
+        "CountNegControlTests": "https://w3id.org/effortless-ntwf#countNegControlTests",
+        "CountNegControlSurvived": "https://w3id.org/effortless-ntwf#countNegControlSurvived",
+        "SurvivesNegativeControls": "https://w3id.org/effortless-ntwf#survivesNegativeControls",
+        "IsSpuriousDerived": "https://w3id.org/effortless-ntwf#isSpuriousDerived",
+        "CausalConfidence": "https://w3id.org/effortless-ntwf#causalConfidence",
+        "VariantIsCausalCandidate": "https://w3id.org/effortless-ntwf#variantIsCausalCandidate",
+        "IsCausalArchitectureNode": "https://w3id.org/effortless-ntwf#isCausalArchitectureNode",
+        "IsAncestryTransportable": "https://w3id.org/effortless-ntwf#isAncestryTransportable",
+        "InterventionTargets": "https://w3id.org/effortless-ntwf#interventionTargets",
+        "EvidenceItems": "https://w3id.org/effortless-ntwf#evidenceItems",
+        "CohortReplications": "https://w3id.org/effortless-ntwf#cohortReplications",
+        "NegativeControlTests": "https://w3id.org/effortless-ntwf#negativeControlTests"
+      }
+    },
+    "EpistaticInteractions": {
+      "class": "https://w3id.org/effortless-ntwf#EpistaticInteractions",
+      "keyField": "EpistaticInteractionId",
+      "fields": {
+        "EpistaticInteractionId": "https://w3id.org/effortless-ntwf#epistaticInteractionId",
+        "InteractionLabel": "https://w3id.org/effortless-ntwf#interactionLabel",
+        "Individual": "https://w3id.org/effortless-ntwf#individual_EpistaticInteractions",
+        "PrimaryVariant": "https://w3id.org/effortless-ntwf#primaryVariant",
+        "SecondaryVariant": "https://w3id.org/effortless-ntwf#secondaryVariant",
+        "EpistasisScore": "https://w3id.org/effortless-ntwf#epistasisScore",
+        "HasPleiotropy": "https://w3id.org/effortless-ntwf#hasPleiotropy",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "IsHighOrderEpistasis": "https://w3id.org/effortless-ntwf#isHighOrderEpistasis"
+      }
+    },
+    "CounterfactualTrajectories": {
+      "class": "https://w3id.org/effortless-ntwf#CounterfactualTrajectories",
+      "keyField": "CounterfactualTrajectoryId",
+      "fields": {
+        "CounterfactualTrajectoryId": "https://w3id.org/effortless-ntwf#counterfactualTrajectoryId",
+        "TrajectoryLabel": "https://w3id.org/effortless-ntwf#trajectoryLabel",
+        "Individual": "https://w3id.org/effortless-ntwf#individual_CounterfactualTrajectories",
+        "AutoimmuneDisease": "https://w3id.org/effortless-ntwf#autoimmuneDisease",
+        "ProjectedSeverity": "https://w3id.org/effortless-ntwf#projectedSeverity",
+        "HorizonMonths": "https://w3id.org/effortless-ntwf#horizonMonths",
+        "InterventionApplied": "https://w3id.org/effortless-ntwf#interventionApplied",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "AutoimmuneDiseaseLabel": "https://w3id.org/effortless-ntwf#autoimmuneDiseaseLabel",
+        "IsWorseningTrajectory": "https://w3id.org/effortless-ntwf#isWorseningTrajectory"
+      }
+    },
+    "IndividualPredictions": {
+      "class": "https://w3id.org/effortless-ntwf#IndividualPredictions",
+      "keyField": "IndividualPredictionId",
+      "fields": {
+        "IndividualPredictionId": "https://w3id.org/effortless-ntwf#individualPredictionId",
+        "PredictionLabel": "https://w3id.org/effortless-ntwf#predictionLabel",
+        "Individual": "https://w3id.org/effortless-ntwf#individual_IndividualPredictions",
+        "AutoimmuneDisease": "https://w3id.org/effortless-ntwf#autoimmuneDisease",
+        "PredictionType": "https://w3id.org/effortless-ntwf#predictionType",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "IndividualAncestryLabel": "https://w3id.org/effortless-ntwf#individualAncestryLabel",
+        "IsAncestryHoldout": "https://w3id.org/effortless-ntwf#isAncestryHoldout",
+        "IndividualCausalMass": "https://w3id.org/effortless-ntwf#individualCausalMass",
+        "IndividualConfirmedNodeCount": "https://w3id.org/effortless-ntwf#individualConfirmedNodeCount",
+        "IndividualCrossAncestryNodeCount": "https://w3id.org/effortless-ntwf#individualCrossAncestryNodeCount",
+        "IndividualHasCrypticRelatedness": "https://w3id.org/effortless-ntwf#individualHasCrypticRelatedness",
+        "IndividualMaxSeverityScore": "https://w3id.org/effortless-ntwf#individualMaxSeverityScore",
+        "IndividualHasHighSeverityPhenotype": "https://w3id.org/effortless-ntwf#individualHasHighSeverityPhenotype",
+        "IndividualHasPredictedTreatmentResponse": "https://w3id.org/effortless-ntwf#individualHasPredictedTreatmentResponse",
+        "PredictedValue": "https://w3id.org/effortless-ntwf#predictedValue",
+        "CountBins": "https://w3id.org/effortless-ntwf#countBins",
+        "CountWellCalibratedBins": "https://w3id.org/effortless-ntwf#countWellCalibratedBins",
+        "SumBinAbsError": "https://w3id.org/effortless-ntwf#sumBinAbsError",
+        "MeanBinAbsError": "https://w3id.org/effortless-ntwf#meanBinAbsError",
+        "WellCalibratedFraction": "https://w3id.org/effortless-ntwf#wellCalibratedFraction",
+        "CalibratedUncertainty": "https://w3id.org/effortless-ntwf#calibratedUncertainty",
+        "RestsOnConfirmedMechanism": "https://w3id.org/effortless-ntwf#restsOnConfirmedMechanism",
+        "HasSpuriousCorrelationFlag": "https://w3id.org/effortless-ntwf#hasSpuriousCorrelationFlag",
+        "IsFalsifiabilityBacked": "https://w3id.org/effortless-ntwf#isFalsifiabilityBacked",
+        "IsTransportableToAbsentAncestry": "https://w3id.org/effortless-ntwf#isTransportableToAbsentAncestry",
+        "IsAncestryTransportSafe": "https://w3id.org/effortless-ntwf#isAncestryTransportSafe",
+        "TransportGateStatus": "https://w3id.org/effortless-ntwf#transportGateStatus",
+        "IsHighConfidencePrediction": "https://w3id.org/effortless-ntwf#isHighConfidencePrediction",
+        "PatientStratificationTier": "https://w3id.org/effortless-ntwf#patientStratificationTier",
+        "PredictedSeverityValue": "https://w3id.org/effortless-ntwf#predictedSeverityValue",
+        "SeverityTier": "https://w3id.org/effortless-ntwf#severityTier",
+        "IsSeverityActionable": "https://w3id.org/effortless-ntwf#isSeverityActionable",
+        "SeverityDecidingFactor": "https://w3id.org/effortless-ntwf#severityDecidingFactor",
+        "IsTreatmentResponseActionable": "https://w3id.org/effortless-ntwf#isTreatmentResponseActionable",
+        "TreatmentResponseDecidingFactor": "https://w3id.org/effortless-ntwf#treatmentResponseDecidingFactor",
+        "IsClinicallyActionable": "https://w3id.org/effortless-ntwf#isClinicallyActionable",
+        "LifecycleStateKey": "https://w3id.org/effortless-ntwf#lifecycleStateKey",
+        "DecidingGate": "https://w3id.org/effortless-ntwf#decidingGate",
+        "CalibrationBins": "https://w3id.org/effortless-ntwf#calibrationBins",
+        "IndividualTargetPathway": "https://w3id.org/effortless-ntwf#individualTargetPathway",
+        "IndividualProgressionStateKey": "https://w3id.org/effortless-ntwf#individualProgressionStateKey",
+        "IndividualIsDiseaseProgressing": "https://w3id.org/effortless-ntwf#individualIsDiseaseProgressing",
+        "RecommendedTreatmentLine": "https://w3id.org/effortless-ntwf#recommendedTreatmentLine",
+        "TreatmentLineDecidingFactor": "https://w3id.org/effortless-ntwf#treatmentLineDecidingFactor",
+        "ProgressionVsActionabilityDisagree": "https://w3id.org/effortless-ntwf#progressionVsActionabilityDisagree"
+      }
+    },
+    "CalibrationBins": {
+      "class": "https://w3id.org/effortless-ntwf#CalibrationBins",
+      "keyField": "CalibrationBinId",
+      "fields": {
+        "CalibrationBinId": "https://w3id.org/effortless-ntwf#calibrationBinId",
+        "BinLabel": "https://w3id.org/effortless-ntwf#binLabel",
+        "IndividualPrediction": "https://w3id.org/effortless-ntwf#individualPrediction",
+        "PredictedProbabilityBand": "https://w3id.org/effortless-ntwf#predictedProbabilityBand",
+        "ObservedEventRate": "https://w3id.org/effortless-ntwf#observedEventRate",
+        "CoverageCount": "https://w3id.org/effortless-ntwf#coverageCount",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "BinAbsError": "https://w3id.org/effortless-ntwf#binAbsError",
+        "IsWellCalibratedBin": "https://w3id.org/effortless-ntwf#isWellCalibratedBin",
+        "SourceQuote": "https://w3id.org/effortless-ntwf#sourceQuote"
+      }
+    },
+    "InterventionTargets": {
+      "class": "https://w3id.org/effortless-ntwf#InterventionTargets",
+      "keyField": "InterventionTargetId",
+      "fields": {
+        "InterventionTargetId": "https://w3id.org/effortless-ntwf#interventionTargetId",
+        "TargetLabel": "https://w3id.org/effortless-ntwf#targetLabel",
+        "CausalMechanism": "https://w3id.org/effortless-ntwf#causalMechanism",
+        "AutoimmuneDisease": "https://w3id.org/effortless-ntwf#autoimmuneDisease",
+        "TherapyClass": "https://w3id.org/effortless-ntwf#therapyClass",
+        "IsValidated": "https://w3id.org/effortless-ntwf#isValidated",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "CausalMechanismLabel": "https://w3id.org/effortless-ntwf#causalMechanismLabel",
+        "IsGeneBasedTherapy": "https://w3id.org/effortless-ntwf#isGeneBasedTherapy",
+        "IsCellBasedTherapy": "https://w3id.org/effortless-ntwf#isCellBasedTherapy"
+      }
+    },
+    "Axioms": {
+      "class": "https://w3id.org/effortless-ntwf#Axioms",
+      "keyField": "AxiomId",
+      "fields": {
+        "AxiomId": "https://w3id.org/effortless-ntwf#axiomId",
+        "Statement": "https://w3id.org/effortless-ntwf#statement",
+        "Rationale": "https://w3id.org/effortless-ntwf#rationale",
+        "Category": "https://w3id.org/effortless-ntwf#category",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath"
+      }
+    },
+    "TestsForSuccess": {
+      "class": "https://w3id.org/effortless-ntwf#TestsForSuccess",
+      "keyField": "TestForSuccessId",
+      "fields": {
+        "TestForSuccessId": "https://w3id.org/effortless-ntwf#testForSuccessId",
+        "Claim": "https://w3id.org/effortless-ntwf#claim",
+        "HowWitnessed": "https://w3id.org/effortless-ntwf#howWitnessed",
+        "RelatedHarnessFile": "https://w3id.org/effortless-ntwf#relatedHarnessFile",
+        "Status": "https://w3id.org/effortless-ntwf#status",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath"
+      }
+    },
+    "Features": {
+      "class": "https://w3id.org/effortless-ntwf#Features",
+      "keyField": "FeatureId",
+      "fields": {
+        "FeatureId": "https://w3id.org/effortless-ntwf#featureId",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "Category": "https://w3id.org/effortless-ntwf#category",
+        "Priority": "https://w3id.org/effortless-ntwf#priority",
+        "Description": "https://w3id.org/effortless-ntwf#description",
+        "ChallengeRefs": "https://w3id.org/effortless-ntwf#challengeRefs",
+        "ChallengeRefsRendered": "https://w3id.org/effortless-ntwf#challengeRefsRendered",
+        "ChallengeNotes": "https://w3id.org/effortless-ntwf#challengeNotes",
+        "RefCount": "https://w3id.org/effortless-ntwf#refCount",
+        "AssignedLoop": "https://w3id.org/effortless-ntwf#assignedLoop",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "MetaLine": "https://w3id.org/effortless-ntwf#metaLine"
+      }
+    },
+    "InferenceKinds": {
+      "class": "https://w3id.org/effortless-ntwf#InferenceKinds",
+      "keyField": "InferenceKindId",
+      "fields": {
+        "InferenceKindId": "https://w3id.org/effortless-ntwf#inferenceKindId",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "Description": "https://w3id.org/effortless-ntwf#description",
+        "ExampleField": "https://w3id.org/effortless-ntwf#exampleField",
+        "EvidenceCount": "https://w3id.org/effortless-ntwf#evidenceCount",
+        "Maturity": "https://w3id.org/effortless-ntwf#maturity",
+        "SortOrder": "https://w3id.org/effortless-ntwf#sortOrder",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath"
+      }
+    },
+    "OpenQuestions": {
+      "class": "https://w3id.org/effortless-ntwf#OpenQuestions",
+      "keyField": "OpenQuestionId",
+      "fields": {
+        "OpenQuestionId": "https://w3id.org/effortless-ntwf#openQuestionId",
+        "Question": "https://w3id.org/effortless-ntwf#question",
+        "Context": "https://w3id.org/effortless-ntwf#context",
+        "Resolution": "https://w3id.org/effortless-ntwf#resolution",
+        "IsResolved": "https://w3id.org/effortless-ntwf#isResolved",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath"
+      }
+    },
+    "NonGoals": {
+      "class": "https://w3id.org/effortless-ntwf#NonGoals",
+      "keyField": "NonGoalId",
+      "fields": {
+        "NonGoalId": "https://w3id.org/effortless-ntwf#nonGoalId",
+        "Statement": "https://w3id.org/effortless-ntwf#statement",
+        "WhyExcluded": "https://w3id.org/effortless-ntwf#whyExcluded",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath"
+      }
+    },
+    "GlossaryTerms": {
+      "class": "https://w3id.org/effortless-ntwf#GlossaryTerms",
+      "keyField": "GlossaryTermId",
+      "fields": {
+        "GlossaryTermId": "https://w3id.org/effortless-ntwf#glossaryTermId",
+        "Term": "https://w3id.org/effortless-ntwf#term",
+        "Definition": "https://w3id.org/effortless-ntwf#definition",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath"
+      }
+    },
+    "EffortlessLoops": {
+      "class": "https://w3id.org/effortless-ntwf#EffortlessLoops",
+      "keyField": "EffortlessLoopId",
+      "fields": {
+        "EffortlessLoopId": "https://w3id.org/effortless-ntwf#effortlessLoopId",
+        "LoopNumber": "https://w3id.org/effortless-ntwf#loopNumber",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "Goal": "https://w3id.org/effortless-ntwf#goal",
+        "Status": "https://w3id.org/effortless-ntwf#status",
+        "RuleCommitMsg": "https://w3id.org/effortless-ntwf#ruleCommitMsg",
+        "StateCommitMsg": "https://w3id.org/effortless-ntwf#stateCommitMsg",
+        "SortOrder": "https://w3id.org/effortless-ntwf#sortOrder",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Completedness": "https://w3id.org/effortless-ntwf#completedness",
+        "IsInCurrentPlan": "https://w3id.org/effortless-ntwf#isInCurrentPlan",
+        "StatusBadge": "https://w3id.org/effortless-ntwf#statusBadge",
+        "StatusLine": "https://w3id.org/effortless-ntwf#statusLine"
+      }
+    },
+    "RoutingAndNavigation": {
+      "class": "https://w3id.org/effortless-ntwf#RoutingAndNavigation",
+      "keyField": "RoutingAndNavigationId",
+      "fields": {
+        "RoutingAndNavigationId": "https://w3id.org/effortless-ntwf#routingAndNavigationId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "Route": "https://w3id.org/effortless-ntwf#route",
+        "Description": "https://w3id.org/effortless-ntwf#description",
+        "SortOrder": "https://w3id.org/effortless-ntwf#sortOrder",
+        "ParentRouteKey": "https://w3id.org/effortless-ntwf#parentRouteKey",
+        "RouteKey": "https://w3id.org/effortless-ntwf#routeKey",
+        "NavLevel": "https://w3id.org/effortless-ntwf#navLevel",
+        "RoleVisibility": "https://w3id.org/effortless-ntwf#roleVisibility",
+        "PrimaryTable": "https://w3id.org/effortless-ntwf#primaryTable",
+        "PrimaryView": "https://w3id.org/effortless-ntwf#primaryView",
+        "IconHint": "https://w3id.org/effortless-ntwf#iconHint",
+        "IsDynamic": "https://w3id.org/effortless-ntwf#isDynamic",
+        "PinToTop": "https://w3id.org/effortless-ntwf#pinToTop",
+        "AdminCRUD": "https://w3id.org/effortless-ntwf#adminCRUD",
+        "IntakeClinicianCRUD": "https://w3id.org/effortless-ntwf#intakeClinicianCRUD",
+        "DiagnosingDoctorCRUD": "https://w3id.org/effortless-ntwf#diagnosingDoctorCRUD",
+        "ExternalLlmCRUD": "https://w3id.org/effortless-ntwf#externalLlmCRUD",
+        "AdminCanCreate": "https://w3id.org/effortless-ntwf#adminCanCreate",
+        "AdminCanRead": "https://w3id.org/effortless-ntwf#adminCanRead",
+        "AdminCanUpdate": "https://w3id.org/effortless-ntwf#adminCanUpdate",
+        "AdminCanDelete": "https://w3id.org/effortless-ntwf#adminCanDelete",
+        "IntakeClinicianCanCreate": "https://w3id.org/effortless-ntwf#intakeClinicianCanCreate",
+        "IntakeClinicianCanRead": "https://w3id.org/effortless-ntwf#intakeClinicianCanRead",
+        "IntakeClinicianCanUpdate": "https://w3id.org/effortless-ntwf#intakeClinicianCanUpdate",
+        "IntakeClinicianCanDelete": "https://w3id.org/effortless-ntwf#intakeClinicianCanDelete",
+        "DiagnosingDoctorCanCreate": "https://w3id.org/effortless-ntwf#diagnosingDoctorCanCreate",
+        "DiagnosingDoctorCanRead": "https://w3id.org/effortless-ntwf#diagnosingDoctorCanRead",
+        "DiagnosingDoctorCanUpdate": "https://w3id.org/effortless-ntwf#diagnosingDoctorCanUpdate",
+        "DiagnosingDoctorCanDelete": "https://w3id.org/effortless-ntwf#diagnosingDoctorCanDelete",
+        "ExternalLlmCanCreate": "https://w3id.org/effortless-ntwf#externalLlmCanCreate",
+        "ExternalLlmCanRead": "https://w3id.org/effortless-ntwf#externalLlmCanRead",
+        "ExternalLlmCanUpdate": "https://w3id.org/effortless-ntwf#externalLlmCanUpdate",
+        "ExternalLlmCanDelete": "https://w3id.org/effortless-ntwf#externalLlmCanDelete",
+        "Depth": "https://w3id.org/effortless-ntwf#depth",
+        "FullPath": "https://w3id.org/effortless-ntwf#fullPath",
+        "HandlerBaseName": "https://w3id.org/effortless-ntwf#handlerBaseName",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "CreatedAt": "https://w3id.org/effortless-ntwf#createdAt",
+        "CreatedBy": "https://w3id.org/effortless-ntwf#createdBy",
+        "ModifiedAt": "https://w3id.org/effortless-ntwf#modifiedAt",
+        "ModifiedBy": "https://w3id.org/effortless-ntwf#modifiedBy",
+        "ModifiedByModel": "https://w3id.org/effortless-ntwf#modifiedByModel"
+      }
+    },
+    "StateMachines": {
+      "class": "https://w3id.org/effortless-ntwf#StateMachines",
+      "keyField": "StateMachineId",
+      "fields": {
+        "StateMachineId": "https://w3id.org/effortless-ntwf#stateMachineId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "Description": "https://w3id.org/effortless-ntwf#description",
+        "SubjectTableName": "https://w3id.org/effortless-ntwf#subjectTableName",
+        "SubjectStateColumn": "https://w3id.org/effortless-ntwf#subjectStateColumn",
+        "MachineStates": "https://w3id.org/effortless-ntwf#machineStates",
+        "StateTransitionRules": "https://w3id.org/effortless-ntwf#stateTransitionRules",
+        "StateTransitions": "https://w3id.org/effortless-ntwf#stateTransitions",
+        "StateCount": "https://w3id.org/effortless-ntwf#stateCount",
+        "TransitionRuleCount": "https://w3id.org/effortless-ntwf#transitionRuleCount",
+        "CreatedAt": "https://w3id.org/effortless-ntwf#createdAt",
+        "CreatedBy": "https://w3id.org/effortless-ntwf#createdBy",
+        "ModifiedAt": "https://w3id.org/effortless-ntwf#modifiedAt",
+        "ModifiedBy": "https://w3id.org/effortless-ntwf#modifiedBy",
+        "ModifiedByModel": "https://w3id.org/effortless-ntwf#modifiedByModel"
+      }
+    },
+    "MachineStates": {
+      "class": "https://w3id.org/effortless-ntwf#MachineStates",
+      "keyField": "MachineStateId",
+      "fields": {
+        "MachineStateId": "https://w3id.org/effortless-ntwf#machineStateId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "StateMachine": "https://w3id.org/effortless-ntwf#stateMachine",
+        "StateKey": "https://w3id.org/effortless-ntwf#stateKey",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "OrderIndex": "https://w3id.org/effortless-ntwf#orderIndex",
+        "IsInitial": "https://w3id.org/effortless-ntwf#isInitial",
+        "IsTerminal": "https://w3id.org/effortless-ntwf#isTerminal",
+        "FromTransitionRules": "https://w3id.org/effortless-ntwf#fromTransitionRules",
+        "ToTransitionRules": "https://w3id.org/effortless-ntwf#toTransitionRules",
+        "CreatedAt": "https://w3id.org/effortless-ntwf#createdAt",
+        "CreatedBy": "https://w3id.org/effortless-ntwf#createdBy",
+        "ModifiedAt": "https://w3id.org/effortless-ntwf#modifiedAt",
+        "ModifiedBy": "https://w3id.org/effortless-ntwf#modifiedBy",
+        "ModifiedByModel": "https://w3id.org/effortless-ntwf#modifiedByModel",
+        "ReachableStateCount": "https://w3id.org/effortless-ntwf#reachableStateCount"
+      }
+    },
+    "StateTransitionRules": {
+      "class": "https://w3id.org/effortless-ntwf#StateTransitionRules",
+      "keyField": "StateTransitionRuleId",
+      "fields": {
+        "StateTransitionRuleId": "https://w3id.org/effortless-ntwf#stateTransitionRuleId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "StateMachine": "https://w3id.org/effortless-ntwf#stateMachine",
+        "FromState": "https://w3id.org/effortless-ntwf#fromState",
+        "ToState": "https://w3id.org/effortless-ntwf#toState",
+        "GuardDescription": "https://w3id.org/effortless-ntwf#guardDescription",
+        "RuleRefs": "https://w3id.org/effortless-ntwf#ruleRefs",
+        "TriggerEndpoint": "https://w3id.org/effortless-ntwf#triggerEndpoint",
+        "TriggeredByRole": "https://w3id.org/effortless-ntwf#triggeredByRole",
+        "FromStateKey": "https://w3id.org/effortless-ntwf#fromStateKey",
+        "ToStateKey": "https://w3id.org/effortless-ntwf#toStateKey",
+        "IsForwardEdge": "https://w3id.org/effortless-ntwf#isForwardEdge",
+        "CreatedAt": "https://w3id.org/effortless-ntwf#createdAt",
+        "CreatedBy": "https://w3id.org/effortless-ntwf#createdBy",
+        "ModifiedAt": "https://w3id.org/effortless-ntwf#modifiedAt",
+        "ModifiedBy": "https://w3id.org/effortless-ntwf#modifiedBy",
+        "ModifiedByModel": "https://w3id.org/effortless-ntwf#modifiedByModel",
+        "ProgressionClosure": "https://w3id.org/effortless-ntwf#progressionClosure"
+      }
+    },
+    "StateTransitions": {
+      "class": "https://w3id.org/effortless-ntwf#StateTransitions",
+      "keyField": "StateTransitionId",
+      "fields": {
+        "StateTransitionId": "https://w3id.org/effortless-ntwf#stateTransitionId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "StateMachine": "https://w3id.org/effortless-ntwf#stateMachine",
+        "SubjectTableName": "https://w3id.org/effortless-ntwf#subjectTableName",
+        "SubjectId": "https://w3id.org/effortless-ntwf#subjectId",
+        "FromStateKey": "https://w3id.org/effortless-ntwf#fromStateKey",
+        "ToStateKey": "https://w3id.org/effortless-ntwf#toStateKey",
+        "TransitionAt": "https://w3id.org/effortless-ntwf#transitionAt",
+        "TriggeredByRole": "https://w3id.org/effortless-ntwf#triggeredByRole",
+        "Reason": "https://w3id.org/effortless-ntwf#reason",
+        "IsForward": "https://w3id.org/effortless-ntwf#isForward",
+        "CreatedAt": "https://w3id.org/effortless-ntwf#createdAt",
+        "CreatedBy": "https://w3id.org/effortless-ntwf#createdBy",
+        "ModifiedAt": "https://w3id.org/effortless-ntwf#modifiedAt",
+        "ModifiedBy": "https://w3id.org/effortless-ntwf#modifiedBy",
+        "ModifiedByModel": "https://w3id.org/effortless-ntwf#modifiedByModel"
+      }
+    },
+    "SubjectStateInstances": {
+      "class": "https://w3id.org/effortless-ntwf#SubjectStateInstances",
+      "keyField": "SubjectStateInstanceId",
+      "fields": {
+        "SubjectStateInstanceId": "https://w3id.org/effortless-ntwf#subjectStateInstanceId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "StateMachine": "https://w3id.org/effortless-ntwf#stateMachine",
+        "SubjectTableName": "https://w3id.org/effortless-ntwf#subjectTableName",
+        "SubjectId": "https://w3id.org/effortless-ntwf#subjectId",
+        "StateKey": "https://w3id.org/effortless-ntwf#stateKey",
+        "EnteredAt": "https://w3id.org/effortless-ntwf#enteredAt",
+        "ExitedAt": "https://w3id.org/effortless-ntwf#exitedAt",
+        "SequenceIndex": "https://w3id.org/effortless-ntwf#sequenceIndex",
+        "PriorInstance": "https://w3id.org/effortless-ntwf#priorInstance",
+        "EnteredViaTransition": "https://w3id.org/effortless-ntwf#enteredViaTransition",
+        "IsCurrent": "https://w3id.org/effortless-ntwf#isCurrent",
+        "HasCompleteLineage": "https://w3id.org/effortless-ntwf#hasCompleteLineage",
+        "CreatedAt": "https://w3id.org/effortless-ntwf#createdAt",
+        "CreatedBy": "https://w3id.org/effortless-ntwf#createdBy",
+        "ModifiedAt": "https://w3id.org/effortless-ntwf#modifiedAt",
+        "ModifiedBy": "https://w3id.org/effortless-ntwf#modifiedBy",
+        "ModifiedByModel": "https://w3id.org/effortless-ntwf#modifiedByModel",
+        "DwellDays": "https://w3id.org/effortless-ntwf#dwellDays",
+        "IsLongDwell": "https://w3id.org/effortless-ntwf#isLongDwell"
+      }
+    },
+    "DiseaseDomainConcepts": {
+      "class": "https://w3id.org/effortless-ntwf#DiseaseDomainConcepts",
+      "keyField": "DiseaseDomainConceptId",
+      "fields": {
+        "DiseaseDomainConceptId": "https://w3id.org/effortless-ntwf#diseaseDomainConceptId",
+        "ConceptLabel": "https://w3id.org/effortless-ntwf#conceptLabel",
+        "RelatedDisease": "https://w3id.org/effortless-ntwf#relatedDisease",
+        "ModelingStatus": "https://w3id.org/effortless-ntwf#modelingStatus",
+        "Definition": "https://w3id.org/effortless-ntwf#definition",
+        "ChallengeStressorType": "https://w3id.org/effortless-ntwf#challengeStressorType",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "IsDeeplyModeled": "https://w3id.org/effortless-ntwf#isDeeplyModeled",
+        "IsSchemaModeled": "https://w3id.org/effortless-ntwf#isSchemaModeled"
+      }
+    },
+    "SerologyObservations": {
+      "class": "https://w3id.org/effortless-ntwf#SerologyObservations",
+      "keyField": "SerologyObservationId",
+      "fields": {
+        "SerologyObservationId": "https://w3id.org/effortless-ntwf#serologyObservationId",
+        "Individual": "https://w3id.org/effortless-ntwf#individual",
+        "ObservedAt": "https://w3id.org/effortless-ntwf#observedAt",
+        "SequenceIndex": "https://w3id.org/effortless-ntwf#sequenceIndex",
+        "AntiDsDnaIU": "https://w3id.org/effortless-ntwf#antiDsDnaIU",
+        "ComplementC3": "https://w3id.org/effortless-ntwf#complementC3",
+        "ComplementC4": "https://w3id.org/effortless-ntwf#complementC4",
+        "ProteinuriaGPerDay": "https://w3id.org/effortless-ntwf#proteinuriaGPerDay",
+        "EgfrMlMin": "https://w3id.org/effortless-ntwf#egfrMlMin",
+        "HasActiveUrinarySediment": "https://w3id.org/effortless-ntwf#hasActiveUrinarySediment",
+        "PriorObservation": "https://w3id.org/effortless-ntwf#priorObservation",
+        "PriorAntiDsDnaIU": "https://w3id.org/effortless-ntwf#priorAntiDsDnaIU",
+        "PriorC3": "https://w3id.org/effortless-ntwf#priorC3",
+        "PriorC4": "https://w3id.org/effortless-ntwf#priorC4",
+        "AntiDsDnaTrend": "https://w3id.org/effortless-ntwf#antiDsDnaTrend",
+        "ComplementTrend": "https://w3id.org/effortless-ntwf#complementTrend",
+        "IsPreNephriticSignaturePanel": "https://w3id.org/effortless-ntwf#isPreNephriticSignaturePanel",
+        "IsSignificantProteinuria": "https://w3id.org/effortless-ntwf#isSignificantProteinuria",
+        "IsNephroticRangeProteinuria": "https://w3id.org/effortless-ntwf#isNephroticRangeProteinuria",
+        "SledaiRenalPoints": "https://w3id.org/effortless-ntwf#sledaiRenalPoints",
+        "SledaiSerologyPoints": "https://w3id.org/effortless-ntwf#sledaiSerologyPoints",
+        "SledaiScore": "https://w3id.org/effortless-ntwf#sledaiScore",
+        "ProgressionStateKey": "https://w3id.org/effortless-ntwf#progressionStateKey",
+        "ProgressionStateOrder": "https://w3id.org/effortless-ntwf#progressionStateOrder",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath"
+      }
+    },
+    "TherapyOptions": {
+      "class": "https://w3id.org/effortless-ntwf#TherapyOptions",
+      "keyField": "TherapyOptionId",
+      "fields": {
+        "TherapyOptionId": "https://w3id.org/effortless-ntwf#therapyOptionId",
+        "TherapyLabel": "https://w3id.org/effortless-ntwf#therapyLabel",
+        "TargetsPathway": "https://w3id.org/effortless-ntwf#targetsPathway",
+        "LineOrdinal": "https://w3id.org/effortless-ntwf#lineOrdinal",
+        "PreferredWhen": "https://w3id.org/effortless-ntwf#preferredWhen",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath"
+      }
+    }
+  },
+  "junctions": {},
+  "conclusionsFromAbsence": {
+    "derivedFields": 271,
+    "fromAbsence": 105,
+    "neverFromAbsence": 166,
+    "tablesCountedWithoutBeingDeclaredComplete": [
+      "CalibrationBins",
+      "CausalMechanisms",
+      "ClinicalPhenotypes",
+      "CohortReplications",
+      "DiseaseStages",
+      "EpistaticInteractions",
+      "EvidenceItems",
+      "GenomicVariants",
+      "Individuals",
+      "InterventionTargets",
+      "MachineStates",
+      "NegativeControlTests",
+      "OmicsAssays",
+      "SerologyObservations",
+      "StateTransitionRules",
+      "Treatments",
+      "vw_state_transition_rules_closure"
+    ],
+    "tablesDeclaredComplete": [],
+    "fields": [
+      {
+        "table": "AutoimmuneDiseases",
+        "field": "CountOfDiseaseStages",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "DiseaseStages",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "AutoimmuneDiseases",
+        "field": "CountOfInterventionTargets",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "InterventionTargets",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "CausalConfidence",
+        "restsOn": [],
+        "inherits": [
+          "CausalMechanisms.CountModalitiesSupporting",
+          "CausalMechanisms.CountQualifiedEvidence",
+          "CausalMechanisms.ReplicationFraction",
+          "CausalMechanisms.SurvivesNegativeControls"
+        ]
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "CountConcordantReplications",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CohortReplications",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "CountCrossAncestryConcordant",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CohortReplications",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "CountInterventionTargets",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "InterventionTargets",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "CountModalitiesSupporting",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "EvidenceItems",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "CountNegControlSurvived",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "NegativeControlTests",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "CountNegControlTests",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "NegativeControlTests",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "CountQualifiedEvidence",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "EvidenceItems",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "CountReplications",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CohortReplications",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "IsAncestryTransportable",
+        "restsOn": [],
+        "inherits": [
+          "CausalMechanisms.CountCrossAncestryConcordant",
+          "CausalMechanisms.IsCausalArchitectureNode"
+        ]
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "IsCausalArchitectureNode",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "CausalMechanisms.EnvironmentalExposure"
+          }
+        ],
+        "inherits": [
+          "CausalMechanisms.CausalConfidence",
+          "CausalMechanisms.IsExperimentallyFalsifiable",
+          "CausalMechanisms.IsSpuriousDerived",
+          "CausalMechanisms.VariantIsCausalCandidate"
+        ]
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "IsExperimentallyFalsifiable",
+        "restsOn": [],
+        "inherits": [
+          "CausalMechanisms.CountInterventionTargets",
+          "CausalMechanisms.CountQualifiedEvidence"
+        ]
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "IsSpuriousDerived",
+        "restsOn": [],
+        "inherits": [
+          "CausalMechanisms.CountModalitiesSupporting",
+          "CausalMechanisms.ReplicatesAcrossCohorts",
+          "CausalMechanisms.SurvivesNegativeControls"
+        ]
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "ReplicatesAcrossCohorts",
+        "restsOn": [],
+        "inherits": [
+          "CausalMechanisms.CountConcordantReplications",
+          "CausalMechanisms.CountReplications"
+        ]
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "ReplicationFraction",
+        "restsOn": [],
+        "inherits": [
+          "CausalMechanisms.CountConcordantReplications",
+          "CausalMechanisms.CountReplications"
+        ]
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "SurvivesNegativeControls",
+        "restsOn": [],
+        "inherits": [
+          "CausalMechanisms.CountNegControlSurvived",
+          "CausalMechanisms.CountNegControlTests"
+        ]
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "VariantIsCausalCandidate",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "CausalMechanisms.GenomicVariant"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ClinicalPhenotypes",
+        "field": "DiseaseStageLabel",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "ClinicalPhenotypes.DiseaseStage"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ClinicalPhenotypes",
+        "field": "IsPresymptomaticPhenotype",
+        "restsOn": [],
+        "inherits": [
+          "ClinicalPhenotypes.DiseaseStageLabel"
+        ]
+      },
+      {
+        "table": "FederatedDatasets",
+        "field": "CountOfIndividuals",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Individuals",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "CalibratedUncertainty",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.MeanBinAbsError",
+          "IndividualPredictions.WellCalibratedFraction"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "CountBins",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CalibrationBins",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "CountWellCalibratedBins",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CalibrationBins",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "DecidingGate",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.CalibratedUncertainty",
+          "IndividualPredictions.IndividualHasCrypticRelatedness",
+          "IndividualPredictions.IsAncestryTransportSafe",
+          "IndividualPredictions.IsClinicallyActionable",
+          "IndividualPredictions.RestsOnConfirmedMechanism"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "HasSpuriousCorrelationFlag",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.IndividualHasCrypticRelatedness",
+          "IndividualPredictions.RestsOnConfirmedMechanism"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualCausalMass",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "IndividualPredictions.Individual"
+          }
+        ],
+        "inherits": [
+          "Individuals.SumConfirmedCausalConfidence"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualConfirmedNodeCount",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "IndividualPredictions.Individual"
+          }
+        ],
+        "inherits": [
+          "Individuals.CountConfirmedCausalNodes"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualCrossAncestryNodeCount",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "IndividualPredictions.Individual"
+          }
+        ],
+        "inherits": [
+          "Individuals.CountCrossAncestryConfirmedNodes"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualHasCrypticRelatedness",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "IndividualPredictions.Individual"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualHasHighSeverityPhenotype",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "IndividualPredictions.Individual"
+          }
+        ],
+        "inherits": [
+          "Individuals.HasHighSeverityPhenotype"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualHasPredictedTreatmentResponse",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "IndividualPredictions.Individual"
+          }
+        ],
+        "inherits": [
+          "Individuals.HasPredictedTreatmentResponse"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualIsDiseaseProgressing",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.IsDiseaseProgressing"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualMaxSeverityScore",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "IndividualPredictions.Individual"
+          }
+        ],
+        "inherits": [
+          "Individuals.MaxSeverityScore"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualProgressionStateKey",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.NephritisProgressionStateKey"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualTargetPathway",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.TargetPathway"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IsAncestryTransportSafe",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.IsTransportableToAbsentAncestry"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IsClinicallyActionable",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.IsAncestryTransportSafe",
+          "IndividualPredictions.IsFalsifiabilityBacked",
+          "IndividualPredictions.IsHighConfidencePrediction",
+          "IndividualPredictions.PredictedValue"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IsFalsifiabilityBacked",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.IndividualConfirmedNodeCount"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IsHighConfidencePrediction",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.CalibratedUncertainty",
+          "IndividualPredictions.HasSpuriousCorrelationFlag"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IsSeverityActionable",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.HasSpuriousCorrelationFlag",
+          "IndividualPredictions.IndividualHasHighSeverityPhenotype",
+          "IndividualPredictions.RestsOnConfirmedMechanism"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IsTransportableToAbsentAncestry",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.HasSpuriousCorrelationFlag",
+          "IndividualPredictions.IndividualCrossAncestryNodeCount"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IsTreatmentResponseActionable",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.IndividualHasPredictedTreatmentResponse"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "LifecycleStateKey",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.CalibratedUncertainty",
+          "IndividualPredictions.IndividualHasCrypticRelatedness",
+          "IndividualPredictions.IsAncestryTransportSafe",
+          "IndividualPredictions.IsFalsifiabilityBacked",
+          "IndividualPredictions.IsHighConfidencePrediction",
+          "IndividualPredictions.PredictedValue",
+          "IndividualPredictions.RestsOnConfirmedMechanism"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "MeanBinAbsError",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.CountBins",
+          "IndividualPredictions.SumBinAbsError"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "PatientStratificationTier",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.PredictedValue"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "PredictedSeverityValue",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.IndividualMaxSeverityScore"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "PredictedValue",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.IndividualCausalMass",
+          "IndividualPredictions.IndividualConfirmedNodeCount"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "ProgressionVsActionabilityDisagree",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.IndividualIsDiseaseProgressing",
+          "IndividualPredictions.IsClinicallyActionable"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "RecommendedTreatmentLine",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.IndividualProgressionStateKey",
+          "IndividualPredictions.IndividualTargetPathway",
+          "IndividualPredictions.RestsOnConfirmedMechanism"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "RestsOnConfirmedMechanism",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.IndividualConfirmedNodeCount"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "SeverityDecidingFactor",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.HasSpuriousCorrelationFlag",
+          "IndividualPredictions.IndividualHasHighSeverityPhenotype",
+          "IndividualPredictions.IsSeverityActionable",
+          "IndividualPredictions.RestsOnConfirmedMechanism"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "SeverityTier",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.PredictedSeverityValue"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "SumBinAbsError",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CalibrationBins",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "TransportGateStatus",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.IsTransportableToAbsentAncestry"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "TreatmentLineDecidingFactor",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.IndividualProgressionStateKey",
+          "IndividualPredictions.IndividualTargetPathway",
+          "IndividualPredictions.RestsOnConfirmedMechanism"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "TreatmentResponseDecidingFactor",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.IsTreatmentResponseActionable",
+          "IndividualPredictions.RestsOnConfirmedMechanism"
+        ]
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "WellCalibratedFraction",
+        "restsOn": [],
+        "inherits": [
+          "IndividualPredictions.CountBins",
+          "IndividualPredictions.CountWellCalibratedBins"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "ActivityTier",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.LatestSledaiScore"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "CausalArchitectureScore",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.CountOfCausalMechanisms",
+          "Individuals.CountOfEpistaticInteractions",
+          "Individuals.RareVariantBurdenScore"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "CountConfirmedCausalNodes",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CausalMechanisms",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "CausalMechanisms.IsCausalArchitectureNode"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "CountCrossAncestryConfirmedNodes",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CausalMechanisms",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "CausalMechanisms.IsAncestryTransportable"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "CountHighSeverityPhenotypes",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "ClinicalPhenotypes",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "CountOfCausalMechanisms",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CausalMechanisms",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "CountOfEpistaticInteractions",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "EpistaticInteractions",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "CountOfGenomicVariants",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "GenomicVariants",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "CountPreNephriticSignaturePanels",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "SerologyObservations",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "SerologyObservations.IsPreNephriticSignaturePanel"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "CountPredictedTreatmentResponses",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Treatments",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Treatments.IsTreatmentResponsePredicted"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "CountSerologyPanels",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "SerologyObservations",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "CurrentProgressionStateId",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.NephritisProgressionStateKey"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "FederatedDatasetNodeLabel",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "Individuals.FederatedDataset"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "HasHighSeverityPhenotype",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.CountHighSeverityPhenotypes"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "HasPredictedTreatmentResponse",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.CountPredictedTreatmentResponses"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "IsDiseaseProgressing",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.NephritisProgressionStateKey"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "IsHighDiseaseActivity",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.LatestSledaiScore"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "IsInPreNephriticSignatureCluster",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.CountPreNephriticSignaturePanels"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "LatestSledaiScore",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "SerologyObservations",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "SerologyObservations.SledaiScore"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "MaxProgressionStateOrder",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "SerologyObservations",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "SerologyObservations.ProgressionStateOrder"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "MaxSeverityScore",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "ClinicalPhenotypes",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "NephritisProgressionStateKey",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.MaxProgressionStateOrder"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "RareVariantBurdenScore",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.CountOfGenomicVariants"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "ReachableStatesAhead",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.CurrentProgressionStateId",
+          "MachineStates.ReachableStateCount"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "SignatureStrength",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.CountPreNephriticSignaturePanels"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "SumConfirmedCausalConfidence",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CausalMechanisms",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "CausalMechanisms.CausalConfidence",
+          "CausalMechanisms.IsCausalArchitectureNode"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "TargetPathway",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.TargetPathwayCode"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "TargetPathwayCode",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CausalMechanisms",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "MachineStates",
+        "field": "ReachableStateCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "vw_state_transition_rules_closure",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "OmicsAssays",
+        "field": "TissueLabel",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "OmicsAssays.Tissue"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "OmicsModalities",
+        "field": "CountOfOmicsAssays",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "OmicsAssays",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "AntiDsDnaTrend",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "SerologyObservations.PriorAntiDsDnaIU"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "ComplementTrend",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "SerologyObservations.PriorC3"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "IsPreNephriticSignaturePanel",
+        "restsOn": [],
+        "inherits": [
+          "SerologyObservations.AntiDsDnaTrend",
+          "SerologyObservations.ComplementTrend"
+        ]
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "ProgressionStateKey",
+        "restsOn": [],
+        "inherits": [
+          "SerologyObservations.AntiDsDnaTrend",
+          "SerologyObservations.ComplementTrend"
+        ]
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "ProgressionStateOrder",
+        "restsOn": [],
+        "inherits": [
+          "SerologyObservations.ProgressionStateKey"
+        ]
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "SledaiScore",
+        "restsOn": [],
+        "inherits": [
+          "SerologyObservations.SledaiSerologyPoints"
+        ]
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "SledaiSerologyPoints",
+        "restsOn": [],
+        "inherits": [
+          "SerologyObservations.AntiDsDnaTrend",
+          "SerologyObservations.ComplementTrend"
+        ]
+      },
+      {
+        "table": "StateMachines",
+        "field": "StateCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "MachineStates",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "StateMachines",
+        "field": "TransitionRuleCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StateTransitionRules",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "SubjectStateInstances",
+        "field": "IsCurrent",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "SubjectStateInstances.ExitedAt"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Tissues",
+        "field": "CountOfOmicsAssays",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "OmicsAssays",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Treatments",
+        "field": "IsMechanismMatched",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "Treatments.TargetsMechanism"
+          }
+        ],
+        "inherits": [
+          "CausalMechanisms.IsCausalArchitectureNode"
+        ]
+      },
+      {
+        "table": "Treatments",
+        "field": "IsTreatmentResponsePredicted",
+        "restsOn": [],
+        "inherits": [
+          "Treatments.IsMechanismMatched"
+        ]
+      },
+      {
+        "table": "Treatments",
+        "field": "TreatmentResponseDecidingFactor",
+        "restsOn": [],
+        "inherits": [
+          "Treatments.IsMechanismMatched",
+          "Treatments.IsTreatmentResponsePredicted"
+        ]
+      },
+      {
+        "table": "VariantTypes",
+        "field": "CountOfGenomicVariants",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "GenomicVariants",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      }
+    ]
+  }
+}

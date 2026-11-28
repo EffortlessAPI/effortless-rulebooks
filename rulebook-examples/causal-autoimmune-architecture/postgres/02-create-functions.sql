@@ -14,6 +14,113 @@
 SET check_function_bodies = off;
 
 -- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+
+-- ============================================================================
 -- LOOKUP FUNCTIONS
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
@@ -431,7 +538,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_disease_stages_is_presymptomatic(p_disease_stage_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(stage_label, '') FROM disease_stages WHERE disease_stage_id = p_disease_stage_id) = 'Presymptomatic' THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(stage_label, '') FROM disease_stages WHERE disease_stage_id = p_disease_stage_id), '') = 'Presymptomatic' THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_omics_assays_assay_label
@@ -1115,7 +1222,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_federated_dataset_node_label(p_individual_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(federated_dataset, '') FROM individuals WHERE individual_id = p_individual_id) IS NULL THEN ('')::text ELSE (((SELECT node_label FROM federated_datasets WHERE federated_dataset_id = ((SELECT NULLIF(federated_dataset, '') FROM individuals WHERE individual_id = p_individual_id))::text)))::text END)::text;
+  SELECT (CASE WHEN (((SELECT NULLIF(federated_dataset, '') FROM individuals WHERE individual_id = p_individual_id)) IS NULL OR ((SELECT NULLIF(federated_dataset, '') FROM individuals WHERE individual_id = p_individual_id))::text = '') THEN ('')::text ELSE (((SELECT node_label FROM federated_datasets WHERE federated_dataset_id = ((SELECT NULLIF(federated_dataset, '') FROM individuals WHERE individual_id = p_individual_id))::text)))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_count_of_genomic_variants
@@ -1155,7 +1262,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_rare_variant_burden_score(p_individual_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT age_years FROM individuals WHERE individual_id = p_individual_id))::NUMERIC > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_individuals_count_of_genomic_variants(p_individual_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT age_years FROM individuals WHERE individual_id = p_individual_id)) AS v) __safe_numeric), 0), 0)))::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((SELECT age_years FROM individuals WHERE individual_id = p_individual_id))::NUMERIC, 0) > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_individuals_count_of_genomic_variants(p_individual_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT age_years FROM individuals WHERE individual_id = p_individual_id)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_causal_architecture_score
@@ -1165,7 +1272,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_causal_architecture_score(p_individual_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_individuals_count_of_causal_mechanisms(p_individual_id)) AS v) __safe_numeric), 0) * COALESCE(10, 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_individuals_count_of_epistatic_interactions(p_individual_id)) AS v) __safe_numeric), 0) * COALESCE(5, 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_individuals_rare_variant_burden_score(p_individual_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_individuals_count_of_causal_mechanisms(p_individual_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(10, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_individuals_count_of_epistatic_interactions(p_individual_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(5, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_individuals_rare_variant_burden_score(p_individual_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_is_development_window
@@ -1175,7 +1282,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_is_development_window(p_individual_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((SELECT age_years FROM individuals WHERE individual_id = p_individual_id))::NUMERIC <= 25 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(((SELECT age_years FROM individuals WHERE individual_id = p_individual_id))::NUMERIC, 0) <= 25 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_is_aging_window
@@ -1185,7 +1292,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_is_aging_window(p_individual_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((SELECT age_years FROM individuals WHERE individual_id = p_individual_id))::NUMERIC >= 60 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(((SELECT age_years FROM individuals WHERE individual_id = p_individual_id))::NUMERIC, 0) >= 60 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_count_confirmed_causal_nodes
@@ -1195,7 +1302,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_count_confirmed_causal_nodes(p_individual_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM causal_mechanisms WHERE individual = (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id) AND calc_causal_mechanisms_is_causal_architecture_node(causal_mechanism_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM causal_mechanisms erb_r1 WHERE individual = (SELECT (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id)) AND ((SELECT (CASE WHEN (COALESCE(COALESCE((calc_causal_mechanisms_causal_confidence(erb_r1.causal_mechanism_id))::NUMERIC, 0) >= 0.7, FALSE) AND COALESCE(calc_causal_mechanisms_is_experimentally_falsifiable(erb_r1.causal_mechanism_id), FALSE) AND COALESCE(NOT (COALESCE(calc_causal_mechanisms_is_spurious_derived(erb_r1.causal_mechanism_id), FALSE)), FALSE) AND COALESCE((COALESCE(COALESCE(erb_r1.variant_is_causal_candidate, FALSE), FALSE) OR COALESCE(((NULLIF(erb_r1.environmental_exposure, '')) IS NOT NULL AND (NULLIF(erb_r1.environmental_exposure, ''))::text <> ''), FALSE)), FALSE)) THEN TRUE ELSE FALSE END)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_sum_confirmed_causal_confidence
@@ -1205,7 +1312,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_sum_confirmed_causal_confidence(p_individual_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_causal_mechanisms_causal_confidence(causal_mechanism_id))::numeric), 0) FROM causal_mechanisms WHERE individual = p_individual_id AND calc_causal_mechanisms_is_causal_architecture_node(causal_mechanism_id) = TRUE))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((WITH __erb_dedup_v1 AS (SELECT calc_causal_mechanisms_count_qualified_evidence(erb_r1.causal_mechanism_id) AS val), __erb_dedup_v2 AS (SELECT calc_causal_mechanisms_count_modalities_supporting(erb_r1.causal_mechanism_id) AS val), __erb_dedup_v3 AS (SELECT calc_causal_mechanisms_replication_fraction(erb_r1.causal_mechanism_id) AS val), __erb_dedup_v4 AS (SELECT calc_causal_mechanisms_survives_negative_controls(erb_r1.causal_mechanism_id) AS val) SELECT (CASE WHEN COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.30, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 4 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(4, 0), 0)))::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.20, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v2))::NUMERIC, 0) >= 3 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(3, 0), 0)))::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.30, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v3)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.20, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v4) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) > 1 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.30, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 4 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(4, 0), 0)))::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.20, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v2))::NUMERIC, 0) >= 3 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(3, 0), 0)))::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.30, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v3)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.20, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v4) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::text END)::numeric))::numeric)::numeric), 0) FROM causal_mechanisms erb_r1 WHERE individual = p_individual_id AND ((SELECT (CASE WHEN (COALESCE(COALESCE((calc_causal_mechanisms_causal_confidence(erb_r1.causal_mechanism_id))::NUMERIC, 0) >= 0.7, FALSE) AND COALESCE(calc_causal_mechanisms_is_experimentally_falsifiable(erb_r1.causal_mechanism_id), FALSE) AND COALESCE(NOT (COALESCE(calc_causal_mechanisms_is_spurious_derived(erb_r1.causal_mechanism_id), FALSE)), FALSE) AND COALESCE((COALESCE(COALESCE(erb_r1.variant_is_causal_candidate, FALSE), FALSE) OR COALESCE(((NULLIF(erb_r1.environmental_exposure, '')) IS NOT NULL AND (NULLIF(erb_r1.environmental_exposure, ''))::text <> ''), FALSE)), FALSE)) THEN TRUE ELSE FALSE END)::boolean))::boolean = TRUE))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_count_cross_ancestry_confirmed_nodes
@@ -1215,7 +1322,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_count_cross_ancestry_confirmed_nodes(p_individual_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM causal_mechanisms WHERE individual = (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id) AND calc_causal_mechanisms_is_ancestry_transportable(causal_mechanism_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM causal_mechanisms erb_r1 WHERE individual = (SELECT (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id)) AND ((SELECT (CASE WHEN (COALESCE(calc_causal_mechanisms_is_causal_architecture_node(erb_r1.causal_mechanism_id), FALSE) AND COALESCE(COALESCE((calc_causal_mechanisms_count_cross_ancestry_concordant(erb_r1.causal_mechanism_id))::NUMERIC, 0) >= 1, FALSE)) THEN TRUE ELSE FALSE END)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_max_severity_score
@@ -1235,7 +1342,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_count_high_severity_phenotypes(p_individual_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM clinical_phenotypes WHERE individual = (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id) AND calc_clinical_phenotypes_is_high_severity(clinical_phenotype_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM clinical_phenotypes erb_r1 WHERE individual = (SELECT (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id)) AND ((SELECT (CASE WHEN COALESCE((erb_r1.severity_score)::NUMERIC, 0) > 7 THEN TRUE ELSE FALSE END)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_has_high_severity_phenotype
@@ -1245,7 +1352,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_has_high_severity_phenotype(p_individual_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_individuals_count_high_severity_phenotypes(p_individual_id))::NUMERIC >= 1 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE((calc_individuals_count_high_severity_phenotypes(p_individual_id))::NUMERIC, 0) >= 1 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_count_predicted_treatment_responses
@@ -1255,7 +1362,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_count_predicted_treatment_responses(p_individual_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM treatments WHERE individual = (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id) AND calc_treatments_is_treatment_response_predicted(treatment_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM treatments erb_r1 WHERE individual = (SELECT (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id)) AND ((SELECT (CASE WHEN (COALESCE(calc_treatments_is_effective_treatment(erb_r1.treatment_id), FALSE) AND COALESCE(COALESCE(erb_r1.is_mechanism_matched, FALSE), FALSE)) THEN TRUE ELSE FALSE END)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_has_predicted_treatment_response
@@ -1265,7 +1372,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_has_predicted_treatment_response(p_individual_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_individuals_count_predicted_treatment_responses(p_individual_id))::NUMERIC >= 1 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE((calc_individuals_count_predicted_treatment_responses(p_individual_id))::NUMERIC, 0) >= 1 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_count_serology_panels
@@ -1285,7 +1392,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_count_pre_nephritic_signature_panels(p_individual_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COUNT(*) FROM serology_observations WHERE individual = (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id) AND calc_serology_observations_is_pre_nephritic_signature_panel(serology_observation_id) = TRUE))::numeric;
+  SELECT ((SELECT COUNT(*) FROM serology_observations WHERE individual = (SELECT (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id)) AND calc_serology_observations_is_pre_nephritic_signature_panel(serology_observation_id) = TRUE))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_is_in_pre_nephritic_signature_cluster
@@ -1295,7 +1402,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_is_in_pre_nephritic_signature_cluster(p_individual_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_individuals_count_pre_nephritic_signature_panels(p_individual_id))::NUMERIC >= 1 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE((calc_individuals_count_pre_nephritic_signature_panels(p_individual_id))::NUMERIC, 0) >= 1 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_signature_strength
@@ -1305,7 +1412,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_signature_strength(p_individual_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_individuals_count_pre_nephritic_signature_panels(p_individual_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 2 THEN (2)::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 1 THEN (1)::text ELSE (0)::text END)::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_individuals_count_pre_nephritic_signature_panels(p_individual_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 2 THEN (2)::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 1 THEN (1)::text ELSE (0)::text END)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_max_progression_state_order
@@ -1335,7 +1442,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_nephritis_progression_state_key(p_individual_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_individuals_max_progression_state_order(p_individual_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 5 THEN ('BiopsyIndicated')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 4 THEN ('RenalFlareRisk')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 3 THEN ('EarlyNephritis')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 2 THEN ('SerologicActive')::text ELSE ('PresymptomaticAutoimmunity')::text END)::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_individuals_max_progression_state_order(p_individual_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 5 THEN ('BiopsyIndicated')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 4 THEN ('RenalFlareRisk')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 3 THEN ('EarlyNephritis')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 2 THEN ('SerologicActive')::text ELSE ('PresymptomaticAutoimmunity')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_activity_tier
@@ -1345,7 +1452,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_activity_tier(p_individual_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_individuals_latest_sledai_score(p_individual_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 12 THEN ('High / flare')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 6 THEN ('Moderate')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 1 THEN ('Mild')::text ELSE ('Quiescent')::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_individuals_latest_sledai_score(p_individual_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 12 THEN ('High / flare')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 6 THEN ('Moderate')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 1 THEN ('Mild')::text ELSE ('Quiescent')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_is_high_disease_activity
@@ -1355,7 +1462,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_is_high_disease_activity(p_individual_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_individuals_latest_sledai_score(p_individual_id))::NUMERIC >= 12 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE((calc_individuals_latest_sledai_score(p_individual_id))::NUMERIC, 0) >= 12 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_is_disease_progressing
@@ -1365,7 +1472,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_is_disease_progressing(p_individual_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_individuals_nephritis_progression_state_key(p_individual_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1) = 'EarlyNephritis' OR (SELECT val FROM __erb_dedup_v1) = 'RenalFlareRisk' OR (SELECT val FROM __erb_dedup_v1) = 'BiopsyIndicated') THEN TRUE ELSE FALSE END)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_individuals_nephritis_progression_state_key(p_individual_id) AS val) SELECT (CASE WHEN (COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'EarlyNephritis', FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'RenalFlareRisk', FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'BiopsyIndicated', FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_target_pathway_code
@@ -1375,7 +1482,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_target_pathway_code(p_individual_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MAX((calc_causal_mechanisms_target_pathway_code(causal_mechanism_id))::numeric), 0) FROM causal_mechanisms WHERE individual = p_individual_id))::numeric;
+  SELECT ((SELECT COALESCE(MAX((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.target_pathway, ''), '') = 'type-I-IFN' THEN (1)::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.target_pathway, ''), '') = 'B-cell/autoantibody' THEN (2)::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.target_pathway, ''), '') = 'T-cell-costim' THEN (3)::text ELSE (CASE WHEN COALESCE(NULLIF(erb_r1.target_pathway, ''), '') = 'IL-17/23' THEN (4)::text ELSE (0)::text END)::text END)::text END)::text END)::numeric))::numeric)::numeric), 0) FROM causal_mechanisms erb_r1 WHERE individual = p_individual_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_target_pathway
@@ -1385,7 +1492,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individuals_target_pathway(p_individual_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_individuals_target_pathway_code(p_individual_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 1 THEN ('type-I-IFN')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 2 THEN ('B-cell/autoantibody')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 3 THEN ('T-cell-costim')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 4 THEN ('IL-17/23')::text ELSE ('')::text END)::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_individuals_target_pathway_code(p_individual_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 1 THEN ('type-I-IFN')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 2 THEN ('B-cell/autoantibody')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 3 THEN ('T-cell-costim')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 4 THEN ('IL-17/23')::text ELSE ('')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_current_progression_state_id
@@ -1487,7 +1594,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_genomic_variants_is_rare_variant(p_genomic_variant_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((SELECT allele_frequency FROM genomic_variants WHERE genomic_variant_id = p_genomic_variant_id))::NUMERIC < 0.01 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(((SELECT allele_frequency FROM genomic_variants WHERE genomic_variant_id = p_genomic_variant_id))::NUMERIC, 0) < 0.01 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_genomic_variants_is_causal_candidate
@@ -1497,7 +1604,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_genomic_variants_is_causal_candidate(p_genomic_variant_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((calc_genomic_variants_is_rare_variant(p_genomic_variant_id) OR calc_genomic_variants_variant_class_is_rare(p_genomic_variant_id)) AND COALESCE((SELECT has_allele_specific_expression FROM genomic_variants WHERE genomic_variant_id = p_genomic_variant_id), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE((COALESCE(calc_genomic_variants_is_rare_variant(p_genomic_variant_id), FALSE) OR COALESCE(calc_genomic_variants_variant_class_is_rare(p_genomic_variant_id), FALSE)), FALSE) AND COALESCE(COALESCE((SELECT has_allele_specific_expression FROM genomic_variants WHERE genomic_variant_id = p_genomic_variant_id), FALSE), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_omics_assays_parent_path
@@ -1666,7 +1773,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_omics_assays_tissue_label(p_omics_assay_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(tissue, '') FROM omics_assays WHERE omics_assay_id = p_omics_assay_id) IS NULL THEN ('Missing Tissue')::text ELSE (((SELECT tissue_label FROM tissues WHERE tissue_id = ((SELECT NULLIF(tissue, '') FROM omics_assays WHERE omics_assay_id = p_omics_assay_id))::text)))::text END)::text;
+  SELECT (CASE WHEN (((SELECT NULLIF(tissue, '') FROM omics_assays WHERE omics_assay_id = p_omics_assay_id)) IS NULL OR ((SELECT NULLIF(tissue, '') FROM omics_assays WHERE omics_assay_id = p_omics_assay_id))::text = '') THEN ('Missing Tissue')::text ELSE (((SELECT tissue_label FROM tissues WHERE tissue_id = ((SELECT NULLIF(tissue, '') FROM omics_assays WHERE omics_assay_id = p_omics_assay_id))::text)))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_omics_assays_has_batch_effect_risk
@@ -1676,7 +1783,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_omics_assays_has_batch_effect_risk(p_omics_assay_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((SELECT measurement_error_score FROM omics_assays WHERE omics_assay_id = p_omics_assay_id))::NUMERIC > 0.3 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(((SELECT measurement_error_score FROM omics_assays WHERE omics_assay_id = p_omics_assay_id))::NUMERIC, 0) > 0.3 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_omics_assays_is_high_quality_assay
@@ -1686,7 +1793,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_omics_assays_is_high_quality_assay(p_omics_assay_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (NOT (calc_omics_assays_has_batch_effect_risk(p_omics_assay_id)) AND ((SELECT measurement_error_score FROM omics_assays WHERE omics_assay_id = p_omics_assay_id))::NUMERIC < 0.15) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(NOT (COALESCE(calc_omics_assays_has_batch_effect_risk(p_omics_assay_id), FALSE)), FALSE) AND COALESCE(COALESCE(((SELECT measurement_error_score FROM omics_assays WHERE omics_assay_id = p_omics_assay_id))::NUMERIC, 0) < 0.15, FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evidence_items_parent_path
@@ -1738,7 +1845,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evidence_items_z_stat(p_evidence_item_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT standard_error FROM evidence_items WHERE evidence_item_id = p_evidence_item_id))::NUMERIC > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT effect_size FROM evidence_items WHERE evidence_item_id = p_evidence_item_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT standard_error FROM evidence_items WHERE evidence_item_id = p_evidence_item_id)) AS v) __safe_numeric), 0), 0)))::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((SELECT standard_error FROM evidence_items WHERE evidence_item_id = p_evidence_item_id))::NUMERIC, 0) > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT effect_size FROM evidence_items WHERE evidence_item_id = p_evidence_item_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT standard_error FROM evidence_items WHERE evidence_item_id = p_evidence_item_id)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evidence_items_is_confound_controlled
@@ -1748,7 +1855,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evidence_items_is_confound_controlled(p_evidence_item_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (COALESCE((SELECT is_adjusted_for_ancestry_pcs FROM evidence_items WHERE evidence_item_id = p_evidence_item_id), FALSE) AND COALESCE((SELECT is_adjusted_for_batch FROM evidence_items WHERE evidence_item_id = p_evidence_item_id), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(COALESCE((SELECT is_adjusted_for_ancestry_pcs FROM evidence_items WHERE evidence_item_id = p_evidence_item_id), FALSE), FALSE) AND COALESCE(COALESCE((SELECT is_adjusted_for_batch FROM evidence_items WHERE evidence_item_id = p_evidence_item_id), FALSE), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evidence_items_is_qualified_evidence
@@ -1758,7 +1865,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evidence_items_is_qualified_evidence(p_evidence_item_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_evidence_items_assay_is_high_quality(p_evidence_item_id) AND NOT (COALESCE((SELECT is_negative_control_arm FROM evidence_items WHERE evidence_item_id = p_evidence_item_id), FALSE)) AND (calc_evidence_items_z_stat(p_evidence_item_id))::NUMERIC >= 2 AND calc_evidence_items_is_confound_controlled(p_evidence_item_id)) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(calc_evidence_items_assay_is_high_quality(p_evidence_item_id), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT is_negative_control_arm FROM evidence_items WHERE evidence_item_id = p_evidence_item_id), FALSE), FALSE)), FALSE) AND COALESCE(COALESCE((calc_evidence_items_z_stat(p_evidence_item_id))::NUMERIC, 0) >= 2, FALSE) AND COALESCE(calc_evidence_items_is_confound_controlled(p_evidence_item_id), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_cohort_replications_parent_path
@@ -1810,7 +1917,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_cohort_replications_replicated_at_nominal_sig(p_cohort_replication_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (((SELECT replication_p_value FROM cohort_replications WHERE cohort_replication_id = p_cohort_replication_id))::NUMERIC <= 0.05 AND ((SELECT replication_effect_sign FROM cohort_replications WHERE cohort_replication_id = p_cohort_replication_id))::NUMERIC = 1) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(COALESCE(((SELECT replication_p_value FROM cohort_replications WHERE cohort_replication_id = p_cohort_replication_id))::NUMERIC, 0) <= 0.05, FALSE) AND COALESCE(COALESCE(((SELECT replication_effect_sign FROM cohort_replications WHERE cohort_replication_id = p_cohort_replication_id))::NUMERIC, 0) = 1, FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_cohort_replications_is_different_ancestry_replication
@@ -1820,7 +1927,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_cohort_replications_is_different_ancestry_replication(p_cohort_replication_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(replication_ancestry_label, '') FROM cohort_replications WHERE cohort_replication_id = p_cohort_replication_id) = calc_cohort_replications_mechanism_primary_ancestry(p_cohort_replication_id) THEN FALSE ELSE TRUE END)::boolean;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(replication_ancestry_label, '') FROM cohort_replications WHERE cohort_replication_id = p_cohort_replication_id), '') = COALESCE(calc_cohort_replications_mechanism_primary_ancestry(p_cohort_replication_id), '') THEN FALSE ELSE TRUE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_cohort_replications_is_cross_ancestry_concordant
@@ -1830,7 +1937,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_cohort_replications_is_cross_ancestry_concordant(p_cohort_replication_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_cohort_replications_replicated_at_nominal_sig(p_cohort_replication_id) AND calc_cohort_replications_is_different_ancestry_replication(p_cohort_replication_id)) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(calc_cohort_replications_replicated_at_nominal_sig(p_cohort_replication_id), FALSE) AND COALESCE(calc_cohort_replications_is_different_ancestry_replication(p_cohort_replication_id), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_negative_control_tests_parent_path
@@ -1871,7 +1978,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_negative_control_tests_is_survived(p_negative_control_test_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT permutation_effect_size FROM negative_control_tests WHERE negative_control_test_id = p_negative_control_test_id) <= (SELECT null_threshold FROM negative_control_tests WHERE negative_control_test_id = p_negative_control_test_id) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(((SELECT permutation_effect_size FROM negative_control_tests WHERE negative_control_test_id = p_negative_control_test_id) <= (SELECT null_threshold FROM negative_control_tests WHERE negative_control_test_id = p_negative_control_test_id)), (((SELECT permutation_effect_size FROM negative_control_tests WHERE negative_control_test_id = p_negative_control_test_id)) IS NULL AND ((SELECT null_threshold FROM negative_control_tests WHERE negative_control_test_id = p_negative_control_test_id)) IS NULL)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_environmental_exposures_parent_path
@@ -1923,7 +2030,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_environmental_exposures_is_high_exposure(p_environmental_exposure_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((SELECT exposure_level FROM environmental_exposures WHERE environmental_exposure_id = p_environmental_exposure_id))::NUMERIC > 5 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(((SELECT exposure_level FROM environmental_exposures WHERE environmental_exposure_id = p_environmental_exposure_id))::NUMERIC, 0) > 5 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatments_parent_path
@@ -1975,7 +2082,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatments_is_effective_treatment(p_treatment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (((SELECT NULLIF(treatment_response, '') FROM treatments WHERE treatment_id = p_treatment_id) = 'Complete' OR (SELECT NULLIF(treatment_response, '') FROM treatments WHERE treatment_id = p_treatment_id) = 'Partial') AND NOT (COALESCE((SELECT has_adverse_effect FROM treatments WHERE treatment_id = p_treatment_id), FALSE))) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE((COALESCE(COALESCE((SELECT NULLIF(treatment_response, '') FROM treatments WHERE treatment_id = p_treatment_id), '') = 'Complete', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(treatment_response, '') FROM treatments WHERE treatment_id = p_treatment_id), '') = 'Partial', FALSE)), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT has_adverse_effect FROM treatments WHERE treatment_id = p_treatment_id), FALSE), FALSE)), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatments_is_mechanism_matched
@@ -1985,7 +2092,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatments_is_mechanism_matched(p_treatment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(targets_mechanism, '') FROM treatments WHERE treatment_id = p_treatment_id) IS NULL THEN (FALSE)::text ELSE (((SELECT calc_causal_mechanisms_is_causal_architecture_node(causal_mechanism_id) FROM causal_mechanisms WHERE causal_mechanism_id = ((SELECT NULLIF(targets_mechanism, '') FROM treatments WHERE treatment_id = p_treatment_id))::text)))::text END)::boolean;
+  SELECT (CASE WHEN (((SELECT NULLIF(targets_mechanism, '') FROM treatments WHERE treatment_id = p_treatment_id)) IS NULL OR ((SELECT NULLIF(targets_mechanism, '') FROM treatments WHERE treatment_id = p_treatment_id))::text = '') THEN (FALSE)::text ELSE (((SELECT calc_causal_mechanisms_is_causal_architecture_node(causal_mechanism_id) FROM causal_mechanisms WHERE causal_mechanism_id = ((SELECT NULLIF(targets_mechanism, '') FROM treatments WHERE treatment_id = p_treatment_id))::text)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatments_is_treatment_response_predicted
@@ -1995,7 +2102,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatments_is_treatment_response_predicted(p_treatment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_treatments_is_effective_treatment(p_treatment_id) AND COALESCE((SELECT is_mechanism_matched FROM treatments WHERE treatment_id = p_treatment_id), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(calc_treatments_is_effective_treatment(p_treatment_id), FALSE) AND COALESCE(COALESCE((SELECT is_mechanism_matched FROM treatments WHERE treatment_id = p_treatment_id), FALSE), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatments_treatment_response_deciding_factor
@@ -2005,7 +2112,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_treatments_treatment_response_deciding_factor(p_treatment_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_treatments_is_treatment_response_predicted(p_treatment_id) THEN ('EffectiveOnConfirmedMechanism')::text ELSE (CASE WHEN NOT (COALESCE((SELECT is_mechanism_matched FROM treatments WHERE treatment_id = p_treatment_id), FALSE)) THEN ('NoConfirmedMechanism')::text ELSE (CASE WHEN COALESCE((SELECT has_adverse_effect FROM treatments WHERE treatment_id = p_treatment_id), FALSE) THEN ('AdverseEffect')::text ELSE (CASE WHEN ((SELECT NULLIF(treatment_response, '') FROM treatments WHERE treatment_id = p_treatment_id) = 'None' OR (SELECT NULLIF(treatment_response, '') FROM treatments WHERE treatment_id = p_treatment_id) = 'Adverse') THEN ('NoResponse')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN calc_treatments_is_treatment_response_predicted(p_treatment_id) THEN ('EffectiveOnConfirmedMechanism')::text ELSE (CASE WHEN NOT (COALESCE(COALESCE((SELECT is_mechanism_matched FROM treatments WHERE treatment_id = p_treatment_id), FALSE), FALSE)) THEN ('NoConfirmedMechanism')::text ELSE (CASE WHEN COALESCE((SELECT has_adverse_effect FROM treatments WHERE treatment_id = p_treatment_id), FALSE) THEN ('AdverseEffect')::text ELSE (CASE WHEN (COALESCE(COALESCE((SELECT NULLIF(treatment_response, '') FROM treatments WHERE treatment_id = p_treatment_id), '') = 'None', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(treatment_response, '') FROM treatments WHERE treatment_id = p_treatment_id), '') = 'Adverse', FALSE)) THEN ('NoResponse')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_clinical_phenotypes_parent_path
@@ -2046,7 +2153,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_clinical_phenotypes_disease_stage_label(p_clinical_phenotype_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(disease_stage, '') FROM clinical_phenotypes WHERE clinical_phenotype_id = p_clinical_phenotype_id) IS NULL THEN ('')::text ELSE (((SELECT stage_label FROM disease_stages WHERE disease_stage_id = ((SELECT NULLIF(disease_stage, '') FROM clinical_phenotypes WHERE clinical_phenotype_id = p_clinical_phenotype_id))::text)))::text END)::text;
+  SELECT (CASE WHEN (((SELECT NULLIF(disease_stage, '') FROM clinical_phenotypes WHERE clinical_phenotype_id = p_clinical_phenotype_id)) IS NULL OR ((SELECT NULLIF(disease_stage, '') FROM clinical_phenotypes WHERE clinical_phenotype_id = p_clinical_phenotype_id))::text = '') THEN ('')::text ELSE (((SELECT stage_label FROM disease_stages WHERE disease_stage_id = ((SELECT NULLIF(disease_stage, '') FROM clinical_phenotypes WHERE clinical_phenotype_id = p_clinical_phenotype_id))::text)))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_clinical_phenotypes_is_high_severity
@@ -2056,7 +2163,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_clinical_phenotypes_is_high_severity(p_clinical_phenotype_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((SELECT severity_score FROM clinical_phenotypes WHERE clinical_phenotype_id = p_clinical_phenotype_id))::NUMERIC > 7 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(((SELECT severity_score FROM clinical_phenotypes WHERE clinical_phenotype_id = p_clinical_phenotype_id))::NUMERIC, 0) > 7 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_clinical_phenotypes_is_presymptomatic_phenotype
@@ -2066,7 +2173,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_clinical_phenotypes_is_presymptomatic_phenotype(p_clinical_phenotype_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN calc_clinical_phenotypes_disease_stage_label(p_clinical_phenotype_id) = 'Presymptomatic' THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(calc_clinical_phenotypes_disease_stage_label(p_clinical_phenotype_id), '') = 'Presymptomatic' THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_parent_path
@@ -2152,7 +2259,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_target_pathway_code(p_causal_mechanism_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(target_pathway, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) = 'type-I-IFN' THEN (1)::text ELSE (CASE WHEN (SELECT NULLIF(target_pathway, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) = 'B-cell/autoantibody' THEN (2)::text ELSE (CASE WHEN (SELECT NULLIF(target_pathway, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) = 'T-cell-costim' THEN (3)::text ELSE (CASE WHEN (SELECT NULLIF(target_pathway, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) = 'IL-17/23' THEN (4)::text ELSE (0)::text END)::text END)::text END)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(target_pathway, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id), '') = 'type-I-IFN' THEN (1)::text ELSE (CASE WHEN COALESCE((SELECT NULLIF(target_pathway, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id), '') = 'B-cell/autoantibody' THEN (2)::text ELSE (CASE WHEN COALESCE((SELECT NULLIF(target_pathway, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id), '') = 'T-cell-costim' THEN (3)::text ELSE (CASE WHEN COALESCE((SELECT NULLIF(target_pathway, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id), '') = 'IL-17/23' THEN (4)::text ELSE (0)::text END)::text END)::text END)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_name
@@ -2182,7 +2289,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_count_qualified_evidence(p_causal_mechanism_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM evidence_items WHERE causal_mechanism = (SELECT NULLIF(causal_mechanism_id, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) AND calc_evidence_items_is_qualified_evidence(evidence_item_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM evidence_items erb_r1 WHERE causal_mechanism = (SELECT (SELECT NULLIF(causal_mechanism_id, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id)) AND ((SELECT (CASE WHEN (COALESCE(calc_evidence_items_assay_is_high_quality(erb_r1.evidence_item_id), FALSE) AND COALESCE(NOT (COALESCE(COALESCE(erb_r1.is_negative_control_arm, FALSE), FALSE)), FALSE) AND COALESCE(COALESCE((calc_evidence_items_z_stat(erb_r1.evidence_item_id))::NUMERIC, 0) >= 2, FALSE) AND COALESCE(calc_evidence_items_is_confound_controlled(erb_r1.evidence_item_id), FALSE)) THEN TRUE ELSE FALSE END)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_count_modalities_supporting
@@ -2192,7 +2299,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_count_modalities_supporting(p_causal_mechanism_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM evidence_items WHERE causal_mechanism = (SELECT NULLIF(causal_mechanism_id, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) AND is_cross_modality = TRUE AND calc_evidence_items_is_qualified_evidence(evidence_item_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM evidence_items erb_r1 WHERE causal_mechanism = (SELECT (SELECT NULLIF(causal_mechanism_id, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id)) AND is_cross_modality = TRUE AND ((SELECT (CASE WHEN (COALESCE(calc_evidence_items_assay_is_high_quality(erb_r1.evidence_item_id), FALSE) AND COALESCE(NOT (COALESCE(COALESCE(erb_r1.is_negative_control_arm, FALSE), FALSE)), FALSE) AND COALESCE(COALESCE((calc_evidence_items_z_stat(erb_r1.evidence_item_id))::NUMERIC, 0) >= 2, FALSE) AND COALESCE(calc_evidence_items_is_confound_controlled(erb_r1.evidence_item_id), FALSE)) THEN TRUE ELSE FALSE END)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_count_intervention_targets
@@ -2212,7 +2319,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_is_experimentally_falsifiable(p_causal_mechanism_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((calc_causal_mechanisms_count_intervention_targets(p_causal_mechanism_id))::NUMERIC >= 1 AND (calc_causal_mechanisms_count_qualified_evidence(p_causal_mechanism_id))::NUMERIC >= 1) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(COALESCE((calc_causal_mechanisms_count_intervention_targets(p_causal_mechanism_id))::NUMERIC, 0) >= 1, FALSE) AND COALESCE(COALESCE((calc_causal_mechanisms_count_qualified_evidence(p_causal_mechanism_id))::NUMERIC, 0) >= 1, FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_count_replications
@@ -2232,7 +2339,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_count_concordant_replications(p_causal_mechanism_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM cohort_replications WHERE causal_mechanism = (SELECT NULLIF(causal_mechanism_id, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) AND calc_cohort_replications_replicated_at_nominal_sig(cohort_replication_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM cohort_replications erb_r1 WHERE causal_mechanism = (SELECT (SELECT NULLIF(causal_mechanism_id, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id)) AND ((SELECT (CASE WHEN (COALESCE(COALESCE((erb_r1.replication_p_value)::NUMERIC, 0) <= 0.05, FALSE) AND COALESCE(COALESCE((erb_r1.replication_effect_sign)::NUMERIC, 0) = 1, FALSE)) THEN TRUE ELSE FALSE END)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_count_cross_ancestry_concordant
@@ -2242,7 +2349,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_count_cross_ancestry_concordant(p_causal_mechanism_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM cohort_replications WHERE causal_mechanism = (SELECT NULLIF(causal_mechanism_id, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) AND calc_cohort_replications_is_cross_ancestry_concordant(cohort_replication_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM cohort_replications erb_r1 WHERE causal_mechanism = (SELECT (SELECT NULLIF(causal_mechanism_id, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id)) AND ((SELECT (CASE WHEN (COALESCE(calc_cohort_replications_replicated_at_nominal_sig(erb_r1.cohort_replication_id), FALSE) AND COALESCE(calc_cohort_replications_is_different_ancestry_replication(erb_r1.cohort_replication_id), FALSE)) THEN TRUE ELSE FALSE END)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_replication_fraction
@@ -2252,7 +2359,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_replication_fraction(p_causal_mechanism_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_causal_mechanisms_count_replications(p_causal_mechanism_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_causal_mechanisms_count_concordant_replications(p_causal_mechanism_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text ELSE (0)::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_causal_mechanisms_count_replications(p_causal_mechanism_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_causal_mechanisms_count_concordant_replications(p_causal_mechanism_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_replicates_across_cohorts
@@ -2262,7 +2369,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_replicates_across_cohorts(p_causal_mechanism_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((calc_causal_mechanisms_count_replications(p_causal_mechanism_id))::NUMERIC >= 2 AND (calc_causal_mechanisms_count_concordant_replications(p_causal_mechanism_id))::NUMERIC >= 2) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(COALESCE((calc_causal_mechanisms_count_replications(p_causal_mechanism_id))::NUMERIC, 0) >= 2, FALSE) AND COALESCE(COALESCE((calc_causal_mechanisms_count_concordant_replications(p_causal_mechanism_id))::NUMERIC, 0) >= 2, FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_count_neg_control_tests
@@ -2282,7 +2389,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_count_neg_control_survived(p_causal_mechanism_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM negative_control_tests WHERE causal_mechanism = (SELECT NULLIF(causal_mechanism_id, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) AND calc_negative_control_tests_is_survived(negative_control_test_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM negative_control_tests erb_r1 WHERE causal_mechanism = (SELECT (SELECT NULLIF(causal_mechanism_id, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id)) AND ((SELECT (CASE WHEN COALESCE((erb_r1.permutation_effect_size <= erb_r1.null_threshold), ((erb_r1.permutation_effect_size) IS NULL AND (erb_r1.null_threshold) IS NULL)) THEN TRUE ELSE FALSE END)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_survives_negative_controls
@@ -2292,7 +2399,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_survives_negative_controls(p_causal_mechanism_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_causal_mechanisms_count_neg_control_tests(p_causal_mechanism_id) AS val) SELECT (CASE WHEN (((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 1 AND calc_causal_mechanisms_count_neg_control_survived(p_causal_mechanism_id) = (SELECT val FROM __erb_dedup_v1)) THEN TRUE ELSE FALSE END)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_causal_mechanisms_count_neg_control_tests(p_causal_mechanism_id) AS val) SELECT (CASE WHEN (COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 1, FALSE) AND COALESCE(COALESCE(calc_causal_mechanisms_count_neg_control_survived(p_causal_mechanism_id), 0) = COALESCE((SELECT val FROM __erb_dedup_v1), 0), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_is_spurious_derived
@@ -2302,7 +2409,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_is_spurious_derived(p_causal_mechanism_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (NOT (calc_causal_mechanisms_replicates_across_cohorts(p_causal_mechanism_id)) OR NOT (calc_causal_mechanisms_survives_negative_controls(p_causal_mechanism_id)) OR (calc_causal_mechanisms_count_modalities_supporting(p_causal_mechanism_id))::NUMERIC < 2 OR COALESCE((SELECT has_pleiotropy FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(NOT (COALESCE(calc_causal_mechanisms_replicates_across_cohorts(p_causal_mechanism_id), FALSE)), FALSE) OR COALESCE(NOT (COALESCE(calc_causal_mechanisms_survives_negative_controls(p_causal_mechanism_id), FALSE)), FALSE) OR COALESCE(COALESCE((calc_causal_mechanisms_count_modalities_supporting(p_causal_mechanism_id))::NUMERIC, 0) < 2, FALSE) OR COALESCE(COALESCE((SELECT has_pleiotropy FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id), FALSE), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_causal_confidence
@@ -2312,7 +2419,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_causal_confidence(p_causal_mechanism_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_causal_mechanisms_count_qualified_evidence(p_causal_mechanism_id) AS val), __erb_dedup_v2 AS (SELECT calc_causal_mechanisms_count_modalities_supporting(p_causal_mechanism_id) AS val), __erb_dedup_v3 AS (SELECT calc_causal_mechanisms_replication_fraction(p_causal_mechanism_id) AS val), __erb_dedup_v4 AS (SELECT calc_causal_mechanisms_survives_negative_controls(p_causal_mechanism_id) AS val) SELECT (CASE WHEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.30, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 4 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) / NULLIF(COALESCE(4, 0), 0)))::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.20, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v2))::NUMERIC >= 3 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v) __safe_numeric), 0) / NULLIF(COALESCE(3, 0), 0)))::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.30, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v3)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.20, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v4) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::NUMERIC > 1 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.30, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 4 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) / NULLIF(COALESCE(4, 0), 0)))::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.20, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v2))::NUMERIC >= 3 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v) __safe_numeric), 0) / NULLIF(COALESCE(3, 0), 0)))::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.30, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v3)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.20, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v4) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_causal_mechanisms_count_qualified_evidence(p_causal_mechanism_id) AS val), __erb_dedup_v2 AS (SELECT calc_causal_mechanisms_count_modalities_supporting(p_causal_mechanism_id) AS val), __erb_dedup_v3 AS (SELECT calc_causal_mechanisms_replication_fraction(p_causal_mechanism_id) AS val), __erb_dedup_v4 AS (SELECT calc_causal_mechanisms_survives_negative_controls(p_causal_mechanism_id) AS val) SELECT (CASE WHEN COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.30, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 4 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(4, 0), 0)))::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.20, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v2))::NUMERIC, 0) >= 3 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(3, 0), 0)))::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.30, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v3)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.20, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v4) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) > 1 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.30, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 4 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(4, 0), 0)))::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.20, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v2))::NUMERIC, 0) >= 3 THEN (1)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(3, 0), 0)))::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.30, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v3)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(0.20, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v4) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_variant_is_causal_candidate
@@ -2322,7 +2429,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_variant_is_causal_candidate(p_causal_mechanism_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(genomic_variant, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) IS NULL THEN (FALSE)::text ELSE (((SELECT calc_genomic_variants_is_causal_candidate(genomic_variant_id) FROM genomic_variants WHERE genomic_variant_id = ((SELECT NULLIF(genomic_variant, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id))::text)))::text END)::boolean;
+  SELECT (CASE WHEN (((SELECT NULLIF(genomic_variant, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id)) IS NULL OR ((SELECT NULLIF(genomic_variant, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id))::text = '') THEN (FALSE)::text ELSE (((SELECT calc_genomic_variants_is_causal_candidate(genomic_variant_id) FROM genomic_variants WHERE genomic_variant_id = ((SELECT NULLIF(genomic_variant, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id))::text)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_is_causal_architecture_node
@@ -2332,7 +2439,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_is_causal_architecture_node(p_causal_mechanism_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((calc_causal_mechanisms_causal_confidence(p_causal_mechanism_id))::NUMERIC >= 0.7 AND calc_causal_mechanisms_is_experimentally_falsifiable(p_causal_mechanism_id) AND NOT (calc_causal_mechanisms_is_spurious_derived(p_causal_mechanism_id)) AND (COALESCE((SELECT variant_is_causal_candidate FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id), FALSE) OR (SELECT NULLIF(environmental_exposure, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) IS NOT NULL)) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(COALESCE((calc_causal_mechanisms_causal_confidence(p_causal_mechanism_id))::NUMERIC, 0) >= 0.7, FALSE) AND COALESCE(calc_causal_mechanisms_is_experimentally_falsifiable(p_causal_mechanism_id), FALSE) AND COALESCE(NOT (COALESCE(calc_causal_mechanisms_is_spurious_derived(p_causal_mechanism_id), FALSE)), FALSE) AND COALESCE((COALESCE(COALESCE((SELECT variant_is_causal_candidate FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id), FALSE), FALSE) OR COALESCE((((SELECT NULLIF(environmental_exposure, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id)) IS NOT NULL AND ((SELECT NULLIF(environmental_exposure, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id))::text <> ''), FALSE)), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_is_ancestry_transportable
@@ -2342,7 +2449,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_is_ancestry_transportable(p_causal_mechanism_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_causal_mechanisms_is_causal_architecture_node(p_causal_mechanism_id) AND (calc_causal_mechanisms_count_cross_ancestry_concordant(p_causal_mechanism_id))::NUMERIC >= 1) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(calc_causal_mechanisms_is_causal_architecture_node(p_causal_mechanism_id), FALSE) AND COALESCE(COALESCE((calc_causal_mechanisms_count_cross_ancestry_concordant(p_causal_mechanism_id))::NUMERIC, 0) >= 1, FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_epistatic_interactions_parent_path
@@ -2383,7 +2490,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_epistatic_interactions_is_high_order_epistasis(p_epistatic_interaction_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((SELECT epistasis_score FROM epistatic_interactions WHERE epistatic_interaction_id = p_epistatic_interaction_id))::NUMERIC > 0.5 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(((SELECT epistasis_score FROM epistatic_interactions WHERE epistatic_interaction_id = p_epistatic_interaction_id))::NUMERIC, 0) > 0.5 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_counterfactual_trajectories_parent_path
@@ -2435,7 +2542,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_counterfactual_trajectories_is_worsening_trajectory(p_counterfactual_trajectory_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((SELECT projected_severity FROM counterfactual_trajectories WHERE counterfactual_trajectory_id = p_counterfactual_trajectory_id))::NUMERIC > 7 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(((SELECT projected_severity FROM counterfactual_trajectories WHERE counterfactual_trajectory_id = p_counterfactual_trajectory_id))::NUMERIC, 0) > 7 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_parent_path
@@ -2585,7 +2692,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_individual_causal_mass(p_individual_prediction_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id) IS NULL THEN (0)::text ELSE (((SELECT calc_individuals_sum_confirmed_causal_confidence(individual_id) FROM individuals WHERE individual_id = ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text)))::text END)::numeric;
+  SELECT (CASE WHEN (((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) IS NULL OR ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text = '') THEN (0)::text ELSE (((SELECT calc_individuals_sum_confirmed_causal_confidence(individual_id) FROM individuals WHERE individual_id = ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_individual_confirmed_node_count
@@ -2595,7 +2702,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_individual_confirmed_node_count(p_individual_prediction_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id) IS NULL THEN (0)::text ELSE (((SELECT calc_individuals_count_confirmed_causal_nodes(individual_id) FROM individuals WHERE individual_id = ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text)))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) IS NULL OR ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text = '') THEN (0)::text ELSE (((SELECT calc_individuals_count_confirmed_causal_nodes(individual_id) FROM individuals WHERE individual_id = ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text)))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_individual_cross_ancestry_node_count
@@ -2605,7 +2712,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_individual_cross_ancestry_node_count(p_individual_prediction_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id) IS NULL THEN (0)::text ELSE (((SELECT calc_individuals_count_cross_ancestry_confirmed_nodes(individual_id) FROM individuals WHERE individual_id = ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text)))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) IS NULL OR ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text = '') THEN (0)::text ELSE (((SELECT calc_individuals_count_cross_ancestry_confirmed_nodes(individual_id) FROM individuals WHERE individual_id = ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text)))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_individual_has_cryptic_relatedness
@@ -2615,7 +2722,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_individual_has_cryptic_relatedness(p_individual_prediction_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id) IS NULL THEN (FALSE)::text ELSE (((SELECT has_cryptic_relatedness_flag FROM individuals WHERE individual_id = ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text)))::text END)::boolean;
+  SELECT (CASE WHEN (((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) IS NULL OR ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text = '') THEN (FALSE)::text ELSE (((SELECT has_cryptic_relatedness_flag FROM individuals WHERE individual_id = ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_individual_max_severity_score
@@ -2625,7 +2732,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_individual_max_severity_score(p_individual_prediction_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id) IS NULL THEN (0)::text ELSE (((SELECT calc_individuals_max_severity_score(individual_id) FROM individuals WHERE individual_id = ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text)))::text END)::numeric;
+  SELECT (CASE WHEN (((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) IS NULL OR ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text = '') THEN (0)::text ELSE (((SELECT calc_individuals_max_severity_score(individual_id) FROM individuals WHERE individual_id = ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_individual_has_high_severity_phenotype
@@ -2635,7 +2742,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_individual_has_high_severity_phenotype(p_individual_prediction_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id) IS NULL THEN (FALSE)::text ELSE (((SELECT calc_individuals_has_high_severity_phenotype(individual_id) FROM individuals WHERE individual_id = ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text)))::text END)::boolean;
+  SELECT (CASE WHEN (((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) IS NULL OR ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text = '') THEN (FALSE)::text ELSE (((SELECT calc_individuals_has_high_severity_phenotype(individual_id) FROM individuals WHERE individual_id = ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_individual_has_predicted_treatment_response
@@ -2645,7 +2752,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_individual_has_predicted_treatment_response(p_individual_prediction_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id) IS NULL THEN (FALSE)::text ELSE (((SELECT calc_individuals_has_predicted_treatment_response(individual_id) FROM individuals WHERE individual_id = ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text)))::text END)::boolean;
+  SELECT (CASE WHEN (((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) IS NULL OR ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text = '') THEN (FALSE)::text ELSE (((SELECT calc_individuals_has_predicted_treatment_response(individual_id) FROM individuals WHERE individual_id = ((SELECT NULLIF(individual, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_predicted_value
@@ -2655,7 +2762,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_predicted_value(p_individual_prediction_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(2, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT individual_causal_mass FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(1.5, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT individual_confirmed_node_count FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::NUMERIC > 10 THEN (10)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(2, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT individual_causal_mass FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(1.5, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT individual_confirmed_node_count FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(2, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT individual_causal_mass FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(1.5, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT individual_confirmed_node_count FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) > 10 THEN (10)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(2, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT individual_causal_mass FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(1.5, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT individual_confirmed_node_count FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_count_bins
@@ -2675,7 +2782,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_count_well_calibrated_bins(p_individual_prediction_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM calibration_bins WHERE individual_prediction = (SELECT NULLIF(individual_prediction_id, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id) AND calc_calibration_bins_is_well_calibrated_bin(calibration_bin_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM calibration_bins erb_r1 WHERE individual_prediction = (SELECT (SELECT NULLIF(individual_prediction_id, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)) AND ((SELECT (CASE WHEN (COALESCE(COALESCE((erb_r1.coverage_count)::NUMERIC, 0) >= 20, FALSE) AND COALESCE(COALESCE((calc_calibration_bins_bin_abs_error(erb_r1.calibration_bin_id))::NUMERIC, 0) <= 0.1, FALSE)) THEN TRUE ELSE FALSE END)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_sum_bin_abs_error
@@ -2685,7 +2792,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_sum_bin_abs_error(p_individual_prediction_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_calibration_bins_bin_abs_error(calibration_bin_id))::numeric), 0) FROM calibration_bins WHERE individual_prediction = p_individual_prediction_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE((erb_r1.predicted_probability_band >= erb_r1.observed_event_rate), ((erb_r1.predicted_probability_band) IS NULL AND (erb_r1.observed_event_rate) IS NULL)) THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (erb_r1.predicted_probability_band) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (erb_r1.observed_event_rate) AS v OFFSET 0) __safe_numeric), 0)))::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (erb_r1.observed_event_rate) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (erb_r1.predicted_probability_band) AS v OFFSET 0) __safe_numeric), 0)))::text END)::numeric))::numeric)::numeric), 0) FROM calibration_bins erb_r1 WHERE individual_prediction = p_individual_prediction_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_mean_bin_abs_error
@@ -2695,7 +2802,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_mean_bin_abs_error(p_individual_prediction_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_count_bins(p_individual_prediction_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_individual_predictions_sum_bin_abs_error(p_individual_prediction_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text ELSE (1)::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_count_bins(p_individual_prediction_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_individual_predictions_sum_bin_abs_error(p_individual_prediction_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text ELSE (1)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_well_calibrated_fraction
@@ -2705,7 +2812,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_well_calibrated_fraction(p_individual_prediction_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_count_bins(p_individual_prediction_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_individual_predictions_count_well_calibrated_bins(p_individual_prediction_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text ELSE (0)::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_count_bins(p_individual_prediction_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_individual_predictions_count_well_calibrated_bins(p_individual_prediction_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_calibrated_uncertainty
@@ -2715,7 +2822,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_calibrated_uncertainty(p_individual_prediction_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_mean_bin_abs_error(p_individual_prediction_id) AS val) SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN ((COALESCE(1, 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0)))::NUMERIC < 0 THEN (0)::text ELSE ((COALESCE(1, 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0)))::text END) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_individual_predictions_well_calibrated_fraction(p_individual_prediction_id)) AS v) __safe_numeric), 0)))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_mean_bin_abs_error(p_individual_prediction_id) AS val) SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN COALESCE(((COALESCE(1, 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, 0) < 0 THEN (0)::text ELSE ((COALESCE(1, 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0)))::text END) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_individual_predictions_well_calibrated_fraction(p_individual_prediction_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_rests_on_confirmed_mechanism
@@ -2725,7 +2832,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((SELECT individual_confirmed_node_count FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::NUMERIC >= 1 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(((SELECT individual_confirmed_node_count FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::NUMERIC, 0) >= 1 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_has_spurious_correlation_flag
@@ -2735,7 +2842,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_has_spurious_correlation_flag(p_individual_prediction_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (NOT (calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id)) OR COALESCE((SELECT individual_has_cryptic_relatedness FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(NOT (COALESCE(calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id), FALSE)), FALSE) OR COALESCE(COALESCE((SELECT individual_has_cryptic_relatedness FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id), FALSE), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_is_falsifiability_backed
@@ -2745,7 +2852,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_is_falsifiability_backed(p_individual_prediction_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((SELECT individual_confirmed_node_count FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::NUMERIC >= 1 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(((SELECT individual_confirmed_node_count FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::NUMERIC, 0) >= 1 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_is_transportable_to_absent_ancestry
@@ -2755,7 +2862,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_is_transportable_to_absent_ancestry(p_individual_prediction_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_individual_predictions_is_ancestry_holdout(p_individual_prediction_id) AND ((SELECT individual_cross_ancestry_node_count FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::NUMERIC >= 1 AND NOT (calc_individual_predictions_has_spurious_correlation_flag(p_individual_prediction_id))) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(calc_individual_predictions_is_ancestry_holdout(p_individual_prediction_id), FALSE) AND COALESCE(COALESCE(((SELECT individual_cross_ancestry_node_count FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::NUMERIC, 0) >= 1, FALSE) AND COALESCE(NOT (COALESCE(calc_individual_predictions_has_spurious_correlation_flag(p_individual_prediction_id), FALSE)), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_is_ancestry_transport_safe
@@ -2775,7 +2882,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_transport_gate_status(p_individual_prediction_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN NOT (calc_individual_predictions_is_ancestry_holdout(p_individual_prediction_id)) THEN ('NotApplicable')::text ELSE (CASE WHEN calc_individual_predictions_is_transportable_to_absent_ancestry(p_individual_prediction_id) THEN ('PASS-tested')::text ELSE ('FAIL')::text END)::text END)::text;
+  SELECT (CASE WHEN NOT (COALESCE(calc_individual_predictions_is_ancestry_holdout(p_individual_prediction_id), FALSE)) THEN ('NotApplicable')::text ELSE (CASE WHEN calc_individual_predictions_is_transportable_to_absent_ancestry(p_individual_prediction_id) THEN ('PASS-tested')::text ELSE ('FAIL')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_is_high_confidence_prediction
@@ -2785,7 +2892,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_is_high_confidence_prediction(p_individual_prediction_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((calc_individual_predictions_calibrated_uncertainty(p_individual_prediction_id))::NUMERIC >= 0.7 AND NOT (calc_individual_predictions_has_spurious_correlation_flag(p_individual_prediction_id))) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(COALESCE((calc_individual_predictions_calibrated_uncertainty(p_individual_prediction_id))::NUMERIC, 0) >= 0.7, FALSE) AND COALESCE(NOT (COALESCE(calc_individual_predictions_has_spurious_correlation_flag(p_individual_prediction_id), FALSE)), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_patient_stratification_tier
@@ -2795,7 +2902,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_patient_stratification_tier(p_individual_prediction_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_predicted_value(p_individual_prediction_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 7 THEN ('High-Risk Pathway')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 4 THEN ('Moderate-Risk Pathway')::text ELSE ('Low-Risk Pathway')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_predicted_value(p_individual_prediction_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 7 THEN ('High-Risk Pathway')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 4 THEN ('Moderate-Risk Pathway')::text ELSE ('Low-Risk Pathway')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_predicted_severity_value
@@ -2815,7 +2922,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_severity_tier(p_individual_prediction_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_predicted_severity_value(p_individual_prediction_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC > 7 THEN ('Severe')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 4 THEN ('Moderate')::text ELSE ('Mild')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_predicted_severity_value(p_individual_prediction_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 7 THEN ('Severe')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 4 THEN ('Moderate')::text ELSE ('Mild')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_is_severity_actionable
@@ -2825,7 +2932,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_is_severity_actionable(p_individual_prediction_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (COALESCE((SELECT individual_has_high_severity_phenotype FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id), FALSE) AND calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id) AND NOT (calc_individual_predictions_has_spurious_correlation_flag(p_individual_prediction_id))) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(COALESCE((SELECT individual_has_high_severity_phenotype FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id), FALSE), FALSE) AND COALESCE(calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id), FALSE) AND COALESCE(NOT (COALESCE(calc_individual_predictions_has_spurious_correlation_flag(p_individual_prediction_id), FALSE)), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_severity_deciding_factor
@@ -2835,7 +2942,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_severity_deciding_factor(p_individual_prediction_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_individual_predictions_is_severity_actionable(p_individual_prediction_id) THEN ('HighSeverityOnConfirmedMechanism')::text ELSE (CASE WHEN NOT (COALESCE((SELECT individual_has_high_severity_phenotype FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id), FALSE)) THEN ('NotHighSeverity')::text ELSE (CASE WHEN NOT (calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id)) THEN ('NoValidatedMechanism')::text ELSE (CASE WHEN calc_individual_predictions_has_spurious_correlation_flag(p_individual_prediction_id) THEN ('SpuriousFlag')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN calc_individual_predictions_is_severity_actionable(p_individual_prediction_id) THEN ('HighSeverityOnConfirmedMechanism')::text ELSE (CASE WHEN NOT (COALESCE(COALESCE((SELECT individual_has_high_severity_phenotype FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id), FALSE), FALSE)) THEN ('NotHighSeverity')::text ELSE (CASE WHEN NOT (COALESCE(calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id), FALSE)) THEN ('NoValidatedMechanism')::text ELSE (CASE WHEN calc_individual_predictions_has_spurious_correlation_flag(p_individual_prediction_id) THEN ('SpuriousFlag')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_is_treatment_response_actionable
@@ -2865,7 +2972,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_is_clinically_actionable(p_individual_prediction_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_individual_predictions_is_high_confidence_prediction(p_individual_prediction_id) AND calc_individual_predictions_is_falsifiability_backed(p_individual_prediction_id) AND calc_individual_predictions_is_ancestry_transport_safe(p_individual_prediction_id) AND (calc_individual_predictions_predicted_value(p_individual_prediction_id))::NUMERIC > 0) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(calc_individual_predictions_is_high_confidence_prediction(p_individual_prediction_id), FALSE) AND COALESCE(calc_individual_predictions_is_falsifiability_backed(p_individual_prediction_id), FALSE) AND COALESCE(calc_individual_predictions_is_ancestry_transport_safe(p_individual_prediction_id), FALSE) AND COALESCE(COALESCE((calc_individual_predictions_predicted_value(p_individual_prediction_id))::NUMERIC, 0) > 0, FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_lifecycle_state_key
@@ -2875,7 +2982,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_lifecycle_state_key(p_individual_prediction_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_is_falsifiability_backed(p_individual_prediction_id) AS val), __erb_dedup_v2 AS (SELECT calc_individual_predictions_is_ancestry_transport_safe(p_individual_prediction_id) AS val) SELECT (CASE WHEN (calc_individual_predictions_is_high_confidence_prediction(p_individual_prediction_id) AND (SELECT val FROM __erb_dedup_v1) AND (SELECT val FROM __erb_dedup_v2) AND (calc_individual_predictions_predicted_value(p_individual_prediction_id))::NUMERIC > 0) THEN ('Actionable')::text ELSE (CASE WHEN (NOT (calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id)) OR NOT ((SELECT val FROM __erb_dedup_v1))) THEN ('NotActionable')::text ELSE (CASE WHEN COALESCE((SELECT individual_has_cryptic_relatedness FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id), FALSE) THEN ('NotActionable')::text ELSE (CASE WHEN (calc_individual_predictions_calibrated_uncertainty(p_individual_prediction_id))::NUMERIC < 0.7 THEN ('NotActionable')::text ELSE (CASE WHEN NOT ((SELECT val FROM __erb_dedup_v2)) THEN ('NotActionable')::text ELSE ('Actionable')::text END)::text END)::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_is_falsifiability_backed(p_individual_prediction_id) AS val), __erb_dedup_v2 AS (SELECT calc_individual_predictions_is_ancestry_transport_safe(p_individual_prediction_id) AS val) SELECT (CASE WHEN (COALESCE(calc_individual_predictions_is_high_confidence_prediction(p_individual_prediction_id), FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v1), FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v2), FALSE) AND COALESCE(COALESCE((calc_individual_predictions_predicted_value(p_individual_prediction_id))::NUMERIC, 0) > 0, FALSE)) THEN ('Actionable')::text ELSE (CASE WHEN (COALESCE(NOT (COALESCE(calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id), FALSE)), FALSE) OR COALESCE(NOT (COALESCE((SELECT val FROM __erb_dedup_v1), FALSE)), FALSE)) THEN ('NotActionable')::text ELSE (CASE WHEN COALESCE((SELECT individual_has_cryptic_relatedness FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id), FALSE) THEN ('NotActionable')::text ELSE (CASE WHEN COALESCE((calc_individual_predictions_calibrated_uncertainty(p_individual_prediction_id))::NUMERIC, 0) < 0.7 THEN ('NotActionable')::text ELSE (CASE WHEN NOT (COALESCE((SELECT val FROM __erb_dedup_v2), FALSE)) THEN ('NotActionable')::text ELSE ('Actionable')::text END)::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_deciding_gate
@@ -2885,7 +2992,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_deciding_gate(p_individual_prediction_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_individual_predictions_is_clinically_actionable(p_individual_prediction_id) THEN ('AllGatesPass')::text ELSE (CASE WHEN NOT (calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id)) THEN ('NoValidatedMechanism')::text ELSE (CASE WHEN COALESCE((SELECT individual_has_cryptic_relatedness FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id), FALSE) THEN ('CrypticRelatedness')::text ELSE (CASE WHEN (calc_individual_predictions_calibrated_uncertainty(p_individual_prediction_id))::NUMERIC < 0.7 THEN ('Calibration')::text ELSE (CASE WHEN NOT (calc_individual_predictions_is_ancestry_transport_safe(p_individual_prediction_id)) THEN ('AncestryTransport')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN calc_individual_predictions_is_clinically_actionable(p_individual_prediction_id) THEN ('AllGatesPass')::text ELSE (CASE WHEN NOT (COALESCE(calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id), FALSE)) THEN ('NoValidatedMechanism')::text ELSE (CASE WHEN COALESCE((SELECT individual_has_cryptic_relatedness FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id), FALSE) THEN ('CrypticRelatedness')::text ELSE (CASE WHEN COALESCE((calc_individual_predictions_calibrated_uncertainty(p_individual_prediction_id))::NUMERIC, 0) < 0.7 THEN ('Calibration')::text ELSE (CASE WHEN NOT (COALESCE(calc_individual_predictions_is_ancestry_transport_safe(p_individual_prediction_id), FALSE)) THEN ('AncestryTransport')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_recommended_treatment_line
@@ -2895,7 +3002,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_recommended_treatment_line(p_individual_prediction_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_individual_progression_state_key(p_individual_prediction_id) AS val), __erb_dedup_v2 AS (SELECT calc_individual_predictions_individual_target_pathway(p_individual_prediction_id) AS val) SELECT (CASE WHEN NOT (calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id)) THEN ('No targeted line — mechanism unconfirmed')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1) = 'RenalFlareRisk' OR (SELECT val FROM __erb_dedup_v1) = 'BiopsyIndicated') THEN ('Mycophenolate (induction)')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v2) = 'type-I-IFN' THEN ('Anifrolumab')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v2) = 'B-cell/autoantibody' THEN ('Belimumab')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v2) = 'IL-17/23' THEN ('Secukinumab')::text ELSE ('Standard-of-care (no mechanism-matched targeted line)')::text END)::text END)::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_individual_progression_state_key(p_individual_prediction_id) AS val), __erb_dedup_v2 AS (SELECT calc_individual_predictions_individual_target_pathway(p_individual_prediction_id) AS val) SELECT (CASE WHEN NOT (COALESCE(calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id), FALSE)) THEN ('No targeted line — mechanism unconfirmed')::text ELSE (CASE WHEN (COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'RenalFlareRisk', FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'BiopsyIndicated', FALSE)) THEN ('Mycophenolate (induction)')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v2), '') = 'type-I-IFN' THEN ('Anifrolumab')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v2), '') = 'B-cell/autoantibody' THEN ('Belimumab')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v2), '') = 'IL-17/23' THEN ('Secukinumab')::text ELSE ('Standard-of-care (no mechanism-matched targeted line)')::text END)::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_treatment_line_deciding_factor
@@ -2905,7 +3012,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_treatment_line_deciding_factor(p_individual_prediction_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_individual_progression_state_key(p_individual_prediction_id) AS val), __erb_dedup_v2 AS (SELECT calc_individual_predictions_individual_target_pathway(p_individual_prediction_id) AS val) SELECT (CASE WHEN NOT (calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id)) THEN ('MechanismUnconfirmed')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1) = 'RenalFlareRisk' OR (SELECT val FROM __erb_dedup_v1) = 'BiopsyIndicated') THEN ('ActiveNephritis-Induction')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v2) = 'type-I-IFN' THEN ('IFNSignature-Anifrolumab')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v2) = 'B-cell/autoantibody' THEN ('AutoantibodyDriven-Belimumab')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v2) = 'IL-17/23' THEN ('IL17Axis-Secukinumab')::text ELSE ('NoMechanismMatch')::text END)::text END)::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_individual_predictions_individual_progression_state_key(p_individual_prediction_id) AS val), __erb_dedup_v2 AS (SELECT calc_individual_predictions_individual_target_pathway(p_individual_prediction_id) AS val) SELECT (CASE WHEN NOT (COALESCE(calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id), FALSE)) THEN ('MechanismUnconfirmed')::text ELSE (CASE WHEN (COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'RenalFlareRisk', FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'BiopsyIndicated', FALSE)) THEN ('ActiveNephritis-Induction')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v2), '') = 'type-I-IFN' THEN ('IFNSignature-Anifrolumab')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v2), '') = 'B-cell/autoantibody' THEN ('AutoantibodyDriven-Belimumab')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v2), '') = 'IL-17/23' THEN ('IL17Axis-Secukinumab')::text ELSE ('NoMechanismMatch')::text END)::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_progression_vs_actionability_disagr
@@ -2915,7 +3022,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_individual_predictions_progression_vs_actionability_disagr(p_individual_prediction_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_individual_predictions_individual_is_disease_progressing(p_individual_prediction_id) AND NOT (calc_individual_predictions_is_clinically_actionable(p_individual_prediction_id))) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(calc_individual_predictions_individual_is_disease_progressing(p_individual_prediction_id), FALSE) AND COALESCE(NOT (COALESCE(calc_individual_predictions_is_clinically_actionable(p_individual_prediction_id), FALSE)), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_calibration_bins_parent_path
@@ -2956,7 +3063,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_calibration_bins_bin_abs_error(p_calibration_bin_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT predicted_probability_band FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id) >= (SELECT observed_event_rate FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id) THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT predicted_probability_band FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT observed_event_rate FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id)) AS v) __safe_numeric), 0)))::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT observed_event_rate FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT predicted_probability_band FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id)) AS v) __safe_numeric), 0)))::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((SELECT predicted_probability_band FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id) >= (SELECT observed_event_rate FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id)), (((SELECT predicted_probability_band FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id)) IS NULL AND ((SELECT observed_event_rate FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id)) IS NULL)) THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT predicted_probability_band FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT observed_event_rate FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id)) AS v OFFSET 0) __safe_numeric), 0)))::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT observed_event_rate FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT predicted_probability_band FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id)) AS v OFFSET 0) __safe_numeric), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_calibration_bins_is_well_calibrated_bin
@@ -2966,7 +3073,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_calibration_bins_is_well_calibrated_bin(p_calibration_bin_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (((SELECT coverage_count FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id))::NUMERIC >= 20 AND (calc_calibration_bins_bin_abs_error(p_calibration_bin_id))::NUMERIC <= 0.1) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(COALESCE(((SELECT coverage_count FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id))::NUMERIC, 0) >= 20, FALSE) AND COALESCE(COALESCE((calc_calibration_bins_bin_abs_error(p_calibration_bin_id))::NUMERIC, 0) <= 0.1, FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_intervention_targets_parent_path
@@ -3018,7 +3125,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_intervention_targets_is_gene_based_therapy(p_intervention_target_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(therapy_class, '') FROM intervention_targets WHERE intervention_target_id = p_intervention_target_id) = 'Gene-based' THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(therapy_class, '') FROM intervention_targets WHERE intervention_target_id = p_intervention_target_id), '') = 'Gene-based' THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_intervention_targets_is_cell_based_therapy
@@ -3028,7 +3135,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_intervention_targets_is_cell_based_therapy(p_intervention_target_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(therapy_class, '') FROM intervention_targets WHERE intervention_target_id = p_intervention_target_id) = 'Cell-based' THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(therapy_class, '') FROM intervention_targets WHERE intervention_target_id = p_intervention_target_id), '') = 'Cell-based' THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_axioms_name
@@ -3098,7 +3205,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_features_meta_line(p_feature_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT('**Category:** ', (SELECT NULLIF(category, '') FROM features WHERE feature_id = p_feature_id), ' - **Priority:** ', (SELECT NULLIF(priority, '') FROM features WHERE feature_id = p_feature_id), ' - **Challenge refs:** ', (SELECT ref_count FROM features WHERE feature_id = p_feature_id)))::text;
+  SELECT (CONCAT('**Category:** ', (SELECT NULLIF(category, '') FROM features WHERE feature_id = p_feature_id), ' - **Priority:** ', (SELECT NULLIF(priority, '') FROM features WHERE feature_id = p_feature_id), ' - **Challenge refs:** ', erb_number_text(((SELECT ref_count FROM features WHERE feature_id = p_feature_id))::numeric)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_kinds_name
@@ -3218,7 +3325,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_effortless_loops_is_in_current_plan(p_effortless_loop_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(status, '') FROM effortless_loops WHERE effortless_loop_id = p_effortless_loop_id) = 'done' THEN FALSE ELSE TRUE END)::boolean;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(status, '') FROM effortless_loops WHERE effortless_loop_id = p_effortless_loop_id), '') = 'done' THEN FALSE ELSE TRUE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_name
@@ -3238,7 +3345,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_admin_can_create(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_admin_can_read
@@ -3248,7 +3355,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_admin_can_read(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_admin_can_update
@@ -3258,7 +3365,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_admin_can_update(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_admin_can_delete
@@ -3268,7 +3375,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_admin_can_delete(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_intake_clinician_can_create
@@ -3278,7 +3385,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_intake_clinician_can_create(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_intake_clinician_can_read
@@ -3288,7 +3395,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_intake_clinician_can_read(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_intake_clinician_can_update
@@ -3298,7 +3405,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_intake_clinician_can_update(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_intake_clinician_can_delete
@@ -3308,7 +3415,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_intake_clinician_can_delete(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_diagnosing_doctor_can_create
@@ -3318,7 +3425,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_diagnosing_doctor_can_create(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_diagnosing_doctor_can_read
@@ -3328,7 +3435,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_diagnosing_doctor_can_read(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_diagnosing_doctor_can_update
@@ -3338,7 +3445,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_diagnosing_doctor_can_update(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_diagnosing_doctor_can_delete
@@ -3348,7 +3455,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_diagnosing_doctor_can_delete(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_external_llm_can_create
@@ -3358,7 +3465,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_external_llm_can_create(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_external_llm_can_read
@@ -3368,7 +3475,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_external_llm_can_read(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_external_llm_can_update
@@ -3378,7 +3485,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_external_llm_can_update(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_external_llm_can_delete
@@ -3388,7 +3495,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_external_llm_can_delete(p_routing_and_navigation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_depth
@@ -3398,7 +3505,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_routing_and_navigation_depth(p_routing_and_navigation_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(parent_route_key, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(route_key, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(route_key, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id), '.', ''))) AS v) __safe_numeric), 0)))::text END)::integer;
+  SELECT (CASE WHEN (SELECT NULLIF(parent_route_key, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(route_key, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(route_key, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id), '.', ''))) AS v OFFSET 0) __safe_numeric), 0)))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_routing_and_navigation_full_path
@@ -3811,7 +3918,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_state_transition_rules_is_forward_edge(p_state_transition_rule_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (NOT (calc_state_transition_rules_to_state_key(p_state_transition_rule_id) = calc_state_transition_rules_from_state_key(p_state_transition_rule_id)))::boolean;
+  SELECT (NOT (COALESCE(COALESCE(calc_state_transition_rules_to_state_key(p_state_transition_rule_id), '') = COALESCE(calc_state_transition_rules_from_state_key(p_state_transition_rule_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_state_transitions_name
@@ -3841,7 +3948,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_state_transitions_is_forward(p_state_transition_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (NOT ((SELECT NULLIF(to_state_key, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id) = 'Intake'))::boolean;
+  SELECT (NOT (COALESCE(COALESCE((SELECT NULLIF(to_state_key, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id), '') = 'Intake', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_subject_state_instances_subject_table_name
@@ -3980,7 +4087,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_subject_state_instances_has_complete_lineage(p_subject_state_instance_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT sequence_index FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id))::NUMERIC >= 1)::boolean;
+  SELECT (COALESCE(((SELECT sequence_index FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id))::NUMERIC, 0) >= 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_subject_state_instances_is_long_dwell
@@ -3990,7 +4097,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_subject_state_instances_is_long_dwell(p_subject_state_instance_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((SELECT dwell_days FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id))::NUMERIC >= 90 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(((SELECT dwell_days FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id))::NUMERIC, 0) >= 90 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_disease_domain_concepts_name
@@ -4020,7 +4127,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_disease_domain_concepts_is_deeply_modeled(p_disease_domain_concept_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(modeling_status, '') FROM disease_domain_concepts WHERE disease_domain_concept_id = p_disease_domain_concept_id) = 'deep-dag' THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(modeling_status, '') FROM disease_domain_concepts WHERE disease_domain_concept_id = p_disease_domain_concept_id), '') = 'deep-dag' THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_disease_domain_concepts_is_schema_modeled
@@ -4030,7 +4137,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_disease_domain_concepts_is_schema_modeled(p_disease_domain_concept_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((SELECT NULLIF(modeling_status, '') FROM disease_domain_concepts WHERE disease_domain_concept_id = p_disease_domain_concept_id) = 'deep-dag' OR (SELECT NULLIF(modeling_status, '') FROM disease_domain_concepts WHERE disease_domain_concept_id = p_disease_domain_concept_id) = 'schema') THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(COALESCE((SELECT NULLIF(modeling_status, '') FROM disease_domain_concepts WHERE disease_domain_concept_id = p_disease_domain_concept_id), '') = 'deep-dag', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(modeling_status, '') FROM disease_domain_concepts WHERE disease_domain_concept_id = p_disease_domain_concept_id), '') = 'schema', FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_serology_observations_prior_anti_ds_dna_iu
@@ -4145,7 +4252,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_serology_observations_anti_ds_dna_trend(p_serology_observation_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_serology_observations_prior_anti_ds_dna_iu(p_serology_observation_id) AS val) SELECT (CASE WHEN (((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '') THEN ('Stable')::text ELSE (CASE WHEN (SELECT anti_ds_dna_iu FROM serology_observations WHERE serology_observation_id = p_serology_observation_id) > (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) * COALESCE(1.25, 0)) THEN ('Rising')::text ELSE (CASE WHEN (SELECT anti_ds_dna_iu FROM serology_observations WHERE serology_observation_id = p_serology_observation_id) < (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) * COALESCE(0.8, 0)) THEN ('Falling')::text ELSE ('Stable')::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_serology_observations_prior_anti_ds_dna_iu(p_serology_observation_id) AS val) SELECT (CASE WHEN (((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '') THEN ('Stable')::text ELSE (CASE WHEN COALESCE((SELECT anti_ds_dna_iu FROM serology_observations WHERE serology_observation_id = p_serology_observation_id), 0) > COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(1.25, 0)), 0) THEN ('Rising')::text ELSE (CASE WHEN COALESCE((SELECT anti_ds_dna_iu FROM serology_observations WHERE serology_observation_id = p_serology_observation_id), 0) < COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(0.8, 0)), 0) THEN ('Falling')::text ELSE ('Stable')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_serology_observations_complement_trend
@@ -4155,7 +4262,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_serology_observations_complement_trend(p_serology_observation_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_serology_observations_prior_c3(p_serology_observation_id) AS val), __erb_dedup_v2 AS (SELECT calc_serology_observations_prior_c4(p_serology_observation_id) AS val) SELECT (CASE WHEN (((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '') THEN ('Stable')::text ELSE (CASE WHEN (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT complement_c3 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT complement_c4 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id)) AS v) __safe_numeric), 0)) < (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) * COALESCE(0.85, 0)) THEN ('Falling')::text ELSE (CASE WHEN (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT complement_c3 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT complement_c4 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id)) AS v) __safe_numeric), 0)) > (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) * COALESCE(1.15, 0)) THEN ('Rising')::text ELSE ('Stable')::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_serology_observations_prior_c3(p_serology_observation_id) AS val), __erb_dedup_v2 AS (SELECT calc_serology_observations_prior_c4(p_serology_observation_id) AS val) SELECT (CASE WHEN (((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '') THEN ('Stable')::text ELSE (CASE WHEN COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT complement_c3 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT complement_c4 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id)) AS v OFFSET 0) __safe_numeric), 0)), 0) < COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(0.85, 0)), 0) THEN ('Falling')::text ELSE (CASE WHEN COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT complement_c3 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT complement_c4 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id)) AS v OFFSET 0) __safe_numeric), 0)), 0) > COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(1.15, 0)), 0) THEN ('Rising')::text ELSE ('Stable')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_serology_observations_is_pre_nephritic_signature_panel
@@ -4165,7 +4272,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_serology_observations_is_pre_nephritic_signature_panel(p_serology_observation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_serology_observations_anti_ds_dna_trend(p_serology_observation_id) = 'Rising' AND calc_serology_observations_complement_trend(p_serology_observation_id) = 'Falling') THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(COALESCE(calc_serology_observations_anti_ds_dna_trend(p_serology_observation_id), '') = 'Rising', FALSE) AND COALESCE(COALESCE(calc_serology_observations_complement_trend(p_serology_observation_id), '') = 'Falling', FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_serology_observations_is_significant_proteinuria
@@ -4175,7 +4282,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_serology_observations_is_significant_proteinuria(p_serology_observation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((SELECT proteinuria_g_per_day FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::NUMERIC >= 0.5 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(((SELECT proteinuria_g_per_day FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::NUMERIC, 0) >= 0.5 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_serology_observations_is_nephrotic_range_proteinuria
@@ -4185,7 +4292,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_serology_observations_is_nephrotic_range_proteinuria(p_serology_observation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((SELECT proteinuria_g_per_day FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::NUMERIC >= 3.0 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(((SELECT proteinuria_g_per_day FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::NUMERIC, 0) >= 3.0 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_serology_observations_sledai_renal_points
@@ -4195,7 +4302,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_serology_observations_sledai_renal_points(p_serology_observation_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_serology_observations_is_nephrotic_range_proteinuria(p_serology_observation_id) OR COALESCE((SELECT has_active_urinary_sediment FROM serology_observations WHERE serology_observation_id = p_serology_observation_id), FALSE)) THEN (8)::text ELSE (CASE WHEN calc_serology_observations_is_significant_proteinuria(p_serology_observation_id) THEN (4)::text ELSE (0)::text END)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(calc_serology_observations_is_nephrotic_range_proteinuria(p_serology_observation_id), FALSE) OR COALESCE(COALESCE((SELECT has_active_urinary_sediment FROM serology_observations WHERE serology_observation_id = p_serology_observation_id), FALSE), FALSE)) THEN (8)::text ELSE (CASE WHEN calc_serology_observations_is_significant_proteinuria(p_serology_observation_id) THEN (4)::text ELSE (0)::text END)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_serology_observations_sledai_serology_points
@@ -4205,7 +4312,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_serology_observations_sledai_serology_points(p_serology_observation_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_serology_observations_complement_trend(p_serology_observation_id) AS val), __erb_dedup_v2 AS (SELECT calc_serology_observations_anti_ds_dna_trend(p_serology_observation_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1) = 'Falling' AND (SELECT val FROM __erb_dedup_v2) = 'Rising') THEN (4)::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1) = 'Falling' OR (SELECT val FROM __erb_dedup_v2) = 'Rising') THEN (2)::text ELSE (0)::text END)::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_serology_observations_complement_trend(p_serology_observation_id) AS val), __erb_dedup_v2 AS (SELECT calc_serology_observations_anti_ds_dna_trend(p_serology_observation_id) AS val) SELECT (CASE WHEN (COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Falling', FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v2), '') = 'Rising', FALSE)) THEN (4)::text ELSE (CASE WHEN (COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Falling', FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v2), '') = 'Rising', FALSE)) THEN (2)::text ELSE (0)::text END)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_serology_observations_sledai_score
@@ -4215,7 +4322,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_serology_observations_sledai_score(p_serology_observation_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_serology_observations_sledai_renal_points(p_serology_observation_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_serology_observations_sledai_serology_points(p_serology_observation_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_serology_observations_sledai_renal_points(p_serology_observation_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_serology_observations_sledai_serology_points(p_serology_observation_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_serology_observations_progression_state_key
@@ -4225,7 +4332,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_serology_observations_progression_state_key(p_serology_observation_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (calc_serology_observations_is_nephrotic_range_proteinuria(p_serology_observation_id) OR COALESCE((SELECT has_active_urinary_sediment FROM serology_observations WHERE serology_observation_id = p_serology_observation_id), FALSE)) THEN ('BiopsyIndicated')::text ELSE (CASE WHEN ((SELECT proteinuria_g_per_day FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::NUMERIC >= 1.0 THEN ('RenalFlareRisk')::text ELSE (CASE WHEN calc_serology_observations_is_significant_proteinuria(p_serology_observation_id) THEN ('EarlyNephritis')::text ELSE (CASE WHEN (calc_serology_observations_anti_ds_dna_trend(p_serology_observation_id) = 'Rising' AND calc_serology_observations_complement_trend(p_serology_observation_id) = 'Falling') THEN ('SerologicActive')::text ELSE ('PresymptomaticAutoimmunity')::text END)::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN (COALESCE(calc_serology_observations_is_nephrotic_range_proteinuria(p_serology_observation_id), FALSE) OR COALESCE(COALESCE((SELECT has_active_urinary_sediment FROM serology_observations WHERE serology_observation_id = p_serology_observation_id), FALSE), FALSE)) THEN ('BiopsyIndicated')::text ELSE (CASE WHEN COALESCE(((SELECT proteinuria_g_per_day FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::NUMERIC, 0) >= 1.0 THEN ('RenalFlareRisk')::text ELSE (CASE WHEN calc_serology_observations_is_significant_proteinuria(p_serology_observation_id) THEN ('EarlyNephritis')::text ELSE (CASE WHEN (COALESCE(COALESCE(calc_serology_observations_anti_ds_dna_trend(p_serology_observation_id), '') = 'Rising', FALSE) AND COALESCE(COALESCE(calc_serology_observations_complement_trend(p_serology_observation_id), '') = 'Falling', FALSE)) THEN ('SerologicActive')::text ELSE ('PresymptomaticAutoimmunity')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_serology_observations_progression_state_order
@@ -4235,7 +4342,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_serology_observations_progression_state_order(p_serology_observation_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_serology_observations_progression_state_key(p_serology_observation_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) = 'BiopsyIndicated' THEN (5)::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) = 'RenalFlareRisk' THEN (4)::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) = 'EarlyNephritis' THEN (3)::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) = 'SerologicActive' THEN (2)::text ELSE (1)::text END)::text END)::text END)::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_serology_observations_progression_state_key(p_serology_observation_id) AS val) SELECT (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'BiopsyIndicated' THEN (5)::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'RenalFlareRisk' THEN (4)::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'EarlyNephritis' THEN (3)::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'SerologicActive' THEN (2)::text ELSE (1)::text END)::text END)::text END)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_serology_observations_name

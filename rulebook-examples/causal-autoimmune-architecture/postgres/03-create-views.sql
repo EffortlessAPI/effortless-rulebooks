@@ -1013,8 +1013,11 @@ closure AS (
         ARRAY[e.from_id, e.to_id] AS path
     FROM edges e
     UNION ALL
-    -- Step: extend each path by one asserted edge, skipping nodes already on the
-    -- path so cyclic edge sets terminate (cycle-safe).
+    -- Step: extend each path by one asserted edge. Interior nodes are never
+    -- revisited, so cyclic edge sets terminate (cycle-safe). Returning to the
+    -- path's own origin IS allowed, exactly once: it emits (x, x) for every x
+    -- that lies on a cycle, which is what transitive closure means. A path that
+    -- has closed back on its origin is complete and is not extended further.
     SELECT
         cl.from_id,
         e.to_id,
@@ -1022,7 +1025,8 @@ closure AS (
         cl.path || e.to_id
     FROM closure cl
     JOIN edges e ON e.from_id = cl.to_id
-    WHERE NOT (e.to_id = ANY(cl.path))
+    WHERE cl.to_id <> cl.from_id
+      AND NOT (e.to_id = ANY(cl.path[2:]))
 )
 SELECT
     cl.from_id,

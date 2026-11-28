@@ -17197,6 +17197,26 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "data": [
       {
+        "MetaKey": "ontology_iri",
+        "Category": "ontology",
+        "Value": "https://w3id.org/effortless-ntwf",
+        "ValueType": "string",
+        "Description": "The ontology's IRI. The OWL emitters mint every class, property and individual under it; this project's reasoner scripts read that namespace.",
+        "Source": null,
+        "Name": "ontology_iri",
+        "RelativePath": null
+      },
+      {
+        "MetaKey": "ontology_prefix",
+        "Category": "ontology",
+        "Value": "effortless-ntwf",
+        "ValueType": "string",
+        "Description": "The prefix written for the ontology's namespace in the generated Turtle and SPARQL.",
+        "Source": null,
+        "Name": "ontology_prefix",
+        "RelativePath": null
+      },
+      {
         "MetaKey": "report.engine",
         "Category": "report-config",
         "Value": "python-fragment-renderer",
@@ -27023,4 +27043,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "TherapyOptions": "therapy option"
     }
   }
-} };
+}, stamp: "c216c656f933d934" };

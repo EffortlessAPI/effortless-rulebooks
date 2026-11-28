@@ -957,7 +957,6 @@ CREATE INDEX IF NOT EXISTS idx_autoimmune_diseases_intervention_targets ON autoi
 CREATE INDEX IF NOT EXISTS idx_disease_stages_autoimmune_disease ON disease_stages (autoimmune_disease);
 
 -- Tissues
-CREATE INDEX IF NOT EXISTS idx_tissues_tissue_label ON tissues (tissue_label);
 CREATE INDEX IF NOT EXISTS idx_tissues_omics_assays ON tissues (omics_assays);
 
 -- OmicsModalities
@@ -972,7 +971,6 @@ CREATE INDEX IF NOT EXISTS idx_federated_datasets_cohort_replications ON federat
 CREATE INDEX IF NOT EXISTS idx_variant_types_genomic_variants ON variant_types (genomic_variants);
 
 -- Individuals
-CREATE INDEX IF NOT EXISTS idx_individuals_federated_dataset ON individuals (federated_dataset);
 CREATE INDEX IF NOT EXISTS idx_individuals_genomic_variants ON individuals (genomic_variants);
 CREATE INDEX IF NOT EXISTS idx_individuals_omics_assays ON individuals (omics_assays);
 CREATE INDEX IF NOT EXISTS idx_individuals_environmental_exposures ON individuals (environmental_exposures);
@@ -988,24 +986,19 @@ CREATE INDEX IF NOT EXISTS idx_genomic_variants_individual ON genomic_variants (
 CREATE INDEX IF NOT EXISTS idx_genomic_variants_variant_type ON genomic_variants (variant_type);
 
 -- OmicsAssays
-CREATE INDEX IF NOT EXISTS idx_omics_assays_assay_label ON omics_assays (assay_label);
 CREATE INDEX IF NOT EXISTS idx_omics_assays_individual ON omics_assays (individual);
 CREATE INDEX IF NOT EXISTS idx_omics_assays_omics_modality ON omics_assays (omics_modality);
-CREATE INDEX IF NOT EXISTS idx_omics_assays_tissue ON omics_assays (tissue);
 CREATE INDEX IF NOT EXISTS idx_omics_assays_evidence_items ON omics_assays (evidence_items);
 
 -- EvidenceItems
-CREATE INDEX IF NOT EXISTS idx_evidence_items_evidence_label ON evidence_items (evidence_label);
 CREATE INDEX IF NOT EXISTS idx_evidence_items_causal_mechanism ON evidence_items (causal_mechanism);
 CREATE INDEX IF NOT EXISTS idx_evidence_items_omics_assay ON evidence_items (omics_assay);
 
 -- CohortReplications
-CREATE INDEX IF NOT EXISTS idx_cohort_replications_replication_label ON cohort_replications (replication_label);
 CREATE INDEX IF NOT EXISTS idx_cohort_replications_causal_mechanism ON cohort_replications (causal_mechanism);
 CREATE INDEX IF NOT EXISTS idx_cohort_replications_federated_dataset ON cohort_replications (federated_dataset);
 
 -- NegativeControlTests
-CREATE INDEX IF NOT EXISTS idx_negative_control_tests_control_label ON negative_control_tests (control_label);
 CREATE INDEX IF NOT EXISTS idx_negative_control_tests_causal_mechanism ON negative_control_tests (causal_mechanism);
 
 -- EnvironmentalExposures
@@ -1014,18 +1007,12 @@ CREATE INDEX IF NOT EXISTS idx_environmental_exposures_individual ON environment
 -- Treatments
 CREATE INDEX IF NOT EXISTS idx_treatments_individual ON treatments (individual);
 CREATE INDEX IF NOT EXISTS idx_treatments_autoimmune_disease ON treatments (autoimmune_disease);
-CREATE INDEX IF NOT EXISTS idx_treatments_targets_mechanism ON treatments (targets_mechanism);
 
 -- ClinicalPhenotypes
 CREATE INDEX IF NOT EXISTS idx_clinical_phenotypes_individual ON clinical_phenotypes (individual);
-CREATE INDEX IF NOT EXISTS idx_clinical_phenotypes_autoimmune_disease ON clinical_phenotypes (autoimmune_disease);
-CREATE INDEX IF NOT EXISTS idx_clinical_phenotypes_disease_stage ON clinical_phenotypes (disease_stage);
-CREATE INDEX IF NOT EXISTS idx_clinical_phenotypes_tissue ON clinical_phenotypes (tissue);
 
 -- CausalMechanisms
 CREATE INDEX IF NOT EXISTS idx_causal_mechanisms_individual ON causal_mechanisms (individual);
-CREATE INDEX IF NOT EXISTS idx_causal_mechanisms_genomic_variant ON causal_mechanisms (genomic_variant);
-CREATE INDEX IF NOT EXISTS idx_causal_mechanisms_mechanism_type ON causal_mechanisms (mechanism_type);
 CREATE INDEX IF NOT EXISTS idx_causal_mechanisms_intervention_targets ON causal_mechanisms (intervention_targets);
 CREATE INDEX IF NOT EXISTS idx_causal_mechanisms_evidence_items ON causal_mechanisms (evidence_items);
 CREATE INDEX IF NOT EXISTS idx_causal_mechanisms_cohort_replications ON causal_mechanisms (cohort_replications);
@@ -1033,29 +1020,20 @@ CREATE INDEX IF NOT EXISTS idx_causal_mechanisms_negative_control_tests ON causa
 
 -- EpistaticInteractions
 CREATE INDEX IF NOT EXISTS idx_epistatic_interactions_individual ON epistatic_interactions (individual);
-CREATE INDEX IF NOT EXISTS idx_epistatic_interactions_primary_variant ON epistatic_interactions (primary_variant);
-CREATE INDEX IF NOT EXISTS idx_epistatic_interactions_secondary_variant ON epistatic_interactions (secondary_variant);
 
 -- CounterfactualTrajectories
 CREATE INDEX IF NOT EXISTS idx_counterfactual_trajectories_individual ON counterfactual_trajectories (individual);
 CREATE INDEX IF NOT EXISTS idx_counterfactual_trajectories_autoimmune_disease ON counterfactual_trajectories (autoimmune_disease);
 
 -- IndividualPredictions
-CREATE INDEX IF NOT EXISTS idx_individual_predictions_prediction_label ON individual_predictions (prediction_label);
 CREATE INDEX IF NOT EXISTS idx_individual_predictions_individual ON individual_predictions (individual);
-CREATE INDEX IF NOT EXISTS idx_individual_predictions_autoimmune_disease ON individual_predictions (autoimmune_disease);
 CREATE INDEX IF NOT EXISTS idx_individual_predictions_calibration_bins ON individual_predictions (calibration_bins);
 
 -- CalibrationBins
-CREATE INDEX IF NOT EXISTS idx_calibration_bins_bin_label ON calibration_bins (bin_label);
 CREATE INDEX IF NOT EXISTS idx_calibration_bins_individual_prediction ON calibration_bins (individual_prediction);
 
 -- InterventionTargets
 CREATE INDEX IF NOT EXISTS idx_intervention_targets_causal_mechanism ON intervention_targets (causal_mechanism);
-CREATE INDEX IF NOT EXISTS idx_intervention_targets_autoimmune_disease ON intervention_targets (autoimmune_disease);
-
--- Features
-CREATE INDEX IF NOT EXISTS idx_features_assigned_loop ON features (assigned_loop);
 
 -- StateMachines
 CREATE INDEX IF NOT EXISTS idx_state_machines_machine_states ON state_machines (machine_states);
@@ -1084,4 +1062,4 @@ CREATE INDEX IF NOT EXISTS idx_subject_state_instances_entered_via_transition ON
 CREATE INDEX IF NOT EXISTS idx_serology_observations_individual ON serology_observations (individual);
 CREATE INDEX IF NOT EXISTS idx_serology_observations_prior_observation ON serology_observations (prior_observation);
 
--- 83 FK index(es) declared.
+-- 63 FK index(es) declared.

@@ -1,4 +1,4 @@
-# 📘 Causal Autoimmune Architecture Platform — RuleSpeak®
+# 📘 Causal Autoimmune Architecture Platform — Docs
 
 _Rulebook for inferring the complete causal architecture of heterogeneous autoimmune disease from multi-omic cohort data, producing falsifiable mechanisms and ancestry-equitable predictions with calibrated uncertainty._
 
@@ -11,19 +11,35 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 
 | Term | Description | Narrative Comment |
 |------|-------------|-------------------|
-| **Autoimmune Diseas** | Target heterogeneous autoimmune disease definitions tracked across development, aging, tissues, and disease stages. | — |
+| **Autoimmune Disease** | Target heterogeneous autoimmune disease definitions tracked across development, aging, tissues, and disease stages. | — |
 | Disease Label | A defined attribute. | _Human-readable disease name._ |
 | Is Complex Disease | True when an empty string. | _True when the disease is a multifactorial complex disease beyond simple monogenic traits._ |
 | Name | The same as its disease label. | _Display label for the autoimmune disease._ |
 | Relative Path | Computed as “/diseases/”, followed by the autoimmune disease ID. | _Canonical path to this AutoimmuneDisease page: /diseases/<slug-or-id>._ |
-| Count of Disease Stages | The number of disease stages related to the autoimmune diseas. | _Number of disease stages defined for this autoimmune disease._ |
-| Count of Intervention Targets | The number of intervention targets related to the autoimmune diseas. | _Count of validated intervention targets linked to this disease._ |
+| Count of Disease Stages | The number of disease stages related to the autoimmune disease. | _Number of disease stages defined for this autoimmune disease._ |
+| Count of Intervention Targets | The number of intervention targets related to the autoimmune disease. | _Count of validated intervention targets linked to this disease._ |
 | Disease Stages | A defined attribute. | _Disease stages for this autoimmune disease._ |
 | Treatments | A defined attribute. | _Treatment histories for this disease._ |
 | Clinical Phenotypes | A defined attribute. | _Clinical phenotypes observed for this disease._ |
 | Individual Predictions | A defined attribute. | _Predictions of disease onset, severity, and treatment response._ |
 | Counterfactual Trajectories | A defined attribute. | _Counterfactual disease trajectories for this disease._ |
 | Intervention Targets | A defined attribute. | _Experimentally falsifiable intervention targets._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Disease Label | Is Complex Disease | Name ƒ | Relative Path ƒ | Count of Disease Stages ƒ | Count of Intervention Targets ƒ |
+|---|---|---|---|---|---|
+| Systemic Lupus Erythematosus | true | Systemic Lupus Erythematosus | /diseases/sle | 3 | 7 |
+| Rheumatoid Arthritis | true | Rheumatoid Arthritis | /diseases/ra | 2 | 0 |
+| Psoriatic Arthritis | true | Psoriatic Arthritis | /diseases/psa | 1 | 4 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Disease Stage** | Ordered disease stages capturing presymptomatic, active, remission, and treatment-refractory phases along disease progression. | — |
 | Stage Label | A defined attribute. | _Human-readable stage label (e.g. presymptomatic, active)._ |
 | Sort Order | A defined attribute. | _Numeric ordering of stages along disease progression._ |
@@ -33,12 +49,44 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Relative Path | Computed as the parent path, followed by “/stages/”, followed by the disease stage ID. | _Path to this DiseaseStage page, chained under its AutoimmuneDisease parent._ |
 | Autoimmune Disease Disease Label | Taken from the linked autoimmune disease. | _Lookup of parent disease label._ |
 | Is Presymptomatic | True when the stage label is “Presymptomatic”. | _True when stage is presymptomatic diagnosis window._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Stage Label | Sort Order | Autoimmune Disease | Name ƒ | Parent Path ƒ | Relative Path ƒ | Autoimmune Disease Disease Label ƒ | Is Presymptomatic ƒ |
+|---|---|---|---|---|---|---|---|
+| Presymptomatic | 1 | sle | Systemic Lupus Erythematosus — Presymptomatic | /diseases/sle | /diseases/sle/stages/sle-presymptomatic | Systemic Lupus Erythematosus | true |
+| Active | 2 | sle | Systemic Lupus Erythematosus — Active | /diseases/sle | /diseases/sle/stages/sle-active | Systemic Lupus Erythematosus | false |
+| Remission | 3 | sle | Systemic Lupus Erythematosus — Remission | /diseases/sle | /diseases/sle/stages/sle-remission | Systemic Lupus Erythematosus | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Tissue** | Anatomical tissues where omics assays resolve cell-state-specific effects; includes cases of missing tissues. | — |
 | Tissue Label | A defined attribute. | _Human-readable tissue name (blood, gut, synovium, skin, brain)._ |
 | Name | The same as its tissue label. | _Display label for the tissue._ |
 | Relative Path | Computed as “/tissues/”, followed by the tissue ID. | _Canonical path to this Tissue page: /tissues/<slug-or-id>._ |
 | Count of Omics Assays | The number of omics assays related to the tissue. | _Number of omics assays performed on this tissue._ |
 | Omics Assays | A defined attribute. | _Omics assays performed on this tissue._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Tissue Label | Name ƒ | Relative Path ƒ | Count of Omics Assays ƒ |
+|---|---|---|---|
+| Blood | Blood | /tissues/blood | 36 |
+| Gut | Gut | /tissues/gut | 0 |
+| Synovium | Synovium | /tissues/synovium | 0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Omics Modality** | Registry of omics assay modalities: RNA-seq, ATAC-seq, proteomics, metabolomics, methylomes, chromatin-conformation, immune-receptor repertoires, microbiomes, and long-read genomes. | — |
 | Modality Label | A defined attribute. | _Human-readable modality name._ |
 | Is Single Cell | True when an empty string. | _True for single-cell or spatial assays resolving cellular states._ |
@@ -46,6 +94,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Relative Path | Computed as “/omics-modalities/”, followed by the omics modality ID. | _Canonical path to this OmicsModalitie page: /omics-modalities/<slug-or-id>._ |
 | Count of Omics Assays | The number of omics assays related to the omics modality. | _Count of assays using this modality._ |
 | Omics Assays | A defined attribute. | _Assays of this modality._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Modality Label | Is Single Cell | Name ƒ | Relative Path ƒ | Count of Omics Assays ƒ |
+|---|---|---|---|---|
+| Phased Telomere-to-Telomere Long-Read Genomes | false | Phased Telomere-to-Telomere Long-Read Genomes | /omics-modalities/long-read-genomes | 0 |
+| RNA-seq | false | RNA-seq | /omics-modalities/rna-seq | 12 |
+| Single-Cell RNA-seq | true | Single-Cell RNA-seq | /omics-modalities/single-cell-rna | 0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Federated Dataset** | Privacy-preserving federated datasets contributing cohort partitions without centralizing raw genomes. | — |
 | Node Label | A defined attribute. | _Human-readable federated node name._ |
 | Region | A defined attribute. | _Geographic region; shifting environments may alter exposure profiles._ |
@@ -56,6 +120,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Individuals | A defined attribute. | _Individuals linked to this federated dataset._ |
 | Omics Assays | A defined attribute. | _Omics assays sourced from this node._ |
 | Cohort Replications | A defined attribute. | _Replications run in this cohort node._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Node Label | Region | Is Privacy Preserving | Name ƒ | Relative Path ƒ | Count of Individuals ƒ |
+|---|---|---|---|---|---|
+| European Reference Node | Europe | true | European Reference Node | /datasets/fed-europe | 4 |
+| East Asia Federated Node | East Asia | true | East Asia Federated Node | /datasets/fed-east-asia | 1 |
+| West Africa Federated Node | West Africa | true | West Africa Federated Node | /datasets/fed-west-africa | 1 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Variant Type** | Classification of genomic variant mechanisms: regulatory, coding, repeat expansions, mobile-element insertions, HLA haplotypes, structural variants, de novo mutations, somatic mosaicism, mitochondrial variation. | — |
 | Type Label | A defined attribute. | _Human-readable variant mechanism label._ |
 | Is Rare Variant Class | True when an empty string. | _True when this type contributes to rare-variant burden scoring._ |
@@ -63,6 +143,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Relative Path | Computed as “/variant-types/”, followed by the variant type ID. | _Canonical path to this VariantType page: /variant-types/<slug-or-id>._ |
 | Count of Genomic Variants | The number of genomic variants related to the variant type. | _Variants classified under this type._ |
 | Genomic Variants | A defined attribute. | _Genomic variants of this type._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Type Label | Is Rare Variant Class | Name ƒ | Relative Path ƒ | Count of Genomic Variants ƒ |
+|---|---|---|---|---|
+| Regulatory Variant | true | Regulatory Variant | /variant-types/regulatory | 12 |
+| Coding Variant | false | Coding Variant | /variant-types/coding | 0 |
+| HLA Haplotype | false | HLA Haplotype | /variant-types/hla-haplotype | 0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Individual** | Ancestrally diverse cohort participants whose phased genomes, omics profiles, exposures, and clinical phenotypes feed causal architecture inference. | — |
 | Given Name | A defined attribute. | _Participant given name (de-identified mock)._ |
 | Family Name | A defined attribute. | _Participant family name (de-identified mock)._ |
@@ -87,7 +183,7 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Sum Confirmed Causal Confidence | The total causal confidence across the individual's causal mechanisms that are causal architecture nodes. | _Summed confidence of this individual's confirmed causal nodes (derived causal mass)._ |
 | Count Cross Ancestry Confirmed Nodes | The number of the individual's causal mechanisms that are ancestry-transportable. | _Confirmed nodes that also showed cross-ancestry replication._ |
 | Max Severity Score | The largest severity score across the clinical phenotypes related to the individual. | _Highest SeverityScore across this individual's clinical phenotypes (0 if none)._ |
-| Count High Severity Phenotypes | The number of the individual's clinical phenotypes that are high severities. | _Count of this individual's high-severity phenotypes (SeverityScore > 7)._ |
+| Count High Severity Phenotypes | The number of the individual's clinical phenotypes that are high-severity. | _Count of this individual's high-severity phenotypes (SeverityScore > 7)._ |
 | Has High Severity Phenotype | True when the count high severity phenotypes is at least 1. | _True when the individual has at least one high-severity phenotype._ |
 | Count Predicted Treatment Responses | The number of the individual's treatments that are treatment-response-predicted. | _Count of this individual's treatments predicted to respond (effective ∧ mechanism-matched)._ |
 | Has Predicted Treatment Response | True when the count predicted treatment responses is at least 1. | _True when the individual has at least one treatment predicted to respond._ |
@@ -115,6 +211,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Target Pathway | Determined by priority: “type-I-IFN” if the target pathway code is 1; “B-cell/autoantibody” if the target pathway code is 2; “T-cell-costim” if the target pathway code is 3; “IL-17/23” if the target pathway code is 4; in all other cases, an empty string. | _Decoded druggable pathway implicated by this individual's mechanism._ |
 | Current Progression State ID | Computed as “lupus-nephritis-progression--”, followed by the lower-cased nephritis progression state key. | _This individual's current lupus-progression state as a MachineStates id (closure-view key form): the lupus-nephritis-progression machine prefix + the lowercased NephritisProgressionStateKey. Pure projection of the derived current state; used to look up closure-derived prognostics._ |
 | Reachable States Ahead | The reachable state count of the individual's current progression state ID. | _How many disease states are still reachable ahead of THIS patient from their current state, via the transition closure (looks up MachineStates.ReachableStateCount for CurrentProgressionStateId). A closure-derived prognostic horizon: Diego at BiopsyIndicated has 0 ahead (terminal); a Presymptomatic patient has 5. NOT derivable from the severity rank alone (the count is non-monotonic in rank because the machine branches into remission)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Given Name | Family Name | Ancestry Label | Age Years | Is Ancestry Absent From Training | Federated Dataset | Enrollment Date | Has Cryptic Relatedness Flag | Name ƒ | Slug ƒ | Relative Path ƒ | Federated Dataset Node Label ƒ | Count of Genomic Variants ƒ | Count of Causal Mechanisms ƒ | Count of Epistatic Interactions ƒ | Rare Variant Burden Score ƒ | Causal Architecture Score ƒ | Is Development Window ƒ | Is Aging Window ƒ | Count Confirmed Causal Nodes ƒ | Sum Confirmed Causal Confidence ƒ | Count Cross Ancestry Confirmed Nodes ƒ | Max Severity Score ƒ | Count High Severity Phenotypes ƒ | Has High Severity Phenotype ƒ | Count Predicted Treatment Responses ƒ | Has Predicted Treatment Response ƒ | Case Narrative | Count Serology Panels ƒ | Count Pre Nephritic Signature Panels ƒ | Is in Pre Nephritic Signature Cluster ƒ | Signature Strength ƒ | Max Progression State Order ƒ | Latest Sledai Score ƒ | Nephritis Progression State Key ƒ | Activity Tier ƒ | Is High Disease Activity ƒ | Is Disease Progressing ƒ | Target Pathway Code ƒ | Target Pathway ƒ | Current Progression State ID ƒ | Reachable States Ahead ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Ana | Reyes | European | 34 | false | fed-europe | 2023-04-10 | false | Ana Reyes | reyes-ana | /intake/new-patient/reyes-ana | European Reference Node | 1 | 1 | 1 | 0.029411764705882353 | 15.029411764705882 | false | false | 1 | 0.7583333333333333 | 1 | 9 | 1 | true | 1 | true | Ana Reyes, a 34-year-old woman of European ancestry (cohort is in the training set), presents with photosensitive malar rash, arthralgia, and a positive ANA, raising concern for SLE onset. Family history is notable for lupus in a maternal aunt. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present at the locus. Functional workup of the IRF5 -> type-I interferon -> SLE-risk edge returns a cis-eQTL in blood RNA-seq with effect 0.91 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.73 (SE 0.19), and a pQTL in blood proteomics with effect 0.66 (SE 0.20) — three assays across two omics modalities, all ancestry-PC and batch adjusted. The edge replicates with a positive effect sign in an East Asian cohort (p=0.004) and in an African cohort (p=0.013), while a European replication is directionally consistent but not significant (p=0.18). Two ancestry-permutation negative controls collapse to the null (permutation effect 0.012 and 0.028, well inside the +/-0.1 null band). The IL-interferon target is druggable (anifrolumab, anti-IFNAR1), giving a perturbable intervention target. For SLE-onset risk, the model's reliability bins each carry coverage of 29-34 held-out individuals, with observed event rates tracking predicted bands closely (e.g. 0.09 observed at the 0.1 band, 0.88 at the 0.9 band). No cryptic-relatedness or assortative-mating leakage was flagged. | 2 | 1 | true | 1 | 2 | 4 | SerologicActive | Mild | false | false | 1 | type-I-IFN | lupus-nephritis-progression--serologicactive | 4 |
+| Bili | Okafor | European | 41 | false | fed-europe | 2023-05-12 | false | Bili Okafor | okafor-bili | /intake/new-patient/okafor-bili | European Reference Node | 1 | 1 | 0 | 0.024390243902439025 | 10.024390243902438 | false | false | 1 | 0.7583333333333333 | 1 | 8 | 1 | true | 1 | true | Bili Okafor, a 41-year-old man of European ancestry (in the training set), presents with serositis, fatigue, and a high-titre ANA suggestive of SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is supported by a cis-eQTL in blood RNA-seq with effect 0.84 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.79 (SE 0.20), and a pQTL in blood proteomics with effect 0.58 (SE 0.20), spanning two omics modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.006) and an African cohort (p=0.017), with a non-significant European replication (p=0.22). Two ancestry-permutation controls collapse to the null (permutation effect 0.015 and 0.024 inside +/-0.1). The interferon target is druggable. The mechanism is as solid as Ana's — but the calibration substrate is thin: this site only accrued coverage of 7-14 held-out individuals per reliability bin, far below the 20-count floor needed to trust the predicted-vs-observed match. No cryptic-relatedness leakage was flagged. | 2 | 0 | false | 0 | 1 | 0 | PresymptomaticAutoimmunity | Quiescent | false | false | 1 | type-I-IFN | lupus-nephritis-progression--presymptomaticautoimmunity | 5 |
+| Chen | Wei | East Asian | 47 | false | fed-east-asia | 2022-09-01 | false | Chen Wei | wei-chen | /intake/new-patient/wei-chen | East Asia Federated Node | 1 | 1 | 0 | 0.02127659574468085 | 10.02127659574468 | false | false | 0 | 0 | 0 | 9 | 1 | true | 0 | false | Chen Wei, a 47-year-old woman of East Asian ancestry (in the training set), presents with arthritis, oral ulcers, and anti-dsDNA positivity concerning for SLE onset. Genotyping finds the STAT4 regulatory variant rs7574865 at an allele frequency of 0.008 (rare), with allele-specific expression present. The STAT4 -> Th1/IFN -> SLE-risk edge shows a cis-eQTL in blood RNA-seq with effect 1.02 (SE 0.23), a caQTL in blood ATAC-seq with effect 0.61 (SE 0.20), and a pQTL in blood proteomics with effect 0.55 (SE 0.21), across two modalities, ancestry-PC and batch adjusted. Replication is troubling: the effect is positive in an East Asian cohort (p=0.009) but the SIGN FLIPS to negative in an African cohort (p=0.024), and the European replication is non-significant (p=0.27) — only one concordant cohort. Worse, while one ancestry-permutation control collapses (permutation effect 0.013), a second negative control does NOT collapse: its permutation effect is 0.46, far outside the +/-0.1 null band, so the signal is not separable from permuted noise. Reliability bins carry coverage of 28-32 per bin. No cryptic-relatedness leakage was flagged. | 2 | 1 | true | 1 | 2 | 4 | SerologicActive | Mild | false | false | 2 | B-cell/autoantibody | lupus-nephritis-progression--serologicactive | 4 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Genomic Variant** | Genomic variant calls per individual spanning regulatory, coding, structural, HLA haplotypes, de novo mutations, somatic mosaicism, and mitochondrial variation. | — |
 | Variant Label | A defined attribute. | _Human-readable variant label (gene/locus)._ |
 | Individual | A defined attribute. | _Individual carrying this variant._ |
@@ -130,6 +242,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Is Rare Variant | True when the allele frequency is less than 0.01. | _True when allele frequency below 0.01._ |
 | Is Causal Candidate | True when all of the following hold: at least one of the following holds: the rare variant flag is set or the variant class is rare flag is set and the allele specific expression flag is set. | _Derived: rare (by frequency or class) AND shows allele-specific expression._ |
 | Source Quote | A defined attribute. | _PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this variant's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Variant Label | Individual | Variant Type | Allele Frequency | Has Allele Specific Expression | Name ƒ | Parent Path ƒ | Relative Path ƒ | Variant Type Label ƒ | Variant Class is Rare ƒ | Individual Ancestry Label ƒ | Is Rare Variant ƒ | Is Causal Candidate ƒ | Source Quote |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| IRF5 regulatory (rs2004640) | ind-a-reyes | regulatory | 0.006 | true | IRF5 regulatory (rs2004640) | /intake/new-patient/reyes-ana | /variants/var-a-irf5 | Regulatory Variant | true | European | true | true | IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present |
+| IRF5 regulatory (rs2004640) | ind-b-okafor | regulatory | 0.006 | true | IRF5 regulatory (rs2004640) | /intake/new-patient/okafor-bili | /variants/var-b-irf5 | Regulatory Variant | true | European | true | true | IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present |
+| STAT4 regulatory (rs7574865) | ind-c-chen | regulatory | 0.008 | true | STAT4 regulatory (rs7574865) | /intake/new-patient/wei-chen | /variants/var-c-stat4 | Regulatory Variant | true | East Asian | true | true | STAT4 regulatory variant rs7574865 at an allele frequency of 0.008 (rare), with allele-specific expression present |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Omics Assay** | Omics assay instances linking individuals to modalities and tissues; captures batch effects, measurement error, and missing tissues. | — |
 | Assay Label | A defined attribute. | _Human-readable assay label._ |
 | Individual | A defined attribute. | _Individual assayed._ |
@@ -147,6 +275,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Has Batch Effect Risk | True when the measurement error score is greater than 0.3. | _True when measurement error exceeds 0.3._ |
 | Is High Quality Assay | True when all of the following hold: the batch effect risk flag is not set and the measurement error score is less than 0.15. | _2nd-order quality flag._ |
 | Evidence Items | A defined attribute. | _Evidence items measured in this assay._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Assay Label | Individual | Omics Modality | Tissue | Federated Dataset | Batch ID | Measurement Error Score | Has Cell State Specific Effect | Name ƒ | Parent Path ƒ | Relative Path ƒ | Modality Label ƒ | Tissue Label ƒ | Has Batch Effect Risk ƒ | Is High Quality Assay ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| assay-a-rna | ind-a-reyes | rna-seq | blood | — | b1 | 0.05 | true | assay-a-rna | /intake/new-patient/reyes-ana | /intake/new-patient/reyes-ana/assays/assay-a-rna | RNA-seq | Blood | false | true |
+| assay-a-atac | ind-a-reyes | atac-seq | blood | — | b1 | 0.05 | true | assay-a-atac | /intake/new-patient/reyes-ana | /intake/new-patient/reyes-ana/assays/assay-a-atac | ATAC-seq | Blood | false | true |
+| assay-a-prot | ind-a-reyes | proteomics | blood | — | b1 | 0.05 | true | assay-a-prot | /intake/new-patient/reyes-ana | /intake/new-patient/reyes-ana/assays/assay-a-prot | Proteomics | Blood | false | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Evidence Item** | One observed support signal for a causal mechanism, measured by one omics assay. Mechanism confidence is an aggregation over these rows. | — |
 | Evidence Label | A defined attribute. | _Human label for the evidence row._ |
 | Causal Mechanism | A defined attribute. | _FK to the mechanism this evidence supports._ |
@@ -163,11 +307,27 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Name | The same as its evidence label. | _Display name._ |
 | Parent Path | The relative path of the evidence item's causal mechanism. | _Lookup: CausalMechanisms.RelativePath via CausalMechanism — used to chain this entity's path under its parent._ |
 | Relative Path | Computed as the parent path, followed by “/evidence/”, followed by the evidence item ID. | _Path to this EvidenceItem page, chained under its CausalMechanism parent._ |
-| Assay is High Quality | True when the linked omics assay is a high quality assay. | _Whether the supporting assay passed quality control._ |
+| Assay is High Quality | True when the linked omics assay is high quality assay. | _Whether the supporting assay passed quality control._ |
 | Z Stat | Determined by priority: the effect size divided by the standard error if the standard error is greater than 0; in all other cases, 0. | _Derived signal-to-noise ratio (effect / SE), 0 if SE non-positive._ |
 | Is Confound Controlled | True when all of the following hold: the adjusted for ancestry p cs flag is set and the adjusted for batch flag is set. | _Derived: both ancestry-PC and batch adjustment present._ |
 | Is Qualified Evidence | True when all of the following hold: the assay is high quality flag is set; the negative control arm flag is not set; the z stat is at least 2; and the confound controlled flag is set. | _Derived: clean assay, real support arm, signal-to-noise >= 2, confound-controlled._ |
 | Source Quote | A defined attribute. | _PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this evidence assay's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Evidence Label | Causal Mechanism | Omics Assay | Effect Size | Standard Error | Is Cross Modality | Is Negative Control Arm | Is Adjusted for Ancestry P Cs | Is Adjusted for Batch | Is Synthetic Leaf | Represents Assay Modality | Identification Assumption | Name ƒ | Parent Path ƒ | Relative Path ƒ | Assay is High Quality ƒ | Z Stat ƒ | Is Confound Controlled ƒ | Is Qualified Evidence ƒ | Source Quote |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| ev-a-1 | cm-a | assay-a-rna | 0.91 | 0.2 | false | false | true | true | true | cis-eQTL, blood RNA-seq | colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument | ev-a-1 | /intake/new-patient/reyes-ana/mechanisms/cm-a | /evidence/ev-a-1 | true | 4.55 | true | false | cis-eQTL in blood RNA-seq with effect 0.91 (SE 0.20) |
+| ev-a-2 | cm-a | assay-a-atac | 0.73 | 0.19 | true | false | true | true | true | caQTL, blood ATAC-seq | open-chromatin peak maps to the credible set; cell-state confounding adjusted | ev-a-2 | /intake/new-patient/reyes-ana/mechanisms/cm-a | /evidence/ev-a-2 | true | 3.8421052631578947 | true | false | caQTL in blood ATAC-seq with effect 0.73 (SE 0.19) |
+| ev-a-3 | cm-a | assay-a-prot | 0.66 | 0.205 | true | false | true | true | true | pQTL, blood mass-spec proteomics | cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded | ev-a-3 | /intake/new-patient/reyes-ana/mechanisms/cm-a | /evidence/ev-a-3 | true | 3.2195121951219514 | true | false | pQTL in blood proteomics with effect 0.66 (SE 0.20) |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Cohort Replication** | One re-test of a causal mechanism in another federated cohort. Replication and cross-ancestry transport are aggregations over these rows. | — |
 | Replication Label | A defined attribute. | _Human label._ |
 | Causal Mechanism | A defined attribute. | _FK to the mechanism being re-tested._ |
@@ -183,6 +343,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Is Different Ancestry Replication | True when it is not the case that the replication ancestry label is the mechanism primary ancestry. | _Derived: the re-test ran in a different ancestry than discovery._ |
 | Is Cross Ancestry Concordant | True when all of the following hold: the replicated at nominal sig flag is set and the different ancestry replication flag is set. | _Derived: replicated at significance AND in a different ancestry (the transportability atom)._ |
 | Source Quote | A defined attribute. | _PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this replication's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Replication Label | Causal Mechanism | Federated Dataset | Replication Effect Sign | Replication P Value | Replication Ancestry Label | Name ƒ | Parent Path ƒ | Relative Path ƒ | Replicated At Nominal Sig ƒ | Mechanism Primary Ancestry ƒ | Is Different Ancestry Replication ƒ | Is Cross Ancestry Concordant ƒ | Source Quote |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| rep-a-1 | cm-a | fed-east-asia | 1 | 0.004 | East Asian | rep-a-1 | /intake/new-patient/reyes-ana/mechanisms/cm-a | /replications/rep-a-1 | true | European | true | true | positive effect sign in an East Asian cohort (p=0.004) |
+| rep-a-2 | cm-a | fed-west-africa | 1 | 0.013 | African | rep-a-2 | /intake/new-patient/reyes-ana/mechanisms/cm-a | /replications/rep-a-2 | true | European | true | true | in an African cohort (p=0.013) |
+| rep-a-3 | cm-a | fed-europe | 1 | 0.18 | European | rep-a-3 | /intake/new-patient/reyes-ana/mechanisms/cm-a | /replications/rep-a-3 | false | European | true | false | European replication is directionally consistent but not significant (p=0.18) |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Negative Control Test** | One stratification / permutation control on a causal mechanism. A true causal signal collapses under the control. | — |
 | Control Label | A defined attribute. | _Human label._ |
 | Causal Mechanism | A defined attribute. | _FK to the mechanism being controlled._ |
@@ -194,6 +370,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Relative Path | Computed as the parent path, followed by “/neg-controls/”, followed by the negative control test ID. | _Path to this NegativeControlTest page, chained under its CausalMechanism parent._ |
 | Is Survived | True when the permutation effect size is at most the null threshold. | _Derived: signal collapses under the control (within the null band), as a true causal effect should._ |
 | Source Quote | A defined attribute. | _PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this negative control's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Control Label | Causal Mechanism | Test Kind | Permutation Effect Size | Null Threshold | Name ƒ | Parent Path ƒ | Relative Path ƒ | Is Survived ƒ | Source Quote |
+|---|---|---|---|---|---|---|---|---|---|
+| nct-a-1 | cm-a | ancestry-permutation | 0.012 | 0.1 | nct-a-1 | /intake/new-patient/reyes-ana/mechanisms/cm-a | /neg-controls/nct-a-1 | true | permutation effect 0.012 and 0.028 inside +/-0.1 |
+| nct-a-2 | cm-a | ancestry-permutation | 0.028 | 0.1 | nct-a-2 | /intake/new-patient/reyes-ana/mechanisms/cm-a | /neg-controls/nct-a-2 | true | permutation effect 0.012 and 0.028 inside +/-0.1 |
+| nct-b-1 | cm-b | ancestry-permutation | 0.015 | 0.1 | nct-b-1 | /intake/new-patient/okafor-bili/mechanisms/cm-b | /neg-controls/nct-b-1 | true | permutation effect 0.015 and 0.024 inside +/-0.1 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Environmental Exposure** | Longitudinal environmental exposures contributing to gene-environment-microbiome interactions and shifting environments. | — |
 | Exposure Label | A defined attribute. | _Exposure name (smoking, UV, particulate, etc.)._ |
 | Individual | A defined attribute. | _Exposed individual._ |
@@ -205,6 +397,20 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Relative Path | Computed as the parent path, followed by “/exposures/”, followed by the environmental exposure ID. | _Path to this EnvironmentalExposure page, chained under its Individual parent._ |
 | Individual Ancestry Label | Taken from the linked individual. | _Ancestry lookup for stratification._ |
 | Is High Exposure | True when the exposure level is greater than 5. | _True when exposure level exceeds threshold._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Exposure Label | Individual | Exposure Level | Exposure Start Date | Is Maternal Effect | Name ƒ | Parent Path ƒ | Relative Path ƒ | Individual Ancestry Label ƒ | Is High Exposure ƒ |
+|---|---|---|---|---|---|---|---|---|---|
+| Smoking pack-years (context only) | ind-a-reyes | 3 | 2015-01-01 | false | Smoking pack-years (context only) | /intake/new-patient/reyes-ana | /exposures/exp-context | European | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Treatment** | Treatment histories capturing treatment-induced changes, treatment response, and adverse effects. | — |
 | Treatment Label | A defined attribute. | _Therapy name._ |
 | Individual | A defined attribute. | _Treated individual._ |
@@ -222,6 +428,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Is Mechanism Matched | False if the targets mechanism is blank, in all other cases the is causal architecture node of the treatment's targets mechanism. | _True when the treatment's target mechanism is a CONFIRMED causal-architecture node (empty-guarded). This is the 'mechanism match'._ |
 | Is Treatment Response Predicted | True when all of the following hold: the effective treatment flag is set and the mechanism matched flag is set. | _Derived: the treatment is effective AND targets a confirmed mechanism. A drug aimed at a debunked mechanism, or one that didn't respond / was adverse, is NOT predicted._ |
 | Treatment Response Deciding Factor | Determined by priority: “EffectiveOnConfirmedMechanism” if the treatment response predicted flag is set; “NoConfirmedMechanism” if the mechanism matched flag is not set; “AdverseEffect” if the adverse effect flag is set; “NoResponse” if at least one of the following holds: the treatment response is “None” or the treatment response is “Adverse”; in all other cases, “Undetermined”. | _Why response is/ isn't predicted — the single deciding reason._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Treatment Label | Individual | Autoimmune Disease | Targets Mechanism | Treatment Response | Has Treatment Induced Change | Has Adverse Effect | Start Date | Name ƒ | Parent Path ƒ | Relative Path ƒ | Autoimmune Disease Label ƒ | Is Effective Treatment ƒ | Is Mechanism Matched ƒ | Is Treatment Response Predicted ƒ | Treatment Response Deciding Factor ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Anifrolumab (anti-IFNAR1) | ind-a-reyes | sle | cm-a | Partial | true | false | 2024-04-01 | Anifrolumab (anti-IFNAR1) | /intake/new-patient/reyes-ana | /intake/new-patient/reyes-ana/treatments/tx-a | Systemic Lupus Erythematosus | true | true | true | EffectiveOnConfirmedMechanism |
+| Anifrolumab (anti-IFNAR1) | ind-b-okafor | sle | cm-b | Complete | true | false | 2024-04-01 | Anifrolumab (anti-IFNAR1) | /intake/new-patient/okafor-bili | /intake/new-patient/okafor-bili/treatments/tx-b | Systemic Lupus Erythematosus | true | true | true | EffectiveOnConfirmedMechanism |
+| STAT4-pathway inhibitor (trial) | ind-c-chen | sle | cm-c | Partial | true | false | 2024-04-01 | STAT4-pathway inhibitor (trial) | /intake/new-patient/wei-chen | /intake/new-patient/wei-chen/treatments/tx-c | Systemic Lupus Erythematosus | true | false | false | NoConfirmedMechanism |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Clinical Phenotype** | Clinical phenotypes including severity, immune dysfunction markers, and feedback from disease progression. | — |
 | Phenotype Label | A defined attribute. | _Phenotype name._ |
 | Individual | A defined attribute. | _Individual measured._ |
@@ -237,6 +459,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Disease Stage Label | Determined by priority: an empty string if the disease stage is blank; in all other cases, the stage label of the clinical phenotype's disease stage. | _Stage label lookup._ |
 | Is High Severity | True when the severity score is greater than 7. | _True when severity exceeds 7._ |
 | Is Presymptomatic Phenotype | True when the disease stage label is “Presymptomatic”. | _True when stage is presymptomatic._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Phenotype Label | Individual | Autoimmune Disease | Disease Stage | Tissue | Severity Score | Measurement Date | Has Immune Dysfunction | Name ƒ | Parent Path ƒ | Relative Path ƒ | Disease Stage Label ƒ | Is High Severity ƒ | Is Presymptomatic Phenotype ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Active SLE — high disease-activity (SLEDAI-equiv) severity | ind-a-reyes | sle | sle-active | blood | 9 | 2024-03-01 | true | Active SLE — high disease-activity (SLEDAI-equiv) severity | /intake/new-patient/reyes-ana | /intake/new-patient/reyes-ana/phenotypes/ph-sev-a | Active | true | false |
+| Active SLE — serositis + high disease activity | ind-b-okafor | sle | sle-active | blood | 8 | 2024-03-01 | true | Active SLE — serositis + high disease activity | /intake/new-patient/okafor-bili | /intake/new-patient/okafor-bili/phenotypes/ph-sev-b | Active | true | false |
+| Active SLE — arthritis + anti-dsDNA high activity | ind-c-chen | sle | sle-active | blood | 9 | 2024-03-01 | true | Active SLE — arthritis + anti-dsDNA high activity | /intake/new-patient/wei-chen | /intake/new-patient/wei-chen/phenotypes/ph-sev-c | Active | true | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Causal Mechanism** | Inferred causal mechanisms linking variants, exposures, and molecular state to clinical phenotypes; must be experimentally falsifiable. | — |
 | Mechanism Label | A defined attribute. | _Human-readable mechanism description._ |
 | Individual | A defined attribute. | _Individual for whom mechanism is inferred._ |
@@ -251,12 +489,12 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Relative Path | Computed as the parent path, followed by “/mechanisms/”, followed by the causal mechanism ID. | _Path to this CausalMechanism page, chained under its Individual parent._ |
 | Individual Ancestry Label | Taken from the linked individual. | _Ancestry lookup._ |
 | Count Qualified Evidence | The number of the causal mechanism's evidence items that are qualified evidences. | _Count of qualified evidence items supporting this mechanism._ |
-| Count Modalities Supporting | The number of the causal mechanism's evidence items that are cross modalities and are qualified evidences. | _Count of qualified cross-modality evidence items (multi-omic corroboration)._ |
+| Count Modalities Supporting | The number of the causal mechanism's evidence items that are cross-modality and are qualified evidences. | _Count of qualified cross-modality evidence items (multi-omic corroboration)._ |
 | Count Intervention Targets | The number of intervention targets related to the causal mechanism. | _Count of perturbable intervention targets for this mechanism (falsifiability requires >=1)._ |
 | Is Experimentally Falsifiable | True when all of the following hold: the count intervention targets is at least 1 and the count qualified evidence is at least 1. | _Derived: a measurable qualified effect exists AND a named intervention can perturb it._ |
 | Count Replications | The number of cohort replications related to the causal mechanism. | _Total cross-cohort re-tests of this mechanism._ |
 | Count Concordant Replications | The number of the causal mechanism's cohort replications that are replicated at nominal sig. | _Re-tests reproducing the predicted sign at significance._ |
-| Count Cross Ancestry Concordant | The number of the causal mechanism's cohort replications that are cross ancestry concordants. | _Concordant re-tests that ran in a DIFFERENT ancestry (the transportability measurement)._ |
+| Count Cross Ancestry Concordant | The number of the causal mechanism's cohort replications that are cross-ancestry-concordant. | _Concordant re-tests that ran in a DIFFERENT ancestry (the transportability measurement)._ |
 | Replication Fraction | Determined by priority: the count concordant replications divided by the count replications if the count replications is greater than 0; in all other cases, 0. | _Derived: fraction of re-tests that were concordant (guarded division)._ |
 | Replicates Across Cohorts | True when all of the following hold: the count replications is at least 2 and the count concordant replications is at least 2. | _Derived: >=2 independent re-tests and >=2 concordant._ |
 | Count Neg Control Tests | The number of negative control tests related to the causal mechanism. | _Negative-control tests run on this mechanism._ |
@@ -271,6 +509,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Evidence Items | A defined attribute. | _Evidence items supporting this mechanism._ |
 | Cohort Replications | A defined attribute. | _Cross-cohort replications of this mechanism._ |
 | Negative Control Tests | A defined attribute. | _Negative-control tests on this mechanism._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Mechanism Label | Individual | Genomic Variant | Environmental Exposure | Mechanism Type | Target Pathway | Target Pathway Code ƒ | Has Pleiotropy | Name ƒ | Parent Path ƒ | Relative Path ƒ | Individual Ancestry Label ƒ | Count Qualified Evidence ƒ | Count Modalities Supporting ƒ | Count Intervention Targets ƒ | Is Experimentally Falsifiable ƒ | Count Replications ƒ | Count Concordant Replications ƒ | Count Cross Ancestry Concordant ƒ | Replication Fraction ƒ | Replicates Across Cohorts ƒ | Count Neg Control Tests ƒ | Count Neg Control Survived ƒ | Survives Negative Controls ƒ | Is Spurious Derived ƒ | Causal Confidence ƒ | Variant is Causal Candidate ƒ | Is Causal Architecture Node ƒ | Is Ancestry Transportable ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| IRF5 regulatory -> type-I IFN -> SLE risk | ind-a-reyes | var-a-irf5 | — | regulatory | type-I-IFN | 1 | false | IRF5 regulatory -> type-I IFN -> SLE risk | /intake/new-patient/reyes-ana | /intake/new-patient/reyes-ana/mechanisms/cm-a | European | 3 | 2 | 1 | true | 3 | 2 | 2 | 0.6666666666666666 | true | 2 | 2 | true | false | 0.7583333333333333 | true | true | true |
+| IRF5 regulatory -> type-I IFN -> SLE risk | ind-b-okafor | var-b-irf5 | — | regulatory | type-I-IFN | 1 | false | IRF5 regulatory -> type-I IFN -> SLE risk | /intake/new-patient/okafor-bili | /intake/new-patient/okafor-bili/mechanisms/cm-b | European | 3 | 2 | 1 | true | 3 | 2 | 2 | 0.6666666666666666 | true | 2 | 2 | true | false | 0.7583333333333333 | true | true | true |
+| STAT4 regulatory -> Th1/IFN -> SLE risk | ind-c-chen | var-c-stat4 | — | regulatory | B-cell/autoantibody | 2 | false | STAT4 regulatory -> Th1/IFN -> SLE risk | /intake/new-patient/wei-chen | /intake/new-patient/wei-chen/mechanisms/cm-c | East Asian | 3 | 2 | 1 | true | 3 | 1 | 0 | 0.3333333333333333 | false | 2 | 1 | false | true | 0.4583333333333333 | true | false | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Epistatic Interaction** | Higher-order epistasis and pleiotropy interactions between genomic variants. | — |
 | Interaction Label | A defined attribute. | _Human-readable interaction label._ |
 | Individual | A defined attribute. | _Individual exhibiting interaction._ |
@@ -282,6 +536,20 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Parent Path | The relative path of the epistatic interaction's individual. | _Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent._ |
 | Relative Path | Computed as the parent path, followed by “/epistasis/”, followed by the epistatic interaction ID. | _Path to this EpistaticInteraction page, chained under its Individual parent._ |
 | Is High Order Epistasis | True when the epistasis score is greater than 0.5. | _True when epistasis score exceeds 0.5._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Interaction Label | Individual | Primary Variant | Secondary Variant | Epistasis Score | Has Pleiotropy | Name ƒ | Parent Path ƒ | Relative Path ƒ | Is High Order Epistasis ƒ |
+|---|---|---|---|---|---|---|---|---|---|
+| IRF5 x STAT4 (context only) | ind-a-reyes | var-a-irf5 | var-c-stat4 | 0.4 | false | IRF5 x STAT4 (context only) | /intake/new-patient/reyes-ana | /epistasis/epi-context | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Counterfactual Trajectory** | Counterfactual disease trajectories inferred without randomized perturbation data. | — |
 | Trajectory Label | A defined attribute. | _Description of hypothetical scenario._ |
 | Individual | A defined attribute. | _Individual whose trajectory is modeled._ |
@@ -294,6 +562,20 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Relative Path | Computed as the parent path, followed by “/trajectories/”, followed by the counterfactual trajectory ID. | _Path to this CounterfactualTrajectorie page, chained under its Individual parent._ |
 | Autoimmune Disease Label | Taken from the linked autoimmune disease. | _Disease label lookup._ |
 | Is Worsening Trajectory | True when the projected severity is greater than 7. | _True when projected severity exceeds 7._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Trajectory Label | Individual | Autoimmune Disease | Projected Severity | Horizon Months | Intervention Applied | Name ƒ | Parent Path ƒ | Relative Path ƒ | Autoimmune Disease Label ƒ | Is Worsening Trajectory ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Untreated SLE projection (context only) | ind-a-reyes | sle | 6 | 12 | none | Untreated SLE projection (context only) | /intake/new-patient/reyes-ana | /trajectories/cf-context | Systemic Lupus Erythematosus | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Individual Prediction** | Predictions of disease onset, severity, treatment response, and adverse effects with calibrated uncertainty for ancestry-equitable risk prediction. | — |
 | Prediction Label | A defined attribute. | _Prediction type label._ |
 | Individual | A defined attribute. | _Individual predicted._ |
@@ -342,6 +624,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Recommended Treatment Line | Determined by priority: “No targeted line — mechanism unconfirmed” if the rests on confirmed mechanism flag is not set; “Mycophenolate (induction)” if at least one of the following holds: the individual progression state key is “RenalFlareRisk” or the individual progression state key is “BiopsyIndicated”; “Anifrolumab” if the individual target pathway is “type-I-IFN”; “Belimumab” if the individual target pathway is “B-cell/autoantibody”; “Secukinumab” if the individual target pathway is “IL-17/23”; in all other cases, “Standard-of-care (no mechanism-matched targeted line)”. | _DERIVED treatment-line recommendation from confirmed-mechanism TargetPathway + disease state. The audit's MMF/belimumab/anifrolumab example._ |
 | Treatment Line Deciding Factor | Determined by priority: “MechanismUnconfirmed” if the rests on confirmed mechanism flag is not set; “ActiveNephritis-Induction” if at least one of the following holds: the individual progression state key is “RenalFlareRisk” or the individual progression state key is “BiopsyIndicated”; “IFNSignature-Anifrolumab” if the individual target pathway is “type-I-IFN”; “AutoantibodyDriven-Belimumab” if the individual target pathway is “B-cell/autoantibody”; “IL17Axis-Secukinumab” if the individual target pathway is “IL-17/23”; in all other cases, “NoMechanismMatch”. | _The single deciding reason for the recommended line (mirrors DecidingGate style)._ |
 | Progression Vs Actionability Disagree | True when all of the following hold: the individual is disease progressing flag is set and the clinically actionable flag is not set. | _THE COUNTER-EXAMPLE FLAG: TRUE when disease is progressing (simulator) but the prediction is NOT clinically actionable (gate). Proves the two layers are independent._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Prediction Label | Individual | Autoimmune Disease | Prediction Type | Name ƒ | Parent Path ƒ | Relative Path ƒ | Individual Ancestry Label ƒ | Is Ancestry Holdout ƒ | Individual Causal Mass ƒ | Individual Confirmed Node Count ƒ | Individual Cross Ancestry Node Count ƒ | Individual Has Cryptic Relatedness ƒ | Individual Max Severity Score ƒ | Individual Has High Severity Phenotype ƒ | Individual Has Predicted Treatment Response ƒ | Predicted Value ƒ | Count Bins ƒ | Count Well Calibrated Bins ƒ | Sum Bin Abs Error ƒ | Mean Bin Abs Error ƒ | Well Calibrated Fraction ƒ | Calibrated Uncertainty ƒ | Rests on Confirmed Mechanism ƒ | Has Spurious Correlation Flag ƒ | Is Falsifiability Backed ƒ | Is Transportable to Absent Ancestry ƒ | Is Ancestry Transport Safe ƒ | Transport Gate Status ƒ | Is High Confidence Prediction ƒ | Patient Stratification Tier ƒ | Predicted Severity Value ƒ | Severity Tier ƒ | Is Severity Actionable ƒ | Severity Deciding Factor ƒ | Is Treatment Response Actionable ƒ | Treatment Response Deciding Factor ƒ | Is Clinically Actionable ƒ | Lifecycle State Key ƒ | Deciding Gate ƒ | Individual Target Pathway ƒ | Individual Progression State Key ƒ | Individual is Disease Progressing ƒ | Recommended Treatment Line ƒ | Treatment Line Deciding Factor ƒ | Progression Vs Actionability Disagree ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| pred-a | ind-a-reyes | sle | Onset | pred-a | /intake/new-patient/reyes-ana | /intake/new-patient/reyes-ana/predictions/pred-a | European | false | 0.7583333333333333 | 1 | 1 | false | 9 | true | true | 3.0166666666666666 | 5 | 5 | 0.06 | 0.012 | 1 | 0.988 | true | false | true | false | true | NotApplicable | true | Low-Risk Pathway | 9 | Severe | true | HighSeverityOnConfirmedMechanism | true | EffectiveOnConfirmedMechanism | true | Actionable | AllGatesPass | type-I-IFN | SerologicActive | false | Anifrolumab | IFNSignature-Anifrolumab | false |
+| pred-b | ind-b-okafor | sle | Onset | pred-b | /intake/new-patient/okafor-bili | /intake/new-patient/okafor-bili/predictions/pred-b | European | false | 0.7583333333333333 | 1 | 1 | false | 8 | true | true | 3.0166666666666666 | 5 | 0 | 0.18 | 0.036 | 0 | 0 | true | false | true | false | true | NotApplicable | false | Low-Risk Pathway | 8 | Severe | true | HighSeverityOnConfirmedMechanism | true | EffectiveOnConfirmedMechanism | false | NotActionable | Calibration | type-I-IFN | PresymptomaticAutoimmunity | false | Anifrolumab | IFNSignature-Anifrolumab | false |
+| pred-c | ind-c-chen | sle | Onset | pred-c | /intake/new-patient/wei-chen | /intake/new-patient/wei-chen/predictions/pred-c | East Asian | false | 0 | 0 | 0 | false | 9 | true | false | 0 | 5 | 5 | 0.08 | 0.016 | 1 | 0.984 | false | true | false | false | true | NotApplicable | false | Low-Risk Pathway | 9 | Severe | false | NoValidatedMechanism | false | NoConfirmedMechanism | false | NotActionable | NoValidatedMechanism | B-cell/autoantibody | SerologicActive | false | No targeted line — mechanism unconfirmed | MechanismUnconfirmed | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Calibration Bin** | Per-prediction reliability-curve bins, seeded from the held-out coverage of this individual's own ancestry x disease. Calibration is an aggregation over these rows. | — |
 | Bin Label | A defined attribute. | _Human label._ |
 | Individual Prediction | A defined attribute. | _FK to the prediction this bin calibrates._ |
@@ -354,6 +652,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Bin Abs Error | Determined by priority: the predicted probability band minus the observed event rate if the predicted probability band is at least the observed event rate; in all other cases, the observed event rate minus the predicted probability band. | _Derived: absolute gap between predicted band and observed rate._ |
 | Is Well Calibrated Bin | True when all of the following hold: the coverage count is at least 20 and the bin abs error is at most 0.1. | _Derived: enough held-out coverage AND small reliability gap._ |
 | Source Quote | A defined attribute. | _PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this calibration bin's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Bin Label | Individual Prediction | Predicted Probability Band | Observed Event Rate | Coverage Count | Name ƒ | Parent Path ƒ | Relative Path ƒ | Bin Abs Error ƒ | Is Well Calibrated Bin ƒ | Source Quote |
+|---|---|---|---|---|---|---|---|---|---|---|
+| cb-a-0 | pred-a | 0.1 | 0.09 | 34 | cb-a-0 | /intake/new-patient/reyes-ana/predictions/pred-a | /bins/cb-a-0 | 0.010000000000000009 | true | coverage of 29-34 held-out individuals per reliability bin |
+| cb-a-1 | pred-a | 0.3 | 0.31 | 31 | cb-a-1 | /intake/new-patient/reyes-ana/predictions/pred-a | /bins/cb-a-1 | 0.010000000000000009 | true | coverage of 29-34 held-out individuals per reliability bin |
+| cb-a-2 | pred-a | 0.5 | 0.49 | 29 | cb-a-2 | /intake/new-patient/reyes-ana/predictions/pred-a | /bins/cb-a-2 | 0.010000000000000009 | true | coverage of 29-34 held-out individuals per reliability bin |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Intervention Target** | Validated intervention targets for gene-based and cell-based therapies derived from falsifiable causal mechanisms. | — |
 | Target Label | A defined attribute. | _Target name (gene, pathway, cell type)._ |
 | Causal Mechanism | A defined attribute. | _Parent causal mechanism._ |
@@ -366,12 +680,44 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Causal Mechanism Label | Taken from the linked causal mechanism. | _Mechanism label lookup._ |
 | Is Gene Based Therapy | True when the therapy class is “Gene-based”. | _True when therapy class is gene-based._ |
 | Is Cell Based Therapy | True when the therapy class is “Cell-based”. | _True when therapy class is cell-based._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Target Label | Causal Mechanism | Autoimmune Disease | Therapy Class | Is Validated | Name ƒ | Parent Path ƒ | Relative Path ƒ | Causal Mechanism Label ƒ | Is Gene Based Therapy ƒ | Is Cell Based Therapy ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| IRF5 Regulatory Modulation | cm-a | sle | Gene-based | true | IRF5 Regulatory Modulation | /intake/new-patient/reyes-ana/mechanisms/cm-a | /targets/it-a | IRF5 regulatory -> type-I IFN -> SLE risk | true | false |
+| IRF5 Regulatory Modulation | cm-b | sle | Gene-based | true | IRF5 Regulatory Modulation | /intake/new-patient/okafor-bili/mechanisms/cm-b | /targets/it-b | IRF5 regulatory -> type-I IFN -> SLE risk | true | false |
+| STAT4 Pathway Modulation | cm-c | sle | Gene-based | false | STAT4 Pathway Modulation | /intake/new-patient/wei-chen/mechanisms/cm-c | /targets/it-c | STAT4 regulatory -> Th1/IFN -> SLE risk | true | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Axiom** | Non-negotiable invariants the platform must obey. Load-bearing constraints, not per-loop work. Captured from the gauntlet conversation. | — |
 | Statement | A defined attribute. | _The invariant, stated as a rule._ |
 | Rationale | A defined attribute. | _Why this must hold / what it defends against._ |
 | Category | A defined attribute. | _Grouping: trust-boundary \| solve-by-inference \| knob \| witness \| scope \| report-derivation._ |
 | Name | The same as its statement. | _Display label._ |
 | Relative Path | Computed as “/admin/axioms/”, followed by the axiom ID. | _Path to this Axioms entry: /admin/axioms/<id>._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Statement | Rationale | Category | Name ƒ | Relative Path ƒ |
+|---|---|---|---|---|
+| The LLM never gets a vote on the conclusion. | Demotes the model to intake-clerk + lab; the verdict is the deterministic DAG's, never the model's. | trust-boundary | The LLM never gets a vote on the conclusion. | /admin/axioms/ax-llm-no-vote |
+| IsClinicallyActionable is computed, never entered. | No field a curator (human or LLM) can set to make the diagnosis come out right. | solve-by-inference | IsClinicallyActionable is computed, never entered. | /admin/axioms/ax-keystone-computed |
+| The trust boundary is a line in the DAG: fields with a formula are the model's; raw-input leaf fields are the LLM's (or a human's). | Makes the boundary mechanically checkable rather than a vibe. | trust-boundary | The trust boundary is a line in the DAG: fields with a formula are the model's; raw-input leaf fields are the LLM's (or a human's). | /admin/axioms/ax-line-in-dag |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Tests for Success** | Falsifiable conditions that prove the axioms hold. The human-readable index of what each demonstration shows; many are realized in the witnessed harness. | — |
 | Claim | A defined attribute. | _The success condition, stated falsifiably._ |
 | How Witnessed | A defined attribute. | _How a human/expert confirms it without trusting the code._ |
@@ -379,6 +725,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Status | A defined attribute. | _red \| green \| planned._ |
 | Name | The same as its claim. | _Display label._ |
 | Relative Path | Computed as “/admin/tests-for-success/”, followed by the test for success ID. | _Path to this TestsForSuccess entry: /admin/tests-for-success/<id>._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Claim | How Witnessed | Related Harness File | Status | Name ƒ | Relative Path ƒ |
+|---|---|---|---|---|---|
+| Five of seven patients fail, each on exactly one gate. | Coverage matrix in scenarios.md; L6/L7 harness assert the deciding gate per patient. | admin-app/tests/L6-gates.test.js | red | Five of seven patients fail, each on exactly one gate. | /admin/tests-for-success/tfs-one-gate-each |
+| The same machine produces TRUE for {A,G} and FALSE for {B,C,D,E,F}. | L7-cohort.test.js asserts exactly {A,G} actionable as a set. | admin-app/tests/L7-cohort.test.js | red | The same machine produces TRUE for {A,G} and FALSE for {B,C,D,E,F}. | /admin/tests-for-success/tfs-both-sides |
+| Raw facts alone derive the keystone with no hand-entered answer anywhere. | Every leaf in the harness is a raw observation; keystone == AND(gates) cross-check. | admin-app/tests/L7-keystone.test.js | red | Raw facts alone derive the keystone with no hand-entered answer anywhere. | /admin/tests-for-success/tfs-no-hand-entry |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Feature** | Catalog of buildable capabilities the platform has / allows for. Coarser grain than loops. Each row carries challenge provenance (ChallengeRefs: exact quoted text + file/line/col into THE-ORIGINAL-CHALLENGE.md, for UI hover tips), a Category, a Priority, and a free-form Markdown ChallengeNotes comment. Source of truth for the DERIVED PLATFORM_FEATURES.md. AssignedLoop links a feature to the loop that delivers it (nullable until scheduled). | — |
 | Title | A defined attribute. | _Short feature name._ |
 | Category | A defined attribute. | _Which layer of the platform this belongs to (Keystone / inference DAG, Leaf / LLM surface, Witness / harness, Disease-state simulation, Treatment reasoning, Corpus-level discovery, Reporting, Platform infrastructure)._ |
@@ -392,6 +754,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Name | The same as its title. | _Display label._ |
 | Relative Path | Computed as “/admin/features/”, followed by the feature ID. | _Path to this Features entry: /admin/features/<id>._ |
 | Meta Line | Computed as “**Category:** ”, followed by the category, followed by “ - **Priority:** ”, followed by the priority, followed by “ - **Challenge refs:** ”, followed by the ref count. | _One-line meta summary for the catalog (category - priority - ref count)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Title | Category | Priority | Description | Challenge Refs | Challenge Refs Rendered | Challenge Notes | Ref Count | Assigned Loop | Name ƒ | Relative Path ƒ | Meta Line ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Four-gate clinical-actionability keystone | Keystone / inference DAG | Load-bearing | The entire system reduces to one computed boolean, `IndividualPredictions.IsClinicallyActionable`, TRUE only when all four derived gates hold (causally grounded, well-calibrated, non-spurious, ancestry-generalizable). Computed from a pure formula DAG, never entered. Seven synthetic patients land on both sides; each failure names the single deciding gate. | [{"file": "THE-ORIGINAL-CHALLENGE.md", "line": 6, "col": 223, "len": 87, "quote": "individualized prevention, presymptomatic diagnosis, ancestry-equitable risk prediction", "section": "payoff", "relation": "direct"}, {"file": "THE-ORIGINAL-CHALLENGE.md", "line": 4, "col": 1608, "len": 68, "quote": "with calibrated uncertainty and no reliance on spurious correlations", "section": "prompt", "relation": "direct"}, {"file": "THE-ORIGINAL-CHALLENGE.md", "line": 4, "col": 351, "len": 79, "quote": "identify the complete causal architecture of a heterogeneous autoimmune disease", "section": "prompt", "relation": "indirect"}] | - **directly addresses** (payoff, `THE-ORIGINAL-CHALLENGE.md` L6:223+87): _individualized prevention, presymptomatic diagnosis, ancestry-equitable risk prediction_<br>- **directly addresses** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1608+68): _with calibrated uncertainty and no reliance on spurious correlations_<br>- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:351+79): _identify the complete causal architecture of a heterogeneous autoimmune disease_ | This is the north-star reduction. It directly operationalizes the payoff paragraph's "individualized... ancestry-equitable... actionable prediction" and the prompt's demand for *calibrated uncertainty and no reliance on spurious correlations*. The four gates are the four hardest constraints in the prompt, each made a falsifiable boolean rather than a promise. | 3 | — | Four-gate clinical-actionability keystone | /admin/features/feat-keystone-actionability-gate | **Category:** Keystone / inference DAG - **Priority:** Load-bearing - **Challenge refs:** 3 |
+| Trust boundary as a line in the DAG | Keystone / inference DAG | Load-bearing | Any field with a formula belongs to the model; any raw-input field is the human's (or the LLM's, as an overridable front-end). Every Z-stat, gate, and the keystone is a pure inspectable formula; nothing above the leaves is enterable. The trust boundary is literally an edge in the dependency graph. | [{"file": "THE-ORIGINAL-CHALLENGE.md", "line": 4, "col": 1608, "len": 68, "quote": "with calibrated uncertainty and no reliance on spurious correlations", "section": "prompt", "relation": "direct"}, {"file": "THE-ORIGINAL-CHALLENGE.md", "line": 66, "col": 191, "len": 37, "quote": "decomposes into inspectable structure", "section": "response", "relation": "indirect"}] | - **directly addresses** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1608+68): _with calibrated uncertainty and no reliance on spurious correlations_<br>- **indirectly supports** (response, `THE-ORIGINAL-CHALLENGE.md` L66:191+37): _decomposes into inspectable structure_ | This is the conceptual spine that makes the whole platform auditable rather than 'an LLM that diagnoses'. It is what lets the system claim *no reliance on spurious correlations* structurally (the V2 response: known reasoning *decomposes into inspectable structure*). | 2 | — | Trust boundary as a line in the DAG | /admin/features/feat-trust-boundary-line-in-dag | **Category:** Keystone / inference DAG - **Priority:** Load-bearing - **Challenge refs:** 2 |
+| LLM intake clerk | Leaf / LLM surface | Load-bearing | LLM reads a natural-language case and writes raw intake observation rows (ancestry, allele freqs, presenting facts) to base tables. It interprets the case like an intake nurse and never computes a single inference above the leaf layer. | [{"file": "THE-ORIGINAL-CHALLENGE.md", "line": 4, "col": 751, "len": 65, "quote": "resolving cell-state-specific effects, allele-specific expression", "section": "prompt", "relation": "indirect"}, {"file": "THE-ORIGINAL-CHALLENGE.md", "line": 4, "col": 1446, "len": 83, "quote": "accurately predict disease onset, severity, treatment response, and adverse effects", "section": "prompt", "relation": "indirect"}] | - **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:751+65): _resolving cell-state-specific effects, allele-specific expression_<br>- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1446+83): _accurately predict disease onset, severity, treatment response, and adverse effects_ | Addresses the front of the challenge's data pipeline: turning heterogeneous clinical input into structured observations. The LLM is the *transcriber*, never the diagnostician - the half of the trust boundary that stays human-overridable. | 2 | — | LLM intake clerk | /admin/features/feat-llm-intake-clerk | **Category:** Leaf / LLM surface - **Priority:** Load-bearing - **Challenge refs:** 2 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Inference Kind** | Families of derivation the platform performs - the KINDS of inference in the DAG (lookups, aggregations, higher-order gates, state machines, transitive closure, predicate-gated narrative, cross-substrate conformance), independent of any one feature. Lets PLATFORM_FEATURES.md open with a short overview of the reasoning machinery before the per-feature catalog. Grounded in field types that actually exist in this rulebook; Maturity is Live unless an upstream step is still in flight. | — |
 | Title | A defined attribute. | _Short name of the inference family._ |
 | Description | A defined attribute. | _One-line factual description of the kind._ |
@@ -401,6 +779,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Sort Order | A defined attribute. | _Display order in the overview._ |
 | Name | The same as its title. | _Display label._ |
 | Relative Path | Computed as “/admin/inference-kinds/”, followed by the inference kind ID. | _Path to this entry: /admin/inference-kinds/<id>._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Title | Description | Example Field | Evidence Count | Maturity | Sort Order | Name ƒ | Relative Path ƒ |
+|---|---|---|---|---|---|---|---|
+| Lookup / FK resolution | Pull a related row's value across a foreign key so a derived field can reason over it in place (no application-side JOIN). The relationship is declared once; the value resolves wherever it is needed. | Individuals.FederatedDatasetNodeLabel (resolves the dataset's label by FK) | 35 lookup fields + 42 relationships; INDEX/MATCH used 49x | Live | 1 | Lookup / FK resolution | /admin/inference-kinds/ik-lookup-fk |
+| Aggregation rollups | Collapse many child rows into one parent value - counts, maxima, sums, fractions. This is how per-row facts become corpus-level patterns: a population signature is a rollup over each person's raw series, with no label assigned. | Individuals.MaxProgressionStateOrder; the emergent IsInPreNephriticSignatureCluster rollup | 33 aggregation fields; COUNTIFS/MAXIFS/SUMIFS used 33x | Live | 2 | Aggregation rollups | /admin/inference-kinds/ik-aggregation-rollup |
+| Higher-order inference (gates over gates) | Calculated fields that take other calculated fields as inputs, stacked into a multi-level DAG. The keystone is the apex: a boolean computed over four gates, each themselves computed over lower derivations - inference about inferences, never a hand-entered answer. | IndividualPredictions.IsClinicallyActionable (AND of the four derived gates) | 200 calculated fields; the keystone is an AND of four derived gates | Live | 3 | Higher-order inference (gates over gates) | /admin/inference-kinds/ik-higher-order |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Open Question** | Decisions still pending, captured so they are not silently re-litigated in a later session. | — |
 | Question | A defined attribute. | _The open question._ |
 | Context | A defined attribute. | _Why it is open / what it affects._ |
@@ -408,16 +802,64 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Is Resolved | True when an empty string. | _TRUE when decided._ |
 | Name | The same as its question. | _Display label._ |
 | Relative Path | Computed as “/admin/open-questions/”, followed by the open question ID. | _Path to this OpenQuestions entry: /admin/open-questions/<id>._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Question | Context | Resolution | Is Resolved | Name ƒ | Relative Path ƒ |
+|---|---|---|---|---|---|
+| Publish README now as a design/thesis doc, or hold until the harness goes green? | Repo is at Loop 0.5 (harness red, no LLM intake yet). Receipts land harder green. | — | false | Publish README now as a design/thesis doc, or hold until the harness goes green? | /admin/open-questions/oq-publish-now |
+| Does the LLM extract facts present in the case, or invent plausible facts for a described case? | Mode #1 (extract) vs mode #2 (invent) changes how strong the claim is. | Mode #1 at intake (extract/interpret), and synthetic-but-transparent test results for the invented case — every number visible, sourced, editable. | true | Does the LLM extract facts present in the case, or invent plausible facts for a described case? | /admin/open-questions/oq-extract-vs-invent |
+| Confirm the reworded README prompt shares no distinctive phrasing with the prospect's original. | Anonymity / no verbatim leakage before publishing. | — | false | Confirm the reworded README prompt shares no distinctive phrasing with the prospect's original. | /admin/open-questions/oq-reworded-prompt |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Non Goal** | Explicit out-of-scope statements — the positive twin of the anti-hallucination ledger. Stops scope creep. | — |
 | Statement | A defined attribute. | _What we are deliberately NOT doing._ |
 | Why Excluded | A defined attribute. | _Why it is off the keystone path / out of scope._ |
 | Name | The same as its statement. | _Display label._ |
 | Relative Path | Computed as “/admin/non-goals/”, followed by the non goal ID. | _Path to this NonGoals entry: /admin/non-goals/<id>._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Statement | Why Excluded | Name ƒ | Relative Path ƒ |
+|---|---|---|---|
+| This is not validated clinical decision support and must never be used for clinical purposes. | Demonstration of inference structure only; all patients synthetic, all figures literature ranges. | This is not validated clinical decision support and must never be used for clinical purposes. | /admin/non-goals/ng-clinical-use |
+| This is not a CRUD UI. | The home screen is the witnessed red/green harness; the payoff is a derived diagnosis writeup. | This is not a CRUD UI. | /admin/non-goals/ng-crud-ui |
+| The LLM does not perform higher-order reasoning or render the diagnosis. | All reasoning lives in the open, editable DAG; the LLM is intake clerk + lab only. | The LLM does not perform higher-order reasoning or render the diagnosis. | /admin/non-goals/ng-llm-reasoning |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Glossary Term** | Vocabulary coined in the gauntlet conversation, so the framing is shared and stable across sessions. | — |
 | Term | A defined attribute. | _The term._ |
 | Definition | A defined attribute. | _What it means here._ |
 | Name | The same as its term. | _Display label._ |
 | Relative Path | Computed as “/admin/glossary/”, followed by the glossary term ID. | _Path to this GlossaryTerms entry: /admin/glossary/<id>._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Term | Definition | Name ƒ | Relative Path ƒ |
+|---|---|---|---|
+| knob | A literal, editable leaf value in the admin UI representing one choice the LLM (or a human) made; nudged, not re-prompted, when wrong. | knob | /admin/glossary/gt-knob |
+| intake clerk + lab | The only two roles the LLM plays: interpret intake facts (clerk) and produce the case's test results (lab). Never the diagnostician. | intake clerk + lab | /admin/glossary/gt-intake-clerk-lab |
+| line in the DAG | The trust boundary, stated mechanically: fields with a formula belong to the model; raw-input leaf fields are the LLM's or a human's. | line in the DAG | /admin/glossary/gt-line-in-dag |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Effortless Loop** | The ordered Effortless loops that build this platform, as data. The derived plan (EFFORTLESS_LOOPS.md, via json-hbars-transform) is generated from these rows; completed ([DONE]) loops are pruned at publish so only current/roadmap work shows in the plan. | — |
 | Loop Number | A defined attribute. | _Display number (0, 0.5, 1...)._ |
 | Title | A defined attribute. | _Loop title._ |
@@ -432,6 +874,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Is in Current Plan | True when it is not the case that the status is “done”. | _TRUE for the current "next" loop and anything still planned/backlog (not done)._ |
 | Status Badge | A defined attribute. | _Display badge for the derived plan, e.g. [DONE] / [NEXT] / [PLANNED] / [BACKLOG]._ |
 | Status Line | A defined attribute. | _Extra plan line: commit messages for done/next loops; empty otherwise._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Loop Number | Title | Goal | Status | Rule Commit Msg | State Commit Msg | Sort Order | Name ƒ | Relative Path ƒ | Completedness ƒ | Is in Current Plan ƒ | Status Badge | Status Line |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 0 | Solve-by-inference rulebook | Convert 7 hand-entered answers to derived; add evidence/replication/control/calibration tables; wire raw observations to keystone. | done | rule: keystone IsClinicallyActionable now derived from observations | state: Loop 0 - Postgres solve-by-inference verified | 0 | Loop 0 — Solve-by-inference rulebook | /admin/effortless-loops/loop-0 | done | false | [DONE] |  - rule `rule: keystone IsClinicallyActionable now derived from observations`; state `state: Loop 0 - Postgres solve-by-inference verified` |
+| 0.5 | Test Harness First (the red contract) | Ship a witnessed inference harness asserting the entire DAG x 7 patients via the app API; red on arrival, load-bearing. | done | none - app-only loop, test-harness-first, no rule change | state: Loop 0.5 - red witnessed-inference harness is the app's contract | 1 | Loop 0.5 — Test Harness First (the red contract) | /admin/effortless-loops/loop-0-5 | done | false | [DONE] |  - rule `none - app-only loop, test-harness-first, no rule change`; state `state: Loop 0.5 - red witnessed-inference harness is the app's contract` |
+| 1 | Intake app skeleton | Turn keystone-level red tests green: wire cohort + prediction-panel endpoints reading vw_*. | done | none - app-only loop, no rule change | state: Loop 1 - read-only intake app surfaces the keystone | 2 | Loop 1 — Intake app skeleton | /admin/effortless-loops/loop-1 | done | false | [DONE] |  - rule `none - app-only loop, no rule change`; state `state: Loop 1 - read-only intake app surfaces the keystone` |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Routing and Navigation** | Role-based navigation: open-ended parent->child->leaf routes with computed paths. Each route has a template (/intake/case/:caseId); entities carry RelativePath that substitutes their own id/slug. Roles: admin, intake-clinician, diagnosing-doctor, external-llm. | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Slug of the display name._ |
 | Display Name | A defined attribute. | _Human-readable nav label._ |
@@ -476,6 +934,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Modified At | A defined attribute. | _Audit: when last written._ |
 | Modified by | A defined attribute. | _Audit: who last wrote it._ |
 | Modified by Model | A defined attribute. | _Audit: AI model credited on last save, if any._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Route | Description | Sort Order | Parent Route Key | Route Key | Nav Level | Role Visibility | Primary Table | Primary View | Icon Hint | Is Dynamic | Pin to Top | Admin CRUD | Intake Clinician CRUD | Diagnosing Doctor CRUD | External Llm CRUD | Admin Can Create ƒ | Admin Can Read ƒ | Admin Can Update ƒ | Admin Can Delete ƒ | Intake Clinician Can Create ƒ | Intake Clinician Can Read ƒ | Intake Clinician Can Update ƒ | Intake Clinician Can Delete ƒ | Diagnosing Doctor Can Create ƒ | Diagnosing Doctor Can Read ƒ | Diagnosing Doctor Can Update ƒ | Diagnosing Doctor Can Delete ƒ | External Llm Can Create ƒ | External Llm Can Read ƒ | External Llm Can Update ƒ | External Llm Can Delete ƒ | Depth ƒ | Full Path ƒ | Handler Base Name ƒ | Relative Path ƒ | Created At | Created by | Modified At | Modified by | Modified by Model |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| intake | Intake | /intake | Clinician intake workspace — bring a new patient case in. | 10 | — | intake | top | admin,intake-clinician | Individuals | vw_individuals | clipboard-plus | false | true | CRUD | CRU | — | — | true | true | true | true | true | true | true | true | — | — | — | — | — | — | — | — | 0 | /intake | intake | /admin/routing/nav-intake | — | build-seed | — | build-seed | — |
+| new-patient | New Patient | /intake/new-patient/:caseId | Open or start a case by slug, e.g. /intake/new-patient/reyes-ana. | 11 | intake | intake.new-patient | sub | admin,intake-clinician | Individuals | vw_individuals | user-plus | true | false | CRUD | CRU | — | — | true | true | true | true | true | true | true | true | — | — | — | — | — | — | — | — | 1 | /intake/new-patient/:caseId | intake new patient | /admin/routing/nav-intake-new | — | build-seed | — | build-seed | — |
+| observations | Observations | /intake/new-patient/:caseId/observations | Raw presenting facts: ancestry, age, federated node, cryptic-relatedness flag. | 12 | intake.new-patient | intake.new-patient.observations | leaf | admin,intake-clinician | Individuals | vw_individuals | stethoscope | true | false | CRUD | CRU | — | — | true | true | true | true | true | true | true | true | — | — | — | — | — | — | — | — | 2 | /intake/new-patient/:caseId/observations | intake new patient observations | /admin/routing/nav-intake-observations | — | build-seed | — | build-seed | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **State Machine** | State-machine definitions. | — |
 | Name | The same as its state machine ID. | _Echoes StateMachineId._ |
 | Relative Path | Computed as “/admin/state-machine/”, followed by the state machine ID. | _Path to this machine's page._ |
@@ -493,6 +967,21 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Modified At | A defined attribute. | _Audit: when last written._ |
 | Modified by | A defined attribute. | _Audit: who last wrote it._ |
 | Modified by Model | A defined attribute. | _Audit: AI model credited on last save, if any._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Relative Path ƒ | Title | Description | Subject Table Name | Subject State Column | State Count ƒ | Transition Rule Count ƒ | Created At | Created by | Modified At | Modified by | Modified by Model |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| diagnosis-lifecycle | /admin/state-machine/diagnosis-lifecycle | Diagnosis Lifecycle | Walks each case from Intake through the four gates to a terminal Actionable / NotActionable verdict. Each patient branches at its single deciding gate. Current state is DERIVED (IndividualPredictions.LifecycleStateKey); the transition log is the witnessed history. | IndividualPredictions | LifecycleStateKey | 7.0 | 9.0 | — | build-seed | — | build-seed | — |
+| lupus-nephritis-progression | /admin/state-machine/lupus-nephritis-progression | Lupus-Nephritis Progression | Disease-state simulator: a patient's lupus-nephritis course derived from raw serology trajectories. Presymptomatic -> SerologicActive -> EarlyNephritis -> RenalFlareRisk -> BiopsyIndicated (+ Quiescent). Current state is the derived Individuals.NephritisProgressionStateKey; never hand-set. | Individuals | NephritisProgressionStateKey | 6.0 | 5.0 | 2026-06-20T00:00:00Z | v2-step3 | 2026-06-20T00:00:00Z | v2-step3 | claude-opus-4-8 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Machine State** | Legal states of each machine. | — |
 | Name | The same as its machine state ID. | _Echoes MachineStateId._ |
 | Relative Path | Computed as “/admin/state-machine/states/”, followed by the machine state ID. | _Path to this state's page._ |
@@ -510,6 +999,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Modified by | A defined attribute. | _Audit: who last wrote it._ |
 | Modified by Model | A defined attribute. | _Audit: AI model credited on last save, if any._ |
 | Reachable State Count | The number of vw state transition rules closure related to the machine state. | _Number of states reachable FROM this state via the transitive closure of the transition edges (rollup over vw_state_transition_rules_closure where from_id = this state). This is a graph-reachability fact the linear severity rank CANNOT reproduce: both Quiescent (the remission sink) and BiopsyIndicated (the terminal progression state) have 0 reachable-ahead, though they sit at opposite ends of the order — the count is non-monotonic in OrderIndex because the machine BRANCHES (remission). The closure is load-bearing here: delete it and this field is uncomputable._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Relative Path ƒ | State Key | Title | Order Index | Is Initial | Is Terminal | Created At | Created by | Modified At | Modified by | Modified by Model | Reachable State Count ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| diagnosis-lifecycle--intake | /admin/state-machine/states/diagnosis-lifecycle--intake | Intake | Intake | 1 | true | false | — | build-seed | — | build-seed | — | 6 |
+| diagnosis-lifecycle--evidenceassessed | /admin/state-machine/states/diagnosis-lifecycle--evidenceassessed | EvidenceAssessed | EvidenceAssessed | 2 | false | false | — | build-seed | — | build-seed | — | 5 |
+| diagnosis-lifecycle--mechanismconfirmed | /admin/state-machine/states/diagnosis-lifecycle--mechanismconfirmed | MechanismConfirmed | MechanismConfirmed | 3 | false | false | — | build-seed | — | build-seed | — | 4 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **State Transition Rule** | Legal edges (guards) of each machine. | — |
 | Name | The same as its state transition rule ID. | _Echoes StateTransitionRuleId._ |
 | Relative Path | Computed as “/admin/state-machine/rules/”, followed by the state transition rule ID. | _Path to this rule's page._ |
@@ -529,6 +1034,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Modified by | A defined attribute. | _Audit: who last wrote it._ |
 | Modified by Model | A defined attribute. | _Audit: AI model credited on last save, if any._ |
 | Progression Closure | A defined attribute. | _Transitive closure of state-machine transitions (an owl:TransitiveProperty). The asserted FromState->ToState edges imply the full reachability ordering of each machine - including never-asserted long-range pairs such as PresymptomaticAutoimmunity -> BiopsyIndicated. Materialized by the transpiler as the cycle-safe recursive view vw_state_transition_rules_closure(from_id, to_id, hop_distance, is_inferred): asserted edges (hop 1) plus inferred reachability rows. The disease trajectory is derived from the transition topology, not hand-asserted._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Relative Path ƒ | Guard Description | Rule Refs | Trigger Endpoint | Triggered by Role | From State Key ƒ | To State Key ƒ | Is Forward Edge ƒ | Created At | Created by | Modified At | Modified by | Modified by Model |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| diagnosis-lifecycle--intake->evidenceassessed | /admin/state-machine/rules/diagnosis-lifecycle--intake->evidenceassessed | Intake facts transcribed; evidence atoms computed. | — | — | system | Intake | EvidenceAssessed | true | — | build-seed | — | build-seed | — |
+| diagnosis-lifecycle--evidenceassessed->mechanismconfirmed | /admin/state-machine/rules/diagnosis-lifecycle--evidenceassessed->mechanismconfirmed | IsCausalArchitectureNode TRUE (replicated, controls survive, >=2 modalities). | — | — | system | EvidenceAssessed | MechanismConfirmed | true | — | build-seed | — | build-seed | — |
+| diagnosis-lifecycle--evidenceassessed->notactionable | /admin/state-machine/rules/diagnosis-lifecycle--evidenceassessed->notactionable | Spurious mechanism OR no falsifiability (0 intervention targets). | — | — | system | EvidenceAssessed | NotActionable | true | — | build-seed | — | build-seed | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **State Transition** | Instance-level transition log (the witnessed history). | — |
 | Name | The same as its state transition ID. | _Echoes StateTransitionId._ |
 | Relative Path | Computed as “/admin/state-machine/transitions/”, followed by the state transition ID. | _Path to this transition's page._ |
@@ -546,6 +1067,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Modified At | A defined attribute. | _Audit: when last written._ |
 | Modified by | A defined attribute. | _Audit: who last wrote it._ |
 | Modified by Model | A defined attribute. | _Audit: AI model credited on last save, if any._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Relative Path ƒ | Subject Table Name | Subject ID | From State Key | To State Key | Transition At | Triggered by Role | Reason | Is Forward ƒ | Created At | Created by | Modified At | Modified by | Modified by Model |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| st-a-02-intake-to-evidenceassessed | /admin/state-machine/transitions/st-a-02-intake-to-evidenceassessed | IndividualPredictions | pred-a | Intake | EvidenceAssessed | 2026-06-02T09:00:00Z | system | Intake → EvidenceAssessed. | true | — | build-seed | — | build-seed | — |
+| st-a-03-evidenceassessed-to-mechanismconfirmed | /admin/state-machine/transitions/st-a-03-evidenceassessed-to-mechanismconfirmed | IndividualPredictions | pred-a | EvidenceAssessed | MechanismConfirmed | 2026-06-03T09:00:00Z | system | EvidenceAssessed → MechanismConfirmed. | true | — | build-seed | — | build-seed | — |
+| st-a-04-mechanismconfirmed-to-calibrationchecked | /admin/state-machine/transitions/st-a-04-mechanismconfirmed-to-calibrationchecked | IndividualPredictions | pred-a | MechanismConfirmed | CalibrationChecked | 2026-06-04T09:00:00Z | system | MechanismConfirmed → CalibrationChecked. | true | — | build-seed | — | build-seed | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Subject State Instance** | Per-subject state occupancy records; current state has blank ExitedAt. | — |
 | Name | The same as its subject state instance ID. | _Echoes SubjectStateInstanceId._ |
 | Relative Path | Computed as “/admin/state-machine/instances/”, followed by the subject state instance ID. | _Path to this occupancy record._ |
@@ -567,6 +1104,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Modified by Model | A defined attribute. | _Audit: AI model credited on last save, if any._ |
 | Dwell Days | A defined attribute. | _Bitemporal dwell: days the subject occupied this state (transparent raw value; transpiler lacks date-diff). Witnessed + editable, like any leaf._ |
 | Is Long Dwell | True when the dwell days is at least 90. | _TRUE when DwellDays >= 90 (a season)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Relative Path ƒ | Subject Table Name | Subject ID | State Key | Entered At | Exited At | Sequence Index | Is Current ƒ | Has Complete Lineage ƒ | Created At | Created by | Modified At | Modified by | Modified by Model | Dwell Days | Is Long Dwell ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| ssi-pred-a-intake-1 | /admin/state-machine/instances/ssi-pred-a-intake-1 | IndividualPredictions | pred-a | Intake | 2026-06-01T09:00:00Z | 2026-06-02T09:00:00Z | 1 | false | true | — | build-seed | — | build-seed | — | — | false |
+| ssi-pred-a-evidenceassessed-2 | /admin/state-machine/instances/ssi-pred-a-evidenceassessed-2 | IndividualPredictions | pred-a | EvidenceAssessed | 2026-06-02T09:00:00Z | 2026-06-03T09:00:00Z | 2 | false | true | — | build-seed | — | build-seed | — | — | false |
+| ssi-pred-a-mechanismconfirmed-3 | /admin/state-machine/instances/ssi-pred-a-mechanismconfirmed-3 | IndividualPredictions | pred-a | MechanismConfirmed | 2026-06-03T09:00:00Z | 2026-06-04T09:00:00Z | 3 | false | true | — | build-seed | — | build-seed | — | — | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Disease Domain Concept** | v2 vocabulary completeness: every disease-domain concept the v1 audit named, with its modeling status and the challenge-stressor TYPE it instantiates. Makes the coverage claim checkable by grep, not by trust. | — |
 | Concept Label | A defined attribute. | _Human-readable concept name (the audit's missing word)._ |
 | Related Disease | A defined attribute. | _Disease this concept belongs to (SLE/RA/PsA/* for cross-cutting). Convention string, not a FK._ |
@@ -577,6 +1130,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Relative Path | Computed as “/admin/disease-concepts/”, followed by the disease domain concept ID. | _Path to this concept's page._ |
 | Is Deeply Modeled | True when the modeling status is “deep-dag”. | _TRUE when this concept carries a witnessed inference DAG (status = deep-dag)._ |
 | Is Schema Modeled | True when at least one of the following holds: the modeling status is “deep-dag” or the modeling status is “schema”. | _TRUE when first-class schema/data (deep-dag or schema)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Concept Label | Related Disease | Modeling Status | Definition | Challenge Stressor Type | Name ƒ | Relative Path ƒ | Is Deeply Modeled ƒ | Is Schema Modeled ƒ |
+|---|---|---|---|---|---|---|---|---|
+| Lupus Nephritis | SLE | deep-dag | Renal involvement of SLE; immune-complex glomerulonephritis. v2 models its PROGRESSION as a witnessed state machine driven by rising anti-dsDNA + falling complement + proteinuria. | disease-progression / organ-specific subtype | Lupus Nephritis | /admin/disease-concepts/lupus-nephritis | true | true |
+| Treatment-Line Selection | SLE | deep-dag | Which therapy to choose given the patient's causal mechanism + disease state: mycophenolate (MMF) vs belimumab vs anifrolumab. v2 derives a recommended line + single deciding reason. | treatment response / patient stratification | Treatment-Line Selection | /admin/disease-concepts/treatment-line-selection | true | true |
+| Neuropsychiatric Lupus (NPSLE) | SLE | schema | CNS/PNS manifestations of SLE (seizure, psychosis, cognitive). Modeled as a phenotype subtype carrying a SeverityScore and organ-domain tag. | tissue-specific / cell-state-specific effects | Neuropsychiatric Lupus (NPSLE) | /admin/disease-concepts/neuropsychiatric-lupus | false | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Serology Observation** | RAW longitudinal serology panels (the lab/LLM layer) + derived trend, SLEDAI sub-scores, and the disease state IMPLIED by each panel. The leaves that drive the lupus-nephritis progression machine. | — |
 | Individual | A defined attribute. | _FK -> Individuals.IndividualId._ |
 | Observed At | A defined attribute. | _Valid-time of this serology panel (RAW leaf)._ |
@@ -603,6 +1172,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Progression State Order | Determined by priority: 5 if the progression state key is “BiopsyIndicated”; 4 if the progression state key is “RenalFlareRisk”; 3 if the progression state key is “EarlyNephritis”; 2 if the progression state key is “SerologicActive”; in all other cases, 1. | _Numeric severity order of THIS panel's implied state (0..5). Lets the individual's current state be a MAXIFS over panels (highest state reached)._ |
 | Name | The same as its serology observation ID. | _Echoes id._ |
 | Relative Path | Computed as “/admin/serology/”, followed by the serology observation ID. | _Path._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Observed At | Sequence Index | Anti Ds Dna IU | Complement C3 | Complement C4 | Proteinuria G Per Day | Egfr Ml Min | Has Active Urinary Sediment | Prior Anti Ds Dna IU ƒ | Prior C3 ƒ | Prior C4 ƒ | Anti Ds Dna Trend ƒ | Complement Trend ƒ | Is Pre Nephritic Signature Panel ƒ | Is Significant Proteinuria ƒ | Is Nephrotic Range Proteinuria ƒ | Sledai Renal Points ƒ | Sledai Serology Points ƒ | Sledai Score ƒ | Progression State Key ƒ | Progression State Order ƒ | Name ƒ | Relative Path ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2025-09-01T00:00:00Z | 1 | 40 | 110 | 22 | 0.1 | 95 | false | — | — | — | Stable | Stable | false | false | false | 0.0 | 0.0 | 0.0 | PresymptomaticAutoimmunity | 1.0 | sero-ind-a-reyes-1 | /admin/serology/sero-ind-a-reyes-1 |
+| 2025-12-01T00:00:00Z | 2 | 95 | 78 | 12 | 0.2 | 94 | false | 40.0 | 110.0 | 22.0 | Rising | Falling | true | false | false | 0.0 | 4.0 | 4.0 | SerologicActive | 2.0 | sero-ind-a-reyes-2 | /admin/serology/sero-ind-a-reyes-2 |
+| 2025-08-15T00:00:00Z | 1 | 30 | 120 | 25 | 0.05 | 99 | false | — | — | — | Stable | Stable | false | false | false | 0.0 | 0.0 | 0.0 | PresymptomaticAutoimmunity | 1.0 | sero-ind-b-okafor-1 | /admin/serology/sero-ind-b-okafor-1 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Therapy Option** | Therapy lookup for the treatment-line-selection DAG (MMF/belimumab/anifrolumab/secukinumab). | — |
 | Therapy Label | A defined attribute. | _Therapy name._ |
 | Targets Pathway | A defined attribute. | _Pathway this therapy targets (matches CausalMechanisms.TargetPathway)._ |
@@ -610,6 +1195,19 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Preferred When | A defined attribute. | _Clinical context where preferred._ |
 | Name | The same as its therapy label. | _Echo._ |
 | Relative Path | Computed as “/admin/therapy-options/”, followed by the therapy option ID. | _Path._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Therapy Label | Targets Pathway | Line Ordinal | Preferred When | Name ƒ | Relative Path ƒ |
+|---|---|---|---|---|---|
+| Mycophenolate (MMF) | organ-induction | 1 | active nephritis (proteinuria-driven) | Mycophenolate (MMF) | /admin/therapy-options/mmf |
+| Belimumab (anti-BLyS) | B-cell/autoantibody | 2 | serologically active, autoantibody-driven | Belimumab (anti-BLyS) | /admin/therapy-options/belimumab |
+| Anifrolumab (anti-IFNAR1) | type-I-IFN | 2 | type-I-IFN-signature mechanism | Anifrolumab (anti-IFNAR1) | /admin/therapy-options/anifrolumab |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -648,35 +1246,35 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 
 ### Structural Constraints (from the schema)
 
-- An autoimmune diseas **must** have a disease label, and record whether it is a complex disease.
-- A disease stage **must** have a stage label, a sort order, and an autoimmune disease.
+- An autoimmune disease **must** have a disease label, and record whether it is a complex disease.
+- A disease stage **must** have a stage label; a sort order; and an autoimmune disease.
 - A tissue **must** have a tissue label.
 - An omics modality **must** have a modality label, and record whether it is a single cell.
 - A federated dataset **must** have a node label and a region, and record whether it is privacy preserving.
 - A variant type **must** have a type label, and record whether it is a rare variant class.
-- An individual **must** have a given name, a family name, an ancestry label, and an age years, and record whether it is ancestry absent from training and whether it has a cryptic relatedness flag.
-- A genomic variant **must** have a variant label, an individual, a variant type, and an allele frequency, and record whether it has an allele specific expression.
-- An omics assay **must** have an assay label, an individual, an omics modality, a batch ID, and a measurement error score, and record whether it has a cell state specific effect.
-- An evidence item **must** have an evidence label, a causal mechanism, an omics assay, an effect size, and a standard error, and record whether it is a cross modality, whether it is a negative control arm, whether it is an adjusted for ancestry p cs, whether it is an adjusted for batch, and whether it is a synthetic leaf.
-- A cohort replication **must** have a replication label, a causal mechanism, a federated dataset, a replication effect sign, a replication p value, and a replication ancestry label.
-- A negative control test **must** have a control label, a causal mechanism, a test kind, a permutation effect size, and a null threshold.
-- An environmental exposure **must** have an exposure label, an individual, and an exposure level, and record whether it is a maternal effect.
-- A treatment **must** have a treatment label, an individual, an autoimmune disease, and a treatment response, and record whether it has a treatment induced change and whether it has an adverse effect.
-- A clinical phenotype **must** have a phenotype label, an individual, an autoimmune disease, and a severity score, and record whether it has an immune dysfunction.
-- A causal mechanism **must** have a mechanism label, an individual, and a mechanism type, and record whether it has a pleiotropy.
-- An epistatic interaction **must** have an interaction label, an individual, a primary variant, a secondary variant, and an epistasis score, and record whether it has a pleiotropy.
-- A counterfactual trajectory **must** have a trajectory label, an individual, an autoimmune disease, a projected severity, and a horizon months.
-- An individual prediction **must** have a prediction label, an individual, an autoimmune disease, and a prediction type.
-- A calibration bin **must** have a bin label, an individual prediction, a predicted probability band, an observed event rate, and a coverage count.
-- An intervention target **must** have a target label, a causal mechanism, an autoimmune disease, and a therapy class, and record whether it is validated.
-- An axiom **must** have a statement, a rationale, and a category.
-- A tests for success **must** have a claim, a how witnessed, and a status.
-- A feature **must** have a title, a category, a priority, a description, and a ref count.
-- An inference kind **must** have a title, a description, an example field, an evidence count, a maturity, and a sort order.
+- An individual **must** have a given name; a family name; an ancestry label; and an age years, and record whether it is ancestry absent from training and whether it has a cryptic relatedness flag.
+- A genomic variant **must** have a variant label; an individual; a variant type; and an allele frequency, and record whether it has an allele specific expression.
+- An omics assay **must** have an assay label; an individual; an omics modality; a batch ID; and a measurement error score, and record whether it has a cell state specific effect.
+- An evidence item **must** have an evidence label; a causal mechanism; an omics assay; an effect size; and a standard error, and record whether it is cross modality; whether it is a negative control arm; whether it is an adjusted for ancestry p cs; whether it is an adjusted for batch; and whether it is a synthetic leaf.
+- A cohort replication **must** have a replication label; a causal mechanism; a federated dataset; a replication effect sign; a replication p value; and a replication ancestry label.
+- A negative control test **must** have a control label; a causal mechanism; a test kind; a permutation effect size; and a null threshold.
+- An environmental exposure **must** have an exposure label; an individual; and an exposure level, and record whether it is a maternal effect.
+- A treatment **must** have a treatment label; an individual; an autoimmune disease; and a treatment response, and record whether it has a treatment induced change and whether it has an adverse effect.
+- A clinical phenotype **must** have a phenotype label; an individual; an autoimmune disease; and a severity score, and record whether it has an immune dysfunction.
+- A causal mechanism **must** have a mechanism label; an individual; and a mechanism type, and record whether it has pleiotropy.
+- An epistatic interaction **must** have an interaction label; an individual; a primary variant; a secondary variant; and an epistasis score, and record whether it has pleiotropy.
+- A counterfactual trajectory **must** have a trajectory label; an individual; an autoimmune disease; a projected severity; and a horizon months.
+- An individual prediction **must** have a prediction label; an individual; an autoimmune disease; and a prediction type.
+- A calibration bin **must** have a bin label; an individual prediction; a predicted probability band; an observed event rate; and a coverage count.
+- An intervention target **must** have a target label; a causal mechanism; an autoimmune disease; and a therapy class, and record whether it is validated.
+- An axiom **must** have a statement; a rationale; and a category.
+- A tests for success **must** have a claim; a how witnessed; and a status.
+- A feature **must** have a title; a category; a priority; a description; and a ref count.
+- An inference kind **must** have a title; a description; an example field; an evidence count; a maturity; and a sort order.
 - An open question **must** have a question and a context, and record whether it is resolved.
 - A non goal **must** have a statement and a why excluded.
 - A glossary term **must** have a term and a definition.
-- An effortless loop **must** have a loop number, a title, a goal, a status, and a sort order.
+- An effortless loop **must** have a loop number; a title; a goal; a status; and a sort order.
 - A state machine **must** have a subject table name and a subject state column.
 - A machine state **must** reference exactly one state machine.
 - A machine state **must** have a state key.
@@ -684,9 +1282,9 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A state transition rule **must** reference exactly one machine state as its from state.
 - A state transition rule **must** reference exactly one machine state as its to state.
 - A state transition **must** reference exactly one state machine.
-- A state transition **must** have a subject table name, a subject ID, and a to state key.
+- A state transition **must** have a subject table name; a subject ID; and a to state key.
 - A subject state instance **must** reference exactly one state machine.
-- A subject state instance **must** have a subject table name, a subject ID, a state key, and a sequence index.
+- A subject state instance **must** have a subject table name; a subject ID; a state key; and a sequence index.
 - A disease domain concept **must** have a concept label and a modeling status.
 - A serology observation **must** reference exactly one individual.
 - A serology observation **must** have an observed at and a sequence index.
@@ -702,10 +1300,10 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 | ID | Declarative rule |
 |----|------------------|
-| **DR-1 Name** | An autoimmune diseas's name is the same as its disease label. |
-| **DR-2 Relative Path** | An autoimmune diseas's relative path is computed as “/diseases/”, followed by the autoimmune disease ID. |
-| **DR-3 Count of Disease Stages** | An autoimmune diseas's count of disease stages is the number of disease stages related to the autoimmune diseas. |
-| **DR-4 Count of Intervention Targets** | An autoimmune diseas's count of intervention targets is the number of intervention targets related to the autoimmune diseas. |
+| **DR-1 Name** | An autoimmune disease's name is the same as its disease label. |
+| **DR-2 Relative Path** | An autoimmune disease's relative path is computed as “/diseases/”, followed by the autoimmune disease ID. |
+| **DR-3 Count of Disease Stages** | An autoimmune disease's count of disease stages is the number of disease stages related to the autoimmune disease. |
+| **DR-4 Count of Intervention Targets** | An autoimmune disease's count of intervention targets is the number of intervention targets related to the autoimmune disease. |
 | **DR-5 Name** | A disease stage's name is computed as the autoimmune disease disease label, followed by “ — ”, followed by the stage label. |
 | **DR-6 Parent Path** | A disease stage's parent path is the relative path of the disease stage's autoimmune disease. |
 | **DR-7 Relative Path** | A disease stage's relative path is computed as the parent path, followed by “/stages/”, followed by the disease stage ID. |
@@ -738,7 +1336,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-34 Sum Confirmed Causal Confidence** | An individual's sum confirmed causal confidence is the total causal confidence across the individual's causal mechanisms that are causal architecture nodes. |
 | **DR-35 Count Cross Ancestry Confirmed Nodes** | An individual's count cross ancestry confirmed nodes is the number of the individual's causal mechanisms that are ancestry-transportable. |
 | **DR-36 Max Severity Score** | An individual's max severity score is the largest severity score across the clinical phenotypes related to the individual. |
-| **DR-37 Count High Severity Phenotypes** | An individual's count high severity phenotypes is the number of the individual's clinical phenotypes that are high severities. |
+| **DR-37 Count High Severity Phenotypes** | An individual's count high severity phenotypes is the number of the individual's clinical phenotypes that are high-severity. |
 | **DR-38 Has High Severity Phenotype** | An individual is considered to have a high severity phenotype if the count high severity phenotypes is at least 1. |
 | **DR-39 Count Predicted Treatment Responses** | An individual's count predicted treatment responses is the number of the individual's treatments that are treatment-response-predicted. |
 | **DR-40 Has Predicted Treatment Response** | An individual is considered to have a predicted treatment response if the count predicted treatment responses is at least 1. |
@@ -750,7 +1348,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-46 Latest Sledai Score** | An individual's latest sledai score is the largest sledai score across the serology observations related to the individual. |
 | **DR-47 Nephritis Progression State Key** | The individual's nephritis progression state key is determined by the following priority:<br>1. “BiopsyIndicated”, if the max progression state order is at least 5;<br>2. “RenalFlareRisk”, if the max progression state order is at least 4;<br>3. “EarlyNephritis”, if the max progression state order is at least 3;<br>4. “SerologicActive”, if the max progression state order is at least 2;<br>5. in all other cases, “PresymptomaticAutoimmunity”. |
 | **DR-48 Activity Tier** | The individual's activity tier is determined by the following priority:<br>1. “High / flare”, if the latest sledai score is at least 12;<br>2. “Moderate”, if the latest sledai score is at least 6;<br>3. “Mild”, if the latest sledai score is at least 1;<br>4. in all other cases, “Quiescent”. |
-| **DR-49 Is High Disease Activity** | An individual is considered a high disease activity if the latest sledai score is at least 12. |
+| **DR-49 Is High Disease Activity** | An individual is considered high-disease-activity if the latest sledai score is at least 12. |
 | **DR-50 Is Disease Progressing** | An individual is considered disease-progressing if at least one of the following holds: the nephritis progression state key is “EarlyNephritis”; the nephritis progression state key is “RenalFlareRisk”; or the nephritis progression state key is “BiopsyIndicated”. |
 | **DR-51 Target Pathway Code** | An individual's target pathway code is the largest target pathway code across the causal mechanisms related to the individual. |
 | **DR-52 Target Pathway** | The individual's target pathway is determined by the following priority:<br>1. “type-I-IFN”, if the target pathway code is 1;<br>2. “B-cell/autoantibody”, if the target pathway code is 2;<br>3. “T-cell-costim”, if the target pathway code is 3;<br>4. “IL-17/23”, if the target pathway code is 4;<br>5. in all other cases, an empty string. |
@@ -762,7 +1360,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-58 Variant Type Label** | A genomic variant's variant type label — taken from the linked variant type. |
 | **DR-59 Variant Class is Rare** | A genomic variant's variant class is rare when the linked variant type is a rare variant class. |
 | **DR-60 Individual Ancestry Label** | A genomic variant's individual ancestry label — taken from the linked individual. |
-| **DR-61 Is Rare Variant** | A genomic variant is considered a rare variant if the allele frequency is less than 0.01. |
+| **DR-61 Is Rare Variant** | A genomic variant is considered rare-variant if the allele frequency is less than 0.01. |
 | **DR-62 Is Causal Candidate** | A genomic variant is considered a causal candidate if all of the following hold: at least one of the following holds: the rare variant flag is set or the variant class is rare flag is set and the allele specific expression flag is set. |
 | **DR-63 Name** | An omics assay's name is the same as its assay label. |
 | **DR-64 Parent Path** | An omics assay's parent path is the relative path of the omics assay's individual. |
@@ -770,11 +1368,11 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-66 Modality Label** | An omics assay's modality label — taken from the linked omics modality. |
 | **DR-67 Tissue Label** | The omics assay's tissue label is determined by the following priority:<br>1. “Missing Tissue”, if the tissue is blank;<br>2. in all other cases, the tissue label of the omics assay's tissue. |
 | **DR-68 Has Batch Effect Risk** | An omics assay is considered to have batch effect risk if the measurement error score is greater than 0.3. |
-| **DR-69 Is High Quality Assay** | An omics assay is considered a high quality assay if all of the following hold: the batch effect risk flag is not set and the measurement error score is less than 0.15. |
+| **DR-69 Is High Quality Assay** | An omics assay is considered high-quality-assay if all of the following hold: the batch effect risk flag is not set and the measurement error score is less than 0.15. |
 | **DR-70 Name** | An evidence item's name is the same as its evidence label. |
 | **DR-71 Parent Path** | An evidence item's parent path is the relative path of the evidence item's causal mechanism. |
 | **DR-72 Relative Path** | An evidence item's relative path is computed as the parent path, followed by “/evidence/”, followed by the evidence item ID. |
-| **DR-73 Assay is High Quality** | An evidence item's assay is high quality when the linked omics assay is a high quality assay. |
+| **DR-73 Assay is High Quality** | An evidence item's assay is high quality when the linked omics assay is high quality assay. |
 | **DR-74 Z Stat** | The evidence item's z stat is determined by the following priority:<br>1. the effect size divided by the standard error, if the standard error is greater than 0;<br>2. in all other cases, 0. |
 | **DR-75 Is Confound Controlled** | An evidence item is considered confound-controlled if all of the following hold: the adjusted for ancestry p cs flag is set and the adjusted for batch flag is set. |
 | **DR-76 Is Qualified Evidence** | An evidence item is considered a qualified evidence if all of the following hold: the assay is high quality flag is set; the negative control arm flag is not set; the z stat is at least 2; and the confound controlled flag is set. |
@@ -784,7 +1382,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-80 Replicated At Nominal Sig** | A cohort replication is flagged replicated at nominal sig if all of the following hold: the replication p value is at most 0.05 and the replication effect sign is 1. |
 | **DR-81 Mechanism Primary Ancestry** | A cohort replication's mechanism primary ancestry is the individual ancestry label of the cohort replication's causal mechanism. |
 | **DR-82 Is Different Ancestry Replication** | A cohort replication is considered a different ancestry replication if it is not the case that the replication ancestry label is the mechanism primary ancestry. |
-| **DR-83 Is Cross Ancestry Concordant** | A cohort replication is considered a cross ancestry concordant if all of the following hold: the replicated at nominal sig flag is set and the different ancestry replication flag is set. |
+| **DR-83 Is Cross Ancestry Concordant** | A cohort replication is considered cross-ancestry-concordant if all of the following hold: the replicated at nominal sig flag is set and the different ancestry replication flag is set. |
 | **DR-84 Name** | A negative control test's name is the same as its control label. |
 | **DR-85 Parent Path** | A negative control test's parent path is the relative path of the negative control test's causal mechanism. |
 | **DR-86 Relative Path** | A negative control test's relative path is computed as the parent path, followed by “/neg-controls/”, followed by the negative control test ID. |
@@ -798,7 +1396,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-94 Parent Path** | A treatment's parent path is the relative path of the treatment's individual. |
 | **DR-95 Relative Path** | A treatment's relative path is computed as the parent path, followed by “/treatments/”, followed by the treatment ID. |
 | **DR-96 Autoimmune Disease Label** | A treatment's autoimmune disease label — taken from the linked autoimmune disease. |
-| **DR-97 Is Effective Treatment** | A treatment is considered an effective treatment if all of the following hold: at least one of the following holds: the treatment response is “Complete” or the treatment response is “Partial” and the adverse effect flag is not set. |
+| **DR-97 Is Effective Treatment** | A treatment is considered effective-treatment if all of the following hold: at least one of the following holds: the treatment response is “Complete” or the treatment response is “Partial” and the adverse effect flag is not set. |
 | **DR-98 Is Mechanism Matched** | A treatment's is mechanism matched is false if the targets mechanism is blank, in all other cases the is causal architecture node of the treatment's targets mechanism. |
 | **DR-99 Is Treatment Response Predicted** | A treatment is considered treatment-response-predicted if all of the following hold: the effective treatment flag is set and the mechanism matched flag is set. |
 | **DR-100 Treatment Response Deciding Factor** | The treatment's treatment response deciding factor is determined by the following priority:<br>1. “EffectiveOnConfirmedMechanism”, if the treatment response predicted flag is set;<br>2. “NoConfirmedMechanism”, if the mechanism matched flag is not set;<br>3. “AdverseEffect”, if the adverse effect flag is set;<br>4. “NoResponse”, if at least one of the following holds: the treatment response is “None” or the treatment response is “Adverse”;<br>5. in all other cases, “Undetermined”. |
@@ -806,7 +1404,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-102 Parent Path** | A clinical phenotype's parent path is the relative path of the clinical phenotype's individual. |
 | **DR-103 Relative Path** | A clinical phenotype's relative path is computed as the parent path, followed by “/phenotypes/”, followed by the clinical phenotype ID. |
 | **DR-104 Disease Stage Label** | The clinical phenotype's disease stage label is determined by the following priority:<br>1. an empty string, if the disease stage is blank;<br>2. in all other cases, the stage label of the clinical phenotype's disease stage. |
-| **DR-105 Is High Severity** | A clinical phenotype is considered a high severity if the severity score is greater than 7. |
+| **DR-105 Is High Severity** | A clinical phenotype is considered high-severity if the severity score is greater than 7. |
 | **DR-106 Is Presymptomatic Phenotype** | A clinical phenotype is considered a presymptomatic phenotype if the disease stage label is “Presymptomatic”. |
 | **DR-107 Target Pathway Code** | The causal mechanism's target pathway code is determined by the following priority:<br>1. 1, if the target pathway is “type-I-IFN”;<br>2. 2, if the target pathway is “B-cell/autoantibody”;<br>3. 3, if the target pathway is “T-cell-costim”;<br>4. 4, if the target pathway is “IL-17/23”;<br>5. in all other cases, 0. |
 | **DR-108 Name** | A causal mechanism's name is the same as its mechanism label. |
@@ -814,12 +1412,12 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-110 Relative Path** | A causal mechanism's relative path is computed as the parent path, followed by “/mechanisms/”, followed by the causal mechanism ID. |
 | **DR-111 Individual Ancestry Label** | A causal mechanism's individual ancestry label — taken from the linked individual. |
 | **DR-112 Count Qualified Evidence** | A causal mechanism's count qualified evidence is the number of the causal mechanism's evidence items that are qualified evidences. |
-| **DR-113 Count Modalities Supporting** | A causal mechanism's count modalities supporting is the number of the causal mechanism's evidence items that are cross modalities and are qualified evidences. |
+| **DR-113 Count Modalities Supporting** | A causal mechanism's count modalities supporting is the number of the causal mechanism's evidence items that are cross-modality and are qualified evidences. |
 | **DR-114 Count Intervention Targets** | A causal mechanism's count intervention targets is the number of intervention targets related to the causal mechanism. |
 | **DR-115 Is Experimentally Falsifiable** | A causal mechanism is considered experimentally-falsifiable if all of the following hold: the count intervention targets is at least 1 and the count qualified evidence is at least 1. |
 | **DR-116 Count Replications** | A causal mechanism's count replications is the number of cohort replications related to the causal mechanism. |
 | **DR-117 Count Concordant Replications** | A causal mechanism's count concordant replications is the number of the causal mechanism's cohort replications that are replicated at nominal sig. |
-| **DR-118 Count Cross Ancestry Concordant** | A causal mechanism's count cross ancestry concordant is the number of the causal mechanism's cohort replications that are cross ancestry concordants. |
+| **DR-118 Count Cross Ancestry Concordant** | A causal mechanism's count cross ancestry concordant is the number of the causal mechanism's cohort replications that are cross-ancestry-concordant. |
 | **DR-119 Replication Fraction** | The causal mechanism's replication fraction is determined by the following priority:<br>1. the count concordant replications divided by the count replications, if the count replications is greater than 0;<br>2. in all other cases, 0. |
 | **DR-120 Replicates Across Cohorts** | A causal mechanism is considered to replicate an across cohorts if all of the following hold: the count replications is at least 2 and the count concordant replications is at least 2. |
 | **DR-121 Count Neg Control Tests** | A causal mechanism's count neg control tests is the number of negative control tests related to the causal mechanism. |
@@ -838,7 +1436,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-134 Parent Path** | A counterfactual trajectory's parent path is the relative path of the counterfactual trajectory's individual. |
 | **DR-135 Relative Path** | A counterfactual trajectory's relative path is computed as the parent path, followed by “/trajectories/”, followed by the counterfactual trajectory ID. |
 | **DR-136 Autoimmune Disease Label** | A counterfactual trajectory's autoimmune disease label — taken from the linked autoimmune disease. |
-| **DR-137 Is Worsening Trajectory** | A counterfactual trajectory is considered a worsening trajectory if the projected severity is greater than 7. |
+| **DR-137 Is Worsening Trajectory** | A counterfactual trajectory is considered worsening-trajectory if the projected severity is greater than 7. |
 | **DR-138 Name** | An individual prediction's name is the same as its prediction label. |
 | **DR-139 Parent Path** | An individual prediction's parent path is the relative path of the individual prediction's individual. |
 | **DR-140 Relative Path** | An individual prediction's relative path is computed as the parent path, followed by “/predictions/”, followed by the individual prediction ID. |
@@ -861,7 +1459,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-157 Rests on Confirmed Mechanism** | An individual prediction is considered to rest on confirmed mechanism if the individual confirmed node count is at least 1. |
 | **DR-158 Has Spurious Correlation Flag** | An individual prediction is considered to have a spurious correlation flag if at least one of the following holds: the rests on confirmed mechanism flag is not set or the individual has cryptic relatedness flag is set. |
 | **DR-159 Is Falsifiability Backed** | An individual prediction is considered falsifiability-backed if the individual confirmed node count is at least 1. |
-| **DR-160 Is Transportable to Absent Ancestry** | An individual prediction is considered a transportable to absent ancestry if all of the following hold: the ancestry holdout flag is set; the individual cross ancestry node count is at least 1; and the spurious correlation flag is not set. |
+| **DR-160 Is Transportable to Absent Ancestry** | An individual prediction is considered transportable-to-absent-ancestry if all of the following hold: the ancestry holdout flag is set; the individual cross ancestry node count is at least 1; and the spurious correlation flag is not set. |
 | **DR-161 Is Ancestry Transport Safe** | An individual prediction is considered an ancestry transport safe if the transportable to absent ancestry flag is set, or else the ancestry holdout flag is not set. |
 | **DR-162 Transport Gate Status** | The individual prediction's transport gate status is determined by the following priority:<br>1. “NotApplicable”, if the ancestry holdout flag is not set;<br>2. “PASS-tested”, if the transportable to absent ancestry flag is set;<br>3. in all other cases, “FAIL”. |
 | **DR-163 Is High Confidence Prediction** | An individual prediction is considered a high confidence prediction if all of the following hold: the calibrated uncertainty is at least 0.7 and the spurious correlation flag is not set. |
@@ -890,8 +1488,8 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-186 Parent Path** | An intervention target's parent path is the relative path of the intervention target's causal mechanism. |
 | **DR-187 Relative Path** | An intervention target's relative path is computed as the parent path, followed by “/targets/”, followed by the intervention target ID. |
 | **DR-188 Causal Mechanism Label** | An intervention target's causal mechanism label — taken from the linked causal mechanism. |
-| **DR-189 Is Gene Based Therapy** | An intervention target is considered a gene based therapy if the therapy class is “Gene-based”. |
-| **DR-190 Is Cell Based Therapy** | An intervention target is considered a cell based therapy if the therapy class is “Cell-based”. |
+| **DR-189 Is Gene Based Therapy** | An intervention target is considered gene-based-therapy if the therapy class is “Gene-based”. |
+| **DR-190 Is Cell Based Therapy** | An intervention target is considered cell-based-therapy if the therapy class is “Cell-based”. |
 | **DR-191 Name** | An axiom's name is the same as its statement. |
 | **DR-192 Relative Path** | An axiom's relative path is computed as “/admin/axioms/”, followed by the axiom ID. |
 | **DR-193 Name** | A tests for success's name is the same as its claim. |
@@ -949,7 +1547,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-245 Is Forward** | A state transition is considered a forward if it is not the case that the to state key is “Intake”. |
 | **DR-246 Name** | A subject state instance's name is the same as its subject state instance ID. |
 | **DR-247 Relative Path** | A subject state instance's relative path is computed as “/admin/state-machine/instances/”, followed by the subject state instance ID. |
-| **DR-248 Is Current** | A subject state instance is considered a current if the exited at is blank. |
+| **DR-248 Is Current** | A subject state instance is considered current if the exited at is blank. |
 | **DR-249 Has Complete Lineage** | A subject state instance is considered to have a complete lineage if the sequence index is at least 1. |
 | **DR-250 Is Long Dwell** | A subject state instance is considered a long dwell if the dwell days is at least 90. |
 | **DR-251 Name** | A disease domain concept's name is the same as its concept label. |
@@ -976,7 +1574,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -1255,8 +1853,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)
