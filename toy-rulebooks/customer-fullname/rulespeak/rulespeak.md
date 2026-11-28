@@ -1,4 +1,4 @@
-# 📘 Customer Full Name — RuleSpeak®
+# 📘 Customer Full Name — Docs
 
 _Hello World: a Customers table whose FullName is a calculated field over FirstName and LastName, demonstrating basic schema and calculated fields._
 
@@ -16,6 +16,19 @@ _Hello World: a Customers table whose FullName is a calculated field over FirstN
 | Last Name | A defined attribute. | _Last Name of the customer_ |
 | Name | Computed as the last name, followed by a comma followed by a space, followed by the first name. | _Full name: first and last_ |
 | Initials | Computed as the first 1 character(s) of the first name, followed by the first 1 character(s) of the last name. | _First letter of the first and last name_ |
+
+<details open>
+<summary>Example data</summary>
+
+| First Name | Last Name | Name ƒ | Initials ƒ |
+|---|---|---|---|
+| Jane | Smith | Smith, Jane | JS |
+| John | Doe | Doe, John | JD |
+| Emily | Jones | Jones, Emily | EJ |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 3 Operative Rules
 
@@ -43,7 +56,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -53,8 +66,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)
