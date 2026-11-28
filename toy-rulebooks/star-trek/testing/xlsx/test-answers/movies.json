@@ -10,7 +10,7 @@
     "budget": 40000000,
     "box_office": 118159941,
     "crew_assignments": "",
-    "crew_count": 0
+    "crew_count": 3
   },
   {
     "movie_id": "movie-2-first-contact",
@@ -23,7 +23,7 @@
     "budget": 46000000,
     "box_office": 92262550,
     "crew_assignments": "",
-    "crew_count": 0
+    "crew_count": 1
   },
   {
     "movie_id": "movie-3-insurrection",
