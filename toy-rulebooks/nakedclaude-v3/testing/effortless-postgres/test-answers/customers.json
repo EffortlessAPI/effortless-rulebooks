@@ -17,8 +17,8 @@
     "created_at": "2025-09-02 09:15:00-05:00",
     "average_order_value": "4770.44",
     "lifetime_margin_percent": "Unable to generate formula",
-    "customer_since_days": 373,
-    "days_since_last_order": "340",
+    "customer_since_days": 452,
+    "days_since_last_order": "418",
     "count_of_multiple_payment_orders": 1,
     "has_multi_payment_orders": true
   },
@@ -40,8 +40,8 @@
     "created_at": "2025-08-14 04:30:00-05:00",
     "average_order_value": "145.63",
     "lifetime_margin_percent": "Unable to generate formula",
-    "customer_since_days": 392,
-    "days_since_last_order": "202",
+    "customer_since_days": 471,
+    "days_since_last_order": "280",
     "count_of_multiple_payment_orders": 2,
     "has_multi_payment_orders": false
   },
@@ -63,8 +63,8 @@
     "created_at": "2025-10-11 06:00:00-05:00",
     "average_order_value": "649.51",
     "lifetime_margin_percent": "Unable to generate formula",
-    "customer_since_days": 334,
-    "days_since_last_order": "302",
+    "customer_since_days": 413,
+    "days_since_last_order": "380",
     "count_of_multiple_payment_orders": 1,
     "has_multi_payment_orders": false
   },
@@ -86,8 +86,8 @@
     "created_at": "2025-11-22 10:45:00-06:00",
     "average_order_value": "221.70",
     "lifetime_margin_percent": "Unable to generate formula",
-    "customer_since_days": 292,
-    "days_since_last_order": "225",
+    "customer_since_days": 371,
+    "days_since_last_order": "303",
     "count_of_multiple_payment_orders": 2,
     "has_multi_payment_orders": false
   },
@@ -109,8 +109,8 @@
     "created_at": "2026-01-08 02:20:00-06:00",
     "average_order_value": "126.82",
     "lifetime_margin_percent": "Unable to generate formula",
-    "customer_since_days": 245,
-    "days_since_last_order": "182",
+    "customer_since_days": 324,
+    "days_since_last_order": "260",
     "count_of_multiple_payment_orders": 1,
     "has_multi_payment_orders": true
   }

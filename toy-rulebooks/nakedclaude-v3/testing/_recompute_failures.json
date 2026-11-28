@@ -4,7 +4,7 @@
     "field": "CustomerSinceDays",
     "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, 'days'), BLANK())",
     "record_id": "bobby",
-    "error": "drift: stored=285 python-recompute=391",
+    "error": "drift: stored=285 python-recompute=470",
     "severity": "drift"
   },
   {
@@ -12,7 +12,7 @@
     "field": "CustomerSinceDays",
     "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, 'days'), BLANK())",
     "record_id": "alice-johnson",
-    "error": "drift: stored=266 python-recompute=372",
+    "error": "drift: stored=266 python-recompute=451",
     "severity": "drift"
   },
   {
@@ -20,7 +20,7 @@
     "field": "CustomerSinceDays",
     "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, 'days'), BLANK())",
     "record_id": "brian-lee",
-    "error": "drift: stored=227 python-recompute=333",
+    "error": "drift: stored=227 python-recompute=412",
     "severity": "drift"
   },
   {
@@ -28,7 +28,7 @@
     "field": "CustomerSinceDays",
     "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, 'days'), BLANK())",
     "record_id": "carla-smith",
-    "error": "drift: stored=185 python-recompute=291",
+    "error": "drift: stored=185 python-recompute=370",
     "severity": "drift"
   },
   {
@@ -36,7 +36,7 @@
     "field": "CustomerSinceDays",
     "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, 'days'), BLANK())",
     "record_id": "caroline",
-    "error": "drift: stored=138 python-recompute=244",
+    "error": "drift: stored=138 python-recompute=323",
     "severity": "drift"
   },
   {
