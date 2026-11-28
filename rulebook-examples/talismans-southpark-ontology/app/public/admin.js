@@ -106,7 +106,6 @@
                  : `<td class="computed"><span data-er-dag="${esc(table.name)}.${esc(f.name)}" data-er-row="${esc(key)}">${esc(row[f.name])}</span></td>`).join('') + '</tr>';
     }).join('');
     $('grid').innerHTML = head + '<tbody>' + body + '</tbody>';
-    $('grid').dataset.table = table.name;
     if (showComputed && window.EffortlessExplainer) {
       if (!explainerReady) { window.EffortlessExplainer.init({ mode: 'modal', corner: 'bottom-right' }); explainerReady = true; }
       else window.EffortlessExplainer.enhanceCells(document);
@@ -123,7 +122,8 @@
 
   // ---------------------------------------------------------------- events
   document.addEventListener('click', (e) => {
-    const t = e.target.closest('[data-table],[data-engine],[data-delete]');
+    // Only the table list's buttons open a table: a click anywhere else (a box of the grid) must not redraw it.
+    const t = e.target.closest('#tables [data-table],[data-engine],[data-delete]');
     if (!t) return;
     if (t.dataset.table) busy(() => loadTable(t.dataset.table));
     else if (t.dataset.engine) { engineId = t.dataset.engine; localStorage.setItem('erb.backend', engineId); renderEngines(); if ($('show-computed').checked) busy(() => loadTable(current)); }

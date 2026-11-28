@@ -27,6 +27,9 @@ engines. The README is the user-facing account; this file is how to work on it.
 - `node --test testing/app/app.test.mjs` covers what her page cannot do (admin edits, Save,
   the candidate generator), on each engine, and the Excel round trip (export, edit one cell,
   import) through the catalog's `rulebook-to-xlsx` and `xlsx-to-rulebook`.
+- `node --test testing/app/admin-page.test.mjs` drives the admin page itself in headless Chrome
+  (`testing/app/browser.mjs`): what a person does with the mouse, not only what the API accepts.
+  A page behaviour that broke goes there.
 - The tests download her page each time, so they also report when her page changes. When
   her page and the rulebook disagree, the rulebook is wrong until shown otherwise: read
   her page's script (one inline script) before changing a rule.

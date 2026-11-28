@@ -108,13 +108,14 @@ report when her page changes.
 | [`compare-with-her-app.mjs`](testing/her-app/compare-with-her-app.mjs) | Her reasoner against the Postgres views, in every combination of the five rule switches for her starting facts, the two facts she suggests trying, and her buttons' fact changes. | 224 of 224 states, in her order too |
 | [`testing/app/app.test.mjs`](testing/app/app.test.mjs) | What her page cannot do, on each engine: a new property wired to the Symmetric rule by adding a row, a new name that finds its portrait, new wording, Save, Discard, and the engines still agreeing afterwards. Also the candidate generator against the rulebook's stored rows, and Save's refusal to overwrite a file someone else changed. | 7 of 7 |
 | [`testing/app/open-world.test.mjs`](testing/app/open-world.test.mjs) | Open world on each engine: a stated fact is TRUE, a fact nothing states or concludes is blank (not known, never FALSE), a rule's conclusion is TRUE, and switching a fact off leaves it not known. | 4 of 4 |
+| [`testing/app/admin-page.test.mjs`](testing/app/admin-page.test.mjs) | The admin page itself in headless Chrome (`testing/app/browser.mjs`, the DevTools pipe, no package): Add a row opens a new line that stays while you click into its boxes, and its Add button puts the row on the server. | 1 of 1 (2026-11-27) |
 | [`testing/app/editors.test.mjs`](testing/app/editors.test.mjs) | The rulebook editors from the app's side: an editor is started from its link (and one that does not start says why), and a file an editor saved is taken in as the next version, in both files, and never over something it would lose. | 4 of 4 (2026-11-27) |
 | [`scripts/tests/test_live_substrates.py`](../../scripts/tests/test_live_substrates.py) | The platform tool: TypeScript and OWL follow a change to the live rows, agree on every computed value, and a wrong value is named. | 4 of 4 |
 
 ```bash
 node testing/her-app/compare-app-with-her-app.mjs --engine=all --walks=3 --steps=40
 node testing/her-app/compare-with-her-app.mjs
-node --test testing/app/app.test.mjs testing/app/open-world.test.mjs testing/app/concepts.test.mjs testing/app/editors.test.mjs testing/app/rulebook-files.test.mjs
+node --test testing/app/app.test.mjs testing/app/open-world.test.mjs testing/app/concepts.test.mjs testing/app/editors.test.mjs testing/app/rulebook-files.test.mjs testing/app/admin-page.test.mjs
 python3 ../../scripts/tests/test_live_substrates.py
 ```
 
