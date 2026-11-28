@@ -1,0 +1,922 @@
+{
+  "generator": "rulebook-to-owl",
+  "ontology": {
+    "iri": "https://example.org/south-park-ontology-in-sdlaf",
+    "versionIri": null,
+    "namespace": "https://example.org/south-park-ontology-in-sdlaf#",
+    "dataNamespace": "https://example.org/south-park-ontology-in-sdlaf#",
+    "prefix": "south-park-ontology-in-sdlaf",
+    "placeholder": true
+  },
+  "prefixes": {
+    "south-park-ontology-in-sdlaf": "https://example.org/south-park-ontology-in-sdlaf#",
+    "south-park-ontology-in-sdlaf-shapes": "https://example.org/south-park-ontology-in-sdlaf/shapes#",
+    "erb": "https://effortlessapi.com/ns/erb#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "keyProperty": "https://effortlessapi.com/ns/erb#key",
+  "derivedProperty": "https://effortlessapi.com/ns/erb#derived",
+  "tables": {
+    "Reasoning": {
+      "class": "https://example.org/south-park-ontology-in-sdlaf#Reasoning",
+      "keyField": "ReasoningId",
+      "fields": {
+        "ReasoningId": "https://example.org/south-park-ontology-in-sdlaf#reasoningId",
+        "Name": "https://example.org/south-park-ontology-in-sdlaf#name",
+        "Label": "https://example.org/south-park-ontology-in-sdlaf#label",
+        "InverseIsOn": "https://example.org/south-park-ontology-in-sdlaf#inverseIsOn",
+        "SymmetricIsOn": "https://example.org/south-park-ontology-in-sdlaf#symmetricIsOn",
+        "ChainIsOn": "https://example.org/south-park-ontology-in-sdlaf#chainIsOn",
+        "DomainRangeIsOn": "https://example.org/south-park-ontology-in-sdlaf#domainRangeIsOn",
+        "DisjointIsOn": "https://example.org/south-park-ontology-in-sdlaf#disjointIsOn",
+        "CountOfIndividuals": "https://example.org/south-park-ontology-in-sdlaf#countOfIndividuals",
+        "CountOfPeople": "https://example.org/south-park-ontology-in-sdlaf#countOfPeople",
+        "CountOfSchools": "https://example.org/south-park-ontology-in-sdlaf#countOfSchools",
+        "CountOfStatedParenthoods": "https://example.org/south-park-ontology-in-sdlaf#countOfStatedParenthoods",
+        "CountOfStatedMarriages": "https://example.org/south-park-ontology-in-sdlaf#countOfStatedMarriages",
+        "CountOfStatedFriendships": "https://example.org/south-park-ontology-in-sdlaf#countOfStatedFriendships",
+        "CountOfStatedIndividualFacts": "https://example.org/south-park-ontology-in-sdlaf#countOfStatedIndividualFacts",
+        "CountOfCurrentGradeLevels": "https://example.org/south-park-ontology-in-sdlaf#countOfCurrentGradeLevels",
+        "CountOfCurrentRoles": "https://example.org/south-park-ontology-in-sdlaf#countOfCurrentRoles",
+        "CountOfStatedFacts": "https://example.org/south-park-ontology-in-sdlaf#countOfStatedFacts",
+        "CountOfChildOfConclusions": "https://example.org/south-park-ontology-in-sdlaf#countOfChildOfConclusions",
+        "CountOfMirroredMarriages": "https://example.org/south-park-ontology-in-sdlaf#countOfMirroredMarriages",
+        "CountOfMirroredFriendships": "https://example.org/south-park-ontology-in-sdlaf#countOfMirroredFriendships",
+        "CountOfGrandparentConclusions": "https://example.org/south-park-ontology-in-sdlaf#countOfGrandparentConclusions",
+        "CountOfPersonConclusions": "https://example.org/south-park-ontology-in-sdlaf#countOfPersonConclusions",
+        "CountOfSchoolConclusions": "https://example.org/south-park-ontology-in-sdlaf#countOfSchoolConclusions",
+        "CountOfConclusions": "https://example.org/south-park-ontology-in-sdlaf#countOfConclusions",
+        "CountOfContradictions": "https://example.org/south-park-ontology-in-sdlaf#countOfContradictions",
+        "IsConsistent": "https://example.org/south-park-ontology-in-sdlaf#isConsistent",
+        "Summary": "https://example.org/south-park-ontology-in-sdlaf#summary"
+      }
+    },
+    "Portraits": {
+      "class": "https://example.org/south-park-ontology-in-sdlaf#Portraits",
+      "keyField": "PortraitId",
+      "fields": {
+        "PortraitId": "https://example.org/south-park-ontology-in-sdlaf#portraitId",
+        "DisplayName": "https://example.org/south-park-ontology-in-sdlaf#displayName",
+        "Page": "https://example.org/south-park-ontology-in-sdlaf#page",
+        "Image": "https://example.org/south-park-ontology-in-sdlaf#image",
+        "Crop": "https://example.org/south-park-ontology-in-sdlaf#crop",
+        "Width": "https://example.org/south-park-ontology-in-sdlaf#width",
+        "Height": "https://example.org/south-park-ontology-in-sdlaf#height",
+        "SortOrder": "https://example.org/south-park-ontology-in-sdlaf#sortOrder",
+        "Name": "https://example.org/south-park-ontology-in-sdlaf#name"
+      }
+    },
+    "Individuals": {
+      "class": "https://example.org/south-park-ontology-in-sdlaf#Individuals",
+      "keyField": "IndividualId",
+      "fields": {
+        "IndividualId": "https://example.org/south-park-ontology-in-sdlaf#individualId",
+        "Name": "https://example.org/south-park-ontology-in-sdlaf#name",
+        "Label": "https://example.org/south-park-ontology-in-sdlaf#label",
+        "SortOrder": "https://example.org/south-park-ontology-in-sdlaf#sortOrder",
+        "Reasoning": "https://example.org/south-park-ontology-in-sdlaf#reasoning",
+        "Portrait": "https://example.org/south-park-ontology-in-sdlaf#portrait",
+        "PortraitImage": "https://example.org/south-park-ontology-in-sdlaf#portraitImage",
+        "SymmetricIsOn": "https://example.org/south-park-ontology-in-sdlaf#symmetricIsOn",
+        "DomainRangeIsOn": "https://example.org/south-park-ontology-in-sdlaf#domainRangeIsOn",
+        "IsAssertedPerson": "https://example.org/south-park-ontology-in-sdlaf#isAssertedPerson",
+        "IsAssertedSchool": "https://example.org/south-park-ontology-in-sdlaf#isAssertedSchool",
+        "Age": "https://example.org/south-park-ontology-in-sdlaf#age",
+        "Attends": "https://example.org/south-park-ontology-in-sdlaf#attends",
+        "AttendsLabel": "https://example.org/south-park-ontology-in-sdlaf#attendsLabel",
+        "HasAge": "https://example.org/south-park-ontology-in-sdlaf#hasAge",
+        "HasAttends": "https://example.org/south-park-ontology-in-sdlaf#hasAttends",
+        "StatedFactCount": "https://example.org/south-park-ontology-in-sdlaf#statedFactCount",
+        "CountOfGradeLevelsOn": "https://example.org/south-park-ontology-in-sdlaf#countOfGradeLevelsOn",
+        "LatestGradeLevelSeq": "https://example.org/south-park-ontology-in-sdlaf#latestGradeLevelSeq",
+        "HasGradeLevel": "https://example.org/south-park-ontology-in-sdlaf#hasGradeLevel",
+        "CurrentGradeLevelRecord": "https://example.org/south-park-ontology-in-sdlaf#currentGradeLevelRecord",
+        "GradeLevel": "https://example.org/south-park-ontology-in-sdlaf#gradeLevel",
+        "CountOfRolesOn": "https://example.org/south-park-ontology-in-sdlaf#countOfRolesOn",
+        "LatestRoleSeq": "https://example.org/south-park-ontology-in-sdlaf#latestRoleSeq",
+        "HasRole": "https://example.org/south-park-ontology-in-sdlaf#hasRole",
+        "CurrentRoleRecord": "https://example.org/south-park-ontology-in-sdlaf#currentRoleRecord",
+        "Role": "https://example.org/south-park-ontology-in-sdlaf#role",
+        "HasPersonEvidence": "https://example.org/south-park-ontology-in-sdlaf#hasPersonEvidence",
+        "IsPersonByDomain": "https://example.org/south-park-ontology-in-sdlaf#isPersonByDomain",
+        "IsPerson": "https://example.org/south-park-ontology-in-sdlaf#isPerson",
+        "IsPersonConcluded": "https://example.org/south-park-ontology-in-sdlaf#isPersonConcluded",
+        "AttendedByCount": "https://example.org/south-park-ontology-in-sdlaf#attendedByCount",
+        "IsSchoolByRange": "https://example.org/south-park-ontology-in-sdlaf#isSchoolByRange",
+        "IsSchool": "https://example.org/south-park-ontology-in-sdlaf#isSchool",
+        "IsSchoolConcluded": "https://example.org/south-park-ontology-in-sdlaf#isSchoolConcluded",
+        "ChildCount": "https://example.org/south-park-ontology-in-sdlaf#childCount",
+        "ParentCount": "https://example.org/south-park-ontology-in-sdlaf#parentCount",
+        "ChildOfFactCount": "https://example.org/south-park-ontology-in-sdlaf#childOfFactCount",
+        "GrandchildCount": "https://example.org/south-park-ontology-in-sdlaf#grandchildCount",
+        "GrandparentCount": "https://example.org/south-park-ontology-in-sdlaf#grandparentCount",
+        "DescendantCount": "https://example.org/south-park-ontology-in-sdlaf#descendantCount",
+        "AncestorCount": "https://example.org/south-park-ontology-in-sdlaf#ancestorCount",
+        "StatedSpouseCount": "https://example.org/south-park-ontology-in-sdlaf#statedSpouseCount",
+        "MirroredSpouseCount": "https://example.org/south-park-ontology-in-sdlaf#mirroredSpouseCount",
+        "SpouseCount": "https://example.org/south-park-ontology-in-sdlaf#spouseCount",
+        "StatedFriendCount": "https://example.org/south-park-ontology-in-sdlaf#statedFriendCount",
+        "MirroredFriendCount": "https://example.org/south-park-ontology-in-sdlaf#mirroredFriendCount",
+        "FriendCount": "https://example.org/south-park-ontology-in-sdlaf#friendCount"
+      }
+    },
+    "Parenthoods": {
+      "class": "https://example.org/south-park-ontology-in-sdlaf#Parenthoods",
+      "keyField": "ParenthoodId",
+      "fields": {
+        "ParenthoodId": "https://example.org/south-park-ontology-in-sdlaf#parenthoodId",
+        "Name": "https://example.org/south-park-ontology-in-sdlaf#name",
+        "Reasoning": "https://example.org/south-park-ontology-in-sdlaf#reasoning",
+        "Parent": "https://example.org/south-park-ontology-in-sdlaf#parent",
+        "Child": "https://example.org/south-park-ontology-in-sdlaf#child",
+        "ParentLabel": "https://example.org/south-park-ontology-in-sdlaf#parentLabel",
+        "ChildLabel": "https://example.org/south-park-ontology-in-sdlaf#childLabel",
+        "InverseIsOn": "https://example.org/south-park-ontology-in-sdlaf#inverseIsOn",
+        "SymmetricIsOn": "https://example.org/south-park-ontology-in-sdlaf#symmetricIsOn",
+        "DisjointIsOn": "https://example.org/south-park-ontology-in-sdlaf#disjointIsOn",
+        "ChildOfHolds": "https://example.org/south-park-ontology-in-sdlaf#childOfHolds",
+        "ChildOfSentence": "https://example.org/south-park-ontology-in-sdlaf#childOfSentence",
+        "SpouseAsStatedCount": "https://example.org/south-park-ontology-in-sdlaf#spouseAsStatedCount",
+        "SpouseAsMirroredCount": "https://example.org/south-park-ontology-in-sdlaf#spouseAsMirroredCount",
+        "IsContradiction": "https://example.org/south-park-ontology-in-sdlaf#isContradiction",
+        "AncestryClosure": "https://example.org/south-park-ontology-in-sdlaf#ancestryClosure"
+      }
+    },
+    "Marriages": {
+      "class": "https://example.org/south-park-ontology-in-sdlaf#Marriages",
+      "keyField": "MarriageId",
+      "fields": {
+        "MarriageId": "https://example.org/south-park-ontology-in-sdlaf#marriageId",
+        "Name": "https://example.org/south-park-ontology-in-sdlaf#name",
+        "Reasoning": "https://example.org/south-park-ontology-in-sdlaf#reasoning",
+        "PartnerA": "https://example.org/south-park-ontology-in-sdlaf#partnerA",
+        "PartnerB": "https://example.org/south-park-ontology-in-sdlaf#partnerB",
+        "PartnerALabel": "https://example.org/south-park-ontology-in-sdlaf#partnerALabel",
+        "PartnerBLabel": "https://example.org/south-park-ontology-in-sdlaf#partnerBLabel",
+        "SymmetricIsOn": "https://example.org/south-park-ontology-in-sdlaf#symmetricIsOn",
+        "MirrorHolds": "https://example.org/south-park-ontology-in-sdlaf#mirrorHolds",
+        "MirrorSentence": "https://example.org/south-park-ontology-in-sdlaf#mirrorSentence"
+      }
+    },
+    "Friendships": {
+      "class": "https://example.org/south-park-ontology-in-sdlaf#Friendships",
+      "keyField": "FriendshipId",
+      "fields": {
+        "FriendshipId": "https://example.org/south-park-ontology-in-sdlaf#friendshipId",
+        "Name": "https://example.org/south-park-ontology-in-sdlaf#name",
+        "Reasoning": "https://example.org/south-park-ontology-in-sdlaf#reasoning",
+        "FriendA": "https://example.org/south-park-ontology-in-sdlaf#friendA",
+        "FriendB": "https://example.org/south-park-ontology-in-sdlaf#friendB",
+        "FriendALabel": "https://example.org/south-park-ontology-in-sdlaf#friendALabel",
+        "FriendBLabel": "https://example.org/south-park-ontology-in-sdlaf#friendBLabel",
+        "SymmetricIsOn": "https://example.org/south-park-ontology-in-sdlaf#symmetricIsOn",
+        "MirrorHolds": "https://example.org/south-park-ontology-in-sdlaf#mirrorHolds",
+        "MirrorSentence": "https://example.org/south-park-ontology-in-sdlaf#mirrorSentence"
+      }
+    },
+    "Grandparenthoods": {
+      "class": "https://example.org/south-park-ontology-in-sdlaf#Grandparenthoods",
+      "keyField": "GrandparenthoodId",
+      "fields": {
+        "GrandparenthoodId": "https://example.org/south-park-ontology-in-sdlaf#grandparenthoodId",
+        "Name": "https://example.org/south-park-ontology-in-sdlaf#name",
+        "Reasoning": "https://example.org/south-park-ontology-in-sdlaf#reasoning",
+        "UpperLink": "https://example.org/south-park-ontology-in-sdlaf#upperLink",
+        "LowerLink": "https://example.org/south-park-ontology-in-sdlaf#lowerLink",
+        "Grandparent": "https://example.org/south-park-ontology-in-sdlaf#grandparent",
+        "UpperChild": "https://example.org/south-park-ontology-in-sdlaf#upperChild",
+        "LowerParent": "https://example.org/south-park-ontology-in-sdlaf#lowerParent",
+        "Grandchild": "https://example.org/south-park-ontology-in-sdlaf#grandchild",
+        "GrandparentLabel": "https://example.org/south-park-ontology-in-sdlaf#grandparentLabel",
+        "GrandchildLabel": "https://example.org/south-park-ontology-in-sdlaf#grandchildLabel",
+        "Links": "https://example.org/south-park-ontology-in-sdlaf#links",
+        "ChainIsOn": "https://example.org/south-park-ontology-in-sdlaf#chainIsOn",
+        "Holds": "https://example.org/south-park-ontology-in-sdlaf#holds"
+      }
+    },
+    "GradeLevelRecords": {
+      "class": "https://example.org/south-park-ontology-in-sdlaf#GradeLevelRecords",
+      "keyField": "GradeLevelRecordId",
+      "fields": {
+        "GradeLevelRecordId": "https://example.org/south-park-ontology-in-sdlaf#gradeLevelRecordId",
+        "Name": "https://example.org/south-park-ontology-in-sdlaf#name",
+        "Reasoning": "https://example.org/south-park-ontology-in-sdlaf#reasoning",
+        "Individual": "https://example.org/south-park-ontology-in-sdlaf#individual",
+        "IndividualLabel": "https://example.org/south-park-ontology-in-sdlaf#individualLabel",
+        "GradeLevel": "https://example.org/south-park-ontology-in-sdlaf#gradeLevel",
+        "StatedSeq": "https://example.org/south-park-ontology-in-sdlaf#statedSeq",
+        "IsOn": "https://example.org/south-park-ontology-in-sdlaf#isOn",
+        "IndividualLatestSeq": "https://example.org/south-park-ontology-in-sdlaf#individualLatestSeq",
+        "IsCurrent": "https://example.org/south-park-ontology-in-sdlaf#isCurrent",
+        "KeyIsCanonical": "https://example.org/south-park-ontology-in-sdlaf#keyIsCanonical"
+      }
+    },
+    "RoleRecords": {
+      "class": "https://example.org/south-park-ontology-in-sdlaf#RoleRecords",
+      "keyField": "RoleRecordId",
+      "fields": {
+        "RoleRecordId": "https://example.org/south-park-ontology-in-sdlaf#roleRecordId",
+        "Name": "https://example.org/south-park-ontology-in-sdlaf#name",
+        "Reasoning": "https://example.org/south-park-ontology-in-sdlaf#reasoning",
+        "Individual": "https://example.org/south-park-ontology-in-sdlaf#individual",
+        "IndividualLabel": "https://example.org/south-park-ontology-in-sdlaf#individualLabel",
+        "Role": "https://example.org/south-park-ontology-in-sdlaf#role",
+        "StatedSeq": "https://example.org/south-park-ontology-in-sdlaf#statedSeq",
+        "IsOn": "https://example.org/south-park-ontology-in-sdlaf#isOn",
+        "IndividualLatestSeq": "https://example.org/south-park-ontology-in-sdlaf#individualLatestSeq",
+        "IsCurrent": "https://example.org/south-park-ontology-in-sdlaf#isCurrent",
+        "KeyIsCanonical": "https://example.org/south-park-ontology-in-sdlaf#keyIsCanonical"
+      }
+    }
+  },
+  "junctions": {},
+  "conclusionsFromAbsence": {
+    "derivedFields": 104,
+    "fromAbsence": 61,
+    "neverFromAbsence": 43,
+    "tablesCountedWithoutBeingDeclaredComplete": [
+      "Friendships",
+      "GradeLevelRecords",
+      "Grandparenthoods",
+      "Individuals",
+      "Marriages",
+      "Parenthoods",
+      "RoleRecords",
+      "vw_parenthoods_closure"
+    ],
+    "tablesDeclaredComplete": [],
+    "fields": [
+      {
+        "table": "GradeLevelRecords",
+        "field": "IndividualLatestSeq",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.LatestGradeLevelSeq"
+        ]
+      },
+      {
+        "table": "GradeLevelRecords",
+        "field": "IsCurrent",
+        "restsOn": [],
+        "inherits": [
+          "GradeLevelRecords.IndividualLatestSeq"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "AncestorCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "vw_parenthoods_closure",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "AttendedByCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Individuals",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "ChildCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Parenthoods",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "ChildOfFactCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Parenthoods",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "CountOfGradeLevelsOn",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "GradeLevelRecords",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "CountOfRolesOn",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "RoleRecords",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "CurrentGradeLevelRecord",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.HasGradeLevel",
+          "Individuals.LatestGradeLevelSeq"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "CurrentRoleRecord",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.HasRole",
+          "Individuals.LatestRoleSeq"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "DescendantCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "vw_parenthoods_closure",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "FriendCount",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.MirroredFriendCount",
+          "Individuals.StatedFriendCount"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "GradeLevel",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.CurrentGradeLevelRecord"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "GrandchildCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Grandparenthoods",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "GrandparentCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Grandparenthoods",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "HasAge",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "Individuals.Age"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "HasAttends",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "Individuals.Attends"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "HasGradeLevel",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.CountOfGradeLevelsOn"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "HasPersonEvidence",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.HasAttends",
+          "Individuals.HasGradeLevel",
+          "Individuals.HasRole"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "HasRole",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.CountOfRolesOn"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "IsPerson",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.IsPersonByDomain"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "IsPersonByDomain",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.HasPersonEvidence"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "IsPersonConcluded",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.IsPersonByDomain"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "IsSchool",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.IsSchoolByRange"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "IsSchoolByRange",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.AttendedByCount"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "IsSchoolConcluded",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.IsSchoolByRange"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "LatestGradeLevelSeq",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "GradeLevelRecords",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "LatestRoleSeq",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "RoleRecords",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "MirroredFriendCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Friendships",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "MirroredSpouseCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Marriages",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "ParentCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Parenthoods",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "Role",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.CurrentRoleRecord"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "SpouseCount",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.MirroredSpouseCount",
+          "Individuals.StatedSpouseCount"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "StatedFactCount",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.HasAge",
+          "Individuals.HasAttends"
+        ]
+      },
+      {
+        "table": "Individuals",
+        "field": "StatedFriendCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Friendships",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Individuals",
+        "field": "StatedSpouseCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Marriages",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Parenthoods",
+        "field": "IsContradiction",
+        "restsOn": [],
+        "inherits": [
+          "Parenthoods.SpouseAsMirroredCount",
+          "Parenthoods.SpouseAsStatedCount"
+        ]
+      },
+      {
+        "table": "Parenthoods",
+        "field": "SpouseAsMirroredCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Marriages",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Parenthoods",
+        "field": "SpouseAsStatedCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Marriages",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfChildOfConclusions",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Parenthoods",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfConclusions",
+        "restsOn": [],
+        "inherits": [
+          "Reasoning.CountOfChildOfConclusions",
+          "Reasoning.CountOfGrandparentConclusions",
+          "Reasoning.CountOfMirroredFriendships",
+          "Reasoning.CountOfMirroredMarriages",
+          "Reasoning.CountOfPersonConclusions",
+          "Reasoning.CountOfSchoolConclusions"
+        ]
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfContradictions",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Parenthoods",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Parenthoods.IsContradiction"
+        ]
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfCurrentGradeLevels",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "GradeLevelRecords",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "GradeLevelRecords.IsCurrent"
+        ]
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfCurrentRoles",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "RoleRecords",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "RoleRecords.IsCurrent"
+        ]
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfGrandparentConclusions",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Grandparenthoods",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfIndividuals",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Individuals",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfMirroredFriendships",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Friendships",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfMirroredMarriages",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Marriages",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfPeople",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Individuals",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Individuals.IsPerson"
+        ]
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfPersonConclusions",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Individuals",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Individuals.IsPersonConcluded"
+        ]
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfSchoolConclusions",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Individuals",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Individuals.IsSchoolConcluded"
+        ]
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfSchools",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Individuals",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Individuals.IsSchool"
+        ]
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfStatedFacts",
+        "restsOn": [],
+        "inherits": [
+          "Reasoning.CountOfCurrentGradeLevels",
+          "Reasoning.CountOfCurrentRoles",
+          "Reasoning.CountOfStatedFriendships",
+          "Reasoning.CountOfStatedIndividualFacts",
+          "Reasoning.CountOfStatedMarriages",
+          "Reasoning.CountOfStatedParenthoods"
+        ]
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfStatedFriendships",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Friendships",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfStatedIndividualFacts",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Individuals",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Individuals.StatedFactCount"
+        ]
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfStatedMarriages",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Marriages",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Reasoning",
+        "field": "CountOfStatedParenthoods",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Parenthoods",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Reasoning",
+        "field": "IsConsistent",
+        "restsOn": [],
+        "inherits": [
+          "Reasoning.CountOfContradictions"
+        ]
+      },
+      {
+        "table": "Reasoning",
+        "field": "Summary",
+        "restsOn": [],
+        "inherits": [
+          "Reasoning.CountOfConclusions",
+          "Reasoning.CountOfContradictions",
+          "Reasoning.CountOfStatedFacts"
+        ]
+      },
+      {
+        "table": "RoleRecords",
+        "field": "IndividualLatestSeq",
+        "restsOn": [],
+        "inherits": [
+          "Individuals.LatestRoleSeq"
+        ]
+      },
+      {
+        "table": "RoleRecords",
+        "field": "IsCurrent",
+        "restsOn": [],
+        "inherits": [
+          "RoleRecords.IndividualLatestSeq"
+        ]
+      }
+    ]
+  }
+}

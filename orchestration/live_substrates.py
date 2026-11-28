@@ -301,6 +301,7 @@ def _compare_values(project_dir: Path):
     values are the same value. The harness resolves its project at import, so it
     is told which one first."""
     os.environ["ERB_DOMAIN"] = project_dir.name
+    os.environ["ERB_DOMAIN_DIR"] = str(project_dir)
     spec = importlib.util.spec_from_file_location("test_orchestrator", REPO_ROOT / "orchestration" / "test-orchestrator.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)

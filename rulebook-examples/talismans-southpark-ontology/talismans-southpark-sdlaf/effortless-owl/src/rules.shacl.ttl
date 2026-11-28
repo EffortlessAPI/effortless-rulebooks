@@ -1,0 +1,2324 @@
+@prefix south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#> .
+@prefix south-park-ontology-in-sdlaf-shapes: <https://example.org/south-park-ontology-in-sdlaf/shapes#> .
+@prefix erb: <https://effortlessapi.com/ns/erb#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+# === Rules for Friendships ===
+south-park-ontology-in-sdlaf-shapes:Friendships_Name a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Friendships ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Friendships_Name" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:name ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Friendships .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:friendALabel ?friend_a_label . OPTIONAL { ?friend_a_label erb:key ?friend_a_label__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:friendBLabel ?friend_b_label . OPTIONAL { ?friend_b_label erb:key ?friend_b_label__key . } }
+                BIND(CONCAT(COALESCE(COALESCE(?friend_a_label__key, IF(isIRI(?friend_a_label), REPLACE(STR(?friend_a_label), "^.*[#/]", ""), STR(?friend_a_label))), ""), " is friend of ", COALESCE(COALESCE(?friend_b_label__key, IF(isIRI(?friend_b_label), REPLACE(STR(?friend_b_label), "^.*[#/]", ""), STR(?friend_b_label))), "")) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Friendships_FriendALabel a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Friendships ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Friendships_FriendALabel" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:friendALabel ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Friendships .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:friendA ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Individuals . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Friendships_FriendBLabel a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Friendships ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Friendships_FriendBLabel" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:friendBLabel ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Friendships .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:friendB ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Individuals . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Friendships_SymmetricIsOn a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Friendships ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Friendships_SymmetricIsOn" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:symmetricIsOn ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Friendships .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:reasoning ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Reasoning . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:symmetricIsOn ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Friendships_MirrorHolds a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Friendships ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Friendships_MirrorHolds" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:mirrorHolds ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Friendships .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:symmetricIsOn ?symmetric_is_on . }
+                BIND(IF(COALESCE(?symmetric_is_on, false), true, "") AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Friendships_MirrorSentence a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Friendships ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Friendships_MirrorSentence" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:mirrorSentence ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Friendships .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:friendALabel ?friend_a_label . OPTIONAL { ?friend_a_label erb:key ?friend_a_label__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:friendBLabel ?friend_b_label . OPTIONAL { ?friend_b_label erb:key ?friend_b_label__key . } }
+                BIND(CONCAT(COALESCE(COALESCE(?friend_b_label__key, IF(isIRI(?friend_b_label), REPLACE(STR(?friend_b_label), "^.*[#/]", ""), STR(?friend_b_label))), ""), " is friend of ", COALESCE(COALESCE(?friend_a_label__key, IF(isIRI(?friend_a_label), REPLACE(STR(?friend_a_label), "^.*[#/]", ""), STR(?friend_a_label))), "")) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for GradeLevelRecords ===
+south-park-ontology-in-sdlaf-shapes:GradeLevelRecords_Name a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:GradeLevelRecords ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_GradeLevelRecords_Name" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:name ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:GradeLevelRecords .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:gradeLevel ?grade_level . OPTIONAL { ?grade_level erb:key ?grade_level__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:individualLabel ?individual_label . OPTIONAL { ?individual_label erb:key ?individual_label__key . } }
+                BIND(CONCAT(COALESCE(COALESCE(?individual_label__key, IF(isIRI(?individual_label), REPLACE(STR(?individual_label), "^.*[#/]", ""), STR(?individual_label))), ""), " has grade level ", COALESCE(COALESCE(?grade_level__key, IF(isIRI(?grade_level), REPLACE(STR(?grade_level), "^.*[#/]", ""), STR(?grade_level))), "")) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:GradeLevelRecords_IndividualLabel a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:GradeLevelRecords ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_GradeLevelRecords_IndividualLabel" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:individualLabel ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:GradeLevelRecords .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:individual ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Individuals . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:GradeLevelRecords_IndividualLatestSeq a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:GradeLevelRecords ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_GradeLevelRecords_IndividualLatestSeq" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:individualLatestSeq ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:GradeLevelRecords .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:individual ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Individuals . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:latestGradeLevelSeq ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:GradeLevelRecords_IsCurrent a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:GradeLevelRecords ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_GradeLevelRecords_IsCurrent" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:isCurrent ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:GradeLevelRecords .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:individualLatestSeq ?individual_latest_seq . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:isOn ?is_on . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:statedSeq ?stated_seq . }
+                BIND((COALESCE(?is_on, false) && COALESCE((COALESCE(?stated_seq, 0) = COALESCE(?individual_latest_seq, 0)), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:GradeLevelRecords_KeyIsCanonical a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:GradeLevelRecords ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_GradeLevelRecords_KeyIsCanonical" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:keyIsCanonical ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:GradeLevelRecords .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:gradeLevelRecordId ?grade_level_record_id . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:individual ?individual . OPTIONAL { ?individual erb:key ?individual__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:statedSeq ?stated_seq . OPTIONAL { ?stated_seq erb:key ?stated_seq__key . } }
+                BIND(COALESCE((?grade_level_record_id = CONCAT(COALESCE(COALESCE(?individual__key, IF(isIRI(?individual), REPLACE(STR(?individual), "^.*[#/]", ""), STR(?individual))), ""), "|grade|", COALESCE(COALESCE(?stated_seq__key, IF(isIRI(?stated_seq), REPLACE(STR(?stated_seq), "^.*[#/]", ""), STR(?stated_seq))), ""))), false) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Grandparenthoods ===
+south-park-ontology-in-sdlaf-shapes:Grandparenthoods_Name a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Grandparenthoods ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Grandparenthoods_Name" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:name ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Grandparenthoods .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:grandchildLabel ?grandchild_label . OPTIONAL { ?grandchild_label erb:key ?grandchild_label__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:grandparentLabel ?grandparent_label . OPTIONAL { ?grandparent_label erb:key ?grandparent_label__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:links ?links . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:lowerLink ?lower_link . OPTIONAL { ?lower_link erb:key ?lower_link__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:upperLink ?upper_link . OPTIONAL { ?upper_link erb:key ?upper_link__key . } }
+                BIND(IF(COALESCE(?links, false), CONCAT(COALESCE(COALESCE(?grandparent_label__key, IF(isIRI(?grandparent_label), REPLACE(STR(?grandparent_label), "^.*[#/]", ""), STR(?grandparent_label))), ""), " is grandparent of ", COALESCE(COALESCE(?grandchild_label__key, IF(isIRI(?grandchild_label), REPLACE(STR(?grandchild_label), "^.*[#/]", ""), STR(?grandchild_label))), "")), CONCAT("(", COALESCE(COALESCE(?upper_link__key, IF(isIRI(?upper_link), REPLACE(STR(?upper_link), "^.*[#/]", ""), STR(?upper_link))), ""), " does not lead to ", COALESCE(COALESCE(?lower_link__key, IF(isIRI(?lower_link), REPLACE(STR(?lower_link), "^.*[#/]", ""), STR(?lower_link))), ""), ")")) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Grandparenthoods_Grandparent a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Grandparenthoods ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Grandparenthoods_Grandparent" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:grandparent ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Grandparenthoods .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:upperLink ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Parenthoods . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:parent ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Grandparenthoods_UpperChild a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Grandparenthoods ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Grandparenthoods_UpperChild" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:upperChild ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Grandparenthoods .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:upperLink ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Parenthoods . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:child ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Grandparenthoods_LowerParent a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Grandparenthoods ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Grandparenthoods_LowerParent" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:lowerParent ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Grandparenthoods .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:lowerLink ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Parenthoods . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:parent ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Grandparenthoods_Grandchild a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Grandparenthoods ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Grandparenthoods_Grandchild" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:grandchild ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Grandparenthoods .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:lowerLink ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Parenthoods . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:child ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Grandparenthoods_GrandparentLabel a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Grandparenthoods ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Grandparenthoods_GrandparentLabel" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:grandparentLabel ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Grandparenthoods .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:upperLink ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Parenthoods . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:parentLabel ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Grandparenthoods_GrandchildLabel a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Grandparenthoods ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Grandparenthoods_GrandchildLabel" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:grandchildLabel ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Grandparenthoods .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:lowerLink ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Parenthoods . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:childLabel ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Grandparenthoods_Links a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Grandparenthoods ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Grandparenthoods_Links" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:links ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Grandparenthoods .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:lowerParent ?lower_parent . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:upperChild ?upper_child . }
+                BIND(COALESCE((?upper_child = ?lower_parent), ((!BOUND(?upper_child) || STR(?upper_child) = "") && (!BOUND(?lower_parent) || STR(?lower_parent) = ""))) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Grandparenthoods_ChainIsOn a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Grandparenthoods ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Grandparenthoods_ChainIsOn" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:chainIsOn ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Grandparenthoods .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:reasoning ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Reasoning . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:chainIsOn ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Grandparenthoods_Holds a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Grandparenthoods ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Grandparenthoods_Holds" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:holds ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Grandparenthoods .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:chainIsOn ?chain_is_on . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:links ?links . }
+                BIND(IF(COALESCE((COALESCE(?links, false) && COALESCE(?chain_is_on, false)), false), true, "") AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Individuals ===
+south-park-ontology-in-sdlaf-shapes:Individuals_Name a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_Name" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:name ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:label ?label . }
+                BIND(?label AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_PortraitImage a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_PortraitImage" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:portraitImage ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:portrait ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Portraits . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:image ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_SymmetricIsOn a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_SymmetricIsOn" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:symmetricIsOn ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:reasoning ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Reasoning . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:symmetricIsOn ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_DomainRangeIsOn a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_DomainRangeIsOn" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:domainRangeIsOn ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:reasoning ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Reasoning . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:domainRangeIsOn ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_AttendsLabel a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_AttendsLabel" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:attendsLabel ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:attends ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Individuals . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_HasAge a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_HasAge" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:hasAge ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:age ?age . OPTIONAL { ?age erb:key ?age__key . } }
+                BIND((COALESCE(COALESCE(?age__key, COALESCE(IF(isIRI(?age), REPLACE(STR(?age), "^.*[#/]", ""), STR(?age)), "")), 0) != "") AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_HasAttends a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_HasAttends" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:hasAttends ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:attends ?attends . OPTIONAL { ?attends erb:key ?attends__key . } }
+                BIND((COALESCE(?attends__key, COALESCE(IF(isIRI(?attends), REPLACE(STR(?attends), "^.*[#/]", ""), STR(?attends)), "")) != "") AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_StatedFactCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_StatedFactCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:statedFactCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:hasAge ?has_age . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:hasAttends ?has_attends . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:isAssertedPerson ?is_asserted_person . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:isAssertedSchool ?is_asserted_school . }
+                BIND(ROUND((((IF(COALESCE(?is_asserted_person, false), 1, 0) + IF(COALESCE(?is_asserted_school, false), 1, 0)) + IF(COALESCE(?has_age, false), 1, 0)) + IF(COALESCE(?has_attends, false), 1, 0))) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_CountOfGradeLevelsOn a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_CountOfGradeLevelsOn" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfGradeLevelsOn ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                    ?child a south-park-ontology-in-sdlaf:GradeLevelRecords .
+                    ?child south-park-ontology-in-sdlaf:individual $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:isOn ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_LatestGradeLevelSeq a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_LatestGradeLevelSeq" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:latestGradeLevelSeq ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (MAX(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                    ?child a south-park-ontology-in-sdlaf:GradeLevelRecords .
+                    ?child south-park-ontology-in-sdlaf:individual $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:isOn ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:statedSeq ?sumraw . }
+                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(?_agg1 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_HasGradeLevel a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_HasGradeLevel" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:hasGradeLevel ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfGradeLevelsOn ?count_of_grade_levels_on . }
+                BIND((COALESCE(?count_of_grade_levels_on, 0) > 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_CurrentGradeLevelRecord a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_CurrentGradeLevelRecord" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:currentGradeLevelRecord ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:hasGradeLevel ?has_grade_level . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:individualId ?individual_id . OPTIONAL { ?individual_id erb:key ?individual_id__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:latestGradeLevelSeq ?latest_grade_level_seq . OPTIONAL { ?latest_grade_level_seq erb:key ?latest_grade_level_seq__key . } }
+                BIND(IF(COALESCE(?has_grade_level, false), CONCAT(COALESCE(COALESCE(?individual_id__key, IF(isIRI(?individual_id), REPLACE(STR(?individual_id), "^.*[#/]", ""), STR(?individual_id))), ""), "|grade|", COALESCE(COALESCE(?latest_grade_level_seq__key, IF(isIRI(?latest_grade_level_seq), REPLACE(STR(?latest_grade_level_seq), "^.*[#/]", ""), STR(?latest_grade_level_seq))), "")), "") AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_GradeLevel a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_GradeLevel" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:gradeLevel ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:currentGradeLevelRecord ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:GradeLevelRecords . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:gradeLevel ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_CountOfRolesOn a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_CountOfRolesOn" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfRolesOn ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                    ?child a south-park-ontology-in-sdlaf:RoleRecords .
+                    ?child south-park-ontology-in-sdlaf:individual $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:isOn ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_LatestRoleSeq a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_LatestRoleSeq" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:latestRoleSeq ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (MAX(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                    ?child a south-park-ontology-in-sdlaf:RoleRecords .
+                    ?child south-park-ontology-in-sdlaf:individual $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:isOn ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:statedSeq ?sumraw . }
+                    BIND(xsd:double(STR(?sumraw)) AS ?sumval)
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(?_agg1 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_HasRole a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_HasRole" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:hasRole ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfRolesOn ?count_of_roles_on . }
+                BIND((COALESCE(?count_of_roles_on, 0) > 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_CurrentRoleRecord a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_CurrentRoleRecord" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:currentRoleRecord ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:hasRole ?has_role . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:individualId ?individual_id . OPTIONAL { ?individual_id erb:key ?individual_id__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:latestRoleSeq ?latest_role_seq . OPTIONAL { ?latest_role_seq erb:key ?latest_role_seq__key . } }
+                BIND(IF(COALESCE(?has_role, false), CONCAT(COALESCE(COALESCE(?individual_id__key, IF(isIRI(?individual_id), REPLACE(STR(?individual_id), "^.*[#/]", ""), STR(?individual_id))), ""), "|role|", COALESCE(COALESCE(?latest_role_seq__key, IF(isIRI(?latest_role_seq), REPLACE(STR(?latest_role_seq), "^.*[#/]", ""), STR(?latest_role_seq))), "")), "") AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_Role a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_Role" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:role ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:currentRoleRecord ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:RoleRecords . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:role ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_HasPersonEvidence a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_HasPersonEvidence" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:hasPersonEvidence ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:hasAttends ?has_attends . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:hasGradeLevel ?has_grade_level . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:hasRole ?has_role . }
+                BIND((COALESCE(?has_attends, false) || COALESCE(?has_grade_level, false) || COALESCE(?has_role, false)) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_IsPersonByDomain a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_IsPersonByDomain" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:isPersonByDomain ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:domainRangeIsOn ?domain_range_is_on . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:hasPersonEvidence ?has_person_evidence . }
+                BIND((COALESCE(?domain_range_is_on, false) && COALESCE(?has_person_evidence, false)) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_IsPerson a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 5 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_IsPerson" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:isPerson ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:isAssertedPerson ?is_asserted_person . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:isPersonByDomain ?is_person_by_domain . }
+                BIND(IF(COALESCE((COALESCE(?is_asserted_person, false) || COALESCE(?is_person_by_domain, false)), false), true, "") AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_IsPersonConcluded a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 5 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_IsPersonConcluded" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:isPersonConcluded ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:isAssertedPerson ?is_asserted_person . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:isPersonByDomain ?is_person_by_domain . }
+                BIND(IF(COALESCE((COALESCE(?is_person_by_domain, false) && COALESCE((!(COALESCE(?is_asserted_person, false))), false)), false), true, "") AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_AttendedByCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_AttendedByCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:attendedByCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                    ?child a south-park-ontology-in-sdlaf:Individuals .
+                    ?child south-park-ontology-in-sdlaf:attends $this .
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_IsSchoolByRange a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_IsSchoolByRange" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:isSchoolByRange ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:attendedByCount ?attended_by_count . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:domainRangeIsOn ?domain_range_is_on . }
+                BIND((COALESCE(?domain_range_is_on, false) && COALESCE((COALESCE(?attended_by_count, 0) > 0), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_IsSchool a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_IsSchool" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:isSchool ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:isAssertedSchool ?is_asserted_school . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:isSchoolByRange ?is_school_by_range . }
+                BIND(IF(COALESCE((COALESCE(?is_asserted_school, false) || COALESCE(?is_school_by_range, false)), false), true, "") AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_IsSchoolConcluded a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_IsSchoolConcluded" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:isSchoolConcluded ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:isAssertedSchool ?is_asserted_school . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:isSchoolByRange ?is_school_by_range . }
+                BIND(IF(COALESCE((COALESCE(?is_school_by_range, false) && COALESCE((!(COALESCE(?is_asserted_school, false))), false)), false), true, "") AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_ChildCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_ChildCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:childCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                    ?child a south-park-ontology-in-sdlaf:Parenthoods .
+                    ?child south-park-ontology-in-sdlaf:parent $this .
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_ParentCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_ParentCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:parentCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                    ?child a south-park-ontology-in-sdlaf:Parenthoods .
+                    ?child south-park-ontology-in-sdlaf:child $this .
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_ChildOfFactCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_ChildOfFactCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:childOfFactCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                    ?child a south-park-ontology-in-sdlaf:Parenthoods .
+                    ?child south-park-ontology-in-sdlaf:child $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:childOfHolds ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_GrandchildCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_GrandchildCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:grandchildCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                    ?child a south-park-ontology-in-sdlaf:Grandparenthoods .
+                    ?child south-park-ontology-in-sdlaf:grandparent ?backfk . OPTIONAL { ?backfk erb:key ?backfk__key . }
+                    $this south-park-ontology-in-sdlaf:individualId ?backpv . OPTIONAL { ?backpv erb:key ?backpv__key . }
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:holds ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(COALESCE(?backfk__key, STR(?backfk)) = COALESCE(?backpv__key, STR(?backpv)))
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_GrandparentCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_GrandparentCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:grandparentCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                    ?child a south-park-ontology-in-sdlaf:Grandparenthoods .
+                    ?child south-park-ontology-in-sdlaf:grandchild ?backfk . OPTIONAL { ?backfk erb:key ?backfk__key . }
+                    $this south-park-ontology-in-sdlaf:individualId ?backpv . OPTIONAL { ?backpv erb:key ?backpv__key . }
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:holds ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(COALESCE(?backfk__key, STR(?backfk)) = COALESCE(?backpv__key, STR(?backpv)))
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_DescendantCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_DescendantCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:descendantCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (COUNT(*) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                        $this south-park-ontology-in-sdlaf:ancestry+ ?b .
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_AncestorCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_AncestorCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:ancestorCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (COUNT(*) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                        ?a south-park-ontology-in-sdlaf:ancestry+ $this .
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_StatedSpouseCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_StatedSpouseCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:statedSpouseCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                    ?child a south-park-ontology-in-sdlaf:Marriages .
+                    ?child south-park-ontology-in-sdlaf:partnerA $this .
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_MirroredSpouseCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_MirroredSpouseCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:mirroredSpouseCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                    ?child a south-park-ontology-in-sdlaf:Marriages .
+                    ?child south-park-ontology-in-sdlaf:partnerB $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:mirrorHolds ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_SpouseCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_SpouseCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:spouseCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:mirroredSpouseCount ?mirrored_spouse_count . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:statedSpouseCount ?stated_spouse_count . }
+                BIND(ROUND((?stated_spouse_count + ?mirrored_spouse_count)) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_StatedFriendCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_StatedFriendCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:statedFriendCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                    ?child a south-park-ontology-in-sdlaf:Friendships .
+                    ?child south-park-ontology-in-sdlaf:friendA $this .
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_MirroredFriendCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_MirroredFriendCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:mirroredFriendCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Individuals .
+                    ?child a south-park-ontology-in-sdlaf:Friendships .
+                    ?child south-park-ontology-in-sdlaf:friendB $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:mirrorHolds ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Individuals_FriendCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Individuals_FriendCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:friendCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Individuals .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:mirroredFriendCount ?mirrored_friend_count . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:statedFriendCount ?stated_friend_count . }
+                BIND(ROUND((?stated_friend_count + ?mirrored_friend_count)) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Marriages ===
+south-park-ontology-in-sdlaf-shapes:Marriages_Name a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Marriages ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Marriages_Name" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:name ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Marriages .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:partnerALabel ?partner_a_label . OPTIONAL { ?partner_a_label erb:key ?partner_a_label__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:partnerBLabel ?partner_b_label . OPTIONAL { ?partner_b_label erb:key ?partner_b_label__key . } }
+                BIND(CONCAT(COALESCE(COALESCE(?partner_a_label__key, IF(isIRI(?partner_a_label), REPLACE(STR(?partner_a_label), "^.*[#/]", ""), STR(?partner_a_label))), ""), " is spouse of ", COALESCE(COALESCE(?partner_b_label__key, IF(isIRI(?partner_b_label), REPLACE(STR(?partner_b_label), "^.*[#/]", ""), STR(?partner_b_label))), "")) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Marriages_PartnerALabel a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Marriages ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Marriages_PartnerALabel" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:partnerALabel ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Marriages .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:partnerA ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Individuals . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Marriages_PartnerBLabel a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Marriages ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Marriages_PartnerBLabel" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:partnerBLabel ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Marriages .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:partnerB ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Individuals . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Marriages_SymmetricIsOn a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Marriages ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Marriages_SymmetricIsOn" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:symmetricIsOn ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Marriages .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:reasoning ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Reasoning . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:symmetricIsOn ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Marriages_MirrorHolds a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Marriages ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Marriages_MirrorHolds" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:mirrorHolds ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Marriages .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:symmetricIsOn ?symmetric_is_on . }
+                BIND(IF(COALESCE(?symmetric_is_on, false), true, "") AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Marriages_MirrorSentence a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Marriages ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Marriages_MirrorSentence" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:mirrorSentence ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Marriages .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:partnerALabel ?partner_a_label . OPTIONAL { ?partner_a_label erb:key ?partner_a_label__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:partnerBLabel ?partner_b_label . OPTIONAL { ?partner_b_label erb:key ?partner_b_label__key . } }
+                BIND(CONCAT(COALESCE(COALESCE(?partner_b_label__key, IF(isIRI(?partner_b_label), REPLACE(STR(?partner_b_label), "^.*[#/]", ""), STR(?partner_b_label))), ""), " is spouse of ", COALESCE(COALESCE(?partner_a_label__key, IF(isIRI(?partner_a_label), REPLACE(STR(?partner_a_label), "^.*[#/]", ""), STR(?partner_a_label))), "")) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Parenthoods ===
+south-park-ontology-in-sdlaf-shapes:Parenthoods_Name a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Parenthoods ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Parenthoods_Name" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:name ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Parenthoods .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:childLabel ?child_label . OPTIONAL { ?child_label erb:key ?child_label__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:parentLabel ?parent_label . OPTIONAL { ?parent_label erb:key ?parent_label__key . } }
+                BIND(CONCAT(COALESCE(COALESCE(?parent_label__key, IF(isIRI(?parent_label), REPLACE(STR(?parent_label), "^.*[#/]", ""), STR(?parent_label))), ""), " is parent of ", COALESCE(COALESCE(?child_label__key, IF(isIRI(?child_label), REPLACE(STR(?child_label), "^.*[#/]", ""), STR(?child_label))), "")) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Parenthoods_ParentLabel a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Parenthoods ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Parenthoods_ParentLabel" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:parentLabel ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Parenthoods .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:parent ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Individuals . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Parenthoods_ChildLabel a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Parenthoods ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Parenthoods_ChildLabel" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:childLabel ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Parenthoods .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:child ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Individuals . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Parenthoods_InverseIsOn a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Parenthoods ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Parenthoods_InverseIsOn" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:inverseIsOn ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Parenthoods .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:reasoning ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Reasoning . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:inverseIsOn ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Parenthoods_SymmetricIsOn a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Parenthoods ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Parenthoods_SymmetricIsOn" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:symmetricIsOn ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Parenthoods .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:reasoning ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Reasoning . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:symmetricIsOn ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Parenthoods_DisjointIsOn a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Parenthoods ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Parenthoods_DisjointIsOn" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:disjointIsOn ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Parenthoods .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:reasoning ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Reasoning . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:disjointIsOn ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Parenthoods_ChildOfHolds a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Parenthoods ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Parenthoods_ChildOfHolds" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:childOfHolds ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Parenthoods .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:inverseIsOn ?inverse_is_on . }
+                BIND(IF(COALESCE(?inverse_is_on, false), true, "") AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Parenthoods_ChildOfSentence a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Parenthoods ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Parenthoods_ChildOfSentence" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:childOfSentence ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Parenthoods .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:childLabel ?child_label . OPTIONAL { ?child_label erb:key ?child_label__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:parentLabel ?parent_label . OPTIONAL { ?parent_label erb:key ?parent_label__key . } }
+                BIND(CONCAT(COALESCE(COALESCE(?child_label__key, IF(isIRI(?child_label), REPLACE(STR(?child_label), "^.*[#/]", ""), STR(?child_label))), ""), " is child of ", COALESCE(COALESCE(?parent_label__key, IF(isIRI(?parent_label), REPLACE(STR(?parent_label), "^.*[#/]", ""), STR(?parent_label))), "")) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Parenthoods_SpouseAsStatedCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Parenthoods ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Parenthoods_SpouseAsStatedCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:spouseAsStatedCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Parenthoods .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Parenthoods .
+                    ?child a south-park-ontology-in-sdlaf:Marriages .
+                    ?child south-park-ontology-in-sdlaf:partnerA ?backfk . OPTIONAL { ?backfk erb:key ?backfk__key . }
+                    $this south-park-ontology-in-sdlaf:parent ?backpv . OPTIONAL { ?backpv erb:key ?backpv__key . }
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:partnerB ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    OPTIONAL { $this south-park-ontology-in-sdlaf:child ?p2 . OPTIONAL { ?p2 erb:key ?p2__key . } }
+                    FILTER(COALESCE(?backfk__key, STR(?backfk)) = COALESCE(?backpv__key, STR(?backpv)))
+                    FILTER(COALESCE(?c2__key, STR(?c2)) = COALESCE(?p2__key, STR(?p2)))
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Parenthoods_SpouseAsMirroredCount a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Parenthoods ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Parenthoods_SpouseAsMirroredCount" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:spouseAsMirroredCount ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Parenthoods .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Parenthoods .
+                    ?child a south-park-ontology-in-sdlaf:Marriages .
+                    ?child south-park-ontology-in-sdlaf:partnerA ?backfk . OPTIONAL { ?backfk erb:key ?backfk__key . }
+                    $this south-park-ontology-in-sdlaf:child ?backpv . OPTIONAL { ?backpv erb:key ?backpv__key . }
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:partnerB ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    OPTIONAL { $this south-park-ontology-in-sdlaf:parent ?p2 . OPTIONAL { ?p2 erb:key ?p2__key . } }
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:mirrorHolds ?c4 . OPTIONAL { ?c4 erb:key ?c4__key . } }
+                    FILTER(COALESCE(?backfk__key, STR(?backfk)) = COALESCE(?backpv__key, STR(?backpv)))
+                    FILTER(COALESCE(?c2__key, STR(?c2)) = COALESCE(?p2__key, STR(?p2)))
+                    FILTER(BOUND(?c4) && ?c4 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Parenthoods_IsContradiction a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Parenthoods ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Parenthoods_IsContradiction" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:isContradiction ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Parenthoods .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:disjointIsOn ?disjoint_is_on . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:spouseAsMirroredCount ?spouse_as_mirrored_count . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:spouseAsStatedCount ?spouse_as_stated_count . }
+                BIND(IF(COALESCE((COALESCE(?disjoint_is_on, false) && COALESCE((COALESCE((?spouse_as_stated_count + ?spouse_as_mirrored_count), 0) > 0), false)), false), true, "") AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Portraits ===
+south-park-ontology-in-sdlaf-shapes:Portraits_Name a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Portraits ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Portraits_Name" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:name ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Portraits .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:displayName ?display_name . }
+                BIND(?display_name AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for Reasoning ===
+south-park-ontology-in-sdlaf-shapes:Reasoning_Name a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_Name" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:name ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:label ?label . }
+                BIND(?label AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfIndividuals a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfIndividuals" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfIndividuals ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:Individuals .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfPeople a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 6 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfPeople" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfPeople ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:Individuals .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:isPerson ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfSchools a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfSchools" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfSchools ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:Individuals .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:isSchool ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfStatedParenthoods a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfStatedParenthoods" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfStatedParenthoods ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:Parenthoods .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfStatedMarriages a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfStatedMarriages" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfStatedMarriages ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:Marriages .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfStatedFriendships a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfStatedFriendships" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfStatedFriendships ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:Friendships .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfStatedIndividualFacts a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfStatedIndividualFacts" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfStatedIndividualFacts ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (SUM(?cval) AS ?_agg1) WHERE {
+                        SELECT $this ?child (MAX(?sumval) AS ?cval) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:Individuals .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:statedFactCount ?sumraw . }
+                    BIND(IF(BOUND(?sumraw), xsd:double(STR(?sumraw)), 0.0) AS ?sumval)
+                        } GROUP BY $this ?child
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfCurrentGradeLevels a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfCurrentGradeLevels" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfCurrentGradeLevels ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:GradeLevelRecords .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:isCurrent ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfCurrentRoles a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfCurrentRoles" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfCurrentRoles ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:RoleRecords .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:isCurrent ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfStatedFacts a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 5 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfStatedFacts" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfStatedFacts ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfCurrentGradeLevels ?count_of_current_grade_levels . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfCurrentRoles ?count_of_current_roles . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfStatedFriendships ?count_of_stated_friendships . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfStatedIndividualFacts ?count_of_stated_individual_facts . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfStatedMarriages ?count_of_stated_marriages . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfStatedParenthoods ?count_of_stated_parenthoods . }
+                BIND(ROUND((((((?count_of_stated_parenthoods + ?count_of_stated_marriages) + ?count_of_stated_friendships) + ?count_of_stated_individual_facts) + ?count_of_current_grade_levels) + ?count_of_current_roles)) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfChildOfConclusions a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfChildOfConclusions" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfChildOfConclusions ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:Parenthoods .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:childOfHolds ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfMirroredMarriages a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfMirroredMarriages" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfMirroredMarriages ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:Marriages .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:mirrorHolds ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfMirroredFriendships a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfMirroredFriendships" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfMirroredFriendships ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:Friendships .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:mirrorHolds ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfGrandparentConclusions a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfGrandparentConclusions" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfGrandparentConclusions ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:Grandparenthoods .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:holds ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfPersonConclusions a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 6 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfPersonConclusions" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfPersonConclusions ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:Individuals .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:isPersonConcluded ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfSchoolConclusions a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 4 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfSchoolConclusions" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfSchoolConclusions ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:Individuals .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:isSchoolConcluded ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfConclusions a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 7 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfConclusions" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfConclusions ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfChildOfConclusions ?count_of_child_of_conclusions . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfGrandparentConclusions ?count_of_grandparent_conclusions . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfMirroredFriendships ?count_of_mirrored_friendships . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfMirroredMarriages ?count_of_mirrored_marriages . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfPersonConclusions ?count_of_person_conclusions . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfSchoolConclusions ?count_of_school_conclusions . }
+                BIND(ROUND((((((?count_of_child_of_conclusions + ?count_of_mirrored_marriages) + ?count_of_mirrored_friendships) + ?count_of_grandparent_conclusions) + ?count_of_person_conclusions) + ?count_of_school_conclusions)) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_CountOfContradictions a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 5 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_CountOfContradictions" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:countOfContradictions ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+                OPTIONAL {
+                    SELECT $this (COUNT(?child) AS ?_agg1) WHERE {
+                        $this a south-park-ontology-in-sdlaf:Reasoning .
+                    ?child a south-park-ontology-in-sdlaf:Parenthoods .
+                    ?child south-park-ontology-in-sdlaf:reasoning $this .
+                    OPTIONAL { ?child south-park-ontology-in-sdlaf:isContradiction ?c2 . OPTIONAL { ?c2 erb:key ?c2__key . } }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    } GROUP BY $this
+                }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_IsConsistent a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 6 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_IsConsistent" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:isConsistent ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfContradictions ?count_of_contradictions . }
+                BIND((COALESCE(?count_of_contradictions, 0) = 0) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:Reasoning_Summary a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Reasoning ;
+    sh:order 8 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Reasoning_Summary" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:summary ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:Reasoning .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfConclusions ?count_of_conclusions . OPTIONAL { ?count_of_conclusions erb:key ?count_of_conclusions__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfContradictions ?count_of_contradictions . OPTIONAL { ?count_of_contradictions erb:key ?count_of_contradictions__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:countOfStatedFacts ?count_of_stated_facts . OPTIONAL { ?count_of_stated_facts erb:key ?count_of_stated_facts__key . } }
+                BIND(CONCAT(COALESCE(COALESCE(?count_of_stated_facts__key, IF(isIRI(?count_of_stated_facts), REPLACE(STR(?count_of_stated_facts), "^.*[#/]", ""), STR(?count_of_stated_facts))), ""), " stated facts, ", COALESCE(COALESCE(?count_of_conclusions__key, IF(isIRI(?count_of_conclusions), REPLACE(STR(?count_of_conclusions), "^.*[#/]", ""), STR(?count_of_conclusions))), ""), " conclusions, ", COALESCE(COALESCE(?count_of_contradictions__key, IF(isIRI(?count_of_contradictions), REPLACE(STR(?count_of_contradictions), "^.*[#/]", ""), STR(?count_of_contradictions))), ""), " contradictions") AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Rules for RoleRecords ===
+south-park-ontology-in-sdlaf-shapes:RoleRecords_Name a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:RoleRecords ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_RoleRecords_Name" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:name ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:RoleRecords .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:individualLabel ?individual_label . OPTIONAL { ?individual_label erb:key ?individual_label__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:role ?role . OPTIONAL { ?role erb:key ?role__key . } }
+                BIND(CONCAT(COALESCE(COALESCE(?individual_label__key, IF(isIRI(?individual_label), REPLACE(STR(?individual_label), "^.*[#/]", ""), STR(?individual_label))), ""), " has role ", COALESCE(COALESCE(?role__key, IF(isIRI(?role), REPLACE(STR(?role), "^.*[#/]", ""), STR(?role))), "")) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:RoleRecords_IndividualLabel a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:RoleRecords ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_RoleRecords_IndividualLabel" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:individualLabel ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:RoleRecords .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:individual ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Individuals . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:label ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:RoleRecords_IndividualLatestSeq a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:RoleRecords ;
+    sh:order 2 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_RoleRecords_IndividualLatestSeq" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:individualLatestSeq ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:RoleRecords .
+                OPTIONAL { $this south-park-ontology-in-sdlaf:individual ?j0 . OPTIONAL { ?j0 erb:key ?j2_of . } BIND(COALESCE(?j2_of, STR(?j0)) AS ?j2) ?j1 erb:key ?j2 ; a south-park-ontology-in-sdlaf:Individuals . OPTIONAL { ?j1 south-park-ontology-in-sdlaf:latestRoleSeq ?j3 . } }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:RoleRecords_IsCurrent a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:RoleRecords ;
+    sh:order 3 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_RoleRecords_IsCurrent" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:isCurrent ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:RoleRecords .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:individualLatestSeq ?individual_latest_seq . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:isOn ?is_on . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:statedSeq ?stated_seq . }
+                BIND((COALESCE(?is_on, false) && COALESCE((COALESCE(?stated_seq, 0) = COALESCE(?individual_latest_seq, 0)), false)) AS ?_result)
+            }
+        """ ;
+    ] .
+south-park-ontology-in-sdlaf-shapes:RoleRecords_KeyIsCanonical a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:RoleRecords ;
+    sh:order 1 ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_RoleRecords_KeyIsCanonical" ;
+        sh:construct """
+            PREFIX south-park-ontology-in-sdlaf: <https://example.org/south-park-ontology-in-sdlaf#>
+            PREFIX erb: <https://effortlessapi.com/ns/erb#>
+            CONSTRUCT {
+                $this south-park-ontology-in-sdlaf:keyIsCanonical ?_result .
+            }
+            WHERE {
+    $this a south-park-ontology-in-sdlaf:RoleRecords .
+    OPTIONAL { $this south-park-ontology-in-sdlaf:individual ?individual . OPTIONAL { ?individual erb:key ?individual__key . } }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:roleRecordId ?role_record_id . }
+    OPTIONAL { $this south-park-ontology-in-sdlaf:statedSeq ?stated_seq . OPTIONAL { ?stated_seq erb:key ?stated_seq__key . } }
+                BIND(COALESCE((?role_record_id = CONCAT(COALESCE(COALESCE(?individual__key, IF(isIRI(?individual), REPLACE(STR(?individual), "^.*[#/]", ""), STR(?individual))), ""), "|role|", COALESCE(COALESCE(?stated_seq__key, IF(isIRI(?stated_seq), REPLACE(STR(?stated_seq), "^.*[#/]", ""), STR(?stated_seq))), ""))), false) AS ?_result)
+            }
+        """ ;
+    ] .
+
+# === Cardinality: single-valued forward FK properties ===
+south-park-ontology-in-sdlaf-shapes:FriendshipsCardinality a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Friendships ;
+    sh:property [ sh:path south-park-ontology-in-sdlaf:friendA ; sh:maxCount 1 ] ;
+    sh:property [ sh:path south-park-ontology-in-sdlaf:friendB ; sh:maxCount 1 ] .
+
+south-park-ontology-in-sdlaf-shapes:GradeLevelRecordsCardinality a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:GradeLevelRecords ;
+    sh:property [ sh:path south-park-ontology-in-sdlaf:individual ; sh:maxCount 1 ] .
+
+south-park-ontology-in-sdlaf-shapes:GrandparenthoodsCardinality a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Grandparenthoods ;
+    sh:property [ sh:path south-park-ontology-in-sdlaf:lowerLink ; sh:maxCount 1 ] ;
+    sh:property [ sh:path south-park-ontology-in-sdlaf:upperLink ; sh:maxCount 1 ] .
+
+south-park-ontology-in-sdlaf-shapes:IndividualsCardinality a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Individuals ;
+    sh:property [ sh:path south-park-ontology-in-sdlaf:attends ; sh:maxCount 1 ] ;
+    sh:property [ sh:path south-park-ontology-in-sdlaf:portrait ; sh:maxCount 1 ] .
+
+south-park-ontology-in-sdlaf-shapes:MarriagesCardinality a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Marriages ;
+    sh:property [ sh:path south-park-ontology-in-sdlaf:partnerA ; sh:maxCount 1 ] ;
+    sh:property [ sh:path south-park-ontology-in-sdlaf:partnerB ; sh:maxCount 1 ] .
+
+south-park-ontology-in-sdlaf-shapes:ParenthoodsCardinality a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:Parenthoods ;
+    sh:property [ sh:path south-park-ontology-in-sdlaf:child ; sh:maxCount 1 ] ;
+    sh:property [ sh:path south-park-ontology-in-sdlaf:parent ; sh:maxCount 1 ] .
+
+south-park-ontology-in-sdlaf-shapes:RoleRecordsCardinality a sh:NodeShape ;
+    sh:targetClass south-park-ontology-in-sdlaf:RoleRecords ;
+    sh:property [ sh:path south-park-ontology-in-sdlaf:individual ; sh:maxCount 1 ] .
+
+# Generated 104 SHACL rules

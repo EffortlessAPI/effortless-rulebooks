@@ -49,6 +49,56 @@
     },
     {
       "IsSSoTTranspiler": false,
+      "Name": "rulebooktotypescript",
+      "RelativePath": "/effortless-typescript",
+      "CommandLine": "rulebook-to-typescript -i ../effortless-rulebook/talismans-southpark-sdlaf-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.26.1239",
+      "LastUrl": "https://effortless-rulebook-to-typescrip-v2026-11-26-1239-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "TypeScript engine: the generated SDK's evaluate(rows)."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopython",
+      "RelativePath": "/effortless-python",
+      "CommandLine": "rulebook-to-python -i ../effortless-rulebook/talismans-southpark-sdlaf-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.27.1359",
+      "LastUrl": "https://effortless-rulebook-to-python-v2026-11-27-1359-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Python engine."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoowl",
+      "RelativePath": "/effortless-owl",
+      "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/talismans-southpark-sdlaf-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.27.1353",
+      "LastUrl": "https://effortless-rulebook-to-owl-v2026-11-27-1353-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "OWL and SHACL rules: the world back as an ontology, computed by a reasoner."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoxlsx",
+      "RelativePath": "/effortless-xlsx",
+      "CommandLine": "rulebook-to-xlsx -i ../effortless-rulebook/talismans-southpark-sdlaf-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.15.1835",
+      "LastUrl": "https://effortless-rulebook-to-xlsx-v2026-11-15-1835-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Excel workbook with every rule as a live formula."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "effortlessrulebookeditor",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "effortless-rulebook-editor -i talismans-southpark-sdlaf-rulebook.json -p rulebookPath=talismans-southpark-sdlaf-rulebook.json -p dockerfilePath=docker/Dockerfile",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.27.1442",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-11-27-1442-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "The generated rulebook editor (./start.sh --editor)."
+    },
+    {
+      "IsSSoTTranspiler": false,
       "Name": "rulebooktorulespeak",
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/talismans-southpark-sdlaf-rulebook.json",
@@ -70,6 +120,6 @@
   ],
   "ShowHidden": false,
   "ShowAllFiles": false,
-  "CurrentPath": null,
+  "CurrentPath": "/effortless-rulebook",
   "SSoTmeProjectFiles": null
 }

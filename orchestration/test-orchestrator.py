@@ -52,7 +52,17 @@ def _get_active_domain():
     return domain
 
 def _find_domain_dir(domain):
-    # Mirrors orchestrate.sh's find_domain_dir(): check rulebook-examples/
+    # ERB_DOMAIN_DIR names the project's folder when the caller knows it (a project
+    # inside a project, such as South Park's talismans-southpark-sdlaf/, is not
+    # directly under an area); its folder name must be the domain.
+    explicit = os.environ.get("ERB_DOMAIN_DIR", "").strip()
+    if explicit:
+        if not os.path.isfile(os.path.join(explicit, "effortless.json")):
+            raise RuntimeError(f"ERB_DOMAIN_DIR is {explicit}, which holds no effortless.json.")
+        if os.path.basename(os.path.normpath(explicit)) != domain:
+            raise RuntimeError(f"ERB_DOMAIN_DIR is {explicit}, which is not the folder of ERB_DOMAIN={domain}.")
+        return explicit
+    # Otherwise mirrors orchestrate.sh's find_domain_dir(): check rulebook-examples/
     # first, then toy-rulebooks/. Fails loudly if the domain is in neither.
     examples_dir = os.path.join(REPO_ROOT, "rulebook-examples", domain)
     toy_dir = os.path.join(REPO_ROOT, "toy-rulebooks", domain)

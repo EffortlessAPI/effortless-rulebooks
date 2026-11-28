@@ -81,5 +81,22 @@ class LiveSubstrates(unittest.TestCase):
             live.evaluate(PROJECT, "effortless-typescript", fewer)
 
 
+NESTED = PROJECT / "talismans-southpark-sdlaf"
+
+
+class AProjectInsideAProject(unittest.TestCase):
+    """Found 2026-11-27: compare told the harness its project by folder name alone, and the
+    harness looked for that name directly under rulebook-examples/ and toy-rulebooks/. South
+    Park's talismans-southpark-sdlaf/ (a project inside a project) could be evaluated but never
+    compared: "Domain 'talismans-southpark-sdlaf' not found". It is now told the folder."""
+
+    def test_its_substrates_can_be_compared(self):
+        rows = stored_rows(live.load_rulebook(NESTED))
+        answers = {s: live.evaluate(NESTED, s, rows)["tables"] for s in ("effortless-typescript", "effortless-python")}
+        result = live.compare(NESTED, answers)
+        self.assertGreater(result["cells"], 100)
+        self.assertEqual(result["differing"], [], json.dumps(result["differing"][:5], indent=1))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

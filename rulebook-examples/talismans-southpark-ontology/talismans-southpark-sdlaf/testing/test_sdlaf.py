@@ -11,6 +11,8 @@ Run after `effortless build` in this folder (it loads erb_talismans_southpark_sd
 
     python3 testing/test_sdlaf.py        (or pytest)
 """
+import copy
+import json
 import os
 import subprocess
 import sys
@@ -20,6 +22,9 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parents[1]
 REPO = HERE.parents[2]
 RULEBOOK = HERE / "effortless-rulebook" / "talismans-southpark-sdlaf-rulebook.json"
+sys.path.insert(0, str(REPO / "orchestration"))
+import live_substrates as live  # noqa: E402  the platform's one way to run a substrate on rows and compare
+from shared import to_snake_case  # noqa: E402  the harness's own naming rule
 DB = os.environ.get("DATABASE_URL") or "postgresql://postgres@localhost:5432/erb_talismans_southpark_sdlaf"
 
 
@@ -122,6 +127,78 @@ class HerChanges(unittest.TestCase):
                          [["Randy is parent of Stan"]])
         # Stated Stan -> Randy: Randy is Stan's spouse only when the symmetric rule mirrors it.
         self.assertEqual(sql(f"{ALL_ON}; {wed}; update reasoning set symmetric_is_on = false; {SUMMARY}")[0][1], "t")
+
+
+ALL_OFF = ALL_ON.replace("true", "false")
+GRADE_FIVE_AND_A_WEDDING = (
+    "insert into grade_level_records (grade_level_record_id, reasoning, individual, grade_level, stated_seq, is_on) "
+    "values ('Stan|grade|11', 'south-park', 'Stan', 5, 11, true); "
+    "insert into marriages (marriage_id, reasoning, partner_a, partner_b) "
+    "values ('Stan|isSpouseOf|Randy', 'south-park', 'Stan', 'Randy')")
+
+
+def postgres_answers(change: str) -> dict:
+    """Every view after `change`, under the rulebook's field names, read inside the rolled-back transaction."""
+    rulebook = live.load_rulebook(HERE)
+    tables = {n: t for n, t in live.tables_of(rulebook).items() if n != "__meta__"}
+    parts = ", ".join(f"'{n}', (select coalesce(jsonb_agg(x), '[]') from vw_{to_snake_case(n)} x)" for n in tables)
+    (text,), = sql(f"{change}; select jsonb_build_object({parts})")
+    got = json.loads(text)
+    return {n: [{f["name"]: r.get(to_snake_case(f["name"])) for f in t["schema"]} for r in got[n]] for n, t in tables.items()}
+
+
+def stored_rows() -> dict:
+    return {n: [{f: r.get(f) for f in live.stored_fields(t)} for r in t["data"]]
+            for n, t in live.tables_of(live.load_rulebook(HERE)).items()}
+
+
+def switched_off(rows: dict) -> dict:
+    rows = copy.deepcopy(rows)
+    for r in rows["Reasoning"]:
+        for rule in ("InverseIsOn", "SymmetricIsOn", "ChainIsOn", "DomainRangeIsOn", "DisjointIsOn"):
+            r[rule] = False
+    return rows
+
+
+def grade_five_and_a_wedding(rows: dict) -> dict:
+    rows = copy.deepcopy(rows)
+    rows["GradeLevelRecords"].append({"GradeLevelRecordId": "Stan|grade|11", "Reasoning": "south-park", "Individual": "Stan",
+                                      "GradeLevel": 5, "StatedSeq": 11, "IsOn": True})
+    rows["Marriages"].append({"MarriageId": "Stan|isSpouseOf|Randy", "Reasoning": "south-park", "PartnerA": "Stan", "PartnerB": "Randy"})
+    return rows
+
+
+SCENARIOS = {  # name: (the change in Postgres, the same change to the stored rows)
+    "as stored": ("set local search_path = public", lambda rows: rows),
+    "every rule off": (ALL_OFF, switched_off),
+    "grade five and a parent who is a spouse": (GRADE_FIVE_AND_A_WEDDING, grade_five_and_a_wedding),
+}
+
+
+class EveryEngineAgrees(unittest.TestCase):
+    """Postgres (the views), TypeScript (the SDK's evaluate) and Python compute every cell alike,
+    compared by the harness's own compare_values, in each scenario."""
+
+    def compare(self, substrates):
+        for name, (change, rows_after) in SCENARIOS.items():
+            with self.subTest(scenario=name):
+                rows = rows_after(stored_rows())
+                answers = {"effortless-postgres": postgres_answers(change)}
+                answers.update({s: live.evaluate(HERE, s, rows)["tables"] for s in substrates})
+                result = live.compare(HERE, answers)
+                self.assertGreater(result["cells"], 400)
+                self.assertEqual(result["missingRows"], [])
+                self.assertEqual(result["differing"], [], json.dumps(result["differing"][:6], indent=1))
+
+    def test_postgres_typescript_and_python(self):
+        self.compare(("effortless-typescript", "effortless-python"))
+
+    # OWL computes every cell alike from the rows its own build wrote (individuals.ttl), but on rows
+    # handed to it live, live_substrates writes no edges for a closure (manifest.json does not say
+    # which property holds them), so DescendantCount and AncestorCount read 0.
+    @unittest.expectedFailure
+    def test_owl_on_live_rows(self):
+        self.compare(("effortless-owl",))
 
 
 class TheFile(unittest.TestCase):

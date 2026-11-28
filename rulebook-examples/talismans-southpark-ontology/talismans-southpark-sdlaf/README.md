@@ -49,12 +49,28 @@ Beyond her page: `Parenthoods.AncestryClosure` is the transitive closure of pare
 8 conclusions, 0 contradictions*. Her page starts with every rule off; here they start on, so
 every conclusion shows.
 
+## Run it
+
+```bash
+effortless build    # in this folder: Postgres (loaded into erb_talismans_southpark_sdlaf),
+                    # TypeScript, Python, OWL, Excel, the editor, the docs and the explainer
+./start.sh          # the generated rulebook editor: http://localhost:43632 (API :43631)
+```
+
+The explainer opens from the file system: `explainer/rulebook-explainer-dag/pages/index.html`.
+
 ## Tests
 
 ```bash
-effortless build                 # in this folder: loads erb_talismans_southpark_sdlaf
-python3 testing/test_sdlaf.py    # her facts, each conclusion, each rule switch, her changes
+python3 testing/test_sdlaf.py
 ```
 
-The tests run each change (a later grade, Stan leaving school, a parent who is also the
-spouse) inside a transaction that is rolled back.
+- Her facts, each conclusion, each rule switch, and her changes (a later grade, Stan leaving
+  school, a parent who is also the spouse), each inside a transaction that is rolled back.
+- Every engine agrees: Postgres (the views), TypeScript (the SDK's `evaluate`) and Python
+  compute every cell alike in three scenarios, compared by the harness's own `compare_values`
+  through `orchestration/live_substrates.py`.
+- OWL agrees on every cell when it runs on the rows its own build wrote. On rows handed to it
+  live, `live_substrates.py` writes no edges for a closure (the OWL build's `manifest.json`
+  does not say which property holds them), so `DescendantCount` and `AncestorCount` read 0:
+  an expected failure in the tests until `rulebook-to-owl` names that property.
