@@ -1,4 +1,4 @@
-# 📘 Community Event Planner — RuleSpeak®
+# 📘 Community Event Planner — Docs
 
 _Venues, events, speakers, attendees with capacity, scheduling, and attendance-forecast cascades._
 
@@ -15,12 +15,44 @@ _Venues, events, speakers, attendees with capacity, scheduling, and attendance-f
 | Name | The same as its venue ID. | _Display name for the venue_ |
 | Location | A defined attribute. | _Physical location/address_ |
 | Capacity | A defined attribute. | _Total seating capacity_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Location | Capacity |
+|---|---|---|
+| main-hall | Downtown Community Center | 150 |
+| conference-room | Tech Hub Building | 50 |
+| outdoor-amphitheater | Central Park | 300 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Speaker** | A speaker is identified by its name. | — |
 | Name | The same as its speaker ID. | _Display name for the speaker_ |
 | Availability Start | A defined attribute. | _Start of speaker availability window_ |
 | Availability End | A defined attribute. | _End of speaker availability window_ |
 | Assignment Count | The number of assignments related to the speaker. | _Total number of event assignments for this speaker_ |
 | Is Overbooked | True when the assignment count is greater than 3. | _Is speaker assigned to more than 3 events (workload alert)?_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Availability Start | Availability End | Assignment Count ƒ | Is Overbooked ƒ |
+|---|---|---|---|---|
+| alice@speakers.local | 2026-05-24 14:00:00 | 2026-05-24 21:00:00 | 2 | false |
+| bob@speakers.local | 2026-05-25 09:00:00 | 2026-05-25 18:00:00 | 2 | false |
+| carol@speakers.local | 2026-05-23 15:00:00 | 2026-05-23 20:00:00 | 2 | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Event** | An event is identified by its name and is related to a venue. | — |
 | Name | The same as its event ID. | _Display name for the event_ |
 | Venue | A defined attribute. | _Related venue_ |
@@ -44,6 +76,22 @@ _Venues, events, speakers, attendees with capacity, scheduling, and attendance-f
 | Capacity Headroom | Computed as the available capacity minus the booked capacity. | _Available capacity minus booked attendees_ |
 | Has Headroom for Overbooking | True when the capacity headroom is at least the booked capacity times 0.2. | _Is there enough headroom to safely overbook by 20%?_ |
 | Recommended Overbooking Factor | Determined by priority: 1.2 if the headroom for overbooking flag is set; in all other cases, 1.0. | _Safe overbooking multiplier (if headroom allows)_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Venue Name ƒ | Venue Capacity ƒ | Event Date | Duration Minutes | Category | Event End ƒ | Total Speakers Assigned ƒ | Has Speakers ƒ | Booked Capacity ƒ | Available Capacity ƒ | At Capacity ƒ | Venue Conflict Count ƒ | Has Venue Conflict ƒ | Event Status ƒ | Registration Close Days Before Event | Registration Deadline ƒ | Is Registration Open ƒ | Capacity Headroom ƒ | Has Headroom for Overbooking ƒ | Recommended Overbooking Factor ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| tech-talk-1 | main-hall | 150 | 2026-05-24 14:00:00 | 60 | Tech | 2026-05-24 14:00:00 | 3 | true | 2 | 148 | false | 2 | true | issues | 0 | 2026-05-24T14:00:00+00:00 | false | 146 | true | 1.2 |
+| workshop-1 | conference-room | 50 | 2026-05-25 10:00:00 | 120 | Learning | 2026-05-25 10:00:00 | 2 | true | 1 | 49 | false | 1 | false | ready | 1 | 2026-05-24T10:00:00+00:00 | false | 48 | true | 1.2 |
+| panel-1 | outdoor-amphitheater | 300 | 2026-05-25 15:00:00 | 90 | Community | 2026-05-25 15:00:00 | 3 | true | 2 | 298 | false | 1 | false | ready | 1 | 2026-05-24T15:00:00+00:00 | false | 296 | true | 1.2 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Assignment** | An assignment is identified by its name and is related to an event (its event ref) and a speaker (its speaker ref). | — |
 | Name | The same as its assignment ID. | _Display name_ |
 | Event Ref | A defined attribute. | _Related event_ |
@@ -54,8 +102,40 @@ _Venues, events, speakers, attendees with capacity, scheduling, and attendance-f
 | Speaker Avail Start | The availability start of the assignment's speaker ref. | _Looked up speaker availability start_ |
 | Speaker Avail End | The availability end of the assignment's speaker ref. | _Looked up speaker availability end_ |
 | Is Available | True when all of the following hold: the event date is at least the speaker avail start and the event date is at most the speaker avail end. | _Is speaker available for this event?_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Event Name ƒ | Speaker Name ƒ | Event Date ƒ | Speaker Avail Start ƒ | Speaker Avail End ƒ | Is Available ƒ |
+|---|---|---|---|---|---|---|
+| assign-1 | tech-talk-1 | alice@speakers.local | 2026-05-24 14:00:00 | 2026-05-24 14:00:00 | 2026-05-24 21:00:00 | true |
+| assign-2 | tech-talk-1 | bob@speakers.local | 2026-05-24 14:00:00 | 2026-05-25 09:00:00 | 2026-05-25 18:00:00 | false |
+| assign-3 | workshop-1 | bob@speakers.local | 2026-05-25 10:00:00 | 2026-05-25 09:00:00 | 2026-05-25 18:00:00 | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Attendee** | An attendee is identified by its name. | — |
 | Name | The same as its attendee ID. | _Display name for the attendee_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ |
+|---|
+| user1@attendees.local |
+| user2@attendees.local |
+| user3@attendees.local |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **RSV P** | An RSV p is identified by its name and is related to an event (its event ref) and an attendee (its attendee ref). | — |
 | Name | The same as its RSVP ID. | _Display name_ |
 | Event Ref | A defined attribute. | _Related event_ |
@@ -63,6 +143,19 @@ _Venues, events, speakers, attendees with capacity, scheduling, and attendance-f
 | Attendee Ref | A defined attribute. | _Related attendee_ |
 | Attendee Name | The attendee ref. | _Looked up attendee name_ |
 | Status | A defined attribute. | _RSVP status (confirmed, waitlist, declined)_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Event Name ƒ | Attendee Name ƒ | Status |
+|---|---|---|---|
+| rsvp-1 | tech-talk-1 | user1@attendees.local | confirmed |
+| rsvp-2 | tech-talk-1 | user2@attendees.local | confirmed |
+| rsvp-3 | workshop-1 | user1@attendees.local | confirmed |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -83,7 +176,7 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 
 - A venue **must** have a capacity.
 - An event **must** reference exactly one venue.
-- An event **must** have an event date, a duration minutes, and a registration close days before event.
+- An event **must** have an event date; a duration minutes; and a registration close days before event.
 - An assignment **must** reference exactly one event as its event ref.
 - An assignment **must** reference exactly one speaker as its speaker ref.
 - An RSV p **must** reference exactly one event as its event ref.
@@ -135,7 +228,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -175,8 +268,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

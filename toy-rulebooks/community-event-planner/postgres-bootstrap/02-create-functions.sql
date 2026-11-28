@@ -14,6 +14,113 @@
 SET check_function_bodies = off;
 
 -- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+
+-- ============================================================================
 -- LOOKUP FUNCTIONS
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
@@ -55,7 +162,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_speakers_is_overbooked(p_speaker_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_speakers_assignment_count(p_speaker_id))::NUMERIC > 3)::boolean;
+  SELECT (COALESCE((calc_speakers_assignment_count(p_speaker_id))::NUMERIC, 0) > 3)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_events_venue_capacity
@@ -134,7 +241,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_events_has_speakers(p_event_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_events_total_speakers_assigned(p_event_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_events_total_speakers_assigned(p_event_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_events_booked_capacity
@@ -154,7 +261,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_events_available_capacity(p_event_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_events_venue_capacity(p_event_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_events_booked_capacity(p_event_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_events_venue_capacity(p_event_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_events_booked_capacity(p_event_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_events_at_capacity
@@ -164,7 +271,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_events_at_capacity(p_event_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_events_available_capacity(p_event_id))::NUMERIC <= 0)::boolean;
+  SELECT (COALESCE((calc_events_available_capacity(p_event_id))::NUMERIC, 0) <= 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_events_venue_conflict_count
@@ -184,7 +291,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_events_has_venue_conflict(p_event_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_events_venue_conflict_count(p_event_id))::NUMERIC > 1)::boolean;
+  SELECT (COALESCE((calc_events_venue_conflict_count(p_event_id))::NUMERIC, 0) > 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_events_event_status
@@ -194,7 +301,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_events_event_status(p_event_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (calc_events_has_speakers(p_event_id) AND NOT (calc_events_at_capacity(p_event_id)) AND NOT (calc_events_has_venue_conflict(p_event_id))) THEN ('ready')::text ELSE ('issues')::text END)::text;
+  SELECT (CASE WHEN (COALESCE(calc_events_has_speakers(p_event_id), FALSE) AND COALESCE(NOT (COALESCE(calc_events_at_capacity(p_event_id), FALSE)), FALSE) AND COALESCE(NOT (COALESCE(calc_events_has_venue_conflict(p_event_id), FALSE)), FALSE)) THEN ('ready')::text ELSE ('issues')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_events_registration_deadline
@@ -204,7 +311,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_events_registration_deadline(p_event_id TEXT)
 RETURNS TIMESTAMPTZ AS $$
-  SELECT ((((SELECT event_date::timestamptz FROM events WHERE event_id = p_event_id))::date - (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT registration_close_days_before_event FROM events WHERE event_id = p_event_id)) AS v) __safe_numeric), 0))::integer))::timestamptz;
+  SELECT ((((SELECT event_date::timestamptz FROM events WHERE event_id = p_event_id))::date - (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT registration_close_days_before_event FROM events WHERE event_id = p_event_id)) AS v OFFSET 0) __safe_numeric), 0))::integer))::timestamptz;
 $$ LANGUAGE sql STABLE;
 
 -- calc_events_is_registration_open
@@ -214,7 +321,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_events_is_registration_open(p_event_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_events_registration_deadline(p_event_id) > CURRENT_TIMESTAMP)::boolean;
+  SELECT (COALESCE((calc_events_registration_deadline(p_event_id) > COALESCE(NULLIF(current_setting('erb.now', true), '')::timestamptz, CURRENT_TIMESTAMP)), FALSE))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_events_capacity_headroom
@@ -224,7 +331,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_events_capacity_headroom(p_event_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_events_available_capacity(p_event_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_events_booked_capacity(p_event_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_events_available_capacity(p_event_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_events_booked_capacity(p_event_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_events_has_headroom_for_overbooking
@@ -234,7 +341,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_events_has_headroom_for_overbooking(p_event_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_events_capacity_headroom(p_event_id) >= (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_events_booked_capacity(p_event_id)) AS v) __safe_numeric), 0) * COALESCE(0.2, 0)))::boolean;
+  SELECT (COALESCE(calc_events_capacity_headroom(p_event_id), 0) >= COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_events_booked_capacity(p_event_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(0.2, 0)), 0))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_events_recommended_overbooking_factor
@@ -371,7 +478,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assignments_is_available(p_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_assignments_event_date(p_assignment_id) AS val) SELECT (((SELECT val FROM __erb_dedup_v1) >= calc_assignments_speaker_avail_start(p_assignment_id) AND (SELECT val FROM __erb_dedup_v1) <= calc_assignments_speaker_avail_end(p_assignment_id)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_assignments_event_date(p_assignment_id) AS val), __erb_dedup_v2 AS (SELECT calc_assignments_speaker_avail_start(p_assignment_id) AS val), __erb_dedup_v3 AS (SELECT calc_assignments_speaker_avail_end(p_assignment_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) >= (SELECT val FROM __erb_dedup_v2)), (((SELECT val FROM __erb_dedup_v1)) IS NULL AND ((SELECT val FROM __erb_dedup_v2)) IS NULL)), FALSE) AND COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1) <= (SELECT val FROM __erb_dedup_v3)), (((SELECT val FROM __erb_dedup_v1)) IS NULL AND ((SELECT val FROM __erb_dedup_v3)) IS NULL)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_attendees_name

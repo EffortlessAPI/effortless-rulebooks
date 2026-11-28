@@ -255,13 +255,18 @@
 
 .dag-hovercard > * { display: block; }
 /* The grip that resizes the card: a tablet and up only (a phone's card is full-size already). It sits in the card's
-   bottom-right corner and stays there as the card scrolls. */
+   bottom-right corner: on the card's own bottom edge when the content is shorter than the card (the card is a
+   column and the grip's top margin is auto, which a sticky grip alone does not do), and stuck there while a tall
+   card scrolls. */
 .dag-hovercard > .dag-hovercard-grip { display: none; }
 @media (min-width: 768px) {
+  /* No bottom padding of its own: a sticky grip stays inside the content box, so the padding would be a gap under it. */
+  .dag-hovercard-shell-fixed .dag-hovercard { display: flex; flex-direction: column; padding-bottom: 0; }
+  .dag-hovercard-shell-fixed .dag-hovercard > * { flex: 0 0 auto; }
   .dag-hovercard > .dag-hovercard-grip {
-    display: block; position: sticky; bottom: 0; width: 20px; height: 20px; margin: -20px -16px -12px auto;
+    display: block; position: sticky; bottom: 0; width: 28px; height: 28px; margin: auto -16px 0 auto;
     cursor: nwse-resize; touch-action: none; border-bottom-right-radius: 8px;
-    background: linear-gradient(135deg, transparent 0 52%, #9aa0aa 52% 58%, transparent 58% 70%, #9aa0aa 70% 76%, transparent 76% 88%, #9aa0aa 88% 94%, transparent 94%);
+    background: linear-gradient(135deg, transparent 0 40%, #6f7682 40% 48%, transparent 48% 60%, #6f7682 60% 68%, transparent 68% 80%, #6f7682 80% 88%, transparent 88%);
   }
 }
 .dag-hovercard-head {
@@ -1188,12 +1193,14 @@ a.dag-hovercard-table:hover, a.dag-hovercard-field:hover { color: var(--dag-calc
 /* Bigger on a tablet and up, and its text larger: it is where the rules are read. The person can
    drag the grip in the corner to any size they like (explainer-dag.js remembers it). */
 @media (min-width: 768px) {
-  .dag-modal-panel { width: 92vw; max-width: 1180px; max-height: 92vh; padding: 1.75rem 2rem; }
+  .dag-modal-panel { width: 92vw; max-width: 1180px; max-height: 92vh; padding: 1.75rem 2rem 0; display: flex; flex-direction: column; }
+  .dag-modal-panel > * { flex: 0 0 auto; }
   #effortless-explainer-modal-body { zoom: 1.15; }
+  /* On the panel's own bottom edge even when the content is shorter than a panel the person made tall. */
   .dag-modal-grip {
-    display: block; position: sticky; bottom: 0; width: 22px; height: 22px; margin: -22px -2rem 0 auto;
+    display: block; position: sticky; bottom: 0; width: 30px; height: 30px; margin: auto -2rem 0 auto;
     cursor: nwse-resize; touch-action: none; border-bottom-right-radius: 8px;
-    background: linear-gradient(135deg, transparent 0 52%, #9aa0aa 52% 58%, transparent 58% 70%, #9aa0aa 70% 76%, transparent 76% 88%, #9aa0aa 88% 94%, transparent 94%);
+    background: linear-gradient(135deg, transparent 0 40%, #6f7682 40% 48%, transparent 48% 60%, #6f7682 60% 68%, transparent 68% 80%, #6f7682 80% 88%, transparent 88%);
   }
   .dag-modal-grip:hover { background-color: #eef0f4; }
 }
@@ -1298,7 +1305,8 @@ a.dag-hovercard-table:hover, a.dag-hovercard-field:hover { color: var(--dag-calc
  * The witness (witness.js): one row's value and the values it came from, down
  * to the stored ones. A tree of lines, "name = value"; a derived line opens to
  * show why (the rule, the row it was looked up from, the rows it counted) and
- * the cells it was made from. Raw lines are the leaves: ground truth.
+ * the cells it was made from. Raw lines are the leaves: ground truth, said by
+ * their dot's hover text (title), never a pill on the line.
  * ========================================================================== */
 .dag-witness .dag-w-tree { margin-top: 10px; }
 .dag-w-picker { display: inline-flex; align-items: center; gap: 8px; margin: 4px 0 2px; font-size: 13px; }
@@ -1331,10 +1339,7 @@ details.dag-w[open] > summary.dag-w-line::before { transform: rotate(90deg); }
 .dag-w-str { font-weight: 600; }
 .dag-w-blank { font-weight: 500; font-style: italic; color: #999; }
 .dag-w-note { margin-inline-start: 8px; font-size: 11.5px; color: #777; }
-.dag-w-gt {
-  padding: 1px 7px; border-radius: 99px; background: var(--dag-raw-bg); color: var(--dag-raw);
-  font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em;
-}
+.dag-w-glyph[title] { cursor: help; }
 .dag-w-body { margin: 0 0 4px; margin-inline-start: 6px; padding: 2px 0; padding-inline-start: 14px; border-inline-start: 2px solid #e6e2ef; }
 .dag-w-why { margin: 2px 0 6px; font-size: 13px; color: #555; }
 .dag-w-why .dag-w-val { font-size: 13px; }
