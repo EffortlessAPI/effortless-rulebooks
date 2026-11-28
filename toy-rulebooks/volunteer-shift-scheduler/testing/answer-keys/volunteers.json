@@ -31,9 +31,9 @@
     "reliability_score": 0.9,
     "max_hours": 12,
     "name": "Jamie Rivera",
-    "assignment_count": 1,
-    "assigned_hours": 3,
-    "load_status": "under"
+    "assignment_count": 2,
+    "assigned_hours": 6,
+    "load_status": "ok"
   },
   {
     "volunteer_id": "morgan-lee",
@@ -43,8 +43,8 @@
     "reliability_score": 0.95,
     "max_hours": 10,
     "name": "Morgan Lee",
-    "assignment_count": 2,
-    "assigned_hours": 7,
+    "assignment_count": 3,
+    "assigned_hours": 10,
     "load_status": "ok"
   },
   {

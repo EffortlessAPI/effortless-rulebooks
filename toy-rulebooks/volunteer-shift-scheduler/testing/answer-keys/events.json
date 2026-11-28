@@ -5,9 +5,9 @@
     "event_date": "2026-11-07T08:00:00Z",
     "shift_count": 2,
     "total_slots_needed": 6,
-    "total_slots_filled": 6,
-    "coverage_percent": 1.0,
-    "staffing_grade": "A"
+    "total_slots_filled": 2,
+    "coverage_percent": 0.3333333333333333,
+    "staffing_grade": "F"
   },
   {
     "event_id": "harvest-festival-2026",
@@ -15,8 +15,8 @@
     "event_date": "2026-10-12T09:00:00Z",
     "shift_count": 4,
     "total_slots_needed": 14,
-    "total_slots_filled": 12,
-    "coverage_percent": 0.857,
-    "staffing_grade": "B"
+    "total_slots_filled": 8,
+    "coverage_percent": 0.5714285714285714,
+    "staffing_grade": "D"
   }
 ]

@@ -7,8 +7,8 @@
     "required_skill": "food-handler",
     "duration_hours": 3,
     "needed_count": 3,
-    "filled_count": 3,
-    "coverage_status": "covered"
+    "filled_count": 1,
+    "coverage_status": "understaffed"
   },
   {
     "shift_id": "foodbank-sort-morning",
@@ -18,8 +18,8 @@
     "required_skill": "intake",
     "duration_hours": 3,
     "needed_count": 3,
-    "filled_count": 3,
-    "coverage_status": "covered"
+    "filled_count": 1,
+    "coverage_status": "understaffed"
   },
   {
     "shift_id": "harvest-food-afternoon",
@@ -29,7 +29,7 @@
     "required_skill": "food-handler",
     "duration_hours": 4,
     "needed_count": 4,
-    "filled_count": 3,
+    "filled_count": 0,
     "coverage_status": "understaffed"
   },
   {
@@ -62,7 +62,7 @@
     "required_skill": "setup",
     "duration_hours": 3,
     "needed_count": 3,
-    "filled_count": 3,
-    "coverage_status": "covered"
+    "filled_count": 2,
+    "coverage_status": "understaffed"
   }
 ]

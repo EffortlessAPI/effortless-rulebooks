@@ -74,9 +74,9 @@
         "EventDate": "2026-10-12T09:00:00Z",
         "ShiftCount": 4,
         "TotalSlotsNeeded": 14,
-        "TotalSlotsFilled": 12,
-        "CoveragePercent": 0.857,
-        "StaffingGrade": "B"
+        "TotalSlotsFilled": 8,
+        "CoveragePercent": 0.5714285714285714,
+        "StaffingGrade": "D"
       },
       {
         "EventId": "food-bank-saturday",
@@ -84,9 +84,9 @@
         "EventDate": "2026-11-07T08:00:00Z",
         "ShiftCount": 2,
         "TotalSlotsNeeded": 6,
-        "TotalSlotsFilled": 6,
-        "CoveragePercent": 1.0,
-        "StaffingGrade": "A"
+        "TotalSlotsFilled": 2,
+        "CoveragePercent": 0.3333333333333333,
+        "StaffingGrade": "F"
       }
     ]
   },
@@ -185,8 +185,8 @@
         "ReliabilityScore": 0.95,
         "MaxHours": 10,
         "Name": "Morgan Lee",
-        "AssignmentCount": 2,
-        "AssignedHours": 7,
+        "AssignmentCount": 3,
+        "AssignedHours": 10,
         "LoadStatus": "ok"
       },
       {
@@ -209,9 +209,9 @@
         "ReliabilityScore": 0.9,
         "MaxHours": 12,
         "Name": "Jamie Rivera",
-        "AssignmentCount": 1,
-        "AssignedHours": 3,
-        "LoadStatus": "under"
+        "AssignmentCount": 2,
+        "AssignedHours": 6,
+        "LoadStatus": "ok"
       },
       {
         "VolunteerId": "alex-kim",
@@ -353,7 +353,7 @@
         "RequiredSkill": "food-handler",
         "DurationHours": 4,
         "NeededCount": 4,
-        "FilledCount": 3,
+        "FilledCount": 0,
         "CoverageStatus": "understaffed"
       },
       {
@@ -364,8 +364,8 @@
         "RequiredSkill": "setup",
         "DurationHours": 3,
         "NeededCount": 3,
-        "FilledCount": 3,
-        "CoverageStatus": "covered"
+        "FilledCount": 2,
+        "CoverageStatus": "understaffed"
       },
       {
         "ShiftId": "foodbank-sort-morning",
@@ -375,8 +375,8 @@
         "RequiredSkill": "intake",
         "DurationHours": 3,
         "NeededCount": 3,
-        "FilledCount": 3,
-        "CoverageStatus": "covered"
+        "FilledCount": 1,
+        "CoverageStatus": "understaffed"
       },
       {
         "ShiftId": "foodbank-distrib-afternoon",
@@ -386,8 +386,8 @@
         "RequiredSkill": "food-handler",
         "DurationHours": 3,
         "NeededCount": 3,
-        "FilledCount": 3,
-        "CoverageStatus": "covered"
+        "FilledCount": 1,
+        "CoverageStatus": "understaffed"
       }
     ]
   },
