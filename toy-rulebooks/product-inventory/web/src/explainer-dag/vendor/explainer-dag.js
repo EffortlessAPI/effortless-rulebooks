@@ -119,7 +119,6 @@
       witnessComputing: "Computing this row with the generated TypeScript…",
       witnessNoRows: (t) => `${t} has no rows to witness.`,
       witnessFailed: "The witness could not be computed.",
-      witnessGroundTruth: "ground truth",
       witnessPointsTo: (t, label) => `points to ${t} ${label}`,
       witnessPointsNowhere: (t) => `names no ${t} row`,
       witnessBlank: "blank",
@@ -233,7 +232,6 @@
       witnessComputing: "生成済み TypeScript でこの行を計算しています…",
       witnessNoRows: (t) => `${t} には実証できる行がありません。`,
       witnessFailed: "実証を計算できませんでした。",
-      witnessGroundTruth: "根拠データ",
       witnessPointsTo: (t, label) => `${t} の ${label} を指しています`,
       witnessPointsNowhere: (t) => `${t} のどの行も指していません`,
       witnessBlank: "空",
@@ -345,7 +343,6 @@
       witnessComputing: "Diese Zeile wird mit dem generierten TypeScript berechnet…",
       witnessNoRows: (t) => `${t} enthält keine Zeilen, die sich nachvollziehen ließen.`,
       witnessFailed: "Der Nachweis konnte nicht berechnet werden.",
-      witnessGroundTruth: "Grunddaten",
       witnessPointsTo: (t, label) => `verweist auf ${t} ${label}`,
       witnessPointsNowhere: (t) => `verweist auf keine Zeile in ${t}`,
       witnessBlank: "leer",
@@ -461,7 +458,6 @@
       witnessComputing: "Calculando esta fila con el TypeScript generado…",
       witnessNoRows: (t) => `${t} no tiene filas que comprobar.`,
       witnessFailed: "No se pudo calcular la comprobación.",
-      witnessGroundTruth: "datos base",
       witnessPointsTo: (t, label) => `apunta a ${t} ${label}`,
       witnessPointsNowhere: (t) => `no apunta a ninguna fila de ${t}`,
       witnessBlank: "en blanco",
@@ -577,7 +573,6 @@
       witnessComputing: "Calcul de cette ligne avec le TypeScript généré…",
       witnessNoRows: (t) => `${t} ne contient aucune ligne à vérifier.`,
       witnessFailed: "La vérification n’a pas pu être calculée.",
-      witnessGroundTruth: "données de base",
       witnessPointsTo: (t, label) => `pointe vers ${t} ${label}`,
       witnessPointsNowhere: (t) => `ne pointe vers aucune ligne de ${t}`,
       witnessBlank: "vide",
@@ -693,7 +688,6 @@
       witnessComputing: "Calculando esta linha com o TypeScript gerado…",
       witnessNoRows: (t) => `${t} não tem linhas para comprovar.`,
       witnessFailed: "Não foi possível calcular a comprovação.",
-      witnessGroundTruth: "dados de base",
       witnessPointsTo: (t, label) => `aponta para ${t} ${label}`,
       witnessPointsNowhere: (t) => `não aponta para nenhuma linha de ${t}`,
       witnessBlank: "em branco",
@@ -809,7 +803,6 @@
       witnessComputing: "Calcolo di questa riga con il TypeScript generato…",
       witnessNoRows: (t) => `${t} non ha righe da verificare.`,
       witnessFailed: "Non è stato possibile calcolare la verifica.",
-      witnessGroundTruth: "dati di base",
       witnessPointsTo: (t, label) => `punta a ${t} ${label}`,
       witnessPointsNowhere: (t) => `non punta a nessuna riga di ${t}`,
       witnessBlank: "vuoto",
@@ -925,7 +918,6 @@
       witnessComputing: "Deze rij wordt berekend met de gegenereerde TypeScript…",
       witnessNoRows: (t) => `${t} heeft geen rijen om na te rekenen.`,
       witnessFailed: "De narekening kon niet worden berekend.",
-      witnessGroundTruth: "basisgegevens",
       witnessPointsTo: (t, label) => `verwijst naar ${t} ${label}`,
       witnessPointsNowhere: (t) => `verwijst naar geen enkele rij in ${t}`,
       witnessBlank: "leeg",
@@ -1041,7 +1033,6 @@
       witnessComputing: "Строка вычисляется сгенерированным TypeScript…",
       witnessNoRows: (t) => `В ${t} нет строк для проверки.`,
       witnessFailed: "Проверку не удалось вычислить.",
-      witnessGroundTruth: "исходные данные",
       witnessPointsTo: (t, label) => `указывает на ${t} ${label}`,
       witnessPointsNowhere: (t) => `не указывает ни на одну строку ${t}`,
       witnessBlank: "пусто",
@@ -1155,7 +1146,6 @@
       witnessComputing: "正在用生成的 TypeScript 计算此行…",
       witnessNoRows: (t) => `${t} 没有可供验证的行。`,
       witnessFailed: "无法计算验证结果。",
-      witnessGroundTruth: "基础数据",
       witnessPointsTo: (t, label) => `指向 ${t} 的 ${label}`,
       witnessPointsNowhere: (t) => `未指向 ${t} 中的任何行`,
       witnessBlank: "空",
@@ -1267,7 +1257,6 @@
       witnessComputing: "जनरेट किए गए TypeScript से इस पंक्ति की गणना हो रही है…",
       witnessNoRows: (t) => `${t} में प्रमाणित करने के लिए कोई पंक्ति नहीं है।`,
       witnessFailed: "प्रमाण की गणना नहीं हो सकी।",
-      witnessGroundTruth: "मूल डेटा",
       witnessPointsTo: (t, label) => `${t} के ${label} की ओर संकेत करता है`,
       witnessPointsNowhere: (t) => `${t} की किसी पंक्ति की ओर संकेत नहीं करता`,
       witnessBlank: "रिक्त",
@@ -1383,7 +1372,6 @@
       witnessComputing: "جارٍ حساب هذا السجل بشيفرة TypeScript المولَّدة…",
       witnessNoRows: (t) => `لا توجد سجلات في الجدول «${t}» يمكن إظهار شاهد عليها.`,
       witnessFailed: "تعذّر حساب الشاهد.",
-      witnessGroundTruth: "بيانات أصلية",
       witnessPointsTo: (t, label) => `يشير إلى السجل «${label}» في الجدول «${t}»`,
       witnessPointsNowhere: (t) => `لا يشير إلى أي سجل في الجدول «${t}»`,
       witnessBlank: "فارغ",
@@ -1497,7 +1485,6 @@
       witnessComputing: "Menghitung baris ini dengan TypeScript yang dihasilkan…",
       witnessNoRows: (t) => `Tabel ${t} tidak memiliki baris untuk dibuktikan.`,
       witnessFailed: "Bukti tidak dapat dihitung.",
-      witnessGroundTruth: "fakta dasar",
       // The row's label comes first and the table follows a fixed head noun, so
       // neither term needs a particle of its own.
       witnessPointsTo: (t, label) => `menunjuk ke ${label} pada tabel ${t}`,
@@ -1613,7 +1600,6 @@
       witnessComputing: "생성된 TypeScript로 이 레코드를 계산하는 중…",
       witnessNoRows: (t) => `${t} 테이블에는 증명할 레코드가 없습니다.`,
       witnessFailed: "증명을 계산하지 못했습니다.",
-      witnessGroundTruth: "원천 데이터",
       witnessPointsTo: (t, label) => `${t} 테이블의 ${label} 레코드를 가리킵니다`,
       witnessPointsNowhere: (t) => `${t} 테이블의 어떤 레코드도 가리키지 않습니다`,
       witnessBlank: "비어 있음",
@@ -1727,7 +1713,6 @@
       witnessComputing: "Bu satır, üretilmiş TypeScript ile hesaplanıyor…",
       witnessNoRows: (t) => `“${t}” tablosunda tanıklık edilecek satır yok.`,
       witnessFailed: "Tanıklık hesaplanamadı.",
-      witnessGroundTruth: "temel veri",
       witnessPointsTo: (t, label) => `“${t}” tablosundaki “${label}” kaydına işaret eder`,
       witnessPointsNowhere: (t) => `“${t}” tablosunda hiçbir satıra işaret etmez`,
       witnessBlank: "boş",
@@ -1844,7 +1829,6 @@
       witnessComputing: "Đang tính bản ghi này bằng mã TypeScript được sinh ra…",
       witnessNoRows: (t) => `Bảng ${t} không có bản ghi nào để kiểm chứng.`,
       witnessFailed: "Không tính được phần kiểm chứng.",
-      witnessGroundTruth: "dữ liệu gốc",
       witnessPointsTo: (t, label) => `trỏ tới bản ghi ${label} của bảng ${t}`,
       witnessPointsNowhere: (t) => `không trỏ tới bản ghi nào của bảng ${t}`,
       witnessBlank: "trống",
@@ -2290,7 +2274,14 @@
           html += "</ol>";
         }
         if (n.children && n.children.length) {
-          html += `<div class="dag-rt-cond-block">${n.children.map((ch) => `<div>${cond(ch)}</div>`).join("")}</div>`;
+          // Under a headline ("... if any of the following:") a group lists its conditions
+          // with no label of its own: the headline already says all or any, as the
+          // RuleSpeak document does (HtmlDocRenderer.RenderRuleTree). Two labels once
+          // said "all of the following: ANY OF THESE HOLD" (2026-11-24).
+          const bare = (ch) => (n.headline && (ch.kind === "all" || ch.kind === "any"))
+            ? `<ul class="dag-rt-children">${(ch.children || []).map((g) => `<li class="dag-rt-child">${cond(g)}</li>`).join("")}</ul>`
+            : cond(ch);
+          html += `<div class="dag-rt-cond-block">${n.children.map((ch) => `<div>${bare(ch)}</div>`).join("")}</div>`;
         }
         return `<div class="dag-rt-priority">${html}</div>`;
       }
@@ -2470,17 +2461,17 @@
     const tone = R().typeTone(node.type);
     const key = `${node.table}.${node.field}#${node.rowId}`;
     const elsewhere = !parent || parent.table !== node.table || parent.rowId !== node.rowId;
+    // A stored value says "ground truth" only when its dot is hovered (owner, 2026-11-24:
+    // a pill on every leaf made the popup VERY busy).
     let note = "";
-    if (node.groundTruth) {
-      note = `<span class="dag-w-note dag-w-gt">${esc(tt("witnessGroundTruth"))}</span>`;
-      if (node.pointsTo) {
-        note += `<span class="dag-w-note">${node.pointsTo.label != null
-          ? tt("witnessPointsTo", esc(node.pointsTo.table), `<strong>${esc(node.pointsTo.label)}</strong>`)
-          : esc(tt("witnessPointsNowhere", node.pointsTo.table))}</span>`;
-      }
+    if (node.groundTruth && node.pointsTo) {
+      note = `<span class="dag-w-note">${node.pointsTo.label != null
+        ? tt("witnessPointsTo", esc(node.pointsTo.table), `<strong>${esc(node.pointsTo.label)}</strong>`)
+        : esc(tt("witnessPointsNowhere", node.pointsTo.table))}</span>`;
     }
+    const glyphTip = node.groundTruth ? ` title="${esc(tt("groundTruth"))}"` : "";
     const line =
-      `<span class="dag-w-glyph dag-w-glyph-${tone}">${esc(R().typeGlyph(node.type))}</span>` +
+      `<span class="dag-w-glyph dag-w-glyph-${tone}"${glyphTip}>${esc(R().typeGlyph(node.type))}</span>` +
       (elsewhere && !isRoot ? `<span class="dag-w-of">${esc(node.table)} <strong>${esc(node.rowLabel)}</strong>:</span> ` : "") +
       `<a class="dag-w-name fc-inline fc-inline-${tone}" href="${esc(refHref(node.table, node.field))}" data-ref-table="${esc(node.table)}" data-ref-field="${esc(node.field)}" data-w-row="${esc(node.rowId)}">${esc(humanizeField(node.field))}</a>` +
       `<span class="dag-w-eq">=</span>${valueHtml(node.value)}${note}`;
@@ -2748,6 +2739,7 @@
   function renderTablesIndex(container) {
     ensureRouting();
     lastRender = { kind: "index", container };
+    stillCurrent();
     container.innerHTML = "";
     speaks(container).className = "dag-page " + prefs.docElementClasses();
     container.appendChild(renderHeader([{ index: true }]));
@@ -2784,6 +2776,7 @@
   function renderTablePage(container, table) {
     ensureRouting();
     lastRender = { kind: "table", container, table };
+    stillCurrent();
     container.innerHTML = "";
     speaks(container).className = "dag-page " + prefs.docElementClasses();
     container.appendChild(renderHeader([{ index: true }, { table }]));
@@ -2848,6 +2841,7 @@
   function renderFieldPage(container, table, field) {
     ensureRouting();
     lastRender = { kind: "field", container, table, field };
+    stillCurrent();
     container.innerHTML = "";
     speaks(container).className = "dag-page " + prefs.docElementClasses();
     const dag = R().resolveDag(table, field);
@@ -3197,7 +3191,7 @@
     if (hoverCloseTimer !== null) { clearTimeout(hoverCloseTimer); hoverCloseTimer = null; }
   }
   function removeHoverCard() {
-    if (activeHoverCard) { activeHoverCard.remove(); activeHoverCard = null; }
+    if (activeHoverCard) { activeHoverCard.remove(); activeHoverCard = null; activeHover = null; }
   }
   function scheduleHoverClose() {
     cancelHoverClose();
@@ -3373,10 +3367,66 @@
       `</span>`;
   }
 
+  // ════════════════════════════════════════════════════════════════════════
+  //  STILL THE BUILD THE SERVER HAS?
+  //  embedded-graph.js (the rules, and the rulebook's rows the witness reads) is
+  //  baked when the project builds, and a page keeps the copy it loaded. The
+  //  rulebook is saved and built again while that page is open (the rulebook
+  //  editor's Save rebuilds this folder), so whenever a popup or a page of the
+  //  explainer opens, the page asks whether the build it holds is still the one
+  //  being served: stamp.json, a few bytes written beside embedded-graph.js with
+  //  the stamp that is inside it. A newer build is loaded in place, the witness
+  //  computes again and what is on screen is drawn again. No reload.
+  //  (Reported 2026-11-23: a value changed in the editor showed in the app at
+  //  once, and the popup over it went on witnessing the old one.)
+  // ════════════════════════════════════════════════════════════════════════
+  const STILL_CURRENT_EVERY_MS = 3000;   // popups opened one after another ask once
+  let stillCurrentAsked = 0;
+  let stillCurrentPending = null;
+  let activeHover = null;                // what the popup on screen shows: { table, field, anchor, rowId }
+  const bakedStamp = () => (global.__EFFORTLESS_EXPLAINER__ || {}).stamp || null;
+  function loadBuild(base, stamp) {
+    return new Promise((resolve, reject) => {
+      const el = document.createElement("script");
+      // Named by its stamp, so no copy the browser kept of the older build answers.
+      el.src = `${base}/embedded-graph.js?v=${encodeURIComponent(stamp)}`;
+      el.onload = () => resolve();
+      el.onerror = () => reject(new Error(`${el.src} could not be loaded`));
+      document.head.appendChild(el);
+    });
+  }
+  // Resolves true when a newer build was loaded. `now` asks even if it has just asked.
+  function stillCurrent(now) {
+    // A build with no stamp (the React module, bundled into the app) has no newer copy to ask for.
+    if (!bakedStamp() || typeof fetch !== "function") return Promise.resolve(false);
+    if (stillCurrentPending) return stillCurrentPending;
+    if (!now && Date.now() - stillCurrentAsked < STILL_CURRENT_EVERY_MS) return Promise.resolve(false);
+    stillCurrentAsked = Date.now();
+    const base = ownBase();
+    stillCurrentPending = Promise.resolve()
+      .then(() => fetch(`${base}/stamp.json`, { cache: "no-store", headers: { Accept: "application/json" } }))
+      .then((res) => (res && res.ok ? res.json() : null))
+      .then((served) => {
+        const stamp = served && served.stamp;
+        if (!stamp || stamp === bakedStamp()) return false;
+        return loadBuild(base, String(stamp)).then(() => {
+          if (W()) W().reset();
+          if (activeHoverCard && activeHover) openHoverCard(activeHover.table, activeHover.field, activeHover.anchor, activeHover.rowId);
+          rerenderCurrent();
+          return true;
+        });
+      })
+      // A server that is rebuilding, or away, or answers with a web page: what is loaded stays.
+      .catch(() => false)
+      .then((changed) => { stillCurrentPending = null; return changed; });
+    return stillCurrentPending;
+  }
+
   function openHoverCard(table, field, anchor, rowId) {
     cancelHoverClose();
     removeHoverCard();
     if (!anchor) return;
+    stillCurrent();
     const html = hoverCardHtml(table, field, rowId);
     if (!html) return;
 
@@ -3407,6 +3457,7 @@
     positionHoverCard(shell, anchor);
     document.body.appendChild(shell);
     activeHoverCard = shell;
+    activeHover = { table, field, anchor, rowId };
   }
 
   function attachHoverToGlyph(glyphEl, table, field, rowOf) {
@@ -3984,6 +4035,11 @@
     witnessReady: () => loadWitnessScript().then(() => { configureWitness(); return W().ready(); }),
     // An app's live rows in place of the rulebook's own: { Table: [row, …] }.
     setRows: (tables) => { config.rows = tables || null; if (W()) { W().setRows(config.rows); } rerenderCurrent(); },
+    // Ask now whether the project has built again since this page loaded its copy, and
+    // load the newer build if so (resolves true when it did). Opening a popup or a page
+    // of the explainer asks by itself; a host that knows the rulebook just changed calls this.
+    refresh: () => stillCurrent(true),
+    openHoverCard,
     setWitnessRow,
     prefs,
     // The languages this page's own text is written in, and the names of the texts
