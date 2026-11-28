@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en" data-lang="en" class="show-rulespeak show-desc show-inputs">
+<html lang="en" data-lang="en" class="show-english show-desc show-consumers show-data">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Does God Exist — Hitchens vs Turek (VCU) — RuleSpeak®</title>
+<title>Does God Exist — Hitchens vs Turek (VCU) — Docs</title>
 <style>
 
 :root{
@@ -19,6 +19,10 @@ body{margin:0;font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,
 a{color:var(--calc);text-decoration:none}
 a:hover{text-decoration:underline}
 code{font:0.85em ui-monospace,SFMono-Regular,Menlo,monospace;background:#f3f3f7;padding:1px 5px;border-radius:4px}
+/* A right-to-left language (dir=rtl on its .lang-doc): the layout mirrors by
+   itself, because every side below is inline-start / inline-end. Formulas and
+   code are left-to-right text whatever surrounds them. */
+code,.fx{direction:ltr;unicode-bidi:isolate}
 
 /* ── One language visible at a time; <html data-lang> picks it (rules per
       language are appended at render time). ─────────────────────────────── */
@@ -32,6 +36,7 @@ html.show-formula   .elem-formula{display:block}
 html.show-desc      .elem-desc{display:block}
 html.show-inputs    .elem-inputs{display:block}
 html.show-consumers .elem-consumers{display:block}
+html.show-data      .elem-data{display:block}
 
 /* ── Sticky top bar — brand · breadcrumb · language · gear ───────────────── */
 .topbar{position:sticky;top:0;z-index:40;height:var(--bar-h);
@@ -42,7 +47,7 @@ html.show-consumers .elem-consumers{display:block}
 .topbar-brand{font-weight:800;font-size:15px;color:var(--ink);white-space:nowrap;flex:none}
 .topbar-brand:hover{text-decoration:none}
 .topbar-tag{font-size:11px;font-weight:700;color:var(--calc);background:var(--calc-bg);
-  padding:1px 7px;border-radius:999px;margin-left:4px;vertical-align:middle}
+  padding:1px 7px;border-radius:999px;margin-inline-start:4px;vertical-align:middle}
 .crumb{flex:1;min-width:0;display:flex;align-items:center;gap:7px;
   font-size:13px;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .crumb-entity{font-weight:700;color:var(--ink)}
@@ -81,7 +86,7 @@ html.show-consumers .elem-consumers{display:block}
 .doc-header-inner{max-width:960px;margin:0 auto;padding:18px 24px}
 .doc-title{margin:0;font-size:24px;font-weight:800}
 .doc-title-sub{font-size:13px;font-weight:600;color:var(--calc);background:var(--calc-bg);
-  padding:2px 8px;border-radius:999px;vertical-align:middle;margin-left:6px}
+  padding:2px 8px;border-radius:999px;vertical-align:middle;margin-inline-start:6px}
 .doc-lede{margin:6px 0 0;font-style:italic;color:var(--muted)}
 .doc-note{margin:8px 0 12px;color:var(--muted);font-size:13px;max-width:70ch}
 .narr-hint{margin:8px 0 0;font-size:12px;color:var(--muted);max-width:78ch}
@@ -90,18 +95,18 @@ html.show-consumers .elem-consumers{display:block}
 .toc-title{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 8px}
 .toc-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
 .toc-list a{font-weight:600}
-.toc-meta{font-size:12px;color:var(--muted);margin-left:6px}
+.toc-meta{font-size:12px;color:var(--muted);margin-inline-start:6px}
 
 .entity{max-width:960px;margin:34px auto 0;padding:0 24px;scroll-margin-top:calc(var(--bar-h) + 14px)}
 .entity-head{border-bottom:2px solid var(--line);padding-bottom:8px;margin-bottom:14px}
 .entity-title{margin:0;font-size:21px;font-weight:800}
 .entity-synopsis{margin:4px 0 0;color:var(--muted);max-width:74ch}
 
-.field{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--rel);
+.field{background:var(--card);border:1px solid var(--line);border-inline-start:4px solid var(--rel);
   border-radius:10px;padding:14px 16px;margin:0 0 12px;scroll-margin-top:calc(var(--bar-h) + 14px)}
-.field.tone-raw{border-left-color:var(--raw)} .field.tone-calc{border-left-color:var(--calc)}
-.field.tone-agg{border-left-color:var(--agg)} .field.tone-lookup{border-left-color:var(--lookup)}
-.field.tone-rel{border-left-color:var(--rel)}
+.field.tone-raw{border-inline-start-color:var(--raw)} .field.tone-calc{border-inline-start-color:var(--calc)}
+.field.tone-agg{border-inline-start-color:var(--agg)} .field.tone-lookup{border-inline-start-color:var(--lookup)}
+.field.tone-rel{border-inline-start-color:var(--rel)}
 .field-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .field-glyph{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;
   border-radius:6px;font-weight:700;color:#fff;font-size:13px}
@@ -131,12 +136,12 @@ html.show-consumers .elem-consumers{display:block}
 .ref{border-bottom:1px dashed var(--calc);font-weight:600}
 
 .rt-headline{margin:0 0 4px}
-.rt-priority{margin:4px 0;padding-left:22px}
+.rt-priority{margin:4px 0;padding-inline-start:22px}
 .rt-priority>li{margin:2px 0}
 .rt-value{font-weight:700;color:var(--calc)}
 .rt-otherwise{color:var(--muted);font-style:italic}
 .rt-group-label{font-weight:600}
-.rt-group{margin:2px 0 6px;padding-left:20px}
+.rt-group{margin:2px 0 6px;padding-inline-start:20px}
 
 .gt{margin-top:8px}
 .gt-body{margin:0;color:var(--muted)}
@@ -145,25 +150,45 @@ html.show-consumers .elem-consumers{display:block}
 .prov{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
 .prov>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
 .prov>summary::-webkit-details-marker{display:none}
-.prov>summary::before{content:'▸';display:inline-block;margin-right:6px;color:var(--muted);transition:transform .1s}
+.prov>summary::before{content:'▸';display:inline-block;margin-inline-end:6px;color:var(--muted);transition:transform .1s}
 .prov[open]>summary::before{transform:rotate(90deg)}
-.count{font-size:11px;font-weight:700;background:#eee;color:#555;padding:1px 7px;border-radius:999px;margin-left:4px}
+.count{font-size:11px;font-weight:700;background:#eee;color:#555;padding:1px 7px;border-radius:999px;margin-inline-start:4px}
 .count-muted{background:#f5f5f5;color:#999}
-.prov-hint{font-size:12px;font-weight:400;color:var(--muted);margin-left:6px}
+.prov-hint{font-size:12px;font-weight:400;color:var(--muted);margin-inline-start:6px}
 .prov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:8px}
 .prov-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.input{display:block;border:1px solid var(--line);border-left:3px solid var(--rel);border-radius:8px;
+.input{display:block;border:1px solid var(--line);border-inline-start:3px solid var(--rel);border-radius:8px;
   padding:8px 10px;background:#fcfcfe}
-.input.tone-raw{border-left-color:var(--raw)} .input.tone-calc{border-left-color:var(--calc)}
-.input.tone-agg{border-left-color:var(--agg)} .input.tone-lookup{border-left-color:var(--lookup)}
-.input.tone-rel{border-left-color:var(--rel)}
+.input.tone-raw{border-inline-start-color:var(--raw)} .input.tone-calc{border-inline-start-color:var(--calc)}
+.input.tone-agg{border-inline-start-color:var(--agg)} .input.tone-lookup{border-inline-start-color:var(--lookup)}
+.input.tone-rel{border-inline-start-color:var(--rel)}
 .input:hover{background:#f4f3fb;text-decoration:none}
 .input-static{cursor:default}
 span.input-static:hover{background:#fcfcfe}
 .input-head{display:flex;align-items:center;gap:6px}
 .input-glyph{font-size:12px;color:var(--muted)}
 .input-name{font-weight:700;color:var(--ink)}
-.input-table{font-size:11px;color:var(--muted);margin-left:auto}
+.input-table{font-size:11px;color:var(--muted);margin-inline-start:auto}
+
+/* ── Example data (per entity, collapsible; gear switch: data) ─────────── */
+.entity-data{margin:14px 0 4px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.entity-data>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
+.entity-data>summary::-webkit-details-marker{display:none}
+.entity-data>summary::before{content:'▸';display:inline-block;margin-inline-end:6px;color:var(--muted);transition:transform .1s}
+.entity-data[open]>summary::before{transform:rotate(90deg)}
+.entity-data .sample-scroll{margin-top:10px}
+.sample-note{max-width:960px;margin:16px auto 0;padding:0 24px;color:var(--muted);font-size:13px}
+.sample-scroll{overflow-x:auto}
+.sample-table{border-collapse:collapse;font-size:13px;background:var(--card);
+  border:1px solid var(--line);border-radius:6px}
+.sample-table th,.sample-table td{padding:6px 12px;border-bottom:1px solid var(--line);
+  text-align:start;vertical-align:top;white-space:nowrap}
+.sample-table thead th{background:#f5f5fa;font-weight:600;color:var(--ink)}
+.sample-table tbody tr:last-child td{border-bottom:none}
+.sample-table th.sample-derived{background:var(--calc-bg);color:var(--calc)}
+.sample-table td.sample-derived{color:var(--calc)}
+.sample-fx{margin-inline-start:4px;opacity:.75}
+.sample-legend{color:var(--muted);font-size:12px;margin-top:12px}
 .input-en{display:block;margin-top:3px;font-size:13px;color:var(--muted)}
 .ref-pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;
   border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:#fff;color:var(--ink)}
@@ -173,7 +198,7 @@ span.input-static:hover{background:#fcfcfe}
 .ref-pill-tbl{font-weight:400;color:var(--muted)}
 
 .field-note{margin:8px 0 0;font-size:13px;font-style:italic;color:var(--muted);
-  border-left:2px solid var(--line);padding-left:10px}
+  border-inline-start:2px solid var(--line);padding-inline-start:10px}
 
 .doc-footer{max-width:960px;margin:40px auto;padding:18px 24px;border-top:1px solid var(--line);
   color:var(--muted);font-size:13px}
@@ -185,6 +210,79 @@ span.input-static:hover{background:#fcfcfe}
 :target{animation:flash 1.2s ease}
 @keyframes flash{0%{background:var(--calc-bg)}100%{background:var(--card)}}
 
+/* ── Navigator: left nav, overview views, field tabs, graph ─────────────────
+   Big rulebooks were a single long page. Now (from nine entities up) the page shows the overview,
+   or ONE entity at a time, with a nav that is always on screen. Logical properties throughout. */
+.docgrid{max-width:1320px;margin:18px auto 0;padding:0 24px;display:grid;
+  grid-template-columns:290px minmax(0,1fr);gap:0 30px;align-items:start}
+.docmain{min-width:0}
+.docmain .entity,.docmain .ov{max-width:900px;margin-inline:0;padding:0}
+.sidenav{position:sticky;top:calc(var(--bar-h) + 12px);max-height:calc(100vh - var(--bar-h) - 24px);
+  display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;background:#fff;
+  font-size:13px;overflow:hidden}
+.sn-head{padding:10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.sn-index{font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:var(--calc);
+  display:flex;justify-content:space-between}
+.sn-q,.ov-q,.tab-q{width:100%;padding:6px 9px;border:1px solid #d0d7de;border-radius:6px;font:inherit;background:#fff;color:inherit}
+.sn-q:focus,.ov-q:focus,.tab-q:focus{outline:2px solid var(--calc);border-color:transparent}
+.sn-body{overflow:auto;padding:6px 6px 12px;overscroll-behavior:contain}
+.sn-foot{border-top:1px solid var(--line);padding:8px 10px}
+.sn-foot button{all:unset;cursor:pointer;color:var(--calc);font-size:12px}
+.sn-empty{padding:10px;color:var(--muted)}
+.sn-group{margin:2px 0}
+.sn-gtitle{display:flex;justify-content:space-between;gap:8px;padding:5px 6px;cursor:pointer;list-style:none;
+  font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#555;border-radius:5px}
+.sn-gtitle::-webkit-details-marker{display:none}
+.sn-gtitle::before{content:'▸';color:#999;margin-inline-end:6px;display:inline-block;transition:transform .1s}
+.sn-group[open]>.sn-gtitle::before{transform:rotate(90deg)}
+.sn-gtitle:hover{background:#eef0f4}
+.sn-gtitle span:nth-of-type(1){flex:1}
+.sn-n{font-weight:600;color:#888;letter-spacing:0;text-transform:none}
+.sn-group.has-current>.sn-gtitle{color:var(--calc)}
+.sn-t{display:flex;justify-content:space-between;gap:6px;padding:4px 8px;border-radius:6px;color:#222;font-weight:600}
+.sn-t:hover{background:#eef0f4;text-decoration:none}
+.sn-t.is-current{background:var(--calc-bg);color:var(--calc)}
+.sn-t b{font-size:10px;font-weight:700;color:var(--calc);background:var(--calc-bg);border-radius:999px;padding:1px 6px}
+.sn-fields{list-style:none;margin:2px 0 6px 10px;padding:0 0 0 6px;border-inline-start:2px solid var(--line)}
+.sn-f{display:flex;align-items:center;gap:6px;padding:2px 6px;border-radius:5px;color:#444;font-size:12px}
+.sn-f:hover{background:#eef0f4;text-decoration:none}
+.sn-f i{flex:none;width:14px;text-align:center;font-family:Georgia,serif;color:var(--rel)}
+.sn-f.tone-raw i{color:var(--raw)} .sn-f.tone-calc i{color:var(--calc)} .sn-f.tone-agg i{color:var(--agg)} .sn-f.tone-lookup i{color:var(--lookup)}
+.tabs{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.tab{display:inline-flex;gap:6px;align-items:center;padding:5px 11px;border:1px solid transparent;border-radius:999px;
+  background:transparent;font:600 12px/1 inherit;color:#555;cursor:pointer}
+.tab:hover{background:#eef0f4}
+.tab.is-active{background:var(--calc-bg);color:var(--calc);border-color:var(--calc)}
+.tab i{font-style:normal;font-size:11px;opacity:.7}
+.tabs .tab-q,.tabs .ov-q{margin-inline-start:auto;width:15em;max-width:100%}
+.field[hidden]{display:none}
+.ov-group{border:1px solid var(--line);border-radius:10px;background:#fff;padding:2px 10px 12px;margin-bottom:12px}
+.ov-gtitle{display:flex;justify-content:space-between;padding:5px 2px;cursor:pointer;list-style:none;font-weight:700;
+  font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#555}
+.ov-gtitle::-webkit-details-marker{display:none}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-top:6px}
+.ov-card{display:flex;flex-direction:column;gap:2px;padding:9px 12px;border:1px solid var(--line);
+  border-inline-start:4px solid var(--calc);border-radius:8px;background:#fff;color:var(--ink)}
+.ov-card:hover{text-decoration:none;box-shadow:0 3px 10px rgba(90,58,160,.14)}
+.ov-card b{font-size:14px}.ov-card span{font-size:12px;color:var(--muted)}
+.ov-list{width:100%;border-collapse:collapse;font-size:13px}
+.ov-list td{padding:6px 8px;border-bottom:1px solid #eee}
+.ov-list a{font-weight:700}
+.ov-n{color:#777;text-align:end;white-space:nowrap}
+.ov-hint{color:var(--muted);margin:0 0 6px}
+.ov-graph{overflow:auto;padding:4px 0}
+.dgraph{display:block;max-width:none;font:600 12px -apple-system,system-ui,sans-serif}
+.dgraph .ge{fill:none;stroke:#b4bac6;stroke-width:1.4}.dgraph .ge:hover{stroke:var(--calc);stroke-width:2.2}
+.dgraph .ga{fill:#b4bac6}
+.dgraph .gn rect{fill:#fff;stroke:#c5cad6;stroke-width:1.3}.dgraph .gn.has rect{fill:var(--calc-bg);stroke:var(--calc)}
+.dgraph .gn text{fill:#222;pointer-events:none}.dgraph .gn:hover rect{stroke-width:2.4}
+.lang-doc.paged .toc{display:none}
+.lang-doc.paged .docmain .entity{display:none}
+.lang-doc.paged .docmain .entity.is-on{display:block}
+.lang-doc.paged .ov[hidden],.lang-doc .ov[hidden]{display:none}
+@media (max-width:900px){.docgrid{display:block}.sidenav{display:none}}
+
+
 html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 </style>
 <script>
@@ -192,7 +290,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 (function(){
   var LANGS=['en'];
   var DEFAULT_LANG='en';
-  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers','data'];
   var root=document.documentElement;
 
   var lang=null;
@@ -212,10 +310,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 </script>
 </head>
 <body>
-<div class="lang-doc" data-lang="en" lang="en">
+<div class="lang-doc" data-lang="en" lang="en" dir="ltr">
 <div class="topbar">
   <div class="topbar-inner">
-    <a class="topbar-brand" href="#en-top">📘 Does God Exist — Hitchens vs Turek (VCU) <span class="topbar-tag">RuleSpeak®</span></a>
+    <a class="topbar-brand" href="#en-top">📘 Does God Exist — Hitchens vs Turek (VCU) <span class="topbar-tag">Docs</span></a>
     <nav class="crumb" aria-label="You are reading">
       <span class="crumb-entity"></span>
       <span class="crumb-sep" hidden>›</span>
@@ -226,12 +324,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
   <div class="gear-pop" role="dialog" aria-label="Documentation options" hidden>
     <p class="gear-pop-title">Show in this document</p>
     <label class="gear-opt" title="The declarative business rule (only if / must / priority)">
-      <input type="checkbox" data-elem="rulespeak" checked>
-      <span class="gear-opt-label">RuleSpeak®</span>
+      <input type="checkbox" data-elem="rulespeak">
+      <span class="gear-opt-label">Docs</span>
       <span class="gear-opt-hint">The declarative business rule (only if / must / priority)</span>
     </label>
     <label class="gear-opt" title="The formula read aloud as a plain sentence">
-      <input type="checkbox" data-elem="english">
+      <input type="checkbox" data-elem="english" checked>
       <span class="gear-opt-label">Plain reading</span>
       <span class="gear-opt-hint">The formula read aloud as a plain sentence</span>
     </label>
@@ -246,24 +344,30 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="gear-opt-hint">The author's narrative comment on a field, when present</span>
     </label>
     <label class="gear-opt" title="The fields each rule reads (its DAG inputs / upstream)">
-      <input type="checkbox" data-elem="inputs" checked>
+      <input type="checkbox" data-elem="inputs">
       <span class="gear-opt-label">Links to inputs</span>
       <span class="gear-opt-hint">The fields each rule reads (its DAG inputs / upstream)</span>
     </label>
     <label class="gear-opt" title="The rules that read this one (its DAG consumers / downstream)">
-      <input type="checkbox" data-elem="consumers">
+      <input type="checkbox" data-elem="consumers" checked>
       <span class="gear-opt-label">Links to consumers</span>
       <span class="gear-opt-hint">The rules that read this one (its DAG consumers / downstream)</span>
+    </label>
+    <label class="gear-opt" title="The first rows of each entity's data, computed columns included">
+      <input type="checkbox" data-elem="data" checked>
+      <span class="gear-opt-label">Example data</span>
+      <span class="gear-opt-hint">The first rows of each entity's data, computed columns included</span>
     </label>
     <button type="button" class="gear-reset">Reset to defaults</button>
   </div>
 </div>
 <header class="doc-header" id="en-top">
+  <script type="application/json" class="nav-texts">{"search":"Filter tables and fields…","empty":"Nothing matches.","other":"Other","all":"All","derived":"Derived","stored":"Stored","rels":"Relationships","groups":"Groups","list":"A–Z","graph":"Graph","graphHint":"Each box is a table; a line runs from a table to the table it refers to. Click a table to open it.","fields":"Filter fields…","showAll":"Show everything on one page","showOne":"Show one table at a time","tocTitle":"Entities"}</script>
   <div class="doc-header-inner">
-    <h1 class="doc-title">📘 Does God Exist — Hitchens vs Turek (VCU) <span class="doc-title-sub">RuleSpeak®</span></h1>
+    <h1 class="doc-title">📘 Does God Exist — Hitchens vs Turek (VCU) <span class="doc-title-sub">Docs</span></h1>
     <p class="doc-lede">Rulebook formalizing the VCU debate 'Does God Exist?' between Christopher Hitchens (atheism/anti-theism) and Frank Turek (theism), and every philosophical concept raised. Built via the Shadle steps: raw text -&gt; vocabulary -&gt; glossary -&gt; narrative -&gt; mock data -&gt; normalized schema -&gt; this DAG-structured hub.</p>
     <p class="doc-note">Declarative business rules rendered from the rulebook — the single source of truth. Every statement below is the plain-language reading of a formula; nothing here is hand-authored prose.</p>
-    <p class="narr-hint">Use the <button type="button" class="gear-inline gear-open-inline">⚙︎ options</button> in the top-right corner to turn each part of the documentation on or off — RuleSpeak®, the literal reading, the raw formula, the author's description, and the links to a rule's inputs and consumers. Your choices are remembered.</p>
+    <p class="narr-hint">Use the <button type="button" class="gear-inline gear-open-inline">⚙︎ options</button> in the top-right corner to turn each part of the documentation on or off — Docs, the literal reading, the raw formula, the author's description, and the links to a rule's inputs and consumers. Your choices are remembered.</p>
   </div>
 </header>
 <nav class="toc">
@@ -272,7 +376,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <li><a href="#en-t-debaters">Debater</a> <span class="toc-meta">4 rules · 0 links</span></li>
     <li><a href="#en-t-worldviews">Worldview</a> <span class="toc-meta">2 rules · 1 links</span></li>
     <li><a href="#en-t-arguments">Argument</a> <span class="toc-meta">7 rules · 2 links</span></li>
-    <li><a href="#en-t-premises">Premis</a> <span class="toc-meta">1 rules · 1 links</span></li>
+    <li><a href="#en-t-premises">Premise</a> <span class="toc-meta">1 rules · 1 links</span></li>
     <li><a href="#en-t-evidence">Evidence</a> <span class="toc-meta">1 rules · 1 links</span></li>
     <li><a href="#en-t-concepts">Concept</a> <span class="toc-meta">2 rules · 1 links</span></li>
     <li><a href="#en-t-claims">Claim</a> <span class="toc-meta">3 rules · 3 links</span></li>
@@ -281,7 +385,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <li><a href="#en-t-quotations">Quotation</a> <span class="toc-meta">1 rules · 2 links</span></li>
   </ul>
 </nav>
-<section class="entity" id="en-t-debaters" data-entity="Debater">
+<section class="entity" id="en-t-debaters" data-entity="Debater" data-links="" data-rules="4">
   <header class="entity-head">
     <h2 class="entity-title">Debater</h2>
     <p class="entity-synopsis">The two principals and the moderator of the debate.</p>
@@ -290,12 +394,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Label</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Display name of the participant.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -305,7 +407,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-debaters-thinkerscited">Thinkers Cited <span class="ref-pill-tbl">Debater</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Display name of the participant.</p>
     </article>
   <article class="field tone-calc" id="en-f-debaters-name" data-entity="Debater" data-field="Name">
     <div class="field-head">
@@ -316,9 +417,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-1</span>
     </div>
+    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">A debater's <a class="ref" href="#en-f-debaters-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-debaters-label">label</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -353,17 +455,13 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-debaters-label">● Label <span class="ref-pill-tbl">Debater</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     </article>
   <article class="field tone-raw" id="en-f-debaters-side" data-entity="Debater" data-field="Side">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Side</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Role in the debate: affirmative, negative, or moderator.</p>
     </article>
@@ -371,11 +469,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Biographical note and stance. (Worldviews defended are the reverse of Worldviews.ChampionedBy.)</p>
     </article>
@@ -388,9 +483,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-2</span>
     </div>
+    <p class="field-note elem elem-desc">1st-order: number of arguments advanced.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A debater's <a class="ref" href="#en-f-debaters-argumentcount">argument count</a> is the number of <a class="ref" href="#en-t-arguments">arguments</a> related to the debater.</p>
       </div>
       <div class="view elem elem-english">
@@ -422,7 +518,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-debaters-label">● Label <span class="ref-pill-tbl">Debater</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">1st-order: number of arguments advanced.</p>
     </article>
   <article class="field tone-agg" id="en-f-debaters-claimcount" data-entity="Debater" data-field="Claim Count">
     <div class="field-head">
@@ -433,9 +528,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-3</span>
     </div>
+    <p class="field-note elem elem-desc">1st-order: number of claims made.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A debater's <a class="ref" href="#en-f-debaters-claimcount">claim count</a> is the number of <a class="ref" href="#en-t-claims">claims</a> related to the debater.</p>
       </div>
       <div class="view elem elem-english">
@@ -467,7 +563,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-debaters-label">● Label <span class="ref-pill-tbl">Debater</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">1st-order: number of claims made.</p>
     </article>
   <article class="field tone-agg" id="en-f-debaters-thinkerscited" data-entity="Debater" data-field="Thinkers Cited">
     <div class="field-head">
@@ -478,9 +573,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-4</span>
     </div>
+    <p class="field-note elem elem-desc">1st-order: distinct thinkers pressed into service.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A debater's <a class="ref" href="#en-f-debaters-thinkerscited">thinkers cited</a> is the number of <a class="ref" href="#en-t-thinkers">thinkers</a> related to the debater.</p>
       </div>
       <div class="view elem elem-english">
@@ -512,10 +608,55 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-debaters-label">● Label <span class="ref-pill-tbl">Debater</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">1st-order: distinct thinkers pressed into service.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Label</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Side</th>
+        <th>Description</th>
+        <th class="sample-derived">Argument Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Claim Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Thinkers Cited<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Frank Turek</td>
+          <td class="sample-derived">frank-turek</td>
+          <td>affirmative</td>
+          <td>Christian apologist, founder of CrossExamined.org, co-author of 'I Don't Have Enough Faith to Be an Atheist'. Argues the affirmative for a generic theism.</td>
+          <td class="sample-derived">9</td>
+          <td class="sample-derived">9</td>
+          <td class="sample-derived">16</td>
+        </tr>
+        <tr>
+          <td>Christopher Hitchens</td>
+          <td class="sample-derived">christopher-hitchens</td>
+          <td>negative</td>
+          <td>Author of 'God Is Not Great'. Argues the negative; self-describes as anti-theist, not merely atheist.</td>
+          <td class="sample-derived">4</td>
+          <td class="sample-derived">8</td>
+          <td class="sample-derived">19</td>
+        </tr>
+        <tr>
+          <td>Timothy Hulley</td>
+          <td class="sample-derived">timothy-hulley</td>
+          <td>moderator</td>
+          <td>Dean of the VCU Honors College; moderates phases and relays audience questions for the event hosted by the United Secular Alliance.</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">0</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-worldviews" data-entity="Worldview">
+<section class="entity" id="en-t-worldviews" data-entity="Worldview" data-links="en-t-debaters" data-rules="2">
   <header class="entity-head">
     <h2 class="entity-title">Worldview</h2>
     <p class="entity-synopsis">Competing positions on God and reality contested in the debate.</p>
@@ -524,12 +665,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Label</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Name of the worldview.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -537,7 +676,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-worldviews-argumentcount">Argument Count <span class="ref-pill-tbl">Worldview</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Name of the worldview.</p>
     </article>
   <article class="field tone-calc" id="en-f-worldviews-name" data-entity="Worldview" data-field="Name">
     <div class="field-head">
@@ -548,9 +686,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-5</span>
     </div>
+    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">A worldview's <a class="ref" href="#en-f-worldviews-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-worldviews-label">label</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -583,17 +722,13 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-worldviews-label">● Label <span class="ref-pill-tbl">Worldview</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     </article>
   <article class="field tone-raw" id="en-f-worldviews-affirmsgod" data-entity="Worldview" data-field="Affirms God">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Affirms God</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype boolean); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">boolean</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Whether the worldview affirms the existence of God.</p>
     </article>
@@ -604,20 +739,17 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Debater who principally champions this worldview.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-debaters">Debater</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
-    <p class="field-note elem elem-desc">Debater who principally champions this worldview.</p>
     </article>
   <article class="field tone-raw" id="en-f-worldviews-description" data-entity="Worldview" data-field="Description">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">What the worldview holds in this debate's context.</p>
     </article>
@@ -630,9 +762,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-6</span>
     </div>
+    <p class="field-note elem elem-desc">1st-order: arguments fielded under this worldview.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A worldview's <a class="ref" href="#en-f-worldviews-argumentcount">argument count</a> is the number of <a class="ref" href="#en-t-arguments">arguments</a> related to the worldview.</p>
       </div>
       <div class="view elem elem-english">
@@ -664,10 +797,47 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-worldviews-label">● Label <span class="ref-pill-tbl">Worldview</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">1st-order: arguments fielded under this worldview.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Label</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Affirms God</th>
+        <th>Description</th>
+        <th class="sample-derived">Argument Count<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Theism</td>
+          <td class="sample-derived">theism</td>
+          <td>true</td>
+          <td>A personal God who created and intervenes in the universe, answers prayer, and grounds morality.</td>
+          <td class="sample-derived">9</td>
+        </tr>
+        <tr>
+          <td>Deism</td>
+          <td class="sample-derived">deism</td>
+          <td>true</td>
+          <td>A designer who set the cosmos in order but does not intervene or reveal itself; Hitchens treats it as separable from theism.</td>
+          <td class="sample-derived">0</td>
+        </tr>
+        <tr>
+          <td>Atheism</td>
+          <td class="sample-derived">atheism</td>
+          <td>false</td>
+          <td>No advanced argument for God has survived rebuttal; not the dogmatic claim no God could exist.</td>
+          <td class="sample-derived">2</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-arguments" data-entity="Argument">
+<section class="entity" id="en-t-arguments" data-entity="Argument" data-links="en-t-debaters en-t-worldviews" data-rules="7">
   <header class="entity-head">
     <h2 class="entity-title">Argument</h2>
     <p class="entity-synopsis">The named arguments advanced by each side, with derived development and contestation metrics.</p>
@@ -676,12 +846,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Label</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Name of the argument.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+6 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -694,7 +862,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-arguments-iscontested">Is Contested <span class="ref-pill-tbl">Argument</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Name of the argument.</p>
     </article>
   <article class="field tone-calc" id="en-f-arguments-name" data-entity="Argument" data-field="Name">
     <div class="field-head">
@@ -705,9 +872,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-7</span>
     </div>
+    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">An argument's <a class="ref" href="#en-f-arguments-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-arguments-label">label</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -745,17 +913,13 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-arguments-label">● Label <span class="ref-pill-tbl">Argument</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     </article>
   <article class="field tone-raw" id="en-f-arguments-argumenttype" data-entity="Argument" data-field="Argument Type">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Argument Type</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">primary, sub, supporting, or counter.</p>
     </article>
@@ -766,6 +930,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Debater who advances the argument.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-debaters">Debater</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -775,7 +940,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-agg" href="#en-f-debaters-argumentcount">Σ Argument Count <span class="ref-pill-tbl">Debater</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Debater who advances the argument.</p>
     </article>
   <article class="field tone-rel" id="en-f-arguments-fieldsworldview" data-entity="Argument" data-field="Fields Worldview">
     <div class="field-head">
@@ -784,6 +948,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Worldview the argument serves.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-worldviews">Worldview</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -793,17 +958,13 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-agg" href="#en-f-worldviews-argumentcount">Σ Argument Count <span class="ref-pill-tbl">Worldview</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Worldview the argument serves.</p>
     </article>
   <article class="field tone-raw" id="en-f-arguments-conclusion" data-entity="Argument" data-field="Conclusion">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Conclusion</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">What the argument purports to establish.</p>
     </article>
@@ -811,11 +972,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Summary of the argument as presented.</p>
     </article>
@@ -828,9 +986,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-8</span>
     </div>
+    <p class="field-note elem elem-desc">1st-order: premises composing the argument.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An argument's <a class="ref" href="#en-f-arguments-premisecount">premise count</a> is the number of <a class="ref" href="#en-t-premises">premises</a> related to the argument.</p>
       </div>
       <div class="view elem elem-english">
@@ -846,7 +1005,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-rel" href="#en-f-premises-supportsargument">
-          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Supports Argument</span><span class="input-table">Premis</span></span>
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Supports Argument</span><span class="input-table">Premise</span></span>
           <span class="input-en muted">Argument this premise belongs to.</span>
         </a>
         <a class="input tone-calc" href="#en-f-arguments-name">
@@ -864,11 +1023,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-rel" href="#en-f-premises-supportsargument">⇢ Supports Argument <span class="ref-pill-tbl">Premis</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-premises-supportsargument">⇢ Supports Argument <span class="ref-pill-tbl">Premise</span></a>
         <a class="ref-pill tone-raw" href="#en-f-arguments-label">● Label <span class="ref-pill-tbl">Argument</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">1st-order: premises composing the argument.</p>
     </article>
   <article class="field tone-agg" id="en-f-arguments-evidencecount" data-entity="Argument" data-field="Evidence Count">
     <div class="field-head">
@@ -879,9 +1037,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-9</span>
     </div>
+    <p class="field-note elem elem-desc">1st-order: evidence items cited.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An argument's <a class="ref" href="#en-f-arguments-evidencecount">evidence count</a> is the number of <a class="ref" href="#en-t-evidence">evidence</a> related to the argument.</p>
       </div>
       <div class="view elem elem-english">
@@ -913,7 +1072,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-arguments-label">● Label <span class="ref-pill-tbl">Argument</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">1st-order: evidence items cited.</p>
     </article>
   <article class="field tone-agg" id="en-f-arguments-claimcount" data-entity="Argument" data-field="Claim Count">
     <div class="field-head">
@@ -924,9 +1082,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-10</span>
     </div>
+    <p class="field-note elem elem-desc">1st-order: claims supporting the argument.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An argument's <a class="ref" href="#en-f-arguments-claimcount">claim count</a> is the number of <a class="ref" href="#en-t-claims">claims</a> related to the argument.</p>
       </div>
       <div class="view elem elem-english">
@@ -958,7 +1117,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-arguments-label">● Label <span class="ref-pill-tbl">Argument</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">1st-order: claims supporting the argument.</p>
     </article>
   <article class="field tone-calc" id="en-f-arguments-isfullydeveloped" data-entity="Argument" data-field="Is Fully Developed">
     <div class="field-head">
@@ -969,9 +1127,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-11</span>
     </div>
+    <p class="field-note elem elem-desc">2nd-order: has at least two premises.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <div class="view-body"><p class="rt-headline">The argument's <a class="ref" href="#en-f-arguments-isfullydeveloped">is fully developed</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">true</span> <span class="rt-when">if the <a class="ref" href="#en-f-arguments-premisecount">premise count</a> is at least 2</span></li><li><span class="rt-value">false</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
@@ -995,11 +1154,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-rel" href="#en-f-premises-supportsargument">⇢ Supports Argument <span class="ref-pill-tbl">Premis</span></a>
+        <a class="ref-pill tone-rel" href="#en-f-premises-supportsargument">⇢ Supports Argument <span class="ref-pill-tbl">Premise</span></a>
         <a class="ref-pill tone-raw" href="#en-f-arguments-label">● Label <span class="ref-pill-tbl">Argument</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">2nd-order: has at least two premises.</p>
     </article>
   <article class="field tone-agg" id="en-f-arguments-totalrebuttals" data-entity="Argument" data-field="Total Rebuttals">
     <div class="field-head">
@@ -1010,9 +1168,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-12</span>
     </div>
+    <p class="field-note elem elem-desc">2nd-order: rebuttals accumulated across supporting claims.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An argument's <a class="ref" href="#en-f-arguments-totalrebuttals">total rebuttals</a> is the total <a class="ref" href="#en-f-claims-rebuttalcount">rebuttal count</a> across the <a class="ref" href="#en-t-claims">claims</a> related to the argument.</p>
       </div>
       <div class="view elem elem-english">
@@ -1056,7 +1215,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-arguments-label">● Label <span class="ref-pill-tbl">Argument</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">2nd-order: rebuttals accumulated across supporting claims.</p>
     </article>
   <article class="field tone-calc" id="en-f-arguments-iscontested" data-entity="Argument" data-field="Is Contested">
     <div class="field-head">
@@ -1067,9 +1225,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-13</span>
     </div>
+    <p class="field-note elem elem-desc">3rd-order: at least one supporting claim was rebutted.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <div class="view-body"><p class="rt-headline">The argument's <a class="ref" href="#en-f-arguments-iscontested">is contested</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">true</span> <span class="rt-when">if the <a class="ref" href="#en-f-arguments-totalrebuttals">total rebuttals</a> is greater than 0</span></li><li><span class="rt-value">false</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
@@ -1099,33 +1258,91 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-arguments-label">● Label <span class="ref-pill-tbl">Argument</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">3rd-order: at least one supporting claim was rebutted.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Label</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Argument Type</th>
+        <th>Conclusion</th>
+        <th>Description</th>
+        <th class="sample-derived">Premise Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Evidence Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Claim Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Fully Developed<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Total Rebuttals<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Contested<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Cosmological Argument</td>
+          <td class="sample-derived">cosmological-argument</td>
+          <td>primary</td>
+          <td>The universe had a beginning, so it had a beginner.</td>
+          <td>From the Big Bang: a beginning implies a beginner; SURGE supplies the evidence.</td>
+          <td class="sample-derived">3</td>
+          <td class="sample-derived">5</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td>Teleological Argument</td>
+          <td class="sample-derived">teleological-argument</td>
+          <td>primary</td>
+          <td>Order and apparent purpose imply a designer.</td>
+          <td>The design argument; contains fine-tuning and design-of-life as sub-arguments.</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td>Argument From Fine-Tuning</td>
+          <td class="sample-derived">argument-from-fine-tuning</td>
+          <td>sub</td>
+          <td>Life-permitting constants imply a tuner.</td>
+          <td>Constants on a razor's edge (the gravitational force to 1 part in 10^40, expansion rate, axial tilt, Jupiter).</td>
+          <td class="sample-derived">3</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">true</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-premises" data-entity="Premis">
+<section class="entity" id="en-t-premises" data-entity="Premise" data-links="en-t-arguments" data-rules="1">
   <header class="entity-head">
-    <h2 class="entity-title">Premis</h2>
+    <h2 class="entity-title">Premise</h2>
     <p class="entity-synopsis">Ordered premises composing each argument.</p>
   </header>
-  <article class="field tone-raw" id="en-f-premises-label" data-entity="Premis" data-field="Label">
+  <article class="field tone-raw" id="en-f-premises-label" data-entity="Premise" data-field="Label">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Label</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Short name of the premise.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-calc" href="#en-f-premises-name">ƒ Name <span class="ref-pill-tbl">Premis</span></a>
+        <a class="ref-pill tone-calc" href="#en-f-premises-name">ƒ Name <span class="ref-pill-tbl">Premise</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Short name of the premise.</p>
     </article>
-  <article class="field tone-calc" id="en-f-premises-name" data-entity="Premis" data-field="Name">
+  <article class="field tone-calc" id="en-f-premises-name" data-entity="Premise" data-field="Name">
     <div class="field-head">
       <span class="field-glyph" title="Calculated">ƒ</span>
       <span class="field-name">Name</span>
@@ -1134,10 +1351,11 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-14</span>
     </div>
+    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
-        <p class="view-body">A premis's <a class="ref" href="#en-f-premises-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-premises-label">label</a> with every a space replaced by a hyphen.</p>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <p class="view-body">A premise's <a class="ref" href="#en-f-premises-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-premises-label">label</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In plain words</span>
@@ -1152,7 +1370,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-raw" href="#en-f-premises-label">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Label</span><span class="input-table">Premis</span></span>
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Label</span><span class="input-table">Premise</span></span>
           <span class="input-en muted">Short name of the premise.</span>
         </a>
       </div>
@@ -1160,18 +1378,18 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#en-f-premises-label">● Label <span class="ref-pill-tbl">Premis</span></a>
+        <a class="ref-pill tone-raw" href="#en-f-premises-label">● Label <span class="ref-pill-tbl">Premise</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     </article>
-  <article class="field tone-rel" id="en-f-premises-supportsargument" data-entity="Premis" data-field="Supports Argument">
+  <article class="field tone-rel" id="en-f-premises-supportsargument" data-entity="Premise" data-field="Supports Argument">
     <div class="field-head">
       <span class="field-glyph" title="Relationship">⇢</span>
       <span class="field-name">Supports Argument</span>
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Argument this premise belongs to.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-arguments">Argument</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -1182,46 +1400,74 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-arguments-isfullydeveloped">Is Fully Developed <span class="ref-pill-tbl">Argument</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Argument this premise belongs to.</p>
     </article>
-  <article class="field tone-raw" id="en-f-premises-ordinal" data-entity="Premis" data-field="Ordinal">
+  <article class="field tone-raw" id="en-f-premises-ordinal" data-entity="Premise" data-field="Ordinal">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Ordinal</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">integer</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Position of the premise within its argument.</p>
     </article>
-  <article class="field tone-raw" id="en-f-premises-statement" data-entity="Premis" data-field="Statement">
+  <article class="field tone-raw" id="en-f-premises-statement" data-entity="Premise" data-field="Statement">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Statement</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">The premise as stated.</p>
     </article>
-  <article class="field tone-raw" id="en-f-premises-description" data-entity="Premis" data-field="Description">
+  <article class="field tone-raw" id="en-f-premises-description" data-entity="Premise" data-field="Description">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Note on the premise.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Label</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Ordinal</th>
+        <th>Statement</th>
+        <th>Description</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Universe Began</td>
+          <td class="sample-derived">universe-began</td>
+          <td>1</td>
+          <td>The universe had a beginning (SURGE).</td>
+          <td>Premise 1 of the cosmological argument.</td>
+        </tr>
+        <tr>
+          <td>Beginning Needs Beginner</td>
+          <td class="sample-derived">beginning-needs-beginner</td>
+          <td>2</td>
+          <td>Whatever begins to exist has a cause/beginner.</td>
+          <td>Premise 2 of the cosmological argument.</td>
+        </tr>
+        <tr>
+          <td>Cause Is Transcendent</td>
+          <td class="sample-derived">cause-is-transcendent</td>
+          <td>3</td>
+          <td>The creator-cause is spaceless, timeless, immaterial, intelligent, powerful, and personal.</td>
+          <td>Premise 3 of the cosmological argument.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-evidence" data-entity="Evidence">
+<section class="entity" id="en-t-evidence" data-entity="Evidence" data-links="en-t-arguments" data-rules="1">
   <header class="entity-head">
     <h2 class="entity-title">Evidence</h2>
     <p class="entity-synopsis">Empirical and theoretical evidence items cited in support of arguments.</p>
@@ -1230,19 +1476,16 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Label</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Name of the evidence item.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-evidence-name">ƒ Name <span class="ref-pill-tbl">Evidence</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Name of the evidence item.</p>
     </article>
   <article class="field tone-calc" id="en-f-evidence-name" data-entity="Evidence" data-field="Name">
     <div class="field-head">
@@ -1253,9 +1496,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-15</span>
     </div>
+    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">An evidence's <a class="ref" href="#en-f-evidence-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-evidence-label">label</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -1282,7 +1526,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-evidence-label">● Label <span class="ref-pill-tbl">Evidence</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     </article>
   <article class="field tone-rel" id="en-f-evidence-supportsargument" data-entity="Evidence" data-field="Supports Argument">
     <div class="field-head">
@@ -1291,6 +1534,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Argument the evidence supports.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-arguments">Argument</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -1300,17 +1544,13 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-agg" href="#en-f-arguments-evidencecount">Σ Evidence Count <span class="ref-pill-tbl">Argument</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Argument the evidence supports.</p>
     </article>
   <article class="field tone-raw" id="en-f-evidence-evidencekind" data-entity="Evidence" data-field="Evidence Kind">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Evidence Kind</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">observational or theoretical.</p>
     </article>
@@ -1318,16 +1558,47 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">What the evidence is and who found it.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Label</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Evidence Kind</th>
+        <th>Description</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>SURGE: Second Law</td>
+          <td class="sample-derived">surge:-second-law</td>
+          <td>theoretical</td>
+          <td>Second law of thermodynamics — the universe runs toward heat death, so it cannot be eternal.</td>
+        </tr>
+        <tr>
+          <td>SURGE: Universe Expanding</td>
+          <td class="sample-derived">surge:-universe-expanding</td>
+          <td>observational</td>
+          <td>Hubble's 1929 discovery of expansion; reversed, it collapses to a singularity.</td>
+        </tr>
+        <tr>
+          <td>SURGE: Radiation Echo</td>
+          <td class="sample-derived">surge:-radiation-echo</td>
+          <td>observational</td>
+          <td>Cosmic afterglow found by Penzias and Wilson; remnant heat of the Big Bang.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-concepts" data-entity="Concept">
+<section class="entity" id="en-t-concepts" data-entity="Concept" data-links="en-t-debaters" data-rules="2">
   <header class="entity-head">
     <h2 class="entity-title">Concept</h2>
     <p class="entity-synopsis">Every philosophical concept raised in the debate, with category and introducer.</p>
@@ -1336,12 +1607,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Label</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Name of the concept.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -1349,7 +1618,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-concepts-claimcount">Claim Count <span class="ref-pill-tbl">Concept</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Name of the concept.</p>
     </article>
   <article class="field tone-calc" id="en-f-concepts-name" data-entity="Concept" data-field="Name">
     <div class="field-head">
@@ -1360,9 +1628,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-16</span>
     </div>
+    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">A concept's <a class="ref" href="#en-f-concepts-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-concepts-label">label</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -1395,17 +1664,13 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-concepts-label">● Label <span class="ref-pill-tbl">Concept</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     </article>
   <article class="field tone-raw" id="en-f-concepts-category" data-entity="Concept" data-field="Category">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Category</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">cosmology, design, moral, theological, method, or epistemic.</p>
     </article>
@@ -1416,20 +1681,17 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Debater who introduced the concept.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-debaters">Debater</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
-    <p class="field-note elem elem-desc">Debater who introduced the concept.</p>
     </article>
   <article class="field tone-raw" id="en-f-concepts-description" data-entity="Concept" data-field="Description">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Meaning of the concept in this debate.</p>
     </article>
@@ -1442,9 +1704,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-17</span>
     </div>
+    <p class="field-note elem elem-desc">1st-order: claims that touch this concept.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A concept's <a class="ref" href="#en-f-concepts-claimcount">claim count</a> is the number of <a class="ref" href="#en-t-claims">claims</a> related to the concept.</p>
       </div>
       <div class="view elem elem-english">
@@ -1476,10 +1739,47 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-concepts-label">● Label <span class="ref-pill-tbl">Concept</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">1st-order: claims that touch this concept.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Label</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Category</th>
+        <th>Description</th>
+        <th class="sample-derived">Claim Count<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Big Bang</td>
+          <td class="sample-derived">big-bang</td>
+          <td>cosmology</td>
+          <td>The accepted origin of the universe; Turek accepts it and infers a 'banger'.</td>
+          <td class="sample-derived">1</td>
+        </tr>
+        <tr>
+          <td>Heat Death</td>
+          <td class="sample-derived">heat-death</td>
+          <td>cosmology</td>
+          <td>The far-future maximal-entropy state; used by both (Turek vs eternity, Hitchens for poor design).</td>
+          <td class="sample-derived">1</td>
+        </tr>
+        <tr>
+          <td>Singularity</td>
+          <td class="sample-derived">singularity</td>
+          <td>cosmology</td>
+          <td>The point reversed expansion collapses to; Turek equates it with 'nothing'.</td>
+          <td class="sample-derived">0</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-claims" data-entity="Claim">
+<section class="entity" id="en-t-claims" data-entity="Claim" data-links="en-t-debaters en-t-arguments en-t-concepts" data-rules="3">
   <header class="entity-head">
     <h2 class="entity-title">Claim</h2>
     <p class="entity-synopsis">Specific assertions made by each debater, with derived rebuttal status.</p>
@@ -1488,12 +1788,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Label</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Short name of the claim.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+4 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -1504,7 +1802,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-arguments-iscontested">Is Contested <span class="ref-pill-tbl">Argument</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Short name of the claim.</p>
     </article>
   <article class="field tone-calc" id="en-f-claims-name" data-entity="Claim" data-field="Name">
     <div class="field-head">
@@ -1515,9 +1812,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-18</span>
     </div>
+    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">A claim's <a class="ref" href="#en-f-claims-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-claims-label">label</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -1553,7 +1851,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-claims-label">● Label <span class="ref-pill-tbl">Claim</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     </article>
   <article class="field tone-rel" id="en-f-claims-madeby" data-entity="Claim" data-field="Made by">
     <div class="field-head">
@@ -1562,6 +1859,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Debater who made the claim.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-debaters">Debater</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -1571,17 +1869,13 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-agg" href="#en-f-debaters-claimcount">Σ Claim Count <span class="ref-pill-tbl">Debater</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Debater who made the claim.</p>
     </article>
   <article class="field tone-raw" id="en-f-claims-phase" data-entity="Claim" data-field="Phase">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Phase</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">opening, rebuttal, cross-examination, or closing.</p>
     </article>
@@ -1592,6 +1886,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Argument the claim supports.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-arguments">Argument</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -1603,7 +1898,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-arguments-iscontested">Is Contested <span class="ref-pill-tbl">Argument</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Argument the claim supports.</p>
     </article>
   <article class="field tone-rel" id="en-f-claims-touchesconcept" data-entity="Claim" data-field="Touches Concept">
     <div class="field-head">
@@ -1612,6 +1906,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Primary concept the claim engages.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-concepts">Concept</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -1621,17 +1916,13 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-agg" href="#en-f-concepts-claimcount">Σ Claim Count <span class="ref-pill-tbl">Concept</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Primary concept the claim engages.</p>
     </article>
   <article class="field tone-raw" id="en-f-claims-description" data-entity="Claim" data-field="Description">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">The claim in brief.</p>
     </article>
@@ -1644,9 +1935,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-19</span>
     </div>
+    <p class="field-note elem elem-desc">1st-order: rebuttals directed at this claim.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A claim's <a class="ref" href="#en-f-claims-rebuttalcount">rebuttal count</a> is the number of <a class="ref" href="#en-t-rebuttals">rebuttals</a> related to the claim.</p>
       </div>
       <div class="view elem elem-english">
@@ -1686,7 +1978,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-claims-label">● Label <span class="ref-pill-tbl">Claim</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">1st-order: rebuttals directed at this claim.</p>
     </article>
   <article class="field tone-calc" id="en-f-claims-isrebutted" data-entity="Claim" data-field="Is Rebutted">
     <div class="field-head">
@@ -1697,9 +1988,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-20</span>
     </div>
+    <p class="field-note elem elem-desc">2nd-order: the claim drew at least one rebuttal.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <div class="view-body"><p class="rt-headline">The claim's <a class="ref" href="#en-f-claims-isrebutted">is rebutted</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">true</span> <span class="rt-when">if the <a class="ref" href="#en-f-claims-rebuttalcount">rebuttal count</a> is greater than 0</span></li><li><span class="rt-value">false</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
@@ -1727,10 +2019,51 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-claims-label">● Label <span class="ref-pill-tbl">Claim</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">2nd-order: the claim drew at least one rebuttal.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Label</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Phase</th>
+        <th>Description</th>
+        <th class="sample-derived">Rebuttal Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Rebutted<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Beginning Implies Beginner</td>
+          <td class="sample-derived">beginning-implies-beginner</td>
+          <td>opening</td>
+          <td>The Big Bang's beginning requires a transcendent beginner.</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td>Constants Are Fine-Tuned</td>
+          <td class="sample-derived">constants-are-fine-tuned</td>
+          <td>opening</td>
+          <td>Life-permitting constants sit on a razor's edge, implying a tuner.</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td>Information Implies Mind</td>
+          <td class="sample-derived">information-implies-mind</td>
+          <td>opening</td>
+          <td>DNA's specified complexity could only come from a mind.</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">true</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-rebuttals" data-entity="Rebuttal">
+<section class="entity" id="en-t-rebuttals" data-entity="Rebuttal" data-links="en-t-debaters en-t-claims" data-rules="1">
   <header class="entity-head">
     <h2 class="entity-title">Rebuttal</h2>
     <p class="entity-synopsis">Direct responses aimed at specific claims.</p>
@@ -1739,19 +2072,16 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Label</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Short name of the rebuttal.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-rebuttals-name">ƒ Name <span class="ref-pill-tbl">Rebuttal</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Short name of the rebuttal.</p>
     </article>
   <article class="field tone-calc" id="en-f-rebuttals-name" data-entity="Rebuttal" data-field="Name">
     <div class="field-head">
@@ -1762,9 +2092,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-21</span>
     </div>
+    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">A rebuttal's <a class="ref" href="#en-f-rebuttals-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-rebuttals-label">label</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -1791,7 +2122,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-rebuttals-label">● Label <span class="ref-pill-tbl">Rebuttal</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     </article>
   <article class="field tone-rel" id="en-f-rebuttals-madeby" data-entity="Rebuttal" data-field="Made by">
     <div class="field-head">
@@ -1800,10 +2130,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Debater making the rebuttal.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-debaters">Debater</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
-    <p class="field-note elem elem-desc">Debater making the rebuttal.</p>
     </article>
   <article class="field tone-rel" id="en-f-rebuttals-rebutsclaim" data-entity="Rebuttal" data-field="Rebuts Claim">
     <div class="field-head">
@@ -1812,6 +2142,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Claim being rebutted.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-claims">Claim</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -1824,22 +2155,48 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-arguments-iscontested">Is Contested <span class="ref-pill-tbl">Argument</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Claim being rebutted.</p>
     </article>
   <article class="field tone-raw" id="en-f-rebuttals-description" data-entity="Rebuttal" data-field="Description">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">The rebuttal in brief.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Label</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Description</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Cause Need Not Choose</td>
+          <td class="sample-derived">cause-need-not-choose</td>
+          <td>'I don't have to know' the origin; positing a choosing being just relabels the mystery.</td>
+        </tr>
+        <tr>
+          <td>Accelerating Expansion</td>
+          <td class="sample-derived">accelerating-expansion</td>
+          <td>Krauss: the red-shift rate is increasing — the cosmos is flying apart, hardly careful tuning.</td>
+        </tr>
+        <tr>
+          <td>Information Argument Is Faith</td>
+          <td class="sample-derived">information-argument-is-faith</td>
+          <td>The origin-of-life quotes are all statements of uncertainty, not evidence of a mind.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-thinkers" data-entity="Thinker">
+<section class="entity" id="en-t-thinkers" data-entity="Thinker" data-links="en-t-debaters" data-rules="2">
   <header class="entity-head">
     <h2 class="entity-title">Thinker</h2>
     <p class="entity-synopsis">Authorities invoked by each side, including hostile witnesses.</p>
@@ -1848,12 +2205,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Label</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Name of the thinker.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -1861,7 +2216,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-thinkers-quotationcount">Quotation Count <span class="ref-pill-tbl">Thinker</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Name of the thinker.</p>
     </article>
   <article class="field tone-calc" id="en-f-thinkers-name" data-entity="Thinker" data-field="Name">
     <div class="field-head">
@@ -1872,9 +2226,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-22</span>
     </div>
+    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">A thinker's <a class="ref" href="#en-f-thinkers-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-thinkers-label">label</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -1907,17 +2262,13 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-thinkers-label">● Label <span class="ref-pill-tbl">Thinker</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     </article>
   <article class="field tone-raw" id="en-f-thinkers-field" data-entity="Thinker" data-field="Field">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Field</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Primary field (physics, biology, philosophy, etc.).</p>
     </article>
@@ -1925,11 +2276,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Era</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Rough period.</p>
     </article>
@@ -1940,6 +2288,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Debater who invokes them.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-debaters">Debater</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -1949,17 +2298,13 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-agg" href="#en-f-debaters-thinkerscited">Σ Thinkers Cited <span class="ref-pill-tbl">Debater</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Debater who invokes them.</p>
     </article>
   <article class="field tone-raw" id="en-f-thinkers-citedashostilewitness" data-entity="Thinker" data-field="Cited As Hostile Witness">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Cited As Hostile Witness</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype boolean); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">boolean</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Cited against their own sympathies (e.g., an atheist conceding fine-tuning).</p>
     </article>
@@ -1967,11 +2312,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Why they appear in the debate.</p>
     </article>
@@ -1984,9 +2326,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-23</span>
     </div>
+    <p class="field-note elem elem-desc">1st-order: quotations attributed to them.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A thinker's <a class="ref" href="#en-f-thinkers-quotationcount">quotation count</a> is the number of <a class="ref" href="#en-t-quotations">quotations</a> related to the thinker.</p>
       </div>
       <div class="view elem elem-english">
@@ -2018,10 +2361,55 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-thinkers-label">● Label <span class="ref-pill-tbl">Thinker</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">1st-order: quotations attributed to them.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Label</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Field</th>
+        <th>Era</th>
+        <th>Cited As Hostile Witness</th>
+        <th>Description</th>
+        <th class="sample-derived">Quotation Count<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Edwin Hubble</td>
+          <td class="sample-derived">edwin-hubble</td>
+          <td>physics</td>
+          <td>20th c.</td>
+          <td>false</td>
+          <td>Discovered cosmic expansion (1929).</td>
+          <td class="sample-derived">0</td>
+        </tr>
+        <tr>
+          <td>Arno Penzias</td>
+          <td class="sample-derived">arno-penzias</td>
+          <td>physics</td>
+          <td>20th c.</td>
+          <td>false</td>
+          <td>Co-discovered the radiation echo; quoted on a balanced, supernatural-seeming universe.</td>
+          <td class="sample-derived">0</td>
+        </tr>
+        <tr>
+          <td>Robert Wilson</td>
+          <td class="sample-derived">robert-wilson</td>
+          <td>physics</td>
+          <td>20th c.</td>
+          <td>false</td>
+          <td>Co-discovered the cosmic afterglow at Bell Labs.</td>
+          <td class="sample-derived">0</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-quotations" data-entity="Quotation">
+<section class="entity" id="en-t-quotations" data-entity="Quotation" data-links="en-t-thinkers en-t-debaters" data-rules="1">
   <header class="entity-head">
     <h2 class="entity-title">Quotation</h2>
     <p class="entity-synopsis">Citations used by debaters, stored as paraphrased gists to respect copyright.</p>
@@ -2030,19 +2418,16 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Label</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Short name of the quotation.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-quotations-name">ƒ Name <span class="ref-pill-tbl">Quotation</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Short name of the quotation.</p>
     </article>
   <article class="field tone-calc" id="en-f-quotations-name" data-entity="Quotation" data-field="Name">
     <div class="field-head">
@@ -2053,9 +2438,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-24</span>
     </div>
+    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">A quotation's <a class="ref" href="#en-f-quotations-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-quotations-label">label</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -2082,7 +2468,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-quotations-label">● Label <span class="ref-pill-tbl">Quotation</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Logical primary key — slug of Label.</p>
     </article>
   <article class="field tone-rel" id="en-f-quotations-speaker" data-entity="Quotation" data-field="Speaker">
     <div class="field-head">
@@ -2091,6 +2476,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Thinker the quotation is attributed to.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-thinkers">Thinker</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -2100,7 +2486,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-agg" href="#en-f-thinkers-quotationcount">Σ Quotation Count <span class="ref-pill-tbl">Thinker</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Thinker the quotation is attributed to.</p>
     </article>
   <article class="field tone-rel" id="en-f-quotations-citedby" data-entity="Quotation" data-field="Cited by">
     <div class="field-head">
@@ -2109,20 +2494,17 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Debater who cited it.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-debaters">Debater</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
-    <p class="field-note elem elem-desc">Debater who cited it.</p>
     </article>
   <article class="field tone-raw" id="en-f-quotations-gist" data-entity="Quotation" data-field="Gist">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Gist</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Paraphrased substance of the quotation.</p>
     </article>
@@ -2130,17 +2512,49 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Context note.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Label</th>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Gist</th>
+        <th>Description</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Smoot On Looking At God</td>
+          <td class="sample-derived">smoot-on-looking-at-god</td>
+          <td>Paraphrase: a religious person might see the COBE result as a glimpse of the divine.</td>
+          <td>Paraphrased citation used in the debate (not verbatim).</td>
+        </tr>
+        <tr>
+          <td>Jastrow's Mountain Of Ignorance</td>
+          <td class="sample-derived">jastrow's-mountain-of-ignorance</td>
+          <td>Paraphrase: the scientist scaling the peak finds theologians already seated there.</td>
+          <td>Paraphrased citation used in the debate (not verbatim).</td>
+        </tr>
+        <tr>
+          <td>Eddington On The Beginning</td>
+          <td class="sample-derived">eddington-on-the-beginning</td>
+          <td>Paraphrase: the cosmic beginning seems frankly supernatural.</td>
+          <td>Paraphrased citation used in the debate (not verbatim).</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
 <footer class="doc-footer">
-  <p>Rendered from the rulebook by the shared <b>RuleSpeak®</b> engine (<code>rulebook-rulespeak-core</code>). The same engine narrates the React Explainer DAG, so every narration mode reads identically across both.</p>
+  <p class="doc-footer-soon"><b>RuleSpeak&#174;</b> — the declarative business-rule notation created by <b>Ronald G. Ross</b>, following the conventions of <b>SBVR</b> — is coming soon. Until then this page shows the regular documentation. <a href="https://www.RonRoss.info" target="_blank" rel="noopener">www.RonRoss.info</a></p>
+  <p>Rendered from the rulebook by the shared <b>Docs</b> engine (<code>rulebook-rulespeak-core</code>). The same engine narrates the React Explainer DAG, so every narration mode reads identically across both.</p>
   <p class="doc-footer-legend"><span class="chip chip-raw">● Ground truth</span> <span class="chip chip-calc">ƒ Calculated</span> <span class="chip chip-agg">Σ Aggregation</span> <span class="chip chip-lookup">↗ Lookup</span> <span class="chip chip-rel">⇢ Relationship</span></p>
 </footer>
 </div>
@@ -2148,8 +2562,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 
 (function(){
   var LANGS=['en'];
-  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
-  var DEFAULTS={'rulespeak':true,'english':false,'formula':false,'desc':true,'inputs':true,'consumers':false};
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers','data'];
+  var DEFAULTS={'rulespeak':false,'english':true,'formula':false,'desc':true,'inputs':false,'consumers':true,'data':true};
   var root=document.documentElement;
 
   // ── Language switching. All .lang-select controls stay in sync; the choice
@@ -2251,8 +2665,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
   var barH=parseInt(getComputedStyle(root).getPropertyValue('--bar-h'),10)||48;
   function update(){
     var line=barH+18, curF=null, curE=null;
-    for(var i=0;i<fields.length;i++){ if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
-    for(var j=0;j<entities.length;j++){ if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
+    for(var i=0;i<fields.length;i++){ if(!fields[i].offsetParent) continue; if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
+    for(var j=0;j<entities.length;j++){ if(!entities[j].offsetParent) continue; if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
     if(curF){
       var fEnt=curF.getAttribute('data-entity');
       var eName=curE?curE.getAttribute('data-entity'):fEnt;
@@ -2266,6 +2680,237 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
   window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('resize',onScroll,{passive:true});
   rebindSpy();
+})();
+
+
+(function(){
+  // ── Navigator ──────────────────────────────────────────────────────────────
+  //  From nine entities up, the page shows an overview or ONE entity at a time, with a nav that is
+  //  always on screen: grouped tables, a filter, the current entity's fields, tabs over its fields and
+  //  an overview as groups / A-Z / a graph. Smaller rulebooks keep the single page. Everything is read
+  //  from what the page already says (the entities, their fields, data-links, data-rules); the words
+  //  come from the language's data-nav. A person can always switch to everything on one page.
+  var MIN=9;
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;'); }
+  function leading(n){
+    var h=String(n).replace(/^[^A-Za-z0-9]+/,'').split(/[\s_-]+/)[0];
+    var m=/^(?:[A-Z]+(?=[A-Z][a-z])|[A-Z][a-z0-9]*|[A-Z]+[0-9]*|[a-z0-9]+)/.exec(h);
+    return m?m[0]:h;
+  }
+  function singular(w){ return w.length>3 ? w.replace(/ies$/i,'y').replace(/s$/i,'') : w; }
+
+  // Families: tables sharing a leading word; a stray joins the family most of its neighbours are in.
+  function groupsOf(ents,T){
+    var names=ents.map(function(e){return e.name;});
+    var by={};
+    ents.forEach(function(e){ var k=singular(leading(e.name)).toLowerCase(); (by[k]=by[k]||{words:[],members:[]}); by[k].words.push(leading(e.name)); by[k].members.push(e); });
+    var fam={},label={};
+    Object.keys(by).forEach(function(k){
+      if(by[k].members.length<2||k.length<3) return;
+      label[k]=by[k].words.slice().sort(function(a,b){return a.length-b.length||a.localeCompare(b);})[0];
+      by[k].members.forEach(function(e){ fam[e.id]=k; });
+    });
+    if(!Object.keys(fam).length) return [{key:'',label:null,items:ents}];
+    var byId={}; ents.forEach(function(e){ byId[e.id]=e; });
+    var nb={}; ents.forEach(function(e){ nb[e.id]=[]; });
+    ents.forEach(function(e){ e.links.forEach(function(t){ if(byId[t]){ nb[e.id].push(t); nb[t].push(e.id); } }); });
+    var groups={};
+    function put(k,e){ (groups[k]=groups[k]||[]).push(e); }
+    ents.forEach(function(e){
+      if(fam[e.id]){ put(fam[e.id],e); return; }
+      var tally={}; nb[e.id].forEach(function(t){ if(fam[t]) tally[fam[t]]=(tally[fam[t]]||0)+1; });
+      var best='',bn=0; Object.keys(tally).sort().forEach(function(k){ if(tally[k]>bn){ best=k; bn=tally[k]; } });
+      put(best,e);
+    });
+    var out=Object.keys(groups).filter(function(k){return k!=='';}).sort(function(a,b){return label[a].localeCompare(label[b]);})
+      .map(function(k){ return {key:k,label:label[k],items:groups[k]}; });
+    if(groups['']) out.push({key:'',label:T.other,items:groups['']});
+    return out;
+  }
+
+  // The graph: a box per table, a line per relationship; what a table points at is to its left.
+  function graphSvg(ents,T){
+    var set={}; ents.forEach(function(e){ set[e.id]=e; });
+    var out={},depth={},vis={};
+    ents.forEach(function(e){ out[e.id]=e.links.filter(function(t){return set[t]&&t!==e.id;}); });
+    function d(id){ if(depth[id]!=null) return depth[id]; if(vis[id]) return 0; vis[id]=1; var x=0; out[id].forEach(function(t){ x=Math.max(x,1+d(t)); }); vis[id]=0; depth[id]=x; return x; }
+    ents.forEach(function(e){ d(e.id); });
+    var maxD=0; ents.forEach(function(e){ maxD=Math.max(maxD,depth[e.id]); });
+    var by=[]; for(var i=0;i<=maxD;i++) by.push([]);
+    ents.slice().sort(function(a,b){return a.name.localeCompare(b.name);}).forEach(function(e){ by[depth[e.id]].push(e); });
+    var layers=by.filter(function(l){return l.length;});
+    var BW=164,BH=30,GX=96,GY=14,pos={};
+    layers.forEach(function(layer,li){
+      if(li>0){
+        var bary=function(e){ var ps=out[e.id].concat(ents.filter(function(o){return out[o.id].indexOf(e.id)>=0;}).map(function(o){return o.id;})).filter(function(t){return pos[t];}).map(function(t){return pos[t].row;}); return ps.length?ps.reduce(function(a,b){return a+b;},0)/ps.length:1e9; };
+        layer.sort(function(a,b){return bary(a)-bary(b)||a.name.localeCompare(b.name);});
+      }
+      layer.forEach(function(e,ri){ pos[e.id]={row:ri,x:li*(BW+GX),y:ri*(BH+GY)}; });
+    });
+    var rows=1; layers.forEach(function(l){rows=Math.max(rows,l.length);});
+    var W=layers.length*(BW+GX)-GX,H=rows*(BH+GY)-GY,s='';
+    ents.forEach(function(e){ out[e.id].forEach(function(t){
+      var a=pos[e.id],b=pos[t],x1=a.x,y1=a.y+BH/2,x2=b.x+BW,y2=b.y+BH/2,dx=Math.max(24,(x1-x2)/2);
+      s+='<path class=\'ge\' d=\'M'+x1+','+y1+' C'+(x1-dx)+','+y1+' '+(x2+dx)+','+y2+' '+x2+','+y2+'\' marker-end=\'url(#dga)\'/>';
+    }); });
+    ents.forEach(function(e){
+      var p=pos[e.id],lab=e.name.length>22?e.name.slice(0,21)+'…':e.name;
+      s+='<g class=\'gn'+(e.rules?' has':'')+'\' transform=\'translate('+p.x+','+p.y+')\'><a href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><rect width=\''+BW+'\' height=\''+BH+'\' rx=\'6\'/><text x=\''+(BW/2)+'\' y=\''+(BH/2+4)+'\' text-anchor=\'middle\'>'+esc(lab)+'</text><title>'+esc(e.name)+'</title></a></g>';
+    });
+    return '<svg class=\'dgraph\' viewBox=\'-4 -4 '+(W+8)+' '+(H+8)+'\' width=\''+(W+8)+'\' height=\''+(H+8)+'\'><defs><marker id=\'dga\' viewBox=\'0 0 8 8\' refX=\'7\' refY=\'4\' markerWidth=\'7\' markerHeight=\'7\' orient=\'auto\'><path d=\'M0,0 L8,4 L0,8 z\' class=\'ga\'/></marker></defs>'+s+'</svg>';
+  }
+
+  function setup(doc){
+    var T={}; var tx=doc.querySelector('.nav-texts'); try{ T=JSON.parse((tx&&tx.textContent)||'{}'); }catch(e){ return; }
+    var sections=Array.prototype.slice.call(doc.querySelectorAll('.entity[id]'));
+    if(sections.length<MIN) return;
+    var ents=sections.map(function(el){
+      var fs=Array.prototype.slice.call(el.querySelectorAll('.field[data-field]')).map(function(f){
+        var tone=(f.className.match(/tone-(\w+)/)||[])[1]||'rel';
+        return {id:f.id,name:f.getAttribute('data-field'),tone:tone,glyph:(f.querySelector('.field-glyph')||{}).textContent||''};
+      });
+      return {id:el.id,name:el.getAttribute('data-entity'),el:el,links:(el.getAttribute('data-links')||'').split(' ').filter(Boolean),rules:parseInt(el.getAttribute('data-rules')||'0',10),fields:fs};
+    });
+    var byId={}; ents.forEach(function(e){ byId[e.id]=e; });
+    var groups=groupsOf(ents,T);
+    var q='',view='groups',tab='all',fq='',closed={};
+
+    // Layout: nav | main (overview + the entities).
+    var toc=doc.querySelector('.toc'),header=doc.querySelector('.doc-header');
+    var grid=document.createElement('div'); grid.className='docgrid';
+    var nav=document.createElement('nav'); nav.className='sidenav'; nav.setAttribute('aria-label',T.tocTitle||'');
+    var main=document.createElement('div'); main.className='docmain';
+    var ov=document.createElement('section'); ov.className='ov';
+    main.appendChild(ov);
+    sections.forEach(function(el){ main.appendChild(el); });
+    grid.appendChild(nav); grid.appendChild(main);
+    (header||toc).insertAdjacentElement('afterend',grid);
+    var footer=doc.querySelector('.doc-footer'); if(footer) grid.insertAdjacentElement('afterend',footer);
+    doc.classList.add('paged');
+
+    function matches(e){
+      var t=q.trim().toLowerCase(); if(!t) return {ok:true,fs:[]};
+      if(e.name.toLowerCase().indexOf(t)>=0) return {ok:true,fs:[]};
+      var hit=e.fields.filter(function(f){return f.name.toLowerCase().indexOf(t)>=0;});
+      return hit.length?{ok:true,fs:hit}:{ok:false,fs:[]};
+    }
+    var cur=null,curField=null;
+    function navBody(){
+      var filtering=!!q.trim(),html='';
+      groups.forEach(function(g){
+        var rows=g.items.map(function(e){
+          var m=matches(e); if(!m.ok) return '';
+          var here=cur===e,shown=here?e.fields:m.fs.slice(0,8);
+          var r='<div><a class=\'sn-t'+(here?' is-current':'')+'\' href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><span>'+esc(e.name)+'</span>'+(e.rules?'<b>ƒ '+e.rules+'</b>':'')+'</a>';
+          if(shown.length) r+='<ul class=\'sn-fields\'>'+shown.map(function(f){ return '<li><a class=\'sn-f tone-'+esc(f.tone)+'\' href=\'#'+esc(f.id)+'\' data-go=\''+esc(f.id)+'\'><i>'+esc(f.glyph)+'</i><span>'+esc(f.name)+'</span></a></li>'; }).join('')+'</ul>';
+          return r+'</div>';
+        }).filter(Boolean);
+        if(!rows.length) return;
+        if(g.label==null){ html+=rows.join(''); return; }
+        var has=cur&&g.items.indexOf(cur)>=0,open=filtering||has||(groups.length<=3&&closed[g.key]!==true)||closed[g.key]===false;
+        html+='<details class=\'sn-group'+(has?' has-current':'')+'\' data-g=\''+esc(g.key)+'\''+(open?' open':'')+'><summary class=\'sn-gtitle\'><span>'+esc(g.label)+'</span><span class=\'sn-n\'>'+rows.length+'</span></summary>'+rows.join('')+'</details>';
+      });
+      return html||'<p class=\'sn-empty\'>'+esc(T.empty)+'</p>';
+    }
+    function drawNav(keepFocus){
+      var body=nav.querySelector('.sn-body'),top=body?body.scrollTop:0;
+      if(!nav.firstChild){
+        nav.innerHTML='<div class=\'sn-head\'><a class=\'sn-index\' href=\'#\' data-go=\'\'><span>▦ '+esc(T.tocTitle)+'</span><span class=\'sn-n\'>'+ents.length+'</span></a><input type=\'search\' class=\'sn-q\' placeholder=\''+esc(T.search)+'\' aria-label=\''+esc(T.search)+'\'></div><div class=\'sn-body\'></div><div class=\'sn-foot\'><button type=\'button\' class=\'sn-all\'></button></div>';
+        nav.querySelector('.sn-q').addEventListener('input',function(){ q=this.value; drawNav(true); drawOverview(); });
+        nav.querySelector('.sn-all').addEventListener('click',function(){ var on=!doc.classList.contains('paged'); setPaged(on); });
+        nav.addEventListener('click',go);
+        nav.addEventListener('toggle',function(ev){ var d=ev.target; if(d&&d.getAttribute&&d.getAttribute('data-g')!=null) closed[d.getAttribute('data-g')]=!d.open; },true);
+        body=nav.querySelector('.sn-body');
+      }
+      body.innerHTML=navBody(); body.scrollTop=top;
+      nav.querySelector('.sn-all').textContent=doc.classList.contains('paged')?T.showAll:T.showOne;
+      var c=body.querySelector('.sn-f.is-current,.sn-t.is-current'); if(c&&!keepFocus&&c.scrollIntoView) c.scrollIntoView({block:'nearest'});
+    }
+    function go(ev){
+      var a=ev.target.closest&&ev.target.closest('[data-go]'); if(!a||ev.metaKey||ev.ctrlKey||ev.shiftKey) return;
+      ev.preventDefault();
+      var id=a.getAttribute('data-go');
+      location.hash=id?'#'+id:'#'+doc.getAttribute('data-lang')+'-top';
+    }
+
+    // Overview: groups, A-Z or the graph, narrowed by the filter.
+    function drawOverview(){
+      var shown=ents.filter(function(e){return matches(e).ok;});
+      var h='<div class=\'tabs\' role=\'tablist\'>'+[['groups',T.groups],['list',T.list],['graph',T.graph]].map(function(v){
+        return '<button type=\'button\' role=\'tab\' class=\'tab'+(view===v[0]?' is-active':'')+'\' data-view=\''+v[0]+'\' aria-selected=\''+(view===v[0])+'\'>'+esc(v[1])+'</button>'; }).join('')+
+        '<input type=\'search\' class=\'ov-q\' placeholder=\''+esc(T.search)+'\' aria-label=\''+esc(T.search)+'\' value=\''+esc(q)+'\'></div>';
+      if(!shown.length) h+='<p class=\'sn-empty\'>'+esc(T.empty)+'</p>';
+      else if(view==='list'){
+        h+='<table class=\'ov-list\'><tbody>'+shown.slice().sort(function(a,b){return a.name.localeCompare(b.name);}).map(function(e){
+          return '<tr><td><a href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'>'+esc(e.name)+'</a></td><td class=\'ov-n\'>'+e.fields.length+'</td><td class=\'ov-n\'>ƒ '+e.rules+'</td><td class=\'ov-n\'>⇢ '+e.links.length+'</td></tr>'; }).join('')+'</tbody></table>';
+      } else {
+        var set={}; shown.forEach(function(e){set[e.id]=1;});
+        var gs=groupsOf(shown,T);
+        if(view==='graph') h+='<p class=\'ov-hint\'>'+esc(T.graphHint)+'</p>';
+        gs.forEach(function(g){
+          var inner=view==='graph'
+            ? '<div class=\'ov-graph\'>'+graphSvg(g.items,T)+'</div>'
+            : '<div class=\'ov-grid\'>'+g.items.map(function(e){ return '<a class=\'ov-card\' href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><b>'+esc(e.name)+'</b><span>'+e.fields.length+' · ƒ '+e.rules+' · ⇢ '+e.links.length+'</span></a>'; }).join('')+'</div>';
+          h+=g.label==null?inner:'<details class=\'ov-group\' open><summary class=\'ov-gtitle\'><span>'+esc(g.label)+'</span><span class=\'sn-n\'>'+g.items.length+'</span></summary>'+inner+'</details>';
+        });
+      }
+      ov.innerHTML=h;
+      ov.querySelectorAll('[data-view]').forEach(function(b){ b.addEventListener('click',function(){ view=b.getAttribute('data-view'); drawOverview(); }); });
+      var oq=ov.querySelector('.ov-q'); oq.addEventListener('input',function(){ q=oq.value; var nq=nav.querySelector('.sn-q'); if(nq) nq.value=q; drawNav(true); drawOverview(); var n=ov.querySelector('.ov-q'); n.focus(); n.setSelectionRange(q.length,q.length); });
+      ov.addEventListener('click',go);
+    }
+
+    // Tabs over an entity's fields.
+    function addTabs(e){
+      if(e.el.querySelector('.tabs')) return;
+      var kinds={all:e.fields.length,derived:0,stored:0,rels:0};
+      e.fields.forEach(function(f){ if(f.tone==='rel') kinds.rels++; else if(f.tone==='raw') kinds.stored++; else kinds.derived++; });
+      var tabs=[['all',T.all],['derived',T.derived],['stored',T.stored],['rels',T.rels]].filter(function(t){return t[0]==='all'||kinds[t[0]];});
+      var bar=document.createElement('div'); bar.className='tabs'; bar.setAttribute('role','tablist');
+      bar.innerHTML=tabs.map(function(t){ return '<button type=\'button\' role=\'tab\' class=\'tab'+(tab===t[0]?' is-active':'')+'\' data-tab=\''+t[0]+'\'>'+esc(t[1])+' <i>'+kinds[t[0]]+'</i></button>'; }).join('')+'<input type=\'search\' class=\'tab-q\' placeholder=\''+esc(T.fields)+'\' aria-label=\''+esc(T.fields)+'\'>';
+      var head=e.el.querySelector('.entity-head'); head.insertAdjacentElement('afterend',bar);
+      var apply=function(){
+        var t=fq.trim().toLowerCase();
+        e.el.querySelectorAll('.field[data-field]').forEach(function(f){
+          var tone=(f.className.match(/tone-(\w+)/)||[])[1]||'rel';
+          var kind=tone==='rel'?'rels':tone==='raw'?'stored':'derived';
+          f.hidden=!((tab==='all'||tab===kind)&&(!t||(f.getAttribute('data-field')||'').toLowerCase().indexOf(t)>=0));
+        });
+        bar.querySelectorAll('.tab').forEach(function(b){ var on=b.getAttribute('data-tab')===tab; b.classList.toggle('is-active',on); });
+      };
+      bar.querySelectorAll('.tab').forEach(function(b){ b.addEventListener('click',function(){ tab=b.getAttribute('data-tab'); ents.forEach(function(x){ if(x.apply) x.apply(); }); }); });
+      var inp=bar.querySelector('.tab-q'); inp.addEventListener('input',function(){ fq=inp.value; ents.forEach(function(x){ if(x.apply&&x!==e){ var o=x.el.querySelector('.tab-q'); if(o) o.value=fq; } if(x.apply) x.apply(); }); });
+      e.apply=apply; apply();
+    }
+    ents.forEach(addTabs);
+
+    // Which entity is on screen follows the address.
+    var first=true;
+    function show(){
+      var id=(location.hash||'').replace(/^#/,''),target=id?document.getElementById(id):null;
+      var ent=null;
+      if(target&&doc.contains(target)){ var s=target.closest?target.closest('.entity'):null; ent=s?byId[s.id]:null; }
+      cur=ent;
+      sections.forEach(function(el){ el.classList.toggle('is-on',!!ent&&el===ent.el); });
+      ov.hidden=!!ent&&doc.classList.contains('paged');
+      if(!ent) drawOverview();
+      drawNav();
+      if(!doc.classList.contains('paged')) return;
+      if(ent&&target&&target!==ent.el){ var hid=target.hidden; if(hid){ tab='all'; fq=''; ents.forEach(function(x){ if(x.apply) x.apply(); }); } target.scrollIntoView(); }
+      else if(!first){ var m=doc.querySelector('.docgrid'); window.scrollTo(0,m?m.getBoundingClientRect().top+window.pageYOffset-60:0); }
+    }
+    function setPaged(on){
+      doc.classList.toggle('paged',on);
+      try{ localStorage.setItem('docs.paged',on?'1':'0'); }catch(e){}
+      show();
+    }
+    var saved=null; try{ saved=localStorage.getItem('docs.paged'); }catch(e){}
+    if(saved==='0') doc.classList.remove('paged');
+    window.addEventListener('hashchange',function(){ if(doc.getAttribute('data-lang')===document.documentElement.getAttribute('data-lang')) show(); });
+    show(); first=false;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.lang-doc'),setup);
+
 })();
 
 </script>

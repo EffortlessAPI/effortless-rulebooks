@@ -1,4 +1,4 @@
-# 📘 Does God Exist — Hitchens vs Turek (VCU) — RuleSpeak®
+# 📘 Does God Exist — Hitchens vs Turek (VCU) — Docs
 
 _Rulebook formalizing the VCU debate 'Does God Exist?' between Christopher Hitchens (atheism/anti-theism) and Frank Turek (theism), and every philosophical concept raised. Built via the Shadle steps: raw text -> vocabulary -> glossary -> narrative -> mock data -> normalized schema -> this DAG-structured hub._
 
@@ -19,6 +19,22 @@ _Rulebook formalizing the VCU debate 'Does God Exist?' between Christopher Hitch
 | Argument Count | The number of arguments related to the debater. | _1st-order: number of arguments advanced._ |
 | Claim Count | The number of claims related to the debater. | _1st-order: number of claims made._ |
 | Thinkers Cited | The number of thinkers related to the debater. | _1st-order: distinct thinkers pressed into service._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Label | Name ƒ | Side | Description | Argument Count ƒ | Claim Count ƒ | Thinkers Cited ƒ |
+|---|---|---|---|---|---|---|
+| Frank Turek | frank-turek | affirmative | Christian apologist, founder of CrossExamined.org, co-author of 'I Don't Have Enough Faith to Be an Atheist'. Argues the affirmative for a generic theism. | 9 | 9 | 16 |
+| Christopher Hitchens | christopher-hitchens | negative | Author of 'God Is Not Great'. Argues the negative; self-describes as anti-theist, not merely atheist. | 4 | 8 | 19 |
+| Timothy Hulley | timothy-hulley | moderator | Dean of the VCU Honors College; moderates phases and relays audience questions for the event hosted by the United Secular Alliance. | 0 | 0 | 0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Worldview** | Competing positions on God and reality contested in the debate. | — |
 | Label | A defined attribute. | _Name of the worldview._ |
 | Name | Computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Logical primary key — slug of Label._ |
@@ -26,6 +42,22 @@ _Rulebook formalizing the VCU debate 'Does God Exist?' between Christopher Hitch
 | Championed by | A defined attribute. | _Debater who principally champions this worldview._ |
 | Description | A defined attribute. | _What the worldview holds in this debate's context._ |
 | Argument Count | The number of arguments related to the worldview. | _1st-order: arguments fielded under this worldview._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Label | Name ƒ | Affirms God | Description | Argument Count ƒ |
+|---|---|---|---|---|
+| Theism | theism | true | A personal God who created and intervenes in the universe, answers prayer, and grounds morality. | 9 |
+| Deism | deism | true | A designer who set the cosmos in order but does not intervene or reveal itself; Hitchens treats it as separable from theism. | 0 |
+| Atheism | atheism | false | No advanced argument for God has survived rebuttal; not the dogmatic claim no God could exist. | 2 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Argument** | The named arguments advanced by each side, with derived development and contestation metrics. | — |
 | Label | A defined attribute. | _Name of the argument._ |
 | Name | Computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Logical primary key — slug of Label._ |
@@ -40,19 +72,67 @@ _Rulebook formalizing the VCU debate 'Does God Exist?' between Christopher Hitch
 | Is Fully Developed | True when the premise count is at least 2. | _2nd-order: has at least two premises._ |
 | Total Rebuttals | The total rebuttal count across the claims related to the argument. | _2nd-order: rebuttals accumulated across supporting claims._ |
 | Is Contested | True when the total rebuttals is greater than 0. | _3rd-order: at least one supporting claim was rebutted._ |
-| **Premis** | Ordered premises composing each argument. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Label | Name ƒ | Argument Type | Conclusion | Description | Premise Count ƒ | Evidence Count ƒ | Claim Count ƒ | Is Fully Developed ƒ | Total Rebuttals ƒ | Is Contested ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Cosmological Argument | cosmological-argument | primary | The universe had a beginning, so it had a beginner. | From the Big Bang: a beginning implies a beginner; SURGE supplies the evidence. | 3 | 5 | 1 | true | 1 | true |
+| Teleological Argument | teleological-argument | primary | Order and apparent purpose imply a designer. | The design argument; contains fine-tuning and design-of-life as sub-arguments. | 0 | 0 | 1 | false | 1 | true |
+| Argument From Fine-Tuning | argument-from-fine-tuning | sub | Life-permitting constants imply a tuner. | Constants on a razor's edge (the gravitational force to 1 part in 10^40, expansion rate, axial tilt, Jupiter). | 3 | 0 | 1 | true | 1 | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
+| **Premise** | Ordered premises composing each argument. | — |
 | Label | A defined attribute. | _Short name of the premise._ |
 | Name | Computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Logical primary key — slug of Label._ |
 | Supports Argument | A defined attribute. | _Argument this premise belongs to._ |
 | Ordinal | A defined attribute. | _Position of the premise within its argument._ |
 | Statement | A defined attribute. | _The premise as stated._ |
 | Description | A defined attribute. | _Note on the premise._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Label | Name ƒ | Ordinal | Statement | Description |
+|---|---|---|---|---|
+| Universe Began | universe-began | 1 | The universe had a beginning (SURGE). | Premise 1 of the cosmological argument. |
+| Beginning Needs Beginner | beginning-needs-beginner | 2 | Whatever begins to exist has a cause/beginner. | Premise 2 of the cosmological argument. |
+| Cause Is Transcendent | cause-is-transcendent | 3 | The creator-cause is spaceless, timeless, immaterial, intelligent, powerful, and personal. | Premise 3 of the cosmological argument. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Evidence** | Empirical and theoretical evidence items cited in support of arguments. | — |
 | Label | A defined attribute. | _Name of the evidence item._ |
 | Name | Computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Logical primary key — slug of Label._ |
 | Supports Argument | A defined attribute. | _Argument the evidence supports._ |
 | Evidence Kind | A defined attribute. | _observational or theoretical._ |
 | Description | A defined attribute. | _What the evidence is and who found it._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Label | Name ƒ | Evidence Kind | Description |
+|---|---|---|---|
+| SURGE: Second Law | surge:-second-law | theoretical | Second law of thermodynamics — the universe runs toward heat death, so it cannot be eternal. |
+| SURGE: Universe Expanding | surge:-universe-expanding | observational | Hubble's 1929 discovery of expansion; reversed, it collapses to a singularity. |
+| SURGE: Radiation Echo | surge:-radiation-echo | observational | Cosmic afterglow found by Penzias and Wilson; remnant heat of the Big Bang. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Concept** | Every philosophical concept raised in the debate, with category and introducer. | — |
 | Label | A defined attribute. | _Name of the concept._ |
 | Name | Computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Logical primary key — slug of Label._ |
@@ -60,6 +140,22 @@ _Rulebook formalizing the VCU debate 'Does God Exist?' between Christopher Hitch
 | Introduced by | A defined attribute. | _Debater who introduced the concept._ |
 | Description | A defined attribute. | _Meaning of the concept in this debate._ |
 | Claim Count | The number of claims related to the concept. | _1st-order: claims that touch this concept._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Label | Name ƒ | Category | Description | Claim Count ƒ |
+|---|---|---|---|---|
+| Big Bang | big-bang | cosmology | The accepted origin of the universe; Turek accepts it and infers a 'banger'. | 1 |
+| Heat Death | heat-death | cosmology | The far-future maximal-entropy state; used by both (Turek vs eternity, Hitchens for poor design). | 1 |
+| Singularity | singularity | cosmology | The point reversed expansion collapses to; Turek equates it with 'nothing'. | 0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Claim** | Specific assertions made by each debater, with derived rebuttal status. | — |
 | Label | A defined attribute. | _Short name of the claim._ |
 | Name | Computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Logical primary key — slug of Label._ |
@@ -70,12 +166,44 @@ _Rulebook formalizing the VCU debate 'Does God Exist?' between Christopher Hitch
 | Description | A defined attribute. | _The claim in brief._ |
 | Rebuttal Count | The number of rebuttals related to the claim. | _1st-order: rebuttals directed at this claim._ |
 | Is Rebutted | True when the rebuttal count is greater than 0. | _2nd-order: the claim drew at least one rebuttal._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Label | Name ƒ | Phase | Description | Rebuttal Count ƒ | Is Rebutted ƒ |
+|---|---|---|---|---|---|
+| Beginning Implies Beginner | beginning-implies-beginner | opening | The Big Bang's beginning requires a transcendent beginner. | 1 | true |
+| Constants Are Fine-Tuned | constants-are-fine-tuned | opening | Life-permitting constants sit on a razor's edge, implying a tuner. | 1 | true |
+| Information Implies Mind | information-implies-mind | opening | DNA's specified complexity could only come from a mind. | 1 | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Rebuttal** | Direct responses aimed at specific claims. | — |
 | Label | A defined attribute. | _Short name of the rebuttal._ |
 | Name | Computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Logical primary key — slug of Label._ |
 | Made by | A defined attribute. | _Debater making the rebuttal._ |
 | Rebuts Claim | A defined attribute. | _Claim being rebutted._ |
 | Description | A defined attribute. | _The rebuttal in brief._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Label | Name ƒ | Description |
+|---|---|---|
+| Cause Need Not Choose | cause-need-not-choose | 'I don't have to know' the origin; positing a choosing being just relabels the mystery. |
+| Accelerating Expansion | accelerating-expansion | Krauss: the red-shift rate is increasing — the cosmos is flying apart, hardly careful tuning. |
+| Information Argument Is Faith | information-argument-is-faith | The origin-of-life quotes are all statements of uncertainty, not evidence of a mind. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Thinker** | Authorities invoked by each side, including hostile witnesses. | — |
 | Label | A defined attribute. | _Name of the thinker._ |
 | Name | Computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Logical primary key — slug of Label._ |
@@ -85,6 +213,22 @@ _Rulebook formalizing the VCU debate 'Does God Exist?' between Christopher Hitch
 | Cited As Hostile Witness | True when an empty string. | _Cited against their own sympathies (e.g., an atheist conceding fine-tuning)._ |
 | Description | A defined attribute. | _Why they appear in the debate._ |
 | Quotation Count | The number of quotations related to the thinker. | _1st-order: quotations attributed to them._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Label | Name ƒ | Field | Era | Cited As Hostile Witness | Description | Quotation Count ƒ |
+|---|---|---|---|---|---|---|
+| Edwin Hubble | edwin-hubble | physics | 20th c. | false | Discovered cosmic expansion (1929). | 0 |
+| Arno Penzias | arno-penzias | physics | 20th c. | false | Co-discovered the radiation echo; quoted on a balanced, supernatural-seeming universe. | 0 |
+| Robert Wilson | robert-wilson | physics | 20th c. | false | Co-discovered the cosmic afterglow at Bell Labs. | 0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Quotation** | Citations used by debaters, stored as paraphrased gists to respect copyright. | — |
 | Label | A defined attribute. | _Short name of the quotation._ |
 | Name | Computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Logical primary key — slug of Label._ |
@@ -93,12 +237,25 @@ _Rulebook formalizing the VCU debate 'Does God Exist?' between Christopher Hitch
 | Gist | A defined attribute. | _Paraphrased substance of the quotation._ |
 | Description | A defined attribute. | _Context note._ |
 
+<details open>
+<summary>Example data</summary>
+
+| Label | Name ƒ | Gist | Description |
+|---|---|---|---|
+| Smoot On Looking At God | smoot-on-looking-at-god | Paraphrase: a religious person might see the COBE result as a glimpse of the divine. | Paraphrased citation used in the debate (not verbatim). |
+| Jastrow's Mountain Of Ignorance | jastrow's-mountain-of-ignorance | Paraphrase: the scientist scaling the peak finds theologians already seated there. | Paraphrased citation used in the debate (not verbatim). |
+| Eddington On The Beginning | eddington-on-the-beginning | Paraphrase: the cosmic beginning seems frankly supernatural. | Paraphrased citation used in the debate (not verbatim). |
+
+_ƒ marks a computed column._
+
+</details>
+
 ## 2 Fact Types
 
 - a **worldview** may reference one **debater**
 - an **argument** references exactly one **debater**
 - an **argument** references exactly one **worldview**
-- a **premis** references exactly one **argument**
+- a **premise** references exactly one **argument**
 - an **evidence** references exactly one **argument**
 - a **concept** may reference one **debater**
 - a **claim** references exactly one **debater**
@@ -124,8 +281,8 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - An argument **must** reference exactly one debater as its advanced by.
 - An argument **must** reference exactly one worldview as its fields worldview.
 - An argument **must** have a label and an argument type.
-- A premis **must** reference exactly one argument as its supports argument.
-- A premis **must** have a label and an ordinal.
+- A premise **must** reference exactly one argument as its supports argument.
+- A premise **must** have a label and an ordinal.
 - An evidence **must** reference exactly one argument as its supports argument.
 - An evidence **must** have a label and an evidence kind.
 - A concept **must** have a label and a category.
@@ -162,7 +319,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-11 Is Fully Developed** | An argument is considered fully-developed if the premise count is at least 2. |
 | **DR-12 Total Rebuttals** | An argument's total rebuttals is the total rebuttal count across the claims related to the argument. |
 | **DR-13 Is Contested** | An argument is considered contested if the total rebuttals is greater than 0. |
-| **DR-14 Name** | A premis's name is computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-14 Name** | A premise's name is computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-15 Name** | An evidence's name is computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-16 Name** | A concept's name is computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-17 Claim Count** | A concept's claim count is the number of claims related to the concept. |
@@ -176,7 +333,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -208,8 +365,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

@@ -10856,4 +10856,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Quotations": "quotation"
     }
   }
-} };
+}, stamp: "5c72c27b7714222a" };
