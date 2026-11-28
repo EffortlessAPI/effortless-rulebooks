@@ -1,4 +1,4 @@
-# 📘 Planar Unit-Distance Discovery — RuleSpeak®
+# 📘 Planar Unit-Distance Discovery — Docs
 
 _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every mathematical object that participates in the chain from Q to U(n) is promoted to its OWN first-class table, and every intermediate quantity (distance squared, edge count, density exponent, witness-consistency check, bound exponent, anchor match) is a first-class calculated/lookup/aggregation field on the entity to which it belongs. Nothing is hidden in a property bag, an expression tree, or a generic relation row. The Pythagorean test: if a mathematician would name it, it has its own column._
 
@@ -16,18 +16,66 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Display Name | A defined attribute. | — |
 | Role in Model | A defined attribute. | — |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Role in Model | Description |
+|---|---|---|---|
+| euclidean-geometry | Euclidean Geometry | ambient_space_and_metric | Points, configurations, distance, unit-distance predicate. |
+| graph-theory | Graph Theory | combinatorial_shadow | Unit-distance graphs and edge counts. |
+| algebraic-number-theory | Algebraic Number Theory | source_of_structured_constructions | Number fields, rings of integers, prime ideals. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Context** | A context is identified by its name. | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Display Name | A defined attribute. | — |
 | Kind | A defined attribute. | — |
 | Assumptions JSON | A defined attribute. | — |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Kind | Assumptions JSON | Description |
+|---|---|---|---|---|
+| euclidean-plane-r2 | Euclidean Plane R2 | mathematical_context | {"ambient_space":"R^2","metric":"standard_euclidean"} | Standard two-dimensional Euclidean geometry. |
+| planar-unit-distance-problem | Planar Unit Distance Problem | problem_context | {"object":"finite point sets in R^2","edge_rule":"distance equals one"} | Maximize the number of unit-distance pairs among n points in the plane. |
+| superlinear-lower-bound | Superlinear Lower Bound | theorem_context | {"target":"U(n) > n^(1+epsilon)"} | The neighborhood anchored by the superlinear lower bound. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Point** | A point is identified by its name and is related to a context. | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Display Name | A defined attribute. | — |
 | X | A defined attribute. | — |
 | Y | A defined attribute. | — |
 | Context | A defined attribute. | _Which mathematical context the coordinates are interpreted in._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | X | Y |
+|---|---|---|---|
+| triangle-a | Triangle A | 0 | 0 |
+| triangle-b | Triangle B | 1 | 0 |
+| triangle-c | Triangle C | 0.5 | 0.8660254037844386 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Point Set** | A point set is identified by its name and is related to a point set member (its members) and a point pair (its pairs). | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Display Name | A defined attribute. | — |
@@ -39,10 +87,42 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Max Possible Edges | Computed as the point count times the point count minus 1 divided by 2. | _n choose 2 — the trivial upper bound on UnitDistancePairCount._ |
 | Edge Density | Computed as the unit distance pair count divided by the max possible edges. | _Fraction of point pairs that are unit pairs._ |
 | Density Exponent Estimate | Computed as the logarithm of the unit distance pair count divided by the logarithm of the point count. | _The exponent c such that UnitDistancePairCount ≈ PointCount^c. Lower bounds for U(n) are claims that this exponent is ≥ some target for arbitrarily large PointCount._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Description | Point Count ƒ | Unit Distance Pair Count ƒ | Max Possible Edges ƒ | Edge Density ƒ | Density Exponent Estimate ƒ |
+|---|---|---|---|---|---|---|---|
+| unit-triangle | Unit Triangle | Three vertices of an equilateral triangle with side 1. | 3 | 3 | 3 | 1.0 | 1.0 |
+| unit-square | Unit Square | Four vertices of an axis-aligned unit square. Note: only 4 of 6 pairs are unit; the diagonals are sqrt(2). | 4 | 4 | 6 | 0.6666666666666666 | 1.0 |
+| heptagon-with-center | Heptagon With Center | The σ_1 projection of {0, 1, ζ_7, ζ_7^2, …, ζ_7^6} from Z[ζ_7]'s Minkowski lattice: 7 unit-circle vertices plus the origin. Produces 7 spoke unit-distance pairs (center↔vertex); no vertex-vertex pairs are unit (closest chord is 2sin(π/7) ≈ 0.868). Demonstrates the Q(ζ_7) chain end-to-end but does NOT itself achieve density exponent > 1. | 8 | 7 | 28 | 0.25 | 0.9357849740192014 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Point Set Member** | A point set member is identified by its name and is related to a point set and a point. | — |
 | Name | Computed as the point set, followed by a slash, followed by the point. | — |
 | Point Set | A defined attribute. | — |
 | Point | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ |
+|---|
+| unit-triangle/tri-a |
+| unit-triangle/tri-b |
+| unit-triangle/tri-c |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Point Pair** | A point pair is identified by its name and is related to a point set; a point (its point a); and a point (its point b). | — |
 | Name | Computed as the point set, followed by a slash, followed by the point a, followed by a hyphen, followed by the point b. | — |
 | Point Set | A defined attribute. | — |
@@ -62,6 +142,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Distance From Unit | Computed as the absolute value of the distance squared minus 1. | — |
 | Is Unit Distance | True when the distance from unit is at most the tolerance. | _The unit-distance predicate — the entire problem turns on this boolean._ |
 | Description | A defined attribute. | _Free-text annotation for this row._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Point AX ƒ | Point AY ƒ | Point BX ƒ | Point BY ƒ | Delta X ƒ | Delta Y ƒ | Delta X Squared ƒ | Delta Y Squared ƒ | Distance Squared ƒ | Distance ƒ | Tolerance | Distance From Unit ƒ | Is Unit Distance ƒ | Description |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| unit-triangle/tri-a-tri-b | 0.0 | 0.0 | 1.0 | 0.0 | 1.0 | 0.0 | 1.0 | 0.0 | 1.0 | 1.0 | 0.0001 | 0.0 | true | — |
+| unit-triangle/tri-a-tri-c | 0.0 | 0.0 | 0.5 | 0.8660254037844386 | 0.5 | 0.8660254037844386 | 0.25 | 0.7499999999999999 | 0.9999999999999999 | 0.9999999999999999 | 0.0001 | 1.1102230246251565e-16 | true | — |
+| unit-triangle/tri-b-tri-c | 1.0 | 0.0 | 0.5 | 0.8660254037844386 | -0.5 | 0.8660254037844386 | 0.25 | 0.7499999999999999 | 0.9999999999999999 | 0.9999999999999999 | 0.0001 | 1.1102230246251565e-16 | true | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Unit Distance Graph** | A unit distance graph is identified by its name and is related to a point set. | — |
 | Name | Computed as the point set, followed by “-graph”. | — |
 | Point Set | A defined attribute. | — |
@@ -70,6 +166,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Max Possible Edges | Computed as the vertex count times the vertex count minus 1 divided by 2. | — |
 | Edge Density | Computed as the edge count divided by the max possible edges. | — |
 | Density Exponent Estimate | Computed as the logarithm of the edge count divided by the logarithm of the vertex count. | _Witness for the exponent in U(n) ≥ n^c, finite-sample._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Vertex Count ƒ | Edge Count ƒ | Max Possible Edges ƒ | Edge Density ƒ | Density Exponent Estimate ƒ |
+|---|---|---|---|---|---|
+| unit-triangle-graph | 3 | 3 | 3 | 1.0 | 1.0 |
+| unit-square-graph | 4 | 4 | 6 | 0.6666666666666666 | 1.0 |
+| heptagon-with-center-graph | 8 | 7 | 28 | 0.25 | 0.9357849740192014 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Number Field** | A number field is identified by its name. | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Display Name | A defined attribute. | — |
@@ -90,6 +202,21 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Is Algebraic Source Candidate | True when all of the following hold: the satisfies golod shafarevich flag is set and the small norm prime ideal count is greater than 0. | _TRUE when the field both satisfies GS and has at least one small-norm prime ideal — the two-condition algebraic precondition for producing a Minkowski lattice with many short vectors._ |
 | Field Embedding Count | The number of field embeddings related to the number field. | _How many field embeddings (real or complex) are explicitly loaded for this field. Sanity check: should equal SignatureRealEmbeddings + SignatureComplexEmbeddings._ |
 | Field Embedding Count Matches Signature | True when the field embedding count is the signature real embeddings plus the signature complex embeddings. | _Read-time integrity check: did we load every embedding the signature claims to exist?_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Defining Polynomial | Degree | Discriminant | Class Number | Signature Real Embeddings | Signature Complex Embeddings | Ambient Lattice Dimension ƒ | Is Totally Real ƒ | Is Totally Complex ƒ | Is PID ƒ | Small Norm Prime Ideal Count ƒ | Golod Shafarevich Passing Count ƒ | Satisfies Golod Shafarevich ƒ | Is Algebraic Source Candidate ƒ | Field Embedding Count ƒ | Field Embedding Count Matches Signature ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| q(sqrt(-3)) | Q(sqrt(-3)) | x^2+3 | 2 | -3 | 1 | 0 | 1 | 2 | false | true | true | 2 | 1 | true | true | 2 | false |
+| q(zeta_7) | Q(zeta_7) | x^6+x^5+x^4+x^3+x^2+x+1 | 6 | -16807 | 1 | 0 | 3 | 6 | false | true | true | 4 | 1 | true | true | 4 | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Prime Ideal** | A prime ideal is identified by its name and is related to a number field. | — |
 | Name | Computed as the number field, followed by a slash, followed by the generator description. | — |
 | Number Field | A defined attribute. | — |
@@ -98,6 +225,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Norm Threshold | A defined attribute. | _Per-prime threshold for the 'small norm' classification._ |
 | Is Small Norm | True when the norm is at most the norm threshold. | — |
 | Splits Completely | True when an empty string. | _Whether the prime in Q splits completely in O_K. Nullable: null when splitting behavior has been named but not yet computed._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Generator Description | Norm | Norm Threshold | Is Small Norm ƒ | Splits Completely |
+|---|---|---|---|---|---|
+| q-sqrt-neg3/(2) | (2) | 4 | 10 | true | false |
+| q-sqrt-neg3/(sqrt(-3)) | (sqrt(-3)) | 3 | 10 | true | false |
+| q-sqrt-neg3/(7) | (7) | 49 | 10 | false | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Minkowski Lattice** | A minkowski lattice is identified by its name and is related to a number field and a planar projection (its projections). | — |
 | Name | Computed as the number field, followed by “-lattice”. | — |
 | Number Field | A defined attribute. | — |
@@ -119,6 +262,21 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Has Any Planar Projection | True when the projection count is greater than 0. | _TRUE if any planar projection has been registered — the geometry-side leg of the bridge from lattice to plane._ |
 | Is Load Bearing for Unit Distance Construction | True when all of the following hold: the source field is algebraic source candidate flag is set; the short vector count is greater than 0; and the any planar projection flag is set. | _TRUE when the lattice has a GS-satisfying source field, at least one short vector, and at least one planar projection — i.e. it is positioned to feed a ConstructionFamily that produces unit-distance witnesses._ |
 | Description | A defined attribute. | _Free-text annotation for this row._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Dimension ƒ | Field Discriminant ƒ | Determinant | Determinant Squared ƒ | Absolute Field Discriminant ƒ | Determinant Squared Equals Discriminant ƒ | Gram Matrix JSON | Short Vector Threshold Squared | Short Vector Count ƒ | Source Field Degree ƒ | Source Field Satisfies Golod Shafarevich ƒ | Source Field is Algebraic Source Candidate ƒ | Projection Count ƒ | Has Any Planar Projection ƒ | Is Load Bearing for Unit Distance Construction ƒ | Description |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| q-sqrt-neg3-lattice | 2 | -3 | 1.7320508075688772 | 2.9999999999999996 | 3.0 | true | [[1,0],[0,3]] | 4 | 3 | 2 | true | true | 3 | true | true | — |
+| q-zeta-7-lattice | 6 | -16807 | 129.64181424216494 | 16807.0 | 16807.0 | true | [[2,-1,0,0,0,-1],[-1,2,-1,0,0,0],[0,-1,2,-1,0,0],[0,0,-1,2,-1,0],[0,0,0,-1,2,-1],[-1,0,0,0,-1,2]] | 4 | 4 | 6 | true | true | 2 | true | true | Minkowski lattice of Z[ζ_7] under the canonical embedding into R^6. Determinant sqrt(16807) ≈ 129.642 (= sqrt of \|disc(K)\|). The Gram matrix is stylized as the cyclotomic-like circulant pattern; the real Z[ζ_7] Gram on the power basis is integral but the entries are not as clean. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Short Vector** | A short vector is identified by its name and is related to a minkowski lattice. | — |
 | Name | Computed as the minkowski lattice, followed by a slash, followed by the coords JSON. | — |
 | Minkowski Lattice | A defined attribute. | — |
@@ -127,6 +285,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Threshold Squared | The short vector threshold squared of the short vector's minkowski lattice. | — |
 | Is Short | True when the norm squared is at most the threshold squared. | — |
 | Description | A defined attribute. | _Free-text annotation for this row._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Coords JSON | Norm Squared | Threshold Squared ƒ | Is Short ƒ | Description |
+|---|---|---|---|---|---|
+| lat-q-sqrt-neg3/[1,0] | [1,0] | 1 | 4.0 | true | — |
+| lat-q-sqrt-neg3/[0,1] | [0,1] | 3 | 4.0 | true | — |
+| lat-q-sqrt-neg3/[2,0] | [2,0] | 4 | 4.0 | true | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Construction Family** | A construction family is identified by its name and is related to optionally a number field (its source number field); optionally a minkowski lattice (its source minkowski lattice); and a construction instance (its instances). | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Display Name | A defined attribute. | — |
@@ -139,6 +313,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Source Lattice is Load Bearing | True when the construction family's source minkowski lattice is a load bearing for unit distance construction. | — |
 | Is Algebraic Construction | True when all of the following hold: the source field satisfies golod shafarevich flag is set and the source lattice is load bearing flag is set. | _TRUE iff the family's algebraic upstream is GS-passing AND its lattice has a projection + short vectors. Non-algebraic families (random points, ad-hoc geometric tricks) will be FALSE._ |
 | Description | A defined attribute. | _Free-text annotation for this row._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Description of Nth Member | Instance Count ƒ | Source Field Satisfies Golod Shafarevich ƒ | Source Lattice is Load Bearing ƒ | Is Algebraic Construction ƒ | Description |
+|---|---|---|---|---|---|---|---|
+| sqrt-lattice-projection | Sqrt Lattice Projection | Project the first n short vectors of the Minkowski lattice of Q(sqrt(-3)) into R^2 via the embedding's first two real coordinates. | 2 | true | true | true | — |
+| q(ζ_7)-σ_1-projection | Q(ζ_7) σ_1 Projection | Project the n smallest elements of Z[ζ_7] under σ_1 into R^2. The n=8 instance is the heptagon-with-center; larger n loads additional non-unit lattice elements (sums and differences). Sawin-style higher n configurations involve restricting to elements with controlled multi-σ norms — not loaded here. | 1 | true | true | true | — |
+| non-algebraic-baseline | Non-Algebraic Baseline | A purely geometric family (unit triangle, unit square, etc.) with no algebraic source. Used as a contrast — IsAlgebraicConstruction is FALSE for this family. | 2 | false | false | false | Coverage row: a non-algebraic family. Its instances point at PointSets that aren't projections of any lattice. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Construction Instance** | A construction instance is identified by its name and is related to a construction family and a point set. | — |
 | Name | Computed as the construction family, followed by “-n”, followed by the param n. | — |
 | Construction Family | A defined attribute. | — |
@@ -151,6 +341,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Family is Algebraic | True when the construction instance's construction family is an algebraic construction. | _Surfaces the family-level algebraic-construction flag onto each instance so per-row checks can see it._ |
 | Is Explicit Superlinear | True when the density exponent estimate is greater than 1. | _TRUE if this single finite instance already exhibits log(edges)/log(points) > 1 — a per-instance witness that the family is achieving superlinear edge growth at this n._ |
 | Is Algebraic Superlinear Witness | True when all of the following hold: the family is algebraic flag is set and the explicit superlinear flag is set. | _A single instance that is both (a) coming from an algebraically valid family AND (b) finitely superlinear. This is the most direct per-row evidence we have that the algebra is producing the geometry._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Param N | Point Count ƒ | Edge Count ƒ | Density Exponent Estimate ƒ | Param N Matches Point Count ƒ | Family is Algebraic ƒ | Is Explicit Superlinear ƒ | Is Algebraic Superlinear Witness ƒ |
+|---|---|---|---|---|---|---|---|---|
+| sqrt-lattice-projection-n3 | 3 | 3 | 3 | 1.0 | true | true | false | false |
+| sqrt-lattice-projection-n4 | 4 | 4 | 4 | 1.0 | true | true | false | false |
+| zeta7-sigma1-projection-n8 | 8 | 8 | 7 | 0.9357849740192014 | true | true | false | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Growth Sequence** | A growth sequence is identified by its name and is related to a construction family. | — |
 | Name | Computed as the construction family, followed by “-growth”. | — |
 | Construction Family | A defined attribute. | — |
@@ -158,6 +364,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Max Param N | The largest param n across the construction instances related to the growth sequence. | — |
 | Max Edge Count | The largest edge count across the construction instances related to the growth sequence. | — |
 | Max Observed Density Exponent Estimate | The largest density exponent estimate across the construction instances related to the growth sequence. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Observed Instance Count ƒ | Max Param N ƒ | Max Edge Count ƒ | Max Observed Density Exponent Estimate ƒ |
+|---|---|---|---|---|
+| sqrt-lattice-projection-growth | 2 | 4 | 4 | 1.0 |
+| zeta7-sigma1-projection-growth | 1 | 8 | 7 | 0.9357849740192014 |
+| non-algebraic-baseline-growth | 2 | 4 | 4 | 1.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Asymptotic Function** | An asymptotic function is identified by its name and is related to an asymptotic lower bound (its lower bounds). | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Display Name | A defined attribute. | — |
@@ -168,6 +390,20 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Best Known Current Lower Bound Exponent | The largest exponent across the asymptotic function's asymptotic lower bounds that are currently-valid. | _Bitemporally-filtered best lower-bound exponent: only counts bounds where IsCurrentlyValid=TRUE. This is what 'best known' actually means under the bitemporal discipline. Retracted overclaims, withdrawn preprints, and pending-evaluation rows are excluded._ |
 | Retracted Lower Bound Count | The number of the asymptotic function's asymptotic lower bounds that are not currently-valid. | _How many lower-bound rows for this function have been retracted/superseded. Cumulative scar count._ |
 | Max Overclaimed Exponent | The largest exponent across the asymptotic function's asymptotic lower bounds that are not currently-valid. | _Highest exponent that was once claimed but is no longer current. Forensic indicator of overclaim history._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Definition Text | Lower Bound Count ƒ | Best Known Lower Bound Exponent ƒ | Best Known Current Lower Bound Exponent ƒ | Retracted Lower Bound Count ƒ | Max Overclaimed Exponent ƒ |
+|---|---|---|---|---|---|---|---|
+| u(n) | U(n) | U(n) = max over P ⊂ R^2 with \|P\|=n of e(G(P)) — the maximum number of unit-distance pairs among n planar points. | 5 | 1.5 | 1.014 | 1 | 1.5 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Asymptotic Lower Bound** | An asymptotic lower bound is identified by its name and is related to an asymptotic function and optionally a growth sequence. | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Display Name | A defined attribute. | — |
@@ -198,6 +434,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Is Algebraic Tower Proof | True when the proof pathway is “algebraic-tower”. | — |
 | Is Combinatorial Proof | True when the proof pathway is “combinatorial-pigeonhole”. | — |
 | Is Auditable Via Its Pathway | True when at least one of the following holds: all of the following hold: the algebraic tower proof flag is set and the algebraically anchored flag is set; all of the following hold: the combinatorial proof flag is set; the all obligations satisfied flag is set; and the witness consistent flag is set; or all of the following hold: the proof pathway is “witness-only” and the witness consistent flag is set. | _Pathway-appropriate audit gate. Algebraic-tower proofs need IsAlgebraicallyAnchored; combinatorial-pigeonhole proofs need obligations satisfied + finite witness consistent; witness-only claims just need WitnessConsistent. Fixes the bias of the older AlgebraicChainClosed gate, which would mis-rule Erdős's pigeonhole proof as 'not closed' simply because it doesn't use class field towers._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Exponent | Coefficient | Statement Text | Source Citation | Is Explicit | Is Superlinear ƒ | Exceeds Trivial Linear Bound ƒ | Witnessed by Max Density Exponent ƒ | Witness Consistent ƒ | Witness Source Family ƒ | Witness Family is Algebraic ƒ | Is Algebraically Anchored ƒ | Obligation Count ƒ | Satisfied Obligation Count ƒ | Open Obligation Count ƒ | All Obligations Satisfied ƒ | Valid From | Valid to | Tx From | Tx to | Is Currently Valid | Proof Pathway | Is Algebraic Tower Proof ƒ | Is Combinatorial Proof ƒ | Is Auditable Via Its Pathway ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| erdős-sqrt(log-n)-bound | Erdős sqrt(log n) bound | 1 | 1 | U(n) ≥ n^{1+c/log log n} (Erdős 1946). Proven via integer-grid construction: take the √n × √n grid Z² ∩ [0,√n]², scale so a frequent distance equals 1, then count: by Landau's theorem on sums of two squares, certain integers k have r₂(k) representations growing like (log k)^{log 2 - 1}, and these representations yield multi-pair unit distances after scaling. | Erdős, 1946 | false | false | true | 1.0 | true | sqrt-lattice-projection | true | false | 3 | 3 | 0 | true | 1946-01-01 | — | 2026-05-27 | — | true | combinatorial-pigeonhole | false | true | true |
+| sawin-n^1.014-bound-(companion-to-openai-2026) | Sawin n^1.014 bound (companion to OpenAI 2026) | 1.014 | 1 | U(n) > n^{1.014} for arbitrarily large n. Sawin's explicit refinement (2026-05-20) of OpenAI's autonomous reasoning-model discovery (announced same day). Construction uses a cyclotomic field K = Q(ζ_p) for chosen prime p satisfying the Golod–Shafarevich criterion, projects O_K's Minkowski lattice into R² via the first complex embedding σ_1, and counts unit-length differences among short vectors. The infinite class field tower from G–S provides the small-norm-prime density that makes the construction superlinear. | Sawin (2026), arXiv:2605.20579 | true | true | true | 0.9357849740192014 | false | zeta7-sigma1-projection | true | false | 5 | 3 | 1 | false | 2026-05-20 | — | 2026-05-27 | — | true | algebraic-tower | true | false | false |
+| q(ζ_7)-σ_1-finite-witness-(under-claim) | Q(ζ_7) σ_1 finite witness (under-claim) | 0.9 | 1 | U(n) ≥ n^{0.9} witnessed by the heptagon-with-center configuration (n=8, e=7 ⇒ exponent ≈ 0.937). A deliberately under-claimed exponent so WitnessConsistent resolves TRUE on the loaded instance. | computed from loaded data, no external citation | true | false | false | 0.9357849740192014 | true | zeta7-sigma1-projection | true | false | 1 | 1 | 0 | true | 2026-05-27 | — | 2026-05-27 | — | true | witness-only | false | false | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Theorem** | A theorem is identified by its name and is related to an asymptotic function and an asymptotic lower bound (its anchored lower bound). | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Display Name | A defined attribute. | — |
@@ -228,6 +480,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Is Historically Anchored | True when all of the following hold: the is currently valid is true and the anchored bound is currently valid is true. | _TRUE iff both the theorem and its anchored bound are currently valid. Bitemporally-aware version of the older AlgebraicChainClosed gate — catches the case where a theorem's anchored bound has been retracted._ |
 | Anchored Bound is Auditable Via Its Pathway | True when the linked anchored lower bound is auditable via its pathway. | _Surfaces the anchored bound's pathway-appropriate audit gate onto the theorem._ |
 | Is Audited and Closed | True when all of the following hold: the historically anchored flag is set and the anchored bound is auditable via its pathway flag is set. | _The pathway-aware replacement for FullyAuditedAndClosed. TRUE iff the theorem is bitemporally valid, its anchored bound is bitemporally valid, AND the anchored bound passes its OWN pathway's audit gate (algebraic chain for Sawin-style; obligations+witness for Erdős-style pigeonhole). Erdős's theorem closes here even though the older algebraic-only gate said it couldn't._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Statement Text | Is Anchor | Is Proven | Proof Citation | Anchored Bound Exponent ƒ | Anchored Bound is Superlinear ƒ | Claimed Exponent | Anchor Matches Bound Exponent ƒ | Anchored Bound Witness Consistent ƒ | Anchored Bound is Algebraically Anchored ƒ | Algebraic Chain Closed ƒ | Applies to Function ƒ | Is Unit Distance Theorem ƒ | Anchored Bound All Obligations Satisfied ƒ | Anchored Bound Open Obligation Count ƒ | Fully Audited and Closed ƒ | Valid From | Valid to | Tx From | Tx to | Is Currently Valid | Anchored Bound is Currently Valid ƒ | Is Historically Anchored ƒ | Anchored Bound is Auditable Via Its Pathway ƒ | Is Audited and Closed ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| superlinear-unit-distance-theorem-(autonomous-ai-proof,-2026) | Superlinear Unit-Distance Theorem (autonomous-AI proof, 2026) | U(n) > n^{1.014} for arbitrarily large n. First open problem central to a subfield of mathematics solved autonomously by AI — OpenAI's internal reasoning model produced the proof (inexplicit superlinear exponent) on 2026-05-20; Sawin's companion paper made the exponent explicit at 1.014 the same day. The model was general-purpose: not domain-trained, not scaffolded for proof search, not targeted at the unit-distance problem. Disproves Erdős 1946's polynomial-improvement conjecture (the long-held belief that square-grid constructions were optimal). | true | true | OpenAI (2026-05-20) autonomous announcement + Sawin (2026), arXiv:2605.20579 | 1.014 | true | 1.014 | true | false | false | false | U(n) | true | false | 1 | false | 2026-05-20 | — | 2026-05-27 | — | true | true | true | false | false |
+| erdős-unit-distance-lower-bound | Erdős Unit-Distance Lower Bound | U(n) ≥ n^{1+c/log log n} (Erdős 1946). | true | true | Erdős, 1946 | 1.0 | false | 1 | true | true | false | false | U(n) | true | true | 0 | false | 1946-01-01 | — | 2026-05-27 | — | true | true | true | true | true |
+| szemerédi–trotter-theorem | Szemerédi–Trotter Theorem | The number of point-line incidences among n points and m lines in R^2 is O((nm)^{2/3} + n + m). | true | true | Szemerédi–Trotter, 1983 | — | false | — | true | true | false | false | U(n) | true | true | — | false | 1983-01-01 | — | 2026-05-27 | — | true | — | false | false | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Metric** | A metric is identified by its name and is related to optionally a context (its ambient context). | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Display Name | A defined attribute. | — |
@@ -238,6 +506,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Is Lattice Gram | True when the metric kind is “lattice-gram”. | — |
 | Satisfies Triangle Inequality | True when an empty string. | _Nullable: TRUE for genuine metrics, FALSE for similarity-only functions, null for unevaluated experimental rows._ |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Metric Kind | Definition Text | Is Euclidean ƒ | Is Lattice Gram ƒ | Satisfies Triangle Inequality | Description |
+|---|---|---|---|---|---|---|---|
+| euclidean-metric-on-r2 | Euclidean Metric on R2 | euclidean | d(x,y) = sqrt((x1-y1)^2 + (x2-y2)^2) | true | false | true | Standard 2D Euclidean distance — the metric used by every PointPair row. |
+| gram-metric-on-q-sqrt-neg3-lattice | Gram Metric on Q-sqrt-neg3 Lattice | lattice-gram | d(v,w)^2 = (v-w)^T G (v-w) for Gram matrix G of the lattice | false | true | true | The intrinsic lattice metric — equals the Euclidean metric only when the embedding is isometric. |
+| taxicab-metric-on-r2 | Taxicab Metric on R2 | taxicab | d(x,y) = \|x1-y1\| + \|x2-y2\| | false | false | true | L1 metric — included to show the Metrics table is general. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Field Embedding** | A field embedding is identified by its name and is related to a number field. | — |
 | Name | Computed as the number field, followed by a slash, followed by the embedding type, followed by a hyphen, followed by the index in signature. | — |
 | Number Field | A defined attribute. | — |
@@ -248,6 +532,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Is Complex Embedding | True when the target space dim is 2. | — |
 | Has Conjugate Pair in Field | True when an empty string. | _Null for real embeddings (concept doesn't apply); TRUE for complex embeddings whose conjugate is in K; FALSE for hypothetical degenerate complex embeddings without their partner._ |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Embedding Type | Index in Signature | Target Space Dim | Is Real Embedding ƒ | Is Complex Embedding ƒ | Has Conjugate Pair in Field | Description |
+|---|---|---|---|---|---|---|---|
+| q-sqrt-neg3/complex-1 | complex | 1 | 2 | false | true | true | The single complex embedding pair of Q(sqrt(-3)). |
+| q-zeta-7/complex-1 | complex | 1 | 2 | false | true | true | — |
+| q-zeta-7/complex-2 | complex | 2 | 2 | false | true | true | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Minkowski Embedding** | A minkowski embedding is identified by its name and is related to a number field and optionally a minkowski lattice (its target lattice). | — |
 | Name | Computed as the number field, followed by “-minkowski-embedding”. | — |
 | Number Field | A defined attribute. | — |
@@ -258,7 +558,23 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Is Canonical | True when an empty string. | _TRUE if this is the canonical Minkowski embedding._ |
 | Preserves Additive Structure | True when an empty string. | _Nullable: TRUE for canonical embeddings, FALSE for non-additive maps, null for unevaluated experimental rows._ |
 | Description | A defined attribute. | — |
-| **Gram Matrice** | A gram matrice is identified by its name and is related to a minkowski lattice. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Ambient Dimension ƒ | Target Lattice Dimension ƒ | Dimension Match ƒ | Is Canonical | Preserves Additive Structure | Description |
+|---|---|---|---|---|---|---|
+| q-sqrt-neg3-minkowski-embedding | 2 | 2 | true | true | true | Canonical Minkowski embedding of Q(sqrt(-3)) into R^2. |
+| q-zeta-7-minkowski-embedding | 6 | 6 | true | true | true | Canonical embedding of Q(ζ_7) into R^6 (signature (0,3) means 3 complex pairs ⇒ ambient R^6). |
+| q-sqrt-neg3-minkowski-embedding | 2 | 0 | false | false | false | Coverage row: hypothetical non-additive map. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
+| **Gram Matrix** | A gram matrix is identified by its name and is related to a minkowski lattice. | — |
 | Name | Computed as the minkowski lattice, followed by “-gram”. | — |
 | Minkowski Lattice | A defined attribute. | — |
 | Dimension | Taken from the linked minkowski lattice. | — |
@@ -270,6 +586,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Rank Deficient | True when an empty string. | — |
 | Encodes Valid Lattice Metric | True when all of the following hold: the symmetric flag is set and the positive definite flag is set. | _TRUE iff G is symmetric and positive-definite — the algebraic conditions for G to induce a genuine metric._ |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Dimension ƒ | Lattice Determinant ƒ | Matrix JSON | Is Symmetric | Is Positive Definite | Is Diagonal | Rank Deficient | Encodes Valid Lattice Metric ƒ | Description |
+|---|---|---|---|---|---|---|---|---|---|
+| lat-q-sqrt-neg3-gram | 2 | 1.7320508075688772 | [[1,0],[0,3]] | true | true | true | false | true | — |
+| lat-q-sqrt-neg3-gram | 2 | 1.7320508075688772 | [[1,1],[1,1]] | true | false | — | true | false | Coverage row: singular Gram-like matrix. |
+| lat-q-sqrt-neg3-gram | 2 | 1.7320508075688772 | [[2,1],[1,2]] | true | — | — | — | false | Coverage row: unverified. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Planar Projection** | A planar projection is identified by its name and is related to a minkowski lattice (its source lattice) and a context (its target context). | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Display Name | A defined attribute. | — |
@@ -287,6 +619,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Unit Distance Vector Yield | Computed as the unit distance vector count divided by the projected short vector count. | _Fraction of projected short vectors that are unit-distance witnesses._ |
 | Source Lattice is Load Bearing | True when the planar projection's source lattice is a load bearing for unit distance construction. | — |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Projection Kind | Scaling Factor | Rotation Degrees | Is Scaling Preserving ƒ | Is Isometric | Preserves Unit Distance | Projected Short Vector Count ƒ | Unit Distance Vector Count ƒ | Unit Distance Vector Yield ƒ | Source Lattice is Load Bearing ƒ | Description |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| first-two-coords-of-lat-q-sqrt-neg3 | First-Two-Coords of Lat Q-sqrt-neg3 | first-two-coords | 1 | 0 | true | true | true | 4 | 1 | 0.25 | true | — |
+| rotated-scaled-of-lat-q-sqrt-neg3 | Rotated-Scaled of Lat Q-sqrt-neg3 | rotation-scale | 2 | 45 | false | false | false | 1 | 0 | 0.0 | true | Coverage row: scaling by 2 destroys unit-distance preservation. |
+| unverified-affine-of-lat-q-sqrt-neg3 | Unverified Affine of Lat Q-sqrt-neg3 | rational-affine | 1 | 0 | true | — | — | 0 | 0 | — | true | Coverage row: properties not yet evaluated. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Projected Short Vector** | A projected short vector is identified by its name and is related to a short vector and a planar projection. | — |
 | Name | Computed as the short vector, followed by a slash, followed by the planar projection. | — |
 | Short Vector | A defined attribute. | — |
@@ -304,7 +652,23 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Is Valid Witness | True when all of the following hold: the source is short flag is set and the projects to unit distance vector flag is set. | _The two-sided certificate: source vector is short (algebraic side) AND projection has squared norm 1 (geometric side)._ |
 | Norm Preserved Under Projection | True when the absolute value of the source norm squared minus the projected norm squared is less than the unit tolerance. | _TRUE if the projection preserved the squared norm on this vector — locally isometric._ |
 | Description | A defined attribute. | — |
-| **Golod Shafarevich Criteria** | A golod shafarevich criteria is identified by its name and is related to a number field and optionally a source reference. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Projected X | Projected Y | Projected X Squared ƒ | Projected Y Squared ƒ | Projected Norm Squared ƒ | Source Norm Squared ƒ | Source is Short ƒ | Unit Tolerance | Distance Squared From Unit ƒ | Projects to Unit Distance Vector ƒ | Is Valid Witness ƒ | Norm Preserved Under Projection ƒ | Description |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| lat-q-sqrt-neg3-v1/proj-q-sqrt-neg3-first-two | 1 | 0 | 1.0 | 0.0 | 1.0 | 1.0 | true | 0.0001 | 0.0 | true | true | true | — |
+| lat-q-sqrt-neg3-v2/proj-q-sqrt-neg3-first-two | 0 | 1.7320508075688772 | 0.0 | 2.9999999999999996 | 2.9999999999999996 | 3.0 | true | 0.0001 | 1.9999999999999996 | false | false | true | — |
+| lat-q-sqrt-neg3-v3/proj-q-sqrt-neg3-first-two | 2 | 0 | 4.0 | 0.0 | 4.0 | 4.0 | true | 0.0001 | 3.0 | false | false | true | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
+| **Golod Shafarevich Criterion** | A golod shafarevich criterion is identified by its name and is related to a number field and optionally a source reference. | — |
 | Name | Computed as the number field, followed by “-gs”. | — |
 | Number Field | A defined attribute. | — |
 | Minimal Generator Count d | A defined attribute. | _The 'd' in the GS inequality._ |
@@ -316,6 +680,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Passes Criterion | True when an empty string. | _Curator override (nullable). Null means 'use calculated SatisfiesGolodShafarevichTower'._ |
 | Source Reference | A defined attribute. | — |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Minimal Generator Count d | Relation Count r | Field Degree ƒ | Criterion Threshold ƒ | Relation Count Exceeds Threshold ƒ | Satisfies Golod Shafarevich Tower ƒ | Passes Criterion | Description |
+|---|---|---|---|---|---|---|---|---|
+| q-sqrt-neg3-gs | 2 | 1 | 2 | 1.0 | false | false | false | Q(sqrt(-3)): d=2, r=1, threshold=1; 1 is not > 1 — fails GS. |
+| q-zeta-7-gs | 3 | 5 | 6 | 2.25 | true | true | true | Q(ζ_7) demonstration values: d=3, r=5, threshold=2.25; 5>2.25 — satisfies GS. Demonstration only; not a rigorous certificate. |
+| q-sqrt-neg3-gs | 3 | 3 | 2 | 2.25 | true | true | — | Coverage row: PassesCriterion unevaluated. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Semantic Bridge** | A semantic bridge is identified by its name and is related to a domain (its from domain) and a domain (its to domain). | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Display Name | A defined attribute. | — |
@@ -328,6 +708,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Is Closed | True when an empty string. | _TRUE if every row in FromConceptTable has a witness in ToConceptTable; null when not checked._ |
 | Is Analogy | True when the bridge kind is “analogy”. | — |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Bridge Kind | From Concept Table | To Concept Table | Is Load Bearing | Is Closed | Is Analogy ƒ | Description |
+|---|---|---|---|---|---|---|---|---|
+| metric-to-graph | Metric to Graph | induction | PointPairs | UnitDistanceGraphs | true | true | false | The unit-distance predicate over PointPairs induces the edge set of the UnitDistanceGraph. |
+| field-to-lattice | Field to Lattice | embedding | NumberFields | MinkowskiLattices | true | true | false | Canonical Minkowski embedding O_K ↪ R^d. Both loaded fields (Q(sqrt(-3)) → lat-q-sqrt-neg3, Q(ζ_7) → lat-q-zeta-7) have witnesses. |
+| lattice-to-plane | Lattice to Plane | projection | MinkowskiLattices | PlanarProjections | true | true | false | Projection π: lattice → R^2. The critical algebraic-to-geometric bridge. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Semantic Route** | A semantic route is identified by its name and is related to a semantic route step (its steps). | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Display Name | A defined attribute. | — |
@@ -340,6 +736,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Validated Step Count | The number of the semantic route's semantic route steps that are validated. | — |
 | All Steps Validated | True when the validated step count is the step count. | _TRUE iff every step on the route has IsValidated=TRUE._ |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Start Concept | End Concept | Step Count ƒ | Is Full Spine | Ends At Theorem Anchor | Validated Step Count ƒ | All Steps Validated ƒ | Description |
+|---|---|---|---|---|---|---|---|---|---|
+| geometry-to-graph | Geometry to Graph | Points | UnitDistanceGraphs | 3 | false | false | 2 | false | Points → PointSets → PointPairs → UnitDistanceGraphs. |
+| field-to-lattice-to-plane | Field to Lattice to Plane | NumberFields | PlanarProjections | 0 | false | false | 0 | true | NumberFields → FieldEmbeddings → MinkowskiEmbeddings → MinkowskiLattices → PlanarProjections. |
+| local-to-asymptotic | Local to Asymptotic | ConstructionInstances | AsymptoticLowerBounds | 0 | false | true | 0 | true | ConstructionInstances → GrowthSequences → AsymptoticLowerBounds. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Semantic Route Step** | A semantic route step is identified by its name and is related to a semantic route and optionally a semantic bridge (its bridge used). | — |
 | Name | Computed as the semantic route, followed by a hyphen, followed by the step order. | — |
 | Semantic Route | A defined attribute. | — |
@@ -350,6 +762,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Bridge is Load Bearing | True when the linked bridge used is load bearing. | — |
 | Is Validated | True when an empty string. | _Curator-set: TRUE if verified, FALSE if known broken, null if not yet evaluated._ |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Step Order | From Concept | To Concept | Bridge is Load Bearing ƒ | Is Validated | Description |
+|---|---|---|---|---|---|---|
+| rte-full-semantic-spine-1 | 1 | NumberFields | FieldEmbeddings | — | true | — |
+| rte-full-semantic-spine-2 | 2 | FieldEmbeddings | MinkowskiEmbeddings | — | true | — |
+| rte-full-semantic-spine-3 | 3 | MinkowskiEmbeddings | MinkowskiLattices | true | true | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Source Reference** | A source reference is identified by its name. | — |
 | Name | Computed as the lower-cased short label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Short Label | A defined attribute. | — |
@@ -367,6 +795,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Tx to | A defined attribute. | — |
 | Is Currently Valid | True when an empty string. | _TRUE if the source is still in good standing; FALSE if retracted; null if standing not yet evaluated._ |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Short Label | Full Citation | URL | Year | Is Arxiv | Is Published | Lemma Count ƒ | Outbound Citation Count ƒ | Inbound Citation Count ƒ | Valid From | Valid to | Tx From | Tx to | Is Currently Valid | Description |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| sawin-2026 | Sawin 2026 | Sawin, W. (2026). 'An explicit lower bound for the unit distance problem.' arXiv:2605.20579 — companion paper to OpenAI's May 20, 2026 autonomous-AI announcement; makes the OpenAI proof's inexplicit exponent explicit at n^{1.014} using cyclotomic fields + Golod–Shafarevich tower + Minkowski lattice projection. | https://arxiv.org/abs/2605.20579 | 2026 | true | false | 3 | 6 | 1 | 2026-05-20 | — | 2026-05-28 | — | true | — |
+| openai-2026-05-20 | OpenAI 2026-05-20 | OpenAI (2026-05-20). 'An OpenAI model has disproved a central conjecture in discrete geometry.' Official announcement at openai.com/index/model-disproves-discrete-geometry-conjecture/. First fully autonomous proof of a central open problem in mathematics: U(n) grows superlinearly with exponent > 1 (inexplicit), refuting the long-held belief that square-grid constructions are optimal. Produced by a general-purpose internal reasoning model — not domain-trained, not scaffolded for proof search, not targeted at the unit-distance problem. | https://openai.com/index/model-disproves-discrete-geometry-conjecture/ | 2026 | false | true | 0 | 2 | 1 | 2026-05-20 | — | 2026-05-28 | — | true | The primary discovery announcement. Sawin's companion paper (src-sawin-2026) makes the exponent explicit; this announcement is the first-mover record. |
+| erdős-1946 | Erdős 1946 | Erdős, P. 'On sets of distances of n points.' American Mathematical Monthly 53 (1946) 248-250. | — | 1946 | false | true | 4 | 0 | 2 | 1946-01-01 | — | 2026-05-27 | — | true | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Lemma** | A lemma is identified by its name and is related to a source reference. | — |
 | Name | Computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Label | A defined attribute. | — |
@@ -383,6 +827,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Tx to | A defined attribute. | — |
 | Is Currently Valid | True when an empty string. | _TRUE if the lemma is still considered valid; FALSE if refuted/retracted; null if unevaluated._ |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Label | Statement Text | Feeds Object Table | Feeds Object ID | Is Loaded | Is Load Bearing | Obligation Count ƒ | Valid From | Valid to | Tx From | Tx to | Is Currently Valid | Description |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| short-vector-counting-for-gs-fields | Short-vector counting for GS fields | For number fields satisfying Golod–Shafarevich with controlled discriminant growth, the count of short vectors of squared norm at most R in the Minkowski lattice is at least c·R^{1+δ} for some explicit δ>0. | ShortVectors | — | true | true | 1 | 2026-05-20 | — | 2026-05-27 | — | true | — |
+| edge-density-margin-over-linear | Edge density margin over linear | When the lattice is projected via the canonical map, the resulting point set has edge count exceeding n^{1.014} for arbitrarily large n. | GrowthSequences | sqrt-lat-growth | true | true | 2 | 2026-05-20 | — | 2026-05-27 | — | true | — |
+| explicit-n^1.014-anchor | Explicit n^1.014 anchor | There exists an explicit construction family (anchored on Q(ζ_p) with appropriate p) realizing the n^{1.014} lower bound. | AsymptoticLowerBounds | sawin-n1014 | true | true | 1 | 2026-05-20 | — | 2026-05-27 | — | true | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Mirror Contract** | A mirror contract is identified by its name. | — |
 | Name | Computed as the lower-cased rule label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Rule Label | A defined attribute. | — |
@@ -392,6 +852,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Is Binding on Agents | True when an empty string. | _TRUE if agents must follow this rule; FALSE if deprecated; null if under discussion._ |
 | Is Rejection Rule | True when the rule kind is “reject”. | — |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Rule Label | Rule Statement | Rule Kind | Applies to Scope | Is Binding on Agents | Is Rejection Rule ƒ | Description |
+|---|---|---|---|---|---|---|---|
+| load-what-is-named | Load what is named | Every named mathematical object in the source papers must appear as a row in the rulebook before the rulebook can claim to mirror the result. | load | all-tables | true | false | — |
+| describe,-do-not-derive | Describe, do not derive | The rulebook describes what the paper proves; it does not attempt to derive new mathematical content. Calculated fields surface relationships already present in the data. | describe | all-tables | true | false | — |
+| no-invented-intermediates | No invented intermediates | Modeler-added objects are allowed only with OriginatedHere=true. Speculative intermediates that are not in the source are rejected. | reject | math-content-tables | true | true | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Conjecture** | A conjecture is identified by its name and is related to an asymptotic function (its target function); optionally a source reference (its proposed by); optionally a source reference (its resolution citation); and optionally a theorem (its related theorem). | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Display Name | A defined attribute. | — |
@@ -412,6 +888,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Tx to | A defined attribute. | — |
 | Is Currently Valid | True when an empty string. | _TRUE iff the conjecture is still an OPEN question. Resolved or withdrawn ⇒ FALSE. Null = unevaluated. NOTE: this is bitemporal-status, NOT the truth of the underlying proposition — a conjecture-that-became-a-theorem has IsCurrentlyValid=FALSE here but the proposition itself is now TRUE in Theorems._ |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Statement Text | Conjectured Exponent | Is Conjectural Upper Bound | Is Conjectural Lower Bound | Is Resolved | Resolved As | Is Still Open ƒ | Valid From | Valid to | Tx From | Tx to | Is Currently Valid | Description |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| erdős-polynomial-improvement-conjecture | Erdős Polynomial Improvement Conjecture | U(n) = O(n^{1+ε}) for every ε > 0 — i.e., the unit-distance count is no more than slightly-superlinear. | 1 | true | false | false | — | true | 1946-01-01 | — | 2026-05-27 | — | true | The most famous open question about U(n). Still open as of every loaded source. |
+| erdős-4/3-tightness-conjecture | Erdős 4/3 Tightness Conjecture | U(n) ≤ c · n^{4/3} — that the Spencer–Szemerédi–Trotter upper bound is tight up to constants. | 1.3333333333 | true | false | false | — | true | 1946-01-01 | — | 2026-05-27 | — | true | Folklore-strength: would mean ST is the right shape. |
+| polynomial-superlinear-improvement-conjecture-(resolved-by-openai-+-sawin-2026) | Polynomial superlinear improvement conjecture (resolved by OpenAI + Sawin 2026) | Pre-2026 conjecture: there exists an explicit construction giving U(n) > n^c for some c > 1, for arbitrarily large n. Resolved 2026-05-20 by OpenAI's autonomous reasoning model (inexplicit c > 1) + Sawin's same-day explicit companion paper (c = 1.014 via cyclotomic + Golod–Shafarevich). | 1.014 | false | true | true | proved | false | 1946-01-01 | 2026-05-20 | 2026-05-27 | — | false | Open for 80 years; resolved 2026-05-20. ValidTo marks the resolution moment. The proposition itself is now TRUE as a theorem (RelatedTheorem). The pre-resolution proposer is Erdős (1946 framing); the resolver is OpenAI's autonomous model. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Proof Obligation** | A proof obligation is identified by its name and is related to an asymptotic lower bound (its parent bound) and a lemma (its required lemma). | — |
 | Name | Computed as the parent bound, followed by a slash, followed by the required lemma. | — |
 | Parent Bound | A defined attribute. | — |
@@ -429,6 +921,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Tx to | A defined attribute. | — |
 | Is Currently Valid | True when an empty string. | — |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Obligation Kind | Is Necessary ƒ | Is Satisfied | Is Lemma Loaded ƒ | Is Lemma Load Bearing ƒ | Bound Claimed Exponent ƒ | Is Currently Open ƒ | Valid From | Valid to | Tx From | Tx to | Is Currently Valid | Description |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| sawin-n1014/lemma-short-vector-counting | necessary | true | true | true | true | 1.014 | false | 2024-01-01 | — | 2026-05-27 | — | true | — |
+| sawin-n1014/lemma-density-margin | necessary | true | true | true | true | 1.014 | false | 2024-01-01 | — | 2026-05-27 | — | true | — |
+| sawin-n1014/lemma-anchor-explicit-bound | sufficient | false | true | true | true | 1.014 | false | 2024-01-01 | — | 2026-05-27 | — | true | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Citation Link** | A citation link is identified by its name and is related to a source reference (its citing source) and a source reference (its cited source). | — |
 | Name | Computed as the citing source, followed by “-cites-”, followed by the cited source. | — |
 | Citing Source | A defined attribute. | — |
@@ -445,6 +953,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Tx to | A defined attribute. | — |
 | Is Currently Valid | True when an empty string. | _TRUE iff both the citing and cited sources are themselves still currently valid; FALSE if either has been retracted; null if unevaluated._ |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Citation Kind | Is Load Bearing | Is Dependency ƒ | Is Improvement ƒ | Citing Year ƒ | Cited Year ƒ | Valid From | Valid to | Tx From | Tx to | Is Currently Valid | Description |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| src-sawin-2026-cites-src-erdos-1946 | improves | true | false | true | 2026 | 1946 | 2026-05-20 | — | 2026-05-27 | — | true | Sawin's n^1.014 explicit-exponent bound improves on Erdős's existential n^{1+c/loglogn}. |
+| src-sawin-2026-cites-src-golod-shafarevich-1964 | depends-on | true | true | false | 2026 | 1964 | 2026-05-20 | — | 2026-05-27 | — | true | Sawin's construction depends on number fields satisfying the Golod–Shafarevich criterion. |
+| src-sawin-2026-cites-src-szemeredi-trotter-1983 | cites-for-context | false | false | false | 2026 | 1983 | 2026-05-20 | — | 2026-05-27 | — | true | Szemerédi–Trotter is the upper-bound side; Sawin cites it for context, not as a dependency. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Answer Key** | An answer key is identified by its name. | — |
 | Name | Computed as the target table, followed by a slash, followed by the target row ID, followed by a slash, followed by the target field. | — |
 | Target Table | A defined attribute. | — |
@@ -464,6 +988,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Tx to | A defined attribute. | — |
 | Is Currently Valid | True when an empty string. | _TRUE if the pin is still the active expected value; FALSE if superseded by a newer pin; null if unevaluated._ |
 | Description | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Target Table | Target Row ID | Target Field | Data Type | Expected String | Expected Number | Expected Boolean | Tolerance | Gate Level | Is Blocking ƒ | Is Currently Matched | Valid From | Valid to | Tx From | Tx to | Is Currently Valid | Description |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| PointPairs/tri-ab/DistanceSquared | PointPairs | tri-ab | DistanceSquared | number | — | 1 | — | 0.0001 | blocking | true | true | 2026-05-27 | — | 2026-05-27 | — | true | Triangle A↔B is a unit-distance pair: ΔX²+ΔY² = 1. |
+| PointPairs/tri-ab/IsUnitDistance | PointPairs | tri-ab | IsUnitDistance | boolean | — | — | true | — | blocking | true | true | 2026-05-27 | — | 2026-05-27 | — | true | — |
+| PointPairs/sq-ac/DistanceSquared | PointPairs | sq-ac | DistanceSquared | number | — | 2 | — | 0.0001 | blocking | true | true | 2026-05-27 | — | 2026-05-27 | — | true | Diagonal of the unit square: sqrt(2), so squared = 2. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Temporal Snapshot** | A temporal snapshot is identified by its name and is related to optionally a source reference (its anchoring source reference). | — |
 | Name | Computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Label | A defined attribute. | — |
@@ -476,6 +1016,22 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Curator Confirmed Best Known Lower Bound Exponent At This Moment | The largest bound exponent across the temporal snapshot's lower bound validity at snapshot that are curator confirmed at this snapshots. | _Stricter as-of rollup: MAX exponent of bounds BOTH bitemporally valid at this snapshot AND curator-confirmed (IsCurrentlyValid=TRUE on the bound itself). This is what the rulebook actually believed at this moment — excludes pending/unevaluated rows that just happen to be in their valid-time interval._ |
 | Pending But Valid by Date Count | The number of lower bound validity at snapshot related to the temporal snapshot. | _Rows that are bitemporally valid here but the curator hasn't ruled on yet — i.e., the rulebook's open epistemic questions at this snapshot._ |
 | Bounds Validated or Retracted This Moment | The number of lower bound validity at snapshot related to the temporal snapshot. | _Total junction rows for this snapshot — should equal the count of all AsymptoticLowerBound rows (a closure check)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Label | Snapshot Date | Description | Is Historical | Valid Lower Bound Count At This Moment ƒ | Best Known Lower Bound Exponent At This Moment ƒ | Curator Confirmed Best Known Lower Bound Exponent At This Moment ƒ | Pending But Valid by Date Count ƒ | Bounds Validated or Retracted This Moment ƒ |
+|---|---|---|---|---|---|---|---|---|---|
+| erdős-1946-publication | Erdős 1946 publication | 1946-01-01 | Erdős's original 'On sets of distances of n points' establishes U(n) ≥ n^{1+c/loglogn}. The starting line of the lower-bound program. | true | 1 | 1.0 | 1.0 | — | 5 |
+| szemerédi–trotter-1983 | Szemerédi–Trotter 1983 | 1983-01-01 | Szemerédi–Trotter incidence bound published. Sets up the upper-bound side. | true | 1 | 1.0 | 1.0 | — | 5 |
+| spencer–szemerédi–trotter-1984 | Spencer–Szemerédi–Trotter 1984 | 1984-01-01 | Specialization of ST to unit distances: U(n) = O(n^{4/3}). The ceiling. | true | 1 | 1.0 | 1.0 | — | 5 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Lower Bound Validity At Snapshot** | A lower bound validity at snapshot is identified by its name and is related to an asymptotic lower bound and a temporal snapshot. | — |
 | Name | Computed as the asymptotic lower bound, followed by “-at-”, followed by the temporal snapshot. | — |
 | Asymptotic Lower Bound | A defined attribute. | — |
@@ -488,6 +1044,19 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 | Bound is Currently Valid | True when the linked asymptotic lower bound is currently valid. | _Surfaces the bound's curator-set IsCurrentlyValid onto the junction. Distinguishes 'bitemporally valid by date' from 'curator-confirmed valid'._ |
 | Is Curator Confirmed At This Snapshot | True when all of the following hold: the valid at this snapshot flag is set and the bound is currently valid is true. | _Stricter than IsValidAtThisSnapshot: TRUE iff the bound is BOTH within its valid-time interval at this snapshot AND has been curator-confirmed (IsCurrentlyValid=TRUE). Excludes pending/unevaluated rows from 'as-of' rollups._ |
 | Description | A defined attribute. | _Free-text annotation for this row._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Bound Exponent ƒ | Bound Valid From ƒ | Bound Valid to ƒ | Snapshot Date ƒ | Is Valid At This Snapshot | Bound is Currently Valid ƒ | Is Curator Confirmed At This Snapshot ƒ | Description |
+|---|---|---|---|---|---|---|---|---|
+| erdos-sqrt-bound-at-snap-erdos-1946 | 1.0 | 1946-01-01 | — | 1946-01-01 | true | true | true | — |
+| erdos-sqrt-bound-at-snap-st-1983 | 1.0 | 1946-01-01 | — | 1983-01-01 | true | true | true | — |
+| erdos-sqrt-bound-at-snap-spencer-st-1984 | 1.0 | 1946-01-01 | — | 1984-01-01 | true | true | true | — |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -518,13 +1087,13 @@ _A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every 
 - a **field embedding** references exactly one **number field**
 - a **minkowski embedding** references exactly one **number field**
 - a **minkowski embedding** may reference one **minkowski lattice**
-- a **gram matrice** references exactly one **minkowski lattice**
+- a **gram matrix** references exactly one **minkowski lattice**
 - a **planar projection** references exactly one **minkowski lattice**
 - a **planar projection** references exactly one **context**
 - a **projected short vector** references exactly one **short vector**
 - a **projected short vector** references exactly one **planar projection**
-- a **golod shafarevich criteria** references exactly one **number field**
-- a **golod shafarevich criteria** may reference one **source reference**
+- a **golod shafarevich criterion** references exactly one **number field**
+- a **golod shafarevich criterion** may reference one **source reference**
 - a **semantic bridge** references exactly one **domain**
 - a **semantic route** references exactly one **semantic route step**
 - a **semantic route step** references exactly one **semantic route**
@@ -591,8 +1160,8 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A field embedding **must** have an embedding type; an index in signature; and a target space dim.
 - A minkowski embedding **must** reference exactly one number field.
 - A minkowski embedding **must** record whether it is canonical.
-- A gram matrice **must** reference exactly one minkowski lattice.
-- A gram matrice **must** have a matrix JSON, and record whether it is symmetric.
+- A gram matrix **must** reference exactly one minkowski lattice.
+- A gram matrix **must** have a matrix JSON, and record whether it is symmetric.
 - A planar projection **must** reference exactly one minkowski lattice as its source lattice.
 - A planar projection **must** reference exactly one context as its target context.
 - A planar projection **must** reference exactly one projected short vector.
@@ -600,8 +1169,8 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A projected short vector **must** reference exactly one short vector.
 - A projected short vector **must** reference exactly one planar projection.
 - A projected short vector **must** have a projected x; a projected y; and a unit tolerance.
-- A golod shafarevich criteria **must** reference exactly one number field.
-- A golod shafarevich criteria **must** have a minimal generator count d and a relation count r.
+- A golod shafarevich criterion **must** reference exactly one number field.
+- A golod shafarevich criterion **must** have a minimal generator count d and a relation count r.
 - A semantic bridge **must** reference exactly one domain as its from domain.
 - A semantic bridge **must** reference exactly one domain as its to domain.
 - A semantic bridge **must** have a display name; a bridge kind; a from concept table; and a to concept table.
@@ -760,10 +1329,10 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-121 Ambient Dimension** | A minkowski embedding's ambient dimension is the ambient lattice dimension of the minkowski embedding's number field. |
 | **DR-122 Target Lattice Dimension** | A minkowski embedding's target lattice dimension — taken from the linked target lattice. |
 | **DR-123 Dimension Match** | A minkowski embedding is flagged dimension match if the ambient dimension is the target lattice dimension. |
-| **DR-124 Name** | A gram matrice's name is computed as the minkowski lattice, followed by “-gram”. |
-| **DR-125 Dimension** | A gram matrice's dimension — taken from the linked minkowski lattice. |
-| **DR-126 Lattice Determinant** | A gram matrice's lattice determinant — taken from the linked minkowski lattice. |
-| **DR-127 Encodes Valid Lattice Metric** | A gram matrice is considered to encode valid lattice metric if all of the following hold: the symmetric flag is set and the positive definite flag is set. |
+| **DR-124 Name** | A gram matrix's name is computed as the minkowski lattice, followed by “-gram”. |
+| **DR-125 Dimension** | A gram matrix's dimension — taken from the linked minkowski lattice. |
+| **DR-126 Lattice Determinant** | A gram matrix's lattice determinant — taken from the linked minkowski lattice. |
+| **DR-127 Encodes Valid Lattice Metric** | A gram matrix is considered to encode valid lattice metric if all of the following hold: the symmetric flag is set and the positive definite flag is set. |
 | **DR-128 Name** | A planar projection's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-129 Is Scaling Preserving** | A planar projection is considered scaling-preserving if the scaling factor is 1. |
 | **DR-130 Projected Short Vector Count** | A planar projection's projected short vector count is the number of projected short vectors related to the planar projection. |
@@ -780,11 +1349,11 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-141 Projects to Unit Distance Vector** | A projected short vector is considered to project to unit distance vector if the distance squared from unit is at most the unit tolerance. |
 | **DR-142 Is Valid Witness** | A projected short vector is considered a valid witness if all of the following hold: the source is short flag is set and the projects to unit distance vector flag is set. |
 | **DR-143 Norm Preserved Under Projection** | A projected short vector is flagged norm preserved under projection if the absolute value of the source norm squared minus the projected norm squared is less than the unit tolerance. |
-| **DR-144 Name** | A golod shafarevich criteria's name is computed as the number field, followed by “-gs”. |
-| **DR-145 Field Degree** | A golod shafarevich criteria's field degree — taken from the linked number field. |
-| **DR-146 Criterion Threshold** | A golod shafarevich criteria's criterion threshold is computed as the minimal generator count d raised to the power of 2 divided by 4. |
-| **DR-147 Relation Count Exceeds Threshold** | A golod shafarevich criteria is flagged relation count exceeds threshold if the relation count r is greater than the criterion threshold. |
-| **DR-148 Satisfies Golod Shafarevich Tower** | A golod shafarevich criteria is considered to satisfie a golod shafarevich tower only if the golod shafarevich criteria is flagged relation count exceeds threshold. |
+| **DR-144 Name** | A golod shafarevich criterion's name is computed as the number field, followed by “-gs”. |
+| **DR-145 Field Degree** | A golod shafarevich criterion's field degree — taken from the linked number field. |
+| **DR-146 Criterion Threshold** | A golod shafarevich criterion's criterion threshold is computed as the minimal generator count d raised to the power of 2 divided by 4. |
+| **DR-147 Relation Count Exceeds Threshold** | A golod shafarevich criterion is flagged relation count exceeds threshold if the relation count r is greater than the criterion threshold. |
+| **DR-148 Satisfies Golod Shafarevich Tower** | A golod shafarevich criterion is considered to satisfie a golod shafarevich tower only if the golod shafarevich criterion is flagged relation count exceeds threshold. |
 | **DR-149 Name** | A semantic bridge's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-150 Is Analogy** | A semantic bridge is considered analogy if the bridge kind is “analogy”. |
 | **DR-151 Name** | A semantic route's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
@@ -832,7 +1401,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -1032,8 +1601,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

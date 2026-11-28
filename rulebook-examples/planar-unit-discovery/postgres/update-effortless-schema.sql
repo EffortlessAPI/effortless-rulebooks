@@ -789,7 +789,7 @@ BEGIN
     -- 2. Views (depend on functions, so they go first).
     FOR r IN (
         SELECT table_name FROM information_schema.views
-         WHERE table_schema = 'public' AND table_name LIKE 'vw\_%'
+         WHERE table_schema = 'public' AND (table_name LIKE 'vw\_%' OR table_name LIKE 'fk\_labels\_%')
            AND obj_description(
                  (quote_ident(table_schema) || '.' || quote_ident(table_name))::regclass, 'pg_class')
                IS DISTINCT FROM 'effortless:hand-maintained'
@@ -847,6 +847,113 @@ $drop_derived$;
 -- on the first forward call site; plpgsql didn't, which is how this file
 -- ever worked. Dependency order is still enforced at EXECUTION time.
 SET check_function_bodies = off;
+
+-- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
 
 -- ============================================================================
 -- LOOKUP FUNCTIONS
@@ -956,7 +1063,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_point_sets_unit_distance_pair_count(p_point_set_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM point_pairs WHERE point_set = (SELECT NULLIF(point_set_id, '') FROM point_sets WHERE point_set_id = p_point_set_id) AND calc_point_pairs_is_unit_distance(point_pair_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM point_pairs erb_r1 WHERE point_set = (SELECT (SELECT NULLIF(point_set_id, '') FROM point_sets WHERE point_set_id = p_point_set_id)) AND ((SELECT (COALESCE(calc_point_pairs_distance_from_unit(erb_r1.point_pair_id), '') <= COALESCE(erb_r1.tolerance, ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_point_sets_max_possible_edges
@@ -966,7 +1073,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_point_sets_max_possible_edges(p_point_set_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_point_sets_point_count(p_point_set_id) AS val) SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) - COALESCE(1, 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE(2, 0), 0))) AS v) __safe_numeric), 0)))::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_point_sets_point_count(p_point_set_id) AS val) SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE(1, 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(2, 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_point_sets_edge_density
@@ -976,7 +1083,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_point_sets_edge_density(p_point_set_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_sets_unit_distance_pair_count(p_point_set_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_sets_max_possible_edges(p_point_set_id)) AS v) __safe_numeric), 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_sets_unit_distance_pair_count(p_point_set_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_sets_max_possible_edges(p_point_set_id)) AS v OFFSET 0) __safe_numeric), 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_point_sets_density_exponent_estimate
@@ -986,7 +1093,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_point_sets_density_exponent_estimate(p_point_set_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LOG((calc_point_sets_unit_distance_pair_count(p_point_set_id))::NUMERIC)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LOG((calc_point_sets_point_count(p_point_set_id))::NUMERIC)) AS v) __safe_numeric), 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LOG((calc_point_sets_unit_distance_pair_count(p_point_set_id))::NUMERIC)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LOG((calc_point_sets_point_count(p_point_set_id))::NUMERIC)) AS v OFFSET 0) __safe_numeric), 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- get_point_sets_display_name
@@ -1094,7 +1201,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_point_pairs_delta_x(p_point_pair_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_pairs_point_bx(p_point_pair_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_pairs_point_ax(p_point_pair_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_pairs_point_bx(p_point_pair_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_pairs_point_ax(p_point_pair_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_point_pairs_delta_y
@@ -1103,7 +1210,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_point_pairs_delta_y(p_point_pair_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_pairs_point_by(p_point_pair_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_pairs_point_ay(p_point_pair_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_pairs_point_by(p_point_pair_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_pairs_point_ay(p_point_pair_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_point_pairs_delta_x_squared
@@ -1131,7 +1238,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_point_pairs_distance_squared(p_point_pair_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_pairs_delta_x_squared(p_point_pair_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_pairs_delta_y_squared(p_point_pair_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_pairs_delta_x_squared(p_point_pair_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_pairs_delta_y_squared(p_point_pair_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_point_pairs_distance
@@ -1149,7 +1256,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_point_pairs_distance_from_unit(p_point_pair_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (ABS((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_pairs_distance_squared(p_point_pair_id)) AS v) __safe_numeric), 0) - COALESCE(1, 0))))::numeric;
+  SELECT (ABS((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_point_pairs_distance_squared(p_point_pair_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE(1, 0))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_point_pairs_is_unit_distance
@@ -1159,7 +1266,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_point_pairs_is_unit_distance(p_point_pair_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_point_pairs_distance_from_unit(p_point_pair_id) <= (SELECT tolerance FROM point_pairs WHERE point_pair_id = p_point_pair_id))::boolean;
+  SELECT (COALESCE(calc_point_pairs_distance_from_unit(p_point_pair_id), '') <= COALESCE((SELECT tolerance FROM point_pairs WHERE point_pair_id = p_point_pair_id), ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_unit_distance_graphs_vertex_count
@@ -1197,7 +1304,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_unit_distance_graphs_max_possible_edges(p_unit_distance_graph_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_unit_distance_graphs_vertex_count(p_unit_distance_graph_id) AS val) SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) - COALESCE(1, 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE(2, 0), 0))) AS v) __safe_numeric), 0)))::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_unit_distance_graphs_vertex_count(p_unit_distance_graph_id) AS val) SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE(1, 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(2, 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_unit_distance_graphs_edge_density
@@ -1206,7 +1313,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_unit_distance_graphs_edge_density(p_unit_distance_graph_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_unit_distance_graphs_edge_count(p_unit_distance_graph_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_unit_distance_graphs_max_possible_edges(p_unit_distance_graph_id)) AS v) __safe_numeric), 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_unit_distance_graphs_edge_count(p_unit_distance_graph_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_unit_distance_graphs_max_possible_edges(p_unit_distance_graph_id)) AS v OFFSET 0) __safe_numeric), 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_unit_distance_graphs_density_exponent_estimate
@@ -1216,7 +1323,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_unit_distance_graphs_density_exponent_estimate(p_unit_distance_graph_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LOG((calc_unit_distance_graphs_edge_count(p_unit_distance_graph_id))::NUMERIC)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LOG((calc_unit_distance_graphs_vertex_count(p_unit_distance_graph_id))::NUMERIC)) AS v) __safe_numeric), 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LOG((calc_unit_distance_graphs_edge_count(p_unit_distance_graph_id))::NUMERIC)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LOG((calc_unit_distance_graphs_vertex_count(p_unit_distance_graph_id))::NUMERIC)) AS v OFFSET 0) __safe_numeric), 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- get_prime_ideals_generator_description
@@ -1269,7 +1376,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_number_fields_ambient_lattice_dimension(p_number_field_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT signature_real_embeddings FROM number_fields WHERE number_field_id = p_number_field_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(2, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT signature_complex_embeddings FROM number_fields WHERE number_field_id = p_number_field_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT signature_real_embeddings FROM number_fields WHERE number_field_id = p_number_field_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(2, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT signature_complex_embeddings FROM number_fields WHERE number_field_id = p_number_field_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_number_fields_is_totally_real
@@ -1278,7 +1385,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_number_fields_is_totally_real(p_number_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT signature_complex_embeddings FROM number_fields WHERE number_field_id = p_number_field_id))::NUMERIC = 0)::boolean;
+  SELECT (COALESCE(((SELECT signature_complex_embeddings FROM number_fields WHERE number_field_id = p_number_field_id))::NUMERIC, 0) = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_number_fields_is_totally_complex
@@ -1287,7 +1394,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_number_fields_is_totally_complex(p_number_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT signature_real_embeddings FROM number_fields WHERE number_field_id = p_number_field_id))::NUMERIC = 0)::boolean;
+  SELECT (COALESCE(((SELECT signature_real_embeddings FROM number_fields WHERE number_field_id = p_number_field_id))::NUMERIC, 0) = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_number_fields_is_pid
@@ -1297,7 +1404,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_number_fields_is_pid(p_number_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT class_number FROM number_fields WHERE number_field_id = p_number_field_id))::NUMERIC = 1)::boolean;
+  SELECT (COALESCE(((SELECT class_number FROM number_fields WHERE number_field_id = p_number_field_id))::NUMERIC, 0) = 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_number_fields_small_norm_prime_ideal_count
@@ -1307,7 +1414,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_number_fields_small_norm_prime_ideal_count(p_number_field_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM prime_ideals WHERE number_field = (SELECT NULLIF(number_field_id, '') FROM number_fields WHERE number_field_id = p_number_field_id) AND calc_prime_ideals_is_small_norm(prime_ideal_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM prime_ideals erb_r1 WHERE number_field = (SELECT (SELECT NULLIF(number_field_id, '') FROM number_fields WHERE number_field_id = p_number_field_id)) AND ((SELECT (COALESCE((erb_r1.norm <= erb_r1.norm_threshold), ((erb_r1.norm) IS NULL AND (erb_r1.norm_threshold) IS NULL)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_number_fields_golod_shafarevich_passing_count
@@ -1317,7 +1424,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_number_fields_golod_shafarevich_passing_count(p_number_field_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM golod_shafarevich_criteria WHERE number_field = (SELECT NULLIF(number_field_id, '') FROM number_fields WHERE number_field_id = p_number_field_id) AND calc_golod_shafarevich_criteria_satisfies_golod_shafarevich_tow(golod_shafarevich_criterion_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM golod_shafarevich_criteria erb_r1 WHERE number_field = (SELECT (SELECT NULLIF(number_field_id, '') FROM number_fields WHERE number_field_id = p_number_field_id)) AND ((SELECT (calc_golod_shafarevich_criteria_relation_count_exceeds_threshol(erb_r1.golod_shafarevich_criterion_id))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_number_fields_satisfies_golod_shafarevich
@@ -1327,7 +1434,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_number_fields_satisfies_golod_shafarevich(p_number_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_number_fields_golod_shafarevich_passing_count(p_number_field_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_number_fields_golod_shafarevich_passing_count(p_number_field_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_number_fields_is_algebraic_source_candidate
@@ -1337,7 +1444,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_number_fields_is_algebraic_source_candidate(p_number_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_number_fields_satisfies_golod_shafarevich(p_number_field_id) AND (calc_number_fields_small_norm_prime_ideal_count(p_number_field_id))::NUMERIC > 0));
+  SELECT ((COALESCE(calc_number_fields_satisfies_golod_shafarevich(p_number_field_id), FALSE) AND COALESCE(COALESCE((calc_number_fields_small_norm_prime_ideal_count(p_number_field_id))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_number_fields_field_embedding_count
@@ -1357,7 +1464,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_number_fields_field_embedding_count_matches_signature(p_number_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_number_fields_field_embedding_count(p_number_field_id) = (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT signature_real_embeddings FROM number_fields WHERE number_field_id = p_number_field_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT signature_complex_embeddings FROM number_fields WHERE number_field_id = p_number_field_id)) AS v) __safe_numeric), 0)))::boolean;
+  SELECT (COALESCE(calc_number_fields_field_embedding_count(p_number_field_id), 0) = COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT signature_real_embeddings FROM number_fields WHERE number_field_id = p_number_field_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT signature_complex_embeddings FROM number_fields WHERE number_field_id = p_number_field_id)) AS v OFFSET 0) __safe_numeric), 0)), 0))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_number_fields_display_name
@@ -1433,7 +1540,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_prime_ideals_is_small_norm(p_prime_ideal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT norm FROM prime_ideals WHERE prime_ideal_id = p_prime_ideal_id) <= (SELECT norm_threshold FROM prime_ideals WHERE prime_ideal_id = p_prime_ideal_id))::boolean;
+  SELECT (COALESCE(((SELECT norm FROM prime_ideals WHERE prime_ideal_id = p_prime_ideal_id) <= (SELECT norm_threshold FROM prime_ideals WHERE prime_ideal_id = p_prime_ideal_id)), (((SELECT norm FROM prime_ideals WHERE prime_ideal_id = p_prime_ideal_id)) IS NULL AND ((SELECT norm_threshold FROM prime_ideals WHERE prime_ideal_id = p_prime_ideal_id)) IS NULL)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_minkowski_lattices_dimension
@@ -1605,7 +1712,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_minkowski_lattices_determinant_squared_equals_discriminant(p_minkowski_lattice_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((ABS((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_minkowski_lattices_determinant_squared(p_minkowski_lattice_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_minkowski_lattices_absolute_field_discriminant(p_minkowski_lattice_id)) AS v) __safe_numeric), 0))))::NUMERIC < 0.0001)::boolean;
+  SELECT (COALESCE((ABS((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_minkowski_lattices_determinant_squared(p_minkowski_lattice_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_minkowski_lattices_absolute_field_discriminant(p_minkowski_lattice_id)) AS v OFFSET 0) __safe_numeric), 0))))::NUMERIC, 0) < 0.0001)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_minkowski_lattices_short_vector_count
@@ -1614,7 +1721,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_minkowski_lattices_short_vector_count(p_minkowski_lattice_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM short_vectors WHERE minkowski_lattice = (SELECT NULLIF(minkowski_lattice_id, '') FROM minkowski_lattices WHERE minkowski_lattice_id = p_minkowski_lattice_id) AND calc_short_vectors_is_short(short_vector_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM short_vectors erb_r1 WHERE minkowski_lattice = (SELECT (SELECT NULLIF(minkowski_lattice_id, '') FROM minkowski_lattices WHERE minkowski_lattice_id = p_minkowski_lattice_id)) AND ((SELECT (COALESCE(erb_r1.norm_squared, '') <= COALESCE(calc_short_vectors_threshold_squared(erb_r1.short_vector_id), ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_minkowski_lattices_projection_count
@@ -1634,7 +1741,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_minkowski_lattices_has_any_planar_projection(p_minkowski_lattice_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_minkowski_lattices_projection_count(p_minkowski_lattice_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_minkowski_lattices_projection_count(p_minkowski_lattice_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_minkowski_lattices_is_load_bearing_for_unit_distance_const
@@ -1644,7 +1751,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_minkowski_lattices_is_load_bearing_for_unit_distance_const(p_minkowski_lattice_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_minkowski_lattices_source_field_is_algebraic_source_candid(p_minkowski_lattice_id) = 'true') AND (calc_minkowski_lattices_short_vector_count(p_minkowski_lattice_id))::NUMERIC > 0 AND calc_minkowski_lattices_has_any_planar_projection(p_minkowski_lattice_id)));
+  SELECT ((COALESCE((calc_minkowski_lattices_source_field_is_algebraic_source_candid(p_minkowski_lattice_id) = 'true'), FALSE) AND COALESCE(COALESCE((calc_minkowski_lattices_short_vector_count(p_minkowski_lattice_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(calc_minkowski_lattices_has_any_planar_projection(p_minkowski_lattice_id), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_short_vectors_threshold_squared
@@ -1706,7 +1813,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_short_vectors_is_short(p_short_vector_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT norm_squared FROM short_vectors WHERE short_vector_id = p_short_vector_id) <= calc_short_vectors_threshold_squared(p_short_vector_id))::boolean;
+  SELECT (COALESCE((SELECT norm_squared FROM short_vectors WHERE short_vector_id = p_short_vector_id), '') <= COALESCE(calc_short_vectors_threshold_squared(p_short_vector_id), ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_construction_families_source_field_satisfies_golod_shafare
@@ -1763,7 +1870,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_construction_families_is_algebraic_construction(p_construction_family_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_construction_families_source_field_satisfies_golod_shafare(p_construction_family_id) = 'true') AND calc_construction_families_source_lattice_is_load_bearing(p_construction_family_id)))::boolean;
+  SELECT ((COALESCE((calc_construction_families_source_field_satisfies_golod_shafare(p_construction_family_id) = 'true'), FALSE) AND COALESCE(calc_construction_families_source_lattice_is_load_bearing(p_construction_family_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_construction_instances_point_count
@@ -1848,7 +1955,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_construction_instances_param_n_matches_point_count(p_construction_instance_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT param_n FROM construction_instances WHERE construction_instance_id = p_construction_instance_id) = calc_construction_instances_point_count(p_construction_instance_id))::boolean;
+  SELECT (COALESCE((SELECT param_n FROM construction_instances WHERE construction_instance_id = p_construction_instance_id), 0) = COALESCE(calc_construction_instances_point_count(p_construction_instance_id), 0))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_construction_instances_is_explicit_superlinear
@@ -1858,7 +1965,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_construction_instances_is_explicit_superlinear(p_construction_instance_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_construction_instances_density_exponent_estimate(p_construction_instance_id))::NUMERIC > 1)::boolean;
+  SELECT (COALESCE((calc_construction_instances_density_exponent_estimate(p_construction_instance_id))::NUMERIC, 0) > 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_construction_instances_is_algebraic_superlinear_witness
@@ -1868,7 +1975,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_construction_instances_is_algebraic_superlinear_witness(p_construction_instance_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_construction_instances_family_is_algebraic(p_construction_instance_id) AND calc_construction_instances_is_explicit_superlinear(p_construction_instance_id)))::boolean;
+  SELECT ((COALESCE(calc_construction_instances_family_is_algebraic(p_construction_instance_id), FALSE) AND COALESCE(calc_construction_instances_is_explicit_superlinear(p_construction_instance_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_growth_sequences_name
@@ -1904,7 +2011,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_growth_sequences_max_edge_count(p_growth_sequence_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(MAX((calc_construction_instances_edge_count(construction_instance_id))::numeric), 0) FROM construction_instances WHERE construction_family = (SELECT NULLIF(construction_family, '') FROM growth_sequences WHERE growth_sequence_id = p_growth_sequence_id)))::integer;
+  SELECT ((SELECT COALESCE(MAX((((SELECT calc_point_sets_unit_distance_pair_count(erb_r1.point_set)))::integer)::numeric), 0) FROM construction_instances erb_r1 WHERE construction_family = (SELECT (SELECT NULLIF(construction_family, '') FROM growth_sequences WHERE growth_sequence_id = p_growth_sequence_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_growth_sequences_max_observed_density_exponent_estimate
@@ -1913,7 +2020,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_growth_sequences_max_observed_density_exponent_estimate(p_growth_sequence_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MAX((calc_construction_instances_density_exponent_estimate(construction_instance_id))::numeric), 0) FROM construction_instances WHERE construction_family = (SELECT NULLIF(construction_family, '') FROM growth_sequences WHERE growth_sequence_id = p_growth_sequence_id)))::numeric;
+  SELECT ((SELECT COALESCE(MAX((((SELECT calc_point_sets_density_exponent_estimate(erb_r1.point_set)))::numeric)::numeric), 0) FROM construction_instances erb_r1 WHERE construction_family = (SELECT (SELECT NULLIF(construction_family, '') FROM growth_sequences WHERE growth_sequence_id = p_growth_sequence_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- get_asymptotic_lower_bounds_display_name
@@ -2131,7 +2238,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_asymptotic_lower_bounds_is_superlinear(p_asymptotic_lower_bound_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT exponent FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = p_asymptotic_lower_bound_id))::NUMERIC > 1)::boolean;
+  SELECT (COALESCE(((SELECT exponent FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = p_asymptotic_lower_bound_id))::NUMERIC, 0) > 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_asymptotic_lower_bounds_exceeds_trivial_linear_bound
@@ -2140,7 +2247,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_asymptotic_lower_bounds_exceeds_trivial_linear_bound(p_asymptotic_lower_bound_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT exponent FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = p_asymptotic_lower_bound_id))::NUMERIC >= 1)::boolean;
+  SELECT (COALESCE(((SELECT exponent FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = p_asymptotic_lower_bound_id))::NUMERIC, 0) >= 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_asymptotic_lower_bounds_witness_consistent
@@ -2150,7 +2257,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_asymptotic_lower_bounds_witness_consistent(p_asymptotic_lower_bound_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_asymptotic_lower_bounds_witnessed_by_max_density_exponent(p_asymptotic_lower_bound_id) >= (SELECT exponent FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = p_asymptotic_lower_bound_id))::boolean;
+  SELECT (COALESCE(calc_asymptotic_lower_bounds_witnessed_by_max_density_exponent(p_asymptotic_lower_bound_id), '') >= COALESCE((SELECT exponent FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = p_asymptotic_lower_bound_id), ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_asymptotic_lower_bounds_is_algebraically_anchored
@@ -2160,7 +2267,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_asymptotic_lower_bounds_is_algebraically_anchored(p_asymptotic_lower_bound_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_asymptotic_lower_bounds_witness_consistent(p_asymptotic_lower_bound_id) AND calc_asymptotic_lower_bounds_witness_family_is_algebraic(p_asymptotic_lower_bound_id) AND calc_asymptotic_lower_bounds_is_superlinear(p_asymptotic_lower_bound_id)))::boolean;
+  SELECT ((COALESCE(calc_asymptotic_lower_bounds_witness_consistent(p_asymptotic_lower_bound_id), FALSE) AND COALESCE(calc_asymptotic_lower_bounds_witness_family_is_algebraic(p_asymptotic_lower_bound_id), FALSE) AND COALESCE(calc_asymptotic_lower_bounds_is_superlinear(p_asymptotic_lower_bound_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_asymptotic_lower_bounds_obligation_count
@@ -2197,7 +2304,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_asymptotic_lower_bounds_all_obligations_satisfied(p_asymptotic_lower_bound_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_asymptotic_lower_bounds_satisfied_obligation_count(p_asymptotic_lower_bound_id) = calc_asymptotic_lower_bounds_obligation_count(p_asymptotic_lower_bound_id))::boolean;
+  SELECT (COALESCE(calc_asymptotic_lower_bounds_satisfied_obligation_count(p_asymptotic_lower_bound_id), 0) = COALESCE(calc_asymptotic_lower_bounds_obligation_count(p_asymptotic_lower_bound_id), 0))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_asymptotic_lower_bounds_is_algebraic_tower_proof
@@ -2206,7 +2313,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_asymptotic_lower_bounds_is_algebraic_tower_proof(p_asymptotic_lower_bound_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(proof_pathway, '') FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = p_asymptotic_lower_bound_id) = 'algebraic-tower')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(proof_pathway, '') FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = p_asymptotic_lower_bound_id), '') = 'algebraic-tower')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_asymptotic_lower_bounds_is_combinatorial_proof
@@ -2215,7 +2322,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_asymptotic_lower_bounds_is_combinatorial_proof(p_asymptotic_lower_bound_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(proof_pathway, '') FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = p_asymptotic_lower_bound_id) = 'combinatorial-pigeonhole')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(proof_pathway, '') FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = p_asymptotic_lower_bound_id), '') = 'combinatorial-pigeonhole')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_asymptotic_lower_bounds_is_auditable_via_its_pathway
@@ -2225,7 +2332,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_asymptotic_lower_bounds_is_auditable_via_its_pathway(p_asymptotic_lower_bound_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_asymptotic_lower_bounds_witness_consistent(p_asymptotic_lower_bound_id) AS val) SELECT (((calc_asymptotic_lower_bounds_is_algebraic_tower_proof(p_asymptotic_lower_bound_id) AND calc_asymptotic_lower_bounds_is_algebraically_anchored(p_asymptotic_lower_bound_id)) OR (calc_asymptotic_lower_bounds_is_combinatorial_proof(p_asymptotic_lower_bound_id) AND calc_asymptotic_lower_bounds_all_obligations_satisfied(p_asymptotic_lower_bound_id) AND (SELECT val FROM __erb_dedup_v1)) OR ((SELECT NULLIF(proof_pathway, '') FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = p_asymptotic_lower_bound_id) = 'witness-only' AND (SELECT val FROM __erb_dedup_v1))))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_asymptotic_lower_bounds_witness_consistent(p_asymptotic_lower_bound_id) AS val) SELECT ((COALESCE((COALESCE(calc_asymptotic_lower_bounds_is_algebraic_tower_proof(p_asymptotic_lower_bound_id), FALSE) AND COALESCE(calc_asymptotic_lower_bounds_is_algebraically_anchored(p_asymptotic_lower_bound_id), FALSE)), FALSE) OR COALESCE((COALESCE(calc_asymptotic_lower_bounds_is_combinatorial_proof(p_asymptotic_lower_bound_id), FALSE) AND COALESCE(calc_asymptotic_lower_bounds_all_obligations_satisfied(p_asymptotic_lower_bound_id), FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v1), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT NULLIF(proof_pathway, '') FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = p_asymptotic_lower_bound_id), '') = 'witness-only', FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v1), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_theorems_anchored_bound_exponent
@@ -2340,7 +2447,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_theorems_anchor_matches_bound_exponent(p_theorem_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((ABS((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT claimed_exponent FROM theorems WHERE theorem_id = p_theorem_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_theorems_anchored_bound_exponent(p_theorem_id)) AS v) __safe_numeric), 0))))::NUMERIC < 0.0001)::boolean;
+  SELECT (COALESCE((ABS((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT claimed_exponent FROM theorems WHERE theorem_id = p_theorem_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_theorems_anchored_bound_exponent(p_theorem_id)) AS v OFFSET 0) __safe_numeric), 0))))::NUMERIC, 0) < 0.0001)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_theorems_algebraic_chain_closed
@@ -2350,7 +2457,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_theorems_algebraic_chain_closed(p_theorem_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_theorems_anchor_matches_bound_exponent(p_theorem_id) AND calc_theorems_anchored_bound_is_superlinear(p_theorem_id) AND calc_theorems_anchored_bound_witness_consistent(p_theorem_id) AND calc_theorems_anchored_bound_is_algebraically_anchored(p_theorem_id)))::boolean;
+  SELECT ((COALESCE(calc_theorems_anchor_matches_bound_exponent(p_theorem_id), FALSE) AND COALESCE(calc_theorems_anchored_bound_is_superlinear(p_theorem_id), FALSE) AND COALESCE(calc_theorems_anchored_bound_witness_consistent(p_theorem_id), FALSE) AND COALESCE(calc_theorems_anchored_bound_is_algebraically_anchored(p_theorem_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_theorems_is_unit_distance_theorem
@@ -2360,7 +2467,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_theorems_is_unit_distance_theorem(p_theorem_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(asymptotic_function, '') FROM theorems WHERE theorem_id = p_theorem_id) = 'u-n')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(asymptotic_function, '') FROM theorems WHERE theorem_id = p_theorem_id), '') = 'u-n')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_theorems_fully_audited_and_closed
@@ -2370,7 +2477,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_theorems_fully_audited_and_closed(p_theorem_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_theorems_algebraic_chain_closed(p_theorem_id) AND calc_theorems_anchored_bound_all_obligations_satisfied(p_theorem_id)))::boolean;
+  SELECT ((COALESCE(calc_theorems_algebraic_chain_closed(p_theorem_id), FALSE) AND COALESCE(calc_theorems_anchored_bound_all_obligations_satisfied(p_theorem_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_theorems_is_historically_anchored
@@ -2380,7 +2487,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_theorems_is_historically_anchored(p_theorem_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT is_currently_valid FROM theorems WHERE theorem_id = p_theorem_id) = TRUE AND calc_theorems_anchored_bound_is_currently_valid(p_theorem_id) = TRUE))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT is_currently_valid FROM theorems WHERE theorem_id = p_theorem_id), FALSE) = TRUE, FALSE) AND COALESCE(COALESCE(calc_theorems_anchored_bound_is_currently_valid(p_theorem_id), FALSE) = TRUE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_theorems_is_audited_and_closed
@@ -2390,7 +2497,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_theorems_is_audited_and_closed(p_theorem_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_theorems_is_historically_anchored(p_theorem_id) AND calc_theorems_anchored_bound_is_auditable_via_its_pathway(p_theorem_id)))::boolean;
+  SELECT ((COALESCE(calc_theorems_is_historically_anchored(p_theorem_id), FALSE) AND COALESCE(calc_theorems_anchored_bound_is_auditable_via_its_pathway(p_theorem_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_metrics_name
@@ -2408,7 +2515,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_metrics_is_euclidean(p_metric_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(metric_kind, '') FROM metrics WHERE metric_id = p_metric_id) = 'euclidean')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(metric_kind, '') FROM metrics WHERE metric_id = p_metric_id), '') = 'euclidean')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_metrics_is_lattice_gram
@@ -2417,7 +2524,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_metrics_is_lattice_gram(p_metric_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(metric_kind, '') FROM metrics WHERE metric_id = p_metric_id) = 'lattice-gram')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(metric_kind, '') FROM metrics WHERE metric_id = p_metric_id), '') = 'lattice-gram')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_field_embeddings_name
@@ -2435,7 +2542,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_field_embeddings_is_real_embedding(p_field_embedding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT target_space_dim FROM field_embeddings WHERE field_embedding_id = p_field_embedding_id))::NUMERIC = 1)::boolean;
+  SELECT (COALESCE(((SELECT target_space_dim FROM field_embeddings WHERE field_embedding_id = p_field_embedding_id))::NUMERIC, 0) = 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_field_embeddings_is_complex_embedding
@@ -2444,7 +2551,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_field_embeddings_is_complex_embedding(p_field_embedding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT target_space_dim FROM field_embeddings WHERE field_embedding_id = p_field_embedding_id))::NUMERIC = 2)::boolean;
+  SELECT (COALESCE(((SELECT target_space_dim FROM field_embeddings WHERE field_embedding_id = p_field_embedding_id))::NUMERIC, 0) = 2)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_minkowski_embeddings_ambient_dimension
@@ -2482,7 +2589,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_minkowski_embeddings_dimension_match(p_minkowski_embedding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_minkowski_embeddings_ambient_dimension(p_minkowski_embedding_id) = calc_minkowski_embeddings_target_lattice_dimension(p_minkowski_embedding_id))::boolean;
+  SELECT (COALESCE(calc_minkowski_embeddings_ambient_dimension(p_minkowski_embedding_id), 0) = COALESCE(calc_minkowski_embeddings_target_lattice_dimension(p_minkowski_embedding_id), 0))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_gram_matrices_dimension
@@ -2521,7 +2628,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_gram_matrices_encodes_valid_lattice_metric(p_gram_matrix_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT is_symmetric FROM gram_matrices WHERE gram_matrix_id = p_gram_matrix_id), FALSE) AND COALESCE((SELECT is_positive_definite FROM gram_matrices WHERE gram_matrix_id = p_gram_matrix_id), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT is_symmetric FROM gram_matrices WHERE gram_matrix_id = p_gram_matrix_id), FALSE), FALSE) AND COALESCE(COALESCE((SELECT is_positive_definite FROM gram_matrices WHERE gram_matrix_id = p_gram_matrix_id), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_planar_projections_source_lattice_is_load_bearing
@@ -2581,7 +2688,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_planar_projections_is_scaling_preserving(p_planar_projection_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT scaling_factor FROM planar_projections WHERE planar_projection_id = p_planar_projection_id))::NUMERIC = 1)::boolean;
+  SELECT (COALESCE(((SELECT scaling_factor FROM planar_projections WHERE planar_projection_id = p_planar_projection_id))::NUMERIC, 0) = 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_planar_projections_projected_short_vector_count
@@ -2600,7 +2707,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_planar_projections_unit_distance_vector_count(p_planar_projection_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM projected_short_vectors WHERE planar_projection = (SELECT NULLIF(planar_projection_id, '') FROM planar_projections WHERE planar_projection_id = p_planar_projection_id) AND calc_projected_short_vectors_projects_to_unit_distance_vector(projected_short_vector_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM projected_short_vectors erb_r1 WHERE planar_projection = (SELECT (SELECT NULLIF(planar_projection_id, '') FROM planar_projections WHERE planar_projection_id = p_planar_projection_id)) AND ((SELECT (COALESCE(calc_projected_short_vectors_distance_squared_from_unit(erb_r1.projected_short_vector_id), '') <= COALESCE(erb_r1.unit_tolerance, ''))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_planar_projections_unit_distance_vector_yield
@@ -2610,7 +2717,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_planar_projections_unit_distance_vector_yield(p_planar_projection_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_planar_projections_unit_distance_vector_count(p_planar_projection_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_planar_projections_projected_short_vector_count(p_planar_projection_id)) AS v) __safe_numeric), 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_planar_projections_unit_distance_vector_count(p_planar_projection_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_planar_projections_projected_short_vector_count(p_planar_projection_id)) AS v OFFSET 0) __safe_numeric), 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_projected_short_vectors_source_norm_squared
@@ -2667,7 +2774,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_projected_short_vectors_projected_norm_squared(p_projected_short_vector_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_projected_short_vectors_projected_x_squared(p_projected_short_vector_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_projected_short_vectors_projected_y_squared(p_projected_short_vector_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_projected_short_vectors_projected_x_squared(p_projected_short_vector_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_projected_short_vectors_projected_y_squared(p_projected_short_vector_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_projected_short_vectors_distance_squared_from_unit
@@ -2676,7 +2783,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_projected_short_vectors_distance_squared_from_unit(p_projected_short_vector_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (ABS((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_projected_short_vectors_projected_norm_squared(p_projected_short_vector_id)) AS v) __safe_numeric), 0) - COALESCE(1, 0))))::numeric;
+  SELECT (ABS((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_projected_short_vectors_projected_norm_squared(p_projected_short_vector_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE(1, 0))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_projected_short_vectors_projects_to_unit_distance_vector
@@ -2686,7 +2793,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_projected_short_vectors_projects_to_unit_distance_vector(p_projected_short_vector_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_projected_short_vectors_distance_squared_from_unit(p_projected_short_vector_id) <= (SELECT unit_tolerance FROM projected_short_vectors WHERE projected_short_vector_id = p_projected_short_vector_id))::boolean;
+  SELECT (COALESCE(calc_projected_short_vectors_distance_squared_from_unit(p_projected_short_vector_id), '') <= COALESCE((SELECT unit_tolerance FROM projected_short_vectors WHERE projected_short_vector_id = p_projected_short_vector_id), ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_projected_short_vectors_is_valid_witness
@@ -2696,7 +2803,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_projected_short_vectors_is_valid_witness(p_projected_short_vector_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_projected_short_vectors_source_is_short(p_projected_short_vector_id) AND calc_projected_short_vectors_projects_to_unit_distance_vector(p_projected_short_vector_id)))::boolean;
+  SELECT ((COALESCE(calc_projected_short_vectors_source_is_short(p_projected_short_vector_id), FALSE) AND COALESCE(calc_projected_short_vectors_projects_to_unit_distance_vector(p_projected_short_vector_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_projected_short_vectors_norm_preserved_under_projection
@@ -2706,7 +2813,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_projected_short_vectors_norm_preserved_under_projection(p_projected_short_vector_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (ABS((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_projected_short_vectors_source_norm_squared(p_projected_short_vector_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_projected_short_vectors_projected_norm_squared(p_projected_short_vector_id)) AS v) __safe_numeric), 0))) < (SELECT unit_tolerance FROM projected_short_vectors WHERE projected_short_vector_id = p_projected_short_vector_id))::boolean;
+  SELECT (COALESCE(ABS((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_projected_short_vectors_source_norm_squared(p_projected_short_vector_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_projected_short_vectors_projected_norm_squared(p_projected_short_vector_id)) AS v OFFSET 0) __safe_numeric), 0))), 0) < COALESCE((SELECT unit_tolerance FROM projected_short_vectors WHERE projected_short_vector_id = p_projected_short_vector_id), 0))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_golod_shafarevich_criteria_field_degree
@@ -2825,7 +2932,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_golod_shafarevich_criteria_criterion_threshold(p_golod_shafarevich_criterion_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (POWER(((SELECT minimal_generator_count_d FROM golod_shafarevich_criteria WHERE golod_shafarevich_criterion_id = p_golod_shafarevich_criterion_id))::NUMERIC, (2)::NUMERIC)) AS v) __safe_numeric), 0) / NULLIF(COALESCE(4, 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (POWER(((SELECT minimal_generator_count_d FROM golod_shafarevich_criteria WHERE golod_shafarevich_criterion_id = p_golod_shafarevich_criterion_id))::NUMERIC, (2)::NUMERIC)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(4, 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_golod_shafarevich_criteria_relation_count_exceeds_threshol
@@ -2834,7 +2941,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_golod_shafarevich_criteria_relation_count_exceeds_threshol(p_golod_shafarevich_criterion_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT relation_count_r FROM golod_shafarevich_criteria WHERE golod_shafarevich_criterion_id = p_golod_shafarevich_criterion_id) > calc_golod_shafarevich_criteria_criterion_threshold(p_golod_shafarevich_criterion_id))::boolean;
+  SELECT (COALESCE((SELECT relation_count_r FROM golod_shafarevich_criteria WHERE golod_shafarevich_criterion_id = p_golod_shafarevich_criterion_id), '') > COALESCE(calc_golod_shafarevich_criteria_criterion_threshold(p_golod_shafarevich_criterion_id), ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_golod_shafarevich_criteria_satisfies_golod_shafarevich_tow
@@ -2886,7 +2993,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_semantic_bridges_is_analogy(p_semantic_bridge_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(bridge_kind, '') FROM semantic_bridges WHERE semantic_bridge_id = p_semantic_bridge_id) = 'analogy')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(bridge_kind, '') FROM semantic_bridges WHERE semantic_bridge_id = p_semantic_bridge_id), '') = 'analogy')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_semantic_route_steps_step_order
@@ -2964,7 +3071,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_semantic_routes_all_steps_validated(p_semantic_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_semantic_routes_validated_step_count(p_semantic_route_id) = calc_semantic_routes_step_count(p_semantic_route_id))::boolean;
+  SELECT (COALESCE(calc_semantic_routes_validated_step_count(p_semantic_route_id), 0) = COALESCE(calc_semantic_routes_step_count(p_semantic_route_id), 0))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_semantic_route_steps_bridge_is_load_bearing
@@ -3165,7 +3272,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mirror_contract_is_rejection_rule(p_mirror_contract_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(rule_kind, '') FROM mirror_contract WHERE mirror_contract_id = p_mirror_contract_id) = 'reject')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(rule_kind, '') FROM mirror_contract WHERE mirror_contract_id = p_mirror_contract_id), '') = 'reject')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_theorems_display_name
@@ -3266,7 +3373,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conjectures_is_still_open(p_conjecture_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT is_resolved FROM conjectures WHERE conjecture_id = p_conjecture_id) = FALSE)::boolean;
+  SELECT (COALESCE((SELECT is_resolved FROM conjectures WHERE conjecture_id = p_conjecture_id), FALSE) = FALSE)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_proof_obligations_is_lemma_loaded
@@ -3396,7 +3503,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_proof_obligations_is_necessary(p_proof_obligation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(obligation_kind, '') FROM proof_obligations WHERE proof_obligation_id = p_proof_obligation_id) = 'necessary')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(obligation_kind, '') FROM proof_obligations WHERE proof_obligation_id = p_proof_obligation_id), '') = 'necessary')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_proof_obligations_is_currently_open
@@ -3406,7 +3513,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_proof_obligations_is_currently_open(p_proof_obligation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT is_satisfied FROM proof_obligations WHERE proof_obligation_id = p_proof_obligation_id) = FALSE)::boolean;
+  SELECT (COALESCE((SELECT is_satisfied FROM proof_obligations WHERE proof_obligation_id = p_proof_obligation_id), FALSE) = FALSE)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citation_links_citing_year
@@ -3444,7 +3551,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citation_links_is_dependency(p_citation_link_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(citation_kind, '') FROM citation_links WHERE citation_link_id = p_citation_link_id) = 'depends-on')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(citation_kind, '') FROM citation_links WHERE citation_link_id = p_citation_link_id), '') = 'depends-on')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citation_links_is_improvement
@@ -3453,7 +3560,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citation_links_is_improvement(p_citation_link_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(citation_kind, '') FROM citation_links WHERE citation_link_id = p_citation_link_id) = 'improves')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(citation_kind, '') FROM citation_links WHERE citation_link_id = p_citation_link_id), '') = 'improves')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_answer_key_name
@@ -3471,7 +3578,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_answer_key_is_blocking(p_answer_key_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(gate_level, '') FROM answer_key WHERE answer_key_id = p_answer_key_id) = 'blocking')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(gate_level, '') FROM answer_key WHERE answer_key_id = p_answer_key_id), '') = 'blocking')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_temporal_snapshots_name
@@ -3500,7 +3607,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_temporal_snapshots_best_known_lower_bound_exponent_at_this(p_temporal_snapshot_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MAX((calc_lower_bound_validity_at_snapshot_bound_exponent(lower_bound_validity_at_snapshot_id))::numeric), 0) FROM lower_bound_validity_at_snapshot WHERE temporal_snapshot = p_temporal_snapshot_id AND is_valid_at_this_snapshot = TRUE))::numeric;
+  SELECT ((SELECT COALESCE(MAX((((SELECT (SELECT exponent::numeric FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = erb_r1.asymptotic_lower_bound)))::numeric)::numeric), 0) FROM lower_bound_validity_at_snapshot erb_r1 WHERE temporal_snapshot = p_temporal_snapshot_id AND is_valid_at_this_snapshot = TRUE))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_temporal_snapshots_curator_confirmed_best_known_lower_boun
@@ -3510,7 +3617,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_temporal_snapshots_curator_confirmed_best_known_lower_boun(p_temporal_snapshot_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MAX((calc_lower_bound_validity_at_snapshot_bound_exponent(lower_bound_validity_at_snapshot_id))::numeric), 0) FROM lower_bound_validity_at_snapshot WHERE temporal_snapshot = p_temporal_snapshot_id AND calc_lower_bound_validity_at_snapshot_is_curator_confirmed_at_t(lower_bound_validity_at_snapshot_id) = TRUE))::numeric;
+  SELECT ((SELECT COALESCE(MAX((((SELECT (SELECT exponent::numeric FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = erb_r1.asymptotic_lower_bound)))::numeric)::numeric), 0) FROM lower_bound_validity_at_snapshot erb_r1 WHERE temporal_snapshot = p_temporal_snapshot_id AND ((SELECT ((COALESCE(COALESCE(erb_r1.is_valid_at_this_snapshot, FALSE), FALSE) AND COALESCE(COALESCE(calc_lower_bound_validity_at_snapshot_bound_is_currently_valid(erb_r1.lower_bound_validity_at_snapshot_id), FALSE) = TRUE, FALSE)))::boolean))::boolean = TRUE))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_temporal_snapshots_pending_but_valid_by_date_count
@@ -3520,7 +3627,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_temporal_snapshots_pending_but_valid_by_date_count(p_temporal_snapshot_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM lower_bound_validity_at_snapshot WHERE temporal_snapshot = (SELECT NULLIF(temporal_snapshot_id, '') FROM temporal_snapshots WHERE temporal_snapshot_id = p_temporal_snapshot_id) AND is_valid_at_this_snapshot = TRUE AND calc_lower_bound_validity_at_snapshot_bound_is_currently_valid(lower_bound_validity_at_snapshot_id) = null))::integer;
+  SELECT ((SELECT COUNT(*) FROM lower_bound_validity_at_snapshot erb_r1 WHERE temporal_snapshot = (SELECT (SELECT NULLIF(temporal_snapshot_id, '') FROM temporal_snapshots WHERE temporal_snapshot_id = p_temporal_snapshot_id)) AND is_valid_at_this_snapshot = TRUE AND ((SELECT (SELECT is_currently_valid::boolean FROM asymptotic_lower_bounds WHERE asymptotic_lower_bound_id = erb_r1.asymptotic_lower_bound)))::boolean = null))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_temporal_snapshots_bounds_validated_or_retracted_this_mome
@@ -3634,7 +3741,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_lower_bound_validity_at_snapshot_is_curator_confirmed_at_t(p_lower_bound_validity_at_snapshot_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT is_valid_at_this_snapshot FROM lower_bound_validity_at_snapshot WHERE lower_bound_validity_at_snapshot_id = p_lower_bound_validity_at_snapshot_id), FALSE) AND calc_lower_bound_validity_at_snapshot_bound_is_currently_valid(p_lower_bound_validity_at_snapshot_id) = TRUE))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT is_valid_at_this_snapshot FROM lower_bound_validity_at_snapshot WHERE lower_bound_validity_at_snapshot_id = p_lower_bound_validity_at_snapshot_id), FALSE), FALSE) AND COALESCE(COALESCE(calc_lower_bound_validity_at_snapshot_bound_is_currently_valid(p_lower_bound_validity_at_snapshot_id), FALSE) = TRUE, FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================
@@ -4507,6 +4614,9 @@ FROM lower_bound_validity_at_snapshot t;
 
 -- === 8. Custom views (ERBCustomizations) ===
 -- (no ERBCustomizations row for this section)
+
+-- === 8b. Function and view overrides (ERBCustomizations FunctionOverride / SchemaOverride) ===
+-- (no FunctionOverride / SchemaOverride row for a function or a view)
 
 -- === 9. Custom RLS (ERBCustomizations) ===
 -- (no ERBCustomizations row for this section)

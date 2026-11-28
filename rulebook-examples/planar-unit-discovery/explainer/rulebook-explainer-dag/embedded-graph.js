@@ -8332,7 +8332,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "An asymptotic lower bound is considered auditable-via-its-pathway if all of the following:",
+          "headline": "An asymptotic lower bound is considered auditable-via-its-pathway if any of the following:",
           "cases": [],
           "children": [
             {
@@ -12892,7 +12892,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "يُصنّف سجل «asymptotic lower bound» على أنه «auditable via its pathway» إذا تحقق جميع ما يلي:",
+          "headline": "يُصنّف سجل «asymptotic lower bound» على أنه «auditable via its pathway» إذا تحقق واحد على الأقل مما يلي:",
           "cases": [],
           "children": [
             {
@@ -17548,7 +17548,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Ein Asymptotic Lower Bound gilt als ein Auditable Via Its Pathway, wenn alles Folgende gilt:",
+          "headline": "Ein Asymptotic Lower Bound gilt als ein Auditable Via Its Pathway, wenn mindestens eines des Folgenden gilt:",
           "cases": [],
           "children": [
             {
@@ -22204,7 +22204,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un asymptotic lower bound se considera auditable via its pathway si se cumple todo lo siguiente:",
+          "headline": "Un asymptotic lower bound se considera auditable via its pathway si se cumple al menos una de las siguientes:",
           "cases": [],
           "children": [
             {
@@ -26860,7 +26860,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un asymptotic lower bound est considéré comme auditable via its pathway si tout ce qui suit est vrai :",
+          "headline": "Un asymptotic lower bound est considéré comme auditable via its pathway si au moins une des conditions suivantes est vraie :",
           "cases": [],
           "children": [
             {
@@ -31516,7 +31516,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "asymptotic lower bound “auditable via its pathway” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "headline": "asymptotic lower bound “auditable via its pathway” माना जाता है, यदि निम्नलिखित में से कम से कम एक सही हो:",
           "cases": [],
           "children": [
             {
@@ -36172,7 +36172,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Setiap asymptotic lower bound dianggap “auditable via its pathway” jika semua kondisi berikut terpenuhi:",
+          "headline": "Setiap asymptotic lower bound dianggap “auditable via its pathway” jika paling sedikit satu kondisi berikut terpenuhi:",
           "cases": [],
           "children": [
             {
@@ -40828,7 +40828,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un asymptotic lower bound è considerato auditable via its pathway se vale tutto quanto segue:",
+          "headline": "Un asymptotic lower bound è considerato auditable via its pathway se vale almeno una delle seguenti:",
           "cases": [],
           "children": [
             {
@@ -45484,7 +45484,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "次のすべてが成り立つ場合、asymptotic lower boundは「Auditable Via Its Pathway」と見なされます:",
+          "headline": "次のいずれかが成り立つ場合、asymptotic lower boundは「Auditable Via Its Pathway」と見なされます:",
           "cases": [],
           "children": [
             {
@@ -50140,7 +50140,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "다음 모두에 해당하는 경우, ‘asymptotic lower bound’ 레코드는 ‘auditable via its pathway’에 해당하는 것으로 간주됩니다:",
+          "headline": "다음 중 하나 이상에 해당하는 경우, ‘asymptotic lower bound’ 레코드는 ‘auditable via its pathway’에 해당하는 것으로 간주됩니다:",
           "cases": [],
           "children": [
             {
@@ -54796,7 +54796,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Een asymptotic lower bound geldt als auditable via its pathway als al het volgende geldt:",
+          "headline": "Een asymptotic lower bound geldt als auditable via its pathway als ten minste één van het volgende geldt:",
           "cases": [],
           "children": [
             {
@@ -59452,7 +59452,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Um asymptotic lower bound é considerado auditable via its pathway se tudo o que segue for verdadeiro:",
+          "headline": "Um asymptotic lower bound é considerado auditable via its pathway se pelo menos um dos seguintes for verdadeiro:",
           "cases": [],
           "children": [
             {
@@ -64108,7 +64108,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Asymptotic lower bound считается «auditable via its pathway», если выполняется всё следующее:",
+          "headline": "Asymptotic lower bound считается «auditable via its pathway», если выполняется хотя бы одно из следующего:",
           "cases": [],
           "children": [
             {
@@ -68764,7 +68764,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "“asymptotic lower bound” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “auditable via its pathway” sayılır:",
+          "headline": "“asymptotic lower bound” kaydı, aşağıdakilerden en az biri sağlanıyor ise “auditable via its pathway” sayılır:",
           "cases": [],
           "children": [
             {
@@ -73420,7 +73420,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Mỗi asymptotic lower bound được coi là “auditable via its pathway” nếu tất cả các điều kiện sau đều đúng:",
+          "headline": "Mỗi asymptotic lower bound được coi là “auditable via its pathway” nếu ít nhất một trong các điều kiện sau đúng:",
           "cases": [],
           "children": [
             {
@@ -78076,7 +78076,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "当以下全部成立时,asymptotic lower bound被视为“Auditable Via Its Pathway”:",
+          "headline": "当以下任一成立时,asymptotic lower bound被视为“Auditable Via Its Pathway”:",
           "cases": [],
           "children": [
             {
@@ -80516,4 +80516,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "LowerBoundValidityAtSnapshot": "lower bound validity at snapshot"
     }
   }
-} };
+}, stamp: "7e51e1a3a3c6fa8e" };
