@@ -5002,11 +5002,6 @@ talismans-south-park-ontology-explainer:admin-editor a talismans-south-park-onto
     talismans-south-park-ontology-explainer:pageTextId "admin-editor" ;
     talismans-south-park-ontology-explainer:text "Open the rulebook editor" .
 
-talismans-south-park-ontology-explainer:admin-editor-off a talismans-south-park-ontology-explainer:PageTexts ;
-    erb:key "admin-editor-off" ;
-    talismans-south-park-ontology-explainer:pageTextId "admin-editor-off" ;
-    talismans-south-park-ontology-explainer:text "The rulebook editor is not running. Start it with ./start.sh --editor" .
-
 talismans-south-park-ontology-explainer:admin-add-row a talismans-south-park-ontology-explainer:PageTexts ;
     erb:key "admin-add-row" ;
     talismans-south-park-ontology-explainer:pageTextId "admin-add-row" ;
@@ -5467,11 +5462,6 @@ talismans-south-park-ontology-explainer:concepts-editor a talismans-south-park-o
     talismans-south-park-ontology-explainer:pageTextId "concepts-editor" ;
     talismans-south-park-ontology-explainer:text "Open the concept rulebook editor" .
 
-talismans-south-park-ontology-explainer:concepts-editor-off a talismans-south-park-ontology-explainer:PageTexts ;
-    erb:key "concepts-editor-off" ;
-    talismans-south-park-ontology-explainer:pageTextId "concepts-editor-off" ;
-    talismans-south-park-ontology-explainer:text "The concept rulebook editor is not running. Start it with ./start.sh --concept-editor" .
-
 talismans-south-park-ontology-explainer:concepts-load-file a talismans-south-park-ontology-explainer:PageTexts ;
     erb:key "concepts-load-file" ;
     talismans-south-park-ontology-explainer:pageTextId "concepts-load-file" ;
@@ -5616,6 +5606,126 @@ talismans-south-park-ontology-explainer:tool-here a talismans-south-park-ontolog
     erb:key "tool-here" ;
     talismans-south-park-ontology-explainer:pageTextId "tool-here" ;
     talismans-south-park-ontology-explainer:text "You are on this page." .
+
+talismans-south-park-ontology-explainer:editor-starts a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "editor-starts" ;
+    talismans-south-park-ontology-explainer:pageTextId "editor-starts" ;
+    talismans-south-park-ontology-explainer:text "Not running yet: it starts when you open it. The first start takes a few minutes." .
+
+talismans-south-park-ontology-explainer:editor-heading-ontology a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "editor-heading-ontology" ;
+    talismans-south-park-ontology-explainer:pageTextId "editor-heading-ontology" ;
+    talismans-south-park-ontology-explainer:text "The rulebook editor, on the rulebook" .
+
+talismans-south-park-ontology-explainer:editor-heading-concept a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "editor-heading-concept" ;
+    talismans-south-park-ontology-explainer:pageTextId "editor-heading-concept" ;
+    talismans-south-park-ontology-explainer:text "The rulebook editor, on the concept rulebook" .
+
+talismans-south-park-ontology-explainer:editor-starting a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "editor-starting" ;
+    talismans-south-park-ontology-explainer:pageTextId "editor-starting" ;
+    talismans-south-park-ontology-explainer:text "Starting it ({seconds} s). This page goes to the editor as soon as it answers; the first start takes a few minutes." .
+
+talismans-south-park-ontology-explainer:editor-failed a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "editor-failed" ;
+    talismans-south-park-ontology-explainer:pageTextId "editor-failed" ;
+    talismans-south-park-ontology-explainer:text "The rulebook editor did not start. What its launcher said:" .
+
+talismans-south-park-ontology-explainer:editor-retry a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "editor-retry" ;
+    talismans-south-park-ontology-explainer:pageTextId "editor-retry" ;
+    talismans-south-park-ontology-explainer:text "Try again" .
+
+talismans-south-park-ontology-explainer:file-taken-concept a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "file-taken-concept" ;
+    talismans-south-park-ontology-explainer:pageTextId "file-taken-concept" ;
+    talismans-south-park-ontology-explainer:text "Rulebook v{number}: {file} was saved from outside this app (its rulebook editor, or by hand) and has been taken into the ontology." .
+
+talismans-south-park-ontology-explainer:file-taken-hub a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "file-taken-hub" ;
+    talismans-south-park-ontology-explainer:pageTextId "file-taken-hub" ;
+    talismans-south-park-ontology-explainer:text "Rulebook v{number}: {file} was saved from outside this app (its rulebook editor, or by hand) and has been loaded." .
+
+talismans-south-park-ontology-explainer:file-refused-hub a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "file-refused-hub" ;
+    talismans-south-park-ontology-explainer:pageTextId "file-refused-hub" ;
+    talismans-south-park-ontology-explainer:text "{file} changed on disk and could not be loaded: {reason}" .
+
+talismans-south-park-ontology-explainer:file-held-start a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "file-held-start" ;
+    talismans-south-park-ontology-explainer:pageTextId "file-held-start" ;
+    talismans-south-park-ontology-explainer:text "It already said something other than the rulebook when this app started, so there is no telling which of the two files is the newer." .
+
+talismans-south-park-ontology-explainer:file-held-base a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "file-held-base" ;
+    talismans-south-park-ontology-explainer:pageTextId "file-held-base" ;
+    talismans-south-park-ontology-explainer:text "It was saved from rulebook v{base} and the rulebook is now v{number}, so loading it would undo what was saved since." .
+
+talismans-south-park-ontology-explainer:file-held-refused a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "file-held-refused" ;
+    talismans-south-park-ontology-explainer:pageTextId "file-held-refused" ;
+    talismans-south-park-ontology-explainer:text "It could not be loaded: {reason}" .
+
+talismans-south-park-ontology-explainer:file-waiting-unsaved a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "file-waiting-unsaved" ;
+    talismans-south-park-ontology-explainer:pageTextId "file-waiting-unsaved" ;
+    talismans-south-park-ontology-explainer:text "There are unsaved changes here, so it was not loaded by itself." .
+
+talismans-south-park-ontology-explainer:files-both-changed a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "files-both-changed" ;
+    talismans-south-park-ontology-explainer:pageTextId "files-both-changed" ;
+    talismans-south-park-ontology-explainer:text "Both rulebook files changed on disk, and there is no telling which is the newer. Discard changes reloads the rulebook file; the concept form loads or overwrites the concept rulebook file." .
+
+talismans-south-park-ontology-explainer:jsonfile-heading-ontology a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-heading-ontology" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-heading-ontology" ;
+    talismans-south-park-ontology-explainer:text "The rulebook file" .
+
+talismans-south-park-ontology-explainer:jsonfile-heading-concept a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-heading-concept" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-heading-concept" ;
+    talismans-south-park-ontology-explainer:text "The concept rulebook file" .
+
+talismans-south-park-ontology-explainer:jsonfile-heading-concept-live a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-heading-concept-live" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-heading-concept-live" ;
+    talismans-south-park-ontology-explainer:text "The concept rulebook of the rows here" .
+
+talismans-south-park-ontology-explainer:jsonfile-about a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-about" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-about" ;
+    talismans-south-park-ontology-explainer:text "The file as it is saved: standard JSON with one field or one row of a table per line, so one changed row is one changed line." .
+
+talismans-south-park-ontology-explainer:jsonfile-about-live a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-about-live" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-about-live" ;
+    talismans-south-park-ontology-explainer:text "The concept rulebook as the rows here make it now, unsaved changes included, laid out the way its file is saved: one field or one row of a table per line." .
+
+talismans-south-park-ontology-explainer:jsonfile-jump a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-jump" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-jump" ;
+    talismans-south-park-ontology-explainer:text "Go to" .
+
+talismans-south-park-ontology-explainer:jsonfile-jump-choose a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-jump-choose" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-jump-choose" ;
+    talismans-south-park-ontology-explainer:text "a table ({count})" .
+
+talismans-south-park-ontology-explainer:jsonfile-wrap a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-wrap" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-wrap" ;
+    talismans-south-park-ontology-explainer:text "Wrap long lines" .
+
+talismans-south-park-ontology-explainer:jsonfile-raw a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-raw" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-raw" ;
+    talismans-south-park-ontology-explainer:text "Open the plain JSON" .
+
+talismans-south-park-ontology-explainer:jsonfile-size a talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-size" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-size" ;
+    talismans-south-park-ontology-explainer:text "{file}: {lines} lines, {kb} KB" .
 
 # === Individuals: PortraitAliases ===
 
@@ -6156,7 +6266,7 @@ talismans-south-park-ontology-explainer:editor a talismans-south-park-ontology-e
     erb:key "editor" ;
     talismans-south-park-ontology-explainer:rulebookToolId "editor" ;
     talismans-south-park-ontology-explainer:label "Rulebook editor" ;
-    talismans-south-park-ontology-explainer:adds "The generated editor for tables, fields and formulas, with its own database and API." ;
+    talismans-south-park-ontology-explainer:adds "The generated editor for tables, fields and formulas, with its own database and API. Its Save writes the rulebook file, and this app takes it in as the next version." ;
     talismans-south-park-ontology-explainer:href "editor" ;
     talismans-south-park-ontology-explainer:linkText "Open the rulebook editor" ;
     talismans-south-park-ontology-explainer:sortOrder 8 ;
@@ -6166,8 +6276,8 @@ talismans-south-park-ontology-explainer:rulebook a talismans-south-park-ontology
     erb:key "rulebook" ;
     talismans-south-park-ontology-explainer:rulebookToolId "rulebook" ;
     talismans-south-park-ontology-explainer:label "The rulebook" ;
-    talismans-south-park-ontology-explainer:adds "One JSON file holds the whole model. Everything on this page is built from it." ;
-    talismans-south-park-ontology-explainer:href "/rulebook/talismans-southpark-ontology-rulebook.json" ;
+    talismans-south-park-ontology-explainer:adds "One JSON file holds the whole model, one field or one row per line. Everything on this page is built from it." ;
+    talismans-south-park-ontology-explainer:href "/file.html?form=ontology" ;
     talismans-south-park-ontology-explainer:linkText "Open the file" ;
     talismans-south-park-ontology-explainer:sortOrder 9 ;
     talismans-south-park-ontology-explainer:form "ontology" .
@@ -6242,7 +6352,7 @@ talismans-south-park-ontology-explainer:concept-editor a talismans-south-park-on
     erb:key "concept-editor" ;
     talismans-south-park-ontology-explainer:rulebookToolId "concept-editor" ;
     talismans-south-park-ontology-explainer:label "Rulebook editor" ;
-    talismans-south-park-ontology-explainer:adds "The generated editor for tables, fields and formulas, opened on the concept rulebook, with its own database and API." ;
+    talismans-south-park-ontology-explainer:adds "The generated editor for tables, fields and formulas, opened on the concept rulebook, with its own database and API. Its Save writes the concept rulebook file, and this app takes it into the ontology as the next version." ;
     talismans-south-park-ontology-explainer:href "editor" ;
     talismans-south-park-ontology-explainer:linkText "Open the concept rulebook editor" ;
     talismans-south-park-ontology-explainer:sortOrder 8 ;
@@ -6252,8 +6362,8 @@ talismans-south-park-ontology-explainer:concept-rulebook a talismans-south-park-
     erb:key "concept-rulebook" ;
     talismans-south-park-ontology-explainer:rulebookToolId "concept-rulebook" ;
     talismans-south-park-ontology-explainer:label "The rulebook" ;
-    talismans-south-park-ontology-explainer:adds "One JSON file holds the concept rulebook. The build writes it from the rulebook, and so does Save." ;
-    talismans-south-park-ontology-explainer:href "/concept-rulebook/talismans-southpark-ontology-concepts.json" ;
+    talismans-south-park-ontology-explainer:adds "One JSON file holds the concept rulebook, one field or one row per line. The build writes it from the rulebook, and so does Save." ;
+    talismans-south-park-ontology-explainer:href "/file.html?form=concept" ;
     talismans-south-park-ontology-explainer:linkText "Open the file" ;
     talismans-south-park-ontology-explainer:sortOrder 9 ;
     talismans-south-park-ontology-explainer:form "concept" .

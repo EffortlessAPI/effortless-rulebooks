@@ -19,7 +19,7 @@
       {"MetaKey": "model_namespace", "ValueType": "string", "StringValue": "https://southpark-ontology-explainer.jessica-tali-7056.chatgpt.site/model#", "JsonValue": null, "Name": "model_namespace"},
       {"MetaKey": "reference_note", "ValueType": "string", "StringValue": "The model follows the explainer page's own script as read on 2026-11-26: its ten facts, five rules, property wiring, provenance wording and the one-current-grade-and-role policy. Her starting state is the seed: facts on, rules off.", "JsonValue": null, "Name": "reference_note"},
       {"MetaKey": "image_credit", "ValueType": "string", "StringValue": "Character and location portraits are Fandom images, linked from each Things row; South Park is the work of Trey Parker and Matt Stone.", "JsonValue": null, "Name": "image_credit"},
-      {"MetaKey": "rulebook-version", "ValueType": "number", "StringValue": "2", "JsonValue": null, "Name": "rulebook-version"},
+      {"MetaKey": "rulebook-version", "ValueType": "number", "StringValue": "3", "JsonValue": null, "Name": "rulebook-version"},
       {"MetaKey": "ontology-form", "ValueType": "string", "StringValue": "concepts-of-an-ontology", "JsonValue": null, "Name": "ontology-form"}
     ]
   },

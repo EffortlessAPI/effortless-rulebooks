@@ -10,8 +10,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
+import { execFileSync, spawnSync } from 'node:child_process';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { readHub, storedRows, writeHub, layOut } from '../../app/lib/hub.mjs';
 
 const PROJECT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -47,4 +47,21 @@ test('the concept rulebook is written in the same layout', () => {
 
 test('layOut fails loudly on what is not a rulebook', () => {
   assert.throws(() => layOut([1, 2]), /rulebook_layout\.py could not lay out the rulebook/);
+});
+
+// Save runs the layout inside the server, where it holds up every other request until it ends.
+// Found 2026-11-27: the document was piped to the script's stdin with no time limit, and twice
+// the script sat waiting for the end of it while the app answered nothing, for hours. The
+// document now goes over as a file, and a layout that does not end fails the Save in words.
+test('a layout that never finishes fails in words; it does not hold the app for ever', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'southpark-layout-never-'));
+  const never = path.join(dir, 'never.py');
+  fs.writeFileSync(never, 'import time\ntime.sleep(600)\n');
+  const hub = pathToFileURL(path.join(PROJECT, 'app', 'lib', 'hub.mjs')).href;
+  const call = `import { layOut } from ${JSON.stringify(hub)}; try { layOut({}); console.log('laid out'); } catch (e) { console.log(e.message); }`;
+  const answer = spawnSync('node', ['--input-type=module', '-e', call],
+    { env: { ...process.env, RULEBOOK_LAYOUT_SCRIPT: never, RULEBOOK_LAYOUT_LIMIT_MS: '1500' }, encoding: 'utf8', timeout: 20000 });
+  assert.equal(answer.error, undefined, 'the call came back by itself');
+  assert.match(answer.stdout, /rulebook_layout\.py could not lay out the rulebook: it did not finish within 1\.5 s/);
+  fs.rmSync(dir, { recursive: true, force: true });
 });

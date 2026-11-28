@@ -95,7 +95,7 @@
       {
         "MetaKey": "rulebook-version",
         "ValueType": "number",
-        "StringValue": "2",
+        "StringValue": "3",
         "JsonValue": null,
         "Name": "rulebook-version"
       },

@@ -2121,7 +2121,7 @@ export const erbTables: TableSpec[] = [
     compute: (row: any) => computeLayoutSlots(row as LayoutSlotsRow),
     lookups: [],
     aggregations: [] },
-  { name: "PageTexts", file: "page_texts", rulebookRows: 198, fields: pageTextsFieldTypes,
+  { name: "PageTexts", file: "page_texts", rulebookRows: 220, fields: pageTextsFieldTypes,
     columns: { page_text_id: "PageTextId", text: "Text", name: "Name" },
     stored: ["page_text_id", "text"],
     compute: (row: any) => computePageTexts(row as PageTextsRow),

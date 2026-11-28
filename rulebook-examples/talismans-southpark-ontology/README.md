@@ -26,7 +26,7 @@ rebuild of her explainer and links to the original.
 effortless build                                                               # every substrate
 python3 ../../scripts/erb_project.py talismans-southpark-ontology --reset-db   # load Postgres
 ./start.sh                                                                     # the app: http://localhost:43210/  (admin at /admin.html, concept form at /concepts.html)
-./start.sh --editor                                                            # optional: the rulebook editor, http://localhost:43612
+./start.sh --editor                                                            # optional: the rulebook editor, http://localhost:43612 (the admin's link starts it too)
 ```
 
 ## What the rulebook tools add
@@ -40,7 +40,7 @@ python3 ../../scripts/erb_project.py talismans-southpark-ontology --reset-db   #
 | Admin | Every table of the rulebook as an editable grid: rules, properties and their wiring, wording, layouts, buttons, the cast, the engines themselves. Edits apply at once on every engine. Save writes the rulebook file. | `/admin.html` |
 | The concept form | The same ontology as ordinary tables: a table of individuals, a table per class, a table or a column per property, with each property's attributes beside it. Add a person, a class, a relationship or a column there and the page shows it. | `/concepts.html` |
 | Excel | Export the current rows as a workbook with every rule as a live formula (about 30 s). Edit it in Excel and import it again (about 2 s): the edits arrive as unsaved changes. The concept form exports and imports its own workbook the same way. | The admin's Export and Import |
-| Rulebook editor | The platform's generated editor for tables, fields and formulas, in its own container. A second one opens the concept rulebook. | `./start.sh --editor`, `./start.sh --concept-editor` |
+| Rulebook editor | The platform's generated editor for tables, fields and formulas, in its own container. A second one opens the concept rulebook. Each form's page links to its editor and starts it when it is not running, and a Save made there comes back into the app as the next version. | The link on `/admin.html` and on `/concepts.html` |
 
 The tools list itself is the rulebook's `RulebookTools` table, and the engines are its
 `Engines` table.
@@ -108,12 +108,13 @@ report when her page changes.
 | [`compare-with-her-app.mjs`](testing/her-app/compare-with-her-app.mjs) | Her reasoner against the Postgres views, in every combination of the five rule switches for her starting facts, the two facts she suggests trying, and her buttons' fact changes. | 224 of 224 states, in her order too |
 | [`testing/app/app.test.mjs`](testing/app/app.test.mjs) | What her page cannot do, on each engine: a new property wired to the Symmetric rule by adding a row, a new name that finds its portrait, new wording, Save, Discard, and the engines still agreeing afterwards. Also the candidate generator against the rulebook's stored rows, and Save's refusal to overwrite a file someone else changed. | 7 of 7 |
 | [`testing/app/open-world.test.mjs`](testing/app/open-world.test.mjs) | Open world on each engine: a stated fact is TRUE, a fact nothing states or concludes is blank (not known, never FALSE), a rule's conclusion is TRUE, and switching a fact off leaves it not known. | 4 of 4 |
+| [`testing/app/editors.test.mjs`](testing/app/editors.test.mjs) | The rulebook editors from the app's side: an editor is started from its link (and one that does not start says why), and a file an editor saved is taken in as the next version, in both files, and never over something it would lose. | 4 of 4 (2026-11-27) |
 | [`scripts/tests/test_live_substrates.py`](../../scripts/tests/test_live_substrates.py) | The platform tool: TypeScript and OWL follow a change to the live rows, agree on every computed value, and a wrong value is named. | 4 of 4 |
 
 ```bash
 node testing/her-app/compare-app-with-her-app.mjs --engine=all --walks=3 --steps=40
 node testing/her-app/compare-with-her-app.mjs
-node --test testing/app/app.test.mjs testing/app/open-world.test.mjs
+node --test testing/app/app.test.mjs testing/app/open-world.test.mjs testing/app/concepts.test.mjs testing/app/editors.test.mjs testing/app/rulebook-files.test.mjs
 python3 ../../scripts/tests/test_live_substrates.py
 ```
 
@@ -156,13 +157,13 @@ the generator reads correctly; the generator's defect is finding `cr-28-01`.
 | The admin (`/admin.html`) | Any stored value of any row of any table; add and delete rows | At once, on every engine |
 | The concept form (`/concepts.html`) | The individuals, each class's members, each property's facts, and the vocabulary itself: a new class, relationship, value property or column; what a link points at (domain and range); symmetric, inverse of, chain, disjoint | At once, on every engine: each edit is written as the matching change of the rulebook's things, properties and statements |
 | Excel | The stored rows, in a workbook where every rule is a live formula | As unsaved changes in the admin, to review and save. A changed formula, field or table is reported, not applied |
-| The rulebook editor (`./start.sh --editor`) | Tables, fields, formulas, rows | Its Save writes the rulebook file; the app then says the file changed and reloads it on Discard; a formula change needs a rebuild |
-| The concept rulebook editor (`./start.sh --concept-editor`) | The concept rulebook: a column added to a class, a new class or property table, rows | Its Save rewrites `concept-rulebook/talismans-southpark-ontology-concepts.json`; the concept form's page says the file changed and **Load the concept rulebook file** brings it into the ontology as unsaved changes. No rebuild: a new column there is a new property row here |
+| The rulebook editor (the admin's link) | Tables, fields, formulas, rows | Its Save writes the rulebook file, and the app takes the file in within a few seconds, as the next version; the concept rulebook file follows. A changed formula, field or table also needs a rebuild |
+| The concept rulebook editor (the concept form's link) | The concept rulebook: a column added to a class, a new class or property table, rows | Its Save rewrites `concept-rulebook/talismans-southpark-ontology-concepts.json`, and the app lays that file over the ontology and saves it as the next version, in both files. No rebuild: a new column there is a new property row here |
 | The rulebook file | Anything | Rebuild |
 
 **Save** (in the admin) writes the stored rows back into the rulebook file and nothing
 else: schema, descriptions and order stay as they are. It refuses if the file changed on
-disk since the app loaded it. The computed copies that the build's first step
+disk since the app loaded it, and the page says so. The computed copies that the build's first step
 (`compile-rulebook`) bakes into the rows are dropped by Save and baked again by the next
 build. **Discard** reloads the rows from the file. **Rebuild** runs `effortless build` and
 reloads the database.
@@ -174,6 +175,49 @@ disjoint (`PropertyAxioms`), her buttons and what each does (`Scenarios`, `Scena
 (`PageTexts`), the portraits and the names they answer to, the engines and the tools.
 Adding a property row and ticking its `IsSymmetric` box is enough for the Symmetric rule to
 apply to it, on all three engines.
+
+### The rulebook editors: a link, and a Save that comes back
+
+Each form of the rulebook has the platform's generated rulebook editor, in a container of
+its own. On the form's page (the "Rulebook editor" group at the top and the card in the tools
+panel) it is a link:
+
+- **Running**: the link goes to the editor.
+- **Not running**: the link goes to `/editor.html`, which asks the app to start it, shows what
+  the launcher is saying, and goes to the editor as soon as it answers; the editor shows its
+  own progress from there. A first start takes a few minutes. The app runs this project's own
+  `./start.sh --editor` (or `--concept-editor`), the same thing as typing it. A launcher that
+  gives up (Docker is not running, a port is taken) is shown with what it said and a
+  **Try again** button.
+
+A Save inside an editor writes that form's file. Every page asks the server every few
+seconds how things stand, and that is when a file saved from outside the app is taken in:
+
+| What changed on disk | What the app does |
+|---|---|
+| The rulebook file, with nothing unsaved here | Reloads it, brings the candidate facts in line with its things and properties, stamps it as the next version (unless it already carries another number), and writes the concept rulebook file from it |
+| The concept rulebook file, saved from the version the rulebook is at, with nothing unsaved here | Lays it over the ontology and saves: the next version, in both files |
+| Either file, rewritten and saying the same | Nothing |
+| Either file, while there are unsaved changes here | Waits. **Discard changes** reloads the rulebook file; the concept form loads or overwrites the concept rulebook file |
+| A concept rulebook saved from an earlier version of the rulebook | Waits: laid over the later rulebook it would undo what was saved since. **Load the concept rulebook file** brings it in as unsaved changes to review |
+| Both files at once, a file that does not parse, a concept rulebook the mapping refuses, a concept rulebook that already said something else when the app started | Waits |
+
+Whatever was taken in, and whatever is waiting and why, is said on every page (the message
+line of each form, and the engine bar of the explainer with the rulebook tools on).
+`testing/app/editors.test.mjs` holds each row of the table, and the starting of an editor
+with a stand-in launcher.
+
+Checked with the real editors on 2026-11-27, on copies of both files. The concept form's link
+started the concept rulebook's container and the browser went to it. A person, a friendship
+and a new column added in that editor, and saved there, were on the explainer page at the
+app's next look, as the next three versions. A rename saved in the rulebook's own editor
+arrived the same way, and the rulebook file differed from before by that label and the
+version number alone. With Docker stopped, the same link showed what the launcher said (it
+could not reach Docker) and **Try again**.
+
+What an editor cannot do for the app: the app reloads rows, not rules. A formula, field or
+table changed in the rulebook's own editor is in the file, and a new version, as soon as it is
+saved; the engines compute it after a rebuild (the admin's **Rebuild**).
 
 ### Two forms of one rulebook
 
@@ -215,13 +259,14 @@ The concept rulebook is also a document, with the tools any rulebook has:
 - **A file**, `concept-rulebook/talismans-southpark-ontology-concepts.json`. The build writes
   it (the `concept-rulebook` step, after `compile-rulebook`) and so does Save, from the saved
   rows. **Open the concept rulebook** gives the live one as JSON.
-- **Its own rulebook editor**, `./start.sh --concept-editor` (ports 43621 to 43623): the same
+- **Its own rulebook editor**, the link on the concept form (ports 43621 to 43623): the same
   generated editor as the rulebook's, built from the concept rulebook, with its own database.
-  Add a column to `Person` there, or a table shaped like a class or a property, and save.
-- **Load the concept rulebook file** lays that file over the live rows: what was edited in it
-  becomes the matching change of the ontology, as unsaved changes to review. The page says
-  when the file changed on disk; Save never overwrites a file it has not seen, and
-  **Overwrite the file from these rows** discards it on request.
+  Add a column to `Person` there, or a table shaped like a class or a property, and save: the
+  app takes the saved file into the ontology as the next version (see "The rulebook editors").
+- **Load the concept rulebook file** does the same by hand, for a file the app did not take in
+  by itself (the page says which, and why): what was edited in it becomes the matching change
+  of the ontology, as unsaved changes to review. Save never overwrites a file it has not seen,
+  and **Overwrite the file from these rows** discards it on request.
 - **Export / Import a concept workbook** take it through the same catalog tools as the
   ontology form's workbook. One cell changed in the concept workbook comes back as the
   matching change of the ontology's rows.
@@ -301,15 +346,15 @@ an earlier one would need repeated rounds.
   workbook into a copy of the live rulebook and the app loads the stored rows from the
   result. A formula, field or table changed in the workbook is listed after the import and
   not applied; make that change in the rulebook editor or the file.
-- **The rulebook editor has its own database.** An edit there reaches this app only after
-  the editor's Save (which rewrites the rulebook file) and a Discard here (which reloads
-  it). A formula or table change also needs a rebuild.
+- **A rulebook editor has its own database.** An edit made there reaches this app when the
+  editor saves, not before (see "The rulebook editors"). A formula, field or table changed in
+  the rulebook's editor is in the file at once and computed only after a rebuild.
 - **Schema changes are not live.** The admin edits rows. Fields, formulas and tables
   change in the rulebook editor or the file, followed by a rebuild. (A new class, property
   or column of the ONTOLOGY is not a schema change: it is rows, made in the concept form.)
-- **Only this app's Save makes a new rulebook version.** The rulebook editor's Save, an
-  edit by hand and a build leave the number as it is. Earlier versions are not kept by the
-  app: the number names a version, and the file's history is where it is found again.
+- **Earlier versions are not kept by the app.** A new version is made by this app's Save and
+  by a file the app takes in from a rulebook editor; a build leaves the number as it is. The
+  number names a version, and the file's history is where it is found again.
 
 ## How the Excel import came to work
 

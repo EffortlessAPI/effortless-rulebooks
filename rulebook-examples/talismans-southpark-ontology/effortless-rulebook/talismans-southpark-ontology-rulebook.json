@@ -19,7 +19,7 @@
       {"MetaKey": "model_namespace", "ValueType": "string", "StringValue": "https://southpark-ontology-explainer.jessica-tali-7056.chatgpt.site/model#", "JsonValue": null, "Name": "model_namespace"},
       {"MetaKey": "reference_note", "ValueType": "string", "StringValue": "The model follows the explainer page's own script as read on 2026-11-26: its ten facts, five rules, property wiring, provenance wording and the one-current-grade-and-role policy. Her starting state is the seed: facts on, rules off.", "JsonValue": null, "Name": "reference_note"},
       {"MetaKey": "image_credit", "ValueType": "string", "StringValue": "Character and location portraits are Fandom images, linked from each Things row; South Park is the work of Trey Parker and Matt Stone.", "JsonValue": null, "Name": "image_credit"},
-      {"MetaKey": "rulebook-version", "ValueType": "number", "StringValue": "2", "JsonValue": null, "Name": "rulebook-version"}
+      {"MetaKey": "rulebook-version", "ValueType": "number", "StringValue": "3", "JsonValue": null, "Name": "rulebook-version"}
     ]
   },
   "Graphs": {
@@ -1377,7 +1377,6 @@
       {"PageTextId": "admin-export", "Text": "Export to Excel", "Name": "admin-export"},
       {"PageTextId": "admin-import", "Text": "Import from Excel", "Name": "admin-import"},
       {"PageTextId": "admin-editor", "Text": "Open the rulebook editor", "Name": "admin-editor"},
-      {"PageTextId": "admin-editor-off", "Text": "The rulebook editor is not running. Start it with ./start.sh --editor", "Name": "admin-editor-off"},
       {"PageTextId": "admin-add-row", "Text": "Add a row", "Name": "admin-add-row"},
       {"PageTextId": "admin-delete-row", "Text": "Delete", "Name": "admin-delete-row"},
       {"PageTextId": "admin-show-computed", "Text": "Show computed fields", "Name": "admin-show-computed"},
@@ -1470,7 +1469,6 @@
       {"PageTextId": "concepts-remove-property", "Text": "Remove this property", "Name": "concepts-remove-property"},
       {"PageTextId": "concepts-remove-confirm", "Text": "Click again to remove", "Name": "concepts-remove-confirm"},
       {"PageTextId": "concepts-editor", "Text": "Open the concept rulebook editor", "Name": "concepts-editor"},
-      {"PageTextId": "concepts-editor-off", "Text": "The concept rulebook editor is not running. Start it with ./start.sh --concept-editor", "Name": "concepts-editor-off"},
       {"PageTextId": "concepts-load-file", "Text": "Load the concept rulebook file", "Name": "concepts-load-file"},
       {"PageTextId": "concepts-write-file", "Text": "Overwrite the file from these rows", "Name": "concepts-write-file"},
       {"PageTextId": "concepts-file-changed", "Text": "The concept rulebook file ({file}) changed on disk: saved from its rulebook editor, or edited by hand. Load it to bring those edits into the ontology, or overwrite it from the rows here.", "Name": "concepts-file-changed"},
@@ -1500,6 +1498,20 @@
       {"PageTextId": "concepts-tools-heading", "Text": "The concept rulebook's tools", "Name": "concepts-tools-heading"},
       {"PageTextId": "concepts-tools-text", "Text": "The same tools as the ontology form has, each made from the concept rulebook: the same facts as tables.", "Name": "concepts-tools-text"},
       {"PageTextId": "tool-here", "Text": "You are on this page.", "Name": "tool-here"},
+      {"PageTextId": "editor-starts", "Text": "Not running yet: it starts when you open it. The first start takes a few minutes.", "Name": "editor-starts"},
+      {"PageTextId": "editor-heading-ontology", "Text": "The rulebook editor, on the rulebook", "Name": "editor-heading-ontology"},
+      {"PageTextId": "editor-heading-concept", "Text": "The rulebook editor, on the concept rulebook", "Name": "editor-heading-concept"},
+      {"PageTextId": "editor-starting", "Text": "Starting it ({seconds} s). This page goes to the editor as soon as it answers; the first start takes a few minutes.", "Name": "editor-starting"},
+      {"PageTextId": "editor-failed", "Text": "The rulebook editor did not start. What its launcher said:", "Name": "editor-failed"},
+      {"PageTextId": "editor-retry", "Text": "Try again", "Name": "editor-retry"},
+      {"PageTextId": "file-taken-concept", "Text": "Rulebook v{number}: {file} was saved from outside this app (its rulebook editor, or by hand) and has been taken into the ontology.", "Name": "file-taken-concept"},
+      {"PageTextId": "file-taken-hub", "Text": "Rulebook v{number}: {file} was saved from outside this app (its rulebook editor, or by hand) and has been loaded.", "Name": "file-taken-hub"},
+      {"PageTextId": "file-refused-hub", "Text": "{file} changed on disk and could not be loaded: {reason}", "Name": "file-refused-hub"},
+      {"PageTextId": "file-held-start", "Text": "It already said something other than the rulebook when this app started, so there is no telling which of the two files is the newer.", "Name": "file-held-start"},
+      {"PageTextId": "file-held-base", "Text": "It was saved from rulebook v{base} and the rulebook is now v{number}, so loading it would undo what was saved since.", "Name": "file-held-base"},
+      {"PageTextId": "file-held-refused", "Text": "It could not be loaded: {reason}", "Name": "file-held-refused"},
+      {"PageTextId": "file-waiting-unsaved", "Text": "There are unsaved changes here, so it was not loaded by itself.", "Name": "file-waiting-unsaved"},
+      {"PageTextId": "files-both-changed", "Text": "Both rulebook files changed on disk, and there is no telling which is the newer. Discard changes reloads the rulebook file; the concept form loads or overwrites the concept rulebook file.", "Name": "files-both-changed"},
       {"PageTextId": "jsonfile-heading-ontology", "Text": "The rulebook file", "Name": "jsonfile-heading-ontology"},
       {"PageTextId": "jsonfile-heading-concept", "Text": "The concept rulebook file", "Name": "jsonfile-heading-concept"},
       {"PageTextId": "jsonfile-heading-concept-live", "Text": "The concept rulebook of the rows here", "Name": "jsonfile-heading-concept-live"},
@@ -1549,7 +1561,7 @@
       {"RulebookToolId": "admin", "Label": "The ontology form", "Adds": "Every table of the rulebook as an editable grid: rules, properties and their wiring, wording, layouts, the cast. Edits apply at once; Save writes the rulebook file.", "Href": "/admin.html", "LinkText": "Open the ontology form", "SortOrder": 5, "Form": "ontology", "Name": "The ontology form"},
       {"RulebookToolId": "concepts", "Label": "The concept form", "Adds": "The same ontology as ordinary tables: a table of individuals, a table per class, a table or a column per property, with each property's attributes beside it. Add a person, a class, a relationship or a column there and this page shows it: every edit is written as the matching change of the rulebook's things, properties and statements.", "Href": "/concepts.html", "LinkText": "Open the concept form", "SortOrder": 6, "Form": "ontology", "Name": "The concept form"},
       {"RulebookToolId": "xlsx", "Label": "Excel, both ways", "Adds": "Export the current rows as a workbook with every rule as a live formula, edit it, and import it again.", "Href": "/admin.html#excel", "LinkText": "Export or import", "SortOrder": 7, "Form": "ontology", "Name": "Excel, both ways"},
-      {"RulebookToolId": "editor", "Label": "Rulebook editor", "Adds": "The generated editor for tables, fields and formulas, with its own database and API.", "Href": "editor", "LinkText": "Open the rulebook editor", "SortOrder": 8, "Form": "ontology", "Name": "Rulebook editor"},
+      {"RulebookToolId": "editor", "Label": "Rulebook editor", "Adds": "The generated editor for tables, fields and formulas, with its own database and API. Its Save writes the rulebook file, and this app takes it in as the next version.", "Href": "editor", "LinkText": "Open the rulebook editor", "SortOrder": 8, "Form": "ontology", "Name": "Rulebook editor"},
       {"RulebookToolId": "rulebook", "Label": "The rulebook", "Adds": "One JSON file holds the whole model, one field or one row per line. Everything on this page is built from it.", "Href": "/file.html?form=ontology", "LinkText": "Open the file", "SortOrder": 9, "Form": "ontology", "Name": "The rulebook"},
       {"RulebookToolId": "concept-engines", "Label": "Interchangeable engines", "Adds": "Which facts are in effect is computed by the Postgres views, the generated TypeScript or the generated OWL and SHACL rules, and these tables show the answer. Switch with the control above; nothing else changes.", "Href": null, "LinkText": null, "SortOrder": 1, "Form": "concept", "Name": "Interchangeable engines"},
       {"RulebookToolId": "concept-conformance", "Label": "Conformance", "Adds": "Every engine's answers for the current facts, compared value by value with the conformance harness's own rule for when two values are equal.", "Href": null, "LinkText": null, "SortOrder": 2, "Form": "concept", "Name": "Conformance"},
@@ -1558,7 +1570,7 @@
       {"RulebookToolId": "concept-ontology", "Label": "The ontology form", "Adds": "The same facts as things, properties and statements, one row per fact, with the page's rules, wording, layouts and cast.", "Href": "/admin.html", "LinkText": "Open the ontology form", "SortOrder": 5, "Form": "concept", "Name": "The ontology form"},
       {"RulebookToolId": "concept-admin", "Label": "The concept form", "Adds": "Every table of the concept rulebook as an editable grid, with each class's and each property's attributes beside it. Edits apply at once, as the matching change of the ontology; Save writes both rulebook files.", "Href": "/concepts.html", "LinkText": "Open the concept form", "SortOrder": 6, "Form": "concept", "Name": "The concept form"},
       {"RulebookToolId": "concept-xlsx", "Label": "Excel, both ways", "Adds": "Export the concept tables as a workbook, edit it, and import it again: the edits come back as the matching changes of the ontology.", "Href": "/concepts.html#excel", "LinkText": "Export or import", "SortOrder": 7, "Form": "concept", "Name": "Excel, both ways"},
-      {"RulebookToolId": "concept-editor", "Label": "Rulebook editor", "Adds": "The generated editor for tables, fields and formulas, opened on the concept rulebook, with its own database and API.", "Href": "editor", "LinkText": "Open the concept rulebook editor", "SortOrder": 8, "Form": "concept", "Name": "Rulebook editor"},
+      {"RulebookToolId": "concept-editor", "Label": "Rulebook editor", "Adds": "The generated editor for tables, fields and formulas, opened on the concept rulebook, with its own database and API. Its Save writes the concept rulebook file, and this app takes it into the ontology as the next version.", "Href": "editor", "LinkText": "Open the concept rulebook editor", "SortOrder": 8, "Form": "concept", "Name": "Rulebook editor"},
       {"RulebookToolId": "concept-rulebook", "Label": "The rulebook", "Adds": "One JSON file holds the concept rulebook, one field or one row per line. The build writes it from the rulebook, and so does Save.", "Href": "/file.html?form=concept", "LinkText": "Open the file", "SortOrder": 9, "Form": "concept", "Name": "The rulebook"}
     ]
   }

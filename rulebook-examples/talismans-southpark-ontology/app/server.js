@@ -28,8 +28,12 @@ const RUN_DIR = path.join(PROJECT, '.run');
 const PORT = Number(process.env.PORT || 43210);
 // The database scripts/erb_project.py loads for this project; DATABASE_URL only overrides it.
 const DATABASE_URL = process.env.DATABASE_URL || `postgresql://postgres@localhost:5432/erb_${SLUG.replace(/-/g, '_')}`;
+// How long a rulebook editor's launcher is given before it is stopped and called failed.
+const EDITOR_START_LIMIT_MS = Number(process.env.EDITOR_START_LIMIT_MS || 15 * 60 * 1000);
 // The rulebook editor's pinned ports (./start.sh --editor starts it on these).
 const EDITOR_UI_URL = `http://localhost:${process.env.RULEBOOK_EDITOR_UI_PORT || 43612}`;
+// What starts a rulebook editor: this project's start.sh, with the form's flag.
+const START_SCRIPT = process.env.START_SCRIPT || path.join(PROJECT, 'start.sh');
 // The concept rulebook as a file: what its own rulebook editor (./start.sh --concept-editor)
 // opens and saves. Beside the hub when RULEBOOK_PATH points the app at a copy.
 const CONCEPT_FILE = process.env.CONCEPT_RULEBOOK_PATH
@@ -60,6 +64,11 @@ function write(fn) {
 
 const app = express();
 app.use(express.json({ limit: '5mb' }));
+// Before the first request that reads or changes rows is answered, the concept rulebook file gets its first look (see firstLook).
+app.use('/api', (req, res, next) => {
+  if (conceptFileSeen !== undefined || req.path === '/health') return next();
+  firstLook().then(() => next(), (e) => { console.error(e.message); looked = null; next(); });
+});
 const route = (fn) => async (req, res) => {
   try { res.json(await fn(req)); } catch (e) { console.error(e.message); res.status(400).json({ error: e.message }); }
 };
@@ -72,7 +81,7 @@ const action = (fn) => route((req) => write(async () => {
 
 // ------------------------------------------------------------------ the explainer
 app.get('/api/health', route(async () => ({ ok: true, project: SLUG, engines: await engines.list() })));
-app.get('/api/page', route((req) => explainer.page(engineOf(req))));
+app.get('/api/page', route(async (req) => { await takeFiles(engineOf(req)); return explainer.page(engineOf(req)); }));
 app.get('/api/rows', route(async () => ws.data));        // stored rows, for the explainer's witness
 app.get('/api/engines', route(async () => ({ engines: await engines.list(), defaultId: engines.defaultId() })));
 app.post('/api/facts/:id/switch', action((req, engine) => explainer.switchFact(engine, req.params.id, !!req.body.on)));
@@ -87,10 +96,12 @@ app.get('/api/tools', route(async (req) => ({ tools: explainer.tools(String(req.
 const tableInfo = (t) => ({ name: t.name, description: t.description, key: t.key, rowCount: ws.rows(t.name).length,
   fields: t.fields.map((f) => ({ name: f.name, type: f.type, datatype: f.datatype, stored: f.stored, relatedTo: f.relatedTo, formula: f.formula, description: f.description })) });
 
-// What the rows are against the rulebook file: what differs, whether the file changed under the app, and the file's version.
-const fileState = () => ({ changes: ws.changes(), hubChangedOnDisk: ws.hubChangedOnDisk(), version: ws.rulebookVersion() });
+// What the rows are against the rulebook's two files: what differs from the rulebook file, whether
+// either file was saved from outside and is waiting, the file's version, and the last thing a
+// file saved from outside did here (news), which an open page shows when it sees a new one.
+const fileState = () => ({ changes: ws.changes(), hubChangedOnDisk: ws.hubChangedOnDisk(), version: ws.rulebookVersion(), file: conceptFileState(), news });
 
-app.get('/api/admin/tables', route(async () => ({ tables: Object.values(ws.tables).map(tableInfo), ...fileState() })));
+app.get('/api/admin/tables', route(async (req) => { await takeFiles(engineOf(req)); return { tables: Object.values(ws.tables).map(tableInfo), ...fileState() }; }));
 
 app.get('/api/admin/tables/:table', route(async (req) => {
   const t = ws.table(req.params.table);
@@ -118,7 +129,8 @@ app.patch('/api/admin/tables/:table/rows/:key', adminWrite((req, table) => ({ ro
 app.post('/api/admin/tables/:table/rows', adminWrite((req, table) => ({ row: ws.insert(table, req.body) })));
 app.delete('/api/admin/tables/:table/rows/:key', adminWrite((req, table) => { ws.remove(table, req.params.key); }));
 
-app.get('/api/admin/changes', route(async () => fileState()));
+// How things stand. The pages ask every few seconds, which is also when a file saved from outside is taken in.
+app.get('/api/admin/changes', route(async (req) => { await takeFiles(engineOf(req)); return fileState(); }));
 app.post('/api/admin/save', route((req) => write(async () => {
   const rows = ws.save();
   const message = rows ? fill(explainer.text('admin-saved'), { rows, file: path.relative(PROJECT, HUB) }) : explainer.text('admin-nothing-to-save');
@@ -272,8 +284,8 @@ app.post('/api/admin/jobs/import', express.raw({ type: () => true, limit: '30mb'
 // the same live rows as their concept rulebook (a table of individuals, a table per class, a
 // table or a column per property, ERBTables and ERBFields) and writes an edit made there as the
 // matching change of the ontology's rows. One store, two forms of it.
-const conceptView = async (engine) => ({ ...(await concepts.view(engine)), ...fileState(), file: conceptFileState() });
-app.get('/api/concepts', route((req) => conceptView(engineOf(req))));
+const conceptView = async (engine) => ({ ...(await concepts.view(engine)), ...fileState() });
+app.get('/api/concepts', route(async (req) => { await takeFiles(engineOf(req)); return conceptView(engineOf(req)); }));
 app.post('/api/concepts/edit', route((req) => write(async () => {
   const engine = engineOf(req);
   const result = await concepts.edit(engine, req.body);
@@ -297,22 +309,30 @@ app.post('/api/concepts/rulebook', route((req) => write(async () => {
 })));
 
 // The concept rulebook as a file. Save writes it from the saved rows, so the rulebook editor
-// opened on it (./start.sh --concept-editor) shows what was saved. That editor's own Save
-// rewrites the file; "Load the concept rulebook file" lays it over the live rows, as unsaved
-// changes of the ontology. A file that changed on disk since this app wrote, loaded or first
-// found it is someone's edit: Save leaves it alone until it is loaded or overwritten here.
+// opened on it shows what was saved. That editor's own Save rewrites the file, and the file is
+// then taken in (see "a file saved from outside this app"); "Load the concept rulebook file"
+// does the same by hand, as unsaved changes of the ontology. A file that changed on disk since
+// this app wrote, loaded or agreed with it is someone's edit: Save leaves it alone until it is
+// loaded or overwritten here.
 const hashOfFile = (file) => (fs.existsSync(file) ? crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') : null);
 const conceptFileName = path.relative(PROJECT, CONCEPT_FILE);
-let conceptFileSeen = hashOfFile(CONCEPT_FILE);
+// The hash of the file as this app last wrote, loaded or agreed with it. Not known until the
+// first look (see firstLook): a file that says something other than the rulebook when the app
+// starts was saved while the app was not looking, and is not passed over as already seen.
+let conceptFileSeen;
+// The file as it is now is the reader's to load or overwrite, and why: { hash, why }.
+let conceptFileHeld = null;
 function conceptFileState() {
   const now = hashOfFile(CONCEPT_FILE);
-  return { file: conceptFileName, exists: now !== null, changedOnDisk: now !== conceptFileSeen };
+  return { file: conceptFileName, exists: now !== null, changedOnDisk: now !== null && now !== conceptFileSeen,
+    why: conceptFileHeld && conceptFileHeld.hash === now ? conceptFileHeld.why : null };
 }
 async function writeConceptFile(engine) {
   const { concepts: document } = await concepts.view(engine);
   fs.mkdirSync(path.dirname(CONCEPT_FILE), { recursive: true });
   fs.writeFileSync(CONCEPT_FILE, layOut(document), 'utf8');
   conceptFileSeen = hashOfFile(CONCEPT_FILE);
+  conceptFileHeld = null;
 }
 // What Save does with the file, and says about it. The rows are saved either way.
 async function saveConceptFile(engine) {
@@ -331,6 +351,7 @@ app.post('/api/concepts/load-file', route((req) => write(async () => {
   const seen = hashOfFile(CONCEPT_FILE);
   const result = await concepts.lay(engine, JSON.parse(fs.readFileSync(CONCEPT_FILE, 'utf8')));
   conceptFileSeen = seen;
+  conceptFileHeld = null;
   return { ...result, message: fill(explainer.text('concepts-file-loaded'), { file: conceptFileName, rows: ws.changes().total }), ...(await conceptView(engine)) };
 })));
 app.post('/api/concepts/write-file', route((req) => write(async () => {
@@ -338,6 +359,129 @@ app.post('/api/concepts/write-file', route((req) => write(async () => {
   await writeConceptFile(engine);
   return { message: fill(explainer.text('concepts-file-written'), { file: conceptFileName }), ...(await conceptView(engine)) };
 })));
+
+// ------------------------------------------------------------------ a file saved from outside this app
+// Each form of the rulebook is a file, and its rulebook editor saves into it. While nothing is
+// unsaved here, a file saved from outside (its editor, or by hand) is taken in the next time a
+// page asks how things stand:
+//   the rulebook file      is reloaded, the candidate facts its things and properties imply are
+//                          brought in line, and an edit that left the version number alone is
+//                          stamped as the next version; the concept rulebook file follows it.
+//   the concept rulebook   is laid over the rows and saved, like any change made in the concept
+//                          form: the rulebook's next version, written to both files. Only a file
+//                          saved from the version the rulebook is at: laid over a later one it
+//                          would undo what was saved since.
+// Everything else waits for the reader, and the pages say so once (news): unsaved changes here,
+// both files changed at once, a concept file saved from an earlier version, one the mapping
+// refuses, and one that already said something else when this app started (there is no telling
+// which of the two files is the newer).
+let news = null;
+const tell = (form, message, bad = false) => { news = { id: (news?.id || 0) + 1, at: Date.now(), form, message, bad }; };
+let told = null;                      // what is waiting, as last said: said once, until it changes
+let hubRefused = null;                // the hash of a rulebook file that could not be taken in: not tried again
+const hubName = path.relative(PROJECT, HUB);
+const conceptFileText = () => JSON.parse(fs.readFileSync(CONCEPT_FILE, 'utf8'));
+const hold = (hash, why) => { conceptFileHeld = { hash, why }; return why; };
+// A file caught while it is being written does not parse yet. It is looked at again at the
+// next look, and refused only once it has lain like that for a few seconds.
+const stillBeingWritten = (file) => {
+  try { JSON.parse(fs.readFileSync(file, 'utf8')); return false; } catch (e) { return Date.now() - fs.statSync(file).mtimeMs < 5000; }
+};
+const changedText = (why) => [fill(explainer.text('concepts-file-changed'), { file: conceptFileName }), why].join(' ');
+
+// The first look at the concept file, before the first request is answered. A file that says
+// what the rulebook says is the one this app would have written, so it counts as seen. Laying
+// it over the rows shows whether it does: nothing changes. It takes an engine that can compute
+// (whichever the request named); with none, nothing is decided and the next request looks again.
+let looked = null;
+function firstLook() {
+  looked ??= write(async () => {
+    const usable = (await engines.list()).find((e) => e.ok);
+    if (!usable) { looked = null; return; }
+    const engine = engines.get(usable.id);
+    const hash = hashOfFile(CONCEPT_FILE);
+    conceptFileSeen = null;
+    if (hash === null) return;
+    const snapshot = ws.snapshot();
+    try {
+      await concepts.lay(engine, conceptFileText());
+      if (ws.changes().total === 0) conceptFileSeen = hash; else hold(hash, explainer.text('file-held-start'));
+    } catch (e) {
+      console.error(`concept rulebook file: ${e.message}`);
+      hold(hash, fill(explainer.text('file-held-refused'), { reason: e.message }));
+    } finally {
+      ws.restore(snapshot);
+    }
+  });
+  return looked;
+}
+
+async function takeFiles(engine) {
+  await writing.catch(() => {});
+  const waiting = () => {
+    const hubHash = ws.hubHashOnDisk(), hash = hashOfFile(CONCEPT_FILE);
+    return { hubHash, hash, hub: hubHash !== ws.hub.hash, concept: hash !== null && hash !== conceptFileSeen };
+  };
+  // What waits for the reader is said once.
+  const wait = (w, form, message) => {
+    const key = [w.hub && w.hubHash, w.concept && w.hash, message].join('|');
+    if (told !== key) { told = key; tell(form, message, true); }
+  };
+  const first = waiting();
+  if (!first.hub && !first.concept) return;
+  if (conceptFileSeen === undefined) return;                                   // no engine could take the first look yet
+  if (first.hub ? first.hubHash === hubRefused : conceptFileHeld?.hash === first.hash) return;   // already the reader's, and said
+  let taking = null;
+  try {
+    await write(async () => {
+      const w = waiting();
+      if (!w.hub && !w.concept) return;
+      if (w.hub && w.hubHash === hubRefused) return;
+      if ((w.hub && stillBeingWritten(HUB)) || (w.concept && stillBeingWritten(CONCEPT_FILE))) return;
+      if (w.hub && w.concept) return wait(w, 'ontology', explainer.text('files-both-changed'));
+      if (w.hub && ws.changes().total) return wait(w, 'ontology', explainer.text('admin-hub-changed'));
+      if (w.hub) {
+        taking = { form: 'ontology', hubHash: w.hubHash };
+        const { was, edited, undo } = ws.takeFile();
+        try {
+          engines.forgetSchema();
+          syncCandidates(ws, (await explainer.nextNumbers(engine)).candidate);
+          const stamp = edited && ws.rulebookVersion() === was;
+          if (stamp || ws.changes().total) ws.save({ edited: stamp });
+        } catch (e) {
+          undo();
+          engines.forgetSchema();
+          throw e;
+        }
+        if (!edited) return;                                             // rewritten, saying the same
+        const file = await saveConceptFile(engine);
+        return tell('ontology', [fill(explainer.text('file-taken-hub'), { file: hubName, number: ws.rulebookVersion() }), file.message].join(' '));
+      }
+      // The concept rulebook file.
+      if (conceptFileHeld?.hash === w.hash) return;                      // already the reader's, and said
+      if (ws.changes().total) return wait(w, 'concept', changedText(explainer.text('file-waiting-unsaved')));
+      taking = { form: 'concept', hash: w.hash };
+      const document = conceptFileText();
+      const base = (document.__meta__?.data || []).find((r) => r.MetaKey === 'rulebook-version')?.StringValue;
+      if (base == null) throw new Error('its __meta__ has no rulebook-version row, so it does not say which version of the rulebook it was saved from');
+      if (String(base) !== String(ws.rulebookVersion())) {
+        return wait(w, 'concept', changedText(hold(w.hash, fill(explainer.text('file-held-base'), { base, number: ws.rulebookVersion() }))));
+      }
+      await concepts.lay(engine, document);
+      const rows = ws.changes().total;
+      if (!rows) { conceptFileSeen = w.hash; return; }                   // rewritten, saying the same
+      ws.save();
+      await writeConceptFile(engine);
+      tell('concept', fill(explainer.text('file-taken-concept'), { file: conceptFileName, rows, number: ws.rulebookVersion() }));
+    });
+  } catch (e) {
+    // Nothing was taken (the write was undone). The file stays as it is and waits for the reader.
+    if (!taking) throw e;
+    console.error(`${taking.form} file saved from outside: ${e.message}`);
+    if (taking.form === 'concept') tell('concept', changedText(hold(taking.hash, fill(explainer.text('file-held-refused'), { reason: e.message }))), true);
+    else { hubRefused = taking.hubHash; tell('ontology', fill(explainer.text('file-refused-hub'), { file: hubName, reason: e.message }), true); }
+  }
+}
 
 // Excel, both ways, on the concept rulebook: the same catalog tools, handed the concept form.
 app.post('/api/admin/jobs/concept-export', route(async (req) => {
@@ -374,20 +518,93 @@ app.post('/api/admin/jobs/concept-import', express.raw({ type: () => true, limit
 }));
 
 // ------------------------------------------------------------------ the rulebook editors (each its own container)
-async function editorAt(url) {
+// Each form of the rulebook has the generated rulebook editor, in a container of its own, on
+// ports start.sh pins. A page links to it: straight there when it answers, otherwise to
+// /editor.html, which asks for it to be started here and goes there when it does. Starting one
+// is this project's own `./start.sh --editor` (or --concept-editor): the platform's launcher,
+// which brings the editor up to date, starts the container and then follows its log for ever.
+// The launcher is let go as soon as the editor answers; the container stays.
+const EDITORS = {
+  ontology: { form: 'ontology', url: EDITOR_UI_URL, flag: '--editor' },
+  concept: { form: 'concept', url: CONCEPT_EDITOR_UI_URL, flag: '--concept-editor' },
+};
+const editorOf = (req) => {
+  const editor = EDITORS[String(req.query.form ?? '')];
+  if (!editor) throw new Error(`There is no rulebook editor for the form ${JSON.stringify(req.query.form ?? '')}: the forms are ${Object.keys(EDITORS).join(' and ')}`);
+  return editor;
+};
+async function answers(url) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 1500);
   try {
-    const r = await fetch(url, { signal: controller.signal });
-    return { running: r.ok, url };
+    return (await fetch(url, { signal: controller.signal })).ok;
   } catch (e) {
-    return { running: false, url };
+    return false;
   } finally {
     clearTimeout(timer);
   }
 }
-app.get('/api/admin/editor', route(() => editorAt(EDITOR_UI_URL)));            // on the rulebook (the ontology form)
-app.get('/api/concepts/editor', route(() => editorAt(CONCEPT_EDITOR_UI_URL)));   // on the concept rulebook file
+// running | starting (its launcher is at work: how long, and its last lines) | failed (the launcher gave up: why) | stopped
+async function editorState(editor) {
+  const { form, url } = editor;
+  if (await answers(url)) return { form, url, state: 'running' };
+  if (editor.launcher) return { form, url, state: 'starting', seconds: Math.round((Date.now() - editor.startedAt) / 1000), tail: editor.tail.slice(-4) };
+  if (editor.failed) return { form, url, state: 'failed', reason: editor.failed };
+  return { form, url, state: 'stopped' };
+}
+// One launcher at a time: each runs the effortless CLI in this project before it starts its container.
+// A launcher has done its work when its editor answers. It is left following the container's log
+// (into .run/editor-<form>.log) and goes when this app does. One that neither answers nor ends
+// is stopped after EDITOR_START_LIMIT_MS, so the other form's editor is not kept waiting behind it.
+let launching = Promise.resolve();
+function startEditor(editor) {
+  if (editor.launcher) return;
+  editor.failed = null;
+  editor.tail = [];
+  editor.startedAt = Date.now();
+  editor.launcher = launching.then(() => new Promise((resolve) => {
+    fs.mkdirSync(RUN_DIR, { recursive: true });
+    const log = fs.createWriteStream(path.join(RUN_DIR, `editor-${editor.form}.log`));
+    const child = spawn('bash', [START_SCRIPT, editor.flag], { cwd: PROJECT, stdio: ['ignore', 'pipe', 'pipe'] });
+    editor.child = child;
+    const keep = (data) => { log.write(data); editor.tail = [...editor.tail, ...String(data).split('\n').map((l) => l.trim()).filter(Boolean)].slice(-12); };
+    child.stdout.on('data', keep);
+    child.stderr.on('data', keep);
+    let settled = false;
+    const settle = (failed) => {
+      if (settled) return;
+      settled = true;
+      clearInterval(watch);
+      editor.launcher = null;
+      editor.failed = failed;
+      resolve();
+    };
+    const began = Date.now();
+    const watch = setInterval(async () => {
+      if (await answers(editor.url)) return settle(null);
+      if (Date.now() - began < EDITOR_START_LIMIT_MS) return;
+      settle([`The editor did not answer at ${editor.url} within ${Math.round(EDITOR_START_LIMIT_MS / 1000)} s, so its launcher was stopped.`, ...editor.tail.slice(-6)].join('\n'));
+      child.kill();
+    }, 1000);
+    const ended = async (why) => {
+      log.end();
+      editor.child = null;
+      settle((await answers(editor.url)) ? null : [why, ...editor.tail.slice(-6)].join('\n'));
+    };
+    child.on('error', (e) => ended(e.message));
+    child.on('close', (code) => ended(`${path.relative(PROJECT, START_SCRIPT)} ${editor.flag} ended (${code ?? 'stopped'}) before the editor answered at ${editor.url}.`));
+  }));
+  launching = editor.launcher;
+}
+// The launchers go with the app, however it is stopped.
+process.on('exit', () => { for (const editor of Object.values(EDITORS)) editor.child?.kill(); });
+for (const signal of ['SIGINT', 'SIGTERM', 'SIGHUP']) process.on(signal, () => process.exit(0));
+app.get('/api/editor', route((req) => editorState(editorOf(req))));
+app.post('/api/editor/start', route(async (req) => {
+  const editor = editorOf(req);
+  if (!(await answers(editor.url))) startEditor(editor);
+  return editorState(editor);
+}));
 
 app.use('/rulebook-explainer-dag', express.static(path.join(PROJECT, 'explainer/rulebook-explainer-dag'), { maxAge: 0 }));
 app.use('/rulespeak', express.static(path.join(PROJECT, 'rulespeak')));

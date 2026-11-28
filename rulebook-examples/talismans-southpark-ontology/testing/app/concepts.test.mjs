@@ -251,7 +251,7 @@ test('the concept rulebook file: Save writes it, an edit made in it is loaded in
   try {
     const { api } = app;
     let view = await api('GET', '/api/concepts');
-    assert.deepEqual(view.file, { file: path.relative(PROJECT, conceptFile), exists: false, changedOnDisk: false });
+    assert.deepEqual(view.file, { file: path.relative(PROJECT, conceptFile), exists: false, changedOnDisk: false, why: null });
     await assert.rejects(() => api('POST', '/api/concepts/load-file'), /There is no concept rulebook file yet/);
 
     // Save writes the rulebook, and its concept form beside it.
@@ -265,7 +265,9 @@ test('the concept rulebook file: Save writes it, an edit made in it is loaded in
     assert.deepEqual([view.file.exists, view.file.changedOnDisk], [true, false]);
     assert.deepEqual(onDisk, view.concepts, 'the file is the concept form of the saved rows');
 
-    // The file edited elsewhere, as a rulebook editor leaves it.
+    // The file edited elsewhere, as a rulebook editor leaves it, while there is an unsaved change
+    // here. (With nothing unsaved the app takes the file in by itself: testing/app/editors.test.mjs.)
+    await api('POST', '/api/rules/inverse/switch', { on: true });
     onDisk.Person.schema.push({ name: 'nickname', datatype: 'string', type: 'raw', nullable: true, Description: 'What friends call them.' });
     onDisk.Person.data = onDisk.Person.data.map((r) => ({ nickname: r.PersonId === 'Stan' ? 'Stan the Man' : null, ...r }));   // keys in another order
     onDisk.Concert = { Description: 'Concerts.', schema: [
@@ -279,9 +281,9 @@ test('the concept rulebook file: Save writes it, an edit made in it is loaded in
     fs.writeFileSync(conceptFile, JSON.stringify(onDisk, null, 4));
     view = await api('GET', '/api/concepts');
     assert.equal(view.file.changedOnDisk, true);
+    assert.ok(view.changes.total > 0 && !view.changes.tables.Properties, 'it waits: the unsaved change here is still the only one');
 
     // Save leaves a file it has not seen alone.
-    await api('POST', '/api/rules/inverse/switch', { on: true });
     saved = await api('POST', '/api/admin/save');
     assert.equal(saved.concept.written, false);
     assert.match(saved.message, /changed on disk and was not overwritten/);

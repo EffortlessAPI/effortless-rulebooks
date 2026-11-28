@@ -7,12 +7,12 @@
 // edits and the server answers with the concept rulebook as it now reads.
 (function () {
   const $ = (id) => document.getElementById(id);
-  const { esc, changeLines, showVersion, nameKinds, toolList, compareEngines } = window.RulebookAdmin;
+  const { esc, changeLines, showVersion, nameKinds, toolList, compareEngines, editorLink, watchFiles } = window.RulebookAdmin;
   const MAX_ROWS = 300;
   const GROUPS = ['individuals', 'class', 'relationship', 'values', 'attributes', 'support', 'meta'];
   const NEW = { class: 'concepts-new-class', relationship: 'concepts-new-relationship', values: 'concepts-new-values' };
   const PROPERTY_PICKS = new Set(['InverseOf', 'ChainFirst', 'ChainSecond']);
-  let texts = {}, engines = [], view = null, current = 'Things', creating = null, armed = null;
+  let texts = {}, engines = [], view = null, current = 'Things', creating = null, armed = null, seen = null;
   let engineId = localStorage.getItem('erb.backend');
   const T = (key, values) => {
     if (texts[key] == null) throw new Error(`The rulebook has no page text "${key}"`);
@@ -73,6 +73,7 @@
   }
   function renderChanges() {
     const { changes, hubChangedOnDisk } = view;
+    if (seen) seen(view);
     const u = $('unsaved');
     u.textContent = changes.total === 1 ? T('unsaved-one') : changes.total ? T('unsaved', { count: changes.total }) : T('unsaved-none');
     u.classList.toggle('dirty', changes.total > 0);
@@ -86,7 +87,7 @@
     $('load-file').disabled = !view.file.exists;
     $('load-file').classList.toggle('primary', view.file.changedOnDisk);
     $('file-note').hidden = !view.file.changedOnDisk;
-    $('file-note-text').textContent = view.file.changedOnDisk ? T('concepts-file-changed', { file: view.file.file }) : '';
+    $('file-note-text').textContent = view.file.changedOnDisk ? [T('concepts-file-changed', { file: view.file.file }), view.file.why].filter(Boolean).join(' ') : '';
   }
 
   // ---------------------------------------------------------------- the list of tables, by what each is
@@ -341,11 +342,13 @@
     engineId = mine.id;
     renderEngines();
     await load();
-    const ed = await api('GET', '/api/concepts/editor');
-    if (ed.running) $('editor').href = ed.url; else { $('editor').removeAttribute('href'); $('editor').removeAttribute('data-kind'); $('editor').classList.add('off'); $('editor-note').textContent = T('concepts-editor-off'); }
+    const ed = await api('GET', '/api/editor?form=concept');
+    editorLink($('editor'), $('editor-note'), ed, T);
     // The concept form's tools: the same ones the ontology form has, made from the concept rulebook.
-    $('tools').innerHTML = toolList((await api('GET', '/api/tools?form=concept')).tools, { T, editor: ed, editorOff: 'concepts-editor-off' });
+    $('tools').innerHTML = toolList((await api('GET', '/api/tools?form=concept')).tools, { T, editor: ed });
     nameKinds(T, texts, $('tools'));
+    // A file saved from a rulebook editor is taken in by the server: load what this page shows again, and say so.
+    seen = watchFiles({ api, state: view, reload: load, say });
     $('compare').addEventListener('click', () => compareEngines({ api, T, box: $('conformance'), show: 25 }));
     for (const kind of Object.keys(JOBS)) await jobs.watch(kind, false);
   })().catch((e) => { console.error(e); say(e.message, true); });

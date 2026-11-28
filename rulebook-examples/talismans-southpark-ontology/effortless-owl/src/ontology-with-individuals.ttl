@@ -1326,7 +1326,7 @@ talismans-south-park-ontology-explainer:NodeLayouts
 talismans-south-park-ontology-explainer:PageTexts
     owl:hasKey ( erb:key ) .
 
-[] a owl:AllDifferent ; owl:distinctMembers ( talismans-south-park-ontology-explainer:page-title talismans-south-park-ontology-explainer:byline-prefix talismans-south-park-ontology-explainer:byline-author talismans-south-park-ontology-explainer:byline-author-url talismans-south-park-ontology-explainer:byline-suffix talismans-south-park-ontology-explainer:title talismans-south-park-ontology-explainer:intro talismans-south-park-ontology-explainer:intro-rulebook talismans-south-park-ontology-explainer:link-article talismans-south-park-ontology-explainer:link-article-url talismans-south-park-ontology-explainer:link-original talismans-south-park-ontology-explainer:link-original-url talismans-south-park-ontology-explainer:key-stated talismans-south-park-ontology-explainer:key-conclusion talismans-south-park-ontology-explainer:key-class talismans-south-park-ontology-explainer:key-individual talismans-south-park-ontology-explainer:key-help talismans-south-park-ontology-explainer:image-note talismans-south-park-ontology-explainer:statements-heading talismans-south-park-ontology-explainer:statements-hint talismans-south-park-ontology-explainer:scenario-heading talismans-south-park-ontology-explainer:scenario-hint talismans-south-park-ontology-explainer:rules-heading talismans-south-park-ontology-explainer:rules-hint talismans-south-park-ontology-explainer:conclusions-heading talismans-south-park-ontology-explainer:add-heading talismans-south-park-ontology-explainer:add-hint talismans-south-park-ontology-explainer:label-subject talismans-south-park-ontology-explainer:label-predicate talismans-south-park-ontology-explainer:label-object talismans-south-park-ontology-explainer:add-button talismans-south-park-ontology-explainer:grade-input-note talismans-south-park-ontology-explainer:integer-error talismans-south-park-ontology-explainer:form-replaced talismans-south-park-ontology-explainer:remove talismans-south-park-ontology-explainer:remove-label talismans-south-park-ontology-explainer:focus-appears talismans-south-park-ontology-explainer:focus-appears-one talismans-south-park-ontology-explainer:focus-source talismans-south-park-ontology-explainer:fandom-link talismans-south-park-ontology-explainer:original-image talismans-south-park-ontology-explainer:record-subject talismans-south-park-ontology-explainer:record-person-yes talismans-south-park-ontology-explainer:record-person-no talismans-south-park-ontology-explainer:record-value talismans-south-park-ontology-explainer:record-none talismans-south-park-ontology-explainer:sublabel-class talismans-south-park-ontology-explainer:title-class talismans-south-park-ontology-explainer:title-literal talismans-south-park-ontology-explainer:mode-label talismans-south-park-ontology-explainer:mode-original talismans-south-park-ontology-explainer:mode-tools talismans-south-park-ontology-explainer:engine-label talismans-south-park-ontology-explainer:engine-timing talismans-south-park-ontology-explainer:engine-unavailable talismans-south-park-ontology-explainer:conformance-button talismans-south-park-ontology-explainer:conformance-running talismans-south-park-ontology-explainer:conformance-agree talismans-south-park-ontology-explainer:conformance-differ talismans-south-park-ontology-explainer:unsaved talismans-south-park-ontology-explainer:unsaved-one talismans-south-park-ontology-explainer:unsaved-none talismans-south-park-ontology-explainer:admin-hub-changed talismans-south-park-ontology-explainer:admin-import-schema talismans-south-park-ontology-explainer:tools-heading talismans-south-park-ontology-explainer:tools-text talismans-south-park-ontology-explainer:admin-title talismans-south-park-ontology-explainer:admin-intro talismans-south-park-ontology-explainer:admin-back talismans-south-park-ontology-explainer:admin-save talismans-south-park-ontology-explainer:admin-discard talismans-south-park-ontology-explainer:admin-rebuild talismans-south-park-ontology-explainer:admin-export talismans-south-park-ontology-explainer:admin-import talismans-south-park-ontology-explainer:admin-editor talismans-south-park-ontology-explainer:admin-editor-off talismans-south-park-ontology-explainer:admin-add-row talismans-south-park-ontology-explainer:admin-delete-row talismans-south-park-ontology-explainer:admin-show-computed talismans-south-park-ontology-explainer:admin-filter talismans-south-park-ontology-explainer:admin-saved talismans-south-park-ontology-explainer:admin-nothing-to-save talismans-south-park-ontology-explainer:admin-discarded talismans-south-park-ontology-explainer:admin-candidates talismans-south-park-ontology-explainer:admin-rows talismans-south-park-ontology-explainer:admin-changes-heading talismans-south-park-ontology-explainer:admin-imported talismans-south-park-ontology-explainer:admin-conformance-heading talismans-south-park-ontology-explainer:admin-build-running talismans-south-park-ontology-explainer:admin-build-done talismans-south-park-ontology-explainer:admin-build-failed talismans-south-park-ontology-explainer:admin-export-running talismans-south-park-ontology-explainer:admin-exported talismans-south-park-ontology-explainer:admin-import-running talismans-south-park-ontology-explainer:admin-import-stale talismans-south-park-ontology-explainer:admin-rebuild-running talismans-south-park-ontology-explainer:record-class talismans-south-park-ontology-explainer:hood-stated talismans-south-park-ontology-explainer:hood-conclusions talismans-south-park-ontology-explainer:hood-consistent talismans-south-park-ontology-explainer:hood-yes talismans-south-park-ontology-explainer:hood-no talismans-south-park-ontology-explainer:focus-children talismans-south-park-ontology-explainer:focus-grandchildren talismans-south-park-ontology-explainer:workbook-url talismans-south-park-ontology-explainer:credits-summary talismans-south-park-ontology-explainer:footer-credit talismans-south-park-ontology-explainer:form-switch-label talismans-south-park-ontology-explainer:form-switch-ontology talismans-south-park-ontology-explainer:form-switch-concepts talismans-south-park-ontology-explainer:concepts-title talismans-south-park-ontology-explainer:concepts-intro talismans-south-park-ontology-explainer:concepts-export talismans-south-park-ontology-explainer:concepts-import talismans-south-park-ontology-explainer:concepts-open-file talismans-south-park-ontology-explainer:concepts-see-page talismans-south-park-ontology-explainer:concepts-changes-heading talismans-south-park-ontology-explainer:concepts-applied talismans-south-park-ontology-explainer:concepts-group-individuals talismans-south-park-ontology-explainer:concepts-group-class talismans-south-park-ontology-explainer:concepts-group-relationship talismans-south-park-ontology-explainer:concepts-group-values talismans-south-park-ontology-explainer:concepts-group-attributes talismans-south-park-ontology-explainer:concepts-group-support talismans-south-park-ontology-explainer:concepts-group-meta talismans-south-park-ontology-explainer:concepts-new-class talismans-south-park-ontology-explainer:concepts-new-relationship talismans-south-park-ontology-explainer:concepts-new-values talismans-south-park-ontology-explainer:concepts-new-class-intro talismans-south-park-ontology-explainer:concepts-new-relationship-intro talismans-south-park-ontology-explainer:concepts-new-values-intro talismans-south-park-ontology-explainer:concepts-new-name talismans-south-park-ontology-explainer:concepts-new-label talismans-south-park-ontology-explainer:concepts-add talismans-south-park-ontology-explainer:concepts-cancel talismans-south-park-ontology-explainer:concepts-any-thing talismans-south-park-ontology-explainer:concepts-a-member talismans-south-park-ontology-explainer:concepts-role-individuals talismans-south-park-ontology-explainer:concepts-role-class talismans-south-park-ontology-explainer:concepts-role-relationship talismans-south-park-ontology-explainer:concepts-role-values talismans-south-park-ontology-explainer:concepts-role-attributes talismans-south-park-ontology-explainer:concepts-role-support talismans-south-park-ontology-explainer:concepts-role-meta talismans-south-park-ontology-explainer:concepts-label talismans-south-park-ontology-explainer:concepts-subject-is talismans-south-park-ontology-explainer:concepts-object-is talismans-south-park-ontology-explainer:concepts-value-is talismans-south-park-ontology-explainer:concepts-symmetric talismans-south-park-ontology-explainer:concepts-inverse-of talismans-south-park-ontology-explainer:concepts-chain talismans-south-park-ontology-explainer:concepts-chain-then talismans-south-park-ontology-explainer:concepts-disjoint-with talismans-south-park-ontology-explainer:concepts-disjoint-placeholder talismans-south-park-ontology-explainer:concepts-user-addable talismans-south-park-ontology-explainer:concepts-none talismans-south-park-ontology-explainer:concepts-columns talismans-south-park-ontology-explainer:concepts-no-columns talismans-south-park-ontology-explainer:concepts-column-name talismans-south-park-ontology-explainer:concepts-column-label talismans-south-park-ontology-explainer:concepts-add-column talismans-south-park-ontology-explainer:concepts-holds-value talismans-south-park-ontology-explainer:concepts-holds-link talismans-south-park-ontology-explainer:concepts-remove-column talismans-south-park-ontology-explainer:concepts-remove-class talismans-south-park-ontology-explainer:concepts-remove-property talismans-south-park-ontology-explainer:concepts-remove-confirm talismans-south-park-ontology-explainer:concepts-editor talismans-south-park-ontology-explainer:concepts-editor-off talismans-south-park-ontology-explainer:concepts-load-file talismans-south-park-ontology-explainer:concepts-write-file talismans-south-park-ontology-explainer:concepts-file-changed talismans-south-park-ontology-explainer:concepts-file-loaded talismans-south-park-ontology-explainer:concepts-file-missing talismans-south-park-ontology-explainer:concepts-file-written talismans-south-park-ontology-explainer:concepts-file-kept talismans-south-park-ontology-explainer:concepts-file-failed talismans-south-park-ontology-explainer:kind-page talismans-south-park-ontology-explainer:kind-newtab talismans-south-park-ontology-explainer:kind-download talismans-south-park-ontology-explainer:kind-upload talismans-south-park-ontology-explainer:version-label talismans-south-park-ontology-explainer:version-label-unsaved talismans-south-park-ontology-explainer:version-hint talismans-south-park-ontology-explainer:form-ontology-what talismans-south-park-ontology-explainer:form-concepts-what talismans-south-park-ontology-explainer:group-rows talismans-south-park-ontology-explainer:group-excel talismans-south-park-ontology-explainer:group-file talismans-south-park-ontology-explainer:group-editor talismans-south-park-ontology-explainer:admin-open-file talismans-south-park-ontology-explainer:effortless-tag talismans-south-park-ontology-explainer:effortless-legend talismans-south-park-ontology-explainer:admin-tools-heading talismans-south-park-ontology-explainer:admin-tools-text talismans-south-park-ontology-explainer:concepts-tools-heading talismans-south-park-ontology-explainer:concepts-tools-text talismans-south-park-ontology-explainer:tool-here ) .
+[] a owl:AllDifferent ; owl:distinctMembers ( talismans-south-park-ontology-explainer:page-title talismans-south-park-ontology-explainer:byline-prefix talismans-south-park-ontology-explainer:byline-author talismans-south-park-ontology-explainer:byline-author-url talismans-south-park-ontology-explainer:byline-suffix talismans-south-park-ontology-explainer:title talismans-south-park-ontology-explainer:intro talismans-south-park-ontology-explainer:intro-rulebook talismans-south-park-ontology-explainer:link-article talismans-south-park-ontology-explainer:link-article-url talismans-south-park-ontology-explainer:link-original talismans-south-park-ontology-explainer:link-original-url talismans-south-park-ontology-explainer:key-stated talismans-south-park-ontology-explainer:key-conclusion talismans-south-park-ontology-explainer:key-class talismans-south-park-ontology-explainer:key-individual talismans-south-park-ontology-explainer:key-help talismans-south-park-ontology-explainer:image-note talismans-south-park-ontology-explainer:statements-heading talismans-south-park-ontology-explainer:statements-hint talismans-south-park-ontology-explainer:scenario-heading talismans-south-park-ontology-explainer:scenario-hint talismans-south-park-ontology-explainer:rules-heading talismans-south-park-ontology-explainer:rules-hint talismans-south-park-ontology-explainer:conclusions-heading talismans-south-park-ontology-explainer:add-heading talismans-south-park-ontology-explainer:add-hint talismans-south-park-ontology-explainer:label-subject talismans-south-park-ontology-explainer:label-predicate talismans-south-park-ontology-explainer:label-object talismans-south-park-ontology-explainer:add-button talismans-south-park-ontology-explainer:grade-input-note talismans-south-park-ontology-explainer:integer-error talismans-south-park-ontology-explainer:form-replaced talismans-south-park-ontology-explainer:remove talismans-south-park-ontology-explainer:remove-label talismans-south-park-ontology-explainer:focus-appears talismans-south-park-ontology-explainer:focus-appears-one talismans-south-park-ontology-explainer:focus-source talismans-south-park-ontology-explainer:fandom-link talismans-south-park-ontology-explainer:original-image talismans-south-park-ontology-explainer:record-subject talismans-south-park-ontology-explainer:record-person-yes talismans-south-park-ontology-explainer:record-person-no talismans-south-park-ontology-explainer:record-value talismans-south-park-ontology-explainer:record-none talismans-south-park-ontology-explainer:sublabel-class talismans-south-park-ontology-explainer:title-class talismans-south-park-ontology-explainer:title-literal talismans-south-park-ontology-explainer:mode-label talismans-south-park-ontology-explainer:mode-original talismans-south-park-ontology-explainer:mode-tools talismans-south-park-ontology-explainer:engine-label talismans-south-park-ontology-explainer:engine-timing talismans-south-park-ontology-explainer:engine-unavailable talismans-south-park-ontology-explainer:conformance-button talismans-south-park-ontology-explainer:conformance-running talismans-south-park-ontology-explainer:conformance-agree talismans-south-park-ontology-explainer:conformance-differ talismans-south-park-ontology-explainer:unsaved talismans-south-park-ontology-explainer:unsaved-one talismans-south-park-ontology-explainer:unsaved-none talismans-south-park-ontology-explainer:admin-hub-changed talismans-south-park-ontology-explainer:admin-import-schema talismans-south-park-ontology-explainer:tools-heading talismans-south-park-ontology-explainer:tools-text talismans-south-park-ontology-explainer:admin-title talismans-south-park-ontology-explainer:admin-intro talismans-south-park-ontology-explainer:admin-back talismans-south-park-ontology-explainer:admin-save talismans-south-park-ontology-explainer:admin-discard talismans-south-park-ontology-explainer:admin-rebuild talismans-south-park-ontology-explainer:admin-export talismans-south-park-ontology-explainer:admin-import talismans-south-park-ontology-explainer:admin-editor talismans-south-park-ontology-explainer:admin-add-row talismans-south-park-ontology-explainer:admin-delete-row talismans-south-park-ontology-explainer:admin-show-computed talismans-south-park-ontology-explainer:admin-filter talismans-south-park-ontology-explainer:admin-saved talismans-south-park-ontology-explainer:admin-nothing-to-save talismans-south-park-ontology-explainer:admin-discarded talismans-south-park-ontology-explainer:admin-candidates talismans-south-park-ontology-explainer:admin-rows talismans-south-park-ontology-explainer:admin-changes-heading talismans-south-park-ontology-explainer:admin-imported talismans-south-park-ontology-explainer:admin-conformance-heading talismans-south-park-ontology-explainer:admin-build-running talismans-south-park-ontology-explainer:admin-build-done talismans-south-park-ontology-explainer:admin-build-failed talismans-south-park-ontology-explainer:admin-export-running talismans-south-park-ontology-explainer:admin-exported talismans-south-park-ontology-explainer:admin-import-running talismans-south-park-ontology-explainer:admin-import-stale talismans-south-park-ontology-explainer:admin-rebuild-running talismans-south-park-ontology-explainer:record-class talismans-south-park-ontology-explainer:hood-stated talismans-south-park-ontology-explainer:hood-conclusions talismans-south-park-ontology-explainer:hood-consistent talismans-south-park-ontology-explainer:hood-yes talismans-south-park-ontology-explainer:hood-no talismans-south-park-ontology-explainer:focus-children talismans-south-park-ontology-explainer:focus-grandchildren talismans-south-park-ontology-explainer:workbook-url talismans-south-park-ontology-explainer:credits-summary talismans-south-park-ontology-explainer:footer-credit talismans-south-park-ontology-explainer:form-switch-label talismans-south-park-ontology-explainer:form-switch-ontology talismans-south-park-ontology-explainer:form-switch-concepts talismans-south-park-ontology-explainer:concepts-title talismans-south-park-ontology-explainer:concepts-intro talismans-south-park-ontology-explainer:concepts-export talismans-south-park-ontology-explainer:concepts-import talismans-south-park-ontology-explainer:concepts-open-file talismans-south-park-ontology-explainer:concepts-see-page talismans-south-park-ontology-explainer:concepts-changes-heading talismans-south-park-ontology-explainer:concepts-applied talismans-south-park-ontology-explainer:concepts-group-individuals talismans-south-park-ontology-explainer:concepts-group-class talismans-south-park-ontology-explainer:concepts-group-relationship talismans-south-park-ontology-explainer:concepts-group-values talismans-south-park-ontology-explainer:concepts-group-attributes talismans-south-park-ontology-explainer:concepts-group-support talismans-south-park-ontology-explainer:concepts-group-meta talismans-south-park-ontology-explainer:concepts-new-class talismans-south-park-ontology-explainer:concepts-new-relationship talismans-south-park-ontology-explainer:concepts-new-values talismans-south-park-ontology-explainer:concepts-new-class-intro talismans-south-park-ontology-explainer:concepts-new-relationship-intro talismans-south-park-ontology-explainer:concepts-new-values-intro talismans-south-park-ontology-explainer:concepts-new-name talismans-south-park-ontology-explainer:concepts-new-label talismans-south-park-ontology-explainer:concepts-add talismans-south-park-ontology-explainer:concepts-cancel talismans-south-park-ontology-explainer:concepts-any-thing talismans-south-park-ontology-explainer:concepts-a-member talismans-south-park-ontology-explainer:concepts-role-individuals talismans-south-park-ontology-explainer:concepts-role-class talismans-south-park-ontology-explainer:concepts-role-relationship talismans-south-park-ontology-explainer:concepts-role-values talismans-south-park-ontology-explainer:concepts-role-attributes talismans-south-park-ontology-explainer:concepts-role-support talismans-south-park-ontology-explainer:concepts-role-meta talismans-south-park-ontology-explainer:concepts-label talismans-south-park-ontology-explainer:concepts-subject-is talismans-south-park-ontology-explainer:concepts-object-is talismans-south-park-ontology-explainer:concepts-value-is talismans-south-park-ontology-explainer:concepts-symmetric talismans-south-park-ontology-explainer:concepts-inverse-of talismans-south-park-ontology-explainer:concepts-chain talismans-south-park-ontology-explainer:concepts-chain-then talismans-south-park-ontology-explainer:concepts-disjoint-with talismans-south-park-ontology-explainer:concepts-disjoint-placeholder talismans-south-park-ontology-explainer:concepts-user-addable talismans-south-park-ontology-explainer:concepts-none talismans-south-park-ontology-explainer:concepts-columns talismans-south-park-ontology-explainer:concepts-no-columns talismans-south-park-ontology-explainer:concepts-column-name talismans-south-park-ontology-explainer:concepts-column-label talismans-south-park-ontology-explainer:concepts-add-column talismans-south-park-ontology-explainer:concepts-holds-value talismans-south-park-ontology-explainer:concepts-holds-link talismans-south-park-ontology-explainer:concepts-remove-column talismans-south-park-ontology-explainer:concepts-remove-class talismans-south-park-ontology-explainer:concepts-remove-property talismans-south-park-ontology-explainer:concepts-remove-confirm talismans-south-park-ontology-explainer:concepts-editor talismans-south-park-ontology-explainer:concepts-load-file talismans-south-park-ontology-explainer:concepts-write-file talismans-south-park-ontology-explainer:concepts-file-changed talismans-south-park-ontology-explainer:concepts-file-loaded talismans-south-park-ontology-explainer:concepts-file-missing talismans-south-park-ontology-explainer:concepts-file-written talismans-south-park-ontology-explainer:concepts-file-kept talismans-south-park-ontology-explainer:concepts-file-failed talismans-south-park-ontology-explainer:kind-page talismans-south-park-ontology-explainer:kind-newtab talismans-south-park-ontology-explainer:kind-download talismans-south-park-ontology-explainer:kind-upload talismans-south-park-ontology-explainer:version-label talismans-south-park-ontology-explainer:version-label-unsaved talismans-south-park-ontology-explainer:version-hint talismans-south-park-ontology-explainer:form-ontology-what talismans-south-park-ontology-explainer:form-concepts-what talismans-south-park-ontology-explainer:group-rows talismans-south-park-ontology-explainer:group-excel talismans-south-park-ontology-explainer:group-file talismans-south-park-ontology-explainer:group-editor talismans-south-park-ontology-explainer:admin-open-file talismans-south-park-ontology-explainer:effortless-tag talismans-south-park-ontology-explainer:effortless-legend talismans-south-park-ontology-explainer:admin-tools-heading talismans-south-park-ontology-explainer:admin-tools-text talismans-south-park-ontology-explainer:concepts-tools-heading talismans-south-park-ontology-explainer:concepts-tools-text talismans-south-park-ontology-explainer:tool-here talismans-south-park-ontology-explainer:editor-starts talismans-south-park-ontology-explainer:editor-heading-ontology talismans-south-park-ontology-explainer:editor-heading-concept talismans-south-park-ontology-explainer:editor-starting talismans-south-park-ontology-explainer:editor-failed talismans-south-park-ontology-explainer:editor-retry talismans-south-park-ontology-explainer:file-taken-concept talismans-south-park-ontology-explainer:file-taken-hub talismans-south-park-ontology-explainer:file-refused-hub talismans-south-park-ontology-explainer:file-held-start talismans-south-park-ontology-explainer:file-held-base talismans-south-park-ontology-explainer:file-held-refused talismans-south-park-ontology-explainer:file-waiting-unsaved talismans-south-park-ontology-explainer:files-both-changed talismans-south-park-ontology-explainer:jsonfile-heading-ontology talismans-south-park-ontology-explainer:jsonfile-heading-concept talismans-south-park-ontology-explainer:jsonfile-heading-concept-live talismans-south-park-ontology-explainer:jsonfile-about talismans-south-park-ontology-explainer:jsonfile-about-live talismans-south-park-ontology-explainer:jsonfile-jump talismans-south-park-ontology-explainer:jsonfile-jump-choose talismans-south-park-ontology-explainer:jsonfile-wrap talismans-south-park-ontology-explainer:jsonfile-raw talismans-south-park-ontology-explainer:jsonfile-size ) .
 
 talismans-south-park-ontology-explainer:PortraitAliases
     rdfs:subClassOf [ a owl:Restriction ; owl:onProperty talismans-south-park-ontology-explainer:portrait ; owl:someValuesFrom talismans-south-park-ontology-explainer:Portraits ] ;
@@ -6418,11 +6418,6 @@ talismans-south-park-ontology-explainer:admin-editor a owl:NamedIndividual , tal
     talismans-south-park-ontology-explainer:pageTextId "admin-editor" ;
     talismans-south-park-ontology-explainer:text "Open the rulebook editor" .
 
-talismans-south-park-ontology-explainer:admin-editor-off a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
-    erb:key "admin-editor-off" ;
-    talismans-south-park-ontology-explainer:pageTextId "admin-editor-off" ;
-    talismans-south-park-ontology-explainer:text "The rulebook editor is not running. Start it with ./start.sh --editor" .
-
 talismans-south-park-ontology-explainer:admin-add-row a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
     erb:key "admin-add-row" ;
     talismans-south-park-ontology-explainer:pageTextId "admin-add-row" ;
@@ -6883,11 +6878,6 @@ talismans-south-park-ontology-explainer:concepts-editor a owl:NamedIndividual , 
     talismans-south-park-ontology-explainer:pageTextId "concepts-editor" ;
     talismans-south-park-ontology-explainer:text "Open the concept rulebook editor" .
 
-talismans-south-park-ontology-explainer:concepts-editor-off a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
-    erb:key "concepts-editor-off" ;
-    talismans-south-park-ontology-explainer:pageTextId "concepts-editor-off" ;
-    talismans-south-park-ontology-explainer:text "The concept rulebook editor is not running. Start it with ./start.sh --concept-editor" .
-
 talismans-south-park-ontology-explainer:concepts-load-file a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
     erb:key "concepts-load-file" ;
     talismans-south-park-ontology-explainer:pageTextId "concepts-load-file" ;
@@ -7032,6 +7022,126 @@ talismans-south-park-ontology-explainer:tool-here a owl:NamedIndividual , talism
     erb:key "tool-here" ;
     talismans-south-park-ontology-explainer:pageTextId "tool-here" ;
     talismans-south-park-ontology-explainer:text "You are on this page." .
+
+talismans-south-park-ontology-explainer:editor-starts a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "editor-starts" ;
+    talismans-south-park-ontology-explainer:pageTextId "editor-starts" ;
+    talismans-south-park-ontology-explainer:text "Not running yet: it starts when you open it. The first start takes a few minutes." .
+
+talismans-south-park-ontology-explainer:editor-heading-ontology a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "editor-heading-ontology" ;
+    talismans-south-park-ontology-explainer:pageTextId "editor-heading-ontology" ;
+    talismans-south-park-ontology-explainer:text "The rulebook editor, on the rulebook" .
+
+talismans-south-park-ontology-explainer:editor-heading-concept a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "editor-heading-concept" ;
+    talismans-south-park-ontology-explainer:pageTextId "editor-heading-concept" ;
+    talismans-south-park-ontology-explainer:text "The rulebook editor, on the concept rulebook" .
+
+talismans-south-park-ontology-explainer:editor-starting a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "editor-starting" ;
+    talismans-south-park-ontology-explainer:pageTextId "editor-starting" ;
+    talismans-south-park-ontology-explainer:text "Starting it ({seconds} s). This page goes to the editor as soon as it answers; the first start takes a few minutes." .
+
+talismans-south-park-ontology-explainer:editor-failed a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "editor-failed" ;
+    talismans-south-park-ontology-explainer:pageTextId "editor-failed" ;
+    talismans-south-park-ontology-explainer:text "The rulebook editor did not start. What its launcher said:" .
+
+talismans-south-park-ontology-explainer:editor-retry a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "editor-retry" ;
+    talismans-south-park-ontology-explainer:pageTextId "editor-retry" ;
+    talismans-south-park-ontology-explainer:text "Try again" .
+
+talismans-south-park-ontology-explainer:file-taken-concept a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "file-taken-concept" ;
+    talismans-south-park-ontology-explainer:pageTextId "file-taken-concept" ;
+    talismans-south-park-ontology-explainer:text "Rulebook v{number}: {file} was saved from outside this app (its rulebook editor, or by hand) and has been taken into the ontology." .
+
+talismans-south-park-ontology-explainer:file-taken-hub a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "file-taken-hub" ;
+    talismans-south-park-ontology-explainer:pageTextId "file-taken-hub" ;
+    talismans-south-park-ontology-explainer:text "Rulebook v{number}: {file} was saved from outside this app (its rulebook editor, or by hand) and has been loaded." .
+
+talismans-south-park-ontology-explainer:file-refused-hub a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "file-refused-hub" ;
+    talismans-south-park-ontology-explainer:pageTextId "file-refused-hub" ;
+    talismans-south-park-ontology-explainer:text "{file} changed on disk and could not be loaded: {reason}" .
+
+talismans-south-park-ontology-explainer:file-held-start a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "file-held-start" ;
+    talismans-south-park-ontology-explainer:pageTextId "file-held-start" ;
+    talismans-south-park-ontology-explainer:text "It already said something other than the rulebook when this app started, so there is no telling which of the two files is the newer." .
+
+talismans-south-park-ontology-explainer:file-held-base a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "file-held-base" ;
+    talismans-south-park-ontology-explainer:pageTextId "file-held-base" ;
+    talismans-south-park-ontology-explainer:text "It was saved from rulebook v{base} and the rulebook is now v{number}, so loading it would undo what was saved since." .
+
+talismans-south-park-ontology-explainer:file-held-refused a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "file-held-refused" ;
+    talismans-south-park-ontology-explainer:pageTextId "file-held-refused" ;
+    talismans-south-park-ontology-explainer:text "It could not be loaded: {reason}" .
+
+talismans-south-park-ontology-explainer:file-waiting-unsaved a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "file-waiting-unsaved" ;
+    talismans-south-park-ontology-explainer:pageTextId "file-waiting-unsaved" ;
+    talismans-south-park-ontology-explainer:text "There are unsaved changes here, so it was not loaded by itself." .
+
+talismans-south-park-ontology-explainer:files-both-changed a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "files-both-changed" ;
+    talismans-south-park-ontology-explainer:pageTextId "files-both-changed" ;
+    talismans-south-park-ontology-explainer:text "Both rulebook files changed on disk, and there is no telling which is the newer. Discard changes reloads the rulebook file; the concept form loads or overwrites the concept rulebook file." .
+
+talismans-south-park-ontology-explainer:jsonfile-heading-ontology a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-heading-ontology" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-heading-ontology" ;
+    talismans-south-park-ontology-explainer:text "The rulebook file" .
+
+talismans-south-park-ontology-explainer:jsonfile-heading-concept a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-heading-concept" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-heading-concept" ;
+    talismans-south-park-ontology-explainer:text "The concept rulebook file" .
+
+talismans-south-park-ontology-explainer:jsonfile-heading-concept-live a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-heading-concept-live" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-heading-concept-live" ;
+    talismans-south-park-ontology-explainer:text "The concept rulebook of the rows here" .
+
+talismans-south-park-ontology-explainer:jsonfile-about a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-about" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-about" ;
+    talismans-south-park-ontology-explainer:text "The file as it is saved: standard JSON with one field or one row of a table per line, so one changed row is one changed line." .
+
+talismans-south-park-ontology-explainer:jsonfile-about-live a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-about-live" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-about-live" ;
+    talismans-south-park-ontology-explainer:text "The concept rulebook as the rows here make it now, unsaved changes included, laid out the way its file is saved: one field or one row of a table per line." .
+
+talismans-south-park-ontology-explainer:jsonfile-jump a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-jump" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-jump" ;
+    talismans-south-park-ontology-explainer:text "Go to" .
+
+talismans-south-park-ontology-explainer:jsonfile-jump-choose a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-jump-choose" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-jump-choose" ;
+    talismans-south-park-ontology-explainer:text "a table ({count})" .
+
+talismans-south-park-ontology-explainer:jsonfile-wrap a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-wrap" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-wrap" ;
+    talismans-south-park-ontology-explainer:text "Wrap long lines" .
+
+talismans-south-park-ontology-explainer:jsonfile-raw a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-raw" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-raw" ;
+    talismans-south-park-ontology-explainer:text "Open the plain JSON" .
+
+talismans-south-park-ontology-explainer:jsonfile-size a owl:NamedIndividual , talismans-south-park-ontology-explainer:PageTexts ;
+    erb:key "jsonfile-size" ;
+    talismans-south-park-ontology-explainer:pageTextId "jsonfile-size" ;
+    talismans-south-park-ontology-explainer:text "{file}: {lines} lines, {kb} KB" .
 
 # === Individuals: PortraitAliases ===
 
@@ -7565,7 +7675,7 @@ talismans-south-park-ontology-explainer:editor a owl:NamedIndividual , talismans
     erb:key "editor" ;
     talismans-south-park-ontology-explainer:rulebookToolId "editor" ;
     talismans-south-park-ontology-explainer:label "Rulebook editor" ;
-    talismans-south-park-ontology-explainer:adds "The generated editor for tables, fields and formulas, with its own database and API." ;
+    talismans-south-park-ontology-explainer:adds "The generated editor for tables, fields and formulas, with its own database and API. Its Save writes the rulebook file, and this app takes it in as the next version." ;
     talismans-south-park-ontology-explainer:href "editor" ;
     talismans-south-park-ontology-explainer:linkText "Open the rulebook editor" ;
     talismans-south-park-ontology-explainer:sortOrder 8 ;
@@ -7575,8 +7685,8 @@ talismans-south-park-ontology-explainer:rulebook a owl:NamedIndividual , talisma
     erb:key "rulebook" ;
     talismans-south-park-ontology-explainer:rulebookToolId "rulebook" ;
     talismans-south-park-ontology-explainer:label "The rulebook" ;
-    talismans-south-park-ontology-explainer:adds "One JSON file holds the whole model. Everything on this page is built from it." ;
-    talismans-south-park-ontology-explainer:href "/rulebook/talismans-southpark-ontology-rulebook.json" ;
+    talismans-south-park-ontology-explainer:adds "One JSON file holds the whole model, one field or one row per line. Everything on this page is built from it." ;
+    talismans-south-park-ontology-explainer:href "/file.html?form=ontology" ;
     talismans-south-park-ontology-explainer:linkText "Open the file" ;
     talismans-south-park-ontology-explainer:sortOrder 9 ;
     talismans-south-park-ontology-explainer:form "ontology" .
@@ -7651,7 +7761,7 @@ talismans-south-park-ontology-explainer:concept-editor a owl:NamedIndividual , t
     erb:key "concept-editor" ;
     talismans-south-park-ontology-explainer:rulebookToolId "concept-editor" ;
     talismans-south-park-ontology-explainer:label "Rulebook editor" ;
-    talismans-south-park-ontology-explainer:adds "The generated editor for tables, fields and formulas, opened on the concept rulebook, with its own database and API." ;
+    talismans-south-park-ontology-explainer:adds "The generated editor for tables, fields and formulas, opened on the concept rulebook, with its own database and API. Its Save writes the concept rulebook file, and this app takes it into the ontology as the next version." ;
     talismans-south-park-ontology-explainer:href "editor" ;
     talismans-south-park-ontology-explainer:linkText "Open the concept rulebook editor" ;
     talismans-south-park-ontology-explainer:sortOrder 8 ;
@@ -7661,8 +7771,8 @@ talismans-south-park-ontology-explainer:concept-rulebook a owl:NamedIndividual ,
     erb:key "concept-rulebook" ;
     talismans-south-park-ontology-explainer:rulebookToolId "concept-rulebook" ;
     talismans-south-park-ontology-explainer:label "The rulebook" ;
-    talismans-south-park-ontology-explainer:adds "One JSON file holds the concept rulebook. The build writes it from the rulebook, and so does Save." ;
-    talismans-south-park-ontology-explainer:href "/concept-rulebook/talismans-southpark-ontology-concepts.json" ;
+    talismans-south-park-ontology-explainer:adds "One JSON file holds the concept rulebook, one field or one row per line. The build writes it from the rulebook, and so does Save." ;
+    talismans-south-park-ontology-explainer:href "/file.html?form=concept" ;
     talismans-south-park-ontology-explainer:linkText "Open the file" ;
     talismans-south-park-ontology-explainer:sortOrder 9 ;
     talismans-south-park-ontology-explainer:form "concept" .

@@ -3,9 +3,9 @@
 // chosen engine computes them. Save writes the rows back into the rulebook file.
 (function () {
   const $ = (id) => document.getElementById(id);
-  const { esc, changeLines, showVersion, nameKinds, toolList, compareEngines } = window.RulebookAdmin;   // shared with the other pages
+  const { esc, changeLines, showVersion, nameKinds, toolList, compareEngines, editorLink, watchFiles } = window.RulebookAdmin;   // shared with the other pages
   const MAX_ROWS = 200, MAX_OPTIONS = 80;
-  let texts = {}, live = {}, tables = [], current = null, rows = [], engines = [], explainerReady = false, version = null;
+  let texts = {}, live = {}, tables = [], current = null, rows = [], engines = [], explainerReady = false, version = null, fileState = null, seen = null;
   let engineId = localStorage.getItem('erb.backend');
   const T = (key, values) => {
     if (texts[key] == null) throw new Error(`The rulebook has no page text "${key}"`);
@@ -50,6 +50,8 @@
     const r = await api('GET', '/api/admin/tables');
     tables = r.tables;
     version = r.version;
+    fileState = r;
+    if (seen) seen(r);
     live = await api('GET', '/api/rows');
     texts = Object.fromEntries(live.PageTexts.map((x) => [x.PageTextId, x.Text]));
     for (const el of document.querySelectorAll('[data-text]')) el.textContent = T(el.dataset.text);
@@ -199,11 +201,13 @@
     engineId = mine.id;
     await loadTables();
     await loadTable(tables.find((t) => t.name === 'Statements') ? 'Statements' : tables[0].name);
-    const ed = await api('GET', '/api/admin/editor');
-    if (ed.running) $('editor').href = ed.url; else { $('editor').removeAttribute('href'); $('editor').removeAttribute('data-kind'); $('editor').classList.add('off'); $('editor-note').textContent = T('admin-editor-off'); }
+    const ed = await api('GET', '/api/editor?form=ontology');
+    editorLink($('editor'), $('editor-note'), ed, T);
     // The ontology form's tools, as the explainer page lists them.
-    $('tools').innerHTML = toolList((await api('GET', '/api/tools?form=ontology')).tools, { T, editor: ed, editorOff: 'admin-editor-off' });
+    $('tools').innerHTML = toolList((await api('GET', '/api/tools?form=ontology')).tools, { T, editor: ed });
     nameKinds(T, texts, $('tools'));
+    // A file saved from a rulebook editor is taken in by the server: load what this page shows again, and say so.
+    seen = watchFiles({ api, state: fileState, reload: async () => { await loadTables(); await loadTable(current); }, say });
     for (const kind of Object.keys(JOBS)) await jobs.watch(kind, false);
   })().catch((e) => { console.error(e); say(e.message, true); });
 })();

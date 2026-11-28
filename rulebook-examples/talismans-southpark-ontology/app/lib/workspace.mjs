@@ -1,7 +1,7 @@
 // The live rows: the rulebook's stored rows as they are right now, with every
 // edit the page or the admin has made since the last save. Every engine computes
 // from these rows; Save writes them back to the rulebook file.
-import { readHub, storedRows, writeHub } from './hub.mjs';
+import { readHub, storedRows, writeHub, hashOnDisk, contentOf } from './hub.mjs';
 
 // The row of __meta__ that names the rulebook file's version, and what a version is.
 const VERSION_KEY = 'rulebook-version';
@@ -38,13 +38,29 @@ export class Workspace {
     this.reload();
   }
 
-  reload() {
-    this.hub = readHub(this.hubPath);
-    this.tables = this.hub.tables;
-    this.data = storedRows(this.hub);
-    this.saved = storedRows(this.hub);
+  reload() { this.use(readHub(this.hubPath)); }
+
+  use(hub) {
+    this.hub = hub;
+    this.tables = hub.tables;
+    this.data = storedRows(hub);
+    this.saved = storedRows(hub);
     this.index = {};
     for (const name of Object.keys(this.tables)) { this.reindex(name); this.touch(name); }
+  }
+
+  // The file was saved from outside this app (its rulebook editor, or by hand) and nothing is
+  // unsaved here: the rows it holds now are the rows. Says the version this app had, and whether
+  // the file reads differently from what was loaded before (a rewrite that changed nothing does not).
+  // A file with no version, or one that does not parse, is refused and nothing here changes.
+  // undo puts back what was loaded before, for a caller whose next step fails.
+  takeFile() {
+    const loaded = this.hub, was = this.rulebookVersion(), before = contentOf(loaded);
+    const hub = readHub(this.hubPath);
+    const row = (hub.doc.__meta__?.data || []).find((r) => r.MetaKey === VERSION_KEY);
+    if (!row || !isVersion(row.StringValue)) throw new Error(`${this.hubPath} has no version: its __meta__ needs a rulebook-version row holding a whole number`);
+    this.use(hub);
+    return { was, edited: contentOf(hub) !== before, undo: () => this.use(loaded) };
   }
 
   reindex(name) {
@@ -208,7 +224,8 @@ export class Workspace {
     return out;
   }
 
-  hubChangedOnDisk() { return readHub(this.hubPath).hash !== this.hub.hash; }
+  hubHashOnDisk() { return hashOnDisk(this.hubPath); }
+  hubChangedOnDisk() { return this.hubHashOnDisk() !== this.hub.hash; }
 
   // The rulebook file's version: the number its __meta__ carries, which a reader quotes to
   // name the file they saw. It belongs to the file, so it is stamped by the one writer (save).
@@ -221,15 +238,17 @@ export class Workspace {
 
   // Writes the rows into the file. A save that changes it is the file's next version; a save
   // the file refuses (it changed on disk) is none. Returns how many rows the save changed.
-  save() {
-    const changed = this.changes().total;
+  // edited: the file was just taken as someone saved it from outside, with the version number
+  // left as it was; that edit is the next version too, though no row differs from the file now.
+  save({ edited = false } = {}) {
+    const changed = this.changes().total, stamp = changed > 0 || edited;
     const row = this.get('__meta__', VERSION_KEY);
     const was = this.rulebookVersion();
-    if (changed) { row.StringValue = String(was + 1); this.touch('__meta__'); }
+    if (stamp) { row.StringValue = String(was + 1); this.touch('__meta__'); }
     try {
       this.hub = writeHub(this.hub, this.data);
     } catch (e) {
-      if (changed) { row.StringValue = String(was); this.touch('__meta__'); }
+      if (stamp) { row.StringValue = String(was); this.touch('__meta__'); }
       throw e;
     }
     this.tables = this.hub.tables;

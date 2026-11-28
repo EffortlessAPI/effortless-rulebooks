@@ -110,11 +110,12 @@ them there. See "Two forms of one rulebook" in the README.
 - **The concept rulebook is also a file**, `concept-rulebook/talismans-southpark-ontology-concepts.json`:
   a build output (the `concept-rulebook` step runs `scripts/extract-concept-rulebook.py`) that
   Save also writes. Never edit it by hand as if it were the hub: an edit there counts only
-  when the Concepts page loads it (`POST /api/concepts/load-file`). A test fails when the
+  when the app takes the file in (by itself after its rulebook editor's Save, see Rules; or
+  `POST /api/concepts/load-file`). A test fails when the
   committed file no longer matches the hub; run the step again.
-- **Its rulebook editor** is `./start.sh --concept-editor`, a second container on ports
-  43621 (API), 43622 (UI), 43623 (Postgres), generated into `concept-rulebook/` like the
-  first one in `effortless-rulebook/`.
+- **Its rulebook editor** is a second container on ports 43621 (API), 43622 (UI), 43623
+  (Postgres), generated into `concept-rulebook/` like the first one in `effortless-rulebook/`.
+  The concept form's link starts it (`./start.sh --concept-editor` by hand).
 - **Both forms have the same tools, each made from its own rulebook.** A `RulebookTools` row
   says which form it is about (`Form`: `ontology` or `concept`); `GET /api/tools?form=` gives
   one form's list and `toolList` (in `admin-shared.js`) draws it on all three pages. The
@@ -179,8 +180,24 @@ them there. See "Two forms of one rulebook" in the README.
   Postgres.app's client check and the Postgres engine reports itself unavailable.
 - **The rulebook editor** runs in its own container with its own database, on ports
   43611 (API), 43612 (UI), 43613 (Postgres), pinned in `start.sh`. Its Save rewrites the
-  rulebook file with computed copies baked in; the app notices the file changed and
-  reloads on Discard.
+  rulebook file with computed copies baked in; the app takes the file in (next rule).
+- **A rulebook editor is a link, and the app starts it.** `GET /api/editor?form=` says whether a
+  form's editor is running, `POST /api/editor/start?form=` runs this project's own
+  `./start.sh --editor` or `--concept-editor` (never a second launcher), and `/editor.html`
+  is where a link goes while its editor is not running. `editorLink` and `toolList`
+  (`admin-shared.js`) draw the link on every page; never show an editor as a note with no link.
+- **A file saved from outside the app is taken in by the server, in one place**: `takeFiles` in
+  `app/server.js`, which runs when a page asks how things stand (`GET /api/admin/changes`, every
+  few seconds, from `watchFiles` in `admin-shared.js`). The rules for what is taken and what
+  waits are the table in the README's "The rulebook editors"; `testing/app/editors.test.mjs`
+  holds each row. Do not add a file watcher or a second poller, and never take a file over
+  unsaved changes or over a later version: what would be lost is not ours to choose.
+- **Nothing in the server waits on another process without a time limit.** `layOut`
+  (`app/lib/hub.mjs`) runs `scripts/rulebook_layout.py` synchronously inside Save; on
+  2026-11-27 it piped the document to the script's stdin, the pipe stalled twice while the
+  machine was short of memory, and the app answered nothing for hours. The document goes over
+  as a file now and the call ends after 30 s with an error. Any new call of this kind gets
+  both.
 
 ## Folders
 

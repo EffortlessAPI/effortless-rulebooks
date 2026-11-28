@@ -2,6 +2,7 @@
 # ./start.sh            the explainer app (foreground; Ctrl-C stops it)
 # ./start.sh --editor   the generated rulebook editor, in its own container
 # ./start.sh --concept-editor   the same editor on the concept rulebook, in a second container
+# (The app runs these two itself when a form's "Rulebook editor" link is opened: app/server.js.)
 set -euo pipefail
 
 PROJECT_NAME="Talisman's South Park Ontology Explainer"
@@ -55,7 +56,7 @@ if [[ "${1:-}" == "--concept-editor" ]]; then
   [[ -f "$PROJECT_ROOT/concept-rulebook/talismans-southpark-ontology-concepts.json" ]] \
     || fail "There is no concept rulebook yet: run 'effortless build' in $PROJECT_ROOT, or Save in the app"
   printf '%s\n' "Concept rulebook editor: http://localhost:${CONCEPT_EDITOR_UI_PORT}  (API http://localhost:${CONCEPT_EDITOR_API_PORT})" \
-    "Its Save rewrites concept-rulebook/talismans-southpark-ontology-concepts.json; the app's Concepts page loads that file into the ontology."
+    "Its Save rewrites concept-rulebook/talismans-southpark-ontology-concepts.json; the app takes that file into the ontology as the rulebook's next version."
   cd "$PROJECT_ROOT/concept-rulebook"
   RULEBOOK_EDITOR_API_PORT="$CONCEPT_EDITOR_API_PORT" RULEBOOK_EDITOR_UI_PORT="$CONCEPT_EDITOR_UI_PORT" RULEBOOK_EDITOR_PG_PORT="$CONCEPT_EDITOR_PG_PORT" \
     exec bash edit-rulebook.sh

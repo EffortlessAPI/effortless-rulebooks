@@ -275,7 +275,7 @@
     unsaved.textContent = P.unsaved === 1 ? T('unsaved-one') : P.unsaved ? T('unsaved', { count: P.unsaved }) : T('unsaved-none');
     unsaved.classList.toggle('dirty', P.unsaved > 0);
     window.RulebookAdmin.showVersion($('version'), T, P.version, P.unsaved);
-    $('tools').innerHTML = window.RulebookAdmin.toolList(P.tools, { T, editor, editorOff: 'admin-editor-off' });
+    $('tools').innerHTML = window.RulebookAdmin.toolList(P.tools, { T, editor });
     window.RulebookAdmin.nameKinds(T, P.texts, $('tools'));
   }
 
@@ -391,9 +391,15 @@
     const mine = engines.find((e) => e.id === engineId && e.ok) || engines.find((e) => e.id === listed.defaultId && e.ok) || engines.find((e) => e.ok);
     if (!mine) throw new Error(engines.map((e) => `${e.label}: ${e.reason}`).join(' | '));
     engineId = mine.id;
-    editor = await api('GET', '/api/admin/editor');
+    editor = await api('GET', '/api/editor?form=ontology');
     P = await api('GET', '/api/page');
     applyLayout('default');
     render();
+    // A file saved from a rulebook editor is taken in by the server: the page shows it, and the tools layer says so.
+    window.RulebookAdmin.watchFiles({
+      api, state: await api('GET', '/api/admin/changes'),
+      reload: () => act('GET', '/api/page', null, (page) => { P = page; }),
+      say: (message, bad) => { $('file-news').textContent = message; $('file-news').classList.toggle('bad', !!bad); },
+    });
   })().catch((e) => { console.error(e); document.body.insertAdjacentHTML('afterbegin', `<p class="alarm">${esc(e.message)}</p>`); });
 })();

@@ -279,6 +279,13 @@ a.link.off { color: var(--quiet); text-decoration: none; cursor: default; }
 .action-group .hint { flex-basis: 100%; margin: 0; }
 .group-label { flex-basis: 100%; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--quiet); }
 
+/* ---- starting a rulebook editor (editor.html), and news of a file saved from one */
+.editor-start h1 { margin: 0 0 8px; font-family: var(--display); font-size: 1.5rem; }
+.editor-start #status.bad { color: var(--alarm); font-weight: 500; }
+.editor-tail { margin: 10px 0; padding: 10px 12px; border-radius: 10px; background: var(--fx-soft); color: var(--ink); font-size: 0.82rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+#file-news:empty { display: none; }
+#file-news { border-left: 4px solid var(--fx); padding-left: 10px; }
+
 /* ---- 3. the two forms of the rulebook: the explainer's links to them, and each editor's own colour */
 .admin-links { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; color: var(--quiet); }
 .formlink { font-weight: 700; }
