@@ -761,7 +761,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "A project is considered approved if all of the following:",
+          "headline": "A project is considered approved if any of the following:",
           "cases": [],
           "children": [
             {
@@ -1134,7 +1134,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "يُصنّف سجل «project» على أنه «approved» إذا تحقق جميع ما يلي:",
+          "headline": "يُصنّف سجل «project» على أنه «approved» إذا تحقق واحد على الأقل مما يلي:",
           "cases": [],
           "children": [
             {
@@ -1517,7 +1517,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Ein Project gilt als approved, wenn alles Folgende gilt:",
+          "headline": "Ein Project gilt als approved, wenn mindestens eines des Folgenden gilt:",
           "cases": [],
           "children": [
             {
@@ -1900,7 +1900,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un project se considera approved si se cumple todo lo siguiente:",
+          "headline": "Un project se considera approved si se cumple al menos una de las siguientes:",
           "cases": [],
           "children": [
             {
@@ -2283,7 +2283,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un project est considéré comme approved si tout ce qui suit est vrai :",
+          "headline": "Un project est considéré comme approved si au moins une des conditions suivantes est vraie :",
           "cases": [],
           "children": [
             {
@@ -2666,7 +2666,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "project “approved” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "headline": "project “approved” माना जाता है, यदि निम्नलिखित में से कम से कम एक सही हो:",
           "cases": [],
           "children": [
             {
@@ -3049,7 +3049,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Setiap project dianggap “approved” jika semua kondisi berikut terpenuhi:",
+          "headline": "Setiap project dianggap “approved” jika paling sedikit satu kondisi berikut terpenuhi:",
           "cases": [],
           "children": [
             {
@@ -3432,7 +3432,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un project è considerato approved se vale tutto quanto segue:",
+          "headline": "Un project è considerato approved se vale almeno una delle seguenti:",
           "cases": [],
           "children": [
             {
@@ -3815,7 +3815,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "次のすべてが成り立つ場合、projectは「Approved」と見なされます:",
+          "headline": "次のいずれかが成り立つ場合、projectは「Approved」と見なされます:",
           "cases": [],
           "children": [
             {
@@ -4198,7 +4198,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "다음 모두에 해당하는 경우, ‘project’ 레코드는 ‘approved’에 해당하는 것으로 간주됩니다:",
+          "headline": "다음 중 하나 이상에 해당하는 경우, ‘project’ 레코드는 ‘approved’에 해당하는 것으로 간주됩니다:",
           "cases": [],
           "children": [
             {
@@ -4581,7 +4581,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Een project geldt als approved als al het volgende geldt:",
+          "headline": "Een project geldt als approved als ten minste één van het volgende geldt:",
           "cases": [],
           "children": [
             {
@@ -4964,7 +4964,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Um project é considerado approved se tudo o que segue for verdadeiro:",
+          "headline": "Um project é considerado approved se pelo menos um dos seguintes for verdadeiro:",
           "cases": [],
           "children": [
             {
@@ -5347,7 +5347,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Project считается «approved», если выполняется всё следующее:",
+          "headline": "Project считается «approved», если выполняется хотя бы одно из следующего:",
           "cases": [],
           "children": [
             {
@@ -5730,7 +5730,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "“project” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “approved” sayılır:",
+          "headline": "“project” kaydı, aşağıdakilerden en az biri sağlanıyor ise “approved” sayılır:",
           "cases": [],
           "children": [
             {
@@ -6113,7 +6113,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Mỗi project được coi là “approved” nếu tất cả các điều kiện sau đều đúng:",
+          "headline": "Mỗi project được coi là “approved” nếu ít nhất một trong các điều kiện sau đúng:",
           "cases": [],
           "children": [
             {
@@ -6496,7 +6496,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "当以下全部成立时,project被视为“Approved”:",
+          "headline": "当以下任一成立时,project被视为“Approved”:",
           "cases": [],
           "children": [
             {
@@ -6758,4 +6758,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "TypesOfProject": "type of project"
     }
   }
-} };
+}, stamp: "de5f9a19186481dd" };

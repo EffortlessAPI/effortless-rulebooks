@@ -125,9 +125,6 @@ COMMENT ON TABLE types_of_project IS 'Table: TypesOfProject';
 -- FK INDEXES - Performance only, always applied
 -- ============================================================================
 
--- Client
-CREATE INDEX IF NOT EXISTS idx_client_customer ON client (customer);
-
 -- Projects
 CREATE INDEX IF NOT EXISTS idx_projects_project_type ON projects (project_type);
 CREATE INDEX IF NOT EXISTS idx_projects_approved_by ON projects (approved_by);
@@ -142,4 +139,4 @@ CREATE INDEX IF NOT EXISTS idx_roles_employees ON roles (employees);
 -- TypesOfProject
 CREATE INDEX IF NOT EXISTS idx_types_of_project_projects ON types_of_project (projects);
 
--- 7 FK index(es) declared.
+-- 6 FK index(es) declared.

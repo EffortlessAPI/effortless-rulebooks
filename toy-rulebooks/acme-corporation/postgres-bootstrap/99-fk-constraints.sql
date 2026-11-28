@@ -12,11 +12,6 @@
 -- enforcement. Idempotent: every constraint is dropped if present, then added.
 -- ============================================================================
 
--- Client
-ALTER TABLE client DROP CONSTRAINT IF EXISTS fk_client_customer;
-ALTER TABLE client ADD CONSTRAINT fk_client_customer
-  FOREIGN KEY (customer) REFERENCES client (client_id);
-
 -- Projects
 ALTER TABLE projects DROP CONSTRAINT IF EXISTS fk_projects_project_type;
 ALTER TABLE projects ADD CONSTRAINT fk_projects_project_type
@@ -43,4 +38,4 @@ ALTER TABLE types_of_project DROP CONSTRAINT IF EXISTS fk_types_of_project_proje
 ALTER TABLE types_of_project ADD CONSTRAINT fk_types_of_project_projects
   FOREIGN KEY (projects) REFERENCES projects (project_id);
 
--- 7 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 6 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
