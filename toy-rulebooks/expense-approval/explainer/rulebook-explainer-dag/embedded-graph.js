@@ -4330,4 +4330,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "ExpenseItems": "expense item"
     }
   }
-} };
+}, stamp: "fdc1d3002374087f" };
