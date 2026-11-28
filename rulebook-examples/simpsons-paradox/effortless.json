@@ -16,7 +16,7 @@
       "CommandLine": "minimize-rulebook -i simpsons-paradox-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.10.24.1121",
-      "LastUrl": "https://effortless-minimize-rulebook-v2026-07-08-1133-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastUrl": "https://effortless-minimize-rulebook-v2026-10-24-1121-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -24,8 +24,7 @@
       "RelativePath": "/effortless-postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/simpsons-paradox-rulebook.json -p memoize_repeated_calls=true -p database=erb_simpsons_paradox",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.17.1626",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.11.26.1400",
       "Description": "Generate Postgres schema + seed data from the rulebook"
     },
     {
@@ -42,7 +41,7 @@
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/simpsons-paradox-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.11.22.1524",
-      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-08-30-1537-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-11-22-1524-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate human-readable RuleSpeak narrative from the rulebook"
     },
     {
@@ -51,8 +50,8 @@
       "RelativePath": "/owl",
       "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/simpsons-paradox-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.17.1018",
-      "LastUrl": "https://effortless-rulebook-to-owl-v2026-07-08-0207-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.11.27.1353",
+      "LastUrl": "https://effortless-rulebook-to-owl-v2026-11-27-1353-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate OWL ontology + SHACL rules from the rulebook"
     },
     {
@@ -77,7 +76,8 @@
       "RelativePath": "/app/frontend/public",
       "CommandLine": "rulebook-to-explainer-dag -i ../../../effortless-rulebook/simpsons-paradox-rulebook.json -o rulebook-explainer-dag",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1838"
+      "LastVersionUsed": "v2026.11.27.1439",
+      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-11-27-1439-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -85,7 +85,6 @@
       "RelativePath": "",
       "CommandLine": "rulebook-to-xlsx -i effortless-rulebook/simpsons-paradox-rulebook.json",
       "IsDisabled": true,
-      "LastVersionUsed": "v2026.09.02.1122",
       "DisabledNote": "2026-07-12: transpiler returns HTTP 400 'XLSX build failed: ' (empty detail) on this rulebook -- confirmed via direct POST, not a network/infra timeout (workload responds in ~4s). Likely can't handle a rulebook this large (43 tables, ~3.9MB JSON). Revisit once a larger-capacity transpiler host is available."
     },
     {
@@ -102,8 +101,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i simpsons-paradox-rulebook.json -p rulebookPath=simpsons-paradox-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.0226",
-      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-07-0138-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.11.27.1442",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-11-27-1442-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],
   "ShowHidden": false,

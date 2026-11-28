@@ -5168,6 +5168,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       { "name": "JsonValue", "datatype": "string", "type": "raw", "nullable": true, "Description": "JSON-encoded value when ValueType = object or array." }
     ],
     "data": [
+      { "MetaKey": "ontology_iri", "Name": "ontology_iri", "ValueType": "string", "StringValue": "https://w3id.org/effortless-ntwf", "JsonValue": null },
+      { "MetaKey": "ontology_prefix", "Name": "ontology_prefix", "ValueType": "string", "StringValue": "effortless-ntwf", "JsonValue": null },
       { "MetaKey": "cmcc_summary", "ValueType": "string", "StringValue": "Domain mirror of Simpson's Paradox. Entities: Studies, Treatments, Strata, CaseCells. CellSuccessRate is the first derived fact. Pooled rates, per-stratum rates, and the reversal fall out as higher-order derived nodes in subsequent loops." },
       { "MetaKey": "causal_role_annotation_protocol", "ValueType": "string", "StringValue": "CausalRole on StratumVariables (confounder/mediator/collider/selection/contested/unknown) is a single-author judgment call recorded inline as MechanismNote at row-creation time — there is no separate annotator identity or double-review step; this repo has one contributor. Loop-98 added AnnotationCommitHash/AnnotationCommitDate/AnnotationCommitSubject/CausalRoleEverRevised, backfilled by walking full git history (git log -p) for every StratumVariables row to find (a) the commit that first introduced the row and (b) whether CausalRole ever differed across any later re-add of that row. Result, verified not assumed: all 242 rows were introduced once and CausalRole has never been revised since (CausalRoleEverRevised=FALSE for every row) — no reclassification has happened, so there is nothing yet to log an annotator-disagreement trail for. The 9 CausalRole='contested' rows (berkeley-1973-department, uc-irvine-admissions-1985-department, berkeley-six-dept-1973-department, hrt-whi-2002-study_design, sick-quitter-alcohol-abstainer_composition, tolbutamide-ugdp-1970-center_baseline_risk, uc-systemwide-admissions-major_campus, returns-to-education-field-field_of_study, fryer-2016-interaction-type) each carry a MechanismNote naming the specific competing causal story (e.g. Berkeley: confounder vs. mediator, gender self-selection into department); these are the load-bearing spot-check candidates for a future second-reviewer pass, which has not yet been done." },
       { "MetaKey": "source", "ValueType": "string", "StringValue": "hand-authored" },
@@ -14140,7 +14142,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "A treatment ranking is considered stratum-unanimous if all of the following:",
+          "headline": "A treatment ranking is considered stratum-unanimous if any of the following:",
           "cases": [],
           "children": [
             {
@@ -18185,7 +18187,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "A candidate study catalog is flagged expected sign flip if all of the following:",
+          "headline": "A candidate study catalog is flagged expected sign flip if any of the following:",
           "cases": [],
           "children": [
             {
@@ -18307,7 +18309,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "A candidate study catalog is considered data-ready if all of the following:",
+          "headline": "A candidate study catalog is considered data-ready if any of the following:",
           "cases": [],
           "children": [
             {
@@ -19907,4 +19909,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "CorpusBalance": "corpus balance"
     }
   }
-} };
+}, stamp: "c7732055c1891360" };

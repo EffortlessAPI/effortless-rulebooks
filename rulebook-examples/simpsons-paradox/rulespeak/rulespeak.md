@@ -1,4 +1,4 @@
-# 📘 simpsons-paradox — RuleSpeak®
+# 📘 simpsons-paradox — Docs
 
 _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treatments, Strata, and CaseCells (raw patient counts). SuccessRates, TreatmentSummaries, and TreatmentRankings are derived. The paradox falls out of the DAG as an emergent derived fact — it is never modeled directly._
 
@@ -8,6 +8,8 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 > this document is their plain-language reading.
 
 ## 1 Business Vocabulary
+
+_Example data is not shown: the formula simulator could not be generated: formula: '=LOOKUP({{TraditionId}}, ResearchTraditions[TraditionId], ResearchTraditions[Name])'. No value is displayed rather than a possibly-incorrect one._
 
 | Term | Description | Narrative Comment |
 |------|-------------|-------------------|
@@ -27,6 +29,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Commit Date | A defined attribute. | _ISO date (YYYY-MM-DD) of the commit where this loop landed._ |
 | Commit Message | A defined attribute. | _Git commit subject line for this loop's landing commit._ |
 | Git Tag | A defined attribute. | _Optional milestone tag pointing at this loop's landing commit (sp-loop-milestone-*). Used for discovery replay without memorizing SHAs._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Study** | A study is identified by its name. | — |
 | Name | The same as its study ID. | _Display label, mirrors StudyId._ |
 | Title | A defined attribute. | _Human-readable title of the study._ |
@@ -59,6 +64,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Valid Time End | A defined attribute. | _Last year of the real-world cohort period this study's data covers (valid-time, not publication year). Defaults to PublicationYear when the true cohort window is not independently known._ |
 | Valid Time Midpoint | Determined by priority: the valid time start plus the valid time end divided by 2 if all of the following hold: the valid time start has a value and the valid time end has a value; in all other cases, the publication year. | _Midpoint year of the valid-time cohort window, used to bucket studies by when their underlying data actually occurred rather than when the paper was published._ |
 | Valid Time Decade | Determined by priority: an empty string if the valid time midpoint is blank; in all other cases, the valid time midpoint divided by 10 rounded down to a whole number times 10. | _ValidTimeMidpoint floored to the decade (e.g. 1973 -> 1970). The bucket key ConfounderDistortionTimeline aggregates over._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Treatment** | A treatment is identified by its name and is related to a study. | — |
 | Name | The same as its treatment ID. | _Display label._ |
 | Study | A defined attribute. | _FK to the parent Study._ |
@@ -67,12 +75,18 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Total Cases | The total cases across the case cells related to the treatment. | _Total cases for this treatment across all strata._ |
 | Total Successes | The total successes across the case cells related to the treatment. | _Total successes for this treatment across all strata._ |
 | Pooled Success Rate | Determined by priority: an empty string if the total cases is 0; in all other cases, the total successes divided by the total cases. | _Pooled (across all strata) success rate for this treatment: TotalSuccesses / TotalCases._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Strata** | A strata is identified by its name and is related to a study. | — |
 | Name | The same as its stratum ID. | _Display label._ |
 | Study | A defined attribute. | _FK to the parent Study._ |
 | Stratum Label | A defined attribute. | _Short label used in CaseCells (e.g. small, large, dept-A)._ |
 | Description | A defined attribute. | _Plain-language description of what defines this stratum._ |
 | Total Cases | The total cases across the case cells related to the strata. | _Total cases in this stratum across all treatments._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Case Cell** | A case cell is identified by its name and is related to a study. | — |
 | Name | The same as its case cell ID. | _Display label._ |
 | Study | A defined attribute. | _FK to the parent Study._ |
@@ -84,6 +98,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Total Cases for Treatment | The total cases across the case cells related to the case cell. | _Total cases across ALL strata for this treatment in this study — the denominator for TreatmentExposureFraction._ |
 | Treatment Exposure Fraction | Determined by priority: an empty string if the total cases for treatment is 0; in all other cases, the cases divided by the total cases for treatment. | _Fraction of this treatment's total cases that fall in this stratum: Cases / TotalCasesForTreatment. High imbalance across strata is the mechanism of confounding — when treatments are allocated very differently across strata, the pooled rate conflates treatment effect with stratum difficulty._ |
 | Is Valid Ingestion Cell | True when all of the following hold: the cases is at least 0; the successes is at least 0; and the successes is at most the cases. | _TRUE when Cases>=0, Successes>=0, and Successes<=Cases (loop-92: a stratum-treatment combination can legitimately have zero observed cases in real source data -- e.g. rdatasets-mtcars-engine has zero 8-cylinder straight-engine cars -- so Cases=0 is a valid ingestion cell, not a defect)._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Stratum Summary** | A stratum summary is identified by its name and is related to a study. | — |
 | Name | The same as its stratum summary ID. | _Display label._ |
 | Study | A defined attribute. | _FK to the parent Study._ |
@@ -114,6 +131,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Weighted Stratum Gap | Determined by priority: an empty string if the stratum gap is blank; in all other cases, the stratum gap times the stratum fraction. | _StratumGap × StratumFraction: the contribution of this stratum's treatment-rate difference to the equal-weight pooled gap. Summing WeightedStratumGap across all TreatmentA rows for a study gives WeightedStratumGapSum — the pooled gap the study would show under balanced allocation. This is the per-stratum building block of the sign-flip test._ |
 | Abs Allocation Bias | Determined by priority: an empty string if the allocation bias is blank; in all other cases, the absolute value of the allocation bias. | _ABS(AllocationBias). MAXIFS-friendly unsigned magnitude so TreatmentRankings.MaxStratumImbalance can compute live via MAXIFS instead of a hand-written cache._ |
 | Abs Stratum Gap | Determined by priority: an empty string if the stratum gap is blank; in all other cases, the absolute value of the stratum gap. | _ABS(StratumGap). MAXIFS-friendly unsigned magnitude so TreatmentRankings.MaxStratumGap can compute live via MAXIFS instead of a hand-written cache._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Model Summary** | A model summary is identified by its name. | — |
 | Name | The same as its model summary ID. | _Display label._ |
 | Reversal Count | The number of treatment rankings related to the model summary. | _Number of studies with IsReversal=TRUE (sign-flip / allocation-driven reversal)._ |
@@ -236,6 +256,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Domain Flip Gap Survives Geometry Control | True when all of the following hold: the economics high imbalance sign flip count is 0 and the epidemiology high imbalance sign flip rate is greater than 0.15. | _TRUE when the economics-vs-epidemiology sign-flip-rate gap for H-domain-flip-geometry-controlled survives after restricting to high-imbalance studies (loop-90 native promotion of the former 02b hand function)._ |
 | Corpus Pattern Superseded Fail Count | Computed as the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed plus the number of the model summary's discovery findings that are not confirmed. | _Count of DiscoveryFindings rows for the 6 superseded-pattern hypotheses (H-econ-zero, H-domain-dist, H-catalog-flip-prediction, H-domain-flip-geometry-controlled, H-econ-encoding-selection, H-domain-profiles-stable) where IsConfirmed=FALSE. Six separate COUNTIFS summed with '+' because this rulebook's formula vocabulary has no IN-list/pipe-delimited OR criterion for COUNTIFS (loop-90 native promotion of the former 02b hand function)._ |
 | Expansion Wave3 Discovery Note | Computed as “superseded=”, followed by the corpus pattern superseded fail count, followed by “; econFlips=”, followed by the economics sign flip count, followed by “; flipPred=”, followed by the sign flip prediction match rate, followed by “; catalogExact=”, followed by the type prediction match rate, followed by “; theorems=”, followed by the theorem count. | _Expansion-wave-3 supersession-audit synthesis rollup (loop-78, promoted to native loop-90)._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Stratum Variable** | A stratum variable is identified by its name and is related to a study. | — |
 | Name | The same as its stratum variable ID. | _Display label._ |
 | Study | A defined attribute. | _FK to the parent Study._ |
@@ -251,6 +274,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Annotation Commit Date | A defined attribute. | _ISO date (YYYY-MM-DD) of AnnotationCommitHash._ |
 | Annotation Commit Subject | A defined attribute. | _Git commit subject line of AnnotationCommitHash — the loop/change that landed this row's causal-role judgment call._ |
 | Causal Role Ever Revised | True when an empty string. | _TRUE if this row's CausalRole value differs across any two points in its git history (a real reclassification); FALSE if the value has been identical since AnnotationCommitHash. Computed once at loop-97 backfill via full-history diff, not re-derived live — re-run the backfill script after any future CausalRole edit to keep this accurate._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Treatment Ranking** | A treatment ranking is identified by its name and is related to a study. | — |
 | Name | The same as its treatment ranking ID. | _Display label._ |
 | Study | A defined attribute. | _FK to the parent Study._ |
@@ -312,6 +338,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Screening Tier | Determined by priority: “DANGER” if at least one of the following holds: the distortion type is “A” or the distortion type is “B”; “CAUTION” if at least one of the following holds: the distortion type is “C+” or the distortion type is “C-”; “SAFE” if the distortion type is “D”; in all other cases, an empty string. | _DANGER when DistortionType is A or B, CAUTION when C+/C-, SAFE when D. Promoted loop-90 (see DistortionRatio)._ |
 | Arm Size Ratio | Determined by priority: 0 if the total cases a plus the total cases b is 0; in all other cases, the total cases a divided by the total cases a plus the total cases b. | _TotalCasesA / (TotalCasesA + TotalCasesB) — the share of total cases allocated to TreatmentA. Promoted loop-90 (see DistortionRatio for why the empty-string zero-denominator idiom is unsafe on a numeric field). Returns 0 for the degenerate zero-case-count edge (never occurs in this corpus, kept for defensive symmetry with DistortionRatio)._ |
 | Symmetry Departure | Computed as the absolute value of the arm size ratio minus 0.5. | _ABS(ArmSizeRatio - 0.5) — how far the case allocation departs from a balanced 50/50 split. Promoted loop-90 (see DistortionRatio)._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Invariant Check** | An invariant check is identified by its name. | — |
 | Name | The same as its invariant check ID. | _Display label._ |
 | Algebraic Statement | A defined attribute. | _The mathematical assertion in compact symbolic form._ |
@@ -333,6 +362,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Tradition Key Claim Summary | The value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[KeyClaim]). | _Lookup: ResearchTraditions.KeyClaim via TraditionId — a failed invariant would falsify this tradition's key claim._ |
 | Protects Conclusion Title | The value of LOOKUP(ProtectsConclusion, Conclusions[ConclusionId], Conclusions[Title]). | _Lookup: Conclusions.Title via ProtectsConclusion._ |
 | Protects Conclusion Category | The value of LOOKUP(ProtectsConclusion, Conclusions[ConclusionId], Conclusions[Category]). | _Lookup: Conclusions.Category via ProtectsConclusion._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Materialized Entity** | A materialized entity is identified by its name. | — |
 | Name | The same as its materialized entity ID. | _Display label, mirrors MaterializedEntityId._ |
 | Entity Table | A defined attribute. | _The rulebook table whose fields are materialized (e.g. SweepStudySummary)._ |
@@ -340,6 +372,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Refresh Function | A defined attribute. | _The SQL function (in the customize-* override files) that recomputes this entity's materialized fields from its upstream SSoT tables._ |
 | Upstream Tables | A defined attribute. | _Comma-separated list of the tables this materialization is derived from — its sealed/stable upstream._ |
 | Justification | A defined attribute. | _The measured cost or evidence that justified materializing this entity instead of leaving it as a live calculated/aggregation field._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Methodology** | A methodology is identified by its name. | — |
 | Name | The same as its methodology ID. | _Display label, mirrors MethodologyId._ |
 | Phase | A defined attribute. | _Broad phase: axiom \| decomposition \| derivation \| hydration \| validation \| taxonomy \| conclusion_ |
@@ -354,6 +389,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Pioneering Researcher Name | The value of LOOKUP(PioneeringResearcher, Researchers[ResearcherId], Researchers[Name]). | _Lookup: Researchers.Name via PioneeringResearcher._ |
 | Pioneering Researcher Affiliation | The value of LOOKUP(PioneeringResearcher, Researchers[ResearcherId], Researchers[Affiliation]). | _Lookup: Researchers.Affiliation via PioneeringResearcher._ |
 | Loop Count | The number of loops related to the methodology. | _Count of Loops whose TraditionId matches this methodology entry's TraditionId — how many build iterations this methodological tradition has driven._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Conclusion** | A conclusion is identified by its name. | — |
 | Name | The same as its conclusion ID. | _Display label, mirrors ConclusionId._ |
 | Category | A defined attribute. | _domain \| instrument \| methodology \| open-question \| corpus-theorem_ |
@@ -380,6 +418,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Witnessed in Loop Commit Date | The value of LOOKUP(WitnessedInLoop, Loops[LoopId], Loops[CommitDate]). | _Lookup: Loops.CommitDate via WitnessedInLoop._ |
 | Witnessed in Loop Git Tag | The value of LOOKUP(WitnessedInLoop, Loops[LoopId], Loops[GitTag]). | _Lookup: Loops.GitTag via WitnessedInLoop — preferred replay entry point when a milestone tag exists._ |
 | Invariant Protecting Count | The number of invariant checks related to the conclusion. | _Count of InvariantChecks whose ProtectsConclusion FK points to this conclusion — how many algebraic invariants stand behind this finding._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **UI Screen** | A UI screen is identified by its name. | — |
 | Name | The same as its screen ID. | _Display label, mirrors ScreenId._ |
 | Title | A defined attribute. | _Human-readable screen title shown in the UI._ |
@@ -394,6 +435,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Tradition Core Conern | The value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[CoreConcern]). | _Lookup: ResearchTraditions.CoreConcern via TraditionId — the lens this screen applies._ |
 | Primary Conclusion Title | The value of LOOKUP(PrimaryConclusion, Conclusions[ConclusionId], Conclusions[Title]). | _Lookup: Conclusions.Title via PrimaryConclusion._ |
 | Primary Conclusion Evidence | The value of LOOKUP(PrimaryConclusion, Conclusions[ConclusionId], Conclusions[Evidence]). | _Lookup: Conclusions.Evidence via PrimaryConclusion._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **UI Component** | A UI component is identified by its name. | — |
 | Name | The same as its component ID. | _Display label, mirrors ComponentId._ |
 | Component Name | A defined attribute. | _Code-level component name (PascalCase, e.g. DistortionBadge)._ |
@@ -402,6 +446,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Description | A defined attribute. | _What this component renders and what decisions a developer must make to implement it._ |
 | Required Fields | A defined attribute. | _Comma-separated rulebook fields this component must receive as props._ |
 | Visual Spec | A defined attribute. | _Plain-English description of the visual output: shape, color coding, interactivity._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Instrument Spec** | An instrument spec is identified by its name. | — |
 | Name | The same as its spec ID. | _Display label._ |
 | Component Type | A defined attribute. | _input \| derived \| classification \| adapter-requirement_ |
@@ -411,6 +458,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Formula | A defined attribute. | _The ERB formula or derivation rule for this component._ |
 | Natural Language | A defined attribute. | _Plain-English statement of what this component represents or requires._ |
 | Adapter Note | A defined attribute. | _What a researcher must supply or verify to satisfy this component when hydrating a new study._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Allocation Sweep** | An allocation sweep is identified by its name. | — |
 | Name | The same as its sweep ID. | _Display label._ |
 | Study ID | A defined attribute. | _The study being swept — all 238 studies in the corpus._ |
@@ -430,6 +480,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Sweep Pooled Gap | Determined by priority: an empty string if the sweep pooled rate a is blank; in all other cases, the sweep pooled rate a minus the sweep pooled rate b. | _SweepPooledRateA minus SweepPooledRateB. Wanders as AllocFractionA varies because pooled rates mix stratum sizes unequally. Crosses zero at some allocation (the paradox reversal point)._ |
 | Sweep Corrected Gap | Computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[SweepCorrectedGap]). | _Allocation-free signal: sum over strata of (n_s/N) * (rate_As - rate_Bs). Constant across the sweep by construction — the allocation variable does not appear. This is the conserved quantity under re-stratification._ |
 | Allocation Distortion Witness | Determined by priority: an empty string if the sweep pooled gap is blank; in all other cases, the sweep pooled gap minus the sweep corrected gap. | _SweepPooledGap minus SweepCorrectedGap. The allocation distortion: how much the pooled signal has been inflated or deflated by differential stratum allocation. Zero only when allocation is balanced._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Sweep Study Summary** | A sweep study summary is identified by its name. | — |
 | Name | The same as its sweep study ID. | _Display label._ |
 | Distortion Type Label | Computed as the value of LOOKUP(SweepStudyId, TreatmentRankings[Study], TreatmentRankings[DistortionType]). | _DistortionType for this study (A, B, C, or D) — provides context for what the sweep should show._ |
@@ -443,6 +496,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Pooled Gap Crosses Zero | True when an empty string. | _Principled materialization (refresh_sweep_study_summary()). TRUE when SweepPooledGapMin < 0 and SweepPooledGapMax > 0 — the pooled gap changes sign somewhere in the sweep, meaning the paradox can be created or destroyed by pure allocation. See CorrectedGapConstant for why this is materialized rather than calculated._ |
 | Invariant Witness | Determined by priority: “PASS: CorrectedGap invariant across allocation sweep” if the sweep corrected gap range is less than 0.0001; in all other cases, “FAIL: CorrectedGap varies — formula error”. | _Summary witness statement: PASS if CorrectedGap is invariant (range < 0.0001), FAIL otherwise._ |
 | Sweep Stratum Label | Computed as the value of LOOKUP(SweepStudyId, SweepStudyConfig[StudyId], SweepStudyConfig[SweepStratumLabel]). | _Which stratum is being swept for this study._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Research Tradition** | A research tradition is identified by its name. | — |
 | Name | A defined attribute. | _Short display name for the tradition._ |
 | Era | A defined attribute. | _Approximate active period, e.g. "1899–1972"._ |
@@ -461,6 +517,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Researcher Count | The number of researchers related to the research tradition. | _Count of researchers in this tradition._ |
 | Study Count | The number of studies related to the research tradition. | _Count of studies in this model whose TraditionId matches this tradition._ |
 | Loop Count | The number of loops related to the research tradition. | _Count of Effortless Loops that drew primarily on this tradition's conceptual vocabulary._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Researcher** | A researcher is identified by its name. | — |
 | Name | A defined attribute. | _Full name as commonly cited._ |
 | Tradition ID | A defined attribute. | _FK → ResearchTraditions.TraditionId_ |
@@ -480,6 +539,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Canonical Study Policy Implication | The value of LOOKUP(CanonicalStudyId, TreatmentRankings[Study], TreatmentRankings[CorrectedPolicyImplication]). | _Lookup: TreatmentRankings.CorrectedPolicyImplication for the canonical study._ |
 | Illustrates Conclusion Title | The value of LOOKUP(IllustratesConclusion, Conclusions[ConclusionId], Conclusions[Title]). | _Lookup: Conclusions.Title via IllustratesConclusion._ |
 | Tradition Key Claim Summary | The value of LOOKUP(TraditionId, ResearchTraditions[TraditionId], ResearchTraditions[KeyClaim]). | _Lookup: ResearchTraditions.KeyClaim via TraditionId — the tradition's signature thesis this researcher contributed to._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Synthetic Phase** | A synthetic phase is identified by its name. | — |
 | Name | The same as its phase ID. | _Display label._ |
 | Param Stratum Fraction | A defined attribute. | _w — fraction of total cases in the hard (stratum-1) subgroup. Range 0.30–0.75 in this grid._ |
@@ -504,6 +566,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Phase is Sign Flip | True when the phase signed pooled gap is less than 0 if the phase corrected gap is greater than 0, in all other cases the phase signed pooled gap is greater than 0. | _TRUE when equal-weight and pooled gaps have opposite signs._ |
 | Phase Allocation Distortion | Computed as the absolute value of the phase corrected gap minus the phase signed pooled gap. | _\|PhaseCorrectedGap − PhaseSignedPooledGap\|._ |
 | Phase Distortion Type | Determined by priority: “A” if all of the following hold: the phase is sign flip flag is set and the phase reversal intensity is 1; “B” if all of the following hold: the phase is sign flip flag is set and the phase reversal intensity is less than 1; “C+” if all of the following hold: the phase is sign flip flag is not set; the phase allocation distortion is greater than 0.01; and the absolute value of the phase signed pooled gap is greater than the absolute value of the phase corrected gap plus 0.001; “C-” if all of the following hold: the phase is sign flip flag is not set; the phase allocation distortion is greater than 0.01; and the absolute value of the phase signed pooled gap is less than the absolute value of the phase corrected gap minus 0.001; in all other cases, “D”. | _Five-type geometric classification at this parameter point._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Phase Diagram Summary** | A phase diagram summary is identified by its name. | — |
 | Name | The same as its phase diagram ID. | _Display label._ |
 | Phase Point Count | Computed as the phase type a count plus the phase type b count plus the phase type c plus count plus the phase type c minus count plus the phase type d count. | _Total grid points in SyntheticPhase (sum of type counts). Refreshed from vw_synthetic_phase by 05b-customize-data.sql._ |
@@ -515,6 +580,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | All Five Types Present | True when all of the following hold: the phase type a count is greater than 0; the phase type b count is greater than 0; the phase type c plus count is greater than 0; the phase type c minus count is greater than 0; and the phase type d count is greater than 0. | _TRUE when every DistortionType cell has at least one grid point._ |
 | Phase Taxonomy Witness | Computed as “A:”, followed by the phase type a count, followed by “ B:”, followed by the phase type b count, followed by “ C+:”, followed by the phase type c plus count, followed by “ C-:”, followed by the phase type c minus count, followed by “ D:”, followed by the phase type d count. | _Human-readable witness string of type counts across the grid._ |
 | Phase Witness Note | Determined by priority: “PASS: all five distortion types populated in parameter space” if the all five types present flag is set; in all other cases, “FAIL: missing distortion type in grid”. | _PASS/FAIL summary for taxonomy completeness._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Ingestion Protocol** | An ingestion protocol is identified by its name. | — |
 | Name | The same as its protocol ID. | _Display label._ |
 | Rule Type | A defined attribute. | _required-input \| structural \| inclusion \| exclusion \| adapter-metadata_ |
@@ -523,6 +591,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Requirement Statement | A defined attribute. | _Plain-English statement of the requirement._ |
 | Mechanical Check | A defined attribute. | _How to verify compliance before classification._ |
 | Sort Order | A defined attribute. | _Display order in the ingestion checklist._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Ingestion Summary** | An ingestion summary is identified by its name. | — |
 | Name | The same as its ingestion summary ID. | _Display label._ |
 | Protocol Item Count | The number of ingestion protocol related to the ingestion summary. | _Total contract items. Fixed loop-90: COUNTIFS(...,"<>") mistranslates to a literal '<>' string-equality filter (a known transpiler bug) instead of IS NOT NULL, always returning 0; replaced with bare COUNT(), which transpiles correctly._ |
@@ -532,11 +603,14 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Study Count | The number of studies related to the ingestion summary. | _Count of studies subject to the ingestion contract (excludes control studies, loop-92 -- control studies were never encoded with paired treatment arms, so IngestionCellParity is structurally undefined for them, not a real ingestion defect)._ |
 | Structural Compliant Count | The number of studies related to the ingestion summary. | _Studies with IngestionCellParity._ |
 | All Studies Structural | True when the structural compliant count is the study count. | _All studies structurally valid._ |
-| Real Study Count | The number of the ingestion summary's studies that are not control studies. | _Non-synthetic, non-control studies (loop-92 -- control studies were never encoded with paired treatment arms, so they are outside the ingestion contract's scope, same as StructuralCompliantCount's StudyCount)._ |
+| Real Study Count | The number of the ingestion summary's studies that are not control-study. | _Non-synthetic, non-control studies (loop-92 -- control studies were never encoded with paired treatment arms, so they are outside the ingestion contract's scope, same as StructuralCompliantCount's StudyCount)._ |
 | Real Fully Compliant Count | The number of studies related to the ingestion summary. | _Real studies with IngestionCompliance=all._ |
 | All Real Studies Compliant | True when the real fully compliant count is the real study count. | _All real studies fully compliant._ |
 | Ingestion Contract Passes | True when all of the following hold: the all cells valid flag is set; the all studies structural flag is set; and the all real studies compliant flag is set. | _Full contract passes._ |
 | Ingestion Witness Note | Determined by priority: “PASS: ”, followed by the protocol item count, followed by “ contract items; ”, followed by the corpus cell count, followed by “ cells valid; ”, followed by the real fully compliant count, followed by a slash, followed by the real study count, followed by “ real studies fully compliant” if the ingestion contract passes flag is set; in all other cases, “FAIL: ingestion contract violated”. | _PASS/FAIL summary._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Candidate Study Catalog** | A candidate study catalog is identified by its name. | — |
 | Name | The same as its candidate ID. | _Display label._ |
 | Proposed Study ID | A defined attribute. | _Stable slug to assign in Studies when imported._ |
@@ -564,6 +638,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Paradox Confirmation | A defined attribute. | _confirmed \| plausible \| pending \| not_applicable_ |
 | Expansion Wave | A defined attribute. | _Catalog wave tag; loop-67 expansion rows = expansion-wave-1._ |
 | Is Data Ready | True when at least one of the following holds: the data acquisition status is “downloaded” or the data acquisition status is “manual_only”. | _TRUE when stratified data is downloaded or available from published tables._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Corpus Catalog Summary** | A corpus catalog summary is identified by its name. | — |
 | Name | The same as its catalog summary ID. | _Display label._ |
 | Total Catalog Entries | The number of candidate study catalog related to the corpus catalog summary. | _All catalog rows. Fixed loop-90 (see IngestionSummary.ProtocolItemCount for why COUNTIFS(...,"<>") is unsafe)._ |
@@ -582,8 +659,11 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Catalog Witness Note | Determined by priority: “READY: ”, followed by the ready to encode count, followed by “ encode-ready (”, followed by the data ready count, followed by “ data-ready) of ”, followed by the candidate count, followed by “ candidates” if the import session ready flag is set; in all other cases, “BUILDING: ”, followed by the candidate count, followed by “ candidates — ”, followed by the data ready count, followed by “ data-ready, ”, followed by the ready to encode count, followed by “ encode-ready”. | _Human-readable readiness summary._ |
 | Catalog Prediction Witness Note | Computed as “exact=”, followed by the type prediction match count, followed by a slash, followed by the imported count, followed by “ (”, followed by the type prediction match rate times 100 rounded to 1 decimal place(s), followed by “%); flipPred=”, followed by the sign flip prediction match count, followed by a slash, followed by the sign flip prediction eligible count, followed by “ (”, followed by the sign flip prediction match rate times 100 rounded to 1 decimal place(s), followed by “%)”. ⚠︎ mechanical <!-- rulespeak:reword --> | _Loop-65 type-prediction audit summary._ |
 | Data Ready Count | The number of the corpus catalog summary's candidate study catalog that have a ingestion status of “candidate”. | _Candidates with IsDataReady=TRUE._ |
-| Encode Pipeline Ready Count | The number of the corpus catalog summary's candidate study catalog that are data readies. | _Candidates both data-ready and encode-ready._ |
+| Encode Pipeline Ready Count | The number of the corpus catalog summary's candidate study catalog that are data-ready. | _Candidates both data-ready and encode-ready._ |
 | Expansion Candidate Count | The number of candidate study catalog related to the corpus catalog summary. | _Loop-67 expansion-wave-1 candidates._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Domain Expansion Target** | A domain expansion target is identified by its name. | — |
 | Name | The same as its domain target ID. | _Display label._ |
 | Domain | A defined attribute. | _Domain tag matching Studies.Domain._ |
@@ -594,6 +674,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Projected Count | Computed as the current imported count plus the candidate queued count. | _Current + queued candidates._ |
 | Gap Count | Computed as the largest of 0 and the target min count minus the projected count. | _Studies still needed to hit target after queued imports._ |
 | Is Under Represented | True when the projected count is less than the target min count. | _TRUE when projected count still below target._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Study Import Template** | A study import template is identified by its name. | — |
 | Name | The same as its template step ID. | _Display label._ |
 | Sort Order | A defined attribute. | _Order to execute during import._ |
@@ -601,6 +684,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Row Description | A defined attribute. | _What rows to create._ |
 | Required Fields | A defined attribute. | _Key columns that must be populated._ |
 | Mechanical Check | A defined attribute. | _How to verify step complete._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Sweep Study Config** | A sweep study config is identified by its name. | — |
 | Name | The same as its config ID. | _Display label._ |
 | Study ID | A defined attribute. | _FK to Studies.StudyId._ |
@@ -614,6 +700,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Fixed Rate B | A defined attribute. | _Weighted success rate for B in fixed strata._ |
 | Original Alloc Fraction a | A defined attribute. | _Observed fraction of sweep-stratum cases assigned to treatment A._ |
 | Sweep Corrected Gap | A defined attribute. | _Allocation-free gap: sum_s (n_s/N)*(rate_As-rate_Bs). Invariant under within-stratum reallocation._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Substrate Conformance Field** | A substrate conformance field is identified by its name. | — |
 | Name | The same as its field ID. | _Display label._ |
 | Source Table | A defined attribute. | _TreatmentRankings \| StratumSummaries \| StratumVariables_ |
@@ -623,13 +712,19 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Data Type | A defined attribute. | _float \| int \| bool \| str_ |
 | Assert From Postgres | True when an empty string. | _TRUE when OWL cannot derive this field yet and Postgres value is asserted before SHACL fixpoint._ |
 | In Compare Set | True when an empty string. | _TRUE when reason.py diffs this field between substrates._ |
-| **Discovery Hypothes** | A discovery hypothes is identified by its name. | — |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
+| **Discovery Hypothesis** | A discovery hypothesis is identified by its name. | — |
 | Name | The same as its hypothesis ID. | _Display label._ |
 | Statement | A defined attribute. | _Natural-language claim under test._ |
 | Expected Outcome | A defined attribute. | _Pass criterion in plain language._ |
 | Registered in Loop | A defined attribute. | _LoopId where this hypothesis was registered._ |
 | Tradition ID | A defined attribute. | _FK → ResearchTraditions.TraditionId._ |
 | Epistemic Tier | A defined attribute. | _consistency-check (definition-linked regression) \| corpus-hypothesis (contingent corpus pattern)_ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Discovery Finding** | A discovery finding is identified by its name. | — |
 | Name | The same as its finding ID. | _Display label._ |
 | Hypothesis ID | A defined attribute. | _FK → DiscoveryHypotheses.HypothesisId._ |
@@ -638,12 +733,18 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Is Confirmed | True when the value of IF(HypothesisId = "H-latent-d", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction]) > 0.5, IF(HypothesisId = "H-purity", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax]) < 0.5, IF(HypothesisId = "H-small-effect", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD]), IF(HypothesisId = "H-econ-zero", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount]) = 0, IF(HypothesisId = "H-domain-dist", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion]), IF(HypothesisId = "H-causal-manifest", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]), LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]) >= 10), IF(HypothesisId = "H-causal-latent", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionLatentOnlyCount]) >= 5), IF(HypothesisId = "H-explained-confounder", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) = LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) >= 10), IF(HypothesisId = "H-unexplained-nonconfounder", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ContestedOrMediatorExplainedCount]) = 0, IF(HypothesisId = "H-catalog-exact-match", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TypePredictionMatchRate]) < 0.5, IF(HypothesisId = "H-catalog-flip-prediction", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipPredictionMatchRate]) < 0.5, IF(HypothesisId = "H-domain-flip-geometry-controlled", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsHighImbalanceSignFlipCount]) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyHighImbalanceSignFlipRate]) > 0.15), IF(HypothesisId = "H-collider-no-manifest-v2", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, IF(HypothesisId = "H-cplus-magnitude", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CMinusAvgDistortion]), LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]) > LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TypeDAvgDistortion])), IF(HypothesisId = "H-econ-encoding-selection", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsExpectedAMismatchRate]) > 0.5, IF(HypothesisId = "H-domain-profiles-stable", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationLatentFraction]) > 0.5, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SportsLatentFraction]) > 0.5, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipRate]) < 0.05), IF(HypothesisId = "H-corrected-gap-invariant", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[MaxStudySweepCorrectedGapRange]) < 0.0001, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CorrectedGapInvariantFailCount]) = 0), IF(HypothesisId = "H-explained-bidirectional", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]) = LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[FalsePositiveExplainedCount]) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount]) = 0), IF(HypothesisId = "H-collider-no-manifest-theorem", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]) = 0, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount]) >= 10), IF(HypothesisId = "H-theorem-portfolio", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TheoremCount]) >= 4, IF(HypothesisId = "H-age-identity-flip-rate", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityManifestFlipRate]) >= 0.40, LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityStudyCount]) >= 10), IF(HypothesisId = "H-identity-map-coverage", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[IdentityMapCoverageRate]) >= 0.95, IF(HypothesisId = "H-severity-medicine-manifest", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityMedicineManifestFlipRate]) >= 0.45, IF(HypothesisId = "H-severity-epi-latent-only", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityEpiManifestFlipCount]) = 0, IF(HypothesisId = "H-mechanism-other-drain", LOOKUP("cluster-id-mechanism-other", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) <= 5, IF(HypothesisId = "H-selection-frailty-zero-manifest", AND(LOOKUP("cluster-id-selection-frailty", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]) = 0, LOOKUP("cluster-id-selection-frailty", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 3), IF(HypothesisId = "H-collider-identity-low-manifest", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderIdentityManifestFlipRate]) <= 0.15, LOOKUP("cluster-id-collider-proxy", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 5), IF(HypothesisId = "H-geographic-stable-type-d", AND(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[GeographicTypeDFraction]) >= 0.25, LOOKUP("cluster-id-geographic-composition", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount]) >= 3), IF(HypothesisId = "H-unexplained-flips-only-nonconfounders", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount]) = 0, IF(HypothesisId = "H-confounder-drift-type-d", AND(OR(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityDriftDirection]) = "rising", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityDriftDirection]) = "single-decade"), OR(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[GeographicDriftDirection]) = "rising", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[GeographicDriftDirection]) = "single-decade"), OR(LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SituationalDriftDirection]) = "rising", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SituationalDriftDirection]) = "single-decade"), LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AgeDriftDirection]) <> "rising", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[InstitutionalDriftDirection]) <> "rising", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SocioeconomicDriftDirection]) <> "rising"), FALSE())))))))))))))))))))))))))))))). | _TRUE when the witnessed metric satisfies the pre-registered ExpectedOutcome._ |
 | Evidence | Determined by priority: “PASS: ”, followed by the observed metric if the is confirmed is true; “FAIL: ”, followed by the observed metric if the is confirmed is false; in all other cases, an empty string. | _Pass/fail witness string for UI and conclusions._ |
 | Witnessed in Loop | A defined attribute. | _LoopId where this finding was witnessed._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Corpus Domain** | A corpus domain is identified by its name. | — |
 | Name | The same as its domain ID. | _Display label._ |
 | Display Name | A defined attribute. | _Human-readable domain name._ |
 | Expansion Target | A defined attribute. | _Target study count from corpus-expansion-plan.md._ |
 | Legacy Studies Domain | A defined attribute. | _Studies.Domain alias for counting already-imported corpus rows._ |
 | Plan Source Section | A defined attribute. | _Section heading in corpus-expansion-plan.md._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Confounder Identity** | A confounder identity is identified by its name. | — |
 | Name | The same as its confounder identity ID. | _Display label._ |
 | Display Name | A defined attribute. | _Human-readable archetype name._ |
@@ -651,11 +752,17 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Description | A defined attribute. | _Narrative description of confounding mechanism._ |
 | Policy Default | A defined attribute. | _Default analytic policy for this confounding archetype._ |
 | Study Count | The number of the confounder identity's studies. | _Studies with a StratumVariable mapped to this identity._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Stratum Variable Identity Map** | A stratum variable identity map is identified by its name and is related to a stratum variable and a confounder identity. | — |
 | Name | The same as its map ID. | _Display label._ |
 | Stratum Variable | A defined attribute. | _FK → StratumVariables._ |
 | Confounder Identity | A defined attribute. | _FK → ConfounderIdentities._ |
 | Variable Name Normalized | A defined attribute. | _Lowercase normalized variable token for dedup audit._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Identity Cluster Summary** | An identity cluster summary is identified by its name and is related to a confounder identity. | — |
 | Name | The same as its identity cluster ID. | _Display label._ |
 | Confounder Identity | A defined attribute. | _FK → ConfounderIdentities._ |
@@ -668,6 +775,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Latent Fraction Among Type D | A defined attribute. | _Fraction of Type-D rows with LatentFlipPotential._ |
 | Domain Count | A defined attribute. | _Distinct Studies.Domain values in cluster._ |
 | Manifest Flip Rate | Determined by priority: an empty string if the study count is 0; in all other cases, the manifest flip count divided by the study count. | _ManifestFlipCount / StudyCount._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Identity Domain Cell** | An identity domain cell is identified by its name and is related to a confounder identity. | — |
 | Name | The same as its cell ID. | _Display label._ |
 | Confounder Identity | A defined attribute. | _FK → ConfounderIdentities._ |
@@ -679,6 +789,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Latent Fraction Among Type D | A defined attribute. | _Fraction of Type-D rows with LatentFlipPotential in cell._ |
 | Manifest Flip Rate | Determined by priority: an empty string if the study count is 0; in all other cases, the manifest flip count divided by the study count. | _ManifestFlipCount / StudyCount._ |
 | Identity Display Name | The value of LOOKUP(ConfounderIdentity, ConfounderIdentities[ConfounderIdentityId], ConfounderIdentities[DisplayName]). | _Lookup archetype display name._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Confounder Distortion Timeline** | A confounder distortion timeline is identified by its name and is related to a confounder identity. | — |
 | Name | The same as its cell ID. | _Display label._ |
 | Confounder Identity | A defined attribute. | _FK -> ConfounderIdentities._ |
@@ -699,6 +812,9 @@ _Digital mirror of the Simpson's Paradox domain. The entities are Studies, Treat
 | Identity Earliest Type D Fraction | The value of LOOKUP(CONCAT(ConfounderIdentity, "-x-", IdentityEarliestDecade), ConfounderDistortionTimeline[CellId], ConfounderDistortionTimeline[TypeDFraction]). | _TypeDFraction of this ConfounderIdentity's earliest decade cell -- the start point for the drift comparison._ |
 | Identity Latest Type D Fraction | The value of LOOKUP(CONCAT(ConfounderIdentity, "-x-", IdentityLatestDecade), ConfounderDistortionTimeline[CellId], ConfounderDistortionTimeline[TypeDFraction]). | _TypeDFraction of this ConfounderIdentity's latest decade cell -- the end point for the drift comparison._ |
 | Drift Direction | Determined by priority: “single-decade” if the identity earliest decade is the identity latest decade; an empty string if at least one of the following holds: the identity earliest type d fraction is blank or the identity latest type d fraction is blank; “rising” if the identity latest type d fraction is greater than the identity earliest type d fraction plus 0.05; “falling” if the identity latest type d fraction is less than the identity earliest type d fraction minus 0.05; in all other cases, “flat”. | _rising \| falling \| flat \| single-decade -- compares this ConfounderIdentity's earliest-decade TypeDFraction to its latest-decade TypeDFraction across the whole table (same value on every row for a given ConfounderIdentity by construction)._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Corpus Balance** | A corpus balance is identified by its name. | — |
 | Name | The same as its balance ID. | _=BalanceId_ |
 | Total Study Count | Computed as the simpson study count plus the control study count. | _Total studies in corpus (Simpson + control). Fixed loop-90: was authored with COUNTA/bareword refs and an uppercase Formula key, which the transpiler cannot parse. COUNTIFS(...,"<>") also mistranslates (known transpiler bug: literal '<>' string instead of IS NOT NULL), so this is expressed as SimpsonStudyCount + ControlStudyCount instead._ |
@@ -730,40 +846,40 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 ### Structural Constraints (from the schema)
 
 - A loop **must** have a title and a status.
-- A study **must** record whether it is a control study.
+- A study **must** record whether it is control study.
 - A treatment **must** reference exactly one study.
 - A treatment **must** have a treatment label.
 - A strata **must** reference exactly one study.
 - A strata **must** have a stratum label.
 - A case cell **must** reference exactly one study.
-- A case cell **must** have a stratum label, a treatment label, a successes, and a cases.
+- A case cell **must** have a stratum label; a treatment label; a successes; and a cases.
 - A stratum summary **must** reference exactly one study.
 - A stratum summary **must** have a stratum label and a treatment label.
 - A stratum variable **must** reference exactly one study.
 - A stratum variable **must** have a variable name and a causal role, and record whether it is affects treatment assignment and whether it is affects outcome.
 - A treatment ranking **must** reference exactly one study.
 - A treatment ranking **must** have a treatment a and a treatment b.
-- An invariant check **must** have an algebraic statement, a natural language, a source table, an assertion expression, an SQL assertion, a pass count, a fail count, and a severity.
-- A materialized entity **must** have an entity table, a refresh contract, a refresh function, and an upstream tables.
-- A methodology **must** have a phase, a title, and a statement.
-- A conclusion **must** have a category, a status, a report tier, and a title.
-- A UI screen **must** have a title, a route, a primary entity, and a purpose.
-- A UI component **must** have a component name, a primary entity, and a description.
-- An instrument spec **must** have a component type, a field name, and a natural language.
+- An invariant check **must** have an algebraic statement; a natural language; a source table; an assertion expression; an SQL assertion; a pass count; a fail count; and a severity.
+- A materialized entity **must** have an entity table; a refresh contract; a refresh function; and an upstream tables.
+- A methodology **must** have a phase; a title; and a statement.
+- A conclusion **must** have a category; a status; a report tier; and a title.
+- A UI screen **must** have a title; a route; a primary entity; and a purpose.
+- A UI component **must** have a component name; a primary entity; and a description.
+- An instrument spec **must** have a component type; a field name; and a natural language.
 - An allocation sweep **must** have a study ID and an alloc fraction a.
 - A research tradition **must** have a name, and record whether it is verified by deep research.
-- A researcher **must** have a name, a tradition ID, and a key contribution, and record whether it is verified by deep research.
-- A synthetic phase **must** have a param stratum fraction, a param stratum gap1, a param stratum gap2, and a param allocation bias.
-- A phase diagram summary **must** have a phase type a count, a phase type b count, a phase type c plus count, a phase type c minus count, and a phase type d count.
-- An ingestion protocol **must** have a rule type, a target table, a requirement statement, a mechanical check, and a sort order.
-- A candidate study catalog **must** have a proposed study ID, a title, a citation, a domain, a stratum variable name, an expected distortion type, an ingestion status, a priority, a stratum count estimate, a data source note, a data acquisition status, a reversal mechanism, and a paradox confirmation.
+- A researcher **must** have a name; a tradition ID; and a key contribution, and record whether it is verified by deep research.
+- A synthetic phase **must** have a param stratum fraction; a param stratum gap1; a param stratum gap2; and a param allocation bias.
+- A phase diagram summary **must** have a phase type a count; a phase type b count; a phase type c plus count; a phase type c minus count; and a phase type d count.
+- An ingestion protocol **must** have a rule type; a target table; a requirement statement; a mechanical check; and a sort order.
+- A candidate study catalog **must** have a proposed study ID; a title; a citation; a domain; a stratum variable name; an expected distortion type; an ingestion status; a priority; a stratum count estimate; a data source note; a data acquisition status; a reversal mechanism; and a paradox confirmation.
 - A domain expansion target **must** have a domain and a target min count.
-- A study import template **must** have a sort order, a target table, a row description, a required fields, and a mechanical check.
-- A sweep study config **must** have a study ID, a sweep stratum label, a n sweep stratum total, a sweep rate a, a sweep rate b, a n fixed a, a n fixed b, a fixed rate a, a fixed rate b, an original alloc fraction a, and a sweep corrected gap.
-- A substrate conformance field **must** have a source table, a field name, a pg column, an owl local name, and a data type, and record whether it is assert from postgres and whether it is in compare set.
-- A discovery hypothes **must** have a statement, an expected outcome, a registered in loop, and an epistemic tier.
+- A study import template **must** have a sort order; a target table; a row description; a required fields; and a mechanical check.
+- A sweep study config **must** have a study ID; a sweep stratum label; a n sweep stratum total; a sweep rate a; a sweep rate b; a n fixed a; a n fixed b; a fixed rate a; a fixed rate b; an original alloc fraction a; and a sweep corrected gap.
+- A substrate conformance field **must** have a source table; a field name; a pg column; an owl local name; and a data type, and record whether it is assert from postgres and whether it is in compare set.
+- A discovery hypothesis **must** have a statement; an expected outcome; a registered in loop; and an epistemic tier.
 - A discovery finding **must** have a hypothesis ID and a witnessed in loop.
-- A corpus domain **must** have a display name, an expansion target, and a plan source section.
+- A corpus domain **must** have a display name; an expansion target; and a plan source section.
 - A confounder identity **must** have a display name and a mechanism class.
 - A stratum variable identity map **must** reference exactly one stratum variable.
 - A stratum variable identity map **must** reference exactly one confounder identity.
@@ -972,7 +1088,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-186 Strata Won by B** | A treatment ranking's strata won by b is the number of stratum summaries related to the treatment ranking. |
 | **DR-187 Per Stratum Winner** | The treatment ranking's per stratum winner is determined by the following priority:<br>1. the treatment a, if the strata won by a is the stratum count;<br>2. the treatment b, if the strata won by b is the stratum count;<br>3. in all other cases, “none”. |
 | **DR-188 Is Stratum Unanimous** | A treatment ranking is considered stratum-unanimous if at least one of the following holds: the strata won by a is the stratum count or the strata won by b is the stratum count. |
-| **DR-189 Is Reversal** | A treatment ranking is considered a reversal if the sign flip flag is set. |
+| **DR-189 Is Reversal** | A treatment ranking is considered reversal if the sign flip flag is set. |
 | **DR-190 Confounders in Study** | A treatment ranking's confounders in study is the number of the treatment ranking's stratum variables that are confounders. |
 | **DR-191 Is Paradox Explained** | A treatment ranking is considered paradox-explained if all of the following hold: the reversal flag is set and the confounders in study is greater than 0. |
 | **DR-192 Pooled Gap** | The treatment ranking's pooled gap is determined by the following priority:<br>1. an empty string, if the pooled rate a is blank;<br>2. in all other cases, the absolute value of the pooled rate a minus the pooled rate b. |
@@ -1052,7 +1168,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-266 Name** | A UI component's name is the same as its component ID. |
 | **DR-267 Name** | An instrument spec's name is the same as its spec ID. |
 | **DR-268 Name** | An allocation sweep's name is the same as its sweep ID. |
-| **DR-269 Is Original** | An allocation sweep is considered an original if the value of ABS(AllocFractionA - LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[OriginalAllocFractionA])) < 0.03. |
+| **DR-269 Is Original** | An allocation sweep is considered original if the value of ABS(AllocFractionA - LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[OriginalAllocFractionA])) < 0.03. |
 | **DR-270 N Sweep Stratum Total** | An allocation sweep's n sweep stratum total is computed as the value of LOOKUP(StudyId, SweepStudyConfig[StudyId], SweepStudyConfig[NSweepStratumTotal]). |
 | **DR-271 N Sweep a** | An allocation sweep's n sweep a is computed as the n sweep stratum total times the alloc fraction a rounded to the nearest whole number. |
 | **DR-272 N Sweep B** | An allocation sweep's n sweep b is computed as the n sweep stratum total minus the n sweep a. |
@@ -1119,7 +1235,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-333 Study Count** | An ingestion summary's study count is the number of studies related to the ingestion summary. |
 | **DR-334 Structural Compliant Count** | An ingestion summary's structural compliant count is the number of studies related to the ingestion summary. |
 | **DR-335 All Studies Structural** | An ingestion summary is flagged all studies structural if the structural compliant count is the study count. |
-| **DR-336 Real Study Count** | An ingestion summary's real study count is the number of the ingestion summary's studies that are not control studies. |
+| **DR-336 Real Study Count** | An ingestion summary's real study count is the number of the ingestion summary's studies that are not control-study. |
 | **DR-337 Real Fully Compliant Count** | An ingestion summary's real fully compliant count is the number of studies related to the ingestion summary. |
 | **DR-338 All Real Studies Compliant** | An ingestion summary is flagged all real studies compliant if the real fully compliant count is the real study count. |
 | **DR-339 Ingestion Contract Passes** | An ingestion summary is flagged ingestion contract passes if all of the following hold: the all cells valid flag is set; the all studies structural flag is set; and the all real studies compliant flag is set. |
@@ -1132,7 +1248,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-346 Expected Sign Flip** | A candidate study catalog is flagged expected sign flip if at least one of the following holds: the expected distortion type is “A” or the expected distortion type is “B”. |
 | **DR-347 Observed Sign Flip Type** | A candidate study catalog is flagged observed sign flip type if the imported flag is set and at least one of the following holds: the observed distortion type is “A” or the observed distortion type is “B”. |
 | **DR-348 Sign Flip Prediction Match** | A candidate study catalog is flagged sign flip prediction match if all of the following hold: the imported flag is set and the expected sign flip flag is set and the observed sign flip type flag is set. |
-| **DR-349 Is Data Ready** | A candidate study catalog is considered a data ready if at least one of the following holds: the data acquisition status is “downloaded” or the data acquisition status is “manual_only”. |
+| **DR-349 Is Data Ready** | A candidate study catalog is considered data-ready if at least one of the following holds: the data acquisition status is “downloaded” or the data acquisition status is “manual_only”. |
 | **DR-350 Name** | A corpus catalog summary's name is the same as its catalog summary ID. |
 | **DR-351 Total Catalog Entries** | A corpus catalog summary's total catalog entries is the number of candidate study catalog related to the corpus catalog summary. |
 | **DR-352 Imported Count** | A corpus catalog summary's imported count is the number of candidate study catalog related to the corpus catalog summary. |
@@ -1150,7 +1266,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-364 Catalog Witness Note** | The corpus catalog summary's catalog witness note is determined by the following priority:<br>1. “READY: ”, followed by the ready to encode count, followed by “ encode-ready (”, followed by the data ready count, followed by “ data-ready) of ”, followed by the candidate count, followed by “ candidates”, if the import session ready flag is set;<br>2. in all other cases, “BUILDING: ”, followed by the candidate count, followed by “ candidates — ”, followed by the data ready count, followed by “ data-ready, ”, followed by the ready to encode count, followed by “ encode-ready”. |
 | **DR-365 Catalog Prediction Witness Note** | A corpus catalog summary's catalog prediction witness note is computed as “exact=”, followed by the type prediction match count, followed by a slash, followed by the imported count, followed by “ (”, followed by the type prediction match rate times 100 rounded to 1 decimal place(s), followed by “%); flipPred=”, followed by the sign flip prediction match count, followed by a slash, followed by the sign flip prediction eligible count, followed by “ (”, followed by the sign flip prediction match rate times 100 rounded to 1 decimal place(s), followed by “%)”. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-366 Data Ready Count** | A corpus catalog summary's data ready count is the number of the corpus catalog summary's candidate study catalog that have a ingestion status of “candidate”. |
-| **DR-367 Encode Pipeline Ready Count** | A corpus catalog summary's encode pipeline ready count is the number of the corpus catalog summary's candidate study catalog that are data readies. |
+| **DR-367 Encode Pipeline Ready Count** | A corpus catalog summary's encode pipeline ready count is the number of the corpus catalog summary's candidate study catalog that are data-ready. |
 | **DR-368 Expansion Candidate Count** | A corpus catalog summary's expansion candidate count is the number of candidate study catalog related to the corpus catalog summary. |
 | **DR-369 Name** | A domain expansion target's name is the same as its domain target ID. |
 | **DR-370 Current Imported Count** | A domain expansion target's current imported count is the number of the domain expansion target's studies that are not synthetic. |
@@ -1161,7 +1277,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-375 Name** | A study import template's name is the same as its template step ID. |
 | **DR-376 Name** | A sweep study config's name is the same as its config ID. |
 | **DR-377 Name** | A substrate conformance field's name is the same as its field ID. |
-| **DR-378 Name** | A discovery hypothes's name is the same as its hypothesis ID. |
+| **DR-378 Name** | A discovery hypothesis's name is the same as its hypothesis ID. |
 | **DR-379 Name** | A discovery finding's name is the same as its finding ID. |
 | **DR-380 Hypothesis Statement** | A discovery finding's hypothesis statement is the value of LOOKUP(HypothesisId, DiscoveryHypotheses[HypothesisId], DiscoveryHypotheses[Statement]). |
 | **DR-381 Observed Metric** | A discovery finding's observed metric is computed as the value of IF(HypothesisId = "H-latent-d", CONCAT("fraction=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LatentTypeDFraction])), IF(HypothesisId = "H-purity", CONCAT("maxPurity=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipSignalPurityMax])), IF(HypothesisId = "H-small-effect", CONCAT("stable=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapStableD]), " latent=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AvgPooledGapLatentD])), IF(HypothesisId = "H-econ-zero", CONCAT("flips=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipCount])), IF(HypothesisId = "H-domain-dist", CONCAT("epi=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyAvgDistortion]), " edu=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationAvgDistortion])), IF(HypothesisId = "H-causal-manifest", CONCAT("confFlip=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), " collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF(HypothesisId = "H-causal-latent", CONCAT("collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount]), " collLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionLatentOnlyCount]), " collN=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount])), IF(HypothesisId = "H-explained-confounder", CONCAT("ExplainedConfounderCount=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]), ", ConfounderSignFlipCount=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount])), IF(HypothesisId = "H-unexplained-nonconfounder", CONCAT("ContestedOrMediatorExplainedCount=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ContestedOrMediatorExplainedCount])), IF(HypothesisId = "H-catalog-exact-match", CONCAT("exactRate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TypePredictionMatchRate])), IF(HypothesisId = "H-catalog-flip-prediction", CONCAT("flipPredRate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SignFlipPredictionMatchRate])), IF(HypothesisId = "H-domain-flip-geometry-controlled", CONCAT("econHighImbFlips=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsHighImbalanceSignFlipCount]), "; epiRate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EpidemiologyHighImbalanceSignFlipRate]), "; legal=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[LegalHighImbalanceSignFlipRate]), "; sports=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SportsHighImbalanceSignFlipRate])), IF(HypothesisId = "H-collider-no-manifest-v2", CONCAT("collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF(HypothesisId = "H-cplus-magnitude", CONCAT("C+=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CPlusAvgDistortion]), " C-=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CMinusAvgDistortion]), " D=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TypeDAvgDistortion])), IF(HypothesisId = "H-econ-encoding-selection", CONCAT("EconExpectedAMismatchRate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsExpectedAMismatchRate])), IF(HypothesisId = "H-domain-profiles-stable", CONCAT("eduLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EducationLatentFraction]), " sportsLatent=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SportsLatentFraction]), " econFlipRate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[EconomicsSignFlipRate])), IF(HypothesisId = "H-corrected-gap-invariant", CONCAT("maxRange=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[MaxStudySweepCorrectedGapRange]), " fails=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[CorrectedGapInvariantFailCount])), IF(HypothesisId = "H-explained-bidirectional", CONCAT("explained=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ExplainedConfounderCount]), " confFlip=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ConfounderSignFlipCount]), " falsePos=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[FalsePositiveExplainedCount]), " unexplained=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount])), IF(HypothesisId = "H-collider-no-manifest-theorem", CONCAT("collN=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionCount]), " collManifest=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderSelectionManifestCount])), IF(HypothesisId = "H-theorem-portfolio", CONCAT("theoremCount=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[TheoremCount])), IF(HypothesisId = "H-age-identity-flip-rate", CONCAT("rate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityManifestFlipRate]), ", n=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AgeIdentityStudyCount])), IF(HypothesisId = "H-identity-map-coverage", CONCAT("coverage=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[IdentityMapCoverageRate])), IF(HypothesisId = "H-severity-medicine-manifest", CONCAT("medicine_flip_rate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityMedicineManifestFlipRate])), IF(HypothesisId = "H-severity-epi-latent-only", CONCAT("epi_manifest_count=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityEpiManifestFlipCount])), IF(HypothesisId = "H-mechanism-other-drain", CONCAT("other_count=", LOOKUP("cluster-id-mechanism-other", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])), IF(HypothesisId = "H-selection-frailty-zero-manifest", CONCAT("manifest=", LOOKUP("cluster-id-selection-frailty", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[ManifestFlipCount]), ", n=", LOOKUP("cluster-id-selection-frailty", IdentityClusterSummaries[IdentityClusterId], IdentityClusterSummaries[StudyCount])), IF(HypothesisId = "H-collider-identity-low-manifest", CONCAT("rate=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[ColliderIdentityManifestFlipRate])), IF(HypothesisId = "H-geographic-stable-type-d", CONCAT("type_d_frac=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[GeographicTypeDFraction])), IF(HypothesisId = "H-unexplained-flips-only-nonconfounders", CONCAT("unexplained_confounder_flips=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[UnexplainedConfounderSignFlipCount])), IF(HypothesisId = "H-confounder-drift-type-d", CONCAT("severity=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SeverityDriftDirection]), " geography=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[GeographicDriftDirection]), " situational=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SituationalDriftDirection]), " age=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[AgeDriftDirection]), " institutional=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[InstitutionalDriftDirection]), " socioeconomic=", LOOKUP("simpsons-paradox-v1", ModelSummary[ModelSummaryId], ModelSummary[SocioeconomicDriftDirection])), ""))))))))))))))))))))))))))))). |
@@ -1197,7 +1313,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -1615,8 +1731,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

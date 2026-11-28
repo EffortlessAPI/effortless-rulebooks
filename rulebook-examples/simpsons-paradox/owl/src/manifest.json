@@ -1,0 +1,4051 @@
+{
+  "generator": "rulebook-to-owl",
+  "ontology": {
+    "iri": "https://w3id.org/effortless-ntwf",
+    "versionIri": null,
+    "namespace": "https://w3id.org/effortless-ntwf#",
+    "dataNamespace": "https://w3id.org/effortless-ntwf#",
+    "prefix": "effortless-ntwf",
+    "placeholder": false
+  },
+  "prefixes": {
+    "effortless-ntwf": "https://w3id.org/effortless-ntwf#",
+    "effortless-ntwf-shapes": "https://w3id.org/effortless-ntwf/shapes#",
+    "erb": "https://effortlessapi.com/ns/erb#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "keyProperty": "https://effortlessapi.com/ns/erb#key",
+  "derivedProperty": "https://effortlessapi.com/ns/erb#derived",
+  "tables": {
+    "Loops": {
+      "class": "https://w3id.org/effortless-ntwf#Loops",
+      "keyField": "LoopId",
+      "fields": {
+        "LoopId": "https://w3id.org/effortless-ntwf#loopId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "Status": "https://w3id.org/effortless-ntwf#status",
+        "NewConcept": "https://w3id.org/effortless-ntwf#newConcept",
+        "DomainQuestion": "https://w3id.org/effortless-ntwf#domainQuestion",
+        "MockDataNote": "https://w3id.org/effortless-ntwf#mockDataNote",
+        "NextSuggestion": "https://w3id.org/effortless-ntwf#nextSuggestion",
+        "TraditionId": "https://w3id.org/effortless-ntwf#traditionId",
+        "TraditionName": "https://w3id.org/effortless-ntwf#traditionName",
+        "TraditionCoreConern": "https://w3id.org/effortless-ntwf#traditionCoreConern",
+        "CommitHash": "https://w3id.org/effortless-ntwf#commitHash",
+        "CommitShort": "https://w3id.org/effortless-ntwf#commitShort",
+        "CommitDate": "https://w3id.org/effortless-ntwf#commitDate",
+        "CommitMessage": "https://w3id.org/effortless-ntwf#commitMessage",
+        "GitTag": "https://w3id.org/effortless-ntwf#gitTag"
+      }
+    },
+    "Studies": {
+      "class": "https://w3id.org/effortless-ntwf#Studies",
+      "keyField": "StudyId",
+      "fields": {
+        "StudyId": "https://w3id.org/effortless-ntwf#studyId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "Source": "https://w3id.org/effortless-ntwf#source",
+        "SourceUrl": "https://w3id.org/effortless-ntwf#sourceUrl",
+        "PublicationYear": "https://w3id.org/effortless-ntwf#publicationYear",
+        "Domain": "https://w3id.org/effortless-ntwf#domain",
+        "IsSynthetic": "https://w3id.org/effortless-ntwf#isSynthetic",
+        "TotalCases": "https://w3id.org/effortless-ntwf#totalCases",
+        "CellCount": "https://w3id.org/effortless-ntwf#cellCount",
+        "TraditionId": "https://w3id.org/effortless-ntwf#traditionId",
+        "PrimaryResearcherId": "https://w3id.org/effortless-ntwf#primaryResearcherId",
+        "TraditionName": "https://w3id.org/effortless-ntwf#traditionName",
+        "TraditionCoreConern": "https://w3id.org/effortless-ntwf#traditionCoreConern",
+        "PrimaryResearcherName": "https://w3id.org/effortless-ntwf#primaryResearcherName",
+        "PrimaryResearcherAffiliation": "https://w3id.org/effortless-ntwf#primaryResearcherAffiliation",
+        "DistortionType": "https://w3id.org/effortless-ntwf#distortionType",
+        "PolicyImplication": "https://w3id.org/effortless-ntwf#policyImplication",
+        "AllocationDistortion": "https://w3id.org/effortless-ntwf#allocationDistortion",
+        "SignalPurity": "https://w3id.org/effortless-ntwf#signalPurity",
+        "IsSignFlip": "https://w3id.org/effortless-ntwf#isSignFlip",
+        "CorrectedWinner": "https://w3id.org/effortless-ntwf#correctedWinner",
+        "ConfoundingVariable": "https://w3id.org/effortless-ntwf#confoundingVariable",
+        "CausalRole": "https://w3id.org/effortless-ntwf#causalRole",
+        "IngestionCellParity": "https://w3id.org/effortless-ntwf#ingestionCellParity",
+        "IngestionCompliance": "https://w3id.org/effortless-ntwf#ingestionCompliance",
+        "IsControlStudy": "https://w3id.org/effortless-ntwf#isControlStudy",
+        "ControlDomain": "https://w3id.org/effortless-ntwf#controlDomain",
+        "ValidTimeStart": "https://w3id.org/effortless-ntwf#validTimeStart",
+        "ValidTimeEnd": "https://w3id.org/effortless-ntwf#validTimeEnd",
+        "ValidTimeMidpoint": "https://w3id.org/effortless-ntwf#validTimeMidpoint",
+        "ValidTimeDecade": "https://w3id.org/effortless-ntwf#validTimeDecade"
+      }
+    },
+    "Treatments": {
+      "class": "https://w3id.org/effortless-ntwf#Treatments",
+      "keyField": "TreatmentId",
+      "fields": {
+        "TreatmentId": "https://w3id.org/effortless-ntwf#treatmentId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Study": "https://w3id.org/effortless-ntwf#study",
+        "TreatmentLabel": "https://w3id.org/effortless-ntwf#treatmentLabel",
+        "Description": "https://w3id.org/effortless-ntwf#description",
+        "TotalCases": "https://w3id.org/effortless-ntwf#totalCases",
+        "TotalSuccesses": "https://w3id.org/effortless-ntwf#totalSuccesses",
+        "PooledSuccessRate": "https://w3id.org/effortless-ntwf#pooledSuccessRate"
+      }
+    },
+    "Strata": {
+      "class": "https://w3id.org/effortless-ntwf#Strata",
+      "keyField": "StratumId",
+      "fields": {
+        "StratumId": "https://w3id.org/effortless-ntwf#stratumId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Study": "https://w3id.org/effortless-ntwf#study",
+        "StratumLabel": "https://w3id.org/effortless-ntwf#stratumLabel",
+        "Description": "https://w3id.org/effortless-ntwf#description",
+        "TotalCases": "https://w3id.org/effortless-ntwf#totalCases"
+      }
+    },
+    "CaseCells": {
+      "class": "https://w3id.org/effortless-ntwf#CaseCells",
+      "keyField": "CaseCellId",
+      "fields": {
+        "CaseCellId": "https://w3id.org/effortless-ntwf#caseCellId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Study": "https://w3id.org/effortless-ntwf#study",
+        "StratumLabel": "https://w3id.org/effortless-ntwf#stratumLabel",
+        "TreatmentLabel": "https://w3id.org/effortless-ntwf#treatmentLabel",
+        "Successes": "https://w3id.org/effortless-ntwf#successes",
+        "Cases": "https://w3id.org/effortless-ntwf#cases",
+        "CellSuccessRate": "https://w3id.org/effortless-ntwf#cellSuccessRate",
+        "TotalCasesForTreatment": "https://w3id.org/effortless-ntwf#totalCasesForTreatment",
+        "TreatmentExposureFraction": "https://w3id.org/effortless-ntwf#treatmentExposureFraction",
+        "IsValidIngestionCell": "https://w3id.org/effortless-ntwf#isValidIngestionCell"
+      }
+    },
+    "StratumSummaries": {
+      "class": "https://w3id.org/effortless-ntwf#StratumSummaries",
+      "keyField": "StratumSummaryId",
+      "fields": {
+        "StratumSummaryId": "https://w3id.org/effortless-ntwf#stratumSummaryId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Study": "https://w3id.org/effortless-ntwf#study",
+        "StratumLabel": "https://w3id.org/effortless-ntwf#stratumLabel",
+        "TreatmentLabel": "https://w3id.org/effortless-ntwf#treatmentLabel",
+        "StratumSuccesses": "https://w3id.org/effortless-ntwf#stratumSuccesses",
+        "StratumCases": "https://w3id.org/effortless-ntwf#stratumCases",
+        "StratumSuccessRate": "https://w3id.org/effortless-ntwf#stratumSuccessRate",
+        "StratumSuccessesA": "https://w3id.org/effortless-ntwf#stratumSuccessesA",
+        "StratumCasesA": "https://w3id.org/effortless-ntwf#stratumCasesA",
+        "StratumRateA": "https://w3id.org/effortless-ntwf#stratumRateA",
+        "StratumSuccessesB": "https://w3id.org/effortless-ntwf#stratumSuccessesB",
+        "StratumCasesB": "https://w3id.org/effortless-ntwf#stratumCasesB",
+        "StratumRateB": "https://w3id.org/effortless-ntwf#stratumRateB",
+        "StratumWinner": "https://w3id.org/effortless-ntwf#stratumWinner",
+        "StudyTotalCases": "https://w3id.org/effortless-ntwf#studyTotalCases",
+        "StratumTotalCases": "https://w3id.org/effortless-ntwf#stratumTotalCases",
+        "StratumFraction": "https://w3id.org/effortless-ntwf#stratumFraction",
+        "WeightedStratumRate": "https://w3id.org/effortless-ntwf#weightedStratumRate",
+        "TreatmentACasesHere": "https://w3id.org/effortless-ntwf#treatmentACasesHere",
+        "TreatmentBCasesHere": "https://w3id.org/effortless-ntwf#treatmentBCasesHere",
+        "TreatmentATotalCases": "https://w3id.org/effortless-ntwf#treatmentATotalCases",
+        "TreatmentBTotalCases": "https://w3id.org/effortless-ntwf#treatmentBTotalCases",
+        "AllocationFractionA": "https://w3id.org/effortless-ntwf#allocationFractionA",
+        "AllocationFractionB": "https://w3id.org/effortless-ntwf#allocationFractionB",
+        "AllocationBias": "https://w3id.org/effortless-ntwf#allocationBias",
+        "StratumGap": "https://w3id.org/effortless-ntwf#stratumGap",
+        "WeightedStratumGap": "https://w3id.org/effortless-ntwf#weightedStratumGap",
+        "AbsAllocationBias": "https://w3id.org/effortless-ntwf#absAllocationBias",
+        "AbsStratumGap": "https://w3id.org/effortless-ntwf#absStratumGap"
+      }
+    },
+    "ModelSummary": {
+      "class": "https://w3id.org/effortless-ntwf#ModelSummary",
+      "keyField": "ModelSummaryId",
+      "fields": {
+        "ModelSummaryId": "https://w3id.org/effortless-ntwf#modelSummaryId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ReversalCount": "https://w3id.org/effortless-ntwf#reversalCount",
+        "NonReversalCount": "https://w3id.org/effortless-ntwf#nonReversalCount",
+        "StudyCount": "https://w3id.org/effortless-ntwf#studyCount",
+        "ExplainedCount": "https://w3id.org/effortless-ntwf#explainedCount",
+        "TotalParadoxStrength": "https://w3id.org/effortless-ntwf#totalParadoxStrength",
+        "AvgParadoxStrength": "https://w3id.org/effortless-ntwf#avgParadoxStrength",
+        "TypeACount": "https://w3id.org/effortless-ntwf#typeACount",
+        "DangerTierCount": "https://w3id.org/effortless-ntwf#dangerTierCount",
+        "CautionTierCount": "https://w3id.org/effortless-ntwf#cautionTierCount",
+        "SafeTierCount": "https://w3id.org/effortless-ntwf#safeTierCount",
+        "TypeBCount": "https://w3id.org/effortless-ntwf#typeBCount",
+        "TypeDCount": "https://w3id.org/effortless-ntwf#typeDCount",
+        "TypeCPlusCount": "https://w3id.org/effortless-ntwf#typeCPlusCount",
+        "TypeCMinusCount": "https://w3id.org/effortless-ntwf#typeCMinusCount",
+        "TypeAFraction": "https://w3id.org/effortless-ntwf#typeAFraction",
+        "DistortionTaxonomyCoverage": "https://w3id.org/effortless-ntwf#distortionTaxonomyCoverage",
+        "DistortionOnlyCount": "https://w3id.org/effortless-ntwf#distortionOnlyCount",
+        "CAmplificationCount": "https://w3id.org/effortless-ntwf#cAmplificationCount",
+        "CCompressionCount": "https://w3id.org/effortless-ntwf#cCompressionCount",
+        "AvgSignalPurity": "https://w3id.org/effortless-ntwf#avgSignalPurity",
+        "SweepCorrectedGapMax": "https://w3id.org/effortless-ntwf#sweepCorrectedGapMax",
+        "SweepCorrectedGapMin": "https://w3id.org/effortless-ntwf#sweepCorrectedGapMin",
+        "SweepCorrectedGapRange": "https://w3id.org/effortless-ntwf#sweepCorrectedGapRange",
+        "SweepPooledGapRange": "https://w3id.org/effortless-ntwf#sweepPooledGapRange",
+        "RealStudyCount": "https://w3id.org/effortless-ntwf#realStudyCount",
+        "AvgSignalPurityReversal": "https://w3id.org/effortless-ntwf#avgSignalPurityReversal",
+        "AvgSignalPurityNonReversal": "https://w3id.org/effortless-ntwf#avgSignalPurityNonReversal",
+        "SignalPurityGap": "https://w3id.org/effortless-ntwf#signalPurityGap",
+        "MedicineStudyCount": "https://w3id.org/effortless-ntwf#medicineStudyCount",
+        "EpidemiologyStudyCount": "https://w3id.org/effortless-ntwf#epidemiologyStudyCount",
+        "OtherDomainStudyCount": "https://w3id.org/effortless-ntwf#otherDomainStudyCount",
+        "DomainDiversityNote": "https://w3id.org/effortless-ntwf#domainDiversityNote",
+        "SyntheticPhaseCount": "https://w3id.org/effortless-ntwf#syntheticPhaseCount",
+        "PhaseDiagramComplete": "https://w3id.org/effortless-ntwf#phaseDiagramComplete",
+        "PhaseTaxonomyCoverage": "https://w3id.org/effortless-ntwf#phaseTaxonomyCoverage",
+        "IngestionProtocolItemCount": "https://w3id.org/effortless-ntwf#ingestionProtocolItemCount",
+        "CorpusPassesIngestionContract": "https://w3id.org/effortless-ntwf#corpusPassesIngestionContract",
+        "IngestionWitnessNote": "https://w3id.org/effortless-ntwf#ingestionWitnessNote",
+        "CatalogEntryCount": "https://w3id.org/effortless-ntwf#catalogEntryCount",
+        "PendingImportCount": "https://w3id.org/effortless-ntwf#pendingImportCount",
+        "ReadyToEncodeCount": "https://w3id.org/effortless-ntwf#readyToEncodeCount",
+        "ImportSessionReady": "https://w3id.org/effortless-ntwf#importSessionReady",
+        "CatalogWitnessNote": "https://w3id.org/effortless-ntwf#catalogWitnessNote",
+        "LatentTypeDCount": "https://w3id.org/effortless-ntwf#latentTypeDCount",
+        "StableTypeDCount": "https://w3id.org/effortless-ntwf#stableTypeDCount",
+        "LatentTypeDFraction": "https://w3id.org/effortless-ntwf#latentTypeDFraction",
+        "CrossZeroCount": "https://w3id.org/effortless-ntwf#crossZeroCount",
+        "SignFlipSignalPurityMax": "https://w3id.org/effortless-ntwf#signFlipSignalPurityMax",
+        "EconomicsSignFlipCount": "https://w3id.org/effortless-ntwf#economicsSignFlipCount",
+        "SumPooledGapLatentD": "https://w3id.org/effortless-ntwf#sumPooledGapLatentD",
+        "AvgPooledGapLatentD": "https://w3id.org/effortless-ntwf#avgPooledGapLatentD",
+        "SumPooledGapStableD": "https://w3id.org/effortless-ntwf#sumPooledGapStableD",
+        "AvgPooledGapStableD": "https://w3id.org/effortless-ntwf#avgPooledGapStableD",
+        "EpidemiologyAvgDistortion": "https://w3id.org/effortless-ntwf#epidemiologyAvgDistortion",
+        "EducationAvgDistortion": "https://w3id.org/effortless-ntwf#educationAvgDistortion",
+        "ConfounderSignFlipCount": "https://w3id.org/effortless-ntwf#confounderSignFlipCount",
+        "ConfounderLatentOnlyCount": "https://w3id.org/effortless-ntwf#confounderLatentOnlyCount",
+        "ColliderSelectionCount": "https://w3id.org/effortless-ntwf#colliderSelectionCount",
+        "ColliderSelectionManifestCount": "https://w3id.org/effortless-ntwf#colliderSelectionManifestCount",
+        "ColliderSelectionLatentOnlyCount": "https://w3id.org/effortless-ntwf#colliderSelectionLatentOnlyCount",
+        "ExplainedConfounderCount": "https://w3id.org/effortless-ntwf#explainedConfounderCount",
+        "ContestedOrMediatorExplainedCount": "https://w3id.org/effortless-ntwf#contestedOrMediatorExplainedCount",
+        "DiscoveryWitnessNote": "https://w3id.org/effortless-ntwf#discoveryWitnessNote",
+        "TypePredictionMatchCount": "https://w3id.org/effortless-ntwf#typePredictionMatchCount",
+        "TypePredictionMismatchCount": "https://w3id.org/effortless-ntwf#typePredictionMismatchCount",
+        "TypePredictionMatchRate": "https://w3id.org/effortless-ntwf#typePredictionMatchRate",
+        "SignFlipPredictionMatchRate": "https://w3id.org/effortless-ntwf#signFlipPredictionMatchRate",
+        "CatalogPredictionWitnessNote": "https://w3id.org/effortless-ntwf#catalogPredictionWitnessNote",
+        "HighImbalanceSignFlipThreshold": "https://w3id.org/effortless-ntwf#highImbalanceSignFlipThreshold",
+        "EconomicsHighImbalanceSignFlipCount": "https://w3id.org/effortless-ntwf#economicsHighImbalanceSignFlipCount",
+        "EpidemiologyHighImbalanceSignFlipRate": "https://w3id.org/effortless-ntwf#epidemiologyHighImbalanceSignFlipRate",
+        "LegalHighImbalanceSignFlipRate": "https://w3id.org/effortless-ntwf#legalHighImbalanceSignFlipRate",
+        "SportsHighImbalanceSignFlipRate": "https://w3id.org/effortless-ntwf#sportsHighImbalanceSignFlipRate",
+        "CPlusAvgDistortion": "https://w3id.org/effortless-ntwf#cPlusAvgDistortion",
+        "CMinusAvgDistortion": "https://w3id.org/effortless-ntwf#cMinusAvgDistortion",
+        "TypeDAvgDistortion": "https://w3id.org/effortless-ntwf#typeDAvgDistortion",
+        "SweepFragileCount": "https://w3id.org/effortless-ntwf#sweepFragileCount",
+        "ExpansionWave1EconomicsExpectedACount": "https://w3id.org/effortless-ntwf#expansionWave1EconomicsExpectedACount",
+        "ExpansionWave1EconomicsExpectedADCount": "https://w3id.org/effortless-ntwf#expansionWave1EconomicsExpectedADCount",
+        "EconomicsExpectedAMismatchRate": "https://w3id.org/effortless-ntwf#economicsExpectedAMismatchRate",
+        "UnanimousSignFlipCount": "https://w3id.org/effortless-ntwf#unanimousSignFlipCount",
+        "MaxStudySweepCorrectedGapRange": "https://w3id.org/effortless-ntwf#maxStudySweepCorrectedGapRange",
+        "CorrectedGapInvariantFailCount": "https://w3id.org/effortless-ntwf#correctedGapInvariantFailCount",
+        "FalsePositiveExplainedCount": "https://w3id.org/effortless-ntwf#falsePositiveExplainedCount",
+        "UnexplainedConfounderSignFlipCount": "https://w3id.org/effortless-ntwf#unexplainedConfounderSignFlipCount",
+        "TheoremCount": "https://w3id.org/effortless-ntwf#theoremCount",
+        "EducationLatentFraction": "https://w3id.org/effortless-ntwf#educationLatentFraction",
+        "SportsLatentFraction": "https://w3id.org/effortless-ntwf#sportsLatentFraction",
+        "EconomicsSignFlipRate": "https://w3id.org/effortless-ntwf#economicsSignFlipRate",
+        "EducationTypeDCount": "https://w3id.org/effortless-ntwf#educationTypeDCount",
+        "EducationLatentDCount": "https://w3id.org/effortless-ntwf#educationLatentDCount",
+        "SportsTypeDCount": "https://w3id.org/effortless-ntwf#sportsTypeDCount",
+        "SportsLatentDCount": "https://w3id.org/effortless-ntwf#sportsLatentDCount",
+        "EconomicsStudyCount": "https://w3id.org/effortless-ntwf#economicsStudyCount",
+        "ExpansionWave2StudyCount": "https://w3id.org/effortless-ntwf#expansionWave2StudyCount",
+        "ConfounderIdentityCount": "https://w3id.org/effortless-ntwf#confounderIdentityCount",
+        "MappedStratumVariableCount": "https://w3id.org/effortless-ntwf#mappedStratumVariableCount",
+        "UnmappedStratumVariableCount": "https://w3id.org/effortless-ntwf#unmappedStratumVariableCount",
+        "AgeIdentityManifestFlipRate": "https://w3id.org/effortless-ntwf#ageIdentityManifestFlipRate",
+        "AgeIdentityStudyCount": "https://w3id.org/effortless-ntwf#ageIdentityStudyCount",
+        "AgeIdentityLatentFractionAmongTypeD": "https://w3id.org/effortless-ntwf#ageIdentityLatentFractionAmongTypeD",
+        "SeverityIdentityLatentFractionAmongTypeD": "https://w3id.org/effortless-ntwf#severityIdentityLatentFractionAmongTypeD",
+        "IdentityMapCoverageRate": "https://w3id.org/effortless-ntwf#identityMapCoverageRate",
+        "IdentityClusterWitnessNote": "https://w3id.org/effortless-ntwf#identityClusterWitnessNote",
+        "SeverityMedicineManifestFlipRate": "https://w3id.org/effortless-ntwf#severityMedicineManifestFlipRate",
+        "SeverityEpiManifestFlipCount": "https://w3id.org/effortless-ntwf#severityEpiManifestFlipCount",
+        "IdentityDomainCellCount": "https://w3id.org/effortless-ntwf#identityDomainCellCount",
+        "SelectionFrailtyManifestFlipCount": "https://w3id.org/effortless-ntwf#selectionFrailtyManifestFlipCount",
+        "SelectionFrailtyStudyCount": "https://w3id.org/effortless-ntwf#selectionFrailtyStudyCount",
+        "ColliderIdentityManifestFlipRate": "https://w3id.org/effortless-ntwf#colliderIdentityManifestFlipRate",
+        "GeographicTypeDFraction": "https://w3id.org/effortless-ntwf#geographicTypeDFraction",
+        "SeverityDriftDirection": "https://w3id.org/effortless-ntwf#severityDriftDirection",
+        "GeographicDriftDirection": "https://w3id.org/effortless-ntwf#geographicDriftDirection",
+        "SituationalDriftDirection": "https://w3id.org/effortless-ntwf#situationalDriftDirection",
+        "AgeDriftDirection": "https://w3id.org/effortless-ntwf#ageDriftDirection",
+        "InstitutionalDriftDirection": "https://w3id.org/effortless-ntwf#institutionalDriftDirection",
+        "SocioeconomicDriftDirection": "https://w3id.org/effortless-ntwf#socioeconomicDriftDirection",
+        "DomainFlipGapSurvivesGeometryControl": "https://w3id.org/effortless-ntwf#domainFlipGapSurvivesGeometryControl",
+        "CorpusPatternSupersededFailCount": "https://w3id.org/effortless-ntwf#corpusPatternSupersededFailCount",
+        "ExpansionWave3DiscoveryNote": "https://w3id.org/effortless-ntwf#expansionWave3DiscoveryNote"
+      }
+    },
+    "StratumVariables": {
+      "class": "https://w3id.org/effortless-ntwf#StratumVariables",
+      "keyField": "StratumVariableId",
+      "fields": {
+        "StratumVariableId": "https://w3id.org/effortless-ntwf#stratumVariableId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Study": "https://w3id.org/effortless-ntwf#study",
+        "VariableName": "https://w3id.org/effortless-ntwf#variableName",
+        "CausalRole": "https://w3id.org/effortless-ntwf#causalRole",
+        "AffectsTreatmentAssignment": "https://w3id.org/effortless-ntwf#affectsTreatmentAssignment",
+        "AffectsOutcome": "https://w3id.org/effortless-ntwf#affectsOutcome",
+        "IsConfounder": "https://w3id.org/effortless-ntwf#isConfounder",
+        "MechanismNote": "https://w3id.org/effortless-ntwf#mechanismNote",
+        "ConditioningRisk": "https://w3id.org/effortless-ntwf#conditioningRisk",
+        "ConfounderIdentity": "https://w3id.org/effortless-ntwf#confounderIdentity",
+        "AnnotationCommitHash": "https://w3id.org/effortless-ntwf#annotationCommitHash",
+        "AnnotationCommitDate": "https://w3id.org/effortless-ntwf#annotationCommitDate",
+        "AnnotationCommitSubject": "https://w3id.org/effortless-ntwf#annotationCommitSubject",
+        "CausalRoleEverRevised": "https://w3id.org/effortless-ntwf#causalRoleEverRevised"
+      }
+    },
+    "TreatmentRankings": {
+      "class": "https://w3id.org/effortless-ntwf#TreatmentRankings",
+      "keyField": "TreatmentRankingId",
+      "fields": {
+        "TreatmentRankingId": "https://w3id.org/effortless-ntwf#treatmentRankingId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Study": "https://w3id.org/effortless-ntwf#study",
+        "TreatmentA": "https://w3id.org/effortless-ntwf#treatmentA",
+        "TreatmentB": "https://w3id.org/effortless-ntwf#treatmentB",
+        "TotalCasesA": "https://w3id.org/effortless-ntwf#totalCasesA",
+        "TotalSuccessesA": "https://w3id.org/effortless-ntwf#totalSuccessesA",
+        "PooledRateA": "https://w3id.org/effortless-ntwf#pooledRateA",
+        "TotalCasesB": "https://w3id.org/effortless-ntwf#totalCasesB",
+        "TotalSuccessesB": "https://w3id.org/effortless-ntwf#totalSuccessesB",
+        "PooledRateB": "https://w3id.org/effortless-ntwf#pooledRateB",
+        "PooledWinner": "https://w3id.org/effortless-ntwf#pooledWinner",
+        "StratumCount": "https://w3id.org/effortless-ntwf#stratumCount",
+        "StrataWonByA": "https://w3id.org/effortless-ntwf#strataWonByA",
+        "StrataWonByB": "https://w3id.org/effortless-ntwf#strataWonByB",
+        "PerStratumWinner": "https://w3id.org/effortless-ntwf#perStratumWinner",
+        "IsStratumUnanimous": "https://w3id.org/effortless-ntwf#isStratumUnanimous",
+        "IsReversal": "https://w3id.org/effortless-ntwf#isReversal",
+        "ConfoundersInStudy": "https://w3id.org/effortless-ntwf#confoundersInStudy",
+        "IsParadoxExplained": "https://w3id.org/effortless-ntwf#isParadoxExplained",
+        "PooledGap": "https://w3id.org/effortless-ntwf#pooledGap",
+        "StrataWonByLoser": "https://w3id.org/effortless-ntwf#strataWonByLoser",
+        "ParadoxStrength": "https://w3id.org/effortless-ntwf#paradoxStrength",
+        "PooledRateFromWeightsA": "https://w3id.org/effortless-ntwf#pooledRateFromWeightsA",
+        "PooledRateFromWeightsB": "https://w3id.org/effortless-ntwf#pooledRateFromWeightsB",
+        "ReversalIntensity": "https://w3id.org/effortless-ntwf#reversalIntensity",
+        "ThresholdMargin": "https://w3id.org/effortless-ntwf#thresholdMargin",
+        "SignedPooledGap": "https://w3id.org/effortless-ntwf#signedPooledGap",
+        "WeightedStratumGapSum": "https://w3id.org/effortless-ntwf#weightedStratumGapSum",
+        "IsSignFlip": "https://w3id.org/effortless-ntwf#isSignFlip",
+        "AllocationDistortion": "https://w3id.org/effortless-ntwf#allocationDistortion",
+        "DistortionType": "https://w3id.org/effortless-ntwf#distortionType",
+        "PolicyImplication": "https://w3id.org/effortless-ntwf#policyImplication",
+        "CorrectedGap": "https://w3id.org/effortless-ntwf#correctedGap",
+        "CorrectedWinner": "https://w3id.org/effortless-ntwf#correctedWinner",
+        "CorrectedVsPooledAgreement": "https://w3id.org/effortless-ntwf#correctedVsPooledAgreement",
+        "CorrectedPolicyImplication": "https://w3id.org/effortless-ntwf#correctedPolicyImplication",
+        "AllocationDirection": "https://w3id.org/effortless-ntwf#allocationDirection",
+        "SignalPurity": "https://w3id.org/effortless-ntwf#signalPurity",
+        "PooledGapCrossesZero": "https://w3id.org/effortless-ntwf#pooledGapCrossesZero",
+        "SweepPooledGapRange": "https://w3id.org/effortless-ntwf#sweepPooledGapRange",
+        "LatentFlipPotential": "https://w3id.org/effortless-ntwf#latentFlipPotential",
+        "AllocationFragility": "https://w3id.org/effortless-ntwf#allocationFragility",
+        "MaxStratumImbalance": "https://w3id.org/effortless-ntwf#maxStratumImbalance",
+        "MaxStratumGap": "https://w3id.org/effortless-ntwf#maxStratumGap",
+        "IsSweepFragile": "https://w3id.org/effortless-ntwf#isSweepFragile",
+        "StudyDomain": "https://w3id.org/effortless-ntwf#studyDomain",
+        "StratumCausalRole": "https://w3id.org/effortless-ntwf#stratumCausalRole",
+        "IsLatentOnlyFlip": "https://w3id.org/effortless-ntwf#isLatentOnlyFlip",
+        "ConfirmedCausalRoleCount": "https://w3id.org/effortless-ntwf#confirmedCausalRoleCount",
+        "MediatorRiskCount": "https://w3id.org/effortless-ntwf#mediatorRiskCount",
+        "ContestedStratumCount": "https://w3id.org/effortless-ntwf#contestedStratumCount",
+        "UnknownCausalRoleCount": "https://w3id.org/effortless-ntwf#unknownCausalRoleCount",
+        "CausalClaimStatus": "https://w3id.org/effortless-ntwf#causalClaimStatus",
+        "AdjustmentAppropriate": "https://w3id.org/effortless-ntwf#adjustmentAppropriate",
+        "AdjustmentRationale": "https://w3id.org/effortless-ntwf#adjustmentRationale",
+        "PurityTrapFlag": "https://w3id.org/effortless-ntwf#purityTrapFlag",
+        "DistortionRatio": "https://w3id.org/effortless-ntwf#distortionRatio",
+        "ScreeningTier": "https://w3id.org/effortless-ntwf#screeningTier",
+        "ArmSizeRatio": "https://w3id.org/effortless-ntwf#armSizeRatio",
+        "SymmetryDeparture": "https://w3id.org/effortless-ntwf#symmetryDeparture"
+      }
+    },
+    "InvariantChecks": {
+      "class": "https://w3id.org/effortless-ntwf#InvariantChecks",
+      "keyField": "InvariantCheckId",
+      "fields": {
+        "InvariantCheckId": "https://w3id.org/effortless-ntwf#invariantCheckId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "AlgebraicStatement": "https://w3id.org/effortless-ntwf#algebraicStatement",
+        "NaturalLanguage": "https://w3id.org/effortless-ntwf#naturalLanguage",
+        "SourceTable": "https://w3id.org/effortless-ntwf#sourceTable",
+        "FilterExpression": "https://w3id.org/effortless-ntwf#filterExpression",
+        "AssertionExpression": "https://w3id.org/effortless-ntwf#assertionExpression",
+        "SqlFilter": "https://w3id.org/effortless-ntwf#sqlFilter",
+        "SqlAssertion": "https://w3id.org/effortless-ntwf#sqlAssertion",
+        "PassCount": "https://w3id.org/effortless-ntwf#passCount",
+        "FailCount": "https://w3id.org/effortless-ntwf#failCount",
+        "UniverseCount": "https://w3id.org/effortless-ntwf#universeCount",
+        "IsGreen": "https://w3id.org/effortless-ntwf#isGreen",
+        "StatusLabel": "https://w3id.org/effortless-ntwf#statusLabel",
+        "Severity": "https://w3id.org/effortless-ntwf#severity",
+        "TraditionId": "https://w3id.org/effortless-ntwf#traditionId",
+        "ProtectsConclusion": "https://w3id.org/effortless-ntwf#protectsConclusion",
+        "TraditionName": "https://w3id.org/effortless-ntwf#traditionName",
+        "TraditionKeyClaimSummary": "https://w3id.org/effortless-ntwf#traditionKeyClaimSummary",
+        "ProtectsConclusionTitle": "https://w3id.org/effortless-ntwf#protectsConclusionTitle",
+        "ProtectsConclusionCategory": "https://w3id.org/effortless-ntwf#protectsConclusionCategory"
+      }
+    },
+    "MaterializedEntities": {
+      "class": "https://w3id.org/effortless-ntwf#MaterializedEntities",
+      "keyField": "MaterializedEntityId",
+      "fields": {
+        "MaterializedEntityId": "https://w3id.org/effortless-ntwf#materializedEntityId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "EntityTable": "https://w3id.org/effortless-ntwf#entityTable",
+        "RefreshContract": "https://w3id.org/effortless-ntwf#refreshContract",
+        "RefreshFunction": "https://w3id.org/effortless-ntwf#refreshFunction",
+        "UpstreamTables": "https://w3id.org/effortless-ntwf#upstreamTables",
+        "Justification": "https://w3id.org/effortless-ntwf#justification"
+      }
+    },
+    "Methodology": {
+      "class": "https://w3id.org/effortless-ntwf#Methodology",
+      "keyField": "MethodologyId",
+      "fields": {
+        "MethodologyId": "https://w3id.org/effortless-ntwf#methodologyId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Phase": "https://w3id.org/effortless-ntwf#phase",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "Statement": "https://w3id.org/effortless-ntwf#statement",
+        "WhyItMatters": "https://w3id.org/effortless-ntwf#whyItMatters",
+        "IllustratedByLoop": "https://w3id.org/effortless-ntwf#illustratedByLoop",
+        "TraditionId": "https://w3id.org/effortless-ntwf#traditionId",
+        "PioneeringResearcher": "https://w3id.org/effortless-ntwf#pioneeringResearcher",
+        "TraditionName": "https://w3id.org/effortless-ntwf#traditionName",
+        "TraditionPrimaryVenue": "https://w3id.org/effortless-ntwf#traditionPrimaryVenue",
+        "PioneeringResearcherName": "https://w3id.org/effortless-ntwf#pioneeringResearcherName",
+        "PioneeringResearcherAffiliation": "https://w3id.org/effortless-ntwf#pioneeringResearcherAffiliation",
+        "LoopCount": "https://w3id.org/effortless-ntwf#loopCount"
+      }
+    },
+    "Conclusions": {
+      "class": "https://w3id.org/effortless-ntwf#Conclusions",
+      "keyField": "ConclusionId",
+      "fields": {
+        "ConclusionId": "https://w3id.org/effortless-ntwf#conclusionId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Category": "https://w3id.org/effortless-ntwf#category",
+        "Status": "https://w3id.org/effortless-ntwf#status",
+        "ReportTier": "https://w3id.org/effortless-ntwf#reportTier",
+        "ValidatingHypothesis": "https://w3id.org/effortless-ntwf#validatingHypothesis",
+        "LiveStatusConfirmed": "https://w3id.org/effortless-ntwf#liveStatusConfirmed",
+        "LiveStatusObservedMetric": "https://w3id.org/effortless-ntwf#liveStatusObservedMetric",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "Evidence": "https://w3id.org/effortless-ntwf#evidence",
+        "WitnessedInLoop": "https://w3id.org/effortless-ntwf#witnessedInLoop",
+        "TargetLoop": "https://w3id.org/effortless-ntwf#targetLoop",
+        "TraditionId": "https://w3id.org/effortless-ntwf#traditionId",
+        "ResearcherId": "https://w3id.org/effortless-ntwf#researcherId",
+        "ChallengesResearcher": "https://w3id.org/effortless-ntwf#challengesResearcher",
+        "TraditionName": "https://w3id.org/effortless-ntwf#traditionName",
+        "TraditionKeyClaimSummary": "https://w3id.org/effortless-ntwf#traditionKeyClaimSummary",
+        "ResearcherName": "https://w3id.org/effortless-ntwf#researcherName",
+        "ResearcherAffiliation": "https://w3id.org/effortless-ntwf#researcherAffiliation",
+        "ChallengesResearcherName": "https://w3id.org/effortless-ntwf#challengesResearcherName",
+        "WitnessedInLoopTitle": "https://w3id.org/effortless-ntwf#witnessedInLoopTitle",
+        "WitnessedInLoopCommitHash": "https://w3id.org/effortless-ntwf#witnessedInLoopCommitHash",
+        "WitnessedInLoopCommitShort": "https://w3id.org/effortless-ntwf#witnessedInLoopCommitShort",
+        "WitnessedInLoopCommitDate": "https://w3id.org/effortless-ntwf#witnessedInLoopCommitDate",
+        "WitnessedInLoopGitTag": "https://w3id.org/effortless-ntwf#witnessedInLoopGitTag",
+        "InvariantProtectingCount": "https://w3id.org/effortless-ntwf#invariantProtectingCount"
+      }
+    },
+    "UIScreens": {
+      "class": "https://w3id.org/effortless-ntwf#UIScreens",
+      "keyField": "ScreenId",
+      "fields": {
+        "ScreenId": "https://w3id.org/effortless-ntwf#screenId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "Route": "https://w3id.org/effortless-ntwf#route",
+        "PrimaryEntity": "https://w3id.org/effortless-ntwf#primaryEntity",
+        "Purpose": "https://w3id.org/effortless-ntwf#purpose",
+        "KeyFields": "https://w3id.org/effortless-ntwf#keyFields",
+        "UserAction": "https://w3id.org/effortless-ntwf#userAction",
+        "TraditionId": "https://w3id.org/effortless-ntwf#traditionId",
+        "PrimaryConclusion": "https://w3id.org/effortless-ntwf#primaryConclusion",
+        "TraditionName": "https://w3id.org/effortless-ntwf#traditionName",
+        "TraditionCoreConern": "https://w3id.org/effortless-ntwf#traditionCoreConern",
+        "PrimaryConclusionTitle": "https://w3id.org/effortless-ntwf#primaryConclusionTitle",
+        "PrimaryConclusionEvidence": "https://w3id.org/effortless-ntwf#primaryConclusionEvidence"
+      }
+    },
+    "UIComponents": {
+      "class": "https://w3id.org/effortless-ntwf#UIComponents",
+      "keyField": "ComponentId",
+      "fields": {
+        "ComponentId": "https://w3id.org/effortless-ntwf#componentId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ComponentName": "https://w3id.org/effortless-ntwf#componentName",
+        "UsedOnScreens": "https://w3id.org/effortless-ntwf#usedOnScreens",
+        "PrimaryEntity": "https://w3id.org/effortless-ntwf#primaryEntity",
+        "Description": "https://w3id.org/effortless-ntwf#description",
+        "RequiredFields": "https://w3id.org/effortless-ntwf#requiredFields",
+        "VisualSpec": "https://w3id.org/effortless-ntwf#visualSpec"
+      }
+    },
+    "InstrumentSpec": {
+      "class": "https://w3id.org/effortless-ntwf#InstrumentSpec",
+      "keyField": "SpecId",
+      "fields": {
+        "SpecId": "https://w3id.org/effortless-ntwf#specId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ComponentType": "https://w3id.org/effortless-ntwf#componentType",
+        "FieldName": "https://w3id.org/effortless-ntwf#fieldName",
+        "DataType": "https://w3id.org/effortless-ntwf#dataType",
+        "SourceTable": "https://w3id.org/effortless-ntwf#sourceTable",
+        "Formula": "https://w3id.org/effortless-ntwf#formula",
+        "NaturalLanguage": "https://w3id.org/effortless-ntwf#naturalLanguage",
+        "AdapterNote": "https://w3id.org/effortless-ntwf#adapterNote"
+      }
+    },
+    "AllocationSweep": {
+      "class": "https://w3id.org/effortless-ntwf#AllocationSweep",
+      "keyField": "SweepId",
+      "fields": {
+        "SweepId": "https://w3id.org/effortless-ntwf#sweepId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "StudyId": "https://w3id.org/effortless-ntwf#studyId",
+        "AllocFractionA": "https://w3id.org/effortless-ntwf#allocFractionA",
+        "IsOriginal": "https://w3id.org/effortless-ntwf#isOriginal",
+        "NSweepStratumTotal": "https://w3id.org/effortless-ntwf#nSweepStratumTotal",
+        "NSweepA": "https://w3id.org/effortless-ntwf#nSweepA",
+        "NSweepB": "https://w3id.org/effortless-ntwf#nSweepB",
+        "NFixedA": "https://w3id.org/effortless-ntwf#nFixedA",
+        "NFixedB": "https://w3id.org/effortless-ntwf#nFixedB",
+        "SweepRateA": "https://w3id.org/effortless-ntwf#sweepRateA",
+        "SweepRateB": "https://w3id.org/effortless-ntwf#sweepRateB",
+        "FixedRateA": "https://w3id.org/effortless-ntwf#fixedRateA",
+        "FixedRateB": "https://w3id.org/effortless-ntwf#fixedRateB",
+        "SweepPooledRateA": "https://w3id.org/effortless-ntwf#sweepPooledRateA",
+        "SweepPooledRateB": "https://w3id.org/effortless-ntwf#sweepPooledRateB",
+        "SweepPooledGap": "https://w3id.org/effortless-ntwf#sweepPooledGap",
+        "SweepCorrectedGap": "https://w3id.org/effortless-ntwf#sweepCorrectedGap",
+        "AllocationDistortionWitness": "https://w3id.org/effortless-ntwf#allocationDistortionWitness"
+      }
+    },
+    "SweepStudySummary": {
+      "class": "https://w3id.org/effortless-ntwf#SweepStudySummary",
+      "keyField": "SweepStudyId",
+      "fields": {
+        "SweepStudyId": "https://w3id.org/effortless-ntwf#sweepStudyId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "DistortionTypeLabel": "https://w3id.org/effortless-ntwf#distortionTypeLabel",
+        "CorrectedGapConstant": "https://w3id.org/effortless-ntwf#correctedGapConstant",
+        "SweepCorrectedGapMax": "https://w3id.org/effortless-ntwf#sweepCorrectedGapMax",
+        "SweepCorrectedGapMin": "https://w3id.org/effortless-ntwf#sweepCorrectedGapMin",
+        "SweepCorrectedGapRange": "https://w3id.org/effortless-ntwf#sweepCorrectedGapRange",
+        "SweepPooledGapMax": "https://w3id.org/effortless-ntwf#sweepPooledGapMax",
+        "SweepPooledGapMin": "https://w3id.org/effortless-ntwf#sweepPooledGapMin",
+        "SweepPooledGapRange": "https://w3id.org/effortless-ntwf#sweepPooledGapRange",
+        "PooledGapCrossesZero": "https://w3id.org/effortless-ntwf#pooledGapCrossesZero",
+        "InvariantWitness": "https://w3id.org/effortless-ntwf#invariantWitness",
+        "SweepStratumLabel": "https://w3id.org/effortless-ntwf#sweepStratumLabel"
+      }
+    },
+    "ResearchTraditions": {
+      "class": "https://w3id.org/effortless-ntwf#ResearchTraditions",
+      "keyField": "TraditionId",
+      "fields": {
+        "TraditionId": "https://w3id.org/effortless-ntwf#traditionId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Era": "https://w3id.org/effortless-ntwf#era",
+        "CoreConcern": "https://w3id.org/effortless-ntwf#coreConcern",
+        "PrimaryVenue": "https://w3id.org/effortless-ntwf#primaryVenue",
+        "KeyClaim": "https://w3id.org/effortless-ntwf#keyClaim",
+        "OpenQuestion": "https://w3id.org/effortless-ntwf#openQuestion",
+        "VerifiedByDeepResearch": "https://w3id.org/effortless-ntwf#verifiedByDeepResearch",
+        "IllustratedByStudy": "https://w3id.org/effortless-ntwf#illustratedByStudy",
+        "SupportingConclusion": "https://w3id.org/effortless-ntwf#supportingConclusion",
+        "IllustratedByStudyTitle": "https://w3id.org/effortless-ntwf#illustratedByStudyTitle",
+        "IllustratedByStudySource": "https://w3id.org/effortless-ntwf#illustratedByStudySource",
+        "IllustratedByStudyDistortionType": "https://w3id.org/effortless-ntwf#illustratedByStudyDistortionType",
+        "SupportingConclusionTitle": "https://w3id.org/effortless-ntwf#supportingConclusionTitle",
+        "SupportingConclusionCategory": "https://w3id.org/effortless-ntwf#supportingConclusionCategory",
+        "ResearcherCount": "https://w3id.org/effortless-ntwf#researcherCount",
+        "StudyCount": "https://w3id.org/effortless-ntwf#studyCount",
+        "LoopCount": "https://w3id.org/effortless-ntwf#loopCount"
+      }
+    },
+    "Researchers": {
+      "class": "https://w3id.org/effortless-ntwf#Researchers",
+      "keyField": "ResearcherId",
+      "fields": {
+        "ResearcherId": "https://w3id.org/effortless-ntwf#researcherId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "TraditionId": "https://w3id.org/effortless-ntwf#traditionId",
+        "ActivePeriod": "https://w3id.org/effortless-ntwf#activePeriod",
+        "Affiliation": "https://w3id.org/effortless-ntwf#affiliation",
+        "KeyContribution": "https://w3id.org/effortless-ntwf#keyContribution",
+        "SignatureWork": "https://w3id.org/effortless-ntwf#signatureWork",
+        "RelationToHannanPearl": "https://w3id.org/effortless-ntwf#relationToHannanPearl",
+        "VerifiedByDeepResearch": "https://w3id.org/effortless-ntwf#verifiedByDeepResearch",
+        "ConfidenceLevel": "https://w3id.org/effortless-ntwf#confidenceLevel",
+        "CanonicalStudyId": "https://w3id.org/effortless-ntwf#canonicalStudyId",
+        "IllustratesConclusion": "https://w3id.org/effortless-ntwf#illustratesConclusion",
+        "TraditionName": "https://w3id.org/effortless-ntwf#traditionName",
+        "TraditionEra": "https://w3id.org/effortless-ntwf#traditionEra",
+        "CanonicalStudyTitle": "https://w3id.org/effortless-ntwf#canonicalStudyTitle",
+        "CanonicalStudyDistortionType": "https://w3id.org/effortless-ntwf#canonicalStudyDistortionType",
+        "CanonicalStudyPolicyImplication": "https://w3id.org/effortless-ntwf#canonicalStudyPolicyImplication",
+        "IllustratesConclusionTitle": "https://w3id.org/effortless-ntwf#illustratesConclusionTitle",
+        "TraditionKeyClaimSummary": "https://w3id.org/effortless-ntwf#traditionKeyClaimSummary"
+      }
+    },
+    "SyntheticPhase": {
+      "class": "https://w3id.org/effortless-ntwf#SyntheticPhase",
+      "keyField": "PhaseId",
+      "fields": {
+        "PhaseId": "https://w3id.org/effortless-ntwf#phaseId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ParamStratumFraction": "https://w3id.org/effortless-ntwf#paramStratumFraction",
+        "ParamStratumGap1": "https://w3id.org/effortless-ntwf#paramStratumGap1",
+        "ParamStratumGap2": "https://w3id.org/effortless-ntwf#paramStratumGap2",
+        "ParamAllocationBias": "https://w3id.org/effortless-ntwf#paramAllocationBias",
+        "PhaseS1Total": "https://w3id.org/effortless-ntwf#phaseS1Total",
+        "PhaseNA1": "https://w3id.org/effortless-ntwf#phaseNA1",
+        "PhaseNB1": "https://w3id.org/effortless-ntwf#phaseNB1",
+        "PhaseNA2": "https://w3id.org/effortless-ntwf#phaseNA2",
+        "PhaseNB2": "https://w3id.org/effortless-ntwf#phaseNB2",
+        "PhaseRateA1": "https://w3id.org/effortless-ntwf#phaseRateA1",
+        "PhaseRateB1": "https://w3id.org/effortless-ntwf#phaseRateB1",
+        "PhaseRateA2": "https://w3id.org/effortless-ntwf#phaseRateA2",
+        "PhaseRateB2": "https://w3id.org/effortless-ntwf#phaseRateB2",
+        "PhasePooledRateA": "https://w3id.org/effortless-ntwf#phasePooledRateA",
+        "PhasePooledRateB": "https://w3id.org/effortless-ntwf#phasePooledRateB",
+        "PhaseSignedPooledGap": "https://w3id.org/effortless-ntwf#phaseSignedPooledGap",
+        "PhaseCorrectedGap": "https://w3id.org/effortless-ntwf#phaseCorrectedGap",
+        "PhaseStrataWonByLoser": "https://w3id.org/effortless-ntwf#phaseStrataWonByLoser",
+        "PhaseReversalIntensity": "https://w3id.org/effortless-ntwf#phaseReversalIntensity",
+        "PhaseIsSignFlip": "https://w3id.org/effortless-ntwf#phaseIsSignFlip",
+        "PhaseAllocationDistortion": "https://w3id.org/effortless-ntwf#phaseAllocationDistortion",
+        "PhaseDistortionType": "https://w3id.org/effortless-ntwf#phaseDistortionType"
+      }
+    },
+    "PhaseDiagramSummary": {
+      "class": "https://w3id.org/effortless-ntwf#PhaseDiagramSummary",
+      "keyField": "PhaseDiagramId",
+      "fields": {
+        "PhaseDiagramId": "https://w3id.org/effortless-ntwf#phaseDiagramId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "PhasePointCount": "https://w3id.org/effortless-ntwf#phasePointCount",
+        "PhaseTypeACount": "https://w3id.org/effortless-ntwf#phaseTypeACount",
+        "PhaseTypeBCount": "https://w3id.org/effortless-ntwf#phaseTypeBCount",
+        "PhaseTypeCPlusCount": "https://w3id.org/effortless-ntwf#phaseTypeCPlusCount",
+        "PhaseTypeCMinusCount": "https://w3id.org/effortless-ntwf#phaseTypeCMinusCount",
+        "PhaseTypeDCount": "https://w3id.org/effortless-ntwf#phaseTypeDCount",
+        "AllFiveTypesPresent": "https://w3id.org/effortless-ntwf#allFiveTypesPresent",
+        "PhaseTaxonomyWitness": "https://w3id.org/effortless-ntwf#phaseTaxonomyWitness",
+        "PhaseWitnessNote": "https://w3id.org/effortless-ntwf#phaseWitnessNote"
+      }
+    },
+    "IngestionProtocol": {
+      "class": "https://w3id.org/effortless-ntwf#IngestionProtocol",
+      "keyField": "ProtocolId",
+      "fields": {
+        "ProtocolId": "https://w3id.org/effortless-ntwf#protocolId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "RuleType": "https://w3id.org/effortless-ntwf#ruleType",
+        "TargetTable": "https://w3id.org/effortless-ntwf#targetTable",
+        "FieldName": "https://w3id.org/effortless-ntwf#fieldName",
+        "RequirementStatement": "https://w3id.org/effortless-ntwf#requirementStatement",
+        "MechanicalCheck": "https://w3id.org/effortless-ntwf#mechanicalCheck",
+        "SortOrder": "https://w3id.org/effortless-ntwf#sortOrder"
+      }
+    },
+    "IngestionSummary": {
+      "class": "https://w3id.org/effortless-ntwf#IngestionSummary",
+      "keyField": "IngestionSummaryId",
+      "fields": {
+        "IngestionSummaryId": "https://w3id.org/effortless-ntwf#ingestionSummaryId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ProtocolItemCount": "https://w3id.org/effortless-ntwf#protocolItemCount",
+        "CorpusCellCount": "https://w3id.org/effortless-ntwf#corpusCellCount",
+        "ValidCellCount": "https://w3id.org/effortless-ntwf#validCellCount",
+        "AllCellsValid": "https://w3id.org/effortless-ntwf#allCellsValid",
+        "StudyCount": "https://w3id.org/effortless-ntwf#studyCount",
+        "StructuralCompliantCount": "https://w3id.org/effortless-ntwf#structuralCompliantCount",
+        "AllStudiesStructural": "https://w3id.org/effortless-ntwf#allStudiesStructural",
+        "RealStudyCount": "https://w3id.org/effortless-ntwf#realStudyCount",
+        "RealFullyCompliantCount": "https://w3id.org/effortless-ntwf#realFullyCompliantCount",
+        "AllRealStudiesCompliant": "https://w3id.org/effortless-ntwf#allRealStudiesCompliant",
+        "IngestionContractPasses": "https://w3id.org/effortless-ntwf#ingestionContractPasses",
+        "IngestionWitnessNote": "https://w3id.org/effortless-ntwf#ingestionWitnessNote"
+      }
+    },
+    "CandidateStudyCatalog": {
+      "class": "https://w3id.org/effortless-ntwf#CandidateStudyCatalog",
+      "keyField": "CandidateId",
+      "fields": {
+        "CandidateId": "https://w3id.org/effortless-ntwf#candidateId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ProposedStudyId": "https://w3id.org/effortless-ntwf#proposedStudyId",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "Citation": "https://w3id.org/effortless-ntwf#citation",
+        "SourceUrl": "https://w3id.org/effortless-ntwf#sourceUrl",
+        "Domain": "https://w3id.org/effortless-ntwf#domain",
+        "StratumVariableName": "https://w3id.org/effortless-ntwf#stratumVariableName",
+        "ExpectedDistortionType": "https://w3id.org/effortless-ntwf#expectedDistortionType",
+        "IngestionStatus": "https://w3id.org/effortless-ntwf#ingestionStatus",
+        "Priority": "https://w3id.org/effortless-ntwf#priority",
+        "StratumCountEstimate": "https://w3id.org/effortless-ntwf#stratumCountEstimate",
+        "DataSourceNote": "https://w3id.org/effortless-ntwf#dataSourceNote",
+        "LinkedStudyId": "https://w3id.org/effortless-ntwf#linkedStudyId",
+        "PublicationYear": "https://w3id.org/effortless-ntwf#publicationYear",
+        "IsReadyToEncode": "https://w3id.org/effortless-ntwf#isReadyToEncode",
+        "IsImported": "https://w3id.org/effortless-ntwf#isImported",
+        "ObservedDistortionType": "https://w3id.org/effortless-ntwf#observedDistortionType",
+        "TypePredictionMatch": "https://w3id.org/effortless-ntwf#typePredictionMatch",
+        "ExpectedSignFlip": "https://w3id.org/effortless-ntwf#expectedSignFlip",
+        "ObservedSignFlipType": "https://w3id.org/effortless-ntwf#observedSignFlipType",
+        "SignFlipPredictionMatch": "https://w3id.org/effortless-ntwf#signFlipPredictionMatch",
+        "DataAcquisitionStatus": "https://w3id.org/effortless-ntwf#dataAcquisitionStatus",
+        "ReversalMechanism": "https://w3id.org/effortless-ntwf#reversalMechanism",
+        "ParadoxConfirmation": "https://w3id.org/effortless-ntwf#paradoxConfirmation",
+        "ExpansionWave": "https://w3id.org/effortless-ntwf#expansionWave",
+        "IsDataReady": "https://w3id.org/effortless-ntwf#isDataReady"
+      }
+    },
+    "CorpusCatalogSummary": {
+      "class": "https://w3id.org/effortless-ntwf#CorpusCatalogSummary",
+      "keyField": "CatalogSummaryId",
+      "fields": {
+        "CatalogSummaryId": "https://w3id.org/effortless-ntwf#catalogSummaryId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "TotalCatalogEntries": "https://w3id.org/effortless-ntwf#totalCatalogEntries",
+        "ImportedCount": "https://w3id.org/effortless-ntwf#importedCount",
+        "CandidateCount": "https://w3id.org/effortless-ntwf#candidateCount",
+        "BlockedCount": "https://w3id.org/effortless-ntwf#blockedCount",
+        "ReadyToEncodeCount": "https://w3id.org/effortless-ntwf#readyToEncodeCount",
+        "HighPriorityCount": "https://w3id.org/effortless-ntwf#highPriorityCount",
+        "ImportSessionReady": "https://w3id.org/effortless-ntwf#importSessionReady",
+        "TypePredictionMatchCount": "https://w3id.org/effortless-ntwf#typePredictionMatchCount",
+        "TypePredictionMismatchCount": "https://w3id.org/effortless-ntwf#typePredictionMismatchCount",
+        "SignFlipPredictionEligibleCount": "https://w3id.org/effortless-ntwf#signFlipPredictionEligibleCount",
+        "SignFlipPredictionMatchCount": "https://w3id.org/effortless-ntwf#signFlipPredictionMatchCount",
+        "TypePredictionMatchRate": "https://w3id.org/effortless-ntwf#typePredictionMatchRate",
+        "SignFlipPredictionMatchRate": "https://w3id.org/effortless-ntwf#signFlipPredictionMatchRate",
+        "CatalogWitnessNote": "https://w3id.org/effortless-ntwf#catalogWitnessNote",
+        "CatalogPredictionWitnessNote": "https://w3id.org/effortless-ntwf#catalogPredictionWitnessNote",
+        "DataReadyCount": "https://w3id.org/effortless-ntwf#dataReadyCount",
+        "EncodePipelineReadyCount": "https://w3id.org/effortless-ntwf#encodePipelineReadyCount",
+        "ExpansionCandidateCount": "https://w3id.org/effortless-ntwf#expansionCandidateCount"
+      }
+    },
+    "DomainExpansionTargets": {
+      "class": "https://w3id.org/effortless-ntwf#DomainExpansionTargets",
+      "keyField": "DomainTargetId",
+      "fields": {
+        "DomainTargetId": "https://w3id.org/effortless-ntwf#domainTargetId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Domain": "https://w3id.org/effortless-ntwf#domain",
+        "LegacyDomainAlias": "https://w3id.org/effortless-ntwf#legacyDomainAlias",
+        "TargetMinCount": "https://w3id.org/effortless-ntwf#targetMinCount",
+        "CurrentImportedCount": "https://w3id.org/effortless-ntwf#currentImportedCount",
+        "CandidateQueuedCount": "https://w3id.org/effortless-ntwf#candidateQueuedCount",
+        "ProjectedCount": "https://w3id.org/effortless-ntwf#projectedCount",
+        "GapCount": "https://w3id.org/effortless-ntwf#gapCount",
+        "IsUnderRepresented": "https://w3id.org/effortless-ntwf#isUnderRepresented"
+      }
+    },
+    "StudyImportTemplate": {
+      "class": "https://w3id.org/effortless-ntwf#StudyImportTemplate",
+      "keyField": "TemplateStepId",
+      "fields": {
+        "TemplateStepId": "https://w3id.org/effortless-ntwf#templateStepId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "SortOrder": "https://w3id.org/effortless-ntwf#sortOrder",
+        "TargetTable": "https://w3id.org/effortless-ntwf#targetTable",
+        "RowDescription": "https://w3id.org/effortless-ntwf#rowDescription",
+        "RequiredFields": "https://w3id.org/effortless-ntwf#requiredFields",
+        "MechanicalCheck": "https://w3id.org/effortless-ntwf#mechanicalCheck"
+      }
+    },
+    "SweepStudyConfig": {
+      "class": "https://w3id.org/effortless-ntwf#SweepStudyConfig",
+      "keyField": "ConfigId",
+      "fields": {
+        "ConfigId": "https://w3id.org/effortless-ntwf#configId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "StudyId": "https://w3id.org/effortless-ntwf#studyId",
+        "SweepStratumLabel": "https://w3id.org/effortless-ntwf#sweepStratumLabel",
+        "NSweepStratumTotal": "https://w3id.org/effortless-ntwf#nSweepStratumTotal",
+        "SweepRateA": "https://w3id.org/effortless-ntwf#sweepRateA",
+        "SweepRateB": "https://w3id.org/effortless-ntwf#sweepRateB",
+        "NFixedA": "https://w3id.org/effortless-ntwf#nFixedA",
+        "NFixedB": "https://w3id.org/effortless-ntwf#nFixedB",
+        "FixedRateA": "https://w3id.org/effortless-ntwf#fixedRateA",
+        "FixedRateB": "https://w3id.org/effortless-ntwf#fixedRateB",
+        "OriginalAllocFractionA": "https://w3id.org/effortless-ntwf#originalAllocFractionA",
+        "SweepCorrectedGap": "https://w3id.org/effortless-ntwf#sweepCorrectedGap"
+      }
+    },
+    "SubstrateConformanceFields": {
+      "class": "https://w3id.org/effortless-ntwf#SubstrateConformanceFields",
+      "keyField": "FieldId",
+      "fields": {
+        "FieldId": "https://w3id.org/effortless-ntwf#fieldId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "SourceTable": "https://w3id.org/effortless-ntwf#sourceTable",
+        "FieldName": "https://w3id.org/effortless-ntwf#fieldName",
+        "PgColumn": "https://w3id.org/effortless-ntwf#pgColumn",
+        "OwlLocalName": "https://w3id.org/effortless-ntwf#owlLocalName",
+        "DataType": "https://w3id.org/effortless-ntwf#dataType",
+        "AssertFromPostgres": "https://w3id.org/effortless-ntwf#assertFromPostgres",
+        "InCompareSet": "https://w3id.org/effortless-ntwf#inCompareSet"
+      }
+    },
+    "DiscoveryHypotheses": {
+      "class": "https://w3id.org/effortless-ntwf#DiscoveryHypotheses",
+      "keyField": "HypothesisId",
+      "fields": {
+        "HypothesisId": "https://w3id.org/effortless-ntwf#hypothesisId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Statement": "https://w3id.org/effortless-ntwf#statement",
+        "ExpectedOutcome": "https://w3id.org/effortless-ntwf#expectedOutcome",
+        "RegisteredInLoop": "https://w3id.org/effortless-ntwf#registeredInLoop",
+        "TraditionId": "https://w3id.org/effortless-ntwf#traditionId",
+        "EpistemicTier": "https://w3id.org/effortless-ntwf#epistemicTier"
+      }
+    },
+    "DiscoveryFindings": {
+      "class": "https://w3id.org/effortless-ntwf#DiscoveryFindings",
+      "keyField": "FindingId",
+      "fields": {
+        "FindingId": "https://w3id.org/effortless-ntwf#findingId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "HypothesisId": "https://w3id.org/effortless-ntwf#hypothesisId",
+        "HypothesisStatement": "https://w3id.org/effortless-ntwf#hypothesisStatement",
+        "ObservedMetric": "https://w3id.org/effortless-ntwf#observedMetric",
+        "IsConfirmed": "https://w3id.org/effortless-ntwf#isConfirmed",
+        "Evidence": "https://w3id.org/effortless-ntwf#evidence",
+        "WitnessedInLoop": "https://w3id.org/effortless-ntwf#witnessedInLoop"
+      }
+    },
+    "CorpusDomains": {
+      "class": "https://w3id.org/effortless-ntwf#CorpusDomains",
+      "keyField": "DomainId",
+      "fields": {
+        "DomainId": "https://w3id.org/effortless-ntwf#domainId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "ExpansionTarget": "https://w3id.org/effortless-ntwf#expansionTarget",
+        "LegacyStudiesDomain": "https://w3id.org/effortless-ntwf#legacyStudiesDomain",
+        "PlanSourceSection": "https://w3id.org/effortless-ntwf#planSourceSection"
+      }
+    },
+    "ConfounderIdentities": {
+      "class": "https://w3id.org/effortless-ntwf#ConfounderIdentities",
+      "keyField": "ConfounderIdentityId",
+      "fields": {
+        "ConfounderIdentityId": "https://w3id.org/effortless-ntwf#confounderIdentityId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "MechanismClass": "https://w3id.org/effortless-ntwf#mechanismClass",
+        "Description": "https://w3id.org/effortless-ntwf#description",
+        "PolicyDefault": "https://w3id.org/effortless-ntwf#policyDefault",
+        "StudyCount": "https://w3id.org/effortless-ntwf#studyCount"
+      }
+    },
+    "StratumVariableIdentityMaps": {
+      "class": "https://w3id.org/effortless-ntwf#StratumVariableIdentityMaps",
+      "keyField": "MapId",
+      "fields": {
+        "MapId": "https://w3id.org/effortless-ntwf#mapId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "StratumVariable": "https://w3id.org/effortless-ntwf#stratumVariable",
+        "ConfounderIdentity": "https://w3id.org/effortless-ntwf#confounderIdentity",
+        "VariableNameNormalized": "https://w3id.org/effortless-ntwf#variableNameNormalized"
+      }
+    },
+    "IdentityClusterSummaries": {
+      "class": "https://w3id.org/effortless-ntwf#IdentityClusterSummaries",
+      "keyField": "IdentityClusterId",
+      "fields": {
+        "IdentityClusterId": "https://w3id.org/effortless-ntwf#identityClusterId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ConfounderIdentity": "https://w3id.org/effortless-ntwf#confounderIdentity",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "StudyCount": "https://w3id.org/effortless-ntwf#studyCount",
+        "ManifestFlipCount": "https://w3id.org/effortless-ntwf#manifestFlipCount",
+        "LatentFlipCount": "https://w3id.org/effortless-ntwf#latentFlipCount",
+        "TypeDCount": "https://w3id.org/effortless-ntwf#typeDCount",
+        "AvgAllocationDistortion": "https://w3id.org/effortless-ntwf#avgAllocationDistortion",
+        "LatentFractionAmongTypeD": "https://w3id.org/effortless-ntwf#latentFractionAmongTypeD",
+        "DomainCount": "https://w3id.org/effortless-ntwf#domainCount",
+        "ManifestFlipRate": "https://w3id.org/effortless-ntwf#manifestFlipRate"
+      }
+    },
+    "IdentityDomainCells": {
+      "class": "https://w3id.org/effortless-ntwf#IdentityDomainCells",
+      "keyField": "CellId",
+      "fields": {
+        "CellId": "https://w3id.org/effortless-ntwf#cellId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ConfounderIdentity": "https://w3id.org/effortless-ntwf#confounderIdentity",
+        "Domain": "https://w3id.org/effortless-ntwf#domain",
+        "StudyCount": "https://w3id.org/effortless-ntwf#studyCount",
+        "ManifestFlipCount": "https://w3id.org/effortless-ntwf#manifestFlipCount",
+        "LatentFlipCount": "https://w3id.org/effortless-ntwf#latentFlipCount",
+        "TypeDCount": "https://w3id.org/effortless-ntwf#typeDCount",
+        "LatentFractionAmongTypeD": "https://w3id.org/effortless-ntwf#latentFractionAmongTypeD",
+        "ManifestFlipRate": "https://w3id.org/effortless-ntwf#manifestFlipRate",
+        "IdentityDisplayName": "https://w3id.org/effortless-ntwf#identityDisplayName"
+      }
+    },
+    "ConfounderDistortionTimeline": {
+      "class": "https://w3id.org/effortless-ntwf#ConfounderDistortionTimeline",
+      "keyField": "CellId",
+      "fields": {
+        "CellId": "https://w3id.org/effortless-ntwf#cellId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "ConfounderIdentity": "https://w3id.org/effortless-ntwf#confounderIdentity",
+        "ValidTimeDecade": "https://w3id.org/effortless-ntwf#validTimeDecade",
+        "StudyCount": "https://w3id.org/effortless-ntwf#studyCount",
+        "TypeDCount": "https://w3id.org/effortless-ntwf#typeDCount",
+        "SignFlipCount": "https://w3id.org/effortless-ntwf#signFlipCount",
+        "SumSignalPurity": "https://w3id.org/effortless-ntwf#sumSignalPurity",
+        "SumAllocationDistortion": "https://w3id.org/effortless-ntwf#sumAllocationDistortion",
+        "TypeDFraction": "https://w3id.org/effortless-ntwf#typeDFraction",
+        "SignFlipFraction": "https://w3id.org/effortless-ntwf#signFlipFraction",
+        "MeanSignalPurity": "https://w3id.org/effortless-ntwf#meanSignalPurity",
+        "MeanAllocationDistortion": "https://w3id.org/effortless-ntwf#meanAllocationDistortion",
+        "IdentityDisplayName": "https://w3id.org/effortless-ntwf#identityDisplayName",
+        "MechanismClass": "https://w3id.org/effortless-ntwf#mechanismClass",
+        "IdentityEarliestDecade": "https://w3id.org/effortless-ntwf#identityEarliestDecade",
+        "IdentityLatestDecade": "https://w3id.org/effortless-ntwf#identityLatestDecade",
+        "IdentityEarliestTypeDFraction": "https://w3id.org/effortless-ntwf#identityEarliestTypeDFraction",
+        "IdentityLatestTypeDFraction": "https://w3id.org/effortless-ntwf#identityLatestTypeDFraction",
+        "DriftDirection": "https://w3id.org/effortless-ntwf#driftDirection"
+      }
+    },
+    "CorpusBalance": {
+      "class": "https://w3id.org/effortless-ntwf#CorpusBalance",
+      "keyField": "BalanceId",
+      "fields": {
+        "BalanceId": "https://w3id.org/effortless-ntwf#balanceId",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "TotalStudyCount": "https://w3id.org/effortless-ntwf#totalStudyCount",
+        "SimpsonStudyCount": "https://w3id.org/effortless-ntwf#simpsonStudyCount",
+        "ControlStudyCount": "https://w3id.org/effortless-ntwf#controlStudyCount",
+        "ControlFraction": "https://w3id.org/effortless-ntwf#controlFraction"
+      }
+    }
+  },
+  "junctions": {},
+  "conclusionsFromAbsence": {
+    "derivedFields": 407,
+    "fromAbsence": 260,
+    "neverFromAbsence": 147,
+    "tablesCountedWithoutBeingDeclaredComplete": [
+      "AllocationSweep",
+      "CandidateStudyCatalog",
+      "CaseCells",
+      "Conclusions",
+      "ConfounderDistortionTimeline",
+      "ConfounderIdentities",
+      "DiscoveryFindings",
+      "IdentityDomainCells",
+      "IngestionProtocol",
+      "InvariantChecks",
+      "Loops",
+      "Researchers",
+      "StratumSummaries",
+      "StratumVariableIdentityMaps",
+      "StratumVariables",
+      "Studies",
+      "SweepStudySummary",
+      "TreatmentRankings"
+    ],
+    "tablesDeclaredComplete": [],
+    "fields": [
+      {
+        "table": "AllocationSweep",
+        "field": "AllocationDistortionWitness",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "AllocationSweep.SweepPooledGap"
+          }
+        ],
+        "inherits": [
+          "AllocationSweep.SweepPooledGap"
+        ]
+      },
+      {
+        "table": "AllocationSweep",
+        "field": "SweepPooledGap",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "AllocationSweep.SweepPooledRateA"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CandidateStudyCatalog",
+        "field": "IsReadyToEncode",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "CandidateStudyCatalog.ProposedStudyId"
+          },
+          {
+            "kind": "blank",
+            "of": "CandidateStudyCatalog.Citation"
+          },
+          {
+            "kind": "blank",
+            "of": "CandidateStudyCatalog.StratumVariableName"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CandidateStudyCatalog",
+        "field": "ObservedDistortionType",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "CandidateStudyCatalog",
+        "field": "ObservedSignFlipType",
+        "restsOn": [],
+        "inherits": [
+          "CandidateStudyCatalog.ObservedDistortionType"
+        ]
+      },
+      {
+        "table": "CandidateStudyCatalog",
+        "field": "SignFlipPredictionMatch",
+        "restsOn": [],
+        "inherits": [
+          "CandidateStudyCatalog.ObservedSignFlipType"
+        ]
+      },
+      {
+        "table": "CandidateStudyCatalog",
+        "field": "TypePredictionMatch",
+        "restsOn": [],
+        "inherits": [
+          "CandidateStudyCatalog.ObservedDistortionType"
+        ]
+      },
+      {
+        "table": "CaseCells",
+        "field": "TotalCasesForTreatment",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CaseCells",
+        "field": "TreatmentExposureFraction",
+        "restsOn": [],
+        "inherits": [
+          "CaseCells.TotalCasesForTreatment"
+        ]
+      },
+      {
+        "table": "Conclusions",
+        "field": "InvariantProtectingCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "InvariantChecks",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Conclusions",
+        "field": "LiveStatusConfirmed",
+        "restsOn": [],
+        "inherits": [
+          "DiscoveryFindings.IsConfirmed"
+        ]
+      },
+      {
+        "table": "ConfounderDistortionTimeline",
+        "field": "DriftDirection",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "ConfounderDistortionTimeline.IdentityEarliestTypeDFraction"
+          },
+          {
+            "kind": "blank",
+            "of": "ConfounderDistortionTimeline.IdentityLatestTypeDFraction"
+          }
+        ],
+        "inherits": [
+          "ConfounderDistortionTimeline.IdentityEarliestDecade",
+          "ConfounderDistortionTimeline.IdentityEarliestTypeDFraction",
+          "ConfounderDistortionTimeline.IdentityLatestDecade",
+          "ConfounderDistortionTimeline.IdentityLatestTypeDFraction"
+        ]
+      },
+      {
+        "table": "ConfounderDistortionTimeline",
+        "field": "IdentityEarliestDecade",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "ConfounderDistortionTimeline",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ConfounderDistortionTimeline",
+        "field": "IdentityEarliestTypeDFraction",
+        "restsOn": [],
+        "inherits": [
+          "ConfounderDistortionTimeline.IdentityEarliestDecade",
+          "ConfounderDistortionTimeline.TypeDFraction"
+        ]
+      },
+      {
+        "table": "ConfounderDistortionTimeline",
+        "field": "IdentityLatestDecade",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "ConfounderDistortionTimeline",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ConfounderDistortionTimeline",
+        "field": "IdentityLatestTypeDFraction",
+        "restsOn": [],
+        "inherits": [
+          "ConfounderDistortionTimeline.IdentityLatestDecade",
+          "ConfounderDistortionTimeline.TypeDFraction"
+        ]
+      },
+      {
+        "table": "ConfounderDistortionTimeline",
+        "field": "MeanAllocationDistortion",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "ConfounderDistortionTimeline.StudyCount"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ConfounderDistortionTimeline",
+        "field": "MeanSignalPurity",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "ConfounderDistortionTimeline.StudyCount"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ConfounderDistortionTimeline",
+        "field": "SignFlipFraction",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "ConfounderDistortionTimeline.StudyCount"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ConfounderDistortionTimeline",
+        "field": "TypeDFraction",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "ConfounderDistortionTimeline.StudyCount"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CorpusBalance",
+        "field": "ControlFraction",
+        "restsOn": [],
+        "inherits": [
+          "CorpusBalance.ControlStudyCount",
+          "CorpusBalance.TotalStudyCount"
+        ]
+      },
+      {
+        "table": "CorpusBalance",
+        "field": "ControlStudyCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Studies",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CorpusBalance",
+        "field": "SimpsonStudyCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Studies",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CorpusBalance",
+        "field": "TotalStudyCount",
+        "restsOn": [],
+        "inherits": [
+          "CorpusBalance.ControlStudyCount",
+          "CorpusBalance.SimpsonStudyCount"
+        ]
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "BlockedCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "CandidateCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "CatalogPredictionWitnessNote",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.ImportedCount",
+          "CorpusCatalogSummary.SignFlipPredictionEligibleCount",
+          "CorpusCatalogSummary.SignFlipPredictionMatchCount",
+          "CorpusCatalogSummary.SignFlipPredictionMatchRate",
+          "CorpusCatalogSummary.TypePredictionMatchCount",
+          "CorpusCatalogSummary.TypePredictionMatchRate"
+        ]
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "CatalogWitnessNote",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.CandidateCount",
+          "CorpusCatalogSummary.DataReadyCount",
+          "CorpusCatalogSummary.ImportSessionReady",
+          "CorpusCatalogSummary.ReadyToEncodeCount"
+        ]
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "DataReadyCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "EncodePipelineReadyCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "CandidateStudyCatalog.IsReadyToEncode"
+        ]
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "ExpansionCandidateCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "HighPriorityCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "ImportSessionReady",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.CandidateCount",
+          "CorpusCatalogSummary.ReadyToEncodeCount"
+        ]
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "ImportedCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "ReadyToEncodeCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "CandidateStudyCatalog.IsReadyToEncode"
+        ]
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "SignFlipPredictionEligibleCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "SignFlipPredictionMatchCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "CandidateStudyCatalog.SignFlipPredictionMatch"
+        ]
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "SignFlipPredictionMatchRate",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.SignFlipPredictionEligibleCount",
+          "CorpusCatalogSummary.SignFlipPredictionMatchCount"
+        ]
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "TotalCatalogEntries",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "TypePredictionMatchCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "CandidateStudyCatalog.TypePredictionMatch"
+        ]
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "TypePredictionMatchRate",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.ImportedCount",
+          "CorpusCatalogSummary.TypePredictionMatchCount"
+        ]
+      },
+      {
+        "table": "CorpusCatalogSummary",
+        "field": "TypePredictionMismatchCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "CandidateStudyCatalog.TypePredictionMatch"
+        ]
+      },
+      {
+        "table": "DiscoveryFindings",
+        "field": "Evidence",
+        "restsOn": [],
+        "inherits": [
+          "DiscoveryFindings.IsConfirmed"
+        ]
+      },
+      {
+        "table": "DiscoveryFindings",
+        "field": "IsConfirmed",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.AgeDriftDirection",
+          "ModelSummary.AvgPooledGapLatentD",
+          "ModelSummary.AvgPooledGapStableD",
+          "ModelSummary.CMinusAvgDistortion",
+          "ModelSummary.CPlusAvgDistortion",
+          "ModelSummary.ColliderSelectionCount",
+          "ModelSummary.ColliderSelectionLatentOnlyCount",
+          "ModelSummary.ColliderSelectionManifestCount",
+          "ModelSummary.ConfounderSignFlipCount",
+          "ModelSummary.ContestedOrMediatorExplainedCount",
+          "ModelSummary.CorrectedGapInvariantFailCount",
+          "ModelSummary.EconomicsExpectedAMismatchRate",
+          "ModelSummary.EconomicsSignFlipCount",
+          "ModelSummary.EconomicsSignFlipRate",
+          "ModelSummary.EducationAvgDistortion",
+          "ModelSummary.EducationLatentFraction",
+          "ModelSummary.EpidemiologyAvgDistortion",
+          "ModelSummary.ExplainedConfounderCount",
+          "ModelSummary.FalsePositiveExplainedCount",
+          "ModelSummary.GeographicDriftDirection",
+          "ModelSummary.IdentityMapCoverageRate",
+          "ModelSummary.InstitutionalDriftDirection",
+          "ModelSummary.LatentTypeDFraction",
+          "ModelSummary.MaxStudySweepCorrectedGapRange",
+          "ModelSummary.SeverityDriftDirection",
+          "ModelSummary.SignFlipPredictionMatchRate",
+          "ModelSummary.SignFlipSignalPurityMax",
+          "ModelSummary.SituationalDriftDirection",
+          "ModelSummary.SocioeconomicDriftDirection",
+          "ModelSummary.SportsLatentFraction",
+          "ModelSummary.TheoremCount",
+          "ModelSummary.TypeDAvgDistortion",
+          "ModelSummary.TypePredictionMatchRate",
+          "ModelSummary.UnexplainedConfounderSignFlipCount"
+        ]
+      },
+      {
+        "table": "DomainExpansionTargets",
+        "field": "CandidateQueuedCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "DomainExpansionTargets",
+        "field": "CurrentImportedCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Studies",
+            "declaredComplete": false
+          },
+          {
+            "kind": "blank",
+            "of": "DomainExpansionTargets.LegacyDomainAlias"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "DomainExpansionTargets",
+        "field": "GapCount",
+        "restsOn": [],
+        "inherits": [
+          "DomainExpansionTargets.ProjectedCount"
+        ]
+      },
+      {
+        "table": "DomainExpansionTargets",
+        "field": "IsUnderRepresented",
+        "restsOn": [],
+        "inherits": [
+          "DomainExpansionTargets.ProjectedCount"
+        ]
+      },
+      {
+        "table": "DomainExpansionTargets",
+        "field": "ProjectedCount",
+        "restsOn": [],
+        "inherits": [
+          "DomainExpansionTargets.CandidateQueuedCount",
+          "DomainExpansionTargets.CurrentImportedCount"
+        ]
+      },
+      {
+        "table": "IngestionSummary",
+        "field": "AllCellsValid",
+        "restsOn": [],
+        "inherits": [
+          "IngestionSummary.CorpusCellCount",
+          "IngestionSummary.ValidCellCount"
+        ]
+      },
+      {
+        "table": "IngestionSummary",
+        "field": "AllRealStudiesCompliant",
+        "restsOn": [],
+        "inherits": [
+          "IngestionSummary.RealFullyCompliantCount",
+          "IngestionSummary.RealStudyCount"
+        ]
+      },
+      {
+        "table": "IngestionSummary",
+        "field": "AllStudiesStructural",
+        "restsOn": [],
+        "inherits": [
+          "IngestionSummary.StructuralCompliantCount",
+          "IngestionSummary.StudyCount"
+        ]
+      },
+      {
+        "table": "IngestionSummary",
+        "field": "CorpusCellCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "IngestionSummary",
+        "field": "IngestionContractPasses",
+        "restsOn": [],
+        "inherits": [
+          "IngestionSummary.AllCellsValid",
+          "IngestionSummary.AllRealStudiesCompliant",
+          "IngestionSummary.AllStudiesStructural"
+        ]
+      },
+      {
+        "table": "IngestionSummary",
+        "field": "IngestionWitnessNote",
+        "restsOn": [],
+        "inherits": [
+          "IngestionSummary.CorpusCellCount",
+          "IngestionSummary.IngestionContractPasses",
+          "IngestionSummary.ProtocolItemCount",
+          "IngestionSummary.RealFullyCompliantCount",
+          "IngestionSummary.RealStudyCount"
+        ]
+      },
+      {
+        "table": "IngestionSummary",
+        "field": "ProtocolItemCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "IngestionProtocol",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "IngestionSummary",
+        "field": "RealFullyCompliantCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Studies",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Studies.IngestionCompliance"
+        ]
+      },
+      {
+        "table": "IngestionSummary",
+        "field": "RealStudyCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Studies",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "IngestionSummary",
+        "field": "StructuralCompliantCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Studies",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "Studies.IngestionCellParity"
+        ]
+      },
+      {
+        "table": "IngestionSummary",
+        "field": "StudyCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Studies",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "IngestionSummary",
+        "field": "ValidCellCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Methodology",
+        "field": "LoopCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Loops",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "AgeDriftDirection",
+        "restsOn": [],
+        "inherits": [
+          "ConfounderDistortionTimeline.DriftDirection"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "AvgParadoxStrength",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.StudyCount",
+          "ModelSummary.TotalParadoxStrength"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "AvgPooledGapLatentD",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.LatentTypeDCount",
+          "ModelSummary.SumPooledGapLatentD"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "AvgPooledGapStableD",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.StableTypeDCount",
+          "ModelSummary.SumPooledGapStableD"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "AvgSignalPurity",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.SignalPurity"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "AvgSignalPurityNonReversal",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.AllocationDirection",
+          "TreatmentRankings.SignalPurity"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "AvgSignalPurityReversal",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.AllocationDirection",
+          "TreatmentRankings.SignalPurity"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "CAmplificationCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "CCompressionCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "CMinusAvgDistortion",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.AllocationDistortion",
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "CPlusAvgDistortion",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.AllocationDistortion",
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "CatalogEntryCount",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.TotalCatalogEntries"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "CatalogPredictionWitnessNote",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.CatalogPredictionWitnessNote"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "CatalogWitnessNote",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.CatalogWitnessNote"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "CautionTierCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.ScreeningTier"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ColliderSelectionCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ColliderSelectionLatentOnlyCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsLatentOnlyFlip"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ColliderSelectionManifestCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsSignFlip"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ConfounderIdentityCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "ConfounderIdentities",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ConfounderLatentOnlyCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsLatentOnlyFlip"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ConfounderSignFlipCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsSignFlip"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ContestedOrMediatorExplainedCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.AdjustmentAppropriate",
+          "TreatmentRankings.IsParadoxExplained",
+          "TreatmentRankings.IsSignFlip"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "CorpusPassesIngestionContract",
+        "restsOn": [],
+        "inherits": [
+          "IngestionSummary.IngestionContractPasses"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "CorpusPatternSupersededFailCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "DiscoveryFindings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "DiscoveryFindings.IsConfirmed"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "CorrectedGapInvariantFailCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "SweepStudySummary",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "CrossZeroCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "DangerTierCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.ScreeningTier"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "DiscoveryWitnessNote",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.ConfounderIdentityCount",
+          "ModelSummary.LatentTypeDFraction",
+          "ModelSummary.SignFlipSignalPurityMax",
+          "ModelSummary.TypePredictionMatchRate"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "DistortionOnlyCount",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.CAmplificationCount",
+          "ModelSummary.CCompressionCount"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "DistortionTaxonomyCoverage",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.CAmplificationCount",
+          "ModelSummary.CCompressionCount",
+          "ModelSummary.TypeACount",
+          "ModelSummary.TypeBCount",
+          "ModelSummary.TypeDCount"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "DomainDiversityNote",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.EconomicsSignFlipRate",
+          "ModelSummary.EducationLatentFraction",
+          "ModelSummary.ExpansionWave2StudyCount",
+          "ModelSummary.RealStudyCount",
+          "ModelSummary.SportsLatentFraction"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "EconomicsExpectedAMismatchRate",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.ExpansionWave1EconomicsExpectedACount",
+          "ModelSummary.ExpansionWave1EconomicsExpectedADCount"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "EconomicsSignFlipCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsSignFlip"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "EconomicsSignFlipRate",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsSignFlip"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "EconomicsStudyCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Studies",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "EducationAvgDistortion",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.AllocationDistortion"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "EducationLatentDCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType",
+          "TreatmentRankings.LatentFlipPotential"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "EducationLatentFraction",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType",
+          "TreatmentRankings.IsLatentOnlyFlip"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "EducationTypeDCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "EpidemiologyAvgDistortion",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.AllocationDistortion"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "EpidemiologyStudyCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Studies",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ExpansionWave1EconomicsExpectedACount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ExpansionWave1EconomicsExpectedADCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "CandidateStudyCatalog.ObservedDistortionType"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ExpansionWave2StudyCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CandidateStudyCatalog",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ExpansionWave3DiscoveryNote",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.CorpusPatternSupersededFailCount",
+          "ModelSummary.EconomicsSignFlipCount",
+          "ModelSummary.SignFlipPredictionMatchRate",
+          "ModelSummary.TheoremCount",
+          "ModelSummary.TypePredictionMatchRate"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ExplainedConfounderCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsParadoxExplained"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ExplainedCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsParadoxExplained"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "FalsePositiveExplainedCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsParadoxExplained",
+          "TreatmentRankings.IsSignFlip"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "GeographicDriftDirection",
+        "restsOn": [],
+        "inherits": [
+          "ConfounderDistortionTimeline.DriftDirection"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "IdentityDomainCellCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "IdentityDomainCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "IdentityMapCoverageRate",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.MappedStratumVariableCount",
+          "ModelSummary.RealStudyCount"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ImportSessionReady",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.ImportSessionReady"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "IngestionProtocolItemCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "IngestionProtocol",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "IngestionWitnessNote",
+        "restsOn": [],
+        "inherits": [
+          "IngestionSummary.IngestionWitnessNote"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "InstitutionalDriftDirection",
+        "restsOn": [],
+        "inherits": [
+          "ConfounderDistortionTimeline.DriftDirection"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "LatentTypeDCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.LatentFlipPotential"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "LatentTypeDFraction",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.LatentTypeDCount",
+          "ModelSummary.TypeDCount"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "MappedStratumVariableCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumVariableIdentityMaps",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "MaxStudySweepCorrectedGapRange",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "SweepStudySummary",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "MedicineStudyCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Studies",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "NonReversalCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsReversal"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "OtherDomainStudyCount",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.EpidemiologyStudyCount",
+          "ModelSummary.MedicineStudyCount",
+          "ModelSummary.RealStudyCount"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "PendingImportCount",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.CandidateCount"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ReadyToEncodeCount",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.ReadyToEncodeCount"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "RealStudyCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Studies",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "ReversalCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsReversal"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SafeTierCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.ScreeningTier"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SeverityDriftDirection",
+        "restsOn": [],
+        "inherits": [
+          "ConfounderDistortionTimeline.DriftDirection"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SignFlipPredictionMatchRate",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.SignFlipPredictionMatchRate"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SignFlipSignalPurityMax",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsSignFlip",
+          "TreatmentRankings.SignalPurity"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SignalPurityGap",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.AvgSignalPurityNonReversal",
+          "ModelSummary.AvgSignalPurityReversal"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SituationalDriftDirection",
+        "restsOn": [],
+        "inherits": [
+          "ConfounderDistortionTimeline.DriftDirection"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SocioeconomicDriftDirection",
+        "restsOn": [],
+        "inherits": [
+          "ConfounderDistortionTimeline.DriftDirection"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SportsLatentDCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType",
+          "TreatmentRankings.LatentFlipPotential"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SportsLatentFraction",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType",
+          "TreatmentRankings.IsLatentOnlyFlip"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SportsTypeDCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "StableTypeDCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType",
+          "TreatmentRankings.LatentFlipPotential"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "StudyCount",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.NonReversalCount",
+          "ModelSummary.ReversalCount"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SumPooledGapLatentD",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.LatentFlipPotential",
+          "TreatmentRankings.PooledGap"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SumPooledGapStableD",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType",
+          "TreatmentRankings.LatentFlipPotential",
+          "TreatmentRankings.PooledGap"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SweepCorrectedGapMax",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "AllocationSweep",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SweepCorrectedGapMin",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "AllocationSweep",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SweepCorrectedGapRange",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "ModelSummary.SweepCorrectedGapMax"
+          }
+        ],
+        "inherits": [
+          "ModelSummary.SweepCorrectedGapMax",
+          "ModelSummary.SweepCorrectedGapMin"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SweepFragileCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsSweepFragile"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "SweepPooledGapRange",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "AllocationSweep",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "AllocationSweep.SweepPooledGap"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "TheoremCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Conclusions",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ModelSummary",
+        "field": "TotalParadoxStrength",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.ParadoxStrength"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "TypeACount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "TypeAFraction",
+        "restsOn": [],
+        "inherits": [
+          "ModelSummary.StudyCount",
+          "ModelSummary.TypeACount"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "TypeBCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "TypeCMinusCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "TypeCPlusCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "TypeDAvgDistortion",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.AllocationDistortion",
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "TypeDCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "TypePredictionMatchCount",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.TypePredictionMatchCount"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "TypePredictionMatchRate",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.TypePredictionMatchRate"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "TypePredictionMismatchCount",
+        "restsOn": [],
+        "inherits": [
+          "CorpusCatalogSummary.TypePredictionMismatchCount"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "UnanimousSignFlipCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsSignFlip",
+          "TreatmentRankings.IsStratumUnanimous"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "UnexplainedConfounderSignFlipCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "TreatmentRankings",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsParadoxExplained",
+          "TreatmentRankings.IsSignFlip"
+        ]
+      },
+      {
+        "table": "ModelSummary",
+        "field": "UnmappedStratumVariableCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumVariables",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "ModelSummary.MappedStratumVariableCount"
+        ]
+      },
+      {
+        "table": "ResearchTraditions",
+        "field": "IllustratedByStudyDistortionType",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "ResearchTraditions",
+        "field": "LoopCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Loops",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ResearchTraditions",
+        "field": "ResearcherCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Researchers",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "ResearchTraditions",
+        "field": "StudyCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "Studies",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Researchers",
+        "field": "CanonicalStudyDistortionType",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "Researchers",
+        "field": "CanonicalStudyPolicyImplication",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.CorrectedPolicyImplication"
+        ]
+      },
+      {
+        "table": "Strata",
+        "field": "TotalCases",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "AbsAllocationBias",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "StratumSummaries.AllocationBias"
+          }
+        ],
+        "inherits": [
+          "StratumSummaries.AllocationBias"
+        ]
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "AbsStratumGap",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "StratumSummaries.StratumGap"
+          }
+        ],
+        "inherits": [
+          "StratumSummaries.StratumGap"
+        ]
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "AllocationBias",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "StratumSummaries.AllocationFractionA"
+          }
+        ],
+        "inherits": [
+          "StratumSummaries.AllocationFractionA",
+          "StratumSummaries.AllocationFractionB"
+        ]
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "AllocationFractionA",
+        "restsOn": [],
+        "inherits": [
+          "StratumSummaries.TreatmentACasesHere",
+          "StratumSummaries.TreatmentATotalCases"
+        ]
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "AllocationFractionB",
+        "restsOn": [],
+        "inherits": [
+          "StratumSummaries.TreatmentBCasesHere",
+          "StratumSummaries.TreatmentBTotalCases"
+        ]
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "StratumCases",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "StratumCasesA",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "StratumCasesB",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "StratumFraction",
+        "restsOn": [],
+        "inherits": [
+          "StratumSummaries.StratumTotalCases",
+          "StratumSummaries.StudyTotalCases"
+        ]
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "StratumGap",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "StratumSummaries.StratumRateA"
+          }
+        ],
+        "inherits": [
+          "StratumSummaries.StratumRateA",
+          "StratumSummaries.StratumRateB"
+        ]
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "StratumRateA",
+        "restsOn": [],
+        "inherits": [
+          "StratumSummaries.StratumCasesA",
+          "StratumSummaries.StratumSuccessesA"
+        ]
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "StratumRateB",
+        "restsOn": [],
+        "inherits": [
+          "StratumSummaries.StratumCasesB",
+          "StratumSummaries.StratumSuccessesB"
+        ]
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "StratumSuccessRate",
+        "restsOn": [],
+        "inherits": [
+          "StratumSummaries.StratumCases",
+          "StratumSummaries.StratumSuccesses"
+        ]
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "StratumSuccesses",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "StratumSuccessesA",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "StratumSuccessesB",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "StratumTotalCases",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "StratumWinner",
+        "restsOn": [],
+        "inherits": [
+          "StratumSummaries.StratumRateA",
+          "StratumSummaries.StratumRateB"
+        ]
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "StudyTotalCases",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "TreatmentACasesHere",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "TreatmentATotalCases",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "TreatmentBCasesHere",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "TreatmentBTotalCases",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "WeightedStratumGap",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "StratumSummaries.StratumGap"
+          }
+        ],
+        "inherits": [
+          "StratumSummaries.StratumFraction",
+          "StratumSummaries.StratumGap"
+        ]
+      },
+      {
+        "table": "StratumSummaries",
+        "field": "WeightedStratumRate",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "StratumSummaries.StratumFraction"
+          }
+        ],
+        "inherits": [
+          "StratumSummaries.StratumFraction",
+          "StratumSummaries.StratumSuccessRate"
+        ]
+      },
+      {
+        "table": "Studies",
+        "field": "AllocationDistortion",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.AllocationDistortion"
+        ]
+      },
+      {
+        "table": "Studies",
+        "field": "CellCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Studies",
+        "field": "CorrectedWinner",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.CorrectedWinner"
+        ]
+      },
+      {
+        "table": "Studies",
+        "field": "DistortionType",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "Studies",
+        "field": "IngestionCellParity",
+        "restsOn": [],
+        "inherits": [
+          "Studies.CellCount",
+          "TreatmentRankings.StratumCount"
+        ]
+      },
+      {
+        "table": "Studies",
+        "field": "IngestionCompliance",
+        "restsOn": [],
+        "inherits": [
+          "Studies.IngestionCellParity"
+        ]
+      },
+      {
+        "table": "Studies",
+        "field": "IsSignFlip",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.IsSignFlip"
+        ]
+      },
+      {
+        "table": "Studies",
+        "field": "PolicyImplication",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.CorrectedPolicyImplication"
+        ]
+      },
+      {
+        "table": "Studies",
+        "field": "SignalPurity",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.SignalPurity"
+        ]
+      },
+      {
+        "table": "Studies",
+        "field": "TotalCases",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Studies",
+        "field": "ValidTimeDecade",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "Studies.ValidTimeMidpoint"
+          }
+        ],
+        "inherits": [
+          "Studies.ValidTimeMidpoint"
+        ]
+      },
+      {
+        "table": "Studies",
+        "field": "ValidTimeMidpoint",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "Studies.ValidTimeStart"
+          },
+          {
+            "kind": "blank",
+            "of": "Studies.ValidTimeEnd"
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "SweepStudySummary",
+        "field": "DistortionTypeLabel",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "AdjustmentAppropriate",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.CausalClaimStatus",
+          "TreatmentRankings.MediatorRiskCount"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "AllocationDirection",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.CorrectedGap"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.CorrectedGap",
+          "TreatmentRankings.IsSignFlip",
+          "TreatmentRankings.SignedPooledGap"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "AllocationDistortion",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.WeightedStratumGapSum"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.SignedPooledGap",
+          "TreatmentRankings.WeightedStratumGapSum"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "AllocationFragility",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.SweepPooledGapRange"
+          },
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.PooledGap"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.PooledGap"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "ArmSizeRatio",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.TotalCasesA",
+          "TreatmentRankings.TotalCasesB"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "CausalClaimStatus",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.ConfirmedCausalRoleCount",
+          "TreatmentRankings.ContestedStratumCount",
+          "TreatmentRankings.UnknownCausalRoleCount"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "ConfirmedCausalRoleCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumVariables",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "ConfoundersInStudy",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumVariables",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "ContestedStratumCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumVariables",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "CorrectedGap",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.WeightedStratumGapSum"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "CorrectedPolicyImplication",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.DistortionType"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "CorrectedVsPooledAgreement",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.CorrectedWinner"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.CorrectedWinner",
+          "TreatmentRankings.PooledWinner"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "CorrectedWinner",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.CorrectedGap"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.CorrectedGap"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "DistortionRatio",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.SignedPooledGap",
+          "TreatmentRankings.WeightedStratumGapSum"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "DistortionType",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.AllocationDistortion"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.AllocationDistortion",
+          "TreatmentRankings.CorrectedGap",
+          "TreatmentRankings.IsSignFlip",
+          "TreatmentRankings.IsStratumUnanimous",
+          "TreatmentRankings.SignedPooledGap"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "IsLatentOnlyFlip",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.PooledGapCrossesZero"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsSignFlip"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "IsParadoxExplained",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.ConfoundersInStudy",
+          "TreatmentRankings.IsReversal"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "IsReversal",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.IsSignFlip"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.IsSignFlip"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "IsSignFlip",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.WeightedStratumGapSum"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.SignedPooledGap",
+          "TreatmentRankings.WeightedStratumGapSum"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "IsStratumUnanimous",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.StrataWonByA",
+          "TreatmentRankings.StrataWonByB",
+          "TreatmentRankings.StratumCount"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "IsSweepFragile",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.AllocationDistortion",
+          "TreatmentRankings.AllocationFragility",
+          "TreatmentRankings.DistortionType",
+          "TreatmentRankings.SignalPurity"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "LatentFlipPotential",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.DistortionType"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "MaxStratumGap",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumSummaries",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "StratumSummaries.AbsStratumGap"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "MaxStratumImbalance",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumSummaries",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "StratumSummaries.AbsAllocationBias"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "MediatorRiskCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumVariables",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "ParadoxStrength",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.PooledGap",
+          "TreatmentRankings.StrataWonByLoser",
+          "TreatmentRankings.StratumCount"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "PerStratumWinner",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.StrataWonByA",
+          "TreatmentRankings.StrataWonByB",
+          "TreatmentRankings.StratumCount"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "PolicyImplication",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.DistortionType"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "PooledGap",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.PooledRateA"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.PooledRateA",
+          "TreatmentRankings.PooledRateB"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "PooledRateA",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.TotalCasesA",
+          "TreatmentRankings.TotalSuccessesA"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "PooledRateB",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.TotalCasesB",
+          "TreatmentRankings.TotalSuccessesB"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "PooledRateFromWeightsA",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumSummaries",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "StratumSummaries.WeightedStratumRate"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "PooledRateFromWeightsB",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumSummaries",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "StratumSummaries.WeightedStratumRate"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "PooledWinner",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.PooledRateA"
+          },
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.PooledRateB"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.PooledRateA",
+          "TreatmentRankings.PooledRateB"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "ReversalIntensity",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.StrataWonByLoser",
+          "TreatmentRankings.StratumCount"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "ScreeningTier",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.DistortionType"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "SignalPurity",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.CorrectedGap"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.AllocationDistortion",
+          "TreatmentRankings.CorrectedGap"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "SignedPooledGap",
+        "restsOn": [
+          {
+            "kind": "blank",
+            "of": "TreatmentRankings.PooledRateA"
+          }
+        ],
+        "inherits": [
+          "TreatmentRankings.PooledRateA",
+          "TreatmentRankings.PooledRateB"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "StrataWonByA",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumSummaries",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "StratumSummaries.StratumWinner"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "StrataWonByB",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumSummaries",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "StratumSummaries.StratumWinner"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "StrataWonByLoser",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.PooledWinner",
+          "TreatmentRankings.StrataWonByA",
+          "TreatmentRankings.StrataWonByB"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "StratumCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumSummaries",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "SymmetryDeparture",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.ArmSizeRatio"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "ThresholdMargin",
+        "restsOn": [],
+        "inherits": [
+          "TreatmentRankings.ReversalIntensity",
+          "TreatmentRankings.StratumCount"
+        ]
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "TotalCasesA",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "TotalCasesB",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "TotalSuccessesA",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "TotalSuccessesB",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "UnknownCausalRoleCount",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumVariables",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "TreatmentRankings",
+        "field": "WeightedStratumGapSum",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "StratumSummaries",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": [
+          "StratumSummaries.WeightedStratumGap"
+        ]
+      },
+      {
+        "table": "Treatments",
+        "field": "PooledSuccessRate",
+        "restsOn": [],
+        "inherits": [
+          "Treatments.TotalCases",
+          "Treatments.TotalSuccesses"
+        ]
+      },
+      {
+        "table": "Treatments",
+        "field": "TotalCases",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      },
+      {
+        "table": "Treatments",
+        "field": "TotalSuccesses",
+        "restsOn": [
+          {
+            "kind": "rollup",
+            "over": "CaseCells",
+            "declaredComplete": false
+          }
+        ],
+        "inherits": []
+      }
+    ]
+  }
+}
