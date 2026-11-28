@@ -31,15 +31,18 @@
     "data": [
       {
         "TransactionTypeId": "PURCHASE",
-        "Description": "Stock received from supplier"
+        "Description": "Stock received from supplier",
+        "Name": "PURCHASE"
       },
       {
         "TransactionTypeId": "SALE",
-        "Description": "Stock sold to customer"
+        "Description": "Stock sold to customer",
+        "Name": "SALE"
       },
       {
         "TransactionTypeId": "ADJUSTMENT",
-        "Description": "Inventory correction or damage write-off"
+        "Description": "Inventory correction or damage write-off",
+        "Name": "ADJUSTMENT"
       }
     ]
   },
@@ -118,22 +121,38 @@
       {
         "ProductId": "WIDGET-A",
         "UnitPrice": 12.99,
-        "ReorderLevel": 50
+        "ReorderLevel": 50,
+        "Name": "WIDGET-A",
+        "CurrentQuantity": 45,
+        "IsLowStock": true,
+        "ReorderStatus": "This needs to be reordered IMMEDIATELY!!"
       },
       {
         "ProductId": "GADGET-B",
         "UnitPrice": 24.5,
-        "ReorderLevel": 30
+        "ReorderLevel": 30,
+        "Name": "GADGET-B",
+        "CurrentQuantity": 15,
+        "IsLowStock": true,
+        "ReorderStatus": "This needs to be reordered IMMEDIATELY!!"
       },
       {
         "ProductId": "PART-C",
         "UnitPrice": 5.0,
-        "ReorderLevel": 100
+        "ReorderLevel": 100,
+        "Name": "PART-C",
+        "CurrentQuantity": 70,
+        "IsLowStock": true,
+        "ReorderStatus": "This needs to be reordered IMMEDIATELY!!"
       },
       {
         "ProductId": "TOOL-D",
         "UnitPrice": 99.99,
-        "ReorderLevel": 10
+        "ReorderLevel": 10,
+        "Name": "TOOL-D",
+        "CurrentQuantity": 5,
+        "IsLowStock": true,
+        "ReorderStatus": "This needs to be reordered IMMEDIATELY!!"
       }
     ]
   },
@@ -243,7 +262,12 @@
         "TransactionType": "PURCHASE",
         "Quantity": 100,
         "TransactionDate": "2026-05-01T10:00:00Z",
-        "Notes": "Initial stock delivery"
+        "Notes": "Initial stock delivery",
+        "Name": "TXN-001",
+        "ProductName": "WIDGET-A",
+        "ProductUnitPrice": 12.99,
+        "TransactionTypeName": "PURCHASE",
+        "Amount": 1299.0
       },
       {
         "TransactionId": "TXN-002",
@@ -251,7 +275,12 @@
         "TransactionType": "SALE",
         "Quantity": -25,
         "TransactionDate": "2026-05-05T14:30:00Z",
-        "Notes": "Bulk order"
+        "Notes": "Bulk order",
+        "Name": "TXN-002",
+        "ProductName": "WIDGET-A",
+        "ProductUnitPrice": 12.99,
+        "TransactionTypeName": "SALE",
+        "Amount": -324.75
       },
       {
         "TransactionId": "TXN-003",
@@ -259,7 +288,12 @@
         "TransactionType": "SALE",
         "Quantity": -30,
         "TransactionDate": "2026-05-10T09:00:00Z",
-        "Notes": "Customer purchase"
+        "Notes": "Customer purchase",
+        "Name": "TXN-003",
+        "ProductName": "WIDGET-A",
+        "ProductUnitPrice": 12.99,
+        "TransactionTypeName": "SALE",
+        "Amount": -389.7
       },
       {
         "TransactionId": "TXN-004",
@@ -267,7 +301,12 @@
         "TransactionType": "PURCHASE",
         "Quantity": 50,
         "TransactionDate": "2026-05-02T11:00:00Z",
-        "Notes": null
+        "Notes": null,
+        "Name": "TXN-004",
+        "ProductName": "GADGET-B",
+        "ProductUnitPrice": 24.5,
+        "TransactionTypeName": "PURCHASE",
+        "Amount": 1225.0
       },
       {
         "TransactionId": "TXN-005",
@@ -275,7 +314,12 @@
         "TransactionType": "SALE",
         "Quantity": -35,
         "TransactionDate": "2026-05-08T13:15:00Z",
-        "Notes": "Order fulfillment"
+        "Notes": "Order fulfillment",
+        "Name": "TXN-005",
+        "ProductName": "GADGET-B",
+        "ProductUnitPrice": 24.5,
+        "TransactionTypeName": "SALE",
+        "Amount": -857.5
       },
       {
         "TransactionId": "TXN-006",
@@ -283,7 +327,12 @@
         "TransactionType": "PURCHASE",
         "Quantity": 200,
         "TransactionDate": "2026-05-01T08:00:00Z",
-        "Notes": "Bulk purchase from supplier"
+        "Notes": "Bulk purchase from supplier",
+        "Name": "TXN-006",
+        "ProductName": "PART-C",
+        "ProductUnitPrice": 5.0,
+        "TransactionTypeName": "PURCHASE",
+        "Amount": 1000.0
       },
       {
         "TransactionId": "TXN-007",
@@ -291,7 +340,12 @@
         "TransactionType": "SALE",
         "Quantity": -80,
         "TransactionDate": "2026-05-06T10:30:00Z",
-        "Notes": null
+        "Notes": null,
+        "Name": "TXN-007",
+        "ProductName": "PART-C",
+        "ProductUnitPrice": 5.0,
+        "TransactionTypeName": "SALE",
+        "Amount": -400.0
       },
       {
         "TransactionId": "TXN-008",
@@ -299,7 +353,12 @@
         "TransactionType": "SALE",
         "Quantity": -50,
         "TransactionDate": "2026-05-12T15:45:00Z",
-        "Notes": "Retail sale"
+        "Notes": "Retail sale",
+        "Name": "TXN-008",
+        "ProductName": "PART-C",
+        "ProductUnitPrice": 5.0,
+        "TransactionTypeName": "SALE",
+        "Amount": -250.0
       },
       {
         "TransactionId": "TXN-009",
@@ -307,7 +366,12 @@
         "TransactionType": "PURCHASE",
         "Quantity": 8,
         "TransactionDate": "2026-05-03T09:30:00Z",
-        "Notes": "Premium tool restock"
+        "Notes": "Premium tool restock",
+        "Name": "TXN-009",
+        "ProductName": "TOOL-D",
+        "ProductUnitPrice": 99.99,
+        "TransactionTypeName": "PURCHASE",
+        "Amount": 799.92
       },
       {
         "TransactionId": "TXN-010",
@@ -315,7 +379,12 @@
         "TransactionType": "SALE",
         "Quantity": -3,
         "TransactionDate": "2026-05-09T16:00:00Z",
-        "Notes": "Professional customer order"
+        "Notes": "Professional customer order",
+        "Name": "TXN-010",
+        "ProductName": "TOOL-D",
+        "ProductUnitPrice": 99.99,
+        "TransactionTypeName": "SALE",
+        "Amount": -299.97
       }
     ]
   },

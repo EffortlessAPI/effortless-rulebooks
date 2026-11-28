@@ -4,6 +4,7 @@
     "unit_price": 24.5,
     "reorder_level": 30,
     "name": null,
+    "current_quantity": null,
     "is_low_stock": null,
     "reorder_status": null
   },
@@ -12,6 +13,7 @@
     "unit_price": 5.0,
     "reorder_level": 100,
     "name": null,
+    "current_quantity": null,
     "is_low_stock": null,
     "reorder_status": null
   },
@@ -20,6 +22,7 @@
     "unit_price": 99.99,
     "reorder_level": 10,
     "name": null,
+    "current_quantity": null,
     "is_low_stock": null,
     "reorder_status": null
   },
@@ -28,6 +31,7 @@
     "unit_price": 12.99,
     "reorder_level": 50,
     "name": null,
+    "current_quantity": null,
     "is_low_stock": null,
     "reorder_status": null
   }

@@ -7,6 +7,9 @@
     "transaction_date": "2026-05-01T10:00:00Z",
     "notes": "Initial stock delivery",
     "name": null,
+    "product_name": null,
+    "product_unit_price": null,
+    "transaction_type_name": null,
     "amount": null
   },
   {
@@ -17,6 +20,9 @@
     "transaction_date": "2026-05-05T14:30:00Z",
     "notes": "Bulk order",
     "name": null,
+    "product_name": null,
+    "product_unit_price": null,
+    "transaction_type_name": null,
     "amount": null
   },
   {
@@ -27,6 +33,9 @@
     "transaction_date": "2026-05-10T09:00:00Z",
     "notes": "Customer purchase",
     "name": null,
+    "product_name": null,
+    "product_unit_price": null,
+    "transaction_type_name": null,
     "amount": null
   },
   {
@@ -37,6 +46,9 @@
     "transaction_date": "2026-05-02T11:00:00Z",
     "notes": null,
     "name": null,
+    "product_name": null,
+    "product_unit_price": null,
+    "transaction_type_name": null,
     "amount": null
   },
   {
@@ -47,6 +59,9 @@
     "transaction_date": "2026-05-08T13:15:00Z",
     "notes": "Order fulfillment",
     "name": null,
+    "product_name": null,
+    "product_unit_price": null,
+    "transaction_type_name": null,
     "amount": null
   },
   {
@@ -57,6 +72,9 @@
     "transaction_date": "2026-05-01T08:00:00Z",
     "notes": "Bulk purchase from supplier",
     "name": null,
+    "product_name": null,
+    "product_unit_price": null,
+    "transaction_type_name": null,
     "amount": null
   },
   {
@@ -67,6 +85,9 @@
     "transaction_date": "2026-05-06T10:30:00Z",
     "notes": null,
     "name": null,
+    "product_name": null,
+    "product_unit_price": null,
+    "transaction_type_name": null,
     "amount": null
   },
   {
@@ -77,6 +98,9 @@
     "transaction_date": "2026-05-12T15:45:00Z",
     "notes": "Retail sale",
     "name": null,
+    "product_name": null,
+    "product_unit_price": null,
+    "transaction_type_name": null,
     "amount": null
   },
   {
@@ -87,6 +111,9 @@
     "transaction_date": "2026-05-03T09:30:00Z",
     "notes": "Premium tool restock",
     "name": null,
+    "product_name": null,
+    "product_unit_price": null,
+    "transaction_type_name": null,
     "amount": null
   },
   {
@@ -97,6 +124,9 @@
     "transaction_date": "2026-05-09T16:00:00Z",
     "notes": "Professional customer order",
     "name": null,
+    "product_name": null,
+    "product_unit_price": null,
+    "transaction_type_name": null,
     "amount": null
   }
 ]

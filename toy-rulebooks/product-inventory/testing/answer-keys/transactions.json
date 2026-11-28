@@ -7,7 +7,10 @@
     "transaction_date": "2026-05-01T10:00:00Z",
     "notes": "Initial stock delivery",
     "name": "TXN-001",
-    "amount": 0
+    "product_name": "WIDGET-A",
+    "product_unit_price": 12.99,
+    "transaction_type_name": "PURCHASE",
+    "amount": 1299.0
   },
   {
     "transaction_id": "TXN-002",
@@ -17,7 +20,10 @@
     "transaction_date": "2026-05-05T14:30:00Z",
     "notes": "Bulk order",
     "name": "TXN-002",
-    "amount": 0
+    "product_name": "WIDGET-A",
+    "product_unit_price": 12.99,
+    "transaction_type_name": "SALE",
+    "amount": -324.75
   },
   {
     "transaction_id": "TXN-003",
@@ -27,7 +33,10 @@
     "transaction_date": "2026-05-10T09:00:00Z",
     "notes": "Customer purchase",
     "name": "TXN-003",
-    "amount": 0
+    "product_name": "WIDGET-A",
+    "product_unit_price": 12.99,
+    "transaction_type_name": "SALE",
+    "amount": -389.7
   },
   {
     "transaction_id": "TXN-004",
@@ -37,7 +46,10 @@
     "transaction_date": "2026-05-02T11:00:00Z",
     "notes": null,
     "name": "TXN-004",
-    "amount": 0
+    "product_name": "GADGET-B",
+    "product_unit_price": 24.5,
+    "transaction_type_name": "PURCHASE",
+    "amount": 1225.0
   },
   {
     "transaction_id": "TXN-005",
@@ -47,7 +59,10 @@
     "transaction_date": "2026-05-08T13:15:00Z",
     "notes": "Order fulfillment",
     "name": "TXN-005",
-    "amount": 0
+    "product_name": "GADGET-B",
+    "product_unit_price": 24.5,
+    "transaction_type_name": "SALE",
+    "amount": -857.5
   },
   {
     "transaction_id": "TXN-006",
@@ -57,7 +72,10 @@
     "transaction_date": "2026-05-01T08:00:00Z",
     "notes": "Bulk purchase from supplier",
     "name": "TXN-006",
-    "amount": 0
+    "product_name": "PART-C",
+    "product_unit_price": 5.0,
+    "transaction_type_name": "PURCHASE",
+    "amount": 1000.0
   },
   {
     "transaction_id": "TXN-007",
@@ -67,7 +85,10 @@
     "transaction_date": "2026-05-06T10:30:00Z",
     "notes": null,
     "name": "TXN-007",
-    "amount": 0
+    "product_name": "PART-C",
+    "product_unit_price": 5.0,
+    "transaction_type_name": "SALE",
+    "amount": -400.0
   },
   {
     "transaction_id": "TXN-008",
@@ -77,7 +98,10 @@
     "transaction_date": "2026-05-12T15:45:00Z",
     "notes": "Retail sale",
     "name": "TXN-008",
-    "amount": 0
+    "product_name": "PART-C",
+    "product_unit_price": 5.0,
+    "transaction_type_name": "SALE",
+    "amount": -250.0
   },
   {
     "transaction_id": "TXN-009",
@@ -87,7 +111,10 @@
     "transaction_date": "2026-05-03T09:30:00Z",
     "notes": "Premium tool restock",
     "name": "TXN-009",
-    "amount": 0
+    "product_name": "TOOL-D",
+    "product_unit_price": 99.99,
+    "transaction_type_name": "PURCHASE",
+    "amount": 799.92
   },
   {
     "transaction_id": "TXN-010",
@@ -97,6 +124,9 @@
     "transaction_date": "2026-05-09T16:00:00Z",
     "notes": "Professional customer order",
     "name": "TXN-010",
-    "amount": 0
+    "product_name": "TOOL-D",
+    "product_unit_price": 99.99,
+    "transaction_type_name": "SALE",
+    "amount": -299.97
   }
 ]
