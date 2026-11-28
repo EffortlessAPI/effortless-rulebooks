@@ -1,4 +1,4 @@
-# 📘 Job Search RAG — RuleSpeak®
+# 📘 Job Search RAG — Docs
 
 _Local LLM + RAG pipeline filtering jobs across boards using semantic search._
 
@@ -19,22 +19,82 @@ _Local LLM + RAG pipeline filtering jobs across boards using semantic search._
 | Is Headless | True when an empty string. | _Whether to run the Playwright browser in headless mode for this board._ |
 | Browser Channel | A defined attribute. | _Optional browser variant to use (e.g., msedge). NULL means default Chromium._ |
 | Job Listings | The number of job listings related to the job board. | _Count of job listings scraped from this board._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Description | Is Enabled | Max Pages | Is Headless | Browser Channel | Job Listings ƒ |
+|---|---|---|---|---|---|---|
+| ZipRecruiter | Primary board. Uses Next.js SERP structure. Full adapter implemented. | true | 3 | true | — | 0 |
+| Indeed | High-volume general board. Adapter planned. | false | 3 | true | — | 0 |
+| LinkedIn | Overnight mode recommended. Stealth browsing, throttled requests. Stricter bot detection. | false | 2 | false | msedge | 0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Search Url** | A search URL is identified by its name and is related to a job board. | — |
 | Name | A defined attribute. | _Descriptive label for this search query (e.g., 'Staff Engineer - Remote')._ |
 | Job Board | A defined attribute. | _Which job board this search URL belongs to._ |
 | URL | A defined attribute. | _The full search URL to crawl on this board._ |
 | Is Enabled | True when an empty string. | _Whether this search URL is active for crawling._ |
 | Job Board Name | Taken from the linked job board. | _Display name of the parent job board._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | URL | Is Enabled | Job Board Name ƒ |
+|---|---|---|---|
+| Staff Platform Architect - Remote | https://www.ziprecruiter.com/jobs-search?search=staff+platform+architect&location=Remote+(USA) | true | ZipRecruiter |
+| Principal Engineer Data Platform - Remote | https://www.ziprecruiter.com/jobs-search?search=principal+engineer+data+platform&location=Remote+(USA) | true | ZipRecruiter |
+| Developer Relations Engineer - Remote | https://www.ziprecruiter.com/jobs-search?search=developer+relations+engineer&location=Remote+(USA) | true | ZipRecruiter |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Role Archetype** | A role archetype is identified by its name. | — |
 | Name | A defined attribute. | _Archetype title (e.g., 'Staff Platform Architect', 'AI Systems Engineer')._ |
 | Description | A defined attribute. | _Natural language description of this ideal role type. Embedded into ChromaDB for archetype scoring._ |
 | Signals Positive | A defined attribute. | _Comma-separated keywords or phrases indicating strong fit for this archetype._ |
 | Signals Negative | A defined attribute. | _Comma-separated keywords or phrases indicating misfit for this archetype._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Description | Signals Positive | Signals Negative |
+|---|---|---|---|
+| AI Systems Engineer / AI Platform Architect | Designs and builds production ML/AI infrastructure: model serving, training pipelines, vector stores, embedding services, and LLM orchestration layers. | ML infrastructure, model serving, training pipeline, vector database, LLM orchestration, embedding service, MLOps, GPU cluster | frontend only, marketing automation, junior data analyst, manual QA |
+| Staff Platform Architect | Cross-team technical leadership for platform and infrastructure. Drives architectural decisions, defines system boundaries, and mentors engineering teams. | platform architecture, system design, cross-team influence, technical strategy, API design, distributed systems, mentorship | individual contributor only, no architecture scope, ticket taker, single-team |
+| Principal Data Platform Engineer | Owns data infrastructure at scale: data pipelines, warehousing, streaming, and analytical platform services. | data platform, data pipeline, streaming, data warehouse, Spark, Kafka, Flink, dbt, analytical infrastructure | BI analyst, dashboard builder, Excel reporting, entry-level data |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Rubric Dimension** | A rubric dimension is identified by its name. | — |
 | Name | A defined attribute. | _Dimension name (e.g., 'Role Scope', 'Technical Depth')._ |
 | Description | A defined attribute. | _What this dimension evaluates and why it matters._ |
 | Signals Positive | A defined attribute. | _Comma-separated positive indicators for this dimension. Embedded into global_positive_signals collection._ |
 | Signals Negative | A defined attribute. | _Comma-separated red flags for this dimension. Embedded into negative_signals collection._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Description | Signals Positive | Signals Negative |
+|---|---|---|---|
+| Role Scope | Cross-team influence and architectural reach vs. narrow single-team execution. | cross-team, architectural influence, system design ownership, technical strategy | ticket taker, narrow scope, single feature team, no design authority |
+| Technical Depth | Infrastructure and platform work vs. web/feature dev. | infrastructure, platform, distributed systems, systems programming, performance engineering | WordPress, Squarespace, basic CRUD, landing pages, no-code |
+| Operational Burden | On-call/SRE load vs. platform engineering focus. | platform engineering, build tools, developer experience, automation | 24/7 on-call, pager duty primary, incident commander rotation, SRE-heavy |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Resume** | A resume is identified by its name. | — |
 | Name | A defined attribute. | _Display name for this resume version (e.g., 'Platform Engineer - 2026Q1')._ |
 | Description | A defined attribute. | _Notes about what this resume version emphasizes or targets._ |
@@ -42,6 +102,20 @@ _Local LLM + RAG pipeline filtering jobs across boards using semantic search._
 | Indexed At | A defined attribute. | _When this resume was last chunked and embedded into ChromaDB. NULL means not yet indexed._ |
 | Resume Sections | The number of resume sections related to the resume. | _Count of sections (## heading chunks) extracted from this resume._ |
 | Search Runs | The number of search runs related to the resume. | _Count of search runs that scored against this resume._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Description | File Path | Indexed At | Resume Sections ƒ | Search Runs ƒ |
+|---|---|---|---|---|---|
+| Platform Engineer - 2026 Q1 | Emphasizes distributed systems, platform architecture, and AI/ML infrastructure. Targets staff+ IC and architect roles. | data/resume.md | 2026-04-01T07:45:00Z | 4 | 0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Resume Section** | A resume section is identified by its name and is related to a resume. | — |
 | Name | A defined attribute. | _Section heading text (e.g., 'Core Strengths', 'Experience')._ |
 | Resume | A defined attribute. | _Which resume this section belongs to._ |
@@ -49,6 +123,22 @@ _Local LLM + RAG pipeline filtering jobs across boards using semantic search._
 | Content | A defined attribute. | _Full text of this section including the ## heading and all body content up to the next ## heading. This is the document embedded into ChromaDB._ |
 | Chroma Doc ID | A defined attribute. | _Document ID in the ChromaDB resume collection (e.g., 'resume-core-strengths'). Used for idempotent upserts._ |
 | Resume Name | Taken from the linked resume. | _Display name of the parent resume._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Section Order | Content | Chroma Doc ID | Resume Name ƒ |
+|---|---|---|---|---|
+| Summary | 1 | ## Summary<br>Senior platform engineer with 15+ years building distributed systems, data pipelines, and AI/ML infrastructure. Track record of cross-team technical leadership at scale. | resume-summary | Platform Engineer - 2026 Q1 |
+| Core Strengths | 2 | ## Core Strengths<br>- Distributed systems architecture (Kubernetes, gRPC, service mesh)<br>- ML/AI platform engineering (model serving, training pipelines, vector stores)<br>- Technical strategy and mentorship across 50+ engineer orgs<br>- Data infrastructure (Kafka, Spark, Flink, dbt) | resume-core-strengths | Platform Engineer - 2026 Q1 |
+| Experience | 3 | ## Experience<br>### Staff Platform Engineer — CloudScale Inc (2022-2026)<br>Led platform architecture for ML serving infrastructure. Designed multi-region Kubernetes deployment strategy. Reduced model inference latency 40%.<br>### Senior Engineer — DataForge (2018-2022)<br>Built real-time data pipelines processing 2M events/sec. Migrated monolith to event-driven microservices. | resume-experience | Platform Engineer - 2026 Q1 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Search Run** | A search run is identified by its name and is related to a resume. | — |
 | Name | A defined attribute. | _Human-readable run label (typically date + time)._ |
 | Resume | A defined attribute. | _Which resume was used for fit_score computation in this run. The central link in the RAG pipeline._ |
@@ -69,6 +159,9 @@ _Local LLM + RAG pipeline filtering jobs across boards using semantic search._
 | Failed Listings | A defined attribute. | _Count of listings that failed scoring._ |
 | Resume Name | Taken from the linked resume. | _Display name of the resume used for this run._ |
 | Score Results | The number of score results related to the search run. | _Count of score results produced in this run._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Job Listing** | A job listing is identified by its name and is related to a job board. | — |
 | Name | A defined attribute. | _Job title as listed on the board, sanitized for filesystem safety._ |
 | Job Board | A defined attribute. | _Which job board this listing was scraped from._ |
@@ -85,6 +178,9 @@ _Local LLM + RAG pipeline filtering jobs across boards using semantic search._
 | Job Board Name | Taken from the linked job board. | _Display name of the source job board._ |
 | Score Results | The number of score results related to the job listing. | _Number of times this listing has been scored across search runs._ |
 | Decisions | The number of decisions related to the job listing. | _Number of decisions recorded for this listing._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Score Result** | A score result is identified by its name and is related to a job listing and a search run. | — |
 | Name | Computed as the job listing name, followed by “ - ”, followed by the search run name. | _Display label combining job title and search run._ |
 | Job Listing | A defined attribute. | _The job listing that was scored._ |
@@ -102,6 +198,9 @@ _Local LLM + RAG pipeline filtering jobs across boards using semantic search._
 | Job Listing Name | Taken from the linked job listing. | _Title of the scored job listing._ |
 | Search Run Name | Taken from the linked search run. | _Label of the parent search run._ |
 | Company | Taken from the linked job listing. | _Company name from the scored listing._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Decision** | A decision is identified by its name and is related to a job listing. | — |
 | Name | Computed as the upper-cased verdict, followed by “: ”, followed by the job listing name. ⚠︎ mechanical <!-- rulespeak:reword --> | _Display label combining verdict and job title._ |
 | Job Listing | A defined attribute. | _The job listing this decision is about._ |
@@ -132,7 +231,7 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 
 ### Structural Constraints (from the schema)
 
-- A job board **must** have a name and a max pages, and record whether it is enabled and whether it is a headless.
+- A job board **must** have a name and a max pages, and record whether it is enabled and whether it is headless.
 - A search URL **must** reference exactly one job board.
 - A search URL **must** have a name and a URL, and record whether it is enabled.
 - A role archetype **must** have a name and a description.
@@ -183,7 +282,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -211,8 +310,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

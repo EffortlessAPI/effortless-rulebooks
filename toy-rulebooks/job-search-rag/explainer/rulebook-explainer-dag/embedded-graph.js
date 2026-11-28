@@ -10562,4 +10562,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Decisions": "decision"
     }
   }
-} };
+}, stamp: "4164463377182f64" };
