@@ -47,6 +47,7 @@
   let state = "idle";           // idle | loading | ready | error
   let error = null;
   let pending = null;
+  let builds = 0;               // how many times the project has built again under this page (reset)
   let engine = null;            // { sdk, runtime, internals, specs }
   let data = null;              // { dataset, rows: Map(table -> [{ id, label, row (engine's), out }]) }
 
@@ -73,7 +74,9 @@
   async function fetchSource(name) {
     const url = `${String(config.typescript).replace(/\/$/, "")}/${name}`;
     let res;
-    try { res = await global.fetch(url); }
+    // no-cache: the project builds again while the page is open (reset below), and
+    // the copy the browser kept must be checked with the server, not trusted.
+    try { res = await global.fetch(url, { cache: "no-cache" }); }
     catch (e) { throw new WitnessError(`${url} could not be reached (${e.message}).`); }
     if (!res.ok) {
       throw new WitnessError(`${url} answered ${res.status}. The witness runs the project's generated TypeScript: add rulebook-to-typescript to effortless.json, write its output where the site serves files, and name that folder in init({ typescript }).`);
@@ -208,18 +211,34 @@
     if (state === "ready") return Promise.resolve(true);
     if (pending) return pending;
     state = "loading";
-    pending = (async () => {
+    const build = builds;
+    const run = (async () => {
       try {
-        if (!engine) engine = await buildEngine();
+        const built = engine || await buildEngine();
+        if (build !== builds) return null;      // the project built again while this was being fetched
+        engine = built;
         data = computeDataset();
         state = "ready"; error = null;
         return true;
       } catch (e) {
+        if (build !== builds) return null;
         state = "error"; error = e.message || String(e);
         throw e;
-      } finally { pending = null; }
+      }
     })();
-    return pending;
+    const settled = run.then(
+      (ok) => { if (pending === settled) pending = null; return ok === null ? ready() : ok; },
+      (e) => { if (pending === settled) pending = null; throw e; });
+    pending = settled;
+    return settled;
+  }
+
+  // The project built again (explainer-dag.js loaded the newer embedded-graph.js):
+  // the rulebook's rows are new and the TypeScript may be, so both are fetched and
+  // computed again on the next ask. Rows the host handed over stay the host's.
+  function reset() {
+    builds++;
+    state = "idle"; error = null; pending = null; engine = null; data = null;
   }
 
   // Rows from the host (an app's live rows) in place of the rulebook's own:
@@ -416,7 +435,7 @@
   }
 
   global.EffortlessWitness = {
-    configure, enabled, ready, setRows,
+    configure, enabled, ready, setRows, reset,
     state: () => state,
     error: () => error,
     rowsOf, valueOf, witness, firedStep, pkField,

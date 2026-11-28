@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="de" data-lang="de" class="show-english show-desc show-consumers">
+<html lang="de" data-lang="de" class="show-english show-desc show-consumers show-data">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ACME, LLC — RuleSpeak®</title>
+<title>ACME, LLC — Dokumentation</title>
 <style>
 
 :root{
@@ -19,6 +19,10 @@ body{margin:0;font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,
 a{color:var(--calc);text-decoration:none}
 a:hover{text-decoration:underline}
 code{font:0.85em ui-monospace,SFMono-Regular,Menlo,monospace;background:#f3f3f7;padding:1px 5px;border-radius:4px}
+/* A right-to-left language (dir=rtl on its .lang-doc): the layout mirrors by
+   itself, because every side below is inline-start / inline-end. Formulas and
+   code are left-to-right text whatever surrounds them. */
+code,.fx{direction:ltr;unicode-bidi:isolate}
 
 /* ── One language visible at a time; <html data-lang> picks it (rules per
       language are appended at render time). ─────────────────────────────── */
@@ -32,6 +36,7 @@ html.show-formula   .elem-formula{display:block}
 html.show-desc      .elem-desc{display:block}
 html.show-inputs    .elem-inputs{display:block}
 html.show-consumers .elem-consumers{display:block}
+html.show-data      .elem-data{display:block}
 
 /* ── Sticky top bar — brand · breadcrumb · language · gear ───────────────── */
 .topbar{position:sticky;top:0;z-index:40;height:var(--bar-h);
@@ -42,7 +47,7 @@ html.show-consumers .elem-consumers{display:block}
 .topbar-brand{font-weight:800;font-size:15px;color:var(--ink);white-space:nowrap;flex:none}
 .topbar-brand:hover{text-decoration:none}
 .topbar-tag{font-size:11px;font-weight:700;color:var(--calc);background:var(--calc-bg);
-  padding:1px 7px;border-radius:999px;margin-left:4px;vertical-align:middle}
+  padding:1px 7px;border-radius:999px;margin-inline-start:4px;vertical-align:middle}
 .crumb{flex:1;min-width:0;display:flex;align-items:center;gap:7px;
   font-size:13px;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .crumb-entity{font-weight:700;color:var(--ink)}
@@ -81,7 +86,7 @@ html.show-consumers .elem-consumers{display:block}
 .doc-header-inner{max-width:960px;margin:0 auto;padding:18px 24px}
 .doc-title{margin:0;font-size:24px;font-weight:800}
 .doc-title-sub{font-size:13px;font-weight:600;color:var(--calc);background:var(--calc-bg);
-  padding:2px 8px;border-radius:999px;vertical-align:middle;margin-left:6px}
+  padding:2px 8px;border-radius:999px;vertical-align:middle;margin-inline-start:6px}
 .doc-lede{margin:6px 0 0;font-style:italic;color:var(--muted)}
 .doc-note{margin:8px 0 12px;color:var(--muted);font-size:13px;max-width:70ch}
 .narr-hint{margin:8px 0 0;font-size:12px;color:var(--muted);max-width:78ch}
@@ -90,18 +95,18 @@ html.show-consumers .elem-consumers{display:block}
 .toc-title{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 8px}
 .toc-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
 .toc-list a{font-weight:600}
-.toc-meta{font-size:12px;color:var(--muted);margin-left:6px}
+.toc-meta{font-size:12px;color:var(--muted);margin-inline-start:6px}
 
 .entity{max-width:960px;margin:34px auto 0;padding:0 24px;scroll-margin-top:calc(var(--bar-h) + 14px)}
 .entity-head{border-bottom:2px solid var(--line);padding-bottom:8px;margin-bottom:14px}
 .entity-title{margin:0;font-size:21px;font-weight:800}
 .entity-synopsis{margin:4px 0 0;color:var(--muted);max-width:74ch}
 
-.field{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--rel);
+.field{background:var(--card);border:1px solid var(--line);border-inline-start:4px solid var(--rel);
   border-radius:10px;padding:14px 16px;margin:0 0 12px;scroll-margin-top:calc(var(--bar-h) + 14px)}
-.field.tone-raw{border-left-color:var(--raw)} .field.tone-calc{border-left-color:var(--calc)}
-.field.tone-agg{border-left-color:var(--agg)} .field.tone-lookup{border-left-color:var(--lookup)}
-.field.tone-rel{border-left-color:var(--rel)}
+.field.tone-raw{border-inline-start-color:var(--raw)} .field.tone-calc{border-inline-start-color:var(--calc)}
+.field.tone-agg{border-inline-start-color:var(--agg)} .field.tone-lookup{border-inline-start-color:var(--lookup)}
+.field.tone-rel{border-inline-start-color:var(--rel)}
 .field-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .field-glyph{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;
   border-radius:6px;font-weight:700;color:#fff;font-size:13px}
@@ -131,12 +136,12 @@ html.show-consumers .elem-consumers{display:block}
 .ref{border-bottom:1px dashed var(--calc);font-weight:600}
 
 .rt-headline{margin:0 0 4px}
-.rt-priority{margin:4px 0;padding-left:22px}
+.rt-priority{margin:4px 0;padding-inline-start:22px}
 .rt-priority>li{margin:2px 0}
 .rt-value{font-weight:700;color:var(--calc)}
 .rt-otherwise{color:var(--muted);font-style:italic}
 .rt-group-label{font-weight:600}
-.rt-group{margin:2px 0 6px;padding-left:20px}
+.rt-group{margin:2px 0 6px;padding-inline-start:20px}
 
 .gt{margin-top:8px}
 .gt-body{margin:0;color:var(--muted)}
@@ -145,41 +150,44 @@ html.show-consumers .elem-consumers{display:block}
 .prov{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
 .prov>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
 .prov>summary::-webkit-details-marker{display:none}
-.prov>summary::before{content:'▸';display:inline-block;margin-right:6px;color:var(--muted);transition:transform .1s}
+.prov>summary::before{content:'▸';display:inline-block;margin-inline-end:6px;color:var(--muted);transition:transform .1s}
 .prov[open]>summary::before{transform:rotate(90deg)}
-.count{font-size:11px;font-weight:700;background:#eee;color:#555;padding:1px 7px;border-radius:999px;margin-left:4px}
+.count{font-size:11px;font-weight:700;background:#eee;color:#555;padding:1px 7px;border-radius:999px;margin-inline-start:4px}
 .count-muted{background:#f5f5f5;color:#999}
-.prov-hint{font-size:12px;font-weight:400;color:var(--muted);margin-left:6px}
+.prov-hint{font-size:12px;font-weight:400;color:var(--muted);margin-inline-start:6px}
 .prov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:8px}
 .prov-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.input{display:block;border:1px solid var(--line);border-left:3px solid var(--rel);border-radius:8px;
+.input{display:block;border:1px solid var(--line);border-inline-start:3px solid var(--rel);border-radius:8px;
   padding:8px 10px;background:#fcfcfe}
-.input.tone-raw{border-left-color:var(--raw)} .input.tone-calc{border-left-color:var(--calc)}
-.input.tone-agg{border-left-color:var(--agg)} .input.tone-lookup{border-left-color:var(--lookup)}
-.input.tone-rel{border-left-color:var(--rel)}
+.input.tone-raw{border-inline-start-color:var(--raw)} .input.tone-calc{border-inline-start-color:var(--calc)}
+.input.tone-agg{border-inline-start-color:var(--agg)} .input.tone-lookup{border-inline-start-color:var(--lookup)}
+.input.tone-rel{border-inline-start-color:var(--rel)}
 .input:hover{background:#f4f3fb;text-decoration:none}
 .input-static{cursor:default}
 span.input-static:hover{background:#fcfcfe}
 .input-head{display:flex;align-items:center;gap:6px}
 .input-glyph{font-size:12px;color:var(--muted)}
 .input-name{font-weight:700;color:var(--ink)}
-.input-table{font-size:11px;color:var(--muted);margin-left:auto}
+.input-table{font-size:11px;color:var(--muted);margin-inline-start:auto}
 
-/* ── 6 Example Data (optional section) ─────────────────────────────────── */
-.sample-data{max-width:1040px;margin:32px auto 8px;padding:0 20px}
-.sample-title{font-size:20px;margin:0 0 6px}
-.sample-note{color:var(--muted);font-size:13px;margin:0 0 16px;max-width:70ch}
-.sample-entity{font-size:15px;margin:20px 0 8px;color:var(--raw)}
+/* ── Example data (per entity, collapsible; gear switch: data) ─────────── */
+.entity-data{margin:14px 0 4px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.entity-data>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
+.entity-data>summary::-webkit-details-marker{display:none}
+.entity-data>summary::before{content:'▸';display:inline-block;margin-inline-end:6px;color:var(--muted);transition:transform .1s}
+.entity-data[open]>summary::before{transform:rotate(90deg)}
+.entity-data .sample-scroll{margin-top:10px}
+.sample-note{max-width:960px;margin:16px auto 0;padding:0 24px;color:var(--muted);font-size:13px}
 .sample-scroll{overflow-x:auto}
 .sample-table{border-collapse:collapse;font-size:13px;background:var(--card);
   border:1px solid var(--line);border-radius:6px}
 .sample-table th,.sample-table td{padding:6px 12px;border-bottom:1px solid var(--line);
-  text-align:left;vertical-align:top;white-space:nowrap}
+  text-align:start;vertical-align:top;white-space:nowrap}
 .sample-table thead th{background:#f5f5fa;font-weight:600;color:var(--ink)}
 .sample-table tbody tr:last-child td{border-bottom:none}
 .sample-table th.sample-derived{background:var(--calc-bg);color:var(--calc)}
 .sample-table td.sample-derived{color:var(--calc)}
-.sample-fx{margin-left:4px;opacity:.75}
+.sample-fx{margin-inline-start:4px;opacity:.75}
 .sample-legend{color:var(--muted);font-size:12px;margin-top:12px}
 .input-en{display:block;margin-top:3px;font-size:13px;color:var(--muted)}
 .ref-pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;
@@ -190,7 +198,7 @@ span.input-static:hover{background:#fcfcfe}
 .ref-pill-tbl{font-weight:400;color:var(--muted)}
 
 .field-note{margin:8px 0 0;font-size:13px;font-style:italic;color:var(--muted);
-  border-left:2px solid var(--line);padding-left:10px}
+  border-inline-start:2px solid var(--line);padding-inline-start:10px}
 
 .doc-footer{max-width:960px;margin:40px auto;padding:18px 24px;border-top:1px solid var(--line);
   color:var(--muted);font-size:13px}
@@ -202,6 +210,79 @@ span.input-static:hover{background:#fcfcfe}
 :target{animation:flash 1.2s ease}
 @keyframes flash{0%{background:var(--calc-bg)}100%{background:var(--card)}}
 
+/* ── Navigator: left nav, overview views, field tabs, graph ─────────────────
+   Big rulebooks were a single long page. Now (from nine entities up) the page shows the overview,
+   or ONE entity at a time, with a nav that is always on screen. Logical properties throughout. */
+.docgrid{max-width:1320px;margin:18px auto 0;padding:0 24px;display:grid;
+  grid-template-columns:290px minmax(0,1fr);gap:0 30px;align-items:start}
+.docmain{min-width:0}
+.docmain .entity,.docmain .ov{max-width:900px;margin-inline:0;padding:0}
+.sidenav{position:sticky;top:calc(var(--bar-h) + 12px);max-height:calc(100vh - var(--bar-h) - 24px);
+  display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;background:#fff;
+  font-size:13px;overflow:hidden}
+.sn-head{padding:10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.sn-index{font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:var(--calc);
+  display:flex;justify-content:space-between}
+.sn-q,.ov-q,.tab-q{width:100%;padding:6px 9px;border:1px solid #d0d7de;border-radius:6px;font:inherit;background:#fff;color:inherit}
+.sn-q:focus,.ov-q:focus,.tab-q:focus{outline:2px solid var(--calc);border-color:transparent}
+.sn-body{overflow:auto;padding:6px 6px 12px;overscroll-behavior:contain}
+.sn-foot{border-top:1px solid var(--line);padding:8px 10px}
+.sn-foot button{all:unset;cursor:pointer;color:var(--calc);font-size:12px}
+.sn-empty{padding:10px;color:var(--muted)}
+.sn-group{margin:2px 0}
+.sn-gtitle{display:flex;justify-content:space-between;gap:8px;padding:5px 6px;cursor:pointer;list-style:none;
+  font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#555;border-radius:5px}
+.sn-gtitle::-webkit-details-marker{display:none}
+.sn-gtitle::before{content:'▸';color:#999;margin-inline-end:6px;display:inline-block;transition:transform .1s}
+.sn-group[open]>.sn-gtitle::before{transform:rotate(90deg)}
+.sn-gtitle:hover{background:#eef0f4}
+.sn-gtitle span:nth-of-type(1){flex:1}
+.sn-n{font-weight:600;color:#888;letter-spacing:0;text-transform:none}
+.sn-group.has-current>.sn-gtitle{color:var(--calc)}
+.sn-t{display:flex;justify-content:space-between;gap:6px;padding:4px 8px;border-radius:6px;color:#222;font-weight:600}
+.sn-t:hover{background:#eef0f4;text-decoration:none}
+.sn-t.is-current{background:var(--calc-bg);color:var(--calc)}
+.sn-t b{font-size:10px;font-weight:700;color:var(--calc);background:var(--calc-bg);border-radius:999px;padding:1px 6px}
+.sn-fields{list-style:none;margin:2px 0 6px 10px;padding:0 0 0 6px;border-inline-start:2px solid var(--line)}
+.sn-f{display:flex;align-items:center;gap:6px;padding:2px 6px;border-radius:5px;color:#444;font-size:12px}
+.sn-f:hover{background:#eef0f4;text-decoration:none}
+.sn-f i{flex:none;width:14px;text-align:center;font-family:Georgia,serif;color:var(--rel)}
+.sn-f.tone-raw i{color:var(--raw)} .sn-f.tone-calc i{color:var(--calc)} .sn-f.tone-agg i{color:var(--agg)} .sn-f.tone-lookup i{color:var(--lookup)}
+.tabs{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.tab{display:inline-flex;gap:6px;align-items:center;padding:5px 11px;border:1px solid transparent;border-radius:999px;
+  background:transparent;font:600 12px/1 inherit;color:#555;cursor:pointer}
+.tab:hover{background:#eef0f4}
+.tab.is-active{background:var(--calc-bg);color:var(--calc);border-color:var(--calc)}
+.tab i{font-style:normal;font-size:11px;opacity:.7}
+.tabs .tab-q,.tabs .ov-q{margin-inline-start:auto;width:15em;max-width:100%}
+.field[hidden]{display:none}
+.ov-group{border:1px solid var(--line);border-radius:10px;background:#fff;padding:2px 10px 12px;margin-bottom:12px}
+.ov-gtitle{display:flex;justify-content:space-between;padding:5px 2px;cursor:pointer;list-style:none;font-weight:700;
+  font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#555}
+.ov-gtitle::-webkit-details-marker{display:none}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-top:6px}
+.ov-card{display:flex;flex-direction:column;gap:2px;padding:9px 12px;border:1px solid var(--line);
+  border-inline-start:4px solid var(--calc);border-radius:8px;background:#fff;color:var(--ink)}
+.ov-card:hover{text-decoration:none;box-shadow:0 3px 10px rgba(90,58,160,.14)}
+.ov-card b{font-size:14px}.ov-card span{font-size:12px;color:var(--muted)}
+.ov-list{width:100%;border-collapse:collapse;font-size:13px}
+.ov-list td{padding:6px 8px;border-bottom:1px solid #eee}
+.ov-list a{font-weight:700}
+.ov-n{color:#777;text-align:end;white-space:nowrap}
+.ov-hint{color:var(--muted);margin:0 0 6px}
+.ov-graph{overflow:auto;padding:4px 0}
+.dgraph{display:block;max-width:none;font:600 12px -apple-system,system-ui,sans-serif}
+.dgraph .ge{fill:none;stroke:#b4bac6;stroke-width:1.4}.dgraph .ge:hover{stroke:var(--calc);stroke-width:2.2}
+.dgraph .ga{fill:#b4bac6}
+.dgraph .gn rect{fill:#fff;stroke:#c5cad6;stroke-width:1.3}.dgraph .gn.has rect{fill:var(--calc-bg);stroke:var(--calc)}
+.dgraph .gn text{fill:#222;pointer-events:none}.dgraph .gn:hover rect{stroke-width:2.4}
+.lang-doc.paged .toc{display:none}
+.lang-doc.paged .docmain .entity{display:none}
+.lang-doc.paged .docmain .entity.is-on{display:block}
+.lang-doc.paged .ov[hidden],.lang-doc .ov[hidden]{display:none}
+@media (max-width:900px){.docgrid{display:block}.sidenav{display:none}}
+
+
 html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
 </style>
 <script>
@@ -209,7 +290,7 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
 (function(){
   var LANGS=['de'];
   var DEFAULT_LANG='de';
-  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers','data'];
   var root=document.documentElement;
 
   var lang=null;
@@ -229,10 +310,10 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
 </script>
 </head>
 <body>
-<div class="lang-doc" data-lang="de" lang="de">
+<div class="lang-doc" data-lang="de" lang="de" dir="ltr">
 <div class="topbar">
   <div class="topbar-inner">
-    <a class="topbar-brand" href="#de-top">📘 ACME, LLC <span class="topbar-tag">RuleSpeak®</span></a>
+    <a class="topbar-brand" href="#de-top">📘 ACME, LLC <span class="topbar-tag">Dokumentation</span></a>
     <nav class="crumb" aria-label="You are reading">
       <span class="crumb-entity"></span>
       <span class="crumb-sep" hidden>›</span>
@@ -244,7 +325,7 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
     <p class="gear-pop-title">In diesem Dokument anzeigen</p>
     <label class="gear-opt" title="Die deklarative Geschäftsregel (nur dann / muss / Priorität)">
       <input type="checkbox" data-elem="rulespeak">
-      <span class="gear-opt-label">RuleSpeak®</span>
+      <span class="gear-opt-label">Dokumentation</span>
       <span class="gear-opt-hint">Die deklarative Geschäftsregel (nur dann / muss / Priorität)</span>
     </label>
     <label class="gear-opt" title="Die Formel als klarsprachlicher Satz vorgelesen">
@@ -272,15 +353,21 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
       <span class="gear-opt-label">Links zu Verbrauchern</span>
       <span class="gear-opt-hint">Die Regeln, die diese hier lesen (ihre DAG-Verbraucher / nachgelagert)</span>
     </label>
+    <label class="gear-opt" title="Die ersten Zeilen der Daten jeder Entität, einschließlich berechneter Spalten">
+      <input type="checkbox" data-elem="data" checked>
+      <span class="gear-opt-label">Beispieldaten</span>
+      <span class="gear-opt-hint">Die ersten Zeilen der Daten jeder Entität, einschließlich berechneter Spalten</span>
+    </label>
     <button type="button" class="gear-reset">Auf Standard zurücksetzen</button>
   </div>
 </div>
 <header class="doc-header" id="de-top">
+  <script type="application/json" class="nav-texts">{"search":"Tabellen und Felder filtern…","empty":"Keine Treffer.","other":"Weitere","all":"Alle","derived":"Abgeleitet","stored":"Gespeichert","rels":"Beziehungen","groups":"Gruppen","list":"A–Z","graph":"Graph","graphHint":"Jedes Kästchen ist eine Tabelle; eine Linie führt von einer Tabelle zu der Tabelle, auf die sie verweist. Zum Öffnen anklicken.","fields":"Felder filtern…","showAll":"Alles auf einer Seite zeigen","showOne":"Eine Tabelle nach der anderen zeigen","tocTitle":"Entitäten"}</script>
   <div class="doc-header-inner">
-    <h1 class="doc-title">📘 ACME, LLC <span class="doc-title-sub">RuleSpeak®</span></h1>
+    <h1 class="doc-title">📘 ACME, LLC <span class="doc-title-sub">Dokumentation</span></h1>
     <p class="doc-lede">Smallest viable rulebook with a calculated field — the &quot;Hello, formulas&quot; tutorial.</p>
     <p class="doc-note">Deklarative Geschäftsregeln, aus dem Regelbuch gerendert — der einzigen Quelle der Wahrheit. Jede Aussage unten ist die klarsprachliche Lesart einer Formel; nichts hier ist von Hand verfasster Text.</p>
-    <p class="narr-hint">Nutzen Sie die <button type="button" class="gear-inline gear-open-inline">⚙︎ Optionen</button> oben rechts, um jeden Teil der Dokumentation ein- oder auszuschalten — RuleSpeak®, die Klartext-Lesart, die rohe Formel, die Beschreibung des Autors und die Links zu Eingaben und Verbrauchern einer Regel. Ihre Auswahl wird gespeichert.</p>
+    <p class="narr-hint">Nutzen Sie die <button type="button" class="gear-inline gear-open-inline">⚙︎ Optionen</button> oben rechts, um jeden Teil der Dokumentation ein- oder auszuschalten — Dokumentation, die Klartext-Lesart, die rohe Formel, die Beschreibung des Autors und die Links zu Eingaben und Verbrauchern einer Regel. Ihre Auswahl wird gespeichert.</p>
   </div>
 </header>
 <nav class="toc">
@@ -289,7 +376,7 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
     <li><a href="#de-t-customers">Customer</a> <span class="toc-meta">2 Regeln · 0 Verknüpfungen</span></li>
   </ul>
 </nav>
-<section class="entity" id="de-t-customers" data-entity="Customer">
+<section class="entity" id="de-t-customers" data-entity="Customer" data-links="" data-rules="2">
   <header class="entity-head">
     <h2 class="entity-title">Customer</h2>
     <p class="entity-synopsis">Ein Customer wird durch <a class="ref" href="#de-f-customers-name">Name</a> identifiziert.</p>
@@ -306,7 +393,7 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
     <p class="field-note elem elem-desc">Identifier for the customer.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Dokumentation</span>
         <p class="view-body">Ein Customer: <a class="ref" href="#de-f-customers-name">Name</a> wird berechnet als der <a class="ref" href="#de-f-customers-emailaddress">Email Address</a>, wobei jedes „@“ durch ein Bindestrich ersetzt wird.</p>
       </div>
       <div class="view elem elem-english">
@@ -391,7 +478,7 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
     <p class="field-note elem elem-desc">Full name is computed from the first and last name of the customer</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Dokumentation</span>
         <p class="view-body">Ein Customer: <a class="ref" href="#de-f-customers-fullname">Full Name</a> wird berechnet als die <a class="ref" href="#de-f-customers-firstname">First Name</a>, gefolgt von ein Leerzeichen, gefolgt von die <a class="ref" href="#de-f-customers-lastname">Last Name</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -424,9 +511,48 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
       </div>
     </details>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Beispieldaten</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Email Address</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th class="sample-derived">Full Name<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">bob-gmail.com</td>
+          <td>bob@gmail.com</td>
+          <td>Bobby</td>
+          <td>Smith</td>
+          <td class="sample-derived">Bobby Smith</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">jimmy-gmail.com</td>
+          <td>jimmy@gmail.com</td>
+          <td>Jimmy</td>
+          <td>Doe</td>
+          <td class="sample-derived">Jimmy Doe</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">mary-gmail.com</td>
+          <td>mary@gmail.com</td>
+          <td>Mary</td>
+          <td>Jones</td>
+          <td class="sample-derived">Mary Jones</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ kennzeichnet eine berechnete Spalte.</p>
+  </details>
 </section>
 <footer class="doc-footer">
-  <p>Aus dem Regelbuch durch die gemeinsame <b>RuleSpeak®</b>-Engine gerendert (<code>rulebook-rulespeak-core</code>). Dieselbe Engine erzählt den React-Explainer-DAG, sodass jede Darstellungsart in beiden identisch gelesen wird.</p>
+  <p class="doc-footer-soon"><b>RuleSpeak&#174;</b> — die von <b>Ronald G. Ross</b> geschaffene deklarative Gesch&#228;ftsregel-Notation nach den Konventionen von <b>SBVR</b> — kommt bald. Bis dahin zeigt diese Seite die regul&#228;re Dokumentation. <a href="https://www.RonRoss.info" target="_blank" rel="noopener">www.RonRoss.info</a></p>
+  <p>Aus dem Regelbuch durch die gemeinsame <b>Dokumentation</b>-Engine gerendert (<code>rulebook-rulespeak-core</code>). Dieselbe Engine erzählt den React-Explainer-DAG, sodass jede Darstellungsart in beiden identisch gelesen wird.</p>
   <p class="doc-footer-legend"><span class="chip chip-raw">● Grundwahrheit</span> <span class="chip chip-calc">ƒ Berechnet</span> <span class="chip chip-agg">Σ Aggregation</span> <span class="chip chip-lookup">↗ Nachschlagewert</span> <span class="chip chip-rel">⇢ Beziehung</span></p>
 </footer>
 </div>
@@ -434,8 +560,8 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
 
 (function(){
   var LANGS=['de'];
-  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
-  var DEFAULTS={'rulespeak':false,'english':true,'formula':false,'desc':true,'inputs':false,'consumers':true};
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers','data'];
+  var DEFAULTS={'rulespeak':false,'english':true,'formula':false,'desc':true,'inputs':false,'consumers':true,'data':true};
   var root=document.documentElement;
 
   // ── Language switching. All .lang-select controls stay in sync; the choice
@@ -537,8 +663,8 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
   var barH=parseInt(getComputedStyle(root).getPropertyValue('--bar-h'),10)||48;
   function update(){
     var line=barH+18, curF=null, curE=null;
-    for(var i=0;i<fields.length;i++){ if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
-    for(var j=0;j<entities.length;j++){ if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
+    for(var i=0;i<fields.length;i++){ if(!fields[i].offsetParent) continue; if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
+    for(var j=0;j<entities.length;j++){ if(!entities[j].offsetParent) continue; if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
     if(curF){
       var fEnt=curF.getAttribute('data-entity');
       var eName=curE?curE.getAttribute('data-entity'):fEnt;
@@ -552,6 +678,237 @@ html[data-lang="de"] .lang-doc[data-lang="de"]{display:block}
   window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('resize',onScroll,{passive:true});
   rebindSpy();
+})();
+
+
+(function(){
+  // ── Navigator ──────────────────────────────────────────────────────────────
+  //  From nine entities up, the page shows an overview or ONE entity at a time, with a nav that is
+  //  always on screen: grouped tables, a filter, the current entity's fields, tabs over its fields and
+  //  an overview as groups / A-Z / a graph. Smaller rulebooks keep the single page. Everything is read
+  //  from what the page already says (the entities, their fields, data-links, data-rules); the words
+  //  come from the language's data-nav. A person can always switch to everything on one page.
+  var MIN=9;
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;'); }
+  function leading(n){
+    var h=String(n).replace(/^[^A-Za-z0-9]+/,'').split(/[\s_-]+/)[0];
+    var m=/^(?:[A-Z]+(?=[A-Z][a-z])|[A-Z][a-z0-9]*|[A-Z]+[0-9]*|[a-z0-9]+)/.exec(h);
+    return m?m[0]:h;
+  }
+  function singular(w){ return w.length>3 ? w.replace(/ies$/i,'y').replace(/s$/i,'') : w; }
+
+  // Families: tables sharing a leading word; a stray joins the family most of its neighbours are in.
+  function groupsOf(ents,T){
+    var names=ents.map(function(e){return e.name;});
+    var by={};
+    ents.forEach(function(e){ var k=singular(leading(e.name)).toLowerCase(); (by[k]=by[k]||{words:[],members:[]}); by[k].words.push(leading(e.name)); by[k].members.push(e); });
+    var fam={},label={};
+    Object.keys(by).forEach(function(k){
+      if(by[k].members.length<2||k.length<3) return;
+      label[k]=by[k].words.slice().sort(function(a,b){return a.length-b.length||a.localeCompare(b);})[0];
+      by[k].members.forEach(function(e){ fam[e.id]=k; });
+    });
+    if(!Object.keys(fam).length) return [{key:'',label:null,items:ents}];
+    var byId={}; ents.forEach(function(e){ byId[e.id]=e; });
+    var nb={}; ents.forEach(function(e){ nb[e.id]=[]; });
+    ents.forEach(function(e){ e.links.forEach(function(t){ if(byId[t]){ nb[e.id].push(t); nb[t].push(e.id); } }); });
+    var groups={};
+    function put(k,e){ (groups[k]=groups[k]||[]).push(e); }
+    ents.forEach(function(e){
+      if(fam[e.id]){ put(fam[e.id],e); return; }
+      var tally={}; nb[e.id].forEach(function(t){ if(fam[t]) tally[fam[t]]=(tally[fam[t]]||0)+1; });
+      var best='',bn=0; Object.keys(tally).sort().forEach(function(k){ if(tally[k]>bn){ best=k; bn=tally[k]; } });
+      put(best,e);
+    });
+    var out=Object.keys(groups).filter(function(k){return k!=='';}).sort(function(a,b){return label[a].localeCompare(label[b]);})
+      .map(function(k){ return {key:k,label:label[k],items:groups[k]}; });
+    if(groups['']) out.push({key:'',label:T.other,items:groups['']});
+    return out;
+  }
+
+  // The graph: a box per table, a line per relationship; what a table points at is to its left.
+  function graphSvg(ents,T){
+    var set={}; ents.forEach(function(e){ set[e.id]=e; });
+    var out={},depth={},vis={};
+    ents.forEach(function(e){ out[e.id]=e.links.filter(function(t){return set[t]&&t!==e.id;}); });
+    function d(id){ if(depth[id]!=null) return depth[id]; if(vis[id]) return 0; vis[id]=1; var x=0; out[id].forEach(function(t){ x=Math.max(x,1+d(t)); }); vis[id]=0; depth[id]=x; return x; }
+    ents.forEach(function(e){ d(e.id); });
+    var maxD=0; ents.forEach(function(e){ maxD=Math.max(maxD,depth[e.id]); });
+    var by=[]; for(var i=0;i<=maxD;i++) by.push([]);
+    ents.slice().sort(function(a,b){return a.name.localeCompare(b.name);}).forEach(function(e){ by[depth[e.id]].push(e); });
+    var layers=by.filter(function(l){return l.length;});
+    var BW=164,BH=30,GX=96,GY=14,pos={};
+    layers.forEach(function(layer,li){
+      if(li>0){
+        var bary=function(e){ var ps=out[e.id].concat(ents.filter(function(o){return out[o.id].indexOf(e.id)>=0;}).map(function(o){return o.id;})).filter(function(t){return pos[t];}).map(function(t){return pos[t].row;}); return ps.length?ps.reduce(function(a,b){return a+b;},0)/ps.length:1e9; };
+        layer.sort(function(a,b){return bary(a)-bary(b)||a.name.localeCompare(b.name);});
+      }
+      layer.forEach(function(e,ri){ pos[e.id]={row:ri,x:li*(BW+GX),y:ri*(BH+GY)}; });
+    });
+    var rows=1; layers.forEach(function(l){rows=Math.max(rows,l.length);});
+    var W=layers.length*(BW+GX)-GX,H=rows*(BH+GY)-GY,s='';
+    ents.forEach(function(e){ out[e.id].forEach(function(t){
+      var a=pos[e.id],b=pos[t],x1=a.x,y1=a.y+BH/2,x2=b.x+BW,y2=b.y+BH/2,dx=Math.max(24,(x1-x2)/2);
+      s+='<path class=\'ge\' d=\'M'+x1+','+y1+' C'+(x1-dx)+','+y1+' '+(x2+dx)+','+y2+' '+x2+','+y2+'\' marker-end=\'url(#dga)\'/>';
+    }); });
+    ents.forEach(function(e){
+      var p=pos[e.id],lab=e.name.length>22?e.name.slice(0,21)+'…':e.name;
+      s+='<g class=\'gn'+(e.rules?' has':'')+'\' transform=\'translate('+p.x+','+p.y+')\'><a href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><rect width=\''+BW+'\' height=\''+BH+'\' rx=\'6\'/><text x=\''+(BW/2)+'\' y=\''+(BH/2+4)+'\' text-anchor=\'middle\'>'+esc(lab)+'</text><title>'+esc(e.name)+'</title></a></g>';
+    });
+    return '<svg class=\'dgraph\' viewBox=\'-4 -4 '+(W+8)+' '+(H+8)+'\' width=\''+(W+8)+'\' height=\''+(H+8)+'\'><defs><marker id=\'dga\' viewBox=\'0 0 8 8\' refX=\'7\' refY=\'4\' markerWidth=\'7\' markerHeight=\'7\' orient=\'auto\'><path d=\'M0,0 L8,4 L0,8 z\' class=\'ga\'/></marker></defs>'+s+'</svg>';
+  }
+
+  function setup(doc){
+    var T={}; var tx=doc.querySelector('.nav-texts'); try{ T=JSON.parse((tx&&tx.textContent)||'{}'); }catch(e){ return; }
+    var sections=Array.prototype.slice.call(doc.querySelectorAll('.entity[id]'));
+    if(sections.length<MIN) return;
+    var ents=sections.map(function(el){
+      var fs=Array.prototype.slice.call(el.querySelectorAll('.field[data-field]')).map(function(f){
+        var tone=(f.className.match(/tone-(\w+)/)||[])[1]||'rel';
+        return {id:f.id,name:f.getAttribute('data-field'),tone:tone,glyph:(f.querySelector('.field-glyph')||{}).textContent||''};
+      });
+      return {id:el.id,name:el.getAttribute('data-entity'),el:el,links:(el.getAttribute('data-links')||'').split(' ').filter(Boolean),rules:parseInt(el.getAttribute('data-rules')||'0',10),fields:fs};
+    });
+    var byId={}; ents.forEach(function(e){ byId[e.id]=e; });
+    var groups=groupsOf(ents,T);
+    var q='',view='groups',tab='all',fq='',closed={};
+
+    // Layout: nav | main (overview + the entities).
+    var toc=doc.querySelector('.toc'),header=doc.querySelector('.doc-header');
+    var grid=document.createElement('div'); grid.className='docgrid';
+    var nav=document.createElement('nav'); nav.className='sidenav'; nav.setAttribute('aria-label',T.tocTitle||'');
+    var main=document.createElement('div'); main.className='docmain';
+    var ov=document.createElement('section'); ov.className='ov';
+    main.appendChild(ov);
+    sections.forEach(function(el){ main.appendChild(el); });
+    grid.appendChild(nav); grid.appendChild(main);
+    (header||toc).insertAdjacentElement('afterend',grid);
+    var footer=doc.querySelector('.doc-footer'); if(footer) grid.insertAdjacentElement('afterend',footer);
+    doc.classList.add('paged');
+
+    function matches(e){
+      var t=q.trim().toLowerCase(); if(!t) return {ok:true,fs:[]};
+      if(e.name.toLowerCase().indexOf(t)>=0) return {ok:true,fs:[]};
+      var hit=e.fields.filter(function(f){return f.name.toLowerCase().indexOf(t)>=0;});
+      return hit.length?{ok:true,fs:hit}:{ok:false,fs:[]};
+    }
+    var cur=null,curField=null;
+    function navBody(){
+      var filtering=!!q.trim(),html='';
+      groups.forEach(function(g){
+        var rows=g.items.map(function(e){
+          var m=matches(e); if(!m.ok) return '';
+          var here=cur===e,shown=here?e.fields:m.fs.slice(0,8);
+          var r='<div><a class=\'sn-t'+(here?' is-current':'')+'\' href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><span>'+esc(e.name)+'</span>'+(e.rules?'<b>ƒ '+e.rules+'</b>':'')+'</a>';
+          if(shown.length) r+='<ul class=\'sn-fields\'>'+shown.map(function(f){ return '<li><a class=\'sn-f tone-'+esc(f.tone)+'\' href=\'#'+esc(f.id)+'\' data-go=\''+esc(f.id)+'\'><i>'+esc(f.glyph)+'</i><span>'+esc(f.name)+'</span></a></li>'; }).join('')+'</ul>';
+          return r+'</div>';
+        }).filter(Boolean);
+        if(!rows.length) return;
+        if(g.label==null){ html+=rows.join(''); return; }
+        var has=cur&&g.items.indexOf(cur)>=0,open=filtering||has||(groups.length<=3&&closed[g.key]!==true)||closed[g.key]===false;
+        html+='<details class=\'sn-group'+(has?' has-current':'')+'\' data-g=\''+esc(g.key)+'\''+(open?' open':'')+'><summary class=\'sn-gtitle\'><span>'+esc(g.label)+'</span><span class=\'sn-n\'>'+rows.length+'</span></summary>'+rows.join('')+'</details>';
+      });
+      return html||'<p class=\'sn-empty\'>'+esc(T.empty)+'</p>';
+    }
+    function drawNav(keepFocus){
+      var body=nav.querySelector('.sn-body'),top=body?body.scrollTop:0;
+      if(!nav.firstChild){
+        nav.innerHTML='<div class=\'sn-head\'><a class=\'sn-index\' href=\'#\' data-go=\'\'><span>▦ '+esc(T.tocTitle)+'</span><span class=\'sn-n\'>'+ents.length+'</span></a><input type=\'search\' class=\'sn-q\' placeholder=\''+esc(T.search)+'\' aria-label=\''+esc(T.search)+'\'></div><div class=\'sn-body\'></div><div class=\'sn-foot\'><button type=\'button\' class=\'sn-all\'></button></div>';
+        nav.querySelector('.sn-q').addEventListener('input',function(){ q=this.value; drawNav(true); drawOverview(); });
+        nav.querySelector('.sn-all').addEventListener('click',function(){ var on=!doc.classList.contains('paged'); setPaged(on); });
+        nav.addEventListener('click',go);
+        nav.addEventListener('toggle',function(ev){ var d=ev.target; if(d&&d.getAttribute&&d.getAttribute('data-g')!=null) closed[d.getAttribute('data-g')]=!d.open; },true);
+        body=nav.querySelector('.sn-body');
+      }
+      body.innerHTML=navBody(); body.scrollTop=top;
+      nav.querySelector('.sn-all').textContent=doc.classList.contains('paged')?T.showAll:T.showOne;
+      var c=body.querySelector('.sn-f.is-current,.sn-t.is-current'); if(c&&!keepFocus&&c.scrollIntoView) c.scrollIntoView({block:'nearest'});
+    }
+    function go(ev){
+      var a=ev.target.closest&&ev.target.closest('[data-go]'); if(!a||ev.metaKey||ev.ctrlKey||ev.shiftKey) return;
+      ev.preventDefault();
+      var id=a.getAttribute('data-go');
+      location.hash=id?'#'+id:'#'+doc.getAttribute('data-lang')+'-top';
+    }
+
+    // Overview: groups, A-Z or the graph, narrowed by the filter.
+    function drawOverview(){
+      var shown=ents.filter(function(e){return matches(e).ok;});
+      var h='<div class=\'tabs\' role=\'tablist\'>'+[['groups',T.groups],['list',T.list],['graph',T.graph]].map(function(v){
+        return '<button type=\'button\' role=\'tab\' class=\'tab'+(view===v[0]?' is-active':'')+'\' data-view=\''+v[0]+'\' aria-selected=\''+(view===v[0])+'\'>'+esc(v[1])+'</button>'; }).join('')+
+        '<input type=\'search\' class=\'ov-q\' placeholder=\''+esc(T.search)+'\' aria-label=\''+esc(T.search)+'\' value=\''+esc(q)+'\'></div>';
+      if(!shown.length) h+='<p class=\'sn-empty\'>'+esc(T.empty)+'</p>';
+      else if(view==='list'){
+        h+='<table class=\'ov-list\'><tbody>'+shown.slice().sort(function(a,b){return a.name.localeCompare(b.name);}).map(function(e){
+          return '<tr><td><a href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'>'+esc(e.name)+'</a></td><td class=\'ov-n\'>'+e.fields.length+'</td><td class=\'ov-n\'>ƒ '+e.rules+'</td><td class=\'ov-n\'>⇢ '+e.links.length+'</td></tr>'; }).join('')+'</tbody></table>';
+      } else {
+        var set={}; shown.forEach(function(e){set[e.id]=1;});
+        var gs=groupsOf(shown,T);
+        if(view==='graph') h+='<p class=\'ov-hint\'>'+esc(T.graphHint)+'</p>';
+        gs.forEach(function(g){
+          var inner=view==='graph'
+            ? '<div class=\'ov-graph\'>'+graphSvg(g.items,T)+'</div>'
+            : '<div class=\'ov-grid\'>'+g.items.map(function(e){ return '<a class=\'ov-card\' href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><b>'+esc(e.name)+'</b><span>'+e.fields.length+' · ƒ '+e.rules+' · ⇢ '+e.links.length+'</span></a>'; }).join('')+'</div>';
+          h+=g.label==null?inner:'<details class=\'ov-group\' open><summary class=\'ov-gtitle\'><span>'+esc(g.label)+'</span><span class=\'sn-n\'>'+g.items.length+'</span></summary>'+inner+'</details>';
+        });
+      }
+      ov.innerHTML=h;
+      ov.querySelectorAll('[data-view]').forEach(function(b){ b.addEventListener('click',function(){ view=b.getAttribute('data-view'); drawOverview(); }); });
+      var oq=ov.querySelector('.ov-q'); oq.addEventListener('input',function(){ q=oq.value; var nq=nav.querySelector('.sn-q'); if(nq) nq.value=q; drawNav(true); drawOverview(); var n=ov.querySelector('.ov-q'); n.focus(); n.setSelectionRange(q.length,q.length); });
+      ov.addEventListener('click',go);
+    }
+
+    // Tabs over an entity's fields.
+    function addTabs(e){
+      if(e.el.querySelector('.tabs')) return;
+      var kinds={all:e.fields.length,derived:0,stored:0,rels:0};
+      e.fields.forEach(function(f){ if(f.tone==='rel') kinds.rels++; else if(f.tone==='raw') kinds.stored++; else kinds.derived++; });
+      var tabs=[['all',T.all],['derived',T.derived],['stored',T.stored],['rels',T.rels]].filter(function(t){return t[0]==='all'||kinds[t[0]];});
+      var bar=document.createElement('div'); bar.className='tabs'; bar.setAttribute('role','tablist');
+      bar.innerHTML=tabs.map(function(t){ return '<button type=\'button\' role=\'tab\' class=\'tab'+(tab===t[0]?' is-active':'')+'\' data-tab=\''+t[0]+'\'>'+esc(t[1])+' <i>'+kinds[t[0]]+'</i></button>'; }).join('')+'<input type=\'search\' class=\'tab-q\' placeholder=\''+esc(T.fields)+'\' aria-label=\''+esc(T.fields)+'\'>';
+      var head=e.el.querySelector('.entity-head'); head.insertAdjacentElement('afterend',bar);
+      var apply=function(){
+        var t=fq.trim().toLowerCase();
+        e.el.querySelectorAll('.field[data-field]').forEach(function(f){
+          var tone=(f.className.match(/tone-(\w+)/)||[])[1]||'rel';
+          var kind=tone==='rel'?'rels':tone==='raw'?'stored':'derived';
+          f.hidden=!((tab==='all'||tab===kind)&&(!t||(f.getAttribute('data-field')||'').toLowerCase().indexOf(t)>=0));
+        });
+        bar.querySelectorAll('.tab').forEach(function(b){ var on=b.getAttribute('data-tab')===tab; b.classList.toggle('is-active',on); });
+      };
+      bar.querySelectorAll('.tab').forEach(function(b){ b.addEventListener('click',function(){ tab=b.getAttribute('data-tab'); ents.forEach(function(x){ if(x.apply) x.apply(); }); }); });
+      var inp=bar.querySelector('.tab-q'); inp.addEventListener('input',function(){ fq=inp.value; ents.forEach(function(x){ if(x.apply&&x!==e){ var o=x.el.querySelector('.tab-q'); if(o) o.value=fq; } if(x.apply) x.apply(); }); });
+      e.apply=apply; apply();
+    }
+    ents.forEach(addTabs);
+
+    // Which entity is on screen follows the address.
+    var first=true;
+    function show(){
+      var id=(location.hash||'').replace(/^#/,''),target=id?document.getElementById(id):null;
+      var ent=null;
+      if(target&&doc.contains(target)){ var s=target.closest?target.closest('.entity'):null; ent=s?byId[s.id]:null; }
+      cur=ent;
+      sections.forEach(function(el){ el.classList.toggle('is-on',!!ent&&el===ent.el); });
+      ov.hidden=!!ent&&doc.classList.contains('paged');
+      if(!ent) drawOverview();
+      drawNav();
+      if(!doc.classList.contains('paged')) return;
+      if(ent&&target&&target!==ent.el){ var hid=target.hidden; if(hid){ tab='all'; fq=''; ents.forEach(function(x){ if(x.apply) x.apply(); }); } target.scrollIntoView(); }
+      else if(!first){ var m=doc.querySelector('.docgrid'); window.scrollTo(0,m?m.getBoundingClientRect().top+window.pageYOffset-60:0); }
+    }
+    function setPaged(on){
+      doc.classList.toggle('paged',on);
+      try{ localStorage.setItem('docs.paged',on?'1':'0'); }catch(e){}
+      show();
+    }
+    var saved=null; try{ saved=localStorage.getItem('docs.paged'); }catch(e){}
+    if(saved==='0') doc.classList.remove('paged');
+    window.addEventListener('hashchange',function(){ if(doc.getAttribute('data-lang')===document.documentElement.getAttribute('data-lang')) show(); });
+    show(); first=false;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.lang-doc'),setup);
+
 })();
 
 </script>

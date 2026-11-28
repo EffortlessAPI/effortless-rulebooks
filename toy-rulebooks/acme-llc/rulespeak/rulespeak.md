@@ -1,4 +1,4 @@
-# 📘 ACME, LLC — RuleSpeak®
+# 📘 ACME, LLC — Docs
 
 _Smallest viable rulebook with a calculated field — the "Hello, formulas" tutorial._
 
@@ -17,6 +17,19 @@ _Smallest viable rulebook with a calculated field — the "Hello, formulas" tuto
 | First Name | A defined attribute. | _First Name of the customer - used to make the full name_ |
 | Last Name | A defined attribute. | _Last Name of the customer - used to make the full name_ |
 | Full Name | Computed as the first name, followed by a space, followed by the last name. | _Full name is computed from the first and last name of the customer_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Email Address | First Name | Last Name | Full Name ƒ |
+|---|---|---|---|---|
+| bob-gmail.com | bob@gmail.com | Bobby | Smith | Bobby Smith |
+| jimmy-gmail.com | jimmy@gmail.com | Jimmy | Doe | Jimmy Doe |
+| mary-gmail.com | mary@gmail.com | Mary | Jones | Mary Jones |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 3 Operative Rules
 
@@ -39,7 +52,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -49,8 +62,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

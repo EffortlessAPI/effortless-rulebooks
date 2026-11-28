@@ -953,4 +953,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Customers": "customer"
     }
   }
-} };
+}, stamp: "b41d38c5a0caee55" };

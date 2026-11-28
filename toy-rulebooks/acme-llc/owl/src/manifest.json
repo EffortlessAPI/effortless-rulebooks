@@ -1,0 +1,27 @@
+{
+  "generator": "oss-rulebook-to-owl",
+  "ontology": {
+    "iri": "https://example.org/acme-llc",
+    "namespace": "https://example.org/acme-llc#",
+    "prefix": "acme-llc"
+  },
+  "prefixes": {
+    "acme-llc": "https://example.org/acme-llc#",
+    "erb": "https://effortlessapi.com/ns/erb#"
+  },
+  "keyProperty": "https://effortlessapi.com/ns/erb#key",
+  "tables": {
+    "Customers": {
+      "class": "https://example.org/acme-llc#Customers",
+      "keyField": "CustomerId",
+      "fields": {
+        "CustomerId": "https://example.org/acme-llc#customerId",
+        "Name": "https://example.org/acme-llc#name",
+        "EmailAddress": "https://example.org/acme-llc#emailAddress",
+        "FirstName": "https://example.org/acme-llc#firstName",
+        "LastName": "https://example.org/acme-llc#lastName",
+        "FullName": "https://example.org/acme-llc#fullName"
+      }
+    }
+  }
+}

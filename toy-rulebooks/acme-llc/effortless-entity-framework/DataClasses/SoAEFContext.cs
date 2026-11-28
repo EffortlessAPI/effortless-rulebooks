@@ -14,6 +14,28 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
         /// </summary>
         public static bool ThrowErrorOnContextMissing { get; set; } = true;
 
+        private bool _freezeComputedValues;
+
+        /// <summary>
+        /// Declares the tracked rows a read-only snapshot. While true, each computed property is
+        /// evaluated once per row and each table's rows are read once, so reading every computed
+        /// value is linear in the data instead of re-deriving every dependency on every read.
+        /// Setting it (either way) discards the previous snapshot; change detection is off while
+        /// frozen, because nothing may change.
+        /// </summary>
+        public bool FreezeComputedValues
+        {
+            get => _freezeComputedValues;
+            set
+            {
+                _freezeComputedValues = value;
+                ComputedSnapshot = value ? new Formulas.EfFormulaFns.Snapshot() : null;
+                ChangeTracker.AutoDetectChangesEnabled = !value;
+            }
+        }
+
+        public Formulas.EfFormulaFns.Snapshot? ComputedSnapshot { get; private set; }
+
         public SoAEFContext(DbContextOptions<SoAEFContext> options)
             : base(options)
         {
@@ -30,9 +52,6 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
         }
 
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<ERBVersion> ERBVersions { get; set; }
-        public DbSet<ERBCustomization> ERBCustomizations { get; set; }
-        public DbSet<__meta__> __meta__ { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

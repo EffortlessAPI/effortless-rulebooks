@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using SqlOnAir.DotNet.Lib.DataClasses;
+using F = SqlOnAir.DotNet.Lib.DataClasses.Formulas.EfFormulaFns;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
@@ -16,18 +17,20 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string CustomerId { get; set; }
 
         // Formula Name (rulebook: =SUBSTITUTE({{EmailAddress}}, "@", "-"))
+        [NotMapped]
         public string? Name
         {
-            get => SUBSTITUTE(this.EmailAddress, "@", "-"); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Substitute(F.Of(this.EmailAddress), F.S("@"), F.S("-")))); set { }
         }
 
         public string? EmailAddress { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         // Formula FullName (rulebook: ={{FirstName}} & " " & {{LastName}})
+        [NotMapped]
         public string? FullName
         {
-            get => this.FirstName + " " + this.LastName; set { }
+            get => F.AsString(F.Memo(this, "FullName", () => F.Concat(F.Text(F.Of(this.FirstName)), F.S(" "), F.Text(F.Of(this.LastName))))); set { }
         }
 
 

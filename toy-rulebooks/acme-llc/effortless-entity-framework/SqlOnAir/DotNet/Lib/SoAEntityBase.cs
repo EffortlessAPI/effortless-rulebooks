@@ -11,12 +11,12 @@ namespace SqlOnAir.DotNet.Lib
         /// <summary>
         /// Mock context property for testing
         /// </summary>
-        public virtual object? Context { get; set; }
+        public virtual object? SoAContext { get; set; }
 
         /// <summary>
         /// Typed context property for Entity Framework operations
         /// </summary>
-        protected SqlOnAir.DotNet.Lib.DataClasses.SoAEFContext? TypedContext => Context as SqlOnAir.DotNet.Lib.DataClasses.SoAEFContext;
+        protected SqlOnAir.DotNet.Lib.DataClasses.SoAEFContext? TypedContext => SoAContext as SqlOnAir.DotNet.Lib.DataClasses.SoAEFContext;
 
         /// <summary>
         /// Set the context for this entity
@@ -24,7 +24,7 @@ namespace SqlOnAir.DotNet.Lib
         /// <param name="context"></param>
         public virtual void SetContext(object context)
         {
-            Context = context;
+            SoAContext = context;
         }
 
         /// <summary>

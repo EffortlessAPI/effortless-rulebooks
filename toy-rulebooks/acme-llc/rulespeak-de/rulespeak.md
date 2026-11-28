@@ -1,4 +1,4 @@
-# 📘 ACME, LLC — RuleSpeak®
+# 📘 ACME, LLC — Dokumentation
 
 _Smallest viable rulebook with a calculated field — the "Hello, formulas" tutorial._
 
@@ -17,6 +17,19 @@ _Smallest viable rulebook with a calculated field — the "Hello, formulas" tuto
 | First Name | Ein definiertes Attribut. | _First Name of the customer - used to make the full name_ |
 | Last Name | Ein definiertes Attribut. | _Last Name of the customer - used to make the full name_ |
 | Full Name | Berechnet als die First Name, gefolgt von ein Leerzeichen, gefolgt von die Last Name. | _Full name is computed from the first and last name of the customer_ |
+
+<details open>
+<summary>Beispieldaten</summary>
+
+| Name ƒ | Email Address | First Name | Last Name | Full Name ƒ |
+|---|---|---|---|---|
+| bob-gmail.com | bob@gmail.com | Bobby | Smith | Bobby Smith |
+| jimmy-gmail.com | jimmy@gmail.com | Jimmy | Doe | Jimmy Doe |
+| mary-gmail.com | mary@gmail.com | Mary | Jones | Mary Jones |
+
+_ƒ kennzeichnet eine berechnete Spalte._
+
+</details>
 
 ## 3 Operative Regeln
 
@@ -40,7 +53,7 @@ aber hölzern ist — ein Signal für eine optionale Umformulierung, kein Fehler
 
 ## 5 Rückverfolgbarkeit zum Schema
 
-_Die Ausdrucksspalte ist die Definition der Regel in RuleSpeak®-Notation —
+_Die Ausdrucksspalte ist die Definition der Regel in Dokumentation-Notation —
 dieselbe Logik, die das Regelbuch speichert, geschrieben für Fachleser._
 
 | Schema-Element | Art | Ausdruck |
@@ -50,7 +63,4 @@ dieselbe Logik, die das Regelbuch speichert, geschrieben für Fachleser._
 
 ---
 
-_Dieses Dokument ist in **RuleSpeak®** gerendert, der deklarativen Geschäftsregel-Notation
-von **Ronald G. Ross**, und folgt den Konventionen von **SBVR** (Semantics of Business
-Vocabulary and Business Rules). Mit Dank an Ronald G. Ross für RuleSpeak® und seine
-grundlegende Arbeit zu Geschäftsregeln — [www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — die von **Ronald G. Ross** geschaffene deklarative Geschäftsregel-Notation nach den Konventionen von **SBVR** — kommt bald. Bis dahin zeigt diese Seite die reguläre Dokumentation. [www.RonRoss.info](https://www.RonRoss.info)
