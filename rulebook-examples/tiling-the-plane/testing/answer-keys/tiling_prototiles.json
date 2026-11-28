@@ -4,76 +4,98 @@
     "tiling": "hexagonal",
     "prototile": "hexagon",
     "count_at_vertex": 3,
-    "name": "hexagonal/hexagon"
+    "name": "hexagonal/hexagon",
+    "prototile_sides": 6,
+    "prototile_interior_angle": 120.0
   },
   {
     "tiling_prototile_id": "pent-1",
     "tiling": "pentagonal-regular",
     "prototile": "pentagon",
     "count_at_vertex": 3,
-    "name": "pentagonal-regular/pentagon"
+    "name": "pentagonal-regular/pentagon",
+    "prototile_sides": 5,
+    "prototile_interior_angle": 108.0
   },
   {
     "tiling_prototile_id": "rtri-1",
     "tiling": "rhombitrihexagonal",
     "prototile": "triangle",
     "count_at_vertex": 1,
-    "name": "rhombitrihexagonal/triangle"
+    "name": "rhombitrihexagonal/triangle",
+    "prototile_sides": 3,
+    "prototile_interior_angle": 60.0
   },
   {
     "tiling_prototile_id": "rtri-2",
     "tiling": "rhombitrihexagonal",
     "prototile": "square",
     "count_at_vertex": 2,
-    "name": "rhombitrihexagonal/square"
+    "name": "rhombitrihexagonal/square",
+    "prototile_sides": 4,
+    "prototile_interior_angle": 90.0
   },
   {
     "tiling_prototile_id": "rtri-3",
     "tiling": "rhombitrihexagonal",
     "prototile": "hexagon",
     "count_at_vertex": 1,
-    "name": "rhombitrihexagonal/hexagon"
+    "name": "rhombitrihexagonal/hexagon",
+    "prototile_sides": 6,
+    "prototile_interior_angle": 120.0
   },
   {
     "tiling_prototile_id": "sq-1",
     "tiling": "square",
     "prototile": "square",
     "count_at_vertex": 4,
-    "name": "square/square"
+    "name": "square/square",
+    "prototile_sides": 4,
+    "prototile_interior_angle": 90.0
   },
   {
     "tiling_prototile_id": "tri-1",
     "tiling": "triangular",
     "prototile": "triangle",
     "count_at_vertex": 6,
-    "name": "triangular/triangle"
+    "name": "triangular/triangle",
+    "prototile_sides": 3,
+    "prototile_interior_angle": 60.0
   },
   {
     "tiling_prototile_id": "trihex-1",
     "tiling": "trihexagonal",
     "prototile": "triangle",
     "count_at_vertex": 2,
-    "name": "trihexagonal/triangle"
+    "name": "trihexagonal/triangle",
+    "prototile_sides": 3,
+    "prototile_interior_angle": 60.0
   },
   {
     "tiling_prototile_id": "trihex-2",
     "tiling": "trihexagonal",
     "prototile": "hexagon",
     "count_at_vertex": 2,
-    "name": "trihexagonal/hexagon"
+    "name": "trihexagonal/hexagon",
+    "prototile_sides": 6,
+    "prototile_interior_angle": 120.0
   },
   {
     "tiling_prototile_id": "tsq-1",
     "tiling": "truncated-square",
     "prototile": "square",
     "count_at_vertex": 1,
-    "name": "truncated-square/square"
+    "name": "truncated-square/square",
+    "prototile_sides": 4,
+    "prototile_interior_angle": 90.0
   },
   {
     "tiling_prototile_id": "tsq-2",
     "tiling": "truncated-square",
     "prototile": "octagon",
     "count_at_vertex": 2,
-    "name": "truncated-square/octagon"
+    "name": "truncated-square/octagon",
+    "prototile_sides": 8,
+    "prototile_interior_angle": 135.0
   }
 ]

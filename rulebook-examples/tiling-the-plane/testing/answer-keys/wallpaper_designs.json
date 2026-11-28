@@ -6,7 +6,12 @@
     "strokes": "[{\"color\":\"#2ea043\",\"width\":3,\"points\":[[0.2,0.8],[0.2,0.2],[0.8,0.2]]},{\"color\":\"#d29922\",\"width\":3,\"points\":[[0.5,0.5],[0.8,0.65]]}]",
     "stroke_color": "#1f6feb",
     "background_color": "#0a0d12",
-    "name": "starter-p4m"
+    "name": "starter-p4m",
+    "group_notation": "p4m",
+    "group_orbifold": "*442",
+    "group_lattice_type": "square",
+    "group_rotation_order": 4,
+    "group_operation_count": 8
   },
   {
     "wallpaper_design_id": "starter-p6m",
@@ -15,7 +20,12 @@
     "strokes": "[{\"color\":\"#1f6feb\",\"width\":3,\"points\":[[0.15,0.15],[0.85,0.85]]}]",
     "stroke_color": "#a371f7",
     "background_color": "#0a0d12",
-    "name": "starter-p6m"
+    "name": "starter-p6m",
+    "group_notation": "p6m",
+    "group_orbifold": "*632",
+    "group_lattice_type": "hexagonal",
+    "group_rotation_order": 6,
+    "group_operation_count": 12
   },
   {
     "wallpaper_design_id": "starter-pgg",
@@ -24,6 +34,11 @@
     "strokes": "[{\"color\":\"#2ea043\",\"width\":3,\"points\":[[0.2,0.8],[0.2,0.2],[0.8,0.2]]},{\"color\":\"#d29922\",\"width\":3,\"points\":[[0.5,0.5],[0.8,0.65]]}]",
     "stroke_color": "#2ea043",
     "background_color": "#0a0d12",
-    "name": "starter-pgg"
+    "name": "starter-pgg",
+    "group_notation": "pgg",
+    "group_orbifold": "22x",
+    "group_lattice_type": "rectangular",
+    "group_rotation_order": 2,
+    "group_operation_count": 4
   }
 ]

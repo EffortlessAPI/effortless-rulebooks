@@ -1,0 +1,47 @@
+[
+  {
+    "region_id": "demo-empty",
+    "display_name": "Demo Empty Plot",
+    "width": 3,
+    "height": 3,
+    "target_tiling": "triangular",
+    "name": null,
+    "area": null,
+    "placement_count": null,
+    "covered_area": null,
+    "overlap_count": null,
+    "coverage_pct": null,
+    "is_fully_covered": null,
+    "is_clean_tiling": null
+  },
+  {
+    "region_id": "demo-hex-strip",
+    "display_name": "Demo Hex Strip",
+    "width": 6,
+    "height": 2,
+    "target_tiling": "hexagonal",
+    "name": null,
+    "area": null,
+    "placement_count": null,
+    "covered_area": null,
+    "overlap_count": null,
+    "coverage_pct": null,
+    "is_fully_covered": null,
+    "is_clean_tiling": null
+  },
+  {
+    "region_id": "demo-square-4x4",
+    "display_name": "Demo Square 4x4",
+    "width": 4,
+    "height": 4,
+    "target_tiling": "square",
+    "name": null,
+    "area": null,
+    "placement_count": null,
+    "covered_area": null,
+    "overlap_count": null,
+    "coverage_pct": null,
+    "is_fully_covered": null,
+    "is_clean_tiling": null
+  }
+]

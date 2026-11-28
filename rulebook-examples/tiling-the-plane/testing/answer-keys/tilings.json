@@ -11,10 +11,16 @@
     "t2x": 0.8660254,
     "t2y": 1.5,
     "name": "hexagonal-tiling",
-    "is_regular_tiling": false,
+    "symmetry_notation": "p6m",
+    "distinct_prototile_count": 1,
+    "vertex_figure_count": 1,
+    "valid_vertex_figure_count": 1,
+    "is_regular_tiling": true,
     "all_vertices_valid": true,
     "lattice_determinant": 2.5980762,
-    "does_tile_plane": false
+    "fundamental_domain_area": 2.5980762,
+    "has_lattice": true,
+    "does_tile_plane": true
   },
   {
     "tiling_id": "pentagonal-regular",
@@ -28,9 +34,15 @@
     "t2x": null,
     "t2y": null,
     "name": "regular-pentagon-attempt",
-    "is_regular_tiling": false,
-    "all_vertices_valid": true,
+    "symmetry_notation": null,
+    "distinct_prototile_count": 1,
+    "vertex_figure_count": 1,
+    "valid_vertex_figure_count": 0,
+    "is_regular_tiling": true,
+    "all_vertices_valid": false,
     "lattice_determinant": 0,
+    "fundamental_domain_area": 0,
+    "has_lattice": false,
     "does_tile_plane": false
   },
   {
@@ -45,10 +57,16 @@
     "t2x": 1.3660254,
     "t2y": 2.3660254,
     "name": "rhombitrihexagonal-tiling",
+    "symmetry_notation": "p6m",
+    "distinct_prototile_count": 3,
+    "vertex_figure_count": 1,
+    "valid_vertex_figure_count": 1,
     "is_regular_tiling": false,
     "all_vertices_valid": true,
     "lattice_determinant": 6.46410158689032,
-    "does_tile_plane": false
+    "fundamental_domain_area": 6.46410158689032,
+    "has_lattice": true,
+    "does_tile_plane": true
   },
   {
     "tiling_id": "square",
@@ -62,10 +80,16 @@
     "t2x": 0.0,
     "t2y": 1.0,
     "name": "square-tiling",
-    "is_regular_tiling": false,
+    "symmetry_notation": "p4m",
+    "distinct_prototile_count": 1,
+    "vertex_figure_count": 1,
+    "valid_vertex_figure_count": 1,
+    "is_regular_tiling": true,
     "all_vertices_valid": true,
     "lattice_determinant": 1.0,
-    "does_tile_plane": false
+    "fundamental_domain_area": 1.0,
+    "has_lattice": true,
+    "does_tile_plane": true
   },
   {
     "tiling_id": "triangular",
@@ -79,10 +103,16 @@
     "t2x": 0.5,
     "t2y": 0.8660254,
     "name": "triangular-tiling",
-    "is_regular_tiling": false,
+    "symmetry_notation": "p6m",
+    "distinct_prototile_count": 1,
+    "vertex_figure_count": 1,
+    "valid_vertex_figure_count": 1,
+    "is_regular_tiling": true,
     "all_vertices_valid": true,
     "lattice_determinant": 0.8660254,
-    "does_tile_plane": false
+    "fundamental_domain_area": 0.8660254,
+    "has_lattice": true,
+    "does_tile_plane": true
   },
   {
     "tiling_id": "trihexagonal",
@@ -96,10 +126,16 @@
     "t2x": 1.0,
     "t2y": 1.7320508,
     "name": "trihexagonal-tiling",
+    "symmetry_notation": "p6m",
+    "distinct_prototile_count": 2,
+    "vertex_figure_count": 1,
+    "valid_vertex_figure_count": 1,
     "is_regular_tiling": false,
     "all_vertices_valid": true,
     "lattice_determinant": 3.4641016,
-    "does_tile_plane": false
+    "fundamental_domain_area": 3.4641016,
+    "has_lattice": true,
+    "does_tile_plane": true
   },
   {
     "tiling_id": "truncated-square",
@@ -113,9 +149,15 @@
     "t2x": 0.0,
     "t2y": 2.4142136,
     "name": "truncated-square-tiling",
+    "symmetry_notation": "p4m",
+    "distinct_prototile_count": 2,
+    "vertex_figure_count": 1,
+    "valid_vertex_figure_count": 1,
     "is_regular_tiling": false,
     "all_vertices_valid": true,
-    "lattice_determinant": 5.8284273064249605,
-    "does_tile_plane": false
+    "lattice_determinant": 5.82842730642496,
+    "fundamental_domain_area": 5.82842730642496,
+    "has_lattice": true,
+    "does_tile_plane": true
   }
 ]

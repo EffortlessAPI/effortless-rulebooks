@@ -5,11 +5,13 @@
     "sides": 12,
     "edge_length": 1.0,
     "name": "regular-dodecagon",
+    "area": 11.1961524227066,
     "interior_angle_deg": 150.0,
     "vertex_angle_turns": 0.4166666666666667,
     "is_regular": true,
     "is_triangle": false,
-    "is_square": false
+    "is_square": false,
+    "used_in_tilings_count": 0
   },
   {
     "prototile_id": "hexagon",
@@ -17,11 +19,13 @@
     "sides": 6,
     "edge_length": 1.0,
     "name": "regular-hexagon",
+    "area": 2.59807621135332,
     "interior_angle_deg": 120.0,
     "vertex_angle_turns": 0.3333333333333333,
     "is_regular": true,
     "is_triangle": false,
-    "is_square": false
+    "is_square": false,
+    "used_in_tilings_count": 3
   },
   {
     "prototile_id": "octagon",
@@ -29,11 +33,13 @@
     "sides": 8,
     "edge_length": 1.0,
     "name": "regular-octagon",
+    "area": 4.82842712474619,
     "interior_angle_deg": 135.0,
     "vertex_angle_turns": 0.375,
     "is_regular": true,
     "is_triangle": false,
-    "is_square": false
+    "is_square": false,
+    "used_in_tilings_count": 1
   },
   {
     "prototile_id": "pentagon",
@@ -41,11 +47,13 @@
     "sides": 5,
     "edge_length": 1.0,
     "name": "regular-pentagon",
+    "area": 1.72047740058897,
     "interior_angle_deg": 108.0,
     "vertex_angle_turns": 0.3,
     "is_regular": true,
     "is_triangle": false,
-    "is_square": false
+    "is_square": false,
+    "used_in_tilings_count": 1
   },
   {
     "prototile_id": "square",
@@ -53,11 +61,13 @@
     "sides": 4,
     "edge_length": 1.0,
     "name": "square",
+    "area": 1,
     "interior_angle_deg": 90.0,
     "vertex_angle_turns": 0.25,
     "is_regular": true,
     "is_triangle": false,
-    "is_square": true
+    "is_square": true,
+    "used_in_tilings_count": 3
   },
   {
     "prototile_id": "triangle",
@@ -65,10 +75,12 @@
     "sides": 3,
     "edge_length": 1.0,
     "name": "equilateral-triangle",
+    "area": 0.433012701892219,
     "interior_angle_deg": 60.0,
     "vertex_angle_turns": 0.16666666666666666,
     "is_regular": true,
     "is_triangle": true,
-    "is_square": false
+    "is_square": false,
+    "used_in_tilings_count": 3
   }
 ]

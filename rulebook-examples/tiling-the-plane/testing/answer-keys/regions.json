@@ -7,6 +7,9 @@
     "target_tiling": "triangular",
     "name": "demo-empty-plot",
     "area": 9,
+    "placement_count": 0,
+    "covered_area": 0,
+    "overlap_count": 0,
     "coverage_pct": 0.0,
     "is_fully_covered": false,
     "is_clean_tiling": false
@@ -19,7 +22,10 @@
     "target_tiling": "hexagonal",
     "name": "demo-hex-strip",
     "area": 12,
-    "coverage_pct": 0.0,
+    "placement_count": 4,
+    "covered_area": 10.39230484541328,
+    "overlap_count": 0,
+    "coverage_pct": 86.602540378444,
     "is_fully_covered": false,
     "is_clean_tiling": false
   },
@@ -31,8 +37,11 @@
     "target_tiling": "square",
     "name": "demo-square-4x4",
     "area": 16,
-    "coverage_pct": 0.0,
-    "is_fully_covered": false,
-    "is_clean_tiling": false
+    "placement_count": 16,
+    "covered_area": 16,
+    "overlap_count": 0,
+    "coverage_pct": 100.0,
+    "is_fully_covered": true,
+    "is_clean_tiling": true
   }
 ]

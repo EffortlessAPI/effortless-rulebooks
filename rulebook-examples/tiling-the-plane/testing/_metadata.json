@@ -1,0 +1,99 @@
+{
+  "symmetry_groups": {
+    "primary_key": "symmetry_group_id",
+    "computed_columns": [
+      "name",
+      "tiling_count",
+      "wallpaper_design_count"
+    ],
+    "record_count": 17
+  },
+  "prototiles": {
+    "primary_key": "prototile_id",
+    "computed_columns": [
+      "name",
+      "area",
+      "interior_angle_deg",
+      "vertex_angle_turns",
+      "is_regular",
+      "is_triangle",
+      "is_square",
+      "used_in_tilings_count"
+    ],
+    "record_count": 6
+  },
+  "tilings": {
+    "primary_key": "tiling_id",
+    "computed_columns": [
+      "name",
+      "symmetry_notation",
+      "distinct_prototile_count",
+      "vertex_figure_count",
+      "valid_vertex_figure_count",
+      "is_regular_tiling",
+      "all_vertices_valid",
+      "lattice_determinant",
+      "fundamental_domain_area",
+      "has_lattice",
+      "does_tile_plane"
+    ],
+    "record_count": 7
+  },
+  "tiling_prototiles": {
+    "primary_key": "tiling_prototile_id",
+    "computed_columns": [
+      "name",
+      "prototile_sides",
+      "prototile_interior_angle"
+    ],
+    "record_count": 11
+  },
+  "vertex_figures": {
+    "primary_key": "vertex_figure_id",
+    "computed_columns": [
+      "name",
+      "turns_at_vertex",
+      "angle_gap_deg",
+      "is_valid"
+    ],
+    "record_count": 7
+  },
+  "regions": {
+    "primary_key": "region_id",
+    "computed_columns": [
+      "name",
+      "area",
+      "placement_count",
+      "covered_area",
+      "overlap_count",
+      "coverage_pct",
+      "is_fully_covered",
+      "is_clean_tiling"
+    ],
+    "record_count": 3
+  },
+  "placements": {
+    "primary_key": "placement_id",
+    "computed_columns": [
+      "name",
+      "tile_area",
+      "tile_sides",
+      "region_width",
+      "region_height",
+      "is_inside_region"
+    ],
+    "record_count": 20
+  },
+  "wallpaper_designs": {
+    "primary_key": "wallpaper_design_id",
+    "computed_columns": [
+      "name",
+      "group_notation",
+      "group_orbifold",
+      "group_lattice_type",
+      "group_rotation_order",
+      "group_operation_count"
+    ],
+    "record_count": 3
+  }
+}

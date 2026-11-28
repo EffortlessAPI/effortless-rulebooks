@@ -1,0 +1,101 @@
+[
+  {
+    "tiling_prototile_id": "hex-1",
+    "tiling": "hexagonal",
+    "prototile": "hexagon",
+    "count_at_vertex": 3,
+    "name": null,
+    "prototile_sides": null,
+    "prototile_interior_angle": null
+  },
+  {
+    "tiling_prototile_id": "pent-1",
+    "tiling": "pentagonal-regular",
+    "prototile": "pentagon",
+    "count_at_vertex": 3,
+    "name": null,
+    "prototile_sides": null,
+    "prototile_interior_angle": null
+  },
+  {
+    "tiling_prototile_id": "rtri-1",
+    "tiling": "rhombitrihexagonal",
+    "prototile": "triangle",
+    "count_at_vertex": 1,
+    "name": null,
+    "prototile_sides": null,
+    "prototile_interior_angle": null
+  },
+  {
+    "tiling_prototile_id": "rtri-2",
+    "tiling": "rhombitrihexagonal",
+    "prototile": "square",
+    "count_at_vertex": 2,
+    "name": null,
+    "prototile_sides": null,
+    "prototile_interior_angle": null
+  },
+  {
+    "tiling_prototile_id": "rtri-3",
+    "tiling": "rhombitrihexagonal",
+    "prototile": "hexagon",
+    "count_at_vertex": 1,
+    "name": null,
+    "prototile_sides": null,
+    "prototile_interior_angle": null
+  },
+  {
+    "tiling_prototile_id": "sq-1",
+    "tiling": "square",
+    "prototile": "square",
+    "count_at_vertex": 4,
+    "name": null,
+    "prototile_sides": null,
+    "prototile_interior_angle": null
+  },
+  {
+    "tiling_prototile_id": "tri-1",
+    "tiling": "triangular",
+    "prototile": "triangle",
+    "count_at_vertex": 6,
+    "name": null,
+    "prototile_sides": null,
+    "prototile_interior_angle": null
+  },
+  {
+    "tiling_prototile_id": "trihex-1",
+    "tiling": "trihexagonal",
+    "prototile": "triangle",
+    "count_at_vertex": 2,
+    "name": null,
+    "prototile_sides": null,
+    "prototile_interior_angle": null
+  },
+  {
+    "tiling_prototile_id": "trihex-2",
+    "tiling": "trihexagonal",
+    "prototile": "hexagon",
+    "count_at_vertex": 2,
+    "name": null,
+    "prototile_sides": null,
+    "prototile_interior_angle": null
+  },
+  {
+    "tiling_prototile_id": "tsq-1",
+    "tiling": "truncated-square",
+    "prototile": "square",
+    "count_at_vertex": 1,
+    "name": null,
+    "prototile_sides": null,
+    "prototile_interior_angle": null
+  },
+  {
+    "tiling_prototile_id": "tsq-2",
+    "tiling": "truncated-square",
+    "prototile": "octagon",
+    "count_at_vertex": 2,
+    "name": null,
+    "prototile_sides": null,
+    "prototile_interior_angle": null
+  }
+]

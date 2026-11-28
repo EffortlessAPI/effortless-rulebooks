@@ -218,7 +218,10 @@
         "RotationOrder": 1,
         "OperationCount": 1,
         "HasMirrors": false,
-        "HasGlides": false
+        "HasGlides": false,
+        "Name": "p1",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 0
       },
       {
         "SymmetryGroupId": "p2",
@@ -233,7 +236,10 @@
         "RotationOrder": 2,
         "OperationCount": 2,
         "HasMirrors": false,
-        "HasGlides": false
+        "HasGlides": false,
+        "Name": "p2",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 0
       },
       {
         "SymmetryGroupId": "pm",
@@ -248,7 +254,10 @@
         "RotationOrder": 1,
         "OperationCount": 2,
         "HasMirrors": true,
-        "HasGlides": false
+        "HasGlides": false,
+        "Name": "pm",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 0
       },
       {
         "SymmetryGroupId": "pg",
@@ -263,7 +272,10 @@
         "RotationOrder": 1,
         "OperationCount": 2,
         "HasMirrors": false,
-        "HasGlides": true
+        "HasGlides": true,
+        "Name": "pg",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 0
       },
       {
         "SymmetryGroupId": "cm",
@@ -278,7 +290,10 @@
         "RotationOrder": 1,
         "OperationCount": 2,
         "HasMirrors": true,
-        "HasGlides": false
+        "HasGlides": false,
+        "Name": "cm",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 0
       },
       {
         "SymmetryGroupId": "pmm",
@@ -293,7 +308,10 @@
         "RotationOrder": 2,
         "OperationCount": 4,
         "HasMirrors": true,
-        "HasGlides": false
+        "HasGlides": false,
+        "Name": "pmm",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 0
       },
       {
         "SymmetryGroupId": "pmg",
@@ -308,7 +326,10 @@
         "RotationOrder": 2,
         "OperationCount": 4,
         "HasMirrors": true,
-        "HasGlides": true
+        "HasGlides": true,
+        "Name": "pmg",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 0
       },
       {
         "SymmetryGroupId": "pgg",
@@ -323,7 +344,10 @@
         "RotationOrder": 2,
         "OperationCount": 4,
         "HasMirrors": false,
-        "HasGlides": true
+        "HasGlides": true,
+        "Name": "pgg",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 1
       },
       {
         "SymmetryGroupId": "cmm",
@@ -338,7 +362,10 @@
         "RotationOrder": 2,
         "OperationCount": 4,
         "HasMirrors": true,
-        "HasGlides": false
+        "HasGlides": false,
+        "Name": "cmm",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 0
       },
       {
         "SymmetryGroupId": "p4",
@@ -353,7 +380,10 @@
         "RotationOrder": 4,
         "OperationCount": 4,
         "HasMirrors": false,
-        "HasGlides": false
+        "HasGlides": false,
+        "Name": "p4",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 0
       },
       {
         "SymmetryGroupId": "p4m",
@@ -368,7 +398,10 @@
         "RotationOrder": 4,
         "OperationCount": 8,
         "HasMirrors": true,
-        "HasGlides": false
+        "HasGlides": false,
+        "Name": "p4m",
+        "TilingCount": 2,
+        "WallpaperDesignCount": 1
       },
       {
         "SymmetryGroupId": "p4g",
@@ -383,7 +416,10 @@
         "RotationOrder": 4,
         "OperationCount": 8,
         "HasMirrors": true,
-        "HasGlides": true
+        "HasGlides": true,
+        "Name": "p4g",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 0
       },
       {
         "SymmetryGroupId": "p3",
@@ -398,7 +434,10 @@
         "RotationOrder": 3,
         "OperationCount": 3,
         "HasMirrors": false,
-        "HasGlides": false
+        "HasGlides": false,
+        "Name": "p3",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 0
       },
       {
         "SymmetryGroupId": "p3m1",
@@ -413,7 +452,10 @@
         "RotationOrder": 3,
         "OperationCount": 6,
         "HasMirrors": true,
-        "HasGlides": false
+        "HasGlides": false,
+        "Name": "p3m1",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 0
       },
       {
         "SymmetryGroupId": "p31m",
@@ -428,7 +470,10 @@
         "RotationOrder": 3,
         "OperationCount": 6,
         "HasMirrors": true,
-        "HasGlides": false
+        "HasGlides": false,
+        "Name": "p31m",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 0
       },
       {
         "SymmetryGroupId": "p6",
@@ -443,7 +488,10 @@
         "RotationOrder": 6,
         "OperationCount": 6,
         "HasMirrors": false,
-        "HasGlides": false
+        "HasGlides": false,
+        "Name": "p6",
+        "TilingCount": 0,
+        "WallpaperDesignCount": 0
       },
       {
         "SymmetryGroupId": "p6m",
@@ -458,7 +506,10 @@
         "RotationOrder": 6,
         "OperationCount": 12,
         "HasMirrors": true,
-        "HasGlides": false
+        "HasGlides": false,
+        "Name": "p6m",
+        "TilingCount": 4,
+        "WallpaperDesignCount": 1
       }
     ]
   },
@@ -565,37 +616,85 @@
         "PrototileId": "triangle",
         "DisplayName": "Equilateral Triangle",
         "Sides": 3,
-        "EdgeLength": 1.0
+        "EdgeLength": 1.0,
+        "Name": "equilateral-triangle",
+        "Area": 0.433012701892219,
+        "InteriorAngleDeg": 60.0,
+        "VertexAngleTurns": 0.16666666666666666,
+        "IsRegular": true,
+        "IsTriangle": true,
+        "IsSquare": false,
+        "UsedInTilingsCount": 3
       },
       {
         "PrototileId": "pentagon",
         "DisplayName": "Regular Pentagon",
         "Sides": 5,
-        "EdgeLength": 1.0
+        "EdgeLength": 1.0,
+        "Name": "regular-pentagon",
+        "Area": 1.72047740058897,
+        "InteriorAngleDeg": 108.0,
+        "VertexAngleTurns": 0.3,
+        "IsRegular": true,
+        "IsTriangle": false,
+        "IsSquare": false,
+        "UsedInTilingsCount": 1
       },
       {
         "PrototileId": "square",
         "DisplayName": "Square",
         "Sides": 4,
-        "EdgeLength": 1.0
+        "EdgeLength": 1.0,
+        "Name": "square",
+        "Area": 1,
+        "InteriorAngleDeg": 90.0,
+        "VertexAngleTurns": 0.25,
+        "IsRegular": true,
+        "IsTriangle": false,
+        "IsSquare": true,
+        "UsedInTilingsCount": 3
       },
       {
         "PrototileId": "hexagon",
         "DisplayName": "Regular Hexagon",
         "Sides": 6,
-        "EdgeLength": 1.0
+        "EdgeLength": 1.0,
+        "Name": "regular-hexagon",
+        "Area": 2.59807621135332,
+        "InteriorAngleDeg": 120.0,
+        "VertexAngleTurns": 0.3333333333333333,
+        "IsRegular": true,
+        "IsTriangle": false,
+        "IsSquare": false,
+        "UsedInTilingsCount": 3
       },
       {
         "PrototileId": "octagon",
         "DisplayName": "Regular Octagon",
         "Sides": 8,
-        "EdgeLength": 1.0
+        "EdgeLength": 1.0,
+        "Name": "regular-octagon",
+        "Area": 4.82842712474619,
+        "InteriorAngleDeg": 135.0,
+        "VertexAngleTurns": 0.375,
+        "IsRegular": true,
+        "IsTriangle": false,
+        "IsSquare": false,
+        "UsedInTilingsCount": 1
       },
       {
         "PrototileId": "dodecagon",
         "DisplayName": "Regular Dodecagon",
         "Sides": 12,
-        "EdgeLength": 1.0
+        "EdgeLength": 1.0,
+        "Name": "regular-dodecagon",
+        "Area": 11.1961524227066,
+        "InteriorAngleDeg": 150.0,
+        "VertexAngleTurns": 0.4166666666666667,
+        "IsRegular": true,
+        "IsTriangle": false,
+        "IsSquare": false,
+        "UsedInTilingsCount": 0
       }
     ]
   },
@@ -775,7 +874,18 @@
         "T1x": 1.0,
         "T1y": 0.0,
         "T2x": 0.5,
-        "T2y": 0.8660254
+        "T2y": 0.8660254,
+        "Name": "triangular-tiling",
+        "SymmetryNotation": "p6m",
+        "DistinctPrototileCount": 1,
+        "VertexFigureCount": 1,
+        "ValidVertexFigureCount": 1,
+        "IsRegularTiling": true,
+        "AllVerticesValid": true,
+        "LatticeDeterminant": 0.8660254,
+        "FundamentalDomainArea": 0.8660254,
+        "HasLattice": true,
+        "DoesTilePlane": true
       },
       {
         "TilingId": "square",
@@ -787,7 +897,18 @@
         "T1x": 1.0,
         "T1y": 0.0,
         "T2x": 0.0,
-        "T2y": 1.0
+        "T2y": 1.0,
+        "Name": "square-tiling",
+        "SymmetryNotation": "p4m",
+        "DistinctPrototileCount": 1,
+        "VertexFigureCount": 1,
+        "ValidVertexFigureCount": 1,
+        "IsRegularTiling": true,
+        "AllVerticesValid": true,
+        "LatticeDeterminant": 1.0,
+        "FundamentalDomainArea": 1.0,
+        "HasLattice": true,
+        "DoesTilePlane": true
       },
       {
         "TilingId": "hexagonal",
@@ -799,7 +920,18 @@
         "T1x": 1.7320508,
         "T1y": 0.0,
         "T2x": 0.8660254,
-        "T2y": 1.5
+        "T2y": 1.5,
+        "Name": "hexagonal-tiling",
+        "SymmetryNotation": "p6m",
+        "DistinctPrototileCount": 1,
+        "VertexFigureCount": 1,
+        "ValidVertexFigureCount": 1,
+        "IsRegularTiling": true,
+        "AllVerticesValid": true,
+        "LatticeDeterminant": 2.5980762,
+        "FundamentalDomainArea": 2.5980762,
+        "HasLattice": true,
+        "DoesTilePlane": true
       },
       {
         "TilingId": "truncated-square",
@@ -811,7 +943,18 @@
         "T1x": 2.4142136,
         "T1y": 0.0,
         "T2x": 0.0,
-        "T2y": 2.4142136
+        "T2y": 2.4142136,
+        "Name": "truncated-square-tiling",
+        "SymmetryNotation": "p4m",
+        "DistinctPrototileCount": 2,
+        "VertexFigureCount": 1,
+        "ValidVertexFigureCount": 1,
+        "IsRegularTiling": false,
+        "AllVerticesValid": true,
+        "LatticeDeterminant": 5.82842730642496,
+        "FundamentalDomainArea": 5.82842730642496,
+        "HasLattice": true,
+        "DoesTilePlane": true
       },
       {
         "TilingId": "trihexagonal",
@@ -823,7 +966,18 @@
         "T1x": 2.0,
         "T1y": 0.0,
         "T2x": 1.0,
-        "T2y": 1.7320508
+        "T2y": 1.7320508,
+        "Name": "trihexagonal-tiling",
+        "SymmetryNotation": "p6m",
+        "DistinctPrototileCount": 2,
+        "VertexFigureCount": 1,
+        "ValidVertexFigureCount": 1,
+        "IsRegularTiling": false,
+        "AllVerticesValid": true,
+        "LatticeDeterminant": 3.4641016,
+        "FundamentalDomainArea": 3.4641016,
+        "HasLattice": true,
+        "DoesTilePlane": true
       },
       {
         "TilingId": "rhombitrihexagonal",
@@ -835,7 +989,18 @@
         "T1x": 2.7320508,
         "T1y": 0.0,
         "T2x": 1.3660254,
-        "T2y": 2.3660254
+        "T2y": 2.3660254,
+        "Name": "rhombitrihexagonal-tiling",
+        "SymmetryNotation": "p6m",
+        "DistinctPrototileCount": 3,
+        "VertexFigureCount": 1,
+        "ValidVertexFigureCount": 1,
+        "IsRegularTiling": false,
+        "AllVerticesValid": true,
+        "LatticeDeterminant": 6.46410158689032,
+        "FundamentalDomainArea": 6.46410158689032,
+        "HasLattice": true,
+        "DoesTilePlane": true
       },
       {
         "TilingId": "pentagonal-regular",
@@ -847,7 +1012,18 @@
         "T1x": null,
         "T1y": null,
         "T2x": null,
-        "T2y": null
+        "T2y": null,
+        "Name": "regular-pentagon-attempt",
+        "SymmetryNotation": null,
+        "DistinctPrototileCount": 1,
+        "VertexFigureCount": 1,
+        "ValidVertexFigureCount": 0,
+        "IsRegularTiling": true,
+        "AllVerticesValid": false,
+        "LatticeDeterminant": 0,
+        "FundamentalDomainArea": 0,
+        "HasLattice": false,
+        "DoesTilePlane": false
       }
     ]
   },
@@ -916,67 +1092,100 @@
         "TilingPrototileId": "tri-1",
         "Tiling": "triangular",
         "Prototile": "triangle",
-        "CountAtVertex": 6
+        "CountAtVertex": 6,
+        "Name": "triangular/triangle",
+        "PrototileSides": 3,
+        "PrototileInteriorAngle": 60.0
       },
       {
         "TilingPrototileId": "sq-1",
         "Tiling": "square",
         "Prototile": "square",
-        "CountAtVertex": 4
+        "CountAtVertex": 4,
+        "Name": "square/square",
+        "PrototileSides": 4,
+        "PrototileInteriorAngle": 90.0
       },
       {
         "TilingPrototileId": "hex-1",
         "Tiling": "hexagonal",
         "Prototile": "hexagon",
-        "CountAtVertex": 3
+        "CountAtVertex": 3,
+        "Name": "hexagonal/hexagon",
+        "PrototileSides": 6,
+        "PrototileInteriorAngle": 120.0
       },
       {
         "TilingPrototileId": "tsq-1",
         "Tiling": "truncated-square",
         "Prototile": "square",
-        "CountAtVertex": 1
+        "CountAtVertex": 1,
+        "Name": "truncated-square/square",
+        "PrototileSides": 4,
+        "PrototileInteriorAngle": 90.0
       },
       {
         "TilingPrototileId": "tsq-2",
         "Tiling": "truncated-square",
         "Prototile": "octagon",
-        "CountAtVertex": 2
+        "CountAtVertex": 2,
+        "Name": "truncated-square/octagon",
+        "PrototileSides": 8,
+        "PrototileInteriorAngle": 135.0
       },
       {
         "TilingPrototileId": "trihex-1",
         "Tiling": "trihexagonal",
         "Prototile": "triangle",
-        "CountAtVertex": 2
+        "CountAtVertex": 2,
+        "Name": "trihexagonal/triangle",
+        "PrototileSides": 3,
+        "PrototileInteriorAngle": 60.0
       },
       {
         "TilingPrototileId": "trihex-2",
         "Tiling": "trihexagonal",
         "Prototile": "hexagon",
-        "CountAtVertex": 2
+        "CountAtVertex": 2,
+        "Name": "trihexagonal/hexagon",
+        "PrototileSides": 6,
+        "PrototileInteriorAngle": 120.0
       },
       {
         "TilingPrototileId": "rtri-1",
         "Tiling": "rhombitrihexagonal",
         "Prototile": "triangle",
-        "CountAtVertex": 1
+        "CountAtVertex": 1,
+        "Name": "rhombitrihexagonal/triangle",
+        "PrototileSides": 3,
+        "PrototileInteriorAngle": 60.0
       },
       {
         "TilingPrototileId": "rtri-2",
         "Tiling": "rhombitrihexagonal",
         "Prototile": "square",
-        "CountAtVertex": 2
+        "CountAtVertex": 2,
+        "Name": "rhombitrihexagonal/square",
+        "PrototileSides": 4,
+        "PrototileInteriorAngle": 90.0
       },
       {
         "TilingPrototileId": "rtri-3",
         "Tiling": "rhombitrihexagonal",
         "Prototile": "hexagon",
-        "CountAtVertex": 1
+        "CountAtVertex": 1,
+        "Name": "rhombitrihexagonal/hexagon",
+        "PrototileSides": 6,
+        "PrototileInteriorAngle": 120.0
       },
       {
         "TilingPrototileId": "pent-1",
         "Tiling": "pentagonal-regular",
         "Prototile": "pentagon",
-        "CountAtVertex": 3
+        "CountAtVertex": 3,
+        "Name": "pentagonal-regular/pentagon",
+        "PrototileSides": 5,
+        "PrototileInteriorAngle": 108.0
       }
     ]
   },
@@ -1052,43 +1261,71 @@
         "VertexFigureId": "vf-tri",
         "Tiling": "triangular",
         "Config": "3.3.3.3.3.3",
-        "AngleSumDeg": 360
+        "AngleSumDeg": 360,
+        "Name": "triangular@3.3.3.3.3.3",
+        "TurnsAtVertex": 1.0,
+        "AngleGapDeg": 0,
+        "IsValid": true
       },
       {
         "VertexFigureId": "vf-sq",
         "Tiling": "square",
         "Config": "4.4.4.4",
-        "AngleSumDeg": 360
+        "AngleSumDeg": 360,
+        "Name": "square@4.4.4.4",
+        "TurnsAtVertex": 1.0,
+        "AngleGapDeg": 0,
+        "IsValid": true
       },
       {
         "VertexFigureId": "vf-hex",
         "Tiling": "hexagonal",
         "Config": "6.6.6",
-        "AngleSumDeg": 360
+        "AngleSumDeg": 360,
+        "Name": "hexagonal@6.6.6",
+        "TurnsAtVertex": 1.0,
+        "AngleGapDeg": 0,
+        "IsValid": true
       },
       {
         "VertexFigureId": "vf-tsq",
         "Tiling": "truncated-square",
         "Config": "4.8.8",
-        "AngleSumDeg": 360
+        "AngleSumDeg": 360,
+        "Name": "truncated-square@4.8.8",
+        "TurnsAtVertex": 1.0,
+        "AngleGapDeg": 0,
+        "IsValid": true
       },
       {
         "VertexFigureId": "vf-trihex",
         "Tiling": "trihexagonal",
         "Config": "3.6.3.6",
-        "AngleSumDeg": 360
+        "AngleSumDeg": 360,
+        "Name": "trihexagonal@3.6.3.6",
+        "TurnsAtVertex": 1.0,
+        "AngleGapDeg": 0,
+        "IsValid": true
       },
       {
         "VertexFigureId": "vf-rtri",
         "Tiling": "rhombitrihexagonal",
         "Config": "3.4.6.4",
-        "AngleSumDeg": 360
+        "AngleSumDeg": 360,
+        "Name": "rhombitrihexagonal@3.4.6.4",
+        "TurnsAtVertex": 1.0,
+        "AngleGapDeg": 0,
+        "IsValid": true
       },
       {
         "VertexFigureId": "vf-pent",
         "Tiling": "pentagonal-regular",
         "Config": "5.5.5",
-        "AngleSumDeg": 324
+        "AngleSumDeg": 324,
+        "Name": "pentagonal-regular@5.5.5",
+        "TurnsAtVertex": 0.9,
+        "AngleGapDeg": 36,
+        "IsValid": false
       }
     ]
   },
@@ -1163,7 +1400,7 @@
         "type": "aggregation",
         "nullable": true,
         "formula": "=SUMIFS(Placements!{{TileArea}}, Placements!{{Region}}, Regions!{{RegionId}})",
-        "Description": "Sum of placed-tile areas (counts overlaps twice \u2014 see CoveragePct)."
+        "Description": "Sum of placed-tile areas (counts overlaps twice — see CoveragePct)."
       },
       {
         "name": "OverlapCount",
@@ -1204,21 +1441,45 @@
         "DisplayName": "Demo Square 4x4",
         "Width": 4,
         "Height": 4,
-        "TargetTiling": "square"
+        "TargetTiling": "square",
+        "Name": "demo-square-4x4",
+        "Area": 16,
+        "PlacementCount": 16,
+        "CoveredArea": 16,
+        "OverlapCount": 0,
+        "CoveragePct": 100.0,
+        "IsFullyCovered": true,
+        "IsCleanTiling": true
       },
       {
         "RegionId": "demo-hex-strip",
         "DisplayName": "Demo Hex Strip",
         "Width": 6,
         "Height": 2,
-        "TargetTiling": "hexagonal"
+        "TargetTiling": "hexagonal",
+        "Name": "demo-hex-strip",
+        "Area": 12,
+        "PlacementCount": 4,
+        "CoveredArea": 10.39230484541328,
+        "OverlapCount": 0,
+        "CoveragePct": 86.602540378444,
+        "IsFullyCovered": false,
+        "IsCleanTiling": false
       },
       {
         "RegionId": "demo-empty",
         "DisplayName": "Demo Empty Plot",
         "Width": 3,
         "Height": 3,
-        "TargetTiling": "triangular"
+        "TargetTiling": "triangular",
+        "Name": "demo-empty-plot",
+        "Area": 9,
+        "PlacementCount": 0,
+        "CoveredArea": 0,
+        "OverlapCount": 0,
+        "CoveragePct": 0.0,
+        "IsFullyCovered": false,
+        "IsCleanTiling": false
       }
     ]
   },
@@ -1335,7 +1596,13 @@
         "X": 0,
         "Y": 0,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-01",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-02",
@@ -1344,7 +1611,13 @@
         "X": 1,
         "Y": 0,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-02",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-03",
@@ -1353,7 +1626,13 @@
         "X": 2,
         "Y": 0,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-03",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-04",
@@ -1362,7 +1641,13 @@
         "X": 3,
         "Y": 0,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-04",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-05",
@@ -1371,7 +1656,13 @@
         "X": 0,
         "Y": 1,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-05",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-06",
@@ -1380,7 +1671,13 @@
         "X": 1,
         "Y": 1,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-06",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-07",
@@ -1389,7 +1686,13 @@
         "X": 2,
         "Y": 1,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-07",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-08",
@@ -1398,7 +1701,13 @@
         "X": 3,
         "Y": 1,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-08",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-09",
@@ -1407,7 +1716,13 @@
         "X": 0,
         "Y": 2,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-09",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-10",
@@ -1416,7 +1731,13 @@
         "X": 1,
         "Y": 2,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-10",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-11",
@@ -1425,7 +1746,13 @@
         "X": 2,
         "Y": 2,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-11",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-12",
@@ -1434,7 +1761,13 @@
         "X": 3,
         "Y": 2,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-12",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-13",
@@ -1443,7 +1776,13 @@
         "X": 0,
         "Y": 3,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-13",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-14",
@@ -1452,7 +1791,13 @@
         "X": 1,
         "Y": 3,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-14",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-15",
@@ -1461,7 +1806,13 @@
         "X": 2,
         "Y": 3,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-15",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "sq-16",
@@ -1470,7 +1821,13 @@
         "X": 3,
         "Y": 3,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-square-4x4#sq-16",
+        "TileArea": 1,
+        "TileSides": 4,
+        "RegionWidth": 4,
+        "RegionHeight": 4,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "hex-01",
@@ -1479,7 +1836,13 @@
         "X": 0,
         "Y": 0,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-hex-strip#hex-01",
+        "TileArea": 2.59807621135332,
+        "TileSides": 6,
+        "RegionWidth": 6,
+        "RegionHeight": 2,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "hex-02",
@@ -1488,7 +1851,13 @@
         "X": 1,
         "Y": 0,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-hex-strip#hex-02",
+        "TileArea": 2.59807621135332,
+        "TileSides": 6,
+        "RegionWidth": 6,
+        "RegionHeight": 2,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "hex-03",
@@ -1497,7 +1866,13 @@
         "X": 2,
         "Y": 0,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-hex-strip#hex-03",
+        "TileArea": 2.59807621135332,
+        "TileSides": 6,
+        "RegionWidth": 6,
+        "RegionHeight": 2,
+        "IsInsideRegion": true
       },
       {
         "PlacementId": "hex-04",
@@ -1506,7 +1881,13 @@
         "X": 3,
         "Y": 0,
         "RotationDeg": 0,
-        "IsOverlapping": false
+        "IsOverlapping": false,
+        "Name": "demo-hex-strip#hex-04",
+        "TileArea": 2.59807621135332,
+        "TileSides": 6,
+        "RegionWidth": 6,
+        "RegionHeight": 2,
+        "IsInsideRegion": true
       }
     ]
   },
@@ -1613,7 +1994,13 @@
         "SymmetryGroup": "p4m",
         "Strokes": "[{\"color\":\"#2ea043\",\"width\":3,\"points\":[[0.2,0.8],[0.2,0.2],[0.8,0.2]]},{\"color\":\"#d29922\",\"width\":3,\"points\":[[0.5,0.5],[0.8,0.65]]}]",
         "StrokeColor": "#1f6feb",
-        "BackgroundColor": "#0a0d12"
+        "BackgroundColor": "#0a0d12",
+        "Name": "starter-p4m",
+        "GroupNotation": "p4m",
+        "GroupOrbifold": "*442",
+        "GroupLatticeType": "square",
+        "GroupRotationOrder": 4,
+        "GroupOperationCount": 8
       },
       {
         "WallpaperDesignId": "starter-p6m",
@@ -1621,7 +2008,13 @@
         "SymmetryGroup": "p6m",
         "Strokes": "[{\"color\":\"#1f6feb\",\"width\":3,\"points\":[[0.15,0.15],[0.85,0.85]]}]",
         "StrokeColor": "#a371f7",
-        "BackgroundColor": "#0a0d12"
+        "BackgroundColor": "#0a0d12",
+        "Name": "starter-p6m",
+        "GroupNotation": "p6m",
+        "GroupOrbifold": "*632",
+        "GroupLatticeType": "hexagonal",
+        "GroupRotationOrder": 6,
+        "GroupOperationCount": 12
       },
       {
         "WallpaperDesignId": "starter-pgg",
@@ -1629,7 +2022,13 @@
         "SymmetryGroup": "pgg",
         "Strokes": "[{\"color\":\"#2ea043\",\"width\":3,\"points\":[[0.2,0.8],[0.2,0.2],[0.8,0.2]]},{\"color\":\"#d29922\",\"width\":3,\"points\":[[0.5,0.5],[0.8,0.65]]}]",
         "StrokeColor": "#2ea043",
-        "BackgroundColor": "#0a0d12"
+        "BackgroundColor": "#0a0d12",
+        "Name": "starter-pgg",
+        "GroupNotation": "pgg",
+        "GroupOrbifold": "22x",
+        "GroupLatticeType": "rectangular",
+        "GroupRotationOrder": 2,
+        "GroupOperationCount": 4
       }
     ]
   }

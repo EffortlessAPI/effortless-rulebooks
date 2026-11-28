@@ -1,0 +1,72 @@
+[
+  {
+    "vertex_figure_id": "vf-hex",
+    "tiling": "hexagonal",
+    "config": "6.6.6",
+    "angle_sum_deg": 360,
+    "name": null,
+    "turns_at_vertex": null,
+    "angle_gap_deg": null,
+    "is_valid": null
+  },
+  {
+    "vertex_figure_id": "vf-pent",
+    "tiling": "pentagonal-regular",
+    "config": "5.5.5",
+    "angle_sum_deg": 324,
+    "name": null,
+    "turns_at_vertex": null,
+    "angle_gap_deg": null,
+    "is_valid": null
+  },
+  {
+    "vertex_figure_id": "vf-rtri",
+    "tiling": "rhombitrihexagonal",
+    "config": "3.4.6.4",
+    "angle_sum_deg": 360,
+    "name": null,
+    "turns_at_vertex": null,
+    "angle_gap_deg": null,
+    "is_valid": null
+  },
+  {
+    "vertex_figure_id": "vf-sq",
+    "tiling": "square",
+    "config": "4.4.4.4",
+    "angle_sum_deg": 360,
+    "name": null,
+    "turns_at_vertex": null,
+    "angle_gap_deg": null,
+    "is_valid": null
+  },
+  {
+    "vertex_figure_id": "vf-tri",
+    "tiling": "triangular",
+    "config": "3.3.3.3.3.3",
+    "angle_sum_deg": 360,
+    "name": null,
+    "turns_at_vertex": null,
+    "angle_gap_deg": null,
+    "is_valid": null
+  },
+  {
+    "vertex_figure_id": "vf-trihex",
+    "tiling": "trihexagonal",
+    "config": "3.6.3.6",
+    "angle_sum_deg": 360,
+    "name": null,
+    "turns_at_vertex": null,
+    "angle_gap_deg": null,
+    "is_valid": null
+  },
+  {
+    "vertex_figure_id": "vf-tsq",
+    "tiling": "truncated-square",
+    "config": "4.8.8",
+    "angle_sum_deg": 360,
+    "name": null,
+    "turns_at_vertex": null,
+    "angle_gap_deg": null,
+    "is_valid": null
+  }
+]

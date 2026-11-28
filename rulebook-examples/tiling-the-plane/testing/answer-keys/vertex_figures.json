@@ -6,7 +6,8 @@
     "angle_sum_deg": 360,
     "name": "hexagonal@6.6.6",
     "turns_at_vertex": 1.0,
-    "is_valid": false
+    "angle_gap_deg": 0,
+    "is_valid": true
   },
   {
     "vertex_figure_id": "vf-pent",
@@ -15,6 +16,7 @@
     "angle_sum_deg": 324,
     "name": "pentagonal-regular@5.5.5",
     "turns_at_vertex": 0.9,
+    "angle_gap_deg": 36,
     "is_valid": false
   },
   {
@@ -24,7 +26,8 @@
     "angle_sum_deg": 360,
     "name": "rhombitrihexagonal@3.4.6.4",
     "turns_at_vertex": 1.0,
-    "is_valid": false
+    "angle_gap_deg": 0,
+    "is_valid": true
   },
   {
     "vertex_figure_id": "vf-sq",
@@ -33,7 +36,8 @@
     "angle_sum_deg": 360,
     "name": "square@4.4.4.4",
     "turns_at_vertex": 1.0,
-    "is_valid": false
+    "angle_gap_deg": 0,
+    "is_valid": true
   },
   {
     "vertex_figure_id": "vf-tri",
@@ -42,7 +46,8 @@
     "angle_sum_deg": 360,
     "name": "triangular@3.3.3.3.3.3",
     "turns_at_vertex": 1.0,
-    "is_valid": false
+    "angle_gap_deg": 0,
+    "is_valid": true
   },
   {
     "vertex_figure_id": "vf-trihex",
@@ -51,7 +56,8 @@
     "angle_sum_deg": 360,
     "name": "trihexagonal@3.6.3.6",
     "turns_at_vertex": 1.0,
-    "is_valid": false
+    "angle_gap_deg": 0,
+    "is_valid": true
   },
   {
     "vertex_figure_id": "vf-tsq",
@@ -60,6 +66,7 @@
     "angle_sum_deg": 360,
     "name": "truncated-square@4.8.8",
     "turns_at_vertex": 1.0,
-    "is_valid": false
+    "angle_gap_deg": 0,
+    "is_valid": true
   }
 ]

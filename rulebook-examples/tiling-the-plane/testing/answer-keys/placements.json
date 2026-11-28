@@ -8,7 +8,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-hex-strip#hex-01",
-    "is_inside_region": false
+    "tile_area": 2.59807621135332,
+    "tile_sides": 6,
+    "region_width": 6,
+    "region_height": 2,
+    "is_inside_region": true
   },
   {
     "placement_id": "hex-02",
@@ -19,7 +23,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-hex-strip#hex-02",
-    "is_inside_region": false
+    "tile_area": 2.59807621135332,
+    "tile_sides": 6,
+    "region_width": 6,
+    "region_height": 2,
+    "is_inside_region": true
   },
   {
     "placement_id": "hex-03",
@@ -30,7 +38,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-hex-strip#hex-03",
-    "is_inside_region": false
+    "tile_area": 2.59807621135332,
+    "tile_sides": 6,
+    "region_width": 6,
+    "region_height": 2,
+    "is_inside_region": true
   },
   {
     "placement_id": "hex-04",
@@ -41,7 +53,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-hex-strip#hex-04",
-    "is_inside_region": false
+    "tile_area": 2.59807621135332,
+    "tile_sides": 6,
+    "region_width": 6,
+    "region_height": 2,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-01",
@@ -52,7 +68,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-01",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-02",
@@ -63,7 +83,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-02",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-03",
@@ -74,7 +98,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-03",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-04",
@@ -85,7 +113,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-04",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-05",
@@ -96,7 +128,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-05",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-06",
@@ -107,7 +143,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-06",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-07",
@@ -118,7 +158,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-07",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-08",
@@ -129,7 +173,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-08",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-09",
@@ -140,7 +188,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-09",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-10",
@@ -151,7 +203,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-10",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-11",
@@ -162,7 +218,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-11",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-12",
@@ -173,7 +233,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-12",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-13",
@@ -184,7 +248,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-13",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-14",
@@ -195,7 +263,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-14",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-15",
@@ -206,7 +278,11 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-15",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   },
   {
     "placement_id": "sq-16",
@@ -217,6 +293,10 @@
     "rotation_deg": 0,
     "is_overlapping": false,
     "name": "demo-square-4x4#sq-16",
-    "is_inside_region": false
+    "tile_area": 1,
+    "tile_sides": 4,
+    "region_width": 4,
+    "region_height": 4,
+    "is_inside_region": true
   }
 ]
