@@ -2,10 +2,25 @@
 // stored rows back. The file is the single source of truth; this module never
 // computes a value.
 import fs from 'node:fs';
+import path from 'node:path';
 import crypto from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 const STORED_TYPES = new Set(['raw', 'relationship']);
 const hashOf = (text) => crypto.createHash('sha256').update(text).digest('hex');
+
+// A rulebook as the text of its file: standard JSON with single-line leaves (one field or one
+// row per line), written by the platform's one layout, scripts/rulebook_layout.py, the same
+// text the generated rulebook editor's Save writes. Both of this app's rulebook files go through it.
+const LAYOUT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../../scripts/rulebook_layout.py');
+export function layOut(doc) {
+  try {
+    return execFileSync('python3', [LAYOUT, '-'], { input: JSON.stringify(doc), encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
+  } catch (e) {
+    throw new Error(`scripts/rulebook_layout.py could not lay out the rulebook: ${(e.stderr || e.message).trim().split('\n').slice(-2).join(' ')}`);
+  }
+}
 
 // The table's key: its first non-nullable field, else its first field (the
 // convention the conformance harness's discover_primary_key applies).
@@ -57,7 +72,7 @@ export function writeHub(hub, rows) {
     if (!rows[name]) throw new Error(`No rows given for table ${name}; refusing to blank it in the rulebook`);
     doc[name].data = rows[name].map((row) => Object.fromEntries(table.stored.map((f) => [f, row[f] ?? null])));
   }
-  const text = JSON.stringify(doc, null, 1) + '\n';   // the hub's own style: one-space indent, UTF-8 written as is
+  const text = layOut(doc);
   fs.writeFileSync(hub.path, text, 'utf8');
   return readHub(hub.path);
 }

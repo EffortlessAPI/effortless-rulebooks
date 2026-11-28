@@ -15,7 +15,7 @@ import { createEngines } from './lib/engines.mjs';
 import { createExplainer } from './lib/explainer.mjs';
 import { syncCandidates } from './lib/candidates.mjs';
 import { createConcepts } from './lib/concepts.mjs';
-import { rulebookWithRows, readHub, storedRows } from './lib/hub.mjs';
+import { rulebookWithRows, readHub, storedRows, layOut } from './lib/hub.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT = path.resolve(HERE, '..');
@@ -283,7 +283,7 @@ app.post('/api/concepts/edit', route((req) => write(async () => {
 app.get('/api/concepts/rulebook.json', async (req, res) => {
   try {
     const { concepts: document } = await concepts.view(engineOf(req));
-    res.type('application/json').send(JSON.stringify(document, null, 1) + '\n');
+    res.type('application/json').send(layOut(document));
   } catch (e) {
     console.error(e.message);
     res.status(400).json({ error: e.message });
@@ -311,7 +311,7 @@ function conceptFileState() {
 async function writeConceptFile(engine) {
   const { concepts: document } = await concepts.view(engine);
   fs.mkdirSync(path.dirname(CONCEPT_FILE), { recursive: true });
-  fs.writeFileSync(CONCEPT_FILE, JSON.stringify(document, null, 2) + '\n', 'utf8');
+  fs.writeFileSync(CONCEPT_FILE, layOut(document), 'utf8');
   conceptFileSeen = hashOfFile(CONCEPT_FILE);
 }
 // What Save does with the file, and says about it. The rows are saved either way.

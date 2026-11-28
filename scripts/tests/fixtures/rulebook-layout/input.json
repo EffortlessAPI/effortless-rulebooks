@@ -1,0 +1,5 @@
+{"$schema": "https://example.com/cmcc-schema/v1", "Name": "Fixture — café", "Description": "Two tables.", "_meta": {"tags": ["a", "b"], "nested": {"x": 1, "empty": {}, "list": []}},
+ "Things": {"Description": "Things in the world", "schema": [{"name": "ThingId", "datatype": "string", "type": "raw", "nullable": false}, {"name": "Score", "datatype": "number", "type": "calculated", "formula": "={{Weight}} * 2"}],
+  "data": [{"ThingId": "stan", "Score": 2.5, "Tags": ["x", 1, true, null], "Note": "line\nbreak \"quoted\" ✓"}, {"ThingId": "kyle", "Score": -3, "Tags": [], "Note": null}]},
+ "Empty": {"Description": "", "schema": [], "data": []},
+ "NotATable": {"schema": "text, not a list"}}

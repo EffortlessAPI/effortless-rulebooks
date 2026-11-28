@@ -292,6 +292,17 @@ passes `ensure_ascii=False`** (a .NET writer sets
 escaped; `--fix` restores UTF-8 by rewriting only the escape sequences and
 refuses to write if the parsed document would change.
 
+# A rulebook file is written in one layout: single-line leaves
+
+Standard JSON with one `schema` field or one `data` row per line, the structure around them
+indented (2026-11-27). `scripts/rulebook_layout.py` is the one implementation: it writes byte for
+byte what the generated rulebook editor's Save writes (`serializeRulebook`), keeps every number's
+text, and never escapes UTF-8. Every writer goes through it: `orchestration/ontology_form.py`'s
+`write_rulebook`, effortless-math's `format-rulebook.py`, and the South Park app's Save
+(`layOut` in `app/lib/hub.mjs`). `compile-rulebook` patches values in place and keeps the layout.
+`python3 scripts/rulebook_layout.py --check <file>` says whether a file is in it; without
+`--check` it lays the file out. Test: `scripts/tests/test_rulebook_layout.py`.
+
 # No unbounded call to an external daemon inside a build
 
 `cr-22`. A hung probe inside a build is worse than a failed one: the work already

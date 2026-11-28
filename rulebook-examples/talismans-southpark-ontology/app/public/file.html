@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rulebook file</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<!-- One of the rulebook's two files, as it is written: standard JSON with single-line leaves
+     (one field or one row per line), coloured as JSON. ?form= ontology | concept picks the file;
+     &live shows the concept rulebook of the live rows (unsaved changes included) instead of its file. -->
+<body data-mode="tools" class="admin">
+<div class="wrap wide">
+  <nav class="modebar">
+    <a id="back" data-kind="back"></a>
+    <span class="modebar-end"><span class="version" id="version"></span></span>
+  </nav>
+  <header>
+    <h1 id="heading"></h1>
+    <p id="about"></p>
+  </header>
+  <section class="card effortless jsonfile">
+    <span class="effortless-tag" data-text="effortless-tag"></span>
+    <div class="jsonfile-bar">
+      <label><span data-text="jsonfile-jump"></span> <select id="jump"></select></label>
+      <label><input type="checkbox" id="wrap" checked> <span data-text="jsonfile-wrap"></span></label>
+      <a id="raw" target="_blank" rel="noopener" data-kind="newtab" data-text="jsonfile-raw"></a>
+    </div>
+    <p id="status" role="status"></p>
+    <div id="code" class="jsonfile-code" aria-label="The file"></div>
+  </section>
+</div>
+<script src="/admin-shared.js"></script>
+<script src="/file.js"></script>
+</body>
+</html>

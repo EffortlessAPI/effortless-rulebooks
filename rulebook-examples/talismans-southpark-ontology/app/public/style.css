@@ -311,3 +311,25 @@ body.admin.concepts { --fx: var(--concept); --fx-soft: var(--concept-soft); }
 .formtab:not([aria-current]):hover { background: var(--tab-soft); }
 .admin a.formtab[aria-current="page"] { background: var(--tab); color: var(--on-accent); cursor: default; }
 .formtab[aria-current="page"] svg, .formtab[aria-current="page"] small { color: var(--on-accent); }
+
+/* A rulebook file (file.html): the file's own lines, numbered and coloured as JSON. Colours are
+   readable on --panel in both schemes; keys wear the form's colour (--fx). */
+.jsonfile { --j-str: #1f6b4f; --j-num: #b4530f; --j-lit: #a8201a; --j-punct: var(--quiet); }
+@media (prefers-color-scheme: dark) { .jsonfile { --j-str: #8fd8b4; --j-num: #ffb27a; --j-lit: #ff9d96; } }
+.jsonfile-bar { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; margin: 6px 0 4px; font-size: 0.92rem; }
+.jsonfile-bar select { font: inherit; max-width: 22rem; }
+.jsonfile #status { color: var(--quiet); font-size: 0.85rem; margin: 4px 0 10px; }
+.jsonfile #status.bad { color: var(--alarm); font-weight: 500; }
+.jsonfile-code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 12.5px; line-height: 1.55;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--panel); overflow-x: auto; padding: 6px 0; }
+.j-line { display: grid; grid-template-columns: 4.2em minmax(0, 1fr); content-visibility: auto; contain-intrinsic-size: auto 1.55em; }
+.j-line:target, .j-line:hover { background: var(--fx-soft); }
+.j-no { color: var(--quiet); opacity: 0.7; text-align: right; padding-right: 12px; text-decoration: none; user-select: none; }
+.j-line code { white-space: pre-wrap; overflow-wrap: anywhere; padding-left: 2ch; text-indent: -2ch; }
+.jsonfile-code.nowrap .j-line code { white-space: pre; overflow-wrap: normal; }
+.jsonfile-code.nowrap .j-line { width: max-content; min-width: 100%; }
+.j-key { color: var(--fx); font-weight: 600; }
+.j-str { color: var(--j-str); }
+.j-num { color: var(--j-num); }
+.j-bool, .j-null { color: var(--j-lit); font-weight: 600; }
+.j-punct { color: var(--j-punct); }

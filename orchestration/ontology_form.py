@@ -71,6 +71,9 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+import rulebook_layout  # noqa: E402  the platform's one rulebook file layout
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE = (
     REPO_ROOT / "rulebook-examples" / "talismans-southpark-ontology"
@@ -1930,8 +1933,8 @@ def read_rulebook(path: Path) -> dict:
 
 
 def write_rulebook(document: dict, path: Path) -> None:
-    Path(path).write_text(json.dumps(document, indent=2, ensure_ascii=False) + "\n",
-                          encoding="utf-8")
+    """A rulebook file in the platform's layout (scripts/rulebook_layout.py): one field or row per line."""
+    rulebook_layout.write_rulebook(document, path)
 
 
 def canonical(document: dict) -> str:
