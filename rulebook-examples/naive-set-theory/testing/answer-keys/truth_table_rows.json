@@ -5,6 +5,7 @@
     "left_input": "false",
     "right_input": "false",
     "output": "false",
+    "output_symbol": "F",
     "name": "conjunction: false , false -> false"
   },
   {
@@ -13,6 +14,7 @@
     "left_input": "false",
     "right_input": "null",
     "output": "false",
+    "output_symbol": "F",
     "name": "conjunction: false , null -> false"
   },
   {
@@ -21,6 +23,7 @@
     "left_input": "false",
     "right_input": "true",
     "output": "false",
+    "output_symbol": "F",
     "name": "conjunction: false , true -> false"
   },
   {
@@ -29,6 +32,7 @@
     "left_input": "null",
     "right_input": "false",
     "output": "false",
+    "output_symbol": "F",
     "name": "conjunction: null , false -> false"
   },
   {
@@ -37,6 +41,7 @@
     "left_input": "null",
     "right_input": "null",
     "output": "null",
+    "output_symbol": "N",
     "name": "conjunction: null , null -> null"
   },
   {
@@ -45,6 +50,7 @@
     "left_input": "null",
     "right_input": "true",
     "output": "null",
+    "output_symbol": "N",
     "name": "conjunction: null , true -> null"
   },
   {
@@ -53,6 +59,7 @@
     "left_input": "true",
     "right_input": "false",
     "output": "false",
+    "output_symbol": "F",
     "name": "conjunction: true , false -> false"
   },
   {
@@ -61,6 +68,7 @@
     "left_input": "true",
     "right_input": "null",
     "output": "null",
+    "output_symbol": "N",
     "name": "conjunction: true , null -> null"
   },
   {
@@ -69,6 +77,7 @@
     "left_input": "true",
     "right_input": "true",
     "output": "true",
+    "output_symbol": "T",
     "name": "conjunction: true , true -> true"
   },
   {
@@ -77,6 +86,7 @@
     "left_input": "false",
     "right_input": "false",
     "output": "false",
+    "output_symbol": "F",
     "name": "disjunction: false , false -> false"
   },
   {
@@ -85,6 +95,7 @@
     "left_input": "false",
     "right_input": "null",
     "output": "null",
+    "output_symbol": "N",
     "name": "disjunction: false , null -> null"
   },
   {
@@ -93,6 +104,7 @@
     "left_input": "false",
     "right_input": "true",
     "output": "true",
+    "output_symbol": "T",
     "name": "disjunction: false , true -> true"
   },
   {
@@ -101,6 +113,7 @@
     "left_input": "null",
     "right_input": "false",
     "output": "null",
+    "output_symbol": "N",
     "name": "disjunction: null , false -> null"
   },
   {
@@ -109,6 +122,7 @@
     "left_input": "null",
     "right_input": "null",
     "output": "null",
+    "output_symbol": "N",
     "name": "disjunction: null , null -> null"
   },
   {
@@ -117,6 +131,7 @@
     "left_input": "null",
     "right_input": "true",
     "output": "true",
+    "output_symbol": "T",
     "name": "disjunction: null , true -> true"
   },
   {
@@ -125,6 +140,7 @@
     "left_input": "true",
     "right_input": "false",
     "output": "true",
+    "output_symbol": "T",
     "name": "disjunction: true , false -> true"
   },
   {
@@ -133,6 +149,7 @@
     "left_input": "true",
     "right_input": "null",
     "output": "true",
+    "output_symbol": "T",
     "name": "disjunction: true , null -> true"
   },
   {
@@ -141,6 +158,7 @@
     "left_input": "true",
     "right_input": "true",
     "output": "true",
+    "output_symbol": "T",
     "name": "disjunction: true , true -> true"
   },
   {
@@ -149,7 +167,8 @@
     "left_input": "false",
     "right_input": null,
     "output": "true",
-    "name": "negation: false ,  -> true"
+    "output_symbol": "T",
+    "name": "negation: false -> true"
   },
   {
     "truth_table_row_id": "negation|null|_|null",
@@ -157,7 +176,8 @@
     "left_input": "null",
     "right_input": null,
     "output": "null",
-    "name": "negation: null ,  -> null"
+    "output_symbol": "N",
+    "name": "negation: null -> null"
   },
   {
     "truth_table_row_id": "negation|true|_|false",
@@ -165,6 +185,7 @@
     "left_input": "true",
     "right_input": null,
     "output": "false",
-    "name": "negation: true ,  -> false"
+    "output_symbol": "F",
+    "name": "negation: true -> false"
   }
 ]

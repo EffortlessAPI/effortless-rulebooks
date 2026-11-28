@@ -5,8 +5,12 @@
     "container": "empty-set",
     "membership_value": "false",
     "name": "a \u2208 empty-set",
+    "container_label": "\u2205",
+    "membership_value_symbol": "F",
+    "is_bivalent": true,
     "is_null": false,
-    "is_grounded": true
+    "is_grounded": true,
+    "count_of_evaluation_steps": 0
   },
   {
     "membership_fact_id": "a-in-pair-ab",
@@ -14,8 +18,12 @@
     "container": "pair-ab",
     "membership_value": "true",
     "name": "a \u2208 pair-ab",
+    "container_label": "{a, b}",
+    "membership_value_symbol": "T",
+    "is_bivalent": true,
     "is_null": false,
-    "is_grounded": true
+    "is_grounded": true,
+    "count_of_evaluation_steps": 0
   },
   {
     "membership_fact_id": "a-in-russell-set",
@@ -23,8 +31,12 @@
     "container": "russell-set",
     "membership_value": "true",
     "name": "a \u2208 russell-set",
+    "container_label": "R",
+    "membership_value_symbol": "T",
+    "is_bivalent": true,
     "is_null": false,
-    "is_grounded": true
+    "is_grounded": true,
+    "count_of_evaluation_steps": 0
   },
   {
     "membership_fact_id": "a-in-singleton-a",
@@ -32,8 +44,12 @@
     "container": "singleton-a",
     "membership_value": "true",
     "name": "a \u2208 singleton-a",
+    "container_label": "{a}",
+    "membership_value_symbol": "T",
+    "is_bivalent": true,
     "is_null": false,
-    "is_grounded": true
+    "is_grounded": true,
+    "count_of_evaluation_steps": 0
   },
   {
     "membership_fact_id": "b-in-pair-ab",
@@ -41,8 +57,12 @@
     "container": "pair-ab",
     "membership_value": "true",
     "name": "b \u2208 pair-ab",
+    "container_label": "{a, b}",
+    "membership_value_symbol": "T",
+    "is_bivalent": true,
     "is_null": false,
-    "is_grounded": true
+    "is_grounded": true,
+    "count_of_evaluation_steps": 0
   },
   {
     "membership_fact_id": "empty-set-in-russell-set",
@@ -50,8 +70,12 @@
     "container": "russell-set",
     "membership_value": "true",
     "name": "empty-set \u2208 russell-set",
+    "container_label": "R",
+    "membership_value_symbol": "T",
+    "is_bivalent": true,
     "is_null": false,
-    "is_grounded": true
+    "is_grounded": true,
+    "count_of_evaluation_steps": 0
   },
   {
     "membership_fact_id": "russell-set-in-russell-set",
@@ -59,8 +83,12 @@
     "container": "russell-set",
     "membership_value": "null",
     "name": "russell-set \u2208 russell-set",
+    "container_label": "R",
+    "membership_value_symbol": "N",
+    "is_bivalent": false,
     "is_null": true,
-    "is_grounded": false
+    "is_grounded": false,
+    "count_of_evaluation_steps": 3
   },
   {
     "membership_fact_id": "singleton-a-in-nested",
@@ -68,8 +96,12 @@
     "container": "nested",
     "membership_value": "true",
     "name": "singleton-a \u2208 nested",
+    "container_label": "{{a}}",
+    "membership_value_symbol": "T",
+    "is_bivalent": true,
     "is_null": false,
-    "is_grounded": true
+    "is_grounded": true,
+    "count_of_evaluation_steps": 0
   },
   {
     "membership_fact_id": "universal-u-in-russell-set",
@@ -77,8 +109,12 @@
     "container": "russell-set",
     "membership_value": "false",
     "name": "universal-u \u2208 russell-set",
+    "container_label": "R",
+    "membership_value_symbol": "F",
+    "is_bivalent": true,
     "is_null": false,
-    "is_grounded": true
+    "is_grounded": true,
+    "count_of_evaluation_steps": 0
   },
   {
     "membership_fact_id": "universal-u-in-universal-u",
@@ -86,7 +122,11 @@
     "container": "universal-u",
     "membership_value": "true",
     "name": "universal-u \u2208 universal-u",
+    "container_label": "U",
+    "membership_value_symbol": "T",
+    "is_bivalent": true,
     "is_null": false,
-    "is_grounded": true
+    "is_grounded": true,
+    "count_of_evaluation_steps": 0
   }
 ]

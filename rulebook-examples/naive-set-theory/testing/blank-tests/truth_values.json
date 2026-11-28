@@ -6,7 +6,8 @@
     "rank": -1,
     "name": null,
     "is_classical": null,
-    "is_undefined": null
+    "is_undefined": null,
+    "count_of_facts": null
   },
   {
     "truth_value_id": "null",
@@ -15,7 +16,8 @@
     "rank": 0,
     "name": null,
     "is_classical": null,
-    "is_undefined": null
+    "is_undefined": null,
+    "count_of_facts": null
   },
   {
     "truth_value_id": "true",
@@ -24,6 +26,7 @@
     "rank": 1,
     "name": null,
     "is_classical": null,
-    "is_undefined": null
+    "is_undefined": null,
+    "count_of_facts": null
   }
 ]

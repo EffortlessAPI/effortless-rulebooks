@@ -1,0 +1,26 @@
+[
+  {
+    "entity": "TruthTableRows",
+    "field": "Name",
+    "formula": "={{Connective}} & \": \" & {{LeftInput}} & IF({{RightInput}}=\"\", \"\", \" , \" & {{RightInput}}) & \" -> \" & {{Output}}",
+    "record_id": "negation|true|_|false",
+    "error": "drift: stored='negation: true -> false' python-recompute='negation: true ,  -> false'",
+    "severity": "drift"
+  },
+  {
+    "entity": "TruthTableRows",
+    "field": "Name",
+    "formula": "={{Connective}} & \": \" & {{LeftInput}} & IF({{RightInput}}=\"\", \"\", \" , \" & {{RightInput}}) & \" -> \" & {{Output}}",
+    "record_id": "negation|null|_|null",
+    "error": "drift: stored='negation: null -> null' python-recompute='negation: null ,  -> null'",
+    "severity": "drift"
+  },
+  {
+    "entity": "TruthTableRows",
+    "field": "Name",
+    "formula": "={{Connective}} & \": \" & {{LeftInput}} & IF({{RightInput}}=\"\", \"\", \" , \" & {{RightInput}}) & \" -> \" & {{Output}}",
+    "record_id": "negation|false|_|true",
+    "error": "drift: stored='negation: false -> true' python-recompute='negation: false ,  -> true'",
+    "severity": "drift"
+  }
+]

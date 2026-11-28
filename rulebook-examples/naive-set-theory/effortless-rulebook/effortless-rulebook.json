@@ -79,19 +79,31 @@
         "TruthValueId": "true",
         "Symbol": "T",
         "Glyph": "⊤",
-        "Rank": 1
+        "Rank": 1,
+        "Name": "true",
+        "IsClassical": true,
+        "IsUndefined": false,
+        "CountOfFacts": 7
       },
       {
         "TruthValueId": "false",
         "Symbol": "F",
         "Glyph": "⊥",
-        "Rank": -1
+        "Rank": -1,
+        "Name": "false",
+        "IsClassical": true,
+        "IsUndefined": false,
+        "CountOfFacts": 2
       },
       {
         "TruthValueId": "null",
         "Symbol": "N",
         "Glyph": "∗",
-        "Rank": 0
+        "Rank": 0,
+        "Name": "null",
+        "IsClassical": false,
+        "IsUndefined": true,
+        "CountOfFacts": 1
       }
     ]
   },
@@ -156,19 +168,25 @@
         "ConnectiveId": "negation",
         "Symbol": "¬",
         "Arity": 1,
-        "KleeneRule": "negate rank"
+        "KleeneRule": "negate rank",
+        "Name": "negation",
+        "CountOfTruthTableRows": 3
       },
       {
         "ConnectiveId": "conjunction",
         "Symbol": "∧",
         "Arity": 2,
-        "KleeneRule": "min of ranks"
+        "KleeneRule": "min of ranks",
+        "Name": "conjunction",
+        "CountOfTruthTableRows": 9
       },
       {
         "ConnectiveId": "disjunction",
         "Symbol": "∨",
         "Arity": 2,
-        "KleeneRule": "max of ranks"
+        "KleeneRule": "max of ranks",
+        "Name": "disjunction",
+        "CountOfTruthTableRows": 9
       }
     ]
   },
@@ -237,147 +255,189 @@
         "Connective": "negation",
         "LeftInput": "true",
         "RightInput": null,
-        "Output": "false"
+        "Output": "false",
+        "OutputSymbol": "F",
+        "Name": "negation: true -> false"
       },
       {
         "TruthTableRowId": "negation|null|_|null",
         "Connective": "negation",
         "LeftInput": "null",
         "RightInput": null,
-        "Output": "null"
+        "Output": "null",
+        "OutputSymbol": "N",
+        "Name": "negation: null -> null"
       },
       {
         "TruthTableRowId": "negation|false|_|true",
         "Connective": "negation",
         "LeftInput": "false",
         "RightInput": null,
-        "Output": "true"
+        "Output": "true",
+        "OutputSymbol": "T",
+        "Name": "negation: false -> true"
       },
       {
         "TruthTableRowId": "conjunction|true|true|true",
         "Connective": "conjunction",
         "LeftInput": "true",
         "RightInput": "true",
-        "Output": "true"
+        "Output": "true",
+        "OutputSymbol": "T",
+        "Name": "conjunction: true , true -> true"
       },
       {
         "TruthTableRowId": "conjunction|true|null|null",
         "Connective": "conjunction",
         "LeftInput": "true",
         "RightInput": "null",
-        "Output": "null"
+        "Output": "null",
+        "OutputSymbol": "N",
+        "Name": "conjunction: true , null -> null"
       },
       {
         "TruthTableRowId": "conjunction|true|false|false",
         "Connective": "conjunction",
         "LeftInput": "true",
         "RightInput": "false",
-        "Output": "false"
+        "Output": "false",
+        "OutputSymbol": "F",
+        "Name": "conjunction: true , false -> false"
       },
       {
         "TruthTableRowId": "conjunction|null|true|null",
         "Connective": "conjunction",
         "LeftInput": "null",
         "RightInput": "true",
-        "Output": "null"
+        "Output": "null",
+        "OutputSymbol": "N",
+        "Name": "conjunction: null , true -> null"
       },
       {
         "TruthTableRowId": "conjunction|null|null|null",
         "Connective": "conjunction",
         "LeftInput": "null",
         "RightInput": "null",
-        "Output": "null"
+        "Output": "null",
+        "OutputSymbol": "N",
+        "Name": "conjunction: null , null -> null"
       },
       {
         "TruthTableRowId": "conjunction|null|false|false",
         "Connective": "conjunction",
         "LeftInput": "null",
         "RightInput": "false",
-        "Output": "false"
+        "Output": "false",
+        "OutputSymbol": "F",
+        "Name": "conjunction: null , false -> false"
       },
       {
         "TruthTableRowId": "conjunction|false|true|false",
         "Connective": "conjunction",
         "LeftInput": "false",
         "RightInput": "true",
-        "Output": "false"
+        "Output": "false",
+        "OutputSymbol": "F",
+        "Name": "conjunction: false , true -> false"
       },
       {
         "TruthTableRowId": "conjunction|false|null|false",
         "Connective": "conjunction",
         "LeftInput": "false",
         "RightInput": "null",
-        "Output": "false"
+        "Output": "false",
+        "OutputSymbol": "F",
+        "Name": "conjunction: false , null -> false"
       },
       {
         "TruthTableRowId": "conjunction|false|false|false",
         "Connective": "conjunction",
         "LeftInput": "false",
         "RightInput": "false",
-        "Output": "false"
+        "Output": "false",
+        "OutputSymbol": "F",
+        "Name": "conjunction: false , false -> false"
       },
       {
         "TruthTableRowId": "disjunction|true|true|true",
         "Connective": "disjunction",
         "LeftInput": "true",
         "RightInput": "true",
-        "Output": "true"
+        "Output": "true",
+        "OutputSymbol": "T",
+        "Name": "disjunction: true , true -> true"
       },
       {
         "TruthTableRowId": "disjunction|true|null|true",
         "Connective": "disjunction",
         "LeftInput": "true",
         "RightInput": "null",
-        "Output": "true"
+        "Output": "true",
+        "OutputSymbol": "T",
+        "Name": "disjunction: true , null -> true"
       },
       {
         "TruthTableRowId": "disjunction|true|false|true",
         "Connective": "disjunction",
         "LeftInput": "true",
         "RightInput": "false",
-        "Output": "true"
+        "Output": "true",
+        "OutputSymbol": "T",
+        "Name": "disjunction: true , false -> true"
       },
       {
         "TruthTableRowId": "disjunction|null|true|true",
         "Connective": "disjunction",
         "LeftInput": "null",
         "RightInput": "true",
-        "Output": "true"
+        "Output": "true",
+        "OutputSymbol": "T",
+        "Name": "disjunction: null , true -> true"
       },
       {
         "TruthTableRowId": "disjunction|null|null|null",
         "Connective": "disjunction",
         "LeftInput": "null",
         "RightInput": "null",
-        "Output": "null"
+        "Output": "null",
+        "OutputSymbol": "N",
+        "Name": "disjunction: null , null -> null"
       },
       {
         "TruthTableRowId": "disjunction|null|false|null",
         "Connective": "disjunction",
         "LeftInput": "null",
         "RightInput": "false",
-        "Output": "null"
+        "Output": "null",
+        "OutputSymbol": "N",
+        "Name": "disjunction: null , false -> null"
       },
       {
         "TruthTableRowId": "disjunction|false|true|true",
         "Connective": "disjunction",
         "LeftInput": "false",
         "RightInput": "true",
-        "Output": "true"
+        "Output": "true",
+        "OutputSymbol": "T",
+        "Name": "disjunction: false , true -> true"
       },
       {
         "TruthTableRowId": "disjunction|false|null|null",
         "Connective": "disjunction",
         "LeftInput": "false",
         "RightInput": "null",
-        "Output": "null"
+        "Output": "null",
+        "OutputSymbol": "N",
+        "Name": "disjunction: false , null -> null"
       },
       {
         "TruthTableRowId": "disjunction|false|false|false",
         "Connective": "disjunction",
         "LeftInput": "false",
         "RightInput": "false",
-        "Output": "false"
+        "Output": "false",
+        "OutputSymbol": "F",
+        "Name": "disjunction: false , false -> false"
       }
     ]
   },
@@ -442,73 +502,109 @@
         "SetRuleId": "rule-1",
         "RuleNumber": 1,
         "Title": "Membership",
-        "Statement": "A set is a collection of distinct objects; x in S asserts x is a member of S."
+        "Statement": "A set is a collection of distinct objects; x in S asserts x is a member of S.",
+        "Name": "R1",
+        "IsClassical": true,
+        "IsTheMissingRule": false
       },
       {
         "SetRuleId": "rule-2",
         "RuleNumber": 2,
         "Title": "Extensionality",
-        "Statement": "A set is fully determined by its members; sets with the same membership profile are identical."
+        "Statement": "A set is fully determined by its members; sets with the same membership profile are identical.",
+        "Name": "R2",
+        "IsClassical": true,
+        "IsTheMissingRule": false
       },
       {
         "SetRuleId": "rule-3",
         "RuleNumber": 3,
         "Title": "Order-independence",
-        "Statement": "The order in which members are listed carries no information."
+        "Statement": "The order in which members are listed carries no information.",
+        "Name": "R3",
+        "IsClassical": true,
+        "IsTheMissingRule": false
       },
       {
         "SetRuleId": "rule-4",
         "RuleNumber": 4,
         "Title": "Repetition-independence",
-        "Statement": "Listing a member more than once adds nothing."
+        "Statement": "Listing a member more than once adds nothing.",
+        "Name": "R4",
+        "IsClassical": true,
+        "IsTheMissingRule": false
       },
       {
         "SetRuleId": "rule-5",
         "RuleNumber": 5,
         "Title": "Two descriptions",
-        "Statement": "A set may be given by enumeration or by a membership condition phi."
+        "Statement": "A set may be given by enumeration or by a membership condition phi.",
+        "Name": "R5",
+        "IsClassical": true,
+        "IsTheMissingRule": false
       },
       {
         "SetRuleId": "rule-6",
         "RuleNumber": 6,
         "Title": "Comprehension",
-        "Statement": "Any condition you can state determines a set of exactly the objects satisfying it."
+        "Statement": "Any condition you can state determines a set of exactly the objects satisfying it.",
+        "Name": "R6",
+        "IsClassical": true,
+        "IsTheMissingRule": false
       },
       {
         "SetRuleId": "rule-7",
         "RuleNumber": 7,
         "Title": "Unbounded size",
-        "Statement": "A set may have any number of members: none, finitely many, or infinitely many."
+        "Statement": "A set may have any number of members: none, finitely many, or infinitely many.",
+        "Name": "R7",
+        "IsClassical": true,
+        "IsTheMissingRule": false
       },
       {
         "SetRuleId": "rule-8",
         "RuleNumber": 8,
         "Title": "Empty set",
-        "Statement": "There is a set with no members."
+        "Statement": "There is a set with no members.",
+        "Name": "R8",
+        "IsClassical": true,
+        "IsTheMissingRule": false
       },
       {
         "SetRuleId": "rule-9",
         "RuleNumber": 9,
         "Title": "Singletons",
-        "Statement": "For any object there is a one-member set, distinct from that member."
+        "Statement": "For any object there is a one-member set, distinct from that member.",
+        "Name": "R9",
+        "IsClassical": true,
+        "IsTheMissingRule": false
       },
       {
         "SetRuleId": "rule-10",
         "RuleNumber": 10,
         "Title": "Nesting",
-        "Statement": "Sets may be members of other sets."
+        "Statement": "Sets may be members of other sets.",
+        "Name": "R10",
+        "IsClassical": true,
+        "IsTheMissingRule": false
       },
       {
         "SetRuleId": "rule-11",
         "RuleNumber": 11,
         "Title": "Self-membership",
-        "Statement": "A set may be a member of itself; S in S is a well-formed question."
+        "Statement": "A set may be a member of itself; S in S is a well-formed question.",
+        "Name": "R11",
+        "IsClassical": true,
+        "IsTheMissingRule": false
       },
       {
         "SetRuleId": "rule-12",
         "RuleNumber": 12,
         "Title": "NULL membership",
-        "Statement": "If a set's condition loops back on itself with no stable True/False value, x in S = NULL."
+        "Statement": "If a set's condition loops back on itself with no stable True/False value, x in S = NULL.",
+        "Name": "R12",
+        "IsClassical": false,
+        "IsTheMissingRule": true
       }
     ]
   },
@@ -589,49 +685,81 @@
         "SetId": "empty-set",
         "Label": "∅",
         "ConditionExpression": "false (nothing satisfies)",
-        "IsSelfReferential": false
+        "IsSelfReferential": false,
+        "Name": "empty-set",
+        "IsRussellSet": false,
+        "CountOfMemberships": 1,
+        "CountOfNullMemberships": 0
       },
       {
         "SetId": "a",
         "Label": "a",
         "ConditionExpression": "atom (primitive element)",
-        "IsSelfReferential": false
+        "IsSelfReferential": false,
+        "Name": "a",
+        "IsRussellSet": false,
+        "CountOfMemberships": 0,
+        "CountOfNullMemberships": 0
       },
       {
         "SetId": "b",
         "Label": "b",
         "ConditionExpression": "atom (primitive element)",
-        "IsSelfReferential": false
+        "IsSelfReferential": false,
+        "Name": "b",
+        "IsRussellSet": false,
+        "CountOfMemberships": 0,
+        "CountOfNullMemberships": 0
       },
       {
         "SetId": "singleton-a",
         "Label": "{a}",
         "ConditionExpression": "x = a",
-        "IsSelfReferential": false
+        "IsSelfReferential": false,
+        "Name": "singleton-a",
+        "IsRussellSet": false,
+        "CountOfMemberships": 1,
+        "CountOfNullMemberships": 0
       },
       {
         "SetId": "pair-ab",
         "Label": "{a, b}",
         "ConditionExpression": "x = a OR x = b",
-        "IsSelfReferential": false
+        "IsSelfReferential": false,
+        "Name": "pair-ab",
+        "IsRussellSet": false,
+        "CountOfMemberships": 2,
+        "CountOfNullMemberships": 0
       },
       {
         "SetId": "nested",
         "Label": "{{a}}",
         "ConditionExpression": "x = {a}",
-        "IsSelfReferential": false
+        "IsSelfReferential": false,
+        "Name": "nested",
+        "IsRussellSet": false,
+        "CountOfMemberships": 1,
+        "CountOfNullMemberships": 0
       },
       {
         "SetId": "universal-u",
         "Label": "U",
         "ConditionExpression": "x is a set (U includes itself)",
-        "IsSelfReferential": true
+        "IsSelfReferential": true,
+        "Name": "universal-u",
+        "IsRussellSet": false,
+        "CountOfMemberships": 1,
+        "CountOfNullMemberships": 0
       },
       {
         "SetId": "russell-set",
         "Label": "R",
         "ConditionExpression": "x not-in x",
-        "IsSelfReferential": true
+        "IsSelfReferential": true,
+        "Name": "russell-set",
+        "IsRussellSet": true,
+        "CountOfMemberships": 4,
+        "CountOfNullMemberships": 1
       }
     ]
   },
@@ -739,61 +867,131 @@
         "MembershipFactId": "a-in-empty-set",
         "Element": "a",
         "Container": "empty-set",
-        "MembershipValue": "false"
+        "MembershipValue": "false",
+        "Name": "a ∈ empty-set",
+        "ContainerLabel": "∅",
+        "MembershipValueSymbol": "F",
+        "IsBivalent": true,
+        "IsNull": false,
+        "IsGrounded": true,
+        "CountOfEvaluationSteps": 0
       },
       {
         "MembershipFactId": "a-in-singleton-a",
         "Element": "a",
         "Container": "singleton-a",
-        "MembershipValue": "true"
+        "MembershipValue": "true",
+        "Name": "a ∈ singleton-a",
+        "ContainerLabel": "{a}",
+        "MembershipValueSymbol": "T",
+        "IsBivalent": true,
+        "IsNull": false,
+        "IsGrounded": true,
+        "CountOfEvaluationSteps": 0
       },
       {
         "MembershipFactId": "a-in-pair-ab",
         "Element": "a",
         "Container": "pair-ab",
-        "MembershipValue": "true"
+        "MembershipValue": "true",
+        "Name": "a ∈ pair-ab",
+        "ContainerLabel": "{a, b}",
+        "MembershipValueSymbol": "T",
+        "IsBivalent": true,
+        "IsNull": false,
+        "IsGrounded": true,
+        "CountOfEvaluationSteps": 0
       },
       {
         "MembershipFactId": "b-in-pair-ab",
         "Element": "b",
         "Container": "pair-ab",
-        "MembershipValue": "true"
+        "MembershipValue": "true",
+        "Name": "b ∈ pair-ab",
+        "ContainerLabel": "{a, b}",
+        "MembershipValueSymbol": "T",
+        "IsBivalent": true,
+        "IsNull": false,
+        "IsGrounded": true,
+        "CountOfEvaluationSteps": 0
       },
       {
         "MembershipFactId": "singleton-a-in-nested",
         "Element": "singleton-a",
         "Container": "nested",
-        "MembershipValue": "true"
+        "MembershipValue": "true",
+        "Name": "singleton-a ∈ nested",
+        "ContainerLabel": "{{a}}",
+        "MembershipValueSymbol": "T",
+        "IsBivalent": true,
+        "IsNull": false,
+        "IsGrounded": true,
+        "CountOfEvaluationSteps": 0
       },
       {
         "MembershipFactId": "universal-u-in-universal-u",
         "Element": "universal-u",
         "Container": "universal-u",
-        "MembershipValue": "true"
+        "MembershipValue": "true",
+        "Name": "universal-u ∈ universal-u",
+        "ContainerLabel": "U",
+        "MembershipValueSymbol": "T",
+        "IsBivalent": true,
+        "IsNull": false,
+        "IsGrounded": true,
+        "CountOfEvaluationSteps": 0
       },
       {
         "MembershipFactId": "a-in-russell-set",
         "Element": "a",
         "Container": "russell-set",
-        "MembershipValue": "true"
+        "MembershipValue": "true",
+        "Name": "a ∈ russell-set",
+        "ContainerLabel": "R",
+        "MembershipValueSymbol": "T",
+        "IsBivalent": true,
+        "IsNull": false,
+        "IsGrounded": true,
+        "CountOfEvaluationSteps": 0
       },
       {
         "MembershipFactId": "empty-set-in-russell-set",
         "Element": "empty-set",
         "Container": "russell-set",
-        "MembershipValue": "true"
+        "MembershipValue": "true",
+        "Name": "empty-set ∈ russell-set",
+        "ContainerLabel": "R",
+        "MembershipValueSymbol": "T",
+        "IsBivalent": true,
+        "IsNull": false,
+        "IsGrounded": true,
+        "CountOfEvaluationSteps": 0
       },
       {
         "MembershipFactId": "universal-u-in-russell-set",
         "Element": "universal-u",
         "Container": "russell-set",
-        "MembershipValue": "false"
+        "MembershipValue": "false",
+        "Name": "universal-u ∈ russell-set",
+        "ContainerLabel": "R",
+        "MembershipValueSymbol": "F",
+        "IsBivalent": true,
+        "IsNull": false,
+        "IsGrounded": true,
+        "CountOfEvaluationSteps": 0
       },
       {
         "MembershipFactId": "russell-set-in-russell-set",
         "Element": "russell-set",
         "Container": "russell-set",
-        "MembershipValue": "null"
+        "MembershipValue": "null",
+        "Name": "russell-set ∈ russell-set",
+        "ContainerLabel": "R",
+        "MembershipValueSymbol": "N",
+        "IsBivalent": false,
+        "IsNull": true,
+        "IsGrounded": false,
+        "CountOfEvaluationSteps": 3
       }
     ]
   },
@@ -869,21 +1067,30 @@
         "MembershipFact": "russell-set-in-russell-set",
         "StepOrder": 1,
         "TrialValue": "true",
-        "ResultingValue": "false"
+        "ResultingValue": "false",
+        "Name": "try true",
+        "IsStable": false,
+        "Outcome": "contradiction"
       },
       {
         "EvaluationStepId": "russell-set-in-russell-set-try-false",
         "MembershipFact": "russell-set-in-russell-set",
         "StepOrder": 2,
         "TrialValue": "false",
-        "ResultingValue": "true"
+        "ResultingValue": "true",
+        "Name": "try false",
+        "IsStable": false,
+        "Outcome": "contradiction"
       },
       {
         "EvaluationStepId": "russell-set-in-russell-set-try-null",
         "MembershipFact": "russell-set-in-russell-set",
         "StepOrder": 3,
         "TrialValue": "null",
-        "ResultingValue": "null"
+        "ResultingValue": "null",
+        "Name": "try null",
+        "IsStable": true,
+        "Outcome": "stable fixed point"
       }
     ]
   },
