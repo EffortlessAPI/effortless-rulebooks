@@ -1,4 +1,4 @@
-# 📘 Gym Trainer Invoicing — RuleSpeak®
+# 📘 Gym Trainer Invoicing — Docs
 
 _Sessions roll up into invoices; invoices roll up into client outstanding balances._
 
@@ -16,14 +16,43 @@ _Sessions roll up into invoices; invoices roll up into client outstanding balanc
 | Email | A defined attribute. | — |
 | Role | A defined attribute. | _trainer \| client \| admin_ |
 | Display Name | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Email | Role | Display Name |
+|---|---|---|---|
+| alex@gym.test | alex@gym.test | trainer | Alex Reyes |
+| jamie@gym.test | jamie@gym.test | trainer | Jamie Lin |
+| sam@example.com | sam@example.com | client | Sam Patel |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Trainer** | Personal trainers who log sessions and bill clients. | — |
 | Name | A defined attribute. | — |
 | Email | A defined attribute. | — |
 | Full Name | A defined attribute. | — |
 | Hourly Rate | A defined attribute. | _Default $/hour charged to clients._ |
 | Total Sessions | The number of sessions related to the trainer. | — |
-| Total Billed | The total total across the invoices related to the trainer. | — |
+| Total Billed | The total across the invoices related to the trainer. | — |
 | Total Outstanding | The total balance across the invoices related to the trainer. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Email | Full Name | Hourly Rate | Total Sessions ƒ | Total Billed ƒ | Total Outstanding ƒ |
+|---|---|---|---|---|---|---|
+| alex@gym.test | alex@gym.test | Alex Reyes | 80 | 9 | 1061.8 | 561.8 |
+| jamie@gym.test | jamie@gym.test | Jamie Lin | 95 | 4 | 476.5 | 476.5 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Client** | Trainer's clients. | — |
 | Name | A defined attribute. | — |
 | Email | A defined attribute. | — |
@@ -33,10 +62,26 @@ _Sessions roll up into invoices; invoices roll up into client outstanding balanc
 | Trainer Email | Taken from the linked trainer. | — |
 | Trainer Hourly Rate | Taken from the linked trainer. | — |
 | Session Count | The number of sessions related to the client. | — |
-| Total Invoiced | The total total across the invoices related to the client. | — |
+| Total Invoiced | The total across the invoices related to the client. | — |
 | Outstanding Balance | The total balance across the invoices related to the client. | — |
 | Overdue Count | The number of the client's invoices that are overdues. | — |
 | Status | Determined by priority: “Overdue” if the overdue count is greater than 0; “Has Balance” if the outstanding balance is greater than 0; in all other cases, “Paid Up”. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Email | Full Name | Trainer Name ƒ | Trainer Email ƒ | Trainer Hourly Rate ƒ | Session Count ƒ | Total Invoiced ƒ | Outstanding Balance ƒ | Overdue Count ƒ | Status ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| sam@example.com | sam@example.com | Sam Patel | Alex Reyes | alex@gym.test | 80.0 | 5 | 614.8 | 614.8 | 2 | Overdue |
+| robin@example.com | robin@example.com | Robin Cole | Alex Reyes | alex@gym.test | 80.0 | 4 | 447.0 | -53.0 | 0 | Paid Up |
+| morgan@example.com | morgan@example.com | Morgan Diaz | Jamie Lin | jamie@gym.test | 95.0 | 2 | 205.0 | 205.0 | 1 | Overdue |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Invoice** | An invoice bundles one or more sessions billed to a client. | — |
 | Name | A defined attribute. | — |
 | Client | A defined attribute. | — |
@@ -60,6 +105,22 @@ _Sessions roll up into invoices; invoices roll up into client outstanding balanc
 | Is Paid | True when the balance is at most 0. | — |
 | Is Overdue | True when all of the following hold: the paid flag is not set and the days past due is greater than 0. | _True only after the GraceDays window has elapsed._ |
 | Status | Determined by priority: “Paid” if the paid flag is set; “Overdue” if the overdue flag is set; in all other cases, “Open”. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Client Name ƒ | Client Email ƒ | Trainer ƒ | Trainer Name ƒ | Issue Date | Due Date | Tax Rate | Discount Amount | Paid Amount | Subtotal ƒ | Tax Amount ƒ | Grace Days ƒ | Days Since Due Date ƒ | Days Past Due ƒ | Late Fee ƒ | Total ƒ | Balance ƒ | Is Paid ƒ | Is Overdue ƒ | Status ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| INV-001 | Sam Patel | sam@example.com | t-alex | Alex Reyes | 2026-04-01 | 2026-04-15 | 0.08 | 0 | 0 | 280.0 | 22.400000000000002 | 45 | 227 | 182 | 15.0 | 317.4 | 317.4 | false | true | Overdue |
+| INV-002 | Sam Patel | sam@example.com | t-alex | Alex Reyes | 2026-05-01 | 2026-05-15 | 0.08 | 20 | 0 | 280.0 | 22.400000000000002 | 45 | 197 | 152 | 15.0 | 297.4 | 297.4 | false | true | Overdue |
+| INV-003 | Robin Cole | robin@example.com | t-alex | Alex Reyes | 2026-05-05 | 2026-05-25 | 0.08 | 0 | 500 | 400.0 | 32.0 | 45 | 187 | 142 | 15.0 | 447.0 | -53.0 | true | false | Paid |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Session** | A logged training session. The atomic line item that rolls up into an invoice. | — |
 | Name | A defined attribute. | — |
 | Client | A defined attribute. | — |
@@ -75,6 +136,19 @@ _Sessions roll up into invoices; invoices roll up into client outstanding balanc
 | Invoice | A defined attribute. | — |
 | Invoice Name | Taken from the linked invoice. | — |
 | Is Billed | True when the invoice has a value. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Client Name ƒ | Trainer ƒ | Client Hourly Rate ƒ | Session Date | Duration Hours | Rate Override | Notes | Effective Rate ƒ | Line Total ƒ | Invoice Name ƒ | Is Billed ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| S-001 | Sam Patel | t-alex | 80.0 | 2026-03-20 | 1.0 | 0 | Strength A | 80.0 | 80.0 | INV-001 | true |
+| S-002 | Sam Patel | t-alex | 80.0 | 2026-03-25 | 1.5 | 0 | Mobility | 80.0 | 120.0 | INV-001 | true |
+| S-003 | Sam Patel | t-alex | 80.0 | 2026-03-28 | 1.0 | 0 | Strength B | 80.0 | 80.0 | INV-001 | true |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -100,13 +174,13 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | ID | Declarative rule |
 |----|------------------|
 | **DR-1 Total Sessions** | A trainer's total sessions is the number of sessions related to the trainer. |
-| **DR-2 Total Billed** | A trainer's total billed is the total total across the invoices related to the trainer. |
+| **DR-2 Total Billed** | A trainer's total billed is the total across the invoices related to the trainer. |
 | **DR-3 Total Outstanding** | A trainer's total outstanding is the total balance across the invoices related to the trainer. |
 | **DR-4 Trainer Name** | A client's trainer name is the full name of the client's trainer. |
 | **DR-5 Trainer Email** | A client's trainer email — taken from the linked trainer. |
 | **DR-6 Trainer Hourly Rate** | A client's trainer hourly rate — taken from the linked trainer. |
 | **DR-7 Session Count** | A client's session count is the number of sessions related to the client. |
-| **DR-8 Total Invoiced** | A client's total invoiced is the total total across the invoices related to the client. |
+| **DR-8 Total Invoiced** | A client's total invoiced is the total across the invoices related to the client. |
 | **DR-9 Outstanding Balance** | A client's outstanding balance is the total balance across the invoices related to the client. |
 | **DR-10 Overdue Count** | A client's overdue count is the number of the client's invoices that are overdues. |
 | **DR-11 Status** | The client's status is determined by the following priority:<br>1. “Overdue”, if the overdue count is greater than 0;<br>2. “Has Balance”, if the outstanding balance is greater than 0;<br>3. in all other cases, “Paid Up”. |
@@ -135,7 +209,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -176,8 +250,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)
