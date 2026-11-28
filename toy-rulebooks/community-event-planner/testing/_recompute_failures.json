@@ -9,10 +9,26 @@
   },
   {
     "entity": "Events",
+    "field": "RegistrationDeadline",
+    "formula": "={{EventDate}} - {{RegistrationCloseDaysBeforeEvent}}",
+    "record_id": "tech-talk-1",
+    "error": "drift: stored='2026-05-24T00:00:00-05:00' python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "Events",
     "field": "EventEnd",
     "formula": "={{EventDate}}",
     "record_id": "workshop-1",
     "error": "drift: stored='2026-05-25T10:00:00-05:00' python-recompute='2026-05-25 10:00:00'",
+    "severity": "drift"
+  },
+  {
+    "entity": "Events",
+    "field": "RegistrationDeadline",
+    "formula": "={{EventDate}} - {{RegistrationCloseDaysBeforeEvent}}",
+    "record_id": "workshop-1",
+    "error": "drift: stored='2026-05-24T00:00:00-05:00' python-recompute=-1",
     "severity": "drift"
   },
   {
@@ -25,10 +41,26 @@
   },
   {
     "entity": "Events",
+    "field": "RegistrationDeadline",
+    "formula": "={{EventDate}} - {{RegistrationCloseDaysBeforeEvent}}",
+    "record_id": "panel-1",
+    "error": "drift: stored='2026-05-24T00:00:00-05:00' python-recompute=-1",
+    "severity": "drift"
+  },
+  {
+    "entity": "Events",
     "field": "EventEnd",
     "formula": "={{EventDate}}",
     "record_id": "meetup-1",
     "error": "drift: stored='2026-05-23T18:00:00-05:00' python-recompute='2026-05-23 18:00:00'",
+    "severity": "drift"
+  },
+  {
+    "entity": "Events",
+    "field": "RegistrationDeadline",
+    "formula": "={{EventDate}} - {{RegistrationCloseDaysBeforeEvent}}",
+    "record_id": "meetup-1",
+    "error": "drift: stored='2026-05-22T00:00:00-05:00' python-recompute=-1",
     "severity": "drift"
   }
 ]
