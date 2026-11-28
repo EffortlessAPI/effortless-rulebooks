@@ -1870,4 +1870,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Dependencies": "dependency"
     }
   }
-} };
+}, stamp: "7dc74975a55b1dbb" };
