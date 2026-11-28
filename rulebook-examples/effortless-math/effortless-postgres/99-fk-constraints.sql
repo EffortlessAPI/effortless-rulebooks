@@ -12,9 +12,4 @@
 -- enforcement. Idempotent: every constraint is dropped if present, then added.
 -- ============================================================================
 
--- LegacyParentAudits
-ALTER TABLE legacy_parent_audits DROP CONSTRAINT IF EXISTS fk_legacy_parent_audits_previous_status;
-ALTER TABLE legacy_parent_audits ADD CONSTRAINT fk_legacy_parent_audits_previous_status
-  FOREIGN KEY (previous_status) REFERENCES proof_statuses (proof_status_id);
-
--- 1 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- (no FK fields detected in rulebook)

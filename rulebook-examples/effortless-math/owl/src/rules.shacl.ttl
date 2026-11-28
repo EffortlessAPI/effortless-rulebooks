@@ -1,334 +1,303 @@
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix effortless-math: <https://example.org/effortless-math#> .
+@prefix effortless-math-shapes: <https://example.org/effortless-math/shapes#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix effortless-ntwf: <https://w3id.org/effortless-ntwf#> .
 
-# === Shape with rules for ArtifactRegistry ===
-effortless-ntwf:ArtifactRegistryShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:ArtifactRegistry ;
+# === Rules for ArtifactRegistry ===
+effortless-math-shapes:ArtifactRegistry_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:ArtifactRegistry ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ArtifactRegistry_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:ArtifactRegistry .
-    OPTIONAL { $this effortless-ntwf:artifactId ?artifact_id . }
+    $this a effortless-math:ArtifactRegistry .
+    OPTIONAL { $this effortless-math:artifactId ?artifact_id . }
                 BIND(?artifact_id AS ?_result)
             }
         """ ;
     ] .
 
-# === Shape with rules for Conclusions ===
-effortless-ntwf:ConclusionsShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:Conclusions ;
+# === Rules for Conclusions ===
+effortless-math-shapes:Conclusions_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:Conclusions ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Conclusions_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:Conclusions .
-    OPTIONAL { $this effortless-ntwf:conclusionId ?conclusion_id . }
+    $this a effortless-math:Conclusions .
+    OPTIONAL { $this effortless-math:conclusionId ?conclusion_id . }
                 BIND(?conclusion_id AS ?_result)
             }
         """ ;
     ] .
 
-# === Shape with rules for Domains ===
-effortless-ntwf:DomainsShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:Domains ;
+# === Rules for Domains ===
+effortless-math-shapes:Domains_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:Domains ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Domains_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:Domains .
-    OPTIONAL { $this effortless-ntwf:domainId ?domain_id . }
+    $this a effortless-math:Domains .
+    OPTIONAL { $this effortless-math:domainId ?domain_id . }
                 BIND(?domain_id AS ?_result)
             }
         """ ;
     ] .
 
-# === Shape with rules for FoundationKernels ===
-effortless-ntwf:FoundationKernelsShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:FoundationKernels ;
+# === Rules for FoundationKernels ===
+effortless-math-shapes:FoundationKernels_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:FoundationKernels ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_FoundationKernels_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:FoundationKernels .
-    OPTIONAL { $this effortless-ntwf:kernel_id ?kernel_id . }
+    $this a effortless-math:FoundationKernels .
+    OPTIONAL { $this effortless-math:kernel_id ?kernel_id . }
                 BIND(?kernel_id AS ?_result)
             }
         """ ;
     ] .
 
-# === Shape with rules for InvariantChecks ===
-effortless-ntwf:InvariantChecksShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:InvariantChecks ;
+# === Rules for InvariantChecks ===
+effortless-math-shapes:InvariantChecks_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:InvariantChecks ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_InvariantChecks_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:InvariantChecks .
-    OPTIONAL { $this effortless-ntwf:invariantCheckId ?invariant_check_id . }
+    $this a effortless-math:InvariantChecks .
+    OPTIONAL { $this effortless-math:invariantCheckId ?invariant_check_id . }
                 BIND(?invariant_check_id AS ?_result)
             }
         """ ;
     ] .
 
-# === Shape with rules for LegacyParentAudits ===
-effortless-ntwf:LegacyParentAuditsShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:LegacyParentAudits ;
+# === Rules for LegacyParentAudits ===
+effortless-math-shapes:LegacyParentAudits_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:LegacyParentAudits ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_LegacyParentAudits_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:LegacyParentAudits .
-    OPTIONAL { $this effortless-ntwf:edge_id ?edge_id . }
+    $this a effortless-math:LegacyParentAudits .
+    OPTIONAL { $this effortless-math:edge_id ?edge_id . }
                 BIND(?edge_id AS ?_result)
             }
         """ ;
     ] .
 
-# === Shape with rules for Loops ===
-effortless-ntwf:LoopsShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:Loops ;
+# === Rules for Loops ===
+effortless-math-shapes:Loops_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:Loops ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Loops_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:Loops .
-    OPTIONAL { $this effortless-ntwf:loopId ?loop_id . }
+    $this a effortless-math:Loops .
+    OPTIONAL { $this effortless-math:loopId ?loop_id . }
                 BIND(?loop_id AS ?_result)
             }
         """ ;
     ] .
 
-# === Shape with rules for MigrationMappings ===
-effortless-ntwf:MigrationMappingsShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:MigrationMappings ;
+# === Rules for MigrationMappings ===
+effortless-math-shapes:MigrationMappings_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:MigrationMappings ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_MigrationMappings_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:MigrationMappings .
-    OPTIONAL { $this effortless-ntwf:mappingId ?mapping_id . }
+    $this a effortless-math:MigrationMappings .
+    OPTIONAL { $this effortless-math:mappingId ?mapping_id . }
                 BIND(?mapping_id AS ?_result)
             }
         """ ;
     ] .
 
-# === Shape with rules for ProjectRoadmap ===
-effortless-ntwf:ProjectRoadmapShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:ProjectRoadmap ;
+# === Rules for ProjectRoadmap ===
+effortless-math-shapes:ProjectRoadmap_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:ProjectRoadmap ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ProjectRoadmap_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:ProjectRoadmap .
-    OPTIONAL { $this effortless-ntwf:roadmapId ?roadmap_id . }
+    $this a effortless-math:ProjectRoadmap .
+    OPTIONAL { $this effortless-math:roadmapId ?roadmap_id . }
                 BIND(?roadmap_id AS ?_result)
             }
         """ ;
     ] .
 
-# === Shape with rules for ProofFacts ===
-effortless-ntwf:ProofFactsShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:ProofFacts ;
+# === Rules for ProofFacts ===
+effortless-math-shapes:ProofFacts_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:ProofFacts ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ProofFacts_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:ProofFacts .
-    OPTIONAL { $this effortless-ntwf:factId ?fact_id . }
+    $this a effortless-math:ProofFacts .
+    OPTIONAL { $this effortless-math:factId ?fact_id . }
                 BIND(?fact_id AS ?_result)
             }
         """ ;
     ] .
 
-# === Shape with rules for ProofStatuses ===
-effortless-ntwf:ProofStatusesShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:ProofStatuses ;
+# === Rules for ProofStatuses ===
+effortless-math-shapes:ProofStatuses_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:ProofStatuses ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_ProofStatuses_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:ProofStatuses .
-    OPTIONAL { $this effortless-ntwf:proofStatusId ?proof_status_id . }
+    $this a effortless-math:ProofStatuses .
+    OPTIONAL { $this effortless-math:proofStatusId ?proof_status_id . }
                 BIND(?proof_status_id AS ?_result)
             }
         """ ;
     ] .
 
-# === Shape with rules for Sources ===
-effortless-ntwf:SourcesShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:Sources ;
+# === Rules for Sources ===
+effortless-math-shapes:Sources_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:Sources ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Sources_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:Sources .
-    OPTIONAL { $this effortless-ntwf:sourceId ?source_id . }
+    $this a effortless-math:Sources .
+    OPTIONAL { $this effortless-math:sourceId ?source_id . }
                 BIND(?source_id AS ?_result)
             }
         """ ;
     ] .
 
-# === Shape with rules for TheoremDependencies ===
-effortless-ntwf:TheoremDependenciesShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:TheoremDependencies ;
+# === Rules for TheoremDependencies ===
+effortless-math-shapes:TheoremDependencies_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:TheoremDependencies ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_TheoremDependencies_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:TheoremDependencies .
-    OPTIONAL { $this effortless-ntwf:dependencyId ?dependency_id . }
+    $this a effortless-math:TheoremDependencies .
+    OPTIONAL { $this effortless-math:dependencyId ?dependency_id . }
                 BIND(?dependency_id AS ?_result)
             }
         """ ;
     ] .
 
-# === Shape with rules for Theorems ===
-effortless-ntwf:TheoremsShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:Theorems ;
+# === Rules for Theorems ===
+effortless-math-shapes:Theorems_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:Theorems ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_Theorems_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:Theorems .
-    OPTIONAL { $this effortless-ntwf:theoremId ?theorem_id . }
+    $this a effortless-math:Theorems .
+    OPTIONAL { $this effortless-math:theoremId ?theorem_id . }
                 BIND(?theorem_id AS ?_result)
             }
         """ ;
     ] .
 
-# === Shape with rules for TrustBoundaries ===
-effortless-ntwf:TrustBoundariesShape a sh:NodeShape ;
-    sh:targetClass effortless-ntwf:TrustBoundaries ;
+# === Rules for TrustBoundaries ===
+effortless-math-shapes:TrustBoundaries_Name a sh:NodeShape ;
+    sh:targetClass effortless-math:TrustBoundaries ;
+    sh:order 1 ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label "rule_TrustBoundaries_Name" ;
-        sh:prefixes effortless-ntwf: ;
         sh:construct """
-            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            PREFIX math: <http://www.w3.org/2005/xpath-functions/math#>
+            PREFIX effortless-math: <https://example.org/effortless-math#>
             CONSTRUCT {
-                $this effortless-ntwf:name ?_result .
+                $this effortless-math:name ?_result .
             }
             WHERE {
-    $this a effortless-ntwf:TrustBoundaries .
-    OPTIONAL { $this effortless-ntwf:trustBoundaryId ?trust_boundary_id . }
+    $this a effortless-math:TrustBoundaries .
+    OPTIONAL { $this effortless-math:trustBoundaryId ?trust_boundary_id . }
                 BIND(?trust_boundary_id AS ?_result)
             }
         """ ;

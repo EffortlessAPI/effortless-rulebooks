@@ -16,7 +16,7 @@
       "CommandLine": "minimize-rulebook -i effortless-math-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.10.24.1121",
-      "LastUrl": "https://effortless-minimize-rulebook-v2026-07-08-1133-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastUrl": "https://effortless-minimize-rulebook-v2026-10-24-1121-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Minimize the canonical theorem-network rulebook."
     },
     {
@@ -25,8 +25,8 @@
       "RelativePath": "/effortless-postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-math-rulebook.json -p memoize_repeated_calls=true -p database=erb_effortless_math",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.17.1626",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.11.26.1400",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-11-26-1400-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate Postgres schema and seed data."
     },
     {
@@ -43,7 +43,7 @@
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-math-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.11.22.1524",
-      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-08-30-1537-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-11-22-1524-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate the human-readable theorem-network narrative."
     },
     {
@@ -52,8 +52,8 @@
       "RelativePath": "/owl",
       "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/effortless-math-rulebook.json",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.17.1018",
-      "LastUrl": "https://effortless-rulebook-to-owl-v2026-07-08-0207-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.11.27.1353",
+      "LastUrl": "https://effortless-rulebook-to-owl-v2026-11-27-1353-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate OWL/SHACL theorem-network projections."
     },
     {
@@ -62,7 +62,8 @@
       "RelativePath": "/app/frontend/public",
       "CommandLine": "rulebook-to-explainer-dag -i ../../../effortless-rulebook/effortless-math-rulebook.json -o rulebook-explainer-dag -p languages=all",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1838",
+      "LastVersionUsed": "v2026.11.27.1439",
+      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-11-27-1439-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate an ExplainDAG projection."
     },
     {
@@ -71,7 +72,6 @@
       "RelativePath": "",
       "CommandLine": "rulebook-to-xlsx -i effortless-rulebook/effortless-math-rulebook.json",
       "IsDisabled": true,
-      "LastVersionUsed": "v2026.09.02.1122",
       "DisabledNote": "Enable after the rulebook is integrated and the large-domain XLSX path is capacity-tested."
     },
     {
@@ -80,8 +80,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i effortless-math-rulebook.json -p rulebookPath=effortless-math-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.0226",
-      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-07-0138-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.11.27.1442",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-11-27-1442-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],
   "ShowHidden": false,

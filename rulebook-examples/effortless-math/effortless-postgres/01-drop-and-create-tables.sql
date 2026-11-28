@@ -386,7 +386,4 @@ COMMENT ON COLUMN legacy_parent_audits.next_target IS 'next_target';
 -- FK INDEXES - Performance only, always applied
 -- ============================================================================
 
--- LegacyParentAudits
-CREATE INDEX IF NOT EXISTS idx_legacy_parent_audits_previous_status ON legacy_parent_audits (previous_status);
-
--- 1 FK index(es) declared.
+-- (no FK fields detected in rulebook)

@@ -1,6 +1,6 @@
 {
   "Domains": {
-    "Description": "Table: Domains \u2014 mathematical domains in the global theorem network.",
+    "Description": "Table: Domains — mathematical domains in the global theorem network.",
     "schema": [
       {
         "name": "DomainId",
@@ -76,7 +76,7 @@
     ]
   },
   "ProofStatuses": {
-    "Description": "Table: ProofStatuses \u2014 controlled proof-state vocabulary. Parent removal and full internalization are deliberately distinct.",
+    "Description": "Table: ProofStatuses — controlled proof-state vocabulary. Parent removal and full internalization are deliberately distinct.",
     "schema": [
       {
         "name": "ProofStatusId",
@@ -138,7 +138,7 @@
     ]
   },
   "Theorems": {
-    "Description": "Table: Theorems \u2014 one row per application theorem or provider theorem.",
+    "Description": "Table: Theorems — one row per application theorem or provider theorem.",
     "schema": [
       {
         "name": "TheoremId",
@@ -249,7 +249,7 @@
     ]
   },
   "TheoremDependencies": {
-    "Description": "Table: TheoremDependencies \u2014 typed provider/consumer edges between theorem contracts.",
+    "Description": "Table: TheoremDependencies — typed provider/consumer edges between theorem contracts.",
     "schema": [
       {
         "name": "DependencyId",
@@ -332,7 +332,7 @@
     ]
   },
   "FoundationKernels": {
-    "Description": "Table: FoundationKernels \u2014 the seven v21 provider frontiers.",
+    "Description": "Table: FoundationKernels — the seven v21 provider frontiers.",
     "schema": [
       {
         "name": "kernel_order",
@@ -422,7 +422,7 @@
     ]
   },
   "ProofFacts": {
-    "Description": "Table: ProofFacts \u2014 the current v21 contradiction trace, one derived fact per row.",
+    "Description": "Table: ProofFacts — the current v21 contradiction trace, one derived fact per row.",
     "schema": [
       {
         "name": "FactId",
@@ -498,7 +498,7 @@
     ]
   },
   "Loops": {
-    "Description": "Table: Loops \u2014 all 571 historical and conceptual build loops from Fermat Witness Lab v21.",
+    "Description": "Table: Loops — all 571 historical and conceptual build loops from Fermat Witness Lab v21.",
     "schema": [
       {
         "name": "LoopId",
@@ -581,7 +581,7 @@
     ]
   },
   "InvariantChecks": {
-    "Description": "Table: InvariantChecks \u2014 imported v21 invariant ledger. Any FAIL row must fail the build.",
+    "Description": "Table: InvariantChecks — imported v21 invariant ledger. Any FAIL row must fail the build.",
     "schema": [
       {
         "name": "InvariantCheckId",
@@ -664,7 +664,7 @@
     ]
   },
   "Sources": {
-    "Description": "Table: Sources \u2014 provenance catalog from v21.",
+    "Description": "Table: Sources — provenance catalog from v21.",
     "schema": [
       {
         "name": "SourceId",
@@ -712,7 +712,7 @@
     ]
   },
   "TrustBoundaries": {
-    "Description": "Table: TrustBoundaries \u2014 explicit statement of what each theorem still trusts externally.",
+    "Description": "Table: TrustBoundaries — explicit statement of what each theorem still trusts externally.",
     "schema": [
       {
         "name": "TrustBoundaryId",
@@ -774,7 +774,7 @@
     ]
   },
   "ArtifactRegistry": {
-    "Description": "Table: ArtifactRegistry \u2014 immutable source artifacts and content hashes for the migration.",
+    "Description": "Table: ArtifactRegistry — immutable source artifacts and content hashes for the migration.",
     "schema": [
       {
         "name": "ArtifactId",
@@ -843,7 +843,7 @@
     ]
   },
   "MigrationMappings": {
-    "Description": "Table: MigrationMappings \u2014 explicit mapping from v21 SQLite concepts to the new theorem-network rulebook.",
+    "Description": "Table: MigrationMappings — explicit mapping from v21 SQLite concepts to the new theorem-network rulebook.",
     "schema": [
       {
         "name": "MappingId",
@@ -891,7 +891,7 @@
     ]
   },
   "ProjectRoadmap": {
-    "Description": "Table: ProjectRoadmap \u2014 integration sequence and acceptance criteria.",
+    "Description": "Table: ProjectRoadmap — integration sequence and acceptance criteria.",
     "schema": [
       {
         "name": "RoadmapId",
@@ -946,7 +946,7 @@
     ]
   },
   "Conclusions": {
-    "Description": "Table: Conclusions \u2014 high-level claims earned by the migration starter itself.",
+    "Description": "Table: Conclusions — high-level claims earned by the migration starter itself.",
     "schema": [
       {
         "name": "ConclusionId",
@@ -1008,7 +1008,7 @@
     ]
   },
   "LegacyParentAudits": {
-    "Description": "Table: LegacyParentAudits \u2014 the final-nine parent-to-kernel compression from v21.",
+    "Description": "Table: LegacyParentAudits — the final-nine parent-to-kernel compression from v21.",
     "schema": [
       {
         "name": "edge_order",

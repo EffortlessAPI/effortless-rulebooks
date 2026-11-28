@@ -1,0 +1,268 @@
+{
+  "generator": "rulebook-to-owl",
+  "ontology": {
+    "iri": "https://example.org/effortless-math",
+    "versionIri": null,
+    "namespace": "https://example.org/effortless-math#",
+    "dataNamespace": "https://example.org/effortless-math#",
+    "prefix": "effortless-math",
+    "placeholder": true
+  },
+  "prefixes": {
+    "effortless-math": "https://example.org/effortless-math#",
+    "effortless-math-shapes": "https://example.org/effortless-math/shapes#",
+    "erb": "https://effortlessapi.com/ns/erb#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "sh": "http://www.w3.org/ns/shacl#",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "keyProperty": "https://effortlessapi.com/ns/erb#key",
+  "derivedProperty": "https://effortlessapi.com/ns/erb#derived",
+  "tables": {
+    "Domains": {
+      "class": "https://example.org/effortless-math#Domains",
+      "keyField": "DomainId",
+      "fields": {
+        "DomainId": "https://example.org/effortless-math#domainId",
+        "Name": "https://example.org/effortless-math#name",
+        "Slug": "https://example.org/effortless-math#slug",
+        "Title": "https://example.org/effortless-math#title",
+        "Role": "https://example.org/effortless-math#role",
+        "Status": "https://example.org/effortless-math#status",
+        "Description": "https://example.org/effortless-math#description",
+        "CanonicalTheoremId": "https://example.org/effortless-math#canonicalTheoremId",
+        "RelativePath": "https://example.org/effortless-math#relativePath",
+        "IsFlagship": "https://example.org/effortless-math#isFlagship"
+      }
+    },
+    "ProofStatuses": {
+      "class": "https://example.org/effortless-math#ProofStatuses",
+      "keyField": "ProofStatusId",
+      "fields": {
+        "ProofStatusId": "https://example.org/effortless-math#proofStatusId",
+        "Name": "https://example.org/effortless-math#name",
+        "SortOrder": "https://example.org/effortless-math#sortOrder",
+        "IsImported": "https://example.org/effortless-math#isImported",
+        "IsDerived": "https://example.org/effortless-math#isDerived",
+        "AllowsImportedChildren": "https://example.org/effortless-math#allowsImportedChildren",
+        "IsTerminal": "https://example.org/effortless-math#isTerminal",
+        "Description": "https://example.org/effortless-math#description"
+      }
+    },
+    "Theorems": {
+      "class": "https://example.org/effortless-math#Theorems",
+      "keyField": "TheoremId",
+      "fields": {
+        "TheoremId": "https://example.org/effortless-math#theoremId",
+        "Name": "https://example.org/effortless-math#name",
+        "DomainId": "https://example.org/effortless-math#domainId",
+        "Title": "https://example.org/effortless-math#title",
+        "TheoremKind": "https://example.org/effortless-math#theoremKind",
+        "Statement": "https://example.org/effortless-math#statement",
+        "Scope": "https://example.org/effortless-math#scope",
+        "ProofStatusId": "https://example.org/effortless-math#proofStatusId",
+        "TrustBoundary": "https://example.org/effortless-math#trustBoundary",
+        "ActiveImportCount": "https://example.org/effortless-math#activeImportCount",
+        "RootFactId": "https://example.org/effortless-math#rootFactId",
+        "ContractPath": "https://example.org/effortless-math#contractPath",
+        "CurrentVersion": "https://example.org/effortless-math#currentVersion",
+        "IsFlagship": "https://example.org/effortless-math#isFlagship",
+        "NextTarget": "https://example.org/effortless-math#nextTarget"
+      }
+    },
+    "TheoremDependencies": {
+      "class": "https://example.org/effortless-math#TheoremDependencies",
+      "keyField": "DependencyId",
+      "fields": {
+        "DependencyId": "https://example.org/effortless-math#dependencyId",
+        "Name": "https://example.org/effortless-math#name",
+        "ConsumerTheoremId": "https://example.org/effortless-math#consumerTheoremId",
+        "ProviderTheoremId": "https://example.org/effortless-math#providerTheoremId",
+        "RequiredConclusion": "https://example.org/effortless-math#requiredConclusion",
+        "ProofStatusId": "https://example.org/effortless-math#proofStatusId",
+        "LoadBearing": "https://example.org/effortless-math#loadBearing",
+        "IsImported": "https://example.org/effortless-math#isImported",
+        "IsSharedKernel": "https://example.org/effortless-math#isSharedKernel",
+        "ProviderContractPath": "https://example.org/effortless-math#providerContractPath",
+        "Notes": "https://example.org/effortless-math#notes"
+      }
+    },
+    "FoundationKernels": {
+      "class": "https://example.org/effortless-math#FoundationKernels",
+      "keyField": "kernel_id",
+      "fields": {
+        "kernel_order": "https://example.org/effortless-math#kernel_order",
+        "kernel_id": "https://example.org/effortless-math#kernel_id",
+        "Name": "https://example.org/effortless-math#name",
+        "title": "https://example.org/effortless-math#title",
+        "mathematical_scope": "https://example.org/effortless-math#mathematical_scope",
+        "input_contract_json": "https://example.org/effortless-math#input_contract_json",
+        "output_contract_json": "https://example.org/effortless-math#output_contract_json",
+        "finite_compiler_tables_json": "https://example.org/effortless-math#finite_compiler_tables_json",
+        "source_id": "https://example.org/effortless-math#source_id",
+        "theorem_content_internalized": "https://example.org/effortless-math#theorem_content_internalized",
+        "status": "https://example.org/effortless-math#status",
+        "next_target": "https://example.org/effortless-math#next_target"
+      }
+    },
+    "ProofFacts": {
+      "class": "https://example.org/effortless-math#ProofFacts",
+      "keyField": "FactId",
+      "fields": {
+        "FactId": "https://example.org/effortless-math#factId",
+        "Name": "https://example.org/effortless-math#name",
+        "StepNo": "https://example.org/effortless-math#stepNo",
+        "RuleId": "https://example.org/effortless-math#ruleId",
+        "DerivedFact": "https://example.org/effortless-math#derivedFact",
+        "AntecedentsJson": "https://example.org/effortless-math#antecedentsJson",
+        "DerivationKind": "https://example.org/effortless-math#derivationKind",
+        "Contradiction": "https://example.org/effortless-math#contradiction",
+        "Notes": "https://example.org/effortless-math#notes",
+        "DomainId": "https://example.org/effortless-math#domainId"
+      }
+    },
+    "Loops": {
+      "class": "https://example.org/effortless-math#Loops",
+      "keyField": "LoopId",
+      "fields": {
+        "LoopId": "https://example.org/effortless-math#loopId",
+        "Name": "https://example.org/effortless-math#name",
+        "LoopOrder": "https://example.org/effortless-math#loopOrder",
+        "Title": "https://example.org/effortless-math#title",
+        "Status": "https://example.org/effortless-math#status",
+        "NewConcept": "https://example.org/effortless-math#newConcept",
+        "DomainQuestion": "https://example.org/effortless-math#domainQuestion",
+        "WitnessSummary": "https://example.org/effortless-math#witnessSummary",
+        "NextFrontier": "https://example.org/effortless-math#nextFrontier",
+        "EpistemicTier": "https://example.org/effortless-math#epistemicTier",
+        "DomainId": "https://example.org/effortless-math#domainId"
+      }
+    },
+    "InvariantChecks": {
+      "class": "https://example.org/effortless-math#InvariantChecks",
+      "keyField": "InvariantCheckId",
+      "fields": {
+        "InvariantCheckId": "https://example.org/effortless-math#invariantCheckId",
+        "Name": "https://example.org/effortless-math#name",
+        "Description": "https://example.org/effortless-math#description",
+        "Tier": "https://example.org/effortless-math#tier",
+        "PassCount": "https://example.org/effortless-math#passCount",
+        "FailCount": "https://example.org/effortless-math#failCount",
+        "UniverseCount": "https://example.org/effortless-math#universeCount",
+        "Status": "https://example.org/effortless-math#status",
+        "Evidence": "https://example.org/effortless-math#evidence",
+        "ProtectsLoop": "https://example.org/effortless-math#protectsLoop",
+        "DomainId": "https://example.org/effortless-math#domainId"
+      }
+    },
+    "Sources": {
+      "class": "https://example.org/effortless-math#Sources",
+      "keyField": "SourceId",
+      "fields": {
+        "SourceId": "https://example.org/effortless-math#sourceId",
+        "Name": "https://example.org/effortless-math#name",
+        "Citation": "https://example.org/effortless-math#citation",
+        "SourceUrl": "https://example.org/effortless-math#sourceUrl",
+        "SourceKind": "https://example.org/effortless-math#sourceKind",
+        "Role": "https://example.org/effortless-math#role"
+      }
+    },
+    "TrustBoundaries": {
+      "class": "https://example.org/effortless-math#TrustBoundaries",
+      "keyField": "TrustBoundaryId",
+      "fields": {
+        "TrustBoundaryId": "https://example.org/effortless-math#trustBoundaryId",
+        "Name": "https://example.org/effortless-math#name",
+        "TheoremId": "https://example.org/effortless-math#theoremId",
+        "BoundaryKind": "https://example.org/effortless-math#boundaryKind",
+        "AcceptedExternalClaims": "https://example.org/effortless-math#acceptedExternalClaims",
+        "KernelOrSubstrate": "https://example.org/effortless-math#kernelOrSubstrate",
+        "CanClaimZeroImports": "https://example.org/effortless-math#canClaimZeroImports",
+        "Notes": "https://example.org/effortless-math#notes"
+      }
+    },
+    "ArtifactRegistry": {
+      "class": "https://example.org/effortless-math#ArtifactRegistry",
+      "keyField": "ArtifactId",
+      "fields": {
+        "ArtifactId": "https://example.org/effortless-math#artifactId",
+        "Name": "https://example.org/effortless-math#name",
+        "DomainId": "https://example.org/effortless-math#domainId",
+        "ArtifactKind": "https://example.org/effortless-math#artifactKind",
+        "RelativePath": "https://example.org/effortless-math#relativePath",
+        "Version": "https://example.org/effortless-math#version",
+        "Sha256": "https://example.org/effortless-math#sha256",
+        "IsCanonicalMigrationSource": "https://example.org/effortless-math#isCanonicalMigrationSource",
+        "Notes": "https://example.org/effortless-math#notes"
+      }
+    },
+    "MigrationMappings": {
+      "class": "https://example.org/effortless-math#MigrationMappings",
+      "keyField": "MappingId",
+      "fields": {
+        "MappingId": "https://example.org/effortless-math#mappingId",
+        "Name": "https://example.org/effortless-math#name",
+        "SourceTable": "https://example.org/effortless-math#sourceTable",
+        "TargetTable": "https://example.org/effortless-math#targetTable",
+        "Strategy": "https://example.org/effortless-math#strategy",
+        "Notes": "https://example.org/effortless-math#notes"
+      }
+    },
+    "ProjectRoadmap": {
+      "class": "https://example.org/effortless-math#ProjectRoadmap",
+      "keyField": "RoadmapId",
+      "fields": {
+        "RoadmapId": "https://example.org/effortless-math#roadmapId",
+        "Name": "https://example.org/effortless-math#name",
+        "SequenceNo": "https://example.org/effortless-math#sequenceNo",
+        "Title": "https://example.org/effortless-math#title",
+        "Status": "https://example.org/effortless-math#status",
+        "AcceptanceCriteria": "https://example.org/effortless-math#acceptanceCriteria",
+        "DependsOn": "https://example.org/effortless-math#dependsOn"
+      }
+    },
+    "Conclusions": {
+      "class": "https://example.org/effortless-math#Conclusions",
+      "keyField": "ConclusionId",
+      "fields": {
+        "ConclusionId": "https://example.org/effortless-math#conclusionId",
+        "Name": "https://example.org/effortless-math#name",
+        "Category": "https://example.org/effortless-math#category",
+        "Status": "https://example.org/effortless-math#status",
+        "ReportTier": "https://example.org/effortless-math#reportTier",
+        "Title": "https://example.org/effortless-math#title",
+        "Evidence": "https://example.org/effortless-math#evidence",
+        "WitnessedInLoop": "https://example.org/effortless-math#witnessedInLoop"
+      }
+    },
+    "LegacyParentAudits": {
+      "class": "https://example.org/effortless-math#LegacyParentAudits",
+      "keyField": "edge_id",
+      "fields": {
+        "edge_order": "https://example.org/effortless-math#edge_order",
+        "edge_id": "https://example.org/effortless-math#edge_id",
+        "Name": "https://example.org/effortless-math#name",
+        "previous_status": "https://example.org/effortless-math#previous_status",
+        "current_status": "https://example.org/effortless-math#current_status",
+        "parent_removed": "https://example.org/effortless-math#parent_removed",
+        "replacement_kernel_id": "https://example.org/effortless-math#replacement_kernel_id",
+        "kernel_shared_with_parent_count": "https://example.org/effortless-math#kernel_shared_with_parent_count",
+        "theorem_content_fully_internalized": "https://example.org/effortless-math#theorem_content_fully_internalized",
+        "status": "https://example.org/effortless-math#status",
+        "next_target": "https://example.org/effortless-math#next_target"
+      }
+    }
+  },
+  "junctions": {},
+  "conclusionsFromAbsence": {
+    "derivedFields": 15,
+    "fromAbsence": 0,
+    "neverFromAbsence": 15,
+    "tablesCountedWithoutBeingDeclaredComplete": [],
+    "tablesDeclaredComplete": [],
+    "fields": []
+  }
+}
