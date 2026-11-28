@@ -1,4 +1,4 @@
-# 📘 Taxonomy of Intelligence — RuleSpeak®
+# 📘 Taxonomy of Intelligence — Docs
 
 _Classifies intelligences (humans, animals, AI) by per-capability assessments through a multi-hop DAG._
 
@@ -16,6 +16,22 @@ _Classifies intelligences (humans, animals, AI) by per-capability assessments th
 | Description | A defined attribute. | _Short prose describing the capability._ |
 | Tier | A defined attribute. | _Capability tier: foundational, composite, or emergent._ |
 | Weight | A defined attribute. | _Importance multiplier used when computing WeightedScore on each Assessment._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Description | Tier | Weight |
+|---|---|---|---|
+| memory | Storing, retaining, and recalling information across time. | foundational | 1.0 |
+| perception | Sensing the environment and interpreting raw input into structure. | foundational | 1.0 |
+| reasoning | Inference, deduction, and structured problem-solving. | composite | 1.3 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Intelligence** | Agents being classified by the taxonomy. Each Intelligence's TaxonomyClass is derived from the rollup of its Assessments. | — |
 | Name | The same as its intelligences ID. | _Display name (derived from PK)._ |
 | Description | A defined attribute. | _Short prose describing what this intelligence is._ |
@@ -23,6 +39,22 @@ _Classifies intelligences (humans, animals, AI) by per-capability assessments th
 | Assessment Count | The number of assessments related to the intelligence. | _How many capabilities this intelligence has been assessed on._ |
 | Total Weighted Score | The total weighted score across the assessments related to the intelligence. | _Sum of WeightedScore across all this intelligence's assessments. Second hop in the DAG._ |
 | Taxonomy Class | Determined by priority: “Generalist” if the total weighted score is at least 350; “Broad” if the total weighted score is at least 220; in all other cases, “Narrow”. | _Taxonomic bucket derived from TotalWeightedScore. Third hop in the DAG._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Description | Substrate | Assessment Count ƒ | Total Weighted Score ƒ | Taxonomy Class ƒ |
+|---|---|---|---|---|---|
+| human | A neurotypical human adult. | biological | 4 | 395.5 | Generalist |
+| octopus | A cephalopod problem-solver with distributed cognition. | biological | 4 | 339.5 | Broad |
+| gpt-5 | A large language model trained on broad text. | digital | 4 | 326.5 | Broad |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Assessment** | Per-capability scores for each intelligence. The junction table whose calculated WeightedScore feeds the rollup on Intelligences. | — |
 | Name | The same as its assessments ID. | _Display name (derived from PK)._ |
 | Intelligence | A defined attribute. | _FK to Intelligences. Holds the value of Intelligences.IntelligencesId._ |
@@ -33,6 +65,19 @@ _Classifies intelligences (humans, animals, AI) by per-capability assessments th
 | Capability Tier | Taken from the linked capability. | _Tier (foundational/composite/emergent) pulled from the related Capabilities row._ |
 | Capability Weight | Taken from the linked capability. | _Importance multiplier pulled from the related Capabilities row._ |
 | Weighted Score | Computed as the raw score times the capability weight. | _RawScore scaled by the capability's Weight. First hop in the DAG._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Raw Score | Intelligence Name ƒ | Capability Name ƒ | Capability Tier ƒ | Capability Weight ƒ | Weighted Score ƒ |
+|---|---|---|---|---|---|---|
+| human-memory | 80 | human | memory | foundational | 1.0 | 80.0 |
+| human-perception | 85 | human | perception | foundational | 1.0 | 85.0 |
+| human-reasoning | 85 | human | reasoning | composite | 1.3 | 110.5 |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -78,7 +123,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -97,8 +142,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)
