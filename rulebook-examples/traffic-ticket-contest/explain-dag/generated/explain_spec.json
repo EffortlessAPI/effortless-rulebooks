@@ -2,7 +2,7 @@
   "schema_version": "erb.explain_spec.v1",
   "rulebook": {
     "name": "traffic-ticket-contest",
-    "rulebook_hash": "sha256:d1b51c270988573175d19aa8a8f37326"
+    "rulebook_hash": "sha256:5cbde7587d4157515b5559c21cf85598"
   },
   "semantics": {
     "profile": "excel",
@@ -14739,6 +14739,12 @@
           "type": "calculated",
           "description": "True when the driver is liable, has not paid in full, and the payment due date has passed as of AsOfDate."
         },
+        "CollectionsDeadline": {
+          "datatype": "date",
+          "nullable": false,
+          "type": "calculated",
+          "description": "Date the account moves to collections: PaymentDueDate plus the jurisdiction's grace window."
+        },
         "IsInCollections": {
           "datatype": "boolean",
           "nullable": false,
@@ -14816,6 +14822,7 @@
         "Name",
         "AmountDueUsd",
         "CitationStatus",
+        "CollectionsDeadline",
         "ContestStatus",
         "DaysUntilResponseDue",
         "EffectivePoints",
@@ -14874,6 +14881,14 @@
           "CitationStatus"
         ],
         [
+          "DaysLateToCollections",
+          "CollectionsDeadline"
+        ],
+        [
+          "PaymentDueDate",
+          "CollectionsDeadline"
+        ],
+        [
           "ContestRequested",
           "ContestStatus"
         ],
@@ -14926,15 +14941,11 @@
           "IsInCollections"
         ],
         [
-          "DaysLateToCollections",
+          "CollectionsDeadline",
           "IsInCollections"
         ],
         [
           "IsPaymentLate",
-          "IsInCollections"
-        ],
-        [
-          "PaymentDueDate",
           "IsInCollections"
         ],
         [
@@ -16041,9 +16052,68 @@
           ],
           "description": "True when the driver is liable, has not paid in full, and the payment due date has passed as of AsOfDate."
         },
+        "CollectionsDeadline": {
+          "formula_source": "=DATEVALUE({{PaymentDueDate}}) + {{DaysLateToCollections}}",
+          "template_hash": "sha256:1a3a74dacf16495e",
+          "root_node": "n_result_CollectionsDeadline",
+          "nodes": {
+            "n_ref_1": {
+              "kind": "field_ref",
+              "field": "PaymentDueDate",
+              "field_snake": "payment_due_date"
+            },
+            "n_fn_2": {
+              "kind": "fn",
+              "name": "DATEVALUE",
+              "args": [
+                "n_ref_1"
+              ]
+            },
+            "n_ref_3": {
+              "kind": "field_ref",
+              "field": "DaysLateToCollections",
+              "field_snake": "days_late_to_collections"
+            },
+            "n_op_4": {
+              "kind": "op",
+              "name": "+",
+              "args": [
+                "n_fn_2",
+                "n_ref_3"
+              ]
+            },
+            "n_result_CollectionsDeadline": {
+              "kind": "result",
+              "field": "CollectionsDeadline",
+              "field_snake": "collections_deadline",
+              "in": [
+                "n_op_4"
+              ]
+            }
+          },
+          "edges": [
+            [
+              "n_ref_1",
+              "n_fn_2"
+            ],
+            [
+              "n_fn_2",
+              "n_op_4"
+            ],
+            [
+              "n_ref_3",
+              "n_op_4"
+            ],
+            [
+              "n_op_4",
+              "n_result_CollectionsDeadline"
+            ]
+          ],
+          "description": "Date the account moves to collections: PaymentDueDate plus the jurisdiction's grace window."
+        },
         "IsInCollections": {
-          "formula_source": "=IF(AND({{IsPaymentLate}}, {{AsOfDate}} > DATEVALUE({{PaymentDueDate}}) + {{DaysLateToCollections}}), TRUE, FALSE)",
-          "template_hash": "sha256:219a7e4391cfff42",
+          "formula_source": "=IF(AND({{IsPaymentLate}}, {{AsOfDate}} > {{CollectionsDeadline}}), TRUE, FALSE)",
+          "template_hash": "sha256:a0aec35262d8c34e",
           "root_node": "n_result_IsInCollections",
           "nodes": {
             "n_ref_1": {
@@ -16058,62 +16128,42 @@
             },
             "n_ref_3": {
               "kind": "field_ref",
-              "field": "PaymentDueDate",
-              "field_snake": "payment_due_date"
+              "field": "CollectionsDeadline",
+              "field_snake": "collections_deadline"
             },
-            "n_fn_4": {
-              "kind": "fn",
-              "name": "DATEVALUE",
-              "args": [
-                "n_ref_3"
-              ]
-            },
-            "n_ref_5": {
-              "kind": "field_ref",
-              "field": "DaysLateToCollections",
-              "field_snake": "days_late_to_collections"
-            },
-            "n_op_6": {
-              "kind": "op",
-              "name": "+",
-              "args": [
-                "n_fn_4",
-                "n_ref_5"
-              ]
-            },
-            "n_op_7": {
+            "n_op_4": {
               "kind": "op",
               "name": ">",
               "args": [
                 "n_ref_2",
-                "n_op_6"
+                "n_ref_3"
               ]
             },
-            "n_fn_8": {
+            "n_fn_5": {
               "kind": "fn",
               "name": "AND",
               "args": [
                 "n_ref_1",
-                "n_op_7"
+                "n_op_4"
               ]
             },
-            "n_const_9": {
+            "n_const_6": {
               "kind": "const",
               "value": true,
               "type": "boolean"
             },
-            "n_const_10": {
+            "n_const_7": {
               "kind": "const",
               "value": false,
               "type": "boolean"
             },
-            "n_fn_11": {
+            "n_fn_8": {
               "kind": "fn",
               "name": "IF",
               "args": [
-                "n_fn_8",
-                "n_const_9",
-                "n_const_10"
+                "n_fn_5",
+                "n_const_6",
+                "n_const_7"
               ]
             },
             "n_result_IsInCollections": {
@@ -16121,53 +16171,41 @@
               "field": "IsInCollections",
               "field_snake": "is_in_collections",
               "in": [
-                "n_fn_11"
+                "n_fn_8"
               ]
             }
           },
           "edges": [
             [
-              "n_ref_3",
-              "n_fn_4"
-            ],
-            [
-              "n_fn_4",
-              "n_op_6"
-            ],
-            [
-              "n_ref_5",
-              "n_op_6"
-            ],
-            [
               "n_ref_2",
-              "n_op_7"
+              "n_op_4"
             ],
             [
-              "n_op_6",
-              "n_op_7"
+              "n_ref_3",
+              "n_op_4"
             ],
             [
               "n_ref_1",
+              "n_fn_5"
+            ],
+            [
+              "n_op_4",
+              "n_fn_5"
+            ],
+            [
+              "n_fn_5",
               "n_fn_8"
             ],
             [
-              "n_op_7",
+              "n_const_6",
+              "n_fn_8"
+            ],
+            [
+              "n_const_7",
               "n_fn_8"
             ],
             [
               "n_fn_8",
-              "n_fn_11"
-            ],
-            [
-              "n_const_9",
-              "n_fn_11"
-            ],
-            [
-              "n_const_10",
-              "n_fn_11"
-            ],
-            [
-              "n_fn_11",
               "n_result_IsInCollections"
             ]
           ],

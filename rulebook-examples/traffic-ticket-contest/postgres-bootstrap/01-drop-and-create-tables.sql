@@ -1799,33 +1799,16 @@ COMMENT ON COLUMN build_phases.modified_by IS 'Audit.';
 
 -- BusinessRules
 CREATE INDEX IF NOT EXISTS idx_business_rules_category ON business_rules (category);
-CREATE INDEX IF NOT EXISTS idx_business_rules_created_by ON business_rules (created_by);
-CREATE INDEX IF NOT EXISTS idx_business_rules_modified_by ON business_rules (modified_by);
-
--- BusinessRuleCategories
-CREATE INDEX IF NOT EXISTS idx_business_rule_categories_created_by ON business_rule_categories (created_by);
-CREATE INDEX IF NOT EXISTS idx_business_rule_categories_modified_by ON business_rule_categories (modified_by);
-
--- GlossaryCategories
-CREATE INDEX IF NOT EXISTS idx_glossary_categories_created_by ON glossary_categories (created_by);
-CREATE INDEX IF NOT EXISTS idx_glossary_categories_modified_by ON glossary_categories (modified_by);
 
 -- GlossaryTerms
 CREATE INDEX IF NOT EXISTS idx_glossary_terms_category ON glossary_terms (category);
-CREATE INDEX IF NOT EXISTS idx_glossary_terms_created_by ON glossary_terms (created_by);
-CREATE INDEX IF NOT EXISTS idx_glossary_terms_modified_by ON glossary_terms (modified_by);
 
 -- AuditLogEntries
 CREATE INDEX IF NOT EXISTS idx_audit_log_entries_citation ON audit_log_entries (citation);
 CREATE INDEX IF NOT EXISTS idx_audit_log_entries_actor ON audit_log_entries (actor);
-CREATE INDEX IF NOT EXISTS idx_audit_log_entries_created_by ON audit_log_entries (created_by);
-CREATE INDEX IF NOT EXISTS idx_audit_log_entries_modified_by ON audit_log_entries (modified_by);
 
 -- PlatformNaviation
 CREATE INDEX IF NOT EXISTS idx_platform_naviation_erb_package ON platform_naviation (erb_package);
-CREATE INDEX IF NOT EXISTS idx_platform_naviation_status ON platform_naviation (status);
-CREATE INDEX IF NOT EXISTS idx_platform_naviation_created_by ON platform_naviation (created_by);
-CREATE INDEX IF NOT EXISTS idx_platform_naviation_modified_by ON platform_naviation (modified_by);
 
 -- Jurisdictions
 CREATE INDEX IF NOT EXISTS idx_jurisdictions_parent_jurisdiction ON jurisdictions (parent_jurisdiction);
@@ -1836,56 +1819,35 @@ CREATE INDEX IF NOT EXISTS idx_jurisdictions_source_documents ON jurisdictions (
 -- JurisdictionSourceDocuments
 CREATE INDEX IF NOT EXISTS idx_jurisdiction_source_documents_jurisdiction ON jurisdiction_source_documents (jurisdiction);
 CREATE INDEX IF NOT EXISTS idx_jurisdiction_source_documents_jurisdiction_rules ON jurisdiction_source_documents (jurisdiction_rules);
-CREATE INDEX IF NOT EXISTS idx_jurisdiction_source_documents_created_by ON jurisdiction_source_documents (created_by);
-CREATE INDEX IF NOT EXISTS idx_jurisdiction_source_documents_modified_by ON jurisdiction_source_documents (modified_by);
 
 -- JurisdictionRules
 CREATE INDEX IF NOT EXISTS idx_jurisdiction_rules_route ON jurisdiction_rules (route);
-CREATE INDEX IF NOT EXISTS idx_jurisdiction_rules_ai_version_model ON jurisdiction_rules (ai_version_model);
 CREATE INDEX IF NOT EXISTS idx_jurisdiction_rules_source_document ON jurisdiction_rules (source_document);
 CREATE INDEX IF NOT EXISTS idx_jurisdiction_rules_jurisdiction ON jurisdiction_rules (jurisdiction);
-CREATE INDEX IF NOT EXISTS idx_jurisdiction_rules_created_by ON jurisdiction_rules (created_by);
-CREATE INDEX IF NOT EXISTS idx_jurisdiction_rules_modified_by ON jurisdiction_rules (modified_by);
-CREATE INDEX IF NOT EXISTS idx_jurisdiction_rules_modified_by_model ON jurisdiction_rules (modified_by_model);
 
 -- AppUsers
 CREATE INDEX IF NOT EXISTS idx_app_users_role ON app_users (role);
 
--- SiteBranding
-CREATE INDEX IF NOT EXISTS idx_site_branding_created_by ON site_branding (created_by);
-CREATE INDEX IF NOT EXISTS idx_site_branding_modified_by ON site_branding (modified_by);
-
 -- ReferenceDocuments
 CREATE INDEX IF NOT EXISTS idx_reference_documents_jurisdiction ON reference_documents (jurisdiction);
-CREATE INDEX IF NOT EXISTS idx_reference_documents_created_by ON reference_documents (created_by);
-CREATE INDEX IF NOT EXISTS idx_reference_documents_modified_by ON reference_documents (modified_by);
 
 -- StateMachines
 CREATE INDEX IF NOT EXISTS idx_state_machines_erb_package ON state_machines (erb_package);
 
 -- MachineStates
 CREATE INDEX IF NOT EXISTS idx_machine_states_state_machine ON machine_states (state_machine);
-CREATE INDEX IF NOT EXISTS idx_machine_states_created_by ON machine_states (created_by);
-CREATE INDEX IF NOT EXISTS idx_machine_states_modified_by ON machine_states (modified_by);
 
 -- StateTransitionRules
 CREATE INDEX IF NOT EXISTS idx_state_transition_rules_state_machine ON state_transition_rules (state_machine);
 CREATE INDEX IF NOT EXISTS idx_state_transition_rules_from_state ON state_transition_rules (from_state);
 CREATE INDEX IF NOT EXISTS idx_state_transition_rules_to_state ON state_transition_rules (to_state);
-CREATE INDEX IF NOT EXISTS idx_state_transition_rules_trigger_endpoint ON state_transition_rules (trigger_endpoint);
-CREATE INDEX IF NOT EXISTS idx_state_transition_rules_created_by ON state_transition_rules (created_by);
-CREATE INDEX IF NOT EXISTS idx_state_transition_rules_modified_by ON state_transition_rules (modified_by);
 
 -- StateTransitions
 CREATE INDEX IF NOT EXISTS idx_state_transitions_state_machine ON state_transitions (state_machine);
 CREATE INDEX IF NOT EXISTS idx_state_transitions_triggered_by ON state_transitions (triggered_by);
-CREATE INDEX IF NOT EXISTS idx_state_transitions_created_by ON state_transitions (created_by);
-CREATE INDEX IF NOT EXISTS idx_state_transitions_modified_by ON state_transitions (modified_by);
 
 -- WorkQueueItems
 CREATE INDEX IF NOT EXISTS idx_work_queue_items_assigned_to ON work_queue_items (assigned_to);
-CREATE INDEX IF NOT EXISTS idx_work_queue_items_created_by ON work_queue_items (created_by);
-CREATE INDEX IF NOT EXISTS idx_work_queue_items_modified_by ON work_queue_items (modified_by);
 
 -- ModelPricingVersions
 CREATE INDEX IF NOT EXISTS idx_model_pricing_versions_ai_model ON model_pricing_versions (ai_model);
@@ -1894,48 +1856,27 @@ CREATE INDEX IF NOT EXISTS idx_model_pricing_versions_ai_model ON model_pricing_
 CREATE INDEX IF NOT EXISTS idx_assistant_turns_citation ON assistant_turns (citation);
 CREATE INDEX IF NOT EXISTS idx_assistant_turns_ai_model ON assistant_turns (ai_model);
 CREATE INDEX IF NOT EXISTS idx_assistant_turns_model_pricing_version ON assistant_turns (model_pricing_version);
-CREATE INDEX IF NOT EXISTS idx_assistant_turns_created_by ON assistant_turns (created_by);
-CREATE INDEX IF NOT EXISTS idx_assistant_turns_modified_by ON assistant_turns (modified_by);
-CREATE INDEX IF NOT EXISTS idx_assistant_turns_modified_by_model ON assistant_turns (modified_by_model);
 
 -- ERBPackages
 CREATE INDEX IF NOT EXISTS idx_erb_packages_erb_features ON erb_packages (erb_features);
-
--- ERBFeatureCategories
-CREATE INDEX IF NOT EXISTS idx_erb_feature_categories_created_by ON erb_feature_categories (created_by);
-CREATE INDEX IF NOT EXISTS idx_erb_feature_categories_modified_by ON erb_feature_categories (modified_by);
 
 -- ERBFeatures
 CREATE INDEX IF NOT EXISTS idx_erb_features_route ON erb_features (route);
 CREATE INDEX IF NOT EXISTS idx_erb_features_erb_package ON erb_features (erb_package);
 CREATE INDEX IF NOT EXISTS idx_erb_features_category ON erb_features (category);
 CREATE INDEX IF NOT EXISTS idx_erb_features_status ON erb_features (status);
-CREATE INDEX IF NOT EXISTS idx_erb_features_created_by ON erb_features (created_by);
-CREATE INDEX IF NOT EXISTS idx_erb_features_modified_by ON erb_features (modified_by);
 
 -- ERBTables
 CREATE INDEX IF NOT EXISTS idx_erb_tables_erb_package ON erb_tables (erb_package);
 CREATE INDEX IF NOT EXISTS idx_erb_tables_platform ON erb_tables (platform);
-CREATE INDEX IF NOT EXISTS idx_erb_tables_created_by ON erb_tables (created_by);
-CREATE INDEX IF NOT EXISTS idx_erb_tables_modified_by ON erb_tables (modified_by);
 
 -- ERBFields
 CREATE INDEX IF NOT EXISTS idx_erb_fields_erb_table ON erb_fields (erb_table);
-CREATE INDEX IF NOT EXISTS idx_erb_fields_created_by ON erb_fields (created_by);
-CREATE INDEX IF NOT EXISTS idx_erb_fields_modified_by ON erb_fields (modified_by);
-
--- APIEndpoints
-CREATE INDEX IF NOT EXISTS idx_api_endpoints_triggers_state_machine ON api_endpoints (triggers_state_machine);
-CREATE INDEX IF NOT EXISTS idx_api_endpoints_status ON api_endpoints (status);
-CREATE INDEX IF NOT EXISTS idx_api_endpoints_created_by ON api_endpoints (created_by);
-CREATE INDEX IF NOT EXISTS idx_api_endpoints_modified_by ON api_endpoints (modified_by);
 
 -- SubjectStateInstances
 CREATE INDEX IF NOT EXISTS idx_subject_state_instances_state_machine ON subject_state_instances (state_machine);
 CREATE INDEX IF NOT EXISTS idx_subject_state_instances_prior_instance ON subject_state_instances (prior_instance);
 CREATE INDEX IF NOT EXISTS idx_subject_state_instances_entered_via_transition ON subject_state_instances (entered_via_transition);
-CREATE INDEX IF NOT EXISTS idx_subject_state_instances_created_by ON subject_state_instances (created_by);
-CREATE INDEX IF NOT EXISTS idx_subject_state_instances_modified_by ON subject_state_instances (modified_by);
 
 -- ViolationTypes
 CREATE INDEX IF NOT EXISTS idx_violation_types_jurisdiction ON violation_types (jurisdiction);
@@ -1944,8 +1885,6 @@ CREATE INDEX IF NOT EXISTS idx_violation_types_citations ON violation_types (cit
 -- Drivers
 CREATE INDEX IF NOT EXISTS idx_drivers_home_jurisdiction ON drivers (home_jurisdiction);
 CREATE INDEX IF NOT EXISTS idx_drivers_citations ON drivers (citations);
-CREATE INDEX IF NOT EXISTS idx_drivers_created_by ON drivers (created_by);
-CREATE INDEX IF NOT EXISTS idx_drivers_modified_by ON drivers (modified_by);
 
 -- Citations
 CREATE INDEX IF NOT EXISTS idx_citations_driver ON citations (driver);
@@ -1954,52 +1893,23 @@ CREATE INDEX IF NOT EXISTS idx_citations_jurisdiction ON citations (jurisdiction
 CREATE INDEX IF NOT EXISTS idx_citations_hearings ON citations (hearings);
 CREATE INDEX IF NOT EXISTS idx_citations_payments ON citations (payments);
 CREATE INDEX IF NOT EXISTS idx_citations_case_events ON citations (case_events);
-CREATE INDEX IF NOT EXISTS idx_citations_created_by ON citations (created_by);
-CREATE INDEX IF NOT EXISTS idx_citations_modified_by ON citations (modified_by);
 
 -- Hearings
 CREATE INDEX IF NOT EXISTS idx_hearings_citation ON hearings (citation);
-CREATE INDEX IF NOT EXISTS idx_hearings_created_by ON hearings (created_by);
-CREATE INDEX IF NOT EXISTS idx_hearings_modified_by ON hearings (modified_by);
 
 -- Payments
 CREATE INDEX IF NOT EXISTS idx_payments_citation ON payments (citation);
-CREATE INDEX IF NOT EXISTS idx_payments_created_by ON payments (created_by);
-CREATE INDEX IF NOT EXISTS idx_payments_modified_by ON payments (modified_by);
 
 -- CaseEvents
 CREATE INDEX IF NOT EXISTS idx_case_events_citation ON case_events (citation);
-CREATE INDEX IF NOT EXISTS idx_case_events_created_by ON case_events (created_by);
-CREATE INDEX IF NOT EXISTS idx_case_events_modified_by ON case_events (modified_by);
-
--- TestCategory
-CREATE INDEX IF NOT EXISTS idx_test_category_created_by ON test_category (created_by);
-CREATE INDEX IF NOT EXISTS idx_test_category_modified_by ON test_category (modified_by);
-
--- TestSurface
-CREATE INDEX IF NOT EXISTS idx_test_surface_layer ON test_surface (layer);
-CREATE INDEX IF NOT EXISTS idx_test_surface_created_by ON test_surface (created_by);
-CREATE INDEX IF NOT EXISTS idx_test_surface_modified_by ON test_surface (modified_by);
-
--- TestTechnology
-CREATE INDEX IF NOT EXISTS idx_test_technology_runner_kind ON test_technology (runner_kind);
-CREATE INDEX IF NOT EXISTS idx_test_technology_created_by ON test_technology (created_by);
-CREATE INDEX IF NOT EXISTS idx_test_technology_modified_by ON test_technology (modified_by);
 
 -- TestCase
 CREATE INDEX IF NOT EXISTS idx_test_case_test_category ON test_case (test_category);
 CREATE INDEX IF NOT EXISTS idx_test_case_test_surface ON test_case (test_surface);
 CREATE INDEX IF NOT EXISTS idx_test_case_test_technology ON test_case (test_technology);
-CREATE INDEX IF NOT EXISTS idx_test_case_target_feature ON test_case (target_feature);
-CREATE INDEX IF NOT EXISTS idx_test_case_target_endpoint ON test_case (target_endpoint);
-CREATE INDEX IF NOT EXISTS idx_test_case_target_transition ON test_case (target_transition);
-CREATE INDEX IF NOT EXISTS idx_test_case_created_by ON test_case (created_by);
-CREATE INDEX IF NOT EXISTS idx_test_case_modified_by ON test_case (modified_by);
 
 -- TestExpectation
 CREATE INDEX IF NOT EXISTS idx_test_expectation_test_case ON test_expectation (test_case);
-CREATE INDEX IF NOT EXISTS idx_test_expectation_created_by ON test_expectation (created_by);
-CREATE INDEX IF NOT EXISTS idx_test_expectation_modified_by ON test_expectation (modified_by);
 
 -- TestResult
 CREATE INDEX IF NOT EXISTS idx_test_result_test_run ON test_result (test_run);
@@ -2010,43 +1920,25 @@ CREATE INDEX IF NOT EXISTS idx_test_result_assertion_test_result ON test_result_
 
 -- ScreenLayouts
 CREATE INDEX IF NOT EXISTS idx_screen_layouts_nav ON screen_layouts (nav);
-CREATE INDEX IF NOT EXISTS idx_screen_layouts_created_by ON screen_layouts (created_by);
-CREATE INDEX IF NOT EXISTS idx_screen_layouts_modified_by ON screen_layouts (modified_by);
 
 -- ScreenSections
 CREATE INDEX IF NOT EXISTS idx_screen_sections_screen_layout ON screen_sections (screen_layout);
-CREATE INDEX IF NOT EXISTS idx_screen_sections_created_by ON screen_sections (created_by);
-CREATE INDEX IF NOT EXISTS idx_screen_sections_modified_by ON screen_sections (modified_by);
 
 -- FieldDisplayHints
 CREATE INDEX IF NOT EXISTS idx_field_display_hints_erb_table ON field_display_hints (erb_table);
-CREATE INDEX IF NOT EXISTS idx_field_display_hints_created_by ON field_display_hints (created_by);
-CREATE INDEX IF NOT EXISTS idx_field_display_hints_modified_by ON field_display_hints (modified_by);
 
 -- FeeSchedules
 CREATE INDEX IF NOT EXISTS idx_fee_schedules_jurisdiction ON fee_schedules (jurisdiction);
 CREATE INDEX IF NOT EXISTS idx_fee_schedules_violation_type ON fee_schedules (violation_type);
-CREATE INDEX IF NOT EXISTS idx_fee_schedules_created_by ON fee_schedules (created_by);
-CREATE INDEX IF NOT EXISTS idx_fee_schedules_modified_by ON fee_schedules (modified_by);
 
 -- DeadlineRules
 CREATE INDEX IF NOT EXISTS idx_deadline_rules_jurisdiction ON deadline_rules (jurisdiction);
-CREATE INDEX IF NOT EXISTS idx_deadline_rules_created_by ON deadline_rules (created_by);
-CREATE INDEX IF NOT EXISTS idx_deadline_rules_modified_by ON deadline_rules (modified_by);
 
 -- ContestGrounds
 CREATE INDEX IF NOT EXISTS idx_contest_grounds_violation_type ON contest_grounds (violation_type);
-CREATE INDEX IF NOT EXISTS idx_contest_grounds_created_by ON contest_grounds (created_by);
-CREATE INDEX IF NOT EXISTS idx_contest_grounds_modified_by ON contest_grounds (modified_by);
 
 -- DriverLicensePoints
 CREATE INDEX IF NOT EXISTS idx_driver_license_points_driver ON driver_license_points (driver);
 CREATE INDEX IF NOT EXISTS idx_driver_license_points_citation ON driver_license_points (citation);
-CREATE INDEX IF NOT EXISTS idx_driver_license_points_created_by ON driver_license_points (created_by);
-CREATE INDEX IF NOT EXISTS idx_driver_license_points_modified_by ON driver_license_points (modified_by);
 
--- BuildPhases
-CREATE INDEX IF NOT EXISTS idx_build_phases_created_by ON build_phases (created_by);
-CREATE INDEX IF NOT EXISTS idx_build_phases_modified_by ON build_phases (modified_by);
-
--- 158 FK index(es) declared.
+-- 68 FK index(es) declared.

@@ -18,8 +18,9 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 DOCKERFILE_PATH="docker/Dockerfile"
 EXTERNAL_SRC_MOUNTED=
 EXTERNAL_SRC_HOST_PATH=""
+ENABLE_MODULES="false"
 RULEBOOK_SELF_UPDATE_PATH="traffic-ticket-contest-rulebook.json"
-EDITOR_RUNTIME_VERSION="2026.10.11.1508"
+EDITOR_RUNTIME_VERSION="2026.11.27.1442"
 
 # The launcher is the OUTER half of the editor and therefore cannot rely on the
 # container's inner `effortless -upgradeAll`. Update and regenerate this runtime
@@ -110,6 +111,9 @@ NODE
     )
     if [ -n "$EXTERNAL_SRC_MOUNTED" ]; then
       SELF_UPDATE_ARGS+=( -p "pathToExternalSrc=$EXTERNAL_SRC_HOST_PATH" )
+    fi
+    if [ "$ENABLE_MODULES" = "true" ]; then
+      SELF_UPDATE_ARGS+=( -p "enable-modules=true" )
     fi
     effortless "${SELF_UPDATE_ARGS[@]}"
     export EFFORTLESS_EDITOR_LAUNCHER_CURRENT=1
@@ -249,6 +253,7 @@ DOCKER_RUN_ARGS=(
   -v "$RULEBOOK_DIR_NATIVE:/app/effortless-rulebook"
   -v "$SSOTME_DIR_NATIVE:/root/.ssotme-ro:ro"
   -e "RULEBOOK_FILENAME=$RULEBOOK_SELF_UPDATE_PATH"
+  -e "ENABLE_MODULES=$ENABLE_MODULES"
 )
 
 # Second bind-mount: only when -p pathToExternalSrc=... was passed at

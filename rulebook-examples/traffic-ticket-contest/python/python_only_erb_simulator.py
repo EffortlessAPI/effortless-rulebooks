@@ -820,7 +820,7 @@ def calc_work_queue_items_is_overdue(due_in_days):
     
     Formula: =IF({{DueInDays}}=BLANK(),FALSE(),{{DueInDays}}<0)
     """
-    return (False if (due_in_days == None) else (due_in_days < 0))
+    return (False if (due_in_days == None) else _erb.erb_cmp(due_in_days, '<', 0))
 
 def calc_work_queue_items_urgency_bucket(due_in_days):
     """
@@ -828,7 +828,7 @@ def calc_work_queue_items_urgency_bucket(due_in_days):
     
     Formula: =IF({{DueInDays}}=BLANK(),"follow-up",IF({{DueInDays}}<=0,"urgent",IF({{DueInDays}}<=3,"due-3-days","upcoming")))
     """
-    return ('follow-up' if (due_in_days == None) else ('urgent' if (due_in_days <= 0) else ('due-3-days' if (due_in_days <= 3) else 'upcoming')))
+    return ('follow-up' if (due_in_days == None) else ('urgent' if _erb.erb_cmp(due_in_days, '<=', 0) else ('due-3-days' if _erb.erb_cmp(due_in_days, '<=', 3) else 'upcoming')))
 
 # Level 3
 
@@ -935,47 +935,47 @@ def calc_assistant_turns_name(assistant_turn_id):
     """
     return assistant_turn_id
 
-
-def calc_assistant_turns_total_tokens():
-    """ERROR: Could not parse formula: ={{InputTokens}}+{{OutputTokens}}
-    Error: '+'
+def calc_assistant_turns_total_tokens(input_tokens, output_tokens):
     """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_assistant_turns_billable_input_tokens():
-    """ERROR: Could not parse formula: ={{InputTokens}}-{{CachedInputTokens}}
-    Error: '-'
+    Input + output tokens.
+    
+    Formula: ={{InputTokens}}+{{OutputTokens}}
     """
-    raise NotImplementedError("Formula parsing failed")
+    return (_erb.erb_num(input_tokens) + _erb.erb_num(output_tokens))
 
+def calc_assistant_turns_billable_input_tokens(input_tokens, cached_input_tokens):
+    """
+    Non-cached input tokens = InputTokens - CachedInputTokens.
+    
+    Formula: ={{InputTokens}}-{{CachedInputTokens}}
+    """
+    return (_erb.erb_num(input_tokens) - _erb.erb_num(cached_input_tokens))
 
 # Level 2
 
-
-def calc_assistant_turns_input_cost():
-    """ERROR: Could not parse formula: =(({{BillableInputTokens}}*{{InputPricePerMTok}})+({{CachedInputTokens}}*{{CachedInputPricePerMTok}}))/1000000
-    Error: '*'
+def calc_assistant_turns_input_cost(billable_input_tokens, input_price_per_m_tok, cached_input_tokens, cached_input_price_per_m_tok):
     """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_assistant_turns_output_cost():
-    """ERROR: Could not parse formula: =({{OutputTokens}}*{{OutputPricePerMTok}})/1000000
-    Error: '*'
+    USD cost of input: (BillableInputTokens × InputPrice + CachedInputTokens × CachedInputPrice) / 1,000,000.
+    
+    Formula: =(({{BillableInputTokens}}*{{InputPricePerMTok}})+({{CachedInputTokens}}*{{CachedInputPricePerMTok}}))/1000000
     """
-    raise NotImplementedError("Formula parsing failed")
+    return _erb.erb_div((_erb.erb_num(_erb.erb_mul(billable_input_tokens, input_price_per_m_tok)) + _erb.erb_num(_erb.erb_mul(cached_input_tokens, cached_input_price_per_m_tok))), 1000000)
 
-
-
-def calc_assistant_turns_total_cost():
-    """ERROR: Could not parse formula: ={{InputCost}}+{{OutputCost}}
-    Error: '+'
+def calc_assistant_turns_output_cost(output_tokens, output_price_per_m_tok):
     """
-    raise NotImplementedError("Formula parsing failed")
+    USD cost of output: OutputTokens × OutputPrice / 1,000,000.
+    
+    Formula: =({{OutputTokens}}*{{OutputPricePerMTok}})/1000000
+    """
+    return _erb.erb_div(_erb.erb_mul(output_tokens, output_price_per_m_tok), 1000000)
 
+def calc_assistant_turns_total_cost(input_cost, output_cost):
+    """
+    Total USD cost for this turn = InputCost + OutputCost. Rolls up to Client and Claim.
+    
+    Formula: ={{InputCost}}+{{OutputCost}}
+    """
+    return (_erb.erb_num(input_cost) + _erb.erb_num(output_cost))
 
 
 def compute_assistant_turns_fields(record: dict) -> dict:
@@ -1591,7 +1591,7 @@ def calc_subject_state_instances_has_complete_lineage(sequence_index):
     
     Formula: ={{SequenceIndex}}>=1
     """
-    return (sequence_index >= 1)
+    return _erb.erb_cmp(sequence_index, '>=', 1)
 
 
 def compute_subject_state_instances_fields(record: dict) -> dict:
@@ -1632,7 +1632,7 @@ def calc_violation_types_is_school_eligible_by_cap(points, traffic_school_point_
     
     Formula: =IF({{Points}} <= {{TrafficSchoolPointCap}}, TRUE, FALSE)
     """
-    return (True if (points <= traffic_school_point_cap) else False)
+    return (True if _erb.erb_cmp(points, '<=', traffic_school_point_cap) else False)
 
 
 def compute_violation_types_fields(record: dict) -> dict:
@@ -1682,7 +1682,7 @@ def calc_drivers_license_status(active_points, suspension_threshold, warning_thr
     
     Formula: =IF({{ActivePoints}} >= {{SuspensionThreshold}}, "Suspended", IF({{ActivePoints}} >= {{WarningThreshold}}, "Warning", "Valid"))
     """
-    return ('Suspended' if (active_points >= suspension_threshold) else ('Warning' if (active_points >= warning_threshold) else 'Valid'))
+    return ('Suspended' if _erb.erb_cmp(active_points, '>=', suspension_threshold) else ('Warning' if _erb.erb_cmp(active_points, '>=', warning_threshold) else 'Valid'))
 
 
 def compute_drivers_fields(record: dict) -> dict:
@@ -1719,13 +1719,13 @@ def calc_citations_name(citation_number):
 
 # Level 2
 
-
-def calc_citations_response_due_date():
-    """ERROR: Could not parse formula: ={{IssuedOn}} + {{DaysToRespond}}
-    Error: '+'
+def calc_citations_response_due_date(issued_on, days_to_respond):
     """
-    raise NotImplementedError("Formula parsing failed")
-
+    Deadline to respond: IssuedOn + the jurisdiction's response window.
+    
+    Formula: ={{IssuedOn}} + {{DaysToRespond}}
+    """
+    return (_erb.erb_num(issued_on) + _erb.erb_num(days_to_respond))
 
 
 def calc_citations_days_until_response_due():
@@ -1767,13 +1767,13 @@ def calc_citations_is_guilty(latest_hearing_outcome, is_response_overdue, contes
     """
     return (True if ((latest_hearing_outcome == 'Guilty') or (latest_hearing_outcome == 'Upheld') or ((is_response_overdue is True) and (contest_requested is not True))) else False)
 
-
-def calc_citations_amount_due_usd():
-    """ERROR: Could not parse formula: =IF({{IsDismissed}}, 0, IF({{IsPaymentLate}}, {{BaseFineUsd}} * (1 + {{LatePenaltyPct}}), {{BaseFineUsd}}))
-    Error: '+'
+def calc_citations_amount_due_usd(is_dismissed, is_payment_late, base_fine_usd, late_penalty_pct):
     """
-    raise NotImplementedError("Formula parsing failed")
-
+    Amount currently owed: 0 if dismissed; otherwise the base fine plus the jurisdiction's late penalty if the payment is late.
+    
+    Formula: =IF({{IsDismissed}}, 0, IF({{IsPaymentLate}}, {{BaseFineUsd}} * (1 + {{LatePenaltyPct}}), {{BaseFineUsd}}))
+    """
+    return (0 if is_dismissed else (_erb.erb_mul(base_fine_usd, (_erb.erb_num(1) + _erb.erb_num(late_penalty_pct))) if is_payment_late else base_fine_usd))
 
 
 def calc_citations_payment_due_date():
@@ -1792,12 +1792,20 @@ def calc_citations_is_payment_late():
 
 
 
-def calc_citations_is_in_collections():
-    """ERROR: Could not parse formula: =IF(AND({{IsPaymentLate}}, {{AsOfDate}} > DATEVALUE({{PaymentDueDate}}) + {{DaysLateToCollections}}), TRUE, FALSE)
+def calc_citations_collections_deadline():
+    """ERROR: Could not parse formula: =DATEVALUE({{PaymentDueDate}}) + {{DaysLateToCollections}}
     Error: Unknown function: DATEVALUE
     """
     raise NotImplementedError("Formula parsing failed")
 
+
+def calc_citations_is_in_collections(is_payment_late, as_of_date, collections_deadline):
+    """
+    True when a late payment has remained unpaid past the jurisdiction's collections window.
+    
+    Formula: =IF(AND({{IsPaymentLate}}, {{AsOfDate}} > {{CollectionsDeadline}}), TRUE, FALSE)
+    """
+    return (True if ((is_payment_late is True) and _erb.erb_cmp(as_of_date, '>', collections_deadline)) else False)
 
 
 def calc_citations_payment_status():
@@ -1841,7 +1849,8 @@ def compute_citations_fields(record: dict) -> dict:
     result['amount_due_usd'] = calc_citations_amount_due_usd(result.get('is_dismissed'), result.get('is_payment_late'), result.get('base_fine_usd'), result.get('late_penalty_pct'))
     result['payment_due_date'] = calc_citations_payment_due_date(result.get('response_due_date'), result.get('days_to_pay_after_ruling'))
     result['is_payment_late'] = calc_citations_is_payment_late(result.get('is_guilty'), result.get('paid_on'), result.get('as_of_date'), result.get('payment_due_date'))
-    result['is_in_collections'] = calc_citations_is_in_collections(result.get('is_payment_late'), result.get('as_of_date'), result.get('payment_due_date'), result.get('days_late_to_collections'))
+    result['collections_deadline'] = calc_citations_collections_deadline(result.get('payment_due_date'), result.get('days_late_to_collections'))
+    result['is_in_collections'] = calc_citations_is_in_collections(result.get('is_payment_late'), result.get('as_of_date'), result.get('collections_deadline'))
     result['payment_status'] = calc_citations_payment_status(result.get('is_dismissed'), result.get('paid_on'), result.get('is_in_collections'), result.get('is_payment_late'), result.get('is_guilty'))
     result['effective_points'] = calc_citations_effective_points(result.get('is_guilty'), result.get('is_dismissed'), result.get('violation_points'))
     result['citation_status'] = calc_citations_citation_status(result.get('paid_on'), result.get('is_dismissed'), result.get('latest_hearing_outcome'), result.get('is_response_overdue'), result.get('contest_requested'), result.get('count_of_hearings'), result.get('responded_on'))

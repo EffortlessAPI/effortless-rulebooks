@@ -1101,6 +1101,7 @@ SELECT
   calc_citations_amount_due_usd(t.citation_id) AS amount_due_usd,               -- Amount currently owed: 0 if dismissed; otherwise the base fine plus the jurisdiction's late penalty if the payment is late.
   calc_citations_payment_due_date(t.citation_id) AS payment_due_date,           -- Date the fine is due: the later anchor (response deadline) plus the jurisdiction's days-to-pay window.
   calc_citations_is_payment_late(t.citation_id) AS is_payment_late,             -- True when the driver is liable, has not paid in full, and the payment due date has passed as of AsOfDate.
+  calc_citations_collections_deadline(t.citation_id) AS collections_deadline,   -- Date the account moves to collections: PaymentDueDate plus the jurisdiction's grace window.
   calc_citations_is_in_collections(t.citation_id) AS is_in_collections,         -- True when a late payment has remained unpaid past the jurisdiction's collections window.
   calc_citations_payment_status(t.citation_id) AS payment_status,               -- Payment/Penalty state machine: NotOwed (dismissed) -> Paid -> Collections -> Late -> Due. Evaluated in priority order.
   calc_citations_effective_points(t.citation_id) AS effective_points,           -- License points this citation actually contributes to the driver: the violation's points if the driver is liable and not dismissed, otherwise 0. Drives the driver's ActivePoints rollup.

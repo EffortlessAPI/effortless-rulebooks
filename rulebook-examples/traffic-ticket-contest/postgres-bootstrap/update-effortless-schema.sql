@@ -1823,33 +1823,16 @@ COMMENT ON COLUMN build_phases.modified_by IS 'Audit.';
 
 -- BusinessRules
 CREATE INDEX IF NOT EXISTS idx_business_rules_category ON business_rules (category);
-CREATE INDEX IF NOT EXISTS idx_business_rules_created_by ON business_rules (created_by);
-CREATE INDEX IF NOT EXISTS idx_business_rules_modified_by ON business_rules (modified_by);
-
--- BusinessRuleCategories
-CREATE INDEX IF NOT EXISTS idx_business_rule_categories_created_by ON business_rule_categories (created_by);
-CREATE INDEX IF NOT EXISTS idx_business_rule_categories_modified_by ON business_rule_categories (modified_by);
-
--- GlossaryCategories
-CREATE INDEX IF NOT EXISTS idx_glossary_categories_created_by ON glossary_categories (created_by);
-CREATE INDEX IF NOT EXISTS idx_glossary_categories_modified_by ON glossary_categories (modified_by);
 
 -- GlossaryTerms
 CREATE INDEX IF NOT EXISTS idx_glossary_terms_category ON glossary_terms (category);
-CREATE INDEX IF NOT EXISTS idx_glossary_terms_created_by ON glossary_terms (created_by);
-CREATE INDEX IF NOT EXISTS idx_glossary_terms_modified_by ON glossary_terms (modified_by);
 
 -- AuditLogEntries
 CREATE INDEX IF NOT EXISTS idx_audit_log_entries_citation ON audit_log_entries (citation);
 CREATE INDEX IF NOT EXISTS idx_audit_log_entries_actor ON audit_log_entries (actor);
-CREATE INDEX IF NOT EXISTS idx_audit_log_entries_created_by ON audit_log_entries (created_by);
-CREATE INDEX IF NOT EXISTS idx_audit_log_entries_modified_by ON audit_log_entries (modified_by);
 
 -- PlatformNaviation
 CREATE INDEX IF NOT EXISTS idx_platform_naviation_erb_package ON platform_naviation (erb_package);
-CREATE INDEX IF NOT EXISTS idx_platform_naviation_status ON platform_naviation (status);
-CREATE INDEX IF NOT EXISTS idx_platform_naviation_created_by ON platform_naviation (created_by);
-CREATE INDEX IF NOT EXISTS idx_platform_naviation_modified_by ON platform_naviation (modified_by);
 
 -- Jurisdictions
 CREATE INDEX IF NOT EXISTS idx_jurisdictions_parent_jurisdiction ON jurisdictions (parent_jurisdiction);
@@ -1860,56 +1843,35 @@ CREATE INDEX IF NOT EXISTS idx_jurisdictions_source_documents ON jurisdictions (
 -- JurisdictionSourceDocuments
 CREATE INDEX IF NOT EXISTS idx_jurisdiction_source_documents_jurisdiction ON jurisdiction_source_documents (jurisdiction);
 CREATE INDEX IF NOT EXISTS idx_jurisdiction_source_documents_jurisdiction_rules ON jurisdiction_source_documents (jurisdiction_rules);
-CREATE INDEX IF NOT EXISTS idx_jurisdiction_source_documents_created_by ON jurisdiction_source_documents (created_by);
-CREATE INDEX IF NOT EXISTS idx_jurisdiction_source_documents_modified_by ON jurisdiction_source_documents (modified_by);
 
 -- JurisdictionRules
 CREATE INDEX IF NOT EXISTS idx_jurisdiction_rules_route ON jurisdiction_rules (route);
-CREATE INDEX IF NOT EXISTS idx_jurisdiction_rules_ai_version_model ON jurisdiction_rules (ai_version_model);
 CREATE INDEX IF NOT EXISTS idx_jurisdiction_rules_source_document ON jurisdiction_rules (source_document);
 CREATE INDEX IF NOT EXISTS idx_jurisdiction_rules_jurisdiction ON jurisdiction_rules (jurisdiction);
-CREATE INDEX IF NOT EXISTS idx_jurisdiction_rules_created_by ON jurisdiction_rules (created_by);
-CREATE INDEX IF NOT EXISTS idx_jurisdiction_rules_modified_by ON jurisdiction_rules (modified_by);
-CREATE INDEX IF NOT EXISTS idx_jurisdiction_rules_modified_by_model ON jurisdiction_rules (modified_by_model);
 
 -- AppUsers
 CREATE INDEX IF NOT EXISTS idx_app_users_role ON app_users (role);
 
--- SiteBranding
-CREATE INDEX IF NOT EXISTS idx_site_branding_created_by ON site_branding (created_by);
-CREATE INDEX IF NOT EXISTS idx_site_branding_modified_by ON site_branding (modified_by);
-
 -- ReferenceDocuments
 CREATE INDEX IF NOT EXISTS idx_reference_documents_jurisdiction ON reference_documents (jurisdiction);
-CREATE INDEX IF NOT EXISTS idx_reference_documents_created_by ON reference_documents (created_by);
-CREATE INDEX IF NOT EXISTS idx_reference_documents_modified_by ON reference_documents (modified_by);
 
 -- StateMachines
 CREATE INDEX IF NOT EXISTS idx_state_machines_erb_package ON state_machines (erb_package);
 
 -- MachineStates
 CREATE INDEX IF NOT EXISTS idx_machine_states_state_machine ON machine_states (state_machine);
-CREATE INDEX IF NOT EXISTS idx_machine_states_created_by ON machine_states (created_by);
-CREATE INDEX IF NOT EXISTS idx_machine_states_modified_by ON machine_states (modified_by);
 
 -- StateTransitionRules
 CREATE INDEX IF NOT EXISTS idx_state_transition_rules_state_machine ON state_transition_rules (state_machine);
 CREATE INDEX IF NOT EXISTS idx_state_transition_rules_from_state ON state_transition_rules (from_state);
 CREATE INDEX IF NOT EXISTS idx_state_transition_rules_to_state ON state_transition_rules (to_state);
-CREATE INDEX IF NOT EXISTS idx_state_transition_rules_trigger_endpoint ON state_transition_rules (trigger_endpoint);
-CREATE INDEX IF NOT EXISTS idx_state_transition_rules_created_by ON state_transition_rules (created_by);
-CREATE INDEX IF NOT EXISTS idx_state_transition_rules_modified_by ON state_transition_rules (modified_by);
 
 -- StateTransitions
 CREATE INDEX IF NOT EXISTS idx_state_transitions_state_machine ON state_transitions (state_machine);
 CREATE INDEX IF NOT EXISTS idx_state_transitions_triggered_by ON state_transitions (triggered_by);
-CREATE INDEX IF NOT EXISTS idx_state_transitions_created_by ON state_transitions (created_by);
-CREATE INDEX IF NOT EXISTS idx_state_transitions_modified_by ON state_transitions (modified_by);
 
 -- WorkQueueItems
 CREATE INDEX IF NOT EXISTS idx_work_queue_items_assigned_to ON work_queue_items (assigned_to);
-CREATE INDEX IF NOT EXISTS idx_work_queue_items_created_by ON work_queue_items (created_by);
-CREATE INDEX IF NOT EXISTS idx_work_queue_items_modified_by ON work_queue_items (modified_by);
 
 -- ModelPricingVersions
 CREATE INDEX IF NOT EXISTS idx_model_pricing_versions_ai_model ON model_pricing_versions (ai_model);
@@ -1918,48 +1880,27 @@ CREATE INDEX IF NOT EXISTS idx_model_pricing_versions_ai_model ON model_pricing_
 CREATE INDEX IF NOT EXISTS idx_assistant_turns_citation ON assistant_turns (citation);
 CREATE INDEX IF NOT EXISTS idx_assistant_turns_ai_model ON assistant_turns (ai_model);
 CREATE INDEX IF NOT EXISTS idx_assistant_turns_model_pricing_version ON assistant_turns (model_pricing_version);
-CREATE INDEX IF NOT EXISTS idx_assistant_turns_created_by ON assistant_turns (created_by);
-CREATE INDEX IF NOT EXISTS idx_assistant_turns_modified_by ON assistant_turns (modified_by);
-CREATE INDEX IF NOT EXISTS idx_assistant_turns_modified_by_model ON assistant_turns (modified_by_model);
 
 -- ERBPackages
 CREATE INDEX IF NOT EXISTS idx_erb_packages_erb_features ON erb_packages (erb_features);
-
--- ERBFeatureCategories
-CREATE INDEX IF NOT EXISTS idx_erb_feature_categories_created_by ON erb_feature_categories (created_by);
-CREATE INDEX IF NOT EXISTS idx_erb_feature_categories_modified_by ON erb_feature_categories (modified_by);
 
 -- ERBFeatures
 CREATE INDEX IF NOT EXISTS idx_erb_features_route ON erb_features (route);
 CREATE INDEX IF NOT EXISTS idx_erb_features_erb_package ON erb_features (erb_package);
 CREATE INDEX IF NOT EXISTS idx_erb_features_category ON erb_features (category);
 CREATE INDEX IF NOT EXISTS idx_erb_features_status ON erb_features (status);
-CREATE INDEX IF NOT EXISTS idx_erb_features_created_by ON erb_features (created_by);
-CREATE INDEX IF NOT EXISTS idx_erb_features_modified_by ON erb_features (modified_by);
 
 -- ERBTables
 CREATE INDEX IF NOT EXISTS idx_erb_tables_erb_package ON erb_tables (erb_package);
 CREATE INDEX IF NOT EXISTS idx_erb_tables_platform ON erb_tables (platform);
-CREATE INDEX IF NOT EXISTS idx_erb_tables_created_by ON erb_tables (created_by);
-CREATE INDEX IF NOT EXISTS idx_erb_tables_modified_by ON erb_tables (modified_by);
 
 -- ERBFields
 CREATE INDEX IF NOT EXISTS idx_erb_fields_erb_table ON erb_fields (erb_table);
-CREATE INDEX IF NOT EXISTS idx_erb_fields_created_by ON erb_fields (created_by);
-CREATE INDEX IF NOT EXISTS idx_erb_fields_modified_by ON erb_fields (modified_by);
-
--- APIEndpoints
-CREATE INDEX IF NOT EXISTS idx_api_endpoints_triggers_state_machine ON api_endpoints (triggers_state_machine);
-CREATE INDEX IF NOT EXISTS idx_api_endpoints_status ON api_endpoints (status);
-CREATE INDEX IF NOT EXISTS idx_api_endpoints_created_by ON api_endpoints (created_by);
-CREATE INDEX IF NOT EXISTS idx_api_endpoints_modified_by ON api_endpoints (modified_by);
 
 -- SubjectStateInstances
 CREATE INDEX IF NOT EXISTS idx_subject_state_instances_state_machine ON subject_state_instances (state_machine);
 CREATE INDEX IF NOT EXISTS idx_subject_state_instances_prior_instance ON subject_state_instances (prior_instance);
 CREATE INDEX IF NOT EXISTS idx_subject_state_instances_entered_via_transition ON subject_state_instances (entered_via_transition);
-CREATE INDEX IF NOT EXISTS idx_subject_state_instances_created_by ON subject_state_instances (created_by);
-CREATE INDEX IF NOT EXISTS idx_subject_state_instances_modified_by ON subject_state_instances (modified_by);
 
 -- ViolationTypes
 CREATE INDEX IF NOT EXISTS idx_violation_types_jurisdiction ON violation_types (jurisdiction);
@@ -1968,8 +1909,6 @@ CREATE INDEX IF NOT EXISTS idx_violation_types_citations ON violation_types (cit
 -- Drivers
 CREATE INDEX IF NOT EXISTS idx_drivers_home_jurisdiction ON drivers (home_jurisdiction);
 CREATE INDEX IF NOT EXISTS idx_drivers_citations ON drivers (citations);
-CREATE INDEX IF NOT EXISTS idx_drivers_created_by ON drivers (created_by);
-CREATE INDEX IF NOT EXISTS idx_drivers_modified_by ON drivers (modified_by);
 
 -- Citations
 CREATE INDEX IF NOT EXISTS idx_citations_driver ON citations (driver);
@@ -1978,52 +1917,23 @@ CREATE INDEX IF NOT EXISTS idx_citations_jurisdiction ON citations (jurisdiction
 CREATE INDEX IF NOT EXISTS idx_citations_hearings ON citations (hearings);
 CREATE INDEX IF NOT EXISTS idx_citations_payments ON citations (payments);
 CREATE INDEX IF NOT EXISTS idx_citations_case_events ON citations (case_events);
-CREATE INDEX IF NOT EXISTS idx_citations_created_by ON citations (created_by);
-CREATE INDEX IF NOT EXISTS idx_citations_modified_by ON citations (modified_by);
 
 -- Hearings
 CREATE INDEX IF NOT EXISTS idx_hearings_citation ON hearings (citation);
-CREATE INDEX IF NOT EXISTS idx_hearings_created_by ON hearings (created_by);
-CREATE INDEX IF NOT EXISTS idx_hearings_modified_by ON hearings (modified_by);
 
 -- Payments
 CREATE INDEX IF NOT EXISTS idx_payments_citation ON payments (citation);
-CREATE INDEX IF NOT EXISTS idx_payments_created_by ON payments (created_by);
-CREATE INDEX IF NOT EXISTS idx_payments_modified_by ON payments (modified_by);
 
 -- CaseEvents
 CREATE INDEX IF NOT EXISTS idx_case_events_citation ON case_events (citation);
-CREATE INDEX IF NOT EXISTS idx_case_events_created_by ON case_events (created_by);
-CREATE INDEX IF NOT EXISTS idx_case_events_modified_by ON case_events (modified_by);
-
--- TestCategory
-CREATE INDEX IF NOT EXISTS idx_test_category_created_by ON test_category (created_by);
-CREATE INDEX IF NOT EXISTS idx_test_category_modified_by ON test_category (modified_by);
-
--- TestSurface
-CREATE INDEX IF NOT EXISTS idx_test_surface_layer ON test_surface (layer);
-CREATE INDEX IF NOT EXISTS idx_test_surface_created_by ON test_surface (created_by);
-CREATE INDEX IF NOT EXISTS idx_test_surface_modified_by ON test_surface (modified_by);
-
--- TestTechnology
-CREATE INDEX IF NOT EXISTS idx_test_technology_runner_kind ON test_technology (runner_kind);
-CREATE INDEX IF NOT EXISTS idx_test_technology_created_by ON test_technology (created_by);
-CREATE INDEX IF NOT EXISTS idx_test_technology_modified_by ON test_technology (modified_by);
 
 -- TestCase
 CREATE INDEX IF NOT EXISTS idx_test_case_test_category ON test_case (test_category);
 CREATE INDEX IF NOT EXISTS idx_test_case_test_surface ON test_case (test_surface);
 CREATE INDEX IF NOT EXISTS idx_test_case_test_technology ON test_case (test_technology);
-CREATE INDEX IF NOT EXISTS idx_test_case_target_feature ON test_case (target_feature);
-CREATE INDEX IF NOT EXISTS idx_test_case_target_endpoint ON test_case (target_endpoint);
-CREATE INDEX IF NOT EXISTS idx_test_case_target_transition ON test_case (target_transition);
-CREATE INDEX IF NOT EXISTS idx_test_case_created_by ON test_case (created_by);
-CREATE INDEX IF NOT EXISTS idx_test_case_modified_by ON test_case (modified_by);
 
 -- TestExpectation
 CREATE INDEX IF NOT EXISTS idx_test_expectation_test_case ON test_expectation (test_case);
-CREATE INDEX IF NOT EXISTS idx_test_expectation_created_by ON test_expectation (created_by);
-CREATE INDEX IF NOT EXISTS idx_test_expectation_modified_by ON test_expectation (modified_by);
 
 -- TestResult
 CREATE INDEX IF NOT EXISTS idx_test_result_test_run ON test_result (test_run);
@@ -2034,46 +1944,28 @@ CREATE INDEX IF NOT EXISTS idx_test_result_assertion_test_result ON test_result_
 
 -- ScreenLayouts
 CREATE INDEX IF NOT EXISTS idx_screen_layouts_nav ON screen_layouts (nav);
-CREATE INDEX IF NOT EXISTS idx_screen_layouts_created_by ON screen_layouts (created_by);
-CREATE INDEX IF NOT EXISTS idx_screen_layouts_modified_by ON screen_layouts (modified_by);
 
 -- ScreenSections
 CREATE INDEX IF NOT EXISTS idx_screen_sections_screen_layout ON screen_sections (screen_layout);
-CREATE INDEX IF NOT EXISTS idx_screen_sections_created_by ON screen_sections (created_by);
-CREATE INDEX IF NOT EXISTS idx_screen_sections_modified_by ON screen_sections (modified_by);
 
 -- FieldDisplayHints
 CREATE INDEX IF NOT EXISTS idx_field_display_hints_erb_table ON field_display_hints (erb_table);
-CREATE INDEX IF NOT EXISTS idx_field_display_hints_created_by ON field_display_hints (created_by);
-CREATE INDEX IF NOT EXISTS idx_field_display_hints_modified_by ON field_display_hints (modified_by);
 
 -- FeeSchedules
 CREATE INDEX IF NOT EXISTS idx_fee_schedules_jurisdiction ON fee_schedules (jurisdiction);
 CREATE INDEX IF NOT EXISTS idx_fee_schedules_violation_type ON fee_schedules (violation_type);
-CREATE INDEX IF NOT EXISTS idx_fee_schedules_created_by ON fee_schedules (created_by);
-CREATE INDEX IF NOT EXISTS idx_fee_schedules_modified_by ON fee_schedules (modified_by);
 
 -- DeadlineRules
 CREATE INDEX IF NOT EXISTS idx_deadline_rules_jurisdiction ON deadline_rules (jurisdiction);
-CREATE INDEX IF NOT EXISTS idx_deadline_rules_created_by ON deadline_rules (created_by);
-CREATE INDEX IF NOT EXISTS idx_deadline_rules_modified_by ON deadline_rules (modified_by);
 
 -- ContestGrounds
 CREATE INDEX IF NOT EXISTS idx_contest_grounds_violation_type ON contest_grounds (violation_type);
-CREATE INDEX IF NOT EXISTS idx_contest_grounds_created_by ON contest_grounds (created_by);
-CREATE INDEX IF NOT EXISTS idx_contest_grounds_modified_by ON contest_grounds (modified_by);
 
 -- DriverLicensePoints
 CREATE INDEX IF NOT EXISTS idx_driver_license_points_driver ON driver_license_points (driver);
 CREATE INDEX IF NOT EXISTS idx_driver_license_points_citation ON driver_license_points (citation);
-CREATE INDEX IF NOT EXISTS idx_driver_license_points_created_by ON driver_license_points (created_by);
-CREATE INDEX IF NOT EXISTS idx_driver_license_points_modified_by ON driver_license_points (modified_by);
 
--- BuildPhases
-CREATE INDEX IF NOT EXISTS idx_build_phases_created_by ON build_phases (created_by);
-CREATE INDEX IF NOT EXISTS idx_build_phases_modified_by ON build_phases (modified_by);
-
--- 158 FK index(es) declared.
+-- 68 FK index(es) declared.
 
 
 -- === 2/3. Drop the derived layer ==========================================
@@ -2086,7 +1978,7 @@ BEGIN
     -- 2. Views (depend on functions, so they go first).
     FOR r IN (
         SELECT table_name FROM information_schema.views
-         WHERE table_schema = 'public' AND table_name LIKE 'vw\_%'
+         WHERE table_schema = 'public' AND (table_name LIKE 'vw\_%' OR table_name LIKE 'fk\_labels\_%')
            AND obj_description(
                  (quote_ident(table_schema) || '.' || quote_ident(table_name))::regclass, 'pg_class')
                IS DISTINCT FROM 'effortless:hand-maintained'
@@ -2144,6 +2036,113 @@ $drop_derived$;
 -- on the first forward call site; plpgsql didn't, which is how this file
 -- ever worked. Dependency order is still enforced at EXECUTION time.
 SET check_function_bodies = off;
+
+-- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
 
 -- ============================================================================
 -- LOOKUP FUNCTIONS
@@ -2747,7 +2746,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_audit_log_entries_entry_age_hours(p_audit_log_entrie_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP::timestamp - (SELECT timestamp::timestamptz FROM audit_log_entries WHERE audit_log_entrie_id = p_audit_log_entrie_id)::timestamp)) / 3600))::integer;
+  SELECT ((EXTRACT(EPOCH FROM ((COALESCE(NULLIF(current_setting('erb.now', true), '')::timestamptz, CURRENT_TIMESTAMP))::timestamptz - ((SELECT timestamp::timestamptz FROM audit_log_entries WHERE audit_log_entrie_id = p_audit_log_entrie_id))::timestamptz)) / 3600))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_package_is_active
@@ -2914,7 +2913,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_admin_can_create(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_admin_can_read
@@ -2924,7 +2923,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_admin_can_read(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_admin_can_update
@@ -2934,7 +2933,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_admin_can_update(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_admin_can_delete
@@ -2944,7 +2943,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_admin_can_delete(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(admin_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_manager_can_create
@@ -2954,7 +2953,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_manager_can_create(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_manager_can_read
@@ -2964,7 +2963,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_manager_can_read(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_manager_can_update
@@ -2974,7 +2973,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_manager_can_update(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_manager_can_delete
@@ -2984,7 +2983,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_manager_can_delete(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(manager_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_representative_can_create
@@ -2994,7 +2993,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_representative_can_create(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_representative_can_read
@@ -3004,7 +3003,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_representative_can_read(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_representative_can_update
@@ -3014,7 +3013,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_representative_can_update(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_representative_can_delete
@@ -3024,7 +3023,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_representative_can_delete(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(representative_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_external_llm_can_create
@@ -3034,7 +3033,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_external_llm_can_create(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_external_llm_can_read
@@ -3044,7 +3043,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_external_llm_can_read(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_external_llm_can_update
@@ -3054,7 +3053,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_external_llm_can_update(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_external_llm_can_delete
@@ -3064,7 +3063,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_external_llm_can_delete(p_platform_naviation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(external_llm_crud, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_depth
@@ -3074,7 +3073,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_naviation_depth(p_platform_naviation_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(parent_route_key, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(route_key, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(route_key, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id), '.', ''))) AS v) __safe_numeric), 0)))::text END)::integer;
+  SELECT (CASE WHEN (SELECT NULLIF(parent_route_key, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id) IS NULL THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(route_key, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(route_key, '') FROM platform_naviation WHERE platform_naviation_id = p_platform_naviation_id), '.', ''))) AS v OFFSET 0) __safe_numeric), 0)))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_naviation_full_path
@@ -3863,7 +3862,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_jurisdiction_rules_is_federal(p_jurisdiction_rule_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (CASE WHEN calc_jurisdiction_rules_jurisdiction_type(p_jurisdiction_rule_id) = 'Country' THEN TRUE ELSE FALSE END) THEN 1 ELSE 0 END)::integer;
+  SELECT (CASE WHEN (CASE WHEN COALESCE(calc_jurisdiction_rules_jurisdiction_type(p_jurisdiction_rule_id), '') = 'Country' THEN TRUE ELSE FALSE END) THEN 1 ELSE 0 END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_app_users_role_title
@@ -4034,7 +4033,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_reference_documents_is_appeal_board_decision(p_reference_document_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(library, '') FROM reference_documents WHERE reference_document_id = p_reference_document_id) = 'appeal-board-decisions')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(library, '') FROM reference_documents WHERE reference_document_id = p_reference_document_id), '') = 'appeal-board-decisions')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_state_machines_package_is_active
@@ -4476,7 +4475,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_state_transition_rules_is_forward_edge(p_state_transition_rule_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (NOT (calc_state_transition_rules_to_state_key(p_state_transition_rule_id) = 'draft'))::boolean;
+  SELECT (NOT (COALESCE(COALESCE(calc_state_transition_rules_to_state_key(p_state_transition_rule_id), '') = 'draft', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_state_transitions_name
@@ -4496,7 +4495,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_state_transitions_is_forward(p_state_transition_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((NOT ((SELECT NULLIF(to_state_key, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id) = 'draft') AND NOT ((SELECT NULLIF(to_state_key, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id) = 'new') AND NOT ((SELECT NULLIF(to_state_key, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id) = 'pending') AND NOT ((SELECT NULLIF(to_state_key, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id) = 'open') AND NOT ((SELECT NULLIF(to_state_key, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id) = 'issued')))::boolean;
+  SELECT ((COALESCE(NOT (COALESCE(COALESCE((SELECT NULLIF(to_state_key, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id), '') = 'draft', FALSE)), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT NULLIF(to_state_key, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id), '') = 'new', FALSE)), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT NULLIF(to_state_key, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id), '') = 'pending', FALSE)), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT NULLIF(to_state_key, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id), '') = 'open', FALSE)), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT NULLIF(to_state_key, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id), '') = 'issued', FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_work_queue_items_name
@@ -4516,7 +4515,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_work_queue_items_due_in_days(p_work_queue_item_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (((SELECT due_date::timestamptz FROM work_queue_items WHERE work_queue_item_id = p_work_queue_item_id)::date - CURRENT_DATE::date))::integer;
+  SELECT (((((SELECT due_date::timestamptz FROM work_queue_items WHERE work_queue_item_id = p_work_queue_item_id))::timestamptz AT TIME ZONE 'UTC')::date - ((COALESCE(NULLIF(current_setting('erb.now', true), '')::timestamptz::date, CURRENT_DATE))::timestamptz AT TIME ZONE 'UTC')::date))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_work_queue_items_is_overdue
@@ -4526,7 +4525,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_work_queue_items_is_overdue(p_work_queue_item_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_work_queue_items_due_in_days(p_work_queue_item_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN (FALSE)::text ELSE (((SELECT val FROM __erb_dedup_v1))::NUMERIC < 0)::text END)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_work_queue_items_due_in_days(p_work_queue_item_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN (FALSE)::text ELSE (COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) < 0)::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_work_queue_items_urgency_bucket
@@ -4536,7 +4535,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_work_queue_items_urgency_bucket(p_work_queue_item_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_work_queue_items_due_in_days(p_work_queue_item_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN ('follow-up')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC <= 0 THEN ('urgent')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC <= 3 THEN ('due-3-days')::text ELSE ('upcoming')::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_work_queue_items_due_in_days(p_work_queue_item_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) IS NULL THEN ('follow-up')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) <= 0 THEN ('urgent')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) <= 3 THEN ('due-3-days')::text ELSE ('upcoming')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_work_queue_items_is_urgent
@@ -4546,7 +4545,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_work_queue_items_is_urgent(p_work_queue_item_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_work_queue_items_urgency_bucket(p_work_queue_item_id) = 'urgent')::boolean;
+  SELECT (COALESCE(calc_work_queue_items_urgency_bucket(p_work_queue_item_id), '') = 'urgent')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_model_pricing_versions_label
@@ -4838,7 +4837,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_models_total_cost(p_ai_model_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_assistant_turns_total_cost(assistant_turn_id))::numeric), 0) FROM assistant_turns WHERE ai_model = p_ai_model_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assistant_turns_input_cost(erb_r1.assistant_turn_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assistant_turns_output_cost(erb_r1.assistant_turn_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric))::numeric)::numeric), 0) FROM assistant_turns erb_r1 WHERE ai_model = p_ai_model_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_model_pricing_versions_ai_model_title
@@ -5032,7 +5031,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assistant_turns_total_tokens(p_assistant_turn_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT input_tokens FROM assistant_turns WHERE assistant_turn_id = p_assistant_turn_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT output_tokens FROM assistant_turns WHERE assistant_turn_id = p_assistant_turn_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT input_tokens FROM assistant_turns WHERE assistant_turn_id = p_assistant_turn_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT output_tokens FROM assistant_turns WHERE assistant_turn_id = p_assistant_turn_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assistant_turns_billable_input_tokens
@@ -5042,7 +5041,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assistant_turns_billable_input_tokens(p_assistant_turn_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT input_tokens FROM assistant_turns WHERE assistant_turn_id = p_assistant_turn_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cached_input_tokens FROM assistant_turns WHERE assistant_turn_id = p_assistant_turn_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT input_tokens FROM assistant_turns WHERE assistant_turn_id = p_assistant_turn_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cached_input_tokens FROM assistant_turns WHERE assistant_turn_id = p_assistant_turn_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assistant_turns_input_cost
@@ -5052,7 +5051,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assistant_turns_input_cost(p_assistant_turn_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assistant_turns_billable_input_tokens(p_assistant_turn_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assistant_turns_input_price_per_m_tok(p_assistant_turn_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cached_input_tokens FROM assistant_turns WHERE assistant_turn_id = p_assistant_turn_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assistant_turns_cached_input_price_per_m_tok(p_assistant_turn_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE(1000000, 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assistant_turns_billable_input_tokens(p_assistant_turn_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assistant_turns_input_price_per_m_tok(p_assistant_turn_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT cached_input_tokens FROM assistant_turns WHERE assistant_turn_id = p_assistant_turn_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assistant_turns_cached_input_price_per_m_tok(p_assistant_turn_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(1000000, 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assistant_turns_output_cost
@@ -5062,7 +5061,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assistant_turns_output_cost(p_assistant_turn_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT output_tokens FROM assistant_turns WHERE assistant_turn_id = p_assistant_turn_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assistant_turns_output_price_per_m_tok(p_assistant_turn_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE(1000000, 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT output_tokens FROM assistant_turns WHERE assistant_turn_id = p_assistant_turn_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assistant_turns_output_price_per_m_tok(p_assistant_turn_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(1000000, 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_assistant_turns_total_cost
@@ -5072,7 +5071,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_assistant_turns_total_cost(p_assistant_turn_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assistant_turns_input_cost(p_assistant_turn_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assistant_turns_output_cost(p_assistant_turn_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assistant_turns_input_cost(p_assistant_turn_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_assistant_turns_output_cost(p_assistant_turn_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- get_erb_tables_table_name
@@ -5971,7 +5970,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_admin_can_create(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_admin_can_read
@@ -5981,7 +5980,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_admin_can_read(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_admin_can_update
@@ -5991,7 +5990,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_admin_can_update(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_admin_can_delete
@@ -6001,7 +6000,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_admin_can_delete(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(admin_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_manager_can_create
@@ -6011,7 +6010,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_manager_can_create(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_manager_can_read
@@ -6021,7 +6020,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_manager_can_read(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_manager_can_update
@@ -6031,7 +6030,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_manager_can_update(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_manager_can_delete
@@ -6041,7 +6040,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_manager_can_delete(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(manager_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_representative_can_create
@@ -6051,7 +6050,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_representative_can_create(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_representative_can_read
@@ -6061,7 +6060,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_representative_can_read(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_representative_can_update
@@ -6071,7 +6070,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_representative_can_update(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_representative_can_delete
@@ -6081,7 +6080,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_representative_can_delete(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(representative_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_external_llm_can_create
@@ -6091,7 +6090,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_external_llm_can_create(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_external_llm_can_read
@@ -6101,7 +6100,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_external_llm_can_read(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_external_llm_can_update
@@ -6111,7 +6110,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_external_llm_can_update(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_tables_external_llm_can_delete
@@ -6121,7 +6120,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_tables_external_llm_can_delete(p_erb_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_tables WHERE erb_table_id = p_erb_table_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_table_package_is_active
@@ -6152,7 +6151,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_is_calculated(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(field_type, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) = 'calculated' OR (SELECT NULLIF(field_type, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) = 'lookup' OR (SELECT NULLIF(field_type, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) = 'aggregation'))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(field_type, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id), '') = 'calculated', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(field_type, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id), '') = 'lookup', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(field_type, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id), '') = 'aggregation', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_admin_can_create
@@ -6162,7 +6161,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_admin_can_create(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_admin_can_read
@@ -6172,7 +6171,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_admin_can_read(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_admin_can_update
@@ -6182,7 +6181,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_admin_can_update(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_admin_can_delete
@@ -6192,7 +6191,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_admin_can_delete(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(admin_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_manager_can_create
@@ -6202,7 +6201,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_manager_can_create(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_manager_can_read
@@ -6212,7 +6211,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_manager_can_read(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_manager_can_update
@@ -6222,7 +6221,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_manager_can_update(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_manager_can_delete
@@ -6232,7 +6231,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_manager_can_delete(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(manager_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_representative_can_create
@@ -6242,7 +6241,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_representative_can_create(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_representative_can_read
@@ -6252,7 +6251,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_representative_can_read(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_representative_can_update
@@ -6262,7 +6261,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_representative_can_update(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_representative_can_delete
@@ -6272,7 +6271,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_representative_can_delete(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(representative_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_external_llm_can_create
@@ -6282,7 +6281,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_external_llm_can_create(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('C' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_external_llm_can_read
@@ -6292,7 +6291,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_external_llm_can_read(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('R' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_external_llm_can_update
@@ -6302,7 +6301,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_external_llm_can_update(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('U' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_fields_external_llm_can_delete
@@ -6312,7 +6311,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_fields_external_llm_can_delete(p_erb_field_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0)))::text END)::boolean;
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id) IS NULL THEN (NULL)::text ELSE (NOT (COALESCE(((POSITION('D' IN (SELECT NULLIF(external_llm_crud, '') FROM erb_fields WHERE erb_field_id = p_erb_field_id))) = 0), FALSE)))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_api_endpoints_name
@@ -6442,7 +6441,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_subject_state_instances_has_complete_lineage(p_subject_state_instance_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT sequence_index FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id))::NUMERIC >= 1)::boolean;
+  SELECT (COALESCE(((SELECT sequence_index FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id))::NUMERIC, 0) >= 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_violation_types_jurisdiction_label
@@ -6484,7 +6483,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_violation_types_is_school_eligible_by_cap(p_violation_type_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT points FROM violation_types WHERE violation_type_id = p_violation_type_id) <= calc_violation_types_traffic_school_point_cap(p_violation_type_id) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE((SELECT points FROM violation_types WHERE violation_type_id = p_violation_type_id), 0) <= COALESCE(calc_violation_types_traffic_school_point_cap(p_violation_type_id), 0) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_violation_types_count_of_citations
@@ -6494,7 +6493,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_violation_types_count_of_citations(p_violation_type_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM citations WHERE violation_type = calc_violation_types_name(p_violation_type_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM citations WHERE violation_type = (SELECT calc_violation_types_name(p_violation_type_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_drivers_home_jurisdiction_label
@@ -6557,7 +6556,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_drivers_count_of_citations(p_driver_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM citations WHERE driver = calc_drivers_name(p_driver_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM citations WHERE driver = (SELECT calc_drivers_name(p_driver_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_drivers_active_points
@@ -6567,7 +6566,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_drivers_active_points(p_driver_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_citations_effective_points(citation_id))::numeric), 0) FROM citations WHERE driver = calc_drivers_name(p_driver_id)))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_citations_is_guilty(erb_r1.citation_id), FALSE) AND COALESCE(NOT (COALESCE(calc_citations_is_dismissed(erb_r1.citation_id), FALSE)), FALSE)) THEN (calc_citations_violation_points(erb_r1.citation_id))::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM citations erb_r1 WHERE driver = (SELECT calc_drivers_name(p_driver_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_drivers_license_status
@@ -6577,7 +6576,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_drivers_license_status(p_driver_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_drivers_active_points(p_driver_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) >= calc_drivers_suspension_threshold(p_driver_id) THEN ('Suspended')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) >= calc_drivers_warning_threshold(p_driver_id) THEN ('Warning')::text ELSE ('Valid')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_drivers_active_points(p_driver_id) AS val) SELECT (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) >= COALESCE(calc_drivers_suspension_threshold(p_driver_id), 0) THEN ('Suspended')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) >= COALESCE(calc_drivers_warning_threshold(p_driver_id), 0) THEN ('Warning')::text ELSE ('Valid')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citations_driver_label
@@ -7164,7 +7163,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citations_response_due_date(p_citation_id TEXT)
 RETURNS DATE AS $$
-  SELECT ((((SELECT issued_on::timestamptz FROM citations WHERE citation_id = p_citation_id))::date + (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_citations_days_to_respond(p_citation_id)) AS v) __safe_numeric), 0))::integer))::date;
+  SELECT ((((SELECT issued_on::timestamptz FROM citations WHERE citation_id = p_citation_id))::date + (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_citations_days_to_respond(p_citation_id)) AS v OFFSET 0) __safe_numeric), 0))::integer))::date;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citations_days_until_response_due
@@ -7184,7 +7183,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citations_is_response_overdue(p_citation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN ((((SELECT responded_on::timestamptz FROM citations WHERE citation_id = p_citation_id)) IS NULL OR ((SELECT responded_on::timestamptz FROM citations WHERE citation_id = p_citation_id))::text = '') AND (SELECT as_of_date::timestamptz FROM citations WHERE citation_id = p_citation_id) > calc_citations_response_due_date(p_citation_id)) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE((((SELECT responded_on::timestamptz FROM citations WHERE citation_id = p_citation_id)) IS NULL OR ((SELECT responded_on::timestamptz FROM citations WHERE citation_id = p_citation_id))::text = ''), FALSE) AND COALESCE(COALESCE(((SELECT as_of_date::timestamptz FROM citations WHERE citation_id = p_citation_id) > calc_citations_response_due_date(p_citation_id)), FALSE), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citations_count_of_hearings
@@ -7194,7 +7193,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citations_count_of_hearings(p_citation_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM hearings WHERE citation = calc_citations_name(p_citation_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM hearings WHERE citation = (SELECT calc_citations_name(p_citation_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citations_latest_hearing_outcome
@@ -7204,7 +7203,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citations_latest_hearing_outcome(p_citation_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_citations_name(p_citation_id) AS val) SELECT ((SELECT MAX(outcome::text) FROM hearings WHERE citation = (SELECT val FROM __erb_dedup_v1) AND scheduled_for = (SELECT MAX(scheduled_for) FROM hearings WHERE citation = (SELECT val FROM __erb_dedup_v1))))::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_citations_name(p_citation_id) AS val) SELECT ((SELECT MAX(outcome::text) FROM hearings WHERE citation = (SELECT (SELECT val FROM __erb_dedup_v1)) AND scheduled_for = (SELECT (SELECT MAX(scheduled_for) FROM hearings WHERE citation = (SELECT (SELECT val FROM __erb_dedup_v1))))))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citations_contest_status
@@ -7214,7 +7213,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citations_contest_status(p_citation_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_citations_latest_hearing_outcome(p_citation_id) AS val) SELECT (CASE WHEN NOT (COALESCE((SELECT contest_requested FROM citations WHERE citation_id = p_citation_id), FALSE)) THEN ('NotContested')::text ELSE (CASE WHEN (calc_citations_count_of_hearings(p_citation_id))::NUMERIC = 0 THEN ('HearingRequested')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1) = 'Pending' OR (((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '')) THEN ('Scheduled')::text ELSE ('Heard')::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_citations_latest_hearing_outcome(p_citation_id) AS val) SELECT (CASE WHEN NOT (COALESCE(COALESCE((SELECT contest_requested FROM citations WHERE citation_id = p_citation_id), FALSE), FALSE)) THEN ('NotContested')::text ELSE (CASE WHEN COALESCE((calc_citations_count_of_hearings(p_citation_id))::NUMERIC, 0) = 0 THEN ('HearingRequested')::text ELSE (CASE WHEN (COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Pending', FALSE) OR COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)) THEN ('Scheduled')::text ELSE ('Heard')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citations_is_dismissed
@@ -7224,7 +7223,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citations_is_dismissed(p_citation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN calc_citations_latest_hearing_outcome(p_citation_id) = 'Dismissed' THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(calc_citations_latest_hearing_outcome(p_citation_id), '') = 'Dismissed' THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citations_is_guilty
@@ -7234,7 +7233,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citations_is_guilty(p_citation_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_citations_latest_hearing_outcome(p_citation_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1) = 'Guilty' OR (SELECT val FROM __erb_dedup_v1) = 'Upheld' OR (calc_citations_is_response_overdue(p_citation_id) AND NOT (COALESCE((SELECT contest_requested FROM citations WHERE citation_id = p_citation_id), FALSE)))) THEN TRUE ELSE FALSE END)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_citations_latest_hearing_outcome(p_citation_id) AS val) SELECT (CASE WHEN (COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Guilty', FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Upheld', FALSE) OR COALESCE((COALESCE(calc_citations_is_response_overdue(p_citation_id), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT contest_requested FROM citations WHERE citation_id = p_citation_id), FALSE), FALSE)), FALSE)), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citations_amount_due_usd
@@ -7244,7 +7243,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citations_amount_due_usd(p_citation_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_citations_base_fine_usd(p_citation_id) AS val) SELECT (CASE WHEN calc_citations_is_dismissed(p_citation_id) THEN (0)::text ELSE (CASE WHEN calc_citations_is_payment_late(p_citation_id) THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(1, 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_citations_late_penalty_pct(p_citation_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::text ELSE ((SELECT val FROM __erb_dedup_v1))::text END)::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_citations_base_fine_usd(p_citation_id) AS val) SELECT (CASE WHEN calc_citations_is_dismissed(p_citation_id) THEN (0)::text ELSE (CASE WHEN calc_citations_is_payment_late(p_citation_id) THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(1, 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_citations_late_penalty_pct(p_citation_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::text ELSE ((SELECT val FROM __erb_dedup_v1))::text END)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citations_payment_due_date
@@ -7254,7 +7253,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citations_payment_due_date(p_citation_id TEXT)
 RETURNS DATE AS $$
-  SELECT ((((calc_citations_response_due_date(p_citation_id))::date)::date + (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_citations_days_to_pay_after_ruling(p_citation_id)) AS v) __safe_numeric), 0))::integer))::date;
+  SELECT ((((calc_citations_response_due_date(p_citation_id))::date)::date + (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_citations_days_to_pay_after_ruling(p_citation_id)) AS v OFFSET 0) __safe_numeric), 0))::integer))::date;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citations_is_payment_late
@@ -7264,7 +7263,17 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citations_is_payment_late(p_citation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_citations_is_guilty(p_citation_id) AND (((SELECT paid_on::timestamptz FROM citations WHERE citation_id = p_citation_id)) IS NULL OR ((SELECT paid_on::timestamptz FROM citations WHERE citation_id = p_citation_id))::text = '') AND (SELECT as_of_date::timestamptz FROM citations WHERE citation_id = p_citation_id) > calc_citations_payment_due_date(p_citation_id)) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(calc_citations_is_guilty(p_citation_id), FALSE) AND COALESCE((((SELECT paid_on::timestamptz FROM citations WHERE citation_id = p_citation_id)) IS NULL OR ((SELECT paid_on::timestamptz FROM citations WHERE citation_id = p_citation_id))::text = ''), FALSE) AND COALESCE(COALESCE(((SELECT as_of_date::timestamptz FROM citations WHERE citation_id = p_citation_id) > calc_citations_payment_due_date(p_citation_id)), FALSE), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_citations_collections_deadline
+-- Field: Citations.CollectionsDeadline
+-- Type: calculated | DataType: date | Returns: DATE
+
+
+CREATE OR REPLACE FUNCTION calc_citations_collections_deadline(p_citation_id TEXT)
+RETURNS DATE AS $$
+  SELECT ((((calc_citations_payment_due_date(p_citation_id))::date)::date + (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_citations_days_late_to_collections(p_citation_id)) AS v OFFSET 0) __safe_numeric), 0))::integer))::date;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citations_is_in_collections
@@ -7274,7 +7283,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citations_is_in_collections(p_citation_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_citations_is_payment_late(p_citation_id) AND (SELECT as_of_date::timestamptz FROM citations WHERE citation_id = p_citation_id) > (((calc_citations_payment_due_date(p_citation_id))::date)::date + (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_citations_days_late_to_collections(p_citation_id)) AS v) __safe_numeric), 0))::integer)) THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN (COALESCE(calc_citations_is_payment_late(p_citation_id), FALSE) AND COALESCE(COALESCE(((SELECT as_of_date::timestamptz FROM citations WHERE citation_id = p_citation_id) > calc_citations_collections_deadline(p_citation_id)), FALSE), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citations_payment_status
@@ -7284,7 +7293,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citations_payment_status(p_citation_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_citations_is_dismissed(p_citation_id) THEN ('NotOwed')::text ELSE (CASE WHEN NOT ((((SELECT paid_on::timestamptz FROM citations WHERE citation_id = p_citation_id)) IS NULL OR ((SELECT paid_on::timestamptz FROM citations WHERE citation_id = p_citation_id))::text = '')) THEN ('Paid')::text ELSE (CASE WHEN calc_citations_is_in_collections(p_citation_id) THEN ('Collections')::text ELSE (CASE WHEN calc_citations_is_payment_late(p_citation_id) THEN ('Late')::text ELSE (CASE WHEN calc_citations_is_guilty(p_citation_id) THEN ('Due')::text ELSE ('Pending')::text END)::text END)::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN calc_citations_is_dismissed(p_citation_id) THEN ('NotOwed')::text ELSE (CASE WHEN NOT (COALESCE((((SELECT paid_on::timestamptz FROM citations WHERE citation_id = p_citation_id)) IS NULL OR ((SELECT paid_on::timestamptz FROM citations WHERE citation_id = p_citation_id))::text = ''), FALSE)) THEN ('Paid')::text ELSE (CASE WHEN calc_citations_is_in_collections(p_citation_id) THEN ('Collections')::text ELSE (CASE WHEN calc_citations_is_payment_late(p_citation_id) THEN ('Late')::text ELSE (CASE WHEN calc_citations_is_guilty(p_citation_id) THEN ('Due')::text ELSE ('Pending')::text END)::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citations_effective_points
@@ -7294,7 +7303,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citations_effective_points(p_citation_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (calc_citations_is_guilty(p_citation_id) AND NOT (calc_citations_is_dismissed(p_citation_id))) THEN (calc_citations_violation_points(p_citation_id))::text ELSE (0)::text END)::integer;
+  SELECT (CASE WHEN (COALESCE(calc_citations_is_guilty(p_citation_id), FALSE) AND COALESCE(NOT (COALESCE(calc_citations_is_dismissed(p_citation_id), FALSE)), FALSE)) THEN (calc_citations_violation_points(p_citation_id))::text ELSE (0)::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_citations_citation_status
@@ -7304,7 +7313,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_citations_citation_status(p_citation_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_citations_latest_hearing_outcome(p_citation_id) AS val) SELECT (CASE WHEN (NOT ((((SELECT paid_on::timestamptz FROM citations WHERE citation_id = p_citation_id)) IS NULL OR ((SELECT paid_on::timestamptz FROM citations WHERE citation_id = p_citation_id))::text = '')) OR calc_citations_is_dismissed(p_citation_id)) THEN ('Closed')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1) = 'Guilty' OR (SELECT val FROM __erb_dedup_v1) = 'Upheld' OR (calc_citations_is_response_overdue(p_citation_id) AND NOT (COALESCE((SELECT contest_requested FROM citations WHERE citation_id = p_citation_id), FALSE)))) THEN ('Adjudicated')::text ELSE (CASE WHEN (COALESCE((SELECT contest_requested FROM citations WHERE citation_id = p_citation_id), FALSE) AND (calc_citations_count_of_hearings(p_citation_id))::NUMERIC > 0) THEN ('InContest')::text ELSE (CASE WHEN NOT ((((SELECT responded_on::timestamptz FROM citations WHERE citation_id = p_citation_id)) IS NULL OR ((SELECT responded_on::timestamptz FROM citations WHERE citation_id = p_citation_id))::text = '')) THEN ('Responded')::text ELSE ('Issued')::text END)::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_citations_latest_hearing_outcome(p_citation_id) AS val) SELECT (CASE WHEN (COALESCE(NOT (COALESCE((((SELECT paid_on::timestamptz FROM citations WHERE citation_id = p_citation_id)) IS NULL OR ((SELECT paid_on::timestamptz FROM citations WHERE citation_id = p_citation_id))::text = ''), FALSE)), FALSE) OR COALESCE(calc_citations_is_dismissed(p_citation_id), FALSE)) THEN ('Closed')::text ELSE (CASE WHEN (COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Guilty', FALSE) OR COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'Upheld', FALSE) OR COALESCE((COALESCE(calc_citations_is_response_overdue(p_citation_id), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT contest_requested FROM citations WHERE citation_id = p_citation_id), FALSE), FALSE)), FALSE)), FALSE)) THEN ('Adjudicated')::text ELSE (CASE WHEN (COALESCE(COALESCE((SELECT contest_requested FROM citations WHERE citation_id = p_citation_id), FALSE), FALSE) AND COALESCE(COALESCE((calc_citations_count_of_hearings(p_citation_id))::NUMERIC, 0) > 0, FALSE)) THEN ('InContest')::text ELSE (CASE WHEN NOT (COALESCE((((SELECT responded_on::timestamptz FROM citations WHERE citation_id = p_citation_id)) IS NULL OR ((SELECT responded_on::timestamptz FROM citations WHERE citation_id = p_citation_id))::text = ''), FALSE)) THEN ('Responded')::text ELSE ('Issued')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_hearings_citation_label
@@ -9469,6 +9478,7 @@ SELECT
   calc_citations_amount_due_usd(t.citation_id) AS amount_due_usd,               -- Amount currently owed: 0 if dismissed; otherwise the base fine plus the jurisdiction's late penalty if the payment is late.
   calc_citations_payment_due_date(t.citation_id) AS payment_due_date,           -- Date the fine is due: the later anchor (response deadline) plus the jurisdiction's days-to-pay window.
   calc_citations_is_payment_late(t.citation_id) AS is_payment_late,             -- True when the driver is liable, has not paid in full, and the payment due date has passed as of AsOfDate.
+  calc_citations_collections_deadline(t.citation_id) AS collections_deadline,   -- Date the account moves to collections: PaymentDueDate plus the jurisdiction's grace window.
   calc_citations_is_in_collections(t.citation_id) AS is_in_collections,         -- True when a late payment has remained unpaid past the jurisdiction's collections window.
   calc_citations_payment_status(t.citation_id) AS payment_status,               -- Payment/Penalty state machine: NotOwed (dismissed) -> Paid -> Collections -> Late -> Due. Evaluated in priority order.
   calc_citations_effective_points(t.citation_id) AS effective_points,           -- License points this citation actually contributes to the driver: the violation's points if the driver is liable and not dismissed, otherwise 0. Drives the driver's ActivePoints rollup.
@@ -9895,6 +9905,328 @@ FROM build_phases t;
 
 -- === 8. Custom views (ERBCustomizations) ===
 -- (no ERBCustomizations row for this section)
+
+-- === 8b. Function and view overrides (ERBCustomizations FunctionOverride / SchemaOverride) ===
+-- Override (function): calc_hearing_outcomes_employer_won_flag
+CREATE OR REPLACE FUNCTION public.calc_attendance_details_latest_occurrence_date(p_attendance_detail_id text)
+RETURNS timestamp with time zone
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN (SELECT MAX(occurrence_date) FROM attendance_occurrences
+          WHERE attendance_detail = p_attendance_detail_id);
+END;
+$function$;
+
+-- 2. is_override_action: generated code uses double-quoted "override" (an identifier).
+CREATE OR REPLACE FUNCTION public.calc_audit_log_entries_is_override_action(p_audit_log_entrie_id text)
+RETURNS boolean
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN LOWER(COALESCE((SELECT action_type FROM audit_log_entries
+                         WHERE audit_log_entrie_id = p_audit_log_entrie_id), '')) = 'override';
+END;
+$function$;
+
+-- 3. tenure_years_approx: cast 0.3 to integer fails when text is fractional.
+CREATE OR REPLACE FUNCTION public.calc_claimants_tenure_years_approx(p_claimant_id text)
+RETURNS integer
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+DECLARE
+  v_hire date;
+BEGIN
+  SELECT hire_date INTO v_hire FROM claimants WHERE claimant_id = p_claimant_id;
+  IF v_hire IS NULL THEN RETURN NULL; END IF;
+  RETURN ROUND((CURRENT_DATE - v_hire)::numeric / 365.0)::integer;
+END;
+$function$;
+
+-- 4. avg_client_hygiene_served: AVGs a text value (STRONG/MIXED/WEAK).
+--    Map to numeric scale: STRONG=3, MIXED=2, WEAK=1, then average.
+CREATE OR REPLACE FUNCTION public.calc_claims_reps_avg_client_hygiene_served(p_claims_rep_id text)
+RETURNS integer
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN COALESCE(ROUND((SELECT AVG(
+      CASE UPPER(calc_unemployment_claims_client_hygiene_rating(unemployment_claim_id))
+        WHEN 'STRONG' THEN 3
+        WHEN 'MIXED'  THEN 2
+        WHEN 'WEAK'   THEN 1
+        ELSE NULL
+      END
+    ) FROM unemployment_claims WHERE claims_rep = p_claims_rep_id)), 0)::integer;
+END;
+$function$;
+
+-- 5. has_reference: generated CASE WHEN '" = "' is gibberish.
+CREATE OR REPLACE FUNCTION public.calc_evidence_items_has_reference(p_evidence_item_id text)
+RETURNS boolean
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN COALESCE(NULLIF((SELECT document_reference FROM evidence_items
+                          WHERE evidence_item_id = p_evidence_item_id), ''), NULL) IS NOT NULL;
+END;
+$function$;
+
+-- 6. is_uploaded_and_referenced: compared a boolean to integer 1.
+CREATE OR REPLACE FUNCTION public.calc_evidence_items_is_uploaded_and_referenced(p_evidence_item_id text)
+RETURNS boolean
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN COALESCE((SELECT document_uploaded FROM evidence_items
+                   WHERE evidence_item_id = p_evidence_item_id), FALSE)
+         AND calc_evidence_items_has_reference(p_evidence_item_id);
+END;
+$function$;
+
+-- 7. employer_won_flag: double-quoted "employer-won" parsed as identifier.
+CREATE OR REPLACE FUNCTION public.calc_hearing_outcomes_employer_won_flag(p_hearing_outcome_id text)
+RETURNS boolean
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN LOWER(COALESCE((SELECT result FROM hearing_outcomes
+                         WHERE hearing_outcome_id = p_hearing_outcome_id), '')) = 'employer-win';
+END;
+$function$;
+
+-- 8. employee_responded_flag: same broken concat pattern.
+CREATE OR REPLACE FUNCTION public.calc_insubordination_details_employee_responded_flag(p_insubordination_detail_id text)
+RETURNS boolean
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN COALESCE(NULLIF((SELECT employee_response_text FROM insubordination_details
+                          WHERE insubordination_detail_id = p_insubordination_detail_id), ''), NULL) IS NOT NULL;
+END;
+$function$;
+
+-- 9. jurisdiction_strictness_flag: double-quoted state codes parsed as identifiers.
+CREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_jurisdiction_strictness_flag(p_misconduct_checklist_id text)
+RETURNS boolean
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN LOWER(COALESCE(calc_misconduct_checklists_jurisdiction_state(p_misconduct_checklist_id), ''))
+         IN ('ca','ny','nj','wa');
+END;
+$function$;
+
+-- 10. latest_hearing_date: SUM of timestamp; want MAX.
+CREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_latest_hearing_date(p_misconduct_checklist_id text)
+RETURNS timestamp with time zone
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN (SELECT MAX(hearing_date) FROM hearing_outcomes
+          WHERE misconduct_checklist = p_misconduct_checklist_id);
+END;
+$function$;
+
+-- 11. overall_readiness_rating: compares boolean flags using = 0/= 1.
+CREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_overall_readiness_rating(p_misconduct_checklist_id text)
+RETURNS text
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  IF calc_misconduct_checklists_raw_readiness_score(p_misconduct_checklist_id) >= 20
+     AND NOT calc_misconduct_checklists_weak_documentation_flag(p_misconduct_checklist_id)
+     AND calc_misconduct_checklists_witness_corroboration_flag(p_misconduct_checklist_id)
+     AND NOT calc_misconduct_checklists_manager_override_heavy_flag(p_misconduct_checklist_id)
+  THEN
+    RETURN 'ready';
+  ELSIF calc_misconduct_checklists_raw_readiness_score(p_misconduct_checklist_id) >= 12 THEN
+    RETURN 'needs-review';
+  ELSE
+    RETURN 'not-ready';
+  END IF;
+END;
+$function$;
+
+-- 12. readiness_gap_narrative: same boolean = integer issue.
+CREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_readiness_gap_narrative(p_misconduct_checklist_id text)
+RETURNS text
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  IF calc_misconduct_checklists_weak_documentation_flag(p_misconduct_checklist_id) THEN
+    RETURN 'weak-documentation';
+  ELSIF NOT calc_misconduct_checklists_witness_corroboration_flag(p_misconduct_checklist_id) THEN
+    RETURN 'missing-witness';
+  ELSIF calc_misconduct_checklists_manager_override_heavy_flag(p_misconduct_checklist_id) THEN
+    RETURN 'override-heavy';
+  ELSIF calc_misconduct_checklists_jurisdiction_strictness_flag(p_misconduct_checklist_id) THEN
+    RETURN 'strict-jurisdiction-double-check';
+  ELSE
+    RETURN 'ok';
+  END IF;
+END;
+$function$;
+
+-- 13. severe_behavior_max_rollup: MAX of boolean cast to numeric. Use bool_or.
+CREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_severe_behavior_max_rollup(p_misconduct_checklist_id text)
+RETURNS integer
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN CASE WHEN COALESCE((SELECT bool_or(calc_behavioral_details_is_severe_behavior(behavioral_detail_id))
+                             FROM behavioral_details
+                             WHERE misconduct_checklist = p_misconduct_checklist_id), FALSE)
+              THEN 1 ELSE 0 END;
+END;
+$function$;
+
+-- 14. severe_incident_flag: depends on severe_behavior_max_rollup; rollup now returns int.
+CREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_severe_incident_flag(p_misconduct_checklist_id text)
+RETURNS boolean
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN calc_misconduct_checklists_severe_behavior_max_rollup(p_misconduct_checklist_id) = 1;
+END;
+$function$;
+
+-- 15. long_standing_issue_flag: cast "4 months" to numeric fails. Parse leading number + unit.
+CREATE OR REPLACE FUNCTION public.calc_performance_details_long_standing_issue_flag(p_performance_detail_id text)
+RETURNS boolean
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+DECLARE
+  v_text text;
+  v_num  numeric;
+  v_days numeric;
+BEGIN
+  SELECT issue_duration INTO v_text FROM performance_details
+   WHERE performance_detail_id = p_performance_detail_id;
+  IF v_text IS NULL OR v_text = '' THEN RETURN FALSE; END IF;
+  v_num := NULLIF((regexp_match(v_text, '([0-9]+(\.[0-9]+)?)'))[1], '')::numeric;
+  IF v_num IS NULL THEN RETURN FALSE; END IF;
+  v_days := CASE
+              WHEN v_text ILIKE '%year%'  THEN v_num * 365
+              WHEN v_text ILIKE '%month%' THEN v_num * 30
+              WHEN v_text ILIKE '%week%'  THEN v_num * 7
+              ELSE v_num
+            END;
+  RETURN v_days >= 60;
+END;
+$function$;
+
+-- 16. any_progressive_discipline_flag: SUMs a boolean. Use bool_or → int.
+CREATE OR REPLACE FUNCTION public.calc_unemployment_claims_any_progressive_discipline_flag(p_unemployment_claim_id text)
+RETURNS integer
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN CASE WHEN COALESCE((SELECT bool_or(calc_misconduct_checklists_progressive_discipline_flag(misconduct_checklist_id))
+                             FROM misconduct_checklists
+                             WHERE unemployment_claim = p_unemployment_claim_id), FALSE)
+              THEN 1 ELSE 0 END;
+END;
+$function$;
+
+-- 17. any_weak_documentation_flag: same.
+CREATE OR REPLACE FUNCTION public.calc_unemployment_claims_any_weak_documentation_flag(p_unemployment_claim_id text)
+RETURNS integer
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN CASE WHEN COALESCE((SELECT bool_or(calc_misconduct_checklists_weak_documentation_flag(misconduct_checklist_id))
+                             FROM misconduct_checklists
+                             WHERE unemployment_claim = p_unemployment_claim_id), FALSE)
+              THEN 1 ELSE 0 END;
+END;
+$function$;
+
+-- 18. claim_risk_baseline: compares hygiene rating (text) to integers.
+--     Map STRONG/MIXED/WEAK to numeric scale, then bucket.
+CREATE OR REPLACE FUNCTION public.calc_unemployment_claims_claim_risk_baseline(p_unemployment_claim_id text)
+RETURNS text
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+DECLARE
+  v_score int;
+BEGIN
+  v_score := CASE UPPER(COALESCE(calc_unemployment_claims_client_hygiene_rating(p_unemployment_claim_id), ''))
+               WHEN 'STRONG' THEN 4
+               WHEN 'MIXED'  THEN 3
+               WHEN 'WEAK'   THEN 1
+               ELSE 0
+             END;
+  IF v_score < 3 THEN RETURN 'high';
+  ELSIF v_score < 4 THEN RETURN 'medium';
+  ELSE RETURN 'low';
+  END IF;
+END;
+$function$;
+
+-- 19. composite_claim_readiness: has_checklist_flag is boolean, compared to 0.
+CREATE OR REPLACE FUNCTION public.calc_unemployment_claims_composite_claim_readiness(p_unemployment_claim_id text)
+RETURNS text
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+DECLARE
+  v_readiness int;
+BEGIN
+  IF NOT calc_unemployment_claims_has_checklist_flag(p_unemployment_claim_id) THEN
+    RETURN 'no-checklist';
+  END IF;
+  v_readiness := calc_unemployment_claims_latest_checklist_raw_readiness(p_unemployment_claim_id);
+  IF calc_unemployment_claims_claim_risk_baseline(p_unemployment_claim_id) = 'high'
+     AND v_readiness < 20 THEN
+    RETURN 'high-risk';
+  ELSIF v_readiness >= 20 THEN
+    RETURN 'ready';
+  ELSIF v_readiness >= 12 THEN
+    RETURN 'needs-review';
+  ELSE
+    RETURN 'not-ready';
+  END IF;
+END;
+$function$;
+
+-- 20. escalate_to_manager_flag: any_weak_documentation_flag now returns int again, OK,
+--     but we also need to handle the any_progressive_discipline_flag side.
+CREATE OR REPLACE FUNCTION public.calc_unemployment_claims_escalate_to_manager_flag(p_unemployment_claim_id text)
+RETURNS integer
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN CASE
+    WHEN calc_unemployment_claims_any_weak_documentation_flag(p_unemployment_claim_id) = 1
+      OR (calc_unemployment_claims_claim_risk_baseline(p_unemployment_claim_id) = 'high'
+          AND calc_unemployment_claims_any_progressive_discipline_flag(p_unemployment_claim_id) = 0)
+    THEN 1 ELSE 0 END;
+END;
+$function$;
+
+-- 21. has_contact_info: same broken concat pattern.
+CREATE OR REPLACE FUNCTION public.calc_witnesses_has_contact_info(p_witnesse_id text)
+RETURNS boolean
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN COALESCE(NULLIF((SELECT contact_info FROM witnesses
+                          WHERE witnesse_id = p_witnesse_id), ''), NULL) IS NOT NULL;
+END;
+$function$;
+
+-- 22. has_usable_statement: depended on has_contact_info = 1.
+CREATE OR REPLACE FUNCTION public.calc_witnesses_has_usable_statement(p_witnesse_id text)
+RETURNS boolean
+LANGUAGE plpgsql STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN COALESCE((SELECT statement_provided_flag FROM witnesses
+                   WHERE witnesse_id = p_witnesse_id), FALSE)
+         AND calc_witnesses_has_contact_info(p_witnesse_id);
+END;
+$function$;
+
 
 -- === 9. Custom RLS (ERBCustomizations) ===
 -- (no ERBCustomizations row for this section)

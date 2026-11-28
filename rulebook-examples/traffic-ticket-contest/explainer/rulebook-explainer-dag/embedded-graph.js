@@ -50468,7 +50468,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "An ERB field is considered calculated if all of the following:",
+          "headline": "An ERB field is considered calculated if any of the following:",
           "cases": [],
           "children": [
             {
@@ -52928,4 +52928,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "BuildPhases": "build phase"
     }
   }
-} };
+}, stamp: "b2860d3153dfdf41" };
