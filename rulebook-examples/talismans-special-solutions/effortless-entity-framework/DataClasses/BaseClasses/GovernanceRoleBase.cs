@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? RelativePath
         {
-            get => F.AsString(F.Memo(this, "RelativePath", () => F.Concat(F.S("governance-roles/"), F.TextOr(F.Of(this.GovernanceRoleId))))); set { }
+            get => F.AsString(F.Memo(this, "RelativePath", () => F.Concat(F.S("governance-roles/"), F.Text(F.Of(this.GovernanceRoleId))))); set { }
         }
 
         // Formula Iri (rulebook: =SUBSTITUTE({{RelativePath}}, "/", "-"))

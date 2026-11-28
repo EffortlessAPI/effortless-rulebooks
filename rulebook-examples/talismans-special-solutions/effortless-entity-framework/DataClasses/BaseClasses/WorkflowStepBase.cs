@@ -27,7 +27,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? RelativePath
         {
-            get => F.AsString(F.Memo(this, "RelativePath", () => F.Concat(F.TextOr(F.Of(this.ParentPath)), F.S("/steps/"), F.TextOr(F.Of(this.WorkflowStepId))))); set { }
+            get => F.AsString(F.Memo(this, "RelativePath", () => F.Concat(F.Text(F.Of(this.ParentPath)), F.S("/steps/"), F.Text(F.Of(this.WorkflowStepId))))); set { }
         }
 
         // Formula Iri (rulebook: =SUBSTITUTE({{RelativePath}}, "/", "-"))
@@ -49,7 +49,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public int? PrecedingStepCount
         {
-            get => throw new System.NotSupportedException("WorkflowSteps.PrecedingStepCount: could not translate formula =COUNTIFS(vw_step_precedence_closure!{{ToId}}, WorkflowSteps!{{WorkflowStepId}}): no table named vw_step_precedence_closure"); set { }
+            get => F.AsInt(F.Memo(this, "PrecedingStepCount", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Closure<StepPrecedence>(base.SoAContext, "vw_step_precedence_closure", "StepPrecedence", __c => __c.StepPrecedence, __e => F.Of(__e.FromStep), __e => F.Of(__e.ToStep), __e => true), __r => F.CritField(F.Of(__r.ToId), F.Of(this.WorkflowStepId))))))); set { }
         }
 
         // Formula InferredSequencePosition (rulebook: ={{PrecedingStepCount}} + 1)

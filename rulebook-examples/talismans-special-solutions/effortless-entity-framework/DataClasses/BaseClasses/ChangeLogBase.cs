@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? RelativePath
         {
-            get => F.AsString(F.Memo(this, "RelativePath", () => F.Concat(F.S("change-log/"), F.TextOr(F.Of(this.ChangeLogId))))); set { }
+            get => F.AsString(F.Memo(this, "RelativePath", () => F.Concat(F.S("change-log/"), F.Text(F.Of(this.ChangeLogId))))); set { }
         }
 
         // Formula Iri (rulebook: =SUBSTITUTE({{RelativePath}}, "/", "-"))
@@ -34,7 +34,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Version)), F.S(" ("), F.TextOr(F.Of(this.ChangeDate)), F.S(")")))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.Version)), F.S(" ("), F.DatetimeText(F.Of(this.ChangeDate)), F.S(")")))); set { }
         }
 
         public string? Version { get; set; }

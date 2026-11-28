@@ -27,7 +27,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? RelativePath
         {
-            get => F.AsString(F.Memo(this, "RelativePath", () => F.Concat(F.TextOr(F.Of(this.ParentPath)), F.S("/assignments/"), F.TextOr(F.Of(this.RoleAssignmentId))))); set { }
+            get => F.AsString(F.Memo(this, "RelativePath", () => F.Concat(F.Text(F.Of(this.ParentPath)), F.S("/assignments/"), F.Text(F.Of(this.RoleAssignmentId))))); set { }
         }
 
         // Formula Iri (rulebook: =SUBSTITUTE({{RelativePath}}, "/", "-"))
@@ -41,7 +41,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.Role)), F.S(" ["), F.TextOr(F.Of(this.ValidFrom)), F.S(" -> "), F.TextNotNull((F.Truthy(F.Bool3(F.IsBlank(F.Of(this.ValidTo)))) ? F.S("open") : F.Of(this.ValidTo))), F.S("]")))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.Role)), F.S(" ["), F.DatetimeText(F.Of(this.ValidFrom)), F.S(" -> "), F.Text((F.Truthy(F.Bool3(F.IsBlank(F.Of(this.ValidTo)))) ? F.S("open") : F.Of(this.ValidTo))), F.S("]")))); set { }
         }
 
         public DateOnly ValidFrom { get; set; }

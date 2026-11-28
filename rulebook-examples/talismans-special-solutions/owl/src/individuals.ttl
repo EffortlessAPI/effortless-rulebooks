@@ -2,10 +2,12 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix effortless-ntwf: <https://w3id.org/effortless-ntwf#> .
+@prefix erb: <https://effortlessapi.com/ns/erb#> .
 
 # === Individuals: AIAgents ===
 
 effortless-ntwf:ntwf-risk-ai a effortless-ntwf:AIAgents ;
+    erb:key "ntwf-risk-ai" ;
     effortless-ntwf:aIAgentId "ntwf-risk-ai" ;
     effortless-ntwf:name "RiskAnalysis-AI" ;
     effortless-ntwf:title "Risk Analysis AI Agent" ;
@@ -14,6 +16,7 @@ effortless-ntwf:ntwf-risk-ai a effortless-ntwf:AIAgents ;
     effortless-ntwf:deployedOn "2026-01-10"^^xsd:date .
 
 effortless-ntwf:ntwf-health-ai a effortless-ntwf:AIAgents ;
+    erb:key "ntwf-health-ai" ;
     effortless-ntwf:aIAgentId "ntwf-health-ai" ;
     effortless-ntwf:name "DeploymentHealth-AI" ;
     effortless-ntwf:title "Deployment Health AI Agent" ;
@@ -24,6 +27,7 @@ effortless-ntwf:ntwf-health-ai a effortless-ntwf:AIAgents ;
 # === Individuals: AgentCapabilityConcepts ===
 
 effortless-ntwf:cap-human-judgment a effortless-ntwf:AgentCapabilityConcepts ;
+    erb:key "cap-human-judgment" ;
     effortless-ntwf:conceptId "cap-human-judgment" ;
     effortless-ntwf:prefLabel "Human Judgment" ;
     effortless-ntwf:altLabel "Human Decision" ;
@@ -31,6 +35,7 @@ effortless-ntwf:cap-human-judgment a effortless-ntwf:AgentCapabilityConcepts ;
     effortless-ntwf:scopeNote "Used for ApprovalGate steps where requiresHumanApproval is true. AI agents may not fill roles with this capability." .
 
 effortless-ntwf:cap-risk-analysis a effortless-ntwf:AgentCapabilityConcepts ;
+    erb:key "cap-risk-analysis" ;
     effortless-ntwf:conceptId "cap-risk-analysis" ;
     effortless-ntwf:prefLabel "Risk Analysis" ;
     effortless-ntwf:altLabel "Risk Assessment" ;
@@ -38,6 +43,7 @@ effortless-ntwf:cap-risk-analysis a effortless-ntwf:AgentCapabilityConcepts ;
     effortless-ntwf:scopeNote "Can be satisfied by an AIAgent with an appropriate model version (e.g. risk-classifier-v2.4.1)." .
 
 effortless-ntwf:cap-deployment-health a effortless-ntwf:AgentCapabilityConcepts ;
+    erb:key "cap-deployment-health" ;
     effortless-ntwf:conceptId "cap-deployment-health" ;
     effortless-ntwf:prefLabel "Deployment Health Monitoring" ;
     effortless-ntwf:altLabel "Post-Deployment Telemetry Summarization" ;
@@ -45,6 +51,7 @@ effortless-ntwf:cap-deployment-health a effortless-ntwf:AgentCapabilityConcepts 
     effortless-ntwf:scopeNote "Held by the Deployment Health Agent role (filled by DeploymentHealth-AI, health-summarizer-v1.2.0)." .
 
 effortless-ntwf:cap-legal-review a effortless-ntwf:AgentCapabilityConcepts ;
+    erb:key "cap-legal-review" ;
     effortless-ntwf:conceptId "cap-legal-review" ;
     effortless-ntwf:prefLabel "Legal Review" ;
     effortless-ntwf:altLabel "Compliance Review" ;
@@ -52,6 +59,7 @@ effortless-ntwf:cap-legal-review a effortless-ntwf:AgentCapabilityConcepts ;
     effortless-ntwf:scopeNote "Requires a human agent. Cannot be delegated to AI or automated pipeline." .
 
 effortless-ntwf:cap-ci-execution a effortless-ntwf:AgentCapabilityConcepts ;
+    erb:key "cap-ci-execution" ;
     effortless-ntwf:conceptId "cap-ci-execution" ;
     effortless-ntwf:prefLabel "CI/CD Execution" ;
     effortless-ntwf:altLabel "Pipeline Execution" ;
@@ -59,6 +67,7 @@ effortless-ntwf:cap-ci-execution a effortless-ntwf:AgentCapabilityConcepts ;
     effortless-ntwf:scopeNote "Satisfied by AutomatedPipelines. HumanAgents should not fill roles requiring only this capability." .
 
 effortless-ntwf:cap-executive-authorization a effortless-ntwf:AgentCapabilityConcepts ;
+    erb:key "cap-executive-authorization" ;
     effortless-ntwf:conceptId "cap-executive-authorization" ;
     effortless-ntwf:prefLabel "Executive Authorization" ;
     effortless-ntwf:altLabel "C-Level Sign-off" ;
@@ -68,6 +77,7 @@ effortless-ntwf:cap-executive-authorization a effortless-ntwf:AgentCapabilityCon
 # === Individuals: ApprovalGates ===
 
 effortless-ntwf:ntwf-release-approval-gate a effortless-ntwf:ApprovalGates ;
+    erb:key "ntwf-release-approval-gate" ;
     effortless-ntwf:approvalGateId "ntwf-release-approval-gate" ;
     effortless-ntwf:displayName "Release Approval Gate" ;
     effortless-ntwf:workflowStep effortless-ntwf:prod-deploy-step-3 ;
@@ -76,6 +86,7 @@ effortless-ntwf:ntwf-release-approval-gate a effortless-ntwf:ApprovalGates ;
 # === Individuals: ArtifactTypeConcepts ===
 
 effortless-ntwf:type-report a effortless-ntwf:ArtifactTypeConcepts ;
+    erb:key "type-report" ;
     effortless-ntwf:conceptId "type-report" ;
     effortless-ntwf:prefLabel "Report" ;
     effortless-ntwf:altLabel "Assessment" ;
@@ -83,6 +94,7 @@ effortless-ntwf:type-report a effortless-ntwf:ArtifactTypeConcepts ;
     effortless-ntwf:scopeNote "Use for narrative analytical artifacts, not for raw datasets or machine logs." .
 
 effortless-ntwf:type-decision-record a effortless-ntwf:ArtifactTypeConcepts ;
+    erb:key "type-decision-record" ;
     effortless-ntwf:conceptId "type-decision-record" ;
     effortless-ntwf:prefLabel "Decision Record" ;
     effortless-ntwf:altLabel "Authorization" ;
@@ -90,6 +102,7 @@ effortless-ntwf:type-decision-record a effortless-ntwf:ArtifactTypeConcepts ;
     effortless-ntwf:scopeNote "Use for sign-off / clearance / authorization artifacts." .
 
 effortless-ntwf:type-log a effortless-ntwf:ArtifactTypeConcepts ;
+    erb:key "type-log" ;
     effortless-ntwf:conceptId "type-log" ;
     effortless-ntwf:prefLabel "Log" ;
     effortless-ntwf:altLabel "Machine Output" ;
@@ -99,6 +112,7 @@ effortless-ntwf:type-log a effortless-ntwf:ArtifactTypeConcepts ;
 # === Individuals: AutomatedPipelines ===
 
 effortless-ntwf:ntwf-ci-pipeline a effortless-ntwf:AutomatedPipelines ;
+    erb:key "ntwf-ci-pipeline" ;
     effortless-ntwf:automatedPipelineId "ntwf-ci-pipeline" ;
     effortless-ntwf:name "CI/CD Deploy Pipeline" ;
     effortless-ntwf:description "Automated build, test, and deployment pipeline for production releases. Deterministic execution — no probabilistic output." ;
@@ -107,6 +121,7 @@ effortless-ntwf:ntwf-ci-pipeline a effortless-ntwf:AutomatedPipelines ;
 # === Individuals: ChangeLog ===
 
 effortless-ntwf:change-1-0-0 a effortless-ntwf:ChangeLog ;
+    erb:key "change-1-0-0" ;
     effortless-ntwf:changeLogId "change-1-0-0" ;
     effortless-ntwf:version "1.0.0" ;
     effortless-ntwf:changeDate "2026-01-15"^^xsd:date ;
@@ -117,6 +132,7 @@ effortless-ntwf:change-1-0-0 a effortless-ntwf:ChangeLog ;
     effortless-ntwf:approvedBy effortless-ntwf:gov-authority .
 
 effortless-ntwf:change-1-1-0 a effortless-ntwf:ChangeLog ;
+    erb:key "change-1-1-0" ;
     effortless-ntwf:changeLogId "change-1-1-0" ;
     effortless-ntwf:version "1.1.0" ;
     effortless-ntwf:changeDate "2026-03-20"^^xsd:date ;
@@ -129,6 +145,7 @@ effortless-ntwf:change-1-1-0 a effortless-ntwf:ChangeLog ;
 # === Individuals: CompetencyQuestions ===
 
 effortless-ntwf:cq-1 a effortless-ntwf:CompetencyQuestions ;
+    erb:key "cq-1" ;
     effortless-ntwf:competencyQuestionId "cq-1" ;
     effortless-ntwf:number "1" ;
     effortless-ntwf:displayName "Steps and order" ;
@@ -144,6 +161,7 @@ effortless-ntwf:cq-1 a effortless-ntwf:CompetencyQuestions ;
     effortless-ntwf:simulateScenario effortless-ntwf:drop-final-edge .
 
 effortless-ntwf:cq-2 a effortless-ntwf:CompetencyQuestions ;
+    erb:key "cq-2" ;
     effortless-ntwf:competencyQuestionId "cq-2" ;
     effortless-ntwf:number "2" ;
     effortless-ntwf:displayName "Who approves" ;
@@ -159,6 +177,7 @@ effortless-ntwf:cq-2 a effortless-ntwf:CompetencyQuestions ;
     effortless-ntwf:simulateScenario effortless-ntwf:ai-release-manager .
 
 effortless-ntwf:cq-3 a effortless-ntwf:CompetencyQuestions ;
+    erb:key "cq-3" ;
     effortless-ntwf:competencyQuestionId "cq-3" ;
     effortless-ntwf:number "3" ;
     effortless-ntwf:displayName "AI vs human steps" ;
@@ -174,6 +193,7 @@ effortless-ntwf:cq-3 a effortless-ntwf:CompetencyQuestions ;
     effortless-ntwf:simulateScenario effortless-ntwf:human-risk-step .
 
 effortless-ntwf:cq-4 a effortless-ntwf:CompetencyQuestions ;
+    erb:key "cq-4" ;
     effortless-ntwf:competencyQuestionId "cq-4" ;
     effortless-ntwf:number "4" ;
     effortless-ntwf:displayName "Artifact lineage" ;
@@ -189,6 +209,7 @@ effortless-ntwf:cq-4 a effortless-ntwf:CompetencyQuestions ;
     effortless-ntwf:simulateScenario effortless-ntwf:break-derivation .
 
 effortless-ntwf:cq-5 a effortless-ntwf:CompetencyQuestions ;
+    erb:key "cq-5" ;
     effortless-ntwf:competencyQuestionId "cq-5" ;
     effortless-ntwf:number "5" ;
     effortless-ntwf:displayName "Stale over 12 months" ;
@@ -204,6 +225,7 @@ effortless-ntwf:cq-5 a effortless-ntwf:CompetencyQuestions ;
     effortless-ntwf:simulateScenario effortless-ntwf:stale-docs .
 
 effortless-ntwf:cq-6 a effortless-ntwf:CompetencyQuestions ;
+    erb:key "cq-6" ;
     effortless-ntwf:competencyQuestionId "cq-6" ;
     effortless-ntwf:number "6" ;
     effortless-ntwf:displayName "Escalation path" ;
@@ -219,6 +241,7 @@ effortless-ntwf:cq-6 a effortless-ntwf:CompetencyQuestions ;
     effortless-ntwf:simulateScenario effortless-ntwf:break-delegation .
 
 effortless-ntwf:cq-7 a effortless-ntwf:CompetencyQuestions ;
+    erb:key "cq-7" ;
     effortless-ntwf:competencyQuestionId "cq-7" ;
     effortless-ntwf:number "7" ;
     effortless-ntwf:displayName "Engineering and Legal" ;
@@ -234,6 +257,7 @@ effortless-ntwf:cq-7 a effortless-ntwf:CompetencyQuestions ;
     effortless-ntwf:simulateScenario effortless-ntwf:legal-to-engineering .
 
 effortless-ntwf:cq-8 a effortless-ntwf:CompetencyQuestions ;
+    erb:key "cq-8" ;
     effortless-ntwf:competencyQuestionId "cq-8" ;
     effortless-ntwf:number "8" ;
     effortless-ntwf:displayName "Datasets and AI" ;
@@ -251,6 +275,7 @@ effortless-ntwf:cq-8 a effortless-ntwf:CompetencyQuestions ;
 # === Individuals: ConformanceTests ===
 
 effortless-ntwf:sweep-workflows a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-workflows" ;
     effortless-ntwf:conformanceTestId "sweep-workflows" ;
     effortless-ntwf:displayName "Sweep Workflows vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -263,6 +288,7 @@ effortless-ntwf:sweep-workflows a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-workflowsteps a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-workflowsteps" ;
     effortless-ntwf:conformanceTestId "sweep-workflowsteps" ;
     effortless-ntwf:displayName "Sweep WorkflowSteps vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -275,6 +301,7 @@ effortless-ntwf:sweep-workflowsteps a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-approvalgates a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-approvalgates" ;
     effortless-ntwf:conformanceTestId "sweep-approvalgates" ;
     effortless-ntwf:displayName "Sweep ApprovalGates vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -287,6 +314,7 @@ effortless-ntwf:sweep-approvalgates a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-stepprecedence a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-stepprecedence" ;
     effortless-ntwf:conformanceTestId "sweep-stepprecedence" ;
     effortless-ntwf:displayName "Sweep StepPrecedence vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -299,6 +327,7 @@ effortless-ntwf:sweep-stepprecedence a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-roles a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-roles" ;
     effortless-ntwf:conformanceTestId "sweep-roles" ;
     effortless-ntwf:displayName "Sweep Roles vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -311,6 +340,7 @@ effortless-ntwf:sweep-roles a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-roleassignments a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-roleassignments" ;
     effortless-ntwf:conformanceTestId "sweep-roleassignments" ;
     effortless-ntwf:displayName "Sweep RoleAssignments vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -323,6 +353,7 @@ effortless-ntwf:sweep-roleassignments a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-departments a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-departments" ;
     effortless-ntwf:conformanceTestId "sweep-departments" ;
     effortless-ntwf:displayName "Sweep Departments vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -335,6 +366,7 @@ effortless-ntwf:sweep-departments a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-humanagents a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-humanagents" ;
     effortless-ntwf:conformanceTestId "sweep-humanagents" ;
     effortless-ntwf:displayName "Sweep HumanAgents vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -347,6 +379,7 @@ effortless-ntwf:sweep-humanagents a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-aiagents a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-aiagents" ;
     effortless-ntwf:conformanceTestId "sweep-aiagents" ;
     effortless-ntwf:displayName "Sweep AIAgents vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -359,6 +392,7 @@ effortless-ntwf:sweep-aiagents a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-automatedpipelines a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-automatedpipelines" ;
     effortless-ntwf:conformanceTestId "sweep-automatedpipelines" ;
     effortless-ntwf:displayName "Sweep AutomatedPipelines vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -371,6 +405,7 @@ effortless-ntwf:sweep-automatedpipelines a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-workflowstatusconcepts a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-workflowstatusconcepts" ;
     effortless-ntwf:conformanceTestId "sweep-workflowstatusconcepts" ;
     effortless-ntwf:displayName "Sweep WorkflowStatusConcepts vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -383,6 +418,7 @@ effortless-ntwf:sweep-workflowstatusconcepts a effortless-ntwf:ConformanceTests 
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-agentcapabilityconcepts a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-agentcapabilityconcepts" ;
     effortless-ntwf:conformanceTestId "sweep-agentcapabilityconcepts" ;
     effortless-ntwf:displayName "Sweep AgentCapabilityConcepts vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -395,6 +431,7 @@ effortless-ntwf:sweep-agentcapabilityconcepts a effortless-ntwf:ConformanceTests
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-artifacttypeconcepts a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-artifacttypeconcepts" ;
     effortless-ntwf:conformanceTestId "sweep-artifacttypeconcepts" ;
     effortless-ntwf:displayName "Sweep ArtifactTypeConcepts vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -407,6 +444,7 @@ effortless-ntwf:sweep-artifacttypeconcepts a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-datasets a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-datasets" ;
     effortless-ntwf:conformanceTestId "sweep-datasets" ;
     effortless-ntwf:displayName "Sweep Datasets vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -419,6 +457,7 @@ effortless-ntwf:sweep-datasets a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-workflowartifacts a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-workflowartifacts" ;
     effortless-ntwf:conformanceTestId "sweep-workflowartifacts" ;
     effortless-ntwf:displayName "Sweep WorkflowArtifacts vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -431,6 +470,7 @@ effortless-ntwf:sweep-workflowartifacts a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-governanceroles a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-governanceroles" ;
     effortless-ntwf:conformanceTestId "sweep-governanceroles" ;
     effortless-ntwf:displayName "Sweep GovernanceRoles vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -443,6 +483,7 @@ effortless-ntwf:sweep-governanceroles a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-changelog a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-changelog" ;
     effortless-ntwf:conformanceTestId "sweep-changelog" ;
     effortless-ntwf:displayName "Sweep ChangeLog vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -455,6 +496,7 @@ effortless-ntwf:sweep-changelog a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-vocabularyreconciliations a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-vocabularyreconciliations" ;
     effortless-ntwf:conformanceTestId "sweep-vocabularyreconciliations" ;
     effortless-ntwf:displayName "Sweep VocabularyReconciliations vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -467,6 +509,7 @@ effortless-ntwf:sweep-vocabularyreconciliations a effortless-ntwf:ConformanceTes
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sweep-scenarios a effortless-ntwf:ConformanceTests ;
+    erb:key "sweep-scenarios" ;
     effortless-ntwf:conformanceTestId "sweep-scenarios" ;
     effortless-ntwf:displayName "Sweep Scenarios vs answer key" ;
     effortless-ntwf:featureRef "" ;
@@ -479,6 +522,7 @@ effortless-ntwf:sweep-scenarios a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:closure-precedence-1-5 a effortless-ntwf:ConformanceTests ;
+    erb:key "closure-precedence-1-5" ;
     effortless-ntwf:conformanceTestId "closure-precedence-1-5" ;
     effortless-ntwf:displayName "Inferred precedence 1 to 5" ;
     effortless-ntwf:featureRef "I-1,CQ3,III-precedesStep" ;
@@ -491,6 +535,7 @@ effortless-ntwf:closure-precedence-1-5 a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:closure-delegation-rm-cto a effortless-ntwf:ConformanceTests ;
+    erb:key "closure-delegation-rm-cto" ;
     effortless-ntwf:conformanceTestId "closure-delegation-rm-cto" ;
     effortless-ntwf:displayName "Inferred delegation Release Manager to CTO" ;
     effortless-ntwf:featureRef "CQ6,III-delegatesTo" ;
@@ -503,6 +548,7 @@ effortless-ntwf:closure-delegation-rm-cto a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:engines-agree-global a effortless-ntwf:ConformanceTests ;
+    erb:key "engines-agree-global" ;
     effortless-ntwf:conformanceTestId "engines-agree-global" ;
     effortless-ntwf:displayName "Both engines compute identical answers" ;
     effortless-ntwf:featureRef "I-4" ;
@@ -515,6 +561,7 @@ effortless-ntwf:engines-agree-global a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:iri-workflow a effortless-ntwf:ConformanceTests ;
+    erb:key "iri-workflow" ;
     effortless-ntwf:conformanceTestId "iri-workflow" ;
     effortless-ntwf:displayName "Workflow IRI minted" ;
     effortless-ntwf:featureRef "I-6,IV-10" ;
@@ -527,6 +574,7 @@ effortless-ntwf:iri-workflow a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:iri-gate a effortless-ntwf:ConformanceTests ;
+    erb:key "iri-gate" ;
     effortless-ntwf:conformanceTestId "iri-gate" ;
     effortless-ntwf:displayName "Approval-gate IRI minted" ;
     effortless-ntwf:featureRef "I-6,IV-10" ;
@@ -539,6 +587,7 @@ effortless-ntwf:iri-gate a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:step1-agent-type a effortless-ntwf:ConformanceTests ;
+    erb:key "step1-agent-type" ;
     effortless-ntwf:conformanceTestId "step1-agent-type" ;
     effortless-ntwf:displayName "Step 1 executing agent type resolves" ;
     effortless-ntwf:featureRef "II-1,CQ1" ;
@@ -551,6 +600,7 @@ effortless-ntwf:step1-agent-type a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:step3-agent-type a effortless-ntwf:ConformanceTests ;
+    erb:key "step3-agent-type" ;
     effortless-ntwf:conformanceTestId "step3-agent-type" ;
     effortless-ntwf:displayName "Gate step executing agent type resolves" ;
     effortless-ntwf:featureRef "II-1,CQ1" ;
@@ -563,6 +613,7 @@ effortless-ntwf:step3-agent-type a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:count-ai-steps a effortless-ntwf:ConformanceTests ;
+    erb:key "count-ai-steps" ;
     effortless-ntwf:conformanceTestId "count-ai-steps" ;
     effortless-ntwf:displayName "AI step count" ;
     effortless-ntwf:featureRef "II-2" ;
@@ -575,6 +626,7 @@ effortless-ntwf:count-ai-steps a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:count-human-steps a effortless-ntwf:ConformanceTests ;
+    erb:key "count-human-steps" ;
     effortless-ntwf:conformanceTestId "count-human-steps" ;
     effortless-ntwf:displayName "Human step count" ;
     effortless-ntwf:featureRef "II-2" ;
@@ -587,6 +639,7 @@ effortless-ntwf:count-human-steps a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:has-ai-agent-step a effortless-ntwf:ConformanceTests ;
+    erb:key "has-ai-agent-step" ;
     effortless-ntwf:conformanceTestId "has-ai-agent-step" ;
     effortless-ntwf:displayName "HasAIAgentStep boolean" ;
     effortless-ntwf:featureRef "II-2" ;
@@ -599,6 +652,7 @@ effortless-ntwf:has-ai-agent-step a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:approval-human-filled a effortless-ntwf:ConformanceTests ;
+    erb:key "approval-human-filled" ;
     effortless-ntwf:conformanceTestId "approval-human-filled" ;
     effortless-ntwf:displayName "Gate step is human-filled at seed" ;
     effortless-ntwf:featureRef "II-3,CQ2" ;
@@ -611,6 +665,7 @@ effortless-ntwf:approval-human-filled a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:approval-violation-false a effortless-ntwf:ConformanceTests ;
+    erb:key "approval-violation-false" ;
     effortless-ntwf:conformanceTestId "approval-violation-false" ;
     effortless-ntwf:displayName "No approval violation at seed" ;
     effortless-ntwf:featureRef "II-3" ;
@@ -623,6 +678,7 @@ effortless-ntwf:approval-violation-false a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:workflow-violation-false a effortless-ntwf:ConformanceTests ;
+    erb:key "workflow-violation-false" ;
     effortless-ntwf:conformanceTestId "workflow-violation-false" ;
     effortless-ntwf:displayName "Workflow has no violation at seed" ;
     effortless-ntwf:featureRef "II-3" ;
@@ -635,6 +691,7 @@ effortless-ntwf:workflow-violation-false a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:skos-workflow-status a effortless-ntwf:ConformanceTests ;
+    erb:key "skos-workflow-status" ;
     effortless-ntwf:conformanceTestId "skos-workflow-status" ;
     effortless-ntwf:displayName "Workflow status is a SKOS concept" ;
     effortless-ntwf:featureRef "II-6" ;
@@ -647,6 +704,7 @@ effortless-ntwf:skos-workflow-status a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:skos-role-capability a effortless-ntwf:ConformanceTests ;
+    erb:key "skos-role-capability" ;
     effortless-ntwf:conformanceTestId "skos-role-capability" ;
     effortless-ntwf:displayName "Role capability is a SKOS concept" ;
     effortless-ntwf:featureRef "II-6" ;
@@ -659,6 +717,7 @@ effortless-ntwf:skos-role-capability a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:role-label-documented a effortless-ntwf:ConformanceTests ;
+    erb:key "role-label-documented" ;
     effortless-ntwf:conformanceTestId "role-label-documented" ;
     effortless-ntwf:displayName "Role carries label documentation" ;
     effortless-ntwf:featureRef "II-8" ;
@@ -671,6 +730,7 @@ effortless-ntwf:role-label-documented a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:gate-escalation-hours a effortless-ntwf:ConformanceTests ;
+    erb:key "gate-escalation-hours" ;
     effortless-ntwf:conformanceTestId "gate-escalation-hours" ;
     effortless-ntwf:displayName "Gate escalation threshold" ;
     effortless-ntwf:featureRef "III-escalationThresholdHours,CQ2" ;
@@ -683,6 +743,7 @@ effortless-ntwf:gate-escalation-hours a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:gate-role-lookup a effortless-ntwf:ConformanceTests ;
+    erb:key "gate-role-lookup" ;
     effortless-ntwf:conformanceTestId "gate-role-lookup" ;
     effortless-ntwf:displayName "Gate role resolves via lookup" ;
     effortless-ntwf:featureRef "III-ApprovalGate,CQ2" ;
@@ -695,6 +756,7 @@ effortless-ntwf:gate-role-lookup a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:gate-approver-lookup a effortless-ntwf:ConformanceTests ;
+    erb:key "gate-approver-lookup" ;
     effortless-ntwf:conformanceTestId "gate-approver-lookup" ;
     effortless-ntwf:displayName "Gate approver human resolves via lookup" ;
     effortless-ntwf:featureRef "III-ApprovalGate,CQ2" ;
@@ -707,6 +769,7 @@ effortless-ntwf:gate-approver-lookup a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:role-exactly-one-filler a effortless-ntwf:ConformanceTests ;
+    erb:key "role-exactly-one-filler" ;
     effortless-ntwf:conformanceTestId "role-exactly-one-filler" ;
     effortless-ntwf:displayName "Release Manager has exactly one filler" ;
     effortless-ntwf:featureRef "III-filledBy,Suite-4" ;
@@ -719,6 +782,7 @@ effortless-ntwf:role-exactly-one-filler a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:bad-filler-count-zero a effortless-ntwf:ConformanceTests ;
+    erb:key "bad-filler-count-zero" ;
     effortless-ntwf:conformanceTestId "bad-filler-count-zero" ;
     effortless-ntwf:displayName "No roles with bad filler cardinality" ;
     effortless-ntwf:featureRef "Suite-4" ;
@@ -731,6 +795,7 @@ effortless-ntwf:bad-filler-count-zero a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:artifact-derivation a effortless-ntwf:ConformanceTests ;
+    erb:key "artifact-derivation" ;
     effortless-ntwf:conformanceTestId "artifact-derivation" ;
     effortless-ntwf:displayName "Release authorization derives from legal clearance" ;
     effortless-ntwf:featureRef "III-wasDerivedFrom,CQ4" ;
@@ -743,6 +808,7 @@ effortless-ntwf:artifact-derivation a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:artifact-attribution a effortless-ntwf:ConformanceTests ;
+    erb:key "artifact-attribution" ;
     effortless-ntwf:conformanceTestId "artifact-attribution" ;
     effortless-ntwf:displayName "Risk report attributed to the risk AI" ;
     effortless-ntwf:featureRef "III-wasAttributedTo,CQ4" ;
@@ -755,6 +821,7 @@ effortless-ntwf:artifact-attribution a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:artifact-has-parent a effortless-ntwf:ConformanceTests ;
+    erb:key "artifact-has-parent" ;
     effortless-ntwf:conformanceTestId "artifact-has-parent" ;
     effortless-ntwf:displayName "Post-deploy report has a derivation parent" ;
     effortless-ntwf:featureRef "III-wasDerivedFrom" ;
@@ -767,6 +834,7 @@ effortless-ntwf:artifact-has-parent a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:consumes-dataset a effortless-ntwf:ConformanceTests ;
+    erb:key "consumes-dataset" ;
     effortless-ntwf:conformanceTestId "consumes-dataset" ;
     effortless-ntwf:displayName "Step consumes the DCAT dataset" ;
     effortless-ntwf:featureRef "III-consumesDataset,CQ8" ;
@@ -779,6 +847,7 @@ effortless-ntwf:consumes-dataset a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:legal-owned-step a effortless-ntwf:ConformanceTests ;
+    erb:key "legal-owned-step" ;
     effortless-ntwf:conformanceTestId "legal-owned-step" ;
     effortless-ntwf:displayName "Legal step is legal-owned" ;
     effortless-ntwf:featureRef "III-ownedBy,CQ7" ;
@@ -791,6 +860,7 @@ effortless-ntwf:legal-owned-step a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:eng-owned-step a effortless-ntwf:ConformanceTests ;
+    erb:key "eng-owned-step" ;
     effortless-ntwf:conformanceTestId "eng-owned-step" ;
     effortless-ntwf:displayName "Deploy step is engineering-owned" ;
     effortless-ntwf:featureRef "III-ownedBy,CQ7" ;
@@ -803,6 +873,7 @@ effortless-ntwf:eng-owned-step a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:cross-cutting-workflow a effortless-ntwf:ConformanceTests ;
+    erb:key "cross-cutting-workflow" ;
     effortless-ntwf:conformanceTestId "cross-cutting-workflow" ;
     effortless-ntwf:displayName "Workflow involves Engineering AND Legal" ;
     effortless-ntwf:featureRef "CQ7" ;
@@ -815,6 +886,7 @@ effortless-ntwf:cross-cutting-workflow a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:sequence-position a effortless-ntwf:ConformanceTests ;
+    erb:key "sequence-position" ;
     effortless-ntwf:conformanceTestId "sequence-position" ;
     effortless-ntwf:displayName "Step 4 sequence position" ;
     effortless-ntwf:featureRef "III-sequencePosition" ;
@@ -827,6 +899,7 @@ effortless-ntwf:sequence-position a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:step-duration a effortless-ntwf:ConformanceTests ;
+    erb:key "step-duration" ;
     effortless-ntwf:conformanceTestId "step-duration" ;
     effortless-ntwf:displayName "Step 1 duration minutes" ;
     effortless-ntwf:featureRef "III-stepDurationMinutes" ;
@@ -839,6 +912,7 @@ effortless-ntwf:step-duration a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:asserted-pair-count a effortless-ntwf:ConformanceTests ;
+    erb:key "asserted-pair-count" ;
     effortless-ntwf:conformanceTestId "asserted-pair-count" ;
     effortless-ntwf:displayName "Asserted precedence pair count" ;
     effortless-ntwf:featureRef "I-1,III-precedesStep" ;
@@ -851,6 +925,7 @@ effortless-ntwf:asserted-pair-count a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:inferred-pair-count a effortless-ntwf:ConformanceTests ;
+    erb:key "inferred-pair-count" ;
     effortless-ntwf:conformanceTestId "inferred-pair-count" ;
     effortless-ntwf:displayName "Inferred precedence pair count" ;
     effortless-ntwf:featureRef "I-1,III-precedesStep" ;
@@ -863,6 +938,7 @@ effortless-ntwf:inferred-pair-count a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:closure-pair-total a effortless-ntwf:ConformanceTests ;
+    erb:key "closure-pair-total" ;
     effortless-ntwf:conformanceTestId "closure-pair-total" ;
     effortless-ntwf:displayName "Total precedence closure pairs" ;
     effortless-ntwf:featureRef "I-1,III-precedesStep" ;
@@ -875,6 +951,7 @@ effortless-ntwf:closure-pair-total a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:months-since-modified a effortless-ntwf:ConformanceTests ;
+    erb:key "months-since-modified" ;
     effortless-ntwf:conformanceTestId "months-since-modified" ;
     effortless-ntwf:displayName "Months since last review" ;
     effortless-ntwf:featureRef "IV-1,CQ5" ;
@@ -887,6 +964,7 @@ effortless-ntwf:months-since-modified a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:is-stale-seed a effortless-ntwf:ConformanceTests ;
+    erb:key "is-stale-seed" ;
     effortless-ntwf:conformanceTestId "is-stale-seed" ;
     effortless-ntwf:displayName "Workflow not stale at seed" ;
     effortless-ntwf:featureRef "IV-1,CQ5" ;
@@ -899,6 +977,7 @@ effortless-ntwf:is-stale-seed a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:stale-and-ai-seed a effortless-ntwf:ConformanceTests ;
+    erb:key "stale-and-ai-seed" ;
     effortless-ntwf:conformanceTestId "stale-and-ai-seed" ;
     effortless-ntwf:displayName "Stale-AND-has-AI at seed" ;
     effortless-ntwf:featureRef "IV-2" ;
@@ -911,6 +990,7 @@ effortless-ntwf:stale-and-ai-seed a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:authority-can-approve a effortless-ntwf:ConformanceTests ;
+    erb:key "authority-can-approve" ;
     effortless-ntwf:conformanceTestId "authority-can-approve" ;
     effortless-ntwf:displayName "Authority can approve changes" ;
     effortless-ntwf:featureRef "IV-3" ;
@@ -923,6 +1003,7 @@ effortless-ntwf:authority-can-approve a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:steward-cannot-approve a effortless-ntwf:ConformanceTests ;
+    erb:key "steward-cannot-approve" ;
     effortless-ntwf:conformanceTestId "steward-cannot-approve" ;
     effortless-ntwf:displayName "Steward cannot approve changes" ;
     effortless-ntwf:featureRef "IV-3" ;
@@ -935,6 +1016,7 @@ effortless-ntwf:steward-cannot-approve a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:changelog-breaking a effortless-ntwf:ConformanceTests ;
+    erb:key "changelog-breaking" ;
     effortless-ntwf:conformanceTestId "changelog-breaking" ;
     effortless-ntwf:displayName "Change 1.0.0 breaking-change flag" ;
     effortless-ntwf:featureRef "IV-4" ;
@@ -947,6 +1029,7 @@ effortless-ntwf:changelog-breaking a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:changelog-backcompat a effortless-ntwf:ConformanceTests ;
+    erb:key "changelog-backcompat" ;
     effortless-ntwf:conformanceTestId "changelog-backcompat" ;
     effortless-ntwf:displayName "Change 1.1.0 backward-compatible flag" ;
     effortless-ntwf:featureRef "IV-4" ;
@@ -959,6 +1042,7 @@ effortless-ntwf:changelog-backcompat a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:assignment-current a effortless-ntwf:ConformanceTests ;
+    erb:key "assignment-current" ;
     effortless-ntwf:conformanceTestId "assignment-current" ;
     effortless-ntwf:displayName "Current role assignment flagged" ;
     effortless-ntwf:featureRef "IV-6" ;
@@ -971,6 +1055,7 @@ effortless-ntwf:assignment-current a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:assignment-as-of-audit a effortless-ntwf:ConformanceTests ;
+    erb:key "assignment-as-of-audit" ;
     effortless-ntwf:conformanceTestId "assignment-as-of-audit" ;
     effortless-ntwf:displayName "Assignment active as of audit date" ;
     effortless-ntwf:featureRef "IV-6" ;
@@ -983,6 +1068,7 @@ effortless-ntwf:assignment-as-of-audit a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:agent-type-change a effortless-ntwf:ConformanceTests ;
+    erb:key "agent-type-change" ;
     effortless-ntwf:conformanceTestId "agent-type-change" ;
     effortless-ntwf:displayName "Agent-type change detected" ;
     effortless-ntwf:featureRef "IV-7" ;
@@ -995,6 +1081,7 @@ effortless-ntwf:agent-type-change a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:compliance-audit-required a effortless-ntwf:ConformanceTests ;
+    erb:key "compliance-audit-required" ;
     effortless-ntwf:conformanceTestId "compliance-audit-required" ;
     effortless-ntwf:displayName "Turnover requires compliance audit" ;
     effortless-ntwf:featureRef "IV-7" ;
@@ -1007,6 +1094,7 @@ effortless-ntwf:compliance-audit-required a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:audit-changes-rollup a effortless-ntwf:ConformanceTests ;
+    erb:key "audit-changes-rollup" ;
     effortless-ntwf:conformanceTestId "audit-changes-rollup" ;
     effortless-ntwf:displayName "Workflow compliance-audit rollup" ;
     effortless-ntwf:featureRef "IV-7" ;
@@ -1019,6 +1107,7 @@ effortless-ntwf:audit-changes-rollup a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:blast-radius-artifacts a effortless-ntwf:ConformanceTests ;
+    erb:key "blast-radius-artifacts" ;
     effortless-ntwf:conformanceTestId "blast-radius-artifacts" ;
     effortless-ntwf:displayName "Risk AI attributed-artifact count" ;
     effortless-ntwf:featureRef "IV-8" ;
@@ -1031,6 +1120,7 @@ effortless-ntwf:blast-radius-artifacts a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:blast-radius-workflows a effortless-ntwf:ConformanceTests ;
+    erb:key "blast-radius-workflows" ;
     effortless-ntwf:conformanceTestId "blast-radius-workflows" ;
     effortless-ntwf:displayName "Risk AI impacted-workflow count" ;
     effortless-ntwf:featureRef "IV-8" ;
@@ -1043,6 +1133,7 @@ effortless-ntwf:blast-radius-workflows a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:model-version a effortless-ntwf:ConformanceTests ;
+    erb:key "model-version" ;
     effortless-ntwf:conformanceTestId "model-version" ;
     effortless-ntwf:displayName "Risk AI model version" ;
     effortless-ntwf:featureRef "IV-9,III-modelVersion" ;
@@ -1055,6 +1146,7 @@ effortless-ntwf:model-version a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:deployed-on a effortless-ntwf:ConformanceTests ;
+    erb:key "deployed-on" ;
     effortless-ntwf:conformanceTestId "deployed-on" ;
     effortless-ntwf:displayName "Risk AI deployment date" ;
     effortless-ntwf:featureRef "IV-9" ;
@@ -1067,6 +1159,7 @@ effortless-ntwf:deployed-on a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:mut-ai-at-human-gate a effortless-ntwf:ConformanceTests ;
+    erb:key "mut-ai-at-human-gate" ;
     effortless-ntwf:conformanceTestId "mut-ai-at-human-gate" ;
     effortless-ntwf:displayName "Assign AI to the human-only gate fires the violation" ;
     effortless-ntwf:featureRef "II-3,Suite-4" ;
@@ -1079,6 +1172,7 @@ effortless-ntwf:mut-ai-at-human-gate a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:mut-backdate-goes-stale a effortless-ntwf:ConformanceTests ;
+    erb:key "mut-backdate-goes-stale" ;
     effortless-ntwf:conformanceTestId "mut-backdate-goes-stale" ;
     effortless-ntwf:displayName "Backdating the review makes the workflow stale" ;
     effortless-ntwf:featureRef "IV-1,CQ5" ;
@@ -1091,6 +1185,7 @@ effortless-ntwf:mut-backdate-goes-stale a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:mut-stale-and-ai-join a effortless-ntwf:ConformanceTests ;
+    erb:key "mut-stale-and-ai-join" ;
     effortless-ntwf:conformanceTestId "mut-stale-and-ai-join" ;
     effortless-ntwf:displayName "Backdating fires the stale-AND-AI compliance join" ;
     effortless-ntwf:featureRef "IV-2" ;
@@ -1103,6 +1198,7 @@ effortless-ntwf:mut-stale-and-ai-join a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:isEnabled true .
 
 effortless-ntwf:mut-gate-not-required a effortless-ntwf:ConformanceTests ;
+    erb:key "mut-gate-not-required" ;
     effortless-ntwf:conformanceTestId "mut-gate-not-required" ;
     effortless-ntwf:displayName "Dropping the sign-off requirement clears the violation" ;
     effortless-ntwf:featureRef "II-3" ;
@@ -1117,6 +1213,7 @@ effortless-ntwf:mut-gate-not-required a effortless-ntwf:ConformanceTests ;
 # === Individuals: Datasets ===
 
 effortless-ntwf:ds-q1-2026-risk-metrics a effortless-ntwf:Datasets ;
+    erb:key "ds-q1-2026-risk-metrics" ;
     effortless-ntwf:datasetId "ds-q1-2026-risk-metrics" ;
     effortless-ntwf:title "Q1 2026 Risk Metrics" ;
     effortless-ntwf:identifier "DS-RISK-2026-Q1" ;
@@ -1126,11 +1223,13 @@ effortless-ntwf:ds-q1-2026-risk-metrics a effortless-ntwf:Datasets ;
 # === Individuals: Departments ===
 
 effortless-ntwf:ntwf-engineering a effortless-ntwf:Departments ;
+    erb:key "ntwf-engineering" ;
     effortless-ntwf:departmentId "ntwf-engineering" ;
     effortless-ntwf:title "Engineering" ;
     effortless-ntwf:displayName "engineering" .
 
 effortless-ntwf:ntwf-legal-dept a effortless-ntwf:Departments ;
+    erb:key "ntwf-legal-dept" ;
     effortless-ntwf:departmentId "ntwf-legal-dept" ;
     effortless-ntwf:title "Legal" ;
     effortless-ntwf:displayName "legal" .
@@ -1138,6 +1237,7 @@ effortless-ntwf:ntwf-legal-dept a effortless-ntwf:Departments ;
 # === Individuals: GovernanceRoles ===
 
 effortless-ntwf:gov-steward a effortless-ntwf:GovernanceRoles ;
+    erb:key "gov-steward" ;
     effortless-ntwf:governanceRoleId "gov-steward" ;
     effortless-ntwf:displayName "Ontology Steward" ;
     effortless-ntwf:kind "Steward" ;
@@ -1146,6 +1246,7 @@ effortless-ntwf:gov-steward a effortless-ntwf:GovernanceRoles ;
     effortless-ntwf:heldBy "Engineering Knowledge Infrastructure team" .
 
 effortless-ntwf:gov-authority a effortless-ntwf:GovernanceRoles ;
+    erb:key "gov-authority" ;
     effortless-ntwf:governanceRoleId "gov-authority" ;
     effortless-ntwf:displayName "Ontology Authority" ;
     effortless-ntwf:kind "Authority" ;
@@ -1156,30 +1257,35 @@ effortless-ntwf:gov-authority a effortless-ntwf:GovernanceRoles ;
 # === Individuals: HumanAgents ===
 
 effortless-ntwf:ntwf-maria-gonzalez a effortless-ntwf:HumanAgents ;
+    erb:key "ntwf-maria-gonzalez" ;
     effortless-ntwf:humanAgentId "ntwf-maria-gonzalez" ;
     effortless-ntwf:name "Maria Gonzalez" ;
     effortless-ntwf:displayName "Maria Gonzalez" ;
     effortless-ntwf:mbox "maria.gonzalez@special-solutions.example" .
 
 effortless-ntwf:ntwf-david-chen a effortless-ntwf:HumanAgents ;
+    erb:key "ntwf-david-chen" ;
     effortless-ntwf:humanAgentId "ntwf-david-chen" ;
     effortless-ntwf:name "David Chen" ;
     effortless-ntwf:displayName "David Chen" ;
     effortless-ntwf:mbox "david.chen@special-solutions.example" .
 
 effortless-ntwf:ntwf-priya-nair a effortless-ntwf:HumanAgents ;
+    erb:key "ntwf-priya-nair" ;
     effortless-ntwf:humanAgentId "ntwf-priya-nair" ;
     effortless-ntwf:name "Priya Nair" ;
     effortless-ntwf:displayName "Priya Nair" ;
     effortless-ntwf:mbox "priya.nair@special-solutions.example" .
 
 effortless-ntwf:ntwf-james-okafor a effortless-ntwf:HumanAgents ;
+    erb:key "ntwf-james-okafor" ;
     effortless-ntwf:humanAgentId "ntwf-james-okafor" ;
     effortless-ntwf:name "James Okafor" ;
     effortless-ntwf:displayName "James Okafor" ;
     effortless-ntwf:mbox "james.okafor@special-solutions.example" .
 
 effortless-ntwf:ntwf-sarah-kim a effortless-ntwf:HumanAgents ;
+    erb:key "ntwf-sarah-kim" ;
     effortless-ntwf:humanAgentId "ntwf-sarah-kim" ;
     effortless-ntwf:name "Sarah Kim" ;
     effortless-ntwf:displayName "Sarah Kim" ;
@@ -1188,6 +1294,7 @@ effortless-ntwf:ntwf-sarah-kim a effortless-ntwf:HumanAgents ;
 # === Individuals: RoleAssignments ===
 
 effortless-ntwf:asn-release-manager-maria a effortless-ntwf:RoleAssignments ;
+    erb:key "asn-release-manager-maria" ;
     effortless-ntwf:roleAssignmentId "asn-release-manager-maria" ;
     effortless-ntwf:role effortless-ntwf:ntwf-release-manager-role ;
     effortless-ntwf:filledByHumanAgent effortless-ntwf:ntwf-maria-gonzalez ;
@@ -1196,6 +1303,7 @@ effortless-ntwf:asn-release-manager-maria a effortless-ntwf:RoleAssignments ;
     effortless-ntwf:priorFillerType "" .
 
 effortless-ntwf:asn-vp-eng-priya a effortless-ntwf:RoleAssignments ;
+    erb:key "asn-vp-eng-priya" ;
     effortless-ntwf:roleAssignmentId "asn-vp-eng-priya" ;
     effortless-ntwf:role effortless-ntwf:ntwf-vp-engineering-role ;
     effortless-ntwf:filledByHumanAgent effortless-ntwf:ntwf-priya-nair ;
@@ -1205,6 +1313,7 @@ effortless-ntwf:asn-vp-eng-priya a effortless-ntwf:RoleAssignments ;
     effortless-ntwf:priorFillerType "" .
 
 effortless-ntwf:asn-vp-eng-david a effortless-ntwf:RoleAssignments ;
+    erb:key "asn-vp-eng-david" ;
     effortless-ntwf:roleAssignmentId "asn-vp-eng-david" ;
     effortless-ntwf:role effortless-ntwf:ntwf-vp-engineering-role ;
     effortless-ntwf:filledByHumanAgent effortless-ntwf:ntwf-david-chen ;
@@ -1213,6 +1322,7 @@ effortless-ntwf:asn-vp-eng-david a effortless-ntwf:RoleAssignments ;
     effortless-ntwf:priorFillerType "HumanAgent" .
 
 effortless-ntwf:asn-deploy-health-ai-initial a effortless-ntwf:RoleAssignments ;
+    erb:key "asn-deploy-health-ai-initial" ;
     effortless-ntwf:roleAssignmentId "asn-deploy-health-ai-initial" ;
     effortless-ntwf:role effortless-ntwf:ntwf-deployment-health-role ;
     effortless-ntwf:filledByAIAgent effortless-ntwf:ntwf-health-ai ;
@@ -1222,6 +1332,7 @@ effortless-ntwf:asn-deploy-health-ai-initial a effortless-ntwf:RoleAssignments ;
     effortless-ntwf:priorFillerType "" .
 
 effortless-ntwf:asn-deploy-health-human-audit a effortless-ntwf:RoleAssignments ;
+    erb:key "asn-deploy-health-human-audit" ;
     effortless-ntwf:roleAssignmentId "asn-deploy-health-human-audit" ;
     effortless-ntwf:role effortless-ntwf:ntwf-deployment-health-role ;
     effortless-ntwf:filledByHumanAgent effortless-ntwf:ntwf-james-okafor ;
@@ -1231,6 +1342,7 @@ effortless-ntwf:asn-deploy-health-human-audit a effortless-ntwf:RoleAssignments 
     effortless-ntwf:priorFillerType "AIAgent" .
 
 effortless-ntwf:asn-deploy-health-ai-current a effortless-ntwf:RoleAssignments ;
+    erb:key "asn-deploy-health-ai-current" ;
     effortless-ntwf:roleAssignmentId "asn-deploy-health-ai-current" ;
     effortless-ntwf:role effortless-ntwf:ntwf-deployment-health-role ;
     effortless-ntwf:filledByAIAgent effortless-ntwf:ntwf-health-ai ;
@@ -1241,6 +1353,7 @@ effortless-ntwf:asn-deploy-health-ai-current a effortless-ntwf:RoleAssignments ;
 # === Individuals: Roles ===
 
 effortless-ntwf:ntwf-ci-executor-role a effortless-ntwf:Roles ;
+    erb:key "ntwf-ci-executor-role" ;
     effortless-ntwf:roleId "ntwf-ci-executor-role" ;
     effortless-ntwf:displayName "CI/CD Executor" ;
     effortless-ntwf:label "CI/CD Executor" ;
@@ -1250,6 +1363,7 @@ effortless-ntwf:ntwf-ci-executor-role a effortless-ntwf:Roles ;
     effortless-ntwf:ownedBy effortless-ntwf:ntwf-engineering .
 
 effortless-ntwf:ntwf-cto-role a effortless-ntwf:Roles ;
+    erb:key "ntwf-cto-role" ;
     effortless-ntwf:roleId "ntwf-cto-role" ;
     effortless-ntwf:displayName "Chief Technology Officer" ;
     effortless-ntwf:label "Chief Technology Officer" ;
@@ -1260,6 +1374,7 @@ effortless-ntwf:ntwf-cto-role a effortless-ntwf:Roles ;
     effortless-ntwf:fromDelegatesTo effortless-ntwf:ntwf-vp-engineering-role .
 
 effortless-ntwf:ntwf-deployment-health-role a effortless-ntwf:Roles ;
+    erb:key "ntwf-deployment-health-role" ;
     effortless-ntwf:roleId "ntwf-deployment-health-role" ;
     effortless-ntwf:displayName "Deployment Health Agent" ;
     effortless-ntwf:label "Deployment Health Agent" ;
@@ -1269,6 +1384,7 @@ effortless-ntwf:ntwf-deployment-health-role a effortless-ntwf:Roles ;
     effortless-ntwf:ownedBy effortless-ntwf:ntwf-engineering .
 
 effortless-ntwf:ntwf-vp-engineering-role a effortless-ntwf:Roles ;
+    erb:key "ntwf-vp-engineering-role" ;
     effortless-ntwf:roleId "ntwf-vp-engineering-role" ;
     effortless-ntwf:displayName "VP of Engineering" ;
     effortless-ntwf:label "VP of Engineering" ;
@@ -1280,6 +1396,7 @@ effortless-ntwf:ntwf-vp-engineering-role a effortless-ntwf:Roles ;
     effortless-ntwf:fromDelegatesTo effortless-ntwf:ntwf-release-manager-role .
 
 effortless-ntwf:ntwf-risk-analysis-role a effortless-ntwf:Roles ;
+    erb:key "ntwf-risk-analysis-role" ;
     effortless-ntwf:roleId "ntwf-risk-analysis-role" ;
     effortless-ntwf:displayName "Risk Analysis Agent" ;
     effortless-ntwf:label "Risk Analysis Agent" ;
@@ -1289,6 +1406,7 @@ effortless-ntwf:ntwf-risk-analysis-role a effortless-ntwf:Roles ;
     effortless-ntwf:ownedBy effortless-ntwf:ntwf-engineering .
 
 effortless-ntwf:ntwf-legal-compliance-role a effortless-ntwf:Roles ;
+    erb:key "ntwf-legal-compliance-role" ;
     effortless-ntwf:roleId "ntwf-legal-compliance-role" ;
     effortless-ntwf:displayName "Legal Compliance Reviewer" ;
     effortless-ntwf:label "Legal Compliance Reviewer" ;
@@ -1298,6 +1416,7 @@ effortless-ntwf:ntwf-legal-compliance-role a effortless-ntwf:Roles ;
     effortless-ntwf:ownedBy effortless-ntwf:ntwf-legal-dept .
 
 effortless-ntwf:ntwf-release-manager-role a effortless-ntwf:Roles ;
+    erb:key "ntwf-release-manager-role" ;
     effortless-ntwf:roleId "ntwf-release-manager-role" ;
     effortless-ntwf:displayName "Release Manager" ;
     effortless-ntwf:label "Release Manager" ;
@@ -1310,6 +1429,7 @@ effortless-ntwf:ntwf-release-manager-role a effortless-ntwf:Roles ;
 # === Individuals: ScenarioCQEffects ===
 
 effortless-ntwf:drop-final-edge-cq-1 a effortless-ntwf:ScenarioCQEffects ;
+    erb:key "drop-final-edge-cq-1" ;
     effortless-ntwf:scenarioCQEffectId "drop-final-edge-cq-1" ;
     effortless-ntwf:scenario effortless-ntwf:drop-final-edge ;
     effortless-ntwf:competencyQuestion effortless-ntwf:cq-1 ;
@@ -1318,6 +1438,7 @@ effortless-ntwf:drop-final-edge-cq-1 a effortless-ntwf:ScenarioCQEffects ;
     effortless-ntwf:sortOrder 10 .
 
 effortless-ntwf:ai-release-manager-cq-2 a effortless-ntwf:ScenarioCQEffects ;
+    erb:key "ai-release-manager-cq-2" ;
     effortless-ntwf:scenarioCQEffectId "ai-release-manager-cq-2" ;
     effortless-ntwf:scenario effortless-ntwf:ai-release-manager ;
     effortless-ntwf:competencyQuestion effortless-ntwf:cq-2 ;
@@ -1326,6 +1447,7 @@ effortless-ntwf:ai-release-manager-cq-2 a effortless-ntwf:ScenarioCQEffects ;
     effortless-ntwf:sortOrder 20 .
 
 effortless-ntwf:ai-release-manager-cq-3 a effortless-ntwf:ScenarioCQEffects ;
+    erb:key "ai-release-manager-cq-3" ;
     effortless-ntwf:scenarioCQEffectId "ai-release-manager-cq-3" ;
     effortless-ntwf:scenario effortless-ntwf:ai-release-manager ;
     effortless-ntwf:competencyQuestion effortless-ntwf:cq-3 ;
@@ -1334,6 +1456,7 @@ effortless-ntwf:ai-release-manager-cq-3 a effortless-ntwf:ScenarioCQEffects ;
     effortless-ntwf:sortOrder 30 .
 
 effortless-ntwf:human-risk-step-cq-3 a effortless-ntwf:ScenarioCQEffects ;
+    erb:key "human-risk-step-cq-3" ;
     effortless-ntwf:scenarioCQEffectId "human-risk-step-cq-3" ;
     effortless-ntwf:scenario effortless-ntwf:human-risk-step ;
     effortless-ntwf:competencyQuestion effortless-ntwf:cq-3 ;
@@ -1342,6 +1465,7 @@ effortless-ntwf:human-risk-step-cq-3 a effortless-ntwf:ScenarioCQEffects ;
     effortless-ntwf:sortOrder 40 .
 
 effortless-ntwf:break-derivation-cq-4 a effortless-ntwf:ScenarioCQEffects ;
+    erb:key "break-derivation-cq-4" ;
     effortless-ntwf:scenarioCQEffectId "break-derivation-cq-4" ;
     effortless-ntwf:scenario effortless-ntwf:break-derivation ;
     effortless-ntwf:competencyQuestion effortless-ntwf:cq-4 ;
@@ -1350,6 +1474,7 @@ effortless-ntwf:break-derivation-cq-4 a effortless-ntwf:ScenarioCQEffects ;
     effortless-ntwf:sortOrder 50 .
 
 effortless-ntwf:stale-docs-cq-5 a effortless-ntwf:ScenarioCQEffects ;
+    erb:key "stale-docs-cq-5" ;
     effortless-ntwf:scenarioCQEffectId "stale-docs-cq-5" ;
     effortless-ntwf:scenario effortless-ntwf:stale-docs ;
     effortless-ntwf:competencyQuestion effortless-ntwf:cq-5 ;
@@ -1358,6 +1483,7 @@ effortless-ntwf:stale-docs-cq-5 a effortless-ntwf:ScenarioCQEffects ;
     effortless-ntwf:sortOrder 60 .
 
 effortless-ntwf:break-delegation-cq-6 a effortless-ntwf:ScenarioCQEffects ;
+    erb:key "break-delegation-cq-6" ;
     effortless-ntwf:scenarioCQEffectId "break-delegation-cq-6" ;
     effortless-ntwf:scenario effortless-ntwf:break-delegation ;
     effortless-ntwf:competencyQuestion effortless-ntwf:cq-6 ;
@@ -1366,6 +1492,7 @@ effortless-ntwf:break-delegation-cq-6 a effortless-ntwf:ScenarioCQEffects ;
     effortless-ntwf:sortOrder 70 .
 
 effortless-ntwf:legal-to-engineering-cq-7 a effortless-ntwf:ScenarioCQEffects ;
+    erb:key "legal-to-engineering-cq-7" ;
     effortless-ntwf:scenarioCQEffectId "legal-to-engineering-cq-7" ;
     effortless-ntwf:scenario effortless-ntwf:legal-to-engineering ;
     effortless-ntwf:competencyQuestion effortless-ntwf:cq-7 ;
@@ -1374,6 +1501,7 @@ effortless-ntwf:legal-to-engineering-cq-7 a effortless-ntwf:ScenarioCQEffects ;
     effortless-ntwf:sortOrder 80 .
 
 effortless-ntwf:dataset-unconsumed-cq-8 a effortless-ntwf:ScenarioCQEffects ;
+    erb:key "dataset-unconsumed-cq-8" ;
     effortless-ntwf:scenarioCQEffectId "dataset-unconsumed-cq-8" ;
     effortless-ntwf:scenario effortless-ntwf:dataset-unconsumed ;
     effortless-ntwf:competencyQuestion effortless-ntwf:cq-8 ;
@@ -1382,6 +1510,7 @@ effortless-ntwf:dataset-unconsumed-cq-8 a effortless-ntwf:ScenarioCQEffects ;
     effortless-ntwf:sortOrder 90 .
 
 effortless-ntwf:trigger-risk-cq-5 a effortless-ntwf:ScenarioCQEffects ;
+    erb:key "trigger-risk-cq-5" ;
     effortless-ntwf:scenarioCQEffectId "trigger-risk-cq-5" ;
     effortless-ntwf:scenario effortless-ntwf:trigger-risk ;
     effortless-ntwf:competencyQuestion effortless-ntwf:cq-5 ;
@@ -1390,6 +1519,7 @@ effortless-ntwf:trigger-risk-cq-5 a effortless-ntwf:ScenarioCQEffects ;
     effortless-ntwf:sortOrder 100 .
 
 effortless-ntwf:all-human-cq-3 a effortless-ntwf:ScenarioCQEffects ;
+    erb:key "all-human-cq-3" ;
     effortless-ntwf:scenarioCQEffectId "all-human-cq-3" ;
     effortless-ntwf:scenario effortless-ntwf:all-human ;
     effortless-ntwf:competencyQuestion effortless-ntwf:cq-3 ;
@@ -1398,6 +1528,7 @@ effortless-ntwf:all-human-cq-3 a effortless-ntwf:ScenarioCQEffects ;
     effortless-ntwf:sortOrder 110 .
 
 effortless-ntwf:ai-at-gate-cq-3 a effortless-ntwf:ScenarioCQEffects ;
+    erb:key "ai-at-gate-cq-3" ;
     effortless-ntwf:scenarioCQEffectId "ai-at-gate-cq-3" ;
     effortless-ntwf:scenario effortless-ntwf:ai-at-gate ;
     effortless-ntwf:competencyQuestion effortless-ntwf:cq-3 ;
@@ -1408,6 +1539,7 @@ effortless-ntwf:ai-at-gate-cq-3 a effortless-ntwf:ScenarioCQEffects ;
 # === Individuals: Scenarios ===
 
 effortless-ntwf:trigger-risk a effortless-ntwf:Scenarios ;
+    erb:key "trigger-risk" ;
     effortless-ntwf:scenarioId "trigger-risk" ;
     effortless-ntwf:label "Stale workflow with an AI step" ;
     effortless-ntwf:icon "⚠️" ;
@@ -1417,6 +1549,7 @@ effortless-ntwf:trigger-risk a effortless-ntwf:Scenarios ;
     effortless-ntwf:edits "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2023-01-01T00:00:00-06:00\"}}]" .
 
 effortless-ntwf:all-human a effortless-ntwf:Scenarios ;
+    erb:key "all-human" ;
     effortless-ntwf:scenarioId "all-human" ;
     effortless-ntwf:label "All-human release" ;
     effortless-ntwf:icon "🧑" ;
@@ -1426,6 +1559,7 @@ effortless-ntwf:all-human a effortless-ntwf:Scenarios ;
     effortless-ntwf:edits "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}]" .
 
 effortless-ntwf:ai-at-gate a effortless-ntwf:Scenarios ;
+    erb:key "ai-at-gate" ;
     effortless-ntwf:scenarioId "ai-at-gate" ;
     effortless-ntwf:label "AI at the approval gate" ;
     effortless-ntwf:icon "🤖" ;
@@ -1435,6 +1569,7 @@ effortless-ntwf:ai-at-gate a effortless-ntwf:Scenarios ;
     effortless-ntwf:edits "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}]" .
 
 effortless-ntwf:reset a effortless-ntwf:Scenarios ;
+    erb:key "reset" ;
     effortless-ntwf:scenarioId "reset" ;
     effortless-ntwf:label "Reset to baseline" ;
     effortless-ntwf:icon "↺" ;
@@ -1444,6 +1579,7 @@ effortless-ntwf:reset a effortless-ntwf:Scenarios ;
     effortless-ntwf:edits "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"ntwf-vp-engineering-role\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"ntwf-cto-role\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-1-2\", \"set\": {\"fromStep\": \"prod-deploy-step-1\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-2-3\", \"set\": {\"fromStep\": \"prod-deploy-step-2\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-3-4\", \"set\": {\"fromStep\": \"prod-deploy-step-3\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"set\": {\"fromStep\": \"prod-deploy-step-4\"}}, {\"class\": \"StepPrecedence\", \"add\": {\"stepPrecedenceId\": \"prec-4-5\", \"fromStep\": \"prod-deploy-step-4\", \"toStep\": \"prod-deploy-step-5\"}}]" .
 
 effortless-ntwf:drop-final-edge a effortless-ntwf:Scenarios ;
+    erb:key "drop-final-edge" ;
     effortless-ntwf:scenarioId "drop-final-edge" ;
     effortless-ntwf:label "Drop the final ordering edge" ;
     effortless-ntwf:icon "✂️" ;
@@ -1453,6 +1589,7 @@ effortless-ntwf:drop-final-edge a effortless-ntwf:Scenarios ;
     effortless-ntwf:edits "[{\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"delete\": true}]" .
 
 effortless-ntwf:ai-release-manager a effortless-ntwf:Scenarios ;
+    erb:key "ai-release-manager" ;
     effortless-ntwf:scenarioId "ai-release-manager" ;
     effortless-ntwf:label "AI fills the release gate" ;
     effortless-ntwf:icon "🤖" ;
@@ -1462,6 +1599,7 @@ effortless-ntwf:ai-release-manager a effortless-ntwf:Scenarios ;
     effortless-ntwf:edits "[{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}]" .
 
 effortless-ntwf:human-risk-step a effortless-ntwf:Scenarios ;
+    erb:key "human-risk-step" ;
     effortless-ntwf:scenarioId "human-risk-step" ;
     effortless-ntwf:label "Hand the risk step to a human" ;
     effortless-ntwf:icon "🧑" ;
@@ -1471,6 +1609,7 @@ effortless-ntwf:human-risk-step a effortless-ntwf:Scenarios ;
     effortless-ntwf:edits "[{\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}]" .
 
 effortless-ntwf:break-derivation a effortless-ntwf:Scenarios ;
+    erb:key "break-derivation" ;
     effortless-ntwf:scenarioId "break-derivation" ;
     effortless-ntwf:label "Break the provenance chain" ;
     effortless-ntwf:icon "⛓️" ;
@@ -1480,6 +1619,7 @@ effortless-ntwf:break-derivation a effortless-ntwf:Scenarios ;
     effortless-ntwf:edits "[{\"class\": \"WorkflowArtifacts\", \"id\": \"artifact-legal-clearance\", \"set\": {\"derivedFromArtifact\": \"\"}}]" .
 
 effortless-ntwf:stale-docs a effortless-ntwf:Scenarios ;
+    erb:key "stale-docs" ;
     effortless-ntwf:scenarioId "stale-docs" ;
     effortless-ntwf:label "Let the docs go stale" ;
     effortless-ntwf:icon "📅" ;
@@ -1489,6 +1629,7 @@ effortless-ntwf:stale-docs a effortless-ntwf:Scenarios ;
     effortless-ntwf:edits "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2023-01-01T00:00:00-06:00\"}}]" .
 
 effortless-ntwf:break-delegation a effortless-ntwf:Scenarios ;
+    erb:key "break-delegation" ;
     effortless-ntwf:scenarioId "break-delegation" ;
     effortless-ntwf:label "Cut the escalation chain" ;
     effortless-ntwf:icon "✂️" ;
@@ -1498,6 +1639,7 @@ effortless-ntwf:break-delegation a effortless-ntwf:Scenarios ;
     effortless-ntwf:edits "[{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"delegatesTo\": \"\"}}]" .
 
 effortless-ntwf:legal-to-engineering a effortless-ntwf:Scenarios ;
+    erb:key "legal-to-engineering" ;
     effortless-ntwf:scenarioId "legal-to-engineering" ;
     effortless-ntwf:label "Move legal review under engineering" ;
     effortless-ntwf:icon "🏛️" ;
@@ -1507,6 +1649,7 @@ effortless-ntwf:legal-to-engineering a effortless-ntwf:Scenarios ;
     effortless-ntwf:edits "[{\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"ownedBy\": \"ntwf-engineering\"}}]" .
 
 effortless-ntwf:dataset-unconsumed a effortless-ntwf:Scenarios ;
+    erb:key "dataset-unconsumed" ;
     effortless-ntwf:scenarioId "dataset-unconsumed" ;
     effortless-ntwf:label "Detach the risk dataset" ;
     effortless-ntwf:icon "📦" ;
@@ -1518,21 +1661,25 @@ effortless-ntwf:dataset-unconsumed a effortless-ntwf:Scenarios ;
 # === Individuals: StepPrecedence ===
 
 effortless-ntwf:prec-1-2 a effortless-ntwf:StepPrecedence ;
+    erb:key "prec-1-2" ;
     effortless-ntwf:stepPrecedenceId "prec-1-2" ;
     effortless-ntwf:fromStep effortless-ntwf:prod-deploy-step-1 ;
     effortless-ntwf:toStep effortless-ntwf:prod-deploy-step-2 .
 
 effortless-ntwf:prec-2-3 a effortless-ntwf:StepPrecedence ;
+    erb:key "prec-2-3" ;
     effortless-ntwf:stepPrecedenceId "prec-2-3" ;
     effortless-ntwf:fromStep effortless-ntwf:prod-deploy-step-2 ;
     effortless-ntwf:toStep effortless-ntwf:prod-deploy-step-3 .
 
 effortless-ntwf:prec-3-4 a effortless-ntwf:StepPrecedence ;
+    erb:key "prec-3-4" ;
     effortless-ntwf:stepPrecedenceId "prec-3-4" ;
     effortless-ntwf:fromStep effortless-ntwf:prod-deploy-step-3 ;
     effortless-ntwf:toStep effortless-ntwf:prod-deploy-step-4 .
 
 effortless-ntwf:prec-4-5 a effortless-ntwf:StepPrecedence ;
+    erb:key "prec-4-5" ;
     effortless-ntwf:stepPrecedenceId "prec-4-5" ;
     effortless-ntwf:fromStep effortless-ntwf:prod-deploy-step-4 ;
     effortless-ntwf:toStep effortless-ntwf:prod-deploy-step-5 .
@@ -1540,6 +1687,7 @@ effortless-ntwf:prec-4-5 a effortless-ntwf:StepPrecedence ;
 # === Individuals: VocabularyReconciliations ===
 
 effortless-ntwf:recon-foaf-name a effortless-ntwf:VocabularyReconciliations ;
+    erb:key "recon-foaf-name" ;
     effortless-ntwf:reconciliationId "recon-foaf-name" ;
     effortless-ntwf:deprecatedTerm "foaf:name" ;
     effortless-ntwf:replacementTerm "ntwf:name" ;
@@ -1549,6 +1697,7 @@ effortless-ntwf:recon-foaf-name a effortless-ntwf:VocabularyReconciliations ;
     effortless-ntwf:rationale "Worked example: a deprecated FOAF element is re-prefixed into the NTWF namespace; existing data stays valid (URIs do not disappear), and foaf:name owl:sameAs ntwf:name keeps the two interchangeable for reasoners." .
 
 effortless-ntwf:recon-dcat-v3 a effortless-ntwf:VocabularyReconciliations ;
+    erb:key "recon-dcat-v3" ;
     effortless-ntwf:reconciliationId "recon-dcat-v3" ;
     effortless-ntwf:deprecatedTerm "dcat:Dataset (v2)" ;
     effortless-ntwf:replacementTerm "dcat:Dataset (v3)" ;
@@ -1560,6 +1709,7 @@ effortless-ntwf:recon-dcat-v3 a effortless-ntwf:VocabularyReconciliations ;
 # === Individuals: WorkflowArtifacts ===
 
 effortless-ntwf:artifact-risk-report a effortless-ntwf:WorkflowArtifacts ;
+    erb:key "artifact-risk-report" ;
     effortless-ntwf:artifactId "artifact-risk-report" ;
     effortless-ntwf:title "Risk Assessment Report" ;
     effortless-ntwf:identifier "ART-RISK-001" ;
@@ -1570,6 +1720,7 @@ effortless-ntwf:artifact-risk-report a effortless-ntwf:WorkflowArtifacts ;
     effortless-ntwf:attributedToAIAgent effortless-ntwf:ntwf-risk-ai .
 
 effortless-ntwf:artifact-legal-clearance a effortless-ntwf:WorkflowArtifacts ;
+    erb:key "artifact-legal-clearance" ;
     effortless-ntwf:artifactId "artifact-legal-clearance" ;
     effortless-ntwf:title "Legal Clearance Certificate" ;
     effortless-ntwf:identifier "ART-LEGAL-001" ;
@@ -1581,6 +1732,7 @@ effortless-ntwf:artifact-legal-clearance a effortless-ntwf:WorkflowArtifacts ;
     effortless-ntwf:attributedToHumanAgent effortless-ntwf:ntwf-james-okafor .
 
 effortless-ntwf:artifact-release-authorization a effortless-ntwf:WorkflowArtifacts ;
+    erb:key "artifact-release-authorization" ;
     effortless-ntwf:artifactId "artifact-release-authorization" ;
     effortless-ntwf:title "Release Authorization" ;
     effortless-ntwf:identifier "ART-AUTH-001" ;
@@ -1592,6 +1744,7 @@ effortless-ntwf:artifact-release-authorization a effortless-ntwf:WorkflowArtifac
     effortless-ntwf:attributedToHumanAgent effortless-ntwf:ntwf-maria-gonzalez .
 
 effortless-ntwf:artifact-deployment-log a effortless-ntwf:WorkflowArtifacts ;
+    erb:key "artifact-deployment-log" ;
     effortless-ntwf:artifactId "artifact-deployment-log" ;
     effortless-ntwf:title "Deployment Execution Log" ;
     effortless-ntwf:identifier "ART-DEPLOG-001" ;
@@ -1602,6 +1755,7 @@ effortless-ntwf:artifact-deployment-log a effortless-ntwf:WorkflowArtifacts ;
     effortless-ntwf:attributedToAutomatedPipeline effortless-ntwf:ntwf-ci-pipeline .
 
 effortless-ntwf:artifact-post-deploy-report a effortless-ntwf:WorkflowArtifacts ;
+    erb:key "artifact-post-deploy-report" ;
     effortless-ntwf:artifactId "artifact-post-deploy-report" ;
     effortless-ntwf:title "Post-Deployment Health Report" ;
     effortless-ntwf:identifier "ART-HEALTH-001" ;
@@ -1614,6 +1768,7 @@ effortless-ntwf:artifact-post-deploy-report a effortless-ntwf:WorkflowArtifacts 
 # === Individuals: WorkflowStatusConcepts ===
 
 effortless-ntwf:status-draft a effortless-ntwf:WorkflowStatusConcepts ;
+    erb:key "status-draft" ;
     effortless-ntwf:conceptId "status-draft" ;
     effortless-ntwf:prefLabel "Draft" ;
     effortless-ntwf:altLabel "In Progress" ;
@@ -1621,6 +1776,7 @@ effortless-ntwf:status-draft a effortless-ntwf:WorkflowStatusConcepts ;
     effortless-ntwf:scopeNote "Set this status when the workflow has not completed its initial review cycle." .
 
 effortless-ntwf:status-active a effortless-ntwf:WorkflowStatusConcepts ;
+    erb:key "status-active" ;
     effortless-ntwf:conceptId "status-active" ;
     effortless-ntwf:prefLabel "Active" ;
     effortless-ntwf:altLabel "In Use" ;
@@ -1628,6 +1784,7 @@ effortless-ntwf:status-active a effortless-ntwf:WorkflowStatusConcepts ;
     effortless-ntwf:scopeNote "Only active workflows should be assigned to running process instances." .
 
 effortless-ntwf:status-deprecated a effortless-ntwf:WorkflowStatusConcepts ;
+    erb:key "status-deprecated" ;
     effortless-ntwf:conceptId "status-deprecated" ;
     effortless-ntwf:prefLabel "Deprecated" ;
     effortless-ntwf:altLabel "Superseded" ;
@@ -1635,6 +1792,7 @@ effortless-ntwf:status-deprecated a effortless-ntwf:WorkflowStatusConcepts ;
     effortless-ntwf:scopeNote "Deprecated workflows may still have in-flight instances; do not archive until all instances close." .
 
 effortless-ntwf:status-archived a effortless-ntwf:WorkflowStatusConcepts ;
+    erb:key "status-archived" ;
     effortless-ntwf:conceptId "status-archived" ;
     effortless-ntwf:prefLabel "Archived" ;
     effortless-ntwf:altLabel "Retired" ;
@@ -1644,6 +1802,7 @@ effortless-ntwf:status-archived a effortless-ntwf:WorkflowStatusConcepts ;
 # === Individuals: WorkflowSteps ===
 
 effortless-ntwf:prod-deploy-step-3 a effortless-ntwf:WorkflowSteps ;
+    erb:key "prod-deploy-step-3" ;
     effortless-ntwf:workflowStepId "prod-deploy-step-3" ;
     effortless-ntwf:displayName "Release Approval Gate" ;
     effortless-ntwf:workflow effortless-ntwf:production-deployment ;
@@ -1657,6 +1816,7 @@ effortless-ntwf:prod-deploy-step-3 a effortless-ntwf:WorkflowSteps ;
     effortless-ntwf:precededBy effortless-ntwf:prec-2-3 .
 
 effortless-ntwf:prod-deploy-step-2 a effortless-ntwf:WorkflowSteps ;
+    erb:key "prod-deploy-step-2" ;
     effortless-ntwf:workflowStepId "prod-deploy-step-2" ;
     effortless-ntwf:displayName "Legal Compliance Review" ;
     effortless-ntwf:workflow effortless-ntwf:production-deployment ;
@@ -1669,6 +1829,7 @@ effortless-ntwf:prod-deploy-step-2 a effortless-ntwf:WorkflowSteps ;
     effortless-ntwf:precededBy effortless-ntwf:prec-1-2 .
 
 effortless-ntwf:prod-deploy-step-5 a effortless-ntwf:WorkflowSteps ;
+    erb:key "prod-deploy-step-5" ;
     effortless-ntwf:workflowStepId "prod-deploy-step-5" ;
     effortless-ntwf:displayName "Post-Deployment Health Check & Report" ;
     effortless-ntwf:workflow effortless-ntwf:production-deployment ;
@@ -1679,6 +1840,7 @@ effortless-ntwf:prod-deploy-step-5 a effortless-ntwf:WorkflowSteps ;
     effortless-ntwf:precededBy effortless-ntwf:prec-4-5 .
 
 effortless-ntwf:prod-deploy-step-1 a effortless-ntwf:WorkflowSteps ;
+    erb:key "prod-deploy-step-1" ;
     effortless-ntwf:workflowStepId "prod-deploy-step-1" ;
     effortless-ntwf:displayName "AI Risk Assessment" ;
     effortless-ntwf:workflow effortless-ntwf:production-deployment ;
@@ -1689,6 +1851,7 @@ effortless-ntwf:prod-deploy-step-1 a effortless-ntwf:WorkflowSteps ;
     effortless-ntwf:precedes effortless-ntwf:prec-1-2 .
 
 effortless-ntwf:prod-deploy-step-4 a effortless-ntwf:WorkflowSteps ;
+    erb:key "prod-deploy-step-4" ;
     effortless-ntwf:workflowStepId "prod-deploy-step-4" ;
     effortless-ntwf:displayName "Automated Deployment Execution" ;
     effortless-ntwf:workflow effortless-ntwf:production-deployment ;
@@ -1703,6 +1866,7 @@ effortless-ntwf:prod-deploy-step-4 a effortless-ntwf:WorkflowSteps ;
 # === Individuals: Workflows ===
 
 effortless-ntwf:production-deployment a effortless-ntwf:Workflows ;
+    erb:key "production-deployment" ;
     effortless-ntwf:workflowId "production-deployment" ;
     effortless-ntwf:displayName "Production Deployment" ;
     effortless-ntwf:title "Production Deployment Workflow" ;

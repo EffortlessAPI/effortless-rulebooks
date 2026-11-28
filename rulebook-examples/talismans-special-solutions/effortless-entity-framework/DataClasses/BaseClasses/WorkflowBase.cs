@@ -20,7 +20,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? RelativePath
         {
-            get => F.AsString(F.Memo(this, "RelativePath", () => F.Concat(F.S("workflows/"), F.TextOr(F.Of(this.WorkflowId))))); set { }
+            get => F.AsString(F.Memo(this, "RelativePath", () => F.Concat(F.S("workflows/"), F.Text(F.Of(this.WorkflowId))))); set { }
         }
 
         // Formula Iri (rulebook: =SUBSTITUTE({{RelativePath}}, "/", "-"))
@@ -153,14 +153,14 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public int? CountInferredPrecedencePairs
         {
-            get => throw new System.NotSupportedException("Workflows.CountInferredPrecedencePairs: could not translate formula =COUNTIFS(vw_step_precedence_closure!{{IsInferred}}, TRUE()): no table named vw_step_precedence_closure"); set { }
+            get => F.AsInt(F.Memo(this, "CountInferredPrecedencePairs", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Closure<StepPrecedence>(base.SoAContext, "vw_step_precedence_closure", "StepPrecedence", __c => __c.StepPrecedence, __e => F.Of(__e.FromStep), __e => F.Of(__e.ToStep), __e => true), __r => F.CritLiteral(F.Of(__r.IsInferred), F.B(true))))))); set { }
         }
 
         // Formula CountAssertedPrecedencePairs (rulebook: =COUNTIFS(vw_step_precedence_closure!{{IsInferred}}, FALSE()))
         [NotMapped]
         public int? CountAssertedPrecedencePairs
         {
-            get => throw new System.NotSupportedException("Workflows.CountAssertedPrecedencePairs: could not translate formula =COUNTIFS(vw_step_precedence_closure!{{IsInferred}}, FALSE()): no table named vw_step_precedence_closure"); set { }
+            get => F.AsInt(F.Memo(this, "CountAssertedPrecedencePairs", () => F.Integer((base.SoAContext == null ? F.Null : F.CountIfs(F.Closure<StepPrecedence>(base.SoAContext, "vw_step_precedence_closure", "StepPrecedence", __c => __c.StepPrecedence, __e => F.Of(__e.FromStep), __e => F.Of(__e.ToStep), __e => true), __r => F.CritLiteral(F.Of(__r.IsInferred), F.B(false))))))); set { }
         }
 
         // Formula CountOfPrecedenceClosurePairs (rulebook: ={{CountAssertedPrecedencePairs}} + {{CountInferredPrecedencePairs}})

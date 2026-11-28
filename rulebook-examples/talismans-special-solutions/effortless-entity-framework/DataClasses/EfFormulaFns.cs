@@ -28,6 +28,93 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.Formulas
     /// </summary>
     public static class EfFormulaFns
     {
+        // ───────────────────────────── build parameters ─────────────────────────────
+        //
+        // The ERB build parameters (docs/ERB-BUILD-PARAMETERS.md) this SDK was generated
+        // under, baked in by rulebook-to-entity-framework. The static constructor installs
+        // them, so nothing here ever runs unconfigured. erb_runtime.py is the reference;
+        // when a rule changes there, it changes here.
+
+        static readonly Dictionary<string, string> GeneratedParameters = new Dictionary<string, string>
+        {
+            { "erbBlankLogic", "coerce" },
+            { "erbDateDiff", "calendar" },
+            { "erbDateTimeText", "iso8601" },
+            { "erbTimezone", "UTC" },
+            { "erbWholeNumber", "by-field-type" }
+        };
+
+        static readonly Dictionary<string, string[]> ParameterValues = new Dictionary<string, string[]>
+        {
+            { "erbDateDiff", new[] { "calendar", "elapsed" } },
+            { "erbTimezone", new[] { "UTC" } }, // or any IANA zone name
+            { "erbDateTimeText", new[] { "iso8601", "sql" } },
+            { "erbBlankLogic", new[] { "coerce", "propagate" } },
+            { "erbWholeNumber", new[] { "by-field-type", "integer", "decimal" } },
+        };
+
+        static IReadOnlyDictionary<string, string> Params;
+        static TimeZoneInfo Zone;
+
+        static EfFormulaFns() { Configure(GeneratedParameters); }
+
+        public static void Configure(IReadOnlyDictionary<string, string> parameters)
+        {
+            foreach (var name in parameters.Keys)
+                if (!ParameterValues.ContainsKey(name))
+                    throw new InvalidOperationException($"EfFormulaFns.Configure: unknown ERB build parameter '{name}'");
+            foreach (var (name, allowed) in ParameterValues)
+            {
+                if (!parameters.TryGetValue(name, out var value))
+                    throw new InvalidOperationException($"EfFormulaFns.Configure: missing ERB build parameter '{name}'");
+                if (name != "erbTimezone" && !allowed.Contains(value))
+                    throw new InvalidOperationException($"EfFormulaFns.Configure: {name}='{value}' is not one of [{string.Join(", ", allowed)}]");
+            }
+            if (parameters["erbWholeNumber"] != "by-field-type")
+                throw new InvalidOperationException($"EfFormulaFns.Configure: an entity property is typed by its declared datatype; erbWholeNumber must be by-field-type, not '{parameters["erbWholeNumber"]}'");
+            var zoneName = parameters["erbTimezone"];
+            try
+            {
+                Zone = zoneName == "UTC" ? TimeZoneInfo.Utc : TimeZoneInfo.FindSystemTimeZoneById(zoneName);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"EfFormulaFns.Configure: erbTimezone='{zoneName}' cannot be resolved: {ex.Message}", ex);
+            }
+            Params = new Dictionary<string, string>(parameters);
+        }
+
+        public static IReadOnlyDictionary<string, string> Parameters => Params;
+
+        static string Param(string name) => Params[name];
+        static bool CoerceBlanks => Param("erbBlankLogic") == "coerce";
+
+        /// <summary>The instant v names, expressed in erbTimezone. A value carrying no offset is
+        /// taken to be in erbTimezone.</summary>
+        static DateTimeOffset InZone(V v)
+        {
+            switch (v.K)
+            {
+                case VK.Time:
+                    if (v.Zoned) return TimeZoneInfo.ConvertTime(v.T, Zone);
+                    return WallInZone(v.T.DateTime);
+                case VK.Str:
+                    var s = v.S.Trim();
+                    if (ParseIso(s, out var t, out var hasZone))
+                        return hasZone ? TimeZoneInfo.ConvertTime(t, Zone) : WallInZone(t.DateTime);
+                    if (s.Length >= 10 && DateTime.TryParseExact(s.Substring(0, 10), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var d))
+                        return WallInZone(d);
+                    break;
+            }
+            throw new InvalidOperationException($"cannot read {PyRepr(v)} as a datetime");
+        }
+
+        static DateTimeOffset WallInZone(DateTime wall)
+        {
+            var unspecified = DateTime.SpecifyKind(wall, DateTimeKind.Unspecified);
+            return new DateTimeOffset(unspecified, Zone.GetUtcOffset(unspecified));
+        }
+
         // ───────────────────────────── values ─────────────────────────────
 
         public enum VK { Null, Bool, Num, Str, Time }
@@ -342,21 +429,24 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.Formulas
         public static V IsTrueV(V v) => B(v.K == VK.Bool && v.B);
         public static V HasValue(V v) => B(!Blank(v));
 
+        /// <summary>AND: under erbBlankLogic=coerce a blank operand is FALSE; under propagate FALSE
+        /// if any operand is FALSE, else NULL if any is NULL, else TRUE.</summary>
         public static V And(params V[] values)
         {
             if (values.Any(v => v.K == VK.Bool && !v.B)) return B(false);
-            if (values.Any(v => v.K == VK.Null)) return Null;
+            if (values.Any(v => v.K == VK.Null)) return CoerceBlanks ? B(false) : Null;
             return B(true);
         }
 
         public static V Or(params V[] values)
         {
             if (values.Any(v => v.K == VK.Bool && v.B)) return B(true);
-            if (values.Any(v => v.K == VK.Null)) return Null;
+            if (values.Any(v => v.K == VK.Null)) return CoerceBlanks ? B(false) : Null;
             return B(false);
         }
 
-        public static V Not(V v) => v.K == VK.Null ? Null : B(!Truthy(v));
+        /// <summary>NOT: coerce makes NOT(blank) TRUE; propagate keeps it NULL.</summary>
+        public static V Not(V v) => v.K == VK.Null ? (CoerceBlanks ? B(true) : Null) : B(!Truthy(v));
 
         static bool Blank(V v) => v.K == VK.Null || (v.K == VK.Str && v.S.Length == 0);
         public static V IsBlank(V v) => B(Blank(v));
@@ -385,14 +475,41 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.Formulas
             };
         }
 
-        public static V Eq(V a, V b) => a.K == VK.Null || b.K == VK.Null ? Null : B(PyEqual(a, b));
-        public static V Ne(V a, V b) => a.K == VK.Null || b.K == VK.Null ? Null : B(!PyEqual(a, b));
+        /// <summary>Under coerce a blank compared against <paramref name="other"/> takes the other
+        /// side's zero: FALSE against a boolean, 0 against a number, "" otherwise.</summary>
+        static V BlankAsZeroOf(V other)
+        {
+            if (other.K == VK.Bool) return B(false);
+            if (ToNumber(other, out _)) return I(0);
+            return S("");
+        }
+
+        /// <summary>Resolves blank operands per erbBlankLogic: true with the pair to compare, or
+        /// false when the blank must propagate as NULL.</summary>
+        static bool CoercedPair(ref V a, ref V b)
+        {
+            if (a.K == VK.Null && b.K == VK.Null)
+            {
+                if (!CoerceBlanks) return false;
+                a = S(""); b = S(""); return true;
+            }
+            if (a.K == VK.Null || b.K == VK.Null)
+            {
+                if (!CoerceBlanks) return false;
+                if (a.K == VK.Null) a = BlankAsZeroOf(b); else b = BlankAsZeroOf(a);
+            }
+            return true;
+        }
+
+        public static V Eq(V a, V b) => CoercedPair(ref a, ref b) ? B(PyEqual(a, b)) : Null;
+        public static V Ne(V a, V b) => CoercedPair(ref a, ref b) ? B(!PyEqual(a, b)) : Null;
 
         /// <summary>Numbers and numeric strings as numbers, two strings as strings, two
-        /// booleans or two datetimes in order; NULL makes it NULL, anything else is FALSE.</summary>
+        /// booleans or two datetimes in order; a blank is NULL under propagate and the other
+        /// side's zero under coerce; anything else is FALSE.</summary>
         public static V Cmp(V a, string op, V b)
         {
-            if (a.K == VK.Null || b.K == VK.Null) return Null;
+            if (!CoercedPair(ref a, ref b)) return Null;
             int c;
             if (ToNumber(a, out var an) && ToNumber(b, out var bn)) c = an.N.CompareTo(bn.N);
             else if (a.K == VK.Str && b.K == VK.Str) c = string.CompareOrdinal(a.S, b.S);
@@ -502,17 +619,86 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.Formulas
 
         public static V Cast(V v) => Truthy(v) ? S(PyStr(v)) : S("");
 
-        public static V Text(V v, V format)
+        // ───────────── TEXT(value, format) — docs/ERB-TEXT-FUNCTION.md ─────────────
+        // The generator checked the format and passes it parsed: a date format as
+        // (isToken, text) parts, a number format as decimals / grouped / percent.
+
+        static readonly Regex TextIsoDate = new Regex(@"^\d{4}-\d{2}-\d{2}$", RegexOptions.Compiled);
+        static readonly Regex TextIsoDatetime = new Regex(
+            @"^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)?$", RegexOptions.Compiled);
+        static readonly Regex TextPlainNumber = new Regex(@"^\s*[+-]?([0-9]+(\.[0-9]*)?|\.[0-9]+)\s*$", RegexOptions.Compiled);
+
+        /// <summary>TEXT(value, date format). A date or datetime (or ISO text) is formatted in
+        /// erbTimezone; a number or boolean comes back as <c>&amp;</c> renders it; other text
+        /// unchanged; blank is NULL.</summary>
+        public static V TextDate(V v, (bool IsToken, string Text)[] parts)
         {
-            if (v.K == VK.Null) return S("");
-            var fmt = format.K == VK.Str ? format.S : "";
-            if (v.K == VK.Time) return S(FormatDate(v.T, fmt));
-            if (ToNumber(v, out var n) && fmt.Length > 0)
+            DateTime dt;
+            switch (v.K)
             {
-                int decimals = fmt.Contains('.') ? fmt.Length - fmt.IndexOf('.') - 1 : 0;
-                return S(n.N.ToString("F" + decimals, CultureInfo.InvariantCulture));
+                case VK.Null: return Null;
+                case VK.Time: dt = InZone(v).DateTime; break;
+                case VK.Str:
+                    var s = v.S.Trim();
+                    if (TextIsoDate.IsMatch(s))
+                        dt = DateTime.ParseExact(s, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    else if (TextIsoDatetime.IsMatch(s))
+                        dt = InZone(S(s.ToUpperInvariant())).DateTime;
+                    else
+                        return v;
+                    break;
+                default: return Text(v);
             }
-            return S(PyStr(v));
+            var sb = new StringBuilder();
+            foreach (var (isToken, text) in parts)
+            {
+                if (!isToken) { sb.Append(text); continue; }
+                sb.Append(text switch
+                {
+                    "yyyy" => dt.Year.ToString("D4", CultureInfo.InvariantCulture),
+                    "yy" => (dt.Year % 100).ToString("D2", CultureInfo.InvariantCulture),
+                    "MM" => dt.Month.ToString("D2", CultureInfo.InvariantCulture),
+                    "M" => dt.Month.ToString(CultureInfo.InvariantCulture),
+                    "dd" => dt.Day.ToString("D2", CultureInfo.InvariantCulture),
+                    "d" => dt.Day.ToString(CultureInfo.InvariantCulture),
+                    "HH" => dt.Hour.ToString("D2", CultureInfo.InvariantCulture),
+                    "H" => dt.Hour.ToString(CultureInfo.InvariantCulture),
+                    "mm" => dt.Minute.ToString("D2", CultureInfo.InvariantCulture),
+                    "m" => dt.Minute.ToString(CultureInfo.InvariantCulture),
+                    "ss" => dt.Second.ToString("D2", CultureInfo.InvariantCulture),
+                    _ => throw new InvalidOperationException($"TEXT(): unknown date token '{text}'")
+                });
+            }
+            return S(sb.ToString());
+        }
+
+        /// <summary>TEXT(value, number format): round half away from zero on the exact decimal
+        /// value (a double's shortest round-trip string), optional ',' groups and percent. A value
+        /// that is not a number or plain numeric text comes back as <c>&amp;</c> renders it.</summary>
+        public static V TextNumber(V v, int decimals, bool grouped, bool percent)
+        {
+            decimal number;
+            switch (v.K)
+            {
+                case VK.Null: return Null;
+                case VK.Num:
+                    if (double.IsNaN(v.N) || double.IsInfinity(v.N)) return Text(v);
+                    number = v.IsInt
+                        ? (decimal)(long)v.N
+                        : decimal.Parse(v.N.ToString("R", CultureInfo.InvariantCulture), NumberStyles.Float, CultureInfo.InvariantCulture);
+                    break;
+                case VK.Str:
+                    if (!TextPlainNumber.IsMatch(v.S)) return v;
+                    var t = v.S.Trim();
+                    number = decimal.Parse(t.EndsWith(".") ? t + "0" : t, NumberStyles.Float, CultureInfo.InvariantCulture);
+                    break;
+                default: return Text(v);
+            }
+            if (percent) number *= 100;
+            var rounded = Math.Round(number, decimals, MidpointRounding.AwayFromZero);
+            var negative = rounded < 0;
+            var digits = Math.Abs(rounded).ToString((grouped ? "N" : "F") + decimals, CultureInfo.InvariantCulture);
+            return S((negative ? "-" : "") + digits + (percent ? "%" : ""));
         }
 
         // ───────────────────────────── dates ─────────────────────────────
@@ -554,6 +740,9 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.Formulas
         static bool DateOrNone(V v, out DateTime t)
         {
             t = default;
+            // A datetime property (DateTimeOffset / DateTime) is date arithmetic too: its wall
+            // clock as stored, offset dropped, as erb_date_or_none reads "…+hh:mm" text.
+            if (v.K == VK.Time) { t = WallClock(v.T); return true; }
             if (v.K != VK.Str) return false;
             var s = v.S.Trim();
             if (!DatePrefix.IsMatch(s)) return false;
@@ -561,52 +750,54 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.Formulas
             return DateTime.TryParseExact(s.Substring(0, 10), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out t);
         }
 
-        static DateTime CoerceDatetime(V v)
-        {
-            if (v.K == VK.Time) return WallClock(v.T);
-            if (v.K == VK.Str)
-            {
-                if (ParseIso(v.S, out var t, out _)) return WallClock(t);
-                if (DateTime.TryParseExact(v.S, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var d)) return d;
-            }
-            throw new InvalidOperationException($"DATETIME_DIFF: cannot coerce {PyRepr(v)} to datetime");
-        }
+        /// <summary>The wall-clock reading of v in erbTimezone (date arithmetic's operand).</summary>
+        static DateTime CoerceDatetime(V v) => InZone(v).DateTime;
 
+        /// <summary>DATETIME_DIFF(end, start, unit) per erbDateDiff: hour, minute and second are
+        /// exact elapsed (possibly fractional) in both modes; month and year are whole calendar
+        /// months (AGE()) in both. calendar: day is calendar dates in erbTimezone subtracted,
+        /// week is day/7 truncated. elapsed: day is seconds/86400 truncated, week
+        /// seconds/604800 truncated.</summary>
         public static V DatetimeDiff(V end, V start, V unitValue)
         {
             var unit = Truthy(unitValue) ? PyStr(unitValue).ToLowerInvariant().TrimEnd('s') : "day";
-            if (end.K == VK.Null || start.K == VK.Null) return Null;
-            var e = CoerceDatetime(end);
-            var s = CoerceDatetime(start);
-            var delta = e - s;
+            if (Blank(end) || Blank(start)) return Null;
+            var ez = InZone(end);
+            var sz = InZone(start);
+            var e = ez.DateTime;
+            var s = sz.DateTime;
+            var seconds = (ez - sz).TotalSeconds;
+            var calendar = Param("erbDateDiff") == "calendar";
+            long CalendarDays() => (long)Math.Round((e.Date - s.Date).TotalDays);
             switch (unit)
             {
-                case "day": return I((long)Math.Round((e.Date - s.Date).TotalDays));
-                case "hour": return D(delta.TotalSeconds / 3600);
-                case "minute": return D(delta.TotalSeconds / 60);
-                case "second": return D(delta.TotalSeconds);
-                case "week": return I((long)Math.Floor(Math.Floor(delta.TotalDays) / 7));
+                case "hour": return D(seconds / 3600);
+                case "minute": return D(seconds / 60);
+                case "second": return D(seconds);
+                case "day": return I(calendar ? CalendarDays() : (long)Math.Truncate(seconds / 86400));
+                case "week": return I(calendar ? (long)Math.Truncate(CalendarDays() / 7.0) : (long)Math.Truncate(seconds / 604800));
                 case "month":
                 case "year":
                     var months = (e.Year - s.Year) * 12 + e.Month - s.Month;
                     var ec = (e.Day, e.Hour, e.Minute, e.Second);
                     var sc = (s.Day, s.Hour, s.Minute, s.Second);
                     if (ec.CompareTo(sc) < 0) months--;
-                    return unit == "month" ? I(months) : I((long)Math.Floor(months / 12.0));
+                    return unit == "month" ? I(months) : I((long)Math.Truncate(months / 12.0));
             }
             throw new InvalidOperationException($"DATETIME_DIFF: unsupported unit '{unit}'");
         }
 
+        /// <summary>NOW()/TODAY(), an instant in erbTimezone. FORMULA_NOW pins it.</summary>
         public static V Now()
         {
             var overrideText = Environment.GetEnvironmentVariable("FORMULA_NOW");
             if (!string.IsNullOrEmpty(overrideText))
             {
-                if (!ParseIso(overrideText, out var t, out var hasZone))
+                if (!ParseIso(overrideText, out _, out _))
                     throw new InvalidOperationException($"FORMULA_NOW '{overrideText}' is not an ISO-8601 datetime");
-                return hasZone ? Zoned(t) : Wall(t.DateTime);
+                return Zoned(InZone(S(overrideText)));
             }
-            return Wall(DateTime.UtcNow);
+            return Zoned(TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, Zone));
         }
 
         public static V DateAdd(V date, V amount, V unitValue)
@@ -642,31 +833,54 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.Formulas
             return dt.ToString(net, CultureInfo.InvariantCulture);
         }
 
-        /// <summary>A datetime inside CONCAT, as the oracle renders a timestamptz: <c>2026-01-01 00:00:00-06</c>.</summary>
-        public static V TimestamptzText(V v)
+        static readonly Regex DateOnlyText = new Regex(@"^\d{4}-\d{2}-\d{2}$", RegexOptions.Compiled);
+
+        /// <summary>A datetime rendered into text per erbDateTimeText, in erbTimezone:
+        /// iso8601 = <c>2026-04-03T14:00:00+00:00</c>, sql = <c>2026-04-03 14:00:00+00</c>. A
+        /// date-only value renders as YYYY-MM-DD; a blank as "".</summary>
+        public static V DatetimeText(V v)
         {
             if (Blank(v)) return S("");
-            DateTimeOffset t;
-            if (v.K == VK.Time)
-            {
-                if (!v.Zoned)
-                    throw new InvalidOperationException($"datetime {PyStr(v)} carries no UTC offset, so its timestamptz text depends on the database session's time zone and cannot be rendered");
-                t = v.T;
-            }
-            else if (v.K == VK.Str)
-            {
-                if (!ParseIso(v.S, out t, out var hasZone)) throw new InvalidOperationException($"invalid isoformat string: '{v.S}'");
-                if (!hasZone)
-                    throw new InvalidOperationException($"datetime '{v.S}' carries no UTC offset, so its timestamptz text depends on the database session's time zone and cannot be rendered");
-            }
-            else throw new InvalidOperationException($"cannot render {PyRepr(v)} as a timestamptz");
-            var s = t.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+            if (v.K == VK.Str && DateOnlyText.IsMatch(v.S.Trim())) return S(v.S.Trim());
+            if (v.K != VK.Time && v.K != VK.Str) throw new InvalidOperationException($"cannot render {PyRepr(v)} as a datetime");
+            var t = InZone(v);
+            var iso = Param("erbDateTimeText") == "iso8601";
+            var s = t.ToString(iso ? "yyyy-MM-dd'T'HH:mm:ss" : "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
             var micros = t.Ticks % TimeSpan.TicksPerSecond / 10;
             if (micros != 0) s += ("." + micros.ToString("D6", CultureInfo.InvariantCulture)).TrimEnd('0');
             var off = t.Offset;
-            s += (off < TimeSpan.Zero ? "-" : "+") + Math.Abs(off.Hours).ToString("D2", CultureInfo.InvariantCulture);
-            if (off.Minutes != 0) s += ":" + Math.Abs(off.Minutes).ToString("D2", CultureInfo.InvariantCulture);
+            var sign = off < TimeSpan.Zero ? "-" : "+";
+            var hh = Math.Abs(off.Hours).ToString("D2", CultureInfo.InvariantCulture);
+            var mm = Math.Abs(off.Minutes).ToString("D2", CultureInfo.InvariantCulture);
+            if (iso) s += sign + hh + ":" + mm;
+            else
+            {
+                s += sign + hh;
+                if (off.Minutes != 0) s += ":" + mm;
+            }
             return S(s);
+        }
+
+        /// <summary>A computed <see cref="DateTimeOffset"/> as it is written into JSON: per
+        /// erbDateTimeText, as the reference implementation's erb_json_value writes it.</summary>
+        public static string DatetimeJson(DateTimeOffset t) => DatetimeText(Zoned(t)).S;
+
+        /// <summary>A non-datetime CONCAT / <c>&amp;</c> operand as text: a blank contributes
+        /// nothing, a number renders in its shortest exact form with no trailing .0, a boolean as
+        /// true/false, a datetime per erbDateTimeText.</summary>
+        public static V Text(V v)
+        {
+            switch (v.K)
+            {
+                case VK.Null: return S("");
+                case VK.Bool: return S(v.B ? "true" : "false");
+                case VK.Num:
+                    if (v.IsInt || (v.N == Math.Truncate(v.N) && Math.Abs(v.N) < 1e15))
+                        return S(((long)v.N).ToString(CultureInfo.InvariantCulture));
+                    return S(PyFloat(v.N));
+                case VK.Time: return DatetimeText(v);
+            }
+            return S(v.S);
         }
 
         // ───────────────────────────── snapshot memoization ─────────────────────────────
@@ -830,6 +1044,92 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.Formulas
             if (a.K == VK.Str && b.K == VK.Str) return string.CompareOrdinal(a.S, b.S) < 0;
             if (a.K == VK.Time && b.K == VK.Time) return a.T < b.T;
             throw new InvalidOperationException($"MIN/MAX over values that cannot be ordered: {PyRepr(a)} and {PyRepr(b)}");
+        }
+
+        // ───────────────────────────── transitive closure ─────────────────────────────
+
+        /// <summary>One row of vw_&lt;edge&gt;_closure: a reachable pair, the shortest derivation's
+        /// length, and whether no directly-asserted edge states the pair.</summary>
+        public sealed class ClosureRow
+        {
+            public string FromId { get; init; } = "";
+            public string ToId { get; init; } = "";
+            public int? HopDistance { get; init; }
+            public bool? IsInferred { get; init; }
+        }
+
+        /// <summary>
+        /// Materializes a closure view over an edge table's rows: every (from, to) pair reachable
+        /// in one or more edges, computed natively here (reading another substrate's closure would
+        /// make this substrate's score a measure of that one). A node on a cycle reaches itself.
+        /// An empty endpoint is not an edge. <paramref name="include"/> is the closure's edge
+        /// filter; an unfiltered closure passes every row.
+        /// </summary>
+        public static List<ClosureRow> Closure<T>(SoAEFContext context, string view, string table,
+                                                 Func<SoAEFContext, DbSet<T>> set, Func<T, V> from, Func<T, V> to,
+                                                 Func<T, bool> include) where T : class
+        {
+            var snapshot = context.ComputedSnapshot;
+            if (snapshot != null && snapshot.Rows.TryGetValue(view, out var cached)) return (List<ClosureRow>)cached;
+
+            var asserted = new HashSet<(string, string)>();
+            var adjacency = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+            var origins = new List<string>();
+            foreach (var row in Rows(context, table, set))
+            {
+                if (!include(row)) continue;
+                var f = from(row);
+                var t = to(row);
+                if (Blank(f) || Blank(t)) continue;
+                var src = PyStr(f);
+                var dst = PyStr(t);
+                asserted.Add((src, dst));
+                if (!adjacency.TryGetValue(src, out var outs))
+                {
+                    adjacency[src] = outs = new List<string>();
+                    origins.Add(src);
+                }
+                outs.Add(dst);
+            }
+
+            var shortest = new Dictionary<(string, string), int>();
+            foreach (var origin in origins)
+            {
+                // Breadth-first, so the first arrival at a node is its shortest derivation.
+                // Interior nodes are never revisited, so a cyclic edge set terminates; arriving
+                // back at the origin records (origin, origin).
+                var frontier = new List<(string Node, HashSet<string> Path)>
+                {
+                    (origin, new HashSet<string>(StringComparer.Ordinal) { origin })
+                };
+                for (int hop = 1; frontier.Count > 0; hop++)
+                {
+                    var next = new List<(string Node, HashSet<string> Path)>();
+                    foreach (var (node, path) in frontier)
+                    {
+                        if (!adjacency.TryGetValue(node, out var neighbors)) continue;
+                        foreach (var neighbor in neighbors)
+                        {
+                            shortest.TryAdd((origin, neighbor), hop);
+                            if (path.Contains(neighbor)) continue;
+                            next.Add((neighbor, new HashSet<string>(path, StringComparer.Ordinal) { neighbor }));
+                        }
+                    }
+                    frontier = next;
+                }
+            }
+
+            var rows = shortest
+                .Select(kv => new ClosureRow
+                {
+                    FromId = kv.Key.Item1,
+                    ToId = kv.Key.Item2,
+                    HopDistance = kv.Value,
+                    IsInferred = !asserted.Contains(kv.Key),
+                })
+                .ToList();
+            if (snapshot != null) snapshot.Rows[view] = rows;
+            return rows;
         }
     }
 }

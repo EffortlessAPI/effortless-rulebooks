@@ -24,6 +24,9 @@ containerized rulebook editor/viewer for any Effortless project:
   `rulebook-to-node-postgres-api`, `rulebook-to-vite-admin-portal`,
   `rulebook-to-explainer-dag` (into the portal's Vite `public/`, so the
   provenance assets are served at `/rulebook-explainer-dag/*`),
+  `rulebook-to-typescript` (into that folder's `typescript/`, where the
+  explainer finds it and computes its witness: one row's values down to the
+  stored ones),
   `rulebook-to-rulespeak` (the core languages, via `languages=en,de,ja,hi`), and
   `rulebook-to-xlsx`.
 - `edit-rulebook.sh` -- thin launcher, generated INTO the rulebook's own
@@ -40,7 +43,7 @@ containerized rulebook editor/viewer for any Effortless project:
 
 - `-p rulebookPath=...` -- where the rulebook JSON file lives, relative to
   wherever this tool is installed/run from (TOOL_DIR). Default:
-  `../effortless-rulebook.json`. `edit-rulebook.sh` is generated into that
+  `effortless-rulebook.json`. `edit-rulebook.sh` is generated into that
   file's folder; every other file (Dockerfile, effortless.editor.json,
   container-entrypoint.sh, boot-server.js, README.md) stays at TOOL_DIR --
   this keeps the rulebook's own folder clean (just the one launcher script).
@@ -53,6 +56,11 @@ containerized rulebook editor/viewer for any Effortless project:
 - `-p srcIsExternal=true` -- forces `tempDir` to be mounted even without
   explicitly setting it, and is what makes `effortless-root` (below) resolve
   to a host-backed folder inside `tempDir` instead of a container-internal one.
+- `-p enable-modules=true` -- forces the ERB modules (the Modules page,
+  Security, Delivery, and their build steps) on. Default: off -- the modules
+  are a Pro feature and the editor hides them until they are switched on with
+  the Admin page's 'ERB modules (Pro)' toggle, which stands in for a license
+  until the tool checks one.
 
 ## `effortless-root` and static-across-rebuilds generated code
 

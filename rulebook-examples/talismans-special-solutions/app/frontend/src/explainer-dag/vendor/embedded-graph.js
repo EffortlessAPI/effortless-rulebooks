@@ -5053,6 +5053,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "data": [
       {
+        "MetaKey": "ontology_iri",
+        "Name": "ontology_iri",
+        "ValueType": "string",
+        "StringValue": "https://w3id.org/effortless-ntwf",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "ontology_prefix",
+        "Name": "ontology_prefix",
+        "ValueType": "string",
+        "StringValue": "effortless-ntwf",
+        "JsonValue": null
+      },
+      {
         "MetaKey": "tagline",
         "Name": "tagline",
         "ValueType": "string",
@@ -7686,7 +7700,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "A change log is considered backward-compatible if all of the following:",
+          "headline": "A change log is considered backward-compatible if any of the following:",
           "cases": [],
           "children": [
             {
@@ -10657,7 +10671,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "يُصنّف سجل «change log» على أنه «backward compatible» إذا تحقق جميع ما يلي:",
+          "headline": "يُصنّف سجل «change log» على أنه «backward compatible» إذا تحقق واحد على الأقل مما يلي:",
           "cases": [],
           "children": [
             {
@@ -13644,7 +13658,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Ein Change Log gilt als eine Backward Compatible, wenn alles Folgende gilt:",
+          "headline": "Ein Change Log gilt als eine Backward Compatible, wenn mindestens eines des Folgenden gilt:",
           "cases": [],
           "children": [
             {
@@ -16631,7 +16645,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un change log se considera backward compatible si se cumple todo lo siguiente:",
+          "headline": "Un change log se considera backward compatible si se cumple al menos una de las siguientes:",
           "cases": [],
           "children": [
             {
@@ -19618,7 +19632,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un change log est considéré comme backward compatible si tout ce qui suit est vrai :",
+          "headline": "Un change log est considéré comme backward compatible si au moins une des conditions suivantes est vraie :",
           "cases": [],
           "children": [
             {
@@ -22605,7 +22619,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "change log “backward compatible” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "headline": "change log “backward compatible” माना जाता है, यदि निम्नलिखित में से कम से कम एक सही हो:",
           "cases": [],
           "children": [
             {
@@ -25592,7 +25606,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Setiap change log dianggap “backward compatible” jika semua kondisi berikut terpenuhi:",
+          "headline": "Setiap change log dianggap “backward compatible” jika paling sedikit satu kondisi berikut terpenuhi:",
           "cases": [],
           "children": [
             {
@@ -28579,7 +28593,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un change log è considerato backward compatible se vale tutto quanto segue:",
+          "headline": "Un change log è considerato backward compatible se vale almeno una delle seguenti:",
           "cases": [],
           "children": [
             {
@@ -31566,7 +31580,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "次のすべてが成り立つ場合、change logは「Backward Compatible」と見なされます:",
+          "headline": "次のいずれかが成り立つ場合、change logは「Backward Compatible」と見なされます:",
           "cases": [],
           "children": [
             {
@@ -34553,7 +34567,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "다음 모두에 해당하는 경우, ‘change log’ 레코드는 ‘backward compatible’에 해당하는 것으로 간주됩니다:",
+          "headline": "다음 중 하나 이상에 해당하는 경우, ‘change log’ 레코드는 ‘backward compatible’에 해당하는 것으로 간주됩니다:",
           "cases": [],
           "children": [
             {
@@ -37540,7 +37554,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Een change log geldt als backward compatible als al het volgende geldt:",
+          "headline": "Een change log geldt als backward compatible als ten minste één van het volgende geldt:",
           "cases": [],
           "children": [
             {
@@ -40527,7 +40541,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Um change log é considerado backward compatible se tudo o que segue for verdadeiro:",
+          "headline": "Um change log é considerado backward compatible se pelo menos um dos seguintes for verdadeiro:",
           "cases": [],
           "children": [
             {
@@ -43514,7 +43528,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Change log считается «backward compatible», если выполняется всё следующее:",
+          "headline": "Change log считается «backward compatible», если выполняется хотя бы одно из следующего:",
           "cases": [],
           "children": [
             {
@@ -46501,7 +46515,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "“change log” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “backward compatible” sayılır:",
+          "headline": "“change log” kaydı, aşağıdakilerden en az biri sağlanıyor ise “backward compatible” sayılır:",
           "cases": [],
           "children": [
             {
@@ -49488,7 +49502,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Mỗi change log được coi là “backward compatible” nếu tất cả các điều kiện sau đều đúng:",
+          "headline": "Mỗi change log được coi là “backward compatible” nếu ít nhất một trong các điều kiện sau đúng:",
           "cases": [],
           "children": [
             {
@@ -52475,7 +52489,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "当以下全部成立时,change log被视为“Backward Compatible”:",
+          "headline": "当以下任一成立时,change log被视为“Backward Compatible”:",
           "cases": [],
           "children": [
             {

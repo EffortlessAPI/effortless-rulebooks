@@ -1,0 +1,455 @@
+{
+  "generator": "oss-rulebook-to-owl",
+  "ontology": {
+    "iri": "https://w3id.org/effortless-ntwf",
+    "namespace": "https://w3id.org/effortless-ntwf#",
+    "prefix": "effortless-ntwf"
+  },
+  "prefixes": {
+    "effortless-ntwf": "https://w3id.org/effortless-ntwf#",
+    "erb": "https://effortlessapi.com/ns/erb#"
+  },
+  "keyProperty": "https://effortlessapi.com/ns/erb#key",
+  "tables": {
+    "Workflows": {
+      "class": "https://w3id.org/effortless-ntwf#Workflows",
+      "keyField": "WorkflowId",
+      "fields": {
+        "WorkflowId": "https://w3id.org/effortless-ntwf#workflowId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "Description": "https://w3id.org/effortless-ntwf#description",
+        "Identifier": "https://w3id.org/effortless-ntwf#identifier",
+        "Modified": "https://w3id.org/effortless-ntwf#modified",
+        "Created": "https://w3id.org/effortless-ntwf#created",
+        "StalenessThresholdMonths": "https://w3id.org/effortless-ntwf#stalenessThresholdMonths",
+        "WorkflowStatus": "https://w3id.org/effortless-ntwf#workflowStatus",
+        "WorkflowSteps": "https://w3id.org/effortless-ntwf#workflowSteps",
+        "CountOfNonProposedSteps": "https://w3id.org/effortless-ntwf#countOfNonProposedSteps",
+        "HasMoreThan1Step": "https://w3id.org/effortless-ntwf#hasMoreThan1Step",
+        "CountAISteps": "https://w3id.org/effortless-ntwf#countAISteps",
+        "CountHumanSteps": "https://w3id.org/effortless-ntwf#countHumanSteps",
+        "CountHumanRequiredSteps": "https://w3id.org/effortless-ntwf#countHumanRequiredSteps",
+        "CountApprovalConsistencyViolations": "https://w3id.org/effortless-ntwf#countApprovalConsistencyViolations",
+        "HasConsistencyViolation": "https://w3id.org/effortless-ntwf#hasConsistencyViolation",
+        "HasAIAgentStep": "https://w3id.org/effortless-ntwf#hasAIAgentStep",
+        "MonthsSinceModified": "https://w3id.org/effortless-ntwf#monthsSinceModified",
+        "IsStale": "https://w3id.org/effortless-ntwf#isStale",
+        "IsStaleAndHasAIAgent": "https://w3id.org/effortless-ntwf#isStaleAndHasAIAgent",
+        "CountDerivationLinks": "https://w3id.org/effortless-ntwf#countDerivationLinks",
+        "CountLegalOwnedSteps": "https://w3id.org/effortless-ntwf#countLegalOwnedSteps",
+        "CountEngineeringOwnedSteps": "https://w3id.org/effortless-ntwf#countEngineeringOwnedSteps",
+        "InvolvesEngineeringAndLegal": "https://w3id.org/effortless-ntwf#involvesEngineeringAndLegal",
+        "CountInferredPrecedencePairs": "https://w3id.org/effortless-ntwf#countInferredPrecedencePairs",
+        "CountAssertedPrecedencePairs": "https://w3id.org/effortless-ntwf#countAssertedPrecedencePairs",
+        "CountOfPrecedenceClosurePairs": "https://w3id.org/effortless-ntwf#countOfPrecedenceClosurePairs",
+        "CountRolesWithBadFillerCardinality": "https://w3id.org/effortless-ntwf#countRolesWithBadFillerCardinality",
+        "CountAgentTypeChanges": "https://w3id.org/effortless-ntwf#countAgentTypeChanges",
+        "CountComplianceAuditChanges": "https://w3id.org/effortless-ntwf#countComplianceAuditChanges",
+        "CountApprovalGateSteps": "https://w3id.org/effortless-ntwf#countApprovalGateSteps",
+        "CountGatesWithoutHumanApprover": "https://w3id.org/effortless-ntwf#countGatesWithoutHumanApprover",
+        "CountWorkflowArtifacts": "https://w3id.org/effortless-ntwf#countWorkflowArtifacts",
+        "CountRolesWithEscalationViolation": "https://w3id.org/effortless-ntwf#countRolesWithEscalationViolation",
+        "CountUnconsumedDatasets": "https://w3id.org/effortless-ntwf#countUnconsumedDatasets",
+        "Cq1Satisfied": "https://w3id.org/effortless-ntwf#cq1Satisfied",
+        "Cq2Satisfied": "https://w3id.org/effortless-ntwf#cq2Satisfied",
+        "Cq3Satisfied": "https://w3id.org/effortless-ntwf#cq3Satisfied",
+        "Cq4Satisfied": "https://w3id.org/effortless-ntwf#cq4Satisfied",
+        "Cq5Satisfied": "https://w3id.org/effortless-ntwf#cq5Satisfied",
+        "Cq6Satisfied": "https://w3id.org/effortless-ntwf#cq6Satisfied",
+        "Cq7Satisfied": "https://w3id.org/effortless-ntwf#cq7Satisfied",
+        "Cq8Satisfied": "https://w3id.org/effortless-ntwf#cq8Satisfied"
+      }
+    },
+    "WorkflowSteps": {
+      "class": "https://w3id.org/effortless-ntwf#WorkflowSteps",
+      "keyField": "WorkflowStepId",
+      "fields": {
+        "WorkflowStepId": "https://w3id.org/effortless-ntwf#workflowStepId",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "Workflow": "https://w3id.org/effortless-ntwf#workflow",
+        "PrecedingStepCount": "https://w3id.org/effortless-ntwf#precedingStepCount",
+        "InferredSequencePosition": "https://w3id.org/effortless-ntwf#inferredSequencePosition",
+        "SequencePositionOverride": "https://w3id.org/effortless-ntwf#sequencePositionOverride",
+        "SequencePosition": "https://w3id.org/effortless-ntwf#sequencePosition",
+        "AssignedRole": "https://w3id.org/effortless-ntwf#assignedRole",
+        "RequiresHumanApproval": "https://w3id.org/effortless-ntwf#requiresHumanApproval",
+        "StepDurationMinutes": "https://w3id.org/effortless-ntwf#stepDurationMinutes",
+        "ConsumesDataset": "https://w3id.org/effortless-ntwf#consumesDataset",
+        "ProducesArtifacts": "https://w3id.org/effortless-ntwf#producesArtifacts",
+        "RequiresArtifacts": "https://w3id.org/effortless-ntwf#requiresArtifacts",
+        "ApprovalGate": "https://w3id.org/effortless-ntwf#approvalGate",
+        "Precedes": "https://w3id.org/effortless-ntwf#precedes",
+        "PrecededBy": "https://w3id.org/effortless-ntwf#precededBy",
+        "ExecutingHumanAgent": "https://w3id.org/effortless-ntwf#executingHumanAgent",
+        "ExecutingAIAgent": "https://w3id.org/effortless-ntwf#executingAIAgent",
+        "ExecutingAutomatedPipeline": "https://w3id.org/effortless-ntwf#executingAutomatedPipeline",
+        "ExecutingAgentType": "https://w3id.org/effortless-ntwf#executingAgentType",
+        "IsExecutedByAI": "https://w3id.org/effortless-ntwf#isExecutedByAI",
+        "IsExecutedByHuman": "https://w3id.org/effortless-ntwf#isExecutedByHuman",
+        "IsApprovalGate": "https://w3id.org/effortless-ntwf#isApprovalGate",
+        "ApprovalConsistencyViolation": "https://w3id.org/effortless-ntwf#approvalConsistencyViolation",
+        "ApprovalIsHumanFilled": "https://w3id.org/effortless-ntwf#approvalIsHumanFilled",
+        "OwningDepartment": "https://w3id.org/effortless-ntwf#owningDepartment",
+        "IsLegalOwned": "https://w3id.org/effortless-ntwf#isLegalOwned",
+        "IsEngineeringOwned": "https://w3id.org/effortless-ntwf#isEngineeringOwned"
+      }
+    },
+    "ApprovalGates": {
+      "class": "https://w3id.org/effortless-ntwf#ApprovalGates",
+      "keyField": "ApprovalGateId",
+      "fields": {
+        "ApprovalGateId": "https://w3id.org/effortless-ntwf#approvalGateId",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "WorkflowStep": "https://w3id.org/effortless-ntwf#workflowStep",
+        "EscalationThresholdHours": "https://w3id.org/effortless-ntwf#escalationThresholdHours",
+        "GateRole": "https://w3id.org/effortless-ntwf#gateRole",
+        "GateApproverHuman": "https://w3id.org/effortless-ntwf#gateApproverHuman",
+        "HasHumanApprover": "https://w3id.org/effortless-ntwf#hasHumanApprover"
+      }
+    },
+    "StepPrecedence": {
+      "class": "https://w3id.org/effortless-ntwf#StepPrecedence",
+      "keyField": "StepPrecedenceId",
+      "fields": {
+        "StepPrecedenceId": "https://w3id.org/effortless-ntwf#stepPrecedenceId",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "FromStep": "https://w3id.org/effortless-ntwf#fromStep",
+        "ToStep": "https://w3id.org/effortless-ntwf#toStep",
+        "PrecedesStepClosure": "https://w3id.org/effortless-ntwf#precedesStepClosure"
+      }
+    },
+    "Roles": {
+      "class": "https://w3id.org/effortless-ntwf#Roles",
+      "keyField": "RoleId",
+      "fields": {
+        "RoleId": "https://w3id.org/effortless-ntwf#roleId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "Label": "https://w3id.org/effortless-ntwf#label",
+        "Comment": "https://w3id.org/effortless-ntwf#comment",
+        "HasCapability": "https://w3id.org/effortless-ntwf#hasCapability",
+        "FilledByHumanAgent": "https://w3id.org/effortless-ntwf#filledByHumanAgent",
+        "FilledByAIAgent": "https://w3id.org/effortless-ntwf#filledByAIAgent",
+        "FilledByAutomatedPipeline": "https://w3id.org/effortless-ntwf#filledByAutomatedPipeline",
+        "OwnedBy": "https://w3id.org/effortless-ntwf#ownedBy",
+        "DelegatesTo": "https://w3id.org/effortless-ntwf#delegatesTo",
+        "WorkflowSteps": "https://w3id.org/effortless-ntwf#workflowSteps",
+        "FromDelegatesTo": "https://w3id.org/effortless-ntwf#fromDelegatesTo",
+        "RoleAssignments": "https://w3id.org/effortless-ntwf#roleAssignments",
+        "DelegationClosure": "https://w3id.org/effortless-ntwf#delegationClosure",
+        "FilledByArmCount": "https://w3id.org/effortless-ntwf#filledByArmCount",
+        "HasExactlyOneFiller": "https://w3id.org/effortless-ntwf#hasExactlyOneFiller",
+        "FillerType": "https://w3id.org/effortless-ntwf#fillerType",
+        "FillsApprovalGate": "https://w3id.org/effortless-ntwf#fillsApprovalGate",
+        "EscalationViolation": "https://w3id.org/effortless-ntwf#escalationViolation"
+      }
+    },
+    "RoleAssignments": {
+      "class": "https://w3id.org/effortless-ntwf#RoleAssignments",
+      "keyField": "RoleAssignmentId",
+      "fields": {
+        "RoleAssignmentId": "https://w3id.org/effortless-ntwf#roleAssignmentId",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Role": "https://w3id.org/effortless-ntwf#role",
+        "FilledByHumanAgent": "https://w3id.org/effortless-ntwf#filledByHumanAgent",
+        "FilledByAIAgent": "https://w3id.org/effortless-ntwf#filledByAIAgent",
+        "FilledByAutomatedPipeline": "https://w3id.org/effortless-ntwf#filledByAutomatedPipeline",
+        "ValidFrom": "https://w3id.org/effortless-ntwf#validFrom",
+        "ValidTo": "https://w3id.org/effortless-ntwf#validTo",
+        "Reason": "https://w3id.org/effortless-ntwf#reason",
+        "PriorFillerType": "https://w3id.org/effortless-ntwf#priorFillerType",
+        "FillerType": "https://w3id.org/effortless-ntwf#fillerType",
+        "IsCurrent": "https://w3id.org/effortless-ntwf#isCurrent",
+        "WasActiveAsOfAuditDate": "https://w3id.org/effortless-ntwf#wasActiveAsOfAuditDate",
+        "IsAgentTypeChange": "https://w3id.org/effortless-ntwf#isAgentTypeChange",
+        "RequiresComplianceAudit": "https://w3id.org/effortless-ntwf#requiresComplianceAudit"
+      }
+    },
+    "Departments": {
+      "class": "https://w3id.org/effortless-ntwf#Departments",
+      "keyField": "DepartmentId",
+      "fields": {
+        "DepartmentId": "https://w3id.org/effortless-ntwf#departmentId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "Roles": "https://w3id.org/effortless-ntwf#roles"
+      }
+    },
+    "HumanAgents": {
+      "class": "https://w3id.org/effortless-ntwf#HumanAgents",
+      "keyField": "HumanAgentId",
+      "fields": {
+        "HumanAgentId": "https://w3id.org/effortless-ntwf#humanAgentId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "Mbox": "https://w3id.org/effortless-ntwf#mbox",
+        "Roles": "https://w3id.org/effortless-ntwf#roles",
+        "RoleAssignments": "https://w3id.org/effortless-ntwf#roleAssignments"
+      }
+    },
+    "AIAgents": {
+      "class": "https://w3id.org/effortless-ntwf#AIAgents",
+      "keyField": "AIAgentId",
+      "fields": {
+        "AIAgentId": "https://w3id.org/effortless-ntwf#aIAgentId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "ModelVersion": "https://w3id.org/effortless-ntwf#modelVersion",
+        "DeployedOn": "https://w3id.org/effortless-ntwf#deployedOn",
+        "Roles": "https://w3id.org/effortless-ntwf#roles",
+        "RoleAssignments": "https://w3id.org/effortless-ntwf#roleAssignments",
+        "AttributedArtifacts": "https://w3id.org/effortless-ntwf#attributedArtifacts",
+        "CountAttributedArtifacts": "https://w3id.org/effortless-ntwf#countAttributedArtifacts",
+        "CountImpactedWorkflows": "https://w3id.org/effortless-ntwf#countImpactedWorkflows"
+      }
+    },
+    "AutomatedPipelines": {
+      "class": "https://w3id.org/effortless-ntwf#AutomatedPipelines",
+      "keyField": "AutomatedPipelineId",
+      "fields": {
+        "AutomatedPipelineId": "https://w3id.org/effortless-ntwf#automatedPipelineId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Description": "https://w3id.org/effortless-ntwf#description",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "Roles": "https://w3id.org/effortless-ntwf#roles",
+        "RoleAssignments": "https://w3id.org/effortless-ntwf#roleAssignments"
+      }
+    },
+    "WorkflowStatusConcepts": {
+      "class": "https://w3id.org/effortless-ntwf#WorkflowStatusConcepts",
+      "keyField": "ConceptId",
+      "fields": {
+        "ConceptId": "https://w3id.org/effortless-ntwf#conceptId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "PrefLabel": "https://w3id.org/effortless-ntwf#prefLabel",
+        "AltLabel": "https://w3id.org/effortless-ntwf#altLabel",
+        "Definition": "https://w3id.org/effortless-ntwf#definition",
+        "ScopeNote": "https://w3id.org/effortless-ntwf#scopeNote",
+        "Workflows": "https://w3id.org/effortless-ntwf#workflows"
+      }
+    },
+    "AgentCapabilityConcepts": {
+      "class": "https://w3id.org/effortless-ntwf#AgentCapabilityConcepts",
+      "keyField": "ConceptId",
+      "fields": {
+        "ConceptId": "https://w3id.org/effortless-ntwf#conceptId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "PrefLabel": "https://w3id.org/effortless-ntwf#prefLabel",
+        "AltLabel": "https://w3id.org/effortless-ntwf#altLabel",
+        "Definition": "https://w3id.org/effortless-ntwf#definition",
+        "ScopeNote": "https://w3id.org/effortless-ntwf#scopeNote",
+        "Roles": "https://w3id.org/effortless-ntwf#roles"
+      }
+    },
+    "ArtifactTypeConcepts": {
+      "class": "https://w3id.org/effortless-ntwf#ArtifactTypeConcepts",
+      "keyField": "ConceptId",
+      "fields": {
+        "ConceptId": "https://w3id.org/effortless-ntwf#conceptId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "PrefLabel": "https://w3id.org/effortless-ntwf#prefLabel",
+        "AltLabel": "https://w3id.org/effortless-ntwf#altLabel",
+        "Definition": "https://w3id.org/effortless-ntwf#definition",
+        "ScopeNote": "https://w3id.org/effortless-ntwf#scopeNote",
+        "WorkflowArtifacts": "https://w3id.org/effortless-ntwf#workflowArtifacts"
+      }
+    },
+    "Datasets": {
+      "class": "https://w3id.org/effortless-ntwf#Datasets",
+      "keyField": "DatasetId",
+      "fields": {
+        "DatasetId": "https://w3id.org/effortless-ntwf#datasetId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "Identifier": "https://w3id.org/effortless-ntwf#identifier",
+        "Modified": "https://w3id.org/effortless-ntwf#modified",
+        "DistributionUrl": "https://w3id.org/effortless-ntwf#distributionUrl",
+        "ConsumedBySteps": "https://w3id.org/effortless-ntwf#consumedBySteps",
+        "IsConsumed": "https://w3id.org/effortless-ntwf#isConsumed"
+      }
+    },
+    "WorkflowArtifacts": {
+      "class": "https://w3id.org/effortless-ntwf#WorkflowArtifacts",
+      "keyField": "ArtifactId",
+      "fields": {
+        "ArtifactId": "https://w3id.org/effortless-ntwf#artifactId",
+        "ParentPath": "https://w3id.org/effortless-ntwf#parentPath",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Title": "https://w3id.org/effortless-ntwf#title",
+        "Identifier": "https://w3id.org/effortless-ntwf#identifier",
+        "ArtifactType": "https://w3id.org/effortless-ntwf#artifactType",
+        "Created": "https://w3id.org/effortless-ntwf#created",
+        "ProducedByStep": "https://w3id.org/effortless-ntwf#producedByStep",
+        "RequiredBySteps": "https://w3id.org/effortless-ntwf#requiredBySteps",
+        "DerivedFromArtifact": "https://w3id.org/effortless-ntwf#derivedFromArtifact",
+        "AttributedToHumanAgent": "https://w3id.org/effortless-ntwf#attributedToHumanAgent",
+        "AttributedToAIAgent": "https://w3id.org/effortless-ntwf#attributedToAIAgent",
+        "AttributedToAutomatedPipeline": "https://w3id.org/effortless-ntwf#attributedToAutomatedPipeline",
+        "ProducingAgentType": "https://w3id.org/effortless-ntwf#producingAgentType",
+        "HasDerivationParent": "https://w3id.org/effortless-ntwf#hasDerivationParent",
+        "ProducedByWorkflow": "https://w3id.org/effortless-ntwf#producedByWorkflow",
+        "HasProducingWorkflow": "https://w3id.org/effortless-ntwf#hasProducingWorkflow",
+        "DerivationClosure": "https://w3id.org/effortless-ntwf#derivationClosure"
+      }
+    },
+    "GovernanceRoles": {
+      "class": "https://w3id.org/effortless-ntwf#GovernanceRoles",
+      "keyField": "GovernanceRoleId",
+      "fields": {
+        "GovernanceRoleId": "https://w3id.org/effortless-ntwf#governanceRoleId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "Kind": "https://w3id.org/effortless-ntwf#kind",
+        "Responsibilities": "https://w3id.org/effortless-ntwf#responsibilities",
+        "ApprovalScope": "https://w3id.org/effortless-ntwf#approvalScope",
+        "HeldBy": "https://w3id.org/effortless-ntwf#heldBy",
+        "CanApproveChanges": "https://w3id.org/effortless-ntwf#canApproveChanges",
+        "ApprovedChanges": "https://w3id.org/effortless-ntwf#approvedChanges"
+      }
+    },
+    "ChangeLog": {
+      "class": "https://w3id.org/effortless-ntwf#ChangeLog",
+      "keyField": "ChangeLogId",
+      "fields": {
+        "ChangeLogId": "https://w3id.org/effortless-ntwf#changeLogId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Version": "https://w3id.org/effortless-ntwf#version",
+        "ChangeDate": "https://w3id.org/effortless-ntwf#changeDate",
+        "ChangeKind": "https://w3id.org/effortless-ntwf#changeKind",
+        "MotivatingQuestion": "https://w3id.org/effortless-ntwf#motivatingQuestion",
+        "TermsAffected": "https://w3id.org/effortless-ntwf#termsAffected",
+        "Rationale": "https://w3id.org/effortless-ntwf#rationale",
+        "ApprovedBy": "https://w3id.org/effortless-ntwf#approvedBy",
+        "IsBreakingChange": "https://w3id.org/effortless-ntwf#isBreakingChange",
+        "IsBackwardCompatible": "https://w3id.org/effortless-ntwf#isBackwardCompatible"
+      }
+    },
+    "VocabularyReconciliations": {
+      "class": "https://w3id.org/effortless-ntwf#VocabularyReconciliations",
+      "keyField": "ReconciliationId",
+      "fields": {
+        "ReconciliationId": "https://w3id.org/effortless-ntwf#reconciliationId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "DeprecatedTerm": "https://w3id.org/effortless-ntwf#deprecatedTerm",
+        "ReplacementTerm": "https://w3id.org/effortless-ntwf#replacementTerm",
+        "ReconciliationRelation": "https://w3id.org/effortless-ntwf#reconciliationRelation",
+        "SourceStandard": "https://w3id.org/effortless-ntwf#sourceStandard",
+        "IntroducedInVersion": "https://w3id.org/effortless-ntwf#introducedInVersion",
+        "Rationale": "https://w3id.org/effortless-ntwf#rationale"
+      }
+    },
+    "Scenarios": {
+      "class": "https://w3id.org/effortless-ntwf#Scenarios",
+      "keyField": "ScenarioId",
+      "fields": {
+        "ScenarioId": "https://w3id.org/effortless-ntwf#scenarioId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Label": "https://w3id.org/effortless-ntwf#label",
+        "Icon": "https://w3id.org/effortless-ntwf#icon",
+        "Explanation": "https://w3id.org/effortless-ntwf#explanation",
+        "SortOrder": "https://w3id.org/effortless-ntwf#sortOrder",
+        "IsReset": "https://w3id.org/effortless-ntwf#isReset",
+        "Edits": "https://w3id.org/effortless-ntwf#edits"
+      }
+    },
+    "CompetencyQuestions": {
+      "class": "https://w3id.org/effortless-ntwf#CompetencyQuestions",
+      "keyField": "CompetencyQuestionId",
+      "fields": {
+        "CompetencyQuestionId": "https://w3id.org/effortless-ntwf#competencyQuestionId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Number": "https://w3id.org/effortless-ntwf#number",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "QuestionText": "https://w3id.org/effortless-ntwf#questionText",
+        "TargetTable": "https://w3id.org/effortless-ntwf#targetTable",
+        "TargetField": "https://w3id.org/effortless-ntwf#targetField",
+        "AnswerKind": "https://w3id.org/effortless-ntwf#answerKind",
+        "ExpectedAnswer": "https://w3id.org/effortless-ntwf#expectedAnswer",
+        "SatisfiedField": "https://w3id.org/effortless-ntwf#satisfiedField",
+        "Explanation": "https://w3id.org/effortless-ntwf#explanation",
+        "SortOrder": "https://w3id.org/effortless-ntwf#sortOrder",
+        "IsActive": "https://w3id.org/effortless-ntwf#isActive",
+        "SimulateScenario": "https://w3id.org/effortless-ntwf#simulateScenario"
+      }
+    },
+    "ScenarioCQEffects": {
+      "class": "https://w3id.org/effortless-ntwf#ScenarioCQEffects",
+      "keyField": "ScenarioCQEffectId",
+      "fields": {
+        "ScenarioCQEffectId": "https://w3id.org/effortless-ntwf#scenarioCQEffectId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "Scenario": "https://w3id.org/effortless-ntwf#scenario",
+        "CompetencyQuestion": "https://w3id.org/effortless-ntwf#competencyQuestion",
+        "EffectKind": "https://w3id.org/effortless-ntwf#effectKind",
+        "Note": "https://w3id.org/effortless-ntwf#note",
+        "SortOrder": "https://w3id.org/effortless-ntwf#sortOrder"
+      }
+    },
+    "ConformanceTests": {
+      "class": "https://w3id.org/effortless-ntwf#ConformanceTests",
+      "keyField": "ConformanceTestId",
+      "fields": {
+        "ConformanceTestId": "https://w3id.org/effortless-ntwf#conformanceTestId",
+        "RelativePath": "https://w3id.org/effortless-ntwf#relativePath",
+        "Iri": "https://w3id.org/effortless-ntwf#iri",
+        "Name": "https://w3id.org/effortless-ntwf#name",
+        "DisplayName": "https://w3id.org/effortless-ntwf#displayName",
+        "FeatureRef": "https://w3id.org/effortless-ntwf#featureRef",
+        "Section": "https://w3id.org/effortless-ntwf#section",
+        "TestKind": "https://w3id.org/effortless-ntwf#testKind",
+        "TargetRef": "https://w3id.org/effortless-ntwf#targetRef",
+        "Expect": "https://w3id.org/effortless-ntwf#expect",
+        "Explanation": "https://w3id.org/effortless-ntwf#explanation",
+        "SortOrder": "https://w3id.org/effortless-ntwf#sortOrder",
+        "IsEnabled": "https://w3id.org/effortless-ntwf#isEnabled"
+      }
+    }
+  }
+}

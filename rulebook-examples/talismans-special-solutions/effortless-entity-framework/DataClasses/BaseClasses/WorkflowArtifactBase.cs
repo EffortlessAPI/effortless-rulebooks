@@ -27,7 +27,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? RelativePath
         {
-            get => F.AsString(F.Memo(this, "RelativePath", () => F.Concat(F.TextOr(F.Of(this.ParentPath)), F.S("/artifacts/"), F.TextOr(F.Of(this.ArtifactId))))); set { }
+            get => F.AsString(F.Memo(this, "RelativePath", () => F.Concat(F.Text(F.Of(this.ParentPath)), F.S("/artifacts/"), F.Text(F.Of(this.ArtifactId))))); set { }
         }
 
         // Formula Iri (rulebook: =SUBSTITUTE({{RelativePath}}, "/", "-"))

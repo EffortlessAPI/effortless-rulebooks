@@ -27,7 +27,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? RelativePath
         {
-            get => F.AsString(F.Memo(this, "RelativePath", () => F.Concat(F.TextOr(F.Of(this.ParentPath)), F.S("/precedence/"), F.TextOr(F.Of(this.StepPrecedenceId))))); set { }
+            get => F.AsString(F.Memo(this, "RelativePath", () => F.Concat(F.Text(F.Of(this.ParentPath)), F.S("/precedence/"), F.Text(F.Of(this.StepPrecedenceId))))); set { }
         }
 
         // Formula Iri (rulebook: =SUBSTITUTE({{RelativePath}}, "/", "-"))
@@ -41,7 +41,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         [NotMapped]
         public string? Name
         {
-            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.TextOr(F.Of(this.FromStep)), F.S(" -> "), F.TextOr(F.Of(this.ToStep))))); set { }
+            get => F.AsString(F.Memo(this, "Name", () => F.Concat(F.Text(F.Of(this.FromStep)), F.S(" -> "), F.Text(F.Of(this.ToStep))))); set { }
         }
 
         public string? PrecedesStepClosure { get; set; }

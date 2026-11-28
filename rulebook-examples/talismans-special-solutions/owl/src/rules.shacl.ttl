@@ -56,12 +56,14 @@ effortless-ntwf:AIAgentsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:AIAgents .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg1) WHERE {
+                    $this a effortless-ntwf:AIAgents .
                     ?child a effortless-ntwf:WorkflowArtifacts .
                     ?child effortless-ntwf:attributedToAIAgent $this .
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg1, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -78,14 +80,16 @@ effortless-ntwf:AIAgentsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:AIAgents .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg2) WHERE {
+                    $this a effortless-ntwf:AIAgents .
                     ?child a effortless-ntwf:WorkflowArtifacts .
                     ?child effortless-ntwf:attributedToAIAgent $this .
                     OPTIONAL { ?child effortless-ntwf:hasProducingWorkflow ?c2 . }
                     FILTER(BOUND(?c2) && ?c2 = true)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg2, 0) AS ?_result)
             }
         """ ;
     ] .
@@ -1090,14 +1094,16 @@ effortless-ntwf:RolesShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Roles .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg3) WHERE {
+                    $this a effortless-ntwf:Roles .
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:assignedRole $this .
                     OPTIONAL { ?child effortless-ntwf:isApprovalGate ?c2 . }
                     FILTER(BOUND(?c2) && ?c2 = true)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg3, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -1640,11 +1646,13 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:WorkflowSteps .
-                {
-                    SELECT (COUNT(*) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(*) AS ?_agg4) WHERE {
+                    $this a effortless-ntwf:WorkflowSteps .
                         ?a effortless-ntwf:precedesStep+ $this .
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg4, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -1980,12 +1988,14 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg5) WHERE {
+                    $this a effortless-ntwf:Workflows .
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg5, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2020,14 +2030,16 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg6) WHERE {
+                    $this a effortless-ntwf:Workflows .
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     OPTIONAL { ?child effortless-ntwf:isExecutedByAI ?c2 . }
                     FILTER(BOUND(?c2) && ?c2 = true)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg6, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2044,14 +2056,16 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg7) WHERE {
+                    $this a effortless-ntwf:Workflows .
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     OPTIONAL { ?child effortless-ntwf:isExecutedByHuman ?c2 . }
                     FILTER(BOUND(?c2) && ?c2 = true)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg7, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2068,14 +2082,16 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg8) WHERE {
+                    $this a effortless-ntwf:Workflows .
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     OPTIONAL { ?child effortless-ntwf:requiresHumanApproval ?c2 . }
                     FILTER(BOUND(?c2) && ?c2 = true)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg8, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2092,14 +2108,16 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg9) WHERE {
+                    $this a effortless-ntwf:Workflows .
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     OPTIONAL { ?child effortless-ntwf:approvalConsistencyViolation ?c2 . }
                     FILTER(BOUND(?c2) && ?c2 = true)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg9, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2208,16 +2226,18 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg10) WHERE {
+                    $this a effortless-ntwf:Workflows .
                     ?child a effortless-ntwf:WorkflowArtifacts .
                     $this effortless-ntwf:workflowId ?p0 .
                     ?child effortless-ntwf:producedByWorkflow ?c0 .
                     OPTIONAL { ?child effortless-ntwf:hasDerivationParent ?c2 . }
                     FILTER(IF(isIRI(?p0), REPLACE(STR(?p0), "^.*[#/]", ""), STR(?p0)) != "" && IF(isIRI(?c0), REPLACE(STR(?c0), "^.*[#/]", ""), STR(?c0)) = IF(isIRI(?p0), REPLACE(STR(?p0), "^.*[#/]", ""), STR(?p0)))
                     FILTER(BOUND(?c2) && ?c2 = true)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg10, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2234,14 +2254,16 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg11) WHERE {
+                    $this a effortless-ntwf:Workflows .
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     OPTIONAL { ?child effortless-ntwf:isLegalOwned ?c2 . }
                     FILTER(BOUND(?c2) && ?c2 = true)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg11, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2258,14 +2280,16 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg12) WHERE {
+                    $this a effortless-ntwf:Workflows .
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     OPTIONAL { ?child effortless-ntwf:isEngineeringOwned ?c2 . }
                     FILTER(BOUND(?c2) && ?c2 = true)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg12, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2301,12 +2325,13 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(*) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(*) AS ?_agg13) WHERE {
                         ?a effortless-ntwf:precedesStep+ ?b .
                         FILTER(NOT EXISTS { ?e a effortless-ntwf:StepPrecedence ; effortless-ntwf:fromStep ?a ; effortless-ntwf:toStep ?b . })
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg13, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2323,12 +2348,13 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(*) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(*) AS ?_agg14) WHERE {
                         ?a effortless-ntwf:precedesStep+ ?b .
                         FILTER(EXISTS { ?e a effortless-ntwf:StepPrecedence ; effortless-ntwf:fromStep ?a ; effortless-ntwf:toStep ?b . })
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg14, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2364,13 +2390,14 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg15) WHERE {
                     ?child a effortless-ntwf:Roles .
                     OPTIONAL { ?child effortless-ntwf:hasExactlyOneFiller ?c0 . }
                     FILTER(BOUND(?c0) && ?c0 = false)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg15, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2387,13 +2414,14 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg16) WHERE {
                     ?child a effortless-ntwf:RoleAssignments .
                     OPTIONAL { ?child effortless-ntwf:isAgentTypeChange ?c0 . }
                     FILTER(BOUND(?c0) && ?c0 = true)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg16, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2410,13 +2438,14 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg17) WHERE {
                     ?child a effortless-ntwf:RoleAssignments .
                     OPTIONAL { ?child effortless-ntwf:requiresComplianceAudit ?c0 . }
                     FILTER(BOUND(?c0) && ?c0 = true)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg17, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2433,14 +2462,16 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg18) WHERE {
+                    $this a effortless-ntwf:Workflows .
                     ?child a effortless-ntwf:WorkflowSteps .
                     ?child effortless-ntwf:workflow $this .
                     OPTIONAL { ?child effortless-ntwf:isApprovalGate ?c2 . }
                     FILTER(BOUND(?c2) && ?c2 = true)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg18, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2457,13 +2488,14 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg19) WHERE {
                     ?child a effortless-ntwf:ApprovalGates .
                     OPTIONAL { ?child effortless-ntwf:hasHumanApprover ?c0 . }
                     FILTER(BOUND(?c0) && ?c0 = false)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg19, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2480,14 +2512,16 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg20) WHERE {
+                    $this a effortless-ntwf:Workflows .
                     ?child a effortless-ntwf:WorkflowArtifacts .
                     $this effortless-ntwf:workflowId ?p0 .
                     ?child effortless-ntwf:producedByWorkflow ?c0 .
                     FILTER(IF(isIRI(?p0), REPLACE(STR(?p0), "^.*[#/]", ""), STR(?p0)) != "" && IF(isIRI(?c0), REPLACE(STR(?c0), "^.*[#/]", ""), STR(?c0)) = IF(isIRI(?p0), REPLACE(STR(?p0), "^.*[#/]", ""), STR(?p0)))
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg20, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2504,13 +2538,14 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg21) WHERE {
                     ?child a effortless-ntwf:Roles .
                     OPTIONAL { ?child effortless-ntwf:escalationViolation ?c0 . }
                     FILTER(BOUND(?c0) && ?c0 = true)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg21, 0) AS ?_result)
             }
         """ ;
     ] ;
@@ -2527,13 +2562,14 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:Workflows .
-                {
-                    SELECT (COUNT(DISTINCT ?child) AS ?_result) WHERE {
+                OPTIONAL {
+                    SELECT $this (COUNT(DISTINCT ?child) AS ?_agg22) WHERE {
                     ?child a effortless-ntwf:Datasets .
                     OPTIONAL { ?child effortless-ntwf:isConsumed ?c0 . }
                     FILTER(BOUND(?c0) && ?c0 = false)
-                    }
+                    } GROUP BY $this
                 }
+                BIND(COALESCE(?_agg22, 0) AS ?_result)
             }
         """ ;
     ] ;

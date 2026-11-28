@@ -7,6 +7,12 @@
 
 package main
 
+// The ERB build parameters this SDK was generated under
+// (docs/ERB-BUILD-PARAMETERS.md). The runtime refuses to run unconfigured.
+var erbBuildParameters = map[string]string{"erbDateDiff": "calendar", "erbTimezone": "UTC", "erbDateTimeText": "iso8601", "erbBlankLogic": "coerce", "erbWholeNumber": "by-field-type"}
+
+func init() { erbConfigure(erbBuildParameters) }
+
 // =============================================================================
 // WORKFLOWS TABLE
 // Table: Workflows. The NTWF Workflow class — prov:Plan + schema:CreativeWork. Each workflow has Dublin Core metadata (title, description, identifier, created, modified), a lifecycle status from the SKOS scheme, and a collection of WorkflowSteps (ntwf:hasStep).
@@ -69,7 +75,7 @@ type Workflow struct {
 // Stable, DAG-derived location for this Workflow row. Root segment 'workflows' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
 // Formula: ="workflows/" & {{WorkflowId}}
 func (tc *Workflow) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("workflows/"), erbTextOr(vStrPlain(tc.WorkflowId))))
+	return toStringPtr(erbConcat(vS("workflows/"), erbText(vStrPlain(tc.WorkflowId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -517,7 +523,7 @@ type WorkflowStep struct {
 // Stable, DAG-derived location: this row nests under its Workflows parent. Concatenates the parent's path (ParentPath) with '/steps/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
 // Formula: ={{ParentPath}} & "/steps/" & {{WorkflowStepId}}
 func (tc *WorkflowStep) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(erbTextOr(vStr(tc.ParentPath)), vS("/steps/"), erbTextOr(vStrPlain(tc.WorkflowStepId))))
+	return toStringPtr(erbConcat(erbText(vStr(tc.ParentPath)), vS("/steps/"), erbText(vStrPlain(tc.WorkflowStepId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -835,7 +841,7 @@ type ApprovalGate struct {
 // Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/approval-gates/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
 // Formula: ={{ParentPath}} & "/approval-gates/" & {{ApprovalGateId}}
 func (tc *ApprovalGate) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(erbTextOr(vStr(tc.ParentPath)), vS("/approval-gates/"), erbTextOr(vStrPlain(tc.ApprovalGateId))))
+	return toStringPtr(erbConcat(erbText(vStr(tc.ParentPath)), vS("/approval-gates/"), erbText(vStrPlain(tc.ApprovalGateId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -994,7 +1000,7 @@ type StepPrecedence struct {
 // Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/precedence/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
 // Formula: ={{ParentPath}} & "/precedence/" & {{StepPrecedenceId}}
 func (tc *StepPrecedence) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(erbTextOr(vStr(tc.ParentPath)), vS("/precedence/"), erbTextOr(vStrPlain(tc.StepPrecedenceId))))
+	return toStringPtr(erbConcat(erbText(vStr(tc.ParentPath)), vS("/precedence/"), erbText(vStrPlain(tc.StepPrecedenceId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -1008,7 +1014,7 @@ func (tc *StepPrecedence) CalcIri() *string {
 // Human-readable edge label derived from its endpoints. Mirrors the FromStep -> ToStep direction.
 // Formula: ={{FromStep}} & " -> " & {{ToStep}}
 func (tc *StepPrecedence) CalcName() *string {
-	return toStringPtr(erbConcat(erbTextOr(vStrPlain(tc.FromStep)), vS(" -> "), erbTextOr(vStrPlain(tc.ToStep))))
+	return toStringPtr(erbConcat(erbText(vStrPlain(tc.FromStep)), vS(" -> "), erbText(vStrPlain(tc.ToStep))))
 }
 
 // erbComputeCalculations computes every calculated field of the row in dependency order.
@@ -1148,7 +1154,7 @@ type Role struct {
 // Stable, DAG-derived location for this Role row. Root segment 'roles' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
 // Formula: ="roles/" & {{RoleId}}
 func (tc *Role) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("roles/"), erbTextOr(vStrPlain(tc.RoleId))))
+	return toStringPtr(erbConcat(vS("roles/"), erbText(vStrPlain(tc.RoleId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -1385,7 +1391,7 @@ type RoleAssignment struct {
 // Stable, DAG-derived location: this assignment nests under its Role parent. Concatenates the parent's path (ParentPath) with '/assignments/' + this row's primary key. Unique by construction.
 // Formula: ={{ParentPath}} & "/assignments/" & {{RoleAssignmentId}}
 func (tc *RoleAssignment) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(erbTextOr(vStr(tc.ParentPath)), vS("/assignments/"), erbTextOr(vStrPlain(tc.RoleAssignmentId))))
+	return toStringPtr(erbConcat(erbText(vStr(tc.ParentPath)), vS("/assignments/"), erbText(vStrPlain(tc.RoleAssignmentId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -1399,7 +1405,7 @@ func (tc *RoleAssignment) CalcIri() *string {
 // Human-readable label for this assignment period: the role and the validity window.
 // Formula: ={{Role}} & " [" & {{ValidFrom}} & " -> " & IF(ISBLANK({{ValidTo}}), "open", {{ValidTo}}) & "]"
 func (tc *RoleAssignment) CalcName() *string {
-	return toStringPtr(erbConcat(erbTextOr(vStrPlain(tc.Role)), vS(" ["), erbTextOr(vStrPlain(tc.ValidFrom)), vS(" -> "), erbTextNotNull(erbIf(erbBool3(erbIsBlank(vStr(tc.ValidTo))), func() Value { return vS("open") }, func() Value { return vStr(tc.ValidTo) })), vS("]")))
+	return toStringPtr(erbConcat(erbText(vStrPlain(tc.Role)), vS(" ["), erbDatetimeText(vStrPlain(tc.ValidFrom)), vS(" -> "), erbText(erbIf(erbBool3(erbIsBlank(vStr(tc.ValidTo))), func() Value { return vS("open") }, func() Value { return vStr(tc.ValidTo) })), vS("]")))
 }
 
 // CalcFillerType computes the FillerType calculated field
@@ -1604,7 +1610,7 @@ type Department struct {
 // Stable, DAG-derived location for this Department row. Root segment 'departments' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
 // Formula: ="departments/" & {{DepartmentId}}
 func (tc *Department) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("departments/"), erbTextOr(vStrPlain(tc.DepartmentId))))
+	return toStringPtr(erbConcat(vS("departments/"), erbText(vStrPlain(tc.DepartmentId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -1740,7 +1746,7 @@ type HumanAgent struct {
 // Stable, DAG-derived location for this HumanAgent row. Root segment 'human-agents' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
 // Formula: ="human-agents/" & {{HumanAgentId}}
 func (tc *HumanAgent) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("human-agents/"), erbTextOr(vStrPlain(tc.HumanAgentId))))
+	return toStringPtr(erbConcat(vS("human-agents/"), erbText(vStrPlain(tc.HumanAgentId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -1877,7 +1883,7 @@ type AIAgent struct {
 // Stable, DAG-derived location for this AIAgent row. Root segment 'ai-agents' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
 // Formula: ="ai-agents/" & {{AIAgentId}}
 func (tc *AIAgent) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("ai-agents/"), erbTextOr(vStrPlain(tc.AIAgentId))))
+	return toStringPtr(erbConcat(vS("ai-agents/"), erbText(vStrPlain(tc.AIAgentId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -2029,7 +2035,7 @@ type AutomatedPipeline struct {
 // Stable, DAG-derived location for this AutomatedPipeline row. Root segment 'automated-pipelines' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
 // Formula: ="automated-pipelines/" & {{AutomatedPipelineId}}
 func (tc *AutomatedPipeline) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("automated-pipelines/"), erbTextOr(vStrPlain(tc.AutomatedPipelineId))))
+	return toStringPtr(erbConcat(vS("automated-pipelines/"), erbText(vStrPlain(tc.AutomatedPipelineId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -2161,7 +2167,7 @@ type WorkflowStatusConcept struct {
 // Stable, DAG-derived location for this WorkflowStatusConcept row. Root segment 'concepts/workflow-status' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
 // Formula: ="concepts/workflow-status/" & {{ConceptId}}
 func (tc *WorkflowStatusConcept) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("concepts/workflow-status/"), erbTextOr(vStrPlain(tc.ConceptId))))
+	return toStringPtr(erbConcat(vS("concepts/workflow-status/"), erbText(vStrPlain(tc.ConceptId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -2293,7 +2299,7 @@ type AgentCapabilityConcept struct {
 // Stable, DAG-derived location for this AgentCapabilityConcept row. Root segment 'concepts/agent-capability' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
 // Formula: ="concepts/agent-capability/" & {{ConceptId}}
 func (tc *AgentCapabilityConcept) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("concepts/agent-capability/"), erbTextOr(vStrPlain(tc.ConceptId))))
+	return toStringPtr(erbConcat(vS("concepts/agent-capability/"), erbText(vStrPlain(tc.ConceptId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -2425,7 +2431,7 @@ type ArtifactTypeConcept struct {
 // Stable, DAG-derived location for this concept row. Root segment 'concepts/artifact-type' + the row's primary key.
 // Formula: ="concepts/artifact-type/" & {{ConceptId}}
 func (tc *ArtifactTypeConcept) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("concepts/artifact-type/"), erbTextOr(vStrPlain(tc.ConceptId))))
+	return toStringPtr(erbConcat(vS("concepts/artifact-type/"), erbText(vStrPlain(tc.ConceptId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -2558,7 +2564,7 @@ type Dataset struct {
 // Stable, DAG-derived location for this Dataset row. Root segment 'datasets' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
 // Formula: ="datasets/" & {{DatasetId}}
 func (tc *Dataset) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("datasets/"), erbTextOr(vStrPlain(tc.DatasetId))))
+	return toStringPtr(erbConcat(vS("datasets/"), erbText(vStrPlain(tc.DatasetId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -2713,7 +2719,7 @@ type WorkflowArtifact struct {
 // Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/artifacts/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
 // Formula: ={{ParentPath}} & "/artifacts/" & {{ArtifactId}}
 func (tc *WorkflowArtifact) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(erbTextOr(vStr(tc.ParentPath)), vS("/artifacts/"), erbTextOr(vStrPlain(tc.ArtifactId))))
+	return toStringPtr(erbConcat(erbText(vStr(tc.ParentPath)), vS("/artifacts/"), erbText(vStrPlain(tc.ArtifactId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -2916,7 +2922,7 @@ type GovernanceRole struct {
 // Stable, DAG-derived location for this GovernanceRole row. Root segment 'governance-roles' + the row's primary key.
 // Formula: ="governance-roles/" & {{GovernanceRoleId}}
 func (tc *GovernanceRole) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("governance-roles/"), erbTextOr(vStrPlain(tc.GovernanceRoleId))))
+	return toStringPtr(erbConcat(vS("governance-roles/"), erbText(vStrPlain(tc.GovernanceRoleId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -3081,7 +3087,7 @@ type ChangeLog struct {
 // Stable, DAG-derived location for this ChangeLog row. Root segment 'change-log' + the row's primary key.
 // Formula: ="change-log/" & {{ChangeLogId}}
 func (tc *ChangeLog) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("change-log/"), erbTextOr(vStrPlain(tc.ChangeLogId))))
+	return toStringPtr(erbConcat(vS("change-log/"), erbText(vStrPlain(tc.ChangeLogId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -3095,7 +3101,7 @@ func (tc *ChangeLog) CalcIri() *string {
 // Human-readable label: the version and date of this change.
 // Formula: ={{Version}} & " (" & {{ChangeDate}} & ")"
 func (tc *ChangeLog) CalcName() *string {
-	return toStringPtr(erbConcat(erbTextOr(vStr(tc.Version)), vS(" ("), erbTextOr(vStr(tc.ChangeDate)), vS(")")))
+	return toStringPtr(erbConcat(erbText(vStr(tc.Version)), vS(" ("), erbDatetimeText(vStr(tc.ChangeDate)), vS(")")))
 }
 
 // CalcIsBreakingChange computes the IsBreakingChange calculated field
@@ -3259,7 +3265,7 @@ type VocabularyReconciliation struct {
 // Stable, DAG-derived location for this reconciliation row. Root segment 'reconciliations' + the row's primary key.
 // Formula: ="reconciliations/" & {{ReconciliationId}}
 func (tc *VocabularyReconciliation) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("reconciliations/"), erbTextOr(vStrPlain(tc.ReconciliationId))))
+	return toStringPtr(erbConcat(vS("reconciliations/"), erbText(vStrPlain(tc.ReconciliationId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -3273,7 +3279,7 @@ func (tc *VocabularyReconciliation) CalcIri() *string {
 // Human-readable label: the sameAs relation between the deprecated term and its NTWF replacement.
 // Formula: ={{DeprecatedTerm}} & " owl:sameAs " & {{ReplacementTerm}}
 func (tc *VocabularyReconciliation) CalcName() *string {
-	return toStringPtr(erbConcat(erbTextOr(vStr(tc.DeprecatedTerm)), vS(" owl:sameAs "), erbTextOr(vStr(tc.ReplacementTerm))))
+	return toStringPtr(erbConcat(erbText(vStr(tc.DeprecatedTerm)), vS(" owl:sameAs "), erbText(vStr(tc.ReplacementTerm))))
 }
 
 // erbComputeCalculations computes every calculated field of the row in dependency order.
@@ -3408,7 +3414,7 @@ type Scenario struct {
 // DAG-derived location for this Scenario row: root segment 'scenarios' + the primary key.
 // Formula: ="scenarios/" & {{ScenarioId}}
 func (tc *Scenario) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("scenarios/"), erbTextOr(vStrPlain(tc.ScenarioId))))
+	return toStringPtr(erbConcat(vS("scenarios/"), erbText(vStrPlain(tc.ScenarioId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -3564,7 +3570,7 @@ type CompetencyQuestion struct {
 // Stable, DAG-derived location for this CompetencyQuestion row. Root segment 'competency-questions' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution.
 // Formula: ="competency-questions/" & {{CompetencyQuestionId}}
 func (tc *CompetencyQuestion) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("competency-questions/"), erbTextOr(vStrPlain(tc.CompetencyQuestionId))))
+	return toStringPtr(erbConcat(vS("competency-questions/"), erbText(vStrPlain(tc.CompetencyQuestionId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -3737,7 +3743,7 @@ type ScenarioCQEffect struct {
 // DAG-derived location: 'scenario-cq-effects/' + the row's primary key.
 // Formula: ="scenario-cq-effects/" & {{ScenarioCQEffectId}}
 func (tc *ScenarioCQEffect) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("scenario-cq-effects/"), erbTextOr(vStrPlain(tc.ScenarioCQEffectId))))
+	return toStringPtr(erbConcat(vS("scenario-cq-effects/"), erbText(vStrPlain(tc.ScenarioCQEffectId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -3885,7 +3891,7 @@ type ConformanceTest struct {
 // DAG-derived location for this test row: root segment 'conformance-tests' + the primary key.
 // Formula: ="conformance-tests/" & {{ConformanceTestId}}
 func (tc *ConformanceTest) CalcRelativePath() *string {
-	return toStringPtr(erbConcat(vS("conformance-tests/"), erbTextOr(vStrPlain(tc.ConformanceTestId))))
+	return toStringPtr(erbConcat(vS("conformance-tests/"), erbText(vStrPlain(tc.ConformanceTestId))))
 }
 
 // CalcIri computes the Iri calculated field
@@ -4138,22 +4144,22 @@ var erbTables = []TableSpec{
 	{Name: "Workflows", File: "workflows", RulebookRows: 1, New: func() Record { return &Workflow{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "count_of_non_proposed_steps", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "field", Field: "workflow_id"}}},
-			{Field: "count_ai_steps", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "field", Field: "workflow_id"}, {Range: "is_executed_by_ai", Kind: "literal", Literal: vB(true)}}},
-			{Field: "count_human_steps", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "field", Field: "workflow_id"}, {Range: "is_executed_by_human", Kind: "literal", Literal: vB(true)}}},
-			{Field: "count_human_required_steps", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "field", Field: "workflow_id"}, {Range: "requires_human_approval", Kind: "literal", Literal: vB(true)}}},
-			{Field: "count_approval_consistency_violations", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "field", Field: "workflow_id"}, {Range: "approval_consistency_violation", Kind: "literal", Literal: vB(true)}}},
-			{Field: "count_derivation_links", Op: "COUNTIFS", Table: "workflow_artifacts", Criteria: []Criterion{{Range: "produced_by_workflow", Kind: "field", Field: "workflow_id"}, {Range: "has_derivation_parent", Kind: "literal", Literal: vB(true)}}},
-			{Field: "count_legal_owned_steps", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "field", Field: "workflow_id"}, {Range: "is_legal_owned", Kind: "literal", Literal: vB(true)}}},
-			{Field: "count_engineering_owned_steps", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "field", Field: "workflow_id"}, {Range: "is_engineering_owned", Kind: "literal", Literal: vB(true)}}},
+			{Field: "count_of_non_proposed_steps", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "raw_field", Field: "workflow_id"}}},
+			{Field: "count_ai_steps", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "raw_field", Field: "workflow_id"}, {Range: "is_executed_by_ai", Kind: "literal", Literal: vB(true)}}},
+			{Field: "count_human_steps", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "raw_field", Field: "workflow_id"}, {Range: "is_executed_by_human", Kind: "literal", Literal: vB(true)}}},
+			{Field: "count_human_required_steps", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "raw_field", Field: "workflow_id"}, {Range: "requires_human_approval", Kind: "literal", Literal: vB(true)}}},
+			{Field: "count_approval_consistency_violations", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "raw_field", Field: "workflow_id"}, {Range: "approval_consistency_violation", Kind: "literal", Literal: vB(true)}}},
+			{Field: "count_derivation_links", Op: "COUNTIFS", Table: "workflow_artifacts", Criteria: []Criterion{{Range: "produced_by_workflow", Kind: "raw_field", Field: "workflow_id"}, {Range: "has_derivation_parent", Kind: "literal", Literal: vB(true)}}},
+			{Field: "count_legal_owned_steps", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "raw_field", Field: "workflow_id"}, {Range: "is_legal_owned", Kind: "literal", Literal: vB(true)}}},
+			{Field: "count_engineering_owned_steps", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "raw_field", Field: "workflow_id"}, {Range: "is_engineering_owned", Kind: "literal", Literal: vB(true)}}},
 			{Field: "count_inferred_precedence_pairs", Op: "COUNTIFS", Table: "vw_step_precedence_closure", Criteria: []Criterion{{Range: "is_inferred", Kind: "literal", Literal: vB(true)}}},
 			{Field: "count_asserted_precedence_pairs", Op: "COUNTIFS", Table: "vw_step_precedence_closure", Criteria: []Criterion{{Range: "is_inferred", Kind: "literal", Literal: vB(false)}}},
 			{Field: "count_roles_with_bad_filler_cardinality", Op: "COUNTIFS", Table: "roles", Criteria: []Criterion{{Range: "has_exactly_one_filler", Kind: "literal", Literal: vB(false)}}},
 			{Field: "count_agent_type_changes", Op: "COUNTIFS", Table: "role_assignments", Criteria: []Criterion{{Range: "is_agent_type_change", Kind: "literal", Literal: vB(true)}}},
 			{Field: "count_compliance_audit_changes", Op: "COUNTIFS", Table: "role_assignments", Criteria: []Criterion{{Range: "requires_compliance_audit", Kind: "literal", Literal: vB(true)}}},
-			{Field: "count_approval_gate_steps", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "field", Field: "workflow_id"}, {Range: "is_approval_gate", Kind: "literal", Literal: vB(true)}}},
+			{Field: "count_approval_gate_steps", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "workflow", Kind: "raw_field", Field: "workflow_id"}, {Range: "is_approval_gate", Kind: "literal", Literal: vB(true)}}},
 			{Field: "count_gates_without_human_approver", Op: "COUNTIFS", Table: "approval_gates", Criteria: []Criterion{{Range: "has_human_approver", Kind: "literal", Literal: vB(false)}}},
-			{Field: "count_workflow_artifacts", Op: "COUNTIFS", Table: "workflow_artifacts", Criteria: []Criterion{{Range: "produced_by_workflow", Kind: "field", Field: "workflow_id"}}},
+			{Field: "count_workflow_artifacts", Op: "COUNTIFS", Table: "workflow_artifacts", Criteria: []Criterion{{Range: "produced_by_workflow", Kind: "raw_field", Field: "workflow_id"}}},
 			{Field: "count_roles_with_escalation_violation", Op: "COUNTIFS", Table: "roles", Criteria: []Criterion{{Range: "escalation_violation", Kind: "literal", Literal: vB(true)}}},
 			{Field: "count_unconsumed_datasets", Op: "COUNTIFS", Table: "datasets", Criteria: []Criterion{{Range: "is_consumed", Kind: "literal", Literal: vB(false)}}},}},
 	{Name: "WorkflowSteps", File: "workflow_steps", RulebookRows: 5, New: func() Record { return &WorkflowStep{} },
@@ -4164,7 +4170,7 @@ var erbTables = []TableSpec{
 			{Field: "executing_automated_pipeline", Target: "roles", Return: "filled_by_automated_pipeline", Key: "assigned_role", Match: "role_id"},
 			{Field: "owning_department", Target: "roles", Return: "owned_by", Key: "assigned_role", Match: "role_id"},},
 		Aggregations: []AggregateSpec{
-			{Field: "preceding_step_count", Op: "COUNTIFS", Table: "vw_step_precedence_closure", Criteria: []Criterion{{Range: "to_id", Kind: "field", Field: "workflow_step_id"}}},}},
+			{Field: "preceding_step_count", Op: "COUNTIFS", Table: "vw_step_precedence_closure", Criteria: []Criterion{{Range: "to_id", Kind: "raw_field", Field: "workflow_step_id"}}},}},
 	{Name: "ApprovalGates", File: "approval_gates", RulebookRows: 1, New: func() Record { return &ApprovalGate{} },
 		Lookups: []LookupSpec{
 			{Field: "parent_path", Target: "workflow_steps", Return: "relative_path", Key: "workflow_step", Match: "workflow_step_id"},
@@ -4178,7 +4184,7 @@ var erbTables = []TableSpec{
 	{Name: "Roles", File: "roles", RulebookRows: 7, New: func() Record { return &Role{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "fills_approval_gate", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "assigned_role", Kind: "field", Field: "role_id"}, {Range: "is_approval_gate", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "fills_approval_gate", Op: "COUNTIFS", Table: "workflow_steps", Criteria: []Criterion{{Range: "assigned_role", Kind: "raw_field", Field: "role_id"}, {Range: "is_approval_gate", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "RoleAssignments", File: "role_assignments", RulebookRows: 6, New: func() Record { return &RoleAssignment{} },
 		Lookups: []LookupSpec{
 			{Field: "parent_path", Target: "roles", Return: "relative_path", Key: "role", Match: "role_id"},},
@@ -4192,8 +4198,8 @@ var erbTables = []TableSpec{
 	{Name: "AIAgents", File: "ai_agents", RulebookRows: 2, New: func() Record { return &AIAgent{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{
-			{Field: "count_attributed_artifacts", Op: "COUNTIFS", Table: "workflow_artifacts", Criteria: []Criterion{{Range: "attributed_to_ai_agent", Kind: "field", Field: "ai_agent_id"}}},
-			{Field: "count_impacted_workflows", Op: "COUNTIFS", Table: "workflow_artifacts", Criteria: []Criterion{{Range: "attributed_to_ai_agent", Kind: "field", Field: "ai_agent_id"}, {Range: "has_producing_workflow", Kind: "literal", Literal: vB(true)}}},}},
+			{Field: "count_attributed_artifacts", Op: "COUNTIFS", Table: "workflow_artifacts", Criteria: []Criterion{{Range: "attributed_to_ai_agent", Kind: "raw_field", Field: "ai_agent_id"}}},
+			{Field: "count_impacted_workflows", Op: "COUNTIFS", Table: "workflow_artifacts", Criteria: []Criterion{{Range: "attributed_to_ai_agent", Kind: "raw_field", Field: "ai_agent_id"}, {Range: "has_producing_workflow", Kind: "literal", Literal: vB(true)}}},}},
 	{Name: "AutomatedPipelines", File: "automated_pipelines", RulebookRows: 1, New: func() Record { return &AutomatedPipeline{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
@@ -4235,14 +4241,14 @@ var erbTables = []TableSpec{
 	{Name: "ConformanceTests", File: "conformance_tests", RulebookRows: 72, New: func() Record { return &ConformanceTest{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
-	{Name: "__meta__", File: "__meta__", RulebookRows: 12, New: func() Record { return &__meta__{} },
+	{Name: "__meta__", File: "__meta__", RulebookRows: 14, New: func() Record { return &__meta__{} },
 		Lookups: []LookupSpec{},
 		Aggregations: []AggregateSpec{}},
 }
 
 // erbClosures materializes each vw_<entity>_closure view aggregations read.
 var erbClosures = []ClosureSpec{
-	{View: "vw_roles_closure", Source: "roles", From: "role_id", To: "delegates_to"},
-	{View: "vw_step_precedence_closure", Source: "step_precedence", From: "from_step", To: "to_step"},
-	{View: "vw_workflow_artifacts_closure", Source: "workflow_artifacts", From: "artifact_id", To: "derived_from_artifact"},
+	{View: "vw_roles_closure", Source: "roles", From: "role_id", To: "delegates_to", Filter: ""},
+	{View: "vw_step_precedence_closure", Source: "step_precedence", From: "from_step", To: "to_step", Filter: ""},
+	{View: "vw_workflow_artifacts_closure", Source: "workflow_artifacts", From: "artifact_id", To: "derived_from_artifact", Filter: ""},
 }

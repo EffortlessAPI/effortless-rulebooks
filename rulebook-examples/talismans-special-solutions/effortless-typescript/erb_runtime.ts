@@ -150,7 +150,9 @@ export function toJSON(v: Value): unknown {
     case KBool: return v.b;
     case KNum: return v.isInt ? Math.trunc(v.n) : v.n;
     case KStr: return v.s;
-    case KTime: return pyStr(v);
+    // A computed datetime is written per erbDateTimeText, as the reference
+    // implementation's erb_json_value writes it.
+    case KTime: return erbDatetimeText(v).s;
   }
   return null;
 }
@@ -430,6 +432,102 @@ export function erbSum(...args: Value[]): Value {
 
 export const erbPi = Math.PI;
 
+// ───────────────────────────── build parameters ─────────────────────────────
+//
+// The ERB build parameters (docs/ERB-BUILD-PARAMETERS.md) this SDK was
+// generated under. erb_sdk.ts calls erbConfigure() as it loads; every helper
+// below reads erbParam(), and nothing runs unconfigured. erb_runtime.py is the
+// reference; when a rule changes there, it changes here.
+
+const erbParameterValues: Record<string, string[]> = {
+  erbDateDiff: ["calendar", "elapsed"],
+  erbTimezone: ["UTC"], // or any IANA zone name
+  erbDateTimeText: ["iso8601", "sql"],
+  erbBlankLogic: ["coerce", "propagate"],
+  erbWholeNumber: ["by-field-type", "integer", "decimal"],
+};
+
+let erbParams: Record<string, string> | null = null;
+let erbZoneFormatter: Intl.DateTimeFormat | null = null;
+
+export function erbConfigure(params: Record<string, string>): void {
+  for (const name of Object.keys(params)) {
+    if (!(name in erbParameterValues)) fail(`erbConfigure: unknown ERB build parameter ${JSON.stringify(name)}`);
+  }
+  for (const [name, allowed] of Object.entries(erbParameterValues)) {
+    const value = params[name];
+    if (value === undefined) fail(`erbConfigure: missing ERB build parameter ${JSON.stringify(name)}`);
+    if (name !== "erbTimezone" && !allowed.includes(value)) {
+      fail(`erbConfigure: ${name}=${JSON.stringify(value)} is not one of ${JSON.stringify(allowed)}`);
+    }
+  }
+  if (params.erbWholeNumber !== "by-field-type") {
+    // A typed row field is typed by its declared datatype; there is no honest
+    // rendering of the other two values here.
+    fail(`erbConfigure: the TypeScript substrate honours erbWholeNumber=by-field-type only, not ${JSON.stringify(params.erbWholeNumber)}`);
+  }
+  const zone = params.erbTimezone;
+  if (zone === "UTC") {
+    erbZoneFormatter = null;
+  } else {
+    try {
+      erbZoneFormatter = new Intl.DateTimeFormat("en-US", {
+        timeZone: zone, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", second: "2-digit",
+      });
+    } catch (e) {
+      fail(`erbConfigure: erbTimezone=${JSON.stringify(zone)} cannot be resolved: ${(e as Error).message}`);
+    }
+  }
+  erbParams = { ...params };
+}
+
+function erbParam(name: string): string {
+  if (erbParams === null) fail("erb_runtime is not configured: erb_sdk.ts must call erbConfigure() before any formula runs");
+  return erbParams[name];
+}
+
+function coerceBlanks(): boolean { return erbParam("erbBlankLogic") === "coerce"; }
+
+/** The UTC offset, in seconds, erbTimezone has at the instant `instantSec`. */
+function zoneOffsetAt(instantSec: number): number {
+  erbParam("erbTimezone");
+  if (erbZoneFormatter === null) return 0;
+  const parts = erbZoneFormatter.formatToParts(new Date(instantSec * 1000));
+  const get = (type: string) => Number(parts.find((p) => p.type === type)?.value ?? "0");
+  const wall = Date.UTC(get("year"), get("month") - 1, get("day"), get("hour") % 24, get("minute"), get("second")) / 1000;
+  return Math.round(wall - instantSec);
+}
+
+/** The instant v names, expressed in erbTimezone (an ErbTime whose wall reading
+ *  and offset are the zone's). A value carrying no offset is taken to be in
+ *  erbTimezone. */
+function inZone(v: Value): ErbTime {
+  let t: ErbTime;
+  let zoned: boolean;
+  if (v.k === KTime) {
+    t = v.t as ErbTime;
+    zoned = v.zoned;
+  } else if (v.k === KStr) {
+    const parsed = parseISO(v.s.trim());
+    if (parsed) {
+      t = parsed.t;
+      zoned = parsed.hasZone;
+    } else {
+      const date = parseDateOnly(v.s.trim().slice(0, 10));
+      if (!date) return fail(`cannot read ${pyRepr(v)} as a datetime`);
+      t = date;
+      zoned = false;
+    }
+  } else {
+    return fail(`cannot read ${pyRepr(v)} as a datetime`);
+  }
+  // A naive reading is in erbTimezone: find the instant whose zone reading is t.
+  const instant = zoned ? t.sec - t.offset : t.sec - zoneOffsetAt(t.sec - zoneOffsetAt(t.sec));
+  const offset = zoneOffsetAt(instant);
+  return { sec: instant + offset, nsec: t.nsec, offset };
+}
+
 // ───────────────────────────── logic ─────────────────────────────
 
 export function erbBool3(v: Value): Value {
@@ -439,13 +537,16 @@ export function erbBool3(v: Value): Value {
 export function erbIsTrue(v: Value): Value { return vB(v.k === KBool && v.b); }
 export function erbHasValue(v: Value): Value { return vB(!isBlank(v)); }
 
+/** AND: under erbBlankLogic=coerce a blank operand is FALSE; under propagate
+ *  FALSE if any operand is FALSE, else NULL if any is NULL, else TRUE. */
 export function erbAnd(...values: Value[]): Value {
   let sawNull = false;
   for (const v of values) {
     if (v.k === KBool && !v.b) return FALSE;
     if (v.k === KNull) sawNull = true;
   }
-  return sawNull ? Null : TRUE;
+  if (sawNull) return coerceBlanks() ? FALSE : Null;
+  return TRUE;
 }
 
 export function erbOr(...values: Value[]): Value {
@@ -454,13 +555,31 @@ export function erbOr(...values: Value[]): Value {
     if (v.k === KBool && v.b) return TRUE;
     if (v.k === KNull) sawNull = true;
   }
-  return sawNull ? Null : FALSE;
+  if (sawNull) return coerceBlanks() ? FALSE : Null;
+  return FALSE;
 }
 
-export function erbNot(v: Value): Value { return v.k === KNull ? Null : vB(!truthy(v)); }
+/** NOT: coerce makes NOT(blank) TRUE; propagate keeps it NULL. */
+export function erbNot(v: Value): Value {
+  if (v.k === KNull) return coerceBlanks() ? TRUE : Null;
+  return vB(!truthy(v));
+}
 
 export function erbIf(cond: Value, then: () => Value, otherwise: () => Value): Value {
   return truthy(cond) ? then() : otherwise();
+}
+
+/** SWITCH(expr, pattern, result, ..., [default]): CASE WHEN (expr)::text =
+ *  (pattern)::text THEN result ... ELSE default END, as erb_runtime.py's
+ *  erb_switch. A NULL never matches; patterns and results are thunks, so only
+ *  the branch taken is computed. CASE x WHEN ... and CHOOSE arrive here too. */
+export function erbSwitch(subject: Value, pairs: Array<[() => Value, () => Value]>, otherwise: () => Value): Value {
+  const key = subject.k === KNull ? null : erbText(subject).s;
+  for (const [pattern, result] of pairs) {
+    const candidate = pattern();
+    if (key !== null && candidate.k !== KNull && erbText(candidate).s === key) return result();
+  }
+  return otherwise();
 }
 
 function isBlank(v: Value): boolean { return v.k === KNull || (v.k === KStr && v.s === ""); }
@@ -491,14 +610,35 @@ function pyEqual(a: Value, b: Value): boolean {
   return false;
 }
 
+/** Under coerce a blank compared against `other` takes the other side's zero:
+ *  FALSE against a boolean, 0 against a number, "" otherwise. */
+function blankAsZeroOf(other: Value): Value {
+  if (other.k === KBool) return FALSE;
+  if (toNumber(other) !== null) return vI(0);
+  return EMPTY;
+}
+
+/** Resolves blank operands per erbBlankLogic: the pair to compare, or null when
+ *  the blank must propagate as NULL. */
+function coercedPair(a: Value, b: Value): [Value, Value] | null {
+  if (a.k === KNull && b.k === KNull) return coerceBlanks() ? [EMPTY, EMPTY] : null;
+  if (a.k === KNull || b.k === KNull) {
+    if (!coerceBlanks()) return null;
+    return a.k === KNull ? [blankAsZeroOf(b), b] : [a, blankAsZeroOf(a)];
+  }
+  return [a, b];
+}
+
 export function erbEq(a: Value, b: Value): Value {
-  if (a.k === KNull || b.k === KNull) return Null;
-  return vB(pyEqual(a, b));
+  const pair = coercedPair(a, b);
+  if (pair === null) return Null;
+  return vB(pyEqual(pair[0], pair[1]));
 }
 
 export function erbNe(a: Value, b: Value): Value {
-  if (a.k === KNull || b.k === KNull) return Null;
-  return vB(!pyEqual(a, b));
+  const pair = coercedPair(a, b);
+  if (pair === null) return Null;
+  return vB(!pyEqual(pair[0], pair[1]));
 }
 
 function compareStrings(a: string, b: string): number {
@@ -509,7 +649,9 @@ function compareStrings(a: string, b: string): number {
  *  strings, two booleans as booleans; NULL makes it NULL and anything else cannot
  *  be ordered and is FALSE. */
 export function erbCmp(a: Value, op: string, b: Value): Value {
-  if (a.k === KNull || b.k === KNull) return Null;
+  const pair = coercedPair(a, b);
+  if (pair === null) return Null;
+  [a, b] = pair;
   let c: number;
   const an = toNumber(a);
   const bn = toNumber(b);
@@ -703,32 +845,29 @@ function dateOrNone(v: Value): ErbTime | null {
   return parseDateOnly(s.slice(0, 10));
 }
 
-function coerceDatetime(v: Value): ErbTime {
-  if (v.k === KTime) return wallClock(v.t as ErbTime);
-  if (v.k === KStr) {
-    const parsed = parseISO(v.s);
-    if (parsed) return wallClock(parsed.t);
-    const date = parseDateOnly(v.s);
-    if (date) return date;
-  }
-  return fail(`DATETIME_DIFF: cannot coerce ${pyRepr(v)} to datetime`);
-}
-
+/** Whole calendar days since the epoch of t's wall reading (t is in erbTimezone). */
 function calendarDays(t: ErbTime): number { return Math.floor(t.sec / 86400); }
 
+/** DATETIME_DIFF(end, start, unit) per erbDateDiff: hour, minute and second are
+ *  exact elapsed (possibly fractional) in both modes; month and year are whole
+ *  calendar months (AGE()) in both. calendar: day is calendar dates in
+ *  erbTimezone subtracted, week is day/7 truncated. elapsed: day is
+ *  seconds/86400 truncated, week seconds/604800 truncated. */
 export function erbDatetimeDiff(end: Value, start: Value, unitValue: Value): Value {
   let unit = "day";
   if (truthy(unitValue)) unit = pyStr(unitValue).toLowerCase().replace(/s+$/, "");
-  if (end.k === KNull || start.k === KNull) return Null;
-  const e = coerceDatetime(end);
-  const s = coerceDatetime(start);
+  if (isBlank(end) || isBlank(start)) return Null;
+  const e = inZone(end);
+  const s = inZone(start);
   const seconds = secondsBetween(e, s);
+  const calendar = erbParam("erbDateDiff") === "calendar";
+  const days = () => calendarDays(e) - calendarDays(s);
   switch (unit) {
-    case "day": return vI(calendarDays(e) - calendarDays(s));
     case "hour": return vF(seconds / 3600);
     case "minute": return vF(seconds / 60);
     case "second": return vF(seconds);
-    case "week": return vI(Math.floor(Math.floor(seconds / 3600 / 24) / 7));
+    case "day": return vI(calendar ? days() : Math.trunc(seconds / 86400));
+    case "week": return vI(calendar ? Math.trunc(days() / 7) : Math.trunc(seconds / 604800));
     case "month":
     case "year": {
       const ed = new Date(e.sec * 1000);
@@ -742,51 +881,166 @@ export function erbDatetimeDiff(end: Value, start: Value, unitValue: Value): Val
           break;
         }
       }
-      return vI(unit === "month" ? months : Math.floor(months / 12));
+      return vI(unit === "month" ? months : Math.trunc(months / 12));
     }
   }
   return fail(`DATETIME_DIFF: unsupported unit ${JSON.stringify(unit)}`);
 }
 
+/** NOW()/TODAY(), an instant in erbTimezone. FORMULA_NOW pins it. */
 export function erbNow(): Value {
   const override = process.env.FORMULA_NOW;
   if (override) {
-    const parsed = parseISO(override);
-    if (!parsed) fail(`FORMULA_NOW ${JSON.stringify(override)} is not an ISO-8601 datetime`);
-    return parsed.hasZone ? vTZ(parsed.t) : vT(parsed.t);
+    if (!parseISO(override)) fail(`FORMULA_NOW ${JSON.stringify(override)} is not an ISO-8601 datetime`);
+    return vTZ(inZone(vS(override)));
   }
   const ms = Date.now();
-  return vT({ sec: Math.floor(ms / 1000), nsec: (ms % 1000) * 1e6, offset: 0 });
+  const instant = Math.floor(ms / 1000);
+  const offset = zoneOffsetAt(instant);
+  return vTZ({ sec: instant + offset, nsec: (ms % 1000) * 1e6, offset });
 }
 
-/** Renders a datetime the way the oracle's CONCAT renders a timestamptz:
- *  `2026-01-01 00:00:00-06`. */
-export function erbTimestamptzText(v: Value): Value {
+const DATE_ONLY_TEXT = /^\d{4}-\d{2}-\d{2}$/;
+
+/** A datetime rendered into text per erbDateTimeText, in erbTimezone:
+ *  iso8601 = 2026-04-03T14:00:00+00:00, sql = 2026-04-03 14:00:00+00. A
+ *  date-only value renders as YYYY-MM-DD; a blank as "". */
+export function erbDatetimeText(v: Value): Value {
   if (isBlank(v)) return EMPTY;
-  let t: ErbTime;
-  if (v.k === KTime) {
-    t = v.t as ErbTime;
-    if (!v.zoned) {
-      fail(`datetime ${pyStr(v)} carries no UTC offset, so its timestamptz text depends on the database session's time zone and cannot be rendered`);
-    }
-  } else if (v.k === KStr) {
-    const parsed = parseISO(v.s);
-    if (!parsed) fail(`invalid isoformat string: ${JSON.stringify(v.s)}`);
-    if (!parsed.hasZone) {
-      fail(`datetime ${JSON.stringify(v.s)} carries no UTC offset, so its timestamptz text depends on the database session's time zone and cannot be rendered`);
-    }
-    t = parsed.t;
-  } else {
-    return fail(`cannot render ${pyRepr(v)} as a timestamptz`);
-  }
+  if (v.k === KStr && DATE_ONLY_TEXT.test(v.s.trim())) return vS(v.s.trim());
+  if (v.k !== KTime && v.k !== KStr) return fail(`cannot render ${pyRepr(v)} as a datetime`);
+  const t = inZone(v);
+  const iso = erbParam("erbDateTimeText") === "iso8601";
   let s = wallText(t);
+  if (iso) s = s.replace(" ", "T");
   if (t.nsec !== 0) s += "." + pad(Math.trunc(t.nsec / 1000), 6).replace(/0+$/, "");
   const sign = t.offset < 0 ? "-" : "+";
   const off = Math.abs(t.offset);
-  s += `${sign}${pad(Math.trunc(off / 3600), 2)}`;
   const minutes = Math.trunc((off % 3600) / 60);
-  if (minutes !== 0) s += `:${pad(minutes, 2)}`;
+  if (iso) {
+    s += `${sign}${pad(Math.trunc(off / 3600), 2)}:${pad(minutes, 2)}`;
+  } else {
+    s += `${sign}${pad(Math.trunc(off / 3600), 2)}`;
+    if (minutes !== 0) s += `:${pad(minutes, 2)}`;
+  }
   return vS(s);
+}
+
+/** A non-datetime CONCAT / `&` operand as text: a blank contributes nothing, a
+ *  number renders in its shortest exact form with no trailing .0, a boolean as
+ *  true/false, a datetime per erbDateTimeText. */
+export function erbText(v: Value): Value {
+  switch (v.k) {
+    case KNull: return EMPTY;
+    case KBool: return vS(v.b ? "true" : "false");
+    case KNum:
+      if (v.isInt || (Number.isFinite(v.n) && v.n === Math.trunc(v.n) && Math.abs(v.n) < 1e15)) return vS(String(Math.trunc(v.n)));
+      return vS(pyFloatRepr(v.n));
+    case KTime: return erbDatetimeText(v);
+  }
+  return vS(v.s);
+}
+
+// ───────────────────── TEXT(value, format) — docs/ERB-TEXT-FUNCTION.md ─────────────────────
+//
+// The generator checked the format and passes it parsed: a date format as
+// [isToken, text] parts, a number format as decimals / grouped / percent.
+// erb_text_date / erb_text_number in erb_runtime.py are the reference.
+
+/** One part of a TEXT() date format: a token (yyyy yy MM M dd d HH H mm m ss,
+ *  MM/M = month, mm/m = minutes) or literal text copied as is. */
+export type ErbTextPart = [boolean, string];
+
+const TEXT_ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const TEXT_ISO_DATETIME =
+  /^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)?$/;
+const TEXT_PLAIN_NUMBER = /^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$/;
+
+const TEXT_DATE_TOKENS: Record<string, (d: Date) => string> = {
+  yyyy: (d) => pad(d.getUTCFullYear(), 4),
+  yy: (d) => pad(d.getUTCFullYear() % 100, 2),
+  MM: (d) => pad(d.getUTCMonth() + 1, 2),
+  M: (d) => String(d.getUTCMonth() + 1),
+  dd: (d) => pad(d.getUTCDate(), 2),
+  d: (d) => String(d.getUTCDate()),
+  HH: (d) => pad(d.getUTCHours(), 2),
+  H: (d) => String(d.getUTCHours()),
+  mm: (d) => pad(d.getUTCMinutes(), 2),
+  m: (d) => String(d.getUTCMinutes()),
+  ss: (d) => pad(d.getUTCSeconds(), 2),
+};
+
+/** TEXT(value, date format). A datetime (or ISO text) is formatted in
+ *  erbTimezone, ISO date text as that calendar date; a number or boolean comes
+ *  back as `&` renders it; other text unchanged; blank is NULL. */
+export function erbTextDate(v: Value, parts: ErbTextPart[]): Value {
+  if (v.k === KNull) return Null;
+  if (v.k === KBool || v.k === KNum) return erbText(v);
+  let t: ErbTime;
+  if (v.k === KTime) {
+    t = inZone(v);
+  } else {
+    const text = v.s.trim();
+    if (TEXT_ISO_DATE.test(text)) {
+      const date = parseDateOnly(text);
+      if (!date) return fail(`TEXT: ${pyRepr(v)} is not a calendar date`);
+      t = date;
+    } else if (TEXT_ISO_DATETIME.test(text)) {
+      t = inZone(vS(text.replace(/z$/, "Z")));
+    } else {
+      return v;
+    }
+  }
+  const d = new Date(t.sec * 1000);
+  return vS(parts.map(([isToken, s]) => (isToken ? TEXT_DATE_TOKENS[s](d) : s)).join(""));
+}
+
+/** TEXT(value, number format): round half away from zero on the exact decimal
+ *  value (a number's shortest round-trip digits, never binary rounding),
+ *  optional ',' groups and percent. A rounded zero has no sign. A value that is
+ *  not a number or plain numeric text comes back as `&` renders it. */
+export function erbTextNumber(v: Value, decimals: number, grouped: boolean, percent: boolean): Value {
+  if (v.k === KNull) return Null;
+  let text: string;
+  if (v.k === KNum) {
+    if (!Number.isFinite(v.n)) return erbText(v);
+    text = fixedShortest(v.n);
+  } else if (v.k === KStr && TEXT_PLAIN_NUMBER.test(v.s)) {
+    text = v.s.trim();
+  } else if (v.k === KStr) {
+    return v;
+  } else {
+    return erbText(v);
+  }
+  let negative = false;
+  if (text[0] === "+" || text[0] === "-") {
+    negative = text[0] === "-";
+    text = text.slice(1);
+  }
+  let [whole, frac = ""] = text.split(".");
+  if (percent) {
+    frac = frac.padEnd(2, "0");
+    whole += frac.slice(0, 2);
+    frac = frac.slice(2);
+  }
+  frac = frac.padEnd(decimals + 1, "0");
+  const digits = (whole + frac.slice(0, decimals)).split("");
+  if (frac[decimals] >= "5") {
+    let i = digits.length - 1;
+    for (; i >= 0; i--) {
+      if (digits[i] === "9") { digits[i] = "0"; continue; }
+      digits[i] = String(Number(digits[i]) + 1);
+      break;
+    }
+    if (i < 0) digits.unshift("1");
+  }
+  const all = digits.join("");
+  let intPart = all.slice(0, all.length - decimals).replace(/^0+/, "") || "0";
+  const fracPart = all.slice(all.length - decimals);
+  if (!/[^0]/.test(all)) negative = false;
+  if (grouped) intPart = intPart.replace(/\B(?=(\d{3})+$)/g, ",");
+  const out = (negative ? "-" : "") + intPart + (decimals > 0 ? "." + fracPart : "");
+  return vS(percent ? out + "%" : out);
 }
 
 // ───────────────────────────── transitive closure ─────────────────────────────
@@ -903,12 +1157,15 @@ export interface AggregateSpec {
   error?: string;
 }
 
-/** Materializes vw_<entity>_closure. */
+/** Materializes vw_<entity>_closure. `filter`, when set, names the edge table
+ *  field an edge must hold TRUE in to take part (the closure field's
+ *  EdgeFilterColumn); the view is then vw_<entity>_closure_where_<filter>. */
 export interface ClosureSpec {
   view: string;
   source: string;
   from: string;
   to: string;
+  filter: string | null;
 }
 
 export interface TableSpec {
@@ -917,6 +1174,11 @@ export interface TableSpec {
   /** Rows the rulebook itself holds for this table. */
   rulebookRows: number;
   fields: Record<string, FieldType>;
+  /** Each field's name in the rulebook, by its snake_case name in `fields`. */
+  columns: Record<string, string>;
+  /** The stored (raw and relationship) fields, by snake_case name: what a caller
+   *  hands evaluate(). Everything else is computed. */
+  stored: string[];
   compute: (row: any) => void;
   lookups: LookupSpec[];
   aggregations: AggregateSpec[];
@@ -959,7 +1221,12 @@ export function loadRows(file: string, spec: { fields: Record<string, FieldType>
     return fail(`reading ${file}: ${errorText(e)}`);
   }
   if (!Array.isArray(raw)) fail(`${file} does not hold a JSON array of rows`);
-  return raw.map((m: Record<string, unknown>) => {
+  return rowsFrom(raw, spec);
+}
+
+/** Typed rows from plain objects, keeping only the table's own fields. */
+function rowsFrom(raw: Array<Record<string, unknown>>, spec: { fields: Record<string, FieldType> }): Row[] {
+  return raw.map((m) => {
     const row = newRow(spec);
     for (const [key, value] of Object.entries(m)) {
       const type = spec.fields[key];
@@ -1086,16 +1353,59 @@ class Dataset {
 
   // ───────────── aggregations ─────────────
 
-  aggregateValue(agg: AggregateSpec, owner: TableSpec, record: Row): Value {
-    if (agg.op === "COMPOSITE") {
-      const aggregates: Record<string, Value> = {};
-      for (const part of agg.parts ?? []) aggregates[part.field] = this.aggregateValue(part, owner, record);
-      return (agg.scalar as NonNullable<AggregateSpec["scalar"]>)(record, aggregates);
-    }
+  /**
+   * The rows of the aggregated table that match a record, for one
+   * computeAggregation call. The literal and operator criteria do not depend on
+   * the record, so they are applied once; the field criteria (Child!{{Fk}} =
+   * Parent!{{Id}}) become an index keyed by the cells' values, so each record
+   * finds its rows directly instead of scanning the table. Rows keep their table
+   * order (MIN/MAX keep the first of equal extremes).
+   *
+   * The index is built from the table's values when the call starts. When the
+   * aggregation reads the very field it is writing on its own table, each record
+   * must see the records before it already written, so that case scans.
+   */
+  matcher(agg: AggregateSpec, owner: TableSpec, written: string): (record: Row) => Row[] {
     const table = this.tableRows(agg.table as string);
     const ownerGet = this.accessor(owner);
     const criteria = agg.criteria ?? [];
-    const matching = table.rows.filter(row => criteria.every(c => criterionMatches(c, table.get(row, c.range), () => ownerGet(record, c.field as string))));
+    const keyed = criteria.filter(c => c.kind === "field");
+    const fixed = criteria.filter(c => c.kind !== "field");
+    const selfReading = agg.table === owner.file && (agg.target === written || criteria.some(c => c.range === written));
+    if (selfReading) {
+      return (record) => table.rows.filter(row => criteria.every(c => criterionMatches(c, table.get(row, c.range), () => ownerGet(record, c.field as string))));
+    }
+    const noRecordField = () => fail("a literal criterion read the record");
+    const candidates = table.rows.filter(row => fixed.every(c => criterionMatches(c, table.get(row, c.range), noRecordField)));
+    if (keyed.length === 0) return () => candidates;
+    const index = new Map<string, Row[]>();
+    for (const row of candidates) {
+      const key = criteriaKey(keyed.map(c => table.get(row, c.range)));
+      if (key === null) continue;
+      const bucket = index.get(key);
+      if (bucket) bucket.push(row);
+      else index.set(key, [row]);
+    }
+    return (record) => {
+      if (index.size === 0) return [];
+      const key = criteriaKey(keyed.map(c => ownerGet(record, c.field as string)));
+      return key === null ? [] : index.get(key) ?? [];
+    };
+  }
+
+  aggregateValue(agg: AggregateSpec, owner: TableSpec, record: Row, matchers: Map<AggregateSpec, (record: Row) => Row[]>, written: string): Value {
+    if (agg.op === "COMPOSITE") {
+      const aggregates: Record<string, Value> = {};
+      for (const part of agg.parts ?? []) aggregates[part.field] = this.aggregateValue(part, owner, record, matchers, written);
+      return (agg.scalar as NonNullable<AggregateSpec["scalar"]>)(record, aggregates);
+    }
+    let match = matchers.get(agg);
+    if (!match) {
+      match = this.matcher(agg, owner, written);
+      matchers.set(agg, match);
+    }
+    const table = this.tableRows(agg.table as string);
+    const matching = match(record);
     switch (agg.op) {
       case "COUNTIFS":
       case "COUNT":
@@ -1139,6 +1449,7 @@ class Dataset {
   }
 
   computeAggregation(agg: AggregateSpec, owner: TableSpec, rows: Row[]): void {
+    const matchers = new Map<AggregateSpec, (record: Row) => Row[]>();
     for (const r of rows) {
       if (agg.error) {
         this.set(owner, r, agg.field, Null);
@@ -1146,7 +1457,7 @@ class Dataset {
         continue;
       }
       try {
-        this.set(owner, r, agg.field, this.aggregateValue(agg, owner, r));
+        this.set(owner, r, agg.field, this.aggregateValue(agg, owner, r, matchers, agg.field));
       } catch (e) {
         this.set(owner, r, agg.field, Null);
         erbErrors(r)[agg.field] = errorText(e);
@@ -1169,6 +1480,34 @@ function lookupKey(v: Value): string {
 }
 
 function blankAsEmpty(v: Value): Value { return v.k === KNull ? EMPTY : v; }
+
+/** A key two values share exactly when pyEqual holds between them, or null for
+ *  a value pyEqual finds equal to nothing (NaN, or a kind it does not compare). */
+function equalityKey(v: Value): string | null {
+  const n = numericLike(v);
+  if (n !== null) return Number.isNaN(n) ? null : "n:" + String(n);
+  switch (v.k) {
+    case KNull: return "z";
+    case KStr: return "s:" + v.s;
+    case KTime: {
+      const t = v.t as ErbTime;
+      return `t:${t.sec - t.offset}:${t.nsec}`;
+    }
+  }
+  return null;
+}
+
+/** The index key of a row's (or a record's) values for a field criteria list:
+ *  equal exactly when every "field" criterion's blank-as-empty pyEqual holds. */
+function criteriaKey(values: Value[]): string | null {
+  const keys: string[] = [];
+  for (const v of values) {
+    const key = equalityKey(blankAsEmpty(v));
+    if (key === null) return null;
+    keys.push(key);
+  }
+  return JSON.stringify(keys);
+}
 
 function criterionMatches(c: Criterion, cell: Value, recordField: () => Value): boolean {
   switch (c.kind) {
@@ -1212,6 +1551,8 @@ function materializeClosure(d: Dataset, spec: ClosureSpec): TableRows {
   const source = d.tableRows(spec.source);
   const edges: Array<[string, string]> = [];
   for (const r of source.rows) {
+    // Only boolean TRUE admits an edge; NULL, FALSE and non-booleans exclude it.
+    if (spec.filter !== null && source.get(r, spec.filter) !== TRUE) continue;
     const from = source.get(r, spec.from);
     const to = source.get(r, spec.to);
     if (isBlank(from) || isBlank(to)) continue;
@@ -1230,10 +1571,22 @@ function fatal(message: string): never {
   process.exit(1);
 }
 
+/** What erbCompute computed: each loaded table's rows (keyed by its `file`),
+ *  every field in schema order under its snake_case name, a field that could not
+ *  be computed null and named in that row's `_erb_errors`. */
+export interface ErbComputed {
+  tables: Map<string, Record<string, unknown>[]>;
+  closurePairs: Map<string, number>;
+  passes: number;
+}
+
 /**
- * Loads every table's blank test rows, computes lookups, aggregations and
- * calculations across the whole dataset until nothing changes, and writes each
- * table's answers.
+ * Computes lookups, aggregations and calculations across the whole dataset until
+ * nothing changes. `input` holds each table's stored rows under its `file` name,
+ * as plain objects keyed by snake_case field name. A table absent from `input`
+ * reads as empty when the rulebook declares it empty, and is otherwise left
+ * unloaded, so anything that reads it fails naming the gap. Throws ErbError;
+ * never exits the process.
  *
  * Tables depend on each other in both directions — one table's lookup reads
  * another's aggregation, which counts rows of the first — so no table order
@@ -1241,37 +1594,31 @@ function fatal(message: string): never {
  * is the number of computed fields, which a dependency chain cannot exceed
  * without a cycle.
  */
-export function erbRun(specs: TableSpec[], closures: ClosureSpec[], calculatedFieldCount: number): void {
-  const testing = process.env.ERB_TESTING_DIR;
-  if (!testing) fatal("ERB_TESTING_DIR is not set; point it at the domain's testing/ directory.");
-  const substrate = process.env.ERB_SUBSTRATE_NAME;
-  if (!substrate) fatal("ERB_SUBSTRATE_NAME is not set; the harness must name the substrate whose answers these are.");
-  const blankDir = path.join(testing, "blank-tests");
-  const answersDir = path.join(testing, substrate, "test-answers");
-  fs.mkdirSync(answersDir, { recursive: true });
-
+export function erbCompute(specs: TableSpec[], closures: ClosureSpec[], calculatedFieldCount: number, input: Map<string, Array<Record<string, unknown>>>): ErbComputed {
   const d = new Dataset(specs);
+  for (const file of input.keys()) {
+    if (!d.byFile.has(file)) fail(`no table ${JSON.stringify(file)} in this SDK`);
+  }
   let computed = 0;
-  const graded: string[] = [];
+  const loaded: string[] = [];
   for (const spec of specs) {
-    const file = path.join(blankDir, `${spec.file}.json`);
-    if (!fs.existsSync(file)) {
-      // No fixture: a table the rulebook declares empty has no rows to test, and
-      // reads as empty. One the rulebook holds rows for stays unloaded, so
-      // anything that reads it fails naming the gap.
+    const raw = input.get(spec.file);
+    if (raw === undefined) {
       if (spec.rulebookRows === 0) d.rows.set(spec.file, []);
       continue;
     }
-    d.rows.set(spec.file, loadRows(file, spec));
-    graded.push(spec.file);
+    if (!Array.isArray(raw)) fail(`${spec.name}: the rows are not an array`);
+    d.rows.set(spec.file, rowsFrom(raw, spec));
+    loaded.push(spec.file);
     computed += spec.lookups.length + spec.aggregations.length;
   }
-  if (graded.length === 0) fatal(`no blank tests for any table under ${blankDir}`);
+  if (loaded.length === 0) fail("no rows for any table");
+  const closurePairs = new Map<string, number>();
   for (const c of closures) {
-    if (!d.rows.has(c.source)) fatal(`closure ${c.view} needs ${c.source}.json in ${blankDir}`);
+    if (!d.rows.has(c.source)) fail(`closure ${c.view} needs the ${c.source} rows`);
     const closure = materializeClosure(d, c);
     d.closures.set(c.view, closure);
-    console.log(`  -> ${c.view}: ${closure.rows.length} pairs`);
+    closurePairs.set(c.view, closure.rows.length);
   }
 
   const maxPasses = computed + calculatedFieldCount + 2;
@@ -1279,8 +1626,13 @@ export function erbRun(specs: TableSpec[], closures: ClosureSpec[], calculatedFi
   let passes = 0;
   for (;;) {
     passes++;
-    if (passes > maxPasses) fatal(`the dataset did not settle within ${maxPasses} passes — the field dependencies are cyclic.`);
+    if (passes > maxPasses) fail(`the dataset did not settle within ${maxPasses} passes — the field dependencies are cyclic.`);
     d.blank = new Map();
+    // A filtered closure's filter may be a derived field, so it is re-read from
+    // the current rows on every pass and settles with them.
+    for (const c of closures) {
+      if (c.filter !== null) d.closures.set(c.view, materializeClosure(d, c));
+    }
     for (const spec of specs) {
       const rows = d.rows.get(spec.file);
       if (!rows) continue;
@@ -1297,15 +1649,103 @@ export function erbRun(specs: TableSpec[], closures: ClosureSpec[], calculatedFi
     if (current === previous) break;
     previous = current;
   }
-  console.log(`TypeScript substrate: dataset settled after ${passes} passes`);
+
+  const tables = new Map<string, Record<string, unknown>[]>();
+  for (const file of loaded) {
+    const spec = d.byFile.get(file) as TableSpec;
+    tables.set(file, (d.rows.get(file) as Row[]).map(r => outputRow(r, spec)));
+  }
+  return { tables, closurePairs, passes };
+}
+
+/**
+ * The SDK as a library: computes every field of every table from rows held in
+ * memory, keyed by the rulebook's own table and field names, and returns every
+ * table the same way. Only stored (raw and relationship) values are read; any
+ * computed value handed in is ignored and recomputed. Every table the SDK knows
+ * must be given (an empty array for none); a table it does not know, or a field
+ * that could not be computed, throws ErbError naming it.
+ *
+ * This is the same computation the conformance runner (erbRun) performs; only
+ * how the rows arrive and leave differs.
+ */
+export function erbEvaluate(specs: TableSpec[], closures: ClosureSpec[], calculatedFieldCount: number,
+                            rows: Record<string, Array<Record<string, unknown>>>): Record<string, Array<Record<string, unknown>>> {
+  const byName = new Map(specs.map(s => [s.name, s]));
+  const unknown = Object.keys(rows).filter(name => !byName.has(name)).sort();
+  if (unknown.length > 0) fail(`evaluate() was given tables the rulebook does not have: ${unknown.join(", ")}`);
+  const missing = specs.filter(s => rows[s.name] === undefined).map(s => s.name);
+  if (missing.length > 0) fail(`evaluate() was not given these tables (pass [] for an empty one): ${missing.join(", ")}`);
+  const input = new Map<string, Array<Record<string, unknown>>>();
+  for (const spec of specs) {
+    const given = rows[spec.name];
+    if (!Array.isArray(given)) fail(`evaluate(): ${spec.name} is not an array of rows`);
+    input.set(spec.file, given.map(row => {
+      const out: Record<string, unknown> = {};
+      for (const snake of spec.stored) out[snake] = row[spec.columns[snake]] ?? null;
+      return out;
+    }));
+  }
+  const { tables } = erbCompute(specs, closures, calculatedFieldCount, input);
+  const result: Record<string, Array<Record<string, unknown>>> = {};
+  for (const spec of specs) {
+    const computed = tables.get(spec.file) as Record<string, unknown>[];
+    result[spec.name] = computed.map(row => {
+      if (row._erb_errors) fail(`${spec.name}: could not compute ${JSON.stringify(row._erb_errors)}`);
+      const out: Record<string, unknown> = {};
+      for (const snake of Object.keys(spec.fields)) out[spec.columns[snake]] = row[snake];
+      return out;
+    });
+  }
+  return result;
+}
+
+/**
+ * The conformance runner: loads every table's blank test rows from
+ * $ERB_TESTING_DIR/blank-tests, computes them (erbCompute), and writes each
+ * table's answers to $ERB_TESTING_DIR/$ERB_SUBSTRATE_NAME/test-answers.
+ */
+export function erbRun(specs: TableSpec[], closures: ClosureSpec[], calculatedFieldCount: number): void {
+  const testing = process.env.ERB_TESTING_DIR;
+  if (!testing) fatal("ERB_TESTING_DIR is not set; point it at the domain's testing/ directory.");
+  const substrate = process.env.ERB_SUBSTRATE_NAME;
+  if (!substrate) fatal("ERB_SUBSTRATE_NAME is not set; the harness must name the substrate whose answers these are.");
+  const blankDir = path.join(testing, "blank-tests");
+  const answersDir = path.join(testing, substrate, "test-answers");
+  fs.mkdirSync(answersDir, { recursive: true });
+
+  let result: ErbComputed;
+  try {
+    const input = new Map<string, Array<Record<string, unknown>>>();
+    for (const spec of specs) {
+      // No fixture: a table the rulebook declares empty has no rows to test, and
+      // reads as empty. One the rulebook holds rows for stays unloaded, so
+      // anything that reads it fails naming the gap.
+      const file = path.join(blankDir, `${spec.file}.json`);
+      if (!fs.existsSync(file)) continue;
+      let raw: unknown;
+      try {
+        raw = JSON.parse(fs.readFileSync(file, "utf-8"));
+      } catch (e) {
+        return fatal(`reading ${file}: ${errorText(e)}`);
+      }
+      if (!Array.isArray(raw)) fatal(`${file} does not hold a JSON array of rows`);
+      input.set(spec.file, raw as Array<Record<string, unknown>>);
+    }
+    if (input.size === 0) fatal(`no blank tests for any table under ${blankDir}`);
+    result = erbCompute(specs, closures, calculatedFieldCount, input);
+  } catch (e) {
+    return fatal(errorText(e));
+  }
+  for (const [view, pairs] of result.closurePairs) console.log(`  -> ${view}: ${pairs} pairs`);
+  console.log(`TypeScript substrate: dataset settled after ${result.passes} passes`);
 
   let total = 0;
-  for (const file of [...graded].sort()) {
-    const spec = d.byFile.get(file) as TableSpec;
-    const rows = d.rows.get(file) as Row[];
-    fs.writeFileSync(path.join(answersDir, `${file}.json`), JSON.stringify(rows.map(r => outputRow(r, spec)), null, 2));
+  for (const file of [...result.tables.keys()].sort()) {
+    const rows = result.tables.get(file) as Record<string, unknown>[];
+    fs.writeFileSync(path.join(answersDir, `${file}.json`), JSON.stringify(rows, null, 2));
     total += rows.length;
     console.log(`  -> ${file}: ${rows.length} records`);
   }
-  console.log(`TypeScript substrate: wrote ${total} records across ${graded.length} tables to ${answersDir}`);
+  console.log(`TypeScript substrate: wrote ${total} records across ${result.tables.size} tables to ${answersDir}`);
 }

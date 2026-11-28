@@ -55,6 +55,12 @@ const REBUILD_PROMPT_DISMISS_FILE = process.env.BOOT_REBUILD_PROMPT_DISMISS_FILE
 // into the container to read logs.
 const ERRORS_FILE = process.env.BOOT_ERRORS_FILE || '/tmp/build-errors.json';
 const STATUS_FILE = process.env.BOOT_STATUS_FILE || '/tmp/boot-status.json';
+// Why the app did not start after the build (container-entrypoint.sh,
+// report_start_failure): headline, then the failing process's log tail.
+const FAILURE_FILE = process.env.BOOT_FAILURE_FILE || '/tmp/boot-failure.txt';
+const readFailure = () => {
+  try { return fs.readFileSync(FAILURE_FILE, 'utf8').trim() || null; } catch { return null; }
+};
 
 // The build pipeline itself -- effortless.json's ProjectTranspilers list, which
 // container-entrypoint.sh seeds onto disk BEFORE the first build starts. Serving
@@ -85,6 +91,14 @@ const STEP_COPY = {
     'Design the database',
     'Reads your rulebook and works out the database from it: a table for every kind of thing you described, a function for every value that gets calculated, and a view that puts them back together.',
   ],
+  rulebooktorbac: [
+    'Work out who can see and change what',
+    'Security module. Reads the roles, users and permissions in your rulebook and writes them down as one list of who is allowed to see or change each table. Off until the Security module is switched on in the portal\'s Modules page.',
+  ],
+  rbactopostgrespolicies: [
+    'Lock down the database to match',
+    'Security module. Turns that list into database rules, so each person only sees and changes the rows their role allows -- enforced by the database itself, not just the screens. Off until the Security module is switched on.',
+  ],
   chmodinitdb: [
     'Prepare the database setup script',
     'Housekeeping. Marks the setup script the previous step just wrote as runnable, so the next step can run it.',
@@ -104,6 +118,10 @@ const STEP_COPY = {
   rulebooktoexplainerdag: [
     'Add explanations for calculated values',
     'Builds the provenance graph used by the portal to explain where every calculated, lookup, and aggregated value came from.',
+  ],
+  rulebooktotypescript: [
+    'Work every value out a second way',
+    'Writes your rules as a small program the explanations use to show, for any one row, the actual values a calculated value came from, all the way down to what you typed in.',
   ],
   rulebooktorulespeaken: [
     'Write the rules out in plain English',
@@ -126,9 +144,27 @@ const STEP_COPY = {
 // Projected down to just what the boot page needs, and camelCased on the way out
 // so the page is not reaching into effortless.json's PascalCase shape directly --
 // this route is the contract, the file layout is not.
+// The ERB module steps are a Pro feature: hidden unless the portal's
+// 'ERB modules (Pro)' setting is on (modulesEnabled in the editor-settings
+// file beside the rulebook -- the stand-in for a license), or the editor was
+// generated with -p enable-modules=true (docker run -e ENABLE_MODULES=true).
+const MODULE_STEP_NAMES = new Set([
+  'rulebooktorbac', 'rbactopostgrespolicies', 'rbactosqlserverpolicies',
+]);
+const EDITOR_SETTINGS_FILE = '/app/effortless-rulebook/'
+  + (process.env.RULEBOOK_FILENAME || 'effortless-rulebook.json').replace(/\.json$/, '') + '.editor-settings.json';
+
+function modulesEnabled() {
+  if (process.env.ENABLE_MODULES === 'true') return true;
+  const settings = readJsonFile(EDITOR_SETTINGS_FILE);
+  return !!(settings && settings.modulesEnabled === true);
+}
+
 function readPipeline() {
   const cfg = readJsonFile(PIPELINE_FILE);
-  const raw = (cfg && cfg.ProjectTranspilers) || [];
+  const modulesOn = modulesEnabled();
+  const raw = ((cfg && cfg.ProjectTranspilers) || [])
+    .filter((t) => modulesOn || !MODULE_STEP_NAMES.has(t.Name));
   return raw
     .map((t) => {
       const copy = STEP_COPY[t.Name] || [];
@@ -419,6 +455,11 @@ const BOOT_PAGE = `<!doctype html>
   .conflict-choices button.recommended{border-color:#4ea882}
   .conflict-choices button.danger{border-color:#e05a3a}
   .dot.degraded{background:#e0a03a;animation:none}
+  .start-fail{display:none;flex-direction:column;gap:10px;margin:14px 22px;padding:18px 20px;
+    border:2px solid #ff6b52;border-radius:8px;background:rgba(255,107,82,.14)}
+  .start-fail.show{display:flex}
+  .start-fail h2{margin:0;font-size:16px;font-weight:700;color:#ff6b52}
+  .start-fail pre{margin:0;max-height:420px;overflow:auto;font-size:11.5px;line-height:1.5;white-space:pre-wrap}
   .fail-panel{display:none;flex-direction:column;gap:8px;margin:14px 22px;padding:16px 18px;
     border:1px solid #e05a3a;border-radius:8px;background:rgba(224,90,58,.08)}
   .fail-panel.show{display:flex}
@@ -462,6 +503,10 @@ const BOOT_PAGE = `<!doctype html>
     </button>
   </div>
 </div>
+<div class="start-fail" id="startFail">
+  <h2 id="startFailTitle"></h2>
+  <pre id="startFailLog"></pre>
+</div>
 <div class="fail-panel" id="failPanel">
   <h2 id="failTitle">Some build steps failed</h2>
   <p id="failIntro"></p>
@@ -498,6 +543,7 @@ const BOOT_PAGE = `<!doctype html>
   const rebuildBtn = document.getElementById('rebuildBtn');
   const conflictPanel = document.getElementById('conflictPanel');
   const failPanel = document.getElementById('failPanel');
+  const startFail = document.getElementById('startFail');
   const failTitle = document.getElementById('failTitle');
   const failIntro = document.getElementById('failIntro');
   const mainEl = document.getElementById('main');
@@ -886,8 +932,19 @@ const BOOT_PAGE = `<!doctype html>
     }).catch(() => {});
   }
 
+  // The reason the app did not start, as loud as the page can make it.
+  function renderStartFailure(text) {
+    if (!text) { startFail.classList.remove('show'); return; }
+    const [title, ...rest] = text.split('\\n');
+    document.getElementById('startFailTitle').textContent = title;
+    document.getElementById('startFailLog').textContent = rest.join('\\n').trim();
+    startFail.classList.add('show');
+  }
+
   function refreshStatus() {
-    return fetch('/__boot/status').then(r => r.json()).then(renderTiles).catch(() => {});
+    return fetch('/__boot/status').then(r => r.json())
+      .then((status) => { renderTiles(status); renderStartFailure(status && status.failure); })
+      .catch(() => {});
   }
 
   // Pull the structured failure record rather than asking the user to spot an
@@ -961,7 +1018,18 @@ const BOOT_PAGE = `<!doctype html>
       hint.textContent = state === 'degraded'
         ? 'Build finished with failures -- loading the app anyway; the tab for the failed step will be empty.'
         : 'Build finished -- loading the app...';
-      if (AUTO_RETURN_PATH && sawBuildForReturn) {
+      if (AUTO_RETURN_PATH && sawBuildForReturn && state === 'degraded') {
+        // A rebuild that FAILED a step stays on this page. Returning to the app
+        // threw away the failed-step panel and the log -- the only places the
+        // error was shown -- so the user knew something broke but could not
+        // see what. Going back is now the user's click, not a timer.
+        if (returnTimer) { clearTimeout(returnTimer); returnTimer = null; }
+        hint.textContent = 'Build finished with failures -- the failed step(s) are listed above and the full output is in the Log tab. The app is running: ';
+        const back = document.createElement('a');
+        back.href = AUTO_RETURN_PATH;
+        back.textContent = 'go back to the app';
+        hint.appendChild(back);
+      } else if (AUTO_RETURN_PATH && sawBuildForReturn) {
         if (returnTimer) clearTimeout(returnTimer);
         returnTimer = setTimeout(() => window.location.replace(AUTO_RETURN_PATH), 600);
       } else if (AUTO_RETURN_PATH) {
@@ -1037,6 +1105,21 @@ const BOOT_PAGE = `<!doctype html>
 </html>
 `;
 
+// Tech support (problem-watch.js, the same file as the admin portal's src/lib/problemWatch.js): the red messages and
+// script errors on THIS page (a failed build step, "the editor could not start") reach Effortless tech support,
+// exactly like the portal's. Only when the run named the www API: VITE_EFFORTLESS_SUPPORT_URL (and
+// VITE_EFFORTLESS_PROJECT_ID), set by a project run's pw-boot.sh; the portal reads the same names through Vite. On a
+// laptop (edit-rulebook.sh) they are unset, so nothing is added to the page and nothing is sent. No key: the route is
+// public.
+const PROBLEM_WATCH_FILE = require('path').join(__dirname, 'problem-watch.js');
+function problemWatchTag(env) {
+  const supportUrl = String(env.VITE_EFFORTLESS_SUPPORT_URL || '').trim();
+  if (!supportUrl || !fs.existsSync(PROBLEM_WATCH_FILE)) return '';
+  const cfg = JSON.stringify({ supportUrl, projectId: env.VITE_EFFORTLESS_PROJECT_ID || null, route: '/__boot' }).replace(/</g, '\\u003c');
+  return '<script type="module">import { installProblemWatch } from "/__boot/problem-watch.js"; installProblemWatch(' + cfg + ');</script>';
+}
+const BOOT_PAGE_SERVED = BOOT_PAGE.replace('</body>', problemWatchTag(process.env) + '</body>');
+
 function proxyToInternalUI(req, res) {
   const proxyReq = http.request(
     {
@@ -1044,7 +1127,12 @@ function proxyToInternalUI(req, res) {
       port: INTERNAL_UI_PORT,
       path: req.url,
       method: req.method,
-      headers: req.headers,
+      // Vite (5.4.12+) refuses any Host it does not know -- behind a gateway
+      // that is the gateway's internal name (e.g. runner-x.loops.cpln.local),
+      // so every request got "Blocked request. This host is not allowed".
+      // Vite is internal to this container; address it as itself and keep
+      // the outside host in x-forwarded-host.
+      headers: { ...req.headers, host: `127.0.0.1:${INTERNAL_UI_PORT}`, 'x-forwarded-host': req.headers['x-forwarded-host'] || req.headers.host },
     },
     (proxyRes) => {
       res.writeHead(proxyRes.statusCode, proxyRes.headers);
@@ -1068,7 +1156,7 @@ function proxyToInternalUI(req, res) {
     const wantsHtml = req.method === 'GET' && accept.includes('text/html');
     if (wantsHtml) {
       res.writeHead(503, { 'content-type': 'text/html', 'cache-control': 'no-store' });
-      res.end(BOOT_PAGE);
+      res.end(BOOT_PAGE_SERVED);
     } else {
       res.writeHead(502, { 'content-type': 'text/plain' });
       res.end(`rulebook-editor: internal UI on :${INTERNAL_UI_PORT} is not answering (${err && err.code ? err.code : 'proxy error'}). See /__boot/ for the build log and /__boot/status for what is running.`);
@@ -1087,7 +1175,6 @@ function proxyToInternalUI(req, res) {
 const STATIC_TOOL_DIRS = {
   '/__tools/rulespeak': '/app/effortless-root/rulespeak',
   '/__tools/xlsx': '/app/effortless-root/xlsx',
-  '/__tools/progress-report': '/app/effortless-root/progress-report',
 };
 const path = require('path');
 
@@ -1147,7 +1234,11 @@ function serveFile(res, target, rel) {
       ext === '.xlsx' ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' :
       ext === '.json' ? 'application/json' :
       'application/octet-stream';
-    res.writeHead(200, { 'content-type': contentType });
+    const headers = { 'content-type': contentType };
+    // The portal links to the bare /__tools/xlsx/ directory, so without this
+    // the browser names the download after the URL ("xlsx") instead of the file.
+    if (ext === '.xlsx') headers['content-disposition'] = `attachment; filename="${path.basename(target)}"`;
+    res.writeHead(200, headers);
     res.end(data);
   });
 }
@@ -1166,6 +1257,14 @@ const server = http.createServer((req, res) => {
       }
     }
 
+    if (requestPath === '/__boot/problem-watch.js') {
+      fs.readFile(PROBLEM_WATCH_FILE, (err, data) => {
+        if (err) { res.writeHead(404, { 'content-type': 'text/plain' }); res.end('problem-watch.js is not in this image'); return; }
+        res.writeHead(200, { 'content-type': 'text/javascript', 'cache-control': 'no-store' });
+        res.end(data);
+      });
+      return;
+    }
     if (requestPath === '/__boot/log') {
       res.writeHead(200, { 'content-type': 'application/json' });
       res.end(JSON.stringify({ lines: tailLines(400), state: readState() }));
@@ -1192,6 +1291,7 @@ const server = http.createServer((req, res) => {
         note: 'no status snapshot written yet -- the first build has not finished',
       };
       status.state = readState();
+      status.failure = readFailure();
       res.writeHead(200, { 'content-type': 'application/json' });
       res.end(JSON.stringify(status));
       return;
@@ -1213,7 +1313,7 @@ const server = http.createServer((req, res) => {
     // a degraded build means some tab in that portal is missing its data.
     if (requestPath === '/__boot' || requestPath === '/__boot/') {
       res.writeHead(200, { 'content-type': 'text/html' });
-      res.end(BOOT_PAGE);
+      res.end(BOOT_PAGE_SERVED);
       return;
     }
     if (requestPath === '/__boot/events') {
@@ -1362,7 +1462,7 @@ const server = http.createServer((req, res) => {
     }
 
     res.writeHead(200, { 'content-type': 'text/html' });
-    res.end(BOOT_PAGE);
+    res.end(BOOT_PAGE_SERVED);
   } catch (err) {
     console.error('[boot-server] request handler error:', req.url, err);
     if (!res.headersSent) {

@@ -3,8 +3,9 @@
 // Generated from: effortless-rulebook/talisman-s-special-solutions-rulebook.json
 //
 // One interface per table, a calc<Table><Field>() function per calculated field,
-// and the table registry main.ts runs. Formulas compute through erb_runtime.ts;
-// nothing here parses a formula, reads the rulebook, or calls a database.
+// the table registry main.ts runs, and evaluate(rows) for an app that computes
+// in-process. Formulas compute through erb_runtime.ts; nothing here parses a
+// formula, reads the rulebook, or calls a database.
 
 /* eslint-disable */
 import {
@@ -34,8 +35,10 @@ import {
   anyPlain,
   erbTextOr,
   erbTextNotNull,
-  erbTimestamptzText,
+  erbDatetimeText,
+  erbText,
   erbConcat,
+  erbConfigure,
   erbNeg,
   erbAdd,
   erbSub,
@@ -60,6 +63,7 @@ import {
   erbOr,
   erbNot,
   erbIf,
+  erbSwitch,
   erbIsBlank,
   erbIsNotBlank,
   erbNullif,
@@ -79,12 +83,20 @@ import {
   erbSubstitute,
   erbFind,
   erbCast,
+  erbTextDate,
+  erbTextNumber,
   erbDatetimeDiff,
   erbNow,
   calcGuard,
   loadRows,
+  erbEvaluate,
 } from "./erb_runtime.js";
 import type { ClosureSpec, FieldType, TableSpec } from "./erb_runtime.js";
+
+/** The ERB build parameters this SDK was generated under
+ *  (docs/ERB-BUILD-PARAMETERS.md). The runtime refuses to run unconfigured. */
+export const erbBuildParameters: Record<string, string> = { "erbDateDiff": "calendar", "erbTimezone": "UTC", "erbDateTimeText": "iso8601", "erbBlankLogic": "coerce", "erbWholeNumber": "by-field-type" };
+erbConfigure(erbBuildParameters);
 
 // =============================================================================
 // WORKFLOWS TABLE
@@ -241,7 +253,7 @@ const workflowsFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location for this Workflow row. Root segment 'workflows' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
  *  Formula: ="workflows/" & {{WorkflowId}} */
 export function calcWorkflowsRelativePath(tc: WorkflowsRow): string | null {
-  return toStringPtr(erbConcat(vS("workflows/"), erbTextOr(vStrPlain(tc.workflow_id))));
+  return toStringPtr(erbConcat(vS("workflows/"), erbText(vStrPlain(tc.workflow_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -511,7 +523,7 @@ const workflowStepsFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location: this row nests under its Workflows parent. Concatenates the parent's path (ParentPath) with '/steps/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
  *  Formula: ={{ParentPath}} & "/steps/" & {{WorkflowStepId}} */
 export function calcWorkflowStepsRelativePath(tc: WorkflowStepsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.parent_path)), vS("/steps/"), erbTextOr(vStrPlain(tc.workflow_step_id))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.parent_path)), vS("/steps/"), erbText(vStrPlain(tc.workflow_step_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -669,7 +681,7 @@ const approvalGatesFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/approval-gates/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
  *  Formula: ={{ParentPath}} & "/approval-gates/" & {{ApprovalGateId}} */
 export function calcApprovalGatesRelativePath(tc: ApprovalGatesRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.parent_path)), vS("/approval-gates/"), erbTextOr(vStrPlain(tc.approval_gate_id))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.parent_path)), vS("/approval-gates/"), erbText(vStrPlain(tc.approval_gate_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -748,7 +760,7 @@ const stepPrecedenceFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/precedence/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
  *  Formula: ={{ParentPath}} & "/precedence/" & {{StepPrecedenceId}} */
 export function calcStepPrecedenceRelativePath(tc: StepPrecedenceRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.parent_path)), vS("/precedence/"), erbTextOr(vStrPlain(tc.step_precedence_id))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.parent_path)), vS("/precedence/"), erbText(vStrPlain(tc.step_precedence_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -762,7 +774,7 @@ export function calcStepPrecedenceIri(tc: StepPrecedenceRow): string | null {
  *  Human-readable edge label derived from its endpoints. Mirrors the FromStep -> ToStep direction.
  *  Formula: ={{FromStep}} & " -> " & {{ToStep}} */
 export function calcStepPrecedenceName(tc: StepPrecedenceRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStrPlain(tc.from_step)), vS(" -> "), erbTextOr(vStrPlain(tc.to_step))));
+  return toStringPtr(erbConcat(erbText(vStrPlain(tc.from_step)), vS(" -> "), erbText(vStrPlain(tc.to_step))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -860,7 +872,7 @@ const rolesFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location for this Role row. Root segment 'roles' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
  *  Formula: ="roles/" & {{RoleId}} */
 export function calcRolesRelativePath(tc: RolesRow): string | null {
-  return toStringPtr(erbConcat(vS("roles/"), erbTextOr(vStrPlain(tc.role_id))));
+  return toStringPtr(erbConcat(vS("roles/"), erbText(vStrPlain(tc.role_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -993,7 +1005,7 @@ const roleAssignmentsFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location: this assignment nests under its Role parent. Concatenates the parent's path (ParentPath) with '/assignments/' + this row's primary key. Unique by construction.
  *  Formula: ={{ParentPath}} & "/assignments/" & {{RoleAssignmentId}} */
 export function calcRoleAssignmentsRelativePath(tc: RoleAssignmentsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.parent_path)), vS("/assignments/"), erbTextOr(vStrPlain(tc.role_assignment_id))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.parent_path)), vS("/assignments/"), erbText(vStrPlain(tc.role_assignment_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -1007,7 +1019,7 @@ export function calcRoleAssignmentsIri(tc: RoleAssignmentsRow): string | null {
  *  Human-readable label for this assignment period: the role and the validity window.
  *  Formula: ={{Role}} & " [" & {{ValidFrom}} & " -> " & IF(ISBLANK({{ValidTo}}), "open", {{ValidTo}}) & "]" */
 export function calcRoleAssignmentsName(tc: RoleAssignmentsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStrPlain(tc.role)), vS(" ["), erbTextOr(vStrPlain(tc.valid_from)), vS(" -> "), erbTextNotNull(erbIf(erbBool3(erbIsBlank(vStr(tc.valid_to))), () => vS("open"), () => vStr(tc.valid_to))), vS("]")));
+  return toStringPtr(erbConcat(erbText(vStrPlain(tc.role)), vS(" ["), erbDatetimeText(vStrPlain(tc.valid_from)), vS(" -> "), erbText(erbIf(erbBool3(erbIsBlank(vStr(tc.valid_to))), () => vS("open"), () => vStr(tc.valid_to))), vS("]")));
 }
 
 /** Computes the FillerType calculated field.
@@ -1102,7 +1114,7 @@ const departmentsFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location for this Department row. Root segment 'departments' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
  *  Formula: ="departments/" & {{DepartmentId}} */
 export function calcDepartmentsRelativePath(tc: DepartmentsRow): string | null {
-  return toStringPtr(erbConcat(vS("departments/"), erbTextOr(vStrPlain(tc.department_id))));
+  return toStringPtr(erbConcat(vS("departments/"), erbText(vStrPlain(tc.department_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -1173,7 +1185,7 @@ const humanAgentsFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location for this HumanAgent row. Root segment 'human-agents' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
  *  Formula: ="human-agents/" & {{HumanAgentId}} */
 export function calcHumanAgentsRelativePath(tc: HumanAgentsRow): string | null {
-  return toStringPtr(erbConcat(vS("human-agents/"), erbTextOr(vStrPlain(tc.human_agent_id))));
+  return toStringPtr(erbConcat(vS("human-agents/"), erbText(vStrPlain(tc.human_agent_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -1251,7 +1263,7 @@ const aIAgentsFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location for this AIAgent row. Root segment 'ai-agents' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
  *  Formula: ="ai-agents/" & {{AIAgentId}} */
 export function calcAIAgentsRelativePath(tc: AIAgentsRow): string | null {
-  return toStringPtr(erbConcat(vS("ai-agents/"), erbTextOr(vStrPlain(tc.ai_agent_id))));
+  return toStringPtr(erbConcat(vS("ai-agents/"), erbText(vStrPlain(tc.ai_agent_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -1314,7 +1326,7 @@ const automatedPipelinesFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location for this AutomatedPipeline row. Root segment 'automated-pipelines' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
  *  Formula: ="automated-pipelines/" & {{AutomatedPipelineId}} */
 export function calcAutomatedPipelinesRelativePath(tc: AutomatedPipelinesRow): string | null {
-  return toStringPtr(erbConcat(vS("automated-pipelines/"), erbTextOr(vStrPlain(tc.automated_pipeline_id))));
+  return toStringPtr(erbConcat(vS("automated-pipelines/"), erbText(vStrPlain(tc.automated_pipeline_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -1378,7 +1390,7 @@ const workflowStatusConceptsFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location for this WorkflowStatusConcept row. Root segment 'concepts/workflow-status' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
  *  Formula: ="concepts/workflow-status/" & {{ConceptId}} */
 export function calcWorkflowStatusConceptsRelativePath(tc: WorkflowStatusConceptsRow): string | null {
-  return toStringPtr(erbConcat(vS("concepts/workflow-status/"), erbTextOr(vStrPlain(tc.concept_id))));
+  return toStringPtr(erbConcat(vS("concepts/workflow-status/"), erbText(vStrPlain(tc.concept_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -1442,7 +1454,7 @@ const agentCapabilityConceptsFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location for this AgentCapabilityConcept row. Root segment 'concepts/agent-capability' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
  *  Formula: ="concepts/agent-capability/" & {{ConceptId}} */
 export function calcAgentCapabilityConceptsRelativePath(tc: AgentCapabilityConceptsRow): string | null {
-  return toStringPtr(erbConcat(vS("concepts/agent-capability/"), erbTextOr(vStrPlain(tc.concept_id))));
+  return toStringPtr(erbConcat(vS("concepts/agent-capability/"), erbText(vStrPlain(tc.concept_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -1506,7 +1518,7 @@ const artifactTypeConceptsFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location for this concept row. Root segment 'concepts/artifact-type' + the row's primary key.
  *  Formula: ="concepts/artifact-type/" & {{ConceptId}} */
 export function calcArtifactTypeConceptsRelativePath(tc: ArtifactTypeConceptsRow): string | null {
-  return toStringPtr(erbConcat(vS("concepts/artifact-type/"), erbTextOr(vStrPlain(tc.concept_id))));
+  return toStringPtr(erbConcat(vS("concepts/artifact-type/"), erbText(vStrPlain(tc.concept_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -1573,7 +1585,7 @@ const datasetsFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location for this Dataset row. Root segment 'datasets' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
  *  Formula: ="datasets/" & {{DatasetId}} */
 export function calcDatasetsRelativePath(tc: DatasetsRow): string | null {
-  return toStringPtr(erbConcat(vS("datasets/"), erbTextOr(vStrPlain(tc.dataset_id))));
+  return toStringPtr(erbConcat(vS("datasets/"), erbText(vStrPlain(tc.dataset_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -1678,7 +1690,7 @@ const workflowArtifactsFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/artifacts/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
  *  Formula: ={{ParentPath}} & "/artifacts/" & {{ArtifactId}} */
 export function calcWorkflowArtifactsRelativePath(tc: WorkflowArtifactsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.parent_path)), vS("/artifacts/"), erbTextOr(vStrPlain(tc.artifact_id))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.parent_path)), vS("/artifacts/"), erbText(vStrPlain(tc.artifact_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -1775,7 +1787,7 @@ const governanceRolesFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location for this GovernanceRole row. Root segment 'governance-roles' + the row's primary key.
  *  Formula: ="governance-roles/" & {{GovernanceRoleId}} */
 export function calcGovernanceRolesRelativePath(tc: GovernanceRolesRow): string | null {
-  return toStringPtr(erbConcat(vS("governance-roles/"), erbTextOr(vStrPlain(tc.governance_role_id))));
+  return toStringPtr(erbConcat(vS("governance-roles/"), erbText(vStrPlain(tc.governance_role_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -1870,7 +1882,7 @@ const changeLogFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location for this ChangeLog row. Root segment 'change-log' + the row's primary key.
  *  Formula: ="change-log/" & {{ChangeLogId}} */
 export function calcChangeLogRelativePath(tc: ChangeLogRow): string | null {
-  return toStringPtr(erbConcat(vS("change-log/"), erbTextOr(vStrPlain(tc.change_log_id))));
+  return toStringPtr(erbConcat(vS("change-log/"), erbText(vStrPlain(tc.change_log_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -1884,7 +1896,7 @@ export function calcChangeLogIri(tc: ChangeLogRow): string | null {
  *  Human-readable label: the version and date of this change.
  *  Formula: ={{Version}} & " (" & {{ChangeDate}} & ")" */
 export function calcChangeLogName(tc: ChangeLogRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.version)), vS(" ("), erbTextOr(vStr(tc.change_date)), vS(")")));
+  return toStringPtr(erbConcat(erbText(vStr(tc.version)), vS(" ("), erbDatetimeText(vStr(tc.change_date)), vS(")")));
 }
 
 /** Computes the IsBreakingChange calculated field.
@@ -1964,7 +1976,7 @@ const vocabularyReconciliationsFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location for this reconciliation row. Root segment 'reconciliations' + the row's primary key.
  *  Formula: ="reconciliations/" & {{ReconciliationId}} */
 export function calcVocabularyReconciliationsRelativePath(tc: VocabularyReconciliationsRow): string | null {
-  return toStringPtr(erbConcat(vS("reconciliations/"), erbTextOr(vStrPlain(tc.reconciliation_id))));
+  return toStringPtr(erbConcat(vS("reconciliations/"), erbText(vStrPlain(tc.reconciliation_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -1978,7 +1990,7 @@ export function calcVocabularyReconciliationsIri(tc: VocabularyReconciliationsRo
  *  Human-readable label: the sameAs relation between the deprecated term and its NTWF replacement.
  *  Formula: ={{DeprecatedTerm}} & " owl:sameAs " & {{ReplacementTerm}} */
 export function calcVocabularyReconciliationsName(tc: VocabularyReconciliationsRow): string | null {
-  return toStringPtr(erbConcat(erbTextOr(vStr(tc.deprecated_term)), vS(" owl:sameAs "), erbTextOr(vStr(tc.replacement_term))));
+  return toStringPtr(erbConcat(erbText(vStr(tc.deprecated_term)), vS(" owl:sameAs "), erbText(vStr(tc.replacement_term))));
 }
 
 /** Computes every calculated field of the row in dependency order. */
@@ -2042,7 +2054,7 @@ const scenariosFieldTypes: Record<string, FieldType> = {
  *  DAG-derived location for this Scenario row: root segment 'scenarios' + the primary key.
  *  Formula: ="scenarios/" & {{ScenarioId}} */
 export function calcScenariosRelativePath(tc: ScenariosRow): string | null {
-  return toStringPtr(erbConcat(vS("scenarios/"), erbTextOr(vStrPlain(tc.scenario_id))));
+  return toStringPtr(erbConcat(vS("scenarios/"), erbText(vStrPlain(tc.scenario_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -2139,7 +2151,7 @@ const competencyQuestionsFieldTypes: Record<string, FieldType> = {
  *  Stable, DAG-derived location for this CompetencyQuestion row. Root segment 'competency-questions' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution.
  *  Formula: ="competency-questions/" & {{CompetencyQuestionId}} */
 export function calcCompetencyQuestionsRelativePath(tc: CompetencyQuestionsRow): string | null {
-  return toStringPtr(erbConcat(vS("competency-questions/"), erbTextOr(vStrPlain(tc.competency_question_id))));
+  return toStringPtr(erbConcat(vS("competency-questions/"), erbText(vStrPlain(tc.competency_question_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -2215,7 +2227,7 @@ const scenarioCQEffectsFieldTypes: Record<string, FieldType> = {
  *  DAG-derived location: 'scenario-cq-effects/' + the row's primary key.
  *  Formula: ="scenario-cq-effects/" & {{ScenarioCQEffectId}} */
 export function calcScenarioCQEffectsRelativePath(tc: ScenarioCQEffectsRow): string | null {
-  return toStringPtr(erbConcat(vS("scenario-cq-effects/"), erbTextOr(vStrPlain(tc.scenario_cq_effect_id))));
+  return toStringPtr(erbConcat(vS("scenario-cq-effects/"), erbText(vStrPlain(tc.scenario_cq_effect_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -2302,7 +2314,7 @@ const conformanceTestsFieldTypes: Record<string, FieldType> = {
  *  DAG-derived location for this test row: root segment 'conformance-tests' + the primary key.
  *  Formula: ="conformance-tests/" & {{ConformanceTestId}} */
 export function calcConformanceTestsRelativePath(tc: ConformanceTestsRow): string | null {
-  return toStringPtr(erbConcat(vS("conformance-tests/"), erbTextOr(vStrPlain(tc.conformance_test_id))));
+  return toStringPtr(erbConcat(vS("conformance-tests/"), erbText(vStrPlain(tc.conformance_test_id))));
 }
 
 /** Computes the Iri calculated field.
@@ -2387,6 +2399,8 @@ export const calculatedFieldCount = 102;
 /** Every table, in rulebook order. */
 export const erbTables: TableSpec[] = [
   { name: "Workflows", file: "workflows", rulebookRows: 1, fields: workflowsFieldTypes,
+    columns: { workflow_id: "WorkflowId", relative_path: "RelativePath", iri: "Iri", name: "Name", display_name: "DisplayName", title: "Title", description: "Description", identifier: "Identifier", modified: "Modified", created: "Created", staleness_threshold_months: "StalenessThresholdMonths", workflow_status: "WorkflowStatus", workflow_steps: "WorkflowSteps", count_of_non_proposed_steps: "CountOfNonProposedSteps", has_more_than1_step: "HasMoreThan1Step", count_ai_steps: "CountAISteps", count_human_steps: "CountHumanSteps", count_human_required_steps: "CountHumanRequiredSteps", count_approval_consistency_violations: "CountApprovalConsistencyViolations", has_consistency_violation: "HasConsistencyViolation", has_ai_agent_step: "HasAIAgentStep", months_since_modified: "MonthsSinceModified", is_stale: "IsStale", is_stale_and_has_ai_agent: "IsStaleAndHasAIAgent", count_derivation_links: "CountDerivationLinks", count_legal_owned_steps: "CountLegalOwnedSteps", count_engineering_owned_steps: "CountEngineeringOwnedSteps", involves_engineering_and_legal: "InvolvesEngineeringAndLegal", count_inferred_precedence_pairs: "CountInferredPrecedencePairs", count_asserted_precedence_pairs: "CountAssertedPrecedencePairs", count_of_precedence_closure_pairs: "CountOfPrecedenceClosurePairs", count_roles_with_bad_filler_cardinality: "CountRolesWithBadFillerCardinality", count_agent_type_changes: "CountAgentTypeChanges", count_compliance_audit_changes: "CountComplianceAuditChanges", count_approval_gate_steps: "CountApprovalGateSteps", count_gates_without_human_approver: "CountGatesWithoutHumanApprover", count_workflow_artifacts: "CountWorkflowArtifacts", count_roles_with_escalation_violation: "CountRolesWithEscalationViolation", count_unconsumed_datasets: "CountUnconsumedDatasets", cq1_satisfied: "Cq1Satisfied", cq2_satisfied: "Cq2Satisfied", cq3_satisfied: "Cq3Satisfied", cq4_satisfied: "Cq4Satisfied", cq5_satisfied: "Cq5Satisfied", cq6_satisfied: "Cq6Satisfied", cq7_satisfied: "Cq7Satisfied", cq8_satisfied: "Cq8Satisfied" },
+    stored: ["workflow_id", "display_name", "title", "description", "identifier", "modified", "created", "staleness_threshold_months", "workflow_status", "workflow_steps"],
     compute: (row: any) => computeWorkflows(row as WorkflowsRow),
     lookups: [],
     aggregations: [
@@ -2409,6 +2423,8 @@ export const erbTables: TableSpec[] = [
       { field: "count_roles_with_escalation_violation", op: "COUNTIFS", table: "roles", criteria: [{ range: "escalation_violation", kind: "literal", literal: vB(true) }] },
       { field: "count_unconsumed_datasets", op: "COUNTIFS", table: "datasets", criteria: [{ range: "is_consumed", kind: "literal", literal: vB(false) }] },] },
   { name: "WorkflowSteps", file: "workflow_steps", rulebookRows: 5, fields: workflowStepsFieldTypes,
+    columns: { workflow_step_id: "WorkflowStepId", parent_path: "ParentPath", relative_path: "RelativePath", iri: "Iri", name: "Name", display_name: "DisplayName", workflow: "Workflow", preceding_step_count: "PrecedingStepCount", inferred_sequence_position: "InferredSequencePosition", sequence_position_override: "SequencePositionOverride", sequence_position: "SequencePosition", assigned_role: "AssignedRole", requires_human_approval: "RequiresHumanApproval", step_duration_minutes: "StepDurationMinutes", consumes_dataset: "ConsumesDataset", produces_artifacts: "ProducesArtifacts", requires_artifacts: "RequiresArtifacts", approval_gate: "ApprovalGate", precedes: "Precedes", preceded_by: "PrecededBy", executing_human_agent: "ExecutingHumanAgent", executing_ai_agent: "ExecutingAIAgent", executing_automated_pipeline: "ExecutingAutomatedPipeline", executing_agent_type: "ExecutingAgentType", is_executed_by_ai: "IsExecutedByAI", is_executed_by_human: "IsExecutedByHuman", is_approval_gate: "IsApprovalGate", approval_consistency_violation: "ApprovalConsistencyViolation", approval_is_human_filled: "ApprovalIsHumanFilled", owning_department: "OwningDepartment", is_legal_owned: "IsLegalOwned", is_engineering_owned: "IsEngineeringOwned" },
+    stored: ["workflow_step_id", "display_name", "workflow", "sequence_position_override", "assigned_role", "requires_human_approval", "step_duration_minutes", "consumes_dataset", "produces_artifacts", "requires_artifacts", "approval_gate", "precedes", "preceded_by"],
     compute: (row: any) => computeWorkflowSteps(row as WorkflowStepsRow),
     lookups: [
       { field: "parent_path", target: "workflows", ret: "relative_path", key: "workflow", match: "workflow_id" },
@@ -2419,6 +2435,8 @@ export const erbTables: TableSpec[] = [
     aggregations: [
       { field: "preceding_step_count", op: "COUNTIFS", table: "vw_step_precedence_closure", criteria: [{ range: "to_id", kind: "field", field: "workflow_step_id" }] },] },
   { name: "ApprovalGates", file: "approval_gates", rulebookRows: 1, fields: approvalGatesFieldTypes,
+    columns: { approval_gate_id: "ApprovalGateId", parent_path: "ParentPath", relative_path: "RelativePath", iri: "Iri", name: "Name", display_name: "DisplayName", workflow_step: "WorkflowStep", escalation_threshold_hours: "EscalationThresholdHours", gate_role: "GateRole", gate_approver_human: "GateApproverHuman", has_human_approver: "HasHumanApprover" },
+    stored: ["approval_gate_id", "display_name", "workflow_step", "escalation_threshold_hours"],
     compute: (row: any) => computeApprovalGates(row as ApprovalGatesRow),
     lookups: [
       { field: "parent_path", target: "workflow_steps", ret: "relative_path", key: "workflow_step", match: "workflow_step_id" },
@@ -2426,89 +2444,129 @@ export const erbTables: TableSpec[] = [
       { field: "gate_approver_human", target: "roles", ret: "filled_by_human_agent", key: "gate_role", match: "role_id" },],
     aggregations: [] },
   { name: "StepPrecedence", file: "step_precedence", rulebookRows: 4, fields: stepPrecedenceFieldTypes,
+    columns: { step_precedence_id: "StepPrecedenceId", parent_path: "ParentPath", relative_path: "RelativePath", iri: "Iri", name: "Name", from_step: "FromStep", to_step: "ToStep", precedes_step_closure: "PrecedesStepClosure" },
+    stored: ["step_precedence_id", "from_step", "to_step"],
     compute: (row: any) => computeStepPrecedence(row as StepPrecedenceRow),
     lookups: [
       { field: "parent_path", target: "workflow_steps", ret: "relative_path", key: "from_step", match: "workflow_step_id" },],
     aggregations: [] },
   { name: "Roles", file: "roles", rulebookRows: 7, fields: rolesFieldTypes,
+    columns: { role_id: "RoleId", relative_path: "RelativePath", iri: "Iri", name: "Name", display_name: "DisplayName", label: "Label", comment: "Comment", has_capability: "HasCapability", filled_by_human_agent: "FilledByHumanAgent", filled_by_ai_agent: "FilledByAIAgent", filled_by_automated_pipeline: "FilledByAutomatedPipeline", owned_by: "OwnedBy", delegates_to: "DelegatesTo", workflow_steps: "WorkflowSteps", from_delegates_to: "FromDelegatesTo", role_assignments: "RoleAssignments", delegation_closure: "DelegationClosure", filled_by_arm_count: "FilledByArmCount", has_exactly_one_filler: "HasExactlyOneFiller", filler_type: "FillerType", fills_approval_gate: "FillsApprovalGate", escalation_violation: "EscalationViolation" },
+    stored: ["role_id", "display_name", "label", "comment", "has_capability", "filled_by_human_agent", "filled_by_ai_agent", "filled_by_automated_pipeline", "owned_by", "delegates_to", "workflow_steps", "from_delegates_to", "role_assignments"],
     compute: (row: any) => computeRoles(row as RolesRow),
     lookups: [],
     aggregations: [
       { field: "fills_approval_gate", op: "COUNTIFS", table: "workflow_steps", criteria: [{ range: "assigned_role", kind: "field", field: "role_id" }, { range: "is_approval_gate", kind: "literal", literal: vB(true) }] },] },
   { name: "RoleAssignments", file: "role_assignments", rulebookRows: 6, fields: roleAssignmentsFieldTypes,
+    columns: { role_assignment_id: "RoleAssignmentId", parent_path: "ParentPath", relative_path: "RelativePath", iri: "Iri", name: "Name", role: "Role", filled_by_human_agent: "FilledByHumanAgent", filled_by_ai_agent: "FilledByAIAgent", filled_by_automated_pipeline: "FilledByAutomatedPipeline", valid_from: "ValidFrom", valid_to: "ValidTo", reason: "Reason", prior_filler_type: "PriorFillerType", filler_type: "FillerType", is_current: "IsCurrent", was_active_as_of_audit_date: "WasActiveAsOfAuditDate", is_agent_type_change: "IsAgentTypeChange", requires_compliance_audit: "RequiresComplianceAudit" },
+    stored: ["role_assignment_id", "role", "filled_by_human_agent", "filled_by_ai_agent", "filled_by_automated_pipeline", "valid_from", "valid_to", "reason", "prior_filler_type"],
     compute: (row: any) => computeRoleAssignments(row as RoleAssignmentsRow),
     lookups: [
       { field: "parent_path", target: "roles", ret: "relative_path", key: "role", match: "role_id" },],
     aggregations: [] },
   { name: "Departments", file: "departments", rulebookRows: 2, fields: departmentsFieldTypes,
+    columns: { department_id: "DepartmentId", relative_path: "RelativePath", iri: "Iri", name: "Name", title: "Title", display_name: "DisplayName", roles: "Roles" },
+    stored: ["department_id", "title", "display_name", "roles"],
     compute: (row: any) => computeDepartments(row as DepartmentsRow),
     lookups: [],
     aggregations: [] },
   { name: "HumanAgents", file: "human_agents", rulebookRows: 5, fields: humanAgentsFieldTypes,
+    columns: { human_agent_id: "HumanAgentId", relative_path: "RelativePath", iri: "Iri", name: "Name", display_name: "DisplayName", mbox: "Mbox", roles: "Roles", role_assignments: "RoleAssignments" },
+    stored: ["human_agent_id", "name", "display_name", "mbox", "roles", "role_assignments"],
     compute: (row: any) => computeHumanAgents(row as HumanAgentsRow),
     lookups: [],
     aggregations: [] },
   { name: "AIAgents", file: "ai_agents", rulebookRows: 2, fields: aIAgentsFieldTypes,
+    columns: { ai_agent_id: "AIAgentId", relative_path: "RelativePath", iri: "Iri", name: "Name", title: "Title", display_name: "DisplayName", model_version: "ModelVersion", deployed_on: "DeployedOn", roles: "Roles", role_assignments: "RoleAssignments", attributed_artifacts: "AttributedArtifacts", count_attributed_artifacts: "CountAttributedArtifacts", count_impacted_workflows: "CountImpactedWorkflows" },
+    stored: ["ai_agent_id", "name", "title", "display_name", "model_version", "deployed_on", "roles", "role_assignments", "attributed_artifacts"],
     compute: (row: any) => computeAIAgents(row as AIAgentsRow),
     lookups: [],
     aggregations: [
       { field: "count_attributed_artifacts", op: "COUNTIFS", table: "workflow_artifacts", criteria: [{ range: "attributed_to_ai_agent", kind: "field", field: "ai_agent_id" }] },
       { field: "count_impacted_workflows", op: "COUNTIFS", table: "workflow_artifacts", criteria: [{ range: "attributed_to_ai_agent", kind: "field", field: "ai_agent_id" }, { range: "has_producing_workflow", kind: "literal", literal: vB(true) }] },] },
   { name: "AutomatedPipelines", file: "automated_pipelines", rulebookRows: 1, fields: automatedPipelinesFieldTypes,
+    columns: { automated_pipeline_id: "AutomatedPipelineId", relative_path: "RelativePath", iri: "Iri", name: "Name", description: "Description", display_name: "DisplayName", roles: "Roles", role_assignments: "RoleAssignments" },
+    stored: ["automated_pipeline_id", "name", "description", "display_name", "roles", "role_assignments"],
     compute: (row: any) => computeAutomatedPipelines(row as AutomatedPipelinesRow),
     lookups: [],
     aggregations: [] },
   { name: "WorkflowStatusConcepts", file: "workflow_status_concepts", rulebookRows: 4, fields: workflowStatusConceptsFieldTypes,
+    columns: { concept_id: "ConceptId", relative_path: "RelativePath", iri: "Iri", pref_label: "PrefLabel", alt_label: "AltLabel", definition: "Definition", scope_note: "ScopeNote", workflows: "Workflows" },
+    stored: ["concept_id", "pref_label", "alt_label", "definition", "scope_note", "workflows"],
     compute: (row: any) => computeWorkflowStatusConcepts(row as WorkflowStatusConceptsRow),
     lookups: [],
     aggregations: [] },
   { name: "AgentCapabilityConcepts", file: "agent_capability_concepts", rulebookRows: 6, fields: agentCapabilityConceptsFieldTypes,
+    columns: { concept_id: "ConceptId", relative_path: "RelativePath", iri: "Iri", pref_label: "PrefLabel", alt_label: "AltLabel", definition: "Definition", scope_note: "ScopeNote", roles: "Roles" },
+    stored: ["concept_id", "pref_label", "alt_label", "definition", "scope_note", "roles"],
     compute: (row: any) => computeAgentCapabilityConcepts(row as AgentCapabilityConceptsRow),
     lookups: [],
     aggregations: [] },
   { name: "ArtifactTypeConcepts", file: "artifact_type_concepts", rulebookRows: 3, fields: artifactTypeConceptsFieldTypes,
+    columns: { concept_id: "ConceptId", relative_path: "RelativePath", iri: "Iri", pref_label: "PrefLabel", alt_label: "AltLabel", definition: "Definition", scope_note: "ScopeNote", workflow_artifacts: "WorkflowArtifacts" },
+    stored: ["concept_id", "pref_label", "alt_label", "definition", "scope_note", "workflow_artifacts"],
     compute: (row: any) => computeArtifactTypeConcepts(row as ArtifactTypeConceptsRow),
     lookups: [],
     aggregations: [] },
   { name: "Datasets", file: "datasets", rulebookRows: 1, fields: datasetsFieldTypes,
+    columns: { dataset_id: "DatasetId", relative_path: "RelativePath", iri: "Iri", title: "Title", identifier: "Identifier", modified: "Modified", distribution_url: "DistributionUrl", consumed_by_steps: "ConsumedBySteps", is_consumed: "IsConsumed" },
+    stored: ["dataset_id", "title", "identifier", "modified", "distribution_url", "consumed_by_steps"],
     compute: (row: any) => computeDatasets(row as DatasetsRow),
     lookups: [],
     aggregations: [] },
   { name: "WorkflowArtifacts", file: "workflow_artifacts", rulebookRows: 5, fields: workflowArtifactsFieldTypes,
+    columns: { artifact_id: "ArtifactId", parent_path: "ParentPath", relative_path: "RelativePath", iri: "Iri", title: "Title", identifier: "Identifier", artifact_type: "ArtifactType", created: "Created", produced_by_step: "ProducedByStep", required_by_steps: "RequiredBySteps", derived_from_artifact: "DerivedFromArtifact", attributed_to_human_agent: "AttributedToHumanAgent", attributed_to_ai_agent: "AttributedToAIAgent", attributed_to_automated_pipeline: "AttributedToAutomatedPipeline", producing_agent_type: "ProducingAgentType", has_derivation_parent: "HasDerivationParent", produced_by_workflow: "ProducedByWorkflow", has_producing_workflow: "HasProducingWorkflow", derivation_closure: "DerivationClosure" },
+    stored: ["artifact_id", "title", "identifier", "artifact_type", "created", "produced_by_step", "required_by_steps", "derived_from_artifact", "attributed_to_human_agent", "attributed_to_ai_agent", "attributed_to_automated_pipeline"],
     compute: (row: any) => computeWorkflowArtifacts(row as WorkflowArtifactsRow),
     lookups: [
       { field: "parent_path", target: "workflow_steps", ret: "relative_path", key: "produced_by_step", match: "workflow_step_id" },
       { field: "produced_by_workflow", target: "workflow_steps", ret: "workflow", key: "produced_by_step", match: "workflow_step_id" },],
     aggregations: [] },
   { name: "GovernanceRoles", file: "governance_roles", rulebookRows: 2, fields: governanceRolesFieldTypes,
+    columns: { governance_role_id: "GovernanceRoleId", relative_path: "RelativePath", iri: "Iri", name: "Name", display_name: "DisplayName", kind: "Kind", responsibilities: "Responsibilities", approval_scope: "ApprovalScope", held_by: "HeldBy", can_approve_changes: "CanApproveChanges", approved_changes: "ApprovedChanges" },
+    stored: ["governance_role_id", "display_name", "kind", "responsibilities", "approval_scope", "held_by", "approved_changes"],
     compute: (row: any) => computeGovernanceRoles(row as GovernanceRolesRow),
     lookups: [],
     aggregations: [] },
   { name: "ChangeLog", file: "change_log", rulebookRows: 2, fields: changeLogFieldTypes,
+    columns: { change_log_id: "ChangeLogId", relative_path: "RelativePath", iri: "Iri", name: "Name", version: "Version", change_date: "ChangeDate", change_kind: "ChangeKind", motivating_question: "MotivatingQuestion", terms_affected: "TermsAffected", rationale: "Rationale", approved_by: "ApprovedBy", is_breaking_change: "IsBreakingChange", is_backward_compatible: "IsBackwardCompatible" },
+    stored: ["change_log_id", "version", "change_date", "change_kind", "motivating_question", "terms_affected", "rationale", "approved_by"],
     compute: (row: any) => computeChangeLog(row as ChangeLogRow),
     lookups: [],
     aggregations: [] },
   { name: "VocabularyReconciliations", file: "vocabulary_reconciliations", rulebookRows: 2, fields: vocabularyReconciliationsFieldTypes,
+    columns: { reconciliation_id: "ReconciliationId", relative_path: "RelativePath", iri: "Iri", name: "Name", deprecated_term: "DeprecatedTerm", replacement_term: "ReplacementTerm", reconciliation_relation: "ReconciliationRelation", source_standard: "SourceStandard", introduced_in_version: "IntroducedInVersion", rationale: "Rationale" },
+    stored: ["reconciliation_id", "deprecated_term", "replacement_term", "reconciliation_relation", "source_standard", "introduced_in_version", "rationale"],
     compute: (row: any) => computeVocabularyReconciliations(row as VocabularyReconciliationsRow),
     lookups: [],
     aggregations: [] },
   { name: "Scenarios", file: "scenarios", rulebookRows: 12, fields: scenariosFieldTypes,
+    columns: { scenario_id: "ScenarioId", relative_path: "RelativePath", iri: "Iri", name: "Name", label: "Label", icon: "Icon", explanation: "Explanation", sort_order: "SortOrder", is_reset: "IsReset", edits: "Edits" },
+    stored: ["scenario_id", "label", "icon", "explanation", "sort_order", "is_reset", "edits"],
     compute: (row: any) => computeScenarios(row as ScenariosRow),
     lookups: [],
     aggregations: [] },
   { name: "CompetencyQuestions", file: "competency_questions", rulebookRows: 8, fields: competencyQuestionsFieldTypes,
+    columns: { competency_question_id: "CompetencyQuestionId", relative_path: "RelativePath", iri: "Iri", name: "Name", number: "Number", display_name: "DisplayName", question_text: "QuestionText", target_table: "TargetTable", target_field: "TargetField", answer_kind: "AnswerKind", expected_answer: "ExpectedAnswer", satisfied_field: "SatisfiedField", explanation: "Explanation", sort_order: "SortOrder", is_active: "IsActive", simulate_scenario: "SimulateScenario" },
+    stored: ["competency_question_id", "number", "display_name", "question_text", "target_table", "target_field", "answer_kind", "expected_answer", "satisfied_field", "explanation", "sort_order", "is_active", "simulate_scenario"],
     compute: (row: any) => computeCompetencyQuestions(row as CompetencyQuestionsRow),
     lookups: [],
     aggregations: [] },
   { name: "ScenarioCQEffects", file: "scenario_cq_effects", rulebookRows: 12, fields: scenarioCQEffectsFieldTypes,
+    columns: { scenario_cq_effect_id: "ScenarioCQEffectId", relative_path: "RelativePath", iri: "Iri", name: "Name", scenario: "Scenario", competency_question: "CompetencyQuestion", effect_kind: "EffectKind", note: "Note", sort_order: "SortOrder" },
+    stored: ["scenario_cq_effect_id", "scenario", "competency_question", "effect_kind", "note", "sort_order"],
     compute: (row: any) => computeScenarioCQEffects(row as ScenarioCQEffectsRow),
     lookups: [],
     aggregations: [] },
   { name: "ConformanceTests", file: "conformance_tests", rulebookRows: 72, fields: conformanceTestsFieldTypes,
+    columns: { conformance_test_id: "ConformanceTestId", relative_path: "RelativePath", iri: "Iri", name: "Name", display_name: "DisplayName", feature_ref: "FeatureRef", section: "Section", test_kind: "TestKind", target_ref: "TargetRef", expect: "Expect", explanation: "Explanation", sort_order: "SortOrder", is_enabled: "IsEnabled" },
+    stored: ["conformance_test_id", "display_name", "feature_ref", "section", "test_kind", "target_ref", "expect", "explanation", "sort_order", "is_enabled"],
     compute: (row: any) => computeConformanceTests(row as ConformanceTestsRow),
     lookups: [],
     aggregations: [] },
-  { name: "__meta__", file: "__meta__", rulebookRows: 12, fields: __meta__FieldTypes,
+  { name: "__meta__", file: "__meta__", rulebookRows: 14, fields: __meta__FieldTypes,
+    columns: { meta_key: "MetaKey", name: "Name", value_type: "ValueType", string_value: "StringValue", json_value: "JsonValue" },
+    stored: ["meta_key", "value_type", "string_value", "json_value"],
     compute: (row: any) => compute__meta__(row as __meta__Row),
     lookups: [],
     aggregations: [] },
@@ -2516,7 +2574,18 @@ export const erbTables: TableSpec[] = [
 
 /** Materializes each vw_<entity>_closure view aggregations read. */
 export const erbClosures: ClosureSpec[] = [
-  { view: "vw_roles_closure", source: "roles", from: "role_id", to: "delegates_to" },
-  { view: "vw_step_precedence_closure", source: "step_precedence", from: "from_step", to: "to_step" },
-  { view: "vw_workflow_artifacts_closure", source: "workflow_artifacts", from: "artifact_id", to: "derived_from_artifact" },
+  { view: "vw_roles_closure", source: "roles", from: "role_id", to: "delegates_to", filter: null },
+  { view: "vw_step_precedence_closure", source: "step_precedence", from: "from_step", to: "to_step", filter: null },
+  { view: "vw_workflow_artifacts_closure", source: "workflow_artifacts", from: "artifact_id", to: "derived_from_artifact", filter: null },
 ];
+
+/**
+ * Computes every field of every table from the stored (raw and relationship)
+ * values given, keyed by the rulebook's own table and field names, and returns
+ * every table the same way. Call it again whenever a row changes: a change of
+ * data is a new call, never a new SDK. The conformance runner (main.ts) runs
+ * the same computation over files. Throws ErbError naming what it cannot do.
+ */
+export function evaluate(rows: Record<string, Array<Record<string, unknown>>>): Record<string, Array<Record<string, unknown>>> {
+  return erbEvaluate(erbTables, erbClosures, calculatedFieldCount, rows);
+}

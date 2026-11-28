@@ -12,6 +12,11 @@ dataset. Nothing here parses a formula or reads the rulebook.
 
 import erb_runtime as _erb
 
+# The ERB build parameters this SDK was generated under
+# (docs/ERB-BUILD-PARAMETERS.md). The runtime refuses to run unconfigured.
+ERB_BUILD_PARAMETERS = {'erbDateDiff': 'calendar', 'erbTimezone': 'UTC', 'erbDateTimeText': 'iso8601', 'erbBlankLogic': 'coerce', 'erbWholeNumber': 'by-field-type'}
+_erb.configure(ERB_BUILD_PARAMETERS)
+
 
 # =============================================================================
 # WORKFLOWS
@@ -26,7 +31,7 @@ def calc_workflows_relative_path(workflow_id):
     
     Formula: ="workflows/" & {{WorkflowId}}
     """
-    return ('workflows/' + str(workflow_id or ""))
+    return ('workflows/' + _erb.erb_text(workflow_id))
 
 def calc_workflows_name(display_name):
     """
@@ -302,7 +307,7 @@ def calc_workflow_steps_relative_path(parent_path, workflow_step_id):
     
     Formula: ={{ParentPath}} & "/steps/" & {{WorkflowStepId}}
     """
-    return (str(parent_path or "") + '/steps/' + str(workflow_step_id or ""))
+    return (_erb.erb_text(parent_path) + '/steps/' + _erb.erb_text(workflow_step_id))
 
 def calc_workflow_steps_name(display_name):
     """Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")"""
@@ -496,7 +501,7 @@ def calc_approval_gates_relative_path(parent_path, approval_gate_id):
     
     Formula: ={{ParentPath}} & "/approval-gates/" & {{ApprovalGateId}}
     """
-    return (str(parent_path or "") + '/approval-gates/' + str(approval_gate_id or ""))
+    return (_erb.erb_text(parent_path) + '/approval-gates/' + _erb.erb_text(approval_gate_id))
 
 def calc_approval_gates_name(display_name):
     """Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")"""
@@ -573,7 +578,7 @@ def calc_step_precedence_relative_path(parent_path, step_precedence_id):
     
     Formula: ={{ParentPath}} & "/precedence/" & {{StepPrecedenceId}}
     """
-    return (str(parent_path or "") + '/precedence/' + str(step_precedence_id or ""))
+    return (_erb.erb_text(parent_path) + '/precedence/' + _erb.erb_text(step_precedence_id))
 
 def calc_step_precedence_name(from_step, to_step):
     """
@@ -581,7 +586,7 @@ def calc_step_precedence_name(from_step, to_step):
     
     Formula: ={{FromStep}} & " -> " & {{ToStep}}
     """
-    return (str(from_step or "") + ' -> ' + str(to_step or ""))
+    return (_erb.erb_text(from_step) + ' -> ' + _erb.erb_text(to_step))
 
 # Level 2
 
@@ -641,7 +646,7 @@ def calc_roles_relative_path(role_id):
     
     Formula: ="roles/" & {{RoleId}}
     """
-    return ('roles/' + str(role_id or ""))
+    return ('roles/' + _erb.erb_text(role_id))
 
 def calc_roles_name(display_name):
     """Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")"""
@@ -757,7 +762,7 @@ def calc_role_assignments_relative_path(parent_path, role_assignment_id):
     
     Formula: ={{ParentPath}} & "/assignments/" & {{RoleAssignmentId}}
     """
-    return (str(parent_path or "") + '/assignments/' + str(role_assignment_id or ""))
+    return (_erb.erb_text(parent_path) + '/assignments/' + _erb.erb_text(role_assignment_id))
 
 def calc_role_assignments_name(role, valid_from, valid_to):
     """
@@ -765,7 +770,7 @@ def calc_role_assignments_name(role, valid_from, valid_to):
     
     Formula: ={{Role}} & " [" & {{ValidFrom}} & " -> " & IF(ISBLANK({{ValidTo}}), "open", {{ValidTo}}) & "]" 
     """
-    return (str(role or "") + ' [' + str(valid_from or "") + ' -> ' + str(('open' if _erb.erb_bool3((valid_to is None or valid_to == "")) else valid_to) if ('open' if _erb.erb_bool3((valid_to is None or valid_to == "")) else valid_to) is not None else "") + ']')
+    return (_erb.erb_text(role) + ' [' + (_erb.erb_datestr(valid_from) or "") + ' -> ' + _erb.erb_text(('open' if _erb.erb_bool3((valid_to is None or valid_to == "")) else valid_to)) + ']')
 
 def calc_role_assignments_filler_type(filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline):
     """
@@ -890,7 +895,7 @@ def calc_departments_relative_path(department_id):
     
     Formula: ="departments/" & {{DepartmentId}}
     """
-    return ('departments/' + str(department_id or ""))
+    return ('departments/' + _erb.erb_text(department_id))
 
 def calc_departments_name(display_name):
     """
@@ -958,7 +963,7 @@ def calc_human_agents_relative_path(human_agent_id):
     
     Formula: ="human-agents/" & {{HumanAgentId}}
     """
-    return ('human-agents/' + str(human_agent_id or ""))
+    return ('human-agents/' + _erb.erb_text(human_agent_id))
 
 # Level 2
 
@@ -1013,7 +1018,7 @@ def calc_ai_agents_relative_path(ai_agent_id):
     
     Formula: ="ai-agents/" & {{AIAgentId}}
     """
-    return ('ai-agents/' + str(ai_agent_id or ""))
+    return ('ai-agents/' + _erb.erb_text(ai_agent_id))
 
 # Level 2
 
@@ -1068,7 +1073,7 @@ def calc_automated_pipelines_relative_path(automated_pipeline_id):
     
     Formula: ="automated-pipelines/" & {{AutomatedPipelineId}}
     """
-    return ('automated-pipelines/' + str(automated_pipeline_id or ""))
+    return ('automated-pipelines/' + _erb.erb_text(automated_pipeline_id))
 
 # Level 2
 
@@ -1123,7 +1128,7 @@ def calc_workflow_status_concepts_relative_path(concept_id):
     
     Formula: ="concepts/workflow-status/" & {{ConceptId}}
     """
-    return ('concepts/workflow-status/' + str(concept_id or ""))
+    return ('concepts/workflow-status/' + _erb.erb_text(concept_id))
 
 # Level 2
 
@@ -1178,7 +1183,7 @@ def calc_agent_capability_concepts_relative_path(concept_id):
     
     Formula: ="concepts/agent-capability/" & {{ConceptId}}
     """
-    return ('concepts/agent-capability/' + str(concept_id or ""))
+    return ('concepts/agent-capability/' + _erb.erb_text(concept_id))
 
 # Level 2
 
@@ -1233,7 +1238,7 @@ def calc_artifact_type_concepts_relative_path(concept_id):
     
     Formula: ="concepts/artifact-type/" & {{ConceptId}}
     """
-    return ('concepts/artifact-type/' + str(concept_id or ""))
+    return ('concepts/artifact-type/' + _erb.erb_text(concept_id))
 
 # Level 2
 
@@ -1288,7 +1293,7 @@ def calc_datasets_relative_path(dataset_id):
     
     Formula: ="datasets/" & {{DatasetId}}
     """
-    return ('datasets/' + str(dataset_id or ""))
+    return ('datasets/' + _erb.erb_text(dataset_id))
 
 def calc_datasets_is_consumed(consumed_by_steps):
     """
@@ -1356,7 +1361,7 @@ def calc_workflow_artifacts_relative_path(parent_path, artifact_id):
     
     Formula: ={{ParentPath}} & "/artifacts/" & {{ArtifactId}}
     """
-    return (str(parent_path or "") + '/artifacts/' + str(artifact_id or ""))
+    return (_erb.erb_text(parent_path) + '/artifacts/' + _erb.erb_text(artifact_id))
 
 def calc_workflow_artifacts_producing_agent_type(attributed_to_human_agent, attributed_to_ai_agent, attributed_to_automated_pipeline):
     """
@@ -1450,7 +1455,7 @@ def calc_governance_roles_relative_path(governance_role_id):
     
     Formula: ="governance-roles/" & {{GovernanceRoleId}}
     """
-    return ('governance-roles/' + str(governance_role_id or ""))
+    return ('governance-roles/' + _erb.erb_text(governance_role_id))
 
 def calc_governance_roles_name(display_name):
     """
@@ -1531,7 +1536,7 @@ def calc_change_log_relative_path(change_log_id):
     
     Formula: ="change-log/" & {{ChangeLogId}}
     """
-    return ('change-log/' + str(change_log_id or ""))
+    return ('change-log/' + _erb.erb_text(change_log_id))
 
 def calc_change_log_name(version, change_date):
     """
@@ -1539,7 +1544,7 @@ def calc_change_log_name(version, change_date):
     
     Formula: ={{Version}} & " (" & {{ChangeDate}} & ")" 
     """
-    return (str(version or "") + ' (' + str(change_date or "") + ')')
+    return (_erb.erb_text(version) + ' (' + (_erb.erb_datestr(change_date) or "") + ')')
 
 def calc_change_log_is_breaking_change(change_kind):
     """
@@ -1625,7 +1630,7 @@ def calc_vocabulary_reconciliations_relative_path(reconciliation_id):
     
     Formula: ="reconciliations/" & {{ReconciliationId}}
     """
-    return ('reconciliations/' + str(reconciliation_id or ""))
+    return ('reconciliations/' + _erb.erb_text(reconciliation_id))
 
 def calc_vocabulary_reconciliations_name(deprecated_term, replacement_term):
     """
@@ -1633,7 +1638,7 @@ def calc_vocabulary_reconciliations_name(deprecated_term, replacement_term):
     
     Formula: ={{DeprecatedTerm}} & " owl:sameAs " & {{ReplacementTerm}}
     """
-    return (str(deprecated_term or "") + ' owl:sameAs ' + str(replacement_term or ""))
+    return (_erb.erb_text(deprecated_term) + ' owl:sameAs ' + _erb.erb_text(replacement_term))
 
 # Level 2
 
@@ -1692,7 +1697,7 @@ def calc_scenarios_relative_path(scenario_id):
     
     Formula: ="scenarios/" & {{ScenarioId}}
     """
-    return ('scenarios/' + str(scenario_id or ""))
+    return ('scenarios/' + _erb.erb_text(scenario_id))
 
 def calc_scenarios_name(label):
     """
@@ -1756,7 +1761,7 @@ def calc_competency_questions_relative_path(competency_question_id):
     
     Formula: ="competency-questions/" & {{CompetencyQuestionId}}
     """
-    return ('competency-questions/' + str(competency_question_id or ""))
+    return ('competency-questions/' + _erb.erb_text(competency_question_id))
 
 def calc_competency_questions_name(display_name):
     """
@@ -1824,7 +1829,7 @@ def calc_scenario_cq_effects_relative_path(scenario_cq_effect_id):
     
     Formula: ="scenario-cq-effects/" & {{ScenarioCQEffectId}}
     """
-    return ('scenario-cq-effects/' + str(scenario_cq_effect_id or ""))
+    return ('scenario-cq-effects/' + _erb.erb_text(scenario_cq_effect_id))
 
 def calc_scenario_cq_effects_name(scenario_cq_effect_id):
     """
@@ -1891,7 +1896,7 @@ def calc_conformance_tests_relative_path(conformance_test_id):
     
     Formula: ="conformance-tests/" & {{ConformanceTestId}}
     """
-    return ('conformance-tests/' + str(conformance_test_id or ""))
+    return ('conformance-tests/' + _erb.erb_text(conformance_test_id))
 
 def calc_conformance_tests_name(display_name):
     """
@@ -2059,31 +2064,33 @@ ERB_TABLES = [
     {'name': 'Workflows', 'file': 'workflows', 'rulebook_rows': 1,
      'compute': compute_workflows_fields,
      'fields': ['workflow_id', 'relative_path', 'iri', 'name', 'display_name', 'title', 'description', 'identifier', 'modified', 'created', 'staleness_threshold_months', 'workflow_status', 'workflow_steps', 'count_of_non_proposed_steps', 'has_more_than1_step', 'count_ai_steps', 'count_human_steps', 'count_human_required_steps', 'count_approval_consistency_violations', 'has_consistency_violation', 'has_ai_agent_step', 'months_since_modified', 'is_stale', 'is_stale_and_has_ai_agent', 'count_derivation_links', 'count_legal_owned_steps', 'count_engineering_owned_steps', 'involves_engineering_and_legal', 'count_inferred_precedence_pairs', 'count_asserted_precedence_pairs', 'count_of_precedence_closure_pairs', 'count_roles_with_bad_filler_cardinality', 'count_agent_type_changes', 'count_compliance_audit_changes', 'count_approval_gate_steps', 'count_gates_without_human_approver', 'count_workflow_artifacts', 'count_roles_with_escalation_violation', 'count_unconsumed_datasets', 'cq1_satisfied', 'cq2_satisfied', 'cq3_satisfied', 'cq4_satisfied', 'cq5_satisfied', 'cq6_satisfied', 'cq7_satisfied', 'cq8_satisfied'],
-     'calculated': {'iri', 'cq6_satisfied', 'is_stale', 'cq3_satisfied', 'is_stale_and_has_ai_agent', 'cq4_satisfied', 'cq7_satisfied', 'name', 'cq8_satisfied', 'involves_engineering_and_legal', 'has_ai_agent_step', 'months_since_modified', 'cq1_satisfied', 'has_consistency_violation', 'relative_path', 'has_more_than1_step', 'cq5_satisfied', 'cq2_satisfied', 'count_of_precedence_closure_pairs'},
+     'datatypes': {'relative_path': 'string', 'iri': 'string', 'name': 'string', 'count_of_non_proposed_steps': 'integer', 'has_more_than1_step': 'boolean', 'count_ai_steps': 'integer', 'count_human_steps': 'integer', 'count_human_required_steps': 'integer', 'count_approval_consistency_violations': 'integer', 'has_consistency_violation': 'boolean', 'has_ai_agent_step': 'boolean', 'months_since_modified': 'integer', 'is_stale': 'boolean', 'is_stale_and_has_ai_agent': 'boolean', 'count_derivation_links': 'integer', 'count_legal_owned_steps': 'integer', 'count_engineering_owned_steps': 'integer', 'involves_engineering_and_legal': 'boolean', 'count_inferred_precedence_pairs': 'integer', 'count_asserted_precedence_pairs': 'integer', 'count_of_precedence_closure_pairs': 'integer', 'count_roles_with_bad_filler_cardinality': 'integer', 'count_agent_type_changes': 'integer', 'count_compliance_audit_changes': 'integer', 'count_approval_gate_steps': 'integer', 'count_gates_without_human_approver': 'integer', 'count_workflow_artifacts': 'integer', 'count_roles_with_escalation_violation': 'integer', 'count_unconsumed_datasets': 'integer', 'cq1_satisfied': 'boolean', 'cq2_satisfied': 'boolean', 'cq3_satisfied': 'boolean', 'cq4_satisfied': 'boolean', 'cq5_satisfied': 'boolean', 'cq6_satisfied': 'boolean', 'cq7_satisfied': 'boolean', 'cq8_satisfied': 'boolean'},
+     'calculated': {'involves_engineering_and_legal', 'cq5_satisfied', 'name', 'has_consistency_violation', 'cq4_satisfied', 'cq8_satisfied', 'is_stale', 'cq1_satisfied', 'cq2_satisfied', 'cq3_satisfied', 'relative_path', 'is_stale_and_has_ai_agent', 'cq7_satisfied', 'cq6_satisfied', 'has_ai_agent_step', 'count_of_precedence_closure_pairs', 'iri', 'months_since_modified', 'has_more_than1_step'},
      'lookups': [],
      'aggregations': [
-        {'field': 'count_of_non_proposed_steps', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'field', 'workflow_id')]},
-        {'field': 'count_ai_steps', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'field', 'workflow_id'), ('is_executed_by_ai', 'literal', True)]},
-        {'field': 'count_human_steps', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'field', 'workflow_id'), ('is_executed_by_human', 'literal', True)]},
-        {'field': 'count_human_required_steps', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'field', 'workflow_id'), ('requires_human_approval', 'literal', True)]},
-        {'field': 'count_approval_consistency_violations', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'field', 'workflow_id'), ('approval_consistency_violation', 'literal', True)]},
-        {'field': 'count_derivation_links', 'op': 'COUNTIFS', 'table': 'workflow_artifacts', 'criteria': [('produced_by_workflow', 'field', 'workflow_id'), ('has_derivation_parent', 'literal', True)]},
-        {'field': 'count_legal_owned_steps', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'field', 'workflow_id'), ('is_legal_owned', 'literal', True)]},
-        {'field': 'count_engineering_owned_steps', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'field', 'workflow_id'), ('is_engineering_owned', 'literal', True)]},
+        {'field': 'count_of_non_proposed_steps', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'raw_field', 'workflow_id')]},
+        {'field': 'count_ai_steps', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'raw_field', 'workflow_id'), ('is_executed_by_ai', 'literal', True)]},
+        {'field': 'count_human_steps', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'raw_field', 'workflow_id'), ('is_executed_by_human', 'literal', True)]},
+        {'field': 'count_human_required_steps', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'raw_field', 'workflow_id'), ('requires_human_approval', 'literal', True)]},
+        {'field': 'count_approval_consistency_violations', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'raw_field', 'workflow_id'), ('approval_consistency_violation', 'literal', True)]},
+        {'field': 'count_derivation_links', 'op': 'COUNTIFS', 'table': 'workflow_artifacts', 'criteria': [('produced_by_workflow', 'raw_field', 'workflow_id'), ('has_derivation_parent', 'literal', True)]},
+        {'field': 'count_legal_owned_steps', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'raw_field', 'workflow_id'), ('is_legal_owned', 'literal', True)]},
+        {'field': 'count_engineering_owned_steps', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'raw_field', 'workflow_id'), ('is_engineering_owned', 'literal', True)]},
         {'field': 'count_inferred_precedence_pairs', 'op': 'COUNTIFS', 'table': 'vw_step_precedence_closure', 'criteria': [('is_inferred', 'literal', True)]},
         {'field': 'count_asserted_precedence_pairs', 'op': 'COUNTIFS', 'table': 'vw_step_precedence_closure', 'criteria': [('is_inferred', 'literal', False)]},
         {'field': 'count_roles_with_bad_filler_cardinality', 'op': 'COUNTIFS', 'table': 'roles', 'criteria': [('has_exactly_one_filler', 'literal', False)]},
         {'field': 'count_agent_type_changes', 'op': 'COUNTIFS', 'table': 'role_assignments', 'criteria': [('is_agent_type_change', 'literal', True)]},
         {'field': 'count_compliance_audit_changes', 'op': 'COUNTIFS', 'table': 'role_assignments', 'criteria': [('requires_compliance_audit', 'literal', True)]},
-        {'field': 'count_approval_gate_steps', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'field', 'workflow_id'), ('is_approval_gate', 'literal', True)]},
+        {'field': 'count_approval_gate_steps', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('workflow', 'raw_field', 'workflow_id'), ('is_approval_gate', 'literal', True)]},
         {'field': 'count_gates_without_human_approver', 'op': 'COUNTIFS', 'table': 'approval_gates', 'criteria': [('has_human_approver', 'literal', False)]},
-        {'field': 'count_workflow_artifacts', 'op': 'COUNTIFS', 'table': 'workflow_artifacts', 'criteria': [('produced_by_workflow', 'field', 'workflow_id')]},
+        {'field': 'count_workflow_artifacts', 'op': 'COUNTIFS', 'table': 'workflow_artifacts', 'criteria': [('produced_by_workflow', 'raw_field', 'workflow_id')]},
         {'field': 'count_roles_with_escalation_violation', 'op': 'COUNTIFS', 'table': 'roles', 'criteria': [('escalation_violation', 'literal', True)]},
         {'field': 'count_unconsumed_datasets', 'op': 'COUNTIFS', 'table': 'datasets', 'criteria': [('is_consumed', 'literal', False)]},]},
     {'name': 'WorkflowSteps', 'file': 'workflow_steps', 'rulebook_rows': 5,
      'compute': compute_workflow_steps_fields,
      'fields': ['workflow_step_id', 'parent_path', 'relative_path', 'iri', 'name', 'display_name', 'workflow', 'preceding_step_count', 'inferred_sequence_position', 'sequence_position_override', 'sequence_position', 'assigned_role', 'requires_human_approval', 'step_duration_minutes', 'consumes_dataset', 'produces_artifacts', 'requires_artifacts', 'approval_gate', 'precedes', 'preceded_by', 'executing_human_agent', 'executing_ai_agent', 'executing_automated_pipeline', 'executing_agent_type', 'is_executed_by_ai', 'is_executed_by_human', 'is_approval_gate', 'approval_consistency_violation', 'approval_is_human_filled', 'owning_department', 'is_legal_owned', 'is_engineering_owned'],
-     'calculated': {'approval_is_human_filled', 'iri', 'is_legal_owned', 'sequence_position', 'inferred_sequence_position', 'name', 'is_engineering_owned', 'approval_consistency_violation', 'is_executed_by_ai', 'relative_path', 'is_executed_by_human', 'is_approval_gate', 'executing_agent_type'},
+     'datatypes': {'parent_path': 'string', 'relative_path': 'string', 'iri': 'string', 'name': 'string', 'preceding_step_count': 'integer', 'inferred_sequence_position': 'integer', 'sequence_position': 'integer', 'executing_human_agent': 'string', 'executing_ai_agent': 'string', 'executing_automated_pipeline': 'string', 'executing_agent_type': 'string', 'is_executed_by_ai': 'boolean', 'is_executed_by_human': 'boolean', 'is_approval_gate': 'boolean', 'approval_consistency_violation': 'boolean', 'approval_is_human_filled': 'boolean', 'owning_department': 'string', 'is_legal_owned': 'boolean', 'is_engineering_owned': 'boolean'},
+     'calculated': {'executing_agent_type', 'is_engineering_owned', 'is_executed_by_human', 'is_legal_owned', 'name', 'approval_consistency_violation', 'is_approval_gate', 'sequence_position', 'relative_path', 'inferred_sequence_position', 'approval_is_human_filled', 'iri', 'is_executed_by_ai'},
      'lookups': [
         {'field': 'parent_path', 'target': 'workflows', 'return': 'relative_path', 'key': 'workflow', 'match': 'workflow_id'},
         {'field': 'executing_human_agent', 'target': 'roles', 'return': 'filled_by_human_agent', 'key': 'assigned_role', 'match': 'role_id'},
@@ -2091,11 +2098,12 @@ ERB_TABLES = [
         {'field': 'executing_automated_pipeline', 'target': 'roles', 'return': 'filled_by_automated_pipeline', 'key': 'assigned_role', 'match': 'role_id'},
         {'field': 'owning_department', 'target': 'roles', 'return': 'owned_by', 'key': 'assigned_role', 'match': 'role_id'},],
      'aggregations': [
-        {'field': 'preceding_step_count', 'op': 'COUNTIFS', 'table': 'vw_step_precedence_closure', 'criteria': [('to_id', 'field', 'workflow_step_id')]},]},
+        {'field': 'preceding_step_count', 'op': 'COUNTIFS', 'table': 'vw_step_precedence_closure', 'criteria': [('to_id', 'raw_field', 'workflow_step_id')]},]},
     {'name': 'ApprovalGates', 'file': 'approval_gates', 'rulebook_rows': 1,
      'compute': compute_approval_gates_fields,
      'fields': ['approval_gate_id', 'parent_path', 'relative_path', 'iri', 'name', 'display_name', 'workflow_step', 'escalation_threshold_hours', 'gate_role', 'gate_approver_human', 'has_human_approver'],
-     'calculated': {'name', 'iri', 'has_human_approver', 'relative_path'},
+     'datatypes': {'parent_path': 'string', 'relative_path': 'string', 'iri': 'string', 'name': 'string', 'gate_role': 'string', 'gate_approver_human': 'string', 'has_human_approver': 'boolean'},
+     'calculated': {'name', 'relative_path', 'has_human_approver', 'iri'},
      'lookups': [
         {'field': 'parent_path', 'target': 'workflow_steps', 'return': 'relative_path', 'key': 'workflow_step', 'match': 'workflow_step_id'},
         {'field': 'gate_role', 'target': 'workflow_steps', 'return': 'assigned_role', 'key': 'workflow_step', 'match': 'workflow_step_id'},
@@ -2104,78 +2112,90 @@ ERB_TABLES = [
     {'name': 'StepPrecedence', 'file': 'step_precedence', 'rulebook_rows': 4,
      'compute': compute_step_precedence_fields,
      'fields': ['step_precedence_id', 'parent_path', 'relative_path', 'iri', 'name', 'from_step', 'to_step', 'precedes_step_closure'],
-     'calculated': {'name', 'iri', 'relative_path'},
+     'datatypes': {'parent_path': 'string', 'relative_path': 'string', 'iri': 'string', 'name': 'string'},
+     'calculated': {'name', 'relative_path', 'iri'},
      'lookups': [
         {'field': 'parent_path', 'target': 'workflow_steps', 'return': 'relative_path', 'key': 'from_step', 'match': 'workflow_step_id'},],
      'aggregations': []},
     {'name': 'Roles', 'file': 'roles', 'rulebook_rows': 7,
      'compute': compute_roles_fields,
      'fields': ['role_id', 'relative_path', 'iri', 'name', 'display_name', 'label', 'comment', 'has_capability', 'filled_by_human_agent', 'filled_by_ai_agent', 'filled_by_automated_pipeline', 'owned_by', 'delegates_to', 'workflow_steps', 'from_delegates_to', 'role_assignments', 'delegation_closure', 'filled_by_arm_count', 'has_exactly_one_filler', 'filler_type', 'fills_approval_gate', 'escalation_violation'],
-     'calculated': {'has_exactly_one_filler', 'iri', 'name', 'filled_by_arm_count', 'filler_type', 'relative_path', 'escalation_violation'},
+     'datatypes': {'relative_path': 'string', 'iri': 'string', 'name': 'string', 'filled_by_arm_count': 'integer', 'has_exactly_one_filler': 'boolean', 'filler_type': 'string', 'fills_approval_gate': 'integer', 'escalation_violation': 'boolean'},
+     'calculated': {'name', 'filler_type', 'filled_by_arm_count', 'relative_path', 'has_exactly_one_filler', 'iri', 'escalation_violation'},
      'lookups': [],
      'aggregations': [
-        {'field': 'fills_approval_gate', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('assigned_role', 'field', 'role_id'), ('is_approval_gate', 'literal', True)]},]},
+        {'field': 'fills_approval_gate', 'op': 'COUNTIFS', 'table': 'workflow_steps', 'criteria': [('assigned_role', 'raw_field', 'role_id'), ('is_approval_gate', 'literal', True)]},]},
     {'name': 'RoleAssignments', 'file': 'role_assignments', 'rulebook_rows': 6,
      'compute': compute_role_assignments_fields,
      'fields': ['role_assignment_id', 'parent_path', 'relative_path', 'iri', 'name', 'role', 'filled_by_human_agent', 'filled_by_ai_agent', 'filled_by_automated_pipeline', 'valid_from', 'valid_to', 'reason', 'prior_filler_type', 'filler_type', 'is_current', 'was_active_as_of_audit_date', 'is_agent_type_change', 'requires_compliance_audit'],
-     'calculated': {'iri', 'was_active_as_of_audit_date', 'name', 'requires_compliance_audit', 'is_agent_type_change', 'is_current', 'filler_type', 'relative_path'},
+     'datatypes': {'parent_path': 'string', 'relative_path': 'string', 'iri': 'string', 'name': 'string', 'filler_type': 'string', 'is_current': 'boolean', 'was_active_as_of_audit_date': 'boolean', 'is_agent_type_change': 'boolean', 'requires_compliance_audit': 'boolean'},
+     'calculated': {'is_current', 'was_active_as_of_audit_date', 'is_agent_type_change', 'name', 'filler_type', 'requires_compliance_audit', 'relative_path', 'iri'},
      'lookups': [
         {'field': 'parent_path', 'target': 'roles', 'return': 'relative_path', 'key': 'role', 'match': 'role_id'},],
      'aggregations': []},
     {'name': 'Departments', 'file': 'departments', 'rulebook_rows': 2,
      'compute': compute_departments_fields,
      'fields': ['department_id', 'relative_path', 'iri', 'name', 'title', 'display_name', 'roles'],
-     'calculated': {'name', 'iri', 'relative_path'},
+     'datatypes': {'relative_path': 'string', 'iri': 'string', 'name': 'string'},
+     'calculated': {'name', 'relative_path', 'iri'},
      'lookups': [],
      'aggregations': []},
     {'name': 'HumanAgents', 'file': 'human_agents', 'rulebook_rows': 5,
      'compute': compute_human_agents_fields,
      'fields': ['human_agent_id', 'relative_path', 'iri', 'name', 'display_name', 'mbox', 'roles', 'role_assignments'],
+     'datatypes': {'relative_path': 'string', 'iri': 'string'},
      'calculated': {'relative_path', 'iri'},
      'lookups': [],
      'aggregations': []},
     {'name': 'AIAgents', 'file': 'ai_agents', 'rulebook_rows': 2,
      'compute': compute_ai_agents_fields,
      'fields': ['ai_agent_id', 'relative_path', 'iri', 'name', 'title', 'display_name', 'model_version', 'deployed_on', 'roles', 'role_assignments', 'attributed_artifacts', 'count_attributed_artifacts', 'count_impacted_workflows'],
+     'datatypes': {'relative_path': 'string', 'iri': 'string', 'count_attributed_artifacts': 'integer', 'count_impacted_workflows': 'integer'},
      'calculated': {'relative_path', 'iri'},
      'lookups': [],
      'aggregations': [
-        {'field': 'count_attributed_artifacts', 'op': 'COUNTIFS', 'table': 'workflow_artifacts', 'criteria': [('attributed_to_ai_agent', 'field', 'ai_agent_id')]},
-        {'field': 'count_impacted_workflows', 'op': 'COUNTIFS', 'table': 'workflow_artifacts', 'criteria': [('attributed_to_ai_agent', 'field', 'ai_agent_id'), ('has_producing_workflow', 'literal', True)]},]},
+        {'field': 'count_attributed_artifacts', 'op': 'COUNTIFS', 'table': 'workflow_artifacts', 'criteria': [('attributed_to_ai_agent', 'raw_field', 'ai_agent_id')]},
+        {'field': 'count_impacted_workflows', 'op': 'COUNTIFS', 'table': 'workflow_artifacts', 'criteria': [('attributed_to_ai_agent', 'raw_field', 'ai_agent_id'), ('has_producing_workflow', 'literal', True)]},]},
     {'name': 'AutomatedPipelines', 'file': 'automated_pipelines', 'rulebook_rows': 1,
      'compute': compute_automated_pipelines_fields,
      'fields': ['automated_pipeline_id', 'relative_path', 'iri', 'name', 'description', 'display_name', 'roles', 'role_assignments'],
+     'datatypes': {'relative_path': 'string', 'iri': 'string'},
      'calculated': {'relative_path', 'iri'},
      'lookups': [],
      'aggregations': []},
     {'name': 'WorkflowStatusConcepts', 'file': 'workflow_status_concepts', 'rulebook_rows': 4,
      'compute': compute_workflow_status_concepts_fields,
      'fields': ['concept_id', 'relative_path', 'iri', 'pref_label', 'alt_label', 'definition', 'scope_note', 'workflows'],
+     'datatypes': {'relative_path': 'string', 'iri': 'string'},
      'calculated': {'relative_path', 'iri'},
      'lookups': [],
      'aggregations': []},
     {'name': 'AgentCapabilityConcepts', 'file': 'agent_capability_concepts', 'rulebook_rows': 6,
      'compute': compute_agent_capability_concepts_fields,
      'fields': ['concept_id', 'relative_path', 'iri', 'pref_label', 'alt_label', 'definition', 'scope_note', 'roles'],
+     'datatypes': {'relative_path': 'string', 'iri': 'string'},
      'calculated': {'relative_path', 'iri'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ArtifactTypeConcepts', 'file': 'artifact_type_concepts', 'rulebook_rows': 3,
      'compute': compute_artifact_type_concepts_fields,
      'fields': ['concept_id', 'relative_path', 'iri', 'pref_label', 'alt_label', 'definition', 'scope_note', 'workflow_artifacts'],
+     'datatypes': {'relative_path': 'string', 'iri': 'string'},
      'calculated': {'relative_path', 'iri'},
      'lookups': [],
      'aggregations': []},
     {'name': 'Datasets', 'file': 'datasets', 'rulebook_rows': 1,
      'compute': compute_datasets_fields,
      'fields': ['dataset_id', 'relative_path', 'iri', 'title', 'identifier', 'modified', 'distribution_url', 'consumed_by_steps', 'is_consumed'],
-     'calculated': {'relative_path', 'iri', 'is_consumed'},
+     'datatypes': {'relative_path': 'string', 'iri': 'string', 'is_consumed': 'boolean'},
+     'calculated': {'relative_path', 'is_consumed', 'iri'},
      'lookups': [],
      'aggregations': []},
     {'name': 'WorkflowArtifacts', 'file': 'workflow_artifacts', 'rulebook_rows': 5,
      'compute': compute_workflow_artifacts_fields,
      'fields': ['artifact_id', 'parent_path', 'relative_path', 'iri', 'title', 'identifier', 'artifact_type', 'created', 'produced_by_step', 'required_by_steps', 'derived_from_artifact', 'attributed_to_human_agent', 'attributed_to_ai_agent', 'attributed_to_automated_pipeline', 'producing_agent_type', 'has_derivation_parent', 'produced_by_workflow', 'has_producing_workflow', 'derivation_closure'],
-     'calculated': {'iri', 'has_producing_workflow', 'has_derivation_parent', 'producing_agent_type', 'relative_path'},
+     'datatypes': {'parent_path': 'string', 'relative_path': 'string', 'iri': 'string', 'producing_agent_type': 'string', 'has_derivation_parent': 'boolean', 'produced_by_workflow': 'string', 'has_producing_workflow': 'boolean'},
+     'calculated': {'has_derivation_parent', 'producing_agent_type', 'has_producing_workflow', 'relative_path', 'iri'},
      'lookups': [
         {'field': 'parent_path', 'target': 'workflow_steps', 'return': 'relative_path', 'key': 'produced_by_step', 'match': 'workflow_step_id'},
         {'field': 'produced_by_workflow', 'target': 'workflow_steps', 'return': 'workflow', 'key': 'produced_by_step', 'match': 'workflow_step_id'},],
@@ -2183,48 +2203,56 @@ ERB_TABLES = [
     {'name': 'GovernanceRoles', 'file': 'governance_roles', 'rulebook_rows': 2,
      'compute': compute_governance_roles_fields,
      'fields': ['governance_role_id', 'relative_path', 'iri', 'name', 'display_name', 'kind', 'responsibilities', 'approval_scope', 'held_by', 'can_approve_changes', 'approved_changes'],
-     'calculated': {'name', 'iri', 'relative_path', 'can_approve_changes'},
+     'datatypes': {'relative_path': 'string', 'iri': 'string', 'name': 'string', 'can_approve_changes': 'boolean'},
+     'calculated': {'name', 'relative_path', 'iri', 'can_approve_changes'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ChangeLog', 'file': 'change_log', 'rulebook_rows': 2,
      'compute': compute_change_log_fields,
      'fields': ['change_log_id', 'relative_path', 'iri', 'name', 'version', 'change_date', 'change_kind', 'motivating_question', 'terms_affected', 'rationale', 'approved_by', 'is_breaking_change', 'is_backward_compatible'],
-     'calculated': {'iri', 'is_backward_compatible', 'name', 'is_breaking_change', 'relative_path'},
+     'datatypes': {'relative_path': 'string', 'iri': 'string', 'name': 'string', 'is_breaking_change': 'boolean', 'is_backward_compatible': 'boolean'},
+     'calculated': {'is_backward_compatible', 'is_breaking_change', 'name', 'relative_path', 'iri'},
      'lookups': [],
      'aggregations': []},
     {'name': 'VocabularyReconciliations', 'file': 'vocabulary_reconciliations', 'rulebook_rows': 2,
      'compute': compute_vocabulary_reconciliations_fields,
      'fields': ['reconciliation_id', 'relative_path', 'iri', 'name', 'deprecated_term', 'replacement_term', 'reconciliation_relation', 'source_standard', 'introduced_in_version', 'rationale'],
-     'calculated': {'name', 'iri', 'relative_path'},
+     'datatypes': {'relative_path': 'string', 'iri': 'string', 'name': 'string'},
+     'calculated': {'name', 'relative_path', 'iri'},
      'lookups': [],
      'aggregations': []},
     {'name': 'Scenarios', 'file': 'scenarios', 'rulebook_rows': 12,
      'compute': compute_scenarios_fields,
      'fields': ['scenario_id', 'relative_path', 'iri', 'name', 'label', 'icon', 'explanation', 'sort_order', 'is_reset', 'edits'],
-     'calculated': {'name', 'iri', 'relative_path'},
+     'datatypes': {'relative_path': 'string', 'iri': 'string', 'name': 'string'},
+     'calculated': {'name', 'relative_path', 'iri'},
      'lookups': [],
      'aggregations': []},
     {'name': 'CompetencyQuestions', 'file': 'competency_questions', 'rulebook_rows': 8,
      'compute': compute_competency_questions_fields,
      'fields': ['competency_question_id', 'relative_path', 'iri', 'name', 'number', 'display_name', 'question_text', 'target_table', 'target_field', 'answer_kind', 'expected_answer', 'satisfied_field', 'explanation', 'sort_order', 'is_active', 'simulate_scenario'],
-     'calculated': {'name', 'iri', 'relative_path'},
+     'datatypes': {'relative_path': 'string', 'iri': 'string', 'name': 'string'},
+     'calculated': {'name', 'relative_path', 'iri'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ScenarioCQEffects', 'file': 'scenario_cq_effects', 'rulebook_rows': 12,
      'compute': compute_scenario_cq_effects_fields,
      'fields': ['scenario_cq_effect_id', 'relative_path', 'iri', 'name', 'scenario', 'competency_question', 'effect_kind', 'note', 'sort_order'],
-     'calculated': {'name', 'iri', 'relative_path'},
+     'datatypes': {'relative_path': 'string', 'iri': 'string', 'name': 'string'},
+     'calculated': {'name', 'relative_path', 'iri'},
      'lookups': [],
      'aggregations': []},
     {'name': 'ConformanceTests', 'file': 'conformance_tests', 'rulebook_rows': 72,
      'compute': compute_conformance_tests_fields,
      'fields': ['conformance_test_id', 'relative_path', 'iri', 'name', 'display_name', 'feature_ref', 'section', 'test_kind', 'target_ref', 'expect', 'explanation', 'sort_order', 'is_enabled'],
-     'calculated': {'name', 'iri', 'relative_path'},
+     'datatypes': {'relative_path': 'string', 'iri': 'string', 'name': 'string'},
+     'calculated': {'name', 'relative_path', 'iri'},
      'lookups': [],
      'aggregations': []},
-    {'name': '__meta__', 'file': '__meta__', 'rulebook_rows': 12,
+    {'name': '__meta__', 'file': '__meta__', 'rulebook_rows': 14,
      'compute': compute___meta___fields,
      'fields': ['meta_key', 'name', 'value_type', 'string_value', 'json_value'],
+     'datatypes': {'name': 'string'},
      'calculated': {'name'},
      'lookups': [],
      'aggregations': []},
@@ -2232,7 +2260,7 @@ ERB_TABLES = [
 
 # ERB_CLOSURES materializes each vw_<entity>_closure view aggregations read.
 ERB_CLOSURES = [
-    {'view': 'vw_roles_closure', 'source': 'roles', 'from': 'role_id', 'to': 'delegates_to'},
-    {'view': 'vw_step_precedence_closure', 'source': 'step_precedence', 'from': 'from_step', 'to': 'to_step'},
-    {'view': 'vw_workflow_artifacts_closure', 'source': 'workflow_artifacts', 'from': 'artifact_id', 'to': 'derived_from_artifact'},
+    {'view': 'vw_roles_closure', 'source': 'roles', 'from': 'role_id', 'to': 'delegates_to', 'filter': None},
+    {'view': 'vw_step_precedence_closure', 'source': 'step_precedence', 'from': 'from_step', 'to': 'to_step', 'filter': None},
+    {'view': 'vw_workflow_artifacts_closure', 'source': 'workflow_artifacts', 'from': 'artifact_id', 'to': 'derived_from_artifact', 'filter': None},
 ]

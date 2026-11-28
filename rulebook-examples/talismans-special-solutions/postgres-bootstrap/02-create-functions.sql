@@ -14,6 +14,113 @@
 SET check_function_bodies = off;
 
 -- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+
+-- ============================================================================
 -- LOOKUP FUNCTIONS
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
@@ -135,7 +242,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_has_more_than1_step(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_workflows_count_of_non_proposed_steps(p_workflow_id))::NUMERIC > 1)::boolean;
+  SELECT (COALESCE((calc_workflows_count_of_non_proposed_steps(p_workflow_id))::NUMERIC, 0) > 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_ai_steps
@@ -145,7 +252,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_ai_steps(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM workflow_steps WHERE workflow = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id) AND calc_workflow_steps_is_executed_by_ai(workflow_step_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM workflow_steps erb_r1 WHERE workflow = (SELECT (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_workflow_steps_executing_ai_agent(erb_r1.workflow_step_id) AS val) SELECT (NOT (COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_human_steps
@@ -155,7 +262,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_human_steps(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM workflow_steps WHERE workflow = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id) AND calc_workflow_steps_is_executed_by_human(workflow_step_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM workflow_steps erb_r1 WHERE workflow = (SELECT (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_workflow_steps_executing_human_agent(erb_r1.workflow_step_id) AS val) SELECT (NOT (COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_human_required_steps
@@ -175,7 +282,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_approval_consistency_violations(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM workflow_steps WHERE workflow = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id) AND calc_workflow_steps_approval_consistency_violation(workflow_step_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM workflow_steps erb_r1 WHERE workflow = (SELECT (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_workflow_steps_executing_human_agent(erb_r1.workflow_step_id) AS val) SELECT ((COALESCE(COALESCE(erb_r1.requires_human_approval, FALSE), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_has_consistency_violation
@@ -185,7 +292,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_has_consistency_violation(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_workflows_count_approval_consistency_violations(p_workflow_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_workflows_count_approval_consistency_violations(p_workflow_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_has_ai_agent_step
@@ -195,7 +302,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_has_ai_agent_step(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_workflows_count_ai_steps(p_workflow_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_workflows_count_ai_steps(p_workflow_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_months_since_modified
@@ -205,7 +312,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_months_since_modified(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((EXTRACT(YEAR FROM AGE(CURRENT_TIMESTAMP::timestamp, (SELECT modified::timestamptz FROM workflows WHERE workflow_id = p_workflow_id)::timestamp)) * 12 + EXTRACT(MONTH FROM AGE(CURRENT_TIMESTAMP::timestamp, (SELECT modified::timestamptz FROM workflows WHERE workflow_id = p_workflow_id)::timestamp))))::integer;
+  SELECT ((EXTRACT(YEAR FROM AGE(((COALESCE(NULLIF(current_setting('erb.now', true), '')::timestamptz, CURRENT_TIMESTAMP))::timestamptz AT TIME ZONE 'UTC'), (((SELECT modified::timestamptz FROM workflows WHERE workflow_id = p_workflow_id))::timestamptz AT TIME ZONE 'UTC'))) * 12 + EXTRACT(MONTH FROM AGE(((COALESCE(NULLIF(current_setting('erb.now', true), '')::timestamptz, CURRENT_TIMESTAMP))::timestamptz AT TIME ZONE 'UTC'), (((SELECT modified::timestamptz FROM workflows WHERE workflow_id = p_workflow_id))::timestamptz AT TIME ZONE 'UTC')))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_is_stale
@@ -215,7 +322,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_is_stale(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_workflows_months_since_modified(p_workflow_id) > (SELECT staleness_threshold_months FROM workflows WHERE workflow_id = p_workflow_id))::boolean;
+  SELECT (COALESCE(calc_workflows_months_since_modified(p_workflow_id), 0) > COALESCE((SELECT staleness_threshold_months FROM workflows WHERE workflow_id = p_workflow_id), 0))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_is_stale_and_has_ai_agent
@@ -225,7 +332,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_is_stale_and_has_ai_agent(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_workflows_is_stale(p_workflow_id) AND calc_workflows_has_ai_agent_step(p_workflow_id)))::boolean;
+  SELECT ((COALESCE(calc_workflows_is_stale(p_workflow_id), FALSE) AND COALESCE(calc_workflows_has_ai_agent_step(p_workflow_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_derivation_links
@@ -235,7 +342,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_derivation_links(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM workflow_artifacts WHERE calc_workflow_artifacts_produced_by_workflow(artifact_id) = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id) AND calc_workflow_artifacts_has_derivation_parent(artifact_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM workflow_artifacts erb_r1 WHERE ((SELECT (SELECT workflow::text FROM workflow_steps WHERE workflow_step_id = erb_r1.produced_by_step)))::text = (SELECT (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id)) AND ((SELECT (NOT (COALESCE(((NULLIF(erb_r1.derived_from_artifact, '')) IS NULL OR (NULLIF(erb_r1.derived_from_artifact, ''))::text = ''), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_legal_owned_steps
@@ -245,7 +352,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_legal_owned_steps(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM workflow_steps WHERE workflow = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id) AND calc_workflow_steps_is_legal_owned(workflow_step_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM workflow_steps erb_r1 WHERE workflow = (SELECT (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id)) AND ((SELECT (COALESCE(calc_workflow_steps_owning_department(erb_r1.workflow_step_id), '') = 'ntwf-legal-dept')::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_engineering_owned_steps
@@ -255,7 +362,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_engineering_owned_steps(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM workflow_steps WHERE workflow = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id) AND calc_workflow_steps_is_engineering_owned(workflow_step_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM workflow_steps erb_r1 WHERE workflow = (SELECT (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id)) AND ((SELECT (COALESCE(calc_workflow_steps_owning_department(erb_r1.workflow_step_id), '') = 'ntwf-engineering')::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_involves_engineering_and_legal
@@ -265,7 +372,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_involves_engineering_and_legal(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_workflows_count_engineering_owned_steps(p_workflow_id))::NUMERIC > 0 AND (calc_workflows_count_legal_owned_steps(p_workflow_id))::NUMERIC > 0));
+  SELECT ((COALESCE(COALESCE((calc_workflows_count_engineering_owned_steps(p_workflow_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((calc_workflows_count_legal_owned_steps(p_workflow_id))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_inferred_precedence_pairs
@@ -295,7 +402,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_of_precedence_closure_pairs(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_workflows_count_asserted_precedence_pairs(p_workflow_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_workflows_count_inferred_precedence_pairs(p_workflow_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_workflows_count_asserted_precedence_pairs(p_workflow_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_workflows_count_inferred_precedence_pairs(p_workflow_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_roles_with_bad_filler_cardinality
@@ -305,7 +412,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_roles_with_bad_filler_cardinality(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM roles WHERE calc_roles_has_exactly_one_filler(role_id) = FALSE))::integer;
+  SELECT ((SELECT COUNT(*) FROM roles erb_r1 WHERE ((SELECT (COALESCE((calc_roles_filled_by_arm_count(erb_r1.role_id))::NUMERIC, 0) = 1)::boolean))::boolean = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_agent_type_changes
@@ -315,7 +422,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_agent_type_changes(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_is_agent_type_change(role_assignment_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM role_assignments erb_r1 WHERE ((SELECT ((COALESCE(NOT (COALESCE(((NULLIF(erb_r1.prior_filler_type, '')) IS NULL OR (NULLIF(erb_r1.prior_filler_type, ''))::text = ''), FALSE)), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.prior_filler_type, ''), '') <> COALESCE(calc_role_assignments_filler_type(erb_r1.role_assignment_id), ''), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_compliance_audit_changes
@@ -325,7 +432,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_compliance_audit_changes(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_requires_compliance_audit(role_assignment_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM role_assignments erb_r1 WHERE ((SELECT ((COALESCE(NOT (COALESCE(((NULLIF(erb_r1.prior_filler_type, '')) IS NULL OR (NULLIF(erb_r1.prior_filler_type, ''))::text = ''), FALSE)), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.prior_filler_type, ''), '') = 'AIAgent', FALSE) AND COALESCE(COALESCE(calc_role_assignments_filler_type(erb_r1.role_assignment_id), '') = 'HumanAgent', FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_approval_gate_steps
@@ -335,7 +442,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_approval_gate_steps(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM workflow_steps WHERE workflow = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id) AND calc_workflow_steps_is_approval_gate(workflow_step_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM workflow_steps erb_r1 WHERE workflow = (SELECT (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id)) AND ((SELECT (NOT (COALESCE(((NULLIF(erb_r1.approval_gate, '')) IS NULL OR (NULLIF(erb_r1.approval_gate, ''))::text = ''), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_gates_without_human_approver
@@ -345,7 +452,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_gates_without_human_approver(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM approval_gates WHERE calc_approval_gates_has_human_approver(approval_gate_id) = FALSE))::integer;
+  SELECT ((SELECT COUNT(*) FROM approval_gates erb_r1 WHERE ((WITH __erb_dedup_v1 AS (SELECT calc_approval_gates_gate_approver_human(erb_r1.approval_gate_id) AS val) SELECT (NOT (COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean))::boolean = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_workflow_artifacts
@@ -355,7 +462,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_workflow_artifacts(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM workflow_artifacts WHERE calc_workflow_artifacts_produced_by_workflow(artifact_id) = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM workflow_artifacts erb_r1 WHERE ((SELECT (SELECT workflow::text FROM workflow_steps WHERE workflow_step_id = erb_r1.produced_by_step)))::text = (SELECT (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_roles_with_escalation_violation
@@ -365,7 +472,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_roles_with_escalation_violation(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM roles WHERE calc_roles_escalation_violation(role_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM roles erb_r1 WHERE ((SELECT ((COALESCE(COALESCE((calc_roles_fills_approval_gate(erb_r1.role_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(((NULLIF(erb_r1.delegates_to, '')) IS NULL OR (NULLIF(erb_r1.delegates_to, ''))::text = ''), FALSE)))))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_count_unconsumed_datasets
@@ -375,7 +482,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_unconsumed_datasets(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM datasets WHERE calc_datasets_is_consumed(dataset_id) = FALSE))::integer;
+  SELECT ((SELECT COUNT(*) FROM datasets erb_r1 WHERE ((WITH __erb_dedup_v1 AS (SELECT calc_datasets_consumed_by_steps(erb_r1.dataset_id) AS val) SELECT (NOT (COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean))::boolean = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_cq1_satisfied
@@ -385,7 +492,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_cq1_satisfied(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_workflows_count_of_non_proposed_steps(p_workflow_id) AS val) SELECT (calc_workflows_count_of_precedence_closure_pairs(p_workflow_id) = (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) - COALESCE(1, 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE(2, 0), 0))) AS v) __safe_numeric), 0)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_workflows_count_of_non_proposed_steps(p_workflow_id) AS val) SELECT (COALESCE(calc_workflows_count_of_precedence_closure_pairs(p_workflow_id), 0) = COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE(1, 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(2, 0), 0))) AS v OFFSET 0) __safe_numeric), 0)), 0))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_cq2_satisfied
@@ -395,7 +502,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_cq2_satisfied(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_workflows_count_approval_gate_steps(p_workflow_id))::NUMERIC > 0 AND (calc_workflows_count_gates_without_human_approver(p_workflow_id))::NUMERIC = 0));
+  SELECT ((COALESCE(COALESCE((calc_workflows_count_approval_gate_steps(p_workflow_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((calc_workflows_count_gates_without_human_approver(p_workflow_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_cq3_satisfied
@@ -405,7 +512,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_cq3_satisfied(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (NOT (calc_workflows_has_consistency_violation(p_workflow_id)))::boolean;
+  SELECT (NOT (COALESCE(calc_workflows_has_consistency_violation(p_workflow_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_cq4_satisfied
@@ -415,7 +522,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_cq4_satisfied(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_workflows_count_derivation_links(p_workflow_id) = (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_workflows_count_workflow_artifacts(p_workflow_id)) AS v) __safe_numeric), 0) - COALESCE(1, 0)))::boolean;
+  SELECT (COALESCE(calc_workflows_count_derivation_links(p_workflow_id), 0) = COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_workflows_count_workflow_artifacts(p_workflow_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE(1, 0)), 0))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_cq5_satisfied
@@ -425,7 +532,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_cq5_satisfied(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (NOT (calc_workflows_is_stale(p_workflow_id)))::boolean;
+  SELECT (NOT (COALESCE(calc_workflows_is_stale(p_workflow_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_cq6_satisfied
@@ -435,7 +542,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_cq6_satisfied(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_workflows_count_roles_with_escalation_violation(p_workflow_id))::NUMERIC = 0)::boolean;
+  SELECT (COALESCE((calc_workflows_count_roles_with_escalation_violation(p_workflow_id))::NUMERIC, 0) = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflows_cq7_satisfied
@@ -455,7 +562,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflows_cq8_satisfied(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_workflows_count_unconsumed_datasets(p_workflow_id))::NUMERIC = 0)::boolean;
+  SELECT (COALESCE((calc_workflows_count_unconsumed_datasets(p_workflow_id))::NUMERIC, 0) = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_steps_parent_path
@@ -727,7 +834,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_steps_inferred_sequence_position(p_workflow_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_workflow_steps_preceding_step_count(p_workflow_step_id)) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_workflow_steps_preceding_step_count(p_workflow_step_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_steps_sequence_position
@@ -737,7 +844,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_steps_sequence_position(p_workflow_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT sequence_position_override FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id) IS NOT NULL THEN ((SELECT sequence_position_override FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id))::text ELSE (calc_workflow_steps_inferred_sequence_position(p_workflow_step_id))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT sequence_position_override FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id)) IS NOT NULL AND ((SELECT sequence_position_override FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id))::text <> '') THEN ((SELECT sequence_position_override FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id))::text ELSE (calc_workflow_steps_inferred_sequence_position(p_workflow_step_id))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_steps_executing_agent_type
@@ -747,7 +854,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_steps_executing_agent_type(p_workflow_step_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_workflow_steps_executing_human_agent(p_workflow_step_id) AS val), __erb_dedup_v2 AS (SELECT calc_workflow_steps_executing_ai_agent(p_workflow_step_id) AS val), __erb_dedup_v3 AS (SELECT calc_workflow_steps_executing_automated_pipeline(p_workflow_step_id) AS val) SELECT (CASE WHEN NOT ((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '')) THEN ('HumanAgent')::text ELSE (CASE WHEN NOT ((((SELECT val FROM __erb_dedup_v2)) IS NULL OR ((SELECT val FROM __erb_dedup_v2))::text = '')) THEN ('AIAgent')::text ELSE (CASE WHEN NOT ((((SELECT val FROM __erb_dedup_v3)) IS NULL OR ((SELECT val FROM __erb_dedup_v3))::text = '')) THEN ('AutomatedPipeline')::text ELSE ('')::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_workflow_steps_executing_human_agent(p_workflow_step_id) AS val), __erb_dedup_v2 AS (SELECT calc_workflow_steps_executing_ai_agent(p_workflow_step_id) AS val), __erb_dedup_v3 AS (SELECT calc_workflow_steps_executing_automated_pipeline(p_workflow_step_id) AS val) SELECT (CASE WHEN NOT (COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)) THEN ('HumanAgent')::text ELSE (CASE WHEN NOT (COALESCE((((SELECT val FROM __erb_dedup_v2)) IS NULL OR ((SELECT val FROM __erb_dedup_v2))::text = ''), FALSE)) THEN ('AIAgent')::text ELSE (CASE WHEN NOT (COALESCE((((SELECT val FROM __erb_dedup_v3)) IS NULL OR ((SELECT val FROM __erb_dedup_v3))::text = ''), FALSE)) THEN ('AutomatedPipeline')::text ELSE ('')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_steps_is_executed_by_ai
@@ -757,7 +864,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_steps_is_executed_by_ai(p_workflow_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_workflow_steps_executing_ai_agent(p_workflow_step_id) AS val) SELECT (NOT ((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '')))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_workflow_steps_executing_ai_agent(p_workflow_step_id) AS val) SELECT (NOT (COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_steps_is_executed_by_human
@@ -767,7 +874,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_steps_is_executed_by_human(p_workflow_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_workflow_steps_executing_human_agent(p_workflow_step_id) AS val) SELECT (NOT ((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '')))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_workflow_steps_executing_human_agent(p_workflow_step_id) AS val) SELECT (NOT (COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_steps_is_approval_gate
@@ -777,7 +884,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_steps_is_approval_gate(p_workflow_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (NOT ((((SELECT NULLIF(approval_gate, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id)) IS NULL OR ((SELECT NULLIF(approval_gate, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id))::text = '')))::boolean;
+  SELECT (NOT (COALESCE((((SELECT NULLIF(approval_gate, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id)) IS NULL OR ((SELECT NULLIF(approval_gate, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_steps_approval_consistency_violation
@@ -787,7 +894,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_steps_approval_consistency_violation(p_workflow_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_workflow_steps_executing_human_agent(p_workflow_step_id) AS val) SELECT ((COALESCE((SELECT requires_human_approval FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id), FALSE) AND (((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '')))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_workflow_steps_executing_human_agent(p_workflow_step_id) AS val) SELECT ((COALESCE(COALESCE((SELECT requires_human_approval FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id), FALSE), FALSE) AND COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_steps_approval_is_human_filled
@@ -797,7 +904,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_steps_approval_is_human_filled(p_workflow_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_workflow_steps_executing_human_agent(p_workflow_step_id) AS val) SELECT (CASE WHEN COALESCE((SELECT requires_human_approval FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id), FALSE) THEN (NOT ((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '')))::text ELSE (TRUE)::text END)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_workflow_steps_executing_human_agent(p_workflow_step_id) AS val) SELECT (CASE WHEN COALESCE((SELECT requires_human_approval FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id), FALSE) THEN (NOT (COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::text ELSE (TRUE)::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_steps_is_legal_owned
@@ -807,7 +914,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_steps_is_legal_owned(p_workflow_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_workflow_steps_owning_department(p_workflow_step_id) = 'ntwf-legal-dept')::boolean;
+  SELECT (COALESCE(calc_workflow_steps_owning_department(p_workflow_step_id), '') = 'ntwf-legal-dept')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_steps_is_engineering_owned
@@ -817,7 +924,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_steps_is_engineering_owned(p_workflow_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_workflow_steps_owning_department(p_workflow_step_id) = 'ntwf-engineering')::boolean;
+  SELECT (COALESCE(calc_workflow_steps_owning_department(p_workflow_step_id), '') = 'ntwf-engineering')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_approval_gates_parent_path
@@ -889,7 +996,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_approval_gates_has_human_approver(p_approval_gate_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_approval_gates_gate_approver_human(p_approval_gate_id) AS val) SELECT (NOT ((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '')))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_approval_gates_gate_approver_human(p_approval_gate_id) AS val) SELECT (NOT (COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_precedence_parent_path
@@ -1155,7 +1262,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_filled_by_arm_count(p_role_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN NOT ((((SELECT NULLIF(filled_by_human_agent, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_human_agent, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN NOT ((((SELECT NULLIF(filled_by_ai_agent, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_ai_agent, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN NOT ((((SELECT NULLIF(filled_by_automated_pipeline, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_automated_pipeline, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN NOT (COALESCE((((SELECT NULLIF(filled_by_human_agent, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_human_agent, '') FROM roles WHERE role_id = p_role_id))::text = ''), FALSE)) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN NOT (COALESCE((((SELECT NULLIF(filled_by_ai_agent, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_ai_agent, '') FROM roles WHERE role_id = p_role_id))::text = ''), FALSE)) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN NOT (COALESCE((((SELECT NULLIF(filled_by_automated_pipeline, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_automated_pipeline, '') FROM roles WHERE role_id = p_role_id))::text = ''), FALSE)) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_has_exactly_one_filler
@@ -1165,7 +1272,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_has_exactly_one_filler(p_role_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_roles_filled_by_arm_count(p_role_id))::NUMERIC = 1)::boolean;
+  SELECT (COALESCE((calc_roles_filled_by_arm_count(p_role_id))::NUMERIC, 0) = 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_filler_type
@@ -1175,7 +1282,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_filler_type(p_role_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN NOT ((((SELECT NULLIF(filled_by_human_agent, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_human_agent, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN ('HumanAgent')::text ELSE (CASE WHEN NOT ((((SELECT NULLIF(filled_by_ai_agent, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_ai_agent, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN ('AIAgent')::text ELSE (CASE WHEN NOT ((((SELECT NULLIF(filled_by_automated_pipeline, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_automated_pipeline, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN ('AutomatedPipeline')::text ELSE ('')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN NOT (COALESCE((((SELECT NULLIF(filled_by_human_agent, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_human_agent, '') FROM roles WHERE role_id = p_role_id))::text = ''), FALSE)) THEN ('HumanAgent')::text ELSE (CASE WHEN NOT (COALESCE((((SELECT NULLIF(filled_by_ai_agent, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_ai_agent, '') FROM roles WHERE role_id = p_role_id))::text = ''), FALSE)) THEN ('AIAgent')::text ELSE (CASE WHEN NOT (COALESCE((((SELECT NULLIF(filled_by_automated_pipeline, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_automated_pipeline, '') FROM roles WHERE role_id = p_role_id))::text = ''), FALSE)) THEN ('AutomatedPipeline')::text ELSE ('')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_fills_approval_gate
@@ -1185,7 +1292,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_fills_approval_gate(p_role_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM workflow_steps WHERE assigned_role = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id) AND calc_workflow_steps_is_approval_gate(workflow_step_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM workflow_steps erb_r1 WHERE assigned_role = (SELECT (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id)) AND ((SELECT (NOT (COALESCE(((NULLIF(erb_r1.approval_gate, '')) IS NULL OR (NULLIF(erb_r1.approval_gate, ''))::text = ''), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_escalation_violation
@@ -1195,7 +1302,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_roles_escalation_violation(p_role_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_roles_fills_approval_gate(p_role_id))::NUMERIC > 0 AND (((SELECT NULLIF(delegates_to, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(delegates_to, '') FROM roles WHERE role_id = p_role_id))::text = '')));
+  SELECT ((COALESCE(COALESCE((calc_roles_fills_approval_gate(p_role_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE((((SELECT NULLIF(delegates_to, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(delegates_to, '') FROM roles WHERE role_id = p_role_id))::text = ''), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_parent_path
@@ -1236,7 +1343,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_name(p_role_assignment_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT((SELECT NULLIF(role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id), ' [', (SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id), ' -> ', CASE WHEN (((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '') THEN ('open')::text ELSE ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text END, ']'))::text;
+  SELECT (CONCAT((SELECT NULLIF(role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id), ' [', erb_date_text(((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::date), ' -> ', CASE WHEN (((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '') THEN ('open')::text ELSE (erb_date_text(((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::date))::text END, ']'))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_filler_type
@@ -1246,7 +1353,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_filler_type(p_role_assignment_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN NOT ((((SELECT NULLIF(filled_by_human_agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(filled_by_human_agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '')) THEN ('HumanAgent')::text ELSE (CASE WHEN NOT ((((SELECT NULLIF(filled_by_ai_agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(filled_by_ai_agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '')) THEN ('AIAgent')::text ELSE (CASE WHEN NOT ((((SELECT NULLIF(filled_by_automated_pipeline, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(filled_by_automated_pipeline, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '')) THEN ('AutomatedPipeline')::text ELSE ('')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN NOT (COALESCE((((SELECT NULLIF(filled_by_human_agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(filled_by_human_agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = ''), FALSE)) THEN ('HumanAgent')::text ELSE (CASE WHEN NOT (COALESCE((((SELECT NULLIF(filled_by_ai_agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(filled_by_ai_agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = ''), FALSE)) THEN ('AIAgent')::text ELSE (CASE WHEN NOT (COALESCE((((SELECT NULLIF(filled_by_automated_pipeline, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(filled_by_automated_pipeline, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = ''), FALSE)) THEN ('AutomatedPipeline')::text ELSE ('')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_is_current
@@ -1266,7 +1373,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_was_active_as_of_audit_date(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= '2026-03-01' AND ((((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '') OR (SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > '2026-03-01')))::boolean;
+  SELECT ((COALESCE(COALESCE(((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= '2026-03-01'), (((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL AND ('2026-03-01') IS NULL)), FALSE) AND COALESCE((COALESCE((((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = ''), FALSE) OR COALESCE(COALESCE(((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > '2026-03-01'), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_is_agent_type_change
@@ -1276,7 +1383,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_is_agent_type_change(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((NOT ((((SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '')) AND (SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <> calc_role_assignments_filler_type(p_role_assignment_id)))::boolean;
+  SELECT ((COALESCE(NOT (COALESCE((((SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = ''), FALSE)), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id), '') <> COALESCE(calc_role_assignments_filler_type(p_role_assignment_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_role_assignments_requires_compliance_audit
@@ -1286,7 +1393,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_role_assignments_requires_compliance_audit(p_role_assignment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((NOT ((((SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '')) AND (SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) = 'AIAgent' AND calc_role_assignments_filler_type(p_role_assignment_id) = 'HumanAgent'))::boolean;
+  SELECT ((COALESCE(NOT (COALESCE((((SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = ''), FALSE)), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id), '') = 'AIAgent', FALSE) AND COALESCE(COALESCE(calc_role_assignments_filler_type(p_role_assignment_id), '') = 'HumanAgent', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_departments_relative_path
@@ -1376,7 +1483,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ai_agents_count_impacted_workflows(p_ai_agent_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM workflow_artifacts WHERE attributed_to_ai_agent = (SELECT NULLIF(ai_agent_id, '') FROM ai_agents WHERE ai_agent_id = p_ai_agent_id) AND calc_workflow_artifacts_has_producing_workflow(artifact_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM workflow_artifacts erb_r1 WHERE attributed_to_ai_agent = (SELECT (SELECT NULLIF(ai_agent_id, '') FROM ai_agents WHERE ai_agent_id = p_ai_agent_id)) AND ((WITH __erb_dedup_v1 AS (SELECT calc_workflow_artifacts_produced_by_workflow(erb_r1.artifact_id) AS val) SELECT (NOT (COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_automated_pipelines_relative_path
@@ -1486,7 +1593,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_datasets_is_consumed(p_dataset_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_datasets_consumed_by_steps(p_dataset_id) AS val) SELECT (NOT ((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '')))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_datasets_consumed_by_steps(p_dataset_id) AS val) SELECT (NOT (COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_artifacts_parent_path
@@ -1574,7 +1681,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_artifacts_producing_agent_type(p_artifact_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN NOT ((((SELECT NULLIF(attributed_to_human_agent, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id)) IS NULL OR ((SELECT NULLIF(attributed_to_human_agent, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id))::text = '')) THEN ('HumanAgent')::text ELSE (CASE WHEN NOT ((((SELECT NULLIF(attributed_to_ai_agent, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id)) IS NULL OR ((SELECT NULLIF(attributed_to_ai_agent, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id))::text = '')) THEN ('AIAgent')::text ELSE (CASE WHEN NOT ((((SELECT NULLIF(attributed_to_automated_pipeline, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id)) IS NULL OR ((SELECT NULLIF(attributed_to_automated_pipeline, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id))::text = '')) THEN ('AutomatedPipeline')::text ELSE ('')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN NOT (COALESCE((((SELECT NULLIF(attributed_to_human_agent, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id)) IS NULL OR ((SELECT NULLIF(attributed_to_human_agent, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id))::text = ''), FALSE)) THEN ('HumanAgent')::text ELSE (CASE WHEN NOT (COALESCE((((SELECT NULLIF(attributed_to_ai_agent, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id)) IS NULL OR ((SELECT NULLIF(attributed_to_ai_agent, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id))::text = ''), FALSE)) THEN ('AIAgent')::text ELSE (CASE WHEN NOT (COALESCE((((SELECT NULLIF(attributed_to_automated_pipeline, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id)) IS NULL OR ((SELECT NULLIF(attributed_to_automated_pipeline, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id))::text = ''), FALSE)) THEN ('AutomatedPipeline')::text ELSE ('')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_artifacts_has_derivation_parent
@@ -1584,7 +1691,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_artifacts_has_derivation_parent(p_artifact_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (NOT ((((SELECT NULLIF(derived_from_artifact, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id)) IS NULL OR ((SELECT NULLIF(derived_from_artifact, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id))::text = '')))::boolean;
+  SELECT (NOT (COALESCE((((SELECT NULLIF(derived_from_artifact, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id)) IS NULL OR ((SELECT NULLIF(derived_from_artifact, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_artifacts_has_producing_workflow
@@ -1594,7 +1701,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_artifacts_has_producing_workflow(p_artifact_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_workflow_artifacts_produced_by_workflow(p_artifact_id) AS val) SELECT (NOT ((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = '')))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_workflow_artifacts_produced_by_workflow(p_artifact_id) AS val) SELECT (NOT (COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NULL OR ((SELECT val FROM __erb_dedup_v1))::text = ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_change_log_version
@@ -1688,7 +1795,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_governance_roles_can_approve_changes(p_governance_role_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(kind, '') FROM governance_roles WHERE governance_role_id = p_governance_role_id) = 'Authority')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(kind, '') FROM governance_roles WHERE governance_role_id = p_governance_role_id), '') = 'Authority')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_governance_roles_display_name
@@ -1763,7 +1870,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_change_log_name(p_change_log_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT((SELECT NULLIF(version, '') FROM change_log WHERE change_log_id = p_change_log_id), ' (', (SELECT change_date::timestamptz FROM change_log WHERE change_log_id = p_change_log_id), ')'))::text;
+  SELECT (CONCAT((SELECT NULLIF(version, '') FROM change_log WHERE change_log_id = p_change_log_id), ' (', erb_date_text(((SELECT change_date::timestamptz FROM change_log WHERE change_log_id = p_change_log_id))::date), ')'))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_log_is_breaking_change
@@ -1773,7 +1880,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_change_log_is_breaking_change(p_change_log_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(change_kind, '') FROM change_log WHERE change_log_id = p_change_log_id) = 'major')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(change_kind, '') FROM change_log WHERE change_log_id = p_change_log_id), '') = 'major')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_change_log_is_backward_compatible
@@ -1783,7 +1890,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_change_log_is_backward_compatible(p_change_log_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(change_kind, '') FROM change_log WHERE change_log_id = p_change_log_id) = 'patch' OR (SELECT NULLIF(change_kind, '') FROM change_log WHERE change_log_id = p_change_log_id) = 'minor'))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(change_kind, '') FROM change_log WHERE change_log_id = p_change_log_id), '') = 'patch', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(change_kind, '') FROM change_log WHERE change_log_id = p_change_log_id), '') = 'minor', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vocabulary_reconciliations_relative_path

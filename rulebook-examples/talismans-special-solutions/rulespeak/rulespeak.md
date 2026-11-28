@@ -1,4 +1,4 @@
-# 📘 Talisman's Special Solutions — RuleSpeak®
+# 📘 Talisman's Special Solutions — Docs
 
 _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman's 'Intentional Arrangement' series, modeled as a relational rulebook. One curated worked example — the Production Deployment Workflow — exercises every class, property, and competency question: three disjoint agent types (human / AI / pipeline), role-vs-agent separation, a delegation/escalation chain, an approval gate as a step subtype, step-to-step transitive ordering, a PROV provenance chain over artifacts, and DCAT dataset consumption. Every competency question is answered by a derived column or a transitive-closure view (no sidecar code); a small set of load-bearing INDEX/MATCH lookups resolves the role-to-agent and gate-to-role-to-approver chains the questions depend on._
 
@@ -58,6 +58,20 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Cq6 Satisfied | True when the count roles with escalation violation is 0. | _CQ6 satisfied: no gate-owning role escalates to nobody — every approval gate has a complete escalation path. Uses the model's native EscalationViolation invariant; 'the top' is the delegation apex, derived, not a hardcoded CTO name._ |
 | Cq7 Satisfied | True when the involves engineering and legal flag is set. | _CQ7 satisfied: the workflow involves BOTH Engineering-owned and Legal-owned steps. Reads the existing InvolvesEngineeringAndLegal boolean._ |
 | Cq8 Satisfied | True when the count unconsumed datasets is 0. | _CQ8 satisfied: every dataset the workflow declares is actually consumed by a step. Flips when a dataset is detached._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Name ƒ | Display Name | Title | Description | Identifier | Modified | Created | Staleness Threshold Months | Count of Non Proposed Steps ƒ | Has More Than1 Step ƒ | Count AI Steps ƒ | Count Human Steps ƒ | Count Human Required Steps ƒ | Count Approval Consistency Violations ƒ | Has Consistency Violation ƒ | Has AI Agent Step ƒ | Months Since Modified ƒ | Is Stale ƒ | Is Stale and Has AI Agent ƒ | Count Derivation Links ƒ | Count Legal Owned Steps ƒ | Count Engineering Owned Steps ƒ | Involves Engineering and Legal ƒ | Count Inferred Precedence Pairs ƒ | Count Asserted Precedence Pairs ƒ | Count of Precedence Closure Pairs ƒ | Count Roles With Bad Filler Cardinality ƒ | Count Agent Type Changes ƒ | Count Compliance Audit Changes ƒ | Count Approval Gate Steps ƒ | Count Gates Without Human Approver ƒ | Count Workflow Artifacts ƒ | Count Roles With Escalation Violation ƒ | Count Unconsumed Datasets ƒ | Cq1 Satisfied ƒ | Cq2 Satisfied ƒ | Cq3 Satisfied ƒ | Cq4 Satisfied ƒ | Cq5 Satisfied ƒ | Cq6 Satisfied ƒ | Cq7 Satisfied ƒ | Cq8 Satisfied ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| workflows/production-deployment | workflows-production-deployment | production-deployment | Production Deployment | Production Deployment Workflow | The primary NTWF ABox example. A 5-step workflow for deploying software to production at Talisman's Special Solutions. Steps involve a human Release Manager (step 1), an AI Risk Analysis Agent (step 2), a human Legal Compliance Reviewer at an Approval Gate (step 3), an automated CI/CD pipeline (step 4), and the Release Manager again for the post-deployment report (step 5). Demonstrates all three agent types, the delegation chain, artifact provenance, and DCAT dataset consumption. | WF-PROD-DEPLOY-001 | 2026-04-03T00:00:00-05:00 | 2026-01-10T00:00:00-06:00 | 12 | 5 | true | 2 | 2 | 2 | 0 | false | true | 7 | false | false | 4 | 1 | 4 | true | 6 | 4 | 10 | 0 | 2 | 1 | 1 | 0 | 5 | 0 | 1 | true | true | true | true | true | true | true | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Workflow Step** | A workflow step is identified by its name and is related to optionally a workflow; optionally a role (its assigned role); optionally a dataset (its consumes dataset); optionally a workflow artifact (its produces artifacts); optionally a workflow artifact (its requires artifacts); optionally an approval gate; optionally a step precedence (its precedes); and optionally a step precedence (its preceded by). | — |
 | Parent Path | The relative path of the workflow step's workflow. | _Helper: the Workflows parent's RelativePath, pulled across the Workflow FK. Exists so RelativePath can concatenate the '/steps/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat)._ |
 | Relative Path | Computed as the parent path, followed by “/steps/”, followed by the workflow step ID. | _Stable, DAG-derived location: this row nests under its Workflows parent. Concatenates the parent's path (ParentPath) with '/steps/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction._ |
@@ -90,6 +104,22 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Owning Department | The owned by of the workflow step's assigned role. | _The department that owns this step's assigned role, resolved through AssignedRole → Roles.OwnedBy. Lets a workflow report which departments its steps touch (CQ7: 'which workflows involve both Engineering and Legal, and at what steps do they intersect')._ |
 | Is Legal Owned | True when the owning department is “ntwf-legal-dept”. | _TRUE iff this step's owning department is Legal. Rolls up to CQ7's count of Legal-owned steps (exactly one in the Production Deployment workflow)._ |
 | Is Engineering Owned | True when the owning department is “ntwf-engineering”. | _TRUE iff this step's owning department is Engineering. Rolls up to CQ7's Engineering-involvement check._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Parent Path ƒ | Relative Path ƒ | Iri ƒ | Name ƒ | Display Name | Preceding Step Count ƒ | Inferred Sequence Position ƒ | Sequence Position Override | Sequence Position ƒ | Requires Human Approval | Step Duration Minutes | Executing Human Agent ƒ | Executing AI Agent ƒ | Executing Automated Pipeline ƒ | Executing Agent Type ƒ | Is Executed by AI ƒ | Is Executed by Human ƒ | Is Approval Gate ƒ | Approval Consistency Violation ƒ | Approval is Human Filled ƒ | Owning Department ƒ | Is Legal Owned ƒ | Is Engineering Owned ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| workflows/production-deployment | workflows/production-deployment/steps/prod-deploy-step-3 | workflows-production-deployment-steps-prod-deploy-step-3 | release-approval-gate | Release Approval Gate | 2 | 3 | — | 3 | true | 30 | ntwf-maria-gonzalez | — | — | HumanAgent | false | true | true | false | true | ntwf-engineering | false | true |
+| workflows/production-deployment | workflows/production-deployment/steps/prod-deploy-step-2 | workflows-production-deployment-steps-prod-deploy-step-2 | legal-compliance-review | Legal Compliance Review | 1 | 2 | — | 2 | true | 120 | ntwf-james-okafor | — | — | HumanAgent | false | true | false | false | true | ntwf-legal-dept | true | false |
+| workflows/production-deployment | workflows/production-deployment/steps/prod-deploy-step-5 | workflows-production-deployment-steps-prod-deploy-step-5 | post-deployment-health-check-&-report | Post-Deployment Health Check & Report | 4 | 5 | — | 5 | false | 60 | — | ntwf-health-ai | — | AIAgent | true | false | false | false | true | ntwf-engineering | false | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Approval Gate** | An approval gate is identified by its name and is related to optionally a workflow step. | — |
 | Parent Path | The relative path of the approval gate's workflow step. | _Helper: the WorkflowSteps parent's RelativePath, pulled across the WorkflowStep FK. Exists so RelativePath can concatenate the '/approval-gates/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat)._ |
 | Relative Path | Computed as the parent path, followed by “/approval-gates/”, followed by the approval gate ID. | _Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/approval-gates/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction._ |
@@ -101,6 +131,20 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Gate Role | The assigned role of the approval gate's workflow step. | _The role responsible for this gate's underlying step, resolved through WorkflowStep → WorkflowSteps.AssignedRole. First hop of the CQ2 chain (gate → role → approver)._ |
 | Gate Approver Human | The filled by human agent of the approval gate's gate role. | _The human agent who approves at this gate, resolved through the two-hop chain gate → GateRole → Roles.FilledByHumanAgent. Answers CQ2 ('who is responsible for approving a production deployment') directly: the release-approval gate resolves to the Release Manager role, filled by Maria Gonzalez._ |
 | Has Human Approver | True when the gate approver human has a value. | _TRUE iff this approval gate resolves to a human approver (its gate role is filled by a HumanAgent). Rolls up into Workflows.CountGatesWithoutHumanApprover, which CQ2's satisfaction reads._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Parent Path ƒ | Relative Path ƒ | Iri ƒ | Name ƒ | Display Name | Escalation Threshold Hours | Gate Role ƒ | Gate Approver Human ƒ | Has Human Approver ƒ |
+|---|---|---|---|---|---|---|---|---|
+| workflows/production-deployment/steps/prod-deploy-step-3 | workflows/production-deployment/steps/prod-deploy-step-3/approval-gates/ntwf-release-approval-gate | workflows-production-deployment-steps-prod-deploy-step-3-approval-gates-ntwf-release-approval-gate | release-approval-gate | Release Approval Gate | 4 | ntwf-release-manager-role | ntwf-maria-gonzalez | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Step Precedence** | A step precedence is identified by its name and is related to a workflow step (its from step) and a workflow step (its to step). | — |
 | Parent Path | The relative path of the step precedence's from step. | _Helper: the WorkflowSteps parent's RelativePath, pulled across the FromStep FK. Exists so RelativePath can concatenate the '/precedence/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat)._ |
 | Relative Path | Computed as the parent path, followed by “/precedence/”, followed by the step precedence ID. | _Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/precedence/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction._ |
@@ -109,6 +153,22 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | From Step | A defined attribute. | _FK to the predecessor WorkflowStep — the step that comes BEFORE. The source of the ntwf:precedesStep edge. Inverse is WorkflowSteps.Precedes._ |
 | To Step | A defined attribute. | _FK to the successor WorkflowStep — the step that comes AFTER. The target of the ntwf:precedesStep edge. Inverse is WorkflowSteps.PrecededBy._ |
 | Precedes Step Closure | A defined attribute. | _Transitive closure of ntwf:precedesStep (an owl:TransitiveProperty). The 4 asserted edges (1→2, 2→3, 3→4, 4→5) imply the full 10-pair ordering closure — including the never-asserted step-1 → step-5. Materialized by the transpiler as the view vw_step_precedence_closure(from_id, to_id, hop_distance, is_inferred): 4 asserted (hop 1) + 6 inferred rows. This is the article's headline inference made to fire, not seeded._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Parent Path ƒ | Relative Path ƒ | Iri ƒ | Name ƒ |
+|---|---|---|---|
+| workflows/production-deployment/steps/prod-deploy-step-1 | workflows/production-deployment/steps/prod-deploy-step-1/precedence/prec-1-2 | workflows-production-deployment-steps-prod-deploy-step-1-precedence-prec-1-2 | prod-deploy-step-1 -> prod-deploy-step-2 |
+| workflows/production-deployment/steps/prod-deploy-step-2 | workflows/production-deployment/steps/prod-deploy-step-2/precedence/prec-2-3 | workflows-production-deployment-steps-prod-deploy-step-2-precedence-prec-2-3 | prod-deploy-step-2 -> prod-deploy-step-3 |
+| workflows/production-deployment/steps/prod-deploy-step-3 | workflows/production-deployment/steps/prod-deploy-step-3/precedence/prec-3-4 | workflows-production-deployment-steps-prod-deploy-step-3-precedence-prec-3-4 | prod-deploy-step-3 -> prod-deploy-step-4 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Role** | A role is identified by its name and is related to optionally an agent capability concept (its has capability); optionally a human agent (its filled by human agent); optionally an AI agent (its filled by AI agent); optionally an automated pipeline (its filled by automated pipeline); optionally a department (its owned by); optionally another role (its delegates to); and optionally another role (its from delegates to). | — |
 | Relative Path | Computed as “roles/”, followed by the role ID. | _Stable, DAG-derived location for this Role row. Root segment 'roles' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions._ |
@@ -131,6 +191,22 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Filler Type | Determined by priority: “HumanAgent” if the filled by human agent has a value; “AIAgent” if the filled by AI agent has a value; “AutomatedPipeline” if the filled by automated pipeline has a value; in all other cases, an empty string. | _Which disjoint agent class fills this role (HumanAgent / AIAgent / AutomatedPipeline), from whichever filledBy arm is set. Lets the delegation-chain query confirm CQ6's 'zero AI agents in the escalation chain'._ |
 | Fills Approval Gate | The number of the role's workflow steps that are approval gates. | _Number of this role's assigned WorkflowSteps that are approval gates (rollup over WorkflowSteps.IsApprovalGate). Greater than zero marks a role that owns a blocking decision checkpoint and therefore MUST have a complete delegatesTo escalation path — the precondition for EscalationViolation. Worked example: 1 for the Release Manager (who fills the Release Approval Gate), 0 for every other role._ |
 | Escalation Violation | True when all of the following hold: the fills approval gate is greater than 0 and the delegates to is blank. | _Detectable-error witness: TRUE iff this role owns an approval gate (FillsApprovalGate > 0) yet has no escalation target (DelegatesTo is blank). A gate can stall and must be escalable up the delegatesTo chain; a gate role with no one to escalate to is a broken escalation. A clean ABox yields FALSE for every role. This is the role-side analogue of WorkflowSteps.ApprovalConsistencyViolation, and the witness CQ6's escalation chain depends on._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Name ƒ | Display Name | Label | Comment | Filled by Arm Count ƒ | Has Exactly One Filler ƒ | Filler Type ƒ | Fills Approval Gate ƒ | Escalation Violation ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| roles/ntwf-ci-executor-role | roles-ntwf-ci-executor-role | ci/cd-executor | CI/CD Executor | CI/CD Executor | Executes the automated build, test, and deployment sequence. Filled by an AutomatedPipeline. Demonstrates CQ3: this step does NOT require human approval. | 1 | true | AutomatedPipeline | 0 | false |
+| roles/ntwf-cto-role | roles-ntwf-cto-role | chief-technology-officer | Chief Technology Officer | Chief Technology Officer | Top of the delegation chain. Has cap-executive-authorization. When both Release Manager and VP Engineering are unavailable, the CTO is the final escalation target. | 1 | true | HumanAgent | 0 | false |
+| roles/ntwf-deployment-health-role | roles-ntwf-deployment-health-role | deployment-health-agent | Deployment Health Agent | Deployment Health Agent | Generates the post-deployment health report by summarizing telemetry after a release. A role, not an identity — currently filled by the DeploymentHealth-AI agent (health-summarizer-v1.2.0), it could be reassigned to a human or a newer model without changing the workflow structure. Its RoleAssignments history records an earlier human-reviewer period and the agent-type transitions. | 1 | true | AIAgent | 0 | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Role Assignment** | A role assignment is identified by its name and is related to a role; optionally a human agent (its filled by human agent); optionally an AI agent (its filled by AI agent); and optionally an automated pipeline (its filled by automated pipeline). | — |
 | Parent Path | The relative path of the role assignment's role. | _Helper: the Roles parent's RelativePath, pulled across the Role FK. Exists so RelativePath can concatenate the '/assignments/' segment using only local-field '&' concat._ |
 | Relative Path | Computed as the parent path, followed by “/assignments/”, followed by the role assignment ID. | _Stable, DAG-derived location: this assignment nests under its Role parent. Concatenates the parent's path (ParentPath) with '/assignments/' + this row's primary key. Unique by construction._ |
@@ -149,6 +225,22 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Was Active As of Audit Date | True when all of the following hold: the valid from is at most “2026-03-01” and at least one of the following holds: the valid to is blank or the valid to is greater than “2026-03-01”. | _NTWF's signature temporal query: 'which agent was executing this step on March 1, 2026?'. TRUE iff this binding's validity period contains 2026-03-01 (ValidFrom <= the date AND (ValidTo blank OR ValidTo > the date)). ISO dates compare lexically. The single row that is TRUE for a given role names the agent active on the audit date — answerable only because history is retained._ |
 | Is Agent Type Change | True when all of the following hold: the prior filler type has a value and the prior filler type is not the filler type. | _TRUE iff this assignment changed the agent CLASS of the role (PriorFillerType set and different from FillerType). NTWF distinguishes a plain personnel/model swap (same class) from an agent-type transition, which carries compliance weight._ |
 | Requires Compliance Audit | True when all of the following hold: the prior filler type has a value; the prior filler type is “AIAgent”; and the filler type is “HumanAgent”. | _Changing the agent type of a step from ntwf:AIAgent to ntwf:HumanAgent is a data operation with compliance implications. TRUE iff this assignment took a previously AI-executed binding and reassigned it to a human — the exact transition NTWF governance says the audit record must capture (when + why)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Parent Path ƒ | Relative Path ƒ | Iri ƒ | Name ƒ | Valid From | Valid to | Reason | Prior Filler Type | Filler Type ƒ | Is Current ƒ | Was Active As of Audit Date ƒ | Is Agent Type Change ƒ | Requires Compliance Audit ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| roles/ntwf-release-manager-role | roles/ntwf-release-manager-role/assignments/asn-release-manager-maria | roles-ntwf-release-manager-role-assignments-asn-release-manager-maria | ntwf-release-manager-role [2026-01-10 -> open] | 2026-01-10 | — | initial assignment | — | HumanAgent | true | true | false | false |
+| roles/ntwf-vp-engineering-role | roles/ntwf-vp-engineering-role/assignments/asn-vp-eng-priya | roles-ntwf-vp-engineering-role-assignments-asn-vp-eng-priya | ntwf-vp-engineering-role [2026-01-10 -> 2026-03-15] | 2026-01-10 | 2026-03-15 | initial assignment | — | HumanAgent | false | true | false | false |
+| roles/ntwf-vp-engineering-role | roles/ntwf-vp-engineering-role/assignments/asn-vp-eng-david | roles-ntwf-vp-engineering-role-assignments-asn-vp-eng-david | ntwf-vp-engineering-role [2026-03-15 -> open] | 2026-03-15 | — | departure of prior holder / backfill | HumanAgent | HumanAgent | true | false | false | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Department** | A department is identified by its name. | — |
 | Relative Path | Computed as “departments/”, followed by the department ID. | _Stable, DAG-derived location for this Department row. Root segment 'departments' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions._ |
@@ -156,6 +248,21 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Title | A defined attribute. | _Formal organizational title of the department. Maps to schema:name / dct:title._ |
 | Display Name | A defined attribute. | _Machine-friendly name for programmatic reference._ |
 | Roles | A defined attribute. | _Back-reference to roles owned by this department. Inverse of Roles.OwnedBy._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Name ƒ | Title | Display Name |
+|---|---|---|---|---|
+| departments/ntwf-engineering | departments-ntwf-engineering | engineering | Engineering | engineering |
+| departments/ntwf-legal-dept | departments-ntwf-legal-dept | legal | Legal | legal |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Human Agent** | A human agent is identified by its name. | — |
 | Relative Path | Computed as “human-agents/”, followed by the human agent ID. | _Stable, DAG-derived location for this HumanAgent row. Root segment 'human-agents' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions._ |
@@ -164,6 +271,22 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Mbox | A defined attribute. | _Email address of the person. Maps to foaf:mbox. Used for notifications and organizational directory integration._ |
 | Roles | A defined attribute. | _Back-reference to roles currently filled by this agent. Inverse of Roles.FilledByHumanAgent._ |
 | Role Assignments | A defined attribute. | _Back-reference to historical filledBy assignment periods in which this human filled a role. Inverse of RoleAssignments.FilledByHumanAgent._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Name | Display Name | Mbox |
+|---|---|---|---|---|
+| human-agents/ntwf-maria-gonzalez | human-agents-ntwf-maria-gonzalez | Maria Gonzalez | Maria Gonzalez | maria.gonzalez@special-solutions.example |
+| human-agents/ntwf-david-chen | human-agents-ntwf-david-chen | David Chen | David Chen | david.chen@special-solutions.example |
+| human-agents/ntwf-priya-nair | human-agents-ntwf-priya-nair | Priya Nair | Priya Nair | priya.nair@special-solutions.example |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **AI Agent** | An AI agent is identified by its name and is related to optionally a workflow artifact (its attributed artifacts). | — |
 | Relative Path | Computed as “ai-agents/”, followed by the AI agent ID. | _Stable, DAG-derived location for this AIAgent row. Root segment 'ai-agents' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions._ |
@@ -177,6 +300,21 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Attributed Artifacts | A defined attribute. | _Back-reference to WorkflowArtifacts attributed to this AI agent (prov:wasAttributedTo). Inverse of WorkflowArtifacts.AttributedToAIAgent. First leg of the 'blast radius' traversal._ |
 | Count Attributed Artifacts | The number of workflow artifacts related to the AI agent. | _'Blast radius', leg 1: how many artifacts are attributed to this AI agent (prov:wasAttributedTo). Counts WorkflowArtifacts whose AttributedToAIAgent is this agent._ |
 | Count Impacted Workflows | The number of the AI agent's workflow artifacts that have a producing workflow. | _'Blast radius', summarized: the number of distinct workflows reachable from this agent's attributed artifacts (each artifact is produced by a step that belongs to a workflow). With one workflow in the worked example, an upgrade to an agent that produced any artifact has a blast radius of 1 workflow. Counts artifacts attributed to this agent that resolve to a workflow._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Name | Title | Display Name | Model Version | Deployed on | Count Attributed Artifacts ƒ | Count Impacted Workflows ƒ |
+|---|---|---|---|---|---|---|---|---|
+| ai-agents/ntwf-risk-ai | ai-agents-ntwf-risk-ai | RiskAnalysis-AI | Risk Analysis AI Agent | RiskAnalysis-AI | risk-classifier-v2.4.1 | 2026-01-10 | 1 | 1 |
+| ai-agents/ntwf-health-ai | ai-agents-ntwf-health-ai | DeploymentHealth-AI | Deployment Health AI Agent | DeploymentHealth-AI | health-summarizer-v1.2.0 | 2026-02-20 | 1 | 1 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Automated Pipeline** | An automated pipeline is identified by its name. | — |
 | Relative Path | Computed as “automated-pipelines/”, followed by the automated pipeline ID. | _Stable, DAG-derived location for this AutomatedPipeline row. Root segment 'automated-pipelines' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions._ |
@@ -185,6 +323,20 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Display Name | A defined attribute. | — |
 | Roles | A defined attribute. | _Back-reference to roles currently filled by this pipeline. Inverse of Roles.FilledByAutomatedPipeline._ |
 | Role Assignments | A defined attribute. | _Back-reference to historical filledBy assignment periods filled by this pipeline. Inverse of RoleAssignments.FilledByAutomatedPipeline._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Name | Description | Display Name |
+|---|---|---|---|---|
+| automated-pipelines/ntwf-ci-pipeline | automated-pipelines-ntwf-ci-pipeline | CI/CD Deploy Pipeline | Automated build, test, and deployment pipeline for production releases. Deterministic execution — no probabilistic output. | CI/CD Deploy Pipeline |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Workflow Status Concept** | SKOS controlled vocabulary for workflow lifecycle states (ntwf:WorkflowStatusScheme). Part of the CBox. Concepts are shared across all workflows. | — |
 | Relative Path | Computed as “concepts/workflow-status/”, followed by the concept ID. | _Stable, DAG-derived location for this WorkflowStatusConcept row. Root segment 'concepts/workflow-status' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions._ |
@@ -193,6 +345,22 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Definition | A defined attribute. | _Formal definition of the concept. Maps to skos:definition._ |
 | Scope Note | A defined attribute. | _Usage guidance for the concept. Maps to skos:scopeNote._ |
 | Workflows | A defined attribute. | _Back-reference to workflows currently in this status. Inverse of Workflows.WorkflowStatus._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Pref Label | Alt Label | Definition | Scope Note |
+|---|---|---|---|---|---|
+| concepts/workflow-status/status-draft | concepts-workflow-status-status-draft | Draft | In Progress | Workflow is being authored or reviewed and is not yet in production use. | Set this status when the workflow has not completed its initial review cycle. |
+| concepts/workflow-status/status-active | concepts-workflow-status-status-active | Active | In Use | Workflow is approved and currently being executed by the organization. | Only active workflows should be assigned to running process instances. |
+| concepts/workflow-status/status-deprecated | concepts-workflow-status-status-deprecated | Deprecated | Superseded | Workflow has been replaced by a newer version and should not be used for new instances. | Deprecated workflows may still have in-flight instances; do not archive until all instances close. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Agent Capability Concept** | SKOS controlled vocabulary for agent capability types (ntwf:AgentCapabilityScheme). Roles declare which capability their filler must have (ntwf:hasCapability). Part of the CBox. | — |
 | Relative Path | Computed as “concepts/agent-capability/”, followed by the concept ID. | _Stable, DAG-derived location for this AgentCapabilityConcept row. Root segment 'concepts/agent-capability' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions._ |
@@ -201,6 +369,22 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Definition | A defined attribute. | _Formal definition. Maps to skos:definition._ |
 | Scope Note | A defined attribute. | _Usage guidance. Maps to skos:scopeNote._ |
 | Roles | A defined attribute. | _Back-reference to roles requiring this capability. Inverse of Roles.HasCapability._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Pref Label | Alt Label | Definition | Scope Note |
+|---|---|---|---|---|---|
+| concepts/agent-capability/cap-human-judgment | concepts-agent-capability-cap-human-judgment | Human Judgment | Human Decision | The filler must be a human agent capable of contextual, ethical, and legally binding decisions. | Used for ApprovalGate steps where requiresHumanApproval is true. AI agents may not fill roles with this capability. |
+| concepts/agent-capability/cap-risk-analysis | concepts-agent-capability-cap-risk-analysis | Risk Analysis | Risk Assessment | The filler must be capable of probabilistic risk scoring over structured datasets. | Can be satisfied by an AIAgent with an appropriate model version (e.g. risk-classifier-v2.4.1). |
+| concepts/agent-capability/cap-deployment-health | concepts-agent-capability-cap-deployment-health | Deployment Health Monitoring | Post-Deployment Telemetry Summarization | The filler must be capable of summarizing post-deployment telemetry into a health report. Distinct from risk analysis: it scores a live deployment's health, not input risk datasets — so a deployment-health role does NOT consume the Q1 Risk Metrics dataset. | Held by the Deployment Health Agent role (filled by DeploymentHealth-AI, health-summarizer-v1.2.0). |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Artifact Type Concept** | SKOS controlled vocabulary for artifact type (ntwf artifact-type scheme). Part of the CBox; NTWF names a CBox concept scheme for artifact types alongside workflow status and agent capabilities. Each artifact is classified via dct:type into one of these concepts. | — |
 | Relative Path | Computed as “concepts/artifact-type/”, followed by the concept ID. | _Stable, DAG-derived location for this concept row. Root segment 'concepts/artifact-type' + the row's primary key._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value._ |
@@ -209,6 +393,22 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Definition | A defined attribute. | _Formal definition of the concept. Maps to skos:definition._ |
 | Scope Note | A defined attribute. | _Usage note clarifying boundaries. Maps to skos:scopeNote._ |
 | Workflow Artifacts | A defined attribute. | _Back-reference to WorkflowArtifacts classified under this concept. Inverse of WorkflowArtifacts.ArtifactType._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Pref Label | Alt Label | Definition | Scope Note |
+|---|---|---|---|---|---|
+| concepts/artifact-type/type-report | concepts-artifact-type-type-report | Report | Assessment | A human- or AI-authored analytical document (e.g. a risk assessment report). | Use for narrative analytical artifacts, not for raw datasets or machine logs. |
+| concepts/artifact-type/type-decision-record | concepts-artifact-type-type-decision-record | Decision Record | Authorization | An artifact recording an approval or authorization decision (e.g. a release authorization, a legal clearance). | Use for sign-off / clearance / authorization artifacts. |
+| concepts/artifact-type/type-log | concepts-artifact-type-type-log | Log | Machine Output | A machine-generated record of an automated activity (e.g. a deployment log). | Use for deterministic pipeline/system output, not human analysis. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Dataset** | DCAT datasets consumed by workflow steps. The NTWF mapping of dcat:Dataset. Kept separate from WorkflowArtifacts to preserve DCAT metadata semantics (dcat:Dataset vs. prov:Entity). Answers CQ8: 'What datasets does the review consume, and which AI processed them?' | — |
 | Relative Path | Computed as “datasets/”, followed by the dataset ID. | _Stable, DAG-derived location for this Dataset row. Root segment 'datasets' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions._ |
@@ -218,6 +418,20 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Distribution URL | A defined attribute. | _URL of the data distribution. Maps to dcat:Distribution. The access endpoint for the dataset._ |
 | Consumed by Steps | A defined attribute. | _Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset. Marked isReversed so every substrate DERIVES it from the forward FK (a reverse lookup over WorkflowSteps.ConsumesDataset) instead of storing it — keeping the two sides from drifting when the forward FK is edited._ |
 | Is Consumed | True when the consumed by steps has a value. | _TRUE iff some workflow step consumes this dataset (ConsumedBySteps is set). Rolls up into Workflows.CountUnconsumedDatasets, which CQ8's satisfaction reads._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Title | Identifier | Modified | Distribution URL | Is Consumed ƒ |
+|---|---|---|---|---|---|---|
+| datasets/ds-q1-2026-risk-metrics | datasets-ds-q1-2026-risk-metrics | Q1 2026 Risk Metrics | DS-RISK-2026-Q1 | 2026-03-31T00:00:00-05:00 | https://data.internal.special-solutions.example/risk/q1-2026 | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Workflow Artifact** | Artifacts produced and consumed by workflow steps. The NTWF WorkflowArtifact class — prov:Entity + schema:CreativeWork. The DerivedFromArtifact self-FK encodes the prov:wasDerivedFrom provenance chain; ProducedByStep maps prov:wasGeneratedBy; the AttributedTo* arms map prov:wasAttributedTo to the responsible agent. | — |
 | Parent Path | The relative path of the workflow artifact's produced by step. | _Helper: the WorkflowSteps parent's RelativePath, pulled across the ProducedByStep FK. Exists so RelativePath can concatenate the '/artifacts/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat)._ |
 | Relative Path | Computed as the parent path, followed by “/artifacts/”, followed by the artifact ID. | _Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/artifacts/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction._ |
@@ -237,6 +451,22 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Produced by Workflow | Taken from the linked produced by step. | _The workflow this artifact belongs to, resolved through ProducedByStep → WorkflowSteps.Workflow (artifact → producing step → workflow). Lets workflow-level rollups (e.g. CountDerivationLinks) aggregate artifacts without a redundant direct FK._ |
 | Has Producing Workflow | True when the produced by workflow has a value. | _TRUE iff this artifact resolves to a producing workflow (ProducedByWorkflow is set). Lets the AIAgents blast-radius rollup (CountImpactedWorkflows) count only artifacts that reach a workflow, since COUNTIFS needs a boolean criterion column._ |
 | Derivation Closure | A defined attribute. | _Transitive closure of prov:wasDerivedFrom over the self-referential DerivedFromArtifact FK. The asserted single-step derivation edges (Legal Clearance was derived from Risk Report, Release Authorization from Legal Clearance, …) imply the never-asserted reachability (Post-Deployment Report transitively wasDerivedFrom Risk Report). Materialized as vw_workflow_artifacts_closure(from_id, to_id, hop_distance, is_inferred). This is the artifact-lineage analogue of vw_step_precedence_closure and vw_roles_closure — the SAME closure construct as step ordering and role escalation, just over a different relation, so a broken link surfaces as a missing reachability pair exactly like a dropped precedence edge._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Parent Path ƒ | Relative Path ƒ | Iri ƒ | Title | Identifier | Created | Producing Agent Type ƒ | Has Derivation Parent ƒ | Produced by Workflow ƒ | Has Producing Workflow ƒ |
+|---|---|---|---|---|---|---|---|---|---|
+| workflows/production-deployment/steps/prod-deploy-step-1 | workflows/production-deployment/steps/prod-deploy-step-1/artifacts/artifact-risk-report | workflows-production-deployment-steps-prod-deploy-step-1-artifacts-artifact-risk-report | Risk Assessment Report | ART-RISK-001 | 2026-04-01T00:00:00-05:00 | AIAgent | false | production-deployment | true |
+| workflows/production-deployment/steps/prod-deploy-step-2 | workflows/production-deployment/steps/prod-deploy-step-2/artifacts/artifact-legal-clearance | workflows-production-deployment-steps-prod-deploy-step-2-artifacts-artifact-legal-clearance | Legal Clearance Certificate | ART-LEGAL-001 | 2026-04-02T00:00:00-05:00 | HumanAgent | true | production-deployment | true |
+| workflows/production-deployment/steps/prod-deploy-step-3 | workflows/production-deployment/steps/prod-deploy-step-3/artifacts/artifact-release-authorization | workflows-production-deployment-steps-prod-deploy-step-3-artifacts-artifact-release-authorization | Release Authorization | ART-AUTH-001 | 2026-04-02T00:00:00-05:00 | HumanAgent | true | production-deployment | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Governance Role** | A governance role is identified by its name and is related to optionally a change log (its approved changes). | — |
 | Relative Path | Computed as “governance-roles/”, followed by the governance role ID. | _Stable, DAG-derived location for this GovernanceRole row. Root segment 'governance-roles' + the row's primary key._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value._ |
@@ -248,6 +478,21 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Held by | A defined attribute. | _The person or function holding this role. The steward is naturally whoever owns the engineering knowledge infrastructure; authority sits with the workflow governance function that owns the modeled domain. Under 500 people, one person may hold both._ |
 | Can Approve Changes | True when the kind is “Authority”. | _TRUE iff this governance role carries approval power (Kind = 'Authority'). A Steward returns FALSE — a steward making TBox/ABox changes without authority review is a single point of failure._ |
 | Approved Changes | A defined attribute. | _Back-reference to ChangeLog entries this governance role approved. Inverse of ChangeLog.ApprovedBy._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Name ƒ | Display Name | Kind | Responsibilities | Approval Scope | Held by | Can Approve Changes ƒ |
+|---|---|---|---|---|---|---|---|---|
+| governance-roles/gov-steward | governance-roles-gov-steward | ontology-steward | Ontology Steward | Steward | Monitors the ontology for drift, tracks external-dependency updates (PROV-O, FOAF, Dublin Core, DCAT, Schema.org), fields questions from users, maintains documentation, and keeps the validation suite current. Identifies that a change is needed but does not approve it. Runs the periodic (at minimum quarterly) competency-question review: new unanswerable questions become scope-change requests, obsolete questions become deprecation candidates, and questions that return wrong answers are defects. | none | Engineering Knowledge Infrastructure team | false |
+| governance-roles/gov-authority | governance-roles-gov-authority | ontology-authority | Ontology Authority | Authority | Holds the power to approve changes to the CBox, ABox, and TBox. Decides how and where a change is made. Reviews changes proposed by the steward so that no single person alters the knowledge graph's semantic integrity unchecked. | CBox, ABox, TBox | Workflow Governance function | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Change Log** | A change log is identified by its name and is related to optionally a governance role (its approved by). | — |
 | Relative Path | Computed as “change-log/”, followed by the change log ID. | _Stable, DAG-derived location for this ChangeLog row. Root segment 'change-log' + the row's primary key._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath)._ |
@@ -261,6 +506,21 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Approved by | A defined attribute. | _FK to the GovernanceRole (an Authority) that approved this change. Changes to CBox/ABox/TBox require authority review; a steward identifying a need is not enough._ |
 | Is Breaking Change | True when the change kind is “major”. | _TRUE iff this is a major (breaking) change (ChangeKind = 'major') — requires explicit update, re-validation, and migration planning for any system on the prior version._ |
 | Is Backward Compatible | True when at least one of the following holds: the change kind is “patch” or the change kind is “minor”. | _TRUE iff systems on the prior version keep working against this release (ChangeKind is 'patch' or 'minor'). Patch and minor increments preserve backward compatibility; only major breaks it._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Name ƒ | Version | Change Date | Change Kind | Motivating Question | Terms Affected | Rationale | Is Breaking Change ƒ | Is Backward Compatible ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| change-log/change-1-0-0 | change-log-change-1-0-0 | 1.0.0 (2026-01-15) | 1.0.0 | 2026-01-15 | major | All eight competency questions (CQ1-CQ8). | Initial release: 9 classes, 13 object properties, 5 datatype properties, 2 CBox schemes. | First validated release of the NTWF workflow ontology; passes the 104-test suite. | true | false |
+| change-log/change-1-1-0 | change-log-change-1-1-0 | 1.1.0 (2026-03-20) | 1.1.0 | 2026-03-20 | minor | Which AI agent was executing this step on March 1, 2026? | Added filledBy assignment history (RoleAssignments) with validity periods; AIAgent deployment date; agent-type-change audit witnesses. | Operational governance needed retained filledBy history so historical 'as of date' and blast-radius queries are answerable without discarding provenance. Additive and backward compatible — a minor, backward-compatible change, so the steward is authorized to approve and deploy it without authority review. | false | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Vocabulary Reconciliation** | A vocabulary reconciliation is identified by its name. | — |
 | Relative Path | Computed as “reconciliations/”, followed by the reconciliation ID. | _Stable, DAG-derived location for this reconciliation row. Root segment 'reconciliations' + the row's primary key._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath)._ |
@@ -271,6 +531,21 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Source Standard | A defined attribute. | _The external standard the deprecated term came from (PROV-O, FOAF, Dublin Core, DCAT, Schema.org)._ |
 | Introduced in Version | A defined attribute. | _The NTWF release version in which this reconciliation shipped. Re-homing a term triggers a version bump._ |
 | Rationale | A defined attribute. | _Why the term was re-homed (e.g. upstream deprecation; semantic-alignment shift)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Name ƒ | Deprecated Term | Replacement Term | Reconciliation Relation | Source Standard | Introduced in Version | Rationale |
+|---|---|---|---|---|---|---|---|---|
+| reconciliations/recon-foaf-name | reconciliations-recon-foaf-name | foaf:name owl:sameAs ntwf:name | foaf:name | ntwf:name | owl:sameAs | FOAF | v1.1.0 | Worked example: a deprecated FOAF element is re-prefixed into the NTWF namespace; existing data stays valid (URIs do not disappear), and foaf:name owl:sameAs ntwf:name keeps the two interchangeable for reasoners. |
+| reconciliations/recon-dcat-v3 | reconciliations-recon-dcat-v3 | dcat:Dataset (v2) owl:sameAs dcat:Dataset (v3) | dcat:Dataset (v2) | dcat:Dataset (v3) | owl:sameAs | DCAT | v1.1.0 | External-dependency fact: DCAT went through a major v2 -> v3 revision that introduced new classes and deprecated others. NTWF tracks the alignment so its dcat:Dataset usage stays semantically current; existing data remains valid because URIs do not disappear. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Scenario** | A scenario is identified by its name. | — |
 | Relative Path | Computed as “scenarios/”, followed by the scenario ID. | _DAG-derived location for this Scenario row: root segment 'scenarios' + the primary key._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (dash-form of RelativePath)._ |
@@ -281,6 +556,22 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Sort Order | A defined attribute. | _Display order in the picker (ascending)._ |
 | Is Reset | True when an empty string. | _True for the single 'restore baseline' scenario; the picker styles it as a secondary action._ |
 | Edits | A defined attribute. | _JSON-encoded ordered list of raw-fact assignments this scenario applies. Each item is {class, id\|match, set:{field:value,...}} where 'class' is a rulebook table (camelCase keys on the raw store), 'id' targets a row by its *Id primary key (or 'match':'first' for the singleton Workflow), and 'set' is the raw fields to assign. The backend replays this list against the active raw store, then re-reasons — the scenario NEVER sets a derived field. This is the single source of truth for what each demo scenario does; the app's picker and the apply endpoint both read it from here (same JSON-on-a-first-class-table pattern as __meta__'s JsonValue)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Name ƒ | Label | Icon | Explanation | Sort Order | Is Reset | Edits |
+|---|---|---|---|---|---|---|---|---|
+| scenarios/trigger-risk | scenarios-trigger-risk | stale-workflow-with-an-ai-step | Stale workflow with an AI step | ⚠️ | Backdates the workflow's last review past its 12-month policy window so the docs go STALE. The release already has AI-executed steps, so stale-docs-AND-an-AI-step fires the article's headline business query: IsStaleAndHasAIAgent (CQ5 extended — stale workflows that involve AI agents). | 1 | false | [{"class": "Workflows", "match": "first", "set": {"modified": "2026-04-03T00:00:00-05:00"}}, {"class": "Roles", "id": "ntwf-release-manager-role", "set": {"filledByHumanAgent": "ntwf-maria-gonzalez", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-risk-analysis-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-risk-ai", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-legal-compliance-role", "set": {"filledByHumanAgent": "ntwf-james-okafor", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-ci-executor-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "", "filledByAutomatedPipeline": "ntwf-ci-pipeline"}}, {"class": "Roles", "id": "ntwf-vp-engineering-role", "set": {"filledByHumanAgent": "ntwf-david-chen", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-cto-role", "set": {"filledByHumanAgent": "ntwf-sarah-kim", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-deployment-health-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-health-ai", "filledByAutomatedPipeline": ""}}, {"class": "Workflows", "match": "first", "set": {"modified": "2023-01-01T00:00:00-06:00"}}] |
+| scenarios/all-human | scenarios-all-human | all-human-release | All-human release | 🧑 | Reassigns every AI agent and pipeline to a human. The AI-step count drops to zero, so the compliance risk can no longer fire — even if the docs are stale. Shows the role→agent indirection: personnel change is one edge, not a rewrite. | 2 | false | [{"class": "Workflows", "match": "first", "set": {"modified": "2026-04-03T00:00:00-05:00"}}, {"class": "Roles", "id": "ntwf-release-manager-role", "set": {"filledByHumanAgent": "ntwf-maria-gonzalez", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-risk-analysis-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-risk-ai", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-legal-compliance-role", "set": {"filledByHumanAgent": "ntwf-james-okafor", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-ci-executor-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "", "filledByAutomatedPipeline": "ntwf-ci-pipeline"}}, {"class": "Roles", "id": "ntwf-vp-engineering-role", "set": {"filledByHumanAgent": "ntwf-david-chen", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-cto-role", "set": {"filledByHumanAgent": "ntwf-sarah-kim", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-deployment-health-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-health-ai", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-risk-analysis-role", "set": {"filledByHumanAgent": "ntwf-david-chen", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-deployment-health-role", "set": {"filledByHumanAgent": "ntwf-sarah-kim", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-ci-executor-role", "set": {"filledByHumanAgent": "ntwf-james-okafor", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}] |
+| scenarios/ai-at-gate | scenarios-ai-at-gate | ai-at-the-approval-gate | AI at the approval gate | 🤖 | Hands the Legal Compliance Reviewer role — whose review step requires human sign-off — to an AI agent. The reasoner's consistency witness fires on that step: a requires-human-approval step is no longer human-filled. The rule break is DERIVED, not hand-checked. | 3 | false | [{"class": "Workflows", "match": "first", "set": {"modified": "2026-04-03T00:00:00-05:00"}}, {"class": "Roles", "id": "ntwf-release-manager-role", "set": {"filledByHumanAgent": "ntwf-maria-gonzalez", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-risk-analysis-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-risk-ai", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-legal-compliance-role", "set": {"filledByHumanAgent": "ntwf-james-okafor", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-ci-executor-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "", "filledByAutomatedPipeline": "ntwf-ci-pipeline"}}, {"class": "Roles", "id": "ntwf-vp-engineering-role", "set": {"filledByHumanAgent": "ntwf-david-chen", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-cto-role", "set": {"filledByHumanAgent": "ntwf-sarah-kim", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-deployment-health-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-health-ai", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-legal-compliance-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-risk-ai", "filledByAutomatedPipeline": ""}}] |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Competency Question** | The article's literal acceptance suite — the eight leadership/competency questions the NTWF worked example must answer (Talisman, Intentional Arrangement, CQ1-CQ8). First-class data, not hardcoded UI strings: each row names the question, the substrate-computed field that ANSWERS it (TargetTable/TargetField, for cross-substrate traceability and the explainer-DAG drilldown), the answer kind, and the asserted ExpectedAnswer used to grade pass/fail. The live answer is always READ from the named computed column — never recomputed — so the CQ scoreboard is a projection of the model like every other lens. This is the CMCC-native home for the competency questions: the article treats them as acceptance criteria traceable to the rulebook, so they live in the rulebook. | — |
 | Relative Path | Computed as “competency-questions/”, followed by the competency question ID. | _Stable, DAG-derived location for this CompetencyQuestion row. Root segment 'competency-questions' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique._ |
@@ -297,6 +588,22 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Sort Order | A defined attribute. | _Display order in the scoreboard. Mirrors Number for now; kept separate so the list can be re-sequenced without renumbering the canonical CQ ids._ |
 | Is Active | True when an empty string. | _Whether this competency question is shown in the scoreboard. All eight are active in the worked example._ |
 | Simulate Scenario | A defined attribute. | _FK to the Scenario the card's 'Simulate' button applies to demonstrate this competency question live. Points at the minimal raw-fact edit that moves THIS question's answer in isolation where one exists; for cq-2 it points at 'ai-release-manager', which also ripples to cq-3 (the gate approver is itself a step executor, so the two answers cannot be perturbed independently). The full set of questions each scenario moves — trigger vs ripple — is enumerated in the ScenarioCQEffects junction; this is just the one the button fires. Inverse-ish of ScenarioCQEffects but kept as a direct FK so the UI has a single answer._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Name ƒ | Number | Display Name | Question Text | Target Table | Target Field | Answer Kind | Expected Answer | Satisfied Field | Explanation | Sort Order | Is Active |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| competency-questions/cq-1 | competency-questions-cq-1 | steps-and-order | 1 | Steps and order | What are all the steps in the release process, and in what order do they execute? | Workflows | CountOfPrecedenceClosurePairs | list | 5 steps, ordered 1 -> 2 -> 3 -> 4 -> 5 (10 closure pairs) | Cq1Satisfied | WorkflowSteps ordered by SequencePosition; the order is the transitive closure of the asserted StepPrecedence edges, materialized as ntwf:precedesStep. | 1 | true |
+| competency-questions/cq-2 | competency-questions-cq-2 | who-approves | 2 | Who approves | Who or what is responsible for approving a production deployment? | ApprovalGates | GateApproverHuman | scalar | Maria Gonzalez | Cq2Satisfied | The Release Approval Gate (step 3) -> its AssignedRole (Release Manager) -> FilledByHumanAgent. The role-agent indirection is resolved by the GateApproverHuman lookup. | 2 | true |
+| competency-questions/cq-3 | competency-questions-cq-3 | ai-vs-human-steps | 3 | AI vs human steps | Which steps are executed by AI agents, and which require human decision? | Workflows | CountAISteps | list | AI-executed: steps 1, 5 - human-required: steps 2, 3 | Cq3Satisfied | Each step's ExecutingAgentType (via its role's filler type) classifies AI vs pipeline vs human; RequiresHumanApproval marks the human-decision steps. CountAISteps aggregates the AI side. | 3 | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Scenario CQ Effect** | A scenario CQ effect is identified by its name and is related to a scenario and a competency question. | — |
 | Relative Path | Computed as “scenario-cq-effects/”, followed by the scenario CQ effect ID. | _DAG-derived location: 'scenario-cq-effects/' + the row's primary key._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (dash-form of RelativePath)._ |
@@ -306,6 +613,22 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Effect Kind | A defined attribute. | _'trigger' = this scenario was authored to move this question (the point of the demo). 'ripple' = the question also moves as an unavoidable side effect of the same raw edit. The ripple rows are the pedagogical payload: they show answers that are structurally coupled and cannot be perturbed independently._ |
 | Note | A defined attribute. | _One-line, human-readable account of how this scenario moves this question's answer (qualitative — the actual value is read live from the substrate, never stored here)._ |
 | Sort Order | A defined attribute. | _Display order._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Name ƒ | Effect Kind | Note | Sort Order |
+|---|---|---|---|---|---|
+| scenario-cq-effects/drop-final-edge-cq-1 | scenario-cq-effects-drop-final-edge-cq-1 | drop-final-edge-cq-1 | trigger | Deleting the step-4→step-5 edge shrinks the precedence closure (10 → 6 ordered pairs); step 5 leaves the chain. No other answer moves. | 10 |
+| scenario-cq-effects/ai-release-manager-cq-2 | scenario-cq-effects-ai-release-manager-cq-2 | ai-release-manager-cq-2 | trigger | Release Manager filled by AI → the gate has no human approver. | 20 |
+| scenario-cq-effects/ai-release-manager-cq-3 | scenario-cq-effects-ai-release-manager-cq-3 | ai-release-manager-cq-3 | ripple | Same edit: the gate's step (3) is now AI-executed, so the AI-step count rises 2 → 3. Cannot be avoided — the gate role is a step executor. | 30 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Conformance Test** | A conformance test is identified by its name. | — |
 | Relative Path | Computed as “conformance-tests/”, followed by the conformance test ID. | _DAG-derived location for this test row: root segment 'conformance-tests' + the primary key._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Slug IRI for this row, derived from RelativePath._ |
@@ -319,6 +642,19 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Explanation | A defined attribute. | _Why this test exists — what feature of the model it flexes, in one sentence._ |
 | Sort Order | A defined attribute. | _Display/run order within the suite._ |
 | Is Enabled | True when an empty string. | _Disabled tests are listed but not executed (parked, not deleted — the list stays the complete spec)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Relative Path ƒ | Iri ƒ | Name ƒ | Display Name | Feature Ref | Section | Test Kind | Target Ref | Expect | Explanation | Sort Order | Is Enabled |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| conformance-tests/sweep-workflows | conformance-tests-sweep-workflows | sweep-workflows-vs-answer-key | Sweep Workflows vs answer key | — | Sweep | sweep | Workflows | — | Every row and every column of Workflows must match the Postgres-oracle answer key on both engines. | 10 | true |
+| conformance-tests/sweep-workflowsteps | conformance-tests-sweep-workflowsteps | sweep-workflowsteps-vs-answer-key | Sweep WorkflowSteps vs answer key | — | Sweep | sweep | WorkflowSteps | — | Every row and every column of WorkflowSteps must match the Postgres-oracle answer key on both engines. | 20 | true |
+| conformance-tests/sweep-approvalgates | conformance-tests-sweep-approvalgates | sweep-approvalgates-vs-answer-key | Sweep ApprovalGates vs answer key | — | Sweep | sweep | ApprovalGates | — | Every row and every column of ApprovalGates must match the Postgres-oracle answer key on both engines. | 30 | true |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -559,7 +895,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -702,8 +1038,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)
