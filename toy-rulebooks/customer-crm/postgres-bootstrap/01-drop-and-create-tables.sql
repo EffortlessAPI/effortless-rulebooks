@@ -178,30 +178,17 @@ COMMENT ON COLUMN order_lines.quantity IS 'Number of FCS units on this line.';
 -- FK INDEXES - Performance only, always applied
 -- ============================================================================
 
--- Users
-CREATE INDEX IF NOT EXISTS idx_users_email ON users (email);
-
--- Customers
-CREATE INDEX IF NOT EXISTS idx_customers_email ON customers (email);
-
 -- Orders
-CREATE INDEX IF NOT EXISTS idx_orders_order_number ON orders (order_number);
 CREATE INDEX IF NOT EXISTS idx_orders_customer ON orders (customer);
 
 -- Payments
-CREATE INDEX IF NOT EXISTS idx_payments_payment_number ON payments (payment_number);
 CREATE INDEX IF NOT EXISTS idx_payments_order_id ON payments (order_id);
 
--- JetModels
-CREATE INDEX IF NOT EXISTS idx_jet_models_model_code ON jet_models (model_code);
-
 -- FlightControlSystems
-CREATE INDEX IF NOT EXISTS idx_flight_control_systems_fcs_code ON flight_control_systems (fcs_code);
 CREATE INDEX IF NOT EXISTS idx_flight_control_systems_jet_model_id ON flight_control_systems (jet_model_id);
 
 -- OrderLines
-CREATE INDEX IF NOT EXISTS idx_order_lines_line_number ON order_lines (line_number);
 CREATE INDEX IF NOT EXISTS idx_order_lines_order_id ON order_lines (order_id);
 CREATE INDEX IF NOT EXISTS idx_order_lines_fcs_id ON order_lines (fcs_id);
 
--- 12 FK index(es) declared.
+-- 5 FK index(es) declared.

@@ -202,33 +202,20 @@ COMMENT ON COLUMN order_lines.quantity IS 'Number of FCS units on this line.';
 -- FK INDEXES - Performance only, always applied
 -- ============================================================================
 
--- Users
-CREATE INDEX IF NOT EXISTS idx_users_email ON users (email);
-
--- Customers
-CREATE INDEX IF NOT EXISTS idx_customers_email ON customers (email);
-
 -- Orders
-CREATE INDEX IF NOT EXISTS idx_orders_order_number ON orders (order_number);
 CREATE INDEX IF NOT EXISTS idx_orders_customer ON orders (customer);
 
 -- Payments
-CREATE INDEX IF NOT EXISTS idx_payments_payment_number ON payments (payment_number);
 CREATE INDEX IF NOT EXISTS idx_payments_order_id ON payments (order_id);
 
--- JetModels
-CREATE INDEX IF NOT EXISTS idx_jet_models_model_code ON jet_models (model_code);
-
 -- FlightControlSystems
-CREATE INDEX IF NOT EXISTS idx_flight_control_systems_fcs_code ON flight_control_systems (fcs_code);
 CREATE INDEX IF NOT EXISTS idx_flight_control_systems_jet_model_id ON flight_control_systems (jet_model_id);
 
 -- OrderLines
-CREATE INDEX IF NOT EXISTS idx_order_lines_line_number ON order_lines (line_number);
 CREATE INDEX IF NOT EXISTS idx_order_lines_order_id ON order_lines (order_id);
 CREATE INDEX IF NOT EXISTS idx_order_lines_fcs_id ON order_lines (fcs_id);
 
--- 12 FK index(es) declared.
+-- 5 FK index(es) declared.
 
 
 -- === 2/3. Drop the derived layer ==========================================
@@ -241,7 +228,7 @@ BEGIN
     -- 2. Views (depend on functions, so they go first).
     FOR r IN (
         SELECT table_name FROM information_schema.views
-         WHERE table_schema = 'public' AND table_name LIKE 'vw\_%'
+         WHERE table_schema = 'public' AND (table_name LIKE 'vw\_%' OR table_name LIKE 'fk\_labels\_%')
            AND obj_description(
                  (quote_ident(table_schema) || '.' || quote_ident(table_name))::regclass, 'pg_class')
                IS DISTINCT FROM 'effortless:hand-maintained'
@@ -301,6 +288,113 @@ $drop_derived$;
 SET check_function_bodies = off;
 
 -- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+
+-- ============================================================================
 -- LOOKUP FUNCTIONS
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
@@ -352,7 +446,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_customers_lifetime_sales(p_customers_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_orders_recent_total(orders_id))::numeric), 0) FROM orders WHERE customer = calc_customers_name(p_customers_id)))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_orders_is_recent(erb_r1.orders_id) THEN (erb_r1.total)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM orders erb_r1 WHERE customer = (SELECT calc_customers_name(p_customers_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_customers_unpaid_order_count
@@ -362,7 +456,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_customers_unpaid_order_count(p_customers_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_orders_unpaid_flag(orders_id))::numeric), 0) FROM orders WHERE customer = calc_customers_name(p_customers_id)))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_orders_is_paid(erb_r1.orders_id) THEN (0)::text ELSE (1)::text END)::numeric))::numeric)::numeric), 0) FROM orders erb_r1 WHERE customer = (SELECT calc_customers_name(p_customers_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_customers_large_order_count
@@ -372,7 +466,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_customers_large_order_count(p_customers_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (total) AS v) __safe_numeric), 0) * COALESCE(0, 0))) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::numeric), 0) FROM orders WHERE customer = calc_customers_name(p_customers_id) AND total > 500))::numeric;
+  SELECT ((SELECT COALESCE(SUM(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (total) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(0, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::numeric), 0) FROM orders WHERE customer = (SELECT calc_customers_name(p_customers_id)) AND total > 500))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_customers_is_vip
@@ -382,7 +476,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_customers_is_vip(p_customers_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_customers_lifetime_sales(p_customers_id))::NUMERIC > 1000 AND (calc_customers_unpaid_order_count(p_customers_id))::NUMERIC <= 1));
+  SELECT ((COALESCE(COALESCE((calc_customers_lifetime_sales(p_customers_id))::NUMERIC, 0) > 1000, FALSE) AND COALESCE(COALESCE((calc_customers_unpaid_order_count(p_customers_id))::NUMERIC, 0) <= 1, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_orders_customer_first_name
@@ -473,7 +567,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_amount_paid(p_orders_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((amount)::numeric), 0) FROM payments WHERE order_id = calc_orders_name(p_orders_id)))::numeric;
+  SELECT ((SELECT COALESCE(SUM((amount)::numeric), 0) FROM payments WHERE order_id = (SELECT calc_orders_name(p_orders_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orders_balance
@@ -483,7 +577,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_balance(p_orders_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT total FROM orders WHERE orders_id = p_orders_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_orders_amount_paid(p_orders_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT total FROM orders WHERE orders_id = p_orders_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_orders_amount_paid(p_orders_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orders_is_paid
@@ -493,7 +587,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_is_paid(p_orders_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_orders_balance(p_orders_id))::NUMERIC <= 0)::boolean;
+  SELECT (COALESCE((calc_orders_balance(p_orders_id))::NUMERIC, 0) <= 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orders_unpaid_flag
@@ -513,7 +607,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_is_recent(p_orders_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((CURRENT_DATE::date - (SELECT order_date::timestamptz FROM orders WHERE orders_id = p_orders_id)::date))::NUMERIC <= 90)::boolean;
+  SELECT (COALESCE(((((COALESCE(NULLIF(current_setting('erb.now', true), '')::timestamptz::date, CURRENT_DATE))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT order_date::timestamptz FROM orders WHERE orders_id = p_orders_id))::timestamptz AT TIME ZONE 'UTC')::date))::NUMERIC, 0) <= 90)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orders_recent_total
@@ -533,7 +627,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_fcs_subtotal(p_orders_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_order_lines_line_total(order_lines_id))::numeric), 0) FROM order_lines WHERE order_id = calc_orders_name(p_orders_id)))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (erb_r1.quantity) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_order_lines_fcs_unit_price(erb_r1.order_lines_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric))::numeric)::numeric), 0) FROM order_lines erb_r1 WHERE order_id = (SELECT calc_orders_name(p_orders_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orders_fcs_unit_count
@@ -543,7 +637,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_fcs_unit_count(p_orders_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((quantity)::numeric), 0) FROM order_lines WHERE order_id = calc_orders_name(p_orders_id)))::numeric;
+  SELECT ((SELECT COALESCE(SUM((quantity)::numeric), 0) FROM order_lines WHERE order_id = (SELECT calc_orders_name(p_orders_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_payments_order_number
@@ -708,7 +802,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_jet_models_is_fifth_gen(p_jet_models_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT generation FROM jet_models WHERE jet_models_id = p_jet_models_id))::NUMERIC >= 5)::boolean;
+  SELECT (COALESCE(((SELECT generation FROM jet_models WHERE jet_models_id = p_jet_models_id))::NUMERIC, 0) >= 5)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_jet_models_fcs_variant_count
@@ -718,7 +812,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_jet_models_fcs_variant_count(p_jet_models_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (unit_price) AS v) __safe_numeric), 0) * COALESCE(0, 0))) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::numeric), 0) FROM flight_control_systems WHERE jet_model_id = calc_jet_models_name(p_jet_models_id)))::numeric;
+  SELECT ((SELECT COALESCE(SUM(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (unit_price) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(0, 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::numeric), 0) FROM flight_control_systems WHERE jet_model_id = (SELECT calc_jet_models_name(p_jet_models_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_jet_models_total_units_ordered
@@ -728,7 +822,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_jet_models_total_units_ordered(p_jet_models_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_flight_control_systems_total_units_ordered(flight_control_systems_id))::numeric), 0) FROM flight_control_systems WHERE jet_model_id = calc_jet_models_name(p_jet_models_id)))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COALESCE(SUM((quantity)::numeric), 0) FROM order_lines WHERE fcs_id = calc_flight_control_systems_name(erb_r1.flight_control_systems_id)))::numeric))::numeric)::numeric), 0) FROM flight_control_systems erb_r1 WHERE jet_model_id = (SELECT calc_jet_models_name(p_jet_models_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_jet_models_total_revenue
@@ -738,7 +832,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_jet_models_total_revenue(p_jet_models_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_flight_control_systems_total_revenue(flight_control_systems_id))::numeric), 0) FROM flight_control_systems WHERE jet_model_id = calc_jet_models_name(p_jet_models_id)))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COALESCE(SUM((calc_order_lines_line_total(order_lines_id))::numeric), 0) FROM order_lines WHERE fcs_id = calc_flight_control_systems_name(erb_r1.flight_control_systems_id)))::numeric))::numeric)::numeric), 0) FROM flight_control_systems erb_r1 WHERE jet_model_id = (SELECT calc_jet_models_name(p_jet_models_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_flight_control_systems_jet_manufacturer
@@ -807,7 +901,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_flight_control_systems_is_triple_redundant(p_flight_control_systems_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT redundancy_channels FROM flight_control_systems WHERE flight_control_systems_id = p_flight_control_systems_id))::NUMERIC >= 3)::boolean;
+  SELECT (COALESCE(((SELECT redundancy_channels FROM flight_control_systems WHERE flight_control_systems_id = p_flight_control_systems_id))::NUMERIC, 0) >= 3)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_flight_control_systems_is_quad_redundant
@@ -817,7 +911,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_flight_control_systems_is_quad_redundant(p_flight_control_systems_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT redundancy_channels FROM flight_control_systems WHERE flight_control_systems_id = p_flight_control_systems_id))::NUMERIC >= 4)::boolean;
+  SELECT (COALESCE(((SELECT redundancy_channels FROM flight_control_systems WHERE flight_control_systems_id = p_flight_control_systems_id))::NUMERIC, 0) >= 4)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_flight_control_systems_meets_fifth_gen_spec
@@ -827,7 +921,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_flight_control_systems_meets_fifth_gen_spec(p_flight_control_systems_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_flight_control_systems_is_quad_redundant(p_flight_control_systems_id) AND ((SELECT NULLIF(architecture, '') FROM flight_control_systems WHERE flight_control_systems_id = p_flight_control_systems_id) = 'fly-by-wire' OR (SELECT NULLIF(architecture, '') FROM flight_control_systems WHERE flight_control_systems_id = p_flight_control_systems_id) = 'fly-by-light') AND (calc_flight_control_systems_jet_generation(p_flight_control_systems_id))::NUMERIC >= 5));
+  SELECT ((COALESCE(calc_flight_control_systems_is_quad_redundant(p_flight_control_systems_id), FALSE) AND COALESCE((COALESCE(COALESCE((SELECT NULLIF(architecture, '') FROM flight_control_systems WHERE flight_control_systems_id = p_flight_control_systems_id), '') = 'fly-by-wire', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(architecture, '') FROM flight_control_systems WHERE flight_control_systems_id = p_flight_control_systems_id), '') = 'fly-by-light', FALSE)), FALSE) AND COALESCE(COALESCE((calc_flight_control_systems_jet_generation(p_flight_control_systems_id))::NUMERIC, 0) >= 5, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_flight_control_systems_total_units_ordered
@@ -837,7 +931,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_flight_control_systems_total_units_ordered(p_flight_control_systems_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((quantity)::numeric), 0) FROM order_lines WHERE fcs_id = calc_flight_control_systems_name(p_flight_control_systems_id)))::numeric;
+  SELECT ((SELECT COALESCE(SUM((quantity)::numeric), 0) FROM order_lines WHERE fcs_id = (SELECT calc_flight_control_systems_name(p_flight_control_systems_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_flight_control_systems_total_revenue
@@ -847,7 +941,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_flight_control_systems_total_revenue(p_flight_control_systems_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_order_lines_line_total(order_lines_id))::numeric), 0) FROM order_lines WHERE fcs_id = calc_flight_control_systems_name(p_flight_control_systems_id)))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (erb_r1.quantity) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_order_lines_fcs_unit_price(erb_r1.order_lines_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric))::numeric)::numeric), 0) FROM order_lines erb_r1 WHERE fcs_id = (SELECT calc_flight_control_systems_name(p_flight_control_systems_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_order_lines_fcs_unit_price
@@ -969,7 +1063,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_order_lines_line_total(p_order_lines_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT quantity FROM order_lines WHERE order_lines_id = p_order_lines_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_order_lines_fcs_unit_price(p_order_lines_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT quantity FROM order_lines WHERE order_lines_id = p_order_lines_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_order_lines_fcs_unit_price(p_order_lines_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================
@@ -1162,6 +1256,9 @@ FROM order_lines t;
 
 -- === 8. Custom views (ERBCustomizations) ===
 -- (no ERBCustomizations row for this section)
+
+-- === 8b. Function and view overrides (ERBCustomizations FunctionOverride / SchemaOverride) ===
+-- (no FunctionOverride / SchemaOverride row for a function or a view)
 
 -- === 9. Custom RLS (ERBCustomizations) ===
 -- (no ERBCustomizations row for this section)

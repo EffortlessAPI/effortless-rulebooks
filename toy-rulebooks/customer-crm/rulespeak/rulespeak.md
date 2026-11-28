@@ -1,4 +1,4 @@
-# 📘 Customer CRM — RuleSpeak®
+# 📘 Customer CRM — Docs
 
 _Fighter-jet FCS sales pipeline rolling revenue up by order, FCS variant, and jet model._
 
@@ -18,6 +18,21 @@ _Fighter-jet FCS sales pipeline rolling revenue up by order, FCS variant, and je
 | Last Name | A defined attribute. | _Family name._ |
 | Role | A defined attribute. | _admin or viewer._ |
 | Full Name | Computed as the last name, followed by a comma followed by a space, followed by the first name. | _LastName, FirstName._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Email | First Name | Last Name | Role | Full Name ƒ |
+|---|---|---|---|---|---|
+| alice@example.com | alice@example.com | Alice | Anderson | admin | Anderson, Alice |
+| bob@example.com | bob@example.com | Bob | Baker | viewer | Baker, Bob |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Customer** | A CRM contact. Email is the PK. | — |
 | Name | The same as its email. | _PK = Email_ |
 | Email | A defined attribute. | _Customer email (PK source)._ |
@@ -28,6 +43,22 @@ _Fighter-jet FCS sales pipeline rolling revenue up by order, FCS variant, and je
 | Unpaid Order Count | The total unpaid flag across the orders related to the customer. | _Number of this customer's orders that are not yet paid in full._ |
 | Large Order Count | The number of the customer's large orders. | _Number of this customer's orders with a Total over $500. SUMIFS expression-mode workaround: agg_range yields 1 per row, then a real WHERE clause filters via the operator criterion ">500" (Program.cs ExtractCriteriaOp, supported on SUMIFS but not yet on COUNTIFS)._ |
 | Is VIP | True when all of the following hold: the lifetime sales is greater than 1000 and the unpaid order count is at most 1. | _True when LifetimeSales > 1000 AND the customer has at most 1 unpaid order._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Email | First Name | Last Name | Full Name ƒ | Lifetime Sales ƒ | Unpaid Order Count ƒ | Large Order Count ƒ | Is VIP ƒ |
+|---|---|---|---|---|---|---|---|---|
+| ada.lovelace@analytical.engine | ada.lovelace@analytical.engine | Ada | Lovelace | Lovelace, Ada | 0.0 | 0.0 | 1.0 | false |
+| grace.hopper@nautical.mil | grace.hopper@nautical.mil | Grace | Hopper | Hopper, Grace | 0.0 | 2.0 | 1.0 | false |
+| alan.turing@bletchley.uk | alan.turing@bletchley.uk | Alan | Turing | Turing, Alan | 0.0 | 0.0 | 0.0 | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Order** | A customer order. OrderNumber is the PK. | — |
 | Name | The same as its order number. | _PK = OrderNumber_ |
 | Order Number | A defined attribute. | _Human-readable order number (PK source)._ |
@@ -46,6 +77,22 @@ _Fighter-jet FCS sales pipeline rolling revenue up by order, FCS variant, and je
 | Recent Total | Determined by priority: the total if the recent flag is set; in all other cases, 0. | _Total if the order is recent, 0 otherwise — summed by Customers.LifetimeSales._ |
 | FCS Subtotal | The total line total across the order lines related to the order. | _Sum of LineTotal across this order's FCS line items (in $M)._ |
 | FCS Unit Count | The total quantity across the order lines related to the order. | _Total FCS units shipped on this order._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Order Number | Order Date | Customer | Customer First Name ƒ | Customer Last Name ƒ | Customer Full Name ƒ | Customer Email ƒ | Total | Amount Paid ƒ | Balance ƒ | Is Paid ƒ | Unpaid Flag ƒ | Is Recent ƒ | Recent Total ƒ | FCS Subtotal ƒ | FCS Unit Count ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| ORD-1001 | ORD-1001 | 2026-01-15 | ada.lovelace@analytical.engine | Ada | Lovelace | Lovelace, Ada | ada.lovelace@analytical.engine | 250.0 | 250.0 | 0.0 | true | 0.0 | false | 0.0 | 0.0 | 0.0 |
+| ORD-1002 | ORD-1002 | 2026-02-03 | ada.lovelace@analytical.engine | Ada | Lovelace | Lovelace, Ada | ada.lovelace@analytical.engine | 875.0 | 875.0 | 0.0 | true | 0.0 | false | 0.0 | 0.0 | 0.0 |
+| ORD-1003 | ORD-1003 | 2026-02-20 | grace.hopper@nautical.mil | Grace | Hopper | Hopper, Grace | grace.hopper@nautical.mil | 1499.99 | 1000.0 | 499.99 | false | 1.0 | false | 0.0 | 29.400000000000002 | 8.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Payment** | A payment recorded against an order. PaymentNumber is the PK. | — |
 | Name | The same as its payment number. | _PK = PaymentNumber_ |
 | Payment Number | A defined attribute. | _Human-readable payment number (PK source)._ |
@@ -62,6 +109,22 @@ _Fighter-jet FCS sales pipeline rolling revenue up by order, FCS variant, and je
 | Order Customer | Taken from the linked order ID. | _Parent order's customer FK (email)._ |
 | Customer Full Name | Taken from the linked order ID. | _Parent order's customer full name (two-hop)._ |
 | Customer Email | Taken from the linked order ID. | _Parent order's customer email (two-hop)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Payment Number | Order ID | Payment Date | Amount | Method | Order Number ƒ | Order Date ƒ | Order Total ƒ | Order Amount Paid ƒ | Order Balance ƒ | Order is Paid ƒ | Order Customer ƒ | Customer Full Name ƒ | Customer Email ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| PMT-2001 | PMT-2001 | ORD-1001 | 2026-01-16 | 250.0 | card | ORD-1001 | 2026-01-15 | 250.0 | 250.0 | 0.0 | true | ada.lovelace@analytical.engine | Lovelace, Ada | ada.lovelace@analytical.engine |
+| PMT-2002 | PMT-2002 | ORD-1002 | 2026-02-04 | 500.0 | card | ORD-1002 | 2026-02-03 | 875.0 | 875.0 | 0.0 | true | ada.lovelace@analytical.engine | Lovelace, Ada | ada.lovelace@analytical.engine |
+| PMT-2003 | PMT-2003 | ORD-1002 | 2026-02-18 | 375.0 | ach | ORD-1002 | 2026-02-03 | 875.0 | 875.0 | 0.0 | true | ada.lovelace@analytical.engine | Lovelace, Ada | ada.lovelace@analytical.engine |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Jet Model** | Catalog of fighter-jet airframes that flight-control systems are built for. ModelCode is the PK. | — |
 | Name | The same as its model code. | _PK = ModelCode_ |
 | Model Code | A defined attribute. | _Short model designation, e.g. F-16C._ |
@@ -69,8 +132,24 @@ _Fighter-jet FCS sales pipeline rolling revenue up by order, FCS variant, and je
 | Generation | A defined attribute. | _Fighter generation (4, 4.5, 5)._ |
 | Is Fifth Gen | True when the generation is at least 5. | _True for 5th-generation airframes (stealth-era)._ |
 | FCS Variant Count | The number of the jet model's FCS variants. | _Number of distinct FCS variants offered for this airframe._ |
-| Total Units Ordered | The total total units ordered across the flight control systems related to the jet model. | _Total FCS units ordered across all variants for this airframe._ |
-| Total Revenue | The total total revenue across the flight control systems related to the jet model. | _Total FCS revenue (in $M) across all variants for this airframe._ |
+| Total Units Ordered | The total units ordered across the flight control systems related to the jet model. | _Total FCS units ordered across all variants for this airframe._ |
+| Total Revenue | The total revenue across the flight control systems related to the jet model. | _Total FCS revenue (in $M) across all variants for this airframe._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Model Code | Manufacturer | Generation | Is Fifth Gen ƒ | FCS Variant Count ƒ | Total Units Ordered ƒ | Total Revenue ƒ |
+|---|---|---|---|---|---|---|---|
+| F-16C | F-16C | Lockheed Martin | 4 | false | 2.0 | 9.0 | 33.6 |
+| F-22A | F-22A | Lockheed Martin | 5 | true | 1.0 | 2.0 | 37.0 |
+| F-35A | F-35A | Lockheed Martin | 5 | true | 1.0 | 7.0 | 84.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Flight Control System** | Flight-control-system product variants. Each variant targets one jet model with a specific control architecture and redundancy level. FCSCode is the PK. | — |
 | Name | The same as its FCS code. | _PK = FCSCode_ |
 | FCS Code | A defined attribute. | _Product code, e.g. FCS-F35-FBW4._ |
@@ -85,6 +164,22 @@ _Fighter-jet FCS sales pipeline rolling revenue up by order, FCS variant, and je
 | Meets Fifth Gen Spec | True when all of the following hold: the quad redundant flag is set; at least one of the following holds: the architecture is “fly-by-wire” or the architecture is “fly-by-light”; and the jet generation is at least 5. | _Quad-redundant fly-by-wire or fly-by-light on a 5th-gen airframe._ |
 | Total Units Ordered | The total quantity across the order lines related to the flight control system. | _Sum of order-line quantities across all orders._ |
 | Total Revenue | The total line total across the order lines related to the flight control system. | _Sum of order-line revenue (in $M)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | FCS Code | Jet Model ID | Jet Manufacturer ƒ | Jet Generation ƒ | Architecture | Redundancy Channels | Unit Price | Is Triple Redundant ƒ | Is Quad Redundant ƒ | Meets Fifth Gen Spec ƒ | Total Units Ordered ƒ | Total Revenue ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| FCS-F16-FBW3 | FCS-F16-FBW3 | F-16C | Lockheed Martin | 4.0 | fly-by-wire | 3 | 4.2 | true | false | false | 7.0 | 29.400000000000002 |
+| FCS-F16-HYB2 | FCS-F16-HYB2 | F-16C | Lockheed Martin | 4.0 | analog-hybrid | 2 | 2.1 | false | false | false | 2.0 | 4.2 |
+| FCS-F22-FBL4 | FCS-F22-FBL4 | F-22A | Lockheed Martin | 5.0 | fly-by-light | 4 | 18.5 | true | true | true | 2.0 | 37.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Order Line** | FCS line items on an order — links Orders to FlightControlSystems with a quantity. LineNumber is the PK. | — |
 | Name | The same as its line number. | _PK = LineNumber_ |
 | Line Number | A defined attribute. | _Human-readable line code, e.g. OL-3001._ |
@@ -98,6 +193,19 @@ _Fighter-jet FCS sales pipeline rolling revenue up by order, FCS variant, and je
 | Order Number | Taken from the linked order ID. | _Parent order number._ |
 | Order Customer | Taken from the linked order ID. | _Parent order customer FK._ |
 | Line Total | Computed as the quantity times the FCS unit price. | _Quantity * FCSUnitPrice (in $M)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Line Number | Order ID | FCS ID | Quantity | FCS Unit Price ƒ | FCS Architecture ƒ | FCS Jet Model ƒ | FCS Meets Fifth Gen Spec ƒ | Order Number ƒ | Order Customer ƒ | Line Total ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| OL-3001 | OL-3001 | ORD-1003 | FCS-F16-FBW3 | 6 | 4.2 | fly-by-wire | F-16C | false | ORD-1003 | grace.hopper@nautical.mil | 25.200000000000003 |
+| OL-3002 | OL-3002 | ORD-1003 | FCS-F16-HYB2 | 2 | 2.1 | analog-hybrid | F-16C | false | ORD-1003 | grace.hopper@nautical.mil | 4.2 |
+| OL-3003 | OL-3003 | ORD-1006 | FCS-F35-FBW4 | 4 | 12.0 | fly-by-wire | F-35A | true | ORD-1006 | katherine.johnson@nasa.gov | 48.0 |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 3 Operative Rules
 
@@ -143,7 +251,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-15 Balance** | An order's balance is computed as the total minus the amount paid. |
 | **DR-16 Is Paid** | An order is considered a paid if the balance is at most 0. |
 | **DR-17 Unpaid Flag** | The order's unpaid flag is determined by the following priority:<br>1. 0, if the paid flag is set;<br>2. in all other cases, 1. |
-| **DR-18 Is Recent** | An order is considered a recent if the number of days from the order date to today's date is at most 90. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-18 Is Recent** | An order is considered recent if the number of days from the order date to today's date is at most 90. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-19 Recent Total** | The order's recent total is determined by the following priority:<br>1. the total, if the recent flag is set;<br>2. in all other cases, 0. |
 | **DR-20 FCS Subtotal** | An order's FCS subtotal is the total line total across the order lines related to the order. |
 | **DR-21 FCS Unit Count** | An order's FCS unit count is the total quantity across the order lines related to the order. |
@@ -160,13 +268,13 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-32 Name** | A jet model's name is the same as its model code. |
 | **DR-33 Is Fifth Gen** | A jet model is considered a fifth gen if the generation is at least 5. |
 | **DR-34 FCS Variant Count** | A jet model's FCS variant count is the number of the jet model's FCS variants. |
-| **DR-35 Total Units Ordered** | A jet model's total units ordered is the total total units ordered across the flight control systems related to the jet model. |
-| **DR-36 Total Revenue** | A jet model's total revenue is the total total revenue across the flight control systems related to the jet model. |
+| **DR-35 Total Units Ordered** | A jet model's total units ordered is the total units ordered across the flight control systems related to the jet model. |
+| **DR-36 Total Revenue** | A jet model's total revenue is the total revenue across the flight control systems related to the jet model. |
 | **DR-37 Name** | A flight control system's name is the same as its FCS code. |
 | **DR-38 Jet Manufacturer** | A flight control system's jet manufacturer — taken from the linked jet model ID. |
 | **DR-39 Jet Generation** | A flight control system's jet generation — taken from the linked jet model ID. |
-| **DR-40 Is Triple Redundant** | A flight control system is considered a triple redundant if the redundancy channels is at least 3. |
-| **DR-41 Is Quad Redundant** | A flight control system is considered a quad redundant if the redundancy channels is at least 4. |
+| **DR-40 Is Triple Redundant** | A flight control system is considered triple-redundant if the redundancy channels is at least 3. |
+| **DR-41 Is Quad Redundant** | A flight control system is considered quad-redundant if the redundancy channels is at least 4. |
 | **DR-42 Meets Fifth Gen Spec** | A flight control system is considered to meet a fifth gen spec if all of the following hold: the quad redundant flag is set; at least one of the following holds: the architecture is “fly-by-wire” or the architecture is “fly-by-light”; and the jet generation is at least 5. |
 | **DR-43 Total Units Ordered** | A flight control system's total units ordered is the total quantity across the order lines related to the flight control system. |
 | **DR-44 Total Revenue** | A flight control system's total revenue is the total line total across the order lines related to the flight control system. |
@@ -181,7 +289,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -241,8 +349,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)
