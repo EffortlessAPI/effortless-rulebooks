@@ -14,6 +14,113 @@
 SET check_function_bodies = off;
 
 -- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+
+-- ============================================================================
 -- LOOKUP FUNCTIONS
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
@@ -65,7 +172,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_prototiles_area(p_prototile_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(0.25, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT sides FROM prototiles WHERE prototile_id = p_prototile_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (POWER(((SELECT edge_length FROM prototiles WHERE prototile_id = p_prototile_id))::NUMERIC, (2)::NUMERIC)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (TAN(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (PI()) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT sides FROM prototiles WHERE prototile_id = p_prototile_id)) AS v) __safe_numeric), 0), 0)))::NUMERIC)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE(0.25, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT sides FROM prototiles WHERE prototile_id = p_prototile_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (POWER(((SELECT edge_length FROM prototiles WHERE prototile_id = p_prototile_id))::NUMERIC, (2)::NUMERIC)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (TAN(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (PI()) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT sides FROM prototiles WHERE prototile_id = p_prototile_id)) AS v OFFSET 0) __safe_numeric), 0), 0)))::NUMERIC)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_prototiles_interior_angle_deg
@@ -75,7 +182,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_prototiles_interior_angle_deg(p_prototile_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT sides FROM prototiles WHERE prototile_id = p_prototile_id)) AS v) __safe_numeric), 0) - COALESCE(2, 0))) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(180, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT sides FROM prototiles WHERE prototile_id = p_prototile_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT sides FROM prototiles WHERE prototile_id = p_prototile_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE(2, 0))) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(180, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT sides FROM prototiles WHERE prototile_id = p_prototile_id)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_prototiles_vertex_angle_turns
@@ -85,7 +192,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_prototiles_vertex_angle_turns(p_prototile_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_prototiles_interior_angle_deg(p_prototile_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE(360, 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_prototiles_interior_angle_deg(p_prototile_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(360, 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_prototiles_is_regular
@@ -95,7 +202,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_prototiles_is_regular(p_prototile_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT sides FROM prototiles WHERE prototile_id = p_prototile_id))::NUMERIC >= 3)::boolean;
+  SELECT (COALESCE(((SELECT sides FROM prototiles WHERE prototile_id = p_prototile_id))::NUMERIC, 0) >= 3)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_prototiles_is_triangle
@@ -105,7 +212,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_prototiles_is_triangle(p_prototile_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT sides FROM prototiles WHERE prototile_id = p_prototile_id))::NUMERIC = 3)::boolean;
+  SELECT (COALESCE(((SELECT sides FROM prototiles WHERE prototile_id = p_prototile_id))::NUMERIC, 0) = 3)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_prototiles_is_square
@@ -115,7 +222,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_prototiles_is_square(p_prototile_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT sides FROM prototiles WHERE prototile_id = p_prototile_id))::NUMERIC = 4)::boolean;
+  SELECT (COALESCE(((SELECT sides FROM prototiles WHERE prototile_id = p_prototile_id))::NUMERIC, 0) = 4)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_prototiles_used_in_tilings_count
@@ -284,7 +391,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tilings_valid_vertex_figure_count(p_tiling_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM vertex_figures WHERE tiling = (SELECT NULLIF(tiling_id, '') FROM tilings WHERE tiling_id = p_tiling_id) AND calc_vertex_figures_is_valid(vertex_figure_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM vertex_figures erb_r1 WHERE tiling = (SELECT (SELECT NULLIF(tiling_id, '') FROM tilings WHERE tiling_id = p_tiling_id)) AND ((SELECT (COALESCE((calc_vertex_figures_angle_gap_deg(erb_r1.vertex_figure_id))::NUMERIC, 0) <= 0.0001)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tilings_is_regular_tiling
@@ -294,7 +401,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tilings_is_regular_tiling(p_tiling_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_tilings_distinct_prototile_count(p_tiling_id))::NUMERIC = 1)::boolean;
+  SELECT (COALESCE((calc_tilings_distinct_prototile_count(p_tiling_id))::NUMERIC, 0) = 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tilings_all_vertices_valid
@@ -304,7 +411,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tilings_all_vertices_valid(p_tiling_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_tilings_valid_vertex_figure_count(p_tiling_id) = calc_tilings_vertex_figure_count(p_tiling_id))::boolean;
+  SELECT (COALESCE(calc_tilings_valid_vertex_figure_count(p_tiling_id), 0) = COALESCE(calc_tilings_vertex_figure_count(p_tiling_id), 0))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tilings_lattice_determinant
@@ -314,7 +421,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tilings_lattice_determinant(p_tiling_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT t1x FROM tilings WHERE tiling_id = p_tiling_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT t2y FROM tilings WHERE tiling_id = p_tiling_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT t1y FROM tilings WHERE tiling_id = p_tiling_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT t2x FROM tilings WHERE tiling_id = p_tiling_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT t1x FROM tilings WHERE tiling_id = p_tiling_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT t2y FROM tilings WHERE tiling_id = p_tiling_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT t1y FROM tilings WHERE tiling_id = p_tiling_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT t2x FROM tilings WHERE tiling_id = p_tiling_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tilings_fundamental_domain_area
@@ -334,7 +441,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tilings_has_lattice(p_tiling_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((ABS(calc_tilings_lattice_determinant(p_tiling_id)))::NUMERIC > 0.0001)::boolean;
+  SELECT (COALESCE((ABS(calc_tilings_lattice_determinant(p_tiling_id)))::NUMERIC, 0) > 0.0001)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tilings_does_tile_plane
@@ -344,7 +451,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tilings_does_tile_plane(p_tiling_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_tilings_all_vertices_valid(p_tiling_id) AND calc_tilings_has_lattice(p_tiling_id)))::boolean;
+  SELECT ((COALESCE(calc_tilings_all_vertices_valid(p_tiling_id), FALSE) AND COALESCE(calc_tilings_has_lattice(p_tiling_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tiling_prototiles_prototile_sides
@@ -495,7 +602,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_vertex_figures_turns_at_vertex(p_vertex_figure_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT angle_sum_deg FROM vertex_figures WHERE vertex_figure_id = p_vertex_figure_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE(360, 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT angle_sum_deg FROM vertex_figures WHERE vertex_figure_id = p_vertex_figure_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(360, 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vertex_figures_angle_gap_deg
@@ -505,7 +612,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_vertex_figures_angle_gap_deg(p_vertex_figure_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (ABS((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT angle_sum_deg FROM vertex_figures WHERE vertex_figure_id = p_vertex_figure_id)) AS v) __safe_numeric), 0) - COALESCE(360, 0))))::numeric;
+  SELECT (ABS((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT angle_sum_deg FROM vertex_figures WHERE vertex_figure_id = p_vertex_figure_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE(360, 0))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_vertex_figures_is_valid
@@ -515,7 +622,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_vertex_figures_is_valid(p_vertex_figure_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_vertex_figures_angle_gap_deg(p_vertex_figure_id))::NUMERIC <= 0.0001)::boolean;
+  SELECT (COALESCE((calc_vertex_figures_angle_gap_deg(p_vertex_figure_id))::NUMERIC, 0) <= 0.0001)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_regions_name
@@ -535,7 +642,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_regions_area(p_region_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT width FROM regions WHERE region_id = p_region_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT height FROM regions WHERE region_id = p_region_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT width FROM regions WHERE region_id = p_region_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT height FROM regions WHERE region_id = p_region_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_regions_placement_count
@@ -555,7 +662,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_regions_covered_area(p_region_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_placements_tile_area(placement_id))::numeric), 0) FROM placements WHERE region = p_region_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT calc_prototiles_area(erb_r1.prototile)))::numeric)::numeric), 0) FROM placements erb_r1 WHERE region = p_region_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_regions_overlap_count
@@ -575,7 +682,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_regions_coverage_pct(p_region_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_regions_covered_area(p_region_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_regions_area(p_region_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_regions_covered_area(p_region_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_regions_area(p_region_id)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_regions_is_fully_covered
@@ -585,7 +692,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_regions_is_fully_covered(p_region_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_regions_coverage_pct(p_region_id))::NUMERIC >= 100)::boolean;
+  SELECT (COALESCE((calc_regions_coverage_pct(p_region_id))::NUMERIC, 0) >= 100)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_regions_is_clean_tiling
@@ -595,7 +702,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_regions_is_clean_tiling(p_region_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_regions_is_fully_covered(p_region_id) AND (calc_regions_overlap_count(p_region_id))::NUMERIC = 0));
+  SELECT ((COALESCE(calc_regions_is_fully_covered(p_region_id), FALSE) AND COALESCE(COALESCE((calc_regions_overlap_count(p_region_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_placements_tile_area
@@ -686,7 +793,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_placements_is_inside_region(p_placement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((((SELECT x FROM placements WHERE placement_id = p_placement_id))::NUMERIC >= 0 AND ((SELECT y FROM placements WHERE placement_id = p_placement_id))::NUMERIC >= 0 AND (SELECT x FROM placements WHERE placement_id = p_placement_id) < calc_placements_region_width(p_placement_id) AND (SELECT y FROM placements WHERE placement_id = p_placement_id) < calc_placements_region_height(p_placement_id)));
+  SELECT ((COALESCE(COALESCE(((SELECT x FROM placements WHERE placement_id = p_placement_id))::NUMERIC, 0) >= 0, FALSE) AND COALESCE(COALESCE(((SELECT y FROM placements WHERE placement_id = p_placement_id))::NUMERIC, 0) >= 0, FALSE) AND COALESCE(COALESCE((SELECT x FROM placements WHERE placement_id = p_placement_id), 0) < COALESCE(calc_placements_region_width(p_placement_id), 0), FALSE) AND COALESCE(COALESCE((SELECT y FROM placements WHERE placement_id = p_placement_id), 0) < COALESCE(calc_placements_region_height(p_placement_id), 0), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_wallpaper_designs_group_notation

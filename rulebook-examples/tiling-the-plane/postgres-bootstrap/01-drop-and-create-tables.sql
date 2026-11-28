@@ -221,9 +221,6 @@ COMMENT ON COLUMN wallpaper_designs.background_color IS 'Fill color (hex) behind
 -- FK INDEXES - Performance only, always applied
 -- ============================================================================
 
--- SymmetryGroups
-CREATE INDEX IF NOT EXISTS idx_symmetry_groups_notation ON symmetry_groups (notation);
-
 -- Tilings
 CREATE INDEX IF NOT EXISTS idx_tilings_symmetry_group ON tilings (symmetry_group);
 
@@ -244,4 +241,4 @@ CREATE INDEX IF NOT EXISTS idx_placements_prototile ON placements (prototile);
 -- WallpaperDesigns
 CREATE INDEX IF NOT EXISTS idx_wallpaper_designs_symmetry_group ON wallpaper_designs (symmetry_group);
 
--- 9 FK index(es) declared.
+-- 8 FK index(es) declared.

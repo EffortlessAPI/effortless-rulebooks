@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en" data-lang="en" class="show-rulespeak show-desc show-inputs">
+<html lang="en" data-lang="en" class="show-english show-desc show-consumers show-data">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tiling the Plane — RuleSpeak®</title>
+<title>Tiling the Plane — Docs</title>
 <style>
 
 :root{
@@ -19,6 +19,10 @@ body{margin:0;font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,
 a{color:var(--calc);text-decoration:none}
 a:hover{text-decoration:underline}
 code{font:0.85em ui-monospace,SFMono-Regular,Menlo,monospace;background:#f3f3f7;padding:1px 5px;border-radius:4px}
+/* A right-to-left language (dir=rtl on its .lang-doc): the layout mirrors by
+   itself, because every side below is inline-start / inline-end. Formulas and
+   code are left-to-right text whatever surrounds them. */
+code,.fx{direction:ltr;unicode-bidi:isolate}
 
 /* ── One language visible at a time; <html data-lang> picks it (rules per
       language are appended at render time). ─────────────────────────────── */
@@ -32,6 +36,7 @@ html.show-formula   .elem-formula{display:block}
 html.show-desc      .elem-desc{display:block}
 html.show-inputs    .elem-inputs{display:block}
 html.show-consumers .elem-consumers{display:block}
+html.show-data      .elem-data{display:block}
 
 /* ── Sticky top bar — brand · breadcrumb · language · gear ───────────────── */
 .topbar{position:sticky;top:0;z-index:40;height:var(--bar-h);
@@ -42,7 +47,7 @@ html.show-consumers .elem-consumers{display:block}
 .topbar-brand{font-weight:800;font-size:15px;color:var(--ink);white-space:nowrap;flex:none}
 .topbar-brand:hover{text-decoration:none}
 .topbar-tag{font-size:11px;font-weight:700;color:var(--calc);background:var(--calc-bg);
-  padding:1px 7px;border-radius:999px;margin-left:4px;vertical-align:middle}
+  padding:1px 7px;border-radius:999px;margin-inline-start:4px;vertical-align:middle}
 .crumb{flex:1;min-width:0;display:flex;align-items:center;gap:7px;
   font-size:13px;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .crumb-entity{font-weight:700;color:var(--ink)}
@@ -81,7 +86,7 @@ html.show-consumers .elem-consumers{display:block}
 .doc-header-inner{max-width:960px;margin:0 auto;padding:18px 24px}
 .doc-title{margin:0;font-size:24px;font-weight:800}
 .doc-title-sub{font-size:13px;font-weight:600;color:var(--calc);background:var(--calc-bg);
-  padding:2px 8px;border-radius:999px;vertical-align:middle;margin-left:6px}
+  padding:2px 8px;border-radius:999px;vertical-align:middle;margin-inline-start:6px}
 .doc-lede{margin:6px 0 0;font-style:italic;color:var(--muted)}
 .doc-note{margin:8px 0 12px;color:var(--muted);font-size:13px;max-width:70ch}
 .narr-hint{margin:8px 0 0;font-size:12px;color:var(--muted);max-width:78ch}
@@ -90,18 +95,18 @@ html.show-consumers .elem-consumers{display:block}
 .toc-title{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 8px}
 .toc-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
 .toc-list a{font-weight:600}
-.toc-meta{font-size:12px;color:var(--muted);margin-left:6px}
+.toc-meta{font-size:12px;color:var(--muted);margin-inline-start:6px}
 
 .entity{max-width:960px;margin:34px auto 0;padding:0 24px;scroll-margin-top:calc(var(--bar-h) + 14px)}
 .entity-head{border-bottom:2px solid var(--line);padding-bottom:8px;margin-bottom:14px}
 .entity-title{margin:0;font-size:21px;font-weight:800}
 .entity-synopsis{margin:4px 0 0;color:var(--muted);max-width:74ch}
 
-.field{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--rel);
+.field{background:var(--card);border:1px solid var(--line);border-inline-start:4px solid var(--rel);
   border-radius:10px;padding:14px 16px;margin:0 0 12px;scroll-margin-top:calc(var(--bar-h) + 14px)}
-.field.tone-raw{border-left-color:var(--raw)} .field.tone-calc{border-left-color:var(--calc)}
-.field.tone-agg{border-left-color:var(--agg)} .field.tone-lookup{border-left-color:var(--lookup)}
-.field.tone-rel{border-left-color:var(--rel)}
+.field.tone-raw{border-inline-start-color:var(--raw)} .field.tone-calc{border-inline-start-color:var(--calc)}
+.field.tone-agg{border-inline-start-color:var(--agg)} .field.tone-lookup{border-inline-start-color:var(--lookup)}
+.field.tone-rel{border-inline-start-color:var(--rel)}
 .field-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .field-glyph{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;
   border-radius:6px;font-weight:700;color:#fff;font-size:13px}
@@ -131,12 +136,12 @@ html.show-consumers .elem-consumers{display:block}
 .ref{border-bottom:1px dashed var(--calc);font-weight:600}
 
 .rt-headline{margin:0 0 4px}
-.rt-priority{margin:4px 0;padding-left:22px}
+.rt-priority{margin:4px 0;padding-inline-start:22px}
 .rt-priority>li{margin:2px 0}
 .rt-value{font-weight:700;color:var(--calc)}
 .rt-otherwise{color:var(--muted);font-style:italic}
 .rt-group-label{font-weight:600}
-.rt-group{margin:2px 0 6px;padding-left:20px}
+.rt-group{margin:2px 0 6px;padding-inline-start:20px}
 
 .gt{margin-top:8px}
 .gt-body{margin:0;color:var(--muted)}
@@ -145,25 +150,45 @@ html.show-consumers .elem-consumers{display:block}
 .prov{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
 .prov>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
 .prov>summary::-webkit-details-marker{display:none}
-.prov>summary::before{content:'▸';display:inline-block;margin-right:6px;color:var(--muted);transition:transform .1s}
+.prov>summary::before{content:'▸';display:inline-block;margin-inline-end:6px;color:var(--muted);transition:transform .1s}
 .prov[open]>summary::before{transform:rotate(90deg)}
-.count{font-size:11px;font-weight:700;background:#eee;color:#555;padding:1px 7px;border-radius:999px;margin-left:4px}
+.count{font-size:11px;font-weight:700;background:#eee;color:#555;padding:1px 7px;border-radius:999px;margin-inline-start:4px}
 .count-muted{background:#f5f5f5;color:#999}
-.prov-hint{font-size:12px;font-weight:400;color:var(--muted);margin-left:6px}
+.prov-hint{font-size:12px;font-weight:400;color:var(--muted);margin-inline-start:6px}
 .prov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:8px}
 .prov-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.input{display:block;border:1px solid var(--line);border-left:3px solid var(--rel);border-radius:8px;
+.input{display:block;border:1px solid var(--line);border-inline-start:3px solid var(--rel);border-radius:8px;
   padding:8px 10px;background:#fcfcfe}
-.input.tone-raw{border-left-color:var(--raw)} .input.tone-calc{border-left-color:var(--calc)}
-.input.tone-agg{border-left-color:var(--agg)} .input.tone-lookup{border-left-color:var(--lookup)}
-.input.tone-rel{border-left-color:var(--rel)}
+.input.tone-raw{border-inline-start-color:var(--raw)} .input.tone-calc{border-inline-start-color:var(--calc)}
+.input.tone-agg{border-inline-start-color:var(--agg)} .input.tone-lookup{border-inline-start-color:var(--lookup)}
+.input.tone-rel{border-inline-start-color:var(--rel)}
 .input:hover{background:#f4f3fb;text-decoration:none}
 .input-static{cursor:default}
 span.input-static:hover{background:#fcfcfe}
 .input-head{display:flex;align-items:center;gap:6px}
 .input-glyph{font-size:12px;color:var(--muted)}
 .input-name{font-weight:700;color:var(--ink)}
-.input-table{font-size:11px;color:var(--muted);margin-left:auto}
+.input-table{font-size:11px;color:var(--muted);margin-inline-start:auto}
+
+/* ── Example data (per entity, collapsible; gear switch: data) ─────────── */
+.entity-data{margin:14px 0 4px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.entity-data>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
+.entity-data>summary::-webkit-details-marker{display:none}
+.entity-data>summary::before{content:'▸';display:inline-block;margin-inline-end:6px;color:var(--muted);transition:transform .1s}
+.entity-data[open]>summary::before{transform:rotate(90deg)}
+.entity-data .sample-scroll{margin-top:10px}
+.sample-note{max-width:960px;margin:16px auto 0;padding:0 24px;color:var(--muted);font-size:13px}
+.sample-scroll{overflow-x:auto}
+.sample-table{border-collapse:collapse;font-size:13px;background:var(--card);
+  border:1px solid var(--line);border-radius:6px}
+.sample-table th,.sample-table td{padding:6px 12px;border-bottom:1px solid var(--line);
+  text-align:start;vertical-align:top;white-space:nowrap}
+.sample-table thead th{background:#f5f5fa;font-weight:600;color:var(--ink)}
+.sample-table tbody tr:last-child td{border-bottom:none}
+.sample-table th.sample-derived{background:var(--calc-bg);color:var(--calc)}
+.sample-table td.sample-derived{color:var(--calc)}
+.sample-fx{margin-inline-start:4px;opacity:.75}
+.sample-legend{color:var(--muted);font-size:12px;margin-top:12px}
 .input-en{display:block;margin-top:3px;font-size:13px;color:var(--muted)}
 .ref-pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;
   border:1px solid var(--line);border-radius:999px;padding:3px 10px;background:#fff;color:var(--ink)}
@@ -173,7 +198,7 @@ span.input-static:hover{background:#fcfcfe}
 .ref-pill-tbl{font-weight:400;color:var(--muted)}
 
 .field-note{margin:8px 0 0;font-size:13px;font-style:italic;color:var(--muted);
-  border-left:2px solid var(--line);padding-left:10px}
+  border-inline-start:2px solid var(--line);padding-inline-start:10px}
 
 .doc-footer{max-width:960px;margin:40px auto;padding:18px 24px;border-top:1px solid var(--line);
   color:var(--muted);font-size:13px}
@@ -185,6 +210,79 @@ span.input-static:hover{background:#fcfcfe}
 :target{animation:flash 1.2s ease}
 @keyframes flash{0%{background:var(--calc-bg)}100%{background:var(--card)}}
 
+/* ── Navigator: left nav, overview views, field tabs, graph ─────────────────
+   Big rulebooks were a single long page. Now (from nine entities up) the page shows the overview,
+   or ONE entity at a time, with a nav that is always on screen. Logical properties throughout. */
+.docgrid{max-width:1320px;margin:18px auto 0;padding:0 24px;display:grid;
+  grid-template-columns:290px minmax(0,1fr);gap:0 30px;align-items:start}
+.docmain{min-width:0}
+.docmain .entity,.docmain .ov{max-width:900px;margin-inline:0;padding:0}
+.sidenav{position:sticky;top:calc(var(--bar-h) + 12px);max-height:calc(100vh - var(--bar-h) - 24px);
+  display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;background:#fff;
+  font-size:13px;overflow:hidden}
+.sn-head{padding:10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.sn-index{font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:var(--calc);
+  display:flex;justify-content:space-between}
+.sn-q,.ov-q,.tab-q{width:100%;padding:6px 9px;border:1px solid #d0d7de;border-radius:6px;font:inherit;background:#fff;color:inherit}
+.sn-q:focus,.ov-q:focus,.tab-q:focus{outline:2px solid var(--calc);border-color:transparent}
+.sn-body{overflow:auto;padding:6px 6px 12px;overscroll-behavior:contain}
+.sn-foot{border-top:1px solid var(--line);padding:8px 10px}
+.sn-foot button{all:unset;cursor:pointer;color:var(--calc);font-size:12px}
+.sn-empty{padding:10px;color:var(--muted)}
+.sn-group{margin:2px 0}
+.sn-gtitle{display:flex;justify-content:space-between;gap:8px;padding:5px 6px;cursor:pointer;list-style:none;
+  font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#555;border-radius:5px}
+.sn-gtitle::-webkit-details-marker{display:none}
+.sn-gtitle::before{content:'▸';color:#999;margin-inline-end:6px;display:inline-block;transition:transform .1s}
+.sn-group[open]>.sn-gtitle::before{transform:rotate(90deg)}
+.sn-gtitle:hover{background:#eef0f4}
+.sn-gtitle span:nth-of-type(1){flex:1}
+.sn-n{font-weight:600;color:#888;letter-spacing:0;text-transform:none}
+.sn-group.has-current>.sn-gtitle{color:var(--calc)}
+.sn-t{display:flex;justify-content:space-between;gap:6px;padding:4px 8px;border-radius:6px;color:#222;font-weight:600}
+.sn-t:hover{background:#eef0f4;text-decoration:none}
+.sn-t.is-current{background:var(--calc-bg);color:var(--calc)}
+.sn-t b{font-size:10px;font-weight:700;color:var(--calc);background:var(--calc-bg);border-radius:999px;padding:1px 6px}
+.sn-fields{list-style:none;margin:2px 0 6px 10px;padding:0 0 0 6px;border-inline-start:2px solid var(--line)}
+.sn-f{display:flex;align-items:center;gap:6px;padding:2px 6px;border-radius:5px;color:#444;font-size:12px}
+.sn-f:hover{background:#eef0f4;text-decoration:none}
+.sn-f i{flex:none;width:14px;text-align:center;font-family:Georgia,serif;color:var(--rel)}
+.sn-f.tone-raw i{color:var(--raw)} .sn-f.tone-calc i{color:var(--calc)} .sn-f.tone-agg i{color:var(--agg)} .sn-f.tone-lookup i{color:var(--lookup)}
+.tabs{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.tab{display:inline-flex;gap:6px;align-items:center;padding:5px 11px;border:1px solid transparent;border-radius:999px;
+  background:transparent;font:600 12px/1 inherit;color:#555;cursor:pointer}
+.tab:hover{background:#eef0f4}
+.tab.is-active{background:var(--calc-bg);color:var(--calc);border-color:var(--calc)}
+.tab i{font-style:normal;font-size:11px;opacity:.7}
+.tabs .tab-q,.tabs .ov-q{margin-inline-start:auto;width:15em;max-width:100%}
+.field[hidden]{display:none}
+.ov-group{border:1px solid var(--line);border-radius:10px;background:#fff;padding:2px 10px 12px;margin-bottom:12px}
+.ov-gtitle{display:flex;justify-content:space-between;padding:5px 2px;cursor:pointer;list-style:none;font-weight:700;
+  font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#555}
+.ov-gtitle::-webkit-details-marker{display:none}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-top:6px}
+.ov-card{display:flex;flex-direction:column;gap:2px;padding:9px 12px;border:1px solid var(--line);
+  border-inline-start:4px solid var(--calc);border-radius:8px;background:#fff;color:var(--ink)}
+.ov-card:hover{text-decoration:none;box-shadow:0 3px 10px rgba(90,58,160,.14)}
+.ov-card b{font-size:14px}.ov-card span{font-size:12px;color:var(--muted)}
+.ov-list{width:100%;border-collapse:collapse;font-size:13px}
+.ov-list td{padding:6px 8px;border-bottom:1px solid #eee}
+.ov-list a{font-weight:700}
+.ov-n{color:#777;text-align:end;white-space:nowrap}
+.ov-hint{color:var(--muted);margin:0 0 6px}
+.ov-graph{overflow:auto;padding:4px 0}
+.dgraph{display:block;max-width:none;font:600 12px -apple-system,system-ui,sans-serif}
+.dgraph .ge{fill:none;stroke:#b4bac6;stroke-width:1.4}.dgraph .ge:hover{stroke:var(--calc);stroke-width:2.2}
+.dgraph .ga{fill:#b4bac6}
+.dgraph .gn rect{fill:#fff;stroke:#c5cad6;stroke-width:1.3}.dgraph .gn.has rect{fill:var(--calc-bg);stroke:var(--calc)}
+.dgraph .gn text{fill:#222;pointer-events:none}.dgraph .gn:hover rect{stroke-width:2.4}
+.lang-doc.paged .toc{display:none}
+.lang-doc.paged .docmain .entity{display:none}
+.lang-doc.paged .docmain .entity.is-on{display:block}
+.lang-doc.paged .ov[hidden],.lang-doc .ov[hidden]{display:none}
+@media (max-width:900px){.docgrid{display:block}.sidenav{display:none}}
+
+
 html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 </style>
 <script>
@@ -192,7 +290,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 (function(){
   var LANGS=['en'];
   var DEFAULT_LANG='en';
-  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers','data'];
   var root=document.documentElement;
 
   var lang=null;
@@ -212,10 +310,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 </script>
 </head>
 <body>
-<div class="lang-doc" data-lang="en" lang="en">
+<div class="lang-doc" data-lang="en" lang="en" dir="ltr">
 <div class="topbar">
   <div class="topbar-inner">
-    <a class="topbar-brand" href="#en-top">📘 Tiling the Plane <span class="topbar-tag">RuleSpeak®</span></a>
+    <a class="topbar-brand" href="#en-top">📘 Tiling the Plane <span class="topbar-tag">Docs</span></a>
     <nav class="crumb" aria-label="You are reading">
       <span class="crumb-entity"></span>
       <span class="crumb-sep" hidden>›</span>
@@ -226,12 +324,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
   <div class="gear-pop" role="dialog" aria-label="Documentation options" hidden>
     <p class="gear-pop-title">Show in this document</p>
     <label class="gear-opt" title="The declarative business rule (only if / must / priority)">
-      <input type="checkbox" data-elem="rulespeak" checked>
-      <span class="gear-opt-label">RuleSpeak®</span>
+      <input type="checkbox" data-elem="rulespeak">
+      <span class="gear-opt-label">Docs</span>
       <span class="gear-opt-hint">The declarative business rule (only if / must / priority)</span>
     </label>
     <label class="gear-opt" title="The formula read aloud as a plain sentence">
-      <input type="checkbox" data-elem="english">
+      <input type="checkbox" data-elem="english" checked>
       <span class="gear-opt-label">Plain reading</span>
       <span class="gear-opt-hint">The formula read aloud as a plain sentence</span>
     </label>
@@ -246,24 +344,30 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="gear-opt-hint">The author's narrative comment on a field, when present</span>
     </label>
     <label class="gear-opt" title="The fields each rule reads (its DAG inputs / upstream)">
-      <input type="checkbox" data-elem="inputs" checked>
+      <input type="checkbox" data-elem="inputs">
       <span class="gear-opt-label">Links to inputs</span>
       <span class="gear-opt-hint">The fields each rule reads (its DAG inputs / upstream)</span>
     </label>
     <label class="gear-opt" title="The rules that read this one (its DAG consumers / downstream)">
-      <input type="checkbox" data-elem="consumers">
+      <input type="checkbox" data-elem="consumers" checked>
       <span class="gear-opt-label">Links to consumers</span>
       <span class="gear-opt-hint">The rules that read this one (its DAG consumers / downstream)</span>
+    </label>
+    <label class="gear-opt" title="The first rows of each entity's data, computed columns included">
+      <input type="checkbox" data-elem="data" checked>
+      <span class="gear-opt-label">Example data</span>
+      <span class="gear-opt-hint">The first rows of each entity's data, computed columns included</span>
     </label>
     <button type="button" class="gear-reset">Reset to defaults</button>
   </div>
 </div>
 <header class="doc-header" id="en-top">
+  <script type="application/json" class="nav-texts">{"search":"Filter tables and fields…","empty":"Nothing matches.","other":"Other","all":"All","derived":"Derived","stored":"Stored","rels":"Relationships","groups":"Groups","list":"A–Z","graph":"Graph","graphHint":"Each box is a table; a line runs from a table to the table it refers to. Click a table to open it.","fields":"Filter fields…","showAll":"Show everything on one page","showOne":"Show one table at a time","tocTitle":"Entities"}</script>
   <div class="doc-header-inner">
-    <h1 class="doc-title">📘 Tiling the Plane <span class="doc-title-sub">RuleSpeak®</span></h1>
+    <h1 class="doc-title">📘 Tiling the Plane <span class="doc-title-sub">Docs</span></h1>
     <p class="doc-lede">A library for tiling the Euclidean plane. The catalog half models which tilings exist and why each vertex figure is valid (interior angles summing to 360deg); the generative half places prototiles into a bounded region and measures coverage, gaps, and overlaps. One DAG of Schema/Data/Lookups/Aggregations/Formulas.</p>
     <p class="doc-note">Declarative business rules rendered from the rulebook — the single source of truth. Every statement below is the plain-language reading of a formula; nothing here is hand-authored prose.</p>
-    <p class="narr-hint">Use the <button type="button" class="gear-inline gear-open-inline">⚙︎ options</button> in the top-right corner to turn each part of the documentation on or off — RuleSpeak®, the literal reading, the raw formula, the author's description, and the links to a rule's inputs and consumers. Your choices are remembered.</p>
+    <p class="narr-hint">Use the <button type="button" class="gear-inline gear-open-inline">⚙︎ options</button> in the top-right corner to turn each part of the documentation on or off — Docs, the literal reading, the raw formula, the author's description, and the links to a rule's inputs and consumers. Your choices are remembered.</p>
   </div>
 </header>
 <nav class="toc">
@@ -279,7 +383,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <li><a href="#en-t-wallpaperdesigns">Wallpaper Design</a> <span class="toc-meta">6 rules · 1 links</span></li>
   </ul>
 </nav>
-<section class="entity" id="en-t-symmetrygroups" data-entity="Symmetry Group">
+<section class="entity" id="en-t-symmetrygroups" data-entity="Symmetry Group" data-links="" data-rules="3">
   <header class="entity-head">
     <h2 class="entity-title">Symmetry Group</h2>
     <p class="entity-synopsis">The wallpaper symmetry groups a tiling can belong to.</p>
@@ -293,9 +397,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-1</span>
     </div>
+    <p class="field-note elem elem-desc">Mirrors the id.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A symmetry group's <a class="ref" href="#en-f-symmetrygroups-name">name</a> is the same as its symmetry group ID.</p>
       </div>
       <div class="view elem elem-english">
@@ -322,18 +427,15 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Symmetry Group ID <span class="ref-pill-tbl">Symmetry Group</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Mirrors the id.</p>
     </article>
   <article class="field tone-raw" id="en-f-symmetrygroups-notation" data-entity="Symmetry Group" data-field="Notation">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Notation</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">IUC / crystallographic short notation (e.g. 'p6m').</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">2 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -341,35 +443,28 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-lookup" href="#en-f-wallpaperdesigns-groupnotation">↗ Group Notation <span class="ref-pill-tbl">Wallpaper Design</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">IUC / crystallographic short notation (e.g. 'p6m').</p>
     </article>
   <article class="field tone-raw" id="en-f-symmetrygroups-orbifold" data-entity="Symmetry Group" data-field="Orbifold">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Orbifold</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Conway orbifold notation (e.g. '*632').</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-lookup" href="#en-f-wallpaperdesigns-grouporbifold">↗ Group Orbifold <span class="ref-pill-tbl">Wallpaper Design</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Conway orbifold notation (e.g. '*632').</p>
     </article>
   <article class="field tone-raw" id="en-f-symmetrygroups-displayname" data-entity="Symmetry Group" data-field="Display Name">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Display Name</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Human-friendly name.</p>
     </article>
@@ -377,11 +472,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">What this wallpaper group is.</p>
     </article>
@@ -394,9 +486,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-2</span>
     </div>
+    <p class="field-note elem elem-desc">How many catalogued tilings have this symmetry group.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A symmetry group's <a class="ref" href="#en-f-symmetrygroups-tilingcount">tiling count</a> is the number of <a class="ref" href="#en-t-tilings">tilings</a> related to the symmetry group.</p>
       </div>
       <div class="view elem elem-english">
@@ -428,35 +521,28 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Symmetry Group ID <span class="ref-pill-tbl">Symmetry Group</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">How many catalogued tilings have this symmetry group.</p>
     </article>
   <article class="field tone-raw" id="en-f-symmetrygroups-latticetype" data-entity="Symmetry Group" data-field="Lattice Type">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Lattice Type</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Bravais lattice class: oblique | rectangular | rhombic | square | hexagonal.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-lookup" href="#en-f-wallpaperdesigns-grouplatticetype">↗ Group Lattice Type <span class="ref-pill-tbl">Wallpaper Design</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Bravais lattice class: oblique | rectangular | rhombic | square | hexagonal.</p>
     </article>
   <article class="field tone-raw" id="en-f-symmetrygroups-latticeangledeg" data-entity="Symmetry Group" data-field="Lattice Angle Deg">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Lattice Angle Deg</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Angle (deg) between the two lattice basis vectors B1,B2.</p>
     </article>
@@ -464,11 +550,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Lattice Ratio</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Length ratio |B2|/|B1| of the lattice basis.</p>
     </article>
@@ -476,11 +559,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Generators</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">JSON array of non-identity coset-rep affine ops in fractional coords: {k,m:[a,b,c,d],t:[tx,ty]} mapping (u,v)-&gt;(a u+b v+tx, c u+d v+ty).</p>
     </article>
@@ -488,47 +568,38 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Rotation Order</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">integer</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Highest order of rotational symmetry (1,2,3,4,6).</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-lookup" href="#en-f-wallpaperdesigns-grouprotationorder">↗ Group Rotation Order <span class="ref-pill-tbl">Wallpaper Design</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Highest order of rotational symmetry (1,2,3,4,6).</p>
     </article>
   <article class="field tone-raw" id="en-f-symmetrygroups-operationcount" data-entity="Symmetry Group" data-field="Operation Count">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Operation Count</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">integer</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Number of point-group coset reps including the identity (= motif copies per lattice cell).</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-lookup" href="#en-f-wallpaperdesigns-groupoperationcount">↗ Group Operation Count <span class="ref-pill-tbl">Wallpaper Design</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Number of point-group coset reps including the identity (= motif copies per lattice cell).</p>
     </article>
   <article class="field tone-raw" id="en-f-symmetrygroups-hasmirrors" data-entity="Symmetry Group" data-field="Has Mirrors">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Has Mirrors</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype boolean); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">boolean</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Whether the group contains reflection (mirror) symmetry.</p>
     </article>
@@ -536,11 +607,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Has Glides</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype boolean); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">boolean</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Whether the group contains glide-reflection symmetry.</p>
     </article>
@@ -553,9 +621,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-3</span>
     </div>
+    <p class="field-note elem elem-desc">How many saved designs use this group.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A symmetry group's <a class="ref" href="#en-f-symmetrygroups-wallpaperdesigncount">wallpaper design count</a> is the number of <a class="ref" href="#en-t-wallpaperdesigns">wallpaper designs</a> related to the symmetry group.</p>
       </div>
       <div class="view elem elem-english">
@@ -587,10 +656,87 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Symmetry Group ID <span class="ref-pill-tbl">Symmetry Group</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">How many saved designs use this group.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Notation</th>
+        <th>Orbifold</th>
+        <th>Display Name</th>
+        <th>Description</th>
+        <th class="sample-derived">Tiling Count<span class="sample-fx">ƒ</span></th>
+        <th>Lattice Type</th>
+        <th>Lattice Angle Deg</th>
+        <th>Lattice Ratio</th>
+        <th>Generators</th>
+        <th>Rotation Order</th>
+        <th>Operation Count</th>
+        <th>Has Mirrors</th>
+        <th>Has Glides</th>
+        <th class="sample-derived">Wallpaper Design Count<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">p1</td>
+          <td>p1</td>
+          <td>o</td>
+          <td>Translations only</td>
+          <td>Only translations; no rotations, reflections, or glides. The most general wallpaper group.</td>
+          <td class="sample-derived">0</td>
+          <td>oblique</td>
+          <td>73</td>
+          <td>1.3</td>
+          <td>[]</td>
+          <td>1</td>
+          <td>1</td>
+          <td>false</td>
+          <td>false</td>
+          <td class="sample-derived">0</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">p2</td>
+          <td>p2</td>
+          <td>2222</td>
+          <td>2-fold rotation</td>
+          <td>Translations plus 2-fold (180deg) rotation centers; no reflections.</td>
+          <td class="sample-derived">0</td>
+          <td>oblique</td>
+          <td>73</td>
+          <td>1.3</td>
+          <td>[{&quot;k&quot;:&quot;rot2&quot;,&quot;m&quot;:[-1,0,0,-1],&quot;t&quot;:[0,0]}]</td>
+          <td>2</td>
+          <td>2</td>
+          <td>false</td>
+          <td>false</td>
+          <td class="sample-derived">0</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">pm</td>
+          <td>pm</td>
+          <td>**</td>
+          <td>Parallel mirrors</td>
+          <td>Reflections across parallel mirror lines; no rotations.</td>
+          <td class="sample-derived">0</td>
+          <td>rectangular</td>
+          <td>90</td>
+          <td>1.4</td>
+          <td>[{&quot;k&quot;:&quot;mirror&quot;,&quot;m&quot;:[-1,0,0,1],&quot;t&quot;:[0,0]}]</td>
+          <td>1</td>
+          <td>2</td>
+          <td>true</td>
+          <td>false</td>
+          <td class="sample-derived">0</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-prototiles" data-entity="Prototile">
+<section class="entity" id="en-t-prototiles" data-entity="Prototile" data-links="" data-rules="8">
   <header class="entity-head">
     <h2 class="entity-title">Prototile</h2>
     <p class="entity-synopsis">The prototiles (regular polygons) available for tilings.</p>
@@ -604,9 +750,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-4</span>
     </div>
+    <p class="field-note elem elem-desc">Slug from display name.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">A prototile's <a class="ref" href="#en-f-prototiles-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-prototiles-displayname">display name</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -633,36 +780,30 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-prototiles-displayname">● Display Name <span class="ref-pill-tbl">Prototile</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Slug from display name.</p>
     </article>
   <article class="field tone-raw" id="en-f-prototiles-displayname" data-entity="Prototile" data-field="Display Name">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Display Name</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Human name (e.g. 'Equilateral Triangle').</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-prototiles-name">ƒ Name <span class="ref-pill-tbl">Prototile</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Human name (e.g. 'Equilateral Triangle').</p>
     </article>
   <article class="field tone-raw" id="en-f-prototiles-sides" data-entity="Prototile" data-field="Sides">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Sides</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">integer</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Number of edges of this regular polygon.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">7 direct</span> <span class="count count-muted">+7 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -682,18 +823,15 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-regions-iscleantiling">Is Clean Tiling <span class="ref-pill-tbl">Region</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Number of edges of this regular polygon.</p>
     </article>
   <article class="field tone-raw" id="en-f-prototiles-edgelength" data-entity="Prototile" data-field="Edge Length">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Edge Length</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Edge length in unit cells (1.0 = unit edge).</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+5 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -705,7 +843,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-regions-iscleantiling">Is Clean Tiling <span class="ref-pill-tbl">Region</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Edge length in unit cells (1.0 = unit edge).</p>
     </article>
   <article class="field tone-calc" id="en-f-prototiles-area" data-entity="Prototile" data-field="Area">
     <div class="field-head">
@@ -716,9 +853,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-5</span>
     </div>
+    <p class="field-note elem elem-desc">Area of one tile (regular n-gon). Trig override lives in 02b-customize-functions.sql.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">A prototile's <a class="ref" href="#en-f-prototiles-area">area</a> is computed as 0.25 times the <a class="ref" href="#en-f-prototiles-sides">sides</a> times the <a class="ref" href="#en-f-prototiles-edgelength">edge length</a> raised to the power of 2 divided by the tangent of pi divided by the <a class="ref" href="#en-f-prototiles-sides">sides</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -760,7 +898,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-prototiles-edgelength">● Edge Length <span class="ref-pill-tbl">Prototile</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Area of one tile (regular n-gon). Trig override lives in 02b-customize-functions.sql.</p>
     </article>
   <article class="field tone-calc" id="en-f-prototiles-interiorangledeg" data-entity="Prototile" data-field="Interior Angle Deg">
     <div class="field-head">
@@ -771,9 +908,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-6</span>
     </div>
+    <p class="field-note elem elem-desc">Interior angle in degrees of this regular polygon.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A prototile's <a class="ref" href="#en-f-prototiles-interiorangledeg">interior angle deg</a> is computed as the <a class="ref" href="#en-f-prototiles-sides">sides</a> minus 2 times 180 divided by the <a class="ref" href="#en-f-prototiles-sides">sides</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -807,7 +945,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-prototiles-sides">● Sides <span class="ref-pill-tbl">Prototile</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Interior angle in degrees of this regular polygon.</p>
     </article>
   <article class="field tone-calc" id="en-f-prototiles-vertexangleturns" data-entity="Prototile" data-field="Vertex Angle Turns">
     <div class="field-head">
@@ -818,9 +955,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-7</span>
     </div>
+    <p class="field-note elem elem-desc">Fraction of a full turn occupied at one vertex by this tile.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A prototile's <a class="ref" href="#en-f-prototiles-vertexangleturns">vertex angle turns</a> is computed as the <a class="ref" href="#en-f-prototiles-interiorangledeg">interior angle deg</a> divided by 360.</p>
       </div>
       <div class="view elem elem-english">
@@ -847,7 +985,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-prototiles-sides">● Sides <span class="ref-pill-tbl">Prototile</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Fraction of a full turn occupied at one vertex by this tile.</p>
     </article>
   <article class="field tone-calc" id="en-f-prototiles-isregular" data-entity="Prototile" data-field="Is Regular">
     <div class="field-head">
@@ -858,9 +995,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-8</span>
     </div>
+    <p class="field-note elem elem-desc">A regular polygon needs at least 3 sides.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A prototile is considered a regular if the <a class="ref" href="#en-f-prototiles-sides">sides</a> is at least 3.</p>
       </div>
       <div class="view elem elem-english">
@@ -887,7 +1025,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-prototiles-sides">● Sides <span class="ref-pill-tbl">Prototile</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">A regular polygon needs at least 3 sides.</p>
     </article>
   <article class="field tone-calc" id="en-f-prototiles-istriangle" data-entity="Prototile" data-field="Is Triangle">
     <div class="field-head">
@@ -898,9 +1035,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-9</span>
     </div>
+    <p class="field-note elem elem-desc">True when this prototile is a triangle (3 sides).</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A prototile is considered a triangle if the <a class="ref" href="#en-f-prototiles-sides">sides</a> is 3.</p>
       </div>
       <div class="view elem elem-english">
@@ -927,7 +1065,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-prototiles-sides">● Sides <span class="ref-pill-tbl">Prototile</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">True when this prototile is a triangle (3 sides).</p>
     </article>
   <article class="field tone-calc" id="en-f-prototiles-issquare" data-entity="Prototile" data-field="Is Square">
     <div class="field-head">
@@ -938,9 +1075,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-10</span>
     </div>
+    <p class="field-note elem elem-desc">True when this prototile is a square (4 sides).</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A prototile is considered a square if the <a class="ref" href="#en-f-prototiles-sides">sides</a> is 4.</p>
       </div>
       <div class="view elem elem-english">
@@ -967,7 +1105,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-prototiles-sides">● Sides <span class="ref-pill-tbl">Prototile</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">True when this prototile is a square (4 sides).</p>
     </article>
   <article class="field tone-agg" id="en-f-prototiles-usedintilingscount" data-entity="Prototile" data-field="Used in Tilings Count">
     <div class="field-head">
@@ -978,9 +1115,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-11</span>
     </div>
+    <p class="field-note elem elem-desc">How many catalogued tilings use this prototile.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A prototile's <a class="ref" href="#en-f-prototiles-usedintilingscount">used in tilings count</a> is the number of <a class="ref" href="#en-t-tilingprototiles">tiling prototiles</a> related to the prototile.</p>
       </div>
       <div class="view elem elem-english">
@@ -1012,10 +1150,71 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Prototile ID <span class="ref-pill-tbl">Prototile</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">How many catalogued tilings use this prototile.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Display Name</th>
+        <th>Sides</th>
+        <th>Edge Length</th>
+        <th class="sample-derived">Area<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Interior Angle Deg<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Vertex Angle Turns<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Regular<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Triangle<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Square<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Used in Tilings Count<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">equilateral-triangle</td>
+          <td>Equilateral Triangle</td>
+          <td>3</td>
+          <td>1.0</td>
+          <td class="sample-derived">0.43301270189221946</td>
+          <td class="sample-derived">60.0</td>
+          <td class="sample-derived">0.16666666666666666</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">3</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">regular-pentagon</td>
+          <td>Regular Pentagon</td>
+          <td>5</td>
+          <td>1.0</td>
+          <td class="sample-derived">1.720477400588967</td>
+          <td class="sample-derived">108.0</td>
+          <td class="sample-derived">0.3</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">1</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">square</td>
+          <td>Square</td>
+          <td>4</td>
+          <td>1.0</td>
+          <td class="sample-derived">1.0000000000000002</td>
+          <td class="sample-derived">90.0</td>
+          <td class="sample-derived">0.25</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">3</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-tilings" data-entity="Tiling">
+<section class="entity" id="en-t-tilings" data-entity="Tiling" data-links="en-t-symmetrygroups" data-rules="11">
   <header class="entity-head">
     <h2 class="entity-title">Tiling</h2>
     <p class="entity-synopsis">Catalogued tilings of the plane.</p>
@@ -1029,9 +1228,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-12</span>
     </div>
+    <p class="field-note elem elem-desc">Slug.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">A tiling's <a class="ref" href="#en-f-tilings-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-tilings-displayname">display name</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -1058,35 +1258,28 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-tilings-displayname">● Display Name <span class="ref-pill-tbl">Tiling</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Slug.</p>
     </article>
   <article class="field tone-raw" id="en-f-tilings-displayname" data-entity="Tiling" data-field="Display Name">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Display Name</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Human name (e.g. 'Hexagonal tiling').</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-tilings-name">ƒ Name <span class="ref-pill-tbl">Tiling</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Human name (e.g. 'Hexagonal tiling').</p>
     </article>
   <article class="field tone-raw" id="en-f-tilings-vertexconfig" data-entity="Tiling" data-field="Vertex Config">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Vertex Config</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Vertex configuration / Schlafli symbol string (e.g. '3.4.6.4').</p>
     </article>
@@ -1094,11 +1287,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Kind</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">'regular' | 'semiregular' (Archimedean).</p>
     </article>
@@ -1106,11 +1296,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Is Edge to Edge</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype boolean); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">boolean</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Whether tiles meet edge-to-edge.</p>
     </article>
@@ -1121,6 +1308,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">The wallpaper symmetry group of this tiling.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-symmetrygroups">Symmetry Group</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -1131,7 +1319,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-lookup" href="#en-f-tilings-symmetrynotation">↗ Symmetry Notation <span class="ref-pill-tbl">Tiling</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">The wallpaper symmetry group of this tiling.</p>
     </article>
   <article class="field tone-lookup" id="en-f-tilings-symmetrynotation" data-entity="Tiling" data-field="Symmetry Notation">
     <div class="field-head">
@@ -1142,9 +1329,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-13</span>
     </div>
+    <p class="field-note elem elem-desc">Pulled symmetry notation for display.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A tiling's <a class="ref" href="#en-f-tilings-symmetrynotation">symmetry notation</a> — taken from the linked <a class="ref" href="#en-f-tilings-symmetrygroup">symmetry group</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1181,7 +1369,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Symmetry Group ID <span class="ref-pill-tbl">Symmetry Group</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Pulled symmetry notation for display.</p>
     </article>
   <article class="field tone-agg" id="en-f-tilings-distinctprototilecount" data-entity="Tiling" data-field="Distinct Prototile Count">
     <div class="field-head">
@@ -1192,9 +1379,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-14</span>
     </div>
+    <p class="field-note elem elem-desc">How many distinct prototiles this tiling uses.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A tiling's <a class="ref" href="#en-f-tilings-distinctprototilecount">distinct prototile count</a> is the number of <a class="ref" href="#en-t-tilingprototiles">tiling prototiles</a> related to the tiling.</p>
       </div>
       <div class="view elem elem-english">
@@ -1232,7 +1420,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Tiling ID <span class="ref-pill-tbl">Tiling</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">How many distinct prototiles this tiling uses.</p>
     </article>
   <article class="field tone-agg" id="en-f-tilings-vertexfigurecount" data-entity="Tiling" data-field="Vertex Figure Count">
     <div class="field-head">
@@ -1243,9 +1430,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-15</span>
     </div>
+    <p class="field-note elem elem-desc">How many distinct vertex figures this tiling has.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A tiling's <a class="ref" href="#en-f-tilings-vertexfigurecount">vertex figure count</a> is the number of <a class="ref" href="#en-t-vertexfigures">vertex figures</a> related to the tiling.</p>
       </div>
       <div class="view elem elem-english">
@@ -1284,7 +1472,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Tiling ID <span class="ref-pill-tbl">Tiling</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">How many distinct vertex figures this tiling has.</p>
     </article>
   <article class="field tone-agg" id="en-f-tilings-validvertexfigurecount" data-entity="Tiling" data-field="Valid Vertex Figure Count">
     <div class="field-head">
@@ -1295,9 +1482,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-16</span>
     </div>
+    <p class="field-note elem elem-desc">How many of its vertex figures close to 360deg.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A tiling's <a class="ref" href="#en-f-tilings-validvertexfigurecount">valid vertex figure count</a> is the number of the tiling's <a class="ref" href="#en-t-vertexfigures">vertex figures</a> that <a class="ref" href="#en-f-vertexfigures-isvalid">are valid</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1341,7 +1529,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-vertexfigures-anglesumdeg">● Angle Sum Deg <span class="ref-pill-tbl">Vertex Figure</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">How many of its vertex figures close to 360deg.</p>
     </article>
   <article class="field tone-calc" id="en-f-tilings-isregulartiling" data-entity="Tiling" data-field="Is Regular Tiling">
     <div class="field-head">
@@ -1352,9 +1539,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-17</span>
     </div>
+    <p class="field-note elem elem-desc">Regular tiling = built from a single prototile.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A tiling is considered regular-tiling if the <a class="ref" href="#en-f-tilings-distinctprototilecount">distinct prototile count</a> is 1.</p>
       </div>
       <div class="view elem elem-english">
@@ -1382,7 +1570,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Tiling ID <span class="ref-pill-tbl">Tiling</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Regular tiling = built from a single prototile.</p>
     </article>
   <article class="field tone-calc" id="en-f-tilings-allverticesvalid" data-entity="Tiling" data-field="All Vertices Valid">
     <div class="field-head">
@@ -1393,9 +1580,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-18</span>
     </div>
+    <p class="field-note elem elem-desc">True when every vertex figure of this tiling closes to a full turn.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A tiling is flagged all vertices valid if the <a class="ref" href="#en-f-tilings-validvertexfigurecount">valid vertex figure count</a> is the <a class="ref" href="#en-f-tilings-vertexfigurecount">vertex figure count</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1434,18 +1622,15 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-vertexfigures-anglesumdeg">● Angle Sum Deg <span class="ref-pill-tbl">Vertex Figure</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">True when every vertex figure of this tiling closes to a full turn.</p>
     </article>
   <article class="field tone-raw" id="en-f-tilings-t1x" data-entity="Tiling" data-field="T1x">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">T1x</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">X component of the first lattice translation vector (unit cells). Repeating the fundamental domain along T1 and T2 fills the plane.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -1455,18 +1640,15 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-tilings-doestileplane">Does Tile Plane <span class="ref-pill-tbl">Tiling</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">X component of the first lattice translation vector (unit cells). Repeating the fundamental domain along T1 and T2 fills the plane.</p>
     </article>
   <article class="field tone-raw" id="en-f-tilings-t1y" data-entity="Tiling" data-field="T1y">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">T1y</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Y component of the first lattice translation vector (unit cells).</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -1476,18 +1658,15 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-tilings-doestileplane">Does Tile Plane <span class="ref-pill-tbl">Tiling</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Y component of the first lattice translation vector (unit cells).</p>
     </article>
   <article class="field tone-raw" id="en-f-tilings-t2x" data-entity="Tiling" data-field="T2x">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">T2x</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">X component of the second lattice translation vector (unit cells).</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -1497,18 +1676,15 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-tilings-doestileplane">Does Tile Plane <span class="ref-pill-tbl">Tiling</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">X component of the second lattice translation vector (unit cells).</p>
     </article>
   <article class="field tone-raw" id="en-f-tilings-t2y" data-entity="Tiling" data-field="T2y">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">T2y</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Y component of the second lattice translation vector (unit cells).</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -1518,7 +1694,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-tilings-doestileplane">Does Tile Plane <span class="ref-pill-tbl">Tiling</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Y component of the second lattice translation vector (unit cells).</p>
     </article>
   <article class="field tone-calc" id="en-f-tilings-latticedeterminant" data-entity="Tiling" data-field="Lattice Determinant">
     <div class="field-head">
@@ -1529,9 +1704,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-19</span>
     </div>
+    <p class="field-note elem elem-desc">Cross product T1 x T2. Equals the signed area of the fundamental domain (unit cell).</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A tiling's <a class="ref" href="#en-f-tilings-latticedeterminant">lattice determinant</a> is computed as the <a class="ref" href="#en-f-tilings-t1x">t1x</a> times the <a class="ref" href="#en-f-tilings-t2y">t2y</a> minus the <a class="ref" href="#en-f-tilings-t1y">t1y</a> times the <a class="ref" href="#en-f-tilings-t2x">t2x</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1581,7 +1757,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-tilings-t2x">● T2x <span class="ref-pill-tbl">Tiling</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Cross product T1 x T2. Equals the signed area of the fundamental domain (unit cell).</p>
     </article>
   <article class="field tone-calc" id="en-f-tilings-fundamentaldomainarea" data-entity="Tiling" data-field="Fundamental Domain Area">
     <div class="field-head">
@@ -1592,9 +1767,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-20</span>
     </div>
+    <p class="field-note elem elem-desc">Area of the fundamental domain spanned by the two translation vectors.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A tiling's <a class="ref" href="#en-f-tilings-fundamentaldomainarea">fundamental domain area</a> is computed as the absolute value of the <a class="ref" href="#en-f-tilings-latticedeterminant">lattice determinant</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1624,7 +1800,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-tilings-t2x">● T2x <span class="ref-pill-tbl">Tiling</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Area of the fundamental domain spanned by the two translation vectors.</p>
     </article>
   <article class="field tone-calc" id="en-f-tilings-haslattice" data-entity="Tiling" data-field="Has Lattice">
     <div class="field-head">
@@ -1635,9 +1810,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-21</span>
     </div>
+    <p class="field-note elem elem-desc">True when the two translation vectors are present and linearly independent (span the plane).</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A tiling is considered to have a lattice if the absolute value of the <a class="ref" href="#en-f-tilings-latticedeterminant">lattice determinant</a> is greater than 0.0001.</p>
       </div>
       <div class="view elem elem-english">
@@ -1673,7 +1849,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-tilings-t2x">● T2x <span class="ref-pill-tbl">Tiling</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">True when the two translation vectors are present and linearly independent (span the plane).</p>
     </article>
   <article class="field tone-calc" id="en-f-tilings-doestileplane" data-entity="Tiling" data-field="Does Tile Plane">
     <div class="field-head">
@@ -1684,9 +1859,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-22</span>
     </div>
+    <p class="field-note elem elem-desc">THE ULTIMATE QUESTION. Yes/no: does this tiling fill the plane? True iff every vertex figure closes to 360deg AND a non-degenerate lattice of translation vectors repeats the fundamental domain across the plane.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <div class="view-body"><p class="rt-headline">A tiling is considered to doe a tile plane if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-tilings-allverticesvalid">all vertices valid</a> flag is set</li><li>the <a class="ref" href="#en-f-tilings-haslattice">lattice</a> flag is set</li></ul></ol></div>
       </div>
       <div class="view elem elem-english">
@@ -1723,10 +1899,103 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-tilings-t2x">● T2x <span class="ref-pill-tbl">Tiling</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">THE ULTIMATE QUESTION. Yes/no: does this tiling fill the plane? True iff every vertex figure closes to 360deg AND a non-degenerate lattice of translation vectors repeats the fundamental domain across the plane.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Display Name</th>
+        <th>Vertex Config</th>
+        <th>Kind</th>
+        <th>Is Edge to Edge</th>
+        <th class="sample-derived">Symmetry Notation<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Distinct Prototile Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Vertex Figure Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Valid Vertex Figure Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Regular Tiling<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">All Vertices Valid<span class="sample-fx">ƒ</span></th>
+        <th>T1x</th>
+        <th>T1y</th>
+        <th>T2x</th>
+        <th>T2y</th>
+        <th class="sample-derived">Lattice Determinant<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Fundamental Domain Area<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Has Lattice<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Does Tile Plane<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">triangular-tiling</td>
+          <td>Triangular tiling</td>
+          <td>3.3.3.3.3.3</td>
+          <td>regular</td>
+          <td>true</td>
+          <td class="sample-derived">p6m</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">true</td>
+          <td>1.0</td>
+          <td>0.0</td>
+          <td>0.5</td>
+          <td>0.8660254</td>
+          <td class="sample-derived">0.8660254</td>
+          <td class="sample-derived">0.8660254</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">square-tiling</td>
+          <td>Square tiling</td>
+          <td>4.4.4.4</td>
+          <td>regular</td>
+          <td>true</td>
+          <td class="sample-derived">p4m</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">true</td>
+          <td>1.0</td>
+          <td>0.0</td>
+          <td>0.0</td>
+          <td>1.0</td>
+          <td class="sample-derived">1.0</td>
+          <td class="sample-derived">1.0</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">hexagonal-tiling</td>
+          <td>Hexagonal tiling</td>
+          <td>6.6.6</td>
+          <td>regular</td>
+          <td>true</td>
+          <td class="sample-derived">p6m</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">true</td>
+          <td>1.7320508</td>
+          <td>0.0</td>
+          <td>0.8660254</td>
+          <td>1.5</td>
+          <td class="sample-derived">2.5980762</td>
+          <td class="sample-derived">2.5980762</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">true</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-tilingprototiles" data-entity="Tiling Prototile">
+<section class="entity" id="en-t-tilingprototiles" data-entity="Tiling Prototile" data-links="en-t-tilings en-t-prototiles" data-rules="3">
   <header class="entity-head">
     <h2 class="entity-title">Tiling Prototile</h2>
     <p class="entity-synopsis">First-class junction: prototiles used by each tiling.</p>
@@ -1740,9 +2009,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-23</span>
     </div>
+    <p class="field-note elem elem-desc">Composite name.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A tiling prototile's <a class="ref" href="#en-f-tilingprototiles-name">name</a> is computed as the <a class="ref" href="#en-f-tilingprototiles-tiling">tiling</a>, followed by a slash, followed by the <a class="ref" href="#en-f-tilingprototiles-prototile">prototile</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1774,7 +2044,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel" href="#en-f-tilingprototiles-prototile">⇢ Prototile <span class="ref-pill-tbl">Tiling Prototile</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Composite name.</p>
     </article>
   <article class="field tone-rel" id="en-f-tilingprototiles-tiling" data-entity="Tiling Prototile" data-field="Tiling">
     <div class="field-head">
@@ -1783,6 +2052,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">The tiling.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-tilings">Tiling</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -1794,7 +2064,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-tilings-isregulartiling">Is Regular Tiling <span class="ref-pill-tbl">Tiling</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">The tiling.</p>
     </article>
   <article class="field tone-rel" id="en-f-tilingprototiles-prototile" data-entity="Tiling Prototile" data-field="Prototile">
     <div class="field-head">
@@ -1803,6 +2072,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">A prototile used by that tiling.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-prototiles">Prototile</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -1815,17 +2085,13 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-lookup" href="#en-f-tilingprototiles-prototileinteriorangle">↗ Prototile Interior Angle <span class="ref-pill-tbl">Tiling Prototile</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">A prototile used by that tiling.</p>
     </article>
   <article class="field tone-raw" id="en-f-tilingprototiles-countatvertex" data-entity="Tiling Prototile" data-field="Count At Vertex">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Count At Vertex</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">integer</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">How many of this prototile meet at a typical vertex.</p>
     </article>
@@ -1838,9 +2104,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-24</span>
     </div>
+    <p class="field-note elem elem-desc">Sides of the referenced prototile.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A tiling prototile's <a class="ref" href="#en-f-tilingprototiles-prototilesides">prototile sides</a> — taken from the linked <a class="ref" href="#en-f-tilingprototiles-prototile">prototile</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1877,7 +2144,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Prototile ID <span class="ref-pill-tbl">Prototile</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Sides of the referenced prototile.</p>
     </article>
   <article class="field tone-lookup" id="en-f-tilingprototiles-prototileinteriorangle" data-entity="Tiling Prototile" data-field="Prototile Interior Angle">
     <div class="field-head">
@@ -1888,9 +2154,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-25</span>
     </div>
+    <p class="field-note elem elem-desc">Interior angle of the referenced prototile.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A tiling prototile's <a class="ref" href="#en-f-tilingprototiles-prototileinteriorangle">prototile interior angle</a> is the <a class="ref" href="#en-f-prototiles-interiorangledeg">interior angle deg</a> of the tiling prototile's <a class="ref" href="#en-f-tilingprototiles-prototile">prototile</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1927,10 +2194,43 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Prototile ID <span class="ref-pill-tbl">Prototile</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Interior angle of the referenced prototile.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Count At Vertex</th>
+        <th class="sample-derived">Prototile Sides<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Prototile Interior Angle<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">triangular/triangle</td>
+          <td>6</td>
+          <td class="sample-derived">3</td>
+          <td class="sample-derived">60.0</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">square/square</td>
+          <td>4</td>
+          <td class="sample-derived">4</td>
+          <td class="sample-derived">90.0</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">hexagonal/hexagon</td>
+          <td>3</td>
+          <td class="sample-derived">6</td>
+          <td class="sample-derived">120.0</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-vertexfigures" data-entity="Vertex Figure">
+<section class="entity" id="en-t-vertexfigures" data-entity="Vertex Figure" data-links="en-t-tilings" data-rules="4">
   <header class="entity-head">
     <h2 class="entity-title">Vertex Figure</h2>
     <p class="entity-synopsis">First-class vertex figures; validity derived from angle sum = 360.</p>
@@ -1944,9 +2244,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-26</span>
     </div>
+    <p class="field-note elem elem-desc">Composite name.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A vertex figure's <a class="ref" href="#en-f-vertexfigures-name">name</a> is computed as the <a class="ref" href="#en-f-vertexfigures-tiling">tiling</a>, followed by “@”, followed by the <a class="ref" href="#en-f-vertexfigures-config">config</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1978,7 +2279,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-vertexfigures-config">● Config <span class="ref-pill-tbl">Vertex Figure</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Composite name.</p>
     </article>
   <article class="field tone-rel" id="en-f-vertexfigures-tiling" data-entity="Vertex Figure" data-field="Tiling">
     <div class="field-head">
@@ -1987,6 +2287,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">The tiling this vertex figure belongs to.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-tilings">Tiling</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -2000,36 +2301,30 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-tilings-doestileplane">Does Tile Plane <span class="ref-pill-tbl">Tiling</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">The tiling this vertex figure belongs to.</p>
     </article>
   <article class="field tone-raw" id="en-f-vertexfigures-config" data-entity="Vertex Figure" data-field="Config">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Config</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Vertex configuration at this vertex (e.g. '3.4.6.4').</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-vertexfigures-name">ƒ Name <span class="ref-pill-tbl">Vertex Figure</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Vertex configuration at this vertex (e.g. '3.4.6.4').</p>
     </article>
   <article class="field tone-raw" id="en-f-vertexfigures-anglesumdeg" data-entity="Vertex Figure" data-field="Angle Sum Deg">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Angle Sum Deg</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Sum of interior angles meeting at this vertex (degrees).</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+4 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -2041,7 +2336,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-tilings-doestileplane">Does Tile Plane <span class="ref-pill-tbl">Tiling</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Sum of interior angles meeting at this vertex (degrees).</p>
     </article>
   <article class="field tone-calc" id="en-f-vertexfigures-turnsatvertex" data-entity="Vertex Figure" data-field="Turns At Vertex">
     <div class="field-head">
@@ -2052,9 +2346,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-27</span>
     </div>
+    <p class="field-note elem elem-desc">Angle sum as a fraction of a full turn.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A vertex figure's <a class="ref" href="#en-f-vertexfigures-turnsatvertex">turns at vertex</a> is computed as the <a class="ref" href="#en-f-vertexfigures-anglesumdeg">angle sum deg</a> divided by 360.</p>
       </div>
       <div class="view elem elem-english">
@@ -2081,7 +2376,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-vertexfigures-anglesumdeg">● Angle Sum Deg <span class="ref-pill-tbl">Vertex Figure</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Angle sum as a fraction of a full turn.</p>
     </article>
   <article class="field tone-calc" id="en-f-vertexfigures-anglegapdeg" data-entity="Vertex Figure" data-field="Angle Gap Deg">
     <div class="field-head">
@@ -2092,9 +2386,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-28</span>
     </div>
+    <p class="field-note elem elem-desc">Distance from a full 360deg turn.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A vertex figure's <a class="ref" href="#en-f-vertexfigures-anglegapdeg">angle gap deg</a> is computed as the absolute value of the <a class="ref" href="#en-f-vertexfigures-anglesumdeg">angle sum deg</a> minus 360.</p>
       </div>
       <div class="view elem elem-english">
@@ -2130,7 +2425,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-vertexfigures-anglesumdeg">● Angle Sum Deg <span class="ref-pill-tbl">Vertex Figure</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Distance from a full 360deg turn.</p>
     </article>
   <article class="field tone-calc" id="en-f-vertexfigures-isvalid" data-entity="Vertex Figure" data-field="Is Valid">
     <div class="field-head">
@@ -2141,9 +2435,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-29</span>
     </div>
+    <p class="field-note elem elem-desc">Valid vertex figure: interior angles close to a full turn.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A vertex figure is considered valid if the <a class="ref" href="#en-f-vertexfigures-anglegapdeg">angle gap deg</a> is at most 0.0001.</p>
       </div>
       <div class="view elem elem-english">
@@ -2178,10 +2473,51 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-vertexfigures-anglesumdeg">● Angle Sum Deg <span class="ref-pill-tbl">Vertex Figure</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Valid vertex figure: interior angles close to a full turn.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Config</th>
+        <th>Angle Sum Deg</th>
+        <th class="sample-derived">Turns At Vertex<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Angle Gap Deg<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Valid<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">triangular@3.3.3.3.3.3</td>
+          <td>3.3.3.3.3.3</td>
+          <td>360</td>
+          <td class="sample-derived">1.0</td>
+          <td class="sample-derived">0.0</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">square@4.4.4.4</td>
+          <td>4.4.4.4</td>
+          <td>360</td>
+          <td class="sample-derived">1.0</td>
+          <td class="sample-derived">0.0</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">hexagonal@6.6.6</td>
+          <td>6.6.6</td>
+          <td>360</td>
+          <td class="sample-derived">1.0</td>
+          <td class="sample-derived">0.0</td>
+          <td class="sample-derived">true</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-regions" data-entity="Region">
+<section class="entity" id="en-t-regions" data-entity="Region" data-links="en-t-tilings" data-rules="8">
   <header class="entity-head">
     <h2 class="entity-title">Region</h2>
     <p class="entity-synopsis">Bounded patches of the plane to be tiled.</p>
@@ -2195,9 +2531,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-30</span>
     </div>
+    <p class="field-note elem elem-desc">Slug.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">A region's <a class="ref" href="#en-f-regions-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-regions-displayname">display name</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -2224,36 +2561,30 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-regions-displayname">● Display Name <span class="ref-pill-tbl">Region</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Slug.</p>
     </article>
   <article class="field tone-raw" id="en-f-regions-displayname" data-entity="Region" data-field="Display Name">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Display Name</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Human name.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-regions-name">ƒ Name <span class="ref-pill-tbl">Region</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Human name.</p>
     </article>
   <article class="field tone-raw" id="en-f-regions-width" data-entity="Region" data-field="Width">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Width</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Region width in unit cells.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+4 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -2265,18 +2596,15 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-regions-iscleantiling">Is Clean Tiling <span class="ref-pill-tbl">Region</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Region width in unit cells.</p>
     </article>
   <article class="field tone-raw" id="en-f-regions-height" data-entity="Region" data-field="Height">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Height</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Region height in unit cells.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+4 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -2288,7 +2616,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-regions-iscleantiling">Is Clean Tiling <span class="ref-pill-tbl">Region</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Region height in unit cells.</p>
     </article>
   <article class="field tone-rel" id="en-f-regions-targettiling" data-entity="Region" data-field="Target Tiling">
     <div class="field-head">
@@ -2297,10 +2624,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Which catalogued tiling this region is trying to realize.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-tilings">Tiling</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
-    <p class="field-note elem elem-desc">Which catalogued tiling this region is trying to realize.</p>
     </article>
   <article class="field tone-calc" id="en-f-regions-area" data-entity="Region" data-field="Area">
     <div class="field-head">
@@ -2311,9 +2638,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-31</span>
     </div>
+    <p class="field-note elem elem-desc">Total area of the region.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A region's <a class="ref" href="#en-f-regions-area">area</a> is computed as the <a class="ref" href="#en-f-regions-width">width</a> times the <a class="ref" href="#en-f-regions-height">height</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2353,7 +2681,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-regions-height">● Height <span class="ref-pill-tbl">Region</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Total area of the region.</p>
     </article>
   <article class="field tone-agg" id="en-f-regions-placementcount" data-entity="Region" data-field="Placement Count">
     <div class="field-head">
@@ -2364,9 +2691,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-32</span>
     </div>
+    <p class="field-note elem elem-desc">How many tiles have been placed in this region.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A region's <a class="ref" href="#en-f-regions-placementcount">placement count</a> is the number of <a class="ref" href="#en-t-placements">placements</a> related to the region.</p>
       </div>
       <div class="view elem elem-english">
@@ -2398,7 +2726,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Region ID <span class="ref-pill-tbl">Region</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">How many tiles have been placed in this region.</p>
     </article>
   <article class="field tone-agg" id="en-f-regions-coveredarea" data-entity="Region" data-field="Covered Area">
     <div class="field-head">
@@ -2409,9 +2736,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-33</span>
     </div>
+    <p class="field-note elem elem-desc">Sum of placed-tile areas (counts overlaps twice — see CoveragePct).</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A region's <a class="ref" href="#en-f-regions-coveredarea">covered area</a> is the total <a class="ref" href="#en-f-placements-tilearea">tile area</a> across the <a class="ref" href="#en-t-placements">placements</a> related to the region.</p>
       </div>
       <div class="view elem elem-english">
@@ -2459,7 +2787,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Region ID <span class="ref-pill-tbl">Region</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Sum of placed-tile areas (counts overlaps twice — see CoveragePct).</p>
     </article>
   <article class="field tone-agg" id="en-f-regions-overlapcount" data-entity="Region" data-field="Overlap Count">
     <div class="field-head">
@@ -2470,9 +2797,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-34</span>
     </div>
+    <p class="field-note elem elem-desc">How many placed tiles are flagged as overlapping a neighbour.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A region's <a class="ref" href="#en-f-regions-overlapcount">overlap count</a> is the number of the region's <a class="ref" href="#en-t-placements">placements</a> that <a class="ref" href="#en-f-placements-isoverlapping">are overlapping</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2515,7 +2843,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-placements-isoverlapping">● Is Overlapping <span class="ref-pill-tbl">Placement</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">How many placed tiles are flagged as overlapping a neighbour.</p>
     </article>
   <article class="field tone-calc" id="en-f-regions-coveragepct" data-entity="Region" data-field="Coverage Pct">
     <div class="field-head">
@@ -2526,9 +2853,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-35</span>
     </div>
+    <p class="field-note elem elem-desc">Covered area as a percentage of region area.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A region's <a class="ref" href="#en-f-regions-coveragepct">coverage pct</a> is computed as 100 times the <a class="ref" href="#en-f-regions-coveredarea">covered area</a> divided by the <a class="ref" href="#en-f-regions-area">area</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2573,7 +2901,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-regions-height">● Height <span class="ref-pill-tbl">Region</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Covered area as a percentage of region area.</p>
     </article>
   <article class="field tone-calc" id="en-f-regions-isfullycovered" data-entity="Region" data-field="Is Fully Covered">
     <div class="field-head">
@@ -2584,9 +2911,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-36</span>
     </div>
+    <p class="field-note elem elem-desc">Whether placed tiles cover at least the whole region area.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A region is considered fully-covered if the <a class="ref" href="#en-f-regions-coveragepct">coverage pct</a> is at least 100.</p>
       </div>
       <div class="view elem elem-english">
@@ -2626,7 +2954,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-regions-height">● Height <span class="ref-pill-tbl">Region</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Whether placed tiles cover at least the whole region area.</p>
     </article>
   <article class="field tone-calc" id="en-f-regions-iscleantiling" data-entity="Region" data-field="Is Clean Tiling">
     <div class="field-head">
@@ -2637,9 +2964,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-37</span>
     </div>
+    <p class="field-note elem elem-desc">Fully covered with no overlaps = a clean tiling of the region.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <div class="view-body"><p class="rt-headline">A region is considered clean-tiling if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-regions-isfullycovered">fully covered</a> flag is set</li><li>the <a class="ref" href="#en-f-regions-overlapcount">overlap count</a> is 0</li></ul></ol></div>
       </div>
       <div class="view elem elem-english">
@@ -2678,10 +3006,71 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-placements-isoverlapping">● Is Overlapping <span class="ref-pill-tbl">Placement</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Fully covered with no overlaps = a clean tiling of the region.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Display Name</th>
+        <th>Width</th>
+        <th>Height</th>
+        <th class="sample-derived">Area<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Placement Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Covered Area<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Overlap Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Coverage Pct<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Fully Covered<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Clean Tiling<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">demo-square-4x4</td>
+          <td>Demo Square 4x4</td>
+          <td>4</td>
+          <td>4</td>
+          <td class="sample-derived">16.0</td>
+          <td class="sample-derived">16</td>
+          <td class="sample-derived">16.000000000000004</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">100.00000000000003</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">demo-hex-strip</td>
+          <td>Demo Hex Strip</td>
+          <td>6</td>
+          <td>2</td>
+          <td class="sample-derived">12.0</td>
+          <td class="sample-derived">4</td>
+          <td class="sample-derived">10.392304845413264</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">86.60254037844386</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">false</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">demo-empty-plot</td>
+          <td>Demo Empty Plot</td>
+          <td>3</td>
+          <td>3</td>
+          <td class="sample-derived">9.0</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">0.0</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">0.0</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">false</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-placements" data-entity="Placement">
+<section class="entity" id="en-t-placements" data-entity="Placement" data-links="en-t-regions en-t-prototiles" data-rules="6">
   <header class="entity-head">
     <h2 class="entity-title">Placement</h2>
     <p class="entity-synopsis">Individual tile placements within a region.</p>
@@ -2695,9 +3084,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-38</span>
     </div>
+    <p class="field-note elem elem-desc">Composite name.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A placement's <a class="ref" href="#en-f-placements-name">name</a> is computed as the <a class="ref" href="#en-f-placements-region">region</a>, followed by “#”, followed by the placement ID.</p>
       </div>
       <div class="view elem elem-english">
@@ -2729,7 +3119,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Placement ID <span class="ref-pill-tbl">Placement</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Composite name.</p>
     </article>
   <article class="field tone-rel" id="en-f-placements-region" data-entity="Placement" data-field="Region">
     <div class="field-head">
@@ -2738,6 +3127,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">The region this tile is placed in.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-regions">Region</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -2756,7 +3146,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-regions-isfullycovered">Is Fully Covered <span class="ref-pill-tbl">Region</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">The region this tile is placed in.</p>
     </article>
   <article class="field tone-rel" id="en-f-placements-prototile" data-entity="Placement" data-field="Prototile">
     <div class="field-head">
@@ -2765,6 +3154,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">The prototile being placed.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-prototiles">Prototile</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -2779,53 +3169,43 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-regions-iscleantiling">Is Clean Tiling <span class="ref-pill-tbl">Region</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">The prototile being placed.</p>
     </article>
   <article class="field tone-raw" id="en-f-placements-x" data-entity="Placement" data-field="X">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">X</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">X coordinate of the tile's anchor (unit cells).</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-placements-isinsideregion">ƒ Is Inside Region <span class="ref-pill-tbl">Placement</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">X coordinate of the tile's anchor (unit cells).</p>
     </article>
   <article class="field tone-raw" id="en-f-placements-y" data-entity="Placement" data-field="Y">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Y</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Y coordinate of the tile's anchor (unit cells).</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-placements-isinsideregion">ƒ Is Inside Region <span class="ref-pill-tbl">Placement</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Y coordinate of the tile's anchor (unit cells).</p>
     </article>
   <article class="field tone-raw" id="en-f-placements-rotationdeg" data-entity="Placement" data-field="Rotation Deg">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Rotation Deg</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Rotation of the tile in degrees.</p>
     </article>
@@ -2833,12 +3213,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Is Overlapping</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype boolean); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">boolean</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Flag: this placement overlaps a neighbour (authored/validated).</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -2846,7 +3224,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-regions-iscleantiling">Is Clean Tiling <span class="ref-pill-tbl">Region</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Flag: this placement overlaps a neighbour (authored/validated).</p>
     </article>
   <article class="field tone-lookup" id="en-f-placements-tilearea" data-entity="Placement" data-field="Tile Area">
     <div class="field-head">
@@ -2857,9 +3234,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-39</span>
     </div>
+    <p class="field-note elem elem-desc">Area of the placed prototile (for coverage rollups).</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A placement's <a class="ref" href="#en-f-placements-tilearea">tile area</a> — taken from the linked <a class="ref" href="#en-f-placements-prototile">prototile</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2906,7 +3284,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Prototile ID <span class="ref-pill-tbl">Prototile</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Area of the placed prototile (for coverage rollups).</p>
     </article>
   <article class="field tone-lookup" id="en-f-placements-tilesides" data-entity="Placement" data-field="Tile Sides">
     <div class="field-head">
@@ -2917,9 +3294,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-40</span>
     </div>
+    <p class="field-note elem elem-desc">Sides of the placed prototile.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A placement's <a class="ref" href="#en-f-placements-tilesides">tile sides</a> — taken from the linked <a class="ref" href="#en-f-placements-prototile">prototile</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2956,7 +3334,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Prototile ID <span class="ref-pill-tbl">Prototile</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Sides of the placed prototile.</p>
     </article>
   <article class="field tone-lookup" id="en-f-placements-regionwidth" data-entity="Placement" data-field="Region Width">
     <div class="field-head">
@@ -2967,9 +3344,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-41</span>
     </div>
+    <p class="field-note elem elem-desc">Width of the containing region.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A placement's <a class="ref" href="#en-f-placements-regionwidth">region width</a> — taken from the linked <a class="ref" href="#en-f-placements-region">region</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -3012,7 +3390,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Region ID <span class="ref-pill-tbl">Region</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Width of the containing region.</p>
     </article>
   <article class="field tone-lookup" id="en-f-placements-regionheight" data-entity="Placement" data-field="Region Height">
     <div class="field-head">
@@ -3023,9 +3400,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">number</span>
       <span class="pill pill-dr">DR-42</span>
     </div>
+    <p class="field-note elem elem-desc">Height of the containing region.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A placement's <a class="ref" href="#en-f-placements-regionheight">region height</a> — taken from the linked <a class="ref" href="#en-f-placements-region">region</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -3068,7 +3446,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Region ID <span class="ref-pill-tbl">Region</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Height of the containing region.</p>
     </article>
   <article class="field tone-calc" id="en-f-placements-isinsideregion" data-entity="Placement" data-field="Is Inside Region">
     <div class="field-head">
@@ -3079,9 +3456,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-43</span>
     </div>
+    <p class="field-note elem elem-desc">Whether the anchor sits within the region bounds.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <div class="view-body"><p class="rt-headline">A placement is considered an inside region if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li>the <a class="ref" href="#en-f-placements-x">x</a> is at least 0</li><li>the <a class="ref" href="#en-f-placements-y">y</a> is at least 0</li><li>the <a class="ref" href="#en-f-placements-x">x</a> is less than the <a class="ref" href="#en-f-placements-regionwidth">region width</a></li><li>the <a class="ref" href="#en-f-placements-y">y</a> is less than the <a class="ref" href="#en-f-placements-regionheight">region height</a></li></ul></ol></div>
       </div>
       <div class="view elem elem-english">
@@ -3125,10 +3503,67 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-regions-height">● Height <span class="ref-pill-tbl">Region</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Whether the anchor sits within the region bounds.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>X</th>
+        <th>Y</th>
+        <th>Rotation Deg</th>
+        <th>Is Overlapping</th>
+        <th class="sample-derived">Tile Area<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Tile Sides<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Region Width<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Region Height<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Inside Region<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">demo-square-4x4#sq-01</td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td>false</td>
+          <td class="sample-derived">1.0000000000000002</td>
+          <td class="sample-derived">4</td>
+          <td class="sample-derived">4.0</td>
+          <td class="sample-derived">4.0</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">demo-square-4x4#sq-02</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+          <td>false</td>
+          <td class="sample-derived">1.0000000000000002</td>
+          <td class="sample-derived">4</td>
+          <td class="sample-derived">4.0</td>
+          <td class="sample-derived">4.0</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">demo-square-4x4#sq-03</td>
+          <td>2</td>
+          <td>0</td>
+          <td>0</td>
+          <td>false</td>
+          <td class="sample-derived">1.0000000000000002</td>
+          <td class="sample-derived">4</td>
+          <td class="sample-derived">4.0</td>
+          <td class="sample-derived">4.0</td>
+          <td class="sample-derived">true</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-wallpaperdesigns" data-entity="Wallpaper Design">
+<section class="entity" id="en-t-wallpaperdesigns" data-entity="Wallpaper Design" data-links="en-t-symmetrygroups" data-rules="6">
   <header class="entity-head">
     <h2 class="entity-title">Wallpaper Design</h2>
     <p class="entity-synopsis">User-authored wallpaper designs: a fundamental-domain motif (drawn strokes) replicated under a chosen symmetry group.</p>
@@ -3142,9 +3577,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-44</span>
     </div>
+    <p class="field-note elem elem-desc">Slug.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">A wallpaper design's <a class="ref" href="#en-f-wallpaperdesigns-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-wallpaperdesigns-displayname">display name</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -3171,25 +3607,21 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-wallpaperdesigns-displayname">● Display Name <span class="ref-pill-tbl">Wallpaper Design</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Slug.</p>
     </article>
   <article class="field tone-raw" id="en-f-wallpaperdesigns-displayname" data-entity="Wallpaper Design" data-field="Display Name">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Display Name</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Human name for this design.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-wallpaperdesigns-name">ƒ Name <span class="ref-pill-tbl">Wallpaper Design</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Human name for this design.</p>
     </article>
   <article class="field tone-rel" id="en-f-wallpaperdesigns-symmetrygroup" data-entity="Wallpaper Design" data-field="Symmetry Group">
     <div class="field-head">
@@ -3198,6 +3630,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">The wallpaper group whose symmetry replicates the motif.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-symmetrygroups">Symmetry Group</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
@@ -3212,17 +3645,13 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-lookup" href="#en-f-wallpaperdesigns-groupoperationcount">↗ Group Operation Count <span class="ref-pill-tbl">Wallpaper Design</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">The wallpaper group whose symmetry replicates the motif.</p>
     </article>
   <article class="field tone-raw" id="en-f-wallpaperdesigns-strokes" data-entity="Wallpaper Design" data-field="Strokes">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Strokes</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">JSON array of polylines drawn in the fundamental domain, in fractional cell coords: [{color,width,points:[[u,v],...]},...].</p>
     </article>
@@ -3230,11 +3659,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Stroke Color</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Default stroke color (hex) for new strokes.</p>
     </article>
@@ -3242,11 +3668,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Background Color</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Fill color (hex) behind the tiling.</p>
     </article>
@@ -3259,9 +3682,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-45</span>
     </div>
+    <p class="field-note elem elem-desc">IUC notation of the chosen group.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A wallpaper design's <a class="ref" href="#en-f-wallpaperdesigns-groupnotation">group notation</a> — taken from the linked <a class="ref" href="#en-f-wallpaperdesigns-symmetrygroup">symmetry group</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -3298,7 +3722,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Symmetry Group ID <span class="ref-pill-tbl">Symmetry Group</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">IUC notation of the chosen group.</p>
     </article>
   <article class="field tone-lookup" id="en-f-wallpaperdesigns-grouporbifold" data-entity="Wallpaper Design" data-field="Group Orbifold">
     <div class="field-head">
@@ -3309,9 +3732,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-46</span>
     </div>
+    <p class="field-note elem elem-desc">Orbifold notation of the chosen group.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A wallpaper design's <a class="ref" href="#en-f-wallpaperdesigns-grouporbifold">group orbifold</a> — taken from the linked <a class="ref" href="#en-f-wallpaperdesigns-symmetrygroup">symmetry group</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -3348,7 +3772,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Symmetry Group ID <span class="ref-pill-tbl">Symmetry Group</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Orbifold notation of the chosen group.</p>
     </article>
   <article class="field tone-lookup" id="en-f-wallpaperdesigns-grouplatticetype" data-entity="Wallpaper Design" data-field="Group Lattice Type">
     <div class="field-head">
@@ -3359,9 +3782,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-47</span>
     </div>
+    <p class="field-note elem elem-desc">Lattice class of the chosen group.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A wallpaper design's <a class="ref" href="#en-f-wallpaperdesigns-grouplatticetype">group lattice type</a> — taken from the linked <a class="ref" href="#en-f-wallpaperdesigns-symmetrygroup">symmetry group</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -3398,7 +3822,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Symmetry Group ID <span class="ref-pill-tbl">Symmetry Group</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Lattice class of the chosen group.</p>
     </article>
   <article class="field tone-lookup" id="en-f-wallpaperdesigns-grouprotationorder" data-entity="Wallpaper Design" data-field="Group Rotation Order">
     <div class="field-head">
@@ -3409,9 +3832,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-48</span>
     </div>
+    <p class="field-note elem elem-desc">Highest rotation order of the chosen group.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A wallpaper design's <a class="ref" href="#en-f-wallpaperdesigns-grouprotationorder">group rotation order</a> — taken from the linked <a class="ref" href="#en-f-wallpaperdesigns-symmetrygroup">symmetry group</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -3448,7 +3872,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Symmetry Group ID <span class="ref-pill-tbl">Symmetry Group</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Highest rotation order of the chosen group.</p>
     </article>
   <article class="field tone-lookup" id="en-f-wallpaperdesigns-groupoperationcount" data-entity="Wallpaper Design" data-field="Group Operation Count">
     <div class="field-head">
@@ -3459,9 +3882,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">integer</span>
       <span class="pill pill-dr">DR-49</span>
     </div>
+    <p class="field-note elem elem-desc">Motif copies per cell for the chosen group.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A wallpaper design's <a class="ref" href="#en-f-wallpaperdesigns-groupoperationcount">group operation count</a> — taken from the linked <a class="ref" href="#en-f-wallpaperdesigns-symmetrygroup">symmetry group</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -3498,11 +3922,69 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Symmetry Group ID <span class="ref-pill-tbl">Symmetry Group</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Motif copies per cell for the chosen group.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Display Name</th>
+        <th>Strokes</th>
+        <th>Stroke Color</th>
+        <th>Background Color</th>
+        <th class="sample-derived">Group Notation<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Group Orbifold<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Group Lattice Type<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Group Rotation Order<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Group Operation Count<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">starter-p4m</td>
+          <td>Starter p4m</td>
+          <td>[{&quot;color&quot;:&quot;#2ea043&quot;,&quot;width&quot;:3,&quot;points&quot;:[[0.2,0.8],[0.2,0.2],[0.8,0.2]]},{&quot;color&quot;:&quot;#d29922&quot;,&quot;width&quot;:3,&quot;points&quot;:[[0.5,0.5],[0.8,0.65]]}]</td>
+          <td>#1f6feb</td>
+          <td>#0a0d12</td>
+          <td class="sample-derived">p4m</td>
+          <td class="sample-derived">*442</td>
+          <td class="sample-derived">square</td>
+          <td class="sample-derived">4</td>
+          <td class="sample-derived">8</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">starter-p6m</td>
+          <td>Starter p6m</td>
+          <td>[{&quot;color&quot;:&quot;#1f6feb&quot;,&quot;width&quot;:3,&quot;points&quot;:[[0.15,0.15],[0.85,0.85]]}]</td>
+          <td>#a371f7</td>
+          <td>#0a0d12</td>
+          <td class="sample-derived">p6m</td>
+          <td class="sample-derived">*632</td>
+          <td class="sample-derived">hexagonal</td>
+          <td class="sample-derived">6</td>
+          <td class="sample-derived">12</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">starter-pgg</td>
+          <td>Starter pgg</td>
+          <td>[{&quot;color&quot;:&quot;#2ea043&quot;,&quot;width&quot;:3,&quot;points&quot;:[[0.2,0.8],[0.2,0.2],[0.8,0.2]]},{&quot;color&quot;:&quot;#d29922&quot;,&quot;width&quot;:3,&quot;points&quot;:[[0.5,0.5],[0.8,0.65]]}]</td>
+          <td>#2ea043</td>
+          <td>#0a0d12</td>
+          <td class="sample-derived">pgg</td>
+          <td class="sample-derived">22x</td>
+          <td class="sample-derived">rectangular</td>
+          <td class="sample-derived">2</td>
+          <td class="sample-derived">4</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
 <footer class="doc-footer">
-  <p>Rendered from the rulebook by the shared <b>RuleSpeak®</b> engine (<code>rulebook-rulespeak-core</code>). The same engine narrates the React Explainer DAG, so every narration mode reads identically across both.</p>
+  <p class="doc-footer-soon"><b>RuleSpeak&#174;</b> — the declarative business-rule notation created by <b>Ronald G. Ross</b>, following the conventions of <b>SBVR</b> — is coming soon. Until then this page shows the regular documentation. <a href="https://www.RonRoss.info" target="_blank" rel="noopener">www.RonRoss.info</a></p>
+  <p>Rendered from the rulebook by the shared <b>Docs</b> engine (<code>rulebook-rulespeak-core</code>). The same engine narrates the React Explainer DAG, so every narration mode reads identically across both.</p>
   <p class="doc-footer-legend"><span class="chip chip-raw">● Ground truth</span> <span class="chip chip-calc">ƒ Calculated</span> <span class="chip chip-agg">Σ Aggregation</span> <span class="chip chip-lookup">↗ Lookup</span> <span class="chip chip-rel">⇢ Relationship</span></p>
 </footer>
 </div>
@@ -3510,8 +3992,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 
 (function(){
   var LANGS=['en'];
-  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
-  var DEFAULTS={'rulespeak':true,'english':false,'formula':false,'desc':true,'inputs':true,'consumers':false};
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers','data'];
+  var DEFAULTS={'rulespeak':false,'english':true,'formula':false,'desc':true,'inputs':false,'consumers':true,'data':true};
   var root=document.documentElement;
 
   // ── Language switching. All .lang-select controls stay in sync; the choice
@@ -3613,8 +4095,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
   var barH=parseInt(getComputedStyle(root).getPropertyValue('--bar-h'),10)||48;
   function update(){
     var line=barH+18, curF=null, curE=null;
-    for(var i=0;i<fields.length;i++){ if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
-    for(var j=0;j<entities.length;j++){ if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
+    for(var i=0;i<fields.length;i++){ if(!fields[i].offsetParent) continue; if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
+    for(var j=0;j<entities.length;j++){ if(!entities[j].offsetParent) continue; if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
     if(curF){
       var fEnt=curF.getAttribute('data-entity');
       var eName=curE?curE.getAttribute('data-entity'):fEnt;
@@ -3628,6 +4110,237 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
   window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('resize',onScroll,{passive:true});
   rebindSpy();
+})();
+
+
+(function(){
+  // ── Navigator ──────────────────────────────────────────────────────────────
+  //  From nine entities up, the page shows an overview or ONE entity at a time, with a nav that is
+  //  always on screen: grouped tables, a filter, the current entity's fields, tabs over its fields and
+  //  an overview as groups / A-Z / a graph. Smaller rulebooks keep the single page. Everything is read
+  //  from what the page already says (the entities, their fields, data-links, data-rules); the words
+  //  come from the language's data-nav. A person can always switch to everything on one page.
+  var MIN=9;
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;'); }
+  function leading(n){
+    var h=String(n).replace(/^[^A-Za-z0-9]+/,'').split(/[\s_-]+/)[0];
+    var m=/^(?:[A-Z]+(?=[A-Z][a-z])|[A-Z][a-z0-9]*|[A-Z]+[0-9]*|[a-z0-9]+)/.exec(h);
+    return m?m[0]:h;
+  }
+  function singular(w){ return w.length>3 ? w.replace(/ies$/i,'y').replace(/s$/i,'') : w; }
+
+  // Families: tables sharing a leading word; a stray joins the family most of its neighbours are in.
+  function groupsOf(ents,T){
+    var names=ents.map(function(e){return e.name;});
+    var by={};
+    ents.forEach(function(e){ var k=singular(leading(e.name)).toLowerCase(); (by[k]=by[k]||{words:[],members:[]}); by[k].words.push(leading(e.name)); by[k].members.push(e); });
+    var fam={},label={};
+    Object.keys(by).forEach(function(k){
+      if(by[k].members.length<2||k.length<3) return;
+      label[k]=by[k].words.slice().sort(function(a,b){return a.length-b.length||a.localeCompare(b);})[0];
+      by[k].members.forEach(function(e){ fam[e.id]=k; });
+    });
+    if(!Object.keys(fam).length) return [{key:'',label:null,items:ents}];
+    var byId={}; ents.forEach(function(e){ byId[e.id]=e; });
+    var nb={}; ents.forEach(function(e){ nb[e.id]=[]; });
+    ents.forEach(function(e){ e.links.forEach(function(t){ if(byId[t]){ nb[e.id].push(t); nb[t].push(e.id); } }); });
+    var groups={};
+    function put(k,e){ (groups[k]=groups[k]||[]).push(e); }
+    ents.forEach(function(e){
+      if(fam[e.id]){ put(fam[e.id],e); return; }
+      var tally={}; nb[e.id].forEach(function(t){ if(fam[t]) tally[fam[t]]=(tally[fam[t]]||0)+1; });
+      var best='',bn=0; Object.keys(tally).sort().forEach(function(k){ if(tally[k]>bn){ best=k; bn=tally[k]; } });
+      put(best,e);
+    });
+    var out=Object.keys(groups).filter(function(k){return k!=='';}).sort(function(a,b){return label[a].localeCompare(label[b]);})
+      .map(function(k){ return {key:k,label:label[k],items:groups[k]}; });
+    if(groups['']) out.push({key:'',label:T.other,items:groups['']});
+    return out;
+  }
+
+  // The graph: a box per table, a line per relationship; what a table points at is to its left.
+  function graphSvg(ents,T){
+    var set={}; ents.forEach(function(e){ set[e.id]=e; });
+    var out={},depth={},vis={};
+    ents.forEach(function(e){ out[e.id]=e.links.filter(function(t){return set[t]&&t!==e.id;}); });
+    function d(id){ if(depth[id]!=null) return depth[id]; if(vis[id]) return 0; vis[id]=1; var x=0; out[id].forEach(function(t){ x=Math.max(x,1+d(t)); }); vis[id]=0; depth[id]=x; return x; }
+    ents.forEach(function(e){ d(e.id); });
+    var maxD=0; ents.forEach(function(e){ maxD=Math.max(maxD,depth[e.id]); });
+    var by=[]; for(var i=0;i<=maxD;i++) by.push([]);
+    ents.slice().sort(function(a,b){return a.name.localeCompare(b.name);}).forEach(function(e){ by[depth[e.id]].push(e); });
+    var layers=by.filter(function(l){return l.length;});
+    var BW=164,BH=30,GX=96,GY=14,pos={};
+    layers.forEach(function(layer,li){
+      if(li>0){
+        var bary=function(e){ var ps=out[e.id].concat(ents.filter(function(o){return out[o.id].indexOf(e.id)>=0;}).map(function(o){return o.id;})).filter(function(t){return pos[t];}).map(function(t){return pos[t].row;}); return ps.length?ps.reduce(function(a,b){return a+b;},0)/ps.length:1e9; };
+        layer.sort(function(a,b){return bary(a)-bary(b)||a.name.localeCompare(b.name);});
+      }
+      layer.forEach(function(e,ri){ pos[e.id]={row:ri,x:li*(BW+GX),y:ri*(BH+GY)}; });
+    });
+    var rows=1; layers.forEach(function(l){rows=Math.max(rows,l.length);});
+    var W=layers.length*(BW+GX)-GX,H=rows*(BH+GY)-GY,s='';
+    ents.forEach(function(e){ out[e.id].forEach(function(t){
+      var a=pos[e.id],b=pos[t],x1=a.x,y1=a.y+BH/2,x2=b.x+BW,y2=b.y+BH/2,dx=Math.max(24,(x1-x2)/2);
+      s+='<path class=\'ge\' d=\'M'+x1+','+y1+' C'+(x1-dx)+','+y1+' '+(x2+dx)+','+y2+' '+x2+','+y2+'\' marker-end=\'url(#dga)\'/>';
+    }); });
+    ents.forEach(function(e){
+      var p=pos[e.id],lab=e.name.length>22?e.name.slice(0,21)+'…':e.name;
+      s+='<g class=\'gn'+(e.rules?' has':'')+'\' transform=\'translate('+p.x+','+p.y+')\'><a href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><rect width=\''+BW+'\' height=\''+BH+'\' rx=\'6\'/><text x=\''+(BW/2)+'\' y=\''+(BH/2+4)+'\' text-anchor=\'middle\'>'+esc(lab)+'</text><title>'+esc(e.name)+'</title></a></g>';
+    });
+    return '<svg class=\'dgraph\' viewBox=\'-4 -4 '+(W+8)+' '+(H+8)+'\' width=\''+(W+8)+'\' height=\''+(H+8)+'\'><defs><marker id=\'dga\' viewBox=\'0 0 8 8\' refX=\'7\' refY=\'4\' markerWidth=\'7\' markerHeight=\'7\' orient=\'auto\'><path d=\'M0,0 L8,4 L0,8 z\' class=\'ga\'/></marker></defs>'+s+'</svg>';
+  }
+
+  function setup(doc){
+    var T={}; var tx=doc.querySelector('.nav-texts'); try{ T=JSON.parse((tx&&tx.textContent)||'{}'); }catch(e){ return; }
+    var sections=Array.prototype.slice.call(doc.querySelectorAll('.entity[id]'));
+    if(sections.length<MIN) return;
+    var ents=sections.map(function(el){
+      var fs=Array.prototype.slice.call(el.querySelectorAll('.field[data-field]')).map(function(f){
+        var tone=(f.className.match(/tone-(\w+)/)||[])[1]||'rel';
+        return {id:f.id,name:f.getAttribute('data-field'),tone:tone,glyph:(f.querySelector('.field-glyph')||{}).textContent||''};
+      });
+      return {id:el.id,name:el.getAttribute('data-entity'),el:el,links:(el.getAttribute('data-links')||'').split(' ').filter(Boolean),rules:parseInt(el.getAttribute('data-rules')||'0',10),fields:fs};
+    });
+    var byId={}; ents.forEach(function(e){ byId[e.id]=e; });
+    var groups=groupsOf(ents,T);
+    var q='',view='groups',tab='all',fq='',closed={};
+
+    // Layout: nav | main (overview + the entities).
+    var toc=doc.querySelector('.toc'),header=doc.querySelector('.doc-header');
+    var grid=document.createElement('div'); grid.className='docgrid';
+    var nav=document.createElement('nav'); nav.className='sidenav'; nav.setAttribute('aria-label',T.tocTitle||'');
+    var main=document.createElement('div'); main.className='docmain';
+    var ov=document.createElement('section'); ov.className='ov';
+    main.appendChild(ov);
+    sections.forEach(function(el){ main.appendChild(el); });
+    grid.appendChild(nav); grid.appendChild(main);
+    (header||toc).insertAdjacentElement('afterend',grid);
+    var footer=doc.querySelector('.doc-footer'); if(footer) grid.insertAdjacentElement('afterend',footer);
+    doc.classList.add('paged');
+
+    function matches(e){
+      var t=q.trim().toLowerCase(); if(!t) return {ok:true,fs:[]};
+      if(e.name.toLowerCase().indexOf(t)>=0) return {ok:true,fs:[]};
+      var hit=e.fields.filter(function(f){return f.name.toLowerCase().indexOf(t)>=0;});
+      return hit.length?{ok:true,fs:hit}:{ok:false,fs:[]};
+    }
+    var cur=null,curField=null;
+    function navBody(){
+      var filtering=!!q.trim(),html='';
+      groups.forEach(function(g){
+        var rows=g.items.map(function(e){
+          var m=matches(e); if(!m.ok) return '';
+          var here=cur===e,shown=here?e.fields:m.fs.slice(0,8);
+          var r='<div><a class=\'sn-t'+(here?' is-current':'')+'\' href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><span>'+esc(e.name)+'</span>'+(e.rules?'<b>ƒ '+e.rules+'</b>':'')+'</a>';
+          if(shown.length) r+='<ul class=\'sn-fields\'>'+shown.map(function(f){ return '<li><a class=\'sn-f tone-'+esc(f.tone)+'\' href=\'#'+esc(f.id)+'\' data-go=\''+esc(f.id)+'\'><i>'+esc(f.glyph)+'</i><span>'+esc(f.name)+'</span></a></li>'; }).join('')+'</ul>';
+          return r+'</div>';
+        }).filter(Boolean);
+        if(!rows.length) return;
+        if(g.label==null){ html+=rows.join(''); return; }
+        var has=cur&&g.items.indexOf(cur)>=0,open=filtering||has||(groups.length<=3&&closed[g.key]!==true)||closed[g.key]===false;
+        html+='<details class=\'sn-group'+(has?' has-current':'')+'\' data-g=\''+esc(g.key)+'\''+(open?' open':'')+'><summary class=\'sn-gtitle\'><span>'+esc(g.label)+'</span><span class=\'sn-n\'>'+rows.length+'</span></summary>'+rows.join('')+'</details>';
+      });
+      return html||'<p class=\'sn-empty\'>'+esc(T.empty)+'</p>';
+    }
+    function drawNav(keepFocus){
+      var body=nav.querySelector('.sn-body'),top=body?body.scrollTop:0;
+      if(!nav.firstChild){
+        nav.innerHTML='<div class=\'sn-head\'><a class=\'sn-index\' href=\'#\' data-go=\'\'><span>▦ '+esc(T.tocTitle)+'</span><span class=\'sn-n\'>'+ents.length+'</span></a><input type=\'search\' class=\'sn-q\' placeholder=\''+esc(T.search)+'\' aria-label=\''+esc(T.search)+'\'></div><div class=\'sn-body\'></div><div class=\'sn-foot\'><button type=\'button\' class=\'sn-all\'></button></div>';
+        nav.querySelector('.sn-q').addEventListener('input',function(){ q=this.value; drawNav(true); drawOverview(); });
+        nav.querySelector('.sn-all').addEventListener('click',function(){ var on=!doc.classList.contains('paged'); setPaged(on); });
+        nav.addEventListener('click',go);
+        nav.addEventListener('toggle',function(ev){ var d=ev.target; if(d&&d.getAttribute&&d.getAttribute('data-g')!=null) closed[d.getAttribute('data-g')]=!d.open; },true);
+        body=nav.querySelector('.sn-body');
+      }
+      body.innerHTML=navBody(); body.scrollTop=top;
+      nav.querySelector('.sn-all').textContent=doc.classList.contains('paged')?T.showAll:T.showOne;
+      var c=body.querySelector('.sn-f.is-current,.sn-t.is-current'); if(c&&!keepFocus&&c.scrollIntoView) c.scrollIntoView({block:'nearest'});
+    }
+    function go(ev){
+      var a=ev.target.closest&&ev.target.closest('[data-go]'); if(!a||ev.metaKey||ev.ctrlKey||ev.shiftKey) return;
+      ev.preventDefault();
+      var id=a.getAttribute('data-go');
+      location.hash=id?'#'+id:'#'+doc.getAttribute('data-lang')+'-top';
+    }
+
+    // Overview: groups, A-Z or the graph, narrowed by the filter.
+    function drawOverview(){
+      var shown=ents.filter(function(e){return matches(e).ok;});
+      var h='<div class=\'tabs\' role=\'tablist\'>'+[['groups',T.groups],['list',T.list],['graph',T.graph]].map(function(v){
+        return '<button type=\'button\' role=\'tab\' class=\'tab'+(view===v[0]?' is-active':'')+'\' data-view=\''+v[0]+'\' aria-selected=\''+(view===v[0])+'\'>'+esc(v[1])+'</button>'; }).join('')+
+        '<input type=\'search\' class=\'ov-q\' placeholder=\''+esc(T.search)+'\' aria-label=\''+esc(T.search)+'\' value=\''+esc(q)+'\'></div>';
+      if(!shown.length) h+='<p class=\'sn-empty\'>'+esc(T.empty)+'</p>';
+      else if(view==='list'){
+        h+='<table class=\'ov-list\'><tbody>'+shown.slice().sort(function(a,b){return a.name.localeCompare(b.name);}).map(function(e){
+          return '<tr><td><a href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'>'+esc(e.name)+'</a></td><td class=\'ov-n\'>'+e.fields.length+'</td><td class=\'ov-n\'>ƒ '+e.rules+'</td><td class=\'ov-n\'>⇢ '+e.links.length+'</td></tr>'; }).join('')+'</tbody></table>';
+      } else {
+        var set={}; shown.forEach(function(e){set[e.id]=1;});
+        var gs=groupsOf(shown,T);
+        if(view==='graph') h+='<p class=\'ov-hint\'>'+esc(T.graphHint)+'</p>';
+        gs.forEach(function(g){
+          var inner=view==='graph'
+            ? '<div class=\'ov-graph\'>'+graphSvg(g.items,T)+'</div>'
+            : '<div class=\'ov-grid\'>'+g.items.map(function(e){ return '<a class=\'ov-card\' href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><b>'+esc(e.name)+'</b><span>'+e.fields.length+' · ƒ '+e.rules+' · ⇢ '+e.links.length+'</span></a>'; }).join('')+'</div>';
+          h+=g.label==null?inner:'<details class=\'ov-group\' open><summary class=\'ov-gtitle\'><span>'+esc(g.label)+'</span><span class=\'sn-n\'>'+g.items.length+'</span></summary>'+inner+'</details>';
+        });
+      }
+      ov.innerHTML=h;
+      ov.querySelectorAll('[data-view]').forEach(function(b){ b.addEventListener('click',function(){ view=b.getAttribute('data-view'); drawOverview(); }); });
+      var oq=ov.querySelector('.ov-q'); oq.addEventListener('input',function(){ q=oq.value; var nq=nav.querySelector('.sn-q'); if(nq) nq.value=q; drawNav(true); drawOverview(); var n=ov.querySelector('.ov-q'); n.focus(); n.setSelectionRange(q.length,q.length); });
+      ov.addEventListener('click',go);
+    }
+
+    // Tabs over an entity's fields.
+    function addTabs(e){
+      if(e.el.querySelector('.tabs')) return;
+      var kinds={all:e.fields.length,derived:0,stored:0,rels:0};
+      e.fields.forEach(function(f){ if(f.tone==='rel') kinds.rels++; else if(f.tone==='raw') kinds.stored++; else kinds.derived++; });
+      var tabs=[['all',T.all],['derived',T.derived],['stored',T.stored],['rels',T.rels]].filter(function(t){return t[0]==='all'||kinds[t[0]];});
+      var bar=document.createElement('div'); bar.className='tabs'; bar.setAttribute('role','tablist');
+      bar.innerHTML=tabs.map(function(t){ return '<button type=\'button\' role=\'tab\' class=\'tab'+(tab===t[0]?' is-active':'')+'\' data-tab=\''+t[0]+'\'>'+esc(t[1])+' <i>'+kinds[t[0]]+'</i></button>'; }).join('')+'<input type=\'search\' class=\'tab-q\' placeholder=\''+esc(T.fields)+'\' aria-label=\''+esc(T.fields)+'\'>';
+      var head=e.el.querySelector('.entity-head'); head.insertAdjacentElement('afterend',bar);
+      var apply=function(){
+        var t=fq.trim().toLowerCase();
+        e.el.querySelectorAll('.field[data-field]').forEach(function(f){
+          var tone=(f.className.match(/tone-(\w+)/)||[])[1]||'rel';
+          var kind=tone==='rel'?'rels':tone==='raw'?'stored':'derived';
+          f.hidden=!((tab==='all'||tab===kind)&&(!t||(f.getAttribute('data-field')||'').toLowerCase().indexOf(t)>=0));
+        });
+        bar.querySelectorAll('.tab').forEach(function(b){ var on=b.getAttribute('data-tab')===tab; b.classList.toggle('is-active',on); });
+      };
+      bar.querySelectorAll('.tab').forEach(function(b){ b.addEventListener('click',function(){ tab=b.getAttribute('data-tab'); ents.forEach(function(x){ if(x.apply) x.apply(); }); }); });
+      var inp=bar.querySelector('.tab-q'); inp.addEventListener('input',function(){ fq=inp.value; ents.forEach(function(x){ if(x.apply&&x!==e){ var o=x.el.querySelector('.tab-q'); if(o) o.value=fq; } if(x.apply) x.apply(); }); });
+      e.apply=apply; apply();
+    }
+    ents.forEach(addTabs);
+
+    // Which entity is on screen follows the address.
+    var first=true;
+    function show(){
+      var id=(location.hash||'').replace(/^#/,''),target=id?document.getElementById(id):null;
+      var ent=null;
+      if(target&&doc.contains(target)){ var s=target.closest?target.closest('.entity'):null; ent=s?byId[s.id]:null; }
+      cur=ent;
+      sections.forEach(function(el){ el.classList.toggle('is-on',!!ent&&el===ent.el); });
+      ov.hidden=!!ent&&doc.classList.contains('paged');
+      if(!ent) drawOverview();
+      drawNav();
+      if(!doc.classList.contains('paged')) return;
+      if(ent&&target&&target!==ent.el){ var hid=target.hidden; if(hid){ tab='all'; fq=''; ents.forEach(function(x){ if(x.apply) x.apply(); }); } target.scrollIntoView(); }
+      else if(!first){ var m=doc.querySelector('.docgrid'); window.scrollTo(0,m?m.getBoundingClientRect().top+window.pageYOffset-60:0); }
+    }
+    function setPaged(on){
+      doc.classList.toggle('paged',on);
+      try{ localStorage.setItem('docs.paged',on?'1':'0'); }catch(e){}
+      show();
+    }
+    var saved=null; try{ saved=localStorage.getItem('docs.paged'); }catch(e){}
+    if(saved==='0') doc.classList.remove('paged');
+    window.addEventListener('hashchange',function(){ if(doc.getAttribute('data-lang')===document.documentElement.getAttribute('data-lang')) show(); });
+    show(); first=false;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.lang-doc'),setup);
+
 })();
 
 </script>

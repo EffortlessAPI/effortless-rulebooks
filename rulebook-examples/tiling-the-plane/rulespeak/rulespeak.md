@@ -1,4 +1,4 @@
-# 📘 Tiling the Plane — RuleSpeak®
+# 📘 Tiling the Plane — Docs
 
 _A library for tiling the Euclidean plane. The catalog half models which tilings exist and why each vertex figure is valid (interior angles summing to 360deg); the generative half places prototiles into a bounded region and measures coverage, gaps, and overlaps. One DAG of Schema/Data/Lookups/Aggregations/Formulas._
 
@@ -27,6 +27,22 @@ _A library for tiling the Euclidean plane. The catalog half models which tilings
 | Has Mirrors | True when an empty string. | _Whether the group contains reflection (mirror) symmetry._ |
 | Has Glides | True when an empty string. | _Whether the group contains glide-reflection symmetry._ |
 | Wallpaper Design Count | The number of wallpaper designs related to the symmetry group. | _How many saved designs use this group._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Notation | Orbifold | Display Name | Description | Tiling Count ƒ | Lattice Type | Lattice Angle Deg | Lattice Ratio | Generators | Rotation Order | Operation Count | Has Mirrors | Has Glides | Wallpaper Design Count ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| p1 | p1 | o | Translations only | Only translations; no rotations, reflections, or glides. The most general wallpaper group. | 0 | oblique | 73 | 1.3 | [] | 1 | 1 | false | false | 0 |
+| p2 | p2 | 2222 | 2-fold rotation | Translations plus 2-fold (180deg) rotation centers; no reflections. | 0 | oblique | 73 | 1.3 | [{"k":"rot2","m":[-1,0,0,-1],"t":[0,0]}] | 2 | 2 | false | false | 0 |
+| pm | pm | ** | Parallel mirrors | Reflections across parallel mirror lines; no rotations. | 0 | rectangular | 90 | 1.4 | [{"k":"mirror","m":[-1,0,0,1],"t":[0,0]}] | 1 | 2 | true | false | 0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Prototile** | The prototiles (regular polygons) available for tilings. | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Slug from display name._ |
 | Display Name | A defined attribute. | _Human name (e.g. 'Equilateral Triangle')._ |
@@ -39,6 +55,22 @@ _A library for tiling the Euclidean plane. The catalog half models which tilings
 | Is Triangle | True when the sides is 3. | _True when this prototile is a triangle (3 sides)._ |
 | Is Square | True when the sides is 4. | _True when this prototile is a square (4 sides)._ |
 | Used in Tilings Count | The number of tiling prototiles related to the prototile. | _How many catalogued tilings use this prototile._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Sides | Edge Length | Area ƒ | Interior Angle Deg ƒ | Vertex Angle Turns ƒ | Is Regular ƒ | Is Triangle ƒ | Is Square ƒ | Used in Tilings Count ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| equilateral-triangle | Equilateral Triangle | 3 | 1.0 | 0.43301270189221946 | 60.0 | 0.16666666666666666 | true | true | false | 3 |
+| regular-pentagon | Regular Pentagon | 5 | 1.0 | 1.720477400588967 | 108.0 | 0.3 | true | false | false | 1 |
+| square | Square | 4 | 1.0 | 1.0000000000000002 | 90.0 | 0.25 | true | false | true | 3 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Tiling** | Catalogued tilings of the plane. | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Slug._ |
 | Display Name | A defined attribute. | _Human name (e.g. 'Hexagonal tiling')._ |
@@ -60,6 +92,22 @@ _A library for tiling the Euclidean plane. The catalog half models which tilings
 | Fundamental Domain Area | Computed as the absolute value of the lattice determinant. | _Area of the fundamental domain spanned by the two translation vectors._ |
 | Has Lattice | True when the absolute value of the lattice determinant is greater than 0.0001. | _True when the two translation vectors are present and linearly independent (span the plane)._ |
 | Does Tile Plane | True when all of the following hold: the all vertices valid flag is set and the lattice flag is set. | _THE ULTIMATE QUESTION. Yes/no: does this tiling fill the plane? True iff every vertex figure closes to 360deg AND a non-degenerate lattice of translation vectors repeats the fundamental domain across the plane._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Vertex Config | Kind | Is Edge to Edge | Symmetry Notation ƒ | Distinct Prototile Count ƒ | Vertex Figure Count ƒ | Valid Vertex Figure Count ƒ | Is Regular Tiling ƒ | All Vertices Valid ƒ | T1x | T1y | T2x | T2y | Lattice Determinant ƒ | Fundamental Domain Area ƒ | Has Lattice ƒ | Does Tile Plane ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| triangular-tiling | Triangular tiling | 3.3.3.3.3.3 | regular | true | p6m | 1 | 1 | 1 | true | true | 1.0 | 0.0 | 0.5 | 0.8660254 | 0.8660254 | 0.8660254 | true | true |
+| square-tiling | Square tiling | 4.4.4.4 | regular | true | p4m | 1 | 1 | 1 | true | true | 1.0 | 0.0 | 0.0 | 1.0 | 1.0 | 1.0 | true | true |
+| hexagonal-tiling | Hexagonal tiling | 6.6.6 | regular | true | p6m | 1 | 1 | 1 | true | true | 1.7320508 | 0.0 | 0.8660254 | 1.5 | 2.5980762 | 2.5980762 | true | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Tiling Prototile** | First-class junction: prototiles used by each tiling. | — |
 | Name | Computed as the tiling, followed by a slash, followed by the prototile. | _Composite name._ |
 | Tiling | A defined attribute. | _The tiling._ |
@@ -67,6 +115,22 @@ _A library for tiling the Euclidean plane. The catalog half models which tilings
 | Count At Vertex | A defined attribute. | _How many of this prototile meet at a typical vertex._ |
 | Prototile Sides | Taken from the linked prototile. | _Sides of the referenced prototile._ |
 | Prototile Interior Angle | The interior angle deg of the tiling prototile's prototile. | _Interior angle of the referenced prototile._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Count At Vertex | Prototile Sides ƒ | Prototile Interior Angle ƒ |
+|---|---|---|---|
+| triangular/triangle | 6 | 3 | 60.0 |
+| square/square | 4 | 4 | 90.0 |
+| hexagonal/hexagon | 3 | 6 | 120.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Vertex Figure** | First-class vertex figures; validity derived from angle sum = 360. | — |
 | Name | Computed as the tiling, followed by “@”, followed by the config. | _Composite name._ |
 | Tiling | A defined attribute. | _The tiling this vertex figure belongs to._ |
@@ -75,6 +139,22 @@ _A library for tiling the Euclidean plane. The catalog half models which tilings
 | Turns At Vertex | Computed as the angle sum deg divided by 360. | _Angle sum as a fraction of a full turn._ |
 | Angle Gap Deg | Computed as the absolute value of the angle sum deg minus 360. | _Distance from a full 360deg turn._ |
 | Is Valid | True when the angle gap deg is at most 0.0001. | _Valid vertex figure: interior angles close to a full turn._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Config | Angle Sum Deg | Turns At Vertex ƒ | Angle Gap Deg ƒ | Is Valid ƒ |
+|---|---|---|---|---|---|
+| triangular@3.3.3.3.3.3 | 3.3.3.3.3.3 | 360 | 1.0 | 0.0 | true |
+| square@4.4.4.4 | 4.4.4.4 | 360 | 1.0 | 0.0 | true |
+| hexagonal@6.6.6 | 6.6.6 | 360 | 1.0 | 0.0 | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Region** | Bounded patches of the plane to be tiled. | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Slug._ |
 | Display Name | A defined attribute. | _Human name._ |
@@ -88,6 +168,22 @@ _A library for tiling the Euclidean plane. The catalog half models which tilings
 | Coverage Pct | Computed as 100 times the covered area divided by the area. | _Covered area as a percentage of region area._ |
 | Is Fully Covered | True when the coverage pct is at least 100. | _Whether placed tiles cover at least the whole region area._ |
 | Is Clean Tiling | True when all of the following hold: the fully covered flag is set and the overlap count is 0. | _Fully covered with no overlaps = a clean tiling of the region._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Width | Height | Area ƒ | Placement Count ƒ | Covered Area ƒ | Overlap Count ƒ | Coverage Pct ƒ | Is Fully Covered ƒ | Is Clean Tiling ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| demo-square-4x4 | Demo Square 4x4 | 4 | 4 | 16.0 | 16 | 16.000000000000004 | 0 | 100.00000000000003 | true | true |
+| demo-hex-strip | Demo Hex Strip | 6 | 2 | 12.0 | 4 | 10.392304845413264 | 0 | 86.60254037844386 | false | false |
+| demo-empty-plot | Demo Empty Plot | 3 | 3 | 9.0 | 0 | 0.0 | 0 | 0.0 | false | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Placement** | Individual tile placements within a region. | — |
 | Name | Computed as the region, followed by “#”, followed by the placement ID. | _Composite name._ |
 | Region | A defined attribute. | _The region this tile is placed in._ |
@@ -101,6 +197,22 @@ _A library for tiling the Euclidean plane. The catalog half models which tilings
 | Region Width | Taken from the linked region. | _Width of the containing region._ |
 | Region Height | Taken from the linked region. | _Height of the containing region._ |
 | Is Inside Region | True when all of the following hold: the x is at least 0; the y is at least 0; the x is less than the region width; and the y is less than the region height. | _Whether the anchor sits within the region bounds._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | X | Y | Rotation Deg | Is Overlapping | Tile Area ƒ | Tile Sides ƒ | Region Width ƒ | Region Height ƒ | Is Inside Region ƒ |
+|---|---|---|---|---|---|---|---|---|---|
+| demo-square-4x4#sq-01 | 0 | 0 | 0 | false | 1.0000000000000002 | 4 | 4.0 | 4.0 | true |
+| demo-square-4x4#sq-02 | 1 | 0 | 0 | false | 1.0000000000000002 | 4 | 4.0 | 4.0 | true |
+| demo-square-4x4#sq-03 | 2 | 0 | 0 | false | 1.0000000000000002 | 4 | 4.0 | 4.0 | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Wallpaper Design** | User-authored wallpaper designs: a fundamental-domain motif (drawn strokes) replicated under a chosen symmetry group. | — |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Slug._ |
 | Display Name | A defined attribute. | _Human name for this design._ |
@@ -113,6 +225,19 @@ _A library for tiling the Euclidean plane. The catalog half models which tilings
 | Group Lattice Type | Taken from the linked symmetry group. | _Lattice class of the chosen group._ |
 | Group Rotation Order | Taken from the linked symmetry group. | _Highest rotation order of the chosen group._ |
 | Group Operation Count | Taken from the linked symmetry group. | _Motif copies per cell for the chosen group._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Strokes | Stroke Color | Background Color | Group Notation ƒ | Group Orbifold ƒ | Group Lattice Type ƒ | Group Rotation Order ƒ | Group Operation Count ƒ |
+|---|---|---|---|---|---|---|---|---|---|
+| starter-p4m | Starter p4m | [{"color":"#2ea043","width":3,"points":[[0.2,0.8],[0.2,0.2],[0.8,0.2]]},{"color":"#d29922","width":3,"points":[[0.5,0.5],[0.8,0.65]]}] | #1f6feb | #0a0d12 | p4m | *442 | square | 4 | 8 |
+| starter-p6m | Starter p6m | [{"color":"#1f6feb","width":3,"points":[[0.15,0.15],[0.85,0.85]]}] | #a371f7 | #0a0d12 | p6m | *632 | hexagonal | 6 | 12 |
+| starter-pgg | Starter pgg | [{"color":"#2ea043","width":3,"points":[[0.2,0.8],[0.2,0.2],[0.8,0.2]]},{"color":"#d29922","width":3,"points":[[0.5,0.5],[0.8,0.65]]}] | #2ea043 | #0a0d12 | pgg | 22x | rectangular | 2 | 4 |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -135,17 +260,17 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 ### Structural Constraints (from the schema)
 
 - A symmetry group **must** have a notation.
-- A prototile **must** have a display name, a sides, and an edge length.
-- A tiling **must** have a display name, a vertex config, and a kind, and record whether it is an edge to edge.
+- A prototile **must** have a display name; a sides; and an edge length.
+- A tiling **must** have a display name; a vertex config; and a kind, and record whether it is an edge to edge.
 - A tiling prototile **must** reference exactly one tiling.
 - A tiling prototile **must** reference exactly one prototile.
 - A tiling prototile **must** have a count at vertex.
 - A vertex figure **must** reference exactly one tiling.
 - A vertex figure **must** have a config and an angle sum deg.
-- A region **must** have a display name, a width, and a height.
+- A region **must** have a display name; a width; and a height.
 - A placement **must** reference exactly one region.
 - A placement **must** reference exactly one prototile.
-- A placement **must** have a x, a y, and a rotation deg, and record whether it is overlapping.
+- A placement **must** have a x; a y; and a rotation deg, and record whether it is overlapping.
 - A wallpaper design **must** reference exactly one symmetry group.
 - A wallpaper design **must** have a display name and a strokes.
 
@@ -211,7 +336,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -268,8 +393,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

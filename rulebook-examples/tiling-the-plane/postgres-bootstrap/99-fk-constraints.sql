@@ -12,11 +12,6 @@
 -- enforcement. Idempotent: every constraint is dropped if present, then added.
 -- ============================================================================
 
--- SymmetryGroups
-ALTER TABLE symmetry_groups DROP CONSTRAINT IF EXISTS fk_symmetry_groups_notation;
-ALTER TABLE symmetry_groups ADD CONSTRAINT fk_symmetry_groups_notation
-  FOREIGN KEY (notation) REFERENCES symmetry_groups (symmetry_group_id);
-
 -- Tilings
 ALTER TABLE tilings DROP CONSTRAINT IF EXISTS fk_tilings_symmetry_group;
 ALTER TABLE tilings ADD CONSTRAINT fk_tilings_symmetry_group
@@ -53,4 +48,4 @@ ALTER TABLE wallpaper_designs DROP CONSTRAINT IF EXISTS fk_wallpaper_designs_sym
 ALTER TABLE wallpaper_designs ADD CONSTRAINT fk_wallpaper_designs_symmetry_group
   FOREIGN KEY (symmetry_group) REFERENCES symmetry_groups (symmetry_group_id);
 
--- 9 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 8 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
