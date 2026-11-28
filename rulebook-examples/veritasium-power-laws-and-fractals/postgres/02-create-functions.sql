@@ -14,6 +14,113 @@
 SET check_function_bodies = off;
 
 -- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+
+-- ============================================================================
 -- LOOKUP FUNCTIONS
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
@@ -277,7 +384,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_systems_data_quality_score(p_system_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_systems_empirical_fit_quality(p_system_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(1, 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_systems_empirical_slope_deviation(p_system_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_systems_empirical_fit_quality(p_system_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(1, 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_systems_empirical_slope_deviation(p_system_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_systems_relative_slope_error
@@ -287,7 +394,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_systems_relative_slope_error(p_system_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (((SELECT slope_delta FROM inference_runs WHERE "system" = ((SELECT NULLIF(system_id, '') FROM systems WHERE system_id = p_system_id))::text))) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT theoretical_log_log_slope FROM systems WHERE system_id = p_system_id)) AS v) __safe_numeric), 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (((SELECT slope_delta FROM inference_runs WHERE "system" = ((SELECT NULLIF(system_id, '') FROM systems WHERE system_id = p_system_id))::text))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT theoretical_log_log_slope FROM systems WHERE system_id = p_system_id)) AS v OFFSET 0) __safe_numeric), 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_systems_is_high_quality_fit
@@ -297,7 +404,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_systems_is_high_quality_fit(p_system_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_systems_empirical_fit_quality(p_system_id))::NUMERIC > 0.99 AND (calc_systems_empirical_slope_deviation(p_system_id))::NUMERIC < 0.05));
+  SELECT ((COALESCE(COALESCE((calc_systems_empirical_fit_quality(p_system_id))::NUMERIC, 0) > 0.99, FALSE) AND COALESCE(COALESCE((calc_systems_empirical_slope_deviation(p_system_id))::NUMERIC, 0) < 0.05, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_scales_base_scale
@@ -457,7 +564,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_scales_scale(p_scale_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_scales_base_scale(p_scale_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_scales_scale_factor_power(p_scale_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_scales_base_scale(p_scale_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_scales_scale_factor_power(p_scale_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_scales_log_scale
@@ -487,7 +594,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_scales_scale_ratio(p_scale_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_scales_base_scale(p_scale_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_scales_scale(p_scale_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_scales_base_scale(p_scale_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_scales_scale(p_scale_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_scales_log_scale_normalized
@@ -497,7 +604,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_scales_log_scale_normalized(p_scale_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_scales_system_delta_log_scale(p_scale_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_scales_log_scale(p_scale_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_scales_system_min_log_scale(p_scale_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_scales_system_delta_log_scale(p_scale_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_scales_log_scale(p_scale_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_scales_system_min_log_scale(p_scale_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_system_stats_system_display_name
@@ -594,7 +701,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_system_stats_min_log_scale(p_system_stats_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MIN((calc_scales_log_scale(scale_id))::numeric), 0) FROM scales WHERE "system" = (SELECT NULLIF("system", '') FROM system_stats WHERE system_stats_id = p_system_stats_id)))::numeric;
+  SELECT ((SELECT COALESCE(MIN((((SELECT (LOG10(calc_scales_scale(erb_r1.scale_id)))::numeric))::numeric)::numeric), 0) FROM scales erb_r1 WHERE "system" = (SELECT (SELECT NULLIF("system", '') FROM system_stats WHERE system_stats_id = p_system_stats_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_system_stats_max_log_scale
@@ -604,7 +711,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_system_stats_max_log_scale(p_system_stats_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MAX((calc_scales_log_scale(scale_id))::numeric), 0) FROM scales WHERE "system" = (SELECT NULLIF("system", '') FROM system_stats WHERE system_stats_id = p_system_stats_id)))::numeric;
+  SELECT ((SELECT COALESCE(MAX((((SELECT (LOG10(calc_scales_scale(erb_r1.scale_id)))::numeric))::numeric)::numeric), 0) FROM scales erb_r1 WHERE "system" = (SELECT (SELECT NULLIF("system", '') FROM system_stats WHERE system_stats_id = p_system_stats_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_system_stats_min_log_measure
@@ -614,7 +721,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_system_stats_min_log_measure(p_system_stats_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MIN((calc_scales_log_measure(scale_id))::numeric), 0) FROM scales WHERE "system" = (SELECT NULLIF("system", '') FROM system_stats WHERE system_stats_id = p_system_stats_id)))::numeric;
+  SELECT ((SELECT COALESCE(MIN((((SELECT (LOG10(erb_r1.measure))::numeric))::numeric)::numeric), 0) FROM scales erb_r1 WHERE "system" = (SELECT (SELECT NULLIF("system", '') FROM system_stats WHERE system_stats_id = p_system_stats_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_system_stats_max_log_measure
@@ -624,7 +731,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_system_stats_max_log_measure(p_system_stats_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MAX((calc_scales_log_measure(scale_id))::numeric), 0) FROM scales WHERE "system" = (SELECT NULLIF("system", '') FROM system_stats WHERE system_stats_id = p_system_stats_id)))::numeric;
+  SELECT ((SELECT COALESCE(MAX((((SELECT (LOG10(erb_r1.measure))::numeric))::numeric)::numeric), 0) FROM scales erb_r1 WHERE "system" = (SELECT (SELECT NULLIF("system", '') FROM system_stats WHERE system_stats_id = p_system_stats_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_system_stats_delta_log_measure
@@ -634,7 +741,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_system_stats_delta_log_measure(p_system_stats_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_min_log_measure(p_system_stats_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_max_log_measure(p_system_stats_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_min_log_measure(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_max_log_measure(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_system_stats_delta_log_scale
@@ -644,7 +751,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_system_stats_delta_log_scale(p_system_stats_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_max_log_scale(p_system_stats_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_min_log_scale(p_system_stats_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_max_log_scale(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_min_log_scale(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_system_stats_empirical_log_log_slope
@@ -654,7 +761,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_system_stats_empirical_log_log_slope(p_system_stats_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_system_stats_delta_log_scale(p_system_stats_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_delta_log_measure(p_system_stats_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_system_stats_delta_log_scale(p_system_stats_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_delta_log_measure(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_system_stats_slope_error
@@ -664,7 +771,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_system_stats_slope_error(p_system_stats_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_empirical_log_log_slope(p_system_stats_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_theoretical_log_log_slope(p_system_stats_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_empirical_log_log_slope(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_theoretical_log_log_slope(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_system_stats_fitted_vs_empirical_delta
@@ -674,7 +781,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_system_stats_fitted_vs_empirical_delta(p_system_stats_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_fitted_slope(p_system_stats_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_empirical_log_log_slope(p_system_stats_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_fitted_slope(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_empirical_log_log_slope(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_system_stats_quality_weighted_slope
@@ -684,7 +791,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_system_stats_quality_weighted_slope(p_system_stats_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_r2(p_system_stats_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_fitted_slope(p_system_stats_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_r2(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_fitted_slope(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_system_stats_slope_to_noise_ratio
@@ -694,7 +801,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_system_stats_slope_to_noise_ratio(p_system_stats_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_system_stats_noise_sigma(p_system_stats_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (ABS(calc_system_stats_empirical_log_log_slope(p_system_stats_id))) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_system_stats_noise_sigma(p_system_stats_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (ABS(calc_system_stats_empirical_log_log_slope(p_system_stats_id))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_system_stats_abs_delta_log_measure
@@ -714,7 +821,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_system_stats_log_log_area(p_system_stats_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_delta_log_scale(p_system_stats_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_abs_delta_log_measure(p_system_stats_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_delta_log_scale(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_abs_delta_log_measure(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_system_stats_data_density
@@ -724,7 +831,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_system_stats_data_density(p_system_stats_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_system_stats_log_log_area(p_system_stats_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_point_count(p_system_stats_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_system_stats_log_log_area(p_system_stats_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_point_count(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_system_stats_relative_slope_error
@@ -734,7 +841,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_system_stats_relative_slope_error(p_system_stats_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_system_stats_theoretical_log_log_slope(p_system_stats_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_slope_error(p_system_stats_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_system_stats_theoretical_log_log_slope(p_system_stats_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_system_stats_slope_error(p_system_stats_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_measurement_models_residual_rms_from_inference
@@ -755,7 +862,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_measurement_models_mean_absolute_residual(p_measurement_model_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(AVG((calc_observed_scales_abs_residual(observed_scale_id))::numeric), 0) FROM observed_scales WHERE measurement_model = p_measurement_model_id))::numeric;
+  SELECT ((SELECT COALESCE(AVG((((SELECT (ABS(calc_observed_scales_residual(erb_r1.observed_scale_id)))::numeric))::numeric)::numeric), 0) FROM observed_scales erb_r1 WHERE measurement_model = p_measurement_model_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_measurement_models_outlier_count
@@ -765,7 +872,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_measurement_models_outlier_count(p_measurement_model_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM observed_scales WHERE measurement_model = (SELECT NULLIF(measurement_model_id, '') FROM measurement_models WHERE measurement_model_id = p_measurement_model_id) AND calc_observed_scales_is_outlier(observed_scale_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM observed_scales erb_r1 WHERE measurement_model = (SELECT (SELECT NULLIF(measurement_model_id, '') FROM measurement_models WHERE measurement_model_id = p_measurement_model_id)) AND ((SELECT (COALESCE((ABS(calc_observed_scales_standardized_residual(erb_r1.observed_scale_id)))::NUMERIC, 0) > 2.5)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_measurement_models_total_point_count
@@ -785,7 +892,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_measurement_models_outlier_rate(p_measurement_model_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_measurement_models_total_point_count(p_measurement_model_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_measurement_models_outlier_count(p_measurement_model_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_measurement_models_total_point_count(p_measurement_model_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_measurement_models_outlier_count(p_measurement_model_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_measurement_models_effective_point_count
@@ -795,7 +902,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_measurement_models_effective_point_count(p_measurement_model_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_measurement_models_total_point_count(p_measurement_model_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_measurement_models_outlier_count(p_measurement_model_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_measurement_models_total_point_count(p_measurement_model_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_measurement_models_outlier_count(p_measurement_model_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_measurement_models_cutoff_log_min_scale
@@ -825,7 +932,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_measurement_models_cutoff_range_span(p_measurement_model_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_measurement_models_cutoff_log_max_scale(p_measurement_model_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_measurement_models_cutoff_log_min_scale(p_measurement_model_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_measurement_models_cutoff_log_max_scale(p_measurement_model_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_measurement_models_cutoff_log_min_scale(p_measurement_model_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_observed_scales_base_scale
@@ -900,7 +1007,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_observed_scales_scale(p_observed_scale_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_base_scale(p_observed_scale_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_scale_factor_power(p_observed_scale_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_base_scale(p_observed_scale_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_scale_factor_power(p_observed_scale_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_observed_scales_log_scale
@@ -930,7 +1037,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_observed_scales_predicted_log_measure(p_observed_scale_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_fitted_slope(p_observed_scale_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_log_scale(p_observed_scale_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_fitted_intercept(p_observed_scale_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_fitted_slope(p_observed_scale_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_log_scale(p_observed_scale_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_fitted_intercept(p_observed_scale_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_observed_scales_residual
@@ -940,7 +1047,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_observed_scales_residual(p_observed_scale_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_log_measure(p_observed_scale_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_predicted_log_measure(p_observed_scale_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_log_measure(p_observed_scale_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_predicted_log_measure(p_observed_scale_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_observed_scales_residual_squared
@@ -950,7 +1057,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_observed_scales_residual_squared(p_observed_scale_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_observed_scales_residual(p_observed_scale_id) AS val) SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0)))::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_observed_scales_residual(p_observed_scale_id) AS val) SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_observed_scales_standardized_residual
@@ -960,7 +1067,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_observed_scales_standardized_residual(p_observed_scale_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_observed_scales_residual_rms(p_observed_scale_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_residual(p_observed_scale_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_observed_scales_residual_rms(p_observed_scale_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_residual(p_observed_scale_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_observed_scales_is_outlier
@@ -970,7 +1077,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_observed_scales_is_outlier(p_observed_scale_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((ABS(calc_observed_scales_standardized_residual(p_observed_scale_id)))::NUMERIC > 2.5)::boolean;
+  SELECT (COALESCE((ABS(calc_observed_scales_standardized_residual(p_observed_scale_id)))::NUMERIC, 0) > 2.5)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_observed_scales_scale_ratio
@@ -980,7 +1087,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_observed_scales_scale_ratio(p_observed_scale_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_observed_scales_base_scale(p_observed_scale_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_scale(p_observed_scale_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_observed_scales_base_scale(p_observed_scale_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_observed_scales_scale(p_observed_scale_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_observed_scales_abs_residual
@@ -1000,7 +1107,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_slope_confidence_interval(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT point_count FROM inference_runs WHERE inference_run_id = p_inference_run_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(1.96, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT residual_rms FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (SQRT(((SELECT point_count FROM inference_runs WHERE inference_run_id = p_inference_run_id))::NUMERIC)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((SELECT point_count FROM inference_runs WHERE inference_run_id = p_inference_run_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE(1.96, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT residual_rms FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (SQRT(((SELECT point_count FROM inference_runs WHERE inference_run_id = p_inference_run_id))::NUMERIC)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_min_log_scale
@@ -1010,7 +1117,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_min_log_scale(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MIN((calc_observed_scales_log_scale(observed_scale_id))::numeric), 0) FROM observed_scales WHERE "system" = (SELECT NULLIF("system", '') FROM inference_runs WHERE inference_run_id = p_inference_run_id)))::numeric;
+  SELECT ((SELECT COALESCE(MIN((((SELECT (LOG10(calc_observed_scales_scale(erb_r1.observed_scale_id)))::numeric))::numeric)::numeric), 0) FROM observed_scales erb_r1 WHERE "system" = (SELECT (SELECT NULLIF("system", '') FROM inference_runs WHERE inference_run_id = p_inference_run_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_max_log_scale
@@ -1020,7 +1127,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_max_log_scale(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MAX((calc_observed_scales_log_scale(observed_scale_id))::numeric), 0) FROM observed_scales WHERE "system" = (SELECT NULLIF("system", '') FROM inference_runs WHERE inference_run_id = p_inference_run_id)))::numeric;
+  SELECT ((SELECT COALESCE(MAX((((SELECT (LOG10(calc_observed_scales_scale(erb_r1.observed_scale_id)))::numeric))::numeric)::numeric), 0) FROM observed_scales erb_r1 WHERE "system" = (SELECT (SELECT NULLIF("system", '') FROM inference_runs WHERE inference_run_id = p_inference_run_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_min_log_measure
@@ -1030,7 +1137,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_min_log_measure(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MIN((calc_observed_scales_log_measure(observed_scale_id))::numeric), 0) FROM observed_scales WHERE "system" = (SELECT NULLIF("system", '') FROM inference_runs WHERE inference_run_id = p_inference_run_id)))::numeric;
+  SELECT ((SELECT COALESCE(MIN((((SELECT (LOG10(erb_r1.measure))::numeric))::numeric)::numeric), 0) FROM observed_scales erb_r1 WHERE "system" = (SELECT (SELECT NULLIF("system", '') FROM inference_runs WHERE inference_run_id = p_inference_run_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_max_log_measure
@@ -1040,7 +1147,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_max_log_measure(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(MAX((calc_observed_scales_log_measure(observed_scale_id))::numeric), 0) FROM observed_scales WHERE "system" = (SELECT NULLIF("system", '') FROM inference_runs WHERE inference_run_id = p_inference_run_id)))::numeric;
+  SELECT ((SELECT COALESCE(MAX((((SELECT (LOG10(erb_r1.measure))::numeric))::numeric)::numeric), 0) FROM observed_scales erb_r1 WHERE "system" = (SELECT (SELECT NULLIF("system", '') FROM inference_runs WHERE inference_run_id = p_inference_run_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_log_measure_range
@@ -1050,7 +1157,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_log_measure_range(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_inference_runs_max_log_measure(p_inference_run_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_inference_runs_min_log_measure(p_inference_run_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_inference_runs_max_log_measure(p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_inference_runs_min_log_measure(p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_abs_slope_delta
@@ -1070,7 +1177,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_slope_is_significant(p_inference_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_inference_runs_abs_slope_delta(p_inference_run_id) > calc_inference_runs_slope_confidence_interval(p_inference_run_id))::boolean;
+  SELECT (COALESCE((calc_inference_runs_abs_slope_delta(p_inference_run_id) > calc_inference_runs_slope_confidence_interval(p_inference_run_id)), FALSE))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_one_plus_residual_rms
@@ -1080,7 +1187,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_one_plus_residual_rms(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(1, 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT residual_rms FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE(1, 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT residual_rms FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_fit_efficiency
@@ -1090,7 +1197,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_fit_efficiency(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_inference_runs_one_plus_residual_rms(p_inference_run_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT r2 FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_inference_runs_one_plus_residual_rms(p_inference_run_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT r2 FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_normalized_rmse
@@ -1100,7 +1207,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_normalized_rmse(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_inference_runs_log_measure_range(p_inference_run_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT residual_rms FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_inference_runs_log_measure_range(p_inference_run_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT residual_rms FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_slope_to_theoretical_ratio
@@ -1110,7 +1217,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_slope_to_theoretical_ratio(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT theoretical_log_log_slope FROM inference_runs WHERE inference_run_id = p_inference_run_id))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT fitted_slope FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT theoretical_log_log_slope FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v) __safe_numeric), 0), 0)))::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((SELECT theoretical_log_log_slope FROM inference_runs WHERE inference_run_id = p_inference_run_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT fitted_slope FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT theoretical_log_log_slope FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_one_minus_r2
@@ -1120,7 +1227,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_one_minus_r2(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE(1, 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT r2 FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE(1, 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT r2 FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_point_count_minus_one
@@ -1130,7 +1237,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_point_count_minus_one(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT point_count FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v) __safe_numeric), 0) - COALESCE(1, 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT point_count FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE(1, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_point_count_minus_two
@@ -1140,7 +1247,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_point_count_minus_two(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT point_count FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v) __safe_numeric), 0) - COALESCE(2, 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT point_count FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE(2, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_adjusted_r2
@@ -1150,7 +1257,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_adjusted_r2(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_inference_runs_point_count_minus_two(p_inference_run_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE ((COALESCE(1, 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_inference_runs_one_minus_r2(p_inference_run_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_inference_runs_point_count_minus_one(p_inference_run_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_inference_runs_point_count_minus_two(p_inference_run_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE ((COALESCE(1, 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_inference_runs_one_minus_r2(p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_inference_runs_point_count_minus_one(p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_residual_rms_squared
@@ -1160,7 +1267,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_residual_rms_squared(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT residual_rms FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT residual_rms FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT residual_rms FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT residual_rms FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_inference_runs_log_residual_rms_squared
@@ -1190,7 +1297,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_inference_runs_bic(p_inference_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT point_count FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_inference_runs_log_residual_rms_squared(p_inference_run_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(2, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_inference_runs_log_point_count(p_inference_run_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT point_count FROM inference_runs WHERE inference_run_id = p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_inference_runs_log_residual_rms_squared(p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE(2, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_inference_runs_log_point_count(p_inference_run_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_scale_regimes_theoretical_log_log_slope
@@ -1211,7 +1318,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_scale_regimes_regime_span(p_regime_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT max_log_scale FROM scale_regimes WHERE regime_id = p_regime_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT min_log_scale FROM scale_regimes WHERE regime_id = p_regime_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT max_log_scale FROM scale_regimes WHERE regime_id = p_regime_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT min_log_scale FROM scale_regimes WHERE regime_id = p_regime_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_scale_regimes_regime_center
@@ -1221,7 +1328,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_scale_regimes_regime_center(p_regime_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT min_log_scale FROM scale_regimes WHERE regime_id = p_regime_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT max_log_scale FROM scale_regimes WHERE regime_id = p_regime_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE(2, 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT min_log_scale FROM scale_regimes WHERE regime_id = p_regime_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT max_log_scale FROM scale_regimes WHERE regime_id = p_regime_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(2, 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_scale_regimes_slope_deviation_from_global
@@ -1231,7 +1338,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_scale_regimes_slope_deviation_from_global(p_regime_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT expected_slope FROM scale_regimes WHERE regime_id = p_regime_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_scale_regimes_theoretical_log_log_slope(p_regime_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT expected_slope FROM scale_regimes WHERE regime_id = p_regime_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_scale_regimes_theoretical_log_log_slope(p_regime_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_scale_regimes_points_in_regime
@@ -1241,7 +1348,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_scale_regimes_points_in_regime(p_regime_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM scales WHERE "system" = (SELECT NULLIF("system", '') FROM scale_regimes WHERE regime_id = p_regime_id) AND (calc_scales_log_scale(scale_id))::numeric >= ((SELECT min_log_scale FROM scale_regimes WHERE regime_id = p_regime_id))::numeric AND (calc_scales_log_scale(scale_id))::numeric <= ((SELECT max_log_scale FROM scale_regimes WHERE regime_id = p_regime_id))::numeric))::integer;
+  SELECT ((SELECT COUNT(*) FROM scales erb_r1 WHERE "system" = (SELECT (SELECT NULLIF("system", '') FROM scale_regimes WHERE regime_id = p_regime_id)) AND (((SELECT (LOG10(calc_scales_scale(erb_r1.scale_id)))::numeric))::numeric)::numeric >= ((SELECT (SELECT min_log_scale FROM scale_regimes WHERE regime_id = p_regime_id)))::numeric AND (((SELECT (LOG10(calc_scales_scale(erb_r1.scale_id)))::numeric))::numeric)::numeric <= ((SELECT (SELECT max_log_scale FROM scale_regimes WHERE regime_id = p_regime_id)))::numeric))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

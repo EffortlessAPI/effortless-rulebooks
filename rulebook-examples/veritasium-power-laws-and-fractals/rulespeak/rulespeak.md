@@ -1,4 +1,4 @@
-# 📘 veritasium-power-laws-and-fractals — RuleSpeak®
+# 📘 veritasium-power-laws-and-fractals — Docs
 
 _Unifies several classic fractal / power-law phenomena into a single CMCC pattern with clean separation between fractal dimension and log–log slope._
 
@@ -8,6 +8,8 @@ _Unifies several classic fractal / power-law phenomena into a single CMCC patter
 > this document is their plain-language reading.
 
 ## 1 Business Vocabulary
+
+_Example data is not shown: the formula simulator could not be generated: ERROR: systems.Class becomes 'class', which cannot be a Python parameter name in the generated SDK. No value is displayed rather than a possibly-incorrect one._
 
 | Term | Description | Narrative Comment |
 |------|-------------|-------------------|
@@ -27,6 +29,9 @@ _Unifies several classic fractal / power-law phenomena into a single CMCC patter
 | Is High Quality Fit | True when all of the following hold: the empirical fit quality is greater than 0.99 and the empirical slope deviation is less than 0.05. | _Boolean flag indicating excellent fit (R² > 0.99 and slope error < 0.05)._ |
 | Scale Range Span | The delta log scale of the system's system ID. | _Total span in log-scale space covered by data (decades of scale)._ |
 | Measure Range Span | The delta log measure of the system's system ID. | _Total span in log-measure space covered by data (decades of measure)._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **scale** | Generic log–log points for each system at multiple iterations / scales. | — |
 | System | A defined attribute. | _FK to systems table._ |
 | Iteration | A defined attribute. | _Discrete zoom level or rank index._ |
@@ -47,6 +52,9 @@ _Unifies several classic fractal / power-law phenomena into a single CMCC patter
 | System Delta Log Scale | Taken from the linked system. | _Total log scale range for the system._ |
 | Scale Ratio | Determined by priority: 0 if the base scale is 0; in all other cases, the scale divided by the base scale. | _How many times larger than base scale (multiplicative factor). Reads 0 when the denominator is 0 (the transpiler has no NULLIF)._ |
 | Log Scale Normalized | Determined by priority: 0 if the system delta log scale is 0; in all other cases, the log scale minus the system min log scale divided by the system delta log scale. | _Position within system's log-scale range as 0-1 value. Reads 0 when the denominator is 0 (the transpiler has no NULLIF)._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **system stat** | Statistical analysis of each system's log-log behavior, with rollups from scales and lookups to systems. | — |
 | System | A defined attribute. | _FK to systems table._ |
 | Analysis Name | A defined attribute. | _Human-readable name for this analysis run._ |
@@ -74,6 +82,9 @@ _Unifies several classic fractal / power-law phenomena into a single CMCC patter
 | Log Log Area | Computed as the delta log scale times the abs delta log measure. | _Area in log-log space (product of ranges)._ |
 | Data Density | Determined by priority: 0 if the log log area is 0; in all other cases, the point count divided by the log log area. | _Number of data points per unit area in log-log space. Reads 0 when the denominator is 0 (the transpiler has no NULLIF)._ |
 | Relative Slope Error | Determined by priority: 0 if the theoretical log log slope is 0; in all other cases, the slope error divided by the theoretical log log slope. | _Slope error as fraction of theoretical slope (percentage). Reads 0 when the denominator is 0 (the transpiler has no NULLIF)._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **measurement model** | Measurement/de-idealization specs used to produce or interpret real-world (noisy, finite-size, discretized) scale records. | — |
 | System | A defined attribute. | _FK to systems table (measurement model is typically system-specific)._ |
 | Data Regime | A defined attribute. | _Regime this model describes. Usually 'measured'._ |
@@ -93,6 +104,9 @@ _Unifies several classic fractal / power-law phenomena into a single CMCC patter
 | Cutoff Log Min Scale | Computed as the LOG10 of the cutoff min scale. | _Log10 of minimum cutoff scale._ |
 | Cutoff Log Max Scale | Computed as the LOG10 of the cutoff max scale. | _Log10 of maximum cutoff scale._ |
 | Cutoff Range Span | Computed as the cutoff log max scale minus the cutoff log min scale. | _Range of observable scales in log units (decades)._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **observed scale** | Noisy, finite-range, discretized observations of each system's scaling law. Mirrors scales but with DataRegime='measured'. | — |
 | System | A defined attribute. | _FK to systems table._ |
 | Measurement Model | A defined attribute. | _FK to measurement model used/assumed for this observation set._ |
@@ -115,6 +129,9 @@ _Unifies several classic fractal / power-law phenomena into a single CMCC patter
 | Is Outlier | True when the absolute value of the standardized residual is greater than 2.5. | _Outlier detection flag (>2.5 RMS units from fit)._ |
 | Scale Ratio | Determined by priority: 0 if the base scale is 0; in all other cases, the scale divided by the base scale. | _Scale relative to base scale (multiplicative factor). Reads 0 when the denominator is 0 (the transpiler has no NULLIF)._ |
 | Abs Residual | Computed as the absolute value of the residual. | _Absolute value of residual for aggregation._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **inference run** | Inference outputs (fits and residual geometry) computed from observed_scales relative to each system fixed point. | — |
 | System | A defined attribute. | _FK to systems table._ |
 | Data Regime | A defined attribute. | _Regime of the fitted data (ideal/measured)._ |
@@ -150,6 +167,9 @@ _Unifies several classic fractal / power-law phenomena into a single CMCC patter
 | Log Residual RMS Squared | Computed as the logarithm of the residual RMS squared. | _Log of squared residual RMS._ |
 | Log Point Count | Computed as the logarithm of the point count. | _Natural log of point count._ |
 | BIC | Computed as the point count times the log residual RMS squared plus 2 times the log point count. | _Bayesian Information Criterion (lower is better fit)._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **scale regime** | Multi-regime analysis defining different scale ranges within systems where different slope behaviors may occur. | — |
 | System | A defined attribute. | _FK to systems table._ |
 | Min Log Scale | A defined attribute. | _Minimum log10(scale) boundary for this regime._ |
@@ -183,22 +203,22 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 
 ### Structural Constraints (from the schema)
 
-- A system **must** have a display name, a class, a base scale, a scale factor, a measure name, a fractal dimension, and a theoretical log log slope.
+- A system **must** have a display name; a class; a base scale; a scale factor; a measure name; a fractal dimension; and a theoretical log log slope.
 - A scale **must** reference exactly one system.
 - A scale **must** reference exactly one measurement model.
-- A scale **must** have an iteration, a measure, and a data regime, and record whether it is projected.
+- A scale **must** have an iteration; a measure; and a data regime, and record whether it is projected.
 - A system stat **must** reference exactly one system.
 - A system stat **must** have an analysis name and a status.
 - A measurement model **must** reference exactly one system.
-- A measurement model **must** have a data regime, a scale regime, a noise type, a noise sigma, a cutoff min scale, a cutoff max scale, a discretization type, and a discretization param.
+- A measurement model **must** have a data regime; a scale regime; a noise type; a noise sigma; a cutoff min scale; a cutoff max scale; a discretization type; and a discretization param.
 - An observed scale **must** reference exactly one system.
 - An observed scale **must** reference exactly one measurement model.
-- An observed scale **must** have an iteration, a measure, and a data regime.
+- An observed scale **must** have an iteration; a measure; and a data regime.
 - An inference run **must** reference exactly one system.
 - An inference run **must** reference exactly one measurement model.
-- An inference run **must** have a data regime, a fit method, a point count, a theoretical log log slope, a fitted slope, a fitted intercept, a slope delta, a r2, a residual RMS, a residual max abs, an orthogonal RMS, and a deviation score.
+- An inference run **must** have a data regime; a fit method; a point count; a theoretical log log slope; a fitted slope; a fitted intercept; a slope delta; a r2; a residual RMS; a residual max abs; an orthogonal RMS; and a deviation score.
 - A scale regime **must** reference exactly one system.
-- A scale regime **must** have a min log scale, a max log scale, an expected slope, and a regime type.
+- A scale regime **must** have a min log scale; a max log scale; an expected slope; and a regime type.
 
 ## 4 Definitional Rules
 
@@ -307,7 +327,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -409,8 +429,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

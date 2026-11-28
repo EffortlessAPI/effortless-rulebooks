@@ -41864,4 +41864,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "scale_regimes": "scale regime"
     }
   }
-} };
+}, stamp: "35e764511f4a765c" };
