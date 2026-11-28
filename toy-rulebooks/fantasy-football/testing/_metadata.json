@@ -1,0 +1,71 @@
+{
+  "dev_users": {
+    "primary_key": "email",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  },
+  "players": {
+    "primary_key": "player_id",
+    "computed_columns": [
+      "name",
+      "total_touchdowns",
+      "projected_score"
+    ],
+    "record_count": 18
+  },
+  "rosters": {
+    "primary_key": "roster_id",
+    "computed_columns": [
+      "name",
+      "total_passing_yards",
+      "total_rushing_yards",
+      "total_receiving_yards",
+      "total_touchdowns",
+      "total_interceptions",
+      "projected_score"
+    ],
+    "record_count": 6
+  },
+  "roster_assignments": {
+    "primary_key": "assignment_id",
+    "computed_columns": [
+      "name",
+      "player_name",
+      "position",
+      "passing_yards",
+      "passing_touchdowns",
+      "interceptions",
+      "rushing_yards",
+      "rushing_touchdowns",
+      "receptions",
+      "received_yards",
+      "received_touchdowns",
+      "total_touchdowns",
+      "projected_score"
+    ],
+    "record_count": 18
+  },
+  "matchups": {
+    "primary_key": "matchup_id",
+    "computed_columns": [
+      "name",
+      "team1_score",
+      "team2_score",
+      "margin",
+      "winner",
+      "loser",
+      "is_tie_game"
+    ],
+    "record_count": 18
+  },
+  "standings": {
+    "primary_key": "standing_id",
+    "computed_columns": [
+      "name",
+      "owner"
+    ],
+    "record_count": 6
+  }
+}

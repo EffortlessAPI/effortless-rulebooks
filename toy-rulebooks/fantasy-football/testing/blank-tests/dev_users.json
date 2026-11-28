@@ -1,0 +1,17 @@
+[
+  {
+    "email": "commissioner@league.local",
+    "role": "commissioner",
+    "name": null
+  },
+  {
+    "email": "owner@league.local",
+    "role": "owner",
+    "name": null
+  },
+  {
+    "email": "spectator@league.local",
+    "role": "spectator",
+    "name": null
+  }
+]

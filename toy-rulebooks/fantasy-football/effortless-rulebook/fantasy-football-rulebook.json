@@ -31,15 +31,18 @@
     "data": [
       {
         "Email": "commissioner@league.local",
-        "Role": "commissioner"
+        "Role": "commissioner",
+        "Name": "commissioner@league.local"
       },
       {
         "Email": "owner@league.local",
-        "Role": "owner"
+        "Role": "owner",
+        "Name": "owner@league.local"
       },
       {
         "Email": "spectator@league.local",
-        "Role": "spectator"
+        "Role": "spectator",
+        "Name": "spectator@league.local"
       }
     ]
   },
@@ -165,7 +168,10 @@
         "RushingTouchdowns": 3,
         "Receptions": 0,
         "ReceivedYards": 0,
-        "ReceivedTouchdowns": 0
+        "ReceivedTouchdowns": 0,
+        "Name": "patrick-mahomes",
+        "TotalTouchdowns": 51,
+        "ProjectedScore": 510.0
       },
       {
         "PlayerId": "travis-kelce",
@@ -177,7 +183,10 @@
         "RushingTouchdowns": 0,
         "Receptions": 110,
         "ReceivedYards": 1200,
-        "ReceivedTouchdowns": 12
+        "ReceivedTouchdowns": 12,
+        "Name": "travis-kelce",
+        "TotalTouchdowns": 12,
+        "ProjectedScore": 72.0
       },
       {
         "PlayerId": "christian-mccaffrey",
@@ -189,7 +198,10 @@
         "RushingTouchdowns": 15,
         "Receptions": 90,
         "ReceivedYards": 650,
-        "ReceivedTouchdowns": 3
+        "ReceivedTouchdowns": 3,
+        "Name": "christian-mccaffrey",
+        "TotalTouchdowns": 18,
+        "ProjectedScore": 108.0
       },
       {
         "PlayerId": "jalen-hurts",
@@ -201,7 +213,10 @@
         "RushingTouchdowns": 14,
         "Receptions": 0,
         "ReceivedYards": 0,
-        "ReceivedTouchdowns": 0
+        "ReceivedTouchdowns": 0,
+        "Name": "jalen-hurts",
+        "TotalTouchdowns": 47,
+        "ProjectedScore": 424.0
       },
       {
         "PlayerId": "saquon-barkley",
@@ -213,7 +228,10 @@
         "RushingTouchdowns": 14,
         "Receptions": 60,
         "ReceivedYards": 420,
-        "ReceivedTouchdowns": 2
+        "ReceivedTouchdowns": 2,
+        "Name": "saquon-barkley",
+        "TotalTouchdowns": 16,
+        "ProjectedScore": 96.0
       },
       {
         "PlayerId": "ja-marr-chase",
@@ -225,7 +243,10 @@
         "RushingTouchdowns": 0,
         "Receptions": 110,
         "ReceivedYards": 1300,
-        "ReceivedTouchdowns": 8
+        "ReceivedTouchdowns": 8,
+        "Name": "ja-marr-chase",
+        "TotalTouchdowns": 8,
+        "ProjectedScore": 48.0
       },
       {
         "PlayerId": "josh-allen",
@@ -237,7 +258,10 @@
         "RushingTouchdowns": 12,
         "Receptions": 0,
         "ReceivedYards": 0,
-        "ReceivedTouchdowns": 0
+        "ReceivedTouchdowns": 0,
+        "Name": "josh-allen",
+        "TotalTouchdowns": 38,
+        "ProjectedScore": 392.0
       },
       {
         "PlayerId": "derrick-henry",
@@ -249,7 +273,10 @@
         "RushingTouchdowns": 14,
         "Receptions": 30,
         "ReceivedYards": 200,
-        "ReceivedTouchdowns": 0
+        "ReceivedTouchdowns": 0,
+        "Name": "derrick-henry",
+        "TotalTouchdowns": 14,
+        "ProjectedScore": 84.0
       },
       {
         "PlayerId": "tyreek-hill",
@@ -261,7 +288,10 @@
         "RushingTouchdowns": 0,
         "Receptions": 115,
         "ReceivedYards": 1750,
-        "ReceivedTouchdowns": 9
+        "ReceivedTouchdowns": 9,
+        "Name": "tyreek-hill",
+        "TotalTouchdowns": 9,
+        "ProjectedScore": 54.0
       },
       {
         "PlayerId": "lamar-jackson",
@@ -273,7 +303,10 @@
         "RushingTouchdowns": 5,
         "Receptions": 0,
         "ReceivedYards": 0,
-        "ReceivedTouchdowns": 0
+        "ReceivedTouchdowns": 0,
+        "Name": "lamar-jackson",
+        "TotalTouchdowns": 33,
+        "ProjectedScore": 324.0
       },
       {
         "PlayerId": "davante-adams",
@@ -285,7 +318,10 @@
         "RushingTouchdowns": 0,
         "Receptions": 125,
         "ReceivedYards": 1300,
-        "ReceivedTouchdowns": 10
+        "ReceivedTouchdowns": 10,
+        "Name": "davante-adams",
+        "TotalTouchdowns": 10,
+        "ProjectedScore": 60.0
       },
       {
         "PlayerId": "aj-brown",
@@ -297,7 +333,10 @@
         "RushingTouchdowns": 0,
         "Receptions": 105,
         "ReceivedYards": 1250,
-        "ReceivedTouchdowns": 11
+        "ReceivedTouchdowns": 11,
+        "Name": "aj-brown",
+        "TotalTouchdowns": 11,
+        "ProjectedScore": 66.0
       },
       {
         "PlayerId": "bryce-young",
@@ -309,7 +348,10 @@
         "RushingTouchdowns": 1,
         "Receptions": 0,
         "ReceivedYards": 0,
-        "ReceivedTouchdowns": 0
+        "ReceivedTouchdowns": 0,
+        "Name": "bryce-young",
+        "TotalTouchdowns": 15,
+        "ProjectedScore": 148.0
       },
       {
         "PlayerId": "de-aaron-henry",
@@ -321,7 +363,10 @@
         "RushingTouchdowns": 4,
         "Receptions": 25,
         "ReceivedYards": 130,
-        "ReceivedTouchdowns": 0
+        "ReceivedTouchdowns": 0,
+        "Name": "de-aaron-henry",
+        "TotalTouchdowns": 4,
+        "ProjectedScore": 24.0
       },
       {
         "PlayerId": "ceedee-lamb",
@@ -333,7 +378,10 @@
         "RushingTouchdowns": 0,
         "Receptions": 65,
         "ReceivedYards": 750,
-        "ReceivedTouchdowns": 5
+        "ReceivedTouchdowns": 5,
+        "Name": "ceedee-lamb",
+        "TotalTouchdowns": 5,
+        "ProjectedScore": 30.0
       },
       {
         "PlayerId": "russell-wilson",
@@ -345,7 +393,10 @@
         "RushingTouchdowns": 1,
         "Receptions": 0,
         "ReceivedYards": 0,
-        "ReceivedTouchdowns": 0
+        "ReceivedTouchdowns": 0,
+        "Name": "russell-wilson",
+        "TotalTouchdowns": 25,
+        "ProjectedScore": 288.0
       },
       {
         "PlayerId": "miles-sanders",
@@ -357,7 +408,10 @@
         "RushingTouchdowns": 7,
         "Receptions": 40,
         "ReceivedYards": 280,
-        "ReceivedTouchdowns": 1
+        "ReceivedTouchdowns": 1,
+        "Name": "miles-sanders",
+        "TotalTouchdowns": 8,
+        "ProjectedScore": 48.0
       },
       {
         "PlayerId": "stefon-diggs",
@@ -369,7 +423,10 @@
         "RushingTouchdowns": 0,
         "Receptions": 120,
         "ReceivedYards": 1100,
-        "ReceivedTouchdowns": 8
+        "ReceivedTouchdowns": 8,
+        "Name": "stefon-diggs",
+        "TotalTouchdowns": 8,
+        "ProjectedScore": 48.0
       }
     ]
   },
@@ -460,27 +517,69 @@
     "data": [
       {
         "RosterId": "mahomes-mob",
-        "Owner": "commissioner@league.local"
+        "Owner": "commissioner@league.local",
+        "Name": "mahomes-mob",
+        "TotalPassingYards": 5500,
+        "TotalRushingYards": 2010,
+        "TotalReceivingYards": 1850,
+        "TotalTouchdowns": 81,
+        "TotalInterceptions": 8,
+        "ProjectedScore": 1076.0
       },
       {
         "RosterId": "hurts-hustlers",
-        "Owner": "owner@league.local"
+        "Owner": "owner@league.local",
+        "Name": "hurts-hustlers",
+        "TotalPassingYards": 3800,
+        "TotalRushingYards": 3020,
+        "TotalReceivingYards": 1720,
+        "TotalTouchdowns": 71,
+        "TotalInterceptions": 5,
+        "ProjectedScore": 1042.0
       },
       {
         "RosterId": "allens-arsenal",
-        "Owner": "owner@league.local"
+        "Owner": "owner@league.local",
+        "Name": "allens-arsenal",
+        "TotalPassingYards": 4500,
+        "TotalRushingYards": 2100,
+        "TotalReceivingYards": 1950,
+        "TotalTouchdowns": 61,
+        "TotalInterceptions": 8,
+        "ProjectedScore": 935.0
       },
       {
         "RosterId": "davantes-dynasty",
-        "Owner": "owner@league.local"
+        "Owner": "owner@league.local",
+        "Name": "davantes-dynasty",
+        "TotalPassingYards": 3650,
+        "TotalRushingYards": 700,
+        "TotalReceivingYards": 2550,
+        "TotalTouchdowns": 54,
+        "TotalInterceptions": 10,
+        "ProjectedScore": 775.0
       },
       {
         "RosterId": "hurts-limit",
-        "Owner": "spectator@league.local"
+        "Owner": "spectator@league.local",
+        "Name": "hurts-limit",
+        "TotalPassingYards": 2200,
+        "TotalRushingYards": 930,
+        "TotalReceivingYards": 880,
+        "TotalTouchdowns": 24,
+        "TotalInterceptions": 15,
+        "ProjectedScore": 383.0
       },
       {
         "RosterId": "defense-wins",
-        "Owner": "spectator@league.local"
+        "Owner": "spectator@league.local",
+        "Name": "defense-wins",
+        "TotalPassingYards": 3900,
+        "TotalRushingYards": 1350,
+        "TotalReceivingYards": 1380,
+        "TotalTouchdowns": 41,
+        "TotalInterceptions": 9,
+        "ProjectedScore": 657.0
       }
     ]
   },
@@ -619,92 +718,326 @@
       {
         "AssignmentId": "mahomes-mob-qb",
         "Roster": "mahomes-mob",
-        "Player": "patrick-mahomes"
+        "Player": "patrick-mahomes",
+        "Name": "mahomes-mob-qb",
+        "PlayerName": "patrick-mahomes",
+        "Position": "QB",
+        "PassingYards": 5500,
+        "PassingTouchdowns": 48,
+        "Interceptions": 8,
+        "RushingYards": 510,
+        "RushingTouchdowns": 3,
+        "Receptions": 0,
+        "ReceivedYards": 0,
+        "ReceivedTouchdowns": 0,
+        "TotalTouchdowns": 51,
+        "ProjectedScore": 510.0
       },
       {
         "AssignmentId": "mahomes-mob-rb",
         "Roster": "mahomes-mob",
-        "Player": "christian-mccaffrey"
+        "Player": "christian-mccaffrey",
+        "Name": "mahomes-mob-rb",
+        "PlayerName": "christian-mccaffrey",
+        "Position": "RB",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 1500,
+        "RushingTouchdowns": 15,
+        "Receptions": 90,
+        "ReceivedYards": 650,
+        "ReceivedTouchdowns": 3,
+        "TotalTouchdowns": 18,
+        "ProjectedScore": 108.0
       },
       {
         "AssignmentId": "mahomes-mob-te",
         "Roster": "mahomes-mob",
-        "Player": "travis-kelce"
+        "Player": "travis-kelce",
+        "Name": "mahomes-mob-te",
+        "PlayerName": "travis-kelce",
+        "Position": "TE",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 0,
+        "RushingTouchdowns": 0,
+        "Receptions": 110,
+        "ReceivedYards": 1200,
+        "ReceivedTouchdowns": 12,
+        "TotalTouchdowns": 12,
+        "ProjectedScore": 72.0
       },
       {
         "AssignmentId": "hurts-hustlers-qb",
         "Roster": "hurts-hustlers",
-        "Player": "jalen-hurts"
+        "Player": "jalen-hurts",
+        "Name": "hurts-hustlers-qb",
+        "PlayerName": "jalen-hurts",
+        "Position": "QB",
+        "PassingYards": 3800,
+        "PassingTouchdowns": 33,
+        "Interceptions": 5,
+        "RushingYards": 920,
+        "RushingTouchdowns": 14,
+        "Receptions": 0,
+        "ReceivedYards": 0,
+        "ReceivedTouchdowns": 0,
+        "TotalTouchdowns": 47,
+        "ProjectedScore": 424.0
       },
       {
         "AssignmentId": "hurts-hustlers-rb",
         "Roster": "hurts-hustlers",
-        "Player": "saquon-barkley"
+        "Player": "saquon-barkley",
+        "Name": "hurts-hustlers-rb",
+        "PlayerName": "saquon-barkley",
+        "Position": "RB",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 2100,
+        "RushingTouchdowns": 14,
+        "Receptions": 60,
+        "ReceivedYards": 420,
+        "ReceivedTouchdowns": 2,
+        "TotalTouchdowns": 16,
+        "ProjectedScore": 96.0
       },
       {
         "AssignmentId": "hurts-hustlers-wr",
         "Roster": "hurts-hustlers",
-        "Player": "ja-marr-chase"
+        "Player": "ja-marr-chase",
+        "Name": "hurts-hustlers-wr",
+        "PlayerName": "ja-marr-chase",
+        "Position": "WR",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 0,
+        "RushingTouchdowns": 0,
+        "Receptions": 110,
+        "ReceivedYards": 1300,
+        "ReceivedTouchdowns": 8,
+        "TotalTouchdowns": 8,
+        "ProjectedScore": 48.0
       },
       {
         "AssignmentId": "allens-arsenal-qb",
         "Roster": "allens-arsenal",
-        "Player": "josh-allen"
+        "Player": "josh-allen",
+        "Name": "allens-arsenal-qb",
+        "PlayerName": "josh-allen",
+        "Position": "QB",
+        "PassingYards": 4500,
+        "PassingTouchdowns": 26,
+        "Interceptions": 8,
+        "RushingYards": 500,
+        "RushingTouchdowns": 12,
+        "Receptions": 0,
+        "ReceivedYards": 0,
+        "ReceivedTouchdowns": 0,
+        "TotalTouchdowns": 38,
+        "ProjectedScore": 392.0
       },
       {
         "AssignmentId": "allens-arsenal-rb",
         "Roster": "allens-arsenal",
-        "Player": "derrick-henry"
+        "Player": "derrick-henry",
+        "Name": "allens-arsenal-rb",
+        "PlayerName": "derrick-henry",
+        "Position": "RB",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 1450,
+        "RushingTouchdowns": 14,
+        "Receptions": 30,
+        "ReceivedYards": 200,
+        "ReceivedTouchdowns": 0,
+        "TotalTouchdowns": 14,
+        "ProjectedScore": 84.0
       },
       {
         "AssignmentId": "allens-arsenal-wr",
         "Roster": "allens-arsenal",
-        "Player": "tyreek-hill"
+        "Player": "tyreek-hill",
+        "Name": "allens-arsenal-wr",
+        "PlayerName": "tyreek-hill",
+        "Position": "WR",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 150,
+        "RushingTouchdowns": 0,
+        "Receptions": 115,
+        "ReceivedYards": 1750,
+        "ReceivedTouchdowns": 9,
+        "TotalTouchdowns": 9,
+        "ProjectedScore": 54.0
       },
       {
         "AssignmentId": "davantes-dynasty-qb",
         "Roster": "davantes-dynasty",
-        "Player": "lamar-jackson"
+        "Player": "lamar-jackson",
+        "Name": "davantes-dynasty-qb",
+        "PlayerName": "lamar-jackson",
+        "Position": "QB",
+        "PassingYards": 3650,
+        "PassingTouchdowns": 28,
+        "Interceptions": 10,
+        "RushingYards": 700,
+        "RushingTouchdowns": 5,
+        "Receptions": 0,
+        "ReceivedYards": 0,
+        "ReceivedTouchdowns": 0,
+        "TotalTouchdowns": 33,
+        "ProjectedScore": 324.0
       },
       {
         "AssignmentId": "davantes-dynasty-wr1",
         "Roster": "davantes-dynasty",
-        "Player": "davante-adams"
+        "Player": "davante-adams",
+        "Name": "davantes-dynasty-wr1",
+        "PlayerName": "davante-adams",
+        "Position": "WR",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 0,
+        "RushingTouchdowns": 0,
+        "Receptions": 125,
+        "ReceivedYards": 1300,
+        "ReceivedTouchdowns": 10,
+        "TotalTouchdowns": 10,
+        "ProjectedScore": 60.0
       },
       {
         "AssignmentId": "davantes-dynasty-wr2",
         "Roster": "davantes-dynasty",
-        "Player": "aj-brown"
+        "Player": "aj-brown",
+        "Name": "davantes-dynasty-wr2",
+        "PlayerName": "aj-brown",
+        "Position": "WR",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 0,
+        "RushingTouchdowns": 0,
+        "Receptions": 105,
+        "ReceivedYards": 1250,
+        "ReceivedTouchdowns": 11,
+        "TotalTouchdowns": 11,
+        "ProjectedScore": 66.0
       },
       {
         "AssignmentId": "hurts-limit-qb",
         "Roster": "hurts-limit",
-        "Player": "bryce-young"
+        "Player": "bryce-young",
+        "Name": "hurts-limit-qb",
+        "PlayerName": "bryce-young",
+        "Position": "QB",
+        "PassingYards": 2200,
+        "PassingTouchdowns": 14,
+        "Interceptions": 15,
+        "RushingYards": 180,
+        "RushingTouchdowns": 1,
+        "Receptions": 0,
+        "ReceivedYards": 0,
+        "ReceivedTouchdowns": 0,
+        "TotalTouchdowns": 15,
+        "ProjectedScore": 148.0
       },
       {
         "AssignmentId": "hurts-limit-rb",
         "Roster": "hurts-limit",
-        "Player": "de-aaron-henry"
+        "Player": "de-aaron-henry",
+        "Name": "hurts-limit-rb",
+        "PlayerName": "de-aaron-henry",
+        "Position": "RB",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 650,
+        "RushingTouchdowns": 4,
+        "Receptions": 25,
+        "ReceivedYards": 130,
+        "ReceivedTouchdowns": 0,
+        "TotalTouchdowns": 4,
+        "ProjectedScore": 24.0
       },
       {
         "AssignmentId": "hurts-limit-wr",
         "Roster": "hurts-limit",
-        "Player": "ceedee-lamb"
+        "Player": "ceedee-lamb",
+        "Name": "hurts-limit-wr",
+        "PlayerName": "ceedee-lamb",
+        "Position": "WR",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 100,
+        "RushingTouchdowns": 0,
+        "Receptions": 65,
+        "ReceivedYards": 750,
+        "ReceivedTouchdowns": 5,
+        "TotalTouchdowns": 5,
+        "ProjectedScore": 30.0
       },
       {
         "AssignmentId": "defense-wins-qb",
         "Roster": "defense-wins",
-        "Player": "russell-wilson"
+        "Player": "russell-wilson",
+        "Name": "defense-wins-qb",
+        "PlayerName": "russell-wilson",
+        "Position": "QB",
+        "PassingYards": 3900,
+        "PassingTouchdowns": 24,
+        "Interceptions": 9,
+        "RushingYards": 250,
+        "RushingTouchdowns": 1,
+        "Receptions": 0,
+        "ReceivedYards": 0,
+        "ReceivedTouchdowns": 0,
+        "TotalTouchdowns": 25,
+        "ProjectedScore": 288.0
       },
       {
         "AssignmentId": "defense-wins-rb",
         "Roster": "defense-wins",
-        "Player": "miles-sanders"
+        "Player": "miles-sanders",
+        "Name": "defense-wins-rb",
+        "PlayerName": "miles-sanders",
+        "Position": "RB",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 1100,
+        "RushingTouchdowns": 7,
+        "Receptions": 40,
+        "ReceivedYards": 280,
+        "ReceivedTouchdowns": 1,
+        "TotalTouchdowns": 8,
+        "ProjectedScore": 48.0
       },
       {
         "AssignmentId": "defense-wins-wr",
         "Roster": "defense-wins",
-        "Player": "stefon-diggs"
+        "Player": "stefon-diggs",
+        "Name": "defense-wins-wr",
+        "PlayerName": "stefon-diggs",
+        "Position": "WR",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 0,
+        "RushingTouchdowns": 0,
+        "Receptions": 120,
+        "ReceivedYards": 1100,
+        "ReceivedTouchdowns": 8,
+        "TotalTouchdowns": 8,
+        "ProjectedScore": 48.0
       }
     ]
   },
@@ -815,109 +1148,235 @@
         "MatchupId": "week1-mob-hustlers",
         "Week": 1,
         "Team1": "mahomes-mob",
-        "Team2": "hurts-hustlers"
+        "Team2": "hurts-hustlers",
+        "Name": "week1-mob-hustlers",
+        "Team1Score": 1076.0,
+        "Team2Score": 1042.0,
+        "Margin": 34.0,
+        "Winner": "mahomes-mob",
+        "Loser": "hurts-hustlers",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week1-arsenal-dynasty",
         "Week": 1,
         "Team1": "allens-arsenal",
-        "Team2": "davantes-dynasty"
+        "Team2": "davantes-dynasty",
+        "Name": "week1-arsenal-dynasty",
+        "Team1Score": 935.0,
+        "Team2Score": 775.0,
+        "Margin": 160.0,
+        "Winner": "allens-arsenal",
+        "Loser": "davantes-dynasty",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week1-limit-wins",
         "Week": 1,
         "Team1": "hurts-limit",
-        "Team2": "defense-wins"
+        "Team2": "defense-wins",
+        "Name": "week1-limit-wins",
+        "Team1Score": 383.0,
+        "Team2Score": 657.0,
+        "Margin": -274.0,
+        "Winner": "defense-wins",
+        "Loser": "hurts-limit",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week2-hustlers-wins",
         "Week": 2,
         "Team1": "hurts-hustlers",
-        "Team2": "defense-wins"
+        "Team2": "defense-wins",
+        "Name": "week2-hustlers-wins",
+        "Team1Score": 1042.0,
+        "Team2Score": 657.0,
+        "Margin": 385.0,
+        "Winner": "hurts-hustlers",
+        "Loser": "defense-wins",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week2-mob-arsenal",
         "Week": 2,
         "Team1": "mahomes-mob",
-        "Team2": "allens-arsenal"
+        "Team2": "allens-arsenal",
+        "Name": "week2-mob-arsenal",
+        "Team1Score": 1076.0,
+        "Team2Score": 935.0,
+        "Margin": 141.0,
+        "Winner": "mahomes-mob",
+        "Loser": "allens-arsenal",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week2-dynasty-limit",
         "Week": 2,
         "Team1": "davantes-dynasty",
-        "Team2": "hurts-limit"
+        "Team2": "hurts-limit",
+        "Name": "week2-dynasty-limit",
+        "Team1Score": 775.0,
+        "Team2Score": 383.0,
+        "Margin": 392.0,
+        "Winner": "davantes-dynasty",
+        "Loser": "hurts-limit",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week3-arsenal-mob",
         "Week": 3,
         "Team1": "allens-arsenal",
-        "Team2": "mahomes-mob"
+        "Team2": "mahomes-mob",
+        "Name": "week3-arsenal-mob",
+        "Team1Score": 935.0,
+        "Team2Score": 1076.0,
+        "Margin": -141.0,
+        "Winner": "mahomes-mob",
+        "Loser": "allens-arsenal",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week3-hustlers-dynasty",
         "Week": 3,
         "Team1": "hurts-hustlers",
-        "Team2": "davantes-dynasty"
+        "Team2": "davantes-dynasty",
+        "Name": "week3-hustlers-dynasty",
+        "Team1Score": 1042.0,
+        "Team2Score": 775.0,
+        "Margin": 267.0,
+        "Winner": "hurts-hustlers",
+        "Loser": "davantes-dynasty",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week3-wins-limit",
         "Week": 3,
         "Team1": "defense-wins",
-        "Team2": "hurts-limit"
+        "Team2": "hurts-limit",
+        "Name": "week3-wins-limit",
+        "Team1Score": 657.0,
+        "Team2Score": 383.0,
+        "Margin": 274.0,
+        "Winner": "defense-wins",
+        "Loser": "hurts-limit",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week4-mob-dynasty",
         "Week": 4,
         "Team1": "mahomes-mob",
-        "Team2": "davantes-dynasty"
+        "Team2": "davantes-dynasty",
+        "Name": "week4-mob-dynasty",
+        "Team1Score": 1076.0,
+        "Team2Score": 775.0,
+        "Margin": 301.0,
+        "Winner": "mahomes-mob",
+        "Loser": "davantes-dynasty",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week4-arsenal-wins",
         "Week": 4,
         "Team1": "allens-arsenal",
-        "Team2": "defense-wins"
+        "Team2": "defense-wins",
+        "Name": "week4-arsenal-wins",
+        "Team1Score": 935.0,
+        "Team2Score": 657.0,
+        "Margin": 278.0,
+        "Winner": "allens-arsenal",
+        "Loser": "defense-wins",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week4-hustlers-limit",
         "Week": 4,
         "Team1": "hurts-hustlers",
-        "Team2": "hurts-limit"
+        "Team2": "hurts-limit",
+        "Name": "week4-hustlers-limit",
+        "Team1Score": 1042.0,
+        "Team2Score": 383.0,
+        "Margin": 659.0,
+        "Winner": "hurts-hustlers",
+        "Loser": "hurts-limit",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week5-dynasty-wins",
         "Week": 5,
         "Team1": "davantes-dynasty",
-        "Team2": "defense-wins"
+        "Team2": "defense-wins",
+        "Name": "week5-dynasty-wins",
+        "Team1Score": 775.0,
+        "Team2Score": 657.0,
+        "Margin": 118.0,
+        "Winner": "davantes-dynasty",
+        "Loser": "defense-wins",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week5-limit-mob",
         "Week": 5,
         "Team1": "hurts-limit",
-        "Team2": "mahomes-mob"
+        "Team2": "mahomes-mob",
+        "Name": "week5-limit-mob",
+        "Team1Score": 383.0,
+        "Team2Score": 1076.0,
+        "Margin": -693.0,
+        "Winner": "mahomes-mob",
+        "Loser": "hurts-limit",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week5-arsenal-hustlers",
         "Week": 5,
         "Team1": "allens-arsenal",
-        "Team2": "hurts-hustlers"
+        "Team2": "hurts-hustlers",
+        "Name": "week5-arsenal-hustlers",
+        "Team1Score": 935.0,
+        "Team2Score": 1042.0,
+        "Margin": -107.0,
+        "Winner": "hurts-hustlers",
+        "Loser": "allens-arsenal",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week6-mob-wins",
         "Week": 6,
         "Team1": "mahomes-mob",
-        "Team2": "defense-wins"
+        "Team2": "defense-wins",
+        "Name": "week6-mob-wins",
+        "Team1Score": 1076.0,
+        "Team2Score": 657.0,
+        "Margin": 419.0,
+        "Winner": "mahomes-mob",
+        "Loser": "defense-wins",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week6-hustlers-arsenal",
         "Week": 6,
         "Team1": "hurts-hustlers",
-        "Team2": "allens-arsenal"
+        "Team2": "allens-arsenal",
+        "Name": "week6-hustlers-arsenal",
+        "Team1Score": 1042.0,
+        "Team2Score": 935.0,
+        "Margin": 107.0,
+        "Winner": "hurts-hustlers",
+        "Loser": "allens-arsenal",
+        "IsTieGame": false
       },
       {
         "MatchupId": "week6-dynasty-limit",
         "Week": 6,
         "Team1": "davantes-dynasty",
-        "Team2": "hurts-limit"
+        "Team2": "hurts-limit",
+        "Name": "week6-dynasty-limit",
+        "Team1Score": 775.0,
+        "Team2Score": 383.0,
+        "Margin": 392.0,
+        "Winner": "davantes-dynasty",
+        "Loser": "hurts-limit",
+        "IsTieGame": false
       }
     ]
   },
@@ -1021,7 +1480,9 @@
         "PointsFor": 6456.0,
         "PointsAgainst": 4727.0,
         "SeedRank": 1,
-        "PlayoffBound": true
+        "PlayoffBound": true,
+        "Name": "mahomes-mob",
+        "Owner": "commissioner@league.local"
       },
       {
         "StandingId": "hurts-hustlers",
@@ -1032,7 +1493,9 @@
         "PointsFor": 6252.0,
         "PointsAgainst": 4761.0,
         "SeedRank": 2,
-        "PlayoffBound": true
+        "PlayoffBound": true,
+        "Name": "hurts-hustlers",
+        "Owner": "owner@league.local"
       },
       {
         "StandingId": "davantes-dynasty",
@@ -1043,7 +1506,9 @@
         "PointsFor": 4650.0,
         "PointsAgainst": 4476.0,
         "SeedRank": 3,
-        "PlayoffBound": true
+        "PlayoffBound": true,
+        "Name": "davantes-dynasty",
+        "Owner": "owner@league.local"
       },
       {
         "StandingId": "allens-arsenal",
@@ -1054,7 +1519,9 @@
         "PointsFor": 5610.0,
         "PointsAgainst": 5668.0,
         "SeedRank": 4,
-        "PlayoffBound": true
+        "PlayoffBound": true,
+        "Name": "allens-arsenal",
+        "Owner": "owner@league.local"
       },
       {
         "StandingId": "defense-wins",
@@ -1065,7 +1532,9 @@
         "PointsFor": 3942.0,
         "PointsAgainst": 4594.0,
         "SeedRank": 5,
-        "PlayoffBound": true
+        "PlayoffBound": true,
+        "Name": "defense-wins",
+        "Owner": "spectator@league.local"
       },
       {
         "StandingId": "hurts-limit",
@@ -1076,7 +1545,9 @@
         "PointsFor": 2298.0,
         "PointsAgainst": 4982.0,
         "SeedRank": 6,
-        "PlayoffBound": true
+        "PlayoffBound": true,
+        "Name": "hurts-limit",
+        "Owner": "spectator@league.local"
       }
     ]
   },

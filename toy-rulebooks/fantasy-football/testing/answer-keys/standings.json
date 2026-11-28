@@ -8,7 +8,9 @@
     "points_for": 5610.0,
     "points_against": 5668.0,
     "seed_rank": 4,
-    "playoff_bound": true
+    "playoff_bound": true,
+    "name": "allens-arsenal",
+    "owner": "owner@league.local"
   },
   {
     "standing_id": "davantes-dynasty",
@@ -19,7 +21,9 @@
     "points_for": 4650.0,
     "points_against": 4476.0,
     "seed_rank": 3,
-    "playoff_bound": true
+    "playoff_bound": true,
+    "name": "davantes-dynasty",
+    "owner": "owner@league.local"
   },
   {
     "standing_id": "defense-wins",
@@ -30,7 +34,9 @@
     "points_for": 3942.0,
     "points_against": 4594.0,
     "seed_rank": 5,
-    "playoff_bound": true
+    "playoff_bound": true,
+    "name": "defense-wins",
+    "owner": "spectator@league.local"
   },
   {
     "standing_id": "hurts-hustlers",
@@ -41,7 +47,9 @@
     "points_for": 6252.0,
     "points_against": 4761.0,
     "seed_rank": 2,
-    "playoff_bound": true
+    "playoff_bound": true,
+    "name": "hurts-hustlers",
+    "owner": "owner@league.local"
   },
   {
     "standing_id": "hurts-limit",
@@ -52,7 +60,9 @@
     "points_for": 2298.0,
     "points_against": 4982.0,
     "seed_rank": 6,
-    "playoff_bound": true
+    "playoff_bound": true,
+    "name": "hurts-limit",
+    "owner": "spectator@league.local"
   },
   {
     "standing_id": "mahomes-mob",
@@ -63,6 +73,8 @@
     "points_for": 6456.0,
     "points_against": 4727.0,
     "seed_rank": 1,
-    "playoff_bound": true
+    "playoff_bound": true,
+    "name": "mahomes-mob",
+    "owner": "commissioner@league.local"
   }
 ]

@@ -2,31 +2,67 @@
   {
     "roster_id": "allens-arsenal",
     "owner": "owner@league.local",
-    "name": "allens-arsenal"
+    "name": "allens-arsenal",
+    "total_passing_yards": 4500,
+    "total_rushing_yards": 2100,
+    "total_receiving_yards": 1950,
+    "total_touchdowns": 61,
+    "total_interceptions": 8,
+    "projected_score": 935.0
   },
   {
     "roster_id": "davantes-dynasty",
     "owner": "owner@league.local",
-    "name": "davantes-dynasty"
+    "name": "davantes-dynasty",
+    "total_passing_yards": 3650,
+    "total_rushing_yards": 700,
+    "total_receiving_yards": 2550,
+    "total_touchdowns": 54,
+    "total_interceptions": 10,
+    "projected_score": 775.0
   },
   {
     "roster_id": "defense-wins",
     "owner": "spectator@league.local",
-    "name": "defense-wins"
+    "name": "defense-wins",
+    "total_passing_yards": 3900,
+    "total_rushing_yards": 1350,
+    "total_receiving_yards": 1380,
+    "total_touchdowns": 41,
+    "total_interceptions": 9,
+    "projected_score": 657.0
   },
   {
     "roster_id": "hurts-hustlers",
     "owner": "owner@league.local",
-    "name": "hurts-hustlers"
+    "name": "hurts-hustlers",
+    "total_passing_yards": 3800,
+    "total_rushing_yards": 3020,
+    "total_receiving_yards": 1720,
+    "total_touchdowns": 71,
+    "total_interceptions": 5,
+    "projected_score": 1042.0
   },
   {
     "roster_id": "hurts-limit",
     "owner": "spectator@league.local",
-    "name": "hurts-limit"
+    "name": "hurts-limit",
+    "total_passing_yards": 2200,
+    "total_rushing_yards": 930,
+    "total_receiving_yards": 880,
+    "total_touchdowns": 24,
+    "total_interceptions": 15,
+    "projected_score": 383.0
   },
   {
     "roster_id": "mahomes-mob",
     "owner": "commissioner@league.local",
-    "name": "mahomes-mob"
+    "name": "mahomes-mob",
+    "total_passing_yards": 5500,
+    "total_rushing_yards": 2010,
+    "total_receiving_yards": 1850,
+    "total_touchdowns": 81,
+    "total_interceptions": 8,
+    "projected_score": 1076.0
   }
 ]

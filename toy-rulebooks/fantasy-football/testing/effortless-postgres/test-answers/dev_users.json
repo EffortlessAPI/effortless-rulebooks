@@ -1,0 +1,20 @@
+[
+  {
+    "dev_users_id": "commissioner-league-local",
+    "email": "commissioner@league.local",
+    "name": "commissioner@league.local",
+    "role": "commissioner"
+  },
+  {
+    "dev_users_id": "owner-league-local",
+    "email": "owner@league.local",
+    "name": "owner@league.local",
+    "role": "owner"
+  },
+  {
+    "dev_users_id": "spectator-league-local",
+    "email": "spectator@league.local",
+    "name": "spectator@league.local",
+    "role": "spectator"
+  }
+]

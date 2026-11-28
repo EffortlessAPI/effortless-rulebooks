@@ -1,0 +1,68 @@
+[
+  {
+    "roster_id": "allens-arsenal",
+    "owner": "owner@league.local",
+    "name": null,
+    "total_passing_yards": null,
+    "total_rushing_yards": null,
+    "total_receiving_yards": null,
+    "total_touchdowns": null,
+    "total_interceptions": null,
+    "projected_score": null
+  },
+  {
+    "roster_id": "davantes-dynasty",
+    "owner": "owner@league.local",
+    "name": null,
+    "total_passing_yards": null,
+    "total_rushing_yards": null,
+    "total_receiving_yards": null,
+    "total_touchdowns": null,
+    "total_interceptions": null,
+    "projected_score": null
+  },
+  {
+    "roster_id": "defense-wins",
+    "owner": "spectator@league.local",
+    "name": null,
+    "total_passing_yards": null,
+    "total_rushing_yards": null,
+    "total_receiving_yards": null,
+    "total_touchdowns": null,
+    "total_interceptions": null,
+    "projected_score": null
+  },
+  {
+    "roster_id": "hurts-hustlers",
+    "owner": "owner@league.local",
+    "name": null,
+    "total_passing_yards": null,
+    "total_rushing_yards": null,
+    "total_receiving_yards": null,
+    "total_touchdowns": null,
+    "total_interceptions": null,
+    "projected_score": null
+  },
+  {
+    "roster_id": "hurts-limit",
+    "owner": "spectator@league.local",
+    "name": null,
+    "total_passing_yards": null,
+    "total_rushing_yards": null,
+    "total_receiving_yards": null,
+    "total_touchdowns": null,
+    "total_interceptions": null,
+    "projected_score": null
+  },
+  {
+    "roster_id": "mahomes-mob",
+    "owner": "commissioner@league.local",
+    "name": null,
+    "total_passing_yards": null,
+    "total_rushing_yards": null,
+    "total_receiving_yards": null,
+    "total_touchdowns": null,
+    "total_interceptions": null,
+    "projected_score": null
+  }
+]
