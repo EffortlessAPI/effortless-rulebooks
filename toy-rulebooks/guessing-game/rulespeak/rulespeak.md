@@ -1,4 +1,4 @@
-# 📘 Guessing Game — RuleSpeak®
+# 📘 Guessing Game — Docs
 
 _Number-guessing game tracking guesses, hints, and best-score records per player._
 
@@ -23,6 +23,22 @@ _Number-guessing game tracking guesses, hints, and best-score records per player
 | 最大边长 | The total 长度 across the 边 related to the 形状. | — |
 | 非斜边角度总和 | The total 长度平方 across the 边 related to the 形状. | — |
 | 勾股定理成立 | Determined by priority: the 非斜边角度总和 is the 最大边长 times the 最大边长 if the 边的数量 is 3; in all other cases, no value. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| 名称 | 边的类型 ƒ | 边标签 ƒ | 边长 ƒ | 边的数量 ƒ | 边角 ƒ | 角度总和 ƒ | 最大边长 ƒ | 非斜边角度总和 ƒ | 勾股定理成立 ƒ |
+|---|---|---|---|---|---|---|---|---|---|
+| 形状2 | 正方形 | 阿, 比, 西, 迪 | 5, 5, 5, 5 | 4 | 90, 90, 90, 90 | 360.0 | 20.0 | 100.0 | — |
+| 形状1 | 三角形 | 阿, 比, 西 | 3, 4, 5 | 3 | 37, 53, 90 | 180.0 | 12.0 | 50.0 | false |
+| 形状3 | 线 | 阿, 比 | 14, 14 | 2 | 180, 180 | 360.0 | 28.0 | 392.0 | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **边** | A 边 is identified by its 标签. | — |
 | 名称 | Computed as the 形状, followed by a hyphen, followed by the 标签. | — |
 | 形状 | A defined attribute. | — |
@@ -34,6 +50,19 @@ _Number-guessing game tracking guesses, hints, and best-score records per player
 | 长度 | A defined attribute. | — |
 | 长度平方 | Computed as the 长度 times the 长度. | — |
 | 角度 | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| 名称 ƒ | 形状的最大边长 ƒ | 边的数量 ƒ | 是否为斜边 ƒ | 形状类型 ƒ | 标签 | 长度 | 长度平方 ƒ | 角度 |
+|---|---|---|---|---|---|---|---|---|
+| 1-阿 | 12.0 | 3 | false | 三角形 | 阿 | 3 | 9 | 37 |
+| 1-比 | 12.0 | 3 | false | 三角形 | 比 | 4 | 16 | 53 |
+| 1-西 | 12.0 | 3 | false | 三角形 | 西 | 5 | 25 | 90 |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -73,7 +102,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -96,8 +125,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

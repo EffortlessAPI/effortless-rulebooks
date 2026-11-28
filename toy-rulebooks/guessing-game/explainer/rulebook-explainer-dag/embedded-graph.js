@@ -3371,4 +3371,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "边": "边"
     }
   }
-} };
+}, stamp: "bee8bdea1dea4a93" };

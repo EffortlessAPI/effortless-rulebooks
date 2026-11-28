@@ -32,3 +32,10 @@ computed in the page by the project's own generated TypeScript, so the project n
 The rows are the rulebook's own. For an app's live rows, hand them over: `EffortlessExplainer.setRows({ Table: [row, ...] })`
 (or `init({ rows })`), raw values only, keys as the rulebook or the database spells them. `witness.js` and `ts-strip.js`
 sit beside `explainer-dag.js` and are fetched on first use; no script tag to add.
+
+## After the rulebook changes
+
+Build again (`effortless build`): `embedded-graph.js` holds the rules and the rulebook's rows as they were at the last
+build. A page that is already open needs no reload: whenever a popup or a page of the explainer opens it asks for
+`stamp.json` (written beside `embedded-graph.js`) and loads the newer build when there is one. To ask at once, call
+`EffortlessExplainer.refresh()`. Serve the whole folder, `stamp.json` included, and do not cache it for long.
