@@ -1,4 +1,4 @@
-# 📘 v4: NakedClaude Demo — RuleSpeak®
+# 📘 v4: NakedClaude Demo — Docs
 
 _Rulebook generated from Airtable base 'v4: NakedClaude Demo'._
 
@@ -19,7 +19,23 @@ _Rulebook generated from Airtable base 'v4: NakedClaude Demo'._
 | Role | A defined attribute. | — |
 | Notes | A defined attribute. | — |
 | Client Approvals | A defined attribute. | — |
-| **Client** | A client is identified by its name and is related to optionally a client category (its category) and optionally a status (its status). | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Contact Name | Email Address | Phone Number | Role | Notes |
+|---|---|---|---|---|---|
+| customer-ssot.me-customer | Bob Customer | customer@ssot.me | (555) 555-1234 | Customer | — |
+| ej-ssot.me-admin | EJ Alexandra | ej@ssot.me | (555) 555-1111 | Admin | — |
+| manager-ssot.me-manager | Mark Manager | manager@ssot.me | (555) 555-4321 | Manager | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
+| **Client** | A client is identified by its name and is related to optionally a client category (its category) and optionally a status. | — |
 | Name | A defined attribute. | _Human-readable customer name._ |
 | Notes | A defined attribute. | _Free-form notes about the customer._ |
 | Category | A defined attribute. | — |
@@ -45,6 +61,22 @@ _Rulebook generated from Airtable base 'v4: NakedClaude Demo'._
 | Last Invoice | The total order date across the invoices related to the client. | — |
 | Customer Since Days | Determined by priority: the number of days from the created at to the current date and time if the created at flag is set; in all other cases, no value. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Client Approvals | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Notes | Category Name ƒ | Category Discount ƒ | Is Stopped ƒ | Status Display Name ƒ | Status Description ƒ | Count of Big Invoices ƒ | Email | Phone | Company Name | Billing Address State Tax Rate ƒ | Billing Address ƒ | Shipping Address ƒ | Created At | Average Order Value ƒ | Is VIP ƒ | Has Recent Invoices ƒ | Last Invoice ƒ | Customer Since Days ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Bob | A customer currently in launch. | Active | 0.05 | true | On-Hold | This status indicates the customer or request is on hold and temporarily paused. | 1 | bob@launchpad.example | +1-415-555-0101 | Launchpad LLC | 0.0625 | 742 Evergreen Terrace, Springfield, il-illinois 97477 | 742 Evergreen Terrace, Springfield, il-illinois 97477 | 2025-08-14T09:30:00Z | 150.3565 | false | false | 0 | 471 |
+| Alice Johnson | Initial mock entry for Alice. | Active | 0.05 | true | Pending | This status shows the customer or request is pending further action or review. | 1 | alice.johnson@northwind.example | +1-206-555-0142 | Northwind Traders | 0.065 | 500 Pine St, Suite 200, Seattle, wa-washington 98101 | 500 Pine St, Suite 200, Seattle, wa-washington 98101 | 2025-09-02T14:15:00Z | 5412.1036875 | false | false | 0 | 452 |
+| Brian Lee | Initial mock entry for Brian. | Prospect | 0.0 | false | New | This status indicates a newly created customer or request that has not yet been processed. | 3 | brian.lee@contoso.example | +1-512-555-0177 | Contoso Manufacturing | 0.0625 | 88 Industrial Way, Austin, tx-texas 78701 | 88 Industrial Way, Austin, tx-texas 78701 | 2025-10-11T11:00:00Z | 657.6414583333334 | false | true | 0 | 413 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Client Approval** | A client approval is identified by its name and is related to optionally a client and optionally an app user (its approved by). | — |
 | Name | Computed as the client, followed by a hyphen, followed by “APVD” if the approved flag is set, in all other cases “PEND”. | — |
 | Client | A defined attribute. | — |
@@ -59,12 +91,44 @@ _Rulebook generated from Airtable base 'v4: NakedClaude Demo'._
 | Client Email | Taken from the linked client. | — |
 | Client Phone | Taken from the linked client. | — |
 | Client Category | Taken from the linked client. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Approved by Contact Name ƒ | Approved by Email Address ƒ | Approved by Phone Number ƒ | Approved by Role ƒ | Is Approved ƒ | Notes | Client Name ƒ | Client Email ƒ | Client Phone ƒ | Client Category ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| alice-johnson-APVD | EJ Alexandra | ej@ssot.me | (555) 555-1111 | Admin | true | — | Alice Johnson | alice.johnson@northwind.example | +1-206-555-0142 | active |
+| brian-lee-APVD | EJ Alexandra | ej@ssot.me | (555) 555-1111 | Admin | true | — | Brian Lee | brian.lee@contoso.example | +1-512-555-0177 | prospect |
+| brian-lee-PEND | — | — | — | — | false | — | Brian Lee | brian.lee@contoso.example | +1-512-555-0177 | prospect |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Client Category** | A client category is identified by its name. | — |
 | Name | A defined attribute. | — |
 | Clients | A defined attribute. | — |
 | Discount | A defined attribute. | — |
 | Notes | A defined attribute. | — |
 | Count of Clients | The number of clients related to the client category. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Discount | Notes | Count of Clients ƒ |
+|---|---|---|---|
+| Prospect | 0 | — | 1 |
+| Gold | 0.15 | — | 1 |
+| Active | 0.05 | — | 3 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Status** | A status is identified by its name. | — |
 | Name | Computed as the lower-cased display name. | _Lowercase, dash-separated compound key derived from DisplayName. Used as the natural key for the status._ |
 | Display Name | A defined attribute. | _Human-readable display name of the status (e.g., "On-Hold", "In-Review")._ |
@@ -73,6 +137,22 @@ _Rulebook generated from Airtable base 'v4: NakedClaude Demo'._
 | Clients | A defined attribute. | _Reverse link to all Customers currently in this status._ |
 | Count of Clients | The number of clients related to the status. | — |
 | Sort Order | A defined attribute. | _Display order for this status in lists._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Description | Is Blocking | Count of Clients ƒ | Sort Order |
+|---|---|---|---|---|---|
+| delayed | Delayed | This status is used when the customer or request has been delayed and is not progressing as scheduled. | false | 2 | 6 |
+| cancelled | Cancelled | This status means the customer or request has been cancelled and will not proceed further. | false | 0 | 7 |
+| processing | Processing | This status means the customer or request is currently being processed. | false | 0 | 2 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Product** | A product is identified by its name. | — |
 | Name | Computed as the lower-cased SKU with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Lowercase, dash-separated compound key derived from SKU. Used as the natural key for the product._ |
 | SKU | A defined attribute. | _Stock-keeping unit identifier for the product. The natural compound key._ |
@@ -90,6 +170,22 @@ _Rulebook generated from Airtable base 'v4: NakedClaude Demo'._
 | Inventory Adjustments | A defined attribute. | — |
 | Count of VIP Orders | The number of invoice line items related to the product. | — |
 | Has Been Ordered by VIP Customers | True when all of the following hold: the count of VIP orders is greater than 0 and the stock quantity is greater than 250. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | SKU | Display Name | Description | Unit Price | Cost | Profit ƒ | Margin ƒ | Is Active | Is High Margin ƒ | Stock Quantity ƒ | COGS ƒ | Count of VIP Orders ƒ | Has Been Ordered by VIP Customers ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| gadget-200 | GADGET-200 | Pro Gadget | Professional-grade gadget with extended battery life. | 89 | 32 | 57.0 | 0.6404494382022472 | true | false | 75 | 2400.0 | 3 | false |
+| hub-7port | HUB-7PORT | 7-Port USB Hub | Powered 7-port USB-A hub with individual switches. | 34.99 | 11.8 | 23.19 | 0.662760788796799 | true | true | 240 | 2832.0 | 2 | false |
+| cable-usb-c | CABLE-USB-C | USB-C Cable (2m) | Two-meter braided USB-C to USB-C cable, 100W power delivery. | 12 | 3.4 | 8.6 | 0.7166666666666667 | true | true | 1240 | 4216.0 | 4 | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Invoice** | An invoice is identified by its name and is related to optionally a client. | — |
 | Name | Computed as the lower-cased client, followed by a hyphen, followed by the invoice number with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Lowercase compound key combining the linked Customer and OrderNumber (e.g. 'bob-1001'). Used as the natural key for the order._ |
 | invoice Number | A defined attribute. | _Sequential or human-assigned order identifier (e.g. '1001'). Combined with Customer to form the order's natural key._ |
@@ -121,6 +217,22 @@ _Rulebook generated from Airtable base 'v4: NakedClaude Demo'._
 | Payment Count | The number of payments related to the invoice. | — |
 | Last Payment Date | The total payment date across the payments related to the invoice. | — |
 | Payment Status Label | Determined by priority: “Paid” if the paid in full flag is set; “Unpaid” if the total paid is 0; in all other cases, “Partial”. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | invoice Number | Client is VIP ƒ | Client Hast Recent Invoices ƒ | Client Email ƒ | Client Phone ƒ | Client Company Name ƒ | Client Category Name ƒ | Client Category Discount ƒ | Order Date | Order Status | Shipping Address | Billing Address | Notes | Item Count ƒ | Total Quantity ƒ | Sub Total ƒ | Is Big Order ƒ | Tax Rate ƒ | Tax Amount ƒ | Invoice Total ƒ | Total Paid ƒ | Amount Due ƒ | Is Paid in Full ƒ | Payment Count ƒ | Last Payment Date ƒ | Payment Status Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| brian-lee-1042 | 1042 | false | — | brian.lee@contoso.example | +1-512-555-0177 | Contoso Manufacturing | Prospect | 0.0 | 2026-02-20T13:15:00Z | Pending | 742 Evergreen Terrace<br>Springfield, OR 97477 | 742 Evergreen Terrace<br>Springfield, OR 97477 | Awaiting payment confirmation. Customer is on-hold. | 2 | 2 | 123.99000000000001 | false | 0.0625 | 7.749375000000001 | 131.739375 | 0.0 | 131.74 | false | 1 | 0 | Unpaid |
+| caroline-1045 | 1045 | false | — | caroline@solo.example | +1-718-555-0199 | Solo Studio | Gold | 0.15 | 2026-03-12T10:00:00Z | New | 23 Hudson Lane<br>Brooklyn, NY 11201 | 23 Hudson Lane<br>Brooklyn, NY 11201 | First-time customer. Marketing wants white-glove handling. | 3 | 4 | 99.00800000000001 | false | 0.04 | 3.9603200000000003 | 102.96832 | 126.82 | -23.85 | true | 2 | 0 | Paid |
+| alice-johnson-1010 | 1010 | false | — | alice.johnson@northwind.example | +1-206-555-0142 | Northwind Traders | Active | 0.05 | 2025-10-05T09:00:00Z | Shipped | 500 Pine St, Suite 200<br>Seattle, WA 98101 | 500 Pine St, Suite 200<br>Seattle, WA 98101 | Bulk order for Q4 inventory. | 4 | 250 | 5081.7875 | true | 0.065 | 330.3161875 | 5412.1036875 | 4770.4400000000005 | 641.66 | false | 2 | 0 | Partial |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Invoice Line Item** | An invoice line item is identified by its name and is related to optionally an invoice and optionally a product. | — |
 | Name | Computed as the lower-cased invoice, followed by “-line-”, followed by the line number with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Lowercase compound key combining the linked Order and LineNumber (e.g. 'bob-1001-line-1'). Used as the natural key for the line item._ |
 | Line Number | A defined attribute. | _Position of this line within its parent Order (e.g. '1', '2'). Combined with Order to form the line item's natural key._ |
@@ -140,6 +252,22 @@ _Rulebook generated from Airtable base 'v4: NakedClaude Demo'._
 | Discount Amount | Computed as the pre discount times the discount percent. | — |
 | Sub Total | Computed as the pre discount minus the discount amount. | — |
 | Notes | A defined attribute. | _Free-form notes about this line item._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Line Number | Client is VIP ƒ | Client Hast Recent Invoices ƒ | invoice Number ƒ | Invoice Total ƒ | Invoice Total Paid ƒ | Product SKU ƒ | Product Display Name ƒ | Quantity | Unit Price ƒ | Pre Discount ƒ | Discount Percent ƒ | Discount Amount ƒ | Sub Total ƒ | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| brian-lee-1037-line-2 | 2 | false | — | 1037 | 1089.0625 | 203.73 | GADGET-200 | Pro Gadget | 10 | 89.0 | 890.0 | 0.0 | 0.0 | 890.0 | Goodwill discount for prior return. |
+| carla-smith-1024-line-2 | 2 | false | — | 1024 | 225.568 | 0.0 | GADGET-200 | Pro Gadget | 1 | 89.0 | 89.0 | 0.05 | 4.45 | 84.55 | Returned: damaged in transit. |
+| caroline-1045-line-3 | 3 | false | — | 1045 | 102.96832 | 126.82 | CABLE-USB-C | USB-C Cable (2m) | 1 | 12.0 | 12.0 | 0.15 | 1.7999999999999998 | 10.2 | Free with welcome bundle. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Inventory Adjustment** | An inventory adjustment is identified by its date and is related to optionally a product. | — |
 | Adjustment Name | Computed as the product, followed by a hyphen, followed by the first 10 character(s) of the date, followed by “-qty”, followed by the quantity. | — |
 | Product | A defined attribute. | — |
@@ -149,6 +277,22 @@ _Rulebook generated from Airtable base 'v4: NakedClaude Demo'._
 | Reason | A defined attribute. | — |
 | Notes | A defined attribute. | — |
 | Adjusted by | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Adjustment Name ƒ | Date | Adjustment Type | Quantity | Reason | Notes | Adjusted by |
+|---|---|---|---|---|---|---|
+| widget-002-2026-04-01-qty180 | 2026-04-01T22:10:00Z | Correction | 180 | Transfer | — | bob |
+| hub-7port-2026-04-25-qty240 | 2026-04-25T22:11:00Z | Correction | 240 | Transfer | — | larry |
+| gadget-100-2026-04-09-qty612 | 2026-04-09T22:10:00Z | Correction | 612 | Transfer | — | larry |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Payment** | A payment is identified by its name and is related to optionally an invoice. | — |
 | Name | Computed as the lower-cased invoice, followed by “-pmt-”, followed by the payment number with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Lowercase compound key combining the linked Order and PaymentNumber (e.g. 'bob-1001-pmt-1'). Used as the natural key for the payment._ |
 | Payment Number | A defined attribute. | _Sequential payment identifier within the parent Order (e.g. '1', '2'). Combined with Order to form the payment's natural key._ |
@@ -167,6 +311,22 @@ _Rulebook generated from Airtable base 'v4: NakedClaude Demo'._
 | Completed Amount | Determined by priority: the amount if the payment status is “Completed”; in all other cases, 0. | — |
 | Order Amount Due | Taken from the linked invoice. | — |
 | Order is Paid in Full | True when the linked invoice is a paid in full. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Payment Number | Payment Date | Payment Method | Transaction ID | Notes | Invoice Date ƒ | Invoice Number ƒ | Invoice Status ƒ | Invoice Total ƒ | Amount | Payment Status | Is Completed ƒ | Completed Amount ƒ | Order Amount Due ƒ | Order is Paid in Full ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| caroline-1045-pmt-1 | 1 | 2026-03-12T10:05:00Z | CreditCard | ch_failed_9981 | Card declined; customer to retry. | 2026-03-12T10:00:00Z | 1045 | New | 102.96832 | 126.82 | Failed | false | 0.0 | -23.85 | true |
+| caroline-1045-pmt-2 | 2 | 2026-03-12T11:30:00Z | Cash | CASH-NY-20260312-001 | Customer paid in cash at pickup. | 2026-03-12T10:00:00Z | 1045 | New | 102.96832 | 126.82 | Completed | true | 126.82 | -23.85 | true |
+| alice-johnson-1010-pmt-2 | 2 | 2025-10-12T11:30:00Z | BankTransfer | wire_NWT_20251012_b | Final balance. | 2025-10-05T09:00:00Z | 1010 | Shipped | 5412.1036875 | 3270.44 | Completed | true | 3270.44 | 641.66 | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Address** | An address is identified by its name and is related to optionally a type of addresses (its type of address) and optionally a state. | — |
 | Name | Computed as the address1, followed by a comma followed by a space, followed by the city, followed by a comma followed by a space, followed by the state, followed by a space, followed by the zip. | — |
 | Clients | A defined attribute. | — |
@@ -181,17 +341,62 @@ _Rulebook generated from Airtable base 'v4: NakedClaude Demo'._
 | State Code | Taken from the linked state. | — |
 | State Tax Rate | Taken from the linked state. | — |
 | Zip | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Type of Address is Shipping Address ƒ | Type of Address is Billing Address ƒ | Attention | Address1 | Address2 | City | State Code ƒ | State Tax Rate ƒ | Zip |
+|---|---|---|---|---|---|---|---|---|---|
+| 500 Pine St, Suite 200, Seattle, wa-washington 98101 | false | true | — | 500 Pine St, Suite 200 | — | Seattle | WA | 0.065 | 98101 |
+| 742 Evergreen Terrace, Springfield, il-illinois 97477 | false | true | — | 742 Evergreen Terrace | — | Springfield | IL | 0.0625 | 97477 |
+| 23 Hudson Lane, Brooklyn, ny-new-york 11201 | false | true | — | 23 Hudson Lane | — | Brooklyn | NY | 0.04 | 11201 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **State** | A state is identified by its name. | — |
 | Name | Computed as the lower-cased code, followed by a hyphen, followed by the text with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Code | A defined attribute. | — |
 | Text | A defined attribute. | — |
 | Tax Rate | A defined attribute. | — |
 | Addresses | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Code | Text | Tax Rate |
+|---|---|---|---|
+| ia-iowa | IA | Iowa | 0.06 |
+| mo-missouri | MO | Missouri | 0.04225 |
+| az-arizona | AZ | Arizona | 0.056 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Type of Addresses** | A type of addresses is identified by its name. | — |
 | Name | A defined attribute. | — |
 | Addresses | A defined attribute. | — |
 | Is Shipping Address | True when an empty string. | — |
 | Is Billing Address | True when an empty string. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Is Shipping Address | Is Billing Address |
+|---|---|---|
+| Shipping | true | false |
+| Billing | false | true |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Version** | An ERB version is identified by its name. | — |
 | Name | A defined attribute. | — |
 | Base ID | A defined attribute. | — |
@@ -201,12 +406,37 @@ _Rulebook generated from Airtable base 'v4: NakedClaude Demo'._
 | Commit Date | A defined attribute. | — |
 | Is Published | True when an empty string. | — |
 | Author | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Base ID | Version | Message | Notes | Commit Date | Is Published | Author |
+|---|---|---|---|---|---|---|---|
+| v2026-04-07t00-45-14-766z | 8d009876-5ceb-47a0-9b94-db653e0774dd | Version 2026-04-07 00:45:14 | Testing function fixes. | — | 2026-04-07 | false | ej@ssot.me |
+| Version 2026-04-07 01:56:19 | 8d009876-5ceb-47a0-9b94-db653e0774dd | — | fixed payments | — | 2026-04-07 | false | ej@ssot.me |
+| Version 2026-04-07 01:54:04 | 8d009876-5ceb-47a0-9b94-db653e0774dd | — | tixed functions | — | 2026-04-07 | false | ej@ssot.me |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Customization** | An ERB customization is identified by its name. | — |
 | Name | A defined attribute. | — |
 | Title | A defined attribute. | — |
 | SQL Code | A defined attribute. | — |
 | SQL Target | A defined attribute. | — |
 | Customization Type | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Title | SQL Code | SQL Target | Customization Type |
+|---|---|---|---|---|
+| calc_orders_item_count | — | -- FunctionOverride: calc_orders_item_count<br>-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).<br><br>CREATE OR REPLACE FUNCTION public.calc_orders_item_count(p_order_id text)<br> RETURNS integer<br> LANGUAGE plpgsql<br> STABLE SECURITY DEFINER<br>AS $function$<br>BEGIN<br>  RETURN ((SELECT COUNT(*) FROM order_line_items WHERE "order" = p_order_id))::integer;<br>END;<br>$function$;<br> | Postgres | FunctionOverride |
+| calc_orders_last_payment_date | — | -- FunctionOverride: calc_orders_last_payment_date<br>-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).<br><br>CREATE OR REPLACE FUNCTION public.calc_orders_last_payment_date(p_order_id text)<br> RETURNS timestamp with time zone<br> LANGUAGE plpgsql<br> STABLE SECURITY DEFINER<br>AS $function$<br>BEGIN<br>  RETURN (SELECT MAX(payment_date) FROM payments WHERE "order" = p_order_id);<br>END;<br>$function$;<br> | Postgres | FunctionOverride |
+| calc_clients_hast_recent_invoices | — | -- FunctionOverride: calc_clients_hast_recent_invoices<br>-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).<br>-- Original Airtable formula: =IF({{LastInvoice}} > DATEADD(TODAY(), -180, 'days'), TRUE(), FALSE())<br>-- Translation failed because DATEADD unit 'days' is unsupported. Reimplement directly.<br><br>CREATE OR REPLACE FUNCTION public.calc_clients_hast_recent_invoices(p_client_id text)<br> RETURNS boolean<br> LANGUAGE plpgsql<br> STABLE SECURITY DEFINER<br>AS $function$<br>BEGIN<br>  RETURN COALESCE(<br>    (SELECT MAX(order_date) FROM invoices WHERE client = p_client_id) > (NOW() - INTERVAL '180 days'),<br>    FALSE<br>  );<br>END;<br>$function$;<br> | Postgres | FunctionOverride |
+
+</details>
 
 ## 2 Fact Types
 
@@ -327,7 +557,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -421,8 +651,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

@@ -38981,4 +38981,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "ERBCustomizations": "ERB customization"
     }
   }
-} };
+}, stamp: "c8107fa14ee19a7b" };
