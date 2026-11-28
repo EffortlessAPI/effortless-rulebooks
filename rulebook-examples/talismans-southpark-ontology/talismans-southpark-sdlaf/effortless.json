@@ -1,0 +1,75 @@
+{
+  "SSoTmeProjectId": "f6855aac-a5b9-463c-9f86-6fbbb4dfe256",
+  "Name": "talismans-southpark-sdlaf",
+  "Description": "The South Park ontology as Schema, Data, Lookups, Aggregations and Formulas: her facts are rows and columns of the tables they are about, and each of her five rules is a field.",
+  "ProjectSettings": [
+    {
+      "Name": "erbDateDiff",
+      "Value": "calendar"
+    },
+    {
+      "Name": "erbTimezone",
+      "Value": "UTC"
+    },
+    {
+      "Name": "erbDateTimeText",
+      "Value": "iso8601"
+    },
+    {
+      "Name": "erbBlankLogic",
+      "Value": "coerce"
+    },
+    {
+      "Name": "erbWholeNumber",
+      "Value": "by-field-type"
+    },
+    {
+      "Name": "project-name",
+      "Value": "talismans-southpark-sdlaf"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/talismans-southpark-sdlaf-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true -p database=erb_talismans_southpark_sdlaf",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.26.1400",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-11-26-1400-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Postgres schema, vw_* views and seed data from the rulebook."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "init-db",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "-exec ../../../../scripts/reset-project-db.py",
+      "IsDisabled": false,
+      "Description": "Recreate erb_talismans_southpark_sdlaf and load the generated SQL into it."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktorulespeak",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/talismans-southpark-sdlaf-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.22.1524",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-11-22-1524-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Plain-language documentation of every rule."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoexplainerdag",
+      "RelativePath": "/explainer",
+      "CommandLine": "rulebook-to-explainer-dag -i ../effortless-rulebook/talismans-southpark-sdlaf-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.11.27.1439",
+      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-11-27-1439-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "The explainer: every derived value, its rule and the values it came from."
+    }
+  ],
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null
+}

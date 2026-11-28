@@ -49,16 +49,20 @@ AREAS = ("rulebook-examples", "toy-rulebooks")
 
 def project_dir_of_build(start: Path) -> Path:
     """The project folder holding the effortless.json of the build running in
-    `start`: the nearest folder at or above `start` directly under an area. A
+    `start`: the nearest folder at or above `start` that has an effortless.json,
+    inside a project directly under an area. A project can hold a project of its
+    own (South Park's talismans-southpark-sdlaf/); its build is the inner one. A
     build's `-exec` step takes no arguments, so this is how it knows its project."""
     start = start.resolve()
+    if not any(d.parent.name in AREAS and d.parent.parent == REPO_ROOT for d in (start, *start.parents)):
+        raise SystemExit(
+            f"{start} is not inside a project under {', '.join(AREAS)} — "
+            f"this step works on the project whose build runs it.")
     for d in (start, *start.parents):
-        if d.parent.name in AREAS and d.parent.parent == REPO_ROOT:
-            if not (d / "effortless.json").is_file():
-                raise SystemExit(f"{d} is a project folder with no effortless.json — nothing declares this build.")
+        if (d / "effortless.json").is_file():
             return d
-        if d == REPO_ROOT:
-            break
+        if d.parent.name in AREAS and d.parent.parent == REPO_ROOT:
+            raise SystemExit(f"{d} is a project folder with no effortless.json — nothing declares this build.")
     raise SystemExit(
         f"{start} is not inside a project under {', '.join(AREAS)} — "
         f"this step works on the project whose build runs it.")

@@ -97,6 +97,18 @@ class FindingTheProject(unittest.TestCase):
         d = REPO / "toy-rulebooks" / "star-trek"
         self.assertEqual(self.mod.project_dir(d / "postgres-bootstrap"), d)
 
+    # Found 2026-11-27: a project inside a project (South Park's talismans-southpark-sdlaf/, with its
+    # own effortless.json) ran its database step, and the step walked past its own effortless.json
+    # to the folder under rulebook-examples/: it recreated erb_talismans_southpark_ontology, the
+    # enclosing project's database, and never made its own.
+    def test_a_project_inside_a_project_is_that_project(self):
+        d = REPO / "rulebook-examples" / "talismans-southpark-ontology" / "talismans-southpark-sdlaf"
+        self.assertEqual(self.mod.project_dir(d / "postgres-bootstrap"), d)
+
+    def test_a_folder_with_no_build_of_its_own_belongs_to_the_project_around_it(self):
+        d = REPO / "rulebook-examples" / "talismans-southpark-ontology"
+        self.assertEqual(self.mod.project_dir(d / "concept-rulebook"), d)
+
     def test_outside_a_project_is_refused(self):
         with self.assertRaises(SystemExit):
             self.mod.project_dir(REPO / "scripts")

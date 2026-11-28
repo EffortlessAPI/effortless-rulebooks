@@ -1,0 +1,276 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "South Park ontology, in SDLAF",
+  "Description": "Jessica Talisman's South Park ontology as an ordinary rulebook: her ten stated facts are rows and columns of the tables they are about (people, parenthoods, marriages, friendships, grade and role records), and each of her five rules is a field: the inverse is the parenthood read from the child's end, the symmetric rule a link with no direction counted from both ends, the property chain a lookup through two parenthoods, domain and range a formula and a count on each individual, disjointness a check on each parenthood. Every rule is switched by the one Reasoning row. Nothing is a generic subject-property-object store: Schema, Data, Lookups, Aggregations and Formulas only.",
+  "__meta__": {
+    "Description": "Project-level metadata. Transpiler-ignored name/value rows.",
+    "schema": [
+      {"name": "MetaKey", "datatype": "string", "type": "raw", "nullable": false, "Description": "The metadata key. Unique within the table."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Order 1. Mirrors MetaKey so the row is addressable by Name.", "formula": "={{MetaKey}}"},
+      {"name": "ValueType", "datatype": "string", "type": "raw", "nullable": false, "Description": "How to read the value: 'string' uses StringValue, 'object' or 'array' parse JsonValue."},
+      {"name": "StringValue", "datatype": "string", "type": "raw", "nullable": true, "Description": "The value when ValueType is 'string'."},
+      {"name": "JsonValue", "datatype": "string", "type": "raw", "nullable": true, "Description": "The value as JSON when ValueType is 'object' or 'array'."}
+    ],
+    "data": [
+      {"MetaKey": "title", "ValueType": "string", "StringValue": "Talisman's South Park ontology, as Schema, Data, Lookups, Aggregations and Formulas", "JsonValue": null, "Name": "title"},
+      {"MetaKey": "source_article", "ValueType": "string", "StringValue": "https://jessicatalisman.substack.com/p/what-is-an-ontology", "JsonValue": null, "Name": "source_article"},
+      {"MetaKey": "source_app", "ValueType": "string", "StringValue": "https://southpark-ontology-explainer.jessica-tali-7056.chatgpt.site/", "JsonValue": null, "Name": "source_app"},
+      {"MetaKey": "source_author", "ValueType": "string", "StringValue": "Jessica Talisman, Intentional Arrangement", "JsonValue": null, "Name": "source_author"},
+      {"MetaKey": "image_credit", "ValueType": "string", "StringValue": "Character and location portraits are Fandom images, linked from each Things row; South Park is the work of Trey Parker and Matt Stone.", "JsonValue": null, "Name": "image_credit"},
+      {"MetaKey": "form", "ValueType": "string", "StringValue": "sdlaf-of-an-ontology", "JsonValue": null, "Name": "form"},
+      {"MetaKey": "reference_note", "ValueType": "string", "StringValue": "The data is her page's ten built-in facts as the page starts. Her page starts with every rule switched off; here the one Reasoning row switches them all on, so every conclusion shows. The ontology form of the same world is ../effortless-rulebook/.", "JsonValue": null, "Name": "reference_note"},
+      {"MetaKey": "rulebook-version", "ValueType": "number", "StringValue": "1", "JsonValue": null, "Name": "rulebook-version"}
+    ]
+  },
+  "Reasoning": {
+    "Description": "The one world the rules reason over, and the switch of each of her five rules. Every table links here, so each rule's switch is one lookup away from the field it gates, and every count of the world rolls up here.",
+    "schema": [
+      {"name": "ReasoningId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Key of the world."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Order 1. The world's name.", "formula": "={{Label}}"},
+      {"name": "Label", "datatype": "string", "type": "raw", "nullable": false, "Description": "The world's name."},
+      {"name": "InverseIsOn", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Inverse rule: a parent link also gives a child link between the same two people (isChildOf, the inverse of isParentOf)."},
+      {"name": "SymmetricIsOn", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Symmetric rule: a spouse link or a friend link holds for both people."},
+      {"name": "ChainIsOn", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Property chain: a parent of a parent is a grandparent (isParentOf then isParentOf gives isGrandparentOf)."},
+      {"name": "DomainRangeIsOn", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Domain and range: whoever attends something, or has a grade level or a role, is a Person; whatever is attended is a School."},
+      {"name": "DisjointIsOn", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Disjoint: no one is both the parent and the spouse of the same person (isParentOf is disjoint with isSpouseOf)."},
+      {"name": "CountOfIndividuals", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 1. Every individual of the world.", "formula": "=COUNTIFS(Individuals!{{Reasoning}}, Reasoning!{{ReasoningId}})"},
+      {"name": "CountOfPeople", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 3. Individuals that are a Person, asserted or concluded.", "formula": "=COUNTIFS(Individuals!{{Reasoning}}, Reasoning!{{ReasoningId}}, Individuals!{{IsPerson}}, TRUE())"},
+      {"name": "CountOfSchools", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 3. Individuals that are a School, asserted or concluded.", "formula": "=COUNTIFS(Individuals!{{Reasoning}}, Reasoning!{{ReasoningId}}, Individuals!{{IsSchool}}, TRUE())"},
+      {"name": "CountOfStatedParenthoods", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 1. Stated isParentOf facts: one per Parenthoods row.", "formula": "=COUNTIFS(Parenthoods!{{Reasoning}}, Reasoning!{{ReasoningId}})"},
+      {"name": "CountOfStatedMarriages", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 1. Stated isSpouseOf facts: one per Marriages row.", "formula": "=COUNTIFS(Marriages!{{Reasoning}}, Reasoning!{{ReasoningId}})"},
+      {"name": "CountOfStatedFriendships", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 1. Stated isFriendOf facts: one per Friendships row.", "formula": "=COUNTIFS(Friendships!{{Reasoning}}, Reasoning!{{ReasoningId}})"},
+      {"name": "CountOfStatedIndividualFacts", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 3. Stated facts held as columns of an individual: attends, has age and is a.", "formula": "=SUMIFS(Individuals!{{StatedFactCount}}, Individuals!{{Reasoning}}, Reasoning!{{ReasoningId}})"},
+      {"name": "CountOfCurrentGradeLevels", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 3. Grade level facts in effect: each person's current grade.", "formula": "=COUNTIFS(GradeLevelRecords!{{Reasoning}}, Reasoning!{{ReasoningId}}, GradeLevelRecords!{{IsCurrent}}, TRUE())"},
+      {"name": "CountOfCurrentRoles", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 3. Role facts in effect: each person's current role.", "formula": "=COUNTIFS(RoleRecords!{{Reasoning}}, Reasoning!{{ReasoningId}}, RoleRecords!{{IsCurrent}}, TRUE())"},
+      {"name": "CountOfStatedFacts", "datatype": "integer", "type": "calculated", "nullable": true, "Description": "Order 4. Every stated fact in effect, wherever it is held.", "formula": "={{CountOfStatedParenthoods}} + {{CountOfStatedMarriages}} + {{CountOfStatedFriendships}} + {{CountOfStatedIndividualFacts}} + {{CountOfCurrentGradeLevels}} + {{CountOfCurrentRoles}}"},
+      {"name": "CountOfChildOfConclusions", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 2. isChildOf facts the inverse rule concludes: one per parenthood.", "formula": "=COUNTIFS(Parenthoods!{{Reasoning}}, Reasoning!{{ReasoningId}}, Parenthoods!{{ChildOfHolds}}, TRUE())"},
+      {"name": "CountOfMirroredMarriages", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 2. isSpouseOf facts the symmetric rule concludes: one per marriage, read from its second partner.", "formula": "=COUNTIFS(Marriages!{{Reasoning}}, Reasoning!{{ReasoningId}}, Marriages!{{MirrorHolds}}, TRUE())"},
+      {"name": "CountOfMirroredFriendships", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 2. isFriendOf facts the symmetric rule concludes: one per friendship, read from its second friend.", "formula": "=COUNTIFS(Friendships!{{Reasoning}}, Reasoning!{{ReasoningId}}, Friendships!{{MirrorHolds}}, TRUE())"},
+      {"name": "CountOfGrandparentConclusions", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 4. isGrandparentOf facts the property chain concludes.", "formula": "=COUNTIFS(Grandparenthoods!{{Reasoning}}, Reasoning!{{ReasoningId}}, Grandparenthoods!{{Holds}}, TRUE())"},
+      {"name": "CountOfPersonConclusions", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 3. Individuals the domain rule makes a Person that no one asserted was one.", "formula": "=COUNTIFS(Individuals!{{Reasoning}}, Reasoning!{{ReasoningId}}, Individuals!{{IsPersonConcluded}}, TRUE())"},
+      {"name": "CountOfSchoolConclusions", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 3. Individuals the range rule makes a School that no one asserted was one.", "formula": "=COUNTIFS(Individuals!{{Reasoning}}, Reasoning!{{ReasoningId}}, Individuals!{{IsSchoolConcluded}}, TRUE())"},
+      {"name": "CountOfConclusions", "datatype": "integer", "type": "calculated", "nullable": true, "Description": "Order 5. Every fact the rules conclude that no one stated.", "formula": "={{CountOfChildOfConclusions}} + {{CountOfMirroredMarriages}} + {{CountOfMirroredFriendships}} + {{CountOfGrandparentConclusions}} + {{CountOfPersonConclusions}} + {{CountOfSchoolConclusions}}"},
+      {"name": "CountOfContradictions", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 4. Parenthoods the disjoint rule flags: the parent is also the child's spouse.", "formula": "=COUNTIFS(Parenthoods!{{Reasoning}}, Reasoning!{{ReasoningId}}, Parenthoods!{{IsContradiction}}, TRUE())"},
+      {"name": "IsConsistent", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 5. No contradiction the disjoint rule can see.", "formula": "={{CountOfContradictions}} = 0"},
+      {"name": "Summary", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Order 6. The world in one line.", "formula": "=CONCAT({{CountOfStatedFacts}}, \" stated facts, \", {{CountOfConclusions}}, \" conclusions, \", {{CountOfContradictions}}, \" contradictions\")"}
+    ],
+    "data": [
+      {"ReasoningId": "south-park", "Label": "South Park", "InverseIsOn": true, "SymmetricIsOn": true, "ChainIsOn": true, "DomainRangeIsOn": true, "DisjointIsOn": true}
+    ]
+  },
+  "Portraits": {
+    "Description": "The picture of each individual, linked from its Fandom page (never downloaded).",
+    "schema": [
+      {"name": "PortraitId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Key of the portrait: the short name the page files it under."},
+      {"name": "DisplayName", "datatype": "string", "type": "raw", "nullable": false, "Description": "The name on the portrait's Fandom page."},
+      {"name": "Page", "datatype": "string", "type": "raw", "nullable": false, "Description": "The Fandom page credited for the portrait."},
+      {"name": "Image", "datatype": "string", "type": "raw", "nullable": false, "Description": "The original Fandom image."},
+      {"name": "Crop", "datatype": "string", "type": "raw", "nullable": false, "Description": "The crop as an SVG viewBox: x y width height."},
+      {"name": "Width", "datatype": "integer", "type": "raw", "nullable": false, "Description": "The original image's width in pixels."},
+      {"name": "Height", "datatype": "integer", "type": "raw", "nullable": false, "Description": "The original image's height in pixels."},
+      {"name": "SortOrder", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Position in the credits."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Order 1. The portrait's name.", "formula": "={{DisplayName}}"}
+    ],
+    "data": [
+      {"PortraitId": "Marvin", "DisplayName": "Marvin Marsh", "Page": "https://southpark.fandom.com/wiki/Marvin_Marsh", "Image": "https://static.wikia.nocookie.net/southpark/images/d/db/Marsh-family-grandpa-marsh-w-purple-blanket.png/revision/latest", "Crop": "48 -5 280 280", "Width": 375, "Height": 536, "SortOrder": 1},
+      {"PortraitId": "Randy", "DisplayName": "Randy Marsh", "Page": "https://southpark.fandom.com/wiki/Randy_Marsh", "Image": "https://static.wikia.nocookie.net/southparkfanon/images/d/d6/Randy_Marsh.png/revision/latest", "Crop": "0 -10 428 428", "Width": 428, "Height": 1057, "SortOrder": 2},
+      {"PortraitId": "Sharon", "DisplayName": "Sharon Marsh", "Page": "https://southpark.fandom.com/wiki/Sharon_Marsh", "Image": "https://static.wikia.nocookie.net/southpark/images/9/99/Sharon_Marsh.png/revision/latest", "Crop": "20 -10 390 390", "Width": 439, "Height": 1049, "SortOrder": 3},
+      {"PortraitId": "Stan", "DisplayName": "Stan Marsh", "Page": "https://southpark.fandom.com/wiki/Stan_Marsh", "Image": "https://static.wikia.nocookie.net/southpark/images/c/c6/Stan-marsh-0.png/revision/latest", "Crop": "-35 -10 735 735", "Width": 663, "Height": 1037, "SortOrder": 4},
+      {"PortraitId": "Shelly", "DisplayName": "Shelley Marsh", "Page": "https://southpark.fandom.com/wiki/Shelley_Marsh", "Image": "https://static.wikia.nocookie.net/southpark/images/3/3b/Shelly.png/revision/latest", "Crop": "-20 -10 760 760", "Width": 720, "Height": 1064, "SortOrder": 5},
+      {"PortraitId": "Kyle", "DisplayName": "Kyle Broflovski", "Page": "https://southpark.fandom.com/wiki/Kyle_Broflovski", "Image": "https://static.wikia.nocookie.net/southpark/images/9/95/Kyle-broflovski.png/revision/latest?cb=20190411033301", "Crop": "-20 -10 790 790", "Width": 753, "Height": 935, "SortOrder": 6},
+      {"PortraitId": "SouthParkElementary", "DisplayName": "South Park Elementary", "Page": "https://southpark.fandom.com/wiki/South_Park_Elementary", "Image": "https://static.wikia.nocookie.net/southpark/images/1/12/School_7.png/revision/latest?cb=20180414152359", "Crop": "420 0 1080 1080", "Width": 1920, "Height": 1080, "SortOrder": 7}
+    ]
+  },
+  "Individuals": {
+    "Description": "Every individual of the world (owl:Thing). What is said about one individual alone is a column of its row: its age, the place it attends, whether it is asserted to be a Person or a School. Its current grade level and role come from their records. Class membership is a formula, not a table, because it is concluded: no one stated that South Park Elementary is a School.",
+    "schema": [
+      {"name": "IndividualId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Key of the individual."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Order 1. The individual's name.", "formula": "={{Label}}"},
+      {"name": "Label", "datatype": "string", "type": "raw", "nullable": false, "Description": "The individual's name."},
+      {"name": "SortOrder", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Position in the cast."},
+      {"name": "Reasoning", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The world this individual belongs to.", "RelatedTo": "Reasoning"},
+      {"name": "Portrait", "datatype": "string", "type": "relationship", "nullable": true, "Description": "The individual's picture.", "RelatedTo": "Portraits"},
+      {"name": "PortraitImage", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 1. The picture's image.", "formula": "=INDEX(Portraits!{{Image}}, MATCH({{Portrait}}, Portraits!{{PortraitId}}, 0))"},
+      {"name": "SymmetricIsOn", "datatype": "boolean", "type": "lookup", "nullable": true, "Description": "Order 1. The Symmetric rule's switch, read from the reasoning this row belongs to.", "formula": "=INDEX(Reasoning!{{SymmetricIsOn}}, MATCH({{Reasoning}}, Reasoning!{{ReasoningId}}, 0))"},
+      {"name": "DomainRangeIsOn", "datatype": "boolean", "type": "lookup", "nullable": true, "Description": "Order 1. The DomainRange rule's switch, read from the reasoning this row belongs to.", "formula": "=INDEX(Reasoning!{{DomainRangeIsOn}}, MATCH({{Reasoning}}, Reasoning!{{ReasoningId}}, 0))"},
+      {"name": "IsAssertedPerson", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Stated: this individual is a Person (isA Person)."},
+      {"name": "IsAssertedSchool", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Stated: this individual is a School (isA School)."},
+      {"name": "Age", "datatype": "integer", "type": "raw", "nullable": true, "Description": "Stated: hasAge."},
+      {"name": "Attends", "datatype": "string", "type": "relationship", "nullable": true, "Description": "Stated: the place this individual attends (attends). Its range is School.", "RelatedTo": "Individuals"},
+      {"name": "AttendsLabel", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 1. The name of the place attended.", "formula": "=INDEX(Individuals!{{Label}}, MATCH({{Attends}}, Individuals!{{IndividualId}}, 0))"},
+      {"name": "HasAge", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 1. An age is stated.", "formula": "={{Age}} <> \"\""},
+      {"name": "HasAttends", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 1. A place attended is stated.", "formula": "={{Attends}} <> \"\""},
+      {"name": "StatedFactCount", "datatype": "integer", "type": "calculated", "nullable": true, "Description": "Order 2. Stated facts held on this row: is a Person, is a School, has age, attends.", "formula": "=IF({{IsAssertedPerson}}, 1, 0) + IF({{IsAssertedSchool}}, 1, 0) + IF({{HasAge}}, 1, 0) + IF({{HasAttends}}, 1, 0)"},
+      {"name": "CountOfGradeLevelsOn", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 1. Grade level records switched on for this individual.", "formula": "=COUNTIFS(GradeLevelRecords!{{Individual}}, Individuals!{{IndividualId}}, GradeLevelRecords!{{IsOn}}, TRUE())"},
+      {"name": "LatestGradeLevelSeq", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 1. When the latest grade level switched on was stated: the one in effect.", "formula": "=MAXIFS(GradeLevelRecords!{{StatedSeq}}, GradeLevelRecords!{{Individual}}, Individuals!{{IndividualId}}, GradeLevelRecords!{{IsOn}}, TRUE())"},
+      {"name": "HasGradeLevel", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 2. A grade level is in effect.", "formula": "={{CountOfGradeLevelsOn}} > 0"},
+      {"name": "CurrentGradeLevelRecord", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Order 3. Key of the grade level record in effect.", "formula": "=IF({{HasGradeLevel}}, CONCAT({{IndividualId}}, \"|grade|\", {{LatestGradeLevelSeq}}), \"\")"},
+      {"name": "GradeLevel", "datatype": "integer", "type": "lookup", "nullable": true, "Description": "Order 4. The grade level in effect: the latest one switched on (hasGradeLevel keeps one current value).", "formula": "=INDEX(GradeLevelRecords!{{GradeLevel}}, MATCH({{CurrentGradeLevelRecord}}, GradeLevelRecords!{{GradeLevelRecordId}}, 0))"},
+      {"name": "CountOfRolesOn", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 1. Role records switched on for this individual.", "formula": "=COUNTIFS(RoleRecords!{{Individual}}, Individuals!{{IndividualId}}, RoleRecords!{{IsOn}}, TRUE())"},
+      {"name": "LatestRoleSeq", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 1. When the latest role switched on was stated: the one in effect.", "formula": "=MAXIFS(RoleRecords!{{StatedSeq}}, RoleRecords!{{Individual}}, Individuals!{{IndividualId}}, RoleRecords!{{IsOn}}, TRUE())"},
+      {"name": "HasRole", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 2. A role is in effect.", "formula": "={{CountOfRolesOn}} > 0"},
+      {"name": "CurrentRoleRecord", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Order 3. Key of the role record in effect.", "formula": "=IF({{HasRole}}, CONCAT({{IndividualId}}, \"|role|\", {{LatestRoleSeq}}), \"\")"},
+      {"name": "Role", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 4. The role in effect: the latest one switched on (hasRole keeps one current value).", "formula": "=INDEX(RoleRecords!{{Role}}, MATCH({{CurrentRoleRecord}}, RoleRecords!{{RoleRecordId}}, 0))"},
+      {"name": "HasPersonEvidence", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 3. Something is stated that only a Person can have: a place attended, a grade level or a role (the domain of attends, hasGradeLevel and hasRole).", "formula": "=OR({{HasAttends}}, {{HasGradeLevel}}, {{HasRole}})"},
+      {"name": "IsPersonByDomain", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 4. The domain rule makes this individual a Person.", "formula": "=AND({{DomainRangeIsOn}}, {{HasPersonEvidence}})"},
+      {"name": "IsPerson", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 5. A Person, asserted or concluded. Open world: true, or not known.", "formula": "=IF(OR({{IsAssertedPerson}}, {{IsPersonByDomain}}), TRUE())"},
+      {"name": "IsPersonConcluded", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 5. A Person only because the domain rule says so.", "formula": "=IF(AND({{IsPersonByDomain}}, NOT({{IsAssertedPerson}})), TRUE())"},
+      {"name": "AttendedByCount", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 1. Individuals that attend this one.", "formula": "=COUNTIFS(Individuals!{{Attends}}, Individuals!{{IndividualId}})"},
+      {"name": "IsSchoolByRange", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 2. The range rule makes this individual a School: someone attends it.", "formula": "=AND({{DomainRangeIsOn}}, {{AttendedByCount}} > 0)"},
+      {"name": "IsSchool", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 3. A School, asserted or concluded. Open world: true, or not known.", "formula": "=IF(OR({{IsAssertedSchool}}, {{IsSchoolByRange}}), TRUE())"},
+      {"name": "IsSchoolConcluded", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 3. A School only because the range rule says so.", "formula": "=IF(AND({{IsSchoolByRange}}, NOT({{IsAssertedSchool}})), TRUE())"},
+      {"name": "ChildCount", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 1. Children: parenthoods where this individual is the parent (isParentOf).", "formula": "=COUNTIFS(Parenthoods!{{Parent}}, Individuals!{{IndividualId}})"},
+      {"name": "ParentCount", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 1. Parents: the same parenthoods read from the child's end. The link is there whatever the inverse rule says.", "formula": "=COUNTIFS(Parenthoods!{{Child}}, Individuals!{{IndividualId}})"},
+      {"name": "ChildOfFactCount", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 2. isChildOf facts about this individual: its parenthoods read from its end, when the inverse rule is on.", "formula": "=COUNTIFS(Parenthoods!{{Child}}, Individuals!{{IndividualId}}, Parenthoods!{{ChildOfHolds}}, TRUE())"},
+      {"name": "GrandchildCount", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 5. Grandchildren the property chain concludes (isGrandparentOf).", "formula": "=COUNTIFS(Grandparenthoods!{{Grandparent}}, Individuals!{{IndividualId}}, Grandparenthoods!{{Holds}}, TRUE())"},
+      {"name": "GrandparentCount", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 5. Grandparents the property chain concludes, read from the grandchild's end.", "formula": "=COUNTIFS(Grandparenthoods!{{Grandchild}}, Individuals!{{IndividualId}}, Grandparenthoods!{{Holds}}, TRUE())"},
+      {"name": "DescendantCount", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 1. Everyone below this individual through one or more parenthoods: the transitive closure, which her page does not draw.", "formula": "=COUNTIFS(vw_parenthoods_closure!{{FromId}}, Individuals!{{IndividualId}})"},
+      {"name": "AncestorCount", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 1. Everyone above this individual through one or more parenthoods.", "formula": "=COUNTIFS(vw_parenthoods_closure!{{ToId}}, Individuals!{{IndividualId}})"},
+      {"name": "StatedSpouseCount", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 2. Marriages that name this individual first: the stated isSpouseOf.", "formula": "=COUNTIFS(Marriages!{{PartnerA}}, Individuals!{{IndividualId}})"},
+      {"name": "MirroredSpouseCount", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 3. Marriages that name this individual second, when the symmetric rule reads them both ways.", "formula": "=COUNTIFS(Marriages!{{PartnerB}}, Individuals!{{IndividualId}}, Marriages!{{MirrorHolds}}, TRUE())"},
+      {"name": "SpouseCount", "datatype": "integer", "type": "calculated", "nullable": true, "Description": "Order 4. Spouses: isSpouseOf facts about this individual, stated or mirrored.", "formula": "={{StatedSpouseCount}} + {{MirroredSpouseCount}}"},
+      {"name": "StatedFriendCount", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 2. Friendships that name this individual first: the stated isFriendOf.", "formula": "=COUNTIFS(Friendships!{{FriendA}}, Individuals!{{IndividualId}})"},
+      {"name": "MirroredFriendCount", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 3. Friendships that name this individual second, when the symmetric rule reads them both ways.", "formula": "=COUNTIFS(Friendships!{{FriendB}}, Individuals!{{IndividualId}}, Friendships!{{MirrorHolds}}, TRUE())"},
+      {"name": "FriendCount", "datatype": "integer", "type": "calculated", "nullable": true, "Description": "Order 4. Friends: isFriendOf facts about this individual, stated or mirrored.", "formula": "={{StatedFriendCount}} + {{MirroredFriendCount}}"}
+    ],
+    "data": [
+      {"IndividualId": "Marvin", "Label": "Marvin", "SortOrder": 1, "Reasoning": "south-park", "Portrait": "Marvin", "IsAssertedPerson": false, "IsAssertedSchool": false, "Age": null, "Attends": null},
+      {"IndividualId": "Randy", "Label": "Randy", "SortOrder": 2, "Reasoning": "south-park", "Portrait": "Randy", "IsAssertedPerson": false, "IsAssertedSchool": false, "Age": null, "Attends": null},
+      {"IndividualId": "Sharon", "Label": "Sharon", "SortOrder": 3, "Reasoning": "south-park", "Portrait": "Sharon", "IsAssertedPerson": false, "IsAssertedSchool": false, "Age": null, "Attends": null},
+      {"IndividualId": "Stan", "Label": "Stan", "SortOrder": 4, "Reasoning": "south-park", "Portrait": "Stan", "IsAssertedPerson": true, "IsAssertedSchool": false, "Age": 10, "Attends": "SouthParkElementary"},
+      {"IndividualId": "Shelly", "Label": "Shelly", "SortOrder": 5, "Reasoning": "south-park", "Portrait": "Shelly", "IsAssertedPerson": false, "IsAssertedSchool": false, "Age": null, "Attends": null},
+      {"IndividualId": "Kyle", "Label": "Kyle", "SortOrder": 6, "Reasoning": "south-park", "Portrait": "Kyle", "IsAssertedPerson": false, "IsAssertedSchool": false, "Age": null, "Attends": null},
+      {"IndividualId": "SouthParkElementary", "Label": "South Park Elementary", "SortOrder": 7, "Reasoning": "south-park", "Portrait": "SouthParkElementary", "IsAssertedPerson": false, "IsAssertedSchool": false, "Age": null, "Attends": null}
+    ]
+  },
+  "Parenthoods": {
+    "Description": "One row per stated isParentOf fact. A person has many children and a child more than one parent, so the link is its own entity with two links to Individuals. The inverse rule's isChildOf is not stored: it is this row read from the child's end.",
+    "schema": [
+      {"name": "ParenthoodId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Key of the fact: subject|property|object, as her page names it."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Order 2. The stated fact in words.", "formula": "=CONCAT({{ParentLabel}}, \" is parent of \", {{ChildLabel}})"},
+      {"name": "Reasoning", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The world this fact belongs to.", "RelatedTo": "Reasoning"},
+      {"name": "Parent", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The parent (the subject of isParentOf).", "RelatedTo": "Individuals"},
+      {"name": "Child", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The child (the object of isParentOf).", "RelatedTo": "Individuals"},
+      {"name": "ParentLabel", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 1. The parent's name.", "formula": "=INDEX(Individuals!{{Label}}, MATCH({{Parent}}, Individuals!{{IndividualId}}, 0))"},
+      {"name": "ChildLabel", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 1. The child's name.", "formula": "=INDEX(Individuals!{{Label}}, MATCH({{Child}}, Individuals!{{IndividualId}}, 0))"},
+      {"name": "InverseIsOn", "datatype": "boolean", "type": "lookup", "nullable": true, "Description": "Order 1. The Inverse rule's switch, read from the reasoning this row belongs to.", "formula": "=INDEX(Reasoning!{{InverseIsOn}}, MATCH({{Reasoning}}, Reasoning!{{ReasoningId}}, 0))"},
+      {"name": "SymmetricIsOn", "datatype": "boolean", "type": "lookup", "nullable": true, "Description": "Order 1. The Symmetric rule's switch, read from the reasoning this row belongs to.", "formula": "=INDEX(Reasoning!{{SymmetricIsOn}}, MATCH({{Reasoning}}, Reasoning!{{ReasoningId}}, 0))"},
+      {"name": "DisjointIsOn", "datatype": "boolean", "type": "lookup", "nullable": true, "Description": "Order 1. The Disjoint rule's switch, read from the reasoning this row belongs to.", "formula": "=INDEX(Reasoning!{{DisjointIsOn}}, MATCH({{Reasoning}}, Reasoning!{{ReasoningId}}, 0))"},
+      {"name": "ChildOfHolds", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 2. The inverse rule concludes the child is child of the parent. Open world: true, or not known.", "formula": "=IF({{InverseIsOn}}, TRUE())"},
+      {"name": "ChildOfSentence", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Order 2. The inverse fact in words.", "formula": "=CONCAT({{ChildLabel}}, \" is child of \", {{ParentLabel}})"},
+      {"name": "SpouseAsStatedCount", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 3. Marriages stated with the parent first and the child second.", "formula": "=COUNTIFS(Marriages!{{PartnerA}}, {{Parent}}, Marriages!{{PartnerB}}, {{Child}})"},
+      {"name": "SpouseAsMirroredCount", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Order 3. Marriages stated with the child first, which make the parent the child's spouse when the symmetric rule mirrors them.", "formula": "=COUNTIFS(Marriages!{{PartnerA}}, {{Child}}, Marriages!{{PartnerB}}, {{Parent}}, Marriages!{{MirrorHolds}}, TRUE())"},
+      {"name": "IsContradiction", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 4. The disjoint rule: the parent is also the child's spouse. Open world: true, or not known.", "formula": "=IF(AND({{DisjointIsOn}}, {{SpouseAsStatedCount}} + {{SpouseAsMirroredCount}} > 0), TRUE())"},
+      {"name": "AncestryClosure", "datatype": "string", "type": "closure", "nullable": true, "Description": "Transitive closure of isParentOf (an owl:TransitiveProperty reading of it, which her page does not draw): every (ancestor, descendant) pair through one or more parenthoods, materialized as vw_parenthoods_closure.", "EdgeTable": "Parenthoods", "FromColumn": "Parent", "ToColumn": "Child"}
+    ],
+    "data": [
+      {"ParenthoodId": "Marvin|isParentOf|Randy", "Reasoning": "south-park", "Parent": "Marvin", "Child": "Randy"},
+      {"ParenthoodId": "Randy|isParentOf|Stan", "Reasoning": "south-park", "Parent": "Randy", "Child": "Stan"},
+      {"ParenthoodId": "Randy|isParentOf|Shelly", "Reasoning": "south-park", "Parent": "Randy", "Child": "Shelly"}
+    ]
+  },
+  "Marriages": {
+    "Description": "One row per stated isSpouseOf fact. A marriage has no direction: the symmetric rule is the same row counted from its second partner's end.",
+    "schema": [
+      {"name": "MarriageId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Key of the fact: subject|property|object, as her page names it."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Order 2. The stated fact in words.", "formula": "=CONCAT({{PartnerALabel}}, \" is spouse of \", {{PartnerBLabel}})"},
+      {"name": "Reasoning", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The world this fact belongs to.", "RelatedTo": "Reasoning"},
+      {"name": "PartnerA", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The partner the stated fact names first.", "RelatedTo": "Individuals"},
+      {"name": "PartnerB", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The partner the stated fact names second.", "RelatedTo": "Individuals"},
+      {"name": "PartnerALabel", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 1. The partnera's name.", "formula": "=INDEX(Individuals!{{Label}}, MATCH({{PartnerA}}, Individuals!{{IndividualId}}, 0))"},
+      {"name": "PartnerBLabel", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 1. The partnerb's name.", "formula": "=INDEX(Individuals!{{Label}}, MATCH({{PartnerB}}, Individuals!{{IndividualId}}, 0))"},
+      {"name": "SymmetricIsOn", "datatype": "boolean", "type": "lookup", "nullable": true, "Description": "Order 1. The Symmetric rule's switch, read from the reasoning this row belongs to.", "formula": "=INDEX(Reasoning!{{SymmetricIsOn}}, MATCH({{Reasoning}}, Reasoning!{{ReasoningId}}, 0))"},
+      {"name": "MirrorHolds", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 2. The symmetric rule concludes the second partner is spouse of the first. Open world: true, or not known.", "formula": "=IF({{SymmetricIsOn}}, TRUE())"},
+      {"name": "MirrorSentence", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Order 2. The mirrored fact in words.", "formula": "=CONCAT({{PartnerBLabel}}, \" is spouse of \", {{PartnerALabel}})"}
+    ],
+    "data": [
+      {"MarriageId": "Randy|isSpouseOf|Sharon", "Reasoning": "south-park", "PartnerA": "Randy", "PartnerB": "Sharon"}
+    ]
+  },
+  "Friendships": {
+    "Description": "One row per stated isFriendOf fact, read both ways by the symmetric rule, like a marriage.",
+    "schema": [
+      {"name": "FriendshipId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Key of the fact: subject|property|object, as her page names it."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Order 2. The stated fact in words.", "formula": "=CONCAT({{FriendALabel}}, \" is friend of \", {{FriendBLabel}})"},
+      {"name": "Reasoning", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The world this fact belongs to.", "RelatedTo": "Reasoning"},
+      {"name": "FriendA", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The friend the stated fact names first.", "RelatedTo": "Individuals"},
+      {"name": "FriendB", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The friend the stated fact names second.", "RelatedTo": "Individuals"},
+      {"name": "FriendALabel", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 1. The frienda's name.", "formula": "=INDEX(Individuals!{{Label}}, MATCH({{FriendA}}, Individuals!{{IndividualId}}, 0))"},
+      {"name": "FriendBLabel", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 1. The friendb's name.", "formula": "=INDEX(Individuals!{{Label}}, MATCH({{FriendB}}, Individuals!{{IndividualId}}, 0))"},
+      {"name": "SymmetricIsOn", "datatype": "boolean", "type": "lookup", "nullable": true, "Description": "Order 1. The Symmetric rule's switch, read from the reasoning this row belongs to.", "formula": "=INDEX(Reasoning!{{SymmetricIsOn}}, MATCH({{Reasoning}}, Reasoning!{{ReasoningId}}, 0))"},
+      {"name": "MirrorHolds", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 2. The symmetric rule concludes the second friend is friend of the first. Open world: true, or not known.", "formula": "=IF({{SymmetricIsOn}}, TRUE())"},
+      {"name": "MirrorSentence", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Order 2. The mirrored fact in words.", "formula": "=CONCAT({{FriendBLabel}}, \" is friend of \", {{FriendALabel}})"}
+    ],
+    "data": [
+      {"FriendshipId": "Stan|isFriendOf|Kyle", "Reasoning": "south-park", "FriendA": "Stan", "FriendB": "Kyle"}
+    ]
+  },
+  "Grandparenthoods": {
+    "Description": "The property chain isParentOf then isParentOf, as rows: every ordered pair of parenthoods is a candidate, and it holds when the first one's child is the second one's parent. A formula cannot add a row, so the candidates are data (every pair, decided by nothing about the family) and whether one holds is a formula.",
+    "schema": [
+      {"name": "GrandparenthoodId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Key: the upper parenthood, then the lower one."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Order 4. The concluded fact in words, or why this pair concludes nothing.", "formula": "=IF({{Links}}, CONCAT({{GrandparentLabel}}, \" is grandparent of \", {{GrandchildLabel}}), CONCAT(\"(\", {{UpperLink}}, \" does not lead to \", {{LowerLink}}, \")\"))"},
+      {"name": "Reasoning", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The world this candidate belongs to.", "RelatedTo": "Reasoning"},
+      {"name": "UpperLink", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The first link: grandparent to the middle generation.", "RelatedTo": "Parenthoods"},
+      {"name": "LowerLink", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The second link: the middle generation to the grandchild.", "RelatedTo": "Parenthoods"},
+      {"name": "Grandparent", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 1. The upper link's parent.", "formula": "=INDEX(Parenthoods!{{Parent}}, MATCH({{UpperLink}}, Parenthoods!{{ParenthoodId}}, 0))"},
+      {"name": "UpperChild", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 1. The upper link's child.", "formula": "=INDEX(Parenthoods!{{Child}}, MATCH({{UpperLink}}, Parenthoods!{{ParenthoodId}}, 0))"},
+      {"name": "LowerParent", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 1. The lower link's parent.", "formula": "=INDEX(Parenthoods!{{Parent}}, MATCH({{LowerLink}}, Parenthoods!{{ParenthoodId}}, 0))"},
+      {"name": "Grandchild", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 1. The lower link's child.", "formula": "=INDEX(Parenthoods!{{Child}}, MATCH({{LowerLink}}, Parenthoods!{{ParenthoodId}}, 0))"},
+      {"name": "GrandparentLabel", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 2. The grandparent's name.", "formula": "=INDEX(Parenthoods!{{ParentLabel}}, MATCH({{UpperLink}}, Parenthoods!{{ParenthoodId}}, 0))"},
+      {"name": "GrandchildLabel", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 2. The grandchild's name.", "formula": "=INDEX(Parenthoods!{{ChildLabel}}, MATCH({{LowerLink}}, Parenthoods!{{ParenthoodId}}, 0))"},
+      {"name": "Links", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 2. The upper link's child is the lower link's parent: the two links make a chain.", "formula": "={{UpperChild}} = {{LowerParent}}"},
+      {"name": "ChainIsOn", "datatype": "boolean", "type": "lookup", "nullable": true, "Description": "Order 1. The Chain rule's switch, read from the reasoning this row belongs to.", "formula": "=INDEX(Reasoning!{{ChainIsOn}}, MATCH({{Reasoning}}, Reasoning!{{ReasoningId}}, 0))"},
+      {"name": "Holds", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 3. The property chain concludes isGrandparentOf. Open world: true, or not known.", "formula": "=IF(AND({{Links}}, {{ChainIsOn}}), TRUE())"}
+    ],
+    "data": [
+      {"GrandparenthoodId": "Marvin|isParentOf|Randy then Marvin|isParentOf|Randy", "Reasoning": "south-park", "UpperLink": "Marvin|isParentOf|Randy", "LowerLink": "Marvin|isParentOf|Randy"},
+      {"GrandparenthoodId": "Marvin|isParentOf|Randy then Randy|isParentOf|Stan", "Reasoning": "south-park", "UpperLink": "Marvin|isParentOf|Randy", "LowerLink": "Randy|isParentOf|Stan"},
+      {"GrandparenthoodId": "Marvin|isParentOf|Randy then Randy|isParentOf|Shelly", "Reasoning": "south-park", "UpperLink": "Marvin|isParentOf|Randy", "LowerLink": "Randy|isParentOf|Shelly"},
+      {"GrandparenthoodId": "Randy|isParentOf|Stan then Marvin|isParentOf|Randy", "Reasoning": "south-park", "UpperLink": "Randy|isParentOf|Stan", "LowerLink": "Marvin|isParentOf|Randy"},
+      {"GrandparenthoodId": "Randy|isParentOf|Stan then Randy|isParentOf|Stan", "Reasoning": "south-park", "UpperLink": "Randy|isParentOf|Stan", "LowerLink": "Randy|isParentOf|Stan"},
+      {"GrandparenthoodId": "Randy|isParentOf|Stan then Randy|isParentOf|Shelly", "Reasoning": "south-park", "UpperLink": "Randy|isParentOf|Stan", "LowerLink": "Randy|isParentOf|Shelly"},
+      {"GrandparenthoodId": "Randy|isParentOf|Shelly then Marvin|isParentOf|Randy", "Reasoning": "south-park", "UpperLink": "Randy|isParentOf|Shelly", "LowerLink": "Marvin|isParentOf|Randy"},
+      {"GrandparenthoodId": "Randy|isParentOf|Shelly then Randy|isParentOf|Stan", "Reasoning": "south-park", "UpperLink": "Randy|isParentOf|Shelly", "LowerLink": "Randy|isParentOf|Stan"},
+      {"GrandparenthoodId": "Randy|isParentOf|Shelly then Randy|isParentOf|Shelly", "Reasoning": "south-park", "UpperLink": "Randy|isParentOf|Shelly", "LowerLink": "Randy|isParentOf|Shelly"}
+    ]
+  },
+  "GradeLevelRecords": {
+    "Description": "Every grade level stated for an individual, kept when a later one replaces it: her page keeps one current grade, the latest switched on. The current value is time (which was stated last), not a flag.",
+    "schema": [
+      {"name": "GradeLevelRecordId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Key: individual|grade|when it was stated."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Order 2. The fact in words.", "formula": "=CONCAT({{IndividualLabel}}, \" has grade level \", {{GradeLevel}})"},
+      {"name": "Reasoning", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The world this record belongs to.", "RelatedTo": "Reasoning"},
+      {"name": "Individual", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Whose value it is.", "RelatedTo": "Individuals"},
+      {"name": "IndividualLabel", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 1. Whose value it is, by name.", "formula": "=INDEX(Individuals!{{Label}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"},
+      {"name": "GradeLevel", "datatype": "integer", "type": "raw", "nullable": false, "Description": "The value stated."},
+      {"name": "StatedSeq", "datatype": "integer", "type": "raw", "nullable": false, "Description": "When the value was switched on, in the order facts are stated (transaction time). The latest one switched on is in effect."},
+      {"name": "IsOn", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "The value is switched on. A value switched off stays in the record."},
+      {"name": "IndividualLatestSeq", "datatype": "integer", "type": "lookup", "nullable": true, "Description": "Order 2. When the individual's latest value switched on was stated.", "formula": "=INDEX(Individuals!{{LatestGradeLevelSeq}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"},
+      {"name": "IsCurrent", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 3. This value is the one in effect: switched on, and the latest switched on.", "formula": "=AND({{IsOn}}, {{StatedSeq}} = {{IndividualLatestSeq}})"},
+      {"name": "KeyIsCanonical", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 1. The key is individual|grade|StatedSeq, the key the individual's current value is looked up by.", "formula": "={{GradeLevelRecordId}} = CONCAT({{Individual}}, \"|grade|\", {{StatedSeq}})"}
+    ],
+    "data": [
+      {"GradeLevelRecordId": "Stan|grade|8", "Reasoning": "south-park", "Individual": "Stan", "GradeLevel": 4, "StatedSeq": 8, "IsOn": true}
+    ]
+  },
+  "RoleRecords": {
+    "Description": "Every role stated for an individual; the latest one switched on is in effect, like a grade level.",
+    "schema": [
+      {"name": "RoleRecordId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Key: individual|role|when it was stated."},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "Description": "Order 2. The fact in words.", "formula": "=CONCAT({{IndividualLabel}}, \" has role \", {{Role}})"},
+      {"name": "Reasoning", "datatype": "string", "type": "relationship", "nullable": false, "Description": "The world this record belongs to.", "RelatedTo": "Reasoning"},
+      {"name": "Individual", "datatype": "string", "type": "relationship", "nullable": false, "Description": "Whose value it is.", "RelatedTo": "Individuals"},
+      {"name": "IndividualLabel", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Order 1. Whose value it is, by name.", "formula": "=INDEX(Individuals!{{Label}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"},
+      {"name": "Role", "datatype": "string", "type": "raw", "nullable": false, "Description": "The value stated."},
+      {"name": "StatedSeq", "datatype": "integer", "type": "raw", "nullable": false, "Description": "When the value was switched on, in the order facts are stated (transaction time). The latest one switched on is in effect."},
+      {"name": "IsOn", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "The value is switched on. A value switched off stays in the record."},
+      {"name": "IndividualLatestSeq", "datatype": "integer", "type": "lookup", "nullable": true, "Description": "Order 2. When the individual's latest value switched on was stated.", "formula": "=INDEX(Individuals!{{LatestRoleSeq}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"},
+      {"name": "IsCurrent", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 3. This value is the one in effect: switched on, and the latest switched on.", "formula": "=AND({{IsOn}}, {{StatedSeq}} = {{IndividualLatestSeq}})"},
+      {"name": "KeyIsCanonical", "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Order 1. The key is individual|role|StatedSeq, the key the individual's current value is looked up by.", "formula": "={{RoleRecordId}} = CONCAT({{Individual}}, \"|role|\", {{StatedSeq}})"}
+    ],
+    "data": [
+      {"RoleRecordId": "Stan|role|9", "Reasoning": "south-park", "Individual": "Stan", "Role": "Student", "StatedSeq": 9, "IsOn": true}
+    ]
+  }
+}

@@ -128,6 +128,18 @@ them there. See "Two forms of one rulebook" in the README.
   covers it on each engine, through Excel and through the file;
   `python3 ../../scripts/tests/test_ontology_form.py` covers the mapping.
 
+## The SDLAF form: `talismans-southpark-sdlaf/` (2026-11-27)
+
+A project of its own inside this one (its own `effortless.json`, database
+`erb_talismans_southpark_sdlaf`): the same world written as an ordinary rulebook, with no
+statement store and no rule engine. Facts are rows and columns of the tables they are about
+(`Individuals`, `Parenthoods`, `Marriages`, `Friendships`, `GradeLevelRecords`, `RoleRecords`) and
+each of her rules is a field, switched by the one `Reasoning` row. It is hand-written and is
+HEAD for itself; nothing generates it yet. Matching it to this project's rulebook (the same
+conclusions from both) is the next step, not done. Build it with `effortless build` in that
+folder and test it with `python3 testing/test_sdlaf.py` there; its README maps each fact and
+rule to its field.
+
 ## Formula traps found here (all three engines must agree)
 
 - **Arithmetic on a blank, and a lookup through an empty link.** Postgres, TypeScript and
