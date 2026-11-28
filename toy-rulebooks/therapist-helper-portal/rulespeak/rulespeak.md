@@ -1,4 +1,4 @@
-# 📘 Therapist Helper Portal — RuleSpeak®
+# 📘 Therapist Helper Portal — Docs
 
 _Sessions and treatment progress: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk three-hop DAG._
 
@@ -16,6 +16,22 @@ _Sessions and treatment progress: GoalUpdate → Goal.ProgressPct → Client.IsA
 | Role | A defined attribute. | _therapist \| supervisor \| client_ |
 | Name | The same as its users ID. | — |
 | Client Count | The number of clients related to the user. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Full Name | Role | Name ƒ | Client Count ƒ |
+|---|---|---|---|
+| Dr. Tess Brennan | therapist | tess@example.com | 2 |
+| Dr. Rob Singh | therapist | rob@example.com | 2 |
+| Dr. Sue Chen (Supervisor) | supervisor | sue@example.com | 0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Client** | People in treatment. Each has an assigned therapist, a set of goals, and a stream of sessions. | — |
 | Client Name | A defined attribute. | — |
 | Therapist | A defined attribute. | _FK to Users.UsersId._ |
@@ -29,6 +45,22 @@ _Sessions and treatment progress: GoalUpdate → Goal.ProgressPct → Client.IsA
 | Last Session Label | The largest session label across the sessions related to the client. | _Most recent session label for this client._ |
 | Is At Risk | True when at least one of the following holds: the avg mood rating is less than 5 or the avg goal progress is less than 50. | _3rd-order: low mood OR low avg goal progress._ |
 | Status Label | Determined by priority: “At risk” if the at risk flag is set; in all other cases, “On track”. | _4th-order: human-readable client status derived from IsAtRisk._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Client Name | Therapist Name ƒ | Start Date | Name ƒ | Session Count ƒ | Avg Mood Rating ƒ | Goal Count ƒ | Avg Goal Progress ƒ | Last Session Label ƒ | Is At Risk ƒ | Status Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Alex Rivera | Dr. Tess Brennan | 2026-01-15 | alex-r | 3 | 7.333333333333333 | 2 | 80.35714285714286 | 2026-04-16 am | false | On track |
+| Blair Morgan | Dr. Tess Brennan | 2026-02-03 | blair-m | 3 | 4.0 | 2 | 49.99999999999999 | 2026-04-17 pm | true | At risk |
+| Casey Lin | Dr. Rob Singh | 2025-11-22 | casey-l | 2 | 6.5 | 2 | 67.85714285714286 | 2026-04-11 am | false | On track |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Goal** | Treatment goals owned by a client. TargetScore is editable. | — |
 | Title | A defined attribute. | — |
 | Client | A defined attribute. | — |
@@ -42,6 +74,22 @@ _Sessions and treatment progress: GoalUpdate → Goal.ProgressPct → Client.IsA
 | Progress Pct | Computed as the avg score achieved divided by the target score times 100 (or 0 if that can't be computed). | _2nd-order._ |
 | Remaining Gap | Computed as the largest of 0 and the target score minus the avg score achieved. | _2nd-order: distance to target._ |
 | Is on Track | True when the progress pct is at least 70. | _3rd-order._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Title | Client Name ƒ | Client Therapist ƒ | Target Score | Name ƒ | Update Count ƒ | Avg Score Achieved ƒ | Latest Score ƒ | Progress Pct ƒ | Remaining Gap ƒ | Is on Track ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Reduce anxiety in social settings | Alex Rivera | tess@example.com | 8 | alex-anxiety | 3 | 6.0 | 7.0 | 75.0 | 2.0 | true |
+| Improve sleep quality | Alex Rivera | tess@example.com | 7 | alex-sleep | 2 | 6.0 | 6.0 | 85.71428571428571 | 1.0 | true |
+| Stabilize daily mood | Blair Morgan | tess@example.com | 8 | blair-mood | 3 | 2.6666666666666665 | 3.0 | 33.33333333333333 | 5.333333333333334 | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Session** | Therapy sessions. MoodRating is editable and feeds the client-level rollup. | — |
 | Client | A defined attribute. | — |
 | Client Name | Taken from the linked client. | — |
@@ -55,6 +103,22 @@ _Sessions and treatment progress: GoalUpdate → Goal.ProgressPct → Client.IsA
 | Avg Score Achieved | The average score achieved across the goal updates related to the session. | _Average update score for this session._ |
 | Is Productive | True when all of the following hold: the update count is at least 2 and the avg score achieved is at least 5. | _2nd-order: session captured >=2 goal updates AND avg score >=5._ |
 | Status Label | Determined by priority: “Productive” if the productive flag is set; in all other cases, “Light”. | _3rd-order: human-readable session status derived from IsProductive._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Client Name ƒ | Client Therapist ƒ | Session Label | Duration Minutes | Mood Rating | Notes | Name ƒ | Update Count ƒ | Avg Score Achieved ƒ | Is Productive ƒ | Status Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Alex Rivera | tess@example.com | 2026-04-02 am | 50 | 7 | Good engagement. | ses-001 | 1 | 5.0 | false | Light |
+| Alex Rivera | tess@example.com | 2026-04-09 am | 50 | 8 | Reported better sleep. | ses-002 | 2 | 6.0 | true | Productive |
+| Alex Rivera | tess@example.com | 2026-04-16 am | 50 | 7 | — | ses-003 | 2 | 6.5 | true | Productive |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Goal Update** | Per-session goal progress entries. ScoreAchieved is editable. | — |
 | Goal | A defined attribute. | — |
 | Goal Title | Taken from the linked goal. | — |
@@ -65,6 +129,19 @@ _Sessions and treatment progress: GoalUpdate → Goal.ProgressPct → Client.IsA
 | Session Label | Taken from the linked session. | — |
 | Score Achieved | A defined attribute. | _0-10. EDITABLE._ |
 | Name | The same as its goal updates ID. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Goal Title ƒ | Goal Client ƒ | Goal Target Score ƒ | Goal Client Therapist ƒ | Session Label ƒ | Score Achieved | Name ƒ |
+|---|---|---|---|---|---|---|
+| Reduce anxiety in social settings | alex-r | 8.0 | tess@example.com | 2026-04-02 am | 5 | upd-001 |
+| Reduce anxiety in social settings | alex-r | 8.0 | tess@example.com | 2026-04-09 am | 6 | upd-002 |
+| Reduce anxiety in social settings | alex-r | 8.0 | tess@example.com | 2026-04-16 am | 7 | upd-003 |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -140,7 +217,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -181,8 +258,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

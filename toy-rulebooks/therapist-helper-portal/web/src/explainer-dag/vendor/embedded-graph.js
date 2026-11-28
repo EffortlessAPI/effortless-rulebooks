@@ -1281,7 +1281,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "A client is considered at-risk if all of the following:",
+          "headline": "A client is considered at-risk if any of the following:",
           "cases": [],
           "children": [
             {
@@ -2103,7 +2103,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "يُصنّف سجل «client» على أنه «at risk» إذا تحقق جميع ما يلي:",
+          "headline": "يُصنّف سجل «client» على أنه «at risk» إذا تحقق واحد على الأقل مما يلي:",
           "cases": [],
           "children": [
             {
@@ -2949,7 +2949,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Ein Client gilt als at risk, wenn alles Folgende gilt:",
+          "headline": "Ein Client gilt als at risk, wenn mindestens eines des Folgenden gilt:",
           "cases": [],
           "children": [
             {
@@ -3795,7 +3795,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un client se considera at risk si se cumple todo lo siguiente:",
+          "headline": "Un client se considera at risk si se cumple al menos una de las siguientes:",
           "cases": [],
           "children": [
             {
@@ -4641,7 +4641,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un client est considéré comme at risk si tout ce qui suit est vrai :",
+          "headline": "Un client est considéré comme at risk si au moins une des conditions suivantes est vraie :",
           "cases": [],
           "children": [
             {
@@ -5487,7 +5487,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "client “at risk” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "headline": "client “at risk” माना जाता है, यदि निम्नलिखित में से कम से कम एक सही हो:",
           "cases": [],
           "children": [
             {
@@ -6333,7 +6333,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Setiap client dianggap “at risk” jika semua kondisi berikut terpenuhi:",
+          "headline": "Setiap client dianggap “at risk” jika paling sedikit satu kondisi berikut terpenuhi:",
           "cases": [],
           "children": [
             {
@@ -7179,7 +7179,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un client è considerato at risk se vale tutto quanto segue:",
+          "headline": "Un client è considerato at risk se vale almeno una delle seguenti:",
           "cases": [],
           "children": [
             {
@@ -8025,7 +8025,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "次のすべてが成り立つ場合、clientは「At Risk」と見なされます:",
+          "headline": "次のいずれかが成り立つ場合、clientは「At Risk」と見なされます:",
           "cases": [],
           "children": [
             {
@@ -8871,7 +8871,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "다음 모두에 해당하는 경우, ‘client’ 레코드는 ‘at risk’에 해당하는 것으로 간주됩니다:",
+          "headline": "다음 중 하나 이상에 해당하는 경우, ‘client’ 레코드는 ‘at risk’에 해당하는 것으로 간주됩니다:",
           "cases": [],
           "children": [
             {
@@ -9717,7 +9717,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Een client geldt als at risk als al het volgende geldt:",
+          "headline": "Een client geldt als at risk als ten minste één van het volgende geldt:",
           "cases": [],
           "children": [
             {
@@ -10563,7 +10563,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Um client é considerado at risk se tudo o que segue for verdadeiro:",
+          "headline": "Um client é considerado at risk se pelo menos um dos seguintes for verdadeiro:",
           "cases": [],
           "children": [
             {
@@ -11409,7 +11409,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Client считается «at risk», если выполняется всё следующее:",
+          "headline": "Client считается «at risk», если выполняется хотя бы одно из следующего:",
           "cases": [],
           "children": [
             {
@@ -12255,7 +12255,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "“client” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “at risk” sayılır:",
+          "headline": "“client” kaydı, aşağıdakilerden en az biri sağlanıyor ise “at risk” sayılır:",
           "cases": [],
           "children": [
             {
@@ -13101,7 +13101,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Mỗi client được coi là “at risk” nếu tất cả các điều kiện sau đều đúng:",
+          "headline": "Mỗi client được coi là “at risk” nếu ít nhất một trong các điều kiện sau đúng:",
           "cases": [],
           "children": [
             {
@@ -13947,7 +13947,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "当以下全部成立时,client被视为“At Risk”:",
+          "headline": "当以下任一成立时,client被视为“At Risk”:",
           "cases": [],
           "children": [
             {
