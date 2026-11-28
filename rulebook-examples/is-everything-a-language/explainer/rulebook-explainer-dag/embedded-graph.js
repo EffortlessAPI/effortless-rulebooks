@@ -12500,4 +12500,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "ERBCustomizations": "ERB customization"
     }
   }
-} };
+}, stamp: "2b0a4a60eed2c56c" };

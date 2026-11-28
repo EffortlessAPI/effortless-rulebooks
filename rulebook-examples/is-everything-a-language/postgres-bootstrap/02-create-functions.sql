@@ -14,6 +14,113 @@
 SET check_function_bodies = off;
 
 -- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+
+-- ============================================================================
 -- LOOKUP FUNCTIONS
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
@@ -25,7 +132,7 @@ SET check_function_bodies = off;
 
 CREATE OR REPLACE FUNCTION calc_language_candidates_has_grammar(p_language_candidate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT has_syntax FROM language_candidates WHERE language_candidate_id = p_language_candidate_id) = TRUE)::boolean;
+  SELECT (COALESCE((SELECT has_syntax FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) = TRUE)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_language_candidates_question
@@ -45,7 +152,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_language_candidates_predicted_answer(p_language_candidate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT has_syntax FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND COALESCE((SELECT is_parsed FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND calc_language_candidates_is_description_of(p_language_candidate_id) AND COALESCE((SELECT has_linear_decoding_pressure FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND COALESCE((SELECT resolves_to_an_ast FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND COALESCE((SELECT is_stable_ontology_reference FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND NOT (COALESCE((SELECT can_be_held FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE)) AND NOT (COALESCE((SELECT has_identity FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE))))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT has_syntax FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE), FALSE) AND COALESCE(COALESCE((SELECT is_parsed FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE), FALSE) AND COALESCE(calc_language_candidates_is_description_of(p_language_candidate_id), FALSE) AND COALESCE(COALESCE((SELECT has_linear_decoding_pressure FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE), FALSE) AND COALESCE(COALESCE((SELECT resolves_to_an_ast FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE), FALSE) AND COALESCE(COALESCE((SELECT is_stable_ontology_reference FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT can_be_held FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE), FALSE)), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT has_identity FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_language_candidates_prediction_predicates
@@ -64,7 +171,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_language_candidates_prediction_fail(p_language_candidate_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_language_candidates_predicted_answer(p_language_candidate_id) AS val) SELECT (CONCAT(CASE WHEN NOT ((SELECT val FROM __erb_dedup_v1) = (SELECT is_language FROM language_candidates WHERE language_candidate_id = p_language_candidate_id)) THEN (CONCAT((SELECT NULLIF(name, '') FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), ' ', CASE WHEN (SELECT val FROM __erb_dedup_v1) THEN ('Is')::text ELSE ('Isn''t')::text END, ' a Family Feud Language, but ', CASE WHEN COALESCE((SELECT is_language FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN ('Is')::text ELSE ('Is Not')::text END, ' marked as a ''Language Candidate.'''))::text ELSE ('')::text END, CASE WHEN calc_language_candidates_is_open_closed_world_conflicted(p_language_candidate_id) THEN (' - Open World vs. Closed World Conflict.')::text ELSE ('')::text END))::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_language_candidates_predicted_answer(p_language_candidate_id) AS val) SELECT (CONCAT(CASE WHEN NOT (COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), FALSE) = COALESCE((SELECT is_language FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE), FALSE)) THEN (CONCAT((SELECT NULLIF(name, '') FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), ' ', CASE WHEN (SELECT val FROM __erb_dedup_v1) THEN ('Is')::text ELSE ('Isn''t')::text END, ' a Family Feud Language, but ', CASE WHEN COALESCE((SELECT is_language FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN ('Is')::text ELSE ('Is Not')::text END, ' marked as a ''Language Candidate.'''))::text ELSE ('')::text END, CASE WHEN calc_language_candidates_is_open_closed_world_conflicted(p_language_candidate_id) THEN (' - Open World vs. Closed World Conflict.')::text ELSE ('')::text END))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_language_candidates_is_description_of
@@ -73,7 +180,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_language_candidates_is_description_of(p_language_candidate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT distance_from_concept FROM language_candidates WHERE language_candidate_id = p_language_candidate_id))::NUMERIC > 1)::boolean;
+  SELECT (COALESCE(((SELECT distance_from_concept FROM language_candidates WHERE language_candidate_id = p_language_candidate_id))::NUMERIC, 0) > 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_language_candidates_is_open_closed_world_conflicted
@@ -82,7 +189,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_language_candidates_is_open_closed_world_conflicted(p_language_candidate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT is_open_world FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND COALESCE((SELECT is_closed_world FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT is_open_world FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE), FALSE) AND COALESCE(COALESCE((SELECT is_closed_world FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_language_candidates_relationship_to_concept
@@ -91,7 +198,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_language_candidates_relationship_to_concept(p_language_candidate_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN ((SELECT distance_from_concept FROM language_candidates WHERE language_candidate_id = p_language_candidate_id))::NUMERIC = 1 THEN ('IsMirrorOf')::text ELSE ('IsDescriptionOf')::text END)::text;
+  SELECT (CASE WHEN COALESCE(((SELECT distance_from_concept FROM language_candidates WHERE language_candidate_id = p_language_candidate_id))::NUMERIC, 0) = 1 THEN ('IsMirrorOf')::text ELSE ('IsDescriptionOf')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_language_candidates_hockett_assessed_count
@@ -111,7 +218,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_language_candidates_hockett_yes_count(p_language_candidate_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_hockett_assessments_is_yes_flag(hockett_assessment_id))::numeric), 0) FROM hockett_assessments WHERE language_candidate = (SELECT NULLIF(name, '') FROM language_candidates WHERE language_candidate_id = p_language_candidate_id)))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.verdict, ''), '') = 'Yes' THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM hockett_assessments erb_r1 WHERE language_candidate = (SELECT (SELECT NULLIF(name, '') FROM language_candidates WHERE language_candidate_id = p_language_candidate_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_language_candidates_is_hockett_assessed
@@ -121,7 +228,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_language_candidates_is_hockett_assessed(p_language_candidate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_language_candidates_hockett_assessed_count(p_language_candidate_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_language_candidates_hockett_assessed_count(p_language_candidate_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_language_candidates_hockett_score
@@ -131,7 +238,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_language_candidates_hockett_score(p_language_candidate_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_language_candidates_hockett_assessed_count(p_language_candidate_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN ('not assessed')::text ELSE (CONCAT(calc_language_candidates_hockett_yes_count(p_language_candidate_id), ' of ', (SELECT val FROM __erb_dedup_v1)))::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_language_candidates_hockett_assessed_count(p_language_candidate_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN ('not assessed')::text ELSE (CONCAT(calc_language_candidates_hockett_yes_count(p_language_candidate_id), ' of ', (SELECT val FROM __erb_dedup_v1)))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_language_candidates_hockett_vs_gate
@@ -141,7 +248,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_language_candidates_hockett_vs_gate(p_language_candidate_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_language_candidates_hockett_assessed_count(p_language_candidate_id) AS val), __erb_dedup_v2 AS (SELECT calc_language_candidates_predicted_answer(p_language_candidate_id) AS val), __erb_dedup_v3 AS (SELECT calc_language_candidates_hockett_yes_count(p_language_candidate_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN ('')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v2) AND (SELECT val FROM __erb_dedup_v3) < (SELECT val FROM __erb_dedup_v1)) THEN (CONCAT('The eight-clause gate says language; Hockett''s features hold for only ', (SELECT val FROM __erb_dedup_v3), ' of ', (SELECT val FROM __erb_dedup_v1), '.'))::text ELSE (CASE WHEN (NOT ((SELECT val FROM __erb_dedup_v2)) AND (SELECT val FROM __erb_dedup_v3) = (SELECT val FROM __erb_dedup_v1)) THEN ('Hockett''s features all hold, and the eight-clause gate says not a language.')::text ELSE ('')::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_language_candidates_hockett_assessed_count(p_language_candidate_id) AS val), __erb_dedup_v2 AS (SELECT calc_language_candidates_predicted_answer(p_language_candidate_id) AS val), __erb_dedup_v3 AS (SELECT calc_language_candidates_hockett_yes_count(p_language_candidate_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN ('')::text ELSE (CASE WHEN (COALESCE((SELECT val FROM __erb_dedup_v2), FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v3), 0) < COALESCE((SELECT val FROM __erb_dedup_v1), 0), FALSE)) THEN (CONCAT('The eight-clause gate says language; Hockett''s features hold for only ', (SELECT val FROM __erb_dedup_v3), ' of ', (SELECT val FROM __erb_dedup_v1), '.'))::text ELSE (CASE WHEN (COALESCE(NOT (COALESCE((SELECT val FROM __erb_dedup_v2), FALSE)), FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v3), 0) = COALESCE((SELECT val FROM __erb_dedup_v1), 0), FALSE)) THEN ('Hockett''s features all hold, and the eight-clause gate says not a language.')::text ELSE ('')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_hockett_features_assessment_count
@@ -161,7 +268,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_hockett_features_yes_count(p_hockett_feature_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_hockett_assessments_is_yes_flag(hockett_assessment_id))::numeric), 0) FROM hockett_assessments WHERE hockett_feature = (SELECT NULLIF(name, '') FROM hockett_features WHERE hockett_feature_id = p_hockett_feature_id)))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.verdict, ''), '') = 'Yes' THEN (1)::text ELSE (0)::text END)::integer))::integer)::numeric), 0) FROM hockett_assessments erb_r1 WHERE hockett_feature = (SELECT (SELECT NULLIF(name, '') FROM hockett_features WHERE hockett_feature_id = p_hockett_feature_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- get_language_candidates_name
@@ -370,7 +477,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_hockett_assessments_is_yes_flag(p_hockett_assessment_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(verdict, '') FROM hockett_assessments WHERE hockett_assessment_id = p_hockett_assessment_id) = 'Yes' THEN (1)::text ELSE (0)::text END)::integer;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(verdict, '') FROM hockett_assessments WHERE hockett_assessment_id = p_hockett_assessment_id), '') = 'Yes' THEN (1)::text ELSE (0)::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

@@ -1,4 +1,4 @@
-# 📘 Is Everything a Language? — RuleSpeak®
+# 📘 Is Everything a Language? — Docs
 
 _Semiotic candidates evaluated by formula — shows substrate-equality holds for non-CRUD ontologies too._
 
@@ -42,6 +42,22 @@ _Semiotic candidates evaluated by formula — shows substrate-equality holds for
 | Is Hockett Assessed | True when the hockett assessed count is greater than 0. | _TRUE once this candidate has at least one published design-feature assessment._ |
 | Hockett Score | Determined by priority: “not assessed” if the hockett assessed count is 0; in all other cases, the hockett yes count, followed by “ of ”, followed by the hockett assessed count. | _The design-feature tally as text, reading "not assessed" rather than "0" when there is no published assessment. A hand-written Postgres function used to sum eleven bio_has_* columns that were never in the rulebook, so every candidate silently scored zero; this field replaces it._ |
 | Hockett Vs Gate | Determined by priority: an empty string if the hockett assessed count is 0; “The eight-clause gate says language; Hockett's features hold for only ”, followed by the hockett yes count, followed by “ of ”, followed by the hockett assessed count, followed by a period if all of the following hold: the predicted answer flag is set and the hockett yes count is less than the hockett assessed count; “Hockett's features all hold, and the eight-clause gate says not a language.” if all of the following hold: the predicted answer flag is not set and the hockett yes count is the hockett assessed count; in all other cases, an empty string. | _Names the disagreement, in English, when the eight-clause gate and Hockett's design features reach opposite conclusions. Empty when they agree or when the candidate is unassessed._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Is Language | Has Grammar ƒ | Has Syntax | Can Be Held | Question ƒ | Predicted Answer ƒ | Prediction Predicates ƒ | Prediction Fail ƒ | Category | Has Identity | Is Parsed | Resolves to an AST | Has Linear Decoding Pressure | Is Stable Ontology Reference | Is Live Ontology Editor | Is Open World | Is Closed World | Is Description of ƒ | Distance From Concept | Is Open Closed World Conflicted ƒ | Dimensionality While Editing | Relationship to Concept ƒ | Model Object Facility Layer | Sort Order | Hockett Assessed Count ƒ | Hockett Yes Count ƒ | Is Hockett Assessed ƒ | Hockett Score ƒ | Hockett Vs Gate ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| English | true | true | true | false | Is English a language? | true | Has Syntax & Requires Parsing & Describes the thing & Has Linear Decoding Pressure & Resolves to AST, Is Stable Ontology AND Can't Be Held, Has no Identity | — | Natural Language | false | true | true | true | true | false | true | false | true | 2 | false | OneDimensionalSymbolic | IsDescriptionOf | M1 | 1 | 13 | 13 | true | 13 of 13 | — |
+| A Coffee Mug | false | false | false | true | Is A Coffee Mug a language? | false | No Syntax & No Parsing Neede & Is the Thing & No Decoding Pressure & No AST, Not 'Ontology' AND Can Be Held, Has Identity | — | Physical Object | true | false | false | false | false | false | false | true | false | 1 | false | N/A | IsMirrorOf | NA | 2 | 0 | 0 | false | not assessed | — |
+| Spoken Words | true | true | true | false | Is Spoken Words a language? | true | Has Syntax & Requires Parsing & Describes the thing & Has Linear Decoding Pressure & Resolves to AST, Is Stable Ontology AND Can't Be Held, Has no Identity | — | Natural Language | false | true | true | true | true | false | true | false | true | 2 | false | OneDimensionalSymbolic | IsDescriptionOf | M1 | 3 | 13 | 13 | true | 13 of 13 | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Is Everything a Language** | An is everything a language is identified by its name. | — |
 | Name | A defined attribute. | — |
 | Argument Name | A defined attribute. | — |
@@ -53,6 +69,20 @@ _Semiotic candidates evaluated by formula — shows substrate-equality holds for
 | Related Candidate ID | A defined attribute. | — |
 | Evidence From Rulebook | A defined attribute. | — |
 | Notes | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Argument Name | Argument Category | Step Type | Statement | Formalization | Related Candidate Name | Related Candidate ID | Evidence From Rulebook | Notes |
+|---|---|---|---|---|---|---|---|---|---|
+| NEIAL-001 | LanguageCanBeFormalized | Definition | Motivation | To avoid the slogan 'Everything is a language', treat 'language' as a typed construct defined by testable properties (syntax, parsing, linear decoding pressure, and descriptor-role). | — | — | — | — | This keeps 'can be interpreted' separate from 'is a language system'. |
+| NEIAL-002 | LanguageCanBeFormalized | Definition | PredicateSet | Use the repo predicates: HasSyntax, RequiresParsing, HasLinearDecodingPressure, StableOntologyReference (spelled IsOngologyDescriptor in the dataset), plus auxiliary checks like CanBeHeld and HasIdentity. | Predicates: Syntax(x), Parse(x), SerializeMeaning(x), OntDesc(x), Tangible(x) | — | — | — | We preserve the dataset's field name even when misspelled to match the generated schema. |
+| NEIAL-003 | LanguageCanBeFormalized | Definition | Definition | Operational definition: an item x counts as a Language if it has syntax, requires parsing, serializes meaning, and functions as an ontology/descriptor system. | Language(x) := HasSyntax(x) ∧ RequiresParsing(x) ∧ HasLinearDecodingPressure(x) ∧ StableOntologyReference(x) | — | — | — | This is a deliberately 'strong' definition: it matches formal languages and many natural language representations. |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Hockett Feature** | A hockett feature is identified by its name. | — |
 | Name | A defined attribute. | _The design feature's name, as Hockett gives it._ |
 | Feature Number | A defined attribute. | _Hockett's own numbering, 1 through 13, then 14 through 16 for the 1968 additions._ |
@@ -61,6 +91,22 @@ _Semiotic candidates evaluated by formula — shows substrate-equality holds for
 | Source | A defined attribute. | _Citation for the feature list._ |
 | Assessment Count | The number of hockett assessments related to the hockett feature. | _How many candidates have been assessed against this feature._ |
 | Yes Count | The total is yes flag across the hockett assessments related to the hockett feature. | _How many assessed candidates satisfy this feature outright._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Feature Number | Definition | Is Original Thirteen | Source | Assessment Count ƒ | Yes Count ƒ |
+|---|---|---|---|---|---|---|
+| Vocal-Auditory Channel | 1 | Signals are made with the vocal tract and received by the auditory system. | true | Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968). | 5 | 2 |
+| Broadcast Transmission And Directional Reception | 2 | The signal radiates to any receiver in range, and a receiver can locate its source. | true | Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968). | 5 | 5 |
+| Rapid Fading | 3 | The signal does not persist. Unlike a track, a spoor or a written record, it is gone once transmitted and will not wait for the hearer's convenience. | true | Hockett, C. F. (1960). The Origin of Speech. Scientific American 203(3), 88-96. Features 14-16 were added in Hockett & Altmann (1968). | 5 | 4 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Hockett Assessment** | A hockett assessment is identified by its name and is related to a language candidate and a hockett feature. | — |
 | Name | Computed as the language candidate, followed by “ / ”, followed by the hockett feature. | _Logical key: the candidate and the feature being assessed._ |
 | Language Candidate | A defined attribute. | _FK to the candidate being assessed._ |
@@ -70,12 +116,39 @@ _Semiotic candidates evaluated by formula — shows substrate-equality holds for
 | Source Citation | A defined attribute. | _Where this cell came from, including which column._ |
 | Mapping Note | A defined attribute. | _Empty when this candidate corresponds exactly to the source's column. Otherwise, how the two differ and how far the row should be trusted._ |
 | Is Yes Flag | True when the verdict is “Yes”. | _1 when the verdict is an outright Yes, else 0. Summed by the rollups on LanguageCandidates and HockettFeatures._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Verdict | Verbatim Assessment | Source Citation | Mapping Note | Is Yes Flag ƒ |
+|---|---|---|---|---|---|
+| Honeybee Waggle Dance / Vocal-Auditory Channel | No | No | Comparative chart of Hockett's design features, J. Coleman, University of Oxford Phonetics Laboratory, phon.ox.ac.uk/jcoleman/design_features.htm, column "Bee dancing". | — | 0 |
+| Honeybee Waggle Dance / Broadcast Transmission And Directional Reception | Yes | Yes | Comparative chart of Hockett's design features, J. Coleman, University of Oxford Phonetics Laboratory, phon.ox.ac.uk/jcoleman/design_features.htm, column "Bee dancing". | — | 1 |
+| Honeybee Waggle Dance / Rapid Fading | Unknown | ? | Comparative chart of Hockett's design features, J. Coleman, University of Oxford Phonetics Laboratory, phon.ox.ac.uk/jcoleman/design_features.htm, column "Bee dancing". | — | 0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Customization** | An ERB customization is identified by its name. | — |
 | Name | A defined attribute. | — |
 | Title | A defined attribute. | — |
 | SQL Code | A defined attribute. | — |
 | SQL Target | A defined attribute. | — |
 | Customization Type | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Title | SQL Code | SQL Target | Customization Type |
+|---|---|---|---|---|
+| 01b-customize-schema.sql | Customize Schema | -- ============================================================================<br>-- CUSTOMIZE SCHEMA - User-defined tables and schema modifications<br>-- ============================================================================<br>-- This file is for YOUR custom schema changes that should persist across<br>-- regeneration of the base ERB files.<br>--<br>-- USE THIS FILE FOR:<br>--   - Additional tables not defined in the rulebook<br>--   - Extra columns on existing tables (ALTER TABLE)<br>--   - Custom indexes for performance tuning<br>--   - Custom constraints or triggers<br>--<br>-- IMPORTANT:<br>--   - This file runs AFTER 01-drop-and-create-tables.sql<br>--   - The base tables already exist when this runs<br>--   - This file will NOT be overwritten by ERB regeneration<br>--<br>-- ============================================================================<br><br>-- Your custom schema changes go here:<br> | Postgres | Schema |
+| 02b-customize-functions.sql | Customize Functions | -- Prediction Fail: Returns TRUE when predicted_answer doesn't match is_language<br>DROP FUNCTION calc_language_candidates_question;<br><br>CREATE OR REPLACE FUNCTION public.calc_language_candidates_question(p_language_candidate_id text)<br> RETURNS text<br> LANGUAGE plpgsql<br> STABLE SECURITY DEFINER<br>AS $function$<br>BEGIN<br>  RETURN ('Is ' \|\| (SELECT NULLIF(name, '''') FROM language_candidates WHERE language_candidate_id = p_language_candidate_id) \|\| ' a language?')::text;<br>END;<br>$function$;<br><br>-- calc_language_candidates_bio_hockett_score was removed here. It summed eleven<br>-- bio_has_* columns that were never declared in the rulebook, so it could only<br>-- error when called or report every candidate as scoring zero. Hockett's design<br>-- features are now first-class rulebook data (HockettFeatures,<br>-- HockettAssessments) and LanguageCandidates.HockettScore is computed from them.<br>-- The DROP is explicit because a check-add rebuild does not remove a function<br>-- that has merely stopped being created.<br>DROP FUNCTION IF EXISTS calc_language_candidates_bio_hockett_score(text);<br> | Postgres | Functions |
+| 03b-customize-views.sql | Customize Views | -- ============================================================================<br>-- CUSTOMIZE VIEWS - User-defined views and view extensions<br>-- ============================================================================<br>-- This file is for YOUR custom views that should persist across<br>-- regeneration of the base ERB files.<br>--<br>-- IMPORTANT:<br>--   - This file runs AFTER 03-create-views.sql<br>--   - All base vw_* views already exist when this runs<br>--   - This file will NOT be overwritten by ERB regeneration<br>--<br>-- ============================================================================<br><br>-- Your custom views go here:<br> | Postgres | Views |
+
+</details>
 
 ## 2 Fact Types
 
@@ -124,7 +197,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -149,8 +222,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)
