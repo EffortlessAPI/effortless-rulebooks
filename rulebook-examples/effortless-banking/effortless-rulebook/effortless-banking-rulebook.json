@@ -401,20 +401,20 @@
         "RelationshipManagerLabel": "Devon Marshall",
         "IsCustomer": true,
         "IsProspect": false,
-        "WasReferred": true,
+        "WasReferred": false,
         "CountOfBeneficialOwners": 2,
         "CountOfContacts": 2,
         "CountOfAccounts": 2,
         "CountOfLoans": 1,
         "CountOfInteractions": 3,
         "CountOfDocuments": 2,
-        "TotalDepositBalanceUsd": "259250.13",
-        "TotalLoanPrincipalUsd": "250000",
-        "CountOfClassifiedLoans": 1,
-        "HasClassifiedLoan": true,
+        "TotalDepositBalanceUsd": 259250.13,
+        "TotalLoanPrincipalUsd": 250000,
+        "CountOfClassifiedLoans": 0,
+        "HasClassifiedLoan": false,
         "BeneficialOwnersAtCddThreshold": 2,
         "MeetsCddRule": true,
-        "PortfolioPriority": "High"
+        "PortfolioPriority": "Low"
       },
       {
         "Name": "ridgeway-consulting-llc",
@@ -430,20 +430,20 @@
         "RelationshipManagerLabel": "Devon Marshall",
         "IsCustomer": true,
         "IsProspect": false,
-        "WasReferred": true,
+        "WasReferred": false,
         "CountOfBeneficialOwners": 1,
         "CountOfContacts": 1,
         "CountOfAccounts": 1,
         "CountOfLoans": 1,
         "CountOfInteractions": 1,
         "CountOfDocuments": 0,
-        "TotalDepositBalanceUsd": "92800",
-        "TotalLoanPrincipalUsd": "100000",
-        "CountOfClassifiedLoans": 1,
-        "HasClassifiedLoan": true,
+        "TotalDepositBalanceUsd": 92800,
+        "TotalLoanPrincipalUsd": 100000,
+        "CountOfClassifiedLoans": 0,
+        "HasClassifiedLoan": false,
         "BeneficialOwnersAtCddThreshold": 1,
         "MeetsCddRule": true,
-        "PortfolioPriority": "High"
+        "PortfolioPriority": "Low"
       },
       {
         "Name": "pine-hardware-inc",
@@ -459,15 +459,15 @@
         "RelationshipManagerLabel": "Devon Marshall",
         "IsCustomer": true,
         "IsProspect": false,
-        "WasReferred": true,
+        "WasReferred": false,
         "CountOfBeneficialOwners": 2,
         "CountOfContacts": 1,
         "CountOfAccounts": 1,
         "CountOfLoans": 1,
         "CountOfInteractions": 4,
         "CountOfDocuments": 1,
-        "TotalDepositBalanceUsd": "612430.55",
-        "TotalLoanPrincipalUsd": "1850000",
+        "TotalDepositBalanceUsd": 612430.55,
+        "TotalLoanPrincipalUsd": 1850000,
         "CountOfClassifiedLoans": 1,
         "HasClassifiedLoan": true,
         "BeneficialOwnersAtCddThreshold": 2,
@@ -488,15 +488,15 @@
         "RelationshipManagerLabel": "Devon Marshall",
         "IsCustomer": true,
         "IsProspect": false,
-        "WasReferred": true,
+        "WasReferred": false,
         "CountOfBeneficialOwners": 0,
         "CountOfContacts": 0,
         "CountOfAccounts": 1,
         "CountOfLoans": 0,
         "CountOfInteractions": 1,
         "CountOfDocuments": 0,
-        "TotalDepositBalanceUsd": "41250",
-        "TotalLoanPrincipalUsd": "0",
+        "TotalDepositBalanceUsd": 41250,
+        "TotalLoanPrincipalUsd": 0,
         "CountOfClassifiedLoans": 0,
         "HasClassifiedLoan": false,
         "BeneficialOwnersAtCddThreshold": 0,
@@ -524,8 +524,8 @@
         "CountOfLoans": 0,
         "CountOfInteractions": 0,
         "CountOfDocuments": 0,
-        "TotalDepositBalanceUsd": "0",
-        "TotalLoanPrincipalUsd": "0",
+        "TotalDepositBalanceUsd": 0,
+        "TotalLoanPrincipalUsd": 0,
         "CountOfClassifiedLoans": 0,
         "HasClassifiedLoan": false,
         "BeneficialOwnersAtCddThreshold": 0,
@@ -933,9 +933,9 @@
         "HasWire": true,
         "HasCard": false,
         "OpenedAt": "2024-03-13T00:00:00Z",
-        "BusinessLabel": "Sunset Auto Body LLC",
-        "TreasuryServiceCount": 0,
-        "HasAnyTreasuryService": false
+        "BusinessLabel": "Stillwater Roasters LLC",
+        "TreasuryServiceCount": 2,
+        "HasAnyTreasuryService": true
       },
       {
         "Name": "stillwater-roasters-llc-savings-0101",
@@ -961,9 +961,9 @@
         "HasWire": true,
         "HasCard": true,
         "OpenedAt": "2019-06-22T00:00:00Z",
-        "BusinessLabel": "Sunset Auto Body LLC",
-        "TreasuryServiceCount": 0,
-        "HasAnyTreasuryService": false
+        "BusinessLabel": "Pine Hardware Inc.",
+        "TreasuryServiceCount": 3,
+        "HasAnyTreasuryService": true
       },
       {
         "Name": "ridgeway-consulting-llc-checking-0300",
@@ -975,9 +975,9 @@
         "HasWire": false,
         "HasCard": false,
         "OpenedAt": "2023-09-06T00:00:00Z",
-        "BusinessLabel": "Sunset Auto Body LLC",
-        "TreasuryServiceCount": 0,
-        "HasAnyTreasuryService": false
+        "BusinessLabel": "Ridgeway Consulting LLC",
+        "TreasuryServiceCount": 1,
+        "HasAnyTreasuryService": true
       },
       {
         "Name": "sunset-auto-body-llc-checking-0400",
@@ -1294,13 +1294,13 @@
         "LtvInBand": true,
         "SegregationOfDutiesOk": true,
         "CountOfCovenants": 3,
-        "CountOfBreachedCovenants": 3,
+        "CountOfBreachedCovenants": 0,
         "CountOfRiskRatingHistory": 1,
         "CountOfDocuments": 2,
-        "HasBreachedCovenant": true,
-        "OnWatchlist": true,
-        "HealthScore": 3,
-        "UnderwriterIsAdmin": null
+        "HasBreachedCovenant": false,
+        "OnWatchlist": false,
+        "HealthScore": 4,
+        "UnderwriterIsAdmin": true
       },
       {
         "Name": "l-0042",
@@ -1335,7 +1335,7 @@
         "HasBreachedCovenant": true,
         "OnWatchlist": true,
         "HealthScore": 1,
-        "UnderwriterIsAdmin": null
+        "UnderwriterIsAdmin": false
       },
       {
         "Name": "l-0078",
@@ -1370,7 +1370,7 @@
         "HasBreachedCovenant": false,
         "OnWatchlist": false,
         "HealthScore": 4,
-        "UnderwriterIsAdmin": null
+        "UnderwriterIsAdmin": true
       }
     ]
   },
@@ -1478,10 +1478,10 @@
         "NextTestDate": "2025-06-30T00:00:00Z",
         "Status": "Active",
         "CurrentWaiverThrough": null,
-        "LoanLabel": "L-0042",
-        "LoanBusiness": "pine-hardware-inc",
-        "IsBreached": true,
-        "HasActiveWaiver": true
+        "LoanLabel": "L-0051",
+        "LoanBusiness": "stillwater-roasters-llc",
+        "IsBreached": false,
+        "HasActiveWaiver": false
       },
       {
         "Name": "l-0051-maxleverage",
@@ -1641,7 +1641,13 @@
         "EffectiveDate": "2021-05-20T00:00:00Z",
         "PriorGrade": null,
         "NewGrade": 4,
-        "Reason": "Initial rating at funding."
+        "Reason": "Initial rating at funding.",
+        "LoanLabel": "L-0042",
+        "ChangedByUserLabel": "Thomas Bell",
+        "GradeDelta": 0,
+        "IsDowngrade": false,
+        "IsInitialRating": true,
+        "CrossedClassifiedThreshold": false
       },
       {
         "Name": "l-0042-2025-05-02-grade-6",
@@ -1650,7 +1656,13 @@
         "EffectiveDate": "2025-05-02T00:00:00Z",
         "PriorGrade": 4,
         "NewGrade": 6,
-        "Reason": "DSCR covenant breach; downgrade to Special Mention."
+        "Reason": "DSCR covenant breach; downgrade to Special Mention.",
+        "LoanLabel": "L-0042",
+        "ChangedByUserLabel": "Thomas Bell",
+        "GradeDelta": 2,
+        "IsDowngrade": true,
+        "IsInitialRating": false,
+        "CrossedClassifiedThreshold": false
       },
       {
         "Name": "l-0042-2025-08-15-grade-7",
@@ -1659,7 +1671,13 @@
         "EffectiveDate": "2025-08-15T00:00:00Z",
         "PriorGrade": 6,
         "NewGrade": 7,
-        "Reason": "Sustained underperformance; downgrade to Substandard. Added to Watchlist."
+        "Reason": "Sustained underperformance; downgrade to Substandard. Added to Watchlist.",
+        "LoanLabel": "L-0042",
+        "ChangedByUserLabel": "Thomas Bell",
+        "GradeDelta": 1,
+        "IsDowngrade": true,
+        "IsInitialRating": false,
+        "CrossedClassifiedThreshold": true
       },
       {
         "Name": "l-0051-2025-03-01-grade-4",
@@ -1668,7 +1686,13 @@
         "EffectiveDate": "2025-03-01T00:00:00Z",
         "PriorGrade": null,
         "NewGrade": 4,
-        "Reason": "Initial rating at funding."
+        "Reason": "Initial rating at funding.",
+        "LoanLabel": "L-0051",
+        "ChangedByUserLabel": "Priya Iyer",
+        "GradeDelta": 0,
+        "IsDowngrade": false,
+        "IsInitialRating": true,
+        "CrossedClassifiedThreshold": false
       },
       {
         "Name": "l-0078-2024-08-22-grade-3",
@@ -1677,7 +1701,13 @@
         "EffectiveDate": "2024-08-22T00:00:00Z",
         "PriorGrade": null,
         "NewGrade": 3,
-        "Reason": "Initial rating at funding; strong cash flow coverage."
+        "Reason": "Initial rating at funding; strong cash flow coverage.",
+        "LoanLabel": "L-0078",
+        "ChangedByUserLabel": "Priya Iyer",
+        "GradeDelta": 0,
+        "IsDowngrade": false,
+        "IsInitialRating": true,
+        "CrossedClassifiedThreshold": false
       }
     ]
   },
@@ -1806,7 +1836,7 @@
         "BusinessLabel": "Stillwater Roasters LLC",
         "LoanLabel": null,
         "UploadedByUserLabel": "Devon Marshall",
-        "AttachedTo": "Loan",
+        "AttachedTo": "Business",
         "FromCustomerPortal": false
       },
       {
@@ -1854,7 +1884,7 @@
         "BusinessLabel": "Stillwater Roasters LLC",
         "LoanLabel": null,
         "UploadedByUserLabel": null,
-        "AttachedTo": "Loan",
+        "AttachedTo": "Business",
         "FromCustomerPortal": true
       },
       {
@@ -1870,7 +1900,7 @@
         "BusinessLabel": "Pine Hardware Inc.",
         "LoanLabel": null,
         "UploadedByUserLabel": "Devon Marshall",
-        "AttachedTo": "Loan",
+        "AttachedTo": "Business",
         "FromCustomerPortal": false
       }
     ]
@@ -2005,10 +2035,10 @@
         "DueDate": null,
         "Source": "RMDashboard",
         "BusinessLabel": "Stillwater Roasters LLC",
-        "UserLabel": null,
+        "UserLabel": "Devon Marshall",
         "IsSystemEvent": false,
         "IsTask": false,
-        "FromCustomer": true,
+        "FromCustomer": false,
         "IsCovenantEvent": false
       },
       {
@@ -2089,8 +2119,8 @@
         "InteractionDate": "2025-04-15T00:00:00Z",
         "DueDate": null,
         "Source": "SystemEvent",
-        "BusinessLabel": "Sunset Auto Body LLC",
-        "UserLabel": "Renee Okafor",
+        "BusinessLabel": "Pine Hardware Inc.",
+        "UserLabel": null,
         "IsSystemEvent": true,
         "IsTask": false,
         "FromCustomer": false,
@@ -2106,12 +2136,12 @@
         "InteractionDate": "2025-05-02T00:00:00Z",
         "DueDate": null,
         "Source": "SystemEvent",
-        "BusinessLabel": "Sunset Auto Body LLC",
-        "UserLabel": "Renee Okafor",
+        "BusinessLabel": "Pine Hardware Inc.",
+        "UserLabel": null,
         "IsSystemEvent": true,
         "IsTask": false,
         "FromCustomer": false,
-        "IsCovenantEvent": false
+        "IsCovenantEvent": true
       },
       {
         "Name": "sunset-auto-body-llc-2025-05-04-systemevent-sar-filed-bsa-aml",

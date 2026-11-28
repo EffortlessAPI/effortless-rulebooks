@@ -1,0 +1,67 @@
+[
+  {
+    "name": null,
+    "full_name": "Devon Marshall",
+    "role": "RM",
+    "email": "devon.marshall@firstvalley.bank",
+    "is_rm": null,
+    "is_underwriter": null,
+    "is_branch_banker": null,
+    "is_admin": null,
+    "count_of_portfolio_businesses": null,
+    "count_of_originated_loans": null,
+    "count_of_underwritten_loans": null
+  },
+  {
+    "name": null,
+    "full_name": "Maya Chen",
+    "role": "BranchBanker",
+    "email": "maya.chen@firstvalley.bank",
+    "is_rm": null,
+    "is_underwriter": null,
+    "is_branch_banker": null,
+    "is_admin": null,
+    "count_of_portfolio_businesses": null,
+    "count_of_originated_loans": null,
+    "count_of_underwritten_loans": null
+  },
+  {
+    "name": null,
+    "full_name": "Priya Iyer",
+    "role": "Admin",
+    "email": "priya.iyer@firstvalley.bank",
+    "is_rm": null,
+    "is_underwriter": null,
+    "is_branch_banker": null,
+    "is_admin": null,
+    "count_of_portfolio_businesses": null,
+    "count_of_originated_loans": null,
+    "count_of_underwritten_loans": null
+  },
+  {
+    "name": null,
+    "full_name": "Renee Okafor",
+    "role": "Admin",
+    "email": "renee.okafor@firstvalley.bank",
+    "is_rm": null,
+    "is_underwriter": null,
+    "is_branch_banker": null,
+    "is_admin": null,
+    "count_of_portfolio_businesses": null,
+    "count_of_originated_loans": null,
+    "count_of_underwritten_loans": null
+  },
+  {
+    "name": null,
+    "full_name": "Thomas Bell",
+    "role": "Underwriter",
+    "email": "thomas.bell@firstvalley.bank",
+    "is_rm": null,
+    "is_underwriter": null,
+    "is_branch_banker": null,
+    "is_admin": null,
+    "count_of_portfolio_businesses": null,
+    "count_of_originated_loans": null,
+    "count_of_underwritten_loans": null
+  }
+]

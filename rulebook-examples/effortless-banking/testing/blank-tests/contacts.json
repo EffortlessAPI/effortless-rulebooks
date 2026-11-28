@@ -1,0 +1,54 @@
+[
+  {
+    "name": null,
+    "business": "pine-hardware-inc",
+    "full_name": "Marta Keene",
+    "title": "AP Clerk",
+    "email": "ap@pinehardware.com",
+    "phone": "555-0188",
+    "contact_type": "APClerk",
+    "is_authorized_signer": false,
+    "business_label": null,
+    "is_officer": null,
+    "is_ap_clerk": null
+  },
+  {
+    "name": null,
+    "business": "ridgeway-consulting-llc",
+    "full_name": "Alex Ridgeway",
+    "title": "CEO",
+    "email": "alex@ridgeway.co",
+    "phone": "555-0260",
+    "contact_type": "Officer",
+    "is_authorized_signer": true,
+    "business_label": null,
+    "is_officer": null,
+    "is_ap_clerk": null
+  },
+  {
+    "name": null,
+    "business": "stillwater-roasters-llc",
+    "full_name": "Jordan Park",
+    "title": "CEO",
+    "email": "jordan@stillwaterroasters.com",
+    "phone": "555-0142",
+    "contact_type": "Officer",
+    "is_authorized_signer": true,
+    "business_label": null,
+    "is_officer": null,
+    "is_ap_clerk": null
+  },
+  {
+    "name": null,
+    "business": "stillwater-roasters-llc",
+    "full_name": "Sam Rivera",
+    "title": "CFO",
+    "email": "sam@stillwaterroasters.com",
+    "phone": "555-0143",
+    "contact_type": "Officer",
+    "is_authorized_signer": true,
+    "business_label": null,
+    "is_officer": null,
+    "is_ap_clerk": null
+  }
+]

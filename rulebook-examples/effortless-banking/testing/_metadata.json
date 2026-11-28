@@ -1,0 +1,149 @@
+{
+  "users": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "is_rm",
+      "is_underwriter",
+      "is_branch_banker",
+      "is_admin",
+      "count_of_portfolio_businesses",
+      "count_of_originated_loans",
+      "count_of_underwritten_loans"
+    ],
+    "record_count": 5
+  },
+  "businesses": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "relationship_manager_label",
+      "is_customer",
+      "is_prospect",
+      "was_referred",
+      "count_of_beneficial_owners",
+      "count_of_contacts",
+      "count_of_accounts",
+      "count_of_loans",
+      "count_of_interactions",
+      "count_of_documents",
+      "total_deposit_balance_usd",
+      "total_loan_principal_usd",
+      "count_of_classified_loans",
+      "has_classified_loan",
+      "beneficial_owners_at_cdd_threshold",
+      "meets_cdd_rule",
+      "portfolio_priority"
+    ],
+    "record_count": 5
+  },
+  "beneficial_owners": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "business_label",
+      "meets25_percent_threshold",
+      "meets_cdd_threshold"
+    ],
+    "record_count": 5
+  },
+  "contacts": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "business_label",
+      "is_officer",
+      "is_ap_clerk"
+    ],
+    "record_count": 4
+  },
+  "accounts": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "business_label",
+      "treasury_service_count",
+      "has_any_treasury_service"
+    ],
+    "record_count": 5
+  },
+  "loans": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "business_label",
+      "business_naics_code",
+      "originating_rm_label",
+      "underwriter_is_admin",
+      "is_funded",
+      "is_classified_asset",
+      "dscr_in_band",
+      "ltv_in_band",
+      "segregation_of_duties_ok",
+      "count_of_covenants",
+      "count_of_breached_covenants",
+      "count_of_risk_rating_history",
+      "count_of_documents",
+      "has_breached_covenant",
+      "on_watchlist",
+      "health_score"
+    ],
+    "record_count": 3
+  },
+  "covenants": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "loan_label",
+      "loan_business",
+      "is_breached",
+      "has_active_waiver"
+    ],
+    "record_count": 4
+  },
+  "risk_rating_history": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "loan_label",
+      "changed_by_user_label",
+      "grade_delta",
+      "is_downgrade",
+      "is_initial_rating",
+      "crossed_classified_threshold"
+    ],
+    "record_count": 5
+  },
+  "documents": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "business_label",
+      "loan_label",
+      "uploaded_by_user_label",
+      "attached_to",
+      "from_customer_portal"
+    ],
+    "record_count": 5
+  },
+  "interactions": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name",
+      "business_label",
+      "user_label",
+      "is_system_event",
+      "is_task",
+      "from_customer",
+      "is_covenant_event"
+    ],
+    "record_count": 9
+  },
+  "constraints": {
+    "primary_key": "name",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 5
+  }
+}

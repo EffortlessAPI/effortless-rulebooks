@@ -15,8 +15,8 @@
     "dscr": 1.08,
     "ltv": 0.71,
     "global_cash_flow_usd": 2100000,
-    "originated_at": "2021-04-14",
-    "funded_at": "2021-05-20",
+    "originated_at": "2021-04-14T00:00:00Z",
+    "funded_at": "2021-05-20T00:00:00Z",
     "business_label": "Pine Hardware Inc.",
     "business_naics_code": "444110",
     "originating_rm_label": "Devon Marshall",
@@ -50,8 +50,8 @@
     "dscr": 1.42,
     "ltv": 0.78,
     "global_cash_flow_usd": 612000,
-    "originated_at": "2025-02-10",
-    "funded_at": "2025-03-01",
+    "originated_at": "2025-02-10T00:00:00Z",
+    "funded_at": "2025-03-01T00:00:00Z",
     "business_label": "Stillwater Roasters LLC",
     "business_naics_code": "311920",
     "originating_rm_label": "Devon Marshall",
@@ -61,13 +61,13 @@
     "ltv_in_band": true,
     "segregation_of_duties_ok": true,
     "count_of_covenants": 3,
-    "count_of_breached_covenants": 3,
+    "count_of_breached_covenants": 0,
     "count_of_risk_rating_history": 1,
     "count_of_documents": 2,
-    "has_breached_covenant": true,
-    "on_watchlist": true,
-    "health_score": 3,
-    "underwriter_is_admin": false
+    "has_breached_covenant": false,
+    "on_watchlist": false,
+    "health_score": 4,
+    "underwriter_is_admin": true
   },
   {
     "name": "l-0078",
@@ -85,8 +85,8 @@
     "dscr": 1.85,
     "ltv": null,
     "global_cash_flow_usd": 320000,
-    "originated_at": "2024-08-01",
-    "funded_at": "2024-08-22",
+    "originated_at": "2024-08-01T00:00:00Z",
+    "funded_at": "2024-08-22T00:00:00Z",
     "business_label": "Ridgeway Consulting LLC",
     "business_naics_code": "541611",
     "originating_rm_label": "Devon Marshall",
@@ -102,6 +102,6 @@
     "has_breached_covenant": false,
     "on_watchlist": false,
     "health_score": 4,
-    "underwriter_is_admin": false
+    "underwriter_is_admin": true
   }
 ]
