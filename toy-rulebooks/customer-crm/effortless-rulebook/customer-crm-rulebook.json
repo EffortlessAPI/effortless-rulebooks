@@ -179,7 +179,7 @@
         "LastName": "Lovelace",
         "Name": "ada.lovelace@analytical.engine",
         "FullName": "Lovelace, Ada",
-        "LifetimeSales": 50.0,
+        "LifetimeSales": 0,
         "UnpaidOrderCount": 0,
         "LargeOrderCount": 1.0,
         "IsVIP": false
@@ -191,7 +191,7 @@
         "LastName": "Hopper",
         "Name": "grace.hopper@nautical.mil",
         "FullName": "Hopper, Grace",
-        "LifetimeSales": 320.5,
+        "LifetimeSales": 0,
         "UnpaidOrderCount": 2,
         "LargeOrderCount": 1.0,
         "IsVIP": false
@@ -203,7 +203,7 @@
         "LastName": "Turing",
         "Name": "alan.turing@bletchley.uk",
         "FullName": "Turing, Alan",
-        "LifetimeSales": 99.0,
+        "LifetimeSales": 0,
         "UnpaidOrderCount": 0,
         "LargeOrderCount": 0,
         "IsVIP": false
@@ -215,10 +215,10 @@
         "LastName": "Johnson",
         "Name": "katherine.johnson@nasa.gov",
         "FullName": "Johnson, Katherine",
-        "LifetimeSales": 1152.0,
+        "LifetimeSales": 0,
         "UnpaidOrderCount": 1,
         "LargeOrderCount": 2.0,
-        "IsVIP": true
+        "IsVIP": false
       },
       {
         "CustomersId": "linus.torvalds@kernel.org",
@@ -227,10 +227,10 @@
         "LastName": "Torvalds",
         "Name": "linus.torvalds@kernel.org",
         "FullName": "Torvalds, Linus",
-        "LifetimeSales": 2580.0,
+        "LifetimeSales": 0,
         "UnpaidOrderCount": 1,
         "LargeOrderCount": 1.0,
-        "IsVIP": true
+        "IsVIP": false
       }
     ]
   },
@@ -453,8 +453,8 @@
         "Balance": 320.5,
         "IsPaid": false,
         "UnpaidFlag": 1,
-        "IsRecent": true,
-        "RecentTotal": 320.5,
+        "IsRecent": false,
+        "RecentTotal": 0,
         "FCSSubtotal": 4.2,
         "FCSUnitCount": 1
       },
@@ -473,8 +473,8 @@
         "Balance": 0.0,
         "IsPaid": true,
         "UnpaidFlag": 0,
-        "IsRecent": true,
-        "RecentTotal": 99.0,
+        "IsRecent": false,
+        "RecentTotal": 0,
         "FCSSubtotal": 0,
         "FCSUnitCount": 0
       },
@@ -493,8 +493,8 @@
         "Balance": 0.0,
         "IsPaid": true,
         "UnpaidFlag": 0,
-        "IsRecent": true,
-        "RecentTotal": 540.0,
+        "IsRecent": false,
+        "RecentTotal": 0,
         "FCSSubtotal": 48.0,
         "FCSUnitCount": 4
       },
@@ -513,8 +513,8 @@
         "Balance": 612.0,
         "IsPaid": false,
         "UnpaidFlag": 1,
-        "IsRecent": true,
-        "RecentTotal": 612.0,
+        "IsRecent": false,
+        "RecentTotal": 0,
         "FCSSubtotal": 73.0,
         "FCSUnitCount": 5
       },
@@ -533,8 +533,8 @@
         "Balance": 0.0,
         "IsPaid": true,
         "UnpaidFlag": 0,
-        "IsRecent": true,
-        "RecentTotal": 2400.0,
+        "IsRecent": false,
+        "RecentTotal": 0,
         "FCSSubtotal": 92.9,
         "FCSUnitCount": 13
       },
@@ -553,8 +553,8 @@
         "Balance": 180.0,
         "IsPaid": false,
         "UnpaidFlag": 1,
-        "IsRecent": true,
-        "RecentTotal": 180.0,
+        "IsRecent": false,
+        "RecentTotal": 0,
         "FCSSubtotal": 0,
         "FCSUnitCount": 0
       },
@@ -573,8 +573,8 @@
         "Balance": 0.0,
         "IsPaid": true,
         "UnpaidFlag": 0,
-        "IsRecent": true,
-        "RecentTotal": 50.0,
+        "IsRecent": false,
+        "RecentTotal": 0,
         "FCSSubtotal": 0,
         "FCSUnitCount": 0
       }

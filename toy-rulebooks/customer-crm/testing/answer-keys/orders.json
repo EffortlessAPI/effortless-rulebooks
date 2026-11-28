@@ -74,8 +74,8 @@
     "balance": 320.5,
     "is_paid": false,
     "unpaid_flag": 1,
-    "is_recent": true,
-    "recent_total": 320.5,
+    "is_recent": false,
+    "recent_total": 0,
     "fcs_subtotal": 4.2,
     "fcs_unit_count": 1
   },
@@ -94,8 +94,8 @@
     "balance": 0.0,
     "is_paid": true,
     "unpaid_flag": 0,
-    "is_recent": true,
-    "recent_total": 99.0,
+    "is_recent": false,
+    "recent_total": 0,
     "fcs_subtotal": 0,
     "fcs_unit_count": 0
   },
@@ -114,8 +114,8 @@
     "balance": 0.0,
     "is_paid": true,
     "unpaid_flag": 0,
-    "is_recent": true,
-    "recent_total": 540.0,
+    "is_recent": false,
+    "recent_total": 0,
     "fcs_subtotal": 48.0,
     "fcs_unit_count": 4
   },
@@ -134,8 +134,8 @@
     "balance": 612.0,
     "is_paid": false,
     "unpaid_flag": 1,
-    "is_recent": true,
-    "recent_total": 612.0,
+    "is_recent": false,
+    "recent_total": 0,
     "fcs_subtotal": 73.0,
     "fcs_unit_count": 5
   },
@@ -154,8 +154,8 @@
     "balance": 0.0,
     "is_paid": true,
     "unpaid_flag": 0,
-    "is_recent": true,
-    "recent_total": 2400.0,
+    "is_recent": false,
+    "recent_total": 0,
     "fcs_subtotal": 92.9,
     "fcs_unit_count": 13
   },
@@ -174,8 +174,8 @@
     "balance": 180.0,
     "is_paid": false,
     "unpaid_flag": 1,
-    "is_recent": true,
-    "recent_total": 180.0,
+    "is_recent": false,
+    "recent_total": 0,
     "fcs_subtotal": 0,
     "fcs_unit_count": 0
   },
@@ -194,8 +194,8 @@
     "balance": 0.0,
     "is_paid": true,
     "unpaid_flag": 0,
-    "is_recent": true,
-    "recent_total": 50.0,
+    "is_recent": false,
+    "recent_total": 0,
     "fcs_subtotal": 0,
     "fcs_unit_count": 0
   }
