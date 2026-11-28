@@ -4,10 +4,15 @@
     "name": "t-family-b",
     "label": "Bride Family",
     "seats": 8,
+    "head_count": null,
     "open_seats": null,
     "over_capacity": null,
+    "raw_happiness": null,
+    "violation_count": null,
     "happiness": null,
     "grade": null,
+    "bride_side_count": null,
+    "groom_side_count": null,
     "side_skew": null
   },
   {
@@ -15,10 +20,15 @@
     "name": "t-family-g",
     "label": "Groom Family",
     "seats": 8,
+    "head_count": null,
     "open_seats": null,
     "over_capacity": null,
+    "raw_happiness": null,
+    "violation_count": null,
     "happiness": null,
     "grade": null,
+    "bride_side_count": null,
+    "groom_side_count": null,
     "side_skew": null
   },
   {
@@ -26,10 +36,15 @@
     "name": "t-friends",
     "label": "College Friends",
     "seats": 6,
+    "head_count": null,
     "open_seats": null,
     "over_capacity": null,
+    "raw_happiness": null,
+    "violation_count": null,
     "happiness": null,
     "grade": null,
+    "bride_side_count": null,
+    "groom_side_count": null,
     "side_skew": null
   },
   {
@@ -37,10 +52,15 @@
     "name": "t-head",
     "label": "Head Table",
     "seats": 6,
+    "head_count": null,
     "open_seats": null,
     "over_capacity": null,
+    "raw_happiness": null,
+    "violation_count": null,
     "happiness": null,
     "grade": null,
+    "bride_side_count": null,
+    "groom_side_count": null,
     "side_skew": null
   },
   {
@@ -48,10 +68,15 @@
     "name": "t-misc",
     "label": "Plus Ones",
     "seats": 4,
+    "head_count": null,
     "open_seats": null,
     "over_capacity": null,
+    "raw_happiness": null,
+    "violation_count": null,
     "happiness": null,
     "grade": null,
+    "bride_side_count": null,
+    "groom_side_count": null,
     "side_skew": null
   }
 ]

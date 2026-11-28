@@ -185,31 +185,81 @@
         "TableId": "t-head",
         "Name": "t-head",
         "Label": "Head Table",
-        "Seats": 6
+        "Seats": 6,
+        "HeadCount": 6,
+        "OpenSeats": 0,
+        "OverCapacity": false,
+        "RawHappiness": 110,
+        "ViolationCount": 0,
+        "Happiness": 110,
+        "Grade": "Great",
+        "BrideSideCount": 3,
+        "GroomSideCount": 3,
+        "SideSkew": 0
       },
       {
         "TableId": "t-family-b",
         "Name": "t-family-b",
         "Label": "Bride Family",
-        "Seats": 8
+        "Seats": 8,
+        "HeadCount": 4,
+        "OpenSeats": 4,
+        "OverCapacity": false,
+        "RawHappiness": 23,
+        "ViolationCount": 0,
+        "Happiness": 19,
+        "Grade": "Great",
+        "BrideSideCount": 4,
+        "GroomSideCount": 0,
+        "SideSkew": 4
       },
       {
         "TableId": "t-family-g",
         "Name": "t-family-g",
         "Label": "Groom Family",
-        "Seats": 8
+        "Seats": 8,
+        "HeadCount": 4,
+        "OpenSeats": 4,
+        "OverCapacity": false,
+        "RawHappiness": 30,
+        "ViolationCount": 0,
+        "Happiness": 26,
+        "Grade": "Great",
+        "BrideSideCount": 0,
+        "GroomSideCount": 4,
+        "SideSkew": 4
       },
       {
         "TableId": "t-friends",
         "Name": "t-friends",
         "Label": "College Friends",
-        "Seats": 6
+        "Seats": 6,
+        "HeadCount": 4,
+        "OpenSeats": 2,
+        "OverCapacity": false,
+        "RawHappiness": 21,
+        "ViolationCount": 0,
+        "Happiness": 21,
+        "Grade": "Great",
+        "BrideSideCount": 2,
+        "GroomSideCount": 2,
+        "SideSkew": 0
       },
       {
         "TableId": "t-misc",
         "Name": "t-misc",
         "Label": "Plus Ones",
-        "Seats": 4
+        "Seats": 4,
+        "HeadCount": 5,
+        "OpenSeats": -1,
+        "OverCapacity": true,
+        "RawHappiness": 17,
+        "ViolationCount": 0,
+        "Happiness": -9,
+        "Grade": "Over Capacity",
+        "BrideSideCount": 2,
+        "GroomSideCount": 3,
+        "SideSkew": 1
       }
     ]
   },
@@ -372,7 +422,18 @@
         "Dietary": "none",
         "Language": "en",
         "AgeBand": "adult",
-        "AssignedTable": "t-head"
+        "AssignedTable": "t-head",
+        "TableLabel": "Head Table",
+        "TableSeats": 6,
+        "TableHeadCount": 6,
+        "RelationshipsAsA": 1,
+        "RelationshipsAsB": 3,
+        "SatisfactionA": 30,
+        "SatisfactionB": 20,
+        "Satisfaction": 50,
+        "Mood": "Happy",
+        "BrideFlag": 1,
+        "GroomFlag": 0
       },
       {
         "GuestId": "g-sam",
@@ -382,7 +443,18 @@
         "Dietary": "none",
         "Language": "en",
         "AgeBand": "adult",
-        "AssignedTable": "t-head"
+        "AssignedTable": "t-head",
+        "TableLabel": "Head Table",
+        "TableSeats": 6,
+        "TableHeadCount": 6,
+        "RelationshipsAsA": 0,
+        "RelationshipsAsB": 4,
+        "SatisfactionA": 0,
+        "SatisfactionB": 50,
+        "Satisfaction": 50,
+        "Mood": "Happy",
+        "BrideFlag": 0,
+        "GroomFlag": 1
       },
       {
         "GuestId": "g-mom-b",
@@ -392,7 +464,18 @@
         "Dietary": "veg",
         "Language": "en",
         "AgeBand": "senior",
-        "AssignedTable": "t-head"
+        "AssignedTable": "t-head",
+        "TableLabel": "Head Table",
+        "TableSeats": 6,
+        "TableHeadCount": 6,
+        "RelationshipsAsA": 2,
+        "RelationshipsAsB": 0,
+        "SatisfactionA": 30,
+        "SatisfactionB": 0,
+        "Satisfaction": 30,
+        "Mood": "Happy",
+        "BrideFlag": 1,
+        "GroomFlag": 0
       },
       {
         "GuestId": "g-dad-b",
@@ -402,7 +485,18 @@
         "Dietary": "none",
         "Language": "en",
         "AgeBand": "senior",
-        "AssignedTable": "t-head"
+        "AssignedTable": "t-head",
+        "TableLabel": "Head Table",
+        "TableSeats": 6,
+        "TableHeadCount": 6,
+        "RelationshipsAsA": 1,
+        "RelationshipsAsB": 1,
+        "SatisfactionA": 10,
+        "SatisfactionB": 20,
+        "Satisfaction": 30,
+        "Mood": "Happy",
+        "BrideFlag": 1,
+        "GroomFlag": 0
       },
       {
         "GuestId": "g-mom-g",
@@ -412,7 +506,18 @@
         "Dietary": "none",
         "Language": "es",
         "AgeBand": "senior",
-        "AssignedTable": "t-head"
+        "AssignedTable": "t-head",
+        "TableLabel": "Head Table",
+        "TableSeats": 6,
+        "TableHeadCount": 6,
+        "RelationshipsAsA": 2,
+        "RelationshipsAsB": 0,
+        "SatisfactionA": 30,
+        "SatisfactionB": 0,
+        "Satisfaction": 30,
+        "Mood": "Happy",
+        "BrideFlag": 0,
+        "GroomFlag": 1
       },
       {
         "GuestId": "g-dad-g",
@@ -422,7 +527,18 @@
         "Dietary": "none",
         "Language": "es",
         "AgeBand": "senior",
-        "AssignedTable": "t-head"
+        "AssignedTable": "t-head",
+        "TableLabel": "Head Table",
+        "TableSeats": 6,
+        "TableHeadCount": 6,
+        "RelationshipsAsA": 1,
+        "RelationshipsAsB": 1,
+        "SatisfactionA": 10,
+        "SatisfactionB": 20,
+        "Satisfaction": 30,
+        "Mood": "Happy",
+        "BrideFlag": 0,
+        "GroomFlag": 1
       },
       {
         "GuestId": "g-aunt-b",
@@ -432,7 +548,18 @@
         "Dietary": "gf",
         "Language": "en",
         "AgeBand": "senior",
-        "AssignedTable": "t-family-b"
+        "AssignedTable": "t-family-b",
+        "TableLabel": "Bride Family",
+        "TableSeats": 8,
+        "TableHeadCount": 4,
+        "RelationshipsAsA": 2,
+        "RelationshipsAsB": 0,
+        "SatisfactionA": 15,
+        "SatisfactionB": 0,
+        "Satisfaction": 15,
+        "Mood": "Happy",
+        "BrideFlag": 1,
+        "GroomFlag": 0
       },
       {
         "GuestId": "g-uncle-b",
@@ -442,7 +569,18 @@
         "Dietary": "none",
         "Language": "en",
         "AgeBand": "senior",
-        "AssignedTable": "t-family-b"
+        "AssignedTable": "t-family-b",
+        "TableLabel": "Bride Family",
+        "TableSeats": 8,
+        "TableHeadCount": 4,
+        "RelationshipsAsA": 1,
+        "RelationshipsAsB": 1,
+        "SatisfactionA": 0,
+        "SatisfactionB": 15,
+        "Satisfaction": 15,
+        "Mood": "Happy",
+        "BrideFlag": 1,
+        "GroomFlag": 0
       },
       {
         "GuestId": "g-cuz-b1",
@@ -452,7 +590,18 @@
         "Dietary": "vegan",
         "Language": "en",
         "AgeBand": "adult",
-        "AssignedTable": "t-family-b"
+        "AssignedTable": "t-family-b",
+        "TableLabel": "Bride Family",
+        "TableSeats": 8,
+        "TableHeadCount": 4,
+        "RelationshipsAsA": 1,
+        "RelationshipsAsB": 0,
+        "SatisfactionA": 8,
+        "SatisfactionB": 0,
+        "Satisfaction": 8,
+        "Mood": "Neutral",
+        "BrideFlag": 1,
+        "GroomFlag": 0
       },
       {
         "GuestId": "g-cuz-b2",
@@ -462,7 +611,18 @@
         "Dietary": "none",
         "Language": "en",
         "AgeBand": "child",
-        "AssignedTable": "t-family-b"
+        "AssignedTable": "t-family-b",
+        "TableLabel": "Bride Family",
+        "TableSeats": 8,
+        "TableHeadCount": 4,
+        "RelationshipsAsA": 0,
+        "RelationshipsAsB": 1,
+        "SatisfactionA": 0,
+        "SatisfactionB": 8,
+        "Satisfaction": 8,
+        "Mood": "Neutral",
+        "BrideFlag": 1,
+        "GroomFlag": 0
       },
       {
         "GuestId": "g-tia-g",
@@ -472,7 +632,18 @@
         "Dietary": "none",
         "Language": "es",
         "AgeBand": "senior",
-        "AssignedTable": "t-family-g"
+        "AssignedTable": "t-family-g",
+        "TableLabel": "Groom Family",
+        "TableSeats": 8,
+        "TableHeadCount": 4,
+        "RelationshipsAsA": 1,
+        "RelationshipsAsB": 0,
+        "SatisfactionA": 15,
+        "SatisfactionB": 0,
+        "Satisfaction": 15,
+        "Mood": "Happy",
+        "BrideFlag": 0,
+        "GroomFlag": 1
       },
       {
         "GuestId": "g-tio-g",
@@ -482,7 +653,18 @@
         "Dietary": "none",
         "Language": "es",
         "AgeBand": "senior",
-        "AssignedTable": "t-family-g"
+        "AssignedTable": "t-family-g",
+        "TableLabel": "Groom Family",
+        "TableSeats": 8,
+        "TableHeadCount": 4,
+        "RelationshipsAsA": 0,
+        "RelationshipsAsB": 2,
+        "SatisfactionA": 0,
+        "SatisfactionB": 15,
+        "Satisfaction": 15,
+        "Mood": "Happy",
+        "BrideFlag": 0,
+        "GroomFlag": 1
       },
       {
         "GuestId": "g-prim-g1",
@@ -492,7 +674,18 @@
         "Dietary": "none",
         "Language": "es",
         "AgeBand": "adult",
-        "AssignedTable": "t-family-g"
+        "AssignedTable": "t-family-g",
+        "TableLabel": "Groom Family",
+        "TableSeats": 8,
+        "TableHeadCount": 4,
+        "RelationshipsAsA": 1,
+        "RelationshipsAsB": 0,
+        "SatisfactionA": 15,
+        "SatisfactionB": 0,
+        "Satisfaction": 15,
+        "Mood": "Happy",
+        "BrideFlag": 0,
+        "GroomFlag": 1
       },
       {
         "GuestId": "g-prim-g2",
@@ -502,7 +695,18 @@
         "Dietary": "veg",
         "Language": "es",
         "AgeBand": "adult",
-        "AssignedTable": "t-family-g"
+        "AssignedTable": "t-family-g",
+        "TableLabel": "Groom Family",
+        "TableSeats": 8,
+        "TableHeadCount": 4,
+        "RelationshipsAsA": 0,
+        "RelationshipsAsB": 1,
+        "SatisfactionA": 0,
+        "SatisfactionB": 15,
+        "Satisfaction": 15,
+        "Mood": "Happy",
+        "BrideFlag": 0,
+        "GroomFlag": 1
       },
       {
         "GuestId": "g-fr-1",
@@ -512,7 +716,18 @@
         "Dietary": "none",
         "Language": "en",
         "AgeBand": "adult",
-        "AssignedTable": "t-friends"
+        "AssignedTable": "t-friends",
+        "TableLabel": "College Friends",
+        "TableSeats": 6,
+        "TableHeadCount": 4,
+        "RelationshipsAsA": 2,
+        "RelationshipsAsB": 0,
+        "SatisfactionA": 13,
+        "SatisfactionB": 0,
+        "Satisfaction": 13,
+        "Mood": "Happy",
+        "BrideFlag": 1,
+        "GroomFlag": 0
       },
       {
         "GuestId": "g-fr-2",
@@ -522,7 +737,18 @@
         "Dietary": "veg",
         "Language": "en",
         "AgeBand": "adult",
-        "AssignedTable": "t-friends"
+        "AssignedTable": "t-friends",
+        "TableLabel": "College Friends",
+        "TableSeats": 6,
+        "TableHeadCount": 4,
+        "RelationshipsAsA": 0,
+        "RelationshipsAsB": 1,
+        "SatisfactionA": 0,
+        "SatisfactionB": 8,
+        "Satisfaction": 8,
+        "Mood": "Neutral",
+        "BrideFlag": 1,
+        "GroomFlag": 0
       },
       {
         "GuestId": "g-fr-3",
@@ -532,7 +758,18 @@
         "Dietary": "none",
         "Language": "en",
         "AgeBand": "adult",
-        "AssignedTable": "t-friends"
+        "AssignedTable": "t-friends",
+        "TableLabel": "College Friends",
+        "TableSeats": 6,
+        "TableHeadCount": 4,
+        "RelationshipsAsA": 1,
+        "RelationshipsAsB": 1,
+        "SatisfactionA": 8,
+        "SatisfactionB": 5,
+        "Satisfaction": 13,
+        "Mood": "Happy",
+        "BrideFlag": 0,
+        "GroomFlag": 1
       },
       {
         "GuestId": "g-fr-4",
@@ -542,7 +779,18 @@
         "Dietary": "none",
         "Language": "en",
         "AgeBand": "adult",
-        "AssignedTable": "t-friends"
+        "AssignedTable": "t-friends",
+        "TableLabel": "College Friends",
+        "TableSeats": 6,
+        "TableHeadCount": 4,
+        "RelationshipsAsA": 0,
+        "RelationshipsAsB": 1,
+        "SatisfactionA": 0,
+        "SatisfactionB": 8,
+        "Satisfaction": 8,
+        "Mood": "Neutral",
+        "BrideFlag": 0,
+        "GroomFlag": 1
       },
       {
         "GuestId": "g-ex",
@@ -552,7 +800,18 @@
         "Dietary": "none",
         "Language": "en",
         "AgeBand": "adult",
-        "AssignedTable": "t-misc"
+        "AssignedTable": "t-misc",
+        "TableLabel": "Plus Ones",
+        "TableSeats": 4,
+        "TableHeadCount": 5,
+        "RelationshipsAsA": 2,
+        "RelationshipsAsB": 1,
+        "SatisfactionA": 0,
+        "SatisfactionB": 0,
+        "Satisfaction": 0,
+        "Mood": "Neutral",
+        "BrideFlag": 1,
+        "GroomFlag": 0
       },
       {
         "GuestId": "g-plus-1",
@@ -562,7 +821,18 @@
         "Dietary": "none",
         "Language": "fr",
         "AgeBand": "adult",
-        "AssignedTable": "t-misc"
+        "AssignedTable": "t-misc",
+        "TableLabel": "Plus Ones",
+        "TableSeats": 4,
+        "TableHeadCount": 5,
+        "RelationshipsAsA": 1,
+        "RelationshipsAsB": 0,
+        "SatisfactionA": 5,
+        "SatisfactionB": 0,
+        "Satisfaction": 5,
+        "Mood": "Neutral",
+        "BrideFlag": 0,
+        "GroomFlag": 1
       },
       {
         "GuestId": "g-plus-2",
@@ -572,7 +842,18 @@
         "Dietary": "kosher",
         "Language": "en",
         "AgeBand": "adult",
-        "AssignedTable": "t-misc"
+        "AssignedTable": "t-misc",
+        "TableLabel": "Plus Ones",
+        "TableSeats": 4,
+        "TableHeadCount": 5,
+        "RelationshipsAsA": 0,
+        "RelationshipsAsB": 1,
+        "SatisfactionA": 0,
+        "SatisfactionB": 5,
+        "Satisfaction": 5,
+        "Mood": "Neutral",
+        "BrideFlag": 0,
+        "GroomFlag": 1
       },
       {
         "GuestId": "g-kid-1",
@@ -582,7 +863,18 @@
         "Dietary": "none",
         "Language": "es",
         "AgeBand": "child",
-        "AssignedTable": "t-misc"
+        "AssignedTable": "t-misc",
+        "TableLabel": "Plus Ones",
+        "TableSeats": 4,
+        "TableHeadCount": 5,
+        "RelationshipsAsA": 1,
+        "RelationshipsAsB": 0,
+        "SatisfactionA": 12,
+        "SatisfactionB": 0,
+        "Satisfaction": 12,
+        "Mood": "Happy",
+        "BrideFlag": 0,
+        "GroomFlag": 1
       },
       {
         "GuestId": "g-kid-2",
@@ -592,7 +884,18 @@
         "Dietary": "none",
         "Language": "en",
         "AgeBand": "child",
-        "AssignedTable": "t-misc"
+        "AssignedTable": "t-misc",
+        "TableLabel": "Plus Ones",
+        "TableSeats": 4,
+        "TableHeadCount": 5,
+        "RelationshipsAsA": 0,
+        "RelationshipsAsB": 1,
+        "SatisfactionA": 0,
+        "SatisfactionB": 12,
+        "Satisfaction": 12,
+        "Mood": "Happy",
+        "BrideFlag": 1,
+        "GroomFlag": 0
       }
     ]
   },
@@ -744,7 +1047,18 @@
         "GuestA": "g-alex",
         "GuestB": "g-sam",
         "Kind": "loves",
-        "Weight": 30
+        "Weight": 30,
+        "GuestAName": "Alex Stone",
+        "GuestBName": "Sam Rivera",
+        "GuestATable": "t-head",
+        "GuestBTable": "t-head",
+        "SameTable": true,
+        "SeatedTable": "t-head",
+        "EffectiveScore": 30,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-mom-b-alex",
@@ -752,7 +1066,18 @@
         "GuestA": "g-mom-b",
         "GuestB": "g-alex",
         "Kind": "prefers",
-        "Weight": 10
+        "Weight": 10,
+        "GuestAName": "Marie Stone",
+        "GuestBName": "Alex Stone",
+        "GuestATable": "t-head",
+        "GuestBTable": "t-head",
+        "SameTable": true,
+        "SeatedTable": "t-head",
+        "EffectiveScore": 10,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-dad-b-alex",
@@ -760,7 +1085,18 @@
         "GuestA": "g-dad-b",
         "GuestB": "g-alex",
         "Kind": "prefers",
-        "Weight": 10
+        "Weight": 10,
+        "GuestAName": "Tom Stone",
+        "GuestBName": "Alex Stone",
+        "GuestATable": "t-head",
+        "GuestBTable": "t-head",
+        "SameTable": true,
+        "SeatedTable": "t-head",
+        "EffectiveScore": 10,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-mom-g-sam",
@@ -768,7 +1104,18 @@
         "GuestA": "g-mom-g",
         "GuestB": "g-sam",
         "Kind": "prefers",
-        "Weight": 10
+        "Weight": 10,
+        "GuestAName": "Lucia Rivera",
+        "GuestBName": "Sam Rivera",
+        "GuestATable": "t-head",
+        "GuestBTable": "t-head",
+        "SameTable": true,
+        "SeatedTable": "t-head",
+        "EffectiveScore": 10,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-dad-g-sam",
@@ -776,7 +1123,18 @@
         "GuestA": "g-dad-g",
         "GuestB": "g-sam",
         "Kind": "prefers",
-        "Weight": 10
+        "Weight": 10,
+        "GuestAName": "Hector Rivera",
+        "GuestBName": "Sam Rivera",
+        "GuestATable": "t-head",
+        "GuestBTable": "t-head",
+        "SameTable": true,
+        "SeatedTable": "t-head",
+        "EffectiveScore": 10,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-parents-b",
@@ -784,7 +1142,18 @@
         "GuestA": "g-mom-b",
         "GuestB": "g-dad-b",
         "Kind": "loves",
-        "Weight": 20
+        "Weight": 20,
+        "GuestAName": "Marie Stone",
+        "GuestBName": "Tom Stone",
+        "GuestATable": "t-head",
+        "GuestBTable": "t-head",
+        "SameTable": true,
+        "SeatedTable": "t-head",
+        "EffectiveScore": 20,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-parents-g",
@@ -792,7 +1161,18 @@
         "GuestA": "g-mom-g",
         "GuestB": "g-dad-g",
         "Kind": "loves",
-        "Weight": 20
+        "Weight": 20,
+        "GuestAName": "Lucia Rivera",
+        "GuestBName": "Hector Rivera",
+        "GuestATable": "t-head",
+        "GuestBTable": "t-head",
+        "SameTable": true,
+        "SeatedTable": "t-head",
+        "EffectiveScore": 20,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-aunt-uncle",
@@ -800,7 +1180,18 @@
         "GuestA": "g-aunt-b",
         "GuestB": "g-uncle-b",
         "Kind": "loves",
-        "Weight": 15
+        "Weight": 15,
+        "GuestAName": "Carol Stone",
+        "GuestBName": "Pete Stone",
+        "GuestATable": "t-family-b",
+        "GuestBTable": "t-family-b",
+        "SameTable": true,
+        "SeatedTable": "t-family-b",
+        "EffectiveScore": 15,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-cousins-b",
@@ -808,7 +1199,18 @@
         "GuestA": "g-cuz-b1",
         "GuestB": "g-cuz-b2",
         "Kind": "prefers",
-        "Weight": 8
+        "Weight": 8,
+        "GuestAName": "Jamie Stone",
+        "GuestBName": "Riley Stone",
+        "GuestATable": "t-family-b",
+        "GuestBTable": "t-family-b",
+        "SameTable": true,
+        "SeatedTable": "t-family-b",
+        "EffectiveScore": 8,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-tia-tio",
@@ -816,7 +1218,18 @@
         "GuestA": "g-tia-g",
         "GuestB": "g-tio-g",
         "Kind": "loves",
-        "Weight": 15
+        "Weight": 15,
+        "GuestAName": "Ana Rivera",
+        "GuestBName": "Miguel Rivera",
+        "GuestATable": "t-family-g",
+        "GuestBTable": "t-family-g",
+        "SameTable": true,
+        "SeatedTable": "t-family-g",
+        "EffectiveScore": 15,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-prims",
@@ -824,7 +1237,18 @@
         "GuestA": "g-prim-g1",
         "GuestB": "g-prim-g2",
         "Kind": "loves",
-        "Weight": 15
+        "Weight": 15,
+        "GuestAName": "Diego Rivera",
+        "GuestBName": "Sofia Rivera",
+        "GuestATable": "t-family-g",
+        "GuestBTable": "t-family-g",
+        "SameTable": true,
+        "SeatedTable": "t-family-g",
+        "EffectiveScore": 15,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-fr-12",
@@ -832,7 +1256,18 @@
         "GuestA": "g-fr-1",
         "GuestB": "g-fr-2",
         "Kind": "prefers",
-        "Weight": 8
+        "Weight": 8,
+        "GuestAName": "Morgan Lee",
+        "GuestBName": "Taylor Brooks",
+        "GuestATable": "t-friends",
+        "GuestBTable": "t-friends",
+        "SameTable": true,
+        "SeatedTable": "t-friends",
+        "EffectiveScore": 8,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-fr-34",
@@ -840,7 +1275,18 @@
         "GuestA": "g-fr-3",
         "GuestB": "g-fr-4",
         "Kind": "prefers",
-        "Weight": 8
+        "Weight": 8,
+        "GuestAName": "Jordan Pham",
+        "GuestBName": "Robin Cole",
+        "GuestATable": "t-friends",
+        "GuestBTable": "t-friends",
+        "SameTable": true,
+        "SeatedTable": "t-friends",
+        "EffectiveScore": 8,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-fr-13",
@@ -848,7 +1294,18 @@
         "GuestA": "g-fr-1",
         "GuestB": "g-fr-3",
         "Kind": "prefers",
-        "Weight": 5
+        "Weight": 5,
+        "GuestAName": "Morgan Lee",
+        "GuestBName": "Jordan Pham",
+        "GuestATable": "t-friends",
+        "GuestBTable": "t-friends",
+        "SameTable": true,
+        "SeatedTable": "t-friends",
+        "EffectiveScore": 5,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-ex-bride",
@@ -856,7 +1313,18 @@
         "GuestA": "g-ex",
         "GuestB": "g-alex",
         "Kind": "must-not",
-        "Weight": -100
+        "Weight": -100,
+        "GuestAName": "Drew Hart (the ex)",
+        "GuestBName": "Alex Stone",
+        "GuestATable": "t-misc",
+        "GuestBTable": "t-head",
+        "SameTable": false,
+        "SeatedTable": "",
+        "EffectiveScore": 0,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-ex-groom",
@@ -864,7 +1332,18 @@
         "GuestA": "g-ex",
         "GuestB": "g-sam",
         "Kind": "avoid",
-        "Weight": -20
+        "Weight": -20,
+        "GuestAName": "Drew Hart (the ex)",
+        "GuestBName": "Sam Rivera",
+        "GuestATable": "t-misc",
+        "GuestBTable": "t-head",
+        "SameTable": false,
+        "SeatedTable": "",
+        "EffectiveScore": 0,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-aunt-ex",
@@ -872,7 +1351,18 @@
         "GuestA": "g-aunt-b",
         "GuestB": "g-ex",
         "Kind": "avoid",
-        "Weight": -15
+        "Weight": -15,
+        "GuestAName": "Carol Stone",
+        "GuestBName": "Drew Hart (the ex)",
+        "GuestATable": "t-family-b",
+        "GuestBTable": "t-misc",
+        "SameTable": false,
+        "SeatedTable": "",
+        "EffectiveScore": 0,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-kids",
@@ -880,7 +1370,18 @@
         "GuestA": "g-kid-1",
         "GuestB": "g-kid-2",
         "Kind": "prefers",
-        "Weight": 12
+        "Weight": 12,
+        "GuestAName": "Mateo Rivera",
+        "GuestBName": "Lily Stone",
+        "GuestATable": "t-misc",
+        "GuestBTable": "t-misc",
+        "SameTable": true,
+        "SeatedTable": "t-misc",
+        "EffectiveScore": 12,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-plus-lang",
@@ -888,7 +1389,18 @@
         "GuestA": "g-plus-1",
         "GuestB": "g-plus-2",
         "Kind": "prefers",
-        "Weight": 5
+        "Weight": 5,
+        "GuestAName": "Avery Quinn",
+        "GuestBName": "Skyler Park",
+        "GuestATable": "t-misc",
+        "GuestBTable": "t-misc",
+        "SameTable": true,
+        "SeatedTable": "t-misc",
+        "EffectiveScore": 5,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       },
       {
         "RelId": "r-uncle-tio",
@@ -896,7 +1408,18 @@
         "GuestA": "g-uncle-b",
         "GuestB": "g-tio-g",
         "Kind": "avoid",
-        "Weight": -10
+        "Weight": -10,
+        "GuestAName": "Pete Stone",
+        "GuestBName": "Miguel Rivera",
+        "GuestATable": "t-family-b",
+        "GuestBTable": "t-family-g",
+        "SameTable": false,
+        "SeatedTable": "",
+        "EffectiveScore": 0,
+        "IsMustNotViolation": false,
+        "IsSatisfied": true,
+        "ViolationTable": "",
+        "ViolationFlag": 0
       }
     ]
   },
