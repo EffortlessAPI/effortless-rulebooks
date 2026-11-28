@@ -10,6 +10,9 @@
       *>   B  boolean   0 / 1
       *>   I  is-int    1 when the number is an integer (renders "3" not "3.0")
       *>   N  number    fixed decimal, 18 integer + 12 fraction digits
+      *>   F  float     1 when the number is a float8 (PI(), TAN and
+      *>                + - * / on one): D holds it in full, N rounded
+      *>   D  double    the float8 value (COMP-2), meaningful when F = 1
       *>   L  length    bytes of text in S
       *>   S  text
       *> Compiled formulas run on a value stack (VS-E, top = VSP). Every
@@ -24,6 +27,8 @@
              10 VS-B           PIC 9.
              10 VS-I           PIC 9.
              10 VS-N           PIC S9(18)V9(12) COMP-3.
+             10 VS-F           PIC 9.
+             10 VS-D           COMP-2.
              10 VS-L           PIC 9(5) COMP-5.
              10 VS-S           PIC X(8192).
       *> Registers: operands are popped into RA/RB/RC, results built in RR.
@@ -32,6 +37,8 @@
           05 RA-B              PIC 9.
           05 RA-I              PIC 9.
           05 RA-N              PIC S9(18)V9(12) COMP-3.
+          05 RA-F              PIC 9.
+          05 RA-D              COMP-2.
           05 RA-L              PIC 9(5) COMP-5.
           05 RA-S              PIC X(8192).
        01 RB.
@@ -39,6 +46,8 @@
           05 RB-B              PIC 9.
           05 RB-I              PIC 9.
           05 RB-N              PIC S9(18)V9(12) COMP-3.
+          05 RB-F              PIC 9.
+          05 RB-D              COMP-2.
           05 RB-L              PIC 9(5) COMP-5.
           05 RB-S              PIC X(8192).
        01 RC.
@@ -46,6 +55,8 @@
           05 RC-B              PIC 9.
           05 RC-I              PIC 9.
           05 RC-N              PIC S9(18)V9(12) COMP-3.
+          05 RC-F              PIC 9.
+          05 RC-D              COMP-2.
           05 RC-L              PIC 9(5) COMP-5.
           05 RC-S              PIC X(8192).
        01 RR.
@@ -53,6 +64,8 @@
           05 RR-B              PIC 9.
           05 RR-I              PIC 9.
           05 RR-N              PIC S9(18)V9(12) COMP-3.
+          05 RR-F              PIC 9.
+          05 RR-D              COMP-2.
           05 RR-L              PIC 9(5) COMP-5.
           05 RR-S              PIC X(8192).
       *> Aggregation scratch: MIN/MAX keep their best value here; a SUMIFS
@@ -62,6 +75,8 @@
           05 AB-B              PIC 9.
           05 AB-I              PIC 9.
           05 AB-N              PIC S9(18)V9(12) COMP-3.
+          05 AB-F              PIC 9.
+          05 AB-D              COMP-2.
           05 AB-L              PIC 9(5) COMP-5.
           05 AB-S              PIC X(8192).
        01 SV.
@@ -69,6 +84,8 @@
           05 SV-B              PIC 9.
           05 SV-I              PIC 9.
           05 SV-N              PIC S9(18)V9(12) COMP-3.
+          05 SV-F              PIC 9.
+          05 SV-D              COMP-2.
           05 SV-L              PIC 9(5) COMP-5.
           05 SV-S              PIC X(8192).
        01 WS-TEXT-MAX          PIC 9(5) COMP-5 VALUE 8192.
@@ -124,6 +141,11 @@
        01 WS-NUM-B             PIC S9(18)V9(12) COMP-3.
        01 WS-NUM-F             PIC S9(18)V9(12) COMP-3.
        01 WS-NUM-T             PIC S9(18)V9(12) COMP-3.
+      *> float8 operands and result (F = 1 values, see the header).
+       01 WS-DBL-A             COMP-2.
+       01 WS-DBL-B             COMP-2.
+       01 WS-DBL-T             COMP-2.
+       01 WS-FLT               PIC 9.
        01 WS-DIGITS            PIC S9(4) COMP-5.
        01 WS-NEG               PIC 9.
        01 WS-ALLINT            PIC 9.

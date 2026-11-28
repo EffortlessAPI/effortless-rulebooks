@@ -407,7 +407,7 @@ BEGIN
     -- 2. Views (depend on functions, so they go first).
     FOR r IN (
         SELECT table_name FROM information_schema.views
-         WHERE table_schema = 'public' AND table_name LIKE 'vw\_%'
+         WHERE table_schema = 'public' AND (table_name LIKE 'vw\_%' OR table_name LIKE 'fk\_labels\_%')
            AND obj_description(
                  (quote_ident(table_schema) || '.' || quote_ident(table_name))::regclass, 'pg_class')
                IS DISTINCT FROM 'effortless:hand-maintained'
@@ -635,7 +635,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_users_count_of_portfolio_businesses(p_users_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM businesses WHERE relationship_manager = calc_users_name(p_users_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM businesses WHERE relationship_manager = (SELECT calc_users_name(p_users_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_users_count_of_originated_loans
@@ -645,7 +645,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_users_count_of_originated_loans(p_users_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM loans WHERE originating_rm = calc_users_name(p_users_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM loans WHERE originating_rm = (SELECT calc_users_name(p_users_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_users_count_of_underwritten_loans
@@ -655,7 +655,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_users_count_of_underwritten_loans(p_users_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM loans WHERE underwriter = calc_users_name(p_users_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM loans WHERE underwriter = (SELECT calc_users_name(p_users_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_relationship_manager_label
@@ -806,7 +806,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_count_of_beneficial_owners(p_businesses_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM beneficial_owners WHERE business = calc_businesses_name(p_businesses_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM beneficial_owners WHERE business = (SELECT calc_businesses_name(p_businesses_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_count_of_contacts
@@ -816,7 +816,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_count_of_contacts(p_businesses_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM contacts WHERE business = calc_businesses_name(p_businesses_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM contacts WHERE business = (SELECT calc_businesses_name(p_businesses_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_count_of_accounts
@@ -826,7 +826,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_count_of_accounts(p_businesses_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM accounts WHERE business = calc_businesses_name(p_businesses_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM accounts WHERE business = (SELECT calc_businesses_name(p_businesses_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_count_of_loans
@@ -836,7 +836,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_count_of_loans(p_businesses_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM loans WHERE business = calc_businesses_name(p_businesses_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM loans WHERE business = (SELECT calc_businesses_name(p_businesses_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_count_of_interactions
@@ -846,7 +846,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_count_of_interactions(p_businesses_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM interactions WHERE business = calc_businesses_name(p_businesses_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM interactions WHERE business = (SELECT calc_businesses_name(p_businesses_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_count_of_documents
@@ -856,7 +856,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_count_of_documents(p_businesses_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM documents WHERE business = calc_businesses_name(p_businesses_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM documents WHERE business = (SELECT calc_businesses_name(p_businesses_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_total_deposit_balance_usd
@@ -866,7 +866,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_total_deposit_balance_usd(p_businesses_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((current_balance_usd)::numeric), 0) FROM accounts WHERE business = calc_businesses_name(p_businesses_id)))::numeric;
+  SELECT ((SELECT COALESCE(SUM((current_balance_usd)::numeric), 0) FROM accounts WHERE business = (SELECT calc_businesses_name(p_businesses_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_total_loan_principal_usd
@@ -876,7 +876,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_total_loan_principal_usd(p_businesses_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((principal_usd)::numeric), 0) FROM loans WHERE business = calc_businesses_name(p_businesses_id)))::numeric;
+  SELECT ((SELECT COALESCE(SUM((principal_usd)::numeric), 0) FROM loans WHERE business = (SELECT calc_businesses_name(p_businesses_id))))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_count_of_classified_loans
@@ -886,7 +886,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_count_of_classified_loans(p_businesses_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM loans WHERE business = calc_businesses_name(p_businesses_id) AND calc_loans_is_classified_asset(loans_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM loans erb_r1 WHERE business = (SELECT calc_businesses_name(p_businesses_id)) AND ((SELECT (COALESCE((erb_r1.risk_rating)::NUMERIC, 0) >= 7)::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_has_classified_loan
@@ -906,7 +906,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_businesses_beneficial_owners_at_cdd_threshold(p_businesses_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM beneficial_owners WHERE business = calc_businesses_name(p_businesses_id) AND calc_beneficial_owners_meets_cdd_threshold(beneficial_owners_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM beneficial_owners erb_r1 WHERE business = (SELECT calc_businesses_name(p_businesses_id)) AND ((SELECT ((COALESCE((calc_beneficial_owners_meets25_percent_threshold(erb_r1.beneficial_owners_id) = 'true'), FALSE) OR COALESCE(COALESCE(erb_r1.is_control_person, FALSE), FALSE)))::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_businesses_meets_cdd_rule
@@ -1163,7 +1163,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_loans_count_of_covenants(p_loans_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM covenants WHERE loan = calc_loans_name(p_loans_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM covenants WHERE loan = (SELECT calc_loans_name(p_loans_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_loans_count_of_breached_covenants
@@ -1173,7 +1173,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_loans_count_of_breached_covenants(p_loans_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM covenants WHERE loan = calc_loans_name(p_loans_id) AND calc_covenants_is_breached(covenants_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM covenants erb_r1 WHERE loan = (SELECT calc_loans_name(p_loans_id)) AND ((SELECT (COALESCE(NULLIF(erb_r1.status, ''), '') = 'Breached')::boolean))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_loans_count_of_risk_rating_history
@@ -1183,7 +1183,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_loans_count_of_risk_rating_history(p_loans_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM risk_rating_history WHERE loan = calc_loans_name(p_loans_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM risk_rating_history WHERE loan = (SELECT calc_loans_name(p_loans_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_loans_count_of_documents
@@ -1193,7 +1193,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_loans_count_of_documents(p_loans_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM documents WHERE loan = calc_loans_name(p_loans_id)))::integer;
+  SELECT ((SELECT COUNT(*) FROM documents WHERE loan = (SELECT calc_loans_name(p_loans_id))))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_loans_has_breached_covenant
@@ -1936,6 +1936,9 @@ FROM constraints t;
 
 -- === 8. Custom views (ERBCustomizations) ===
 -- (no ERBCustomizations row for this section)
+
+-- === 8b. Function and view overrides (ERBCustomizations FunctionOverride / SchemaOverride) ===
+-- (no FunctionOverride / SchemaOverride row for a function or a view)
 
 -- === 9. Custom RLS (ERBCustomizations) ===
 -- (no ERBCustomizations row for this section)

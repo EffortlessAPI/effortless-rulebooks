@@ -43,7 +43,7 @@
            PERFORM RT-PUSH-R
            .
        RT-R-NULL.
-           MOVE 0 TO RR-K RR-B RR-I RR-L
+           MOVE 0 TO RR-K RR-B RR-I RR-L RR-F
            MOVE 0 TO RR-N
            .
        RT-R-BOOL.
@@ -67,6 +67,40 @@
            MOVE 2 TO RR-K
            MOVE 0 TO RR-I
            MOVE WS-NUM-T TO RR-N
+           .
+       RT-PUSH-DBL.
+      *>   Pushes the float8 WS-DBL-T: D keeps it whole, N is it rounded
+      *>   to 12 places (what a field stores and what N-only routines use).
+           PERFORM RT-R-NULL
+           COMPUTE RR-N ROUNDED = WS-DBL-T
+               ON SIZE ERROR
+                   MOVE "number too large" TO WS-ERR-MSG
+                   PERFORM RT-FAIL-PUSH-NULL
+                   EXIT PARAGRAPH
+           END-COMPUTE
+           MOVE 2 TO RR-K
+           MOVE 1 TO RR-F
+           MOVE WS-DBL-T TO RR-D
+           PERFORM RT-PUSH-R
+           .
+       RT-DBL-AB.
+      *>   After RT-NUMZ-B / RT-NUMZ-A: WS-DBL-A, WS-DBL-B := the operands
+      *>   as float8 (D when the value is one, else N); WS-FLT := 1 when
+      *>   either is a float8. Postgres types PI() and TAN as float8 and
+      *>   keeps + - * / on one in float8; so does this runtime.
+           MOVE 0 TO WS-FLT
+           IF RA-K = 2 AND RA-F = 1
+               MOVE RA-D TO WS-DBL-A
+               MOVE 1 TO WS-FLT
+           ELSE
+               MOVE WS-NUM-A TO WS-DBL-A
+           END-IF
+           IF RB-K = 2 AND RB-F = 1
+               MOVE RB-D TO WS-DBL-B
+               MOVE 1 TO WS-FLT
+           ELSE
+               MOVE WS-NUM-B TO WS-DBL-B
+           END-IF
            .
        RT-R-TMP.
       *>   RR := the text WS-TMP(1:WS-TMP-L)
@@ -140,7 +174,7 @@
            END-IF
            IF VSP > 0
                MOVE 0 TO VS-K(VSP) VS-B(VSP) VS-I(VSP) VS-L(VSP)
-               MOVE 0 TO VS-N(VSP)
+               MOVE 0 TO VS-N(VSP) VS-F(VSP)
            ELSE
                PERFORM RT-PUSH-NULL
            END-IF
@@ -402,6 +436,12 @@
                IF WS-MATCH = 0 PERFORM RT-PUSH-NULL END-IF
                EXIT PARAGRAPH
            END-IF
+           PERFORM RT-DBL-AB
+           IF WS-FLT = 1
+               COMPUTE WS-DBL-T = WS-DBL-A + WS-DBL-B
+               PERFORM RT-PUSH-DBL
+               EXIT PARAGRAPH
+           END-IF
            COMPUTE WS-NUM-T = WS-NUM-A + WS-NUM-B
                ON SIZE ERROR
                    MOVE "number too large" TO WS-ERR-MSG
@@ -417,6 +457,12 @@
            PERFORM RT-ARITH-PREP
            IF WS-OK = 0
                IF WS-MATCH = 0 PERFORM RT-PUSH-NULL END-IF
+               EXIT PARAGRAPH
+           END-IF
+           PERFORM RT-DBL-AB
+           IF WS-FLT = 1
+               COMPUTE WS-DBL-T = WS-DBL-A - WS-DBL-B
+               PERFORM RT-PUSH-DBL
                EXIT PARAGRAPH
            END-IF
            COMPUTE WS-NUM-T = WS-NUM-A - WS-NUM-B
@@ -435,6 +481,12 @@
            PERFORM RT-NUMZ-B
            PERFORM RT-NUMZ-A
            IF WS-NEG = 0 MOVE 0 TO WS-ALLINT END-IF
+           PERFORM RT-DBL-AB
+           IF WS-FLT = 1
+               COMPUTE WS-DBL-T = WS-DBL-A * WS-DBL-B
+               PERFORM RT-PUSH-DBL
+               EXIT PARAGRAPH
+           END-IF
            COMPUTE WS-NUM-T ROUNDED = WS-NUM-A * WS-NUM-B
                ON SIZE ERROR
                    MOVE "number too large" TO WS-ERR-MSG
@@ -450,6 +502,16 @@
            PERFORM RT-POP-A
            PERFORM RT-NUMZ-B
            PERFORM RT-NUMZ-A
+           PERFORM RT-DBL-AB
+           IF WS-FLT = 1
+               IF WS-DBL-B = 0
+                   PERFORM RT-PUSH-NULL
+                   EXIT PARAGRAPH
+               END-IF
+               COMPUTE WS-DBL-T = WS-DBL-A / WS-DBL-B
+               PERFORM RT-PUSH-DBL
+               EXIT PARAGRAPH
+           END-IF
            IF WS-NUM-B = 0
                PERFORM RT-PUSH-NULL
                EXIT PARAGRAPH
@@ -622,9 +684,13 @@
            PERFORM RT-POP-A
            PERFORM RT-ORZERO-A
            IF WS-OK = 0 PERFORM RT-PUSH-NULL EXIT PARAGRAPH END-IF
-           COMPUTE WS-NUM-T ROUNDED = FUNCTION TAN(WS-NUM-A)
-           PERFORM RT-R-FLOAT
-           PERFORM RT-PUSH-R
+           IF RA-K = 2 AND RA-F = 1
+               MOVE RA-D TO WS-DBL-A
+           ELSE
+               MOVE WS-NUM-A TO WS-DBL-A
+           END-IF
+           COMPUTE WS-DBL-T = FUNCTION TAN(WS-DBL-A)
+           PERFORM RT-PUSH-DBL
            .
        RT-LOG10.
            PERFORM RT-POP-A
@@ -659,9 +725,8 @@
            PERFORM RT-PUSH-R
            .
        RT-PI.
-           COMPUTE WS-NUM-T ROUNDED = FUNCTION PI
-           PERFORM RT-R-FLOAT
-           PERFORM RT-PUSH-R
+           COMPUTE WS-DBL-T = FUNCTION PI
+           PERFORM RT-PUSH-DBL
            .
        RT-MAXMIN.
       *>   WS-NARGS values on the stack, WS-MAXMODE 1 = MAX, 0 = MIN.
@@ -777,7 +842,7 @@
                    IF WS-OK = 1
                        MOVE 2 TO RA-K
                        MOVE 1 TO RA-I
-                       MOVE 0 TO RA-N
+                       MOVE 0 TO RA-N RA-F
                    ELSE
                        MOVE 3 TO RA-K
                        MOVE 0 TO RA-L
@@ -794,7 +859,7 @@
                    IF WS-OK = 1
                        MOVE 2 TO RB-K
                        MOVE 1 TO RB-I
-                       MOVE 0 TO RB-N
+                       MOVE 0 TO RB-N RB-F
                    ELSE
                        MOVE 3 TO RB-K
                        MOVE 0 TO RB-L
@@ -815,6 +880,32 @@
            PERFORM RT-COERCE-PAIR
            PERFORM RT-PYEQ
            IF WS-T = 1 MOVE 0 TO WS-T ELSE MOVE 1 TO WS-T END-IF
+           PERFORM RT-PUSH-BOOL
+           .
+       RT-SWITCH-EQ.
+      *>   One SWITCH arm, as erb_runtime.py's erb_switch: (x)::text =
+      *>   (p)::text, and a NULL never matches. Stack: x p -> boolean.
+           PERFORM RT-CP-VSP-RA
+           IF RA-K = 0
+               SUBTRACT 2 FROM VSP
+               PERFORM RT-PUSH-FALSE
+               EXIT PARAGRAPH
+           END-IF
+           SUBTRACT 1 FROM VSP
+           PERFORM RT-CP-VSP-RA
+           ADD 1 TO VSP
+           IF RA-K = 0
+               SUBTRACT 2 FROM VSP
+               PERFORM RT-PUSH-FALSE
+               EXIT PARAGRAPH
+           END-IF
+           PERFORM RT-TEXT
+           PERFORM RT-POP-A
+           PERFORM RT-CP-RA-RC
+           PERFORM RT-TEXT
+           PERFORM RT-POP-A
+           PERFORM RT-CP-RC-RB
+           PERFORM RT-PYEQ
            PERFORM RT-PUSH-BOOL
            .
        RT-CMP.
@@ -1364,6 +1455,7 @@
                PERFORM RT-ROUND-HALF-AWAY
                MOVE WS-NUM-T TO VS-N(VSP)
                MOVE 1 TO VS-I(VSP)
+               MOVE 0 TO VS-F(VSP)
            END-IF
            .
        RT-PLAIN-STR.
@@ -1382,7 +1474,7 @@
            IF VS-K(VSP) = 0
                MOVE 2 TO VS-K(VSP)
                MOVE 1 TO VS-I(VSP)
-               MOVE 0 TO VS-N(VSP)
+               MOVE 0 TO VS-N(VSP) VS-F(VSP)
            END-IF
            .
 
@@ -1410,6 +1502,19 @@
            IF RB-K = 0 MOVE 3 TO RB-K MOVE 0 TO RB-L END-IF
            PERFORM RT-PYEQ
            IF WS-T = 0 MOVE 0 TO WS-MATCH END-IF
+           .
+       RT-CRIT-RAWFIELD.
+      *>   As RT-CRIT-FIELD, for the owner's RAW field: never matches
+      *>   while that field is blank (Postgres: = NULLIF(own, '')).
+           PERFORM RT-POP-B
+           PERFORM RT-POP-A
+           IF RB-K = 0 OR (RB-K = 3 AND RB-L = 0)
+               MOVE 0 TO WS-MATCH
+           ELSE
+               IF RA-K = 0 MOVE 3 TO RA-K MOVE 0 TO RA-L END-IF
+               PERFORM RT-PYEQ
+               IF WS-T = 0 MOVE 0 TO WS-MATCH END-IF
+           END-IF
            .
        RT-CRIT-LIT.
            PERFORM RT-POP-B
@@ -1460,7 +1565,7 @@
            END-IF
            IF WS-OK = 1
                MOVE 2 TO SV-K
-               MOVE 0 TO SV-I SV-B SV-L
+               MOVE 0 TO SV-I SV-B SV-L SV-F
                MOVE WS-NUM-T TO SV-N
            END-IF
            .
@@ -2334,6 +2439,8 @@
            MOVE AB-B TO RB-B
            MOVE AB-I TO RB-I
            MOVE AB-N TO RB-N
+           MOVE AB-F TO RB-F
+           MOVE AB-D TO RB-D
            MOVE AB-L TO RB-L
            IF AB-L > 0
                MOVE AB-S(1:AB-L) TO RB-S(1:AB-L)
@@ -2344,6 +2451,8 @@
            MOVE RA-B TO AB-B
            MOVE RA-I TO AB-I
            MOVE RA-N TO AB-N
+           MOVE RA-F TO AB-F
+           MOVE RA-D TO AB-D
            MOVE RA-L TO AB-L
            IF RA-L > 0
                MOVE RA-S(1:RA-L) TO AB-S(1:RA-L)
@@ -2354,6 +2463,8 @@
            MOVE RA-B TO RC-B
            MOVE RA-I TO RC-I
            MOVE RA-N TO RC-N
+           MOVE RA-F TO RC-F
+           MOVE RA-D TO RC-D
            MOVE RA-L TO RC-L
            IF RA-L > 0
                MOVE RA-S(1:RA-L) TO RC-S(1:RA-L)
@@ -2364,6 +2475,8 @@
            MOVE RA-B TO RR-B
            MOVE RA-I TO RR-I
            MOVE RA-N TO RR-N
+           MOVE RA-F TO RR-F
+           MOVE RA-D TO RR-D
            MOVE RA-L TO RR-L
            IF RA-L > 0
                MOVE RA-S(1:RA-L) TO RR-S(1:RA-L)
@@ -2374,6 +2487,8 @@
            MOVE RB-B TO AB-B
            MOVE RB-I TO AB-I
            MOVE RB-N TO AB-N
+           MOVE RB-F TO AB-F
+           MOVE RB-D TO AB-D
            MOVE RB-L TO AB-L
            IF RB-L > 0
                MOVE RB-S(1:RB-L) TO AB-S(1:RB-L)
@@ -2384,6 +2499,8 @@
            MOVE RB-B TO RA-B
            MOVE RB-I TO RA-I
            MOVE RB-N TO RA-N
+           MOVE RB-F TO RA-F
+           MOVE RB-D TO RA-D
            MOVE RB-L TO RA-L
            IF RB-L > 0
                MOVE RB-S(1:RB-L) TO RA-S(1:RB-L)
@@ -2394,6 +2511,8 @@
            MOVE RB-B TO RC-B
            MOVE RB-I TO RC-I
            MOVE RB-N TO RC-N
+           MOVE RB-F TO RC-F
+           MOVE RB-D TO RC-D
            MOVE RB-L TO RC-L
            IF RB-L > 0
                MOVE RB-S(1:RB-L) TO RC-S(1:RB-L)
@@ -2404,6 +2523,8 @@
            MOVE RC-B TO RA-B
            MOVE RC-I TO RA-I
            MOVE RC-N TO RA-N
+           MOVE RC-F TO RA-F
+           MOVE RC-D TO RA-D
            MOVE RC-L TO RA-L
            IF RC-L > 0
                MOVE RC-S(1:RC-L) TO RA-S(1:RC-L)
@@ -2414,6 +2535,8 @@
            MOVE RC-B TO RB-B
            MOVE RC-I TO RB-I
            MOVE RC-N TO RB-N
+           MOVE RC-F TO RB-F
+           MOVE RC-D TO RB-D
            MOVE RC-L TO RB-L
            IF RC-L > 0
                MOVE RC-S(1:RC-L) TO RB-S(1:RC-L)
@@ -2424,6 +2547,8 @@
            MOVE RR-B TO RA-B
            MOVE RR-I TO RA-I
            MOVE RR-N TO RA-N
+           MOVE RR-F TO RA-F
+           MOVE RR-D TO RA-D
            MOVE RR-L TO RA-L
            IF RR-L > 0
                MOVE RR-S(1:RR-L) TO RA-S(1:RR-L)
@@ -2434,6 +2559,8 @@
            MOVE RR-B TO VS-B(VSP)
            MOVE RR-I TO VS-I(VSP)
            MOVE RR-N TO VS-N(VSP)
+           MOVE RR-F TO VS-F(VSP)
+           MOVE RR-D TO VS-D(VSP)
            MOVE RR-L TO VS-L(VSP)
            IF RR-L > 0
                MOVE RR-S(1:RR-L) TO VS-S(VSP)(1:RR-L)
@@ -2444,6 +2571,8 @@
            MOVE SV-B TO RR-B
            MOVE SV-I TO RR-I
            MOVE SV-N TO RR-N
+           MOVE SV-F TO RR-F
+           MOVE SV-D TO RR-D
            MOVE SV-L TO RR-L
            IF SV-L > 0
                MOVE SV-S(1:SV-L) TO RR-S(1:SV-L)
@@ -2454,6 +2583,8 @@
            MOVE VS-B(WS-J) TO RA-B
            MOVE VS-I(WS-J) TO RA-I
            MOVE VS-N(WS-J) TO RA-N
+           MOVE VS-F(WS-J) TO RA-F
+           MOVE VS-D(WS-J) TO RA-D
            MOVE VS-L(WS-J) TO RA-L
            IF VS-L(WS-J) > 0
                MOVE VS-S(WS-J)(1:VS-L(WS-J)) TO RA-S(1:VS-L(WS-J))
@@ -2464,6 +2595,8 @@
            MOVE VS-B(VSP) TO RA-B
            MOVE VS-I(VSP) TO RA-I
            MOVE VS-N(VSP) TO RA-N
+           MOVE VS-F(VSP) TO RA-F
+           MOVE VS-D(VSP) TO RA-D
            MOVE VS-L(VSP) TO RA-L
            IF VS-L(VSP) > 0
                MOVE VS-S(VSP)(1:VS-L(VSP)) TO RA-S(1:VS-L(VSP))
@@ -2474,6 +2607,8 @@
            MOVE VS-B(VSP) TO RB-B
            MOVE VS-I(VSP) TO RB-I
            MOVE VS-N(VSP) TO RB-N
+           MOVE VS-F(VSP) TO RB-F
+           MOVE VS-D(VSP) TO RB-D
            MOVE VS-L(VSP) TO RB-L
            IF VS-L(VSP) > 0
                MOVE VS-S(VSP)(1:VS-L(VSP)) TO RB-S(1:VS-L(VSP))
@@ -2484,6 +2619,8 @@
            MOVE VS-B(VSP) TO RC-B
            MOVE VS-I(VSP) TO RC-I
            MOVE VS-N(VSP) TO RC-N
+           MOVE VS-F(VSP) TO RC-F
+           MOVE VS-D(VSP) TO RC-D
            MOVE VS-L(VSP) TO RC-L
            IF VS-L(VSP) > 0
                MOVE VS-S(VSP)(1:VS-L(VSP)) TO RC-S(1:VS-L(VSP))
@@ -2494,6 +2631,8 @@
            MOVE AB-B TO RR-B
            MOVE AB-I TO RR-I
            MOVE AB-N TO RR-N
+           MOVE AB-F TO RR-F
+           MOVE AB-D TO RR-D
            MOVE AB-L TO RR-L
            IF AB-L > 0
                MOVE AB-S(1:AB-L) TO RR-S(1:AB-L)

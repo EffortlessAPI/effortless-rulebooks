@@ -3051,7 +3051,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "A beneficial owner is considered to meet a CDD threshold if all of the following:",
+          "headline": "A beneficial owner is considered to meet a CDD threshold if any of the following:",
           "cases": [],
           "children": [
             {
@@ -3555,7 +3555,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "A loan is flagged on watchlist if all of the following:",
+          "headline": "A loan is flagged on watchlist if any of the following:",
           "cases": [],
           "children": [
             {
@@ -4935,7 +4935,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "يُعدّ سجل «beneficial owner» محققًا لشرط «meets CDD threshold» إذا تحقق جميع ما يلي:",
+          "headline": "يُعدّ سجل «beneficial owner» محققًا لشرط «meets CDD threshold» إذا تحقق واحد على الأقل مما يلي:",
           "cases": [],
           "children": [
             {
@@ -5463,7 +5463,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "يوسم سجل «loan» بعلامة «on watchlist» إذا تحقق جميع ما يلي:",
+          "headline": "يوسم سجل «loan» بعلامة «on watchlist» إذا تحقق واحد على الأقل مما يلي:",
           "cases": [],
           "children": [
             {
@@ -6870,7 +6870,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Ein Beneficial Owner gilt als CDD Threshold erfüllend, wenn alles Folgende gilt:",
+          "headline": "Ein Beneficial Owner gilt als CDD Threshold erfüllend, wenn mindestens eines des Folgenden gilt:",
           "cases": [],
           "children": [
             {
@@ -7398,7 +7398,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Ein Loan ist markiert als On Watchlist, wenn alles Folgende gilt:",
+          "headline": "Ein Loan ist markiert als On Watchlist, wenn mindestens eines des Folgenden gilt:",
           "cases": [],
           "children": [
             {
@@ -8805,7 +8805,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un beneficial owner se considera que cumple: CDD threshold si se cumple todo lo siguiente:",
+          "headline": "Un beneficial owner se considera que cumple: CDD threshold si se cumple al menos una de las siguientes:",
           "cases": [],
           "children": [
             {
@@ -9333,7 +9333,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un loan está marcado como on watchlist si se cumple todo lo siguiente:",
+          "headline": "Un loan está marcado como on watchlist si se cumple al menos una de las siguientes:",
           "cases": [],
           "children": [
             {
@@ -10740,7 +10740,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un beneficial owner est considéré comme satisfaisant : CDD threshold si tout ce qui suit est vrai :",
+          "headline": "Un beneficial owner est considéré comme satisfaisant : CDD threshold si au moins une des conditions suivantes est vraie :",
           "cases": [],
           "children": [
             {
@@ -11268,7 +11268,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un loan est marqué comme on watchlist si tout ce qui suit est vrai :",
+          "headline": "Un loan est marqué comme on watchlist si au moins une des conditions suivantes est vraie :",
           "cases": [],
           "children": [
             {
@@ -12675,7 +12675,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "beneficial owner “CDD threshold” की शर्त पूरी करने वाला माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "headline": "beneficial owner “CDD threshold” की शर्त पूरी करने वाला माना जाता है, यदि निम्नलिखित में से कम से कम एक सही हो:",
           "cases": [],
           "children": [
             {
@@ -13203,7 +13203,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "loan “on watchlist” के रूप में दर्ज किया जाता है, यदि निम्नलिखित सभी सही हों:",
+          "headline": "loan “on watchlist” के रूप में दर्ज किया जाता है, यदि निम्नलिखित में से कम से कम एक सही हो:",
           "cases": [],
           "children": [
             {
@@ -14610,7 +14610,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Setiap beneficial owner dianggap memenuhi kondisi “meets CDD threshold” jika semua kondisi berikut terpenuhi:",
+          "headline": "Setiap beneficial owner dianggap memenuhi kondisi “meets CDD threshold” jika paling sedikit satu kondisi berikut terpenuhi:",
           "cases": [],
           "children": [
             {
@@ -15138,7 +15138,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Setiap loan ditandai sebagai “on watchlist” jika semua kondisi berikut terpenuhi:",
+          "headline": "Setiap loan ditandai sebagai “on watchlist” jika paling sedikit satu kondisi berikut terpenuhi:",
           "cases": [],
           "children": [
             {
@@ -16545,7 +16545,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un beneficial owner è considerato come soddisfacente: CDD threshold se vale tutto quanto segue:",
+          "headline": "Un beneficial owner è considerato come soddisfacente: CDD threshold se vale almeno una delle seguenti:",
           "cases": [],
           "children": [
             {
@@ -17073,7 +17073,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un loan è contrassegnato come on watchlist se vale tutto quanto segue:",
+          "headline": "Un loan è contrassegnato come on watchlist se vale almeno una delle seguenti:",
           "cases": [],
           "children": [
             {
@@ -18480,7 +18480,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "次のすべてが成り立つ場合、beneficial ownerは「CDD Threshold」を満たすと見なされます:",
+          "headline": "次のいずれかが成り立つ場合、beneficial ownerは「CDD Threshold」を満たすと見なされます:",
           "cases": [],
           "children": [
             {
@@ -19008,7 +19008,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "次のすべてが成り立つ場合、loanは「On Watchlist」と記録されます:",
+          "headline": "次のいずれかが成り立つ場合、loanは「On Watchlist」と記録されます:",
           "cases": [],
           "children": [
             {
@@ -20415,7 +20415,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "다음 모두에 해당하는 경우, ‘beneficial owner’ 레코드는 ‘meets CDD threshold’ 조건에 해당하는 것으로 간주됩니다:",
+          "headline": "다음 중 하나 이상에 해당하는 경우, ‘beneficial owner’ 레코드는 ‘meets CDD threshold’ 조건에 해당하는 것으로 간주됩니다:",
           "cases": [],
           "children": [
             {
@@ -20943,7 +20943,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "다음 모두에 해당하는 경우, ‘loan’ 레코드는 ‘on watchlist’에 해당하는 것으로 표시됩니다:",
+          "headline": "다음 중 하나 이상에 해당하는 경우, ‘loan’ 레코드는 ‘on watchlist’에 해당하는 것으로 표시됩니다:",
           "cases": [],
           "children": [
             {
@@ -22350,7 +22350,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Een beneficial owner geldt als voldoend aan: CDD threshold als al het volgende geldt:",
+          "headline": "Een beneficial owner geldt als voldoend aan: CDD threshold als ten minste één van het volgende geldt:",
           "cases": [],
           "children": [
             {
@@ -22878,7 +22878,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Een loan is gemarkeerd als on watchlist als al het volgende geldt:",
+          "headline": "Een loan is gemarkeerd als on watchlist als ten minste één van het volgende geldt:",
           "cases": [],
           "children": [
             {
@@ -24285,7 +24285,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Um beneficial owner é considerado como satisfazendo: CDD threshold se tudo o que segue for verdadeiro:",
+          "headline": "Um beneficial owner é considerado como satisfazendo: CDD threshold se pelo menos um dos seguintes for verdadeiro:",
           "cases": [],
           "children": [
             {
@@ -24813,7 +24813,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Um loan está marcado como on watchlist se tudo o que segue for verdadeiro:",
+          "headline": "Um loan está marcado como on watchlist se pelo menos um dos seguintes for verdadeiro:",
           "cases": [],
           "children": [
             {
@@ -26220,7 +26220,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Beneficial owner считается удовлетворяющим условию «CDD threshold», если выполняется всё следующее:",
+          "headline": "Beneficial owner считается удовлетворяющим условию «CDD threshold», если выполняется хотя бы одно из следующего:",
           "cases": [],
           "children": [
             {
@@ -26748,7 +26748,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Loan помечается как «on watchlist», если выполняется всё следующее:",
+          "headline": "Loan помечается как «on watchlist», если выполняется хотя бы одно из следующего:",
           "cases": [],
           "children": [
             {
@@ -28155,7 +28155,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "“beneficial owner” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “meets CDD threshold” koşulunu sağlamış sayılır:",
+          "headline": "“beneficial owner” kaydı, aşağıdakilerden en az biri sağlanıyor ise “meets CDD threshold” koşulunu sağlamış sayılır:",
           "cases": [],
           "children": [
             {
@@ -28683,7 +28683,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "“loan” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “on watchlist” olarak işaretlenir:",
+          "headline": "“loan” kaydı, aşağıdakilerden en az biri sağlanıyor ise “on watchlist” olarak işaretlenir:",
           "cases": [],
           "children": [
             {
@@ -30090,7 +30090,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Mỗi beneficial owner được coi là thỏa điều kiện “meets CDD threshold” nếu tất cả các điều kiện sau đều đúng:",
+          "headline": "Mỗi beneficial owner được coi là thỏa điều kiện “meets CDD threshold” nếu ít nhất một trong các điều kiện sau đúng:",
           "cases": [],
           "children": [
             {
@@ -30618,7 +30618,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Mỗi loan được đánh dấu là “on watchlist” nếu tất cả các điều kiện sau đều đúng:",
+          "headline": "Mỗi loan được đánh dấu là “on watchlist” nếu ít nhất một trong các điều kiện sau đúng:",
           "cases": [],
           "children": [
             {
@@ -32025,7 +32025,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "当以下全部成立时,beneficial owner被视为满足“CDD Threshold”:",
+          "headline": "当以下任一成立时,beneficial owner被视为满足“CDD Threshold”:",
           "cases": [],
           "children": [
             {
@@ -32553,7 +32553,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "当以下全部成立时,loan被标记为“On Watchlist”:",
+          "headline": "当以下任一成立时,loan被标记为“On Watchlist”:",
           "cases": [],
           "children": [
             {
@@ -33312,4 +33312,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Interactions": "interaction"
     }
   }
-} };
+}, stamp: "49861ac3d942bfe6" };

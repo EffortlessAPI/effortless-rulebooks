@@ -1,4 +1,4 @@
-# 📘 Effortless Banking — RuleSpeak®
+# 📘 Effortless Banking — Docs
 
 _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 
@@ -23,6 +23,22 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | Count of Portfolio Businesses | The number of businesses related to the user. | _Number of Businesses whose RelationshipManager is this user._ |
 | Count of Originated Loans | The number of loans related to the user. | _Number of Loans this user originated as the RM of record._ |
 | Count of Underwritten Loans | The number of loans related to the user. | _Number of Loans this user underwrote._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Full Name | Role | Email | Is RM ƒ | Is Underwriter ƒ | Is Branch Banker ƒ | Is Admin ƒ | Count of Portfolio Businesses ƒ | Count of Originated Loans ƒ | Count of Underwritten Loans ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| devon-marshall | Devon Marshall | RM | devon.marshall@firstvalley.bank | true | false | false | false | 5 | 3 | 0 |
+| priya-iyer | Priya Iyer | Admin | priya.iyer@firstvalley.bank | false | false | false | true | 0 | 0 | 2 |
+| thomas-bell | Thomas Bell | Underwriter | thomas.bell@firstvalley.bank | false | true | false | false | 0 | 0 | 1 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Business** | Small-business customers (and prospects) of the bank. Central entity: BeneficialOwners, Contacts, Accounts, Loans, Documents, and Interactions all hang off a Business. BusinessProfile information (legal name, structure, NAICS code) lives directly on this table. | — |
 | Name | Computed as the lower-cased legal name with every a space replaced by a hyphen with every a period replaced by an empty string. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased compound PK derived from LegalName (punctuation stripped)._ |
 | Legal Name | A defined attribute. | _Registered legal name of the business._ |
@@ -51,6 +67,22 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | Beneficial Owners At CDD Threshold | The number of the business's beneficial owners that meet a CDD threshold. | _Count of BeneficialOwners meeting FinCEN's 25% threshold or marked as the control person._ |
 | Meets CDD Rule | True when the beneficial owners at CDD threshold is greater than 0. | _True when CDD beneficial-ownership collection is satisfied: at least one owner crosses the 25% threshold, or a control person is designated._ |
 | Portfolio Priority | Determined by priority: “High” if the classified loan flag is set; “Medium” if at least one of the following holds: the meets CDD rule flag is not set; the prospect flag is set; or the count of loans is 0; in all other cases, “Low”. | _Higher-order: portfolio-management priority bucket for this business. 'High' when classified loan present, 'Medium' when CDD or onboarding incomplete or no loans yet, otherwise 'Low'._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Legal Name | Business Structure | NAICS Code | NAICS Description | Annual Revenue USD | Status | Onboarded At | Relationship Manager Label ƒ | Is Customer ƒ | Is Prospect ƒ | Was Referred ƒ | Count of Beneficial Owners ƒ | Count of Contacts ƒ | Count of Accounts ƒ | Count of Loans ƒ | Count of Interactions ƒ | Count of Documents ƒ | Total Deposit Balance USD ƒ | Total Loan Principal USD ƒ | Count of Classified Loans ƒ | Has Classified Loan ƒ | Beneficial Owners At CDD Threshold ƒ | Meets CDD Rule ƒ | Portfolio Priority ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| stillwater-roasters-llc | Stillwater Roasters LLC | LLC | 311920 | Coffee and Tea Manufacturing | 4200000 | Customer | 2024-03-12T00:00:00Z | Devon Marshall | true | false | false | 2 | 2 | 2 | 1 | 3 | 2 | 259250.13 | 250000.0 | 0 | false | 2 | true | Low |
+| ridgeway-consulting-llc | Ridgeway Consulting LLC | LLC | 541611 | Administrative Management Consulting | 1800000 | Customer | 2023-09-05T00:00:00Z | Devon Marshall | true | false | false | 1 | 1 | 1 | 1 | 1 | 0 | 92800.0 | 100000.0 | 0 | false | 1 | true | Low |
+| pine-hardware-inc | Pine Hardware Inc. | C-Corp | 444110 | Home Centers | 12500000 | Customer | 2019-06-21T00:00:00Z | Devon Marshall | true | false | false | 2 | 1 | 1 | 1 | 4 | 1 | 612430.55 | 1850000.0 | 1 | true | 2 | true | High |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Beneficial Owner** | Individuals owning 25%+ of a Business plus designated control persons, per FinCEN's CDD rule. PII (SSN, DOB, address) is stored encrypted at rest via field-level encryption. | — |
 | Name | Computed as the business, followed by a hyphen, followed by the lower-cased full name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased compound PK: {Business}-{FullName slug}._ |
 | Business | A defined attribute. | _FK to the parent Business._ |
@@ -63,6 +95,22 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | Business Label | The legal name of the beneficial owner's business. | _Display label of the parent Business._ |
 | Meets25 Percent Threshold | True when the ownership percentage is at least 25. | _True when OwnershipPercentage >= 25._ |
 | Meets CDD Threshold | True when at least one of the following holds: the meets25 percent threshold flag is set or the control person flag is set. | _True when this row counts toward CDD compliance: meets 25% OR is the control person._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Full Name | Date of Birth Encrypted | SSN Encrypted | Address Encrypted | Ownership Percentage | Is Control Person | Business Label ƒ | Meets25 Percent Threshold ƒ | Meets CDD Threshold ƒ |
+|---|---|---|---|---|---|---|---|---|---|
+| stillwater-roasters-llc-jordan-park | Jordan Park | ENC(1981-04-17) | ENC(xxx-xx-1234) | ENC(742 Evergreen Way, Stillwater) | 60 | true | Stillwater Roasters LLC | true | true |
+| stillwater-roasters-llc-sam-rivera | Sam Rivera | ENC(1978-11-02) | ENC(xxx-xx-5678) | ENC(15 Hillcrest Rd, Stillwater) | 40 | false | Stillwater Roasters LLC | true | true |
+| ridgeway-consulting-llc-alex-ridgeway | Alex Ridgeway | ENC(1972-02-14) | ENC(xxx-xx-9012) | ENC(204 Birch Ln, Ridgeway) | 0 | true | Ridgeway Consulting LLC | false | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Contact** | Non-owner individuals associated with a Business: officers, AP clerks, authorized signers, additional points of contact. Distinct from BeneficialOwners (which carries PII/CDD weight). | — |
 | Name | Computed as the business, followed by a hyphen, followed by the lower-cased full name with every a space replaced by a hyphen, followed by a hyphen, followed by the lower-cased title with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased compound PK: {Business}-{FullName slug}-{Title slug}._ |
 | Business | A defined attribute. | _FK to the parent Business._ |
@@ -75,6 +123,22 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | Business Label | The legal name of the contact's business. | _Display label of the parent Business._ |
 | Is Officer | True when the contact type is “Officer”. | _True when ContactType = 'Officer'._ |
 | Is AP Clerk | True when the contact type is “APClerk”. | _True when ContactType = 'APClerk'._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Full Name | Title | Email | Phone | Contact Type | Is Authorized Signer | Business Label ƒ | Is Officer ƒ | Is AP Clerk ƒ |
+|---|---|---|---|---|---|---|---|---|---|
+| stillwater-roasters-llc-jordan-park-ceo | Jordan Park | CEO | jordan@stillwaterroasters.com | 555-0142 | Officer | true | Stillwater Roasters LLC | true | false |
+| stillwater-roasters-llc-sam-rivera-cfo | Sam Rivera | CFO | sam@stillwaterroasters.com | 555-0143 | Officer | true | Stillwater Roasters LLC | true | false |
+| pine-hardware-inc-marta-keene-ap-clerk | Marta Keene | AP Clerk | ap@pinehardware.com | 555-0188 | APClerk | false | Pine Hardware Inc. | false | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Account** | Deposit accounts the Business holds at the bank (checking, savings, money market). Balances feed GlobalCashFlow during credit analysis. TreasuryServices enrollment flags (ACH, Wire, Card) are stored per-account. | — |
 | Name | Computed as the business, followed by a hyphen, followed by the lower-cased account type, followed by a hyphen, followed by the account number last4. | _Kebab-cased compound PK: {Business}-{AccountType}-{Last4}._ |
 | Business | A defined attribute. | _FK to the parent Business._ |
@@ -88,6 +152,22 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | Business Label | The legal name of the account's business. | _Display label of the parent Business._ |
 | Treasury Service Count | Computed as the count of the following that hold: the ACH flag is set; the wire flag is set; and the card flag is set. | _Number of treasury services enrolled on this account._ |
 | Has Any Treasury Service | True when the treasury service count is greater than 0. | _True when at least one treasury service is enrolled._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Account Type | Account Number Last4 | Current Balance USD | Has ACH | Has Wire | Has Card | Opened At | Business Label ƒ | Treasury Service Count ƒ | Has Any Treasury Service ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| stillwater-roasters-llc-checking-0001 | Checking | 0001 | 184250.13 | true | true | false | 2024-03-13T00:00:00Z | Stillwater Roasters LLC | 2 | true |
+| stillwater-roasters-llc-savings-0101 | Savings | 0101 | 75000 | false | false | false | 2024-03-13T00:00:00Z | Stillwater Roasters LLC | 0 | false |
+| pine-hardware-inc-checking-0200 | Checking | 0200 | 612430.55 | true | true | true | 2019-06-22T00:00:00Z | Pine Hardware Inc. | 3 | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Loan** | Credit facilities extended to a Business, tracked from inquiry through funding, servicing, and payoff. RiskRating is denormalized here for fast reads; every change is captured in RiskRatingHistory. | — |
 | Name | Computed as the lower-cased loan number with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased PK derived from LoanNumber (e.g. 'L-0051' -> 'l-0051')._ |
 | Loan Number | A defined attribute. | _Bank-assigned loan number (e.g. 'L-0051')._ |
@@ -122,6 +202,22 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | Has Breached Covenant | True when the count of breached covenants is greater than 0. | _True when at least one covenant is in breach._ |
 | On Watchlist | True when at least one of the following holds: the classified asset flag is set or the breached covenant flag is set. | _Higher-order: on the watchlist when the loan is a classified asset OR has any breached covenant._ |
 | Health Score | Computed as the count of the following that hold: the DSCR in band flag is set; the LTV in band flag is set; the classified asset flag is not set; and the breached covenant flag is not set. | _Higher-order composite health score (0-4): +1 for DscrInBand, +1 for LtvInBand, +1 for NOT IsClassifiedAsset, +1 for NOT HasBreachedCovenant._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Loan Number | Loan Purpose | Principal USD | Rate Pct | Term Months | Underwriting Stage | Risk Rating | Risk Rating Label | DSCR | LTV | Global Cash Flow USD | Originated At | Funded At | Business Label ƒ | Business NAICS Code ƒ | Originating RM Label ƒ | Underwriter is Admin ƒ | Is Funded ƒ | Is Classified Asset ƒ | DSCR in Band ƒ | LTV in Band ƒ | Segregation of Duties Ok ƒ | Count of Covenants ƒ | Count of Breached Covenants ƒ | Count of Risk Rating History ƒ | Count of Documents ƒ | Has Breached Covenant ƒ | On Watchlist ƒ | Health Score ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| l-0051 | L-0051 | Equipment | 250000 | 7.25 | 60 | Funded | 4 | Pass | 1.42 | 0.78 | 612000 | 2025-02-10T00:00:00Z | 2025-03-01T00:00:00Z | Stillwater Roasters LLC | 311920 | Devon Marshall | true | true | false | true | true | true | 3 | 0 | 1 | 2 | false | false | 4 |
+| l-0042 | L-0042 | CRE | 1850000 | 6.5 | 240 | Funded | 7 | Substandard | 1.08 | 0.71 | 2100000 | 2021-04-14T00:00:00Z | 2021-05-20T00:00:00Z | Pine Hardware Inc. | 444110 | Devon Marshall | false | true | true | false | true | true | 1 | 1 | 3 | 0 | true | true | 1 |
+| l-0078 | L-0078 | LOC | 100000 | 8 | 12 | Funded | 3 | Pass | 1.85 | — | 320000 | 2024-08-01T00:00:00Z | 2024-08-22T00:00:00Z | Ridgeway Consulting LLC | 541611 | Devon Marshall | true | true | false | true | true | true | 0 | 0 | 1 | 0 | false | false | 4 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Covenant** | Conditions attached to a Loan that must be tested on a recurring schedule (e.g. minimum DSCR each quarter). CovenantMonitoring runs the tickler calendar ahead of NextTestDate; breaches surface as SystemEvent Interactions. | — |
 | Name | Computed as the loan, followed by a hyphen, followed by the lower-cased covenant type with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased compound PK: {Loan}-{CovenantType slug}._ |
 | Loan | A defined attribute. | _FK to the parent Loan._ |
@@ -135,6 +231,22 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | Loan Business | Taken from the linked loan. | _Business of the parent Loan (chained lookup)._ |
 | Is Breached | True when the status is “Breached”. | _True when Status = 'Breached'._ |
 | Has Active Waiver | True when the current waiver through has a value. | _True when CurrentWaiverThrough is set (waiver is on file)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Covenant Type | Threshold Value | Test Frequency | Next Test Date | Status | Current Waiver Through | Loan Label ƒ | Loan Business ƒ | Is Breached ƒ | Has Active Waiver ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| l-0051-mindscr | MinDSCR | 1.2 | Quarterly | 2025-06-30T00:00:00Z | Active | — | L-0051 | stillwater-roasters-llc | false | false |
+| l-0051-maxleverage | MaxLeverage | 3 | Annual | 2026-03-01T00:00:00Z | Active | — | L-0051 | stillwater-roasters-llc | false | false |
+| l-0051-reportingfinancials | ReportingFinancials | — | Annual | 2026-03-31T00:00:00Z | Active | — | L-0051 | stillwater-roasters-llc | false | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Risk Rating History** | Time-series of risk-grade changes on a Loan. Regulators audit rating drift, so every migration is captured here. AnnualReview also writes a row even when the grade is reaffirmed unchanged. | — |
 | Name | Computed as the loan, followed by a hyphen, followed by the TEXT of the effective date and “yyyy-mm-dd”, followed by “-grade-”, followed by the TEXT of the new grade and “0”. | _Kebab-cased compound PK: {Loan}-{EffectiveDate}-grade-{NewGrade}._ |
 | Loan | A defined attribute. | _FK to the Loan whose grade changed._ |
@@ -149,6 +261,22 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | Is Downgrade | True when the grade delta is greater than 0. | _True when the migration represents a downgrade (higher grade number = worse risk)._ |
 | Is Initial Rating | True when the prior grade (a missing value counts as 0) is 0. | _True when this is the loan's first rating row (no PriorGrade)._ |
 | Crossed Classified Threshold | True when all of the following hold: the prior grade (a missing value counts as 0) is less than 7 and the new grade is at least 7. | _Higher-order: true when this migration is the moment a loan crossed from non-classified to classified (PriorGrade < 7 and NewGrade >= 7)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Effective Date | Prior Grade | New Grade | Reason | Loan Label ƒ | Changed by User Label ƒ | Grade Delta ƒ | Is Downgrade ƒ | Is Initial Rating ƒ | Crossed Classified Threshold ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| l-0042-2021-05-20-grade-4 | 2021-05-20T00:00:00Z | — | 4 | Initial rating at funding. | L-0042 | Thomas Bell | 0 | false | true | false |
+| l-0042-2025-05-02-grade-6 | 2025-05-02T00:00:00Z | 4 | 6 | DSCR covenant breach; downgrade to Special Mention. | L-0042 | Thomas Bell | 2 | true | false | false |
+| l-0042-2025-08-15-grade-7 | 2025-08-15T00:00:00Z | 6 | 7 | Sustained underperformance; downgrade to Substandard. Added to Watchlist. | L-0042 | Thomas Bell | 1 | true | false | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Document** | Files in the DocumentVault. A document attaches to either a Business (tax returns, formation docs) or a Loan (note, security agreement, appraisal). Both FKs are nullable so a document can hang off the appropriate parent. | — |
 | Name | Computed as the lower-cased filename with every a space replaced by a hyphen with every a period replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased PK derived from the filename._ |
 | Business | A defined attribute. | _Optional FK to a Business (nullable for loan-only docs)._ |
@@ -164,6 +292,22 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | Uploaded by User Label | The full name of the document's uploaded by user. | _Display label of the uploader (if known)._ |
 | Attached to | Determined by priority: “Loan” if the loan is set; “Business” if the business is set; in all other cases, “Orphan”. | _Which parent this document hangs off: 'Loan', 'Business', or 'Orphan' (neither set)._ |
 | From Customer Portal | True when the uploaded via is “BusinessClientPortal”. | _True when uploaded by the customer themselves via the BusinessClientPortal._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Filename | Document Type | Ocr Indexed | Uploaded Via | Uploaded At | Business Label ƒ | Loan Label ƒ | Uploaded by User Label ƒ | Attached to ƒ | From Customer Portal ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| stillwater-2024-tax-return-pdf | stillwater-2024-tax-return.pdf | TaxReturn | true | RMDashboard | 2025-01-22T00:00:00Z | Stillwater Roasters LLC | — | Devon Marshall | Business | false |
+| l-0051-promissory-note-pdf | l-0051-promissory-note.pdf | Note | true | RMDashboard | 2025-02-28T00:00:00Z | — | L-0051 | Priya Iyer | Loan | false |
+| l-0051-security-agreement-pdf | l-0051-security-agreement.pdf | SecurityAgreement | true | RMDashboard | 2025-02-28T00:00:00Z | — | L-0051 | Priya Iyer | Loan | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Interaction** | Unified activity-log feed for a Business. An Interaction is intentionally generic: InteractionType discriminates Note, Call, Visit, Task, Meeting, or SystemEvent. Covenant breaches, document requests, and other machine actions are written as SystemEvent interactions so they appear in the same stream as human-logged activity. | — |
 | Name | Computed as the business, followed by a hyphen, followed by the TEXT of the interaction date and “yyyy-mm-dd”, followed by a hyphen, followed by the lower-cased interaction type, followed by a hyphen, followed by the lower-cased subject with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Kebab-cased compound PK: {Business}-{InteractionDate}-{InteractionType slug}-{Subject slug}._ |
 | Business | A defined attribute. | _FK to the parent Business._ |
@@ -180,6 +324,19 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 | Is Task | True when the interaction type is “Task”. | _True for Task-type rows._ |
 | From Customer | True when the source is “BusinessClientPortal”. | _True when sourced from the BusinessClientPortal (customer-originated)._ |
 | Is Covenant Event | True when all of the following hold: the system event flag is set and the subject mentions “covenant breach”. | _Higher-order: true when this is a covenant-related system event (subject contains 'covenant')._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Interaction Type | Subject | Body | Interaction Date | Due Date | Source | Business Label ƒ | User Label ƒ | Is System Event ƒ | Is Task ƒ | From Customer ƒ | Is Covenant Event ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| stillwater-roasters-llc-2025-04-15-note-q2-pnl-review | Note | Q2 PnL review | Reviewed Q2 P&L. Margins compressed slightly on green-coffee cost spike but volume up 12% YoY. | 2025-04-15T00:00:00Z | — | RMDashboard | Stillwater Roasters LLC | Devon Marshall | false | false | false | false |
+| stillwater-roasters-llc-2025-04-15-call-wire-fee-question | Call | Wire fee question | Sam called re: $30 outbound wire fee. Confirmed price; offered ACH-international as alternative. | 2025-04-15T00:00:00Z | — | RMDashboard | Stillwater Roasters LLC | Devon Marshall | false | false | false | false |
+| pine-hardware-inc-2025-04-15-visit-refi-discussion | Visit | Refi discussion | On-site visit. Discussed potential refinance of L-0042 once classified-asset status resolves. | 2025-04-15T00:00:00Z | — | RMDashboard | Pine Hardware Inc. | Devon Marshall | false | false | false | false |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -257,7 +414,7 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 
 ### Segregation of Duties
 
-- **loan-sod** *(hard)* — A loan **must not** be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.
+- **loan-sod** *(hard)* — A loan **must not** be funded by the same user who originated it: the originating relationship manager and the underwriter **must** be different users.
   - _On violation:_ “The same user originated and underwrote this loan — segregation of duties is violated.”
   - _Source:_ Internal Credit Policy §4.2
 
@@ -354,7 +511,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -442,8 +599,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

@@ -956,7 +956,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-NAME-NI(R01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -974,7 +974,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-NAME-NI(Q01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1040,7 +1040,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T01-FULL-NAME-LEN(R01) TO VS-L(VSP)
@@ -1054,7 +1054,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T01-FULL-NAME-LEN(Q01) TO VS-L(VSP)
@@ -1105,7 +1105,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T01-ROLE-LEN(R01) TO VS-L(VSP)
@@ -1119,7 +1119,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T01-ROLE-LEN(Q01) TO VS-L(VSP)
@@ -1170,7 +1170,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T01-EMAIL-LEN(R01) TO VS-L(VSP)
@@ -1184,7 +1184,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T01-EMAIL-LEN(Q01) TO VS-L(VSP)
@@ -1235,7 +1235,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-IS-RM-NI(R01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1252,7 +1252,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-IS-RM-NI(Q01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1311,7 +1311,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-IS-UNDERWRITER-NI(R01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1328,7 +1328,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-IS-UNDERWRITER-NI(Q01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1387,7 +1387,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-IS-BRANCH-BANKER-NI(R01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1404,7 +1404,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-IS-BRANCH-BANKER-NI(Q01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1463,7 +1463,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-IS-ADMIN-NI(R01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1480,7 +1480,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-IS-ADMIN-NI(Q01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1539,7 +1539,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-COUNT-OF-PORTFOLIO-BUS-NI(R01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1555,7 +1555,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-COUNT-OF-PORTFOLIO-BUS-NI(Q01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1607,7 +1607,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-COUNT-OF-ORIGINATED-LO-NI(R01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1623,7 +1623,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-COUNT-OF-ORIGINATED-LO-NI(Q01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1675,7 +1675,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-COUNT-OF-UNDERWRITTEN-NI(R01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1691,7 +1691,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T01-COUNT-OF-UNDERWRITTEN-NI(Q01) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1916,7 +1916,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-NAME-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -1934,7 +1934,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-NAME-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2000,7 +2000,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T02-LEGAL-NAME-LEN(R02) TO VS-L(VSP)
@@ -2014,7 +2014,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T02-LEGAL-NAME-LEN(Q02) TO VS-L(VSP)
@@ -2065,7 +2065,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T02-BUSINESS-STRUCTURE-LEN(R02) TO VS-L(VSP)
@@ -2079,7 +2079,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T02-BUSINESS-STRUCTURE-LEN(Q02) TO VS-L(VSP)
@@ -2130,7 +2130,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T02-NAICS-CODE-LEN(R02) TO VS-L(VSP)
@@ -2144,7 +2144,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T02-NAICS-CODE-LEN(Q02) TO VS-L(VSP)
@@ -2195,7 +2195,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-NAICS-DESCRIPTION-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2213,7 +2213,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-NAICS-DESCRIPTION-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2279,7 +2279,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-ANNUAL-REVENUE-USD-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2297,7 +2297,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-ANNUAL-REVENUE-USD-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2359,7 +2359,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T02-STATUS-LEN(R02) TO VS-L(VSP)
@@ -2373,7 +2373,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T02-STATUS-LEN(Q02) TO VS-L(VSP)
@@ -2424,7 +2424,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-ONBOARDED-AT-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2442,7 +2442,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-ONBOARDED-AT-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2508,7 +2508,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T02-RELATIONSHIP-MANAGER-LEN(R02) TO VS-L(VSP)
@@ -2522,7 +2522,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T02-RELATIONSHIP-MANAGER-LEN(Q02) TO VS-L(VSP)
@@ -2573,7 +2573,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-REFERRAL-SOURCE-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2591,7 +2591,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-REFERRAL-SOURCE-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2657,7 +2657,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-RELATIONSHIP-MANAGER-L-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2675,7 +2675,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-RELATIONSHIP-MANAGER-L-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2741,7 +2741,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-IS-CUSTOMER-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2758,7 +2758,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-IS-CUSTOMER-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2817,7 +2817,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-IS-PROSPECT-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2834,7 +2834,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-IS-PROSPECT-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2893,7 +2893,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-WAS-REFERRED-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2910,7 +2910,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-WAS-REFERRED-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2969,7 +2969,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-COUNT-OF-BENEFICIAL-OW-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -2985,7 +2985,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-COUNT-OF-BENEFICIAL-OW-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3037,7 +3037,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-COUNT-OF-CONTACTS-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3053,7 +3053,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-COUNT-OF-CONTACTS-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3105,7 +3105,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-COUNT-OF-ACCOUNTS-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3121,7 +3121,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-COUNT-OF-ACCOUNTS-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3173,7 +3173,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-COUNT-OF-LOANS-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3189,7 +3189,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-COUNT-OF-LOANS-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3240,7 +3240,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-COUNT-OF-INTERACTIONS-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3256,7 +3256,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-COUNT-OF-INTERACTIONS-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3308,7 +3308,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-COUNT-OF-DOCUMENTS-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3324,7 +3324,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-COUNT-OF-DOCUMENTS-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3376,7 +3376,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-TOTAL-DEPOSIT-BALANCE-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3394,7 +3394,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-TOTAL-DEPOSIT-BALANCE-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3448,7 +3448,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-TOTAL-LOAN-PRINCIPAL-U-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3466,7 +3466,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-TOTAL-LOAN-PRINCIPAL-U-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3520,7 +3520,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-COUNT-OF-CLASSIFIED-LO-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3536,7 +3536,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-COUNT-OF-CLASSIFIED-LO-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3588,7 +3588,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-HAS-CLASSIFIED-LOAN-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3605,7 +3605,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-HAS-CLASSIFIED-LOAN-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3665,7 +3665,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-BENEFICIAL-OWNERS-AT-C-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3681,7 +3681,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-BENEFICIAL-OWNERS-AT-C-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3733,7 +3733,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-MEETS-CDD-RULE-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3750,7 +3750,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-MEETS-CDD-RULE-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3809,7 +3809,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-PORTFOLIO-PRIORITY-NI(R02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -3827,7 +3827,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T02-PORTFOLIO-PRIORITY-NI(Q02) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -4424,7 +4424,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T03-NAME-NI(R03) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -4442,7 +4442,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T03-NAME-NI(Q03) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -4508,7 +4508,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T03-BUSINESS-LEN(R03) TO VS-L(VSP)
@@ -4522,7 +4522,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T03-BUSINESS-LEN(Q03) TO VS-L(VSP)
@@ -4573,7 +4573,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T03-FULL-NAME-LEN(R03) TO VS-L(VSP)
@@ -4587,7 +4587,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T03-FULL-NAME-LEN(Q03) TO VS-L(VSP)
@@ -4638,7 +4638,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T03-DATE-OF-BIRTH-ENCRYPTE-LEN(R03) TO VS-L(VSP)
@@ -4652,7 +4652,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T03-DATE-OF-BIRTH-ENCRYPTE-LEN(Q03) TO VS-L(VSP)
@@ -4703,7 +4703,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T03-SSN-ENCRYPTED-LEN(R03) TO VS-L(VSP)
@@ -4717,7 +4717,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T03-SSN-ENCRYPTED-LEN(Q03) TO VS-L(VSP)
@@ -4768,7 +4768,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T03-ADDRESS-ENCRYPTED-LEN(R03) TO VS-L(VSP)
@@ -4782,7 +4782,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T03-ADDRESS-ENCRYPTED-LEN(Q03) TO VS-L(VSP)
@@ -4833,7 +4833,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 2 TO VS-K(VSP)
            MOVE T03-OWNERSHIP-PERCENTAGE(R03) TO VS-N(VSP)
@@ -4847,7 +4847,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 2 TO VS-K(VSP)
            MOVE T03-OWNERSHIP-PERCENTAGE(Q03) TO VS-N(VSP)
@@ -4895,7 +4895,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 1 TO VS-K(VSP)
            IF T03-IS-CONTROL-PERSON(R03) = "Y"
@@ -4908,7 +4908,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 1 TO VS-K(VSP)
            IF T03-IS-CONTROL-PERSON(Q03) = "Y"
@@ -4954,7 +4954,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T03-BUSINESS-LABEL-NI(R03) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -4972,7 +4972,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T03-BUSINESS-LABEL-NI(Q03) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -5038,7 +5038,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T03-MEETS25-PERCENT-THRESH-NI(R03) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -5055,7 +5055,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T03-MEETS25-PERCENT-THRESH-NI(Q03) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -5115,7 +5115,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T03-MEETS-CDD-THRESHOLD-NI(R03) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -5132,7 +5132,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T03-MEETS-CDD-THRESHOLD-NI(Q03) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -5272,7 +5272,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T04-NAME-NI(R04) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -5290,7 +5290,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T04-NAME-NI(Q04) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -5356,7 +5356,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T04-BUSINESS-LEN(R04) TO VS-L(VSP)
@@ -5370,7 +5370,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T04-BUSINESS-LEN(Q04) TO VS-L(VSP)
@@ -5421,7 +5421,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T04-FULL-NAME-LEN(R04) TO VS-L(VSP)
@@ -5435,7 +5435,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T04-FULL-NAME-LEN(Q04) TO VS-L(VSP)
@@ -5486,7 +5486,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T04-TITLE-LEN(R04) TO VS-L(VSP)
@@ -5500,7 +5500,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T04-TITLE-LEN(Q04) TO VS-L(VSP)
@@ -5551,7 +5551,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T04-EMAIL-NI(R04) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -5569,7 +5569,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T04-EMAIL-NI(Q04) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -5635,7 +5635,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T04-PHONE-NI(R04) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -5653,7 +5653,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T04-PHONE-NI(Q04) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -5719,7 +5719,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T04-CONTACT-TYPE-LEN(R04) TO VS-L(VSP)
@@ -5733,7 +5733,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T04-CONTACT-TYPE-LEN(Q04) TO VS-L(VSP)
@@ -5784,7 +5784,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 1 TO VS-K(VSP)
            IF T04-IS-AUTHORIZED-SIGNER(R04) = "Y"
@@ -5797,7 +5797,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 1 TO VS-K(VSP)
            IF T04-IS-AUTHORIZED-SIGNER(Q04) = "Y"
@@ -5843,7 +5843,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T04-BUSINESS-LABEL-NI(R04) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -5861,7 +5861,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T04-BUSINESS-LABEL-NI(Q04) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -5927,7 +5927,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T04-IS-OFFICER-NI(R04) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -5944,7 +5944,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T04-IS-OFFICER-NI(Q04) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -6003,7 +6003,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T04-IS-AP-CLERK-NI(R04) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -6020,7 +6020,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T04-IS-AP-CLERK-NI(Q04) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -6171,7 +6171,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T05-NAME-NI(R05) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -6189,7 +6189,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T05-NAME-NI(Q05) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -6255,7 +6255,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T05-BUSINESS-LEN(R05) TO VS-L(VSP)
@@ -6269,7 +6269,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T05-BUSINESS-LEN(Q05) TO VS-L(VSP)
@@ -6320,7 +6320,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T05-ACCOUNT-TYPE-LEN(R05) TO VS-L(VSP)
@@ -6334,7 +6334,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T05-ACCOUNT-TYPE-LEN(Q05) TO VS-L(VSP)
@@ -6385,7 +6385,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T05-ACCOUNT-NUMBER-LAST4-LEN(R05) TO VS-L(VSP)
@@ -6399,7 +6399,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T05-ACCOUNT-NUMBER-LAST4-LEN(Q05) TO VS-L(VSP)
@@ -6450,7 +6450,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 2 TO VS-K(VSP)
            MOVE T05-CURRENT-BALANCE-USD(R05) TO VS-N(VSP)
@@ -6464,7 +6464,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 2 TO VS-K(VSP)
            MOVE T05-CURRENT-BALANCE-USD(Q05) TO VS-N(VSP)
@@ -6512,7 +6512,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 1 TO VS-K(VSP)
            IF T05-HAS-ACH(R05) = "Y"
@@ -6525,7 +6525,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 1 TO VS-K(VSP)
            IF T05-HAS-ACH(Q05) = "Y"
@@ -6570,7 +6570,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 1 TO VS-K(VSP)
            IF T05-HAS-WIRE(R05) = "Y"
@@ -6583,7 +6583,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 1 TO VS-K(VSP)
            IF T05-HAS-WIRE(Q05) = "Y"
@@ -6628,7 +6628,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 1 TO VS-K(VSP)
            IF T05-HAS-CARD(R05) = "Y"
@@ -6641,7 +6641,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 1 TO VS-K(VSP)
            IF T05-HAS-CARD(Q05) = "Y"
@@ -6686,7 +6686,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T05-OPENED-AT-LEN(R05) TO VS-L(VSP)
@@ -6700,7 +6700,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T05-OPENED-AT-LEN(Q05) TO VS-L(VSP)
@@ -6751,7 +6751,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T05-BUSINESS-LABEL-NI(R05) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -6769,7 +6769,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T05-BUSINESS-LABEL-NI(Q05) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -6835,7 +6835,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T05-TREASURY-SERVICE-COUNT-NI(R05) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -6851,7 +6851,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T05-TREASURY-SERVICE-COUNT-NI(Q05) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -6903,7 +6903,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T05-HAS-ANY-TREASURY-SERVI-NI(R05) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -6920,7 +6920,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T05-HAS-ANY-TREASURY-SERVI-NI(Q05) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -7090,7 +7090,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-NAME-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -7108,7 +7108,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-NAME-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -7174,7 +7174,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-LOAN-NUMBER-LEN(R06) TO VS-L(VSP)
@@ -7188,7 +7188,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-LOAN-NUMBER-LEN(Q06) TO VS-L(VSP)
@@ -7239,7 +7239,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-BUSINESS-LEN(R06) TO VS-L(VSP)
@@ -7253,7 +7253,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-BUSINESS-LEN(Q06) TO VS-L(VSP)
@@ -7304,7 +7304,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-ORIGINATING-RM-LEN(R06) TO VS-L(VSP)
@@ -7318,7 +7318,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-ORIGINATING-RM-LEN(Q06) TO VS-L(VSP)
@@ -7369,7 +7369,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-UNDERWRITER-LEN(R06) TO VS-L(VSP)
@@ -7383,7 +7383,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-UNDERWRITER-LEN(Q06) TO VS-L(VSP)
@@ -7434,7 +7434,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-LOAN-PURPOSE-LEN(R06) TO VS-L(VSP)
@@ -7448,7 +7448,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-LOAN-PURPOSE-LEN(Q06) TO VS-L(VSP)
@@ -7499,7 +7499,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 2 TO VS-K(VSP)
            MOVE T06-PRINCIPAL-USD(R06) TO VS-N(VSP)
@@ -7513,7 +7513,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 2 TO VS-K(VSP)
            MOVE T06-PRINCIPAL-USD(Q06) TO VS-N(VSP)
@@ -7559,7 +7559,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 2 TO VS-K(VSP)
            MOVE T06-RATE-PCT(R06) TO VS-N(VSP)
@@ -7573,7 +7573,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 2 TO VS-K(VSP)
            MOVE T06-RATE-PCT(Q06) TO VS-N(VSP)
@@ -7619,7 +7619,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 2 TO VS-K(VSP)
            MOVE 1 TO VS-I(VSP)
@@ -7631,7 +7631,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 2 TO VS-K(VSP)
            MOVE 1 TO VS-I(VSP)
@@ -7675,7 +7675,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-UNDERWRITING-STAGE-LEN(R06) TO VS-L(VSP)
@@ -7689,7 +7689,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-UNDERWRITING-STAGE-LEN(Q06) TO VS-L(VSP)
@@ -7740,7 +7740,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 2 TO VS-K(VSP)
            MOVE 1 TO VS-I(VSP)
@@ -7752,7 +7752,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 2 TO VS-K(VSP)
            MOVE 1 TO VS-I(VSP)
@@ -7796,7 +7796,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-RISK-RATING-LABEL-LEN(R06) TO VS-L(VSP)
@@ -7810,7 +7810,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-RISK-RATING-LABEL-LEN(Q06) TO VS-L(VSP)
@@ -7861,7 +7861,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-DSCR-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -7879,7 +7879,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-DSCR-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -7939,7 +7939,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-LTV-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -7957,7 +7957,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-LTV-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8017,7 +8017,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-GLOBAL-CASH-FLOW-USD-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8035,7 +8035,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-GLOBAL-CASH-FLOW-USD-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8096,7 +8096,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-ORIGINATED-AT-LEN(R06) TO VS-L(VSP)
@@ -8110,7 +8110,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T06-ORIGINATED-AT-LEN(Q06) TO VS-L(VSP)
@@ -8161,7 +8161,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-FUNDED-AT-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8179,7 +8179,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-FUNDED-AT-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8245,7 +8245,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-BUSINESS-LABEL-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8263,7 +8263,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-BUSINESS-LABEL-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8329,7 +8329,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-BUSINESS-NAICS-CODE-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8347,7 +8347,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-BUSINESS-NAICS-CODE-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8413,7 +8413,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-ORIGINATING-RM-LABEL-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8431,7 +8431,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-ORIGINATING-RM-LABEL-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8497,7 +8497,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-UNDERWRITER-IS-ADMIN-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8514,7 +8514,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-UNDERWRITER-IS-ADMIN-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8574,7 +8574,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-IS-FUNDED-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8591,7 +8591,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-IS-FUNDED-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8650,7 +8650,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-IS-CLASSIFIED-ASSET-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8667,7 +8667,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-IS-CLASSIFIED-ASSET-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8726,7 +8726,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-DSCR-IN-BAND-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8743,7 +8743,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-DSCR-IN-BAND-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8802,7 +8802,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-LTV-IN-BAND-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8819,7 +8819,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-LTV-IN-BAND-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8878,7 +8878,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-SEGREGATION-OF-DUTIES-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8895,7 +8895,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-SEGREGATION-OF-DUTIES-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8955,7 +8955,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-COUNT-OF-COVENANTS-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -8971,7 +8971,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-COUNT-OF-COVENANTS-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9022,7 +9022,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-COUNT-OF-BREACHED-COVE-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9038,7 +9038,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-COUNT-OF-BREACHED-COVE-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9090,7 +9090,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-COUNT-OF-RISK-RATING-H-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9106,7 +9106,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-COUNT-OF-RISK-RATING-H-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9158,7 +9158,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-COUNT-OF-DOCUMENTS-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9174,7 +9174,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-COUNT-OF-DOCUMENTS-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9225,7 +9225,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-HAS-BREACHED-COVENANT-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9242,7 +9242,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-HAS-BREACHED-COVENANT-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9302,7 +9302,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-ON-WATCHLIST-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9319,7 +9319,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-ON-WATCHLIST-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9378,7 +9378,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-HEALTH-SCORE-NI(R06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9394,7 +9394,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T06-HEALTH-SCORE-NI(Q06) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9871,7 +9871,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T07-NAME-NI(R07) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9889,7 +9889,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T07-NAME-NI(Q07) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -9955,7 +9955,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T07-LOAN-LEN(R07) TO VS-L(VSP)
@@ -9969,7 +9969,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T07-LOAN-LEN(Q07) TO VS-L(VSP)
@@ -10020,7 +10020,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T07-COVENANT-TYPE-LEN(R07) TO VS-L(VSP)
@@ -10034,7 +10034,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T07-COVENANT-TYPE-LEN(Q07) TO VS-L(VSP)
@@ -10085,7 +10085,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T07-THRESHOLD-VALUE-NI(R07) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -10103,7 +10103,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T07-THRESHOLD-VALUE-NI(Q07) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -10165,7 +10165,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T07-TEST-FREQUENCY-LEN(R07) TO VS-L(VSP)
@@ -10179,7 +10179,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T07-TEST-FREQUENCY-LEN(Q07) TO VS-L(VSP)
@@ -10230,7 +10230,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T07-NEXT-TEST-DATE-LEN(R07) TO VS-L(VSP)
@@ -10244,7 +10244,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T07-NEXT-TEST-DATE-LEN(Q07) TO VS-L(VSP)
@@ -10295,7 +10295,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T07-STATUS-LEN(R07) TO VS-L(VSP)
@@ -10309,7 +10309,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T07-STATUS-LEN(Q07) TO VS-L(VSP)
@@ -10360,7 +10360,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T07-CURRENT-WAIVER-THROUGH-NI(R07) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -10378,7 +10378,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T07-CURRENT-WAIVER-THROUGH-NI(Q07) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -10444,7 +10444,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T07-LOAN-LABEL-NI(R07) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -10462,7 +10462,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T07-LOAN-LABEL-NI(Q07) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -10528,7 +10528,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T07-LOAN-BUSINESS-NI(R07) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -10546,7 +10546,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T07-LOAN-BUSINESS-NI(Q07) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -10612,7 +10612,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T07-IS-BREACHED-NI(R07) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -10629,7 +10629,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T07-IS-BREACHED-NI(Q07) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -10688,7 +10688,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T07-HAS-ACTIVE-WAIVER-NI(R07) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -10705,7 +10705,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T07-HAS-ACTIVE-WAIVER-NI(Q07) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -10868,7 +10868,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-NAME-NI(R08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -10886,7 +10886,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-NAME-NI(Q08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -10952,7 +10952,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T08-LOAN-LEN(R08) TO VS-L(VSP)
@@ -10966,7 +10966,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T08-LOAN-LEN(Q08) TO VS-L(VSP)
@@ -11017,7 +11017,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T08-CHANGED-BY-USER-LEN(R08) TO VS-L(VSP)
@@ -11031,7 +11031,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T08-CHANGED-BY-USER-LEN(Q08) TO VS-L(VSP)
@@ -11082,7 +11082,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T08-EFFECTIVE-DATE-LEN(R08) TO VS-L(VSP)
@@ -11096,7 +11096,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T08-EFFECTIVE-DATE-LEN(Q08) TO VS-L(VSP)
@@ -11147,7 +11147,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-PRIOR-GRADE-NI(R08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -11163,7 +11163,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-PRIOR-GRADE-NI(Q08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -11223,7 +11223,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 2 TO VS-K(VSP)
            MOVE 1 TO VS-I(VSP)
@@ -11235,7 +11235,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 2 TO VS-K(VSP)
            MOVE 1 TO VS-I(VSP)
@@ -11281,7 +11281,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T08-REASON-LEN(R08) TO VS-L(VSP)
@@ -11295,7 +11295,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T08-REASON-LEN(Q08) TO VS-L(VSP)
@@ -11346,7 +11346,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-LOAN-LABEL-NI(R08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -11364,7 +11364,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-LOAN-LABEL-NI(Q08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -11430,7 +11430,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-CHANGED-BY-USER-LABEL-NI(R08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -11448,7 +11448,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-CHANGED-BY-USER-LABEL-NI(Q08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -11514,7 +11514,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-GRADE-DELTA-NI(R08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -11530,7 +11530,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-GRADE-DELTA-NI(Q08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -11582,7 +11582,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-IS-DOWNGRADE-NI(R08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -11599,7 +11599,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-IS-DOWNGRADE-NI(Q08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -11659,7 +11659,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-IS-INITIAL-RATING-NI(R08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -11676,7 +11676,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-IS-INITIAL-RATING-NI(Q08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -11736,7 +11736,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-CROSSED-CLASSIFIED-THR-NI(R08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -11753,7 +11753,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T08-CROSSED-CLASSIFIED-THR-NI(Q08) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -11982,7 +11982,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-NAME-NI(R09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12000,7 +12000,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-NAME-NI(Q09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12066,7 +12066,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-BUSINESS-NI(R09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12084,7 +12084,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-BUSINESS-NI(Q09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12150,7 +12150,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-LOAN-NI(R09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12168,7 +12168,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-LOAN-NI(Q09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12234,7 +12234,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-UPLOADED-BY-USER-NI(R09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12252,7 +12252,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-UPLOADED-BY-USER-NI(Q09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12318,7 +12318,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T09-FILENAME-LEN(R09) TO VS-L(VSP)
@@ -12332,7 +12332,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T09-FILENAME-LEN(Q09) TO VS-L(VSP)
@@ -12383,7 +12383,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T09-DOCUMENT-TYPE-LEN(R09) TO VS-L(VSP)
@@ -12397,7 +12397,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T09-DOCUMENT-TYPE-LEN(Q09) TO VS-L(VSP)
@@ -12448,7 +12448,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 1 TO VS-K(VSP)
            IF T09-OCR-INDEXED(R09) = "Y"
@@ -12461,7 +12461,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 1 TO VS-K(VSP)
            IF T09-OCR-INDEXED(Q09) = "Y"
@@ -12506,7 +12506,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-UPLOADED-VIA-NI(R09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12524,7 +12524,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-UPLOADED-VIA-NI(Q09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12590,7 +12590,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T09-UPLOADED-AT-LEN(R09) TO VS-L(VSP)
@@ -12604,7 +12604,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T09-UPLOADED-AT-LEN(Q09) TO VS-L(VSP)
@@ -12655,7 +12655,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-BUSINESS-LABEL-NI(R09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12673,7 +12673,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-BUSINESS-LABEL-NI(Q09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12739,7 +12739,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-LOAN-LABEL-NI(R09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12757,7 +12757,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-LOAN-LABEL-NI(Q09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12823,7 +12823,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-UPLOADED-BY-USER-LABEL-NI(R09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12841,7 +12841,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-UPLOADED-BY-USER-LABEL-NI(Q09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12907,7 +12907,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-ATTACHED-TO-NI(R09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12925,7 +12925,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-ATTACHED-TO-NI(Q09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -12991,7 +12991,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-FROM-CUSTOMER-PORTAL-NI(R09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -13008,7 +13008,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T09-FROM-CUSTOMER-PORTAL-NI(Q09) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -13227,7 +13227,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-NAME-NI(R10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -13245,7 +13245,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-NAME-NI(Q10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -13311,7 +13311,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T10-BUSINESS-LEN(R10) TO VS-L(VSP)
@@ -13325,7 +13325,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T10-BUSINESS-LEN(Q10) TO VS-L(VSP)
@@ -13376,7 +13376,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-USER-NI(R10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -13394,7 +13394,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-USER-NI(Q10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -13460,7 +13460,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T10-INTERACTION-TYPE-LEN(R10) TO VS-L(VSP)
@@ -13474,7 +13474,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T10-INTERACTION-TYPE-LEN(Q10) TO VS-L(VSP)
@@ -13525,7 +13525,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T10-SUBJECT-LEN(R10) TO VS-L(VSP)
@@ -13539,7 +13539,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T10-SUBJECT-LEN(Q10) TO VS-L(VSP)
@@ -13590,7 +13590,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-BODY-NI(R10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -13608,7 +13608,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-BODY-NI(Q10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -13674,7 +13674,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T10-INTERACTION-DATE-LEN(R10) TO VS-L(VSP)
@@ -13688,7 +13688,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T10-INTERACTION-DATE-LEN(Q10) TO VS-L(VSP)
@@ -13739,7 +13739,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-DUE-DATE-NI(R10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -13757,7 +13757,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-DUE-DATE-NI(Q10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -13823,7 +13823,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-SOURCE-NI(R10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -13841,7 +13841,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-SOURCE-NI(Q10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -13907,7 +13907,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-BUSINESS-LABEL-NI(R10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -13925,7 +13925,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-BUSINESS-LABEL-NI(Q10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -13991,7 +13991,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-USER-LABEL-NI(R10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -14009,7 +14009,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-USER-LABEL-NI(Q10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -14075,7 +14075,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-IS-SYSTEM-EVENT-NI(R10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -14092,7 +14092,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-IS-SYSTEM-EVENT-NI(Q10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -14152,7 +14152,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-IS-TASK-NI(R10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -14169,7 +14169,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-IS-TASK-NI(Q10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -14228,7 +14228,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-FROM-CUSTOMER-NI(R10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -14245,7 +14245,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-FROM-CUSTOMER-NI(Q10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -14305,7 +14305,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-IS-COVENANT-EVENT-NI(R10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -14322,7 +14322,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T10-IS-COVENANT-EVENT-NI(Q10) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -14564,7 +14564,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T11-NAME-NI(R11) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -14582,7 +14582,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T11-NAME-NI(Q11) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -14648,7 +14648,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T11-CONSTRAINT-KEY-LEN(R11) TO VS-L(VSP)
@@ -14662,7 +14662,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T11-CONSTRAINT-KEY-LEN(Q11) TO VS-L(VSP)
@@ -14713,7 +14713,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T11-ENTITY-LEN(R11) TO VS-L(VSP)
@@ -14727,7 +14727,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T11-ENTITY-LEN(Q11) TO VS-L(VSP)
@@ -14778,7 +14778,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T11-PREDICATE-LEN(R11) TO VS-L(VSP)
@@ -14792,7 +14792,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T11-PREDICATE-LEN(Q11) TO VS-L(VSP)
@@ -14843,7 +14843,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T11-DEONTIC-LEN(R11) TO VS-L(VSP)
@@ -14857,7 +14857,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T11-DEONTIC-LEN(Q11) TO VS-L(VSP)
@@ -14908,7 +14908,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T11-SEVERITY-LEN(R11) TO VS-L(VSP)
@@ -14922,7 +14922,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T11-SEVERITY-LEN(Q11) TO VS-L(VSP)
@@ -14973,7 +14973,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T11-MESSAGE-LEN(R11) TO VS-L(VSP)
@@ -14987,7 +14987,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T11-MESSAGE-LEN(Q11) TO VS-L(VSP)
@@ -15038,7 +15038,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T11-RULE-GROUP-NI(R11) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -15056,7 +15056,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T11-RULE-GROUP-NI(Q11) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -15122,7 +15122,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T11-SOURCE-CITATION-NI(R11) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -15140,7 +15140,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T11-SOURCE-CITATION-NI(Q11) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -15206,7 +15206,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T11-RULE-SPEAK-OVERRIDE-NI(R11) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -15224,7 +15224,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T11-RULE-SPEAK-OVERRIDE-NI(Q11) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -15290,7 +15290,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 1 TO VS-K(VSP)
            IF T11-IS-ACTIVE(R11) = "Y"
@@ -15303,7 +15303,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 1 TO VS-K(VSP)
            IF T11-IS-ACTIVE(Q11) = "Y"
@@ -15360,7 +15360,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T12-META-KEY-LEN(R12) TO VS-L(VSP)
@@ -15374,7 +15374,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T12-META-KEY-LEN(Q12) TO VS-L(VSP)
@@ -15425,7 +15425,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T12-NAME-NI(R12) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -15443,7 +15443,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T12-NAME-NI(Q12) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -15509,7 +15509,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T12-VALUE-TYPE-LEN(R12) TO VS-L(VSP)
@@ -15523,7 +15523,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            MOVE 3 TO VS-K(VSP)
            MOVE T12-VALUE-TYPE-LEN(Q12) TO VS-L(VSP)
@@ -15574,7 +15574,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T12-STRING-VALUE-NI(R12) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -15592,7 +15592,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T12-STRING-VALUE-NI(Q12) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -15658,7 +15658,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T12-JSON-VALUE-NI(R12) = "Y"
                MOVE 0 TO VS-K(VSP)
@@ -15676,7 +15676,7 @@
                MOVE "value stack overflow" TO WS-ERR-MSG
                PERFORM RT-FATAL
            END-IF
-           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP)
+           MOVE 0 TO VS-B(VSP) VS-I(VSP) VS-L(VSP) VS-F(VSP)
            MOVE 0 TO VS-N(VSP)
            IF T12-JSON-VALUE-NI(Q12) = "Y"
                MOVE 0 TO VS-K(VSP)

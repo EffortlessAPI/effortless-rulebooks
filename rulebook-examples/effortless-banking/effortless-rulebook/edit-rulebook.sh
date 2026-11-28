@@ -8,7 +8,7 @@
 # Host ports are assigned by Docker unless pinned with RULEBOOK_EDITOR_*_PORT
 # variables or a ports.env file beside this launcher.
 #
-# Refresh your browser after editing effortless-banking-rulebook.json -- the container's
+# Refresh your browser after editing effortless-rulebook.json -- the container's
 # filesystem watcher detects the change, re-runs `effortless build`, and
 # restarts the API + UI automatically.
 
@@ -18,8 +18,9 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 DOCKERFILE_PATH="docker/Dockerfile"
 EXTERNAL_SRC_MOUNTED=
 EXTERNAL_SRC_HOST_PATH=""
-RULEBOOK_SELF_UPDATE_PATH="effortless-banking-rulebook.json"
-EDITOR_RUNTIME_VERSION="2026.9.6.1406"
+ENABLE_MODULES="false"
+RULEBOOK_SELF_UPDATE_PATH="effortless-rulebook.json"
+EDITOR_RUNTIME_VERSION="2026.11.27.1442"
 
 # The launcher is the OUTER half of the editor and therefore cannot rely on the
 # container's inner `effortless -upgradeAll`. Update and regenerate this runtime
@@ -110,6 +111,9 @@ NODE
     )
     if [ -n "$EXTERNAL_SRC_MOUNTED" ]; then
       SELF_UPDATE_ARGS+=( -p "pathToExternalSrc=$EXTERNAL_SRC_HOST_PATH" )
+    fi
+    if [ "$ENABLE_MODULES" = "true" ]; then
+      SELF_UPDATE_ARGS+=( -p "enable-modules=true" )
     fi
     effortless "${SELF_UPDATE_ARGS[@]}"
     export EFFORTLESS_EDITOR_LAUNCHER_CURRENT=1
@@ -249,6 +253,7 @@ DOCKER_RUN_ARGS=(
   -v "$RULEBOOK_DIR_NATIVE:/app/effortless-rulebook"
   -v "$SSOTME_DIR_NATIVE:/root/.ssotme-ro:ro"
   -e "RULEBOOK_FILENAME=$RULEBOOK_SELF_UPDATE_PATH"
+  -e "ENABLE_MODULES=$ENABLE_MODULES"
 )
 
 # Second bind-mount: only when -p pathToExternalSrc=... was passed at
@@ -312,6 +317,27 @@ RESOLVED_API_PORT="$(docker port "$CONTAINER_NAME" 5177/tcp | awk -F: 'NR == 1 {
 RESOLVED_UI_PORT="$(docker port "$CONTAINER_NAME" 5174/tcp | awk -F: 'NR == 1 { print $NF }')"
 RESOLVED_PG_PORT="$(docker port "$CONTAINER_NAME" 5432/tcp | awk -F: 'NR == 1 { print $NF }')"
 
+# Docker only assigns these HOST ports once the container is already running,
+# so nothing inside the container (the API included) can know them from its
+# own environment. This script is the only place that ever learns them --
+# drop them into the bind-mounted rulebook folder so the running API can read
+# the file and serve it back to the UI (dashboard: Postgres connection info,
+# API docs / rulespeak / source links). Overwritten on every launch; never
+# meant to be committed.
+CONNECTION_INFO_FILE="$(pwd)/.editor-connection-info.json"
+cat > "$CONNECTION_INFO_FILE" <<EOF
+{
+  "apiPort": $RESOLVED_API_PORT,
+  "uiPort": $RESOLVED_UI_PORT,
+  "pgPort": $RESOLVED_PG_PORT,
+  "pgConnectionString": "postgresql://postgres:postgres@localhost:$RESOLVED_PG_PORT/effortless-rulebook"
+}
+EOF
+GITIGNORE_FILE="$(pwd)/.gitignore"
+if [ ! -f "$GITIGNORE_FILE" ] || ! grep -qxF ".editor-connection-info.json" "$GITIGNORE_FILE"; then
+  echo ".editor-connection-info.json" >> "$GITIGNORE_FILE"
+fi
+
 echo ""
 echo "effortless-rulebook-editor is starting up."
 echo "  CONTAINER: $CONTAINER_NAME"
@@ -327,8 +353,10 @@ echo "                            to the real app automatically once ready, and 
 echo "                            its own Rebuild button + log view at any time)"
 echo "  PG:   postgresql://postgres:postgres@localhost:$RESOLVED_PG_PORT/effortless-rulebook"
 echo "                            (for a host psql client / GUI tool -- this is the"
-echo "                            ONLY supported way to inspect data directly; the"
-echo "                            DB is reseeded from the rulebook on every rebuild)"
+echo "                            ONLY supported way to inspect data directly. Built"
+echo "                            from scratch each time the container starts; while it"
+echo "                            runs, a rebuild only adds tables/columns and upserts"
+echo "                            the rulebook's own rows)"
 echo ""
 echo "Edit effortless-rulebook.json to trigger a rebuild -- the container watches"
 echo "the file (and the UI's Rebuild button) and rebuilds automatically."
