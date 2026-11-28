@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en" data-lang="en" class="show-rulespeak show-desc show-inputs">
+<html lang="en" data-lang="en" class="show-english show-desc show-consumers show-data">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>v3: NakedClaude Demo — RuleSpeak®</title>
+<title>v3: NakedClaude Demo — Docs</title>
 <style>
 
 :root{
@@ -19,6 +19,10 @@ body{margin:0;font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,
 a{color:var(--calc);text-decoration:none}
 a:hover{text-decoration:underline}
 code{font:0.85em ui-monospace,SFMono-Regular,Menlo,monospace;background:#f3f3f7;padding:1px 5px;border-radius:4px}
+/* A right-to-left language (dir=rtl on its .lang-doc): the layout mirrors by
+   itself, because every side below is inline-start / inline-end. Formulas and
+   code are left-to-right text whatever surrounds them. */
+code,.fx{direction:ltr;unicode-bidi:isolate}
 
 /* ── One language visible at a time; <html data-lang> picks it (rules per
       language are appended at render time). ─────────────────────────────── */
@@ -32,6 +36,7 @@ html.show-formula   .elem-formula{display:block}
 html.show-desc      .elem-desc{display:block}
 html.show-inputs    .elem-inputs{display:block}
 html.show-consumers .elem-consumers{display:block}
+html.show-data      .elem-data{display:block}
 
 /* ── Sticky top bar — brand · breadcrumb · language · gear ───────────────── */
 .topbar{position:sticky;top:0;z-index:40;height:var(--bar-h);
@@ -42,7 +47,7 @@ html.show-consumers .elem-consumers{display:block}
 .topbar-brand{font-weight:800;font-size:15px;color:var(--ink);white-space:nowrap;flex:none}
 .topbar-brand:hover{text-decoration:none}
 .topbar-tag{font-size:11px;font-weight:700;color:var(--calc);background:var(--calc-bg);
-  padding:1px 7px;border-radius:999px;margin-left:4px;vertical-align:middle}
+  padding:1px 7px;border-radius:999px;margin-inline-start:4px;vertical-align:middle}
 .crumb{flex:1;min-width:0;display:flex;align-items:center;gap:7px;
   font-size:13px;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .crumb-entity{font-weight:700;color:var(--ink)}
@@ -81,7 +86,7 @@ html.show-consumers .elem-consumers{display:block}
 .doc-header-inner{max-width:960px;margin:0 auto;padding:18px 24px}
 .doc-title{margin:0;font-size:24px;font-weight:800}
 .doc-title-sub{font-size:13px;font-weight:600;color:var(--calc);background:var(--calc-bg);
-  padding:2px 8px;border-radius:999px;vertical-align:middle;margin-left:6px}
+  padding:2px 8px;border-radius:999px;vertical-align:middle;margin-inline-start:6px}
 .doc-lede{margin:6px 0 0;font-style:italic;color:var(--muted)}
 .doc-note{margin:8px 0 12px;color:var(--muted);font-size:13px;max-width:70ch}
 .narr-hint{margin:8px 0 0;font-size:12px;color:var(--muted);max-width:78ch}
@@ -90,18 +95,18 @@ html.show-consumers .elem-consumers{display:block}
 .toc-title{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 8px}
 .toc-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
 .toc-list a{font-weight:600}
-.toc-meta{font-size:12px;color:var(--muted);margin-left:6px}
+.toc-meta{font-size:12px;color:var(--muted);margin-inline-start:6px}
 
 .entity{max-width:960px;margin:34px auto 0;padding:0 24px;scroll-margin-top:calc(var(--bar-h) + 14px)}
 .entity-head{border-bottom:2px solid var(--line);padding-bottom:8px;margin-bottom:14px}
 .entity-title{margin:0;font-size:21px;font-weight:800}
 .entity-synopsis{margin:4px 0 0;color:var(--muted);max-width:74ch}
 
-.field{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--rel);
+.field{background:var(--card);border:1px solid var(--line);border-inline-start:4px solid var(--rel);
   border-radius:10px;padding:14px 16px;margin:0 0 12px;scroll-margin-top:calc(var(--bar-h) + 14px)}
-.field.tone-raw{border-left-color:var(--raw)} .field.tone-calc{border-left-color:var(--calc)}
-.field.tone-agg{border-left-color:var(--agg)} .field.tone-lookup{border-left-color:var(--lookup)}
-.field.tone-rel{border-left-color:var(--rel)}
+.field.tone-raw{border-inline-start-color:var(--raw)} .field.tone-calc{border-inline-start-color:var(--calc)}
+.field.tone-agg{border-inline-start-color:var(--agg)} .field.tone-lookup{border-inline-start-color:var(--lookup)}
+.field.tone-rel{border-inline-start-color:var(--rel)}
 .field-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .field-glyph{width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;
   border-radius:6px;font-weight:700;color:#fff;font-size:13px}
@@ -131,12 +136,12 @@ html.show-consumers .elem-consumers{display:block}
 .ref{border-bottom:1px dashed var(--calc);font-weight:600}
 
 .rt-headline{margin:0 0 4px}
-.rt-priority{margin:4px 0;padding-left:22px}
+.rt-priority{margin:4px 0;padding-inline-start:22px}
 .rt-priority>li{margin:2px 0}
 .rt-value{font-weight:700;color:var(--calc)}
 .rt-otherwise{color:var(--muted);font-style:italic}
 .rt-group-label{font-weight:600}
-.rt-group{margin:2px 0 6px;padding-left:20px}
+.rt-group{margin:2px 0 6px;padding-inline-start:20px}
 
 .gt{margin-top:8px}
 .gt-body{margin:0;color:var(--muted)}
@@ -145,41 +150,44 @@ html.show-consumers .elem-consumers{display:block}
 .prov{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
 .prov>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
 .prov>summary::-webkit-details-marker{display:none}
-.prov>summary::before{content:'▸';display:inline-block;margin-right:6px;color:var(--muted);transition:transform .1s}
+.prov>summary::before{content:'▸';display:inline-block;margin-inline-end:6px;color:var(--muted);transition:transform .1s}
 .prov[open]>summary::before{transform:rotate(90deg)}
-.count{font-size:11px;font-weight:700;background:#eee;color:#555;padding:1px 7px;border-radius:999px;margin-left:4px}
+.count{font-size:11px;font-weight:700;background:#eee;color:#555;padding:1px 7px;border-radius:999px;margin-inline-start:4px}
 .count-muted{background:#f5f5f5;color:#999}
-.prov-hint{font-size:12px;font-weight:400;color:var(--muted);margin-left:6px}
+.prov-hint{font-size:12px;font-weight:400;color:var(--muted);margin-inline-start:6px}
 .prov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:8px}
 .prov-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.input{display:block;border:1px solid var(--line);border-left:3px solid var(--rel);border-radius:8px;
+.input{display:block;border:1px solid var(--line);border-inline-start:3px solid var(--rel);border-radius:8px;
   padding:8px 10px;background:#fcfcfe}
-.input.tone-raw{border-left-color:var(--raw)} .input.tone-calc{border-left-color:var(--calc)}
-.input.tone-agg{border-left-color:var(--agg)} .input.tone-lookup{border-left-color:var(--lookup)}
-.input.tone-rel{border-left-color:var(--rel)}
+.input.tone-raw{border-inline-start-color:var(--raw)} .input.tone-calc{border-inline-start-color:var(--calc)}
+.input.tone-agg{border-inline-start-color:var(--agg)} .input.tone-lookup{border-inline-start-color:var(--lookup)}
+.input.tone-rel{border-inline-start-color:var(--rel)}
 .input:hover{background:#f4f3fb;text-decoration:none}
 .input-static{cursor:default}
 span.input-static:hover{background:#fcfcfe}
 .input-head{display:flex;align-items:center;gap:6px}
 .input-glyph{font-size:12px;color:var(--muted)}
 .input-name{font-weight:700;color:var(--ink)}
-.input-table{font-size:11px;color:var(--muted);margin-left:auto}
+.input-table{font-size:11px;color:var(--muted);margin-inline-start:auto}
 
-/* ── 6 Example Data (optional section) ─────────────────────────────────── */
-.sample-data{max-width:1040px;margin:32px auto 8px;padding:0 20px}
-.sample-title{font-size:20px;margin:0 0 6px}
-.sample-note{color:var(--muted);font-size:13px;margin:0 0 16px;max-width:70ch}
-.sample-entity{font-size:15px;margin:20px 0 8px;color:var(--raw)}
+/* ── Example data (per entity, collapsible; gear switch: data) ─────────── */
+.entity-data{margin:14px 0 4px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.entity-data>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);list-style:none}
+.entity-data>summary::-webkit-details-marker{display:none}
+.entity-data>summary::before{content:'▸';display:inline-block;margin-inline-end:6px;color:var(--muted);transition:transform .1s}
+.entity-data[open]>summary::before{transform:rotate(90deg)}
+.entity-data .sample-scroll{margin-top:10px}
+.sample-note{max-width:960px;margin:16px auto 0;padding:0 24px;color:var(--muted);font-size:13px}
 .sample-scroll{overflow-x:auto}
 .sample-table{border-collapse:collapse;font-size:13px;background:var(--card);
   border:1px solid var(--line);border-radius:6px}
 .sample-table th,.sample-table td{padding:6px 12px;border-bottom:1px solid var(--line);
-  text-align:left;vertical-align:top;white-space:nowrap}
+  text-align:start;vertical-align:top;white-space:nowrap}
 .sample-table thead th{background:#f5f5fa;font-weight:600;color:var(--ink)}
 .sample-table tbody tr:last-child td{border-bottom:none}
 .sample-table th.sample-derived{background:var(--calc-bg);color:var(--calc)}
 .sample-table td.sample-derived{color:var(--calc)}
-.sample-fx{margin-left:4px;opacity:.75}
+.sample-fx{margin-inline-start:4px;opacity:.75}
 .sample-legend{color:var(--muted);font-size:12px;margin-top:12px}
 .input-en{display:block;margin-top:3px;font-size:13px;color:var(--muted)}
 .ref-pill{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;
@@ -190,7 +198,7 @@ span.input-static:hover{background:#fcfcfe}
 .ref-pill-tbl{font-weight:400;color:var(--muted)}
 
 .field-note{margin:8px 0 0;font-size:13px;font-style:italic;color:var(--muted);
-  border-left:2px solid var(--line);padding-left:10px}
+  border-inline-start:2px solid var(--line);padding-inline-start:10px}
 
 .doc-footer{max-width:960px;margin:40px auto;padding:18px 24px;border-top:1px solid var(--line);
   color:var(--muted);font-size:13px}
@@ -202,6 +210,79 @@ span.input-static:hover{background:#fcfcfe}
 :target{animation:flash 1.2s ease}
 @keyframes flash{0%{background:var(--calc-bg)}100%{background:var(--card)}}
 
+/* ── Navigator: left nav, overview views, field tabs, graph ─────────────────
+   Big rulebooks were a single long page. Now (from nine entities up) the page shows the overview,
+   or ONE entity at a time, with a nav that is always on screen. Logical properties throughout. */
+.docgrid{max-width:1320px;margin:18px auto 0;padding:0 24px;display:grid;
+  grid-template-columns:290px minmax(0,1fr);gap:0 30px;align-items:start}
+.docmain{min-width:0}
+.docmain .entity,.docmain .ov{max-width:900px;margin-inline:0;padding:0}
+.sidenav{position:sticky;top:calc(var(--bar-h) + 12px);max-height:calc(100vh - var(--bar-h) - 24px);
+  display:flex;flex-direction:column;border:1px solid var(--line);border-radius:10px;background:#fff;
+  font-size:13px;overflow:hidden}
+.sn-head{padding:10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.sn-index{font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:var(--calc);
+  display:flex;justify-content:space-between}
+.sn-q,.ov-q,.tab-q{width:100%;padding:6px 9px;border:1px solid #d0d7de;border-radius:6px;font:inherit;background:#fff;color:inherit}
+.sn-q:focus,.ov-q:focus,.tab-q:focus{outline:2px solid var(--calc);border-color:transparent}
+.sn-body{overflow:auto;padding:6px 6px 12px;overscroll-behavior:contain}
+.sn-foot{border-top:1px solid var(--line);padding:8px 10px}
+.sn-foot button{all:unset;cursor:pointer;color:var(--calc);font-size:12px}
+.sn-empty{padding:10px;color:var(--muted)}
+.sn-group{margin:2px 0}
+.sn-gtitle{display:flex;justify-content:space-between;gap:8px;padding:5px 6px;cursor:pointer;list-style:none;
+  font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#555;border-radius:5px}
+.sn-gtitle::-webkit-details-marker{display:none}
+.sn-gtitle::before{content:'▸';color:#999;margin-inline-end:6px;display:inline-block;transition:transform .1s}
+.sn-group[open]>.sn-gtitle::before{transform:rotate(90deg)}
+.sn-gtitle:hover{background:#eef0f4}
+.sn-gtitle span:nth-of-type(1){flex:1}
+.sn-n{font-weight:600;color:#888;letter-spacing:0;text-transform:none}
+.sn-group.has-current>.sn-gtitle{color:var(--calc)}
+.sn-t{display:flex;justify-content:space-between;gap:6px;padding:4px 8px;border-radius:6px;color:#222;font-weight:600}
+.sn-t:hover{background:#eef0f4;text-decoration:none}
+.sn-t.is-current{background:var(--calc-bg);color:var(--calc)}
+.sn-t b{font-size:10px;font-weight:700;color:var(--calc);background:var(--calc-bg);border-radius:999px;padding:1px 6px}
+.sn-fields{list-style:none;margin:2px 0 6px 10px;padding:0 0 0 6px;border-inline-start:2px solid var(--line)}
+.sn-f{display:flex;align-items:center;gap:6px;padding:2px 6px;border-radius:5px;color:#444;font-size:12px}
+.sn-f:hover{background:#eef0f4;text-decoration:none}
+.sn-f i{flex:none;width:14px;text-align:center;font-family:Georgia,serif;color:var(--rel)}
+.sn-f.tone-raw i{color:var(--raw)} .sn-f.tone-calc i{color:var(--calc)} .sn-f.tone-agg i{color:var(--agg)} .sn-f.tone-lookup i{color:var(--lookup)}
+.tabs{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin:0 0 14px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.tab{display:inline-flex;gap:6px;align-items:center;padding:5px 11px;border:1px solid transparent;border-radius:999px;
+  background:transparent;font:600 12px/1 inherit;color:#555;cursor:pointer}
+.tab:hover{background:#eef0f4}
+.tab.is-active{background:var(--calc-bg);color:var(--calc);border-color:var(--calc)}
+.tab i{font-style:normal;font-size:11px;opacity:.7}
+.tabs .tab-q,.tabs .ov-q{margin-inline-start:auto;width:15em;max-width:100%}
+.field[hidden]{display:none}
+.ov-group{border:1px solid var(--line);border-radius:10px;background:#fff;padding:2px 10px 12px;margin-bottom:12px}
+.ov-gtitle{display:flex;justify-content:space-between;padding:5px 2px;cursor:pointer;list-style:none;font-weight:700;
+  font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#555}
+.ov-gtitle::-webkit-details-marker{display:none}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-top:6px}
+.ov-card{display:flex;flex-direction:column;gap:2px;padding:9px 12px;border:1px solid var(--line);
+  border-inline-start:4px solid var(--calc);border-radius:8px;background:#fff;color:var(--ink)}
+.ov-card:hover{text-decoration:none;box-shadow:0 3px 10px rgba(90,58,160,.14)}
+.ov-card b{font-size:14px}.ov-card span{font-size:12px;color:var(--muted)}
+.ov-list{width:100%;border-collapse:collapse;font-size:13px}
+.ov-list td{padding:6px 8px;border-bottom:1px solid #eee}
+.ov-list a{font-weight:700}
+.ov-n{color:#777;text-align:end;white-space:nowrap}
+.ov-hint{color:var(--muted);margin:0 0 6px}
+.ov-graph{overflow:auto;padding:4px 0}
+.dgraph{display:block;max-width:none;font:600 12px -apple-system,system-ui,sans-serif}
+.dgraph .ge{fill:none;stroke:#b4bac6;stroke-width:1.4}.dgraph .ge:hover{stroke:var(--calc);stroke-width:2.2}
+.dgraph .ga{fill:#b4bac6}
+.dgraph .gn rect{fill:#fff;stroke:#c5cad6;stroke-width:1.3}.dgraph .gn.has rect{fill:var(--calc-bg);stroke:var(--calc)}
+.dgraph .gn text{fill:#222;pointer-events:none}.dgraph .gn:hover rect{stroke-width:2.4}
+.lang-doc.paged .toc{display:none}
+.lang-doc.paged .docmain .entity{display:none}
+.lang-doc.paged .docmain .entity.is-on{display:block}
+.lang-doc.paged .ov[hidden],.lang-doc .ov[hidden]{display:none}
+@media (max-width:900px){.docgrid{display:block}.sidenav{display:none}}
+
+
 html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 </style>
 <script>
@@ -209,7 +290,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 (function(){
   var LANGS=['en'];
   var DEFAULT_LANG='en';
-  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers','data'];
   var root=document.documentElement;
 
   var lang=null;
@@ -229,10 +310,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 </script>
 </head>
 <body>
-<div class="lang-doc" data-lang="en" lang="en">
+<div class="lang-doc" data-lang="en" lang="en" dir="ltr">
 <div class="topbar">
   <div class="topbar-inner">
-    <a class="topbar-brand" href="#en-top">📘 v3: NakedClaude Demo <span class="topbar-tag">RuleSpeak®</span></a>
+    <a class="topbar-brand" href="#en-top">📘 v3: NakedClaude Demo <span class="topbar-tag">Docs</span></a>
     <nav class="crumb" aria-label="You are reading">
       <span class="crumb-entity"></span>
       <span class="crumb-sep" hidden>›</span>
@@ -243,12 +324,12 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
   <div class="gear-pop" role="dialog" aria-label="Documentation options" hidden>
     <p class="gear-pop-title">Show in this document</p>
     <label class="gear-opt" title="The declarative business rule (only if / must / priority)">
-      <input type="checkbox" data-elem="rulespeak" checked>
-      <span class="gear-opt-label">RuleSpeak®</span>
+      <input type="checkbox" data-elem="rulespeak">
+      <span class="gear-opt-label">Docs</span>
       <span class="gear-opt-hint">The declarative business rule (only if / must / priority)</span>
     </label>
     <label class="gear-opt" title="The formula read aloud as a plain sentence">
-      <input type="checkbox" data-elem="english">
+      <input type="checkbox" data-elem="english" checked>
       <span class="gear-opt-label">Plain reading</span>
       <span class="gear-opt-hint">The formula read aloud as a plain sentence</span>
     </label>
@@ -263,24 +344,30 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="gear-opt-hint">The author's narrative comment on a field, when present</span>
     </label>
     <label class="gear-opt" title="The fields each rule reads (its DAG inputs / upstream)">
-      <input type="checkbox" data-elem="inputs" checked>
+      <input type="checkbox" data-elem="inputs">
       <span class="gear-opt-label">Links to inputs</span>
       <span class="gear-opt-hint">The fields each rule reads (its DAG inputs / upstream)</span>
     </label>
     <label class="gear-opt" title="The rules that read this one (its DAG consumers / downstream)">
-      <input type="checkbox" data-elem="consumers">
+      <input type="checkbox" data-elem="consumers" checked>
       <span class="gear-opt-label">Links to consumers</span>
       <span class="gear-opt-hint">The rules that read this one (its DAG consumers / downstream)</span>
+    </label>
+    <label class="gear-opt" title="The first rows of each entity's data, computed columns included">
+      <input type="checkbox" data-elem="data" checked>
+      <span class="gear-opt-label">Example data</span>
+      <span class="gear-opt-hint">The first rows of each entity's data, computed columns included</span>
     </label>
     <button type="button" class="gear-reset">Reset to defaults</button>
   </div>
 </div>
 <header class="doc-header" id="en-top">
+  <script type="application/json" class="nav-texts">{"search":"Filter tables and fields…","empty":"Nothing matches.","other":"Other","all":"All","derived":"Derived","stored":"Stored","rels":"Relationships","groups":"Groups","list":"A–Z","graph":"Graph","graphHint":"Each box is a table; a line runs from a table to the table it refers to. Click a table to open it.","fields":"Filter fields…","showAll":"Show everything on one page","showOne":"Show one table at a time","tocTitle":"Entities"}</script>
   <div class="doc-header-inner">
-    <h1 class="doc-title">📘 v3: NakedClaude Demo <span class="doc-title-sub">RuleSpeak®</span></h1>
+    <h1 class="doc-title">📘 v3: NakedClaude Demo <span class="doc-title-sub">Docs</span></h1>
     <p class="doc-lede">Rulebook generated from Airtable base 'v3: NakedClaude Demo'.</p>
     <p class="doc-note">Declarative business rules rendered from the rulebook — the single source of truth. Every statement below is the plain-language reading of a formula; nothing here is hand-authored prose.</p>
-    <p class="narr-hint">Use the <button type="button" class="gear-inline gear-open-inline">⚙︎ options</button> in the top-right corner to turn each part of the documentation on or off — RuleSpeak®, the literal reading, the raw formula, the author's description, and the links to a rule's inputs and consumers. Your choices are remembered.</p>
+    <p class="narr-hint">Use the <button type="button" class="gear-inline gear-open-inline">⚙︎ options</button> in the top-right corner to turn each part of the documentation on or off — Docs, the literal reading, the raw formula, the author's description, and the links to a rule's inputs and consumers. Your choices are remembered.</p>
   </div>
 </header>
 <nav class="toc">
@@ -296,38 +383,32 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <li><a href="#en-t-erbcustomizations">ERB Customization</a> <span class="toc-meta">0 rules · 0 links</span></li>
   </ul>
 </nav>
-<section class="entity" id="en-t-customers" data-entity="Customer">
+<section class="entity" id="en-t-customers" data-entity="Customer" data-links="en-t-statuses en-t-orders" data-rules="10">
   <header class="entity-head">
     <h2 class="entity-title">Customer</h2>
-    <p class="entity-synopsis">A customer is identified by its <a class="ref" href="#en-f-customers-name">name</a> and is related to optionally a <a class="ref" href="#en-t-statuses">status</a> (its <a class="ref" href="#en-f-customers-status">status</a>).</p>
+    <p class="entity-synopsis">A customer is identified by its <a class="ref" href="#en-f-customers-name">name</a> and is related to optionally a <a class="ref" href="#en-t-statuses">status</a>.</p>
   </header>
   <article class="field tone-raw" id="en-f-customers-name" data-entity="Customer" data-field="Name">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Name</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Human-readable customer name.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-customers-isstopped">ƒ Is Stopped <span class="ref-pill-tbl">Customer</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Human-readable customer name.</p>
     </article>
   <article class="field tone-raw" id="en-f-customers-notes" data-entity="Customer" data-field="Notes">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Notes</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Free-form notes about the customer.</p>
     </article>
@@ -340,9 +421,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-1</span>
     </div>
+    <p class="field-note elem elem-desc">True when the customer's current Status is a blocking status. Lookup of Statuses.IsBlocking.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <div class="view-body"><p class="rt-headline">A customer is considered stopped if all of the following:</p><ol class="rt-priority"><ul class="rt-group"><li><span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the <a class="ref" href="#en-f-customers-statusisblocking">status is blocking</a> flag is set</li><li>the <a class="ref" href="#en-f-customers-name">name</a> is “Bobby”</li></ul></li><li>the <a class="ref" href="#en-f-customers-hasmultipaymentorders">multi payment orders</a> flag is set</li></ul></ol></div>
       </div>
       <div class="view elem elem-english">
@@ -382,7 +464,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Customer ID <span class="ref-pill-tbl">Customer</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">True when the customer's current Status is a blocking status. Lookup of Statuses.IsBlocking.</p>
     </article>
   <article class="field tone-lookup" id="en-f-customers-statusisblocking" data-entity="Customer" data-field="Status is Blocking">
     <div class="field-head">
@@ -393,9 +474,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">boolean</span>
       <span class="pill pill-dr">DR-2</span>
     </div>
+    <p class="field-note elem elem-desc">True when the customer's current Status is a blocking status. Lookup of Statuses.IsBlocking.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A customer's <a class="ref" href="#en-f-customers-statusisblocking">status is blocking</a> when the linked <a class="ref" href="#en-f-customers-status">status</a> is blocking.</p>
       </div>
       <div class="view elem elem-english">
@@ -438,7 +520,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Statuse ID <span class="ref-pill-tbl">Status</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">True when the customer's current Status is a blocking status. Lookup of Statuses.IsBlocking.</p>
     </article>
   <article class="field tone-rel" id="en-f-customers-status" data-entity="Customer" data-field="Status">
     <div class="field-head">
@@ -447,6 +528,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Link to the customer's current Status in the Statuses table.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-statuses">Status</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
       <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-statuses-customers">⇢ Customers <span class="ref-pill-tbl">Status</span></a></p>
@@ -460,7 +542,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-customers-isstopped">Is Stopped <span class="ref-pill-tbl">Customer</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Link to the customer's current Status in the Statuses table.</p>
     </article>
   <article class="field tone-lookup" id="en-f-customers-statusdisplayname" data-entity="Customer" data-field="Status Display Name">
     <div class="field-head">
@@ -471,9 +552,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-3</span>
     </div>
+    <p class="field-note elem elem-desc">Human-readable display name of the customer's current Status. Lookup of Statuses.DisplayName.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A customer's <a class="ref" href="#en-f-customers-statusdisplayname">status display name</a> — taken from the linked <a class="ref" href="#en-f-customers-status">status</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -510,7 +592,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Statuse ID <span class="ref-pill-tbl">Status</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Human-readable display name of the customer's current Status. Lookup of Statuses.DisplayName.</p>
     </article>
   <article class="field tone-lookup" id="en-f-customers-statusdescription" data-entity="Customer" data-field="Status Description">
     <div class="field-head">
@@ -521,9 +602,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-4</span>
     </div>
+    <p class="field-note elem elem-desc">Description of the customer's current Status. Lookup of Statuses.Description.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A customer's <a class="ref" href="#en-f-customers-statusdescription">status description</a> — taken from the linked <a class="ref" href="#en-f-customers-status">status</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -560,7 +642,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <span class="ref-pill tone-raw">● Statuse ID <span class="ref-pill-tbl">Status</span></span>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Description of the customer's current Status. Lookup of Statuses.Description.</p>
     </article>
   <article class="field tone-rel" id="en-f-customers-orders" data-entity="Customer" data-field="Orders">
     <div class="field-head">
@@ -569,20 +650,17 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Reverse link to all Orders placed by this customer.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-orders">Order</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
-    <p class="field-note elem elem-desc">Reverse link to all Orders placed by this customer.</p>
     </article>
   <article class="field tone-raw" id="en-f-customers-email" data-entity="Customer" data-field="Email">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Email</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Primary email address for the customer.</p>
     </article>
@@ -590,11 +668,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Phone</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Primary phone number for the customer.</p>
     </article>
@@ -602,11 +677,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Company Name</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Company the customer represents, if applicable.</p>
     </article>
@@ -614,11 +686,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Billing Address</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Default billing address for the customer.</p>
     </article>
@@ -626,11 +695,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Shipping Address</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Default shipping address for the customer.</p>
     </article>
@@ -638,19 +704,16 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Created At</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype datetime); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">datetime</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>datetime</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Timestamp when the customer record was created.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-customers-customersincedays">ƒ Customer Since Days <span class="ref-pill-tbl">Customer</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Timestamp when the customer record was created.</p>
     </article>
   <article class="field tone-calc" id="en-f-customers-averageordervalue" data-entity="Customer" data-field="Average Order Value">
     <div class="field-head">
@@ -662,7 +725,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A customer's <a class="ref" href="#en-f-customers-averageordervalue">average order value</a> is computed as “Unable to generate formula”.</p>
       </div>
       <div class="view elem elem-english">
@@ -685,7 +748,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A customer's <a class="ref" href="#en-f-customers-lifetimemarginpercent">lifetime margin percent</a> is computed as “Unable to generate formula”.</p>
       </div>
       <div class="view elem elem-english">
@@ -709,7 +772,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <div class="view-body"><p class="rt-headline">The customer's <a class="ref" href="#en-f-customers-customersincedays">customer since days</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">the number of days from the <a class="ref" href="#en-f-customers-createdat">created at</a> to the current date and time</span> <span class="rt-when">if the <a class="ref" href="#en-f-customers-createdat">created at</a> flag is set</span></li><li><span class="rt-value">no value</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
@@ -747,7 +810,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A customer's <a class="ref" href="#en-f-customers-dayssincelastorder">days since last order</a> is computed as “Unable to generate formula”.</p>
       </div>
       <div class="view elem elem-english">
@@ -771,7 +834,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A customer's <a class="ref" href="#en-f-customers-countofmultiplepaymentorders">count of multiple payment orders</a> is the number of <a class="ref" href="#en-t-orders">orders</a> related to the customer.</p>
       </div>
       <div class="view elem elem-english">
@@ -822,7 +885,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A customer is considered to have a multi payment orders if the <a class="ref" href="#en-f-customers-countofmultiplepaymentorders">count of multiple payment orders</a> is greater than 0.</p>
       </div>
       <div class="view elem elem-english">
@@ -857,8 +920,104 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Name</th>
+        <th>Notes</th>
+        <th class="sample-derived">Is Stopped<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Status is Blocking<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Status Display Name<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Status Description<span class="sample-fx">ƒ</span></th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Company Name</th>
+        <th>Billing Address</th>
+        <th>Shipping Address</th>
+        <th>Created At</th>
+        <th class="sample-derived">Average Order Value<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Lifetime Margin Percent<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Customer Since Days<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Days Since Last Order<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Count of Multiple Payment Orders<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Has Multi Payment Orders<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>Bobby</td>
+          <td>A customer currently in launch.</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">Pending</td>
+          <td class="sample-derived">This status shows the customer or request is pending further action or review.</td>
+          <td>bob@launchpad.example</td>
+          <td>+1-415-555-0101</td>
+          <td>Launchpad LLC</td>
+          <td>742 Evergreen Terrace
+Springfield, OR 97477</td>
+          <td>742 Evergreen Terrace
+Springfield, OR 97477</td>
+          <td>2025-08-14T09:30:00Z</td>
+          <td class="sample-derived">Unable to generate formula</td>
+          <td class="sample-derived">Unable to generate formula</td>
+          <td class="sample-derived">471</td>
+          <td class="sample-derived">Unable to generate formula</td>
+          <td class="sample-derived">2</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td>Alice Johnson</td>
+          <td>Initial mock entry for Alice.</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">New</td>
+          <td class="sample-derived">This status indicates a newly created customer or request that has not yet been processed.</td>
+          <td>alice.johnson@northwind.example</td>
+          <td>+1-206-555-0142</td>
+          <td>Northwind Traders</td>
+          <td>500 Pine St, Suite 200
+Seattle, WA 98101</td>
+          <td>500 Pine St, Suite 200
+Seattle, WA 98101</td>
+          <td>2025-09-02T14:15:00Z</td>
+          <td class="sample-derived">Unable to generate formula</td>
+          <td class="sample-derived">Unable to generate formula</td>
+          <td class="sample-derived">452</td>
+          <td class="sample-derived">Unable to generate formula</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td>Brian Lee</td>
+          <td>Initial mock entry for Brian.</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">New</td>
+          <td class="sample-derived">This status indicates a newly created customer or request that has not yet been processed.</td>
+          <td>brian.lee@contoso.example</td>
+          <td>+1-512-555-0177</td>
+          <td>Contoso Manufacturing</td>
+          <td>88 Industrial Way
+Austin, TX 78701</td>
+          <td>90 Industrial Way (Loading Dock B)
+Austin, TX 78701</td>
+          <td>2025-10-11T11:00:00Z</td>
+          <td class="sample-derived">Unable to generate formula</td>
+          <td class="sample-derived">Unable to generate formula</td>
+          <td class="sample-derived">413</td>
+          <td class="sample-derived">Unable to generate formula</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">true</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-statuses" data-entity="Status">
+<section class="entity" id="en-t-statuses" data-entity="Status" data-links="en-t-customers" data-rules="1">
   <header class="entity-head">
     <h2 class="entity-title">Status</h2>
     <p class="entity-synopsis">A status is identified by its <a class="ref" href="#en-f-statuses-name">name</a>.</p>
@@ -872,9 +1031,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-11</span>
     </div>
+    <p class="field-note elem elem-desc">Lowercase, dash-separated compound key derived from DisplayName. Used as the natural key for the status.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A status's <a class="ref" href="#en-f-statuses-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-statuses-displayname">display name</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -901,18 +1061,15 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-statuses-displayname">● Display Name <span class="ref-pill-tbl">Status</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Lowercase, dash-separated compound key derived from DisplayName. Used as the natural key for the status.</p>
     </article>
   <article class="field tone-raw" id="en-f-statuses-displayname" data-entity="Status" data-field="Display Name">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Display Name</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Human-readable display name of the status (e.g., &quot;On-Hold&quot;, &quot;In-Review&quot;).</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">2 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -920,36 +1077,30 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-calc" href="#en-f-statuses-name">ƒ Name <span class="ref-pill-tbl">Status</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Human-readable display name of the status (e.g., &quot;On-Hold&quot;, &quot;In-Review&quot;).</p>
     </article>
   <article class="field tone-raw" id="en-f-statuses-description" data-entity="Status" data-field="Description">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Free-form description of what this status means and when it applies.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-lookup" href="#en-f-customers-statusdescription">↗ Status Description <span class="ref-pill-tbl">Customer</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Free-form description of what this status means and when it applies.</p>
     </article>
   <article class="field tone-raw" id="en-f-statuses-isblocking" data-entity="Status" data-field="Is Blocking">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Is Blocking</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype boolean); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">boolean</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">True when customers in this status should be considered stopped (blocked from progressing).</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+1 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -957,7 +1108,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-customers-isstopped">Is Stopped <span class="ref-pill-tbl">Customer</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">True when customers in this status should be considered stopped (blocked from progressing).</p>
     </article>
   <article class="field tone-rel" id="en-f-statuses-customers" data-entity="Status" data-field="Customers">
     <div class="field-head">
@@ -966,25 +1116,60 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Reverse link to all Customers currently in this status.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-customers">Customer</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
-    <p class="field-note elem elem-desc">Reverse link to all Customers currently in this status.</p>
     </article>
   <article class="field tone-raw" id="en-f-statuses-sortorder" data-entity="Status" data-field="Sort Order">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Sort Order</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">integer</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Display order for this status in lists.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Display Name</th>
+        <th>Description</th>
+        <th>Is Blocking</th>
+        <th>Sort Order</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">delayed</td>
+          <td>Delayed</td>
+          <td>This status is used when the customer or request has been delayed and is not progressing as scheduled.</td>
+          <td>true</td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">cancelled</td>
+          <td>Cancelled</td>
+          <td>This status means the customer or request has been cancelled and will not proceed further.</td>
+          <td>false</td>
+          <td>7</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">processing</td>
+          <td>Processing</td>
+          <td>This status means the customer or request is currently being processed.</td>
+          <td>false</td>
+          <td>2</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-products" data-entity="Product">
+<section class="entity" id="en-t-products" data-entity="Product" data-links="en-t-orderlineitems" data-rules="1">
   <header class="entity-head">
     <h2 class="entity-title">Product</h2>
     <p class="entity-synopsis">A product is identified by its <a class="ref" href="#en-f-products-name">name</a>.</p>
@@ -998,9 +1183,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-12</span>
     </div>
+    <p class="field-note elem elem-desc">Lowercase, dash-separated compound key derived from SKU. Used as the natural key for the product.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">A product's <a class="ref" href="#en-f-products-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-products-sku">SKU</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -1027,25 +1213,21 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-products-sku">● SKU <span class="ref-pill-tbl">Product</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Lowercase, dash-separated compound key derived from SKU. Used as the natural key for the product.</p>
     </article>
   <article class="field tone-raw" id="en-f-products-sku" data-entity="Product" data-field="SKU">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">SKU</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Stock-keeping unit identifier for the product. The natural compound key.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-products-name">ƒ Name <span class="ref-pill-tbl">Product</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Stock-keeping unit identifier for the product. The natural compound key.</p>
     </article>
   <article class="field tone-rel" id="en-f-products-orderlineitems" data-entity="Product" data-field="Order Line Items">
     <div class="field-head">
@@ -1054,20 +1236,17 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Reverse link to all OrderLineItems that reference this product.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-orderlineitems">Order Line Item</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
-    <p class="field-note elem elem-desc">Reverse link to all OrderLineItems that reference this product.</p>
     </article>
   <article class="field tone-raw" id="en-f-products-displayname" data-entity="Product" data-field="Display Name">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Display Name</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Human-readable product name shown in catalogs and orders.</p>
     </article>
@@ -1075,11 +1254,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Description</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Long-form product description.</p>
     </article>
@@ -1087,11 +1263,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Unit Price</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Default list price per unit.</p>
     </article>
@@ -1099,11 +1272,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Cost</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Internal cost per unit.</p>
     </article>
@@ -1111,11 +1281,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Is Active</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype boolean); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">boolean</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">True when the product is currently sellable.</p>
     </article>
@@ -1123,16 +1290,63 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Stock Quantity</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">integer</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Number of units currently in stock.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>SKU</th>
+        <th>Display Name</th>
+        <th>Description</th>
+        <th>Unit Price</th>
+        <th>Cost</th>
+        <th>Is Active</th>
+        <th>Stock Quantity</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">gadget-200</td>
+          <td>GADGET-200</td>
+          <td>Pro Gadget</td>
+          <td>Professional-grade gadget with extended battery life.</td>
+          <td>89</td>
+          <td>32</td>
+          <td>true</td>
+          <td>75</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">hub-7port</td>
+          <td>HUB-7PORT</td>
+          <td>7-Port USB Hub</td>
+          <td>Powered 7-port USB-A hub with individual switches.</td>
+          <td>34.99</td>
+          <td>11.8</td>
+          <td>true</td>
+          <td>240</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">cable-usb-c</td>
+          <td>CABLE-USB-C</td>
+          <td>USB-C Cable (2m)</td>
+          <td>Two-meter braided USB-C to USB-C cable, 100W power delivery.</td>
+          <td>12</td>
+          <td>3.4</td>
+          <td>true</td>
+          <td>1240</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-orders" data-entity="Order">
+<section class="entity" id="en-t-orders" data-entity="Order" data-links="en-t-customers en-t-orderlineitems en-t-payments" data-rules="13">
   <header class="entity-head">
     <h2 class="entity-title">Order</h2>
     <p class="entity-synopsis">An order is identified by its <a class="ref" href="#en-f-orders-name">name</a> and is related to optionally a <a class="ref" href="#en-t-customers">customer</a>.</p>
@@ -1146,9 +1360,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-13</span>
     </div>
+    <p class="field-note elem elem-desc">Lowercase compound key combining the linked Customer and OrderNumber (e.g. 'bob-1001'). Used as the natural key for the order.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">An order's <a class="ref" href="#en-f-orders-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-orders-customer">customer</a>, followed by a hyphen, followed by the <a class="ref" href="#en-f-orders-ordernumber">order number</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -1180,18 +1395,15 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-orders-ordernumber">● Order Number <span class="ref-pill-tbl">Order</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Lowercase compound key combining the linked Customer and OrderNumber (e.g. 'bob-1001'). Used as the natural key for the order.</p>
     </article>
   <article class="field tone-raw" id="en-f-orders-ordernumber" data-entity="Order" data-field="Order Number">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Order Number</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Sequential or human-assigned order identifier (e.g. '1001'). Combined with Customer to form the order's natural key.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">2 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -1199,7 +1411,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-lookup" href="#en-f-payments-ordernumber">↗ Order Number <span class="ref-pill-tbl">Payment</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Sequential or human-assigned order identifier (e.g. '1001'). Combined with Customer to form the order's natural key.</p>
     </article>
   <article class="field tone-rel" id="en-f-orders-customer" data-entity="Order" data-field="Customer">
     <div class="field-head">
@@ -1208,6 +1419,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Link to the Customer who placed this order.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-customers">Customer</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
       <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-customers-orders">⇢ Orders <span class="ref-pill-tbl">Customer</span></a></p>
@@ -1221,7 +1433,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-customers-isstopped">Is Stopped <span class="ref-pill-tbl">Customer</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Link to the Customer who placed this order.</p>
     </article>
   <article class="field tone-rel" id="en-f-orders-orderlineitems" data-entity="Order" data-field="Order Line Items">
     <div class="field-head">
@@ -1230,10 +1441,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Reverse link to all OrderLineItems on this order.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-orderlineitems">Order Line Item</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
-    <p class="field-note elem elem-desc">Reverse link to all OrderLineItems on this order.</p>
     </article>
   <article class="field tone-rel" id="en-f-orders-payments" data-entity="Order" data-field="Payments">
     <div class="field-head">
@@ -1242,56 +1453,47 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Reverse link to all Payments applied to this order.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-payments">Payment</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
-    <p class="field-note elem elem-desc">Reverse link to all Payments applied to this order.</p>
     </article>
   <article class="field tone-raw" id="en-f-orders-orderdate" data-entity="Order" data-field="Order Date">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Order Date</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype datetime); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">datetime</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>datetime</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">When the order was placed.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-lookup" href="#en-f-payments-orderdate">↗ Order Date <span class="ref-pill-tbl">Payment</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">When the order was placed.</p>
     </article>
   <article class="field tone-raw" id="en-f-orders-orderstatus" data-entity="Order" data-field="Order Status">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Order Status</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Lifecycle state of the order.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-lookup" href="#en-f-payments-orderstatus">↗ Order Status <span class="ref-pill-tbl">Payment</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Lifecycle state of the order.</p>
     </article>
   <article class="field tone-raw" id="en-f-orders-shippingaddress" data-entity="Order" data-field="Shipping Address">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Shipping Address</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Where this specific order ships to.</p>
     </article>
@@ -1299,11 +1501,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Billing Address</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Billing address used for this specific order.</p>
     </article>
@@ -1311,11 +1510,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Notes</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Free-form notes about this order.</p>
     </article>
@@ -1330,7 +1526,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An order's <a class="ref" href="#en-f-orders-itemcount">item count</a> is the number of <a class="ref" href="#en-t-orderlineitems">order line items</a> related to the order.</p>
       </div>
       <div class="view elem elem-english">
@@ -1374,7 +1570,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An order's <a class="ref" href="#en-f-orders-totalquantity">total quantity</a> is the total <a class="ref" href="#en-f-orderlineitems-quantity">quantity</a> across the <a class="ref" href="#en-t-orderlineitems">order line items</a> related to the order.</p>
       </div>
       <div class="view elem elem-english">
@@ -1423,7 +1619,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An order's <a class="ref" href="#en-f-orders-subtotal">sub total</a> is the total <a class="ref" href="#en-f-orderlineitems-subtotal">sub total</a> across the <a class="ref" href="#en-t-orderlineitems">order line items</a> related to the order.</p>
       </div>
       <div class="view elem elem-english">
@@ -1480,12 +1676,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Tax Rate</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Sales tax rate applied to this order.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+7 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -1499,7 +1693,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-payments-orderispaidinfull">Order is Paid in Full <span class="ref-pill-tbl">Payment</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Sales tax rate applied to this order.</p>
     </article>
   <article class="field tone-calc" id="en-f-orders-taxamount" data-entity="Order" data-field="Tax Amount">
     <div class="field-head">
@@ -1512,7 +1705,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An order's <a class="ref" href="#en-f-orders-taxamount">tax amount</a> is computed as the <a class="ref" href="#en-f-orders-subtotal">sub total</a> times the <a class="ref" href="#en-f-orders-taxrate">tax rate</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1572,7 +1765,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An order's <a class="ref" href="#en-f-orders-ordertotal">order total</a> is computed as the <a class="ref" href="#en-f-orders-subtotal">sub total</a> plus the <a class="ref" href="#en-f-orders-taxamount">tax amount</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -1631,7 +1824,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An order's <a class="ref" href="#en-f-orders-totalpaid">total paid</a> is the total <a class="ref" href="#en-f-payments-completedamount">completed amount</a> across the <a class="ref" href="#en-t-payments">payments</a> related to the order.</p>
       </div>
       <div class="view elem elem-english">
@@ -1691,7 +1884,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An order's <a class="ref" href="#en-f-orders-amountdue">amount due</a> is computed as the <a class="ref" href="#en-f-orders-ordertotal">order total</a> minus the <a class="ref" href="#en-f-orders-totalpaid">total paid</a> rounded to 2 decimal place(s).</p>
       </div>
       <div class="view elem elem-english">
@@ -1751,7 +1944,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <div class="view-body"><p class="rt-headline">The order's <a class="ref" href="#en-f-orders-ispaidinfull">is paid in full</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">true</span> <span class="rt-when">if the <a class="ref" href="#en-f-orders-amountdue">amount due</a> is at most 0</span></li><li><span class="rt-value">false</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
@@ -1805,7 +1998,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An order's <a class="ref" href="#en-f-orders-paymentcount">payment count</a> is the number of <a class="ref" href="#en-t-payments">payments</a> related to the order.</p>
       </div>
       <div class="view elem elem-english">
@@ -1855,7 +2048,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An order is considered a multi payment order if the <a class="ref" href="#en-f-orders-paymentcount">payment count</a> is greater than 1.</p>
       </div>
       <div class="view elem elem-english">
@@ -1895,7 +2088,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An order's <a class="ref" href="#en-f-orders-lastpaymentdate">last payment date</a> is the total <a class="ref" href="#en-f-payments-paymentdate">payment date</a> across the <a class="ref" href="#en-t-payments">payments</a> related to the order.</p>
       </div>
       <div class="view elem elem-english">
@@ -1944,7 +2137,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <div class="view-body"><p class="rt-headline">The order's <a class="ref" href="#en-f-orders-paymentstatuslabel">payment status label</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">“Paid”</span> <span class="rt-when">if the <a class="ref" href="#en-f-orders-ispaidinfull">paid in full</a> flag is set</span></li><li><span class="rt-value">“Unpaid”</span> <span class="rt-when">if the <a class="ref" href="#en-f-orders-totalpaid">total paid</a> is 0</span></li><li><span class="rt-value">“Partial”</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
@@ -1984,8 +2177,112 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Order Number</th>
+        <th>Order Date</th>
+        <th>Order Status</th>
+        <th>Shipping Address</th>
+        <th>Billing Address</th>
+        <th>Notes</th>
+        <th class="sample-derived">Item Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Total Quantity<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Sub Total<span class="sample-fx">ƒ</span></th>
+        <th>Tax Rate</th>
+        <th class="sample-derived">Tax Amount<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Order Total<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Total Paid<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Amount Due<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Paid in Full<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Payment Count<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Is Multi Payment Order<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Last Payment Date<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Payment Status Label<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">bobby-1042</td>
+          <td>1042</td>
+          <td>2026-02-20T13:15:00Z</td>
+          <td>Pending</td>
+          <td>742 Evergreen Terrace
+Springfield, OR 97477</td>
+          <td>742 Evergreen Terrace
+Springfield, OR 97477</td>
+          <td>Awaiting payment confirmation. Customer is on-hold.</td>
+          <td class="sample-derived">2</td>
+          <td class="sample-derived">2</td>
+          <td class="sample-derived">123.99000000000001</td>
+          <td>0.085</td>
+          <td class="sample-derived">10.539150000000001</td>
+          <td class="sample-derived">134.52915000000002</td>
+          <td class="sample-derived">0.0</td>
+          <td class="sample-derived">134.53</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">1</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">Unpaid</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">caroline-1045</td>
+          <td>1045</td>
+          <td>2026-03-12T10:00:00Z</td>
+          <td>New</td>
+          <td>23 Hudson Lane
+Brooklyn, NY 11201</td>
+          <td>23 Hudson Lane
+Brooklyn, NY 11201</td>
+          <td>First-time customer. Marketing wants white-glove handling.</td>
+          <td class="sample-derived">3</td>
+          <td class="sample-derived">4</td>
+          <td class="sample-derived">116.48</td>
+          <td>0.08875</td>
+          <td class="sample-derived">10.3376</td>
+          <td class="sample-derived">126.8176</td>
+          <td class="sample-derived">126.82</td>
+          <td class="sample-derived">-0.0</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">2</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">Paid</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">alice-johnson-1010</td>
+          <td>1010</td>
+          <td>2025-10-05T09:00:00Z</td>
+          <td>Shipped</td>
+          <td>500 Pine St, Suite 200
+Seattle, WA 98101</td>
+          <td>500 Pine St, Suite 200
+Seattle, WA 98101</td>
+          <td>Bulk order for Q4 inventory.</td>
+          <td class="sample-derived">4</td>
+          <td class="sample-derived">250</td>
+          <td class="sample-derived">4332.825</td>
+          <td>0.101</td>
+          <td class="sample-derived">437.615325</td>
+          <td class="sample-derived">4770.440325</td>
+          <td class="sample-derived">4770.4400000000005</td>
+          <td class="sample-derived">0.0</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">2</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">0</td>
+          <td class="sample-derived">Paid</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-orderlineitems" data-entity="Order Line Item">
+<section class="entity" id="en-t-orderlineitems" data-entity="Order Line Item" data-links="en-t-orders en-t-products" data-rules="4">
   <header class="entity-head">
     <h2 class="entity-title">Order Line Item</h2>
     <p class="entity-synopsis">An order line item is identified by its <a class="ref" href="#en-f-orderlineitems-name">name</a> and is related to optionally an <a class="ref" href="#en-t-orders">order</a> and optionally a <a class="ref" href="#en-t-products">product</a>.</p>
@@ -1999,9 +2296,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-26</span>
     </div>
+    <p class="field-note elem elem-desc">Lowercase compound key combining the linked Order and LineNumber (e.g. 'bob-1001-line-1'). Used as the natural key for the line item.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">An order line item's <a class="ref" href="#en-f-orderlineitems-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-orderlineitems-order">order</a>, followed by “-line-”, followed by the <a class="ref" href="#en-f-orderlineitems-linenumber">line number</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -2033,25 +2331,21 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-orderlineitems-linenumber">● Line Number <span class="ref-pill-tbl">Order Line Item</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Lowercase compound key combining the linked Order and LineNumber (e.g. 'bob-1001-line-1'). Used as the natural key for the line item.</p>
     </article>
   <article class="field tone-raw" id="en-f-orderlineitems-linenumber" data-entity="Order Line Item" data-field="Line Number">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Line Number</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Position of this line within its parent Order (e.g. '1', '2'). Combined with Order to form the line item's natural key.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-orderlineitems-name">ƒ Name <span class="ref-pill-tbl">Order Line Item</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Position of this line within its parent Order (e.g. '1', '2'). Combined with Order to form the line item's natural key.</p>
     </article>
   <article class="field tone-rel" id="en-f-orderlineitems-order" data-entity="Order Line Item" data-field="Order">
     <div class="field-head">
@@ -2060,6 +2354,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Link to the parent Order this line item belongs to.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-orders">Order</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
       <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-orders-orderlineitems">⇢ Order Line Items <span class="ref-pill-tbl">Order</span></a></p>
@@ -2081,7 +2376,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-payments-orderispaidinfull">Order is Paid in Full <span class="ref-pill-tbl">Payment</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Link to the parent Order this line item belongs to.</p>
     </article>
   <article class="field tone-rel" id="en-f-orderlineitems-product" data-entity="Order Line Item" data-field="Product">
     <div class="field-head">
@@ -2090,22 +2384,20 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Link to the Product being ordered on this line.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-products">Product</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
       <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-products-orderlineitems">⇢ Order Line Items <span class="ref-pill-tbl">Product</span></a></p>
     </div>
-    <p class="field-note elem elem-desc">Link to the Product being ordered on this line.</p>
     </article>
   <article class="field tone-raw" id="en-f-orderlineitems-quantity" data-entity="Order Line Item" data-field="Quantity">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Quantity</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype integer); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">integer</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Number of units ordered on this line.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+11 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -2124,18 +2416,15 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-payments-orderispaidinfull">Order is Paid in Full <span class="ref-pill-tbl">Payment</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Number of units ordered on this line.</p>
     </article>
   <article class="field tone-raw" id="en-f-orderlineitems-unitprice" data-entity="Order Line Item" data-field="Unit Price">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Unit Price</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Price per unit captured at the time of ordering (may differ from current Product.UnitPrice).</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+11 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -2153,7 +2442,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-payments-orderispaidinfull">Order is Paid in Full <span class="ref-pill-tbl">Payment</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Price per unit captured at the time of ordering (may differ from current Product.UnitPrice).</p>
     </article>
   <article class="field tone-calc" id="en-f-orderlineitems-prediscount" data-entity="Order Line Item" data-field="Pre Discount">
     <div class="field-head">
@@ -2166,7 +2454,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An order line item's <a class="ref" href="#en-f-orderlineitems-prediscount">pre discount</a> is computed as the <a class="ref" href="#en-f-orderlineitems-quantity">quantity</a> times the <a class="ref" href="#en-f-orderlineitems-unitprice">unit price</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2219,12 +2507,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Discount Percent</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Per-line discount applied to this item.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+10 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -2241,7 +2527,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-payments-orderispaidinfull">Order is Paid in Full <span class="ref-pill-tbl">Payment</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Per-line discount applied to this item.</p>
     </article>
   <article class="field tone-calc" id="en-f-orderlineitems-discountamount" data-entity="Order Line Item" data-field="Discount Amount">
     <div class="field-head">
@@ -2254,7 +2539,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An order line item's <a class="ref" href="#en-f-orderlineitems-discountamount">discount amount</a> is computed as the <a class="ref" href="#en-f-orderlineitems-prediscount">pre discount</a> times the <a class="ref" href="#en-f-orderlineitems-discountpercent">discount percent</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2314,7 +2599,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">An order line item's <a class="ref" href="#en-f-orderlineitems-subtotal">sub total</a> is computed as the <a class="ref" href="#en-f-orderlineitems-prediscount">pre discount</a> minus the <a class="ref" href="#en-f-orderlineitems-discountamount">discount amount</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2366,16 +2651,67 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Notes</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Free-form notes about this line item.</p>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Line Number</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th class="sample-derived">Pre Discount<span class="sample-fx">ƒ</span></th>
+        <th>Discount Percent</th>
+        <th class="sample-derived">Discount Amount<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Sub Total<span class="sample-fx">ƒ</span></th>
+        <th>Notes</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">carla-smith-1037-line-2</td>
+          <td>2</td>
+          <td>1</td>
+          <td>89</td>
+          <td class="sample-derived">89.0</td>
+          <td>0.15</td>
+          <td class="sample-derived">13.35</td>
+          <td class="sample-derived">75.65</td>
+          <td>Goodwill discount for prior return.</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">carla-smith-1024-line-2</td>
+          <td>2</td>
+          <td>1</td>
+          <td>89</td>
+          <td class="sample-derived">89.0</td>
+          <td>0</td>
+          <td class="sample-derived">0.0</td>
+          <td class="sample-derived">89.0</td>
+          <td>Returned: damaged in transit.</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">caroline-1045-line-3</td>
+          <td>3</td>
+          <td>1</td>
+          <td>12</td>
+          <td class="sample-derived">12.0</td>
+          <td>0</td>
+          <td class="sample-derived">0.0</td>
+          <td class="sample-derived">12.0</td>
+          <td>Free with welcome bundle.</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-payments" data-entity="Payment">
+<section class="entity" id="en-t-payments" data-entity="Payment" data-links="en-t-orders" data-rules="9">
   <header class="entity-head">
     <h2 class="entity-title">Payment</h2>
     <p class="entity-synopsis">A payment is identified by its <a class="ref" href="#en-f-payments-name">name</a> and is related to optionally an <a class="ref" href="#en-t-orders">order</a>.</p>
@@ -2389,9 +2725,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-muted">string</span>
       <span class="pill pill-dr">DR-30</span>
     </div>
+    <p class="field-note elem elem-desc">Lowercase compound key combining the linked Order and PaymentNumber (e.g. 'bob-1001-pmt-1'). Used as the natural key for the payment.</p>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak® <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <span class="view-label">In Docs <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
         <p class="view-body">A payment's <a class="ref" href="#en-f-payments-name">name</a> is computed as the lower-cased <a class="ref" href="#en-f-payments-order">order</a>, followed by “-pmt-”, followed by the <a class="ref" href="#en-f-payments-paymentnumber">payment number</a> with every a space replaced by a hyphen.</p>
       </div>
       <div class="view elem elem-english">
@@ -2423,25 +2760,21 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-raw" href="#en-f-payments-paymentnumber">● Payment Number <span class="ref-pill-tbl">Payment</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Lowercase compound key combining the linked Order and PaymentNumber (e.g. 'bob-1001-pmt-1'). Used as the natural key for the payment.</p>
     </article>
   <article class="field tone-raw" id="en-f-payments-paymentnumber" data-entity="Payment" data-field="Payment Number">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Payment Number</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Sequential payment identifier within the parent Order (e.g. '1', '2'). Combined with Order to form the payment's natural key.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#en-f-payments-name">ƒ Name <span class="ref-pill-tbl">Payment</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Sequential payment identifier within the parent Order (e.g. '1', '2'). Combined with Order to form the payment's natural key.</p>
     </article>
   <article class="field tone-rel" id="en-f-payments-order" data-entity="Payment" data-field="Order">
     <div class="field-head">
@@ -2450,6 +2783,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       <span class="pill pill-type">Relationship</span>
       <span class="pill pill-muted">string</span>
     </div>
+    <p class="field-note elem elem-desc">Link to the Order this payment is being applied to.</p>
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#en-t-orders">Order</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
       <p class="gt-body gt-reverse">Reverse side: <a class="ref-pill tone-rel" href="#en-f-orders-payments">⇢ Payments <span class="ref-pill-tbl">Order</span></a></p>
@@ -2473,35 +2807,28 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-orders-ispaidinfull">Is Paid in Full <span class="ref-pill-tbl">Order</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Link to the Order this payment is being applied to.</p>
     </article>
   <article class="field tone-raw" id="en-f-payments-paymentdate" data-entity="Payment" data-field="Payment Date">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Payment Date</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype datetime); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">datetime</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>datetime</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">When the payment was received.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-agg" href="#en-f-orders-lastpaymentdate">Σ Last Payment Date <span class="ref-pill-tbl">Order</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">When the payment was received.</p>
     </article>
   <article class="field tone-raw" id="en-f-payments-paymentmethod" data-entity="Payment" data-field="Payment Method">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Payment Method</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">How the payment was made.</p>
     </article>
@@ -2509,11 +2836,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Transaction ID</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">External processor transaction identifier.</p>
     </article>
@@ -2521,11 +2845,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Notes</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Free-form notes about this payment.</p>
     </article>
@@ -2540,7 +2861,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A payment's <a class="ref" href="#en-f-payments-orderdate">order date</a> — taken from the linked <a class="ref" href="#en-f-payments-order">order</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2589,7 +2910,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A payment's <a class="ref" href="#en-f-payments-ordernumber">order number</a> — taken from the linked <a class="ref" href="#en-f-payments-order">order</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2638,7 +2959,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A payment's <a class="ref" href="#en-f-payments-orderstatus">order status</a> — taken from the linked <a class="ref" href="#en-f-payments-order">order</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2687,7 +3008,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A payment's <a class="ref" href="#en-f-payments-ordertotal">order total</a> — taken from the linked <a class="ref" href="#en-f-payments-order">order</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2733,12 +3054,10 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Amount</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype number); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">number</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Amount paid.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+6 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -2751,18 +3070,15 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-payments-orderispaidinfull">Order is Paid in Full <span class="ref-pill-tbl">Payment</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Amount paid.</p>
     </article>
   <article class="field tone-raw" id="en-f-payments-paymentstatus" data-entity="Payment" data-field="Payment Status">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Payment Status</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
+    <p class="field-note elem elem-desc">Lifecycle state of the payment.</p>
     <details class="prov prov-consumers elem elem-consumers" open>
       <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+6 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
@@ -2776,7 +3092,6 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
         <a class="ref-pill tone-rel faded" href="#en-f-payments-orderispaidinfull">Order is Paid in Full <span class="ref-pill-tbl">Payment</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Lifecycle state of the payment.</p>
     </article>
   <article class="field tone-calc" id="en-f-payments-iscompleted" data-entity="Payment" data-field="Is Completed">
     <div class="field-head">
@@ -2789,7 +3104,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <div class="view-body"><p class="rt-headline">The payment's <a class="ref" href="#en-f-payments-iscompleted">is completed</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">true</span> <span class="rt-when">if the <a class="ref" href="#en-f-payments-paymentstatus">payment status</a> is “Completed”</span></li><li><span class="rt-value">false</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
@@ -2828,7 +3143,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <div class="view-body"><p class="rt-headline">The payment's <a class="ref" href="#en-f-payments-completedamount">completed amount</a> is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">the <a class="ref" href="#en-f-payments-amount">amount</a></span> <span class="rt-when">if the <a class="ref" href="#en-f-payments-paymentstatus">payment status</a> is “completed”</span></li><li><span class="rt-value">0</span> <span class="rt-when">in all other cases</span></li></ol></div>
       </div>
       <div class="view elem elem-english">
@@ -2883,7 +3198,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A payment's <a class="ref" href="#en-f-payments-orderamountdue">order amount due</a> — taken from the linked <a class="ref" href="#en-f-payments-order">order</a>.</p>
       </div>
       <div class="view elem elem-english">
@@ -2938,7 +3253,7 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
-        <span class="view-label">In RuleSpeak®</span>
+        <span class="view-label">In Docs</span>
         <p class="view-body">A payment's <a class="ref" href="#en-f-payments-orderispaidinfull">order is paid in full</a> when the linked <a class="ref" href="#en-f-payments-order">order</a> is a paid in full.</p>
       </div>
       <div class="view elem elem-english">
@@ -2982,8 +3297,90 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
       </div>
     </details>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th class="sample-derived">Name<span class="sample-fx">ƒ</span></th>
+        <th>Payment Number</th>
+        <th>Payment Date</th>
+        <th>Payment Method</th>
+        <th>Transaction ID</th>
+        <th>Notes</th>
+        <th class="sample-derived">Order Date<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Order Number<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Order Status<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Order Total<span class="sample-fx">ƒ</span></th>
+        <th>Amount</th>
+        <th>Payment Status</th>
+        <th class="sample-derived">Is Completed<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Completed Amount<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Order Amount Due<span class="sample-fx">ƒ</span></th>
+        <th class="sample-derived">Order is Paid in Full<span class="sample-fx">ƒ</span></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="sample-derived">caroline-1045-pmt-1</td>
+          <td>1</td>
+          <td>2026-03-12T10:05:00Z</td>
+          <td>CreditCard</td>
+          <td>ch_failed_9981</td>
+          <td>Card declined; customer to retry.</td>
+          <td class="sample-derived">2026-03-12T10:00:00Z</td>
+          <td class="sample-derived">1045</td>
+          <td class="sample-derived">New</td>
+          <td class="sample-derived">126.8176</td>
+          <td>126.82</td>
+          <td>Failed</td>
+          <td class="sample-derived">false</td>
+          <td class="sample-derived">0.0</td>
+          <td class="sample-derived">-0.0</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">caroline-1045-pmt-2</td>
+          <td>2</td>
+          <td>2026-03-12T11:30:00Z</td>
+          <td>Cash</td>
+          <td>CASH-NY-20260312-001</td>
+          <td>Customer paid in cash at pickup.</td>
+          <td class="sample-derived">2026-03-12T10:00:00Z</td>
+          <td class="sample-derived">1045</td>
+          <td class="sample-derived">New</td>
+          <td class="sample-derived">126.8176</td>
+          <td>126.82</td>
+          <td>Completed</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">126.82</td>
+          <td class="sample-derived">-0.0</td>
+          <td class="sample-derived">true</td>
+        </tr>
+        <tr>
+          <td class="sample-derived">alice-johnson-1010-pmt-2</td>
+          <td>2</td>
+          <td>2025-10-12T11:30:00Z</td>
+          <td>BankTransfer</td>
+          <td>wire_NWT_20251012_b</td>
+          <td>Final balance.</td>
+          <td class="sample-derived">2025-10-05T09:00:00Z</td>
+          <td class="sample-derived">1010</td>
+          <td class="sample-derived">Shipped</td>
+          <td class="sample-derived">4770.440325</td>
+          <td>3270.44</td>
+          <td>Completed</td>
+          <td class="sample-derived">true</td>
+          <td class="sample-derived">3270.44</td>
+          <td class="sample-derived">0.0</td>
+          <td class="sample-derived">true</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="sample-legend">ƒ marks a computed column.</p>
+  </details>
 </section>
-<section class="entity" id="en-t-erbversions" data-entity="ERB Version">
+<section class="entity" id="en-t-erbversions" data-entity="ERB Version" data-links="" data-rules="0">
   <header class="entity-head">
     <h2 class="entity-title">ERB Version</h2>
     <p class="entity-synopsis">An ERB version is identified by its <a class="ref" href="#en-f-erbversions-name">name</a>.</p>
@@ -2992,92 +3389,117 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Name</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     </article>
   <article class="field tone-raw" id="en-f-erbversions-baseid" data-entity="ERB Version" data-field="Base ID">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Base ID</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     </article>
   <article class="field tone-raw" id="en-f-erbversions-version" data-entity="ERB Version" data-field="Version">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Version</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     </article>
   <article class="field tone-raw" id="en-f-erbversions-message" data-entity="ERB Version" data-field="Message">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Message</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     </article>
   <article class="field tone-raw" id="en-f-erbversions-notes" data-entity="ERB Version" data-field="Notes">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Notes</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     </article>
   <article class="field tone-raw" id="en-f-erbversions-commitdate" data-entity="ERB Version" data-field="Commit Date">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Commit Date</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype datetime); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">datetime</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>datetime</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     </article>
   <article class="field tone-raw" id="en-f-erbversions-ispublished" data-entity="ERB Version" data-field="Is Published">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Is Published</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype boolean); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">boolean</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     </article>
   <article class="field tone-raw" id="en-f-erbversions-author" data-entity="ERB Version" data-field="Author">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Author</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Name</th>
+        <th>Base ID</th>
+        <th>Version</th>
+        <th>Message</th>
+        <th>Notes</th>
+        <th>Commit Date</th>
+        <th>Is Published</th>
+        <th>Author</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>v2026-04-07t00-45-14-766z</td>
+          <td>8d009876-5ceb-47a0-9b94-db653e0774dd</td>
+          <td>Version 2026-04-07 00:45:14</td>
+          <td>Testing function fixes.</td>
+          <td>—</td>
+          <td>2026-04-07</td>
+          <td>false</td>
+          <td>ej@ssot.me</td>
+        </tr>
+        <tr>
+          <td>Version 2026-04-07 01:56:19</td>
+          <td>8d009876-5ceb-47a0-9b94-db653e0774dd</td>
+          <td>—</td>
+          <td>fixed payments</td>
+          <td>—</td>
+          <td>2026-04-07</td>
+          <td>false</td>
+          <td>ej@ssot.me</td>
+        </tr>
+        <tr>
+          <td>Version 2026-04-07 01:54:04</td>
+          <td>8d009876-5ceb-47a0-9b94-db653e0774dd</td>
+          <td>—</td>
+          <td>tixed functions</td>
+          <td>—</td>
+          <td>2026-04-07</td>
+          <td>false</td>
+          <td>ej@ssot.me</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
 </section>
-<section class="entity" id="en-t-erbcustomizations" data-entity="ERB Customization">
+<section class="entity" id="en-t-erbcustomizations" data-entity="ERB Customization" data-links="" data-rules="0">
   <header class="entity-head">
     <h2 class="entity-title">ERB Customization</h2>
     <p class="entity-synopsis">An ERB customization is identified by its <a class="ref" href="#en-f-erbcustomizations-name">name</a>.</p>
@@ -3086,60 +3508,139 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Name</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     </article>
   <article class="field tone-raw" id="en-f-erbcustomizations-title" data-entity="ERB Customization" data-field="Title">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Title</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     </article>
   <article class="field tone-raw" id="en-f-erbcustomizations-sqlcode" data-entity="ERB Customization" data-field="SQL Code">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">SQL Code</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     </article>
   <article class="field tone-raw" id="en-f-erbcustomizations-sqltarget" data-entity="ERB Customization" data-field="SQL Target">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">SQL Target</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
-    </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     </article>
   <article class="field tone-raw" id="en-f-erbcustomizations-customizationtype" data-entity="ERB Customization" data-field="Customization Type">
     <div class="field-head">
       <span class="field-glyph" title="Ground truth">●</span>
       <span class="field-name">Customization Type</span>
-      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-type" title="Ground truth. Written directly to the database (datatype string); not computed from anything else. Everything derived ultimately traces back to values like this one.">Ground truth</span>
       <span class="pill pill-muted">string</span>
     </div>
-    <div class="gt">
-      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
-    </div>
     </article>
+  <details class="entity-data elem elem-data" open>
+    <summary>Example data</summary>
+    <div class="sample-scroll">
+    <table class="sample-table">
+      <thead><tr>
+        <th>Name</th>
+        <th>Title</th>
+        <th>SQL Code</th>
+        <th>SQL Target</th>
+        <th>Customization Type</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>calc_customers_average_order_value</td>
+          <td>—</td>
+          <td>-- FunctionOverride: calc_customers_average_order_value
+-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).
+
+CREATE OR REPLACE FUNCTION public.calc_customers_average_order_value(p_customer_id text)
+ RETURNS TEXT
+ LANGUAGE plpgsql
+ STABLE SECURITY DEFINER
+AS $function$
+DECLARE
+  v_avg numeric;
+BEGIN
+  SELECT AVG(calc_orders_order_total(order_id))
+    INTO v_avg
+    FROM orders
+   WHERE customer = p_customer_id;
+  RETURN COALESCE(ROUND(v_avg, 2)::text, '0.00');
+END;
+$function$;
+</td>
+          <td>Postgres</td>
+          <td>FunctionOverride</td>
+        </tr>
+        <tr>
+          <td>calc_customers_has_multi_payment_orders</td>
+          <td>Fix: only true when customer has an order with &gt;1 payment</td>
+          <td>-- FunctionOverride: calc_customers_has_multi_payment_orders
+-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).
+
+CREATE OR REPLACE FUNCTION public.calc_customers_has_multi_payment_orders(p_customer_id text)
+ RETURNS BOOLEAN
+ LANGUAGE plpgsql
+ STABLE SECURITY DEFINER
+AS $function$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1
+      FROM orders o
+     WHERE o.customer = p_customer_id
+       AND (SELECT COUNT(*) FROM payments p WHERE p.&quot;order&quot; = o.order_id) &gt; 1
+  );
+END;
+$function$;
+</td>
+          <td>Postgres</td>
+          <td>FunctionOverride</td>
+        </tr>
+        <tr>
+          <td>calc_customers_days_since_last_order</td>
+          <td>—</td>
+          <td>-- FunctionOverride: calc_customers_days_since_last_order
+-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).
+
+CREATE OR REPLACE FUNCTION public.calc_customers_days_since_last_order(p_customer_id text)
+ RETURNS TEXT
+ LANGUAGE plpgsql
+ STABLE SECURITY DEFINER
+AS $function$
+DECLARE
+  v_last timestamptz;
+BEGIN
+  SELECT MAX(order_date::timestamptz)
+    INTO v_last
+    FROM orders
+   WHERE customer = p_customer_id;
+  IF v_last IS NULL THEN
+    RETURN NULL;
+  END IF;
+  RETURN (CURRENT_DATE - v_last::date)::text;
+END;
+$function$;
+</td>
+          <td>Postgres</td>
+          <td>FunctionOverride</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </details>
 </section>
 <footer class="doc-footer">
-  <p>Rendered from the rulebook by the shared <b>RuleSpeak®</b> engine (<code>rulebook-rulespeak-core</code>). The same engine narrates the React Explainer DAG, so every narration mode reads identically across both.</p>
+  <p class="doc-footer-soon"><b>RuleSpeak&#174;</b> — the declarative business-rule notation created by <b>Ronald G. Ross</b>, following the conventions of <b>SBVR</b> — is coming soon. Until then this page shows the regular documentation. <a href="https://www.RonRoss.info" target="_blank" rel="noopener">www.RonRoss.info</a></p>
+  <p>Rendered from the rulebook by the shared <b>Docs</b> engine (<code>rulebook-rulespeak-core</code>). The same engine narrates the React Explainer DAG, so every narration mode reads identically across both.</p>
   <p class="doc-footer-legend"><span class="chip chip-raw">● Ground truth</span> <span class="chip chip-calc">ƒ Calculated</span> <span class="chip chip-agg">Σ Aggregation</span> <span class="chip chip-lookup">↗ Lookup</span> <span class="chip chip-rel">⇢ Relationship</span></p>
 </footer>
 </div>
@@ -3147,8 +3648,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
 
 (function(){
   var LANGS=['en'];
-  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers'];
-  var DEFAULTS={'rulespeak':true,'english':false,'formula':false,'desc':true,'inputs':true,'consumers':false};
+  var ELEMS=['rulespeak','english','formula','desc','inputs','consumers','data'];
+  var DEFAULTS={'rulespeak':false,'english':true,'formula':false,'desc':true,'inputs':false,'consumers':true,'data':true};
   var root=document.documentElement;
 
   // ── Language switching. All .lang-select controls stay in sync; the choice
@@ -3250,8 +3751,8 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
   var barH=parseInt(getComputedStyle(root).getPropertyValue('--bar-h'),10)||48;
   function update(){
     var line=barH+18, curF=null, curE=null;
-    for(var i=0;i<fields.length;i++){ if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
-    for(var j=0;j<entities.length;j++){ if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
+    for(var i=0;i<fields.length;i++){ if(!fields[i].offsetParent) continue; if(fields[i].getBoundingClientRect().top<=line) curF=fields[i]; else break; }
+    for(var j=0;j<entities.length;j++){ if(!entities[j].offsetParent) continue; if(entities[j].getBoundingClientRect().top<=line) curE=entities[j]; else break; }
     if(curF){
       var fEnt=curF.getAttribute('data-entity');
       var eName=curE?curE.getAttribute('data-entity'):fEnt;
@@ -3265,6 +3766,237 @@ html[data-lang="en"] .lang-doc[data-lang="en"]{display:block}
   window.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('resize',onScroll,{passive:true});
   rebindSpy();
+})();
+
+
+(function(){
+  // ── Navigator ──────────────────────────────────────────────────────────────
+  //  From nine entities up, the page shows an overview or ONE entity at a time, with a nav that is
+  //  always on screen: grouped tables, a filter, the current entity's fields, tabs over its fields and
+  //  an overview as groups / A-Z / a graph. Smaller rulebooks keep the single page. Everything is read
+  //  from what the page already says (the entities, their fields, data-links, data-rules); the words
+  //  come from the language's data-nav. A person can always switch to everything on one page.
+  var MIN=9;
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;'); }
+  function leading(n){
+    var h=String(n).replace(/^[^A-Za-z0-9]+/,'').split(/[\s_-]+/)[0];
+    var m=/^(?:[A-Z]+(?=[A-Z][a-z])|[A-Z][a-z0-9]*|[A-Z]+[0-9]*|[a-z0-9]+)/.exec(h);
+    return m?m[0]:h;
+  }
+  function singular(w){ return w.length>3 ? w.replace(/ies$/i,'y').replace(/s$/i,'') : w; }
+
+  // Families: tables sharing a leading word; a stray joins the family most of its neighbours are in.
+  function groupsOf(ents,T){
+    var names=ents.map(function(e){return e.name;});
+    var by={};
+    ents.forEach(function(e){ var k=singular(leading(e.name)).toLowerCase(); (by[k]=by[k]||{words:[],members:[]}); by[k].words.push(leading(e.name)); by[k].members.push(e); });
+    var fam={},label={};
+    Object.keys(by).forEach(function(k){
+      if(by[k].members.length<2||k.length<3) return;
+      label[k]=by[k].words.slice().sort(function(a,b){return a.length-b.length||a.localeCompare(b);})[0];
+      by[k].members.forEach(function(e){ fam[e.id]=k; });
+    });
+    if(!Object.keys(fam).length) return [{key:'',label:null,items:ents}];
+    var byId={}; ents.forEach(function(e){ byId[e.id]=e; });
+    var nb={}; ents.forEach(function(e){ nb[e.id]=[]; });
+    ents.forEach(function(e){ e.links.forEach(function(t){ if(byId[t]){ nb[e.id].push(t); nb[t].push(e.id); } }); });
+    var groups={};
+    function put(k,e){ (groups[k]=groups[k]||[]).push(e); }
+    ents.forEach(function(e){
+      if(fam[e.id]){ put(fam[e.id],e); return; }
+      var tally={}; nb[e.id].forEach(function(t){ if(fam[t]) tally[fam[t]]=(tally[fam[t]]||0)+1; });
+      var best='',bn=0; Object.keys(tally).sort().forEach(function(k){ if(tally[k]>bn){ best=k; bn=tally[k]; } });
+      put(best,e);
+    });
+    var out=Object.keys(groups).filter(function(k){return k!=='';}).sort(function(a,b){return label[a].localeCompare(label[b]);})
+      .map(function(k){ return {key:k,label:label[k],items:groups[k]}; });
+    if(groups['']) out.push({key:'',label:T.other,items:groups['']});
+    return out;
+  }
+
+  // The graph: a box per table, a line per relationship; what a table points at is to its left.
+  function graphSvg(ents,T){
+    var set={}; ents.forEach(function(e){ set[e.id]=e; });
+    var out={},depth={},vis={};
+    ents.forEach(function(e){ out[e.id]=e.links.filter(function(t){return set[t]&&t!==e.id;}); });
+    function d(id){ if(depth[id]!=null) return depth[id]; if(vis[id]) return 0; vis[id]=1; var x=0; out[id].forEach(function(t){ x=Math.max(x,1+d(t)); }); vis[id]=0; depth[id]=x; return x; }
+    ents.forEach(function(e){ d(e.id); });
+    var maxD=0; ents.forEach(function(e){ maxD=Math.max(maxD,depth[e.id]); });
+    var by=[]; for(var i=0;i<=maxD;i++) by.push([]);
+    ents.slice().sort(function(a,b){return a.name.localeCompare(b.name);}).forEach(function(e){ by[depth[e.id]].push(e); });
+    var layers=by.filter(function(l){return l.length;});
+    var BW=164,BH=30,GX=96,GY=14,pos={};
+    layers.forEach(function(layer,li){
+      if(li>0){
+        var bary=function(e){ var ps=out[e.id].concat(ents.filter(function(o){return out[o.id].indexOf(e.id)>=0;}).map(function(o){return o.id;})).filter(function(t){return pos[t];}).map(function(t){return pos[t].row;}); return ps.length?ps.reduce(function(a,b){return a+b;},0)/ps.length:1e9; };
+        layer.sort(function(a,b){return bary(a)-bary(b)||a.name.localeCompare(b.name);});
+      }
+      layer.forEach(function(e,ri){ pos[e.id]={row:ri,x:li*(BW+GX),y:ri*(BH+GY)}; });
+    });
+    var rows=1; layers.forEach(function(l){rows=Math.max(rows,l.length);});
+    var W=layers.length*(BW+GX)-GX,H=rows*(BH+GY)-GY,s='';
+    ents.forEach(function(e){ out[e.id].forEach(function(t){
+      var a=pos[e.id],b=pos[t],x1=a.x,y1=a.y+BH/2,x2=b.x+BW,y2=b.y+BH/2,dx=Math.max(24,(x1-x2)/2);
+      s+='<path class=\'ge\' d=\'M'+x1+','+y1+' C'+(x1-dx)+','+y1+' '+(x2+dx)+','+y2+' '+x2+','+y2+'\' marker-end=\'url(#dga)\'/>';
+    }); });
+    ents.forEach(function(e){
+      var p=pos[e.id],lab=e.name.length>22?e.name.slice(0,21)+'…':e.name;
+      s+='<g class=\'gn'+(e.rules?' has':'')+'\' transform=\'translate('+p.x+','+p.y+')\'><a href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><rect width=\''+BW+'\' height=\''+BH+'\' rx=\'6\'/><text x=\''+(BW/2)+'\' y=\''+(BH/2+4)+'\' text-anchor=\'middle\'>'+esc(lab)+'</text><title>'+esc(e.name)+'</title></a></g>';
+    });
+    return '<svg class=\'dgraph\' viewBox=\'-4 -4 '+(W+8)+' '+(H+8)+'\' width=\''+(W+8)+'\' height=\''+(H+8)+'\'><defs><marker id=\'dga\' viewBox=\'0 0 8 8\' refX=\'7\' refY=\'4\' markerWidth=\'7\' markerHeight=\'7\' orient=\'auto\'><path d=\'M0,0 L8,4 L0,8 z\' class=\'ga\'/></marker></defs>'+s+'</svg>';
+  }
+
+  function setup(doc){
+    var T={}; var tx=doc.querySelector('.nav-texts'); try{ T=JSON.parse((tx&&tx.textContent)||'{}'); }catch(e){ return; }
+    var sections=Array.prototype.slice.call(doc.querySelectorAll('.entity[id]'));
+    if(sections.length<MIN) return;
+    var ents=sections.map(function(el){
+      var fs=Array.prototype.slice.call(el.querySelectorAll('.field[data-field]')).map(function(f){
+        var tone=(f.className.match(/tone-(\w+)/)||[])[1]||'rel';
+        return {id:f.id,name:f.getAttribute('data-field'),tone:tone,glyph:(f.querySelector('.field-glyph')||{}).textContent||''};
+      });
+      return {id:el.id,name:el.getAttribute('data-entity'),el:el,links:(el.getAttribute('data-links')||'').split(' ').filter(Boolean),rules:parseInt(el.getAttribute('data-rules')||'0',10),fields:fs};
+    });
+    var byId={}; ents.forEach(function(e){ byId[e.id]=e; });
+    var groups=groupsOf(ents,T);
+    var q='',view='groups',tab='all',fq='',closed={};
+
+    // Layout: nav | main (overview + the entities).
+    var toc=doc.querySelector('.toc'),header=doc.querySelector('.doc-header');
+    var grid=document.createElement('div'); grid.className='docgrid';
+    var nav=document.createElement('nav'); nav.className='sidenav'; nav.setAttribute('aria-label',T.tocTitle||'');
+    var main=document.createElement('div'); main.className='docmain';
+    var ov=document.createElement('section'); ov.className='ov';
+    main.appendChild(ov);
+    sections.forEach(function(el){ main.appendChild(el); });
+    grid.appendChild(nav); grid.appendChild(main);
+    (header||toc).insertAdjacentElement('afterend',grid);
+    var footer=doc.querySelector('.doc-footer'); if(footer) grid.insertAdjacentElement('afterend',footer);
+    doc.classList.add('paged');
+
+    function matches(e){
+      var t=q.trim().toLowerCase(); if(!t) return {ok:true,fs:[]};
+      if(e.name.toLowerCase().indexOf(t)>=0) return {ok:true,fs:[]};
+      var hit=e.fields.filter(function(f){return f.name.toLowerCase().indexOf(t)>=0;});
+      return hit.length?{ok:true,fs:hit}:{ok:false,fs:[]};
+    }
+    var cur=null,curField=null;
+    function navBody(){
+      var filtering=!!q.trim(),html='';
+      groups.forEach(function(g){
+        var rows=g.items.map(function(e){
+          var m=matches(e); if(!m.ok) return '';
+          var here=cur===e,shown=here?e.fields:m.fs.slice(0,8);
+          var r='<div><a class=\'sn-t'+(here?' is-current':'')+'\' href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><span>'+esc(e.name)+'</span>'+(e.rules?'<b>ƒ '+e.rules+'</b>':'')+'</a>';
+          if(shown.length) r+='<ul class=\'sn-fields\'>'+shown.map(function(f){ return '<li><a class=\'sn-f tone-'+esc(f.tone)+'\' href=\'#'+esc(f.id)+'\' data-go=\''+esc(f.id)+'\'><i>'+esc(f.glyph)+'</i><span>'+esc(f.name)+'</span></a></li>'; }).join('')+'</ul>';
+          return r+'</div>';
+        }).filter(Boolean);
+        if(!rows.length) return;
+        if(g.label==null){ html+=rows.join(''); return; }
+        var has=cur&&g.items.indexOf(cur)>=0,open=filtering||has||(groups.length<=3&&closed[g.key]!==true)||closed[g.key]===false;
+        html+='<details class=\'sn-group'+(has?' has-current':'')+'\' data-g=\''+esc(g.key)+'\''+(open?' open':'')+'><summary class=\'sn-gtitle\'><span>'+esc(g.label)+'</span><span class=\'sn-n\'>'+rows.length+'</span></summary>'+rows.join('')+'</details>';
+      });
+      return html||'<p class=\'sn-empty\'>'+esc(T.empty)+'</p>';
+    }
+    function drawNav(keepFocus){
+      var body=nav.querySelector('.sn-body'),top=body?body.scrollTop:0;
+      if(!nav.firstChild){
+        nav.innerHTML='<div class=\'sn-head\'><a class=\'sn-index\' href=\'#\' data-go=\'\'><span>▦ '+esc(T.tocTitle)+'</span><span class=\'sn-n\'>'+ents.length+'</span></a><input type=\'search\' class=\'sn-q\' placeholder=\''+esc(T.search)+'\' aria-label=\''+esc(T.search)+'\'></div><div class=\'sn-body\'></div><div class=\'sn-foot\'><button type=\'button\' class=\'sn-all\'></button></div>';
+        nav.querySelector('.sn-q').addEventListener('input',function(){ q=this.value; drawNav(true); drawOverview(); });
+        nav.querySelector('.sn-all').addEventListener('click',function(){ var on=!doc.classList.contains('paged'); setPaged(on); });
+        nav.addEventListener('click',go);
+        nav.addEventListener('toggle',function(ev){ var d=ev.target; if(d&&d.getAttribute&&d.getAttribute('data-g')!=null) closed[d.getAttribute('data-g')]=!d.open; },true);
+        body=nav.querySelector('.sn-body');
+      }
+      body.innerHTML=navBody(); body.scrollTop=top;
+      nav.querySelector('.sn-all').textContent=doc.classList.contains('paged')?T.showAll:T.showOne;
+      var c=body.querySelector('.sn-f.is-current,.sn-t.is-current'); if(c&&!keepFocus&&c.scrollIntoView) c.scrollIntoView({block:'nearest'});
+    }
+    function go(ev){
+      var a=ev.target.closest&&ev.target.closest('[data-go]'); if(!a||ev.metaKey||ev.ctrlKey||ev.shiftKey) return;
+      ev.preventDefault();
+      var id=a.getAttribute('data-go');
+      location.hash=id?'#'+id:'#'+doc.getAttribute('data-lang')+'-top';
+    }
+
+    // Overview: groups, A-Z or the graph, narrowed by the filter.
+    function drawOverview(){
+      var shown=ents.filter(function(e){return matches(e).ok;});
+      var h='<div class=\'tabs\' role=\'tablist\'>'+[['groups',T.groups],['list',T.list],['graph',T.graph]].map(function(v){
+        return '<button type=\'button\' role=\'tab\' class=\'tab'+(view===v[0]?' is-active':'')+'\' data-view=\''+v[0]+'\' aria-selected=\''+(view===v[0])+'\'>'+esc(v[1])+'</button>'; }).join('')+
+        '<input type=\'search\' class=\'ov-q\' placeholder=\''+esc(T.search)+'\' aria-label=\''+esc(T.search)+'\' value=\''+esc(q)+'\'></div>';
+      if(!shown.length) h+='<p class=\'sn-empty\'>'+esc(T.empty)+'</p>';
+      else if(view==='list'){
+        h+='<table class=\'ov-list\'><tbody>'+shown.slice().sort(function(a,b){return a.name.localeCompare(b.name);}).map(function(e){
+          return '<tr><td><a href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'>'+esc(e.name)+'</a></td><td class=\'ov-n\'>'+e.fields.length+'</td><td class=\'ov-n\'>ƒ '+e.rules+'</td><td class=\'ov-n\'>⇢ '+e.links.length+'</td></tr>'; }).join('')+'</tbody></table>';
+      } else {
+        var set={}; shown.forEach(function(e){set[e.id]=1;});
+        var gs=groupsOf(shown,T);
+        if(view==='graph') h+='<p class=\'ov-hint\'>'+esc(T.graphHint)+'</p>';
+        gs.forEach(function(g){
+          var inner=view==='graph'
+            ? '<div class=\'ov-graph\'>'+graphSvg(g.items,T)+'</div>'
+            : '<div class=\'ov-grid\'>'+g.items.map(function(e){ return '<a class=\'ov-card\' href=\'#'+esc(e.id)+'\' data-go=\''+esc(e.id)+'\'><b>'+esc(e.name)+'</b><span>'+e.fields.length+' · ƒ '+e.rules+' · ⇢ '+e.links.length+'</span></a>'; }).join('')+'</div>';
+          h+=g.label==null?inner:'<details class=\'ov-group\' open><summary class=\'ov-gtitle\'><span>'+esc(g.label)+'</span><span class=\'sn-n\'>'+g.items.length+'</span></summary>'+inner+'</details>';
+        });
+      }
+      ov.innerHTML=h;
+      ov.querySelectorAll('[data-view]').forEach(function(b){ b.addEventListener('click',function(){ view=b.getAttribute('data-view'); drawOverview(); }); });
+      var oq=ov.querySelector('.ov-q'); oq.addEventListener('input',function(){ q=oq.value; var nq=nav.querySelector('.sn-q'); if(nq) nq.value=q; drawNav(true); drawOverview(); var n=ov.querySelector('.ov-q'); n.focus(); n.setSelectionRange(q.length,q.length); });
+      ov.addEventListener('click',go);
+    }
+
+    // Tabs over an entity's fields.
+    function addTabs(e){
+      if(e.el.querySelector('.tabs')) return;
+      var kinds={all:e.fields.length,derived:0,stored:0,rels:0};
+      e.fields.forEach(function(f){ if(f.tone==='rel') kinds.rels++; else if(f.tone==='raw') kinds.stored++; else kinds.derived++; });
+      var tabs=[['all',T.all],['derived',T.derived],['stored',T.stored],['rels',T.rels]].filter(function(t){return t[0]==='all'||kinds[t[0]];});
+      var bar=document.createElement('div'); bar.className='tabs'; bar.setAttribute('role','tablist');
+      bar.innerHTML=tabs.map(function(t){ return '<button type=\'button\' role=\'tab\' class=\'tab'+(tab===t[0]?' is-active':'')+'\' data-tab=\''+t[0]+'\'>'+esc(t[1])+' <i>'+kinds[t[0]]+'</i></button>'; }).join('')+'<input type=\'search\' class=\'tab-q\' placeholder=\''+esc(T.fields)+'\' aria-label=\''+esc(T.fields)+'\'>';
+      var head=e.el.querySelector('.entity-head'); head.insertAdjacentElement('afterend',bar);
+      var apply=function(){
+        var t=fq.trim().toLowerCase();
+        e.el.querySelectorAll('.field[data-field]').forEach(function(f){
+          var tone=(f.className.match(/tone-(\w+)/)||[])[1]||'rel';
+          var kind=tone==='rel'?'rels':tone==='raw'?'stored':'derived';
+          f.hidden=!((tab==='all'||tab===kind)&&(!t||(f.getAttribute('data-field')||'').toLowerCase().indexOf(t)>=0));
+        });
+        bar.querySelectorAll('.tab').forEach(function(b){ var on=b.getAttribute('data-tab')===tab; b.classList.toggle('is-active',on); });
+      };
+      bar.querySelectorAll('.tab').forEach(function(b){ b.addEventListener('click',function(){ tab=b.getAttribute('data-tab'); ents.forEach(function(x){ if(x.apply) x.apply(); }); }); });
+      var inp=bar.querySelector('.tab-q'); inp.addEventListener('input',function(){ fq=inp.value; ents.forEach(function(x){ if(x.apply&&x!==e){ var o=x.el.querySelector('.tab-q'); if(o) o.value=fq; } if(x.apply) x.apply(); }); });
+      e.apply=apply; apply();
+    }
+    ents.forEach(addTabs);
+
+    // Which entity is on screen follows the address.
+    var first=true;
+    function show(){
+      var id=(location.hash||'').replace(/^#/,''),target=id?document.getElementById(id):null;
+      var ent=null;
+      if(target&&doc.contains(target)){ var s=target.closest?target.closest('.entity'):null; ent=s?byId[s.id]:null; }
+      cur=ent;
+      sections.forEach(function(el){ el.classList.toggle('is-on',!!ent&&el===ent.el); });
+      ov.hidden=!!ent&&doc.classList.contains('paged');
+      if(!ent) drawOverview();
+      drawNav();
+      if(!doc.classList.contains('paged')) return;
+      if(ent&&target&&target!==ent.el){ var hid=target.hidden; if(hid){ tab='all'; fq=''; ents.forEach(function(x){ if(x.apply) x.apply(); }); } target.scrollIntoView(); }
+      else if(!first){ var m=doc.querySelector('.docgrid'); window.scrollTo(0,m?m.getBoundingClientRect().top+window.pageYOffset-60:0); }
+    }
+    function setPaged(on){
+      doc.classList.toggle('paged',on);
+      try{ localStorage.setItem('docs.paged',on?'1':'0'); }catch(e){}
+      show();
+    }
+    var saved=null; try{ saved=localStorage.getItem('docs.paged'); }catch(e){}
+    if(saved==='0') doc.classList.remove('paged');
+    window.addEventListener('hashchange',function(){ if(doc.getAttribute('data-lang')===document.documentElement.getAttribute('data-lang')) show(); });
+    show(); first=false;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.lang-doc'),setup);
+
 })();
 
 </script>

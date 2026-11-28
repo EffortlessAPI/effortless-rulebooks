@@ -14,6 +14,113 @@
 SET check_function_bodies = off;
 
 -- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+
+-- ============================================================================
 -- LOOKUP FUNCTIONS
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
@@ -157,7 +264,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_customers_is_stopped(p_customer_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((CASE WHEN calc_customers_status_is_blocking(p_customer_id) THEN TRUE ELSE FALSE END AND (SELECT NULLIF(name, '') FROM customers WHERE customer_id = p_customer_id) = 'Bobby') OR calc_customers_has_multi_payment_orders(p_customer_id)))::boolean;
+  SELECT ((COALESCE((COALESCE(CASE WHEN calc_customers_status_is_blocking(p_customer_id) THEN TRUE ELSE FALSE END, FALSE) AND COALESCE(COALESCE((SELECT NULLIF(name, '') FROM customers WHERE customer_id = p_customer_id), '') = 'Bobby', FALSE)), FALSE) OR COALESCE(calc_customers_has_multi_payment_orders(p_customer_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_customers_average_order_value
@@ -184,7 +291,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_customers_customer_since_days(p_customer_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT created_at::timestamptz FROM customers WHERE customer_id = p_customer_id) IS NOT NULL THEN ((CURRENT_TIMESTAMP::date - (SELECT created_at::timestamptz FROM customers WHERE customer_id = p_customer_id)::date))::text ELSE (NULL)::text END)::integer;
+  SELECT (CASE WHEN (SELECT created_at::timestamptz FROM customers WHERE customer_id = p_customer_id) IS NOT NULL THEN ((((COALESCE(NULLIF(current_setting('erb.now', true), '')::timestamptz, CURRENT_TIMESTAMP))::timestamptz AT TIME ZONE 'UTC')::date - (((SELECT created_at::timestamptz FROM customers WHERE customer_id = p_customer_id))::timestamptz AT TIME ZONE 'UTC')::date))::text ELSE (NULL)::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_customers_days_since_last_order
@@ -211,7 +318,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_customers_has_multi_payment_orders(p_customer_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_customers_count_of_multiple_payment_orders(p_customer_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_customers_count_of_multiple_payment_orders(p_customer_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_customers_name
@@ -439,7 +546,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_sub_total(p_order_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_order_line_items_sub_total(order_line_item_id))::numeric), 0) FROM order_line_items WHERE "order" = p_order_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_order_line_items_pre_discount(erb_r1.order_line_item_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_order_line_items_discount_amount(erb_r1.order_line_item_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric))::numeric)::numeric), 0) FROM order_line_items erb_r1 WHERE "order" = p_order_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orders_tax_amount
@@ -448,7 +555,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_tax_amount(p_order_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_orders_sub_total(p_order_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT tax_rate FROM orders WHERE order_id = p_order_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_orders_sub_total(p_order_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT tax_rate FROM orders WHERE order_id = p_order_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orders_order_total
@@ -457,7 +564,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_order_total(p_order_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_orders_sub_total(p_order_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_orders_tax_amount(p_order_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_orders_sub_total(p_order_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_orders_tax_amount(p_order_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orders_total_paid
@@ -466,7 +573,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_total_paid(p_order_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_payments_completed_amount(payment_id))::numeric), 0) FROM payments WHERE "order" = p_order_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(LOWER(NULLIF(erb_r1.payment_status, '')), '') = 'completed' THEN (erb_r1.amount)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM payments erb_r1 WHERE "order" = p_order_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orders_amount_due
@@ -475,7 +582,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_amount_due(p_order_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_orders_order_total(p_order_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_orders_total_paid(p_order_id)) AS v) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::numeric;
+  SELECT (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_orders_order_total(p_order_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_orders_total_paid(p_order_id)) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (2)::INTEGER))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orders_is_paid_in_full
@@ -484,7 +591,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_is_paid_in_full(p_order_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (calc_orders_amount_due(p_order_id))::NUMERIC <= 0 THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE((calc_orders_amount_due(p_order_id))::NUMERIC, 0) <= 0 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orders_payment_count
@@ -502,7 +609,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_is_multi_payment_order(p_order_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_orders_payment_count(p_order_id))::NUMERIC > 1)::boolean;
+  SELECT (COALESCE((calc_orders_payment_count(p_order_id))::NUMERIC, 0) > 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orders_last_payment_date
@@ -520,7 +627,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orders_payment_status_label(p_order_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_orders_is_paid_in_full(p_order_id) THEN ('Paid')::text ELSE (CASE WHEN (calc_orders_total_paid(p_order_id))::NUMERIC = 0 THEN ('Unpaid')::text ELSE ('Partial')::text END)::text END)::text;
+  SELECT (CASE WHEN calc_orders_is_paid_in_full(p_order_id) THEN ('Paid')::text ELSE (CASE WHEN COALESCE((calc_orders_total_paid(p_order_id))::NUMERIC, 0) = 0 THEN ('Unpaid')::text ELSE ('Partial')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- get_products_sku
@@ -602,7 +709,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_order_line_items_pre_discount(p_order_line_item_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT quantity FROM order_line_items WHERE order_line_item_id = p_order_line_item_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT unit_price FROM order_line_items WHERE order_line_item_id = p_order_line_item_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT quantity FROM order_line_items WHERE order_line_item_id = p_order_line_item_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT unit_price FROM order_line_items WHERE order_line_item_id = p_order_line_item_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_order_line_items_discount_amount
@@ -611,7 +718,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_order_line_items_discount_amount(p_order_line_item_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_order_line_items_pre_discount(p_order_line_item_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT discount_percent FROM order_line_items WHERE order_line_item_id = p_order_line_item_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_order_line_items_pre_discount(p_order_line_item_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT discount_percent FROM order_line_items WHERE order_line_item_id = p_order_line_item_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_order_line_items_sub_total
@@ -620,7 +727,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_order_line_items_sub_total(p_order_line_item_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_order_line_items_pre_discount(p_order_line_item_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_order_line_items_discount_amount(p_order_line_item_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_order_line_items_pre_discount(p_order_line_item_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_order_line_items_discount_amount(p_order_line_item_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_payments_order_date
@@ -699,7 +806,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_payments_is_completed(p_payment_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(payment_status, '') FROM payments WHERE payment_id = p_payment_id) = 'Completed' THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(payment_status, '') FROM payments WHERE payment_id = p_payment_id), '') = 'Completed' THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_payments_completed_amount
@@ -708,7 +815,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_payments_completed_amount(p_payment_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN LOWER((SELECT NULLIF(payment_status, '') FROM payments WHERE payment_id = p_payment_id)) = 'completed' THEN ((SELECT amount FROM payments WHERE payment_id = p_payment_id))::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(LOWER((SELECT NULLIF(payment_status, '') FROM payments WHERE payment_id = p_payment_id)), '') = 'completed' THEN ((SELECT amount FROM payments WHERE payment_id = p_payment_id))::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

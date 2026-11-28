@@ -1,4 +1,4 @@
-# 📘 v3: NakedClaude Demo — RuleSpeak®
+# 📘 v3: NakedClaude Demo — Docs
 
 _Rulebook generated from Airtable base 'v3: NakedClaude Demo'._
 
@@ -11,7 +11,7 @@ _Rulebook generated from Airtable base 'v3: NakedClaude Demo'._
 
 | Term | Description | Narrative Comment |
 |------|-------------|-------------------|
-| **Customer** | A customer is identified by its name and is related to optionally a status (its status). | — |
+| **Customer** | A customer is identified by its name and is related to optionally a status. | — |
 | Name | A defined attribute. | _Human-readable customer name._ |
 | Notes | A defined attribute. | _Free-form notes about the customer._ |
 | Is Stopped | True when at least one of the following holds: all of the following hold: the status is blocking flag is set and the name is “Bobby” or the multi payment orders flag is set. | _True when the customer's current Status is a blocking status. Lookup of Statuses.IsBlocking._ |
@@ -32,6 +32,22 @@ _Rulebook generated from Airtable base 'v3: NakedClaude Demo'._
 | Days Since Last Order | Computed as “Unable to generate formula”. | — |
 | Count of Multiple Payment Orders | The number of orders related to the customer. | — |
 | Has Multi Payment Orders | True when the count of multiple payment orders is greater than 0. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Notes | Is Stopped ƒ | Status is Blocking ƒ | Status Display Name ƒ | Status Description ƒ | Email | Phone | Company Name | Billing Address | Shipping Address | Created At | Average Order Value ƒ | Lifetime Margin Percent ƒ | Customer Since Days ƒ | Days Since Last Order ƒ | Count of Multiple Payment Orders ƒ | Has Multi Payment Orders ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Bobby | A customer currently in launch. | true | true | Pending | This status shows the customer or request is pending further action or review. | bob@launchpad.example | +1-415-555-0101 | Launchpad LLC | 742 Evergreen Terrace<br>Springfield, OR 97477 | 742 Evergreen Terrace<br>Springfield, OR 97477 | 2025-08-14T09:30:00Z | Unable to generate formula | Unable to generate formula | 471 | Unable to generate formula | 2 | true |
+| Alice Johnson | Initial mock entry for Alice. | true | false | New | This status indicates a newly created customer or request that has not yet been processed. | alice.johnson@northwind.example | +1-206-555-0142 | Northwind Traders | 500 Pine St, Suite 200<br>Seattle, WA 98101 | 500 Pine St, Suite 200<br>Seattle, WA 98101 | 2025-09-02T14:15:00Z | Unable to generate formula | Unable to generate formula | 452 | Unable to generate formula | 1 | true |
+| Brian Lee | Initial mock entry for Brian. | true | false | New | This status indicates a newly created customer or request that has not yet been processed. | brian.lee@contoso.example | +1-512-555-0177 | Contoso Manufacturing | 88 Industrial Way<br>Austin, TX 78701 | 90 Industrial Way (Loading Dock B)<br>Austin, TX 78701 | 2025-10-11T11:00:00Z | Unable to generate formula | Unable to generate formula | 413 | Unable to generate formula | 1 | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Status** | A status is identified by its name. | — |
 | Name | Computed as the lower-cased display name. | _Lowercase, dash-separated compound key derived from DisplayName. Used as the natural key for the status._ |
 | Display Name | A defined attribute. | _Human-readable display name of the status (e.g., "On-Hold", "In-Review")._ |
@@ -39,6 +55,22 @@ _Rulebook generated from Airtable base 'v3: NakedClaude Demo'._
 | Is Blocking | True when an empty string. | _True when customers in this status should be considered stopped (blocked from progressing)._ |
 | Customers | A defined attribute. | _Reverse link to all Customers currently in this status._ |
 | Sort Order | A defined attribute. | _Display order for this status in lists._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Description | Is Blocking | Sort Order |
+|---|---|---|---|---|
+| delayed | Delayed | This status is used when the customer or request has been delayed and is not progressing as scheduled. | true | 6 |
+| cancelled | Cancelled | This status means the customer or request has been cancelled and will not proceed further. | false | 7 |
+| processing | Processing | This status means the customer or request is currently being processed. | false | 2 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Product** | A product is identified by its name. | — |
 | Name | Computed as the lower-cased SKU with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Lowercase, dash-separated compound key derived from SKU. Used as the natural key for the product._ |
 | SKU | A defined attribute. | _Stock-keeping unit identifier for the product. The natural compound key._ |
@@ -49,6 +81,22 @@ _Rulebook generated from Airtable base 'v3: NakedClaude Demo'._
 | Cost | A defined attribute. | _Internal cost per unit._ |
 | Is Active | True when an empty string. | _True when the product is currently sellable._ |
 | Stock Quantity | A defined attribute. | _Number of units currently in stock._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | SKU | Display Name | Description | Unit Price | Cost | Is Active | Stock Quantity |
+|---|---|---|---|---|---|---|---|
+| gadget-200 | GADGET-200 | Pro Gadget | Professional-grade gadget with extended battery life. | 89 | 32 | true | 75 |
+| hub-7port | HUB-7PORT | 7-Port USB Hub | Powered 7-port USB-A hub with individual switches. | 34.99 | 11.8 | true | 240 |
+| cable-usb-c | CABLE-USB-C | USB-C Cable (2m) | Two-meter braided USB-C to USB-C cable, 100W power delivery. | 12 | 3.4 | true | 1240 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Order** | An order is identified by its name and is related to optionally a customer. | — |
 | Name | Computed as the lower-cased customer, followed by a hyphen, followed by the order number with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Lowercase compound key combining the linked Customer and OrderNumber (e.g. 'bob-1001'). Used as the natural key for the order._ |
 | Order Number | A defined attribute. | _Sequential or human-assigned order identifier (e.g. '1001'). Combined with Customer to form the order's natural key._ |
@@ -73,6 +121,22 @@ _Rulebook generated from Airtable base 'v3: NakedClaude Demo'._
 | Is Multi Payment Order | True when the payment count is greater than 1. | — |
 | Last Payment Date | The total payment date across the payments related to the order. | — |
 | Payment Status Label | Determined by priority: “Paid” if the paid in full flag is set; “Unpaid” if the total paid is 0; in all other cases, “Partial”. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Order Number | Order Date | Order Status | Shipping Address | Billing Address | Notes | Item Count ƒ | Total Quantity ƒ | Sub Total ƒ | Tax Rate | Tax Amount ƒ | Order Total ƒ | Total Paid ƒ | Amount Due ƒ | Is Paid in Full ƒ | Payment Count ƒ | Is Multi Payment Order ƒ | Last Payment Date ƒ | Payment Status Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| bobby-1042 | 1042 | 2026-02-20T13:15:00Z | Pending | 742 Evergreen Terrace<br>Springfield, OR 97477 | 742 Evergreen Terrace<br>Springfield, OR 97477 | Awaiting payment confirmation. Customer is on-hold. | 2 | 2 | 123.99000000000001 | 0.085 | 10.539150000000001 | 134.52915000000002 | 0.0 | 134.53 | false | 1 | false | 0 | Unpaid |
+| caroline-1045 | 1045 | 2026-03-12T10:00:00Z | New | 23 Hudson Lane<br>Brooklyn, NY 11201 | 23 Hudson Lane<br>Brooklyn, NY 11201 | First-time customer. Marketing wants white-glove handling. | 3 | 4 | 116.48 | 0.08875 | 10.3376 | 126.8176 | 126.82 | -0.0 | true | 2 | true | 0 | Paid |
+| alice-johnson-1010 | 1010 | 2025-10-05T09:00:00Z | Shipped | 500 Pine St, Suite 200<br>Seattle, WA 98101 | 500 Pine St, Suite 200<br>Seattle, WA 98101 | Bulk order for Q4 inventory. | 4 | 250 | 4332.825 | 0.101 | 437.615325 | 4770.440325 | 4770.4400000000005 | 0.0 | true | 2 | true | 0 | Paid |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Order Line Item** | An order line item is identified by its name and is related to optionally an order and optionally a product. | — |
 | Name | Computed as the lower-cased order, followed by “-line-”, followed by the line number with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Lowercase compound key combining the linked Order and LineNumber (e.g. 'bob-1001-line-1'). Used as the natural key for the line item._ |
 | Line Number | A defined attribute. | _Position of this line within its parent Order (e.g. '1', '2'). Combined with Order to form the line item's natural key._ |
@@ -85,6 +149,22 @@ _Rulebook generated from Airtable base 'v3: NakedClaude Demo'._
 | Discount Amount | Computed as the pre discount times the discount percent. | — |
 | Sub Total | Computed as the pre discount minus the discount amount. | — |
 | Notes | A defined attribute. | _Free-form notes about this line item._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Line Number | Quantity | Unit Price | Pre Discount ƒ | Discount Percent | Discount Amount ƒ | Sub Total ƒ | Notes |
+|---|---|---|---|---|---|---|---|---|
+| carla-smith-1037-line-2 | 2 | 1 | 89 | 89.0 | 0.15 | 13.35 | 75.65 | Goodwill discount for prior return. |
+| carla-smith-1024-line-2 | 2 | 1 | 89 | 89.0 | 0 | 0.0 | 89.0 | Returned: damaged in transit. |
+| caroline-1045-line-3 | 3 | 1 | 12 | 12.0 | 0 | 0.0 | 12.0 | Free with welcome bundle. |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Payment** | A payment is identified by its name and is related to optionally an order. | — |
 | Name | Computed as the lower-cased order, followed by “-pmt-”, followed by the payment number with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Lowercase compound key combining the linked Order and PaymentNumber (e.g. 'bob-1001-pmt-1'). Used as the natural key for the payment._ |
 | Payment Number | A defined attribute. | _Sequential payment identifier within the parent Order (e.g. '1', '2'). Combined with Order to form the payment's natural key._ |
@@ -103,6 +183,22 @@ _Rulebook generated from Airtable base 'v3: NakedClaude Demo'._
 | Completed Amount | Determined by priority: the amount if the payment status is “completed”; in all other cases, 0. | — |
 | Order Amount Due | Taken from the linked order. | — |
 | Order is Paid in Full | True when the linked order is a paid in full. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Payment Number | Payment Date | Payment Method | Transaction ID | Notes | Order Date ƒ | Order Number ƒ | Order Status ƒ | Order Total ƒ | Amount | Payment Status | Is Completed ƒ | Completed Amount ƒ | Order Amount Due ƒ | Order is Paid in Full ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| caroline-1045-pmt-1 | 1 | 2026-03-12T10:05:00Z | CreditCard | ch_failed_9981 | Card declined; customer to retry. | 2026-03-12T10:00:00Z | 1045 | New | 126.8176 | 126.82 | Failed | false | 0.0 | -0.0 | true |
+| caroline-1045-pmt-2 | 2 | 2026-03-12T11:30:00Z | Cash | CASH-NY-20260312-001 | Customer paid in cash at pickup. | 2026-03-12T10:00:00Z | 1045 | New | 126.8176 | 126.82 | Completed | true | 126.82 | -0.0 | true |
+| alice-johnson-1010-pmt-2 | 2 | 2025-10-12T11:30:00Z | BankTransfer | wire_NWT_20251012_b | Final balance. | 2025-10-05T09:00:00Z | 1010 | Shipped | 4770.440325 | 3270.44 | Completed | true | 3270.44 | 0.0 | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Version** | An ERB version is identified by its name. | — |
 | Name | A defined attribute. | — |
 | Base ID | A defined attribute. | — |
@@ -112,12 +208,37 @@ _Rulebook generated from Airtable base 'v3: NakedClaude Demo'._
 | Commit Date | A defined attribute. | — |
 | Is Published | True when an empty string. | — |
 | Author | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Base ID | Version | Message | Notes | Commit Date | Is Published | Author |
+|---|---|---|---|---|---|---|---|
+| v2026-04-07t00-45-14-766z | 8d009876-5ceb-47a0-9b94-db653e0774dd | Version 2026-04-07 00:45:14 | Testing function fixes. | — | 2026-04-07 | false | ej@ssot.me |
+| Version 2026-04-07 01:56:19 | 8d009876-5ceb-47a0-9b94-db653e0774dd | — | fixed payments | — | 2026-04-07 | false | ej@ssot.me |
+| Version 2026-04-07 01:54:04 | 8d009876-5ceb-47a0-9b94-db653e0774dd | — | tixed functions | — | 2026-04-07 | false | ej@ssot.me |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Customization** | An ERB customization is identified by its name. | — |
 | Name | A defined attribute. | — |
 | Title | A defined attribute. | — |
 | SQL Code | A defined attribute. | — |
 | SQL Target | A defined attribute. | — |
 | Customization Type | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Title | SQL Code | SQL Target | Customization Type |
+|---|---|---|---|---|
+| calc_customers_average_order_value | — | -- FunctionOverride: calc_customers_average_order_value<br>-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).<br><br>CREATE OR REPLACE FUNCTION public.calc_customers_average_order_value(p_customer_id text)<br> RETURNS TEXT<br> LANGUAGE plpgsql<br> STABLE SECURITY DEFINER<br>AS $function$<br>DECLARE<br>  v_avg numeric;<br>BEGIN<br>  SELECT AVG(calc_orders_order_total(order_id))<br>    INTO v_avg<br>    FROM orders<br>   WHERE customer = p_customer_id;<br>  RETURN COALESCE(ROUND(v_avg, 2)::text, '0.00');<br>END;<br>$function$;<br> | Postgres | FunctionOverride |
+| calc_customers_has_multi_payment_orders | Fix: only true when customer has an order with >1 payment | -- FunctionOverride: calc_customers_has_multi_payment_orders<br>-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).<br><br>CREATE OR REPLACE FUNCTION public.calc_customers_has_multi_payment_orders(p_customer_id text)<br> RETURNS BOOLEAN<br> LANGUAGE plpgsql<br> STABLE SECURITY DEFINER<br>AS $function$<br>BEGIN<br>  RETURN EXISTS (<br>    SELECT 1<br>      FROM orders o<br>     WHERE o.customer = p_customer_id<br>       AND (SELECT COUNT(*) FROM payments p WHERE p."order" = o.order_id) > 1<br>  );<br>END;<br>$function$;<br> | Postgres | FunctionOverride |
+| calc_customers_days_since_last_order | — | -- FunctionOverride: calc_customers_days_since_last_order<br>-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).<br><br>CREATE OR REPLACE FUNCTION public.calc_customers_days_since_last_order(p_customer_id text)<br> RETURNS TEXT<br> LANGUAGE plpgsql<br> STABLE SECURITY DEFINER<br>AS $function$<br>DECLARE<br>  v_last timestamptz;<br>BEGIN<br>  SELECT MAX(order_date::timestamptz)<br>    INTO v_last<br>    FROM orders<br>   WHERE customer = p_customer_id;<br>  IF v_last IS NULL THEN<br>    RETURN NULL;<br>  END IF;<br>  RETURN (CURRENT_DATE - v_last::date)::text;<br>END;<br>$function$;<br> | Postgres | FunctionOverride |
+
+</details>
 
 ## 2 Fact Types
 
@@ -184,7 +305,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -230,8 +351,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

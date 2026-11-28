@@ -17,16 +17,6 @@ ALTER TABLE customers DROP CONSTRAINT IF EXISTS fk_customers_status;
 ALTER TABLE customers ADD CONSTRAINT fk_customers_status
   FOREIGN KEY (status) REFERENCES statuses (statuse_id);
 
--- Statuses
-ALTER TABLE statuses DROP CONSTRAINT IF EXISTS fk_statuses_display_name;
-ALTER TABLE statuses ADD CONSTRAINT fk_statuses_display_name
-  FOREIGN KEY (display_name) REFERENCES statuses (statuse_id);
-
--- Products
-ALTER TABLE products DROP CONSTRAINT IF EXISTS fk_products_sku;
-ALTER TABLE products ADD CONSTRAINT fk_products_sku
-  FOREIGN KEY (sku) REFERENCES products (product_id);
-
 -- Orders
 ALTER TABLE orders DROP CONSTRAINT IF EXISTS fk_orders_customer;
 ALTER TABLE orders ADD CONSTRAINT fk_orders_customer
@@ -45,4 +35,4 @@ ALTER TABLE payments DROP CONSTRAINT IF EXISTS fk_payments_order;
 ALTER TABLE payments ADD CONSTRAINT fk_payments_order
   FOREIGN KEY ("order") REFERENCES orders (order_id);
 
--- 7 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 5 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

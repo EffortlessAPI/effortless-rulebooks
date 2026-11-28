@@ -196,12 +196,6 @@ COMMENT ON COLUMN payments.payment_status IS 'Lifecycle state of the payment.';
 -- Customers
 CREATE INDEX IF NOT EXISTS idx_customers_status ON customers (status);
 
--- Statuses
-CREATE INDEX IF NOT EXISTS idx_statuses_display_name ON statuses (display_name);
-
--- Products
-CREATE INDEX IF NOT EXISTS idx_products_sku ON products (sku);
-
 -- Orders
 CREATE INDEX IF NOT EXISTS idx_orders_customer ON orders (customer);
 
@@ -212,4 +206,4 @@ CREATE INDEX IF NOT EXISTS idx_order_line_items_product ON order_line_items (pro
 -- Payments
 CREATE INDEX IF NOT EXISTS idx_payments_order ON payments ("order");
 
--- 7 FK index(es) declared.
+-- 5 FK index(es) declared.
