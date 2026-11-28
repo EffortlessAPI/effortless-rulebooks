@@ -4,6 +4,8 @@
     "description": "A pocket arithmetic device.",
     "substrate": "digital",
     "name": "calculator",
+    "assessment_count": 4,
+    "total_weighted_score": 183.5,
     "taxonomy_class": "Narrow"
   },
   {
@@ -11,20 +13,26 @@
     "description": "A large language model trained on broad text.",
     "substrate": "digital",
     "name": "gpt-5",
-    "taxonomy_class": "Narrow"
+    "assessment_count": 4,
+    "total_weighted_score": 326.5,
+    "taxonomy_class": "Broad"
   },
   {
     "intelligences_id": "human",
     "description": "A neurotypical human adult.",
     "substrate": "biological",
     "name": "human",
-    "taxonomy_class": "Narrow"
+    "assessment_count": 4,
+    "total_weighted_score": 395.5,
+    "taxonomy_class": "Generalist"
   },
   {
     "intelligences_id": "octopus",
     "description": "A cephalopod problem-solver with distributed cognition.",
     "substrate": "biological",
     "name": "octopus",
-    "taxonomy_class": "Narrow"
+    "assessment_count": 4,
+    "total_weighted_score": 339.5,
+    "taxonomy_class": "Broad"
   }
 ]

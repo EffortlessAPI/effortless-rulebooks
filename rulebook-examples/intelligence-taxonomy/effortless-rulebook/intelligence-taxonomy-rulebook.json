@@ -47,25 +47,29 @@
         "CapabilitiesId": "memory",
         "Description": "Storing, retaining, and recalling information across time.",
         "Tier": "foundational",
-        "Weight": 1.0
+        "Weight": 1.0,
+        "Name": "memory"
       },
       {
         "CapabilitiesId": "perception",
         "Description": "Sensing the environment and interpreting raw input into structure.",
         "Tier": "foundational",
-        "Weight": 1.0
+        "Weight": 1.0,
+        "Name": "perception"
       },
       {
         "CapabilitiesId": "reasoning",
         "Description": "Inference, deduction, and structured problem-solving.",
         "Tier": "composite",
-        "Weight": 1.3
+        "Weight": 1.3,
+        "Name": "reasoning"
       },
       {
         "CapabilitiesId": "creativity",
         "Description": "Novel synthesis, divergent thinking, and open-ended generation.",
         "Tier": "emergent",
-        "Weight": 1.5
+        "Weight": 1.5,
+        "Name": "creativity"
       }
     ]
   },
@@ -142,22 +146,38 @@
       {
         "IntelligencesId": "human",
         "Description": "A neurotypical human adult.",
-        "Substrate": "biological"
+        "Substrate": "biological",
+        "Name": "human",
+        "AssessmentCount": 4,
+        "TotalWeightedScore": 395.5,
+        "TaxonomyClass": "Generalist"
       },
       {
         "IntelligencesId": "octopus",
         "Description": "A cephalopod problem-solver with distributed cognition.",
-        "Substrate": "biological"
+        "Substrate": "biological",
+        "Name": "octopus",
+        "AssessmentCount": 4,
+        "TotalWeightedScore": 339.5,
+        "TaxonomyClass": "Broad"
       },
       {
         "IntelligencesId": "gpt-5",
         "Description": "A large language model trained on broad text.",
-        "Substrate": "digital"
+        "Substrate": "digital",
+        "Name": "gpt-5",
+        "AssessmentCount": 4,
+        "TotalWeightedScore": 326.5,
+        "TaxonomyClass": "Broad"
       },
       {
         "IntelligencesId": "calculator",
         "Description": "A pocket arithmetic device.",
-        "Substrate": "digital"
+        "Substrate": "digital",
+        "Name": "calculator",
+        "AssessmentCount": 4,
+        "TotalWeightedScore": 183.5,
+        "TaxonomyClass": "Narrow"
       }
     ]
   },
@@ -258,97 +278,193 @@
         "AssessmentsId": "human-memory",
         "Intelligence": "human",
         "Capability": "memory",
-        "RawScore": 80
+        "RawScore": 80,
+        "Name": "human-memory",
+        "IntelligenceName": "human",
+        "CapabilityName": "memory",
+        "CapabilityTier": "foundational",
+        "CapabilityWeight": 1.0,
+        "WeightedScore": 80.0
       },
       {
         "AssessmentsId": "human-perception",
         "Intelligence": "human",
         "Capability": "perception",
-        "RawScore": 85
+        "RawScore": 85,
+        "Name": "human-perception",
+        "IntelligenceName": "human",
+        "CapabilityName": "perception",
+        "CapabilityTier": "foundational",
+        "CapabilityWeight": 1.0,
+        "WeightedScore": 85.0
       },
       {
         "AssessmentsId": "human-reasoning",
         "Intelligence": "human",
         "Capability": "reasoning",
-        "RawScore": 85
+        "RawScore": 85,
+        "Name": "human-reasoning",
+        "IntelligenceName": "human",
+        "CapabilityName": "reasoning",
+        "CapabilityTier": "composite",
+        "CapabilityWeight": 1.3,
+        "WeightedScore": 110.5
       },
       {
         "AssessmentsId": "human-creativity",
         "Intelligence": "human",
         "Capability": "creativity",
-        "RawScore": 80
+        "RawScore": 80,
+        "Name": "human-creativity",
+        "IntelligenceName": "human",
+        "CapabilityName": "creativity",
+        "CapabilityTier": "emergent",
+        "CapabilityWeight": 1.5,
+        "WeightedScore": 120.0
       },
       {
         "AssessmentsId": "octopus-memory",
         "Intelligence": "octopus",
         "Capability": "memory",
-        "RawScore": 60
+        "RawScore": 60,
+        "Name": "octopus-memory",
+        "IntelligenceName": "octopus",
+        "CapabilityName": "memory",
+        "CapabilityTier": "foundational",
+        "CapabilityWeight": 1.0,
+        "WeightedScore": 60.0
       },
       {
         "AssessmentsId": "octopus-perception",
         "Intelligence": "octopus",
         "Capability": "perception",
-        "RawScore": 90
+        "RawScore": 90,
+        "Name": "octopus-perception",
+        "IntelligenceName": "octopus",
+        "CapabilityName": "perception",
+        "CapabilityTier": "foundational",
+        "CapabilityWeight": 1.0,
+        "WeightedScore": 90.0
       },
       {
         "AssessmentsId": "octopus-reasoning",
         "Intelligence": "octopus",
         "Capability": "reasoning",
-        "RawScore": 65
+        "RawScore": 65,
+        "Name": "octopus-reasoning",
+        "IntelligenceName": "octopus",
+        "CapabilityName": "reasoning",
+        "CapabilityTier": "composite",
+        "CapabilityWeight": 1.3,
+        "WeightedScore": 84.5
       },
       {
         "AssessmentsId": "octopus-creativity",
         "Intelligence": "octopus",
         "Capability": "creativity",
-        "RawScore": 70
+        "RawScore": 70,
+        "Name": "octopus-creativity",
+        "IntelligenceName": "octopus",
+        "CapabilityName": "creativity",
+        "CapabilityTier": "emergent",
+        "CapabilityWeight": 1.5,
+        "WeightedScore": 105.0
       },
       {
         "AssessmentsId": "gpt-5-memory",
         "Intelligence": "gpt-5",
         "Capability": "memory",
-        "RawScore": 95
+        "RawScore": 95,
+        "Name": "gpt-5-memory",
+        "IntelligenceName": "gpt-5",
+        "CapabilityName": "memory",
+        "CapabilityTier": "foundational",
+        "CapabilityWeight": 1.0,
+        "WeightedScore": 95.0
       },
       {
         "AssessmentsId": "gpt-5-perception",
         "Intelligence": "gpt-5",
         "Capability": "perception",
-        "RawScore": 30
+        "RawScore": 30,
+        "Name": "gpt-5-perception",
+        "IntelligenceName": "gpt-5",
+        "CapabilityName": "perception",
+        "CapabilityTier": "foundational",
+        "CapabilityWeight": 1.0,
+        "WeightedScore": 30.0
       },
       {
         "AssessmentsId": "gpt-5-reasoning",
         "Intelligence": "gpt-5",
         "Capability": "reasoning",
-        "RawScore": 80
+        "RawScore": 80,
+        "Name": "gpt-5-reasoning",
+        "IntelligenceName": "gpt-5",
+        "CapabilityName": "reasoning",
+        "CapabilityTier": "composite",
+        "CapabilityWeight": 1.3,
+        "WeightedScore": 104.0
       },
       {
         "AssessmentsId": "gpt-5-creativity",
         "Intelligence": "gpt-5",
         "Capability": "creativity",
-        "RawScore": 65
+        "RawScore": 65,
+        "Name": "gpt-5-creativity",
+        "IntelligenceName": "gpt-5",
+        "CapabilityName": "creativity",
+        "CapabilityTier": "emergent",
+        "CapabilityWeight": 1.5,
+        "WeightedScore": 97.5
       },
       {
         "AssessmentsId": "calculator-memory",
         "Intelligence": "calculator",
         "Capability": "memory",
-        "RawScore": 50
+        "RawScore": 50,
+        "Name": "calculator-memory",
+        "IntelligenceName": "calculator",
+        "CapabilityName": "memory",
+        "CapabilityTier": "foundational",
+        "CapabilityWeight": 1.0,
+        "WeightedScore": 50.0
       },
       {
         "AssessmentsId": "calculator-perception",
         "Intelligence": "calculator",
         "Capability": "perception",
-        "RawScore": 10
+        "RawScore": 10,
+        "Name": "calculator-perception",
+        "IntelligenceName": "calculator",
+        "CapabilityName": "perception",
+        "CapabilityTier": "foundational",
+        "CapabilityWeight": 1.0,
+        "WeightedScore": 10.0
       },
       {
         "AssessmentsId": "calculator-reasoning",
         "Intelligence": "calculator",
         "Capability": "reasoning",
-        "RawScore": 95
+        "RawScore": 95,
+        "Name": "calculator-reasoning",
+        "IntelligenceName": "calculator",
+        "CapabilityName": "reasoning",
+        "CapabilityTier": "composite",
+        "CapabilityWeight": 1.3,
+        "WeightedScore": 123.5
       },
       {
         "AssessmentsId": "calculator-creativity",
         "Intelligence": "calculator",
         "Capability": "creativity",
-        "RawScore": 0
+        "RawScore": 0,
+        "Name": "calculator-creativity",
+        "IntelligenceName": "calculator",
+        "CapabilityName": "creativity",
+        "CapabilityTier": "emergent",
+        "CapabilityWeight": 1.5,
+        "WeightedScore": 0.0
       }
     ]
   },

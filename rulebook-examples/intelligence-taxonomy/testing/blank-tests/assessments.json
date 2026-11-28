@@ -5,6 +5,10 @@
     "capability": "creativity",
     "raw_score": 0,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -13,6 +17,10 @@
     "capability": "memory",
     "raw_score": 50,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -21,6 +29,10 @@
     "capability": "perception",
     "raw_score": 10,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -29,6 +41,10 @@
     "capability": "reasoning",
     "raw_score": 95,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -37,6 +53,10 @@
     "capability": "creativity",
     "raw_score": 65,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -45,6 +65,10 @@
     "capability": "memory",
     "raw_score": 95,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -53,6 +77,10 @@
     "capability": "perception",
     "raw_score": 30,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -61,6 +89,10 @@
     "capability": "reasoning",
     "raw_score": 80,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -69,6 +101,10 @@
     "capability": "creativity",
     "raw_score": 80,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -77,6 +113,10 @@
     "capability": "memory",
     "raw_score": 80,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -85,6 +125,10 @@
     "capability": "perception",
     "raw_score": 85,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -93,6 +137,10 @@
     "capability": "reasoning",
     "raw_score": 85,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -101,6 +149,10 @@
     "capability": "creativity",
     "raw_score": 70,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -109,6 +161,10 @@
     "capability": "memory",
     "raw_score": 60,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -117,6 +173,10 @@
     "capability": "perception",
     "raw_score": 90,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   },
   {
@@ -125,6 +185,10 @@
     "capability": "reasoning",
     "raw_score": 65,
     "name": null,
+    "intelligence_name": null,
+    "capability_name": null,
+    "capability_tier": null,
+    "capability_weight": null,
     "weighted_score": null
   }
 ]
