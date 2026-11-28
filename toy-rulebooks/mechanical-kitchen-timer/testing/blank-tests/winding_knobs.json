@@ -7,6 +7,8 @@
     "wind_direction": "clockwise",
     "shaft_diameter_mm": 4,
     "pointer_fixed": true,
+    "timer_wind_angle": null,
+    "timer_max_wind": null,
     "scale_reading": null
   },
   {
@@ -17,6 +19,8 @@
     "wind_direction": "clockwise",
     "shaft_diameter_mm": 4,
     "pointer_fixed": true,
+    "timer_wind_angle": null,
+    "timer_max_wind": null,
     "scale_reading": null
   },
   {
@@ -27,6 +31,8 @@
     "wind_direction": "clockwise",
     "shaft_diameter_mm": 4,
     "pointer_fixed": true,
+    "timer_wind_angle": null,
+    "timer_max_wind": null,
     "scale_reading": null
   },
   {
@@ -37,6 +43,8 @@
     "wind_direction": "clockwise",
     "shaft_diameter_mm": 4,
     "pointer_fixed": true,
+    "timer_wind_angle": null,
+    "timer_max_wind": null,
     "scale_reading": null
   }
 ]

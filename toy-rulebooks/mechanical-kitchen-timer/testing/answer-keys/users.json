@@ -2,49 +2,89 @@
   {
     "user_id": "Carmen",
     "display_name": "Sous Chef",
-    "activity_level": "busy",
-    "cooking_style": "slow-cooking"
+    "wind_count": 0,
+    "cook_count": 3,
+    "completed_cook_count": 1,
+    "activity_level": "idle",
+    "total_recipe_minutes_attempted": 77,
+    "avg_recipe_minutes_attempted": 25.666666666666668,
+    "cooking_style": "short-order"
   },
   {
     "user_id": "Diego",
     "display_name": "Line Cook",
-    "activity_level": "busy",
-    "cooking_style": "slow-cooking"
+    "wind_count": 0,
+    "cook_count": 2,
+    "completed_cook_count": 0,
+    "activity_level": "idle",
+    "total_recipe_minutes_attempted": 30,
+    "avg_recipe_minutes_attempted": 15.0,
+    "cooking_style": "short-order"
   },
   {
     "user_id": "Eli",
     "display_name": "Apprentice",
-    "activity_level": "busy",
-    "cooking_style": "slow-cooking"
+    "wind_count": 0,
+    "cook_count": 0,
+    "completed_cook_count": 0,
+    "activity_level": "idle",
+    "total_recipe_minutes_attempted": 0,
+    "avg_recipe_minutes_attempted": 0,
+    "cooking_style": "not cooking"
   },
   {
     "user_id": "Iris",
     "display_name": "Pastry Chef",
-    "activity_level": "busy",
+    "wind_count": 0,
+    "cook_count": 2,
+    "completed_cook_count": 0,
+    "activity_level": "idle",
+    "total_recipe_minutes_attempted": 68,
+    "avg_recipe_minutes_attempted": 34.0,
     "cooking_style": "slow-cooking"
   },
   {
     "user_id": "Lena",
     "display_name": "Baker",
-    "activity_level": "busy",
+    "wind_count": 1,
+    "cook_count": 4,
+    "completed_cook_count": 0,
+    "activity_level": "casual",
+    "total_recipe_minutes_attempted": 399,
+    "avg_recipe_minutes_attempted": 99.75,
     "cooking_style": "slow-cooking"
   },
   {
     "user_id": "Marcus",
     "display_name": "Chef",
+    "wind_count": 4,
+    "cook_count": 7,
+    "completed_cook_count": 2,
     "activity_level": "busy",
-    "cooking_style": "slow-cooking"
+    "total_recipe_minutes_attempted": 160,
+    "avg_recipe_minutes_attempted": 22.857142857142858,
+    "cooking_style": "short-order"
   },
   {
     "user_id": "Tomas",
     "display_name": "Dishwasher",
-    "activity_level": "busy",
-    "cooking_style": "slow-cooking"
+    "wind_count": 0,
+    "cook_count": 0,
+    "completed_cook_count": 0,
+    "activity_level": "idle",
+    "total_recipe_minutes_attempted": 0,
+    "avg_recipe_minutes_attempted": 0,
+    "cooking_style": "not cooking"
   },
   {
     "user_id": "Wendell",
     "display_name": "Food Critic",
-    "activity_level": "busy",
-    "cooking_style": "slow-cooking"
+    "wind_count": 0,
+    "cook_count": 0,
+    "completed_cook_count": 0,
+    "activity_level": "idle",
+    "total_recipe_minutes_attempted": 0,
+    "avg_recipe_minutes_attempted": 0,
+    "cooking_style": "not cooking"
   }
 ]

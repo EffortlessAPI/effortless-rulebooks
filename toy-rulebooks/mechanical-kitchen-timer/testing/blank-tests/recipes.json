@@ -4,8 +4,11 @@
     "dish_name": "steamed broccoli",
     "recommended_minutes": 25,
     "ideal_temperature_c": 100,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -13,8 +16,11 @@
     "dish_name": "vanilla cake",
     "recommended_minutes": 35,
     "ideal_temperature_c": 180,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -22,8 +28,11 @@
     "dish_name": "creme brulee",
     "recommended_minutes": 55,
     "ideal_temperature_c": 165,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -31,8 +40,11 @@
     "dish_name": "butter croissant",
     "recommended_minutes": 18,
     "ideal_temperature_c": 200,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -40,8 +52,11 @@
     "dish_name": "caramel flan",
     "recommended_minutes": 50,
     "ideal_temperature_c": 170,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -49,8 +64,11 @@
     "dish_name": "instant coffee",
     "recommended_minutes": 2,
     "ideal_temperature_c": 90,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -58,8 +76,11 @@
     "dish_name": "paella valenciana",
     "recommended_minutes": 40,
     "ideal_temperature_c": 100,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -67,8 +88,11 @@
     "dish_name": "pizza margherita",
     "recommended_minutes": 8,
     "ideal_temperature_c": 240,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -76,8 +100,11 @@
     "dish_name": "tonkotsu ramen",
     "recommended_minutes": 5,
     "ideal_temperature_c": 100,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -85,8 +112,11 @@
     "dish_name": "rib roast",
     "recommended_minutes": 90,
     "ideal_temperature_c": 175,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -94,8 +124,11 @@
     "dish_name": "mushroom risotto",
     "recommended_minutes": 30,
     "ideal_temperature_c": 100,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -103,8 +136,11 @@
     "dish_name": "garden salad",
     "recommended_minutes": 7,
     "ideal_temperature_c": 20,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -112,8 +148,11 @@
     "dish_name": "soft-boiled egg",
     "recommended_minutes": 10,
     "ideal_temperature_c": 100,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -121,8 +160,11 @@
     "dish_name": "vegetable soup",
     "recommended_minutes": 25,
     "ideal_temperature_c": 100,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -130,8 +172,11 @@
     "dish_name": "sourdough loaf",
     "recommended_minutes": 45,
     "ideal_temperature_c": 220,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -139,8 +184,11 @@
     "dish_name": "spaghetti al pomodoro",
     "recommended_minutes": 12,
     "ideal_temperature_c": 100,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -148,8 +196,11 @@
     "dish_name": "ribeye steak",
     "recommended_minutes": 11,
     "ideal_temperature_c": 230,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -157,8 +208,11 @@
     "dish_name": "Earl Grey tea",
     "recommended_minutes": 4,
     "ideal_temperature_c": 95,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   },
   {
@@ -166,8 +220,11 @@
     "dish_name": "homemade yogurt",
     "recommended_minutes": 360,
     "ideal_temperature_c": 40,
+    "times_used_today": null,
     "duration_category": null,
     "cooking_temp_profile": null,
+    "avg_timer_capacity": null,
+    "total_timer_capacity": null,
     "assignment_verdict": null
   }
 ]

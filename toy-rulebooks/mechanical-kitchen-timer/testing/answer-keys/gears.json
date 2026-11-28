@@ -6,7 +6,8 @@
     "tooth_count": 48,
     "is_first_in_chain": true,
     "is_last_in_chain": false,
-    "size_class": "large"
+    "size_class": "large",
+    "on_timer": "Bessie"
   },
   {
     "gear_id": "Bessie's second gear",
@@ -15,7 +16,8 @@
     "tooth_count": 36,
     "is_first_in_chain": false,
     "is_last_in_chain": false,
-    "size_class": "medium"
+    "size_class": "medium",
+    "on_timer": "Bessie"
   },
   {
     "gear_id": "Bessie's third gear",
@@ -24,7 +26,8 @@
     "tooth_count": 24,
     "is_first_in_chain": false,
     "is_last_in_chain": true,
-    "size_class": "small"
+    "size_class": "small",
+    "on_timer": "Bessie"
   },
   {
     "gear_id": "Olive's first gear",
@@ -33,7 +36,8 @@
     "tooth_count": 48,
     "is_first_in_chain": true,
     "is_last_in_chain": false,
-    "size_class": "large"
+    "size_class": "large",
+    "on_timer": "Olive"
   },
   {
     "gear_id": "Olive's second gear",
@@ -42,7 +46,8 @@
     "tooth_count": 36,
     "is_first_in_chain": false,
     "is_last_in_chain": false,
-    "size_class": "medium"
+    "size_class": "medium",
+    "on_timer": "Olive"
   },
   {
     "gear_id": "Olive's third gear",
@@ -51,7 +56,8 @@
     "tooth_count": 24,
     "is_first_in_chain": false,
     "is_last_in_chain": true,
-    "size_class": "small"
+    "size_class": "small",
+    "on_timer": "Olive"
   },
   {
     "gear_id": "Rufus's first gear",
@@ -60,7 +66,8 @@
     "tooth_count": 48,
     "is_first_in_chain": true,
     "is_last_in_chain": false,
-    "size_class": "large"
+    "size_class": "large",
+    "on_timer": "Rufus"
   },
   {
     "gear_id": "Rufus's second gear",
@@ -69,7 +76,8 @@
     "tooth_count": 36,
     "is_first_in_chain": false,
     "is_last_in_chain": false,
-    "size_class": "medium"
+    "size_class": "medium",
+    "on_timer": "Rufus"
   },
   {
     "gear_id": "Rufus's third gear",
@@ -78,7 +86,8 @@
     "tooth_count": 24,
     "is_first_in_chain": false,
     "is_last_in_chain": true,
-    "size_class": "small"
+    "size_class": "small",
+    "on_timer": "Rufus"
   },
   {
     "gear_id": "Twigs's first gear",
@@ -87,7 +96,8 @@
     "tooth_count": 48,
     "is_first_in_chain": true,
     "is_last_in_chain": false,
-    "size_class": "large"
+    "size_class": "large",
+    "on_timer": "Twigs"
   },
   {
     "gear_id": "Twigs's second gear",
@@ -96,7 +106,8 @@
     "tooth_count": 36,
     "is_first_in_chain": false,
     "is_last_in_chain": false,
-    "size_class": "medium"
+    "size_class": "medium",
+    "on_timer": "Twigs"
   },
   {
     "gear_id": "Twigs's third gear",
@@ -105,6 +116,7 @@
     "tooth_count": 24,
     "is_first_in_chain": false,
     "is_last_in_chain": true,
-    "size_class": "small"
+    "size_class": "small",
+    "on_timer": "Twigs"
   }
 ]

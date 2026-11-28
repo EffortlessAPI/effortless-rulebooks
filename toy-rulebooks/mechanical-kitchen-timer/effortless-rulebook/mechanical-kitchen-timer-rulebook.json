@@ -79,35 +79,91 @@
     "data": [
       {
         "UserId": "Marcus",
-        "DisplayName": "Chef"
+        "DisplayName": "Chef",
+        "WindCount": 4,
+        "CookCount": 7,
+        "CompletedCookCount": 2,
+        "ActivityLevel": "busy",
+        "TotalRecipeMinutesAttempted": 160,
+        "AvgRecipeMinutesAttempted": 22.857142857142858,
+        "CookingStyle": "short-order"
       },
       {
         "UserId": "Lena",
-        "DisplayName": "Baker"
+        "DisplayName": "Baker",
+        "WindCount": 1,
+        "CookCount": 4,
+        "CompletedCookCount": 0,
+        "ActivityLevel": "casual",
+        "TotalRecipeMinutesAttempted": 399,
+        "AvgRecipeMinutesAttempted": 99.75,
+        "CookingStyle": "slow-cooking"
       },
       {
         "UserId": "Eli",
-        "DisplayName": "Apprentice"
+        "DisplayName": "Apprentice",
+        "WindCount": 0,
+        "CookCount": 0,
+        "CompletedCookCount": 0,
+        "ActivityLevel": "idle",
+        "TotalRecipeMinutesAttempted": 0,
+        "AvgRecipeMinutesAttempted": 0,
+        "CookingStyle": "not cooking"
       },
       {
         "UserId": "Carmen",
-        "DisplayName": "Sous Chef"
+        "DisplayName": "Sous Chef",
+        "WindCount": 0,
+        "CookCount": 3,
+        "CompletedCookCount": 1,
+        "ActivityLevel": "idle",
+        "TotalRecipeMinutesAttempted": 77,
+        "AvgRecipeMinutesAttempted": 25.666666666666668,
+        "CookingStyle": "short-order"
       },
       {
         "UserId": "Tomas",
-        "DisplayName": "Dishwasher"
+        "DisplayName": "Dishwasher",
+        "WindCount": 0,
+        "CookCount": 0,
+        "CompletedCookCount": 0,
+        "ActivityLevel": "idle",
+        "TotalRecipeMinutesAttempted": 0,
+        "AvgRecipeMinutesAttempted": 0,
+        "CookingStyle": "not cooking"
       },
       {
         "UserId": "Diego",
-        "DisplayName": "Line Cook"
+        "DisplayName": "Line Cook",
+        "WindCount": 0,
+        "CookCount": 2,
+        "CompletedCookCount": 0,
+        "ActivityLevel": "idle",
+        "TotalRecipeMinutesAttempted": 30,
+        "AvgRecipeMinutesAttempted": 15.0,
+        "CookingStyle": "short-order"
       },
       {
         "UserId": "Iris",
-        "DisplayName": "Pastry Chef"
+        "DisplayName": "Pastry Chef",
+        "WindCount": 0,
+        "CookCount": 2,
+        "CompletedCookCount": 0,
+        "ActivityLevel": "idle",
+        "TotalRecipeMinutesAttempted": 68,
+        "AvgRecipeMinutesAttempted": 34.0,
+        "CookingStyle": "slow-cooking"
       },
       {
         "UserId": "Wendell",
-        "DisplayName": "Food Critic"
+        "DisplayName": "Food Critic",
+        "WindCount": 0,
+        "CookCount": 0,
+        "CompletedCookCount": 0,
+        "ActivityLevel": "idle",
+        "TotalRecipeMinutesAttempted": 0,
+        "AvgRecipeMinutesAttempted": 0,
+        "CookingStyle": "not cooking"
       }
     ]
   },
@@ -322,7 +378,25 @@
         "WindAngleDegrees": 0,
         "MaxWindDegrees": 360,
         "MaxSpringTorqueNm": 0.08,
-        "EscapementBaseHz": 4
+        "EscapementBaseHz": 4,
+        "WindFraction": 0.0,
+        "StoredTorqueNm": 0.0,
+        "RemainingMinutes": 0.0,
+        "WindState": "Unwound",
+        "IsArmed": false,
+        "HasRung": true,
+        "TickCount": 8,
+        "RingCount": 1,
+        "CookCount": 3,
+        "TotalRecipeMinutesUsed": 19,
+        "AvgRecipeMinutesUsed": 6.333333333333333,
+        "WindDurationMinutes": 60.0,
+        "ExpectedTicksPerMinute": 240,
+        "ExpectedTotalTicks": 14400.0,
+        "TicksElapsedExpected": 14400.0,
+        "TickEfficiencyPercent": 0.05555555555555556,
+        "HasSparseTickRecord": true,
+        "MechanicalPhase": "rung"
       },
       {
         "TimerId": "Olive",
@@ -330,7 +404,25 @@
         "WindAngleDegrees": 120,
         "MaxWindDegrees": 360,
         "MaxSpringTorqueNm": 0.08,
-        "EscapementBaseHz": 4
+        "EscapementBaseHz": 4,
+        "WindFraction": 0.3333333333333333,
+        "StoredTorqueNm": 0.02666666666666667,
+        "RemainingMinutes": 20.0,
+        "WindState": "Partial",
+        "IsArmed": true,
+        "HasRung": false,
+        "TickCount": 8,
+        "RingCount": 0,
+        "CookCount": 6,
+        "TotalRecipeMinutesUsed": 454,
+        "AvgRecipeMinutesUsed": 75.66666666666667,
+        "WindDurationMinutes": 60.0,
+        "ExpectedTicksPerMinute": 240,
+        "ExpectedTotalTicks": 14400.0,
+        "TicksElapsedExpected": 9600.0,
+        "TickEfficiencyPercent": 0.08333333333333333,
+        "HasSparseTickRecord": true,
+        "MechanicalPhase": "mid-run"
       },
       {
         "TimerId": "Rufus",
@@ -338,7 +430,25 @@
         "WindAngleDegrees": 360,
         "MaxWindDegrees": 360,
         "MaxSpringTorqueNm": 0.08,
-        "EscapementBaseHz": 4
+        "EscapementBaseHz": 4,
+        "WindFraction": 1.0,
+        "StoredTorqueNm": 0.08,
+        "RemainingMinutes": 60.0,
+        "WindState": "Full",
+        "IsArmed": true,
+        "HasRung": false,
+        "TickCount": 4,
+        "RingCount": 0,
+        "CookCount": 7,
+        "TotalRecipeMinutesUsed": 252,
+        "AvgRecipeMinutesUsed": 36.0,
+        "WindDurationMinutes": 60.0,
+        "ExpectedTicksPerMinute": 240,
+        "ExpectedTotalTicks": 14400.0,
+        "TicksElapsedExpected": 0.0,
+        "TickEfficiencyPercent": 100,
+        "HasSparseTickRecord": false,
+        "MechanicalPhase": "freshly-wound"
       },
       {
         "TimerId": "Twigs",
@@ -346,7 +456,25 @@
         "WindAngleDegrees": 30,
         "MaxWindDegrees": 360,
         "MaxSpringTorqueNm": 0.08,
-        "EscapementBaseHz": 4
+        "EscapementBaseHz": 4,
+        "WindFraction": 0.08333333333333333,
+        "StoredTorqueNm": 0.006666666666666667,
+        "RemainingMinutes": 5.0,
+        "WindState": "Partial",
+        "IsArmed": true,
+        "HasRung": false,
+        "TickCount": 3,
+        "RingCount": 0,
+        "CookCount": 2,
+        "TotalRecipeMinutesUsed": 9,
+        "AvgRecipeMinutesUsed": 4.5,
+        "WindDurationMinutes": 60.0,
+        "ExpectedTicksPerMinute": 240,
+        "ExpectedTotalTicks": 14400.0,
+        "TicksElapsedExpected": 13200.0,
+        "TickEfficiencyPercent": 0.022727272727272728,
+        "HasSparseTickRecord": true,
+        "MechanicalPhase": "nearly-done"
       }
     ]
   },
@@ -453,25 +581,33 @@
         "BellId": "Bessie's bell",
         "MountedOnCase": "Bessie's case",
         "DiameterMm": 40,
-        "ToneHz": 1800
+        "ToneHz": 1800,
+        "TimesRung": 1,
+        "HasEverRung": true
       },
       {
         "BellId": "Olive's bell",
         "MountedOnCase": "Olive's case",
         "DiameterMm": 40,
-        "ToneHz": 1800
+        "ToneHz": 1800,
+        "TimesRung": 0,
+        "HasEverRung": false
       },
       {
         "BellId": "Rufus's bell",
         "MountedOnCase": "Rufus's case",
         "DiameterMm": 40,
-        "ToneHz": 1800
+        "ToneHz": 1800,
+        "TimesRung": 0,
+        "HasEverRung": false
       },
       {
         "BellId": "Twigs's bell",
         "MountedOnCase": "Twigs's case",
         "DiameterMm": 40,
-        "ToneHz": 1800
+        "ToneHz": 1800,
+        "TimesRung": 0,
+        "HasEverRung": false
       }
     ]
   },
@@ -561,7 +697,10 @@
         "ScaleMax": 60,
         "WindDirection": "clockwise",
         "ShaftDiameterMm": 4,
-        "PointerFixed": true
+        "PointerFixed": true,
+        "TimerWindAngle": 0,
+        "TimerMaxWind": 360,
+        "ScaleReading": 0.0
       },
       {
         "WindingKnobId": "Olive's knob",
@@ -570,7 +709,10 @@
         "ScaleMax": 60,
         "WindDirection": "clockwise",
         "ShaftDiameterMm": 4,
-        "PointerFixed": true
+        "PointerFixed": true,
+        "TimerWindAngle": 120,
+        "TimerMaxWind": 360,
+        "ScaleReading": 20.0
       },
       {
         "WindingKnobId": "Rufus's knob",
@@ -579,7 +721,10 @@
         "ScaleMax": 60,
         "WindDirection": "clockwise",
         "ShaftDiameterMm": 4,
-        "PointerFixed": true
+        "PointerFixed": true,
+        "TimerWindAngle": 360,
+        "TimerMaxWind": 360,
+        "ScaleReading": 60.0
       },
       {
         "WindingKnobId": "Twigs's knob",
@@ -588,7 +733,10 @@
         "ScaleMax": 60,
         "WindDirection": "clockwise",
         "ShaftDiameterMm": 4,
-        "PointerFixed": true
+        "PointerFixed": true,
+        "TimerWindAngle": 30,
+        "TimerMaxWind": 360,
+        "ScaleReading": 5.0
       }
     ]
   },
@@ -793,22 +941,42 @@
       {
         "GearTrainId": "Bessie's gear train",
         "InTimer": "Bessie",
-        "ReductionRatio": 240
+        "ReductionRatio": 240,
+        "TimerEscapementHz": 4,
+        "OutputShaftRPM": 1.0,
+        "GearCount": 3,
+        "TotalTeeth": 108,
+        "AverageToothCount": 36.0
       },
       {
         "GearTrainId": "Olive's gear train",
         "InTimer": "Olive",
-        "ReductionRatio": 240
+        "ReductionRatio": 240,
+        "TimerEscapementHz": 4,
+        "OutputShaftRPM": 1.0,
+        "GearCount": 3,
+        "TotalTeeth": 108,
+        "AverageToothCount": 36.0
       },
       {
         "GearTrainId": "Rufus's gear train",
         "InTimer": "Rufus",
-        "ReductionRatio": 240
+        "ReductionRatio": 240,
+        "TimerEscapementHz": 4,
+        "OutputShaftRPM": 1.0,
+        "GearCount": 3,
+        "TotalTeeth": 108,
+        "AverageToothCount": 36.0
       },
       {
         "GearTrainId": "Twigs's gear train",
         "InTimer": "Twigs",
-        "ReductionRatio": 240
+        "ReductionRatio": 240,
+        "TimerEscapementHz": 4,
+        "OutputShaftRPM": 1.0,
+        "GearCount": 3,
+        "TotalTeeth": 108,
+        "AverageToothCount": 36.0
       }
     ]
   },
@@ -882,73 +1050,121 @@
         "GearId": "Bessie's first gear",
         "InGearTrain": "Bessie's gear train",
         "PositionInChain": 1,
-        "ToothCount": 48
+        "ToothCount": 48,
+        "IsFirstInChain": true,
+        "IsLastInChain": false,
+        "SizeClass": "large",
+        "OnTimer": "Bessie"
       },
       {
         "GearId": "Bessie's second gear",
         "InGearTrain": "Bessie's gear train",
         "PositionInChain": 2,
-        "ToothCount": 36
+        "ToothCount": 36,
+        "IsFirstInChain": false,
+        "IsLastInChain": false,
+        "SizeClass": "medium",
+        "OnTimer": "Bessie"
       },
       {
         "GearId": "Bessie's third gear",
         "InGearTrain": "Bessie's gear train",
         "PositionInChain": 3,
-        "ToothCount": 24
+        "ToothCount": 24,
+        "IsFirstInChain": false,
+        "IsLastInChain": true,
+        "SizeClass": "small",
+        "OnTimer": "Bessie"
       },
       {
         "GearId": "Olive's first gear",
         "InGearTrain": "Olive's gear train",
         "PositionInChain": 1,
-        "ToothCount": 48
+        "ToothCount": 48,
+        "IsFirstInChain": true,
+        "IsLastInChain": false,
+        "SizeClass": "large",
+        "OnTimer": "Olive"
       },
       {
         "GearId": "Olive's second gear",
         "InGearTrain": "Olive's gear train",
         "PositionInChain": 2,
-        "ToothCount": 36
+        "ToothCount": 36,
+        "IsFirstInChain": false,
+        "IsLastInChain": false,
+        "SizeClass": "medium",
+        "OnTimer": "Olive"
       },
       {
         "GearId": "Olive's third gear",
         "InGearTrain": "Olive's gear train",
         "PositionInChain": 3,
-        "ToothCount": 24
+        "ToothCount": 24,
+        "IsFirstInChain": false,
+        "IsLastInChain": true,
+        "SizeClass": "small",
+        "OnTimer": "Olive"
       },
       {
         "GearId": "Rufus's first gear",
         "InGearTrain": "Rufus's gear train",
         "PositionInChain": 1,
-        "ToothCount": 48
+        "ToothCount": 48,
+        "IsFirstInChain": true,
+        "IsLastInChain": false,
+        "SizeClass": "large",
+        "OnTimer": "Rufus"
       },
       {
         "GearId": "Rufus's second gear",
         "InGearTrain": "Rufus's gear train",
         "PositionInChain": 2,
-        "ToothCount": 36
+        "ToothCount": 36,
+        "IsFirstInChain": false,
+        "IsLastInChain": false,
+        "SizeClass": "medium",
+        "OnTimer": "Rufus"
       },
       {
         "GearId": "Rufus's third gear",
         "InGearTrain": "Rufus's gear train",
         "PositionInChain": 3,
-        "ToothCount": 24
+        "ToothCount": 24,
+        "IsFirstInChain": false,
+        "IsLastInChain": true,
+        "SizeClass": "small",
+        "OnTimer": "Rufus"
       },
       {
         "GearId": "Twigs's first gear",
         "InGearTrain": "Twigs's gear train",
         "PositionInChain": 1,
-        "ToothCount": 48
+        "ToothCount": 48,
+        "IsFirstInChain": true,
+        "IsLastInChain": false,
+        "SizeClass": "large",
+        "OnTimer": "Twigs"
       },
       {
         "GearId": "Twigs's second gear",
         "InGearTrain": "Twigs's gear train",
         "PositionInChain": 2,
-        "ToothCount": 36
+        "ToothCount": 36,
+        "IsFirstInChain": false,
+        "IsLastInChain": false,
+        "SizeClass": "medium",
+        "OnTimer": "Twigs"
       },
       {
         "GearId": "Twigs's third gear",
         "InGearTrain": "Twigs's gear train",
         "PositionInChain": 3,
-        "ToothCount": 24
+        "ToothCount": 24,
+        "IsFirstInChain": false,
+        "IsLastInChain": true,
+        "SizeClass": "small",
+        "OnTimer": "Twigs"
       }
     ]
   },
@@ -982,19 +1198,23 @@
     "data": [
       {
         "OutputShaftId": "Bessie's output shaft",
-        "InGearTrain": "Bessie's gear train"
+        "InGearTrain": "Bessie's gear train",
+        "CurrentRPM": 1.0
       },
       {
         "OutputShaftId": "Olive's output shaft",
-        "InGearTrain": "Olive's gear train"
+        "InGearTrain": "Olive's gear train",
+        "CurrentRPM": 1.0
       },
       {
         "OutputShaftId": "Rufus's output shaft",
-        "InGearTrain": "Rufus's gear train"
+        "InGearTrain": "Rufus's gear train",
+        "CurrentRPM": 1.0
       },
       {
         "OutputShaftId": "Twigs's output shaft",
-        "InGearTrain": "Twigs's gear train"
+        "InGearTrain": "Twigs's gear train",
+        "CurrentRPM": 1.0
       }
     ]
   },
@@ -1085,19 +1305,27 @@
     "data": [
       {
         "EscapementId": "Bessie's escapement",
-        "InTimer": "Bessie"
+        "InTimer": "Bessie",
+        "TickCount": 8,
+        "HasTicked": true
       },
       {
         "EscapementId": "Olive's escapement",
-        "InTimer": "Olive"
+        "InTimer": "Olive",
+        "TickCount": 8,
+        "HasTicked": true
       },
       {
         "EscapementId": "Rufus's escapement",
-        "InTimer": "Rufus"
+        "InTimer": "Rufus",
+        "TickCount": 4,
+        "HasTicked": true
       },
       {
         "EscapementId": "Twigs's escapement",
-        "InTimer": "Twigs"
+        "InTimer": "Twigs",
+        "TickCount": 3,
+        "HasTicked": true
       }
     ]
   },
@@ -1364,22 +1592,30 @@
       {
         "BellHammerId": "Bessie's bell hammer",
         "InTimer": "Bessie",
-        "ArmTorqueNm": 0.02
+        "ArmTorqueNm": 0.02,
+        "TimerHasRung": true,
+        "ReleaseState": "Released"
       },
       {
         "BellHammerId": "Olive's bell hammer",
         "InTimer": "Olive",
-        "ArmTorqueNm": 0.02
+        "ArmTorqueNm": 0.02,
+        "TimerHasRung": false,
+        "ReleaseState": "Held"
       },
       {
         "BellHammerId": "Rufus's bell hammer",
         "InTimer": "Rufus",
-        "ArmTorqueNm": 0.02
+        "ArmTorqueNm": 0.02,
+        "TimerHasRung": false,
+        "ReleaseState": "Held"
       },
       {
         "BellHammerId": "Twigs's bell hammer",
         "InTimer": "Twigs",
-        "ArmTorqueNm": 0.02
+        "ArmTorqueNm": 0.02,
+        "TimerHasRung": false,
+        "ReleaseState": "Held"
       }
     ]
   },
@@ -1528,22 +1764,30 @@
       {
         "HammerCatchId": "Bessie's hammer catch",
         "OfBellHammer": "Bessie's bell hammer",
-        "EngagedWithCam": "Bessie's cam"
+        "EngagedWithCam": "Bessie's cam",
+        "HammerReleaseState": "Released",
+        "IsEngaged": false
       },
       {
         "HammerCatchId": "Olive's hammer catch",
         "OfBellHammer": "Olive's bell hammer",
-        "EngagedWithCam": "Olive's cam"
+        "EngagedWithCam": "Olive's cam",
+        "HammerReleaseState": "Held",
+        "IsEngaged": true
       },
       {
         "HammerCatchId": "Rufus's hammer catch",
         "OfBellHammer": "Rufus's bell hammer",
-        "EngagedWithCam": "Rufus's cam"
+        "EngagedWithCam": "Rufus's cam",
+        "HammerReleaseState": "Held",
+        "IsEngaged": true
       },
       {
         "HammerCatchId": "Twigs's hammer catch",
         "OfBellHammer": "Twigs's bell hammer",
-        "EngagedWithCam": "Twigs's cam"
+        "EngagedWithCam": "Twigs's cam",
+        "HammerReleaseState": "Held",
+        "IsEngaged": true
       }
     ]
   },
@@ -1610,35 +1854,45 @@
         "PerformedBy": "Marcus",
         "TurnedKnob": "Bessie's knob",
         "TargetAngleDeg": 60,
-        "OccurredAt": "2026-05-21T07:45:00Z"
+        "OccurredAt": "2026-05-21T07:45:00Z",
+        "AppliedToTimer": "Bessie",
+        "ResultedInRing": true
       },
       {
         "WindActionId": "Lena wound Olive",
         "PerformedBy": "Lena",
         "TurnedKnob": "Olive's knob",
         "TargetAngleDeg": 120,
-        "OccurredAt": "2026-05-21T09:30:00Z"
+        "OccurredAt": "2026-05-21T09:30:00Z",
+        "AppliedToTimer": "Olive",
+        "ResultedInRing": false
       },
       {
         "WindActionId": "Marcus wound Rufus",
         "PerformedBy": "Marcus",
         "TurnedKnob": "Rufus's knob",
         "TargetAngleDeg": 360,
-        "OccurredAt": "2026-05-21T10:00:00Z"
+        "OccurredAt": "2026-05-21T10:00:00Z",
+        "AppliedToTimer": "Rufus",
+        "ResultedInRing": false
       },
       {
         "WindActionId": "Marcus readjusted Bessie",
         "PerformedBy": "Marcus",
         "TurnedKnob": "Bessie's knob",
         "TargetAngleDeg": 60,
-        "OccurredAt": "2026-05-21T11:30:00Z"
+        "OccurredAt": "2026-05-21T11:30:00Z",
+        "AppliedToTimer": "Bessie",
+        "ResultedInRing": true
       },
       {
         "WindActionId": "Marcus wound Twigs",
         "PerformedBy": "Marcus",
         "TurnedKnob": "Twigs's knob",
         "TargetAngleDeg": 30,
-        "OccurredAt": "2026-05-21T11:25:00Z"
+        "OccurredAt": "2026-05-21T11:25:00Z",
+        "AppliedToTimer": "Twigs",
+        "ResultedInRing": false
       }
     ]
   },
@@ -1705,139 +1959,208 @@
         "TickEventId": "Bessie's tick 1",
         "HappenedOnTimer": "Bessie",
         "AtEscapement": "Bessie's escapement",
-        "OccurredAt": "2026-05-21T07:46:15Z"
+        "OccurredAt": "2026-05-21T07:46:15Z",
+        "TimerLabel": "Egg Timer",
+        "OnTimerThatHasRung": true,
+        "OnTimerInPhase": "rung"
       },
       {
         "TickEventId": "Bessie's tick 2",
         "HappenedOnTimer": "Bessie",
         "AtEscapement": "Bessie's escapement",
-        "OccurredAt": "2026-05-21T07:47:30Z"
+        "OccurredAt": "2026-05-21T07:47:30Z",
+        "TimerLabel": "Egg Timer",
+        "OnTimerThatHasRung": true,
+        "OnTimerInPhase": "rung"
       },
       {
         "TickEventId": "Bessie's tick 3",
         "HappenedOnTimer": "Bessie",
         "AtEscapement": "Bessie's escapement",
-        "OccurredAt": "2026-05-21T07:48:45Z"
+        "OccurredAt": "2026-05-21T07:48:45Z",
+        "TimerLabel": "Egg Timer",
+        "OnTimerThatHasRung": true,
+        "OnTimerInPhase": "rung"
       },
       {
         "TickEventId": "Bessie's tick 4",
         "HappenedOnTimer": "Bessie",
         "AtEscapement": "Bessie's escapement",
-        "OccurredAt": "2026-05-21T07:50:00Z"
+        "OccurredAt": "2026-05-21T07:50:00Z",
+        "TimerLabel": "Egg Timer",
+        "OnTimerThatHasRung": true,
+        "OnTimerInPhase": "rung"
       },
       {
         "TickEventId": "Bessie's tick 5",
         "HappenedOnTimer": "Bessie",
         "AtEscapement": "Bessie's escapement",
-        "OccurredAt": "2026-05-21T07:51:15Z"
+        "OccurredAt": "2026-05-21T07:51:15Z",
+        "TimerLabel": "Egg Timer",
+        "OnTimerThatHasRung": true,
+        "OnTimerInPhase": "rung"
       },
       {
         "TickEventId": "Bessie's tick 6",
         "HappenedOnTimer": "Bessie",
         "AtEscapement": "Bessie's escapement",
-        "OccurredAt": "2026-05-21T07:52:30Z"
+        "OccurredAt": "2026-05-21T07:52:30Z",
+        "TimerLabel": "Egg Timer",
+        "OnTimerThatHasRung": true,
+        "OnTimerInPhase": "rung"
       },
       {
         "TickEventId": "Bessie's tick 7",
         "HappenedOnTimer": "Bessie",
         "AtEscapement": "Bessie's escapement",
-        "OccurredAt": "2026-05-21T07:53:45Z"
+        "OccurredAt": "2026-05-21T07:53:45Z",
+        "TimerLabel": "Egg Timer",
+        "OnTimerThatHasRung": true,
+        "OnTimerInPhase": "rung"
       },
       {
         "TickEventId": "Bessie's tick 8",
         "HappenedOnTimer": "Bessie",
         "AtEscapement": "Bessie's escapement",
-        "OccurredAt": "2026-05-21T07:55:00Z"
+        "OccurredAt": "2026-05-21T07:55:00Z",
+        "TimerLabel": "Egg Timer",
+        "OnTimerThatHasRung": true,
+        "OnTimerInPhase": "rung"
       },
       {
         "TickEventId": "Olive's tick 1",
         "HappenedOnTimer": "Olive",
         "AtEscapement": "Olive's escapement",
-        "OccurredAt": "2026-05-21T09:35:00Z"
+        "OccurredAt": "2026-05-21T09:35:00Z",
+        "TimerLabel": "Pasta Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "mid-run"
       },
       {
         "TickEventId": "Olive's tick 2",
         "HappenedOnTimer": "Olive",
         "AtEscapement": "Olive's escapement",
-        "OccurredAt": "2026-05-21T09:40:00Z"
+        "OccurredAt": "2026-05-21T09:40:00Z",
+        "TimerLabel": "Pasta Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "mid-run"
       },
       {
         "TickEventId": "Olive's tick 3",
         "HappenedOnTimer": "Olive",
         "AtEscapement": "Olive's escapement",
-        "OccurredAt": "2026-05-21T09:45:00Z"
+        "OccurredAt": "2026-05-21T09:45:00Z",
+        "TimerLabel": "Pasta Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "mid-run"
       },
       {
         "TickEventId": "Olive's tick 4",
         "HappenedOnTimer": "Olive",
         "AtEscapement": "Olive's escapement",
-        "OccurredAt": "2026-05-21T09:50:00Z"
+        "OccurredAt": "2026-05-21T09:50:00Z",
+        "TimerLabel": "Pasta Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "mid-run"
       },
       {
         "TickEventId": "Olive's tick 5",
         "HappenedOnTimer": "Olive",
         "AtEscapement": "Olive's escapement",
-        "OccurredAt": "2026-05-21T09:55:00Z"
+        "OccurredAt": "2026-05-21T09:55:00Z",
+        "TimerLabel": "Pasta Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "mid-run"
       },
       {
         "TickEventId": "Olive's tick 6",
         "HappenedOnTimer": "Olive",
         "AtEscapement": "Olive's escapement",
-        "OccurredAt": "2026-05-21T10:00:00Z"
+        "OccurredAt": "2026-05-21T10:00:00Z",
+        "TimerLabel": "Pasta Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "mid-run"
       },
       {
         "TickEventId": "Olive's tick 7",
         "HappenedOnTimer": "Olive",
         "AtEscapement": "Olive's escapement",
-        "OccurredAt": "2026-05-21T10:05:00Z"
+        "OccurredAt": "2026-05-21T10:05:00Z",
+        "TimerLabel": "Pasta Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "mid-run"
       },
       {
         "TickEventId": "Olive's tick 8",
         "HappenedOnTimer": "Olive",
         "AtEscapement": "Olive's escapement",
-        "OccurredAt": "2026-05-21T10:10:00Z"
+        "OccurredAt": "2026-05-21T10:10:00Z",
+        "TimerLabel": "Pasta Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "mid-run"
       },
       {
         "TickEventId": "Rufus's tick 1",
         "HappenedOnTimer": "Rufus",
         "AtEscapement": "Rufus's escapement",
-        "OccurredAt": "2026-05-21T10:00:30Z"
+        "OccurredAt": "2026-05-21T10:00:30Z",
+        "TimerLabel": "Roast Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "freshly-wound"
       },
       {
         "TickEventId": "Rufus's tick 2",
         "HappenedOnTimer": "Rufus",
         "AtEscapement": "Rufus's escapement",
-        "OccurredAt": "2026-05-21T10:01:00Z"
+        "OccurredAt": "2026-05-21T10:01:00Z",
+        "TimerLabel": "Roast Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "freshly-wound"
       },
       {
         "TickEventId": "Rufus's tick 3",
         "HappenedOnTimer": "Rufus",
         "AtEscapement": "Rufus's escapement",
-        "OccurredAt": "2026-05-21T10:01:30Z"
+        "OccurredAt": "2026-05-21T10:01:30Z",
+        "TimerLabel": "Roast Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "freshly-wound"
       },
       {
         "TickEventId": "Rufus's tick 4",
         "HappenedOnTimer": "Rufus",
         "AtEscapement": "Rufus's escapement",
-        "OccurredAt": "2026-05-21T10:02:00Z"
+        "OccurredAt": "2026-05-21T10:02:00Z",
+        "TimerLabel": "Roast Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "freshly-wound"
       },
       {
         "TickEventId": "Twigs's tick 1",
         "HappenedOnTimer": "Twigs",
         "AtEscapement": "Twigs's escapement",
-        "OccurredAt": "2026-05-21T11:26:00Z"
+        "OccurredAt": "2026-05-21T11:26:00Z",
+        "TimerLabel": "Tea Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "nearly-done"
       },
       {
         "TickEventId": "Twigs's tick 2",
         "HappenedOnTimer": "Twigs",
         "AtEscapement": "Twigs's escapement",
-        "OccurredAt": "2026-05-21T11:27:00Z"
+        "OccurredAt": "2026-05-21T11:27:00Z",
+        "TimerLabel": "Tea Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "nearly-done"
       },
       {
         "TickEventId": "Twigs's tick 3",
         "HappenedOnTimer": "Twigs",
         "AtEscapement": "Twigs's escapement",
-        "OccurredAt": "2026-05-21T11:28:00Z"
+        "OccurredAt": "2026-05-21T11:28:00Z",
+        "TimerLabel": "Tea Timer",
+        "OnTimerThatHasRung": false,
+        "OnTimerInPhase": "nearly-done"
       }
     ]
   },
@@ -2044,7 +2367,20 @@
         "PreparedBy": "Marcus",
         "DishName": "soft-boiled egg",
         "StartedAt": "2026-05-21T07:45:00Z",
-        "FollowsRecipe": "soft-boiled egg recipe"
+        "FollowsRecipe": "soft-boiled egg recipe",
+        "TimerHasRung": true,
+        "TimerIsArmed": false,
+        "TimerRemainingMin": 0.0,
+        "Status": "Done",
+        "RecommendedMinutes": 10,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "overkill",
+        "PreparedByName": "Chef",
+        "PreparedByActivityLevel": "busy",
+        "RecipeDurationCategory": "short",
+        "RecipeTempProfile": "boiling",
+        "TimerMechanicalPhase": "rung"
       },
       {
         "CookId": "spaghetti al pomodoro",
@@ -2052,7 +2388,20 @@
         "PreparedBy": "Lena",
         "DishName": "spaghetti al pomodoro",
         "StartedAt": "2026-05-21T09:30:00Z",
-        "FollowsRecipe": "spaghetti recipe"
+        "FollowsRecipe": "spaghetti recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 20.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 12,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "overkill",
+        "PreparedByName": "Baker",
+        "PreparedByActivityLevel": "casual",
+        "RecipeDurationCategory": "short",
+        "RecipeTempProfile": "boiling",
+        "TimerMechanicalPhase": "mid-run"
       },
       {
         "CookId": "rib roast",
@@ -2060,7 +2409,20 @@
         "PreparedBy": "Marcus",
         "DishName": "rib roast",
         "StartedAt": "2026-05-21T10:00:00Z",
-        "FollowsRecipe": "rib roast recipe"
+        "FollowsRecipe": "rib roast recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 60.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 90,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": false,
+        "SuitabilityVerdict": "insufficient",
+        "PreparedByName": "Chef",
+        "PreparedByActivityLevel": "busy",
+        "RecipeDurationCategory": "long",
+        "RecipeTempProfile": "warm oven",
+        "TimerMechanicalPhase": "freshly-wound"
       },
       {
         "CookId": "steamed broccoli side",
@@ -2068,7 +2430,20 @@
         "PreparedBy": "Lena",
         "DishName": "steamed broccoli",
         "StartedAt": "2026-05-21T09:32:00Z",
-        "FollowsRecipe": "broccoli recipe"
+        "FollowsRecipe": "broccoli recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 20.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 25,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "appropriate",
+        "PreparedByName": "Baker",
+        "PreparedByActivityLevel": "casual",
+        "RecipeDurationCategory": "medium",
+        "RecipeTempProfile": "boiling",
+        "TimerMechanicalPhase": "mid-run"
       },
       {
         "CookId": "afternoon tea",
@@ -2076,7 +2451,20 @@
         "PreparedBy": "Marcus",
         "DishName": "Earl Grey tea",
         "StartedAt": "2026-05-21T11:25:00Z",
-        "FollowsRecipe": "tea recipe"
+        "FollowsRecipe": "tea recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 5.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 4,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "overkill",
+        "PreparedByName": "Chef",
+        "PreparedByActivityLevel": "busy",
+        "RecipeDurationCategory": "quick",
+        "RecipeTempProfile": "boiling",
+        "TimerMechanicalPhase": "nearly-done"
       },
       {
         "CookId": "morning coffee",
@@ -2084,7 +2472,20 @@
         "PreparedBy": "Marcus",
         "DishName": "instant coffee",
         "StartedAt": "2026-05-21T07:40:00Z",
-        "FollowsRecipe": "instant coffee recipe"
+        "FollowsRecipe": "instant coffee recipe",
+        "TimerHasRung": true,
+        "TimerIsArmed": false,
+        "TimerRemainingMin": 0.0,
+        "Status": "Done",
+        "RecommendedMinutes": 2,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "overkill",
+        "PreparedByName": "Chef",
+        "PreparedByActivityLevel": "busy",
+        "RecipeDurationCategory": "quick",
+        "RecipeTempProfile": "boiling",
+        "TimerMechanicalPhase": "rung"
       },
       {
         "CookId": "baker's espresso",
@@ -2092,7 +2493,20 @@
         "PreparedBy": "Lena",
         "DishName": "instant coffee",
         "StartedAt": "2026-05-21T09:25:00Z",
-        "FollowsRecipe": "instant coffee recipe"
+        "FollowsRecipe": "instant coffee recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 20.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 2,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "overkill",
+        "PreparedByName": "Baker",
+        "PreparedByActivityLevel": "casual",
+        "RecipeDurationCategory": "quick",
+        "RecipeTempProfile": "boiling",
+        "TimerMechanicalPhase": "mid-run"
       },
       {
         "CookId": "preheat for pizza",
@@ -2100,7 +2514,20 @@
         "PreparedBy": "Marcus",
         "DishName": "pizza margherita",
         "StartedAt": "2026-05-21T10:02:00Z",
-        "FollowsRecipe": "pizza recipe"
+        "FollowsRecipe": "pizza recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 60.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 8,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "overkill",
+        "PreparedByName": "Chef",
+        "PreparedByActivityLevel": "busy",
+        "RecipeDurationCategory": "short",
+        "RecipeTempProfile": "hot oven",
+        "TimerMechanicalPhase": "freshly-wound"
       },
       {
         "CookId": "late cake bake",
@@ -2108,7 +2535,20 @@
         "PreparedBy": "Marcus",
         "DishName": "vanilla cake",
         "StartedAt": "2026-05-21T10:25:00Z",
-        "FollowsRecipe": "cake recipe"
+        "FollowsRecipe": "cake recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 60.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 35,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "appropriate",
+        "PreparedByName": "Chef",
+        "PreparedByActivityLevel": "busy",
+        "RecipeDurationCategory": "medium",
+        "RecipeTempProfile": "warm oven",
+        "TimerMechanicalPhase": "freshly-wound"
       },
       {
         "CookId": "overnight yogurt",
@@ -2116,7 +2556,20 @@
         "PreparedBy": "Lena",
         "DishName": "homemade yogurt",
         "StartedAt": "2026-05-21T09:35:00Z",
-        "FollowsRecipe": "yogurt recipe"
+        "FollowsRecipe": "yogurt recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 20.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 360,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": false,
+        "SuitabilityVerdict": "insufficient",
+        "PreparedByName": "Baker",
+        "PreparedByActivityLevel": "casual",
+        "RecipeDurationCategory": "long",
+        "RecipeTempProfile": "low",
+        "TimerMechanicalPhase": "mid-run"
       },
       {
         "CookId": "croissant batch",
@@ -2124,7 +2577,20 @@
         "PreparedBy": "Iris",
         "DishName": "butter croissant",
         "StartedAt": "2026-05-21T10:05:00Z",
-        "FollowsRecipe": "croissant recipe"
+        "FollowsRecipe": "croissant recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 60.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 18,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "overkill",
+        "PreparedByName": "Pastry Chef",
+        "PreparedByActivityLevel": "idle",
+        "RecipeDurationCategory": "medium",
+        "RecipeTempProfile": "hot oven",
+        "TimerMechanicalPhase": "freshly-wound"
       },
       {
         "CookId": "risotto dinner",
@@ -2132,7 +2598,20 @@
         "PreparedBy": "Carmen",
         "DishName": "mushroom risotto",
         "StartedAt": "2026-05-21T09:40:00Z",
-        "FollowsRecipe": "risotto recipe"
+        "FollowsRecipe": "risotto recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 20.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 30,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "appropriate",
+        "PreparedByName": "Sous Chef",
+        "PreparedByActivityLevel": "idle",
+        "RecipeDurationCategory": "medium",
+        "RecipeTempProfile": "boiling",
+        "TimerMechanicalPhase": "mid-run"
       },
       {
         "CookId": "ramen lunch",
@@ -2140,7 +2619,20 @@
         "PreparedBy": "Diego",
         "DishName": "tonkotsu ramen",
         "StartedAt": "2026-05-21T11:26:00Z",
-        "FollowsRecipe": "ramen recipe"
+        "FollowsRecipe": "ramen recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 5.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 5,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "overkill",
+        "PreparedByName": "Line Cook",
+        "PreparedByActivityLevel": "idle",
+        "RecipeDurationCategory": "short",
+        "RecipeTempProfile": "boiling",
+        "TimerMechanicalPhase": "nearly-done"
       },
       {
         "CookId": "paella special",
@@ -2148,7 +2640,20 @@
         "PreparedBy": "Carmen",
         "DishName": "paella valenciana",
         "StartedAt": "2026-05-21T10:10:00Z",
-        "FollowsRecipe": "paella recipe"
+        "FollowsRecipe": "paella recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 60.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 40,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "appropriate",
+        "PreparedByName": "Sous Chef",
+        "PreparedByActivityLevel": "idle",
+        "RecipeDurationCategory": "medium",
+        "RecipeTempProfile": "boiling",
+        "TimerMechanicalPhase": "freshly-wound"
       },
       {
         "CookId": "soup of the day",
@@ -2156,7 +2661,20 @@
         "PreparedBy": "Diego",
         "DishName": "vegetable soup",
         "StartedAt": "2026-05-21T09:45:00Z",
-        "FollowsRecipe": "soup recipe"
+        "FollowsRecipe": "soup recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 20.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 25,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "appropriate",
+        "PreparedByName": "Line Cook",
+        "PreparedByActivityLevel": "idle",
+        "RecipeDurationCategory": "medium",
+        "RecipeTempProfile": "boiling",
+        "TimerMechanicalPhase": "mid-run"
       },
       {
         "CookId": "steak dinner",
@@ -2164,7 +2682,20 @@
         "PreparedBy": "Marcus",
         "DishName": "ribeye steak",
         "StartedAt": "2026-05-21T10:30:00Z",
-        "FollowsRecipe": "steak recipe"
+        "FollowsRecipe": "steak recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 60.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 11,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "overkill",
+        "PreparedByName": "Chef",
+        "PreparedByActivityLevel": "busy",
+        "RecipeDurationCategory": "short",
+        "RecipeTempProfile": "hot oven",
+        "TimerMechanicalPhase": "freshly-wound"
       },
       {
         "CookId": "flan dessert",
@@ -2172,7 +2703,20 @@
         "PreparedBy": "Iris",
         "DishName": "caramel flan",
         "StartedAt": "2026-05-21T10:35:00Z",
-        "FollowsRecipe": "flan recipe"
+        "FollowsRecipe": "flan recipe",
+        "TimerHasRung": false,
+        "TimerIsArmed": true,
+        "TimerRemainingMin": 60.0,
+        "Status": "Cooking",
+        "RecommendedMinutes": 50,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "appropriate",
+        "PreparedByName": "Pastry Chef",
+        "PreparedByActivityLevel": "idle",
+        "RecipeDurationCategory": "long",
+        "RecipeTempProfile": "warm oven",
+        "TimerMechanicalPhase": "freshly-wound"
       },
       {
         "CookId": "salad starter",
@@ -2180,7 +2724,20 @@
         "PreparedBy": "Carmen",
         "DishName": "garden salad",
         "StartedAt": "2026-05-21T07:46:00Z",
-        "FollowsRecipe": "salad recipe"
+        "FollowsRecipe": "salad recipe",
+        "TimerHasRung": true,
+        "TimerIsArmed": false,
+        "TimerRemainingMin": 0.0,
+        "Status": "Done",
+        "RecommendedMinutes": 7,
+        "TimerWindDuration": 60.0,
+        "TimerCanCoverRecipe": true,
+        "SuitabilityVerdict": "overkill",
+        "PreparedByName": "Sous Chef",
+        "PreparedByActivityLevel": "idle",
+        "RecipeDurationCategory": "short",
+        "RecipeTempProfile": "low",
+        "TimerMechanicalPhase": "rung"
       }
     ]
   },
@@ -2269,115 +2826,229 @@
         "RecipeId": "soft-boiled egg recipe",
         "DishName": "soft-boiled egg",
         "RecommendedMinutes": 10,
-        "IdealTemperatureC": 100
+        "IdealTemperatureC": 100,
+        "TimesUsedToday": 1,
+        "DurationCategory": "short",
+        "CookingTempProfile": "boiling",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "over-provisioned"
       },
       {
         "RecipeId": "spaghetti recipe",
         "DishName": "spaghetti al pomodoro",
         "RecommendedMinutes": 12,
-        "IdealTemperatureC": 100
+        "IdealTemperatureC": 100,
+        "TimesUsedToday": 1,
+        "DurationCategory": "short",
+        "CookingTempProfile": "boiling",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "over-provisioned"
       },
       {
         "RecipeId": "rib roast recipe",
         "DishName": "rib roast",
         "RecommendedMinutes": 90,
-        "IdealTemperatureC": 175
+        "IdealTemperatureC": 175,
+        "TimesUsedToday": 1,
+        "DurationCategory": "long",
+        "CookingTempProfile": "warm oven",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "under-provisioned"
       },
       {
         "RecipeId": "broccoli recipe",
         "DishName": "steamed broccoli",
         "RecommendedMinutes": 25,
-        "IdealTemperatureC": 100
+        "IdealTemperatureC": 100,
+        "TimesUsedToday": 1,
+        "DurationCategory": "medium",
+        "CookingTempProfile": "boiling",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "well-matched"
       },
       {
         "RecipeId": "tea recipe",
         "DishName": "Earl Grey tea",
         "RecommendedMinutes": 4,
-        "IdealTemperatureC": 95
+        "IdealTemperatureC": 95,
+        "TimesUsedToday": 1,
+        "DurationCategory": "quick",
+        "CookingTempProfile": "boiling",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "over-provisioned"
       },
       {
         "RecipeId": "cake recipe",
         "DishName": "vanilla cake",
         "RecommendedMinutes": 35,
-        "IdealTemperatureC": 180
+        "IdealTemperatureC": 180,
+        "TimesUsedToday": 1,
+        "DurationCategory": "medium",
+        "CookingTempProfile": "warm oven",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "well-matched"
       },
       {
         "RecipeId": "pizza recipe",
         "DishName": "pizza margherita",
         "RecommendedMinutes": 8,
-        "IdealTemperatureC": 240
+        "IdealTemperatureC": 240,
+        "TimesUsedToday": 1,
+        "DurationCategory": "short",
+        "CookingTempProfile": "hot oven",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "over-provisioned"
       },
       {
         "RecipeId": "yogurt recipe",
         "DishName": "homemade yogurt",
         "RecommendedMinutes": 360,
-        "IdealTemperatureC": 40
+        "IdealTemperatureC": 40,
+        "TimesUsedToday": 1,
+        "DurationCategory": "long",
+        "CookingTempProfile": "low",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "under-provisioned"
       },
       {
         "RecipeId": "instant coffee recipe",
         "DishName": "instant coffee",
         "RecommendedMinutes": 2,
-        "IdealTemperatureC": 90
+        "IdealTemperatureC": 90,
+        "TimesUsedToday": 2,
+        "DurationCategory": "quick",
+        "CookingTempProfile": "boiling",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 120.0,
+        "AssignmentVerdict": "over-provisioned"
       },
       {
         "RecipeId": "croissant recipe",
         "DishName": "butter croissant",
         "RecommendedMinutes": 18,
-        "IdealTemperatureC": 200
+        "IdealTemperatureC": 200,
+        "TimesUsedToday": 1,
+        "DurationCategory": "medium",
+        "CookingTempProfile": "hot oven",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "over-provisioned"
       },
       {
         "RecipeId": "risotto recipe",
         "DishName": "mushroom risotto",
         "RecommendedMinutes": 30,
-        "IdealTemperatureC": 100
+        "IdealTemperatureC": 100,
+        "TimesUsedToday": 1,
+        "DurationCategory": "medium",
+        "CookingTempProfile": "boiling",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "well-matched"
       },
       {
         "RecipeId": "sourdough recipe",
         "DishName": "sourdough loaf",
         "RecommendedMinutes": 45,
-        "IdealTemperatureC": 220
+        "IdealTemperatureC": 220,
+        "TimesUsedToday": 0,
+        "DurationCategory": "long",
+        "CookingTempProfile": "hot oven",
+        "AvgTimerCapacity": 0,
+        "TotalTimerCapacity": 0,
+        "AssignmentVerdict": "unused"
       },
       {
         "RecipeId": "creme brulee recipe",
         "DishName": "creme brulee",
         "RecommendedMinutes": 55,
-        "IdealTemperatureC": 165
+        "IdealTemperatureC": 165,
+        "TimesUsedToday": 0,
+        "DurationCategory": "long",
+        "CookingTempProfile": "warm oven",
+        "AvgTimerCapacity": 0,
+        "TotalTimerCapacity": 0,
+        "AssignmentVerdict": "unused"
       },
       {
         "RecipeId": "paella recipe",
         "DishName": "paella valenciana",
         "RecommendedMinutes": 40,
-        "IdealTemperatureC": 100
+        "IdealTemperatureC": 100,
+        "TimesUsedToday": 1,
+        "DurationCategory": "medium",
+        "CookingTempProfile": "boiling",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "well-matched"
       },
       {
         "RecipeId": "ramen recipe",
         "DishName": "tonkotsu ramen",
         "RecommendedMinutes": 5,
-        "IdealTemperatureC": 100
+        "IdealTemperatureC": 100,
+        "TimesUsedToday": 1,
+        "DurationCategory": "short",
+        "CookingTempProfile": "boiling",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "over-provisioned"
       },
       {
         "RecipeId": "salad recipe",
         "DishName": "garden salad",
         "RecommendedMinutes": 7,
-        "IdealTemperatureC": 20
+        "IdealTemperatureC": 20,
+        "TimesUsedToday": 1,
+        "DurationCategory": "short",
+        "CookingTempProfile": "low",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "over-provisioned"
       },
       {
         "RecipeId": "steak recipe",
         "DishName": "ribeye steak",
         "RecommendedMinutes": 11,
-        "IdealTemperatureC": 230
+        "IdealTemperatureC": 230,
+        "TimesUsedToday": 1,
+        "DurationCategory": "short",
+        "CookingTempProfile": "hot oven",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "over-provisioned"
       },
       {
         "RecipeId": "soup recipe",
         "DishName": "vegetable soup",
         "RecommendedMinutes": 25,
-        "IdealTemperatureC": 100
+        "IdealTemperatureC": 100,
+        "TimesUsedToday": 1,
+        "DurationCategory": "medium",
+        "CookingTempProfile": "boiling",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "well-matched"
       },
       {
         "RecipeId": "flan recipe",
         "DishName": "caramel flan",
         "RecommendedMinutes": 50,
-        "IdealTemperatureC": 170
+        "IdealTemperatureC": 170,
+        "TimesUsedToday": 1,
+        "DurationCategory": "long",
+        "CookingTempProfile": "warm oven",
+        "AvgTimerCapacity": 60.0,
+        "TotalTimerCapacity": 60.0,
+        "AssignmentVerdict": "well-matched"
       }
     ]
   },
@@ -2618,7 +3289,34 @@
     "data": [
       {
         "KitchenId": "Main",
-        "DisplayName": "Main Kitchen"
+        "DisplayName": "Main Kitchen",
+        "TotalTimers": 4,
+        "TotalCases": 4,
+        "TotalBells": 4,
+        "TotalUsers": 8,
+        "TotalCooks": 18,
+        "TotalRecipes": 19,
+        "TotalWindActions": 5,
+        "TotalTickEvents": 23,
+        "TotalRingEvents": 1,
+        "TimersFreshlyWound": 1,
+        "TimersMidRun": 1,
+        "TimersNearlyDone": 1,
+        "TimersRung": 1,
+        "CooksDone": 3,
+        "CooksCooking": 15,
+        "RecipesUnused": 2,
+        "RecipesUnderProvisioned": 2,
+        "RecipesWellMatched": 6,
+        "BusyUsers": 1,
+        "IdleUsers": 6,
+        "TotalRecipeMinutes": 832,
+        "AvgRecipeMinutes": 43.78947368421053,
+        "MinRecipeMinutes": 2,
+        "MaxRecipeMinutes": 360,
+        "HasAnyTimerRung": true,
+        "HasMisprovisionedRecipe": true,
+        "OperationalStatus": "busy"
       }
     ]
   },

@@ -4,13 +4,15 @@
     "mounted_on_case": "Bessie's case",
     "diameter_mm": 40,
     "tone_hz": 1800,
-    "has_ever_rung": false
+    "times_rung": 1,
+    "has_ever_rung": true
   },
   {
     "bell_id": "Olive's bell",
     "mounted_on_case": "Olive's case",
     "diameter_mm": 40,
     "tone_hz": 1800,
+    "times_rung": 0,
     "has_ever_rung": false
   },
   {
@@ -18,6 +20,7 @@
     "mounted_on_case": "Rufus's case",
     "diameter_mm": 40,
     "tone_hz": 1800,
+    "times_rung": 0,
     "has_ever_rung": false
   },
   {
@@ -25,6 +28,7 @@
     "mounted_on_case": "Twigs's case",
     "diameter_mm": 40,
     "tone_hz": 1800,
+    "times_rung": 0,
     "has_ever_rung": false
   }
 ]

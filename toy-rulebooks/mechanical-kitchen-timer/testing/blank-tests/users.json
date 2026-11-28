@@ -2,49 +2,89 @@
   {
     "user_id": "Carmen",
     "display_name": "Sous Chef",
+    "wind_count": null,
+    "cook_count": null,
+    "completed_cook_count": null,
     "activity_level": null,
+    "total_recipe_minutes_attempted": null,
+    "avg_recipe_minutes_attempted": null,
     "cooking_style": null
   },
   {
     "user_id": "Diego",
     "display_name": "Line Cook",
+    "wind_count": null,
+    "cook_count": null,
+    "completed_cook_count": null,
     "activity_level": null,
+    "total_recipe_minutes_attempted": null,
+    "avg_recipe_minutes_attempted": null,
     "cooking_style": null
   },
   {
     "user_id": "Eli",
     "display_name": "Apprentice",
+    "wind_count": null,
+    "cook_count": null,
+    "completed_cook_count": null,
     "activity_level": null,
+    "total_recipe_minutes_attempted": null,
+    "avg_recipe_minutes_attempted": null,
     "cooking_style": null
   },
   {
     "user_id": "Iris",
     "display_name": "Pastry Chef",
+    "wind_count": null,
+    "cook_count": null,
+    "completed_cook_count": null,
     "activity_level": null,
+    "total_recipe_minutes_attempted": null,
+    "avg_recipe_minutes_attempted": null,
     "cooking_style": null
   },
   {
     "user_id": "Lena",
     "display_name": "Baker",
+    "wind_count": null,
+    "cook_count": null,
+    "completed_cook_count": null,
     "activity_level": null,
+    "total_recipe_minutes_attempted": null,
+    "avg_recipe_minutes_attempted": null,
     "cooking_style": null
   },
   {
     "user_id": "Marcus",
     "display_name": "Chef",
+    "wind_count": null,
+    "cook_count": null,
+    "completed_cook_count": null,
     "activity_level": null,
+    "total_recipe_minutes_attempted": null,
+    "avg_recipe_minutes_attempted": null,
     "cooking_style": null
   },
   {
     "user_id": "Tomas",
     "display_name": "Dishwasher",
+    "wind_count": null,
+    "cook_count": null,
+    "completed_cook_count": null,
     "activity_level": null,
+    "total_recipe_minutes_attempted": null,
+    "avg_recipe_minutes_attempted": null,
     "cooking_style": null
   },
   {
     "user_id": "Wendell",
     "display_name": "Food Critic",
+    "wind_count": null,
+    "cook_count": null,
+    "completed_cook_count": null,
     "activity_level": null,
+    "total_recipe_minutes_attempted": null,
+    "avg_recipe_minutes_attempted": null,
     "cooking_style": null
   }
 ]

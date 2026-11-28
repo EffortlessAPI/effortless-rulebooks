@@ -2,21 +2,25 @@
   {
     "escapement_id": "Bessie's escapement",
     "in_timer": "Bessie",
+    "tick_count": null,
     "has_ticked": null
   },
   {
     "escapement_id": "Olive's escapement",
     "in_timer": "Olive",
+    "tick_count": null,
     "has_ticked": null
   },
   {
     "escapement_id": "Rufus's escapement",
     "in_timer": "Rufus",
+    "tick_count": null,
     "has_ticked": null
   },
   {
     "escapement_id": "Twigs's escapement",
     "in_timer": "Twigs",
+    "tick_count": null,
     "has_ticked": null
   }
 ]
