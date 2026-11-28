@@ -1,0 +1,79 @@
+[
+  {
+    "app_user_id": "admin-ej-ssot-me",
+    "name": "admin-ej-ssot-me",
+    "email_address": "ej@ssot.me",
+    "role": "admin",
+    "is_effortless_employee": true,
+    "name_redacted": "admin-ej-ssot-me",
+    "email_address_redacted": "ej@ssot.me",
+    "role_title": null,
+    "role_description": null
+  },
+  {
+    "app_user_id": "admin-example",
+    "name": "admin-example",
+    "email_address": "admin@example.com",
+    "role": "admin",
+    "is_effortless_employee": false,
+    "name_redacted": "admin-example",
+    "email_address_redacted": "admin@example.com",
+    "role_title": null,
+    "role_description": null
+  },
+  {
+    "app_user_id": "eejai42-gmail",
+    "name": "eejai42-gmail",
+    "email_address": "eejai42@gmail.com",
+    "role": "admin",
+    "is_effortless_employee": true,
+    "name_redacted": "eejai42-gmail",
+    "email_address_redacted": "eejai42@gmail.com",
+    "role_title": null,
+    "role_description": null
+  },
+  {
+    "app_user_id": "external-llm-example",
+    "name": "external-llm-example",
+    "email_address": "external-llm@example.com",
+    "role": "external-llm",
+    "is_effortless_employee": false,
+    "name_redacted": "external-llm-example",
+    "email_address_redacted": "external-llm@example.com",
+    "role_title": null,
+    "role_description": null
+  },
+  {
+    "app_user_id": "manager-example",
+    "name": "manager-example",
+    "email_address": "manager@example.com",
+    "role": "manager",
+    "is_effortless_employee": false,
+    "name_redacted": "manager-example",
+    "email_address_redacted": "manager@example.com",
+    "role_title": null,
+    "role_description": null
+  },
+  {
+    "app_user_id": "manager-niko-ssot-me",
+    "name": "manager-niko-ssot-me",
+    "email_address": "niko@ssot.me",
+    "role": "admin",
+    "is_effortless_employee": true,
+    "name_redacted": "manager-niko-ssot-me",
+    "email_address_redacted": "niko@ssot.me",
+    "role_title": null,
+    "role_description": null
+  },
+  {
+    "app_user_id": "representative-example",
+    "name": "representative-example",
+    "email_address": "representative@example.com",
+    "role": "representative",
+    "is_effortless_employee": false,
+    "name_redacted": "representative-example",
+    "email_address_redacted": "representative@example.com",
+    "role_title": null,
+    "role_description": null
+  }
+]

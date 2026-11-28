@@ -7,7 +7,8 @@
     "amount_usd": 300.0,
     "method": "online",
     "is_mock_data": true,
-    "name": "pmt-2026-0005"
+    "name": "pmt-2026-0005",
+    "citation_label": "TC-2026-0005"
   },
   {
     "payment_id": "p-0002",
@@ -21,7 +22,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T20:00:00Z",
     "modified_by": "admin-example",
-    "name": "pmt-2026-0009"
+    "name": "pmt-2026-0009",
+    "citation_label": "TC-2026-0009"
   },
   {
     "payment_id": "p-0003",
@@ -35,6 +37,7 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T20:00:00Z",
     "modified_by": "admin-example",
-    "name": "pmt-2026-0001"
+    "name": "pmt-2026-0001",
+    "citation_label": "TC-2026-0001"
   }
 ]

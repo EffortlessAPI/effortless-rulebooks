@@ -8,7 +8,8 @@
     "outcome": "Pending",
     "notes": "Driver contests red-light timing; awaiting hearing.",
     "is_mock_data": true,
-    "name": "h-2026-0002"
+    "name": "h-2026-0002",
+    "citation_label": "TC-2026-0002"
   },
   {
     "hearing_id": "h-0002",
@@ -19,7 +20,8 @@
     "outcome": "Dismissed",
     "notes": "Radar calibration records not produced; dismissed.",
     "is_mock_data": true,
-    "name": "h-2026-0003"
+    "name": "h-2026-0003",
+    "citation_label": "TC-2026-0003"
   },
   {
     "hearing_id": "h-0003",
@@ -33,7 +35,8 @@
     "modified_at": "2026-06-07T20:00:00Z",
     "modified_by": "admin-example",
     "requested_on": "2026-04-10",
-    "name": "hrg-2026-0003"
+    "name": "hrg-2026-0003",
+    "citation_label": "TC-2026-0007"
   },
   {
     "hearing_id": "h-0004",
@@ -47,7 +50,8 @@
     "modified_at": "2026-06-07T20:00:00Z",
     "modified_by": "admin-example",
     "requested_on": "2026-05-05",
-    "name": "hrg-2026-0004"
+    "name": "hrg-2026-0004",
+    "citation_label": "TC-2026-0010"
   },
   {
     "hearing_id": "h-0005",
@@ -61,6 +65,7 @@
     "modified_at": "2026-06-07T20:00:00Z",
     "modified_by": "admin-example",
     "requested_on": "2026-05-20",
-    "name": "hrg-2026-0005"
+    "name": "hrg-2026-0005",
+    "citation_label": "TC-2026-0012"
   }
 ]

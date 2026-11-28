@@ -1,0 +1,79 @@
+[
+  {
+    "app_user_id": "admin-ej-ssot-me",
+    "name": "admin-ej-ssot-me",
+    "email_address": "ej@ssot.me",
+    "role": "admin",
+    "is_effortless_employee": true,
+    "name_redacted": null,
+    "email_address_redacted": null,
+    "role_title": null,
+    "role_description": null
+  },
+  {
+    "app_user_id": "admin-example",
+    "name": "admin-example",
+    "email_address": "admin@example.com",
+    "role": "admin",
+    "is_effortless_employee": false,
+    "name_redacted": null,
+    "email_address_redacted": null,
+    "role_title": null,
+    "role_description": null
+  },
+  {
+    "app_user_id": "eejai42-gmail",
+    "name": "eejai42-gmail",
+    "email_address": "eejai42@gmail.com",
+    "role": "admin",
+    "is_effortless_employee": true,
+    "name_redacted": null,
+    "email_address_redacted": null,
+    "role_title": null,
+    "role_description": null
+  },
+  {
+    "app_user_id": "external-llm-example",
+    "name": "external-llm-example",
+    "email_address": "external-llm@example.com",
+    "role": "external-llm",
+    "is_effortless_employee": false,
+    "name_redacted": null,
+    "email_address_redacted": null,
+    "role_title": null,
+    "role_description": null
+  },
+  {
+    "app_user_id": "manager-example",
+    "name": "manager-example",
+    "email_address": "manager@example.com",
+    "role": "manager",
+    "is_effortless_employee": false,
+    "name_redacted": null,
+    "email_address_redacted": null,
+    "role_title": null,
+    "role_description": null
+  },
+  {
+    "app_user_id": "manager-niko-ssot-me",
+    "name": "manager-niko-ssot-me",
+    "email_address": "niko@ssot.me",
+    "role": "admin",
+    "is_effortless_employee": true,
+    "name_redacted": null,
+    "email_address_redacted": null,
+    "role_title": null,
+    "role_description": null
+  },
+  {
+    "app_user_id": "representative-example",
+    "name": "representative-example",
+    "email_address": "representative@example.com",
+    "role": "representative",
+    "is_effortless_employee": false,
+    "name_redacted": null,
+    "email_address_redacted": null,
+    "role_title": null,
+    "role_description": null
+  }
+]

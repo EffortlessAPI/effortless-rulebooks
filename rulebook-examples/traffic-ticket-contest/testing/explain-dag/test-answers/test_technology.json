@@ -1,0 +1,50 @@
+[
+  {
+    "test_technology_id": "manual",
+    "title": "Manual",
+    "description": "Human-verified acceptance checks.",
+    "runner_kind": "manual",
+    "is_implemented": true,
+    "created_at": "2026-06-07T19:30:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T19:30:00Z",
+    "modified_by": "admin-example",
+    "name": "manual"
+  },
+  {
+    "test_technology_id": "playwright",
+    "title": "Playwright",
+    "description": "End-to-end browser tests.",
+    "runner_kind": "playwright",
+    "is_implemented": false,
+    "created_at": "2026-06-07T19:30:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T19:30:00Z",
+    "modified_by": "admin-example",
+    "name": "playwright"
+  },
+  {
+    "test_technology_id": "sql",
+    "title": "SQL Assertions",
+    "description": "Direct SQL queries against the DB.",
+    "runner_kind": "sql",
+    "is_implemented": true,
+    "created_at": "2026-06-07T19:30:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T19:30:00Z",
+    "modified_by": "admin-example",
+    "name": "sql"
+  },
+  {
+    "test_technology_id": "vitest",
+    "title": "Vitest",
+    "description": "Unit/integration tests in TypeScript.",
+    "runner_kind": "vitest",
+    "is_implemented": false,
+    "created_at": "2026-06-07T19:30:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T19:30:00Z",
+    "modified_by": "admin-example",
+    "name": "vitest"
+  }
+]

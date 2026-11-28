@@ -1,0 +1,50 @@
+[
+  {
+    "payment_id": "p-0001",
+    "name": "pmt-2026-0005",
+    "is_mock_data": true,
+    "payment_number": "PMT-2026-0005",
+    "citation": "c-0005",
+    "citation_label": "TC-2026-0005",
+    "paid_on": "2026-05-18",
+    "amount_usd": "300.0",
+    "method": "online",
+    "created_at": null,
+    "created_by": null,
+    "modified_at": null,
+    "modified_by": null,
+    "modified_by_model": null
+  },
+  {
+    "payment_id": "p-0002",
+    "name": "pmt-2026-0009",
+    "is_mock_data": true,
+    "payment_number": "PMT-2026-0009",
+    "citation": "c-0009",
+    "citation_label": "TC-2026-0009",
+    "paid_on": "2026-03-26",
+    "amount_usd": "138.0",
+    "method": "online",
+    "created_at": "2026-06-07 15:00:00-05:00",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07 15:00:00-05:00",
+    "modified_by": "admin-example",
+    "modified_by_model": null
+  },
+  {
+    "payment_id": "p-0003",
+    "name": "pmt-2026-0001",
+    "is_mock_data": true,
+    "payment_number": "PMT-2026-0001",
+    "citation": "c-0001",
+    "citation_label": "TC-2026-0001",
+    "paid_on": "2026-04-01",
+    "amount_usd": "95.0",
+    "method": "online",
+    "created_at": "2026-06-07 15:00:00-05:00",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07 15:00:00-05:00",
+    "modified_by": "admin-example",
+    "modified_by_model": null
+  }
+]

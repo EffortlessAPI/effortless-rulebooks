@@ -8,7 +8,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "name": "assistant"
+    "name": "assistant",
+    "rule_count": null
   },
   {
     "business_rule_category_id": "audit",
@@ -19,7 +20,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "name": "audit"
+    "name": "audit",
+    "rule_count": null
   },
   {
     "business_rule_category_id": "auth",
@@ -30,7 +32,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
-    "name": "auth"
+    "name": "auth",
+    "rule_count": null
   },
   {
     "business_rule_category_id": "citation-lifecycle",
@@ -41,7 +44,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "name": "citation-lifecycle"
+    "name": "citation-lifecycle",
+    "rule_count": null
   },
   {
     "business_rule_category_id": "contest",
@@ -52,7 +56,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "name": "contest"
+    "name": "contest",
+    "rule_count": null
   },
   {
     "business_rule_category_id": "glossary",
@@ -63,7 +68,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
-    "name": "glossary"
+    "name": "glossary",
+    "rule_count": null
   },
   {
     "business_rule_category_id": "intake",
@@ -74,7 +80,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "name": "intake"
+    "name": "intake",
+    "rule_count": null
   },
   {
     "business_rule_category_id": "license",
@@ -85,7 +92,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "name": "license"
+    "name": "license",
+    "rule_count": null
   },
   {
     "business_rule_category_id": "licensing",
@@ -96,7 +104,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
-    "name": "licensing"
+    "name": "licensing",
+    "rule_count": null
   },
   {
     "business_rule_category_id": "navigation",
@@ -107,7 +116,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
-    "name": "navigation"
+    "name": "navigation",
+    "rule_count": null
   },
   {
     "business_rule_category_id": "payment",
@@ -118,7 +128,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "name": "payment"
+    "name": "payment",
+    "rule_count": null
   },
   {
     "business_rule_category_id": "platform",
@@ -129,7 +140,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
-    "name": "platform"
+    "name": "platform",
+    "rule_count": null
   },
   {
     "business_rule_category_id": "rbac",
@@ -140,7 +152,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
-    "name": "rbac"
+    "name": "rbac",
+    "rule_count": null
   },
   {
     "business_rule_category_id": "rules-engine",
@@ -151,7 +164,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
-    "name": "rules-engine"
+    "name": "rules-engine",
+    "rule_count": null
   },
   {
     "business_rule_category_id": "workqueue",
@@ -162,6 +176,7 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "name": "workqueue"
+    "name": "workqueue",
+    "rule_count": null
   }
 ]

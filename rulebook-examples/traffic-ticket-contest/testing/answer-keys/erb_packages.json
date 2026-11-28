@@ -8,7 +8,9 @@
     "is_licensed": true,
     "sort_order": 4,
     "is_key": false,
-    "feature_count": 0
+    "name": "access-control",
+    "feature_count": 6,
+    "shipped_feature_count": 55
   },
   {
     "erb_package_id": "assistant",
@@ -19,7 +21,9 @@
     "is_licensed": true,
     "sort_order": 6,
     "is_key": false,
-    "feature_count": 0
+    "name": "assistant",
+    "feature_count": 6,
+    "shipped_feature_count": 55
   },
   {
     "erb_package_id": "citations",
@@ -30,7 +34,9 @@
     "is_licensed": true,
     "sort_order": 1,
     "is_key": false,
-    "feature_count": 0
+    "name": "citations",
+    "feature_count": 6,
+    "shipped_feature_count": 55
   },
   {
     "erb_package_id": "core",
@@ -41,7 +47,9 @@
     "is_licensed": true,
     "sort_order": 2,
     "is_key": true,
-    "feature_count": 0
+    "name": "core",
+    "feature_count": 6,
+    "shipped_feature_count": 55
   },
   {
     "erb_package_id": "platform-meta",
@@ -52,7 +60,9 @@
     "is_licensed": true,
     "sort_order": 3,
     "is_key": true,
-    "feature_count": 0
+    "name": "platform-meta",
+    "feature_count": 6,
+    "shipped_feature_count": 55
   },
   {
     "erb_package_id": "state-machines",
@@ -63,6 +73,8 @@
     "is_licensed": true,
     "sort_order": 5,
     "is_key": false,
-    "feature_count": 0
+    "name": "state-machines",
+    "feature_count": 6,
+    "shipped_feature_count": 55
   }
 ]

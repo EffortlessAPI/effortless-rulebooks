@@ -23,9 +23,13 @@
     "name": "turn-0002-deadline",
     "total_tokens": 1990,
     "billable_input_tokens": 650,
-    "input_cost": 0.0,
-    "output_cost": 0.0,
-    "total_cost": 0.0
+    "ai_model_title": "GPT-4o mini",
+    "input_price_per_m_tok": 0.15,
+    "cached_input_price_per_m_tok": 0.075,
+    "output_price_per_m_tok": 0.6,
+    "input_cost": 0.0001875,
+    "output_cost": 8.4e-05,
+    "total_cost": 0.0002715
   },
   {
     "assistant_turn_id": "turn-0003-dismiss-basis",
@@ -51,9 +55,13 @@
     "name": "turn-0003-dismiss-basis",
     "total_tokens": 3320,
     "billable_input_tokens": 1200,
-    "input_cost": 0.0,
-    "output_cost": 0.0,
-    "total_cost": 0.0
+    "ai_model_title": "GPT-4o",
+    "input_price_per_m_tok": 2.5,
+    "cached_input_price_per_m_tok": 1.25,
+    "output_price_per_m_tok": 10,
+    "input_cost": 0.005375,
+    "output_cost": 0.0022,
+    "total_cost": 0.007575
   },
   {
     "assistant_turn_id": "turn-0004-penalty",
@@ -79,9 +87,13 @@
     "name": "turn-0004-penalty",
     "total_tokens": 1860,
     "billable_input_tokens": 600,
-    "input_cost": 0.0,
-    "output_cost": 0.0,
-    "total_cost": 0.0
+    "ai_model_title": "GPT-4o mini",
+    "input_price_per_m_tok": 0.15,
+    "cached_input_price_per_m_tok": 0.075,
+    "output_price_per_m_tok": 0.6,
+    "input_cost": 0.0001725,
+    "output_cost": 9.6e-05,
+    "total_cost": 0.0002685
   },
   {
     "assistant_turn_id": "turn-failed-example",
@@ -106,9 +118,13 @@
     "name": "turn-failed-example",
     "total_tokens": 1260,
     "billable_input_tokens": 400,
-    "input_cost": 0.0,
-    "output_cost": 0.0,
-    "total_cost": 0.0
+    "ai_model_title": "GPT-4o mini",
+    "input_price_per_m_tok": 0.15,
+    "cached_input_price_per_m_tok": 0.075,
+    "output_price_per_m_tok": 0.6,
+    "input_cost": 0.00012,
+    "output_cost": 3.6e-05,
+    "total_cost": 0.000156
   },
   {
     "assistant_turn_id": "turn-routing-company",
@@ -133,6 +149,10 @@
     "name": "turn-routing-company",
     "total_tokens": 990,
     "billable_input_tokens": 900,
+    "ai_model_title": "ERB Internal Classifier",
+    "input_price_per_m_tok": 0,
+    "cached_input_price_per_m_tok": 0,
+    "output_price_per_m_tok": 0,
     "input_cost": 0.0,
     "output_cost": 0.0,
     "total_cost": 0.0

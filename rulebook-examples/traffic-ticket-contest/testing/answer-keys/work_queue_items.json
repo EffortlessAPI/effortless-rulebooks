@@ -12,7 +12,7 @@
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
     "name": "wq-citations-tc-2026-0001",
-    "due_in_days": -112,
+    "due_in_days": -189,
     "is_overdue": true,
     "urgency_bucket": "urgent",
     "is_urgent": true
@@ -30,7 +30,7 @@
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
     "name": "wq-citations-tc-2026-0002",
-    "due_in_days": -83,
+    "due_in_days": -160,
     "is_overdue": true,
     "urgency_bucket": "urgent",
     "is_urgent": true
@@ -48,7 +48,7 @@
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
     "name": "wq-citations-tc-2026-0004",
-    "due_in_days": -149,
+    "due_in_days": -226,
     "is_overdue": true,
     "urgency_bucket": "urgent",
     "is_urgent": true
@@ -66,7 +66,7 @@
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
     "name": "wq-citations-tc-2026-0006",
-    "due_in_days": -79,
+    "due_in_days": -156,
     "is_overdue": true,
     "urgency_bucket": "urgent",
     "is_urgent": true

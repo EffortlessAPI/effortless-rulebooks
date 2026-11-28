@@ -8,7 +8,10 @@
     "points": 1,
     "is_mock_data": true,
     "name": "cvc-21453a",
-    "is_school_eligible_by_cap": false
+    "jurisdiction_label": "Los Angeles County, California",
+    "traffic_school_point_cap": 1,
+    "is_school_eligible_by_cap": true,
+    "count_of_citations": 0
   },
   {
     "violation_type_id": "vt-cvc-22350",
@@ -19,7 +22,10 @@
     "points": 1,
     "is_mock_data": true,
     "name": "cvc-22350",
-    "is_school_eligible_by_cap": false
+    "jurisdiction_label": "Los Angeles County, California",
+    "traffic_school_point_cap": 1,
+    "is_school_eligible_by_cap": true,
+    "count_of_citations": 0
   },
   {
     "violation_type_id": "vt-cvc-23123",
@@ -30,7 +36,10 @@
     "points": 0,
     "is_mock_data": true,
     "name": "cvc-23123",
-    "is_school_eligible_by_cap": false
+    "jurisdiction_label": "Los Angeles County, California",
+    "traffic_school_point_cap": 1,
+    "is_school_eligible_by_cap": true,
+    "count_of_citations": 0
   },
   {
     "violation_type_id": "vt-ttc-544007",
@@ -41,7 +50,10 @@
     "points": 2,
     "is_mock_data": true,
     "name": "ttc-544007",
-    "is_school_eligible_by_cap": false
+    "jurisdiction_label": "Travis County, Texas",
+    "traffic_school_point_cap": 2,
+    "is_school_eligible_by_cap": true,
+    "count_of_citations": 0
   },
   {
     "violation_type_id": "vt-ttc-545351",
@@ -52,7 +64,10 @@
     "points": 2,
     "is_mock_data": true,
     "name": "ttc-545351",
-    "is_school_eligible_by_cap": false
+    "jurisdiction_label": "Travis County, Texas",
+    "traffic_school_point_cap": 2,
+    "is_school_eligible_by_cap": true,
+    "count_of_citations": 0
   },
   {
     "violation_type_id": "vt-vtl-1111d",
@@ -63,7 +78,10 @@
     "points": 3,
     "is_mock_data": true,
     "name": "vtl-1111d",
-    "is_school_eligible_by_cap": false
+    "jurisdiction_label": "New York City, New York",
+    "traffic_school_point_cap": 0,
+    "is_school_eligible_by_cap": false,
+    "count_of_citations": 0
   },
   {
     "violation_type_id": "vt-vtl-1180b",
@@ -74,6 +92,9 @@
     "points": 4,
     "is_mock_data": true,
     "name": "vtl-1180b",
-    "is_school_eligible_by_cap": false
+    "jurisdiction_label": "New York City, New York",
+    "traffic_school_point_cap": 0,
+    "is_school_eligible_by_cap": false,
+    "count_of_citations": 0
   }
 ]

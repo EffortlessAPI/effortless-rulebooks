@@ -10,7 +10,9 @@
     "effective_date": "2026-01-01",
     "is_active": true,
     "notes": "Self-hosted; no external per-token charge (internal cost basis only).",
-    "name": "erb-internal-classifier-2026-01"
+    "name": "erb-internal-classifier-2026-01",
+    "ai_model_title": "ERB Internal Classifier",
+    "turn_count": 1
   },
   {
     "model_pricing_version_id": "gpt-4o-2024-08",
@@ -23,7 +25,9 @@
     "effective_date": "2024-08-06",
     "is_active": true,
     "notes": "Current public OpenAI pricing.",
-    "name": "gpt-4o-2024-08"
+    "name": "gpt-4o-2024-08",
+    "ai_model_title": "GPT-4o",
+    "turn_count": 1
   },
   {
     "model_pricing_version_id": "gpt-4o-mini-2024-07",
@@ -36,7 +40,9 @@
     "effective_date": "2024-07-18",
     "is_active": false,
     "notes": "Original launch pricing; superseded.",
-    "name": "gpt-4o-mini-2024-07"
+    "name": "gpt-4o-mini-2024-07",
+    "ai_model_title": "GPT-4o mini",
+    "turn_count": 0
   },
   {
     "model_pricing_version_id": "gpt-4o-mini-2025-07",
@@ -49,6 +55,8 @@
     "effective_date": "2025-07-18",
     "is_active": true,
     "notes": "Current public OpenAI pricing.",
-    "name": "gpt-4o-mini-2025-07"
+    "name": "gpt-4o-mini-2025-07",
+    "ai_model_title": "GPT-4o mini",
+    "turn_count": 3
   }
 ]

@@ -8,6 +8,11 @@
     "is_mock_data": true,
     "name": "d1234567",
     "full_name": "Doe, Jane",
+    "home_jurisdiction_label": "Los Angeles County, California",
+    "suspension_threshold": 4,
+    "warning_threshold": 3,
+    "count_of_citations": 0,
+    "active_points": 0,
     "license_status": "Valid"
   },
   {
@@ -23,6 +28,11 @@
     "modified_by": "admin-example",
     "name": "d1357924",
     "full_name": "Whitfield, James",
+    "home_jurisdiction_label": "Travis County, Texas",
+    "suspension_threshold": 6,
+    "warning_threshold": 4,
+    "count_of_citations": 0,
+    "active_points": 0,
     "license_status": "Valid"
   },
   {
@@ -38,6 +48,11 @@
     "modified_by": "admin-example",
     "name": "d2468013",
     "full_name": "Gonzalez, Maria",
+    "home_jurisdiction_label": "Los Angeles County, California",
+    "suspension_threshold": 4,
+    "warning_threshold": 3,
+    "count_of_citations": 0,
+    "active_points": 0,
     "license_status": "Valid"
   },
   {
@@ -49,6 +64,11 @@
     "is_mock_data": true,
     "name": "d7654321",
     "full_name": "Mendez, Carlos",
+    "home_jurisdiction_label": "Travis County, Texas",
+    "suspension_threshold": 6,
+    "warning_threshold": 4,
+    "count_of_citations": 0,
+    "active_points": 0,
     "license_status": "Valid"
   },
   {
@@ -60,6 +80,11 @@
     "is_mock_data": true,
     "name": "n0099887",
     "full_name": "Khan, Aisha",
+    "home_jurisdiction_label": "New York City, New York",
+    "suspension_threshold": 11,
+    "warning_threshold": 6,
+    "count_of_citations": 0,
+    "active_points": 0,
     "license_status": "Valid"
   },
   {
@@ -75,6 +100,11 @@
     "modified_by": "admin-example",
     "name": "n5544332",
     "full_name": "Rahman, Aisha",
+    "home_jurisdiction_label": "New York City, New York",
+    "suspension_threshold": 11,
+    "warning_threshold": 6,
+    "count_of_citations": 0,
+    "active_points": 0,
     "license_status": "Valid"
   }
 ]

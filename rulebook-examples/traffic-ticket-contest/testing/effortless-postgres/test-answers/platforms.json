@@ -1,0 +1,16 @@
+[
+  {
+    "platform_id": "ticket-portal",
+    "name": "ticket-portal",
+    "title": "Traffic-Ticket Portal",
+    "description": "Case-management portal for contesting traffic citations.",
+    "sort_order": "1",
+    "is_active": true,
+    "erb_tables": "AiModels, APIEndpoints, AppUsers, AssistantTurns, AuditLogEntries, BuildPhases, BusinessRuleCategories, BusinessRules, CaseEvents, Citations, ContestGrounds, DeadlineRules, DriverLicensePoints, Drivers, ERBCustomizations, ERBFeatureCategories, ERBFeatures, ERBFeatureStatuses, ERBFields, ERBPackages, ERBTables, ERBVersions, FeeSchedules, FieldDisplayHints, GlossaryCategories, GlossaryTerms, Hearings, JurisdictionRules, Jurisdictions, JurisdictionSourceDocuments, MachineStates, MagicLinkConfig, ModelPricingVersions, Payments, PlatformNaviation, Platforms, ReferenceDocuments, Roles, ScreenLayouts, ScreenSections, SiteBranding, StateMachines, StateTransitionRules, StateTransitions, SubjectStateInstances, TestCase, TestCategory, TestExpectation, TestResult, TestResultAssertion, TestRun, TestSurface, TestTechnology, ViolationTypes, WorkQueueItems",
+    "created_at": null,
+    "created_by": null,
+    "modified_at": null,
+    "modified_by": null,
+    "modified_by_model": null
+  }
+]

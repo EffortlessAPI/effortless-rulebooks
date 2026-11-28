@@ -13,7 +13,9 @@
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
     "name": "los-angeles-county-traffic-school-eligibility-guidance",
-    "relative_path": "/library/jurisdiction-docs/doc-ca-traffic-school"
+    "jurisdiction_name": "ca-us",
+    "relative_path": "/library/jurisdiction-docs/doc-ca-traffic-school",
+    "rule_count": 1
   },
   {
     "jurisdiction_source_document_id": "doc-ca-vc-deadlines",
@@ -29,7 +31,9 @@
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
     "name": "california-vehicle-code-\u2014-arraignment-&-bail-deadlines",
-    "relative_path": "/library/jurisdiction-docs/doc-ca-vc-deadlines"
+    "jurisdiction_name": "ca-us",
+    "relative_path": "/library/jurisdiction-docs/doc-ca-vc-deadlines",
+    "rule_count": 1
   },
   {
     "jurisdiction_source_document_id": "doc-ny-vtl-points",
@@ -45,7 +49,9 @@
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
     "name": "new-york-vehicle-&-traffic-law-\u2014-point-system",
-    "relative_path": "/library/jurisdiction-docs/doc-ny-vtl-points"
+    "jurisdiction_name": "ny-us",
+    "relative_path": "/library/jurisdiction-docs/doc-ny-vtl-points",
+    "rule_count": 1
   },
   {
     "jurisdiction_source_document_id": "doc-tx-aus-appeal-2025-114",
@@ -61,7 +67,9 @@
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
     "name": "travis-county-appeal-board-decision-2025-114-(radar-calibration)",
-    "relative_path": "/library/jurisdiction-docs/doc-tx-aus-appeal-2025-114"
+    "jurisdiction_name": "tx-us",
+    "relative_path": "/library/jurisdiction-docs/doc-tx-aus-appeal-2025-114",
+    "rule_count": 1
   },
   {
     "jurisdiction_source_document_id": "doc-tx-transportation-code",
@@ -77,6 +85,8 @@
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
     "name": "texas-transportation-code-\u2014-speed-&-signal-offenses",
-    "relative_path": "/library/jurisdiction-docs/doc-tx-transportation-code"
+    "jurisdiction_name": "tx-us",
+    "relative_path": "/library/jurisdiction-docs/doc-tx-transportation-code",
+    "rule_count": 1
   }
 ]

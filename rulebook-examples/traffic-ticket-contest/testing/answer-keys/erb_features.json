@@ -18,7 +18,14 @@
     "modified_by": "admin-example",
     "route": "nav-assistant",
     "is_key": false,
-    "relative_path": ""
+    "name": "ai-assistant",
+    "route_path": "/assistant",
+    "relative_path": "/assistant",
+    "package_is_licensed": true,
+    "category_title": "AI Assistant",
+    "status_title": "In Progress",
+    "status_description": "Actively being built.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "as-cost-dashboard",
@@ -39,7 +46,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-assistant-costs",
-    "relative_path": ""
+    "name": "as-cost-dashboard",
+    "route_path": "/assistant/costs",
+    "relative_path": "/assistant/costs",
+    "package_is_licensed": true,
+    "category_title": "Dashboards",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "as-cost-telemetry",
@@ -60,7 +74,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-assistant-costs",
-    "relative_path": ""
+    "name": "as-cost-telemetry",
+    "route_path": "/assistant/costs",
+    "relative_path": "/assistant/costs",
+    "package_is_licensed": true,
+    "category_title": "Data Model",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "as-ocr-cost-estimator",
@@ -81,7 +102,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-assistant-costs",
-    "relative_path": ""
+    "name": "as-ocr-cost-estimator",
+    "route_path": "/assistant/costs",
+    "relative_path": "/assistant/costs",
+    "package_is_licensed": true,
+    "category_title": "Dashboards",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "as-portal-assistant",
@@ -102,7 +130,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-assistant",
-    "relative_path": ""
+    "name": "as-portal-assistant",
+    "route_path": "/assistant",
+    "relative_path": "/assistant",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "In Progress",
+    "status_description": "Actively being built.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "audit-trail",
@@ -123,7 +158,14 @@
     "modified_by": "admin-example",
     "route": "nav-admin-audit-log",
     "is_key": false,
-    "relative_path": ""
+    "name": "audit-trail",
+    "route_path": "/admin/audit-log",
+    "relative_path": "/admin/audit-log",
+    "package_is_licensed": true,
+    "category_title": "Audit & History",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "business-rules-browser",
@@ -144,7 +186,14 @@
     "modified_by": "admin-example",
     "route": "nav-library-business-rules",
     "is_key": false,
-    "relative_path": ""
+    "name": "business-rules-browser",
+    "route_path": "/library/business-rules",
+    "relative_path": "/library/business-rules",
+    "package_is_licensed": true,
+    "category_title": "Reference Library",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "citation-intake",
@@ -165,7 +214,14 @@
     "modified_by": "admin-example",
     "route": "nav-citations-detail",
     "is_key": false,
-    "relative_path": ""
+    "name": "citation-intake",
+    "route_path": "/citations/:citationId",
+    "relative_path": "/citations/:citationId",
+    "package_is_licensed": true,
+    "category_title": "Intake & Response",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "citation-statemachine",
@@ -186,7 +242,14 @@
     "modified_by": "admin-example",
     "route": "nav-citations-detail",
     "is_key": false,
-    "relative_path": ""
+    "name": "citation-statemachine",
+    "route_path": "/citations/:citationId",
+    "relative_path": "/citations/:citationId",
+    "package_is_licensed": true,
+    "category_title": "State Machines",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "contest-track",
@@ -207,7 +270,14 @@
     "modified_by": "admin-example",
     "route": "nav-citations-detail",
     "is_key": false,
-    "relative_path": ""
+    "name": "contest-track",
+    "route_path": "/citations/:citationId",
+    "relative_path": "/citations/:citationId",
+    "package_is_licensed": true,
+    "category_title": "State Machines",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-admin-equivalent-access",
@@ -228,7 +298,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-permissions",
-    "relative_path": ""
+    "name": "core-admin-equivalent-access",
+    "route_path": "/admin/permissions",
+    "relative_path": "/admin/permissions",
+    "package_is_licensed": true,
+    "category_title": "Permissions & RBAC",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-api-endpoints",
@@ -249,7 +326,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-endpoints",
-    "relative_path": ""
+    "name": "core-api-endpoints",
+    "route_path": "/admin/endpoints",
+    "relative_path": "/admin/endpoints",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Designed",
+    "status_description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "status_is_active": false
   },
   {
     "erb_feature_id": "core-app-users-directory",
@@ -270,7 +354,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-users",
-    "relative_path": ""
+    "name": "core-app-users-directory",
+    "route_path": "/admin/users",
+    "relative_path": "/admin/users",
+    "package_is_licensed": true,
+    "category_title": "Auth & Identity",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-build-pipeline",
@@ -291,7 +382,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-build-pipeline",
-    "relative_path": ""
+    "name": "core-build-pipeline",
+    "route_path": "/admin/build-pipeline",
+    "relative_path": "/admin/build-pipeline",
+    "package_is_licensed": true,
+    "category_title": "DevOps & Tooling",
+    "status_title": "Designed",
+    "status_description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "status_is_active": false
   },
   {
     "erb_feature_id": "core-business-rule-admin",
@@ -312,7 +410,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-library-business-rules",
-    "relative_path": ""
+    "name": "core-business-rule-admin",
+    "route_path": "/library/business-rules",
+    "relative_path": "/library/business-rules",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-claim-lifecycle-sim",
@@ -333,7 +438,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-state-machines",
-    "relative_path": ""
+    "name": "core-claim-lifecycle-sim",
+    "route_path": "/admin/state-machines",
+    "relative_path": "/admin/state-machines",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-config-export-scope",
@@ -354,7 +466,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-build-pipeline",
-    "relative_path": ""
+    "name": "core-config-export-scope",
+    "route_path": "/admin/build-pipeline",
+    "relative_path": "/admin/build-pipeline",
+    "package_is_licensed": true,
+    "category_title": "DevOps & Tooling",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-default-crud-editor",
@@ -375,7 +494,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-permissions",
-    "relative_path": ""
+    "name": "core-default-crud-editor",
+    "route_path": "/admin/permissions",
+    "relative_path": "/admin/permissions",
+    "package_is_licensed": true,
+    "category_title": "Permissions & RBAC",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-derived-rls",
@@ -396,7 +522,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-permissions",
-    "relative_path": ""
+    "name": "core-derived-rls",
+    "route_path": "/admin/permissions",
+    "relative_path": "/admin/permissions",
+    "package_is_licensed": true,
+    "category_title": "Permissions & RBAC",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-dev-quick-connect",
@@ -417,7 +550,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-users",
-    "relative_path": ""
+    "name": "core-dev-quick-connect",
+    "route_path": "/admin/users",
+    "relative_path": "/admin/users",
+    "package_is_licensed": true,
+    "category_title": "Auth & Identity",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-drift-guard",
@@ -438,7 +578,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-build-pipeline",
-    "relative_path": ""
+    "name": "core-drift-guard",
+    "route_path": "/admin/build-pipeline",
+    "relative_path": "/admin/build-pipeline",
+    "package_is_licensed": true,
+    "category_title": "DevOps & Tooling",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-endpoint-access-editor",
@@ -459,7 +606,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-endpoints",
-    "relative_path": ""
+    "name": "core-endpoint-access-editor",
+    "route_path": "/admin/endpoints",
+    "relative_path": "/admin/endpoints",
+    "package_is_licensed": true,
+    "category_title": "Permissions & RBAC",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-enforced-crud-api",
@@ -480,7 +634,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-endpoints",
-    "relative_path": ""
+    "name": "core-enforced-crud-api",
+    "route_path": "/admin/endpoints",
+    "relative_path": "/admin/endpoints",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Designed",
+    "status_description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "status_is_active": false
   },
   {
     "erb_feature_id": "core-explainer-dag",
@@ -501,7 +662,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-explainer-dag",
-    "relative_path": ""
+    "name": "core-explainer-dag",
+    "route_path": "/admin/explainer-dag",
+    "relative_path": "/admin/explainer-dag",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-feature-catalog-grid",
@@ -522,7 +690,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-features",
-    "relative_path": ""
+    "name": "core-feature-catalog-grid",
+    "route_path": "/admin/features",
+    "relative_path": "/admin/features",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-feature-detail-editor",
@@ -543,7 +718,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-feature-detail",
-    "relative_path": ""
+    "name": "core-feature-detail-editor",
+    "route_path": "/admin/features/:featureId",
+    "relative_path": "/admin/features/core-feature-detail-editor",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-feature-licensing",
@@ -564,7 +746,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-features",
-    "relative_path": ""
+    "name": "core-feature-licensing",
+    "route_path": "/admin/features",
+    "relative_path": "/admin/features",
+    "package_is_licensed": true,
+    "category_title": "Packages & Licensing",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-feature-logo-system",
@@ -585,7 +774,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-features",
-    "relative_path": ""
+    "name": "core-feature-logo-system",
+    "route_path": "/admin/features",
+    "relative_path": "/admin/features",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-feature-status-tracking",
@@ -606,7 +802,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-features",
-    "relative_path": ""
+    "name": "core-feature-status-tracking",
+    "route_path": "/admin/features",
+    "relative_path": "/admin/features",
+    "package_is_licensed": true,
+    "category_title": "DevOps & Tooling",
+    "status_title": "Designed",
+    "status_description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "status_is_active": false
   },
   {
     "erb_feature_id": "core-feature-vocab-editors",
@@ -627,7 +830,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-features",
-    "relative_path": ""
+    "name": "core-feature-vocab-editors",
+    "route_path": "/admin/features",
+    "relative_path": "/admin/features",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-field-crud-grid",
@@ -648,7 +858,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-permissions",
-    "relative_path": ""
+    "name": "core-field-crud-grid",
+    "route_path": "/admin/permissions",
+    "relative_path": "/admin/permissions",
+    "package_is_licensed": true,
+    "category_title": "Permissions & RBAC",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-fields-catalog",
@@ -669,7 +886,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-fields",
-    "relative_path": ""
+    "name": "core-fields-catalog",
+    "route_path": "/admin/fields",
+    "relative_path": "/admin/fields",
+    "package_is_licensed": true,
+    "category_title": "Data Model",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-global-ui-settings",
@@ -690,7 +914,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-branding",
-    "relative_path": ""
+    "name": "core-global-ui-settings",
+    "route_path": "/admin/branding",
+    "relative_path": "/admin/branding",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-glossary-admin",
@@ -711,7 +942,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-library-glossary",
-    "relative_path": ""
+    "name": "core-glossary-admin",
+    "route_path": "/library/glossary",
+    "relative_path": "/library/glossary",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-live-identity",
@@ -732,7 +970,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-users",
-    "relative_path": ""
+    "name": "core-live-identity",
+    "route_path": "/admin/users",
+    "relative_path": "/admin/users",
+    "package_is_licensed": true,
+    "category_title": "Auth & Identity",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-live-sidebar",
@@ -753,7 +998,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-route-designer",
-    "relative_path": ""
+    "name": "core-live-sidebar",
+    "route_path": "/admin/route-designer",
+    "relative_path": "/admin/route-designer",
+    "package_is_licensed": true,
+    "category_title": "Navigation & Routing",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-magic-link-auth",
@@ -774,7 +1026,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-users",
-    "relative_path": ""
+    "name": "core-magic-link-auth",
+    "route_path": "/admin/users",
+    "relative_path": "/admin/users",
+    "package_is_licensed": true,
+    "category_title": "DevOps & Tooling",
+    "status_title": "Designed",
+    "status_description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "status_is_active": false
   },
   {
     "erb_feature_id": "core-nav-backed-pages",
@@ -795,7 +1054,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-route-designer",
-    "relative_path": ""
+    "name": "core-nav-backed-pages",
+    "route_path": "/admin/route-designer",
+    "relative_path": "/admin/route-designer",
+    "package_is_licensed": true,
+    "category_title": "Navigation & Routing",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-package-licensing",
@@ -816,7 +1082,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-packages",
-    "relative_path": ""
+    "name": "core-package-licensing",
+    "route_path": "/admin/packages",
+    "relative_path": "/admin/packages",
+    "package_is_licensed": true,
+    "category_title": "Packages & Licensing",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-package-toggle",
@@ -837,7 +1110,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-packages",
-    "relative_path": ""
+    "name": "core-package-toggle",
+    "route_path": "/admin/packages",
+    "relative_path": "/admin/packages",
+    "package_is_licensed": true,
+    "category_title": "Packages & Licensing",
+    "status_title": "In Progress",
+    "status_description": "Actively being built.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-permission-sync",
@@ -858,7 +1138,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-permissions",
-    "relative_path": ""
+    "name": "core-permission-sync",
+    "route_path": "/admin/permissions",
+    "relative_path": "/admin/permissions",
+    "package_is_licensed": true,
+    "category_title": "DevOps & Tooling",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-pin-to-top",
@@ -879,7 +1166,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-route-designer",
-    "relative_path": ""
+    "name": "core-pin-to-top",
+    "route_path": "/admin/route-designer",
+    "relative_path": "/admin/route-designer",
+    "package_is_licensed": true,
+    "category_title": "Navigation & Routing",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-redacted-projection",
@@ -900,7 +1194,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-endpoints",
-    "relative_path": ""
+    "name": "core-redacted-projection",
+    "route_path": "/admin/endpoints",
+    "relative_path": "/admin/endpoints",
+    "package_is_licensed": true,
+    "category_title": "Permissions & RBAC",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-redaction-sweep",
@@ -921,7 +1222,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-permissions",
-    "relative_path": ""
+    "name": "core-redaction-sweep",
+    "route_path": "/admin/permissions",
+    "relative_path": "/admin/permissions",
+    "package_is_licensed": true,
+    "category_title": "Permissions & RBAC",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-rls-plan",
@@ -942,7 +1250,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-permissions",
-    "relative_path": ""
+    "name": "core-rls-plan",
+    "route_path": "/admin/permissions",
+    "relative_path": "/admin/permissions",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Designed",
+    "status_description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "status_is_active": false
   },
   {
     "erb_feature_id": "core-role-impersonation",
@@ -963,7 +1278,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-users",
-    "relative_path": ""
+    "name": "core-role-impersonation",
+    "route_path": "/admin/users",
+    "relative_path": "/admin/users",
+    "package_is_licensed": true,
+    "category_title": "Auth & Identity",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-role-permission-model",
@@ -984,7 +1306,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-permissions",
-    "relative_path": ""
+    "name": "core-role-permission-model",
+    "route_path": "/admin/permissions",
+    "relative_path": "/admin/permissions",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Designed",
+    "status_description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "status_is_active": false
   },
   {
     "erb_feature_id": "core-role-specific-schemas",
@@ -1005,7 +1334,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-tables",
-    "relative_path": ""
+    "name": "core-role-specific-schemas",
+    "route_path": "/admin/tables",
+    "relative_path": "/admin/tables",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Designed",
+    "status_description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "status_is_active": false
   },
   {
     "erb_feature_id": "core-role-url-worlds",
@@ -1026,7 +1362,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-route-designer",
-    "relative_path": ""
+    "name": "core-role-url-worlds",
+    "route_path": "/admin/route-designer",
+    "relative_path": "/admin/route-designer",
+    "package_is_licensed": true,
+    "category_title": "Navigation & Routing",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-roles-catalog-admin",
@@ -1047,7 +1390,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-roles",
-    "relative_path": ""
+    "name": "core-roles-catalog-admin",
+    "route_path": "/admin/roles",
+    "relative_path": "/admin/roles",
+    "package_is_licensed": true,
+    "category_title": "Permissions & RBAC",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-roles-vocabulary",
@@ -1068,7 +1418,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-roles",
-    "relative_path": ""
+    "name": "core-roles-vocabulary",
+    "route_path": "/admin/roles",
+    "relative_path": "/admin/roles",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Designed",
+    "status_description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "status_is_active": false
   },
   {
     "erb_feature_id": "core-route-access-gating",
@@ -1089,7 +1446,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-route-designer",
-    "relative_path": ""
+    "name": "core-route-access-gating",
+    "route_path": "/admin/route-designer",
+    "relative_path": "/admin/route-designer",
+    "package_is_licensed": true,
+    "category_title": "Navigation & Routing",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-route-designer",
@@ -1110,7 +1474,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-route-designer",
-    "relative_path": ""
+    "name": "core-route-designer",
+    "route_path": "/admin/route-designer",
+    "relative_path": "/admin/route-designer",
+    "package_is_licensed": true,
+    "category_title": "Navigation & Routing",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-route-galleries",
@@ -1131,7 +1502,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-route-designer",
-    "relative_path": ""
+    "name": "core-route-galleries",
+    "route_path": "/admin/route-designer",
+    "relative_path": "/admin/route-designer",
+    "package_is_licensed": true,
+    "category_title": "Navigation & Routing",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-save-to-rulebook",
@@ -1152,7 +1530,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-build-pipeline",
-    "relative_path": ""
+    "name": "core-save-to-rulebook",
+    "route_path": "/admin/build-pipeline",
+    "relative_path": "/admin/build-pipeline",
+    "package_is_licensed": true,
+    "category_title": "DevOps & Tooling",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-schema-catalog",
@@ -1173,7 +1558,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-tables",
-    "relative_path": ""
+    "name": "core-schema-catalog",
+    "route_path": "/admin/tables",
+    "relative_path": "/admin/tables",
+    "package_is_licensed": true,
+    "category_title": "DevOps & Tooling",
+    "status_title": "Designed",
+    "status_description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "status_is_active": false
   },
   {
     "erb_feature_id": "core-site-branding",
@@ -1194,7 +1586,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-branding",
-    "relative_path": ""
+    "name": "core-site-branding",
+    "route_path": "/admin/branding",
+    "relative_path": "/admin/branding",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-state-machine-admin",
@@ -1215,7 +1614,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-state-machines",
-    "relative_path": ""
+    "name": "core-state-machine-admin",
+    "route_path": "/admin/state-machines",
+    "relative_path": "/admin/state-machines",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-state-machine-backbone",
@@ -1236,7 +1642,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-state-machines",
-    "relative_path": ""
+    "name": "core-state-machine-backbone",
+    "route_path": "/admin/state-machines",
+    "relative_path": "/admin/state-machines",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Designed",
+    "status_description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "status_is_active": false
   },
   {
     "erb_feature_id": "core-table-catalog",
@@ -1257,7 +1670,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-tables",
-    "relative_path": ""
+    "name": "core-table-catalog",
+    "route_path": "/admin/tables",
+    "relative_path": "/admin/tables",
+    "package_is_licensed": true,
+    "category_title": "Data Model",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-table-route-licensing",
@@ -1278,7 +1698,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-packages",
-    "relative_path": ""
+    "name": "core-table-route-licensing",
+    "route_path": "/admin/packages",
+    "relative_path": "/admin/packages",
+    "package_is_licensed": true,
+    "category_title": "Packages & Licensing",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-table-where-policies",
@@ -1299,7 +1726,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-permissions",
-    "relative_path": ""
+    "name": "core-table-where-policies",
+    "route_path": "/admin/permissions",
+    "relative_path": "/admin/permissions",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Designed",
+    "status_description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "status_is_active": false
   },
   {
     "erb_feature_id": "core-table-where-policy-editor",
@@ -1320,7 +1754,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-permissions",
-    "relative_path": ""
+    "name": "core-table-where-policy-editor",
+    "route_path": "/admin/permissions",
+    "relative_path": "/admin/permissions",
+    "package_is_licensed": true,
+    "category_title": "Permissions & RBAC",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-unlicensed-reveal",
@@ -1341,7 +1782,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-admin-packages",
-    "relative_path": ""
+    "name": "core-unlicensed-reveal",
+    "route_path": "/admin/packages",
+    "relative_path": "/admin/packages",
+    "package_is_licensed": true,
+    "category_title": "Packages & Licensing",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "core-work-queue",
@@ -1362,7 +1810,14 @@
     "modified_at": "2026-06-07T00:00:00Z",
     "modified_by": "admin-example",
     "route": "nav-work-queue",
-    "relative_path": ""
+    "name": "core-work-queue",
+    "route_path": "/work-queue",
+    "relative_path": "/work-queue",
+    "package_is_licensed": true,
+    "category_title": "Platform & Meta",
+    "status_title": "Designed",
+    "status_description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "status_is_active": false
   },
   {
     "erb_feature_id": "driver-response",
@@ -1383,7 +1838,14 @@
     "modified_by": "admin-example",
     "route": "nav-citations-detail",
     "is_key": false,
-    "relative_path": ""
+    "name": "driver-response",
+    "route_path": "/citations/:citationId",
+    "relative_path": "/citations/:citationId",
+    "package_is_licensed": true,
+    "category_title": "Intake & Response",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "glossary",
@@ -1404,7 +1866,14 @@
     "modified_by": "admin-example",
     "route": "nav-library-glossary",
     "is_key": false,
-    "relative_path": ""
+    "name": "glossary",
+    "route_path": "/library/glossary",
+    "relative_path": "/library/glossary",
+    "package_is_licensed": true,
+    "category_title": "Reference Library",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "hearing-scheduling",
@@ -1425,7 +1894,14 @@
     "modified_by": "admin-example",
     "route": "nav-hearings",
     "is_key": false,
-    "relative_path": ""
+    "name": "hearing-scheduling",
+    "route_path": "/hearings",
+    "relative_path": "/hearings",
+    "package_is_licensed": true,
+    "category_title": "Hearings & Contests",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "jurisdiction-library",
@@ -1446,7 +1922,14 @@
     "modified_by": "admin-example",
     "route": "nav-library-jurisdiction-docs",
     "is_key": false,
-    "relative_path": ""
+    "name": "jurisdiction-library",
+    "route_path": "/library/jurisdiction-docs",
+    "relative_path": "/library/jurisdiction-docs",
+    "package_is_licensed": true,
+    "category_title": "Reference Library",
+    "status_title": "Planned",
+    "status_description": "Accepted into the official roadmap; not yet started.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "jurisdiction-rules",
@@ -1467,7 +1950,14 @@
     "modified_by": "admin-example",
     "route": "nav-jurisdictions",
     "is_key": false,
-    "relative_path": ""
+    "name": "jurisdiction-rules",
+    "route_path": "/jurisdictions",
+    "relative_path": "/jurisdictions",
+    "package_is_licensed": true,
+    "category_title": "Rules Engine",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "license-points",
@@ -1488,7 +1978,14 @@
     "modified_by": "admin-example",
     "route": "nav-drivers",
     "is_key": false,
-    "relative_path": ""
+    "name": "license-points",
+    "route_path": "/drivers",
+    "relative_path": "/drivers",
+    "package_is_licensed": true,
+    "category_title": "License & Points",
+    "status_title": "In Progress",
+    "status_description": "Actively being built.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "multi-jurisdiction-dashboard",
@@ -1509,7 +2006,14 @@
     "modified_by": "admin-example",
     "route": "nav-dashboard",
     "is_key": false,
-    "relative_path": ""
+    "name": "multi-jurisdiction-dashboard",
+    "route_path": "/dashboard",
+    "relative_path": "/dashboard",
+    "package_is_licensed": true,
+    "category_title": "Rules Engine",
+    "status_title": "Designed",
+    "status_description": "Modeled in the rulebook; not yet part of the official build everyone sees.",
+    "status_is_active": false
   },
   {
     "erb_feature_id": "payment-checkout",
@@ -1530,7 +2034,14 @@
     "modified_by": "admin-example",
     "route": "nav-citations-pay",
     "is_key": false,
-    "relative_path": ""
+    "name": "payment-checkout",
+    "route_path": "/citations/:citationId/pay",
+    "relative_path": "/citations/:citationId/pay",
+    "package_is_licensed": true,
+    "category_title": "Payments & Penalties",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "payment-track",
@@ -1551,7 +2062,14 @@
     "modified_by": "admin-example",
     "route": "nav-payments",
     "is_key": false,
-    "relative_path": ""
+    "name": "payment-track",
+    "route_path": "/payments",
+    "relative_path": "/payments",
+    "package_is_licensed": true,
+    "category_title": "State Machines",
+    "status_title": "In Progress",
+    "status_description": "Actively being built.",
+    "status_is_active": true
   },
   {
     "erb_feature_id": "work-queue",
@@ -1572,6 +2090,13 @@
     "modified_by": "admin-example",
     "route": "nav-work-queue",
     "is_key": false,
-    "relative_path": ""
+    "name": "work-queue",
+    "route_path": "/work-queue",
+    "relative_path": "/work-queue",
+    "package_is_licensed": true,
+    "category_title": "Work Queue & Deadlines",
+    "status_title": "Shipped",
+    "status_description": "Delivered and live.",
+    "status_is_active": true
   }
 ]

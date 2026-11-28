@@ -12,8 +12,9 @@
     "created_by": null,
     "modified_at": "2026-05-22T00:00:00Z",
     "modified_by": null,
+    "name": "audit-c-0001-2026-05-22t00-00-00-status_change",
     "is_override_action": false,
-    "entry_age_hours": 2671
+    "entry_age_hours": 4561
   },
   {
     "audit_log_entrie_id": "audit-0002-hearing-req",
@@ -29,8 +30,9 @@
     "created_by": "representative-example",
     "modified_at": "2026-05-25T14:30:00Z",
     "modified_by": "representative-example",
+    "name": "audit-c-0002-2026-05-25t14-30-00-status_change",
     "is_override_action": false,
-    "entry_age_hours": 2585
+    "entry_age_hours": 4475
   },
   {
     "audit_log_entrie_id": "audit-0002-scheduled",
@@ -46,8 +48,9 @@
     "created_by": "manager-example",
     "modified_at": "2026-05-26T09:10:00Z",
     "modified_by": "manager-example",
+    "name": "audit-c-0002-2026-05-26t09-10-00-status_change",
     "is_override_action": false,
-    "entry_age_hours": 2566
+    "entry_age_hours": 4456
   },
   {
     "audit_log_entrie_id": "audit-0003-dismissed",
@@ -63,8 +66,9 @@
     "created_by": "manager-example",
     "modified_at": "2026-04-15T15:00:00Z",
     "modified_by": "manager-example",
+    "name": "audit-c-0003-2026-04-15t15-00-00-review-decision",
     "is_override_action": false,
-    "entry_age_hours": 3544
+    "entry_age_hours": 5434
   },
   {
     "audit_log_entrie_id": "audit-0003-notowed-override",
@@ -80,8 +84,9 @@
     "created_by": "admin-example",
     "modified_at": "2026-04-15T15:05:00Z",
     "modified_by": "admin-example",
+    "name": "audit-c-0003-2026-04-15t15-05-00-override",
     "is_override_action": true,
-    "entry_age_hours": 3544
+    "entry_age_hours": 5434
   },
   {
     "audit_log_entrie_id": "audit-0004-late",
@@ -96,8 +101,9 @@
     "created_by": null,
     "modified_at": "2026-03-01T00:00:00Z",
     "modified_by": null,
+    "name": "audit-c-0004-2026-03-01t00-00-00-status_change",
     "is_override_action": false,
-    "entry_age_hours": 4639
+    "entry_age_hours": 6529
   },
   {
     "audit_log_entrie_id": "audit-0005-paid",
@@ -113,7 +119,8 @@
     "created_by": "representative-example",
     "modified_at": "2026-05-18T19:22:00Z",
     "modified_by": "representative-example",
+    "name": "audit-c-0005-2026-05-18t19-22-00-status_change",
     "is_override_action": false,
-    "entry_age_hours": 2748
+    "entry_age_hours": 4638
   }
 ]

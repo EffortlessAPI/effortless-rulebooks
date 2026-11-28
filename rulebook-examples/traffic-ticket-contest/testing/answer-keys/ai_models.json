@@ -7,7 +7,10 @@
     "is_internal": true,
     "is_active": true,
     "context_window_tokens": 8192,
-    "name": "erb-internal-classifier"
+    "name": "erb-internal-classifier",
+    "pricing_version_count": 1,
+    "turn_count": 1,
+    "total_cost": 0.0
   },
   {
     "ai_model_id": "gpt-4o",
@@ -17,7 +20,10 @@
     "is_internal": false,
     "is_active": true,
     "context_window_tokens": 128000,
-    "name": "gpt-4o"
+    "name": "gpt-4o",
+    "pricing_version_count": 1,
+    "turn_count": 1,
+    "total_cost": 0.007575
   },
   {
     "ai_model_id": "gpt-4o-mini",
@@ -27,6 +33,9 @@
     "is_internal": false,
     "is_active": true,
     "context_window_tokens": 128000,
-    "name": "gpt-4o-mini"
+    "name": "gpt-4o-mini",
+    "pricing_version_count": 2,
+    "turn_count": 3,
+    "total_cost": 0.000696
   }
 ]

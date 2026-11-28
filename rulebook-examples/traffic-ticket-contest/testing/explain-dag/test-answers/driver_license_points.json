@@ -1,0 +1,44 @@
+[
+  {
+    "driver_license_point_id": "c-0001--d-d1234567",
+    "driver": "d-d1234567",
+    "citation": "c-0001",
+    "points": 1,
+    "assessed_on": "2026-02-15",
+    "reversed_on": null,
+    "is_active": true,
+    "created_at": "2026-06-07T20:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T20:00:00Z",
+    "modified_by": "admin-example",
+    "name": "c-0001--d-d1234567"
+  },
+  {
+    "driver_license_point_id": "c-0003--d-d7654321",
+    "driver": "d-d7654321",
+    "citation": "c-0003",
+    "points": 2,
+    "assessed_on": "2026-03-01",
+    "reversed_on": "2026-03-20",
+    "is_active": false,
+    "created_at": "2026-06-07T20:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T20:00:00Z",
+    "modified_by": "admin-example",
+    "name": "c-0003--d-d7654321"
+  },
+  {
+    "driver_license_point_id": "c-0009--d-n5544332",
+    "driver": "d-n5544332",
+    "citation": "c-0009",
+    "points": 3,
+    "assessed_on": "2026-03-30",
+    "reversed_on": null,
+    "is_active": true,
+    "created_at": "2026-06-07T20:00:00Z",
+    "created_by": "admin-example",
+    "modified_at": "2026-06-07T20:00:00Z",
+    "modified_by": "admin-example",
+    "name": "c-0009--d-n5544332"
+  }
+]

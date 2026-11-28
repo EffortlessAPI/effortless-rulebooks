@@ -6,7 +6,10 @@
     "subject_table_name": "Citations",
     "subject_state_column": "CitationStatus",
     "erb_package": "citations",
-    "name": "citation-lifecycle"
+    "name": "citation-lifecycle",
+    "package_is_active": true,
+    "state_count": null,
+    "transition_rule_count": null
   },
   {
     "state_machine_id": "contest-track",
@@ -15,7 +18,10 @@
     "subject_table_name": "Citations",
     "subject_state_column": "ContestStatus",
     "erb_package": "citations",
-    "name": "contest-track"
+    "name": "contest-track",
+    "package_is_active": true,
+    "state_count": null,
+    "transition_rule_count": null
   },
   {
     "state_machine_id": "license-track",
@@ -24,7 +30,10 @@
     "subject_table_name": "Drivers",
     "subject_state_column": "LicenseStatus",
     "erb_package": "citations",
-    "name": "license-track"
+    "name": "license-track",
+    "package_is_active": true,
+    "state_count": null,
+    "transition_rule_count": null
   },
   {
     "state_machine_id": "payment-track",
@@ -33,6 +42,9 @@
     "subject_table_name": "Citations",
     "subject_state_column": "PaymentStatus",
     "erb_package": "citations",
-    "name": "payment-track"
+    "name": "payment-track",
+    "package_is_active": true,
+    "state_count": null,
+    "transition_rule_count": null
   }
 ]

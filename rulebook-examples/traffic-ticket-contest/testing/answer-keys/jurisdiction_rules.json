@@ -18,8 +18,11 @@
     "modified_by": "admin-example",
     "modified_by_model": "gpt-4o",
     "name": "ca-vc-\u00a740519",
+    "route_path": null,
     "relative_path": "/library/jurisdiction-rules/jr-ca-respond-21",
-    "is_federal": false
+    "jurisdiction_name": "ca-us",
+    "jurisdiction_type": "county",
+    "is_federal": 0
   },
   {
     "jurisdiction_rule_id": "jr-ca-school-1pt",
@@ -40,8 +43,11 @@
     "modified_by": "admin-example",
     "modified_by_model": "gpt-4o-mini",
     "name": "ca-la-ts-1",
+    "route_path": null,
     "relative_path": "/library/jurisdiction-rules/jr-ca-school-1pt",
-    "is_federal": false
+    "jurisdiction_name": "ca-us",
+    "jurisdiction_type": "county",
+    "is_federal": 0
   },
   {
     "jurisdiction_rule_id": "jr-ny-suspend-11",
@@ -62,8 +68,11 @@
     "modified_by": "admin-example",
     "modified_by_model": "gpt-4o",
     "name": "ny-vtl-\u00a7510",
+    "route_path": null,
     "relative_path": "/library/jurisdiction-rules/jr-ny-suspend-11",
-    "is_federal": false
+    "jurisdiction_name": "ny-us",
+    "jurisdiction_type": "city",
+    "is_federal": 0
   },
   {
     "jurisdiction_rule_id": "jr-tx-radar-dismiss",
@@ -84,8 +93,11 @@
     "modified_by": "admin-example",
     "modified_by_model": "gpt-4o",
     "name": "tx-aus-ab-2025-114",
+    "route_path": null,
     "relative_path": "/library/jurisdiction-rules/jr-tx-radar-dismiss",
-    "is_federal": false
+    "jurisdiction_name": "tx-us",
+    "jurisdiction_type": "county",
+    "is_federal": 0
   },
   {
     "jurisdiction_rule_id": "jr-tx-respond-14",
@@ -106,7 +118,10 @@
     "modified_by": "admin-example",
     "modified_by_model": "gpt-4o-mini",
     "name": "tx-tc-\u00a7543",
+    "route_path": null,
     "relative_path": "/library/jurisdiction-rules/jr-tx-respond-14",
-    "is_federal": false
+    "jurisdiction_name": "tx-us",
+    "jurisdiction_type": "county",
+    "is_federal": 0
   }
 ]

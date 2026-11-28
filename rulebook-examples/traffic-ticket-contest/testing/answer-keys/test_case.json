@@ -16,7 +16,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-assistant-ask"
+    "name": "tc-endpoint-assistant-ask",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-case-timeline-report",
@@ -35,7 +36,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-case-timeline-report"
+    "name": "tc-endpoint-case-timeline-report",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-citation-advance-state",
@@ -54,7 +56,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-citation-advance-state"
+    "name": "tc-endpoint-citation-advance-state",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-citation-contest",
@@ -73,7 +76,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-citation-contest"
+    "name": "tc-endpoint-citation-contest",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-citation-dismiss",
@@ -92,7 +96,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-citation-dismiss"
+    "name": "tc-endpoint-citation-dismiss",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-citation-import",
@@ -111,7 +116,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-citation-import"
+    "name": "tc-endpoint-citation-import",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-citation-ocr",
@@ -130,7 +136,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-citation-ocr"
+    "name": "tc-endpoint-citation-ocr",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-citation-request-hearing",
@@ -149,7 +156,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-citation-request-hearing"
+    "name": "tc-endpoint-citation-request-hearing",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-citation-respond",
@@ -168,7 +176,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-citation-respond"
+    "name": "tc-endpoint-citation-respond",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-citation-withdraw-contest",
@@ -187,7 +196,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-citation-withdraw-contest"
+    "name": "tc-endpoint-citation-withdraw-contest",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-collections-sweep",
@@ -206,7 +216,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-collections-sweep"
+    "name": "tc-endpoint-collections-sweep",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-config-drift-check",
@@ -225,7 +236,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-config-drift-check"
+    "name": "tc-endpoint-config-drift-check",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-config-save",
@@ -244,7 +256,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-config-save"
+    "name": "tc-endpoint-config-save",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-cost-rollup",
@@ -263,7 +276,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-cost-rollup"
+    "name": "tc-endpoint-cost-rollup",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-deadline-report",
@@ -282,7 +296,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-deadline-report"
+    "name": "tc-endpoint-deadline-report",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-determination-issue",
@@ -301,7 +316,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-determination-issue"
+    "name": "tc-endpoint-determination-issue",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-determination-letter-generate",
@@ -320,7 +336,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-determination-letter-generate"
+    "name": "tc-endpoint-determination-letter-generate",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-driver-lookup",
@@ -339,7 +356,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-driver-lookup"
+    "name": "tc-endpoint-driver-lookup",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-feature-toggle-license",
@@ -358,7 +376,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-feature-toggle-license"
+    "name": "tc-endpoint-feature-toggle-license",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-hearing-prep",
@@ -377,7 +396,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-hearing-prep"
+    "name": "tc-endpoint-hearing-prep",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-hearing-record-outcome",
@@ -396,7 +416,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-hearing-record-outcome"
+    "name": "tc-endpoint-hearing-record-outcome",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-hearing-reschedule",
@@ -415,7 +436,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-hearing-reschedule"
+    "name": "tc-endpoint-hearing-reschedule",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-hearing-schedule",
@@ -434,7 +456,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-hearing-schedule"
+    "name": "tc-endpoint-hearing-schedule",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-impersonate-role",
@@ -453,7 +476,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-impersonate-role"
+    "name": "tc-endpoint-impersonate-role",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-jurisdiction-recompute",
@@ -472,7 +496,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-jurisdiction-recompute"
+    "name": "tc-endpoint-jurisdiction-recompute",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-late-penalty-accrue",
@@ -491,7 +516,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-late-penalty-accrue"
+    "name": "tc-endpoint-late-penalty-accrue",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-license-suspension-check",
@@ -510,7 +536,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-license-suspension-check"
+    "name": "tc-endpoint-license-suspension-check",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-ocr-cost-estimate",
@@ -529,7 +556,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-ocr-cost-estimate"
+    "name": "tc-endpoint-ocr-cost-estimate",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-package-toggle",
@@ -548,7 +576,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-package-toggle"
+    "name": "tc-endpoint-package-toggle",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-payment-checkout",
@@ -567,7 +596,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-payment-checkout"
+    "name": "tc-endpoint-payment-checkout",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-payment-plan-enroll",
@@ -586,7 +616,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-payment-plan-enroll"
+    "name": "tc-endpoint-payment-plan-enroll",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-payment-plan-installment",
@@ -605,7 +636,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-payment-plan-installment"
+    "name": "tc-endpoint-payment-plan-installment",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-payment-refund",
@@ -624,7 +656,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-payment-refund"
+    "name": "tc-endpoint-payment-refund",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-points-assess",
@@ -643,7 +676,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-points-assess"
+    "name": "tc-endpoint-points-assess",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-points-recompute",
@@ -662,7 +696,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-points-recompute"
+    "name": "tc-endpoint-points-recompute",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-endpoint-work-queue-report",
@@ -681,7 +716,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-endpoint-work-queue-report"
+    "name": "tc-endpoint-work-queue-report",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-ai-assistant",
@@ -700,7 +736,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-ai-assistant"
+    "name": "tc-feature-ai-assistant",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-as-cost-dashboard",
@@ -719,7 +756,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-as-cost-dashboard"
+    "name": "tc-feature-as-cost-dashboard",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-as-cost-telemetry",
@@ -738,7 +776,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-as-cost-telemetry"
+    "name": "tc-feature-as-cost-telemetry",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-as-ocr-cost-estimator",
@@ -757,7 +796,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-as-ocr-cost-estimator"
+    "name": "tc-feature-as-ocr-cost-estimator",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-as-portal-assistant",
@@ -776,7 +816,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-as-portal-assistant"
+    "name": "tc-feature-as-portal-assistant",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-audit-trail",
@@ -795,7 +836,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-audit-trail"
+    "name": "tc-feature-audit-trail",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-business-rules-browser",
@@ -814,7 +856,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-business-rules-browser"
+    "name": "tc-feature-business-rules-browser",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-citation-intake",
@@ -833,7 +876,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-citation-intake"
+    "name": "tc-feature-citation-intake",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-citation-statemachine",
@@ -852,7 +896,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-citation-statemachine"
+    "name": "tc-feature-citation-statemachine",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-contest-track",
@@ -871,7 +916,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-contest-track"
+    "name": "tc-feature-contest-track",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-admin-equivalent-access",
@@ -890,7 +936,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-admin-equivalent-access"
+    "name": "tc-feature-core-admin-equivalent-access",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-api-endpoints",
@@ -909,7 +956,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-api-endpoints"
+    "name": "tc-feature-core-api-endpoints",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-app-users-directory",
@@ -928,7 +976,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-app-users-directory"
+    "name": "tc-feature-core-app-users-directory",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-build-pipeline",
@@ -947,7 +996,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-build-pipeline"
+    "name": "tc-feature-core-build-pipeline",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-business-rule-admin",
@@ -966,7 +1016,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-business-rule-admin"
+    "name": "tc-feature-core-business-rule-admin",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-claim-lifecycle-sim",
@@ -985,7 +1036,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-claim-lifecycle-sim"
+    "name": "tc-feature-core-claim-lifecycle-sim",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-config-export-scope",
@@ -1004,7 +1056,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-config-export-scope"
+    "name": "tc-feature-core-config-export-scope",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-default-crud-editor",
@@ -1023,7 +1076,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-default-crud-editor"
+    "name": "tc-feature-core-default-crud-editor",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-derived-rls",
@@ -1042,7 +1096,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-derived-rls"
+    "name": "tc-feature-core-derived-rls",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-dev-quick-connect",
@@ -1061,7 +1116,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-dev-quick-connect"
+    "name": "tc-feature-core-dev-quick-connect",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-drift-guard",
@@ -1080,7 +1136,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-drift-guard"
+    "name": "tc-feature-core-drift-guard",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-endpoint-access-editor",
@@ -1099,7 +1156,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-endpoint-access-editor"
+    "name": "tc-feature-core-endpoint-access-editor",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-enforced-crud-api",
@@ -1118,7 +1176,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-enforced-crud-api"
+    "name": "tc-feature-core-enforced-crud-api",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-explainer-dag",
@@ -1137,7 +1196,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-explainer-dag"
+    "name": "tc-feature-core-explainer-dag",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-feature-catalog-grid",
@@ -1156,7 +1216,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-feature-catalog-grid"
+    "name": "tc-feature-core-feature-catalog-grid",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-feature-detail-editor",
@@ -1175,7 +1236,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-feature-detail-editor"
+    "name": "tc-feature-core-feature-detail-editor",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-feature-licensing",
@@ -1194,7 +1256,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-feature-licensing"
+    "name": "tc-feature-core-feature-licensing",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-feature-logo-system",
@@ -1213,7 +1276,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-feature-logo-system"
+    "name": "tc-feature-core-feature-logo-system",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-feature-status-tracking",
@@ -1232,7 +1296,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-feature-status-tracking"
+    "name": "tc-feature-core-feature-status-tracking",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-feature-vocab-editors",
@@ -1251,7 +1316,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-feature-vocab-editors"
+    "name": "tc-feature-core-feature-vocab-editors",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-field-crud-grid",
@@ -1270,7 +1336,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-field-crud-grid"
+    "name": "tc-feature-core-field-crud-grid",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-fields-catalog",
@@ -1289,7 +1356,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-fields-catalog"
+    "name": "tc-feature-core-fields-catalog",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-global-ui-settings",
@@ -1308,7 +1376,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-global-ui-settings"
+    "name": "tc-feature-core-global-ui-settings",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-glossary-admin",
@@ -1327,7 +1396,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-glossary-admin"
+    "name": "tc-feature-core-glossary-admin",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-live-identity",
@@ -1346,7 +1416,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-live-identity"
+    "name": "tc-feature-core-live-identity",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-live-sidebar",
@@ -1365,7 +1436,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-live-sidebar"
+    "name": "tc-feature-core-live-sidebar",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-magic-link-auth",
@@ -1384,7 +1456,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-magic-link-auth"
+    "name": "tc-feature-core-magic-link-auth",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-nav-backed-pages",
@@ -1403,7 +1476,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-nav-backed-pages"
+    "name": "tc-feature-core-nav-backed-pages",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-package-licensing",
@@ -1422,7 +1496,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-package-licensing"
+    "name": "tc-feature-core-package-licensing",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-package-toggle",
@@ -1441,7 +1516,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-package-toggle"
+    "name": "tc-feature-core-package-toggle",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-permission-sync",
@@ -1460,7 +1536,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-permission-sync"
+    "name": "tc-feature-core-permission-sync",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-pin-to-top",
@@ -1479,7 +1556,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-pin-to-top"
+    "name": "tc-feature-core-pin-to-top",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-redacted-projection",
@@ -1498,7 +1576,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-redacted-projection"
+    "name": "tc-feature-core-redacted-projection",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-redaction-sweep",
@@ -1517,7 +1596,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-redaction-sweep"
+    "name": "tc-feature-core-redaction-sweep",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-rls-plan",
@@ -1536,7 +1616,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-rls-plan"
+    "name": "tc-feature-core-rls-plan",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-role-impersonation",
@@ -1555,7 +1636,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-role-impersonation"
+    "name": "tc-feature-core-role-impersonation",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-role-permission-model",
@@ -1574,7 +1656,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-role-permission-model"
+    "name": "tc-feature-core-role-permission-model",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-role-specific-schemas",
@@ -1593,7 +1676,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-role-specific-schemas"
+    "name": "tc-feature-core-role-specific-schemas",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-role-url-worlds",
@@ -1612,7 +1696,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-role-url-worlds"
+    "name": "tc-feature-core-role-url-worlds",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-roles-catalog-admin",
@@ -1631,7 +1716,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-roles-catalog-admin"
+    "name": "tc-feature-core-roles-catalog-admin",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-roles-vocabulary",
@@ -1650,7 +1736,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-roles-vocabulary"
+    "name": "tc-feature-core-roles-vocabulary",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-route-access-gating",
@@ -1669,7 +1756,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-route-access-gating"
+    "name": "tc-feature-core-route-access-gating",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-route-designer",
@@ -1688,7 +1776,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-route-designer"
+    "name": "tc-feature-core-route-designer",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-route-galleries",
@@ -1707,7 +1796,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-route-galleries"
+    "name": "tc-feature-core-route-galleries",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-save-to-rulebook",
@@ -1726,7 +1816,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-save-to-rulebook"
+    "name": "tc-feature-core-save-to-rulebook",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-schema-catalog",
@@ -1745,7 +1836,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-schema-catalog"
+    "name": "tc-feature-core-schema-catalog",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-site-branding",
@@ -1764,7 +1856,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-site-branding"
+    "name": "tc-feature-core-site-branding",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-state-machine-admin",
@@ -1783,7 +1876,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-state-machine-admin"
+    "name": "tc-feature-core-state-machine-admin",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-state-machine-backbone",
@@ -1802,7 +1896,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-state-machine-backbone"
+    "name": "tc-feature-core-state-machine-backbone",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-table-catalog",
@@ -1821,7 +1916,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-table-catalog"
+    "name": "tc-feature-core-table-catalog",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-table-route-licensing",
@@ -1840,7 +1936,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-table-route-licensing"
+    "name": "tc-feature-core-table-route-licensing",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-table-where-policies",
@@ -1859,7 +1956,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-table-where-policies"
+    "name": "tc-feature-core-table-where-policies",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-table-where-policy-editor",
@@ -1878,7 +1976,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-table-where-policy-editor"
+    "name": "tc-feature-core-table-where-policy-editor",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-unlicensed-reveal",
@@ -1897,7 +1996,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-unlicensed-reveal"
+    "name": "tc-feature-core-unlicensed-reveal",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-core-work-queue",
@@ -1916,7 +2016,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-core-work-queue"
+    "name": "tc-feature-core-work-queue",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-driver-response",
@@ -1935,7 +2036,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-driver-response"
+    "name": "tc-feature-driver-response",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-glossary",
@@ -1954,7 +2056,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-glossary"
+    "name": "tc-feature-glossary",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-hearing-scheduling",
@@ -1973,7 +2076,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-hearing-scheduling"
+    "name": "tc-feature-hearing-scheduling",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-jurisdiction-library",
@@ -1992,7 +2096,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-jurisdiction-library"
+    "name": "tc-feature-jurisdiction-library",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-jurisdiction-rules",
@@ -2011,7 +2116,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-jurisdiction-rules"
+    "name": "tc-feature-jurisdiction-rules",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-license-points",
@@ -2030,7 +2136,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-license-points"
+    "name": "tc-feature-license-points",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-multi-jurisdiction-dashboard",
@@ -2049,7 +2156,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-multi-jurisdiction-dashboard"
+    "name": "tc-feature-multi-jurisdiction-dashboard",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-payment-checkout",
@@ -2068,7 +2176,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-payment-checkout"
+    "name": "tc-feature-payment-checkout",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-payment-track",
@@ -2087,7 +2196,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-payment-track"
+    "name": "tc-feature-payment-track",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-feature-work-queue",
@@ -2106,7 +2216,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-feature-work-queue"
+    "name": "tc-feature-work-queue",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R1",
@@ -2124,7 +2235,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R1"
+    "name": "tc-rule-R1",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R10",
@@ -2142,7 +2254,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R10"
+    "name": "tc-rule-R10",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R11",
@@ -2160,7 +2273,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R11"
+    "name": "tc-rule-R11",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R12",
@@ -2178,7 +2292,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R12"
+    "name": "tc-rule-R12",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R13",
@@ -2196,7 +2311,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R13"
+    "name": "tc-rule-R13",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R2",
@@ -2214,7 +2330,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R2"
+    "name": "tc-rule-R2",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R20",
@@ -2232,7 +2349,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R20"
+    "name": "tc-rule-R20",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R21",
@@ -2250,7 +2368,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R21"
+    "name": "tc-rule-R21",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R22",
@@ -2268,7 +2387,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R22"
+    "name": "tc-rule-R22",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R23",
@@ -2286,7 +2406,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R23"
+    "name": "tc-rule-R23",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R3",
@@ -2304,7 +2425,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R3"
+    "name": "tc-rule-R3",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R30",
@@ -2322,7 +2444,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R30"
+    "name": "tc-rule-R30",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R31",
@@ -2340,7 +2463,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R31"
+    "name": "tc-rule-R31",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R40",
@@ -2358,7 +2482,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R40"
+    "name": "tc-rule-R40",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R50",
@@ -2376,7 +2501,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R50"
+    "name": "tc-rule-R50",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R51",
@@ -2394,7 +2520,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R51"
+    "name": "tc-rule-R51",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R60",
@@ -2412,7 +2539,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R60"
+    "name": "tc-rule-R60",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-R70",
@@ -2430,7 +2558,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-R70"
+    "name": "tc-rule-R70",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-ASSISTANT-01",
@@ -2448,7 +2577,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-ASSISTANT-01"
+    "name": "tc-rule-TT-ASSISTANT-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-ASSISTANT-02",
@@ -2466,7 +2596,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-ASSISTANT-02"
+    "name": "tc-rule-TT-ASSISTANT-02",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-AUDIT-01",
@@ -2484,7 +2615,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-AUDIT-01"
+    "name": "tc-rule-TT-AUDIT-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-AUDIT-02",
@@ -2502,7 +2634,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-AUDIT-02"
+    "name": "tc-rule-TT-AUDIT-02",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-AUTH-01",
@@ -2520,7 +2653,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-AUTH-01"
+    "name": "tc-rule-TT-AUTH-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-CITATION-01",
@@ -2538,7 +2672,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-CITATION-01"
+    "name": "tc-rule-TT-CITATION-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-CITATION-02",
@@ -2556,7 +2691,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-CITATION-02"
+    "name": "tc-rule-TT-CITATION-02",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-CONTEST-01",
@@ -2574,7 +2710,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-CONTEST-01"
+    "name": "tc-rule-TT-CONTEST-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-CONTEST-02",
@@ -2592,7 +2729,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-CONTEST-02"
+    "name": "tc-rule-TT-CONTEST-02",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-CONTEST-03",
@@ -2610,7 +2748,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-CONTEST-03"
+    "name": "tc-rule-TT-CONTEST-03",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-DEADLINE-01",
@@ -2628,7 +2767,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-DEADLINE-01"
+    "name": "tc-rule-TT-DEADLINE-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-DETERMINATION-01",
@@ -2646,7 +2786,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-DETERMINATION-01"
+    "name": "tc-rule-TT-DETERMINATION-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-DETERMINATION-02",
@@ -2664,7 +2805,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-DETERMINATION-02"
+    "name": "tc-rule-TT-DETERMINATION-02",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-FEE-01",
@@ -2682,7 +2824,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-FEE-01"
+    "name": "tc-rule-TT-FEE-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-GLOSSARY-01",
@@ -2700,7 +2843,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-GLOSSARY-01"
+    "name": "tc-rule-TT-GLOSSARY-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-HEARING-01",
@@ -2718,7 +2862,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-HEARING-01"
+    "name": "tc-rule-TT-HEARING-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-HEARING-02",
@@ -2736,7 +2881,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-HEARING-02"
+    "name": "tc-rule-TT-HEARING-02",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-INTAKE-01",
@@ -2754,7 +2900,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-INTAKE-01"
+    "name": "tc-rule-TT-INTAKE-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-INTAKE-02",
@@ -2772,7 +2919,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-INTAKE-02"
+    "name": "tc-rule-TT-INTAKE-02",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-INTAKE-03",
@@ -2790,7 +2938,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-INTAKE-03"
+    "name": "tc-rule-TT-INTAKE-03",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-LICENSE-01",
@@ -2808,7 +2957,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-LICENSE-01"
+    "name": "tc-rule-TT-LICENSE-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-LICENSE-02",
@@ -2826,7 +2976,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-LICENSE-02"
+    "name": "tc-rule-TT-LICENSE-02",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-LICENSE-PKG-01",
@@ -2844,7 +2995,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-LICENSE-PKG-01"
+    "name": "tc-rule-TT-LICENSE-PKG-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-NAV-01",
@@ -2862,7 +3014,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-NAV-01"
+    "name": "tc-rule-TT-NAV-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-NAV-02",
@@ -2880,7 +3033,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-NAV-02"
+    "name": "tc-rule-TT-NAV-02",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-PAYMENT-01",
@@ -2898,7 +3052,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-PAYMENT-01"
+    "name": "tc-rule-TT-PAYMENT-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-PAYMENT-02",
@@ -2916,7 +3071,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-PAYMENT-02"
+    "name": "tc-rule-TT-PAYMENT-02",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-PAYMENT-03",
@@ -2934,7 +3090,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-PAYMENT-03"
+    "name": "tc-rule-TT-PAYMENT-03",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-PLATFORM-01",
@@ -2952,7 +3109,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-PLATFORM-01"
+    "name": "tc-rule-TT-PLATFORM-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-PLATFORM-02",
@@ -2970,7 +3128,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-PLATFORM-02"
+    "name": "tc-rule-TT-PLATFORM-02",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-PLATFORM-03",
@@ -2988,7 +3147,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-PLATFORM-03"
+    "name": "tc-rule-TT-PLATFORM-03",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-QUEUE-01",
@@ -3006,7 +3166,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-QUEUE-01"
+    "name": "tc-rule-TT-QUEUE-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-RBAC-01",
@@ -3024,7 +3185,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-RBAC-01"
+    "name": "tc-rule-TT-RBAC-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-RBAC-02",
@@ -3042,7 +3204,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-RBAC-02"
+    "name": "tc-rule-TT-RBAC-02",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-RBAC-03",
@@ -3060,7 +3223,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-RBAC-03"
+    "name": "tc-rule-TT-RBAC-03",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-RBAC-04",
@@ -3078,7 +3242,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-RBAC-04"
+    "name": "tc-rule-TT-RBAC-04",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-RULES-01",
@@ -3096,7 +3261,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-RULES-01"
+    "name": "tc-rule-TT-RULES-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-RULES-02",
@@ -3114,7 +3280,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-RULES-02"
+    "name": "tc-rule-TT-RULES-02",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-rule-TT-STATE-01",
@@ -3132,7 +3299,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-rule-TT-STATE-01"
+    "name": "tc-rule-TT-STATE-01",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-citation-lifecycle--adjudicated->closed",
@@ -3151,7 +3319,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-citation-lifecycle--adjudicated->closed"
+    "name": "tc-transition-citation-lifecycle--adjudicated->closed",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-citation-lifecycle--incontest->adjudicated",
@@ -3170,7 +3339,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-citation-lifecycle--incontest->adjudicated"
+    "name": "tc-transition-citation-lifecycle--incontest->adjudicated",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-citation-lifecycle--incontest->dismissed",
@@ -3190,7 +3360,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-citation-lifecycle--incontest->dismissed"
+    "name": "tc-transition-citation-lifecycle--incontest->dismissed",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-citation-lifecycle--issued->adjudicated",
@@ -3209,7 +3380,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-citation-lifecycle--issued->adjudicated"
+    "name": "tc-transition-citation-lifecycle--issued->adjudicated",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-citation-lifecycle--issued->responded",
@@ -3228,7 +3400,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-citation-lifecycle--issued->responded"
+    "name": "tc-transition-citation-lifecycle--issued->responded",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-citation-lifecycle--responded->incontest",
@@ -3247,7 +3420,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-citation-lifecycle--responded->incontest"
+    "name": "tc-transition-citation-lifecycle--responded->incontest",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-contest-track--heard->dismissed",
@@ -3267,7 +3441,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-contest-track--heard->dismissed"
+    "name": "tc-transition-contest-track--heard->dismissed",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-contest-track--heard->reduced",
@@ -3287,7 +3462,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-contest-track--heard->reduced"
+    "name": "tc-transition-contest-track--heard->reduced",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-contest-track--heard->upheld",
@@ -3307,7 +3483,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-contest-track--heard->upheld"
+    "name": "tc-transition-contest-track--heard->upheld",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-contest-track--hearingrequested->scheduled",
@@ -3326,7 +3503,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-contest-track--hearingrequested->scheduled"
+    "name": "tc-transition-contest-track--hearingrequested->scheduled",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-contest-track--hearingrequested->withdrawn",
@@ -3346,7 +3524,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-contest-track--hearingrequested->withdrawn"
+    "name": "tc-transition-contest-track--hearingrequested->withdrawn",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-contest-track--notcontested->hearingrequested",
@@ -3365,7 +3544,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-contest-track--notcontested->hearingrequested"
+    "name": "tc-transition-contest-track--notcontested->hearingrequested",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-contest-track--scheduled->heard",
@@ -3384,7 +3564,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-contest-track--scheduled->heard"
+    "name": "tc-transition-contest-track--scheduled->heard",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-contest-track--scheduled->withdrawn",
@@ -3404,7 +3585,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-contest-track--scheduled->withdrawn"
+    "name": "tc-transition-contest-track--scheduled->withdrawn",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-license-track--pointsassessed->warning",
@@ -3424,7 +3606,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-license-track--pointsassessed->warning"
+    "name": "tc-transition-license-track--pointsassessed->warning",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-license-track--suspended->reinstated",
@@ -3444,7 +3627,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-license-track--suspended->reinstated"
+    "name": "tc-transition-license-track--suspended->reinstated",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-license-track--valid->pointsassessed",
@@ -3464,7 +3648,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-license-track--valid->pointsassessed"
+    "name": "tc-transition-license-track--valid->pointsassessed",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-license-track--valid->warning",
@@ -3483,7 +3668,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-license-track--valid->warning"
+    "name": "tc-transition-license-track--valid->warning",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-license-track--warning->suspended",
@@ -3502,7 +3688,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-license-track--warning->suspended"
+    "name": "tc-transition-license-track--warning->suspended",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-payment-track--collections->paid",
@@ -3522,7 +3709,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-payment-track--collections->paid"
+    "name": "tc-transition-payment-track--collections->paid",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-payment-track--due->late",
@@ -3541,7 +3729,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-payment-track--due->late"
+    "name": "tc-transition-payment-track--due->late",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-payment-track--due->paid",
@@ -3560,7 +3749,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-payment-track--due->paid"
+    "name": "tc-transition-payment-track--due->paid",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-payment-track--late->collections",
@@ -3579,7 +3769,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-payment-track--late->collections"
+    "name": "tc-transition-payment-track--late->collections",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-payment-track--paid->notowed",
@@ -3599,7 +3790,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-payment-track--paid->notowed"
+    "name": "tc-transition-payment-track--paid->notowed",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-payment-track--pending->due",
@@ -3618,7 +3810,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-payment-track--pending->due"
+    "name": "tc-transition-payment-track--pending->due",
+    "expectation_count": 351
   },
   {
     "test_case_id": "tc-transition-payment-track--pending->notowed",
@@ -3637,6 +3830,7 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:30:00Z",
     "modified_by": "admin-example",
-    "name": "tc-transition-payment-track--pending->notowed"
+    "name": "tc-transition-payment-track--pending->notowed",
+    "expectation_count": 351
   }
 ]

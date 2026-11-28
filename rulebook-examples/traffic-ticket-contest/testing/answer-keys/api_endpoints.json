@@ -12,7 +12,8 @@
     "created_at": "2026-06-06T12:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "assistant-ask"
   },
   {
     "api_endpoint_id": "case-timeline-report",
@@ -29,7 +30,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "case-timeline-report"
   },
   {
     "api_endpoint_id": "citation-advance-state",
@@ -46,7 +48,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "citation-advance-state"
   },
   {
     "api_endpoint_id": "citation-contest",
@@ -63,7 +66,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "citation-contest"
   },
   {
     "api_endpoint_id": "citation-dismiss",
@@ -80,7 +84,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "citation-dismiss"
   },
   {
     "api_endpoint_id": "citation-import",
@@ -97,7 +102,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "citation-import"
   },
   {
     "api_endpoint_id": "citation-ocr",
@@ -114,7 +120,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "citation-ocr"
   },
   {
     "api_endpoint_id": "citation-request-hearing",
@@ -130,7 +137,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "triggers_state_machine": "contest-track"
+    "triggers_state_machine": "contest-track",
+    "name": "citation-request-hearing"
   },
   {
     "api_endpoint_id": "citation-respond",
@@ -146,7 +154,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "triggers_state_machine": "citation-lifecycle"
+    "triggers_state_machine": "citation-lifecycle",
+    "name": "citation-respond"
   },
   {
     "api_endpoint_id": "citation-withdraw-contest",
@@ -163,7 +172,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "citation-withdraw-contest"
   },
   {
     "api_endpoint_id": "collections-sweep",
@@ -178,7 +188,8 @@
     "created_at": "2026-06-06T12:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "collections-sweep"
   },
   {
     "api_endpoint_id": "config-drift-check",
@@ -195,7 +206,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "config-drift-check"
   },
   {
     "api_endpoint_id": "config-save",
@@ -212,7 +224,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "config-save"
   },
   {
     "api_endpoint_id": "cost-rollup",
@@ -229,7 +242,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "cost-rollup"
   },
   {
     "api_endpoint_id": "deadline-report",
@@ -246,7 +260,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "deadline-report"
   },
   {
     "api_endpoint_id": "determination-issue",
@@ -263,7 +278,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "determination-issue"
   },
   {
     "api_endpoint_id": "determination-letter-generate",
@@ -280,7 +296,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "determination-letter-generate"
   },
   {
     "api_endpoint_id": "driver-lookup",
@@ -297,7 +314,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "driver-lookup"
   },
   {
     "api_endpoint_id": "feature-toggle-license",
@@ -314,7 +332,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "feature-toggle-license"
   },
   {
     "api_endpoint_id": "hearing-prep",
@@ -331,7 +350,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "hearing-prep"
   },
   {
     "api_endpoint_id": "hearing-record-outcome",
@@ -347,7 +367,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "triggers_state_machine": "contest-track"
+    "triggers_state_machine": "contest-track",
+    "name": "hearing-record-outcome"
   },
   {
     "api_endpoint_id": "hearing-reschedule",
@@ -364,7 +385,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "hearing-reschedule"
   },
   {
     "api_endpoint_id": "hearing-schedule",
@@ -380,7 +402,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "triggers_state_machine": "contest-track"
+    "triggers_state_machine": "contest-track",
+    "name": "hearing-schedule"
   },
   {
     "api_endpoint_id": "impersonate-role",
@@ -397,7 +420,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "impersonate-role"
   },
   {
     "api_endpoint_id": "jurisdiction-recompute",
@@ -412,7 +436,8 @@
     "created_at": "2026-06-06T12:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "jurisdiction-recompute"
   },
   {
     "api_endpoint_id": "late-penalty-accrue",
@@ -429,7 +454,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "late-penalty-accrue"
   },
   {
     "api_endpoint_id": "license-suspension-check",
@@ -446,7 +472,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "license-suspension-check"
   },
   {
     "api_endpoint_id": "ocr-cost-estimate",
@@ -463,7 +490,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "ocr-cost-estimate"
   },
   {
     "api_endpoint_id": "package-toggle",
@@ -480,7 +508,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "package-toggle"
   },
   {
     "api_endpoint_id": "payment-checkout",
@@ -496,7 +525,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "triggers_state_machine": "payment-track"
+    "triggers_state_machine": "payment-track",
+    "name": "payment-checkout"
   },
   {
     "api_endpoint_id": "payment-plan-enroll",
@@ -513,7 +543,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "payment-plan-enroll"
   },
   {
     "api_endpoint_id": "payment-plan-installment",
@@ -530,7 +561,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "payment-plan-installment"
   },
   {
     "api_endpoint_id": "payment-refund",
@@ -547,7 +579,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "payment-refund"
   },
   {
     "api_endpoint_id": "points-assess",
@@ -564,7 +597,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "points-assess"
   },
   {
     "api_endpoint_id": "points-recompute",
@@ -581,7 +615,8 @@
     "created_at": "2026-06-07T19:00:00Z",
     "created_by": "admin-example",
     "modified_at": "2026-06-07T19:00:00Z",
-    "modified_by": "admin-example"
+    "modified_by": "admin-example",
+    "name": "points-recompute"
   },
   {
     "api_endpoint_id": "work-queue-report",
@@ -597,6 +632,7 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "where_clause": "assigned_to = app.jwt_email()"
+    "where_clause": "assigned_to = app.jwt_email()",
+    "name": "work-queue-report"
   }
 ]

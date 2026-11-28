@@ -8,7 +8,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T20:15:00Z",
     "modified_by": "admin-example",
-    "name": "analytics"
+    "name": "analytics",
+    "term_count": null
   },
   {
     "glossary_category_id": "legal",
@@ -19,7 +20,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "name": "legal"
+    "name": "legal",
+    "term_count": null
   },
   {
     "glossary_category_id": "lifecycle",
@@ -30,7 +32,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "name": "lifecycle"
+    "name": "lifecycle",
+    "term_count": null
   },
   {
     "glossary_category_id": "money",
@@ -41,7 +44,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "name": "money"
+    "name": "money",
+    "term_count": null
   },
   {
     "glossary_category_id": "people",
@@ -52,7 +56,8 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-06T12:00:00Z",
     "modified_by": "admin-example",
-    "name": "people"
+    "name": "people",
+    "term_count": null
   },
   {
     "glossary_category_id": "system",
@@ -63,6 +68,7 @@
     "created_by": "admin-example",
     "modified_at": "2026-06-07T20:15:00Z",
     "modified_by": "admin-example",
-    "name": "system"
+    "name": "system",
+    "term_count": null
   }
 ]

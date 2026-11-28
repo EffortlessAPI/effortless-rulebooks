@@ -1,0 +1,503 @@
+{
+  "business_rules": {
+    "primary_key": "business_rule_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 57
+  },
+  "business_rule_categories": {
+    "primary_key": "business_rule_category_id",
+    "computed_columns": [
+      "name",
+      "rule_count"
+    ],
+    "record_count": 15
+  },
+  "glossary_categories": {
+    "primary_key": "glossary_category_id",
+    "computed_columns": [
+      "name",
+      "term_count"
+    ],
+    "record_count": 6
+  },
+  "glossary_terms": {
+    "primary_key": "glossary_term_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 36
+  },
+  "roles": {
+    "primary_key": "role_id",
+    "computed_columns": [
+      "name",
+      "app_user_count"
+    ],
+    "record_count": 4
+  },
+  "audit_log_entries": {
+    "primary_key": "audit_log_entrie_id",
+    "computed_columns": [
+      "name",
+      "is_override_action",
+      "entry_age_hours"
+    ],
+    "record_count": 7
+  },
+  "platform_naviation": {
+    "primary_key": "platform_naviation_id",
+    "computed_columns": [
+      "name",
+      "package_is_active",
+      "package_is_licensed",
+      "admin_can_create",
+      "admin_can_read",
+      "admin_can_update",
+      "admin_can_delete",
+      "manager_can_create",
+      "manager_can_read",
+      "manager_can_update",
+      "manager_can_delete",
+      "representative_can_create",
+      "representative_can_read",
+      "representative_can_update",
+      "representative_can_delete",
+      "external_llm_can_create",
+      "external_llm_can_read",
+      "external_llm_can_update",
+      "external_llm_can_delete",
+      "depth",
+      "full_path",
+      "handler_base_name"
+    ],
+    "record_count": 40
+  },
+  "jurisdictions": {
+    "primary_key": "jurisdiction_id",
+    "computed_columns": [
+      "name",
+      "parent_jurisdiction_name",
+      "is_root_jurisdiction",
+      "child_jurisdiction_count",
+      "relative_path",
+      "rule_count",
+      "source_document_count"
+    ],
+    "record_count": 3
+  },
+  "jurisdiction_source_documents": {
+    "primary_key": "jurisdiction_source_document_id",
+    "computed_columns": [
+      "name",
+      "jurisdiction_name",
+      "relative_path",
+      "rule_count"
+    ],
+    "record_count": 5
+  },
+  "jurisdiction_rules": {
+    "primary_key": "jurisdiction_rule_id",
+    "computed_columns": [
+      "name",
+      "route_path",
+      "relative_path",
+      "jurisdiction_name",
+      "jurisdiction_type",
+      "is_federal"
+    ],
+    "record_count": 5
+  },
+  "app_users": {
+    "primary_key": "app_user_id",
+    "computed_columns": [
+      "name_redacted",
+      "email_address_redacted",
+      "role_title",
+      "role_description"
+    ],
+    "record_count": 7
+  },
+  "site_branding": {
+    "primary_key": "site_branding_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 1
+  },
+  "reference_documents": {
+    "primary_key": "reference_document_id",
+    "computed_columns": [
+      "name",
+      "is_appeal_board_decision"
+    ],
+    "record_count": 4
+  },
+  "state_machines": {
+    "primary_key": "state_machine_id",
+    "computed_columns": [
+      "name",
+      "package_is_active",
+      "state_count",
+      "transition_rule_count"
+    ],
+    "record_count": 4
+  },
+  "machine_states": {
+    "primary_key": "machine_state_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 25
+  },
+  "state_transition_rules": {
+    "primary_key": "state_transition_rule_id",
+    "computed_columns": [
+      "name",
+      "from_state_key",
+      "to_state_key",
+      "is_forward_edge"
+    ],
+    "record_count": 26
+  },
+  "state_transitions": {
+    "primary_key": "state_transition_id",
+    "computed_columns": [
+      "name",
+      "is_forward"
+    ],
+    "record_count": 20
+  },
+  "work_queue_items": {
+    "primary_key": "work_queue_item_id",
+    "computed_columns": [
+      "name",
+      "due_in_days",
+      "is_overdue",
+      "urgency_bucket",
+      "is_urgent"
+    ],
+    "record_count": 4
+  },
+  "ai_models": {
+    "primary_key": "ai_model_id",
+    "computed_columns": [
+      "name",
+      "pricing_version_count",
+      "turn_count",
+      "total_cost"
+    ],
+    "record_count": 3
+  },
+  "model_pricing_versions": {
+    "primary_key": "model_pricing_version_id",
+    "computed_columns": [
+      "name",
+      "ai_model_title",
+      "turn_count"
+    ],
+    "record_count": 4
+  },
+  "assistant_turns": {
+    "primary_key": "assistant_turn_id",
+    "computed_columns": [
+      "name",
+      "total_tokens",
+      "billable_input_tokens",
+      "ai_model_title",
+      "input_price_per_m_tok",
+      "cached_input_price_per_m_tok",
+      "output_price_per_m_tok",
+      "input_cost",
+      "output_cost",
+      "total_cost"
+    ],
+    "record_count": 5
+  },
+  "platforms": {
+    "primary_key": "platform_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 1
+  },
+  "erb_packages": {
+    "primary_key": "erb_package_id",
+    "computed_columns": [
+      "name",
+      "feature_count",
+      "shipped_feature_count"
+    ],
+    "record_count": 6
+  },
+  "erb_feature_statuses": {
+    "primary_key": "erb_feature_status_id",
+    "computed_columns": [
+      "name",
+      "feature_count"
+    ],
+    "record_count": 5
+  },
+  "erb_feature_categories": {
+    "primary_key": "erb_feature_category_id",
+    "computed_columns": [
+      "name",
+      "feature_count"
+    ],
+    "record_count": 18
+  },
+  "erb_features": {
+    "primary_key": "erb_feature_id",
+    "computed_columns": [
+      "name",
+      "route_path",
+      "relative_path",
+      "package_is_licensed",
+      "category_title",
+      "status_title",
+      "status_description",
+      "status_is_active"
+    ],
+    "record_count": 75
+  },
+  "erb_tables": {
+    "primary_key": "erb_table_id",
+    "computed_columns": [
+      "name",
+      "package_is_active",
+      "package_is_licensed",
+      "admin_can_create",
+      "admin_can_read",
+      "admin_can_update",
+      "admin_can_delete",
+      "manager_can_create",
+      "manager_can_read",
+      "manager_can_update",
+      "manager_can_delete",
+      "representative_can_create",
+      "representative_can_read",
+      "representative_can_update",
+      "representative_can_delete",
+      "external_llm_can_create",
+      "external_llm_can_read",
+      "external_llm_can_update",
+      "external_llm_can_delete"
+    ],
+    "record_count": 55
+  },
+  "erb_fields": {
+    "primary_key": "erb_field_id",
+    "computed_columns": [
+      "name",
+      "table_package_is_active",
+      "is_calculated",
+      "admin_can_create",
+      "admin_can_read",
+      "admin_can_update",
+      "admin_can_delete",
+      "manager_can_create",
+      "manager_can_read",
+      "manager_can_update",
+      "manager_can_delete",
+      "representative_can_create",
+      "representative_can_read",
+      "representative_can_update",
+      "representative_can_delete",
+      "external_llm_can_create",
+      "external_llm_can_read",
+      "external_llm_can_update",
+      "external_llm_can_delete"
+    ],
+    "record_count": 980
+  },
+  "api_endpoints": {
+    "primary_key": "api_endpoint_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 36
+  },
+  "subject_state_instances": {
+    "primary_key": "subject_state_instance_id",
+    "computed_columns": [
+      "name",
+      "is_current",
+      "has_complete_lineage"
+    ],
+    "record_count": 11
+  },
+  "violation_types": {
+    "primary_key": "violation_type_id",
+    "computed_columns": [
+      "name",
+      "jurisdiction_label",
+      "traffic_school_point_cap",
+      "is_school_eligible_by_cap",
+      "count_of_citations"
+    ],
+    "record_count": 7
+  },
+  "drivers": {
+    "primary_key": "driver_id",
+    "computed_columns": [
+      "name",
+      "full_name",
+      "home_jurisdiction_label",
+      "suspension_threshold",
+      "warning_threshold",
+      "count_of_citations",
+      "active_points",
+      "license_status"
+    ],
+    "record_count": 6
+  },
+  "citations": {
+    "primary_key": "citation_id",
+    "computed_columns": [
+      "name",
+      "driver_label",
+      "violation_label",
+      "jurisdiction_label",
+      "base_fine_usd",
+      "violation_points",
+      "days_to_respond",
+      "days_to_pay_after_ruling",
+      "late_penalty_pct",
+      "days_late_to_collections",
+      "response_due_date",
+      "days_until_response_due",
+      "is_response_overdue",
+      "count_of_hearings",
+      "latest_hearing_outcome",
+      "contest_status",
+      "is_dismissed",
+      "is_guilty",
+      "amount_due_usd",
+      "payment_due_date",
+      "is_payment_late",
+      "collections_deadline",
+      "is_in_collections",
+      "payment_status",
+      "effective_points",
+      "citation_status"
+    ],
+    "record_count": 12
+  },
+  "hearings": {
+    "primary_key": "hearing_id",
+    "computed_columns": [
+      "name",
+      "citation_label"
+    ],
+    "record_count": 5
+  },
+  "payments": {
+    "primary_key": "payment_id",
+    "computed_columns": [
+      "name",
+      "citation_label"
+    ],
+    "record_count": 3
+  },
+  "case_events": {
+    "primary_key": "case_event_id",
+    "computed_columns": [
+      "name",
+      "citation_label"
+    ],
+    "record_count": 12
+  },
+  "test_category": {
+    "primary_key": "test_category_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 7
+  },
+  "test_surface": {
+    "primary_key": "test_surface_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 5
+  },
+  "test_technology": {
+    "primary_key": "test_technology_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 4
+  },
+  "test_case": {
+    "primary_key": "test_case_id",
+    "computed_columns": [
+      "name",
+      "expectation_count"
+    ],
+    "record_count": 194
+  },
+  "test_expectation": {
+    "primary_key": "test_expectation_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 351
+  },
+  "screen_layouts": {
+    "primary_key": "screen_layout_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 40
+  },
+  "screen_sections": {
+    "primary_key": "screen_section_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 88
+  },
+  "field_display_hints": {
+    "primary_key": "field_display_hint_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 485
+  },
+  "fee_schedules": {
+    "primary_key": "fee_schedule_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 21
+  },
+  "deadline_rules": {
+    "primary_key": "deadline_rule_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 9
+  },
+  "contest_grounds": {
+    "primary_key": "contest_ground_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 14
+  },
+  "driver_license_points": {
+    "primary_key": "driver_license_point_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  },
+  "build_phases": {
+    "primary_key": "build_phase_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 5
+  }
+}

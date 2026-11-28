@@ -15,8 +15,12 @@
     "notes": null,
     "parent_jurisdiction": null,
     "name": "ca-us",
-    "is_root_jurisdiction": true,
-    "relative_path": "/library/jurisdictions/j-ca-la"
+    "parent_jurisdiction_name": null,
+    "is_root_jurisdiction": 1,
+    "child_jurisdiction_count": 0,
+    "relative_path": "/library/jurisdictions/j-ca-la",
+    "rule_count": 2,
+    "source_document_count": 2
   },
   {
     "jurisdiction_id": "j-ny-nyc",
@@ -34,8 +38,12 @@
     "notes": null,
     "parent_jurisdiction": null,
     "name": "ny-us",
-    "is_root_jurisdiction": true,
-    "relative_path": "/library/jurisdictions/j-ny-nyc"
+    "parent_jurisdiction_name": null,
+    "is_root_jurisdiction": 1,
+    "child_jurisdiction_count": 0,
+    "relative_path": "/library/jurisdictions/j-ny-nyc",
+    "rule_count": 1,
+    "source_document_count": 1
   },
   {
     "jurisdiction_id": "j-tx-aus",
@@ -53,7 +61,11 @@
     "notes": null,
     "parent_jurisdiction": null,
     "name": "tx-us",
-    "is_root_jurisdiction": true,
-    "relative_path": "/library/jurisdictions/j-tx-aus"
+    "parent_jurisdiction_name": null,
+    "is_root_jurisdiction": 1,
+    "child_jurisdiction_count": 0,
+    "relative_path": "/library/jurisdictions/j-tx-aus",
+    "rule_count": 2,
+    "source_document_count": 2
   }
 ]

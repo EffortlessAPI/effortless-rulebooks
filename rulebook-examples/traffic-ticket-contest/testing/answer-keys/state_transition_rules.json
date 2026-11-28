@@ -7,6 +7,8 @@
     "guard_description": "Fine paid in full or citation dismissed.",
     "triggered_by_role": "system",
     "name": "citation-lifecycle--adjudicated->closed",
+    "from_state_key": "Adjudicated",
+    "to_state_key": "Closed",
     "is_forward_edge": true
   },
   {
@@ -17,6 +19,8 @@
     "guard_description": "Hearing returns a guilty/upheld outcome.",
     "triggered_by_role": "system",
     "name": "citation-lifecycle--incontest->adjudicated",
+    "from_state_key": "InContest",
+    "to_state_key": "Adjudicated",
     "is_forward_edge": true
   },
   {
@@ -33,6 +37,8 @@
     "modified_at": "2026-06-07T19:15:00Z",
     "modified_by": "admin-example",
     "name": "citation-lifecycle--incontest->dismissed",
+    "from_state_key": "InContest",
+    "to_state_key": "dismissed",
     "is_forward_edge": true
   },
   {
@@ -43,6 +49,8 @@
     "guard_description": "Response deadline passes with no response (default).",
     "triggered_by_role": "system",
     "name": "citation-lifecycle--issued->adjudicated",
+    "from_state_key": "Issued",
+    "to_state_key": "Adjudicated",
     "is_forward_edge": true
   },
   {
@@ -53,6 +61,8 @@
     "guard_description": "Driver responds (pays or requests hearing).",
     "triggered_by_role": "representative",
     "name": "citation-lifecycle--issued->responded",
+    "from_state_key": "Issued",
+    "to_state_key": "Responded",
     "is_forward_edge": true
   },
   {
@@ -63,6 +73,8 @@
     "guard_description": "Driver elects to contest and a hearing exists.",
     "triggered_by_role": "representative",
     "name": "citation-lifecycle--responded->incontest",
+    "from_state_key": "Responded",
+    "to_state_key": "InContest",
     "is_forward_edge": true
   },
   {
@@ -79,6 +91,8 @@
     "modified_at": "2026-06-07T19:15:00Z",
     "modified_by": "admin-example",
     "name": "contest-track--heard->dismissed",
+    "from_state_key": "Heard",
+    "to_state_key": "dismissed",
     "is_forward_edge": true
   },
   {
@@ -95,6 +109,8 @@
     "modified_at": "2026-06-07T19:15:00Z",
     "modified_by": "admin-example",
     "name": "contest-track--heard->reduced",
+    "from_state_key": "Heard",
+    "to_state_key": "reduced",
     "is_forward_edge": true
   },
   {
@@ -111,6 +127,8 @@
     "modified_at": "2026-06-07T19:15:00Z",
     "modified_by": "admin-example",
     "name": "contest-track--heard->upheld",
+    "from_state_key": "Heard",
+    "to_state_key": "upheld",
     "is_forward_edge": true
   },
   {
@@ -121,6 +139,8 @@
     "guard_description": "Court schedules the hearing.",
     "triggered_by_role": "manager",
     "name": "contest-track--hearingrequested->scheduled",
+    "from_state_key": "HearingRequested",
+    "to_state_key": "Scheduled",
     "is_forward_edge": true
   },
   {
@@ -137,6 +157,8 @@
     "modified_at": "2026-06-07T19:15:00Z",
     "modified_by": "admin-example",
     "name": "contest-track--hearingrequested->withdrawn",
+    "from_state_key": "HearingRequested",
+    "to_state_key": "withdrawn",
     "is_forward_edge": true
   },
   {
@@ -147,6 +169,8 @@
     "guard_description": "Driver requests a hearing.",
     "triggered_by_role": "representative",
     "name": "contest-track--notcontested->hearingrequested",
+    "from_state_key": "NotContested",
+    "to_state_key": "HearingRequested",
     "is_forward_edge": true
   },
   {
@@ -157,6 +181,8 @@
     "guard_description": "Hearing is held and an outcome recorded.",
     "triggered_by_role": "manager",
     "name": "contest-track--scheduled->heard",
+    "from_state_key": "Scheduled",
+    "to_state_key": "Heard",
     "is_forward_edge": true
   },
   {
@@ -173,6 +199,8 @@
     "modified_at": "2026-06-07T19:15:00Z",
     "modified_by": "admin-example",
     "name": "contest-track--scheduled->withdrawn",
+    "from_state_key": "Scheduled",
+    "to_state_key": "withdrawn",
     "is_forward_edge": true
   },
   {
@@ -189,6 +217,8 @@
     "modified_at": "2026-06-07T19:15:00Z",
     "modified_by": "admin-example",
     "name": "license-track--pointsassessed->warning",
+    "from_state_key": "pointsassessed",
+    "to_state_key": "Warning",
     "is_forward_edge": true
   },
   {
@@ -205,6 +235,8 @@
     "modified_at": "2026-06-07T19:15:00Z",
     "modified_by": "admin-example",
     "name": "license-track--suspended->reinstated",
+    "from_state_key": "Suspended",
+    "to_state_key": "reinstated",
     "is_forward_edge": true
   },
   {
@@ -221,6 +253,8 @@
     "modified_at": "2026-06-07T19:15:00Z",
     "modified_by": "admin-example",
     "name": "license-track--valid->pointsassessed",
+    "from_state_key": "Valid",
+    "to_state_key": "pointsassessed",
     "is_forward_edge": true
   },
   {
@@ -231,6 +265,8 @@
     "guard_description": "Active points reach the warning threshold.",
     "triggered_by_role": "system",
     "name": "license-track--valid->warning",
+    "from_state_key": "Valid",
+    "to_state_key": "Warning",
     "is_forward_edge": true
   },
   {
@@ -241,6 +277,8 @@
     "guard_description": "Active points reach the suspension threshold.",
     "triggered_by_role": "system",
     "name": "license-track--warning->suspended",
+    "from_state_key": "Warning",
+    "to_state_key": "Suspended",
     "is_forward_edge": true
   },
   {
@@ -257,6 +295,8 @@
     "modified_at": "2026-06-07T19:15:00Z",
     "modified_by": "admin-example",
     "name": "payment-track--collections->paid",
+    "from_state_key": "Collections",
+    "to_state_key": "Paid",
     "is_forward_edge": true
   },
   {
@@ -267,6 +307,8 @@
     "guard_description": "Payment due date passes unpaid.",
     "triggered_by_role": "system",
     "name": "payment-track--due->late",
+    "from_state_key": "Due",
+    "to_state_key": "Late",
     "is_forward_edge": true
   },
   {
@@ -277,6 +319,8 @@
     "guard_description": "Driver pays in full.",
     "triggered_by_role": "representative",
     "name": "payment-track--due->paid",
+    "from_state_key": "Due",
+    "to_state_key": "Paid",
     "is_forward_edge": true
   },
   {
@@ -287,6 +331,8 @@
     "guard_description": "Late beyond the jurisdiction's collections window.",
     "triggered_by_role": "system",
     "name": "payment-track--late->collections",
+    "from_state_key": "Late",
+    "to_state_key": "Collections",
     "is_forward_edge": true
   },
   {
@@ -303,6 +349,8 @@
     "modified_at": "2026-06-07T19:15:00Z",
     "modified_by": "admin-example",
     "name": "payment-track--paid->notowed",
+    "from_state_key": "Paid",
+    "to_state_key": "NotOwed",
     "is_forward_edge": true
   },
   {
@@ -313,6 +361,8 @@
     "guard_description": "Driver found liable; fine assessed.",
     "triggered_by_role": "system",
     "name": "payment-track--pending->due",
+    "from_state_key": "Pending",
+    "to_state_key": "Due",
     "is_forward_edge": true
   },
   {
@@ -323,6 +373,8 @@
     "guard_description": "Citation dismissed at hearing.",
     "triggered_by_role": "system",
     "name": "payment-track--pending->notowed",
+    "from_state_key": "Pending",
+    "to_state_key": "NotOwed",
     "is_forward_edge": true
   }
 ]
