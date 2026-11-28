@@ -1,0 +1,690 @@
+[
+  {
+    "entity": "system_stats",
+    "field": "SlopeError",
+    "formula": "={{EmpiricalLogLogSlope}} - {{TheoreticalLogLogSlope}}",
+    "record_id": null,
+    "error": "drift: stored=-0.003512802963017496 python-recompute=-0.0035128029630175917",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "LogLogArea",
+    "formula": "={{DeltaLogScale}} * {{AbsDeltaLogMeasure}}",
+    "record_id": null,
+    "error": "drift: stored=7.05352717997743 python-recompute=7.053527179977429",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "SlopeError",
+    "formula": "={{EmpiricalLogLogSlope}} - {{TheoreticalLogLogSlope}}",
+    "record_id": null,
+    "error": "drift: stored=0.002091118450423118 python-recompute=0.002091118450423146",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "SlopeError",
+    "formula": "={{EmpiricalLogLogSlope}} - {{TheoreticalLogLogSlope}}",
+    "record_id": null,
+    "error": "drift: stored=-0.005683552300837661 python-recompute=-0.005683552300837613",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "SlopeError",
+    "formula": "={{EmpiricalLogLogSlope}} - {{TheoreticalLogLogSlope}}",
+    "record_id": null,
+    "error": "drift: stored=-0.0071835995457703 python-recompute=-0.007183599545770303",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "RelativeSlopeError",
+    "formula": "=IF({{TheoreticalLogLogSlope}} = 0, 0, {{SlopeError}} / {{TheoreticalLogLogSlope}})",
+    "record_id": null,
+    "error": "drift: stored=0.00287343981830812 python-recompute=0.0028734398183081203",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "EmpiricalLogLogSlope",
+    "formula": "=IF({{DeltaLogScale}} = 0, 0, {{DeltaLogMeasure}} / {{DeltaLogScale}})",
+    "record_id": null,
+    "error": "drift: stored=-0.995627934030638 python-recompute=-0.9956279340306381",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "SlopeError",
+    "formula": "={{EmpiricalLogLogSlope}} - {{TheoreticalLogLogSlope}}",
+    "record_id": null,
+    "error": "drift: stored=0.00437206596936201 python-recompute=0.004372065969362016",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "LogLogArea",
+    "formula": "={{DeltaLogScale}} * {{AbsDeltaLogMeasure}}",
+    "record_id": null,
+    "error": "drift: stored=4.420920423638145 python-recompute=4.420920423638146",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "DataDensity",
+    "formula": "=IF({{LogLogArea}} = 0, 0, {{PointCount}} / {{LogLogArea}})",
+    "record_id": null,
+    "error": "drift: stored=1.809577923462484 python-recompute=1.8095779234624843",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "SlopeError",
+    "formula": "={{EmpiricalLogLogSlope}} - {{TheoreticalLogLogSlope}}",
+    "record_id": null,
+    "error": "drift: stored=-0.005141898134784226 python-recompute=-0.005141898134784162",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "LogLogArea",
+    "formula": "={{DeltaLogScale}} * {{AbsDeltaLogMeasure}}",
+    "record_id": null,
+    "error": "drift: stored=4.463165600556299 python-recompute=4.463165600556298",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "EmpiricalLogLogSlope",
+    "formula": "=IF({{DeltaLogScale}} = 0, 0, {{DeltaLogMeasure}} / {{DeltaLogScale}})",
+    "record_id": null,
+    "error": "drift: stored=-1.306004989193402 python-recompute=-1.3060049891934022",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "SlopeError",
+    "formula": "={{EmpiricalLogLogSlope}} - {{TheoreticalLogLogSlope}}",
+    "record_id": null,
+    "error": "drift: stored=-0.006004989193402035 python-recompute=-0.006004989193401977",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "DataDensity",
+    "formula": "=IF({{LogLogArea}} = 0, 0, {{PointCount}} / {{LogLogArea}})",
+    "record_id": null,
+    "error": "drift: stored=1.3795248443247732 python-recompute=1.379524844324773",
+    "severity": "drift"
+  },
+  {
+    "entity": "system_stats",
+    "field": "RelativeSlopeError",
+    "formula": "=IF({{TheoreticalLogLogSlope}} = 0, 0, {{SlopeError}} / {{TheoreticalLogLogSlope}})",
+    "record_id": null,
+    "error": "drift: stored=0.0046192224564631035 python-recompute=0.004619222456463104",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=0.24274398904585068 python-recompute=0.24274398904585065",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=1.9180861369275395 python-recompute=1.9180861369275393",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=3.5825362497736286 python-recompute=3.582536249773628",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=5.473765768435779 python-recompute=5.473765768435778",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=11.677090383496472 python-recompute=11.677090383496473",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=0.07584708932443797 python-recompute=0.07584708932443798",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=0.3243999218731513 python-recompute=0.32439992187315125",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=0.8177467071885928 python-recompute=0.8177467071885927",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=0.011040760382892468 python-recompute=0.011040760382892466",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=2.3550497926285874 python-recompute=2.355049792628587",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=3.582654099000423 python-recompute=3.5826540990004236",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=4.397031602653447 python-recompute=4.397031602653446",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=0.5886847423180298 python-recompute=0.5886847423180297",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=2.893900855640719 python-recompute=2.8939008556407195",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=0.0058517807672641454 python-recompute=0.005851780767264145",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=0.13265239465527756 python-recompute=0.1326523946552776",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=0.2694970743937195 python-recompute=0.26949707439371945",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=0.9334927896648024 python-recompute=0.9334927896648025",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=3.4718102448579424 python-recompute=3.471810244857942",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=7.469708547724237e-05 python-recompute=7.469708547724238e-05",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=0.4870443428512314 python-recompute=0.4870443428512313",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=1.1809518781730597 python-recompute=1.18095187817306",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=2.6655266886087987 python-recompute=2.6655266886087983",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=2.9945854502293443 python-recompute=2.9945854502293447",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=0.5228430492530418 python-recompute=0.5228430492530419",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=1.60682558013575 python-recompute=1.6068255801357503",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=5.507411505500642 python-recompute=5.5074115055006425",
+    "severity": "drift"
+  },
+  {
+    "entity": "observed_scales",
+    "field": "ResidualSquared",
+    "formula": "={{Residual}} * {{Residual}}",
+    "record_id": null,
+    "error": "drift: stored=7.2844390843055695 python-recompute=7.284439084305569",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "LogMeasureRange",
+    "formula": "={{MaxLogMeasure}} - {{MinLogMeasure}}",
+    "record_id": null,
+    "error": "drift: stored=3.4171323632695456 python-recompute=3.417132363269546",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "OnePlusResidualRMS",
+    "formula": "=1 + {{ResidualRMS}}",
+    "record_id": null,
+    "error": "drift: stored=1.035459 python-recompute=1",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "NormalizedRMSE",
+    "formula": "=IF({{LogMeasureRange}} = 0, 0, {{ResidualRMS}} / {{LogMeasureRange}})",
+    "record_id": null,
+    "error": "drift: stored=0.010376829525582814 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "OneMinusR2",
+    "formula": "=1 - {{R2}}",
+    "record_id": null,
+    "error": "drift: stored=0.001032 python-recompute=0.0010320000000000329",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "ResidualRMSSquared",
+    "formula": "={{ResidualRMS}} * {{ResidualRMS}}",
+    "record_id": null,
+    "error": "drift: stored=0.001257340681 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "BIC",
+    "formula": "={{PointCount}} * {{LogResidualRMSSquared}} + 2 * {{LogPointCount}}",
+    "record_id": null,
+    "error": "drift: stored=-21.398196287697974 python-recompute=1.8061799739838873",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "LogMeasureRange",
+    "formula": "={{MaxLogMeasure}} - {{MinLogMeasure}}",
+    "record_id": null,
+    "error": "drift: stored=0.9299660496732253 python-recompute=0.9299660496732252",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "OnePlusResidualRMS",
+    "formula": "=1 + {{ResidualRMS}}",
+    "record_id": null,
+    "error": "drift: stored=1.027705 python-recompute=1",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "NormalizedRMSE",
+    "formula": "=IF({{LogMeasureRange}} = 0, 0, {{ResidualRMS}} / {{LogMeasureRange}})",
+    "record_id": null,
+    "error": "drift: stored=0.02979141013775189 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "SlopeToTheoreticalRatio",
+    "formula": "=IF({{TheoreticalLogLogSlope}} = 0, 0, {{FittedSlope}} / {{TheoreticalLogLogSlope}})",
+    "record_id": null,
+    "error": "drift: stored=1.0308625954198474 python-recompute=1.0308625954198471",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "OneMinusR2",
+    "formula": "=1 - {{R2}}",
+    "record_id": null,
+    "error": "drift: stored=0.008728 python-recompute=0.008727999999999958",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "ResidualRMSSquared",
+    "formula": "={{ResidualRMS}} * {{ResidualRMS}}",
+    "record_id": null,
+    "error": "drift: stored=0.000767567025 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "BIC",
+    "formula": "={{PointCount}} * {{LogResidualRMSSquared}} + 2 * {{LogPointCount}}",
+    "record_id": null,
+    "error": "drift: stored=-23.11288955408135 python-recompute=1.8061799739838873",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "LogMeasureRange",
+    "formula": "={{MaxLogMeasure}} - {{MinLogMeasure}}",
+    "record_id": null,
+    "error": "drift: stored=1.9918349903675998 python-recompute=1.9918349903675996",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "OnePlusResidualRMS",
+    "formula": "=1 + {{ResidualRMS}}",
+    "record_id": null,
+    "error": "drift: stored=1.046013 python-recompute=1",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "NormalizedRMSE",
+    "formula": "=IF({{LogMeasureRange}} = 0, 0, {{ResidualRMS}} / {{LogMeasureRange}})",
+    "record_id": null,
+    "error": "drift: stored=0.023100809164672897 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "OneMinusR2",
+    "formula": "=1 - {{R2}}",
+    "record_id": null,
+    "error": "drift: stored=0.004753 python-recompute=0.004753000000000007",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "ResidualRMSSquared",
+    "formula": "={{ResidualRMS}} * {{ResidualRMS}}",
+    "record_id": null,
+    "error": "drift: stored=0.002117196169 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "BIC",
+    "formula": "={{PointCount}} * {{LogResidualRMSSquared}} + 2 * {{LogPointCount}}",
+    "record_id": null,
+    "error": "drift: stored=-19.58773123019443 python-recompute=1.8061799739838873",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "OnePlusResidualRMS",
+    "formula": "=1 + {{ResidualRMS}}",
+    "record_id": null,
+    "error": "drift: stored=1.074995 python-recompute=1",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "NormalizedRMSE",
+    "formula": "=IF({{LogMeasureRange}} = 0, 0, {{ResidualRMS}} / {{LogMeasureRange}})",
+    "record_id": null,
+    "error": "drift: stored=0.01406308428369828 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "OneMinusR2",
+    "formula": "=1 - {{R2}}",
+    "record_id": null,
+    "error": "drift: stored=0.001885 python-recompute=0.0018850000000000255",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "ResidualRMSSquared",
+    "formula": "={{ResidualRMS}} * {{ResidualRMS}}",
+    "record_id": null,
+    "error": "drift: stored=0.005624250025 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "BIC",
+    "formula": "={{PointCount}} * {{LogResidualRMSSquared}} + 2 * {{LogPointCount}}",
+    "record_id": null,
+    "error": "drift: stored=-16.193303074638543 python-recompute=1.8061799739838873",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "OnePlusResidualRMS",
+    "formula": "=1 + {{ResidualRMS}}",
+    "record_id": null,
+    "error": "drift: stored=1.057567 python-recompute=1",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "NormalizedRMSE",
+    "formula": "=IF({{LogMeasureRange}} = 0, 0, {{ResidualRMS}} / {{LogMeasureRange}})",
+    "record_id": null,
+    "error": "drift: stored=0.028338466149498802 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "OneMinusR2",
+    "formula": "=1 - {{R2}}",
+    "record_id": null,
+    "error": "drift: stored=0.007254 python-recompute=0.007253999999999983",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "ResidualRMSSquared",
+    "formula": "={{ResidualRMS}} * {{ResidualRMS}}",
+    "record_id": null,
+    "error": "drift: stored=0.003313959489 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "BIC",
+    "formula": "={{PointCount}} * {{LogResidualRMSSquared}} + 2 * {{LogPointCount}}",
+    "record_id": null,
+    "error": "drift: stored=-18.031042464831263 python-recompute=1.8061799739838873",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "OnePlusResidualRMS",
+    "formula": "=1 + {{ResidualRMS}}",
+    "record_id": null,
+    "error": "drift: stored=1.074595 python-recompute=1",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "NormalizedRMSE",
+    "formula": "=IF({{LogMeasureRange}} = 0, 0, {{ResidualRMS}} / {{LogMeasureRange}})",
+    "record_id": null,
+    "error": "drift: stored=0.035243705738813864 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "OneMinusR2",
+    "formula": "=1 - {{R2}}",
+    "record_id": null,
+    "error": "drift: stored=0.011841 python-recompute=0.01184099999999999",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "ResidualRMSSquared",
+    "formula": "={{ResidualRMS}} * {{ResidualRMS}}",
+    "record_id": null,
+    "error": "drift: stored=0.005564414025 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "BIC",
+    "formula": "={{PointCount}} * {{LogResidualRMSSquared}} + 2 * {{LogPointCount}}",
+    "record_id": null,
+    "error": "drift: stored=-16.230464533409613 python-recompute=1.8061799739838873",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "OnePlusResidualRMS",
+    "formula": "=1 + {{ResidualRMS}}",
+    "record_id": null,
+    "error": "drift: stored=1.069674 python-recompute=1",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "NormalizedRMSE",
+    "formula": "=IF({{LogMeasureRange}} = 0, 0, {{ResidualRMS}} / {{LogMeasureRange}})",
+    "record_id": null,
+    "error": "drift: stored=0.02630351295008901 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "OneMinusR2",
+    "formula": "=1 - {{R2}}",
+    "record_id": null,
+    "error": "drift: stored=0.005962 python-recompute=0.005962000000000023",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "ResidualRMSSquared",
+    "formula": "={{ResidualRMS}} * {{ResidualRMS}}",
+    "record_id": null,
+    "error": "drift: stored=0.004854466276 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "inference_runs",
+    "field": "BIC",
+    "formula": "={{PointCount}} * {{LogResidualRMSSquared}} + 2 * {{LogPointCount}}",
+    "record_id": null,
+    "error": "drift: stored=-16.704688118910223 python-recompute=1.8061799739838873",
+    "severity": "drift"
+  },
+  {
+    "entity": "scale_regimes",
+    "field": "RegimeSpan",
+    "formula": "={{MaxLogScale}} - {{MinLogScale}}",
+    "record_id": null,
+    "error": "drift: stored=0.2 python-recompute=0.19999999999999998",
+    "severity": "drift"
+  },
+  {
+    "entity": "scale_regimes",
+    "field": "SlopeDeviationFromGlobal",
+    "formula": "={{ExpectedSlope}} - {{TheoreticalLogLogSlope}}",
+    "record_id": null,
+    "error": "drift: stored=-0.7 python-recompute=-0.7000000000000002",
+    "severity": "drift"
+  },
+  {
+    "entity": "scale_regimes",
+    "field": "SlopeDeviationFromGlobal",
+    "formula": "={{ExpectedSlope}} - {{TheoreticalLogLogSlope}}",
+    "record_id": null,
+    "error": "drift: stored=-0.2 python-recompute=-0.19999999999999996",
+    "severity": "drift"
+  }
+]
