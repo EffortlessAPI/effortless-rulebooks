@@ -1,0 +1,41 @@
+[
+  {
+    "system_id": "sys_hydrogen",
+    "name": "Hydrogen Atom",
+    "description": "Ground-state hydrogen: proton at origin, electron at 1 Bohr radius. The canonical Coulomb's Law demonstration.",
+    "is_synthetic": false,
+    "charge_count": null,
+    "interaction_count": null,
+    "attractive_count": null,
+    "repulsive_count": null,
+    "total_charge": null,
+    "is_neutral": null,
+    "max_force_magnitude": null
+  },
+  {
+    "system_id": "sys_nacl",
+    "name": "NaCl Ion Pair",
+    "description": "Sodium chloride: Na\u207a and Cl\u207b separated by the equilibrium bond length (282 pm). Ionic bond model.",
+    "is_synthetic": false,
+    "charge_count": null,
+    "interaction_count": null,
+    "attractive_count": null,
+    "repulsive_count": null,
+    "total_charge": null,
+    "is_neutral": null,
+    "max_force_magnitude": null
+  },
+  {
+    "system_id": "sys_triangle",
+    "name": "Charge Triangle",
+    "description": "Two positive charges and one negative charge in an equilateral triangle. Tests superposition and mixed attractive/repulsive interactions.",
+    "is_synthetic": true,
+    "charge_count": null,
+    "interaction_count": null,
+    "attractive_count": null,
+    "repulsive_count": null,
+    "total_charge": null,
+    "is_neutral": null,
+    "max_force_magnitude": null
+  }
+]

@@ -1,0 +1,53 @@
+[
+  {
+    "summary_id": "ss_hydrogen",
+    "name": "ss_hydrogen",
+    "system_id": "sys_hydrogen",
+    "system_name": "Hydrogen Atom",
+    "charge_count": 2,
+    "interaction_count": 1,
+    "attractive_count": 1,
+    "repulsive_count": 0,
+    "total_charge": "0E-22",
+    "is_neutral": true,
+    "max_force_magnitude": "8.238441158776435744365773523270000000E-8",
+    "min_distance_meters": "5.29200000000000000E-11",
+    "all_attractive": true,
+    "all_repulsive": false,
+    "has_mixed_interactions": false
+  },
+  {
+    "summary_id": "ss_nacl",
+    "name": "ss_nacl",
+    "system_id": "sys_nacl",
+    "system_name": "NaCl Ion Pair",
+    "charge_count": 2,
+    "interaction_count": 1,
+    "attractive_count": 1,
+    "repulsive_count": 0,
+    "total_charge": "0E-22",
+    "is_neutral": true,
+    "max_force_magnitude": "2.90125898596650067904028972170000000E-9",
+    "min_distance_meters": "2.820000000000000E-10",
+    "all_attractive": true,
+    "all_repulsive": false,
+    "has_mixed_interactions": false
+  },
+  {
+    "summary_id": "ss_triangle",
+    "name": "ss_triangle",
+    "system_id": "sys_triangle",
+    "system_name": "Charge Triangle",
+    "charge_count": 3,
+    "interaction_count": 3,
+    "attractive_count": 2,
+    "repulsive_count": 1,
+    "total_charge": "1.602E-19",
+    "is_neutral": false,
+    "max_force_magnitude": "2.307298717143554316389921159170000000E-8",
+    "min_distance_meters": "9.9997799975799468E-11",
+    "all_attractive": false,
+    "all_repulsive": false,
+    "has_mixed_interactions": true
+  }
+]

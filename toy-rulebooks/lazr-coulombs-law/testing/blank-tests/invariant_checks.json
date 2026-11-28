@@ -1,0 +1,66 @@
+[
+  {
+    "invariant_id": "inv-attractive-negative",
+    "algebraic_statement": "IsAttractive \u2194 ChargeProduct < 0",
+    "natural_language": "A pair is attractive if and only if their charges have opposite signs.",
+    "physics_law": "Coulomb's Law sign convention",
+    "severity": "critical",
+    "name": null
+  },
+  {
+    "invariant_id": "inv-distance-positive",
+    "algebraic_statement": "DistanceMeters > 0 for all interactions",
+    "natural_language": "No two distinct charges can occupy the same position (would produce infinite force).",
+    "physics_law": "Coulomb's Law regularity",
+    "severity": "critical",
+    "name": null
+  },
+  {
+    "invariant_id": "inv-field-superposition",
+    "algebraic_statement": "E_total = \u03a3 E_i (vector sum over all source charges)",
+    "natural_language": "Electric fields obey the superposition principle: total field at a point is the vector sum of individual fields.",
+    "physics_law": "Superposition Principle",
+    "severity": "informational",
+    "name": null
+  },
+  {
+    "invariant_id": "inv-force-inverse-sq",
+    "algebraic_statement": "F \u221d 1/r\u00b2: doubling distance quarters the force",
+    "natural_language": "Coulomb's Law is an inverse-square law: force falls off with the square of distance.",
+    "physics_law": "Coulomb's Law",
+    "severity": "informational",
+    "name": null
+  },
+  {
+    "invariant_id": "inv-force-symmetry",
+    "algebraic_statement": "F(q1\u2192q2) = F(q2\u2192q1)",
+    "natural_language": "Newton's 3rd law: the magnitude of the force each charge exerts on the other must be equal.",
+    "physics_law": "Newton's Third Law",
+    "severity": "critical",
+    "name": null
+  },
+  {
+    "invariant_id": "inv-neutral-system",
+    "algebraic_statement": "TotalCharge = \u03a3 q_i for IsNeutral systems \u2248 0",
+    "natural_language": "Electrically neutral systems have zero net charge.",
+    "physics_law": "Charge conservation",
+    "severity": "informational",
+    "name": null
+  },
+  {
+    "invariant_id": "inv-repulsive-positive",
+    "algebraic_statement": "IsRepulsive \u2194 ChargeProduct > 0",
+    "natural_language": "A pair is repulsive if and only if their charges have the same sign.",
+    "physics_law": "Coulomb's Law sign convention",
+    "severity": "critical",
+    "name": null
+  },
+  {
+    "invariant_id": "inv-unit-vector-length",
+    "algebraic_statement": "UnitX\u00b2 + UnitY\u00b2 + UnitZ\u00b2 = 1 (within floating point)",
+    "natural_language": "The displacement unit vector must have magnitude 1 for all non-zero separations.",
+    "physics_law": "Vector normalization",
+    "severity": "warning",
+    "name": null
+  }
+]

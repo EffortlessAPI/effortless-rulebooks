@@ -1,0 +1,53 @@
+[
+  {
+    "summary_id": "ss_hydrogen",
+    "system_id": "sys_hydrogen",
+    "name": null,
+    "system_name": null,
+    "charge_count": null,
+    "interaction_count": null,
+    "attractive_count": null,
+    "repulsive_count": null,
+    "total_charge": null,
+    "is_neutral": null,
+    "max_force_magnitude": null,
+    "min_distance_meters": null,
+    "all_attractive": null,
+    "all_repulsive": null,
+    "has_mixed_interactions": null
+  },
+  {
+    "summary_id": "ss_nacl",
+    "system_id": "sys_nacl",
+    "name": null,
+    "system_name": null,
+    "charge_count": null,
+    "interaction_count": null,
+    "attractive_count": null,
+    "repulsive_count": null,
+    "total_charge": null,
+    "is_neutral": null,
+    "max_force_magnitude": null,
+    "min_distance_meters": null,
+    "all_attractive": null,
+    "all_repulsive": null,
+    "has_mixed_interactions": null
+  },
+  {
+    "summary_id": "ss_triangle",
+    "system_id": "sys_triangle",
+    "name": null,
+    "system_name": null,
+    "charge_count": null,
+    "interaction_count": null,
+    "attractive_count": null,
+    "repulsive_count": null,
+    "total_charge": null,
+    "is_neutral": null,
+    "max_force_magnitude": null,
+    "min_distance_meters": null,
+    "all_attractive": null,
+    "all_repulsive": null,
+    "has_mixed_interactions": null
+  }
+]

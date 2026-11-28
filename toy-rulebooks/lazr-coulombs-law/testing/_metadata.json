@@ -1,0 +1,117 @@
+{
+  "loops": {
+    "primary_key": "loop_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 4
+  },
+  "particles": {
+    "primary_key": "particle_id",
+    "computed_columns": [
+      "charge_sign"
+    ],
+    "record_count": 6
+  },
+  "charges": {
+    "primary_key": "charge_id",
+    "computed_columns": [
+      "charge_sign",
+      "charge_magnitude",
+      "system_name",
+      "particle_name",
+      "interaction_count"
+    ],
+    "record_count": 7
+  },
+  "systems": {
+    "primary_key": "system_id",
+    "computed_columns": [
+      "charge_count",
+      "interaction_count",
+      "attractive_count",
+      "repulsive_count",
+      "total_charge",
+      "is_neutral",
+      "max_force_magnitude"
+    ],
+    "record_count": 3
+  },
+  "charge_interactions": {
+    "primary_key": "interaction_id",
+    "computed_columns": [
+      "name",
+      "delta_x",
+      "delta_y",
+      "delta_z",
+      "distance_squared",
+      "distance_meters",
+      "distance_picometers",
+      "charge_product",
+      "force_magnitude",
+      "is_attractive",
+      "is_repulsive",
+      "interaction_type",
+      "force_in_atto_newtons"
+    ],
+    "record_count": 5
+  },
+  "force_vectors": {
+    "primary_key": "force_vector_id",
+    "computed_columns": [
+      "name",
+      "unit_x",
+      "unit_y",
+      "unit_z",
+      "sign_factor",
+      "fx",
+      "fy",
+      "fz",
+      "force_dir_description"
+    ],
+    "record_count": 5
+  },
+  "electric_field_points": {
+    "primary_key": "field_point_id",
+    "computed_columns": [
+      "name",
+      "d_x",
+      "d_y",
+      "d_z",
+      "distance_squared",
+      "distance",
+      "e_field_magnitude",
+      "q_sign",
+      "ex",
+      "ey",
+      "ez"
+    ],
+    "record_count": 7
+  },
+  "invariant_checks": {
+    "primary_key": "invariant_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 8
+  },
+  "system_summary": {
+    "primary_key": "summary_id",
+    "computed_columns": [
+      "name",
+      "system_name",
+      "charge_count",
+      "interaction_count",
+      "attractive_count",
+      "repulsive_count",
+      "total_charge",
+      "is_neutral",
+      "max_force_magnitude",
+      "min_distance_meters",
+      "all_attractive",
+      "all_repulsive",
+      "has_mixed_interactions"
+    ],
+    "record_count": 3
+  }
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "particle_id": "particle_alpha",
+    "name": "Alpha",
+    "canonical_charge": 3.204e-19,
+    "canonical_mass": 6.6446573e-27,
+    "description": "Helium-4 nucleus: 2 protons + 2 neutrons; charge = +2e",
+    "charge_sign": null
+  },
+  {
+    "particle_id": "particle_electron",
+    "name": "Electron",
+    "canonical_charge": -1.602e-19,
+    "canonical_mass": 9.1093837015e-31,
+    "description": "Negatively charged lepton; orbital particle",
+    "charge_sign": null
+  },
+  {
+    "particle_id": "particle_neg_ion",
+    "name": "Anion",
+    "canonical_charge": -1.602e-19,
+    "canonical_mass": 9.1093837015e-31,
+    "description": "Generic negative ion (1 extra electron)",
+    "charge_sign": null
+  },
+  {
+    "particle_id": "particle_neutron",
+    "name": "Neutron",
+    "canonical_charge": 0.0,
+    "canonical_mass": 1.67492749e-27,
+    "description": "Neutral baryon; nucleus constituent",
+    "charge_sign": null
+  },
+  {
+    "particle_id": "particle_pos_ion",
+    "name": "Cation",
+    "canonical_charge": 1.602e-19,
+    "canonical_mass": 1.67262192e-27,
+    "description": "Generic positive ion (1 missing electron)",
+    "charge_sign": null
+  },
+  {
+    "particle_id": "particle_proton",
+    "name": "Proton",
+    "canonical_charge": 1.602e-19,
+    "canonical_mass": 1.67262192e-27,
+    "description": "Positively charged baryon; nucleus constituent",
+    "charge_sign": null
+  }
+]

@@ -1,0 +1,250 @@
+[
+  {
+    "entity": "ChargeInteractions",
+    "field": "DistanceSquared",
+    "formula": "={{DeltaX}} * {{DeltaX}} + {{DeltaY}} * {{DeltaY}} + {{DeltaZ}} * {{DeltaZ}}",
+    "record_id": "int_h_p_e",
+    "error": "drift: stored=2.8005264e-21 python-recompute=2.8005264000000003e-21",
+    "severity": "drift"
+  },
+  {
+    "entity": "ChargeInteractions",
+    "field": "DistanceSquared",
+    "formula": "={{DeltaX}} * {{DeltaX}} + {{DeltaY}} * {{DeltaY}} + {{DeltaZ}} * {{DeltaZ}}",
+    "record_id": "int_nacl",
+    "error": "drift: stored=7.9524e-20 python-recompute=7.952400000000001e-20",
+    "severity": "drift"
+  },
+  {
+    "entity": "ChargeInteractions",
+    "field": "DistanceSquared",
+    "formula": "={{DeltaX}} * {{DeltaX}} + {{DeltaY}} * {{DeltaY}} + {{DeltaZ}} * {{DeltaZ}}",
+    "record_id": "int_tri_ab",
+    "error": "drift: stored=1e-20 python-recompute=1.0000000000000001e-20",
+    "severity": "drift"
+  },
+  {
+    "entity": "ChargeInteractions",
+    "field": "DistancePicometers",
+    "formula": "={{DistanceMeters}} * 1000000000000",
+    "record_id": "int_tri_ac",
+    "error": "drift: stored=99.99779997579947 python-recompute=99.99779997579948",
+    "severity": "drift"
+  },
+  {
+    "entity": "ChargeInteractions",
+    "field": "DistancePicometers",
+    "formula": "={{DistanceMeters}} * 1000000000000",
+    "record_id": "int_tri_bc",
+    "error": "drift: stored=99.99779997579947 python-recompute=99.99779997579948",
+    "severity": "drift"
+  },
+  {
+    "entity": "ForceVectors",
+    "field": "UnitX",
+    "formula": "=IF({{DistRaw}} = 0, 0, {{DX}} / {{DistRaw}})",
+    "record_id": "fv_h_p_e",
+    "error": "drift: stored=1.0 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ForceVectors",
+    "field": "UnitX",
+    "formula": "=IF({{DistRaw}} = 0, 0, {{DX}} / {{DistRaw}})",
+    "record_id": "fv_nacl",
+    "error": "drift: stored=1.0 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ForceVectors",
+    "field": "UnitX",
+    "formula": "=IF({{DistRaw}} = 0, 0, {{DX}} / {{DistRaw}})",
+    "record_id": "fv_tri_ab",
+    "error": "drift: stored=1.0 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ForceVectors",
+    "field": "UnitX",
+    "formula": "=IF({{DistRaw}} = 0, 0, {{DX}} / {{DistRaw}})",
+    "record_id": "fv_tri_ac",
+    "error": "drift: stored=0.5 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ForceVectors",
+    "field": "UnitY",
+    "formula": "=IF({{DistRaw}} = 0, 0, {{DY}} / {{DistRaw}})",
+    "record_id": "fv_tri_ac",
+    "error": "drift: stored=0.866 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ForceVectors",
+    "field": "FY",
+    "formula": "={{ForceMagnitudeRaw}} * {{SignFactor}} * {{UnitY}}",
+    "record_id": "fv_tri_ac",
+    "error": "drift: stored=-2.00046e-08 python-recompute=-2.0004599999999998e-08",
+    "severity": "drift"
+  },
+  {
+    "entity": "ForceVectors",
+    "field": "UnitX",
+    "formula": "=IF({{DistRaw}} = 0, 0, {{DX}} / {{DistRaw}})",
+    "record_id": "fv_tri_bc",
+    "error": "drift: stored=-0.5 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ForceVectors",
+    "field": "UnitY",
+    "formula": "=IF({{DistRaw}} = 0, 0, {{DY}} / {{DistRaw}})",
+    "record_id": "fv_tri_bc",
+    "error": "drift: stored=0.866 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ForceVectors",
+    "field": "FY",
+    "formula": "={{ForceMagnitudeRaw}} * {{SignFactor}} * {{UnitY}}",
+    "record_id": "fv_tri_bc",
+    "error": "drift: stored=-2.00046e-08 python-recompute=-2.0004599999999998e-08",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "DistanceSquared",
+    "formula": "={{dX}} * {{dX}} + {{dY}} * {{dY}} + {{dZ}} * {{dZ}}",
+    "record_id": "efp_h_mid_proton",
+    "error": "drift: stored=7.001316e-22 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "EX",
+    "formula": "={{EFieldMagnitude}} * {{QSign}} * {{dX}} / {{Distance}}",
+    "record_id": "efp_h_mid_proton",
+    "error": "drift: stored=2057038990955.4146 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "DistanceSquared",
+    "formula": "={{dX}} * {{dX}} + {{dY}} * {{dY}} + {{dZ}} * {{dZ}}",
+    "record_id": "efp_h_mid_electron",
+    "error": "drift: stored=7.001316e-22 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "EX",
+    "formula": "={{EFieldMagnitude}} * {{QSign}} * {{dX}} / {{Distance}}",
+    "record_id": "efp_h_mid_electron",
+    "error": "drift: stored=2057038990955.4146 python-recompute=-0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "DistanceSquared",
+    "formula": "={{dX}} * {{dX}} + {{dY}} * {{dY}} + {{dZ}} * {{dZ}}",
+    "record_id": "efp_nacl_mid_na",
+    "error": "drift: stored=1.9881e-20 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "EX",
+    "formula": "={{EFieldMagnitude}} * {{QSign}} * {{dX}} / {{Distance}}",
+    "record_id": "efp_nacl_mid_na",
+    "error": "drift: stored=72440923494.79402 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "DistanceSquared",
+    "formula": "={{dX}} * {{dX}} + {{dY}} * {{dY}} + {{dZ}} * {{dZ}}",
+    "record_id": "efp_nacl_mid_cl",
+    "error": "drift: stored=1.9881e-20 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "EX",
+    "formula": "={{EFieldMagnitude}} * {{QSign}} * {{dX}} / {{Distance}}",
+    "record_id": "efp_nacl_mid_cl",
+    "error": "drift: stored=72440923494.79402 python-recompute=-0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "DistanceSquared",
+    "formula": "={{dX}} * {{dX}} + {{dY}} * {{dY}} + {{dZ}} * {{dZ}}",
+    "record_id": "efp_tri_cen_a",
+    "error": "drift: stored=3.3334769e-21 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "EX",
+    "formula": "={{EFieldMagnitude}} * {{QSign}} * {{dX}} / {{Distance}}",
+    "record_id": "efp_tri_cen_a",
+    "error": "drift: stored=374150244107.07184 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "EY",
+    "formula": "={{EFieldMagnitude}} * {{QSign}} * {{dY}} / {{Distance}}",
+    "record_id": "efp_tri_cen_a",
+    "error": "drift: stored=216034350947.4233 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "DistanceSquared",
+    "formula": "={{dX}} * {{dX}} + {{dY}} * {{dY}} + {{dZ}} * {{dZ}}",
+    "record_id": "efp_tri_cen_b",
+    "error": "drift: stored=3.3334769e-21 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "EX",
+    "formula": "={{EFieldMagnitude}} * {{QSign}} * {{dX}} / {{Distance}}",
+    "record_id": "efp_tri_cen_b",
+    "error": "drift: stored=-374150244107.07184 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "EY",
+    "formula": "={{EFieldMagnitude}} * {{QSign}} * {{dY}} / {{Distance}}",
+    "record_id": "efp_tri_cen_b",
+    "error": "drift: stored=216034350947.4233 python-recompute=0.0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "dY",
+    "formula": "={{ObsY}} - {{SrcY}}",
+    "record_id": "efp_tri_cen_c",
+    "error": "drift: stored=-5.773e-11 python-recompute=-5.7730000000000004e-11",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "DistanceSquared",
+    "formula": "={{dX}} * {{dX}} + {{dY}} * {{dY}} + {{dZ}} * {{dZ}}",
+    "record_id": "efp_tri_cen_c",
+    "error": "drift: stored=3.3327529e-21 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "ElectricFieldPoints",
+    "field": "EY",
+    "formula": "={{EFieldMagnitude}} * {{QSign}} * {{dY}} / {{Distance}}",
+    "record_id": "efp_tri_cen_c",
+    "error": "drift: stored=432134647606.1877 python-recompute=-0.0",
+    "severity": "drift"
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "constant_id": "bohr_radius",
+    "name": "Bohr Radius",
+    "symbol": "a\u2080",
+    "value": "5.292E-11",
+    "units": "m",
+    "description": "Most probable distance from proton to electron in ground-state hydrogen"
+  },
+  {
+    "constant_id": "coulomb_k",
+    "name": "Coulomb's Constant",
+    "symbol": "k",
+    "value": "8990000000",
+    "units": "N\u00b7m\u00b2\u00b7C\u207b\u00b2",
+    "description": "Proportionality constant in Coulomb's Law (= 1/(4\u03c0\u03b5\u2080))"
+  },
+  {
+    "constant_id": "electron_mass",
+    "name": "Electron Mass",
+    "symbol": "m\u2091",
+    "value": "9.1093837015E-31",
+    "units": "kg",
+    "description": "Rest mass of an electron"
+  },
+  {
+    "constant_id": "elem_charge",
+    "name": "Elementary Charge",
+    "symbol": "e",
+    "value": "1.602E-19",
+    "units": "C",
+    "description": "Magnitude of charge on a proton or electron"
+  },
+  {
+    "constant_id": "epsilon_0",
+    "name": "Permittivity of Free Space",
+    "symbol": "\u03b5\u2080",
+    "value": "8.854187817E-12",
+    "units": "C\u00b2\u00b7N\u207b\u00b9\u00b7m\u207b\u00b2",
+    "description": "Electric constant; k = 1/(4\u03c0\u03b5\u2080)"
+  },
+  {
+    "constant_id": "proton_mass",
+    "name": "Proton Mass",
+    "symbol": "m\u209a",
+    "value": "1.67262192E-27",
+    "units": "kg",
+    "description": "Rest mass of a proton"
+  }
+]

@@ -1,0 +1,40 @@
+[
+  {
+    "loop_id": "loop-01",
+    "title": "Core domain: Charges + ChargeInteractions \u2192 ForceMagnitude falls out",
+    "status": "complete",
+    "new_concept": "Charges, ChargeInteractions",
+    "domain_question": "For each pair of charges, what is the electrostatic force magnitude between them?",
+    "mock_data_note": "Hydrogen atom: proton at origin, electron 1 Bohr radius away. ForceMagnitude = k\u00b7|q\u2081|\u00b7|q\u2082|/r\u00b2 \u2248 8.24\u00d710\u207b\u2078 N.",
+    "next_suggestion": "Ask: what is the direction of the force \u2014 and decompose it into X/Y/Z components? That requires ForceComponents.",
+    "commit_date": "2026-06-30",
+    "name": "loop-01"
+  },
+  {
+    "loop_id": "loop-02",
+    "title": "ForceComponents: decompose force vector into X, Y, Z projections",
+    "status": "planned",
+    "new_concept": "ForceComponents",
+    "domain_question": "In what direction does each charge push/pull its partner? What are the X, Y, Z force components?",
+    "next_suggestion": "Ask: what is the electric field at an arbitrary observation point due to a source charge? That requires ElectricFieldPoints.",
+    "name": "loop-02"
+  },
+  {
+    "loop_id": "loop-03",
+    "title": "ElectricFieldPoints: field strength and direction at observation points",
+    "status": "planned",
+    "new_concept": "ElectricFieldPoints",
+    "domain_question": "At any point in space, what is the total electric field due to all charges in the system?",
+    "next_suggestion": "Ask: which charge dominates the field at each observation point? Add FieldDominantCharge as a derived fact.",
+    "name": "loop-03"
+  },
+  {
+    "loop_id": "loop-04",
+    "title": "SystemSummary: the model witnesses its own state \u2014 total force, net field, dominant interactions",
+    "status": "planned",
+    "new_concept": "SystemSummary",
+    "domain_question": "Across all interactions in this system, what is the total attractive force? Total repulsive force? Which pair has the strongest interaction?",
+    "next_suggestion": "Add InvariantChecks: Coulomb symmetry (F\u2081\u2082 = F\u2082\u2081), superposition compliance, sign consistency.",
+    "name": "loop-04"
+  }
+]
