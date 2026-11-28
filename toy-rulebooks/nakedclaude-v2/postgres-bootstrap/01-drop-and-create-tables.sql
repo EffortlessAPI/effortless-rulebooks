@@ -103,7 +103,6 @@ COMMENT ON COLUMN app_users.role IS 'admin = full access; customer = sees only o
 CREATE INDEX IF NOT EXISTS idx_customers_status ON customers (status);
 
 -- Statuses
-CREATE INDEX IF NOT EXISTS idx_statuses_display_name ON statuses (display_name);
 CREATE INDEX IF NOT EXISTS idx_statuses_customers ON statuses (customers);
 
--- 3 FK index(es) declared.
+-- 2 FK index(es) declared.

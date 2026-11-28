@@ -3871,4 +3871,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "AppUsers": "app user"
     }
   }
-} };
+}, stamp: "167e1bcd2eca5cd7" };

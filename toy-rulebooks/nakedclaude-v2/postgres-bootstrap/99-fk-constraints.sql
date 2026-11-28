@@ -18,11 +18,8 @@ ALTER TABLE customers ADD CONSTRAINT fk_customers_status
   FOREIGN KEY (status) REFERENCES statuses (statuse_id);
 
 -- Statuses
-ALTER TABLE statuses DROP CONSTRAINT IF EXISTS fk_statuses_display_name;
-ALTER TABLE statuses ADD CONSTRAINT fk_statuses_display_name
-  FOREIGN KEY (display_name) REFERENCES statuses (statuse_id);
 ALTER TABLE statuses DROP CONSTRAINT IF EXISTS fk_statuses_customers;
 ALTER TABLE statuses ADD CONSTRAINT fk_statuses_customers
   FOREIGN KEY (customers) REFERENCES customers (customer_id);
 
--- 3 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 2 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

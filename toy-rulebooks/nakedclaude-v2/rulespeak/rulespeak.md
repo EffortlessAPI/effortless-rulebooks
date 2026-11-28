@@ -1,4 +1,4 @@
-# 📘 v2: NakedClaude Demo — RuleSpeak®
+# 📘 v2: NakedClaude Demo — Docs
 
 _Rulebook generated from Airtable base 'v2: NakedClaude Demo'._
 
@@ -11,7 +11,7 @@ _Rulebook generated from Airtable base 'v2: NakedClaude Demo'._
 
 | Term | Description | Narrative Comment |
 |------|-------------|-------------------|
-| **Customer** | A customer is identified by its name and is related to optionally a status (its status). | — |
+| **Customer** | A customer is identified by its name and is related to optionally a status. | — |
 | Name | Computed as the lower-cased full name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | First Name | A defined attribute. | — |
 | Last Name | A defined attribute. | — |
@@ -23,6 +23,22 @@ _Rulebook generated from Airtable base 'v2: NakedClaude Demo'._
 | Status Description | Taken from the linked status. | — |
 | Status | A defined attribute. | — |
 | Owner Email | A defined attribute. | _Email address of the user who owns this customer record. Used by Row-Level Security to scope visibility to the JWT email of the requester._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | First Name | Last Name | Full Name ƒ | Notes | Status Display Name ƒ | Status is Blocking ƒ | Is Stopped ƒ | Status Description ƒ | Owner Email |
+|---|---|---|---|---|---|---|---|---|---|
+| bob- | Bob | — | Bob  | A customer currently in launch. | On-Hold | true | true | This status indicates the customer or request is on hold and temporarily paused. | eejai42@gmail.com |
+| alice-johnson | Alice | Johnson | Alice Johnson | Initial mock entry for Alice. | Pending | true | false | This status shows the customer or request is pending further action or review. | eejai42@gmail.com |
+| brian-lee | Brian | Lee | Brian Lee | Initial mock entry for Brian. | New | false | false | This status indicates a newly created customer or request that has not yet been processed. | eejai42@gmail.com |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Status** | A status is identified by its name. | — |
 | Name | Computed as the lower-cased display name. | — |
 | Display Name | A defined attribute. | — |
@@ -30,10 +46,39 @@ _Rulebook generated from Airtable base 'v2: NakedClaude Demo'._
 | Is Blocking | True when an empty string. | — |
 | Customers | A defined attribute. | — |
 | Owner Email | A defined attribute. | _Email address of the user who owns this status. Used by Row-Level Security to scope visibility._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Display Name | Description | Is Blocking | Owner Email |
+|---|---|---|---|---|
+| delayed | Delayed | This status is used when the customer or request has been delayed and is not progressing as scheduled. | false | ej@ssot.me |
+| cancelled | Cancelled | This status means the customer or request has been cancelled and will not proceed further. | true | ej@ssot.me |
+| processing | Processing | This status means the customer or request is currently being processed. | false | ej@ssot.me |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **App User** | An app user is identified by its name. | — |
 | Name | Computed as the lower-cased email address with every “. ” replaced by a hyphen with every “@” replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Email Address | A defined attribute. | _Primary identity — matches the JWT email of the signed-in user._ |
 | Role | A defined attribute. | _admin = full access; customer = sees only owned customers (RLS DAG)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Email Address | Role |
+|---|---|---|
+| eejai42-gmail.com | eejai42@gmail.com | customer |
+| ej-ssot.me | ej@ssot.me | admin |
+| alice-example.com | alice@example.com | customer |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -66,7 +111,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -82,8 +127,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)
