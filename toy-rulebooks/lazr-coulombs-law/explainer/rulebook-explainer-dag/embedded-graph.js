@@ -24780,4 +24780,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "SystemSummary": "system summary"
     }
   }
-} };
+}, stamp: "bcb2b92a89de3e77" };

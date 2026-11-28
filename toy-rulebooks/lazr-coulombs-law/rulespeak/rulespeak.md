@@ -1,4 +1,4 @@
-# 📘 lazr-coulombs-law — RuleSpeak®
+# 📘 lazr-coulombs-law — Docs
 
 _Digital mirror of Coulomb's Law of electrostatics. Entities: Charges, ChargeInteractions, ForceComponents, ElectricFields. Force magnitude, direction, attraction/repulsion, electric field strength, and field superposition all fall out of the DAG as derived facts — never modeled directly._
 
@@ -8,6 +8,8 @@ _Digital mirror of Coulomb's Law of electrostatics. Entities: Charges, ChargeInt
 > this document is their plain-language reading.
 
 ## 1 Business Vocabulary
+
+_Example data is not shown: the formula simulator could not be generated: formula: '=LOOKUP({{SystemId}}, Systems[SystemId], Systems[Name])'. No value is displayed rather than a possibly-incorrect one._
 
 | Term | Description | Narrative Comment |
 |------|-------------|-------------------|
@@ -21,18 +23,27 @@ _Digital mirror of Coulomb's Law of electrostatics. Entities: Charges, ChargeInt
 | Next Suggestion | A defined attribute. | _Suggestion for the next loop._ |
 | Commit Hash | A defined attribute. | _Git SHA where this loop first landed._ |
 | Commit Date | A defined attribute. | _ISO date of the commit._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Physics Constant** | A physics constant is identified by its name. | — |
 | Name | A defined attribute. | _Human-readable name_ |
 | Symbol | A defined attribute. | _Physics symbol (k, e, a₀, …)_ |
 | Value | A defined attribute. | _Numeric value in SI units_ |
 | Units | A defined attribute. | _SI unit string_ |
 | Description | A defined attribute. | _What this constant represents_ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Particle** | A particle is identified by its name. | — |
 | Name | A defined attribute. | _Common name (Proton, Electron, …)_ |
 | Canonical Charge | A defined attribute. | _Charge in Coulombs (positive or negative)_ |
 | Canonical Mass | A defined attribute. | _Rest mass in kg_ |
 | Charge Sign | Determined by priority: “positive” if the canonical charge is greater than 0; “negative” if the canonical charge is less than 0; in all other cases, “neutral”. | _positive \| negative \| neutral_ |
 | Description | A defined attribute. | _Physical description_ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Charge** | A charge is identified by its name. | — |
 | Name | A defined attribute. | _Human-readable label (Proton A, Electron B, …)_ |
 | System ID | A defined attribute. | _FK → Systems.SystemId — which physical system this charge belongs to_ |
@@ -47,6 +58,9 @@ _Digital mirror of Coulomb's Law of electrostatics. Entities: Charges, ChargeInt
 | System Name | The value of LOOKUP(SystemId, Systems[SystemId], Systems[Name]). | _Lookup: Systems.Name via SystemId._ |
 | Particle Name | The value of LOOKUP(ParticleId, Particles[ParticleId], Particles[Name]). | _Lookup: Particles.Name via ParticleId._ |
 | Interaction Count | The number of charge interactions related to the charge. | _Count of ChargeInteractions that reference this charge as Charge1 or Charge2._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **System** | A system is identified by its name. | — |
 | Name | A defined attribute. | _Human-readable name_ |
 | Description | A defined attribute. | _What physical situation this represents_ |
@@ -58,6 +72,9 @@ _Digital mirror of Coulomb's Law of electrostatics. Entities: Charges, ChargeInt
 | Total Charge | The total charge value across the charges related to the system. | _Algebraic sum of all charges in the system (net charge)._ |
 | Is Neutral | True when the value of ABS(TotalCharge) < 1e-30. | _True when net charge is effectively zero._ |
 | Max Force Magnitude | The largest force magnitude across the charge interactions related to the system. | _Strongest pairwise interaction in this system._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Charge Interaction** | A charge interaction is identified by its name. | — |
 | Name | The same as its interaction ID. | _Display label._ |
 | System ID | A defined attribute. | _FK → Systems.SystemId_ |
@@ -86,6 +103,9 @@ _Digital mirror of Coulomb's Law of electrostatics. Entities: Charges, ChargeInt
 | Is Repulsive | True when the charge product is greater than 0. | _True when charges have the same sign (ChargeProduct > 0). Force pushes the particles apart._ |
 | Interaction Type | Determined by priority: “attractive” if the attractive flag is set; “repulsive” if the repulsive flag is set; in all other cases, “neutral”. | _attractive \| repulsive \| neutral — derived from sign of ChargeProduct._ |
 | Force in Atto Newtons | Computed as the force magnitude times 1000000000000000000. | _ForceMagnitude expressed in attonewtons (F × 10¹⁸). Human-readable at atomic scale._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Force Vector** | A force vector is identified by its name. | — |
 | Name | The same as its force vector ID. | _Display label._ |
 | Interaction ID | A defined attribute. | _FK → ChargeInteractions.InteractionId_ |
@@ -103,6 +123,9 @@ _Digital mirror of Coulomb's Law of electrostatics. Entities: Charges, ChargeInt
 | FY | Computed as the force magnitude raw times the sign factor times the unit y. | _Y component of force on Charge1 in Newtons._ |
 | FZ | Computed as the force magnitude raw times the sign factor times the unit z. | _Z component of force on Charge1 in Newtons._ |
 | Force Dir Description | Determined by priority: “towards” if the attractive raw flag is set; in all other cases, “away-from”. | _towards (attractive) \| away-from (repulsive)._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Electric Field Point** | An electric field point is identified by its name. | — |
 | Name | The same as its field point ID. | _Display label._ |
 | System ID | A defined attribute. | _FK → Systems.SystemId_ |
@@ -127,12 +150,18 @@ _Digital mirror of Coulomb's Law of electrostatics. Entities: Charges, ChargeInt
 | EX | Computed as the e field magnitude times the q sign times the d x divided by the distance. | _X component of electric field contribution at observation point (N/C). Positive = points in +X direction._ |
 | EY | Computed as the e field magnitude times the q sign times the d y divided by the distance. | _Y component of electric field contribution._ |
 | EZ | Computed as the e field magnitude times the q sign times the d z divided by the distance. | _Z component of electric field contribution._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Invariant Check** | An invariant check is identified by its name. | — |
 | Name | The same as its invariant ID. | _Display label._ |
 | Algebraic Statement | A defined attribute. | _The mathematical identity being checked_ |
 | Natural Language | A defined attribute. | _Plain English: what must be true?_ |
 | Physics Law | A defined attribute. | _Which physics principle this invariant encodes_ |
 | Severity | A defined attribute. | _critical \| warning \| informational_ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **System Summary** | A system summary is identified by its name. | — |
 | Name | The same as its summary ID. | _Display label._ |
 | System ID | A defined attribute. | _FK → Systems.SystemId_ |
@@ -159,14 +188,14 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 ### Structural Constraints (from the schema)
 
 - A loop **must** have a title and a status.
-- A physics constant **must** have a name, a symbol, a value, and an units.
-- A particle **must** have a name, a canonical charge, and a canonical mass.
-- A charge **must** have a name, a system ID, a charge value, a position x, a position y, and a position z.
+- A physics constant **must** have a name; a symbol; a value; and an units.
+- A particle **must** have a name; a canonical charge; and a canonical mass.
+- A charge **must** have a name; a system ID; a charge value; a position x; a position y; and a position z.
 - A system **must** have a name, and record whether it is synthetic.
-- A charge interaction **must** have a system ID, a charge1 ID, a charge2 ID, a q1, a q2, a x1, a y1, a z1, a x2, a y2, a z2, and a coulomb k.
-- A force vector **must** have an interaction ID, a force magnitude raw, a DX, a DY, a DZ, and a dist raw, and record whether it is an attractive raw.
-- An electric field point **must** have a system ID, a source charge ID, an observation label, an obs x, an obs y, an obs z, a coulomb k, a source q, a src x, a src y, and a src z.
-- An invariant check **must** have an algebraic statement, a natural language, and a severity.
+- A charge interaction **must** have a system ID; a charge1 ID; a charge2 ID; a q1; a q2; a x1; a y1; a z1; a x2; a y2; a z2; and a coulomb k.
+- A force vector **must** have an interaction ID; a force magnitude raw; a DX; a DY; a DZ; and a dist raw, and record whether it is an attractive raw.
+- An electric field point **must** have a system ID; a source charge ID; an observation label; an obs x; an obs y; an obs z; a coulomb k; a source q; a src x; a src y; and a src z.
+- An invariant check **must** have an algebraic statement; a natural language; and a severity.
 - A system summary **must** have a system ID.
 
 ## 4 Definitional Rules
@@ -191,7 +220,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-10 Attractive Count** | A system's attractive count is the number of the system's charge interactions that are attractive. |
 | **DR-11 Repulsive Count** | A system's repulsive count is the number of the system's charge interactions that are repulsive. |
 | **DR-12 Total Charge** | A system's total charge is the total charge value across the charges related to the system. |
-| **DR-13 Is Neutral** | A system is considered a neutral if the value of ABS(TotalCharge) < 1e-30. |
+| **DR-13 Is Neutral** | A system is considered neutral if the value of ABS(TotalCharge) < 1e-30. |
 | **DR-14 Max Force Magnitude** | A system's max force magnitude is the largest force magnitude across the charge interactions related to the system. |
 | **DR-15 Name** | A charge interaction's name is the same as its interaction ID. |
 | **DR-16 Delta X** | A charge interaction's delta x is computed as the x2 minus the x1. |
@@ -234,7 +263,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-53 Attractive Count** | A system summary's attractive count is the number of the system summary's charge interactions that are attractive. |
 | **DR-54 Repulsive Count** | A system summary's repulsive count is the number of the system summary's charge interactions that are repulsive. |
 | **DR-55 Total Charge** | A system summary's total charge is the total charge value across the charges related to the system summary. |
-| **DR-56 Is Neutral** | A system summary is considered a neutral if the value of ABS(TotalCharge) < 1e-30. |
+| **DR-56 Is Neutral** | A system summary is considered neutral if the value of ABS(TotalCharge) < 1e-30. |
 | **DR-57 Max Force Magnitude** | A system summary's max force magnitude is the largest force magnitude across the charge interactions related to the system summary. |
 | **DR-58 Min Distance Meters** | A system summary's min distance meters is the smallest distance meters across the charge interactions related to the system summary. |
 | **DR-59 All Attractive** | A system summary is flagged all attractive if the attractive count is the interaction count. |
@@ -243,7 +272,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -312,8 +341,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)
