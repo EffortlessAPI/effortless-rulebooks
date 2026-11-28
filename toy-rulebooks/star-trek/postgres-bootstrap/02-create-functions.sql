@@ -245,7 +245,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_series_total_episodes(p_serie_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_seasons_episode_count(season_id))::numeric), 0) FROM seasons WHERE series = p_serie_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COUNT(*) FROM episodes WHERE season = NULLIF(erb_r1.season_id, '')))::integer))::integer)::numeric), 0) FROM seasons erb_r1 WHERE series = p_serie_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_series_is_long_running

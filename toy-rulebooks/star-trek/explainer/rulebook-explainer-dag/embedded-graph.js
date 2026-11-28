@@ -159,7 +159,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SeriesRatings": "series-1-tos-riley-shaw, series-1-tos-alex-mercer, series-1-tos-drew-patel",
         "Rating": 4.333333333333333,
         "IsLongRunning": true,
-        "IsGood": false
+        "IsGood": false,
+        "RatingCount": 3,
+        "RatingTotal": 13
       },
       {
         "SerieId": "2-tng",
@@ -177,7 +179,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SeriesRatings": "series-2-tng-avery-chen",
         "Rating": 5,
         "IsGood": true,
-        "IsLongRunning": true
+        "IsLongRunning": true,
+        "RatingCount": 1,
+        "RatingTotal": 5
       },
       {
         "SerieId": "3-ds9",
@@ -191,11 +195,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Seasons": "3-ds9-season-1, 3-ds9-season-2, 3-ds9-season-3, 3-ds9-season-4, 3-ds9-season-5, 3-ds9-season-6, 3-ds9-season-7",
         "SeriesNumber": 3,
         "ShowCode": "DS9",
-        "Rating": "{\n  \"specialValue\": \"NaN\"\n}",
+        "Rating": 0,
         "FinaleDate": "",
-        "IsLongRunning": false,
+        "IsLongRunning": true,
         "SeriesRatings": "",
-        "IsGood": false
+        "IsGood": false,
+        "RatingCount": 0,
+        "RatingTotal": 0
       },
       {
         "SerieId": "4-voy",
@@ -209,11 +215,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Seasons": "4-voy-season-1, 4-voy-season-2, 4-voy-season-3, 4-voy-season-4, 4-voy-season-5, 4-voy-season-6, 4-voy-season-7",
         "SeriesNumber": 4,
         "ShowCode": "VOY",
-        "Rating": "{\n  \"specialValue\": \"NaN\"\n}",
+        "Rating": 0,
         "FinaleDate": "",
-        "IsLongRunning": false,
+        "IsLongRunning": true,
         "SeriesRatings": "",
-        "IsGood": false
+        "IsGood": false,
+        "RatingCount": 0,
+        "RatingTotal": 0
       },
       {
         "SerieId": "5-ent",
@@ -227,11 +235,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Seasons": "5-ent-season-1, 5-ent-season-2, 5-ent-season-3, 5-ent-season-4",
         "SeriesNumber": 5,
         "ShowCode": "ENT",
-        "Rating": "{\n  \"specialValue\": \"NaN\"\n}",
+        "Rating": 0,
         "FinaleDate": "",
-        "IsLongRunning": false,
+        "IsLongRunning": true,
         "SeriesRatings": "",
-        "IsGood": false
+        "IsGood": false,
+        "RatingCount": 0,
+        "RatingTotal": 0
       },
       {
         "SerieId": "6-dis",
@@ -245,11 +255,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Seasons": "6-dis-season-1, 6-dis-season-2, 6-dis-season-3, 6-dis-season-4, 6-dis-season-5",
         "SeriesNumber": 6,
         "ShowCode": "DIS",
-        "Rating": "{\n  \"specialValue\": \"NaN\"\n}",
+        "Rating": 0,
         "FinaleDate": "",
-        "IsLongRunning": false,
+        "IsLongRunning": true,
         "SeriesRatings": "",
-        "IsGood": false
+        "IsGood": false,
+        "RatingCount": 0,
+        "RatingTotal": 0
       },
       {
         "SerieId": "7-pic",
@@ -263,11 +275,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Seasons": "7-pic-season-1, 7-pic-season-2, 7-pic-season-3",
         "SeriesNumber": 7,
         "ShowCode": "PIC",
-        "Rating": "{\n  \"specialValue\": \"NaN\"\n}",
+        "Rating": 0,
         "FinaleDate": "",
         "IsLongRunning": false,
         "SeriesRatings": "",
-        "IsGood": false
+        "IsGood": false,
+        "RatingCount": 0,
+        "RatingTotal": 0
       },
       {
         "SerieId": "8-lds",
@@ -281,11 +295,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Seasons": "8-lds-season-1, 8-lds-season-2, 8-lds-season-3, 8-lds-season-4",
         "SeriesNumber": 8,
         "ShowCode": "LDS",
-        "Rating": "{\n  \"specialValue\": \"NaN\"\n}",
+        "Rating": 0,
         "FinaleDate": "",
         "IsLongRunning": false,
         "SeriesRatings": "",
-        "IsGood": false
+        "IsGood": false,
+        "RatingCount": 0,
+        "RatingTotal": 0
       },
       {
         "SerieId": "9-pro",
@@ -299,11 +315,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Seasons": "9-pro-season-1, 9-pro-season-2",
         "SeriesNumber": 9,
         "ShowCode": "PRO",
-        "Rating": "{\n  \"specialValue\": \"NaN\"\n}",
+        "Rating": 0,
         "FinaleDate": "",
         "IsLongRunning": false,
         "SeriesRatings": "",
-        "IsGood": false
+        "IsGood": false,
+        "RatingCount": 0,
+        "RatingTotal": 0
       },
       {
         "SerieId": "10-snw",
@@ -316,12 +334,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TotalEpisodes": 20,
         "SeriesNumber": 10,
         "ShowCode": "SNW",
-        "Rating": "{\n  \"specialValue\": \"NaN\"\n}",
+        "Rating": 0,
         "FinaleDate": "",
         "IsLongRunning": false,
         "Seasons": "10-snw-season-1, 10-snw-season-2",
         "SeriesRatings": "",
-        "IsGood": false
+        "IsGood": false,
+        "RatingCount": 0,
+        "RatingTotal": 0
       }
     ]
   },
@@ -423,7 +443,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "data": [
       {
         "SeasonId": "1-tos-season-1",
-        "Name": "TOS-Season-1",
+        "Name": "1-tos-Season-1",
         "Series": "1-tos",
         "SeasonNumber": 1,
         "Title": "The Original Series Season 1",
@@ -432,11 +452,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1967-09-01",
         "EpisodeCount": 26,
         "Episodes": "1-tos-season-1-episode-01, 1-tos-season-1-episode-02, 1-tos-season-1-episode-03, 1-tos-season-1-episode-04, 1-tos-season-1-episode-05, 1-tos-season-1-episode-06, 1-tos-season-1-episode-07, 1-tos-season-1-episode-08, 1-tos-season-1-episode-09, 1-tos-season-1-episode-10, 1-tos-season-1-episode-11, 1-tos-season-1-episode-12, 1-tos-season-1-episode-13, 1-tos-season-1-episode-14, 1-tos-season-1-episode-15, 1-tos-season-1-episode-16, 1-tos-season-1-episode-17, 1-tos-season-1-episode-18, 1-tos-season-1-episode-19, 1-tos-season-1-episode-20, 1-tos-season-1-episode-21, 1-tos-season-1-episode-22, 1-tos-season-1-episode-23, 1-tos-season-1-episode-24, 1-tos-season-1-episode-25, 1-tos-season-1-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: The Original Series",
+        "ShowDescription": "The voyages of the starship Enterprise under Captain James T. Kirk.",
+        "ShowNetwork": "NBC"
       },
       {
         "SeasonId": "1-tos-season-2",
-        "Name": "TOS-Season-2",
+        "Name": "1-tos-Season-2",
         "Series": "1-tos",
         "SeasonNumber": 2,
         "Title": "The Original Series Season 2",
@@ -445,11 +468,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1968-08-31",
         "EpisodeCount": 26,
         "Episodes": "1-tos-season-2-episode-01, 1-tos-season-2-episode-02, 1-tos-season-2-episode-03, 1-tos-season-2-episode-04, 1-tos-season-2-episode-05, 1-tos-season-2-episode-06, 1-tos-season-2-episode-07, 1-tos-season-2-episode-08, 1-tos-season-2-episode-09, 1-tos-season-2-episode-10, 1-tos-season-2-episode-11, 1-tos-season-2-episode-12, 1-tos-season-2-episode-13, 1-tos-season-2-episode-14, 1-tos-season-2-episode-15, 1-tos-season-2-episode-16, 1-tos-season-2-episode-17, 1-tos-season-2-episode-18, 1-tos-season-2-episode-19, 1-tos-season-2-episode-20, 1-tos-season-2-episode-21, 1-tos-season-2-episode-22, 1-tos-season-2-episode-23, 1-tos-season-2-episode-24, 1-tos-season-2-episode-25, 1-tos-season-2-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: The Original Series",
+        "ShowDescription": "The voyages of the starship Enterprise under Captain James T. Kirk.",
+        "ShowNetwork": "NBC"
       },
       {
         "SeasonId": "1-tos-season-3",
-        "Name": "TOS-Season-3",
+        "Name": "1-tos-Season-3",
         "Series": "1-tos",
         "SeasonNumber": 3,
         "Title": "The Original Series Season 3",
@@ -458,11 +484,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1969-09-01",
         "EpisodeCount": 24,
         "Episodes": "1-tos-season-3-episode-01, 1-tos-season-3-episode-02, 1-tos-season-3-episode-03, 1-tos-season-3-episode-04, 1-tos-season-3-episode-05, 1-tos-season-3-episode-06, 1-tos-season-3-episode-07, 1-tos-season-3-episode-08, 1-tos-season-3-episode-09, 1-tos-season-3-episode-10, 1-tos-season-3-episode-11, 1-tos-season-3-episode-12, 1-tos-season-3-episode-13, 1-tos-season-3-episode-14, 1-tos-season-3-episode-15, 1-tos-season-3-episode-16, 1-tos-season-3-episode-17, 1-tos-season-3-episode-18, 1-tos-season-3-episode-19, 1-tos-season-3-episode-20, 1-tos-season-3-episode-21, 1-tos-season-3-episode-22, 1-tos-season-3-episode-23, 1-tos-season-3-episode-24",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: The Original Series",
+        "ShowDescription": "The voyages of the starship Enterprise under Captain James T. Kirk.",
+        "ShowNetwork": "NBC"
       },
       {
         "SeasonId": "2-tng-season-1",
-        "Name": "TNG-Season-1",
+        "Name": "2-tng-Season-1",
         "Series": "2-tng",
         "SeasonNumber": 1,
         "Title": "The Next Generation Season 1",
@@ -471,11 +500,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1988-08-31",
         "EpisodeCount": 26,
         "Episodes": "2-tng-season-1-episode-01, 2-tng-season-1-episode-02, 2-tng-season-1-episode-03, 2-tng-season-1-episode-04, 2-tng-season-1-episode-05, 2-tng-season-1-episode-06, 2-tng-season-1-episode-07, 2-tng-season-1-episode-08, 2-tng-season-1-episode-09, 2-tng-season-1-episode-10, 2-tng-season-1-episode-11, 2-tng-season-1-episode-12, 2-tng-season-1-episode-13, 2-tng-season-1-episode-14, 2-tng-season-1-episode-15, 2-tng-season-1-episode-16, 2-tng-season-1-episode-17, 2-tng-season-1-episode-18, 2-tng-season-1-episode-19, 2-tng-season-1-episode-20, 2-tng-season-1-episode-21, 2-tng-season-1-episode-22, 2-tng-season-1-episode-23, 2-tng-season-1-episode-24, 2-tng-season-1-episode-25, 2-tng-season-1-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: The Next Generation",
+        "ShowDescription": "The next generation of Starfleet explores the galaxy under Captain Jean-Luc Picard.",
+        "ShowNetwork": "Syndication"
       },
       {
         "SeasonId": "2-tng-season-2",
-        "Name": "TNG-Season-2",
+        "Name": "2-tng-Season-2",
         "Series": "2-tng",
         "SeasonNumber": 2,
         "Title": "The Next Generation Season 2",
@@ -484,11 +516,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1989-09-01",
         "EpisodeCount": 22,
         "Episodes": "2-tng-season-2-episode-01, 2-tng-season-2-episode-02, 2-tng-season-2-episode-03, 2-tng-season-2-episode-04, 2-tng-season-2-episode-05, 2-tng-season-2-episode-06, 2-tng-season-2-episode-07, 2-tng-season-2-episode-08, 2-tng-season-2-episode-09, 2-tng-season-2-episode-10, 2-tng-season-2-episode-11, 2-tng-season-2-episode-12, 2-tng-season-2-episode-13, 2-tng-season-2-episode-14, 2-tng-season-2-episode-15, 2-tng-season-2-episode-16, 2-tng-season-2-episode-17, 2-tng-season-2-episode-18, 2-tng-season-2-episode-19, 2-tng-season-2-episode-20, 2-tng-season-2-episode-21, 2-tng-season-2-episode-22",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: The Next Generation",
+        "ShowDescription": "The next generation of Starfleet explores the galaxy under Captain Jean-Luc Picard.",
+        "ShowNetwork": "Syndication"
       },
       {
         "SeasonId": "2-tng-season-3",
-        "Name": "TNG-Season-3",
+        "Name": "2-tng-Season-3",
         "Series": "2-tng",
         "SeasonNumber": 3,
         "Title": "The Next Generation Season 3",
@@ -497,11 +532,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1990-09-01",
         "EpisodeCount": 26,
         "Episodes": "2-tng-season-3-episode-01, 2-tng-season-3-episode-02, 2-tng-season-3-episode-03, 2-tng-season-3-episode-04, 2-tng-season-3-episode-05, 2-tng-season-3-episode-06, 2-tng-season-3-episode-07, 2-tng-season-3-episode-08, 2-tng-season-3-episode-09, 2-tng-season-3-episode-10, 2-tng-season-3-episode-11, 2-tng-season-3-episode-12, 2-tng-season-3-episode-13, 2-tng-season-3-episode-14, 2-tng-season-3-episode-15, 2-tng-season-3-episode-16, 2-tng-season-3-episode-17, 2-tng-season-3-episode-18, 2-tng-season-3-episode-19, 2-tng-season-3-episode-20, 2-tng-season-3-episode-21, 2-tng-season-3-episode-22, 2-tng-season-3-episode-23, 2-tng-season-3-episode-24, 2-tng-season-3-episode-25, 2-tng-season-3-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: The Next Generation",
+        "ShowDescription": "The next generation of Starfleet explores the galaxy under Captain Jean-Luc Picard.",
+        "ShowNetwork": "Syndication"
       },
       {
         "SeasonId": "2-tng-season-4",
-        "Name": "TNG-Season-4",
+        "Name": "2-tng-Season-4",
         "Series": "2-tng",
         "SeasonNumber": 4,
         "Title": "The Next Generation Season 4",
@@ -510,11 +548,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1991-09-01",
         "EpisodeCount": 26,
         "Episodes": "2-tng-season-4-episode-01, 2-tng-season-4-episode-02, 2-tng-season-4-episode-03, 2-tng-season-4-episode-04, 2-tng-season-4-episode-05, 2-tng-season-4-episode-06, 2-tng-season-4-episode-07, 2-tng-season-4-episode-08, 2-tng-season-4-episode-09, 2-tng-season-4-episode-10, 2-tng-season-4-episode-11, 2-tng-season-4-episode-12, 2-tng-season-4-episode-13, 2-tng-season-4-episode-14, 2-tng-season-4-episode-15, 2-tng-season-4-episode-16, 2-tng-season-4-episode-17, 2-tng-season-4-episode-18, 2-tng-season-4-episode-19, 2-tng-season-4-episode-20, 2-tng-season-4-episode-21, 2-tng-season-4-episode-22, 2-tng-season-4-episode-23, 2-tng-season-4-episode-24, 2-tng-season-4-episode-25, 2-tng-season-4-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: The Next Generation",
+        "ShowDescription": "The next generation of Starfleet explores the galaxy under Captain Jean-Luc Picard.",
+        "ShowNetwork": "Syndication"
       },
       {
         "SeasonId": "2-tng-season-5",
-        "Name": "TNG-Season-5",
+        "Name": "2-tng-Season-5",
         "Series": "2-tng",
         "SeasonNumber": 5,
         "Title": "The Next Generation Season 5",
@@ -523,11 +564,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1992-08-31",
         "EpisodeCount": 26,
         "Episodes": "2-tng-season-5-episode-01, 2-tng-season-5-episode-02, 2-tng-season-5-episode-03, 2-tng-season-5-episode-04, 2-tng-season-5-episode-05, 2-tng-season-5-episode-06, 2-tng-season-5-episode-07, 2-tng-season-5-episode-08, 2-tng-season-5-episode-09, 2-tng-season-5-episode-10, 2-tng-season-5-episode-11, 2-tng-season-5-episode-12, 2-tng-season-5-episode-13, 2-tng-season-5-episode-14, 2-tng-season-5-episode-15, 2-tng-season-5-episode-16, 2-tng-season-5-episode-17, 2-tng-season-5-episode-18, 2-tng-season-5-episode-19, 2-tng-season-5-episode-20, 2-tng-season-5-episode-21, 2-tng-season-5-episode-22, 2-tng-season-5-episode-23, 2-tng-season-5-episode-24, 2-tng-season-5-episode-25, 2-tng-season-5-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: The Next Generation",
+        "ShowDescription": "The next generation of Starfleet explores the galaxy under Captain Jean-Luc Picard.",
+        "ShowNetwork": "Syndication"
       },
       {
         "SeasonId": "2-tng-season-6",
-        "Name": "TNG-Season-6",
+        "Name": "2-tng-Season-6",
         "Series": "2-tng",
         "SeasonNumber": 6,
         "Title": "The Next Generation Season 6",
@@ -536,11 +580,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1993-09-01",
         "EpisodeCount": 26,
         "Episodes": "2-tng-season-6-episode-01, 2-tng-season-6-episode-02, 2-tng-season-6-episode-03, 2-tng-season-6-episode-04, 2-tng-season-6-episode-05, 2-tng-season-6-episode-06, 2-tng-season-6-episode-07, 2-tng-season-6-episode-08, 2-tng-season-6-episode-09, 2-tng-season-6-episode-10, 2-tng-season-6-episode-11, 2-tng-season-6-episode-12, 2-tng-season-6-episode-13, 2-tng-season-6-episode-14, 2-tng-season-6-episode-15, 2-tng-season-6-episode-16, 2-tng-season-6-episode-17, 2-tng-season-6-episode-18, 2-tng-season-6-episode-19, 2-tng-season-6-episode-20, 2-tng-season-6-episode-21, 2-tng-season-6-episode-22, 2-tng-season-6-episode-23, 2-tng-season-6-episode-24, 2-tng-season-6-episode-25, 2-tng-season-6-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: The Next Generation",
+        "ShowDescription": "The next generation of Starfleet explores the galaxy under Captain Jean-Luc Picard.",
+        "ShowNetwork": "Syndication"
       },
       {
         "SeasonId": "2-tng-season-7",
-        "Name": "TNG-Season-7",
+        "Name": "2-tng-Season-7",
         "Series": "2-tng",
         "SeasonNumber": 7,
         "Title": "The Next Generation Season 7",
@@ -549,11 +596,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1994-09-01",
         "EpisodeCount": 26,
         "Episodes": "2-tng-season-7-episode-01, 2-tng-season-7-episode-02, 2-tng-season-7-episode-03, 2-tng-season-7-episode-04, 2-tng-season-7-episode-05, 2-tng-season-7-episode-06, 2-tng-season-7-episode-07, 2-tng-season-7-episode-08, 2-tng-season-7-episode-09, 2-tng-season-7-episode-10, 2-tng-season-7-episode-11, 2-tng-season-7-episode-12, 2-tng-season-7-episode-13, 2-tng-season-7-episode-14, 2-tng-season-7-episode-15, 2-tng-season-7-episode-16, 2-tng-season-7-episode-17, 2-tng-season-7-episode-18, 2-tng-season-7-episode-19, 2-tng-season-7-episode-20, 2-tng-season-7-episode-21, 2-tng-season-7-episode-22, 2-tng-season-7-episode-23, 2-tng-season-7-episode-24, 2-tng-season-7-episode-25, 2-tng-season-7-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: The Next Generation",
+        "ShowDescription": "The next generation of Starfleet explores the galaxy under Captain Jean-Luc Picard.",
+        "ShowNetwork": "Syndication"
       },
       {
         "SeasonId": "3-ds9-season-1",
-        "Name": "DS9-Season-1",
+        "Name": "3-ds9-Season-1",
         "Series": "3-ds9",
         "SeasonNumber": 1,
         "Title": "Deep Space Nine Season 1",
@@ -562,11 +612,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1994-09-01",
         "EpisodeCount": 20,
         "Episodes": "3-ds9-season-1-episode-01, 3-ds9-season-1-episode-02, 3-ds9-season-1-episode-03, 3-ds9-season-1-episode-04, 3-ds9-season-1-episode-05, 3-ds9-season-1-episode-06, 3-ds9-season-1-episode-07, 3-ds9-season-1-episode-08, 3-ds9-season-1-episode-09, 3-ds9-season-1-episode-10, 3-ds9-season-1-episode-11, 3-ds9-season-1-episode-12, 3-ds9-season-1-episode-13, 3-ds9-season-1-episode-14, 3-ds9-season-1-episode-15, 3-ds9-season-1-episode-16, 3-ds9-season-1-episode-17, 3-ds9-season-1-episode-18, 3-ds9-season-1-episode-19, 3-ds9-season-1-episode-20",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Deep Space Nine",
+        "ShowDescription": "A space station at the edge of the final frontier faces political intrigue and war.",
+        "ShowNetwork": "Syndication"
       },
       {
         "SeasonId": "3-ds9-season-2",
-        "Name": "DS9-Season-2",
+        "Name": "3-ds9-Season-2",
         "Series": "3-ds9",
         "SeasonNumber": 2,
         "Title": "Deep Space Nine Season 2",
@@ -575,11 +628,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1995-09-01",
         "EpisodeCount": 26,
         "Episodes": "3-ds9-season-2-episode-01, 3-ds9-season-2-episode-02, 3-ds9-season-2-episode-03, 3-ds9-season-2-episode-04, 3-ds9-season-2-episode-05, 3-ds9-season-2-episode-06, 3-ds9-season-2-episode-07, 3-ds9-season-2-episode-08, 3-ds9-season-2-episode-09, 3-ds9-season-2-episode-10, 3-ds9-season-2-episode-11, 3-ds9-season-2-episode-12, 3-ds9-season-2-episode-13, 3-ds9-season-2-episode-14, 3-ds9-season-2-episode-15, 3-ds9-season-2-episode-16, 3-ds9-season-2-episode-17, 3-ds9-season-2-episode-18, 3-ds9-season-2-episode-19, 3-ds9-season-2-episode-20, 3-ds9-season-2-episode-21, 3-ds9-season-2-episode-22, 3-ds9-season-2-episode-23, 3-ds9-season-2-episode-24, 3-ds9-season-2-episode-25, 3-ds9-season-2-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Deep Space Nine",
+        "ShowDescription": "A space station at the edge of the final frontier faces political intrigue and war.",
+        "ShowNetwork": "Syndication"
       },
       {
         "SeasonId": "3-ds9-season-3",
-        "Name": "DS9-Season-3",
+        "Name": "3-ds9-Season-3",
         "Series": "3-ds9",
         "SeasonNumber": 3,
         "Title": "Deep Space Nine Season 3",
@@ -588,11 +644,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1996-08-31",
         "EpisodeCount": 26,
         "Episodes": "3-ds9-season-3-episode-01, 3-ds9-season-3-episode-02, 3-ds9-season-3-episode-03, 3-ds9-season-3-episode-04, 3-ds9-season-3-episode-05, 3-ds9-season-3-episode-06, 3-ds9-season-3-episode-07, 3-ds9-season-3-episode-08, 3-ds9-season-3-episode-09, 3-ds9-season-3-episode-10, 3-ds9-season-3-episode-11, 3-ds9-season-3-episode-12, 3-ds9-season-3-episode-13, 3-ds9-season-3-episode-14, 3-ds9-season-3-episode-15, 3-ds9-season-3-episode-16, 3-ds9-season-3-episode-17, 3-ds9-season-3-episode-18, 3-ds9-season-3-episode-19, 3-ds9-season-3-episode-20, 3-ds9-season-3-episode-21, 3-ds9-season-3-episode-22, 3-ds9-season-3-episode-23, 3-ds9-season-3-episode-24, 3-ds9-season-3-episode-25, 3-ds9-season-3-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Deep Space Nine",
+        "ShowDescription": "A space station at the edge of the final frontier faces political intrigue and war.",
+        "ShowNetwork": "Syndication"
       },
       {
         "SeasonId": "3-ds9-season-4",
-        "Name": "DS9-Season-4",
+        "Name": "3-ds9-Season-4",
         "Series": "3-ds9",
         "SeasonNumber": 4,
         "Title": "Deep Space Nine Season 4",
@@ -601,11 +660,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1997-09-01",
         "EpisodeCount": 26,
         "Episodes": "3-ds9-season-4-episode-01, 3-ds9-season-4-episode-02, 3-ds9-season-4-episode-03, 3-ds9-season-4-episode-04, 3-ds9-season-4-episode-05, 3-ds9-season-4-episode-06, 3-ds9-season-4-episode-07, 3-ds9-season-4-episode-08, 3-ds9-season-4-episode-09, 3-ds9-season-4-episode-10, 3-ds9-season-4-episode-11, 3-ds9-season-4-episode-12, 3-ds9-season-4-episode-13, 3-ds9-season-4-episode-14, 3-ds9-season-4-episode-15, 3-ds9-season-4-episode-16, 3-ds9-season-4-episode-17, 3-ds9-season-4-episode-18, 3-ds9-season-4-episode-19, 3-ds9-season-4-episode-20, 3-ds9-season-4-episode-21, 3-ds9-season-4-episode-22, 3-ds9-season-4-episode-23, 3-ds9-season-4-episode-24, 3-ds9-season-4-episode-25, 3-ds9-season-4-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Deep Space Nine",
+        "ShowDescription": "A space station at the edge of the final frontier faces political intrigue and war.",
+        "ShowNetwork": "Syndication"
       },
       {
         "SeasonId": "3-ds9-season-5",
-        "Name": "DS9-Season-5",
+        "Name": "3-ds9-Season-5",
         "Series": "3-ds9",
         "SeasonNumber": 5,
         "Title": "Deep Space Nine Season 5",
@@ -614,11 +676,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1998-09-01",
         "EpisodeCount": 26,
         "Episodes": "3-ds9-season-5-episode-01, 3-ds9-season-5-episode-02, 3-ds9-season-5-episode-03, 3-ds9-season-5-episode-04, 3-ds9-season-5-episode-05, 3-ds9-season-5-episode-06, 3-ds9-season-5-episode-07, 3-ds9-season-5-episode-08, 3-ds9-season-5-episode-09, 3-ds9-season-5-episode-10, 3-ds9-season-5-episode-11, 3-ds9-season-5-episode-12, 3-ds9-season-5-episode-13, 3-ds9-season-5-episode-14, 3-ds9-season-5-episode-15, 3-ds9-season-5-episode-16, 3-ds9-season-5-episode-17, 3-ds9-season-5-episode-18, 3-ds9-season-5-episode-19, 3-ds9-season-5-episode-20, 3-ds9-season-5-episode-21, 3-ds9-season-5-episode-22, 3-ds9-season-5-episode-23, 3-ds9-season-5-episode-24, 3-ds9-season-5-episode-25, 3-ds9-season-5-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Deep Space Nine",
+        "ShowDescription": "A space station at the edge of the final frontier faces political intrigue and war.",
+        "ShowNetwork": "Syndication"
       },
       {
         "SeasonId": "3-ds9-season-6",
-        "Name": "DS9-Season-6",
+        "Name": "3-ds9-Season-6",
         "Series": "3-ds9",
         "SeasonNumber": 6,
         "Title": "Deep Space Nine Season 6",
@@ -627,11 +692,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1999-09-01",
         "EpisodeCount": 26,
         "Episodes": "3-ds9-season-6-episode-01, 3-ds9-season-6-episode-02, 3-ds9-season-6-episode-03, 3-ds9-season-6-episode-04, 3-ds9-season-6-episode-05, 3-ds9-season-6-episode-06, 3-ds9-season-6-episode-07, 3-ds9-season-6-episode-08, 3-ds9-season-6-episode-09, 3-ds9-season-6-episode-10, 3-ds9-season-6-episode-11, 3-ds9-season-6-episode-12, 3-ds9-season-6-episode-13, 3-ds9-season-6-episode-14, 3-ds9-season-6-episode-15, 3-ds9-season-6-episode-16, 3-ds9-season-6-episode-17, 3-ds9-season-6-episode-18, 3-ds9-season-6-episode-19, 3-ds9-season-6-episode-20, 3-ds9-season-6-episode-21, 3-ds9-season-6-episode-22, 3-ds9-season-6-episode-23, 3-ds9-season-6-episode-24, 3-ds9-season-6-episode-25, 3-ds9-season-6-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Deep Space Nine",
+        "ShowDescription": "A space station at the edge of the final frontier faces political intrigue and war.",
+        "ShowNetwork": "Syndication"
       },
       {
         "SeasonId": "3-ds9-season-7",
-        "Name": "DS9-Season-7",
+        "Name": "3-ds9-Season-7",
         "Series": "3-ds9",
         "SeasonNumber": 7,
         "Title": "Deep Space Nine Season 7",
@@ -640,11 +708,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2000-08-31",
         "EpisodeCount": 26,
         "Episodes": "3-ds9-season-7-episode-01, 3-ds9-season-7-episode-02, 3-ds9-season-7-episode-03, 3-ds9-season-7-episode-04, 3-ds9-season-7-episode-05, 3-ds9-season-7-episode-06, 3-ds9-season-7-episode-07, 3-ds9-season-7-episode-08, 3-ds9-season-7-episode-09, 3-ds9-season-7-episode-10, 3-ds9-season-7-episode-11, 3-ds9-season-7-episode-12, 3-ds9-season-7-episode-13, 3-ds9-season-7-episode-14, 3-ds9-season-7-episode-15, 3-ds9-season-7-episode-16, 3-ds9-season-7-episode-17, 3-ds9-season-7-episode-18, 3-ds9-season-7-episode-19, 3-ds9-season-7-episode-20, 3-ds9-season-7-episode-21, 3-ds9-season-7-episode-22, 3-ds9-season-7-episode-23, 3-ds9-season-7-episode-24, 3-ds9-season-7-episode-25, 3-ds9-season-7-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Deep Space Nine",
+        "ShowDescription": "A space station at the edge of the final frontier faces political intrigue and war.",
+        "ShowNetwork": "Syndication"
       },
       {
         "SeasonId": "4-voy-season-1",
-        "Name": "VOY-Season-1",
+        "Name": "4-voy-Season-1",
         "Series": "4-voy",
         "SeasonNumber": 1,
         "Title": "Voyager Season 1",
@@ -653,11 +724,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1996-08-31",
         "EpisodeCount": 16,
         "Episodes": "4-voy-season-1-episode-01, 4-voy-season-1-episode-02, 4-voy-season-1-episode-03, 4-voy-season-1-episode-04, 4-voy-season-1-episode-05, 4-voy-season-1-episode-06, 4-voy-season-1-episode-07, 4-voy-season-1-episode-08, 4-voy-season-1-episode-09, 4-voy-season-1-episode-10, 4-voy-season-1-episode-11, 4-voy-season-1-episode-12, 4-voy-season-1-episode-13, 4-voy-season-1-episode-14, 4-voy-season-1-episode-15, 4-voy-season-1-episode-16",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Voyager",
+        "ShowDescription": "A starship lost in the Delta Quadrant struggles to return home.",
+        "ShowNetwork": "UPN"
       },
       {
         "SeasonId": "4-voy-season-2",
-        "Name": "VOY-Season-2",
+        "Name": "4-voy-Season-2",
         "Series": "4-voy",
         "SeasonNumber": 2,
         "Title": "Voyager Season 2",
@@ -666,11 +740,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1997-09-01",
         "EpisodeCount": 26,
         "Episodes": "4-voy-season-2-episode-01, 4-voy-season-2-episode-02, 4-voy-season-2-episode-03, 4-voy-season-2-episode-04, 4-voy-season-2-episode-05, 4-voy-season-2-episode-06, 4-voy-season-2-episode-07, 4-voy-season-2-episode-08, 4-voy-season-2-episode-09, 4-voy-season-2-episode-10, 4-voy-season-2-episode-11, 4-voy-season-2-episode-12, 4-voy-season-2-episode-13, 4-voy-season-2-episode-14, 4-voy-season-2-episode-15, 4-voy-season-2-episode-16, 4-voy-season-2-episode-17, 4-voy-season-2-episode-18, 4-voy-season-2-episode-19, 4-voy-season-2-episode-20, 4-voy-season-2-episode-21, 4-voy-season-2-episode-22, 4-voy-season-2-episode-23, 4-voy-season-2-episode-24, 4-voy-season-2-episode-25, 4-voy-season-2-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Voyager",
+        "ShowDescription": "A starship lost in the Delta Quadrant struggles to return home.",
+        "ShowNetwork": "UPN"
       },
       {
         "SeasonId": "4-voy-season-3",
-        "Name": "VOY-Season-3",
+        "Name": "4-voy-Season-3",
         "Series": "4-voy",
         "SeasonNumber": 3,
         "Title": "Voyager Season 3",
@@ -679,11 +756,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1998-09-01",
         "EpisodeCount": 26,
         "Episodes": "4-voy-season-3-episode-01, 4-voy-season-3-episode-02, 4-voy-season-3-episode-03, 4-voy-season-3-episode-04, 4-voy-season-3-episode-05, 4-voy-season-3-episode-06, 4-voy-season-3-episode-07, 4-voy-season-3-episode-08, 4-voy-season-3-episode-09, 4-voy-season-3-episode-10, 4-voy-season-3-episode-11, 4-voy-season-3-episode-12, 4-voy-season-3-episode-13, 4-voy-season-3-episode-14, 4-voy-season-3-episode-15, 4-voy-season-3-episode-16, 4-voy-season-3-episode-17, 4-voy-season-3-episode-18, 4-voy-season-3-episode-19, 4-voy-season-3-episode-20, 4-voy-season-3-episode-21, 4-voy-season-3-episode-22, 4-voy-season-3-episode-23, 4-voy-season-3-episode-24, 4-voy-season-3-episode-25, 4-voy-season-3-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Voyager",
+        "ShowDescription": "A starship lost in the Delta Quadrant struggles to return home.",
+        "ShowNetwork": "UPN"
       },
       {
         "SeasonId": "4-voy-season-4",
-        "Name": "VOY-Season-4",
+        "Name": "4-voy-Season-4",
         "Series": "4-voy",
         "SeasonNumber": 4,
         "Title": "Voyager Season 4",
@@ -692,11 +772,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "1999-09-01",
         "EpisodeCount": 26,
         "Episodes": "4-voy-season-4-episode-01, 4-voy-season-4-episode-02, 4-voy-season-4-episode-03, 4-voy-season-4-episode-04, 4-voy-season-4-episode-05, 4-voy-season-4-episode-06, 4-voy-season-4-episode-07, 4-voy-season-4-episode-08, 4-voy-season-4-episode-09, 4-voy-season-4-episode-10, 4-voy-season-4-episode-11, 4-voy-season-4-episode-12, 4-voy-season-4-episode-13, 4-voy-season-4-episode-14, 4-voy-season-4-episode-15, 4-voy-season-4-episode-16, 4-voy-season-4-episode-17, 4-voy-season-4-episode-18, 4-voy-season-4-episode-19, 4-voy-season-4-episode-20, 4-voy-season-4-episode-21, 4-voy-season-4-episode-22, 4-voy-season-4-episode-23, 4-voy-season-4-episode-24, 4-voy-season-4-episode-25, 4-voy-season-4-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Voyager",
+        "ShowDescription": "A starship lost in the Delta Quadrant struggles to return home.",
+        "ShowNetwork": "UPN"
       },
       {
         "SeasonId": "4-voy-season-5",
-        "Name": "VOY-Season-5",
+        "Name": "4-voy-Season-5",
         "Series": "4-voy",
         "SeasonNumber": 5,
         "Title": "Voyager Season 5",
@@ -705,11 +788,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2000-08-31",
         "EpisodeCount": 26,
         "Episodes": "4-voy-season-5-episode-01, 4-voy-season-5-episode-02, 4-voy-season-5-episode-03, 4-voy-season-5-episode-04, 4-voy-season-5-episode-05, 4-voy-season-5-episode-06, 4-voy-season-5-episode-07, 4-voy-season-5-episode-08, 4-voy-season-5-episode-09, 4-voy-season-5-episode-10, 4-voy-season-5-episode-11, 4-voy-season-5-episode-12, 4-voy-season-5-episode-13, 4-voy-season-5-episode-14, 4-voy-season-5-episode-15, 4-voy-season-5-episode-16, 4-voy-season-5-episode-17, 4-voy-season-5-episode-18, 4-voy-season-5-episode-19, 4-voy-season-5-episode-20, 4-voy-season-5-episode-21, 4-voy-season-5-episode-22, 4-voy-season-5-episode-23, 4-voy-season-5-episode-24, 4-voy-season-5-episode-25, 4-voy-season-5-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Voyager",
+        "ShowDescription": "A starship lost in the Delta Quadrant struggles to return home.",
+        "ShowNetwork": "UPN"
       },
       {
         "SeasonId": "4-voy-season-6",
-        "Name": "VOY-Season-6",
+        "Name": "4-voy-Season-6",
         "Series": "4-voy",
         "SeasonNumber": 6,
         "Title": "Voyager Season 6",
@@ -718,11 +804,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2001-09-01",
         "EpisodeCount": 26,
         "Episodes": "4-voy-season-6-episode-01, 4-voy-season-6-episode-02, 4-voy-season-6-episode-03, 4-voy-season-6-episode-04, 4-voy-season-6-episode-05, 4-voy-season-6-episode-06, 4-voy-season-6-episode-07, 4-voy-season-6-episode-08, 4-voy-season-6-episode-09, 4-voy-season-6-episode-10, 4-voy-season-6-episode-11, 4-voy-season-6-episode-12, 4-voy-season-6-episode-13, 4-voy-season-6-episode-14, 4-voy-season-6-episode-15, 4-voy-season-6-episode-16, 4-voy-season-6-episode-17, 4-voy-season-6-episode-18, 4-voy-season-6-episode-19, 4-voy-season-6-episode-20, 4-voy-season-6-episode-21, 4-voy-season-6-episode-22, 4-voy-season-6-episode-23, 4-voy-season-6-episode-24, 4-voy-season-6-episode-25, 4-voy-season-6-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Voyager",
+        "ShowDescription": "A starship lost in the Delta Quadrant struggles to return home.",
+        "ShowNetwork": "UPN"
       },
       {
         "SeasonId": "4-voy-season-7",
-        "Name": "VOY-Season-7",
+        "Name": "4-voy-Season-7",
         "Series": "4-voy",
         "SeasonNumber": 7,
         "Title": "Voyager Season 7",
@@ -731,11 +820,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2002-09-01",
         "EpisodeCount": 24,
         "Episodes": "4-voy-season-7-episode-01, 4-voy-season-7-episode-02, 4-voy-season-7-episode-03, 4-voy-season-7-episode-04, 4-voy-season-7-episode-05, 4-voy-season-7-episode-06, 4-voy-season-7-episode-07, 4-voy-season-7-episode-08, 4-voy-season-7-episode-09, 4-voy-season-7-episode-10, 4-voy-season-7-episode-11, 4-voy-season-7-episode-12, 4-voy-season-7-episode-13, 4-voy-season-7-episode-14, 4-voy-season-7-episode-15, 4-voy-season-7-episode-16, 4-voy-season-7-episode-17, 4-voy-season-7-episode-18, 4-voy-season-7-episode-19, 4-voy-season-7-episode-20, 4-voy-season-7-episode-21, 4-voy-season-7-episode-22, 4-voy-season-7-episode-23, 4-voy-season-7-episode-24",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Voyager",
+        "ShowDescription": "A starship lost in the Delta Quadrant struggles to return home.",
+        "ShowNetwork": "UPN"
       },
       {
         "SeasonId": "5-ent-season-1",
-        "Name": "ENT-Season-1",
+        "Name": "5-ent-Season-1",
         "Series": "5-ent",
         "SeasonNumber": 1,
         "Title": "Enterprise Season 1",
@@ -744,11 +836,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2002-09-01",
         "EpisodeCount": 26,
         "Episodes": "5-ent-season-1-episode-01, 5-ent-season-1-episode-02, 5-ent-season-1-episode-03, 5-ent-season-1-episode-04, 5-ent-season-1-episode-05, 5-ent-season-1-episode-06, 5-ent-season-1-episode-07, 5-ent-season-1-episode-08, 5-ent-season-1-episode-09, 5-ent-season-1-episode-10, 5-ent-season-1-episode-11, 5-ent-season-1-episode-12, 5-ent-season-1-episode-13, 5-ent-season-1-episode-14, 5-ent-season-1-episode-15, 5-ent-season-1-episode-16, 5-ent-season-1-episode-17, 5-ent-season-1-episode-18, 5-ent-season-1-episode-19, 5-ent-season-1-episode-20, 5-ent-season-1-episode-21, 5-ent-season-1-episode-22, 5-ent-season-1-episode-23, 5-ent-season-1-episode-24, 5-ent-season-1-episode-25, 5-ent-season-1-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Enterprise",
+        "ShowDescription": "The earliest voyages of Starfleet as humanity takes its first steps into deep space.",
+        "ShowNetwork": "UPN"
       },
       {
         "SeasonId": "5-ent-season-2",
-        "Name": "ENT-Season-2",
+        "Name": "5-ent-Season-2",
         "Series": "5-ent",
         "SeasonNumber": 2,
         "Title": "Enterprise Season 2",
@@ -757,11 +852,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2003-09-01",
         "EpisodeCount": 26,
         "Episodes": "5-ent-season-2-episode-01, 5-ent-season-2-episode-02, 5-ent-season-2-episode-03, 5-ent-season-2-episode-04, 5-ent-season-2-episode-05, 5-ent-season-2-episode-06, 5-ent-season-2-episode-07, 5-ent-season-2-episode-08, 5-ent-season-2-episode-09, 5-ent-season-2-episode-10, 5-ent-season-2-episode-11, 5-ent-season-2-episode-12, 5-ent-season-2-episode-13, 5-ent-season-2-episode-14, 5-ent-season-2-episode-15, 5-ent-season-2-episode-16, 5-ent-season-2-episode-17, 5-ent-season-2-episode-18, 5-ent-season-2-episode-19, 5-ent-season-2-episode-20, 5-ent-season-2-episode-21, 5-ent-season-2-episode-22, 5-ent-season-2-episode-23, 5-ent-season-2-episode-24, 5-ent-season-2-episode-25, 5-ent-season-2-episode-26",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Enterprise",
+        "ShowDescription": "The earliest voyages of Starfleet as humanity takes its first steps into deep space.",
+        "ShowNetwork": "UPN"
       },
       {
         "SeasonId": "5-ent-season-3",
-        "Name": "ENT-Season-3",
+        "Name": "5-ent-Season-3",
         "Series": "5-ent",
         "SeasonNumber": 3,
         "Title": "Enterprise Season 3",
@@ -770,11 +868,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2004-08-31",
         "EpisodeCount": 24,
         "Episodes": "5-ent-season-3-episode-01, 5-ent-season-3-episode-02, 5-ent-season-3-episode-03, 5-ent-season-3-episode-04, 5-ent-season-3-episode-05, 5-ent-season-3-episode-06, 5-ent-season-3-episode-07, 5-ent-season-3-episode-08, 5-ent-season-3-episode-09, 5-ent-season-3-episode-10, 5-ent-season-3-episode-11, 5-ent-season-3-episode-12, 5-ent-season-3-episode-13, 5-ent-season-3-episode-14, 5-ent-season-3-episode-15, 5-ent-season-3-episode-16, 5-ent-season-3-episode-17, 5-ent-season-3-episode-18, 5-ent-season-3-episode-19, 5-ent-season-3-episode-20, 5-ent-season-3-episode-21, 5-ent-season-3-episode-22, 5-ent-season-3-episode-23, 5-ent-season-3-episode-24",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Enterprise",
+        "ShowDescription": "The earliest voyages of Starfleet as humanity takes its first steps into deep space.",
+        "ShowNetwork": "UPN"
       },
       {
         "SeasonId": "5-ent-season-4",
-        "Name": "ENT-Season-4",
+        "Name": "5-ent-Season-4",
         "Series": "5-ent",
         "SeasonNumber": 4,
         "Title": "Enterprise Season 4",
@@ -783,11 +884,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2005-09-01",
         "EpisodeCount": 22,
         "Episodes": "5-ent-season-4-episode-01, 5-ent-season-4-episode-02, 5-ent-season-4-episode-03, 5-ent-season-4-episode-04, 5-ent-season-4-episode-05, 5-ent-season-4-episode-06, 5-ent-season-4-episode-07, 5-ent-season-4-episode-08, 5-ent-season-4-episode-09, 5-ent-season-4-episode-10, 5-ent-season-4-episode-11, 5-ent-season-4-episode-12, 5-ent-season-4-episode-13, 5-ent-season-4-episode-14, 5-ent-season-4-episode-15, 5-ent-season-4-episode-16, 5-ent-season-4-episode-17, 5-ent-season-4-episode-18, 5-ent-season-4-episode-19, 5-ent-season-4-episode-20, 5-ent-season-4-episode-21, 5-ent-season-4-episode-22",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Enterprise",
+        "ShowDescription": "The earliest voyages of Starfleet as humanity takes its first steps into deep space.",
+        "ShowNetwork": "UPN"
       },
       {
         "SeasonId": "6-dis-season-1",
-        "Name": "DIS-Season-1",
+        "Name": "6-dis-Season-1",
         "Series": "6-dis",
         "SeasonNumber": 1,
         "Title": "Discovery Season 1",
@@ -796,11 +900,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2018-09-01",
         "EpisodeCount": 13,
         "Episodes": "6-dis-season-1-episode-01, 6-dis-season-1-episode-02, 6-dis-season-1-episode-03, 6-dis-season-1-episode-04, 6-dis-season-1-episode-05, 6-dis-season-1-episode-06, 6-dis-season-1-episode-07, 6-dis-season-1-episode-08, 6-dis-season-1-episode-09, 6-dis-season-1-episode-10, 6-dis-season-1-episode-11, 6-dis-season-1-episode-12, 6-dis-season-1-episode-13",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Discovery",
+        "ShowDescription": "A new crew explores the galaxy in the 32nd century.",
+        "ShowNetwork": "CBS All Access"
       },
       {
         "SeasonId": "6-dis-season-2",
-        "Name": "DIS-Season-2",
+        "Name": "6-dis-Season-2",
         "Series": "6-dis",
         "SeasonNumber": 2,
         "Title": "Discovery Season 2",
@@ -809,11 +916,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2019-09-01",
         "EpisodeCount": 14,
         "Episodes": "6-dis-season-2-episode-01, 6-dis-season-2-episode-02, 6-dis-season-2-episode-03, 6-dis-season-2-episode-04, 6-dis-season-2-episode-05, 6-dis-season-2-episode-06, 6-dis-season-2-episode-07, 6-dis-season-2-episode-08, 6-dis-season-2-episode-09, 6-dis-season-2-episode-10, 6-dis-season-2-episode-11, 6-dis-season-2-episode-12, 6-dis-season-2-episode-13, 6-dis-season-2-episode-14",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Discovery",
+        "ShowDescription": "A new crew explores the galaxy in the 32nd century.",
+        "ShowNetwork": "CBS All Access"
       },
       {
         "SeasonId": "6-dis-season-3",
-        "Name": "DIS-Season-3",
+        "Name": "6-dis-Season-3",
         "Series": "6-dis",
         "SeasonNumber": 3,
         "Title": "Discovery Season 3",
@@ -822,11 +932,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2020-08-31",
         "EpisodeCount": 13,
         "Episodes": "6-dis-season-3-episode-01, 6-dis-season-3-episode-02, 6-dis-season-3-episode-03, 6-dis-season-3-episode-04, 6-dis-season-3-episode-05, 6-dis-season-3-episode-06, 6-dis-season-3-episode-07, 6-dis-season-3-episode-08, 6-dis-season-3-episode-09, 6-dis-season-3-episode-10, 6-dis-season-3-episode-11, 6-dis-season-3-episode-12, 6-dis-season-3-episode-13",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Discovery",
+        "ShowDescription": "A new crew explores the galaxy in the 32nd century.",
+        "ShowNetwork": "CBS All Access"
       },
       {
         "SeasonId": "6-dis-season-4",
-        "Name": "DIS-Season-4",
+        "Name": "6-dis-Season-4",
         "Series": "6-dis",
         "SeasonNumber": 4,
         "Title": "Discovery Season 4",
@@ -835,11 +948,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2021-09-01",
         "EpisodeCount": 13,
         "Episodes": "6-dis-season-4-episode-01, 6-dis-season-4-episode-02, 6-dis-season-4-episode-03, 6-dis-season-4-episode-04, 6-dis-season-4-episode-05, 6-dis-season-4-episode-06, 6-dis-season-4-episode-07, 6-dis-season-4-episode-08, 6-dis-season-4-episode-09, 6-dis-season-4-episode-10, 6-dis-season-4-episode-11, 6-dis-season-4-episode-12, 6-dis-season-4-episode-13",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Discovery",
+        "ShowDescription": "A new crew explores the galaxy in the 32nd century.",
+        "ShowNetwork": "CBS All Access"
       },
       {
         "SeasonId": "6-dis-season-5",
-        "Name": "DIS-Season-5",
+        "Name": "6-dis-Season-5",
         "Series": "6-dis",
         "SeasonNumber": 5,
         "Title": "Discovery Season 5",
@@ -848,11 +964,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2022-09-01",
         "EpisodeCount": 10,
         "Episodes": "6-dis-season-5-episode-01, 6-dis-season-5-episode-02, 6-dis-season-5-episode-03, 6-dis-season-5-episode-04, 6-dis-season-5-episode-05, 6-dis-season-5-episode-06, 6-dis-season-5-episode-07, 6-dis-season-5-episode-08, 6-dis-season-5-episode-09, 6-dis-season-5-episode-10",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Discovery",
+        "ShowDescription": "A new crew explores the galaxy in the 32nd century.",
+        "ShowNetwork": "CBS All Access"
       },
       {
         "SeasonId": "7-pic-season-1",
-        "Name": "PIC-Season-1",
+        "Name": "7-pic-Season-1",
         "Series": "7-pic",
         "SeasonNumber": 1,
         "Title": "Picard Season 1",
@@ -861,11 +980,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2021-09-01",
         "EpisodeCount": 10,
         "Episodes": "7-pic-season-1-episode-01, 7-pic-season-1-episode-02, 7-pic-season-1-episode-03, 7-pic-season-1-episode-04, 7-pic-season-1-episode-05, 7-pic-season-1-episode-06, 7-pic-season-1-episode-07, 7-pic-season-1-episode-08, 7-pic-season-1-episode-09, 7-pic-season-1-episode-10",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Picard",
+        "ShowDescription": "Jean-Luc Picard returns for a new adventure decades after TNG.",
+        "ShowNetwork": "Paramount+"
       },
       {
         "SeasonId": "7-pic-season-2",
-        "Name": "PIC-Season-2",
+        "Name": "7-pic-Season-2",
         "Series": "7-pic",
         "SeasonNumber": 2,
         "Title": "Picard Season 2",
@@ -874,11 +996,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2022-09-01",
         "EpisodeCount": 10,
         "Episodes": "7-pic-season-2-episode-01, 7-pic-season-2-episode-02, 7-pic-season-2-episode-03, 7-pic-season-2-episode-04, 7-pic-season-2-episode-05, 7-pic-season-2-episode-06, 7-pic-season-2-episode-07, 7-pic-season-2-episode-08, 7-pic-season-2-episode-09, 7-pic-season-2-episode-10",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Picard",
+        "ShowDescription": "Jean-Luc Picard returns for a new adventure decades after TNG.",
+        "ShowNetwork": "Paramount+"
       },
       {
         "SeasonId": "7-pic-season-3",
-        "Name": "PIC-Season-3",
+        "Name": "7-pic-Season-3",
         "Series": "7-pic",
         "SeasonNumber": 3,
         "Title": "Picard Season 3",
@@ -887,11 +1012,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2023-09-01",
         "EpisodeCount": 10,
         "Episodes": "7-pic-season-3-episode-01, 7-pic-season-3-episode-02, 7-pic-season-3-episode-03, 7-pic-season-3-episode-04, 7-pic-season-3-episode-05, 7-pic-season-3-episode-06, 7-pic-season-3-episode-07, 7-pic-season-3-episode-08, 7-pic-season-3-episode-09, 7-pic-season-3-episode-10",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Picard",
+        "ShowDescription": "Jean-Luc Picard returns for a new adventure decades after TNG.",
+        "ShowNetwork": "Paramount+"
       },
       {
         "SeasonId": "8-lds-season-1",
-        "Name": "LDS-Season-1",
+        "Name": "8-lds-Season-1",
         "Series": "8-lds",
         "SeasonNumber": 1,
         "Title": "Lower Decks Season 1",
@@ -900,11 +1028,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2021-09-01",
         "EpisodeCount": 10,
         "Episodes": "8-lds-season-1-episode-01, 8-lds-season-1-episode-02, 8-lds-season-1-episode-03, 8-lds-season-1-episode-04, 8-lds-season-1-episode-05, 8-lds-season-1-episode-06, 8-lds-season-1-episode-07, 8-lds-season-1-episode-08, 8-lds-season-1-episode-09, 8-lds-season-1-episode-10",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Lower Decks",
+        "ShowDescription": "The support crew of one of Starfleet’s least important ships.",
+        "ShowNetwork": "Paramount+"
       },
       {
         "SeasonId": "8-lds-season-2",
-        "Name": "LDS-Season-2",
+        "Name": "8-lds-Season-2",
         "Series": "8-lds",
         "SeasonNumber": 2,
         "Title": "Lower Decks Season 2",
@@ -913,11 +1044,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2022-09-01",
         "EpisodeCount": 10,
         "Episodes": "8-lds-season-2-episode-01, 8-lds-season-2-episode-02, 8-lds-season-2-episode-03, 8-lds-season-2-episode-04, 8-lds-season-2-episode-05, 8-lds-season-2-episode-06, 8-lds-season-2-episode-07, 8-lds-season-2-episode-08, 8-lds-season-2-episode-09, 8-lds-season-2-episode-10",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Lower Decks",
+        "ShowDescription": "The support crew of one of Starfleet’s least important ships.",
+        "ShowNetwork": "Paramount+"
       },
       {
         "SeasonId": "8-lds-season-3",
-        "Name": "LDS-Season-3",
+        "Name": "8-lds-Season-3",
         "Series": "8-lds",
         "SeasonNumber": 3,
         "Title": "Lower Decks Season 3",
@@ -926,11 +1060,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2023-09-01",
         "EpisodeCount": 10,
         "Episodes": "8-lds-season-3-episode-01, 8-lds-season-3-episode-02, 8-lds-season-3-episode-03, 8-lds-season-3-episode-04, 8-lds-season-3-episode-05, 8-lds-season-3-episode-06, 8-lds-season-3-episode-07, 8-lds-season-3-episode-08, 8-lds-season-3-episode-09, 8-lds-season-3-episode-10",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Lower Decks",
+        "ShowDescription": "The support crew of one of Starfleet’s least important ships.",
+        "ShowNetwork": "Paramount+"
       },
       {
         "SeasonId": "8-lds-season-4",
-        "Name": "LDS-Season-4",
+        "Name": "8-lds-Season-4",
         "Series": "8-lds",
         "SeasonNumber": 4,
         "Title": "Lower Decks Season 4",
@@ -939,11 +1076,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2024-08-31",
         "EpisodeCount": 12,
         "Episodes": "8-lds-season-4-episode-01, 8-lds-season-4-episode-02, 8-lds-season-4-episode-03, 8-lds-season-4-episode-04, 8-lds-season-4-episode-05, 8-lds-season-4-episode-06, 8-lds-season-4-episode-07, 8-lds-season-4-episode-08, 8-lds-season-4-episode-09, 8-lds-season-4-episode-10, 8-lds-season-4-episode-11, 8-lds-season-4-episode-12",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Lower Decks",
+        "ShowDescription": "The support crew of one of Starfleet’s least important ships.",
+        "ShowNetwork": "Paramount+"
       },
       {
         "SeasonId": "9-pro-season-1",
-        "Name": "PRO-Season-1",
+        "Name": "9-pro-Season-1",
         "Series": "9-pro",
         "SeasonNumber": 1,
         "Title": "Prodigy Season 1",
@@ -952,11 +1092,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2022-09-01",
         "EpisodeCount": 20,
         "Episodes": "9-pro-season-1-episode-01, 9-pro-season-1-episode-02, 9-pro-season-1-episode-03, 9-pro-season-1-episode-04, 9-pro-season-1-episode-05, 9-pro-season-1-episode-06, 9-pro-season-1-episode-07, 9-pro-season-1-episode-08, 9-pro-season-1-episode-09, 9-pro-season-1-episode-10, 9-pro-season-1-episode-11, 9-pro-season-1-episode-12, 9-pro-season-1-episode-13, 9-pro-season-1-episode-14, 9-pro-season-1-episode-15, 9-pro-season-1-episode-16, 9-pro-season-1-episode-17, 9-pro-season-1-episode-18, 9-pro-season-1-episode-19, 9-pro-season-1-episode-20",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Prodigy",
+        "ShowDescription": "A group of young aliens finds a derelict Starfleet ship and seeks adventure.",
+        "ShowNetwork": "Paramount+"
       },
       {
         "SeasonId": "9-pro-season-2",
-        "Name": "PRO-Season-2",
+        "Name": "9-pro-Season-2",
         "Series": "9-pro",
         "SeasonNumber": 2,
         "Title": "Prodigy Season 2",
@@ -965,11 +1108,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2023-09-01",
         "EpisodeCount": 20,
         "Episodes": "9-pro-season-2-episode-01, 9-pro-season-2-episode-02, 9-pro-season-2-episode-03, 9-pro-season-2-episode-04, 9-pro-season-2-episode-05, 9-pro-season-2-episode-06, 9-pro-season-2-episode-07, 9-pro-season-2-episode-08, 9-pro-season-2-episode-09, 9-pro-season-2-episode-10, 9-pro-season-2-episode-11, 9-pro-season-2-episode-12, 9-pro-season-2-episode-13, 9-pro-season-2-episode-14, 9-pro-season-2-episode-15, 9-pro-season-2-episode-16, 9-pro-season-2-episode-17, 9-pro-season-2-episode-18, 9-pro-season-2-episode-19, 9-pro-season-2-episode-20",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Prodigy",
+        "ShowDescription": "A group of young aliens finds a derelict Starfleet ship and seeks adventure.",
+        "ShowNetwork": "Paramount+"
       },
       {
         "SeasonId": "10-snw-season-1",
-        "Name": "SNW-Season-1",
+        "Name": "10-snw-Season-1",
         "Series": "10-snw",
         "SeasonNumber": 1,
         "Title": "Strange New Worlds Season 1",
@@ -978,11 +1124,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2023-09-01",
         "EpisodeCount": 10,
         "Episodes": "10-snw-season-1-episode-01, 10-snw-season-1-episode-02, 10-snw-season-1-episode-03, 10-snw-season-1-episode-04, 10-snw-season-1-episode-05, 10-snw-season-1-episode-06, 10-snw-season-1-episode-07, 10-snw-season-1-episode-08, 10-snw-season-1-episode-09, 10-snw-season-1-episode-10",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Strange New Worlds",
+        "ShowDescription": "Captain Pike leads the Enterprise before Kirk’s command.",
+        "ShowNetwork": "Paramount+"
       },
       {
         "SeasonId": "10-snw-season-2",
-        "Name": "SNW-Season-2",
+        "Name": "10-snw-Season-2",
         "Series": "10-snw",
         "SeasonNumber": 2,
         "Title": "Strange New Worlds Season 2",
@@ -991,7 +1140,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EndAirdate": "2024-08-31",
         "EpisodeCount": 10,
         "Episodes": "10-snw-season-2-episode-01, 10-snw-season-2-episode-02, 10-snw-season-2-episode-03, 10-snw-season-2-episode-04, 10-snw-season-2-episode-05, 10-snw-season-2-episode-06, 10-snw-season-2-episode-07, 10-snw-season-2-episode-08, 10-snw-season-2-episode-09, 10-snw-season-2-episode-10",
-        "MockDataNotes": ""
+        "MockDataNotes": "",
+        "ShowTitle": "Star Trek: Strange New Worlds",
+        "ShowDescription": "Captain Pike leads the Enterprise before Kirk’s command.",
+        "ShowNetwork": "Paramount+"
       }
     ]
   },
@@ -1116,7 +1268,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-02",
@@ -1130,7 +1285,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-03",
@@ -1144,7 +1302,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-04",
@@ -1158,7 +1319,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-05",
@@ -1172,7 +1336,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-06",
@@ -1186,7 +1353,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-07",
@@ -1200,7 +1370,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-08",
@@ -1214,7 +1387,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-09",
@@ -1228,7 +1404,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-10",
@@ -1242,7 +1421,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-11",
@@ -1256,7 +1438,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-12",
@@ -1270,7 +1455,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-13",
@@ -1284,7 +1472,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-14",
@@ -1298,7 +1489,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-15",
@@ -1312,7 +1506,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-16",
@@ -1326,7 +1523,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-17",
@@ -1340,7 +1540,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-18",
@@ -1354,7 +1557,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-19",
@@ -1368,7 +1574,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-20",
@@ -1382,7 +1591,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-21",
@@ -1396,7 +1608,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-22",
@@ -1410,7 +1625,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-23",
@@ -1424,7 +1642,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-24",
@@ -1438,7 +1659,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-25",
@@ -1452,7 +1676,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-1-episode-26",
@@ -1466,7 +1693,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Original Series Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-01",
@@ -1480,7 +1710,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-02",
@@ -1494,7 +1727,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-03",
@@ -1508,7 +1744,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-04",
@@ -1522,7 +1761,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-05",
@@ -1536,7 +1778,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-06",
@@ -1550,7 +1795,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-07",
@@ -1564,7 +1812,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-08",
@@ -1578,7 +1829,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-09",
@@ -1592,7 +1846,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-10",
@@ -1606,7 +1863,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-11",
@@ -1620,7 +1880,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-12",
@@ -1634,7 +1897,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-13",
@@ -1648,7 +1914,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-14",
@@ -1662,7 +1931,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-15",
@@ -1676,7 +1948,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-16",
@@ -1690,7 +1965,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-17",
@@ -1704,7 +1982,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-18",
@@ -1718,7 +1999,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-19",
@@ -1732,7 +2016,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-20",
@@ -1746,7 +2033,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-21",
@@ -1760,7 +2050,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-22",
@@ -1774,7 +2067,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-23",
@@ -1788,7 +2084,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-24",
@@ -1802,7 +2101,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-25",
@@ -1816,7 +2118,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-2-episode-26",
@@ -1830,7 +2135,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Original Series Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-01",
@@ -1844,7 +2152,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-02",
@@ -1858,7 +2169,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-03",
@@ -1872,7 +2186,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-04",
@@ -1886,7 +2203,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-05",
@@ -1900,7 +2220,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-06",
@@ -1914,7 +2237,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-07",
@@ -1928,7 +2254,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-08",
@@ -1942,7 +2271,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-09",
@@ -1956,7 +2288,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-10",
@@ -1970,7 +2305,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-11",
@@ -1984,7 +2322,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-12",
@@ -1998,7 +2339,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-13",
@@ -2012,7 +2356,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-14",
@@ -2026,7 +2373,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-15",
@@ -2040,7 +2390,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-16",
@@ -2054,7 +2407,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-17",
@@ -2068,7 +2424,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-18",
@@ -2082,7 +2441,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-19",
@@ -2096,7 +2458,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-20",
@@ -2110,7 +2475,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-21",
@@ -2124,7 +2492,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-22",
@@ -2138,7 +2509,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-23",
@@ -2152,7 +2526,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "1-tos-season-3-episode-24",
@@ -2166,7 +2543,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Original Series Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Original Series"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-01",
@@ -2180,7 +2560,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-02",
@@ -2194,7 +2577,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-03",
@@ -2208,7 +2594,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-04",
@@ -2222,7 +2611,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-05",
@@ -2236,7 +2628,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-06",
@@ -2250,7 +2645,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-07",
@@ -2264,7 +2662,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-08",
@@ -2278,7 +2679,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-09",
@@ -2292,7 +2696,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-10",
@@ -2306,7 +2713,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-11",
@@ -2320,7 +2730,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-12",
@@ -2334,7 +2747,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-13",
@@ -2348,7 +2764,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-14",
@@ -2362,7 +2781,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-15",
@@ -2376,7 +2798,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-16",
@@ -2390,7 +2815,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-17",
@@ -2404,7 +2832,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-18",
@@ -2418,7 +2849,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-19",
@@ -2432,7 +2866,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-20",
@@ -2446,7 +2883,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-21",
@@ -2460,7 +2900,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-22",
@@ -2474,7 +2917,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-23",
@@ -2488,7 +2934,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-24",
@@ -2502,7 +2951,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-25",
@@ -2516,7 +2968,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-1-episode-26",
@@ -2530,7 +2985,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "The Next Generation Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-01",
@@ -2544,7 +3002,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-02",
@@ -2558,7 +3019,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-03",
@@ -2572,7 +3036,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-04",
@@ -2586,7 +3053,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-05",
@@ -2600,7 +3070,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-06",
@@ -2614,7 +3087,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-07",
@@ -2628,7 +3104,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-08",
@@ -2642,7 +3121,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-09",
@@ -2656,7 +3138,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-10",
@@ -2670,7 +3155,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-11",
@@ -2684,7 +3172,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-12",
@@ -2698,7 +3189,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-13",
@@ -2712,7 +3206,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-14",
@@ -2726,7 +3223,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-15",
@@ -2740,7 +3240,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-16",
@@ -2754,7 +3257,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-17",
@@ -2768,7 +3274,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-18",
@@ -2782,7 +3291,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-19",
@@ -2796,7 +3308,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-20",
@@ -2810,7 +3325,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-21",
@@ -2824,7 +3342,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-2-episode-22",
@@ -2838,7 +3359,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "The Next Generation Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-01",
@@ -2852,7 +3376,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-02",
@@ -2866,7 +3393,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-03",
@@ -2880,7 +3410,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-04",
@@ -2894,7 +3427,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-05",
@@ -2908,7 +3444,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-06",
@@ -2922,7 +3461,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-07",
@@ -2936,7 +3478,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-08",
@@ -2950,7 +3495,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-09",
@@ -2964,7 +3512,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-10",
@@ -2978,7 +3529,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-11",
@@ -2992,7 +3546,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-12",
@@ -3006,7 +3563,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-13",
@@ -3020,7 +3580,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-14",
@@ -3034,7 +3597,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-15",
@@ -3048,7 +3614,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-16",
@@ -3062,7 +3631,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-17",
@@ -3076,7 +3648,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-18",
@@ -3090,7 +3665,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-19",
@@ -3104,7 +3682,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-20",
@@ -3118,7 +3699,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-21",
@@ -3132,7 +3716,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-22",
@@ -3146,7 +3733,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-23",
@@ -3160,7 +3750,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-24",
@@ -3174,7 +3767,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-25",
@@ -3188,7 +3784,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-3-episode-26",
@@ -3202,7 +3801,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "The Next Generation Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-01",
@@ -3216,7 +3818,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-02",
@@ -3230,7 +3835,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-03",
@@ -3244,7 +3852,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-04",
@@ -3258,7 +3869,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-05",
@@ -3272,7 +3886,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-06",
@@ -3286,7 +3903,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-07",
@@ -3300,7 +3920,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-08",
@@ -3314,7 +3937,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-09",
@@ -3328,7 +3954,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-10",
@@ -3342,7 +3971,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-11",
@@ -3356,7 +3988,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-12",
@@ -3370,7 +4005,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-13",
@@ -3384,7 +4022,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-14",
@@ -3398,7 +4039,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-15",
@@ -3412,7 +4056,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-16",
@@ -3426,7 +4073,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-17",
@@ -3440,7 +4090,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-18",
@@ -3454,7 +4107,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-19",
@@ -3468,7 +4124,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-20",
@@ -3482,7 +4141,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-21",
@@ -3496,7 +4158,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-22",
@@ -3510,7 +4175,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-23",
@@ -3524,7 +4192,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-24",
@@ -3538,7 +4209,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-25",
@@ -3552,7 +4226,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-4-episode-26",
@@ -3566,7 +4243,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "The Next Generation Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-01",
@@ -3580,7 +4260,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-02",
@@ -3594,7 +4277,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-03",
@@ -3608,7 +4294,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-04",
@@ -3622,7 +4311,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-05",
@@ -3636,7 +4328,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-06",
@@ -3650,7 +4345,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-07",
@@ -3664,7 +4362,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-08",
@@ -3678,7 +4379,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-09",
@@ -3692,7 +4396,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-10",
@@ -3706,7 +4413,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-11",
@@ -3720,7 +4430,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-12",
@@ -3734,7 +4447,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-13",
@@ -3748,7 +4464,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-14",
@@ -3762,7 +4481,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-15",
@@ -3776,7 +4498,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-16",
@@ -3790,7 +4515,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-17",
@@ -3804,7 +4532,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-18",
@@ -3818,7 +4549,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-19",
@@ -3832,7 +4566,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-20",
@@ -3846,7 +4583,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-21",
@@ -3860,7 +4600,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-22",
@@ -3874,7 +4617,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-23",
@@ -3888,7 +4634,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-24",
@@ -3902,7 +4651,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-25",
@@ -3916,7 +4668,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-5-episode-26",
@@ -3930,7 +4685,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "The Next Generation Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-01",
@@ -3944,7 +4702,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-02",
@@ -3958,7 +4719,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-03",
@@ -3972,7 +4736,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-04",
@@ -3986,7 +4753,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-05",
@@ -4000,7 +4770,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-06",
@@ -4014,7 +4787,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-07",
@@ -4028,7 +4804,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-08",
@@ -4042,7 +4821,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-09",
@@ -4056,7 +4838,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-10",
@@ -4070,7 +4855,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-11",
@@ -4084,7 +4872,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-12",
@@ -4098,7 +4889,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-13",
@@ -4112,7 +4906,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-14",
@@ -4126,7 +4923,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-15",
@@ -4140,7 +4940,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-16",
@@ -4154,7 +4957,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-17",
@@ -4168,7 +4974,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-18",
@@ -4182,7 +4991,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-19",
@@ -4196,7 +5008,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-20",
@@ -4210,7 +5025,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-21",
@@ -4224,7 +5042,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-22",
@@ -4238,7 +5059,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-23",
@@ -4252,7 +5076,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-24",
@@ -4266,7 +5093,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-25",
@@ -4280,7 +5110,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-6-episode-26",
@@ -4294,7 +5127,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "The Next Generation Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-01",
@@ -4308,7 +5144,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-02",
@@ -4322,7 +5161,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-03",
@@ -4336,7 +5178,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-04",
@@ -4350,7 +5195,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-05",
@@ -4364,7 +5212,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-06",
@@ -4378,7 +5229,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-07",
@@ -4392,7 +5246,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-08",
@@ -4406,7 +5263,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-09",
@@ -4420,7 +5280,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-10",
@@ -4434,7 +5297,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-11",
@@ -4448,7 +5314,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-12",
@@ -4462,7 +5331,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-13",
@@ -4476,7 +5348,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-14",
@@ -4490,7 +5365,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-15",
@@ -4504,7 +5382,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-16",
@@ -4518,7 +5399,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-17",
@@ -4532,7 +5416,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-18",
@@ -4546,7 +5433,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-19",
@@ -4560,7 +5450,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-20",
@@ -4574,7 +5467,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-21",
@@ -4588,7 +5484,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-22",
@@ -4602,7 +5501,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-23",
@@ -4616,7 +5518,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-24",
@@ -4630,7 +5535,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-25",
@@ -4644,7 +5552,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "2-tng-season-7-episode-26",
@@ -4658,7 +5569,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "The Next Generation Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: The Next Generation"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-01",
@@ -4672,7 +5586,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-02",
@@ -4686,7 +5603,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-03",
@@ -4700,7 +5620,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-04",
@@ -4714,7 +5637,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-05",
@@ -4728,7 +5654,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-06",
@@ -4742,7 +5671,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-07",
@@ -4756,7 +5688,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-08",
@@ -4770,7 +5705,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-09",
@@ -4784,7 +5722,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-10",
@@ -4798,7 +5739,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-11",
@@ -4812,7 +5756,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-12",
@@ -4826,7 +5773,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-13",
@@ -4840,7 +5790,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-14",
@@ -4854,7 +5807,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-15",
@@ -4868,7 +5824,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-16",
@@ -4882,7 +5841,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-17",
@@ -4896,7 +5858,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-18",
@@ -4910,7 +5875,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-19",
@@ -4924,7 +5892,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-1-episode-20",
@@ -4938,7 +5909,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Deep Space Nine Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-01",
@@ -4952,7 +5926,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-02",
@@ -4966,7 +5943,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-03",
@@ -4980,7 +5960,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-04",
@@ -4994,7 +5977,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-05",
@@ -5008,7 +5994,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-06",
@@ -5022,7 +6011,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-07",
@@ -5036,7 +6028,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-08",
@@ -5050,7 +6045,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-09",
@@ -5064,7 +6062,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-10",
@@ -5078,7 +6079,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-11",
@@ -5092,7 +6096,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-12",
@@ -5106,7 +6113,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-13",
@@ -5120,7 +6130,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-14",
@@ -5134,7 +6147,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-15",
@@ -5148,7 +6164,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-16",
@@ -5162,7 +6181,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-17",
@@ -5176,7 +6198,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-18",
@@ -5190,7 +6215,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-19",
@@ -5204,7 +6232,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-20",
@@ -5218,7 +6249,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-21",
@@ -5232,7 +6266,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-22",
@@ -5246,7 +6283,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-23",
@@ -5260,7 +6300,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-24",
@@ -5274,7 +6317,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-25",
@@ -5288,7 +6334,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-2-episode-26",
@@ -5302,7 +6351,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Deep Space Nine Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-01",
@@ -5316,7 +6368,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-02",
@@ -5330,7 +6385,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-03",
@@ -5344,7 +6402,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-04",
@@ -5358,7 +6419,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-05",
@@ -5372,7 +6436,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-06",
@@ -5386,7 +6453,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-07",
@@ -5400,7 +6470,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-08",
@@ -5414,7 +6487,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-09",
@@ -5428,7 +6504,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-10",
@@ -5442,7 +6521,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-11",
@@ -5456,7 +6538,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-12",
@@ -5470,7 +6555,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-13",
@@ -5484,7 +6572,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-14",
@@ -5498,7 +6589,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-15",
@@ -5512,7 +6606,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-16",
@@ -5526,7 +6623,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-17",
@@ -5540,7 +6640,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-18",
@@ -5554,7 +6657,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-19",
@@ -5568,7 +6674,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-20",
@@ -5582,7 +6691,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-21",
@@ -5596,7 +6708,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-22",
@@ -5610,7 +6725,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-23",
@@ -5624,7 +6742,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-24",
@@ -5638,7 +6759,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-25",
@@ -5652,7 +6776,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-3-episode-26",
@@ -5666,7 +6793,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Deep Space Nine Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-01",
@@ -5680,7 +6810,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-02",
@@ -5694,7 +6827,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-03",
@@ -5708,7 +6844,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-04",
@@ -5722,7 +6861,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-05",
@@ -5736,7 +6878,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-06",
@@ -5750,7 +6895,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-07",
@@ -5764,7 +6912,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-08",
@@ -5778,7 +6929,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-09",
@@ -5792,7 +6946,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-10",
@@ -5806,7 +6963,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-11",
@@ -5820,7 +6980,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-12",
@@ -5834,7 +6997,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-13",
@@ -5848,7 +7014,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-14",
@@ -5862,7 +7031,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-15",
@@ -5876,7 +7048,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-16",
@@ -5890,7 +7065,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-17",
@@ -5904,7 +7082,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-18",
@@ -5918,7 +7099,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-19",
@@ -5932,7 +7116,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-20",
@@ -5946,7 +7133,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-21",
@@ -5960,7 +7150,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-22",
@@ -5974,7 +7167,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-23",
@@ -5988,7 +7184,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-24",
@@ -6002,7 +7201,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-25",
@@ -6016,7 +7218,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-4-episode-26",
@@ -6030,7 +7235,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Deep Space Nine Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-01",
@@ -6044,7 +7252,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-02",
@@ -6058,7 +7269,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-03",
@@ -6072,7 +7286,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-04",
@@ -6086,7 +7303,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-05",
@@ -6100,7 +7320,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-06",
@@ -6114,7 +7337,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-07",
@@ -6128,7 +7354,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-08",
@@ -6142,7 +7371,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-09",
@@ -6156,7 +7388,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-10",
@@ -6170,7 +7405,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-11",
@@ -6184,7 +7422,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-12",
@@ -6198,7 +7439,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-13",
@@ -6212,7 +7456,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-14",
@@ -6226,7 +7473,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-15",
@@ -6240,7 +7490,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-16",
@@ -6254,7 +7507,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-17",
@@ -6268,7 +7524,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-18",
@@ -6282,7 +7541,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-19",
@@ -6296,7 +7558,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-20",
@@ -6310,7 +7575,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-21",
@@ -6324,7 +7592,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-22",
@@ -6338,7 +7609,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-23",
@@ -6352,7 +7626,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-24",
@@ -6366,7 +7643,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-25",
@@ -6380,7 +7660,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-5-episode-26",
@@ -6394,7 +7677,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Deep Space Nine Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-01",
@@ -6408,7 +7694,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-02",
@@ -6422,7 +7711,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-03",
@@ -6436,7 +7728,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-04",
@@ -6450,7 +7745,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-05",
@@ -6464,7 +7762,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-06",
@@ -6478,7 +7779,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-07",
@@ -6492,7 +7796,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-08",
@@ -6506,7 +7813,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-09",
@@ -6520,7 +7830,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-10",
@@ -6534,7 +7847,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-11",
@@ -6548,7 +7864,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-12",
@@ -6562,7 +7881,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-13",
@@ -6576,7 +7898,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-14",
@@ -6590,7 +7915,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-15",
@@ -6604,7 +7932,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-16",
@@ -6618,7 +7949,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-17",
@@ -6632,7 +7966,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-18",
@@ -6646,7 +7983,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-19",
@@ -6660,7 +8000,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-20",
@@ -6674,7 +8017,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-21",
@@ -6688,7 +8034,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-22",
@@ -6702,7 +8051,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-23",
@@ -6716,7 +8068,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-24",
@@ -6730,7 +8085,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-25",
@@ -6744,7 +8102,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-6-episode-26",
@@ -6758,7 +8119,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Deep Space Nine Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-01",
@@ -6772,7 +8136,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-02",
@@ -6786,7 +8153,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-03",
@@ -6800,7 +8170,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-04",
@@ -6814,7 +8187,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-05",
@@ -6828,7 +8204,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-06",
@@ -6842,7 +8221,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-07",
@@ -6856,7 +8238,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-08",
@@ -6870,7 +8255,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-09",
@@ -6884,7 +8272,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-10",
@@ -6898,7 +8289,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-11",
@@ -6912,7 +8306,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-12",
@@ -6926,7 +8323,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-13",
@@ -6940,7 +8340,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-14",
@@ -6954,7 +8357,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-15",
@@ -6968,7 +8374,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-16",
@@ -6982,7 +8391,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-17",
@@ -6996,7 +8408,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-18",
@@ -7010,7 +8425,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-19",
@@ -7024,7 +8442,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-20",
@@ -7038,7 +8459,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-21",
@@ -7052,7 +8476,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-22",
@@ -7066,7 +8493,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-23",
@@ -7080,7 +8510,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-24",
@@ -7094,7 +8527,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-25",
@@ -7108,7 +8544,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "3-ds9-season-7-episode-26",
@@ -7122,7 +8561,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Deep Space Nine Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Deep Space Nine"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-01",
@@ -7136,7 +8578,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-02",
@@ -7150,7 +8595,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-03",
@@ -7164,7 +8612,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-04",
@@ -7178,7 +8629,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-05",
@@ -7192,7 +8646,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-06",
@@ -7206,7 +8663,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-07",
@@ -7220,7 +8680,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-08",
@@ -7234,7 +8697,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-09",
@@ -7248,7 +8714,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-10",
@@ -7262,7 +8731,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-11",
@@ -7276,7 +8748,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-12",
@@ -7290,7 +8765,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-13",
@@ -7304,7 +8782,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-14",
@@ -7318,7 +8799,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-15",
@@ -7332,7 +8816,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-1-episode-16",
@@ -7346,7 +8833,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Voyager Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-01",
@@ -7360,7 +8850,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-02",
@@ -7374,7 +8867,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-03",
@@ -7388,7 +8884,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-04",
@@ -7402,7 +8901,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-05",
@@ -7416,7 +8918,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-06",
@@ -7430,7 +8935,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-07",
@@ -7444,7 +8952,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-08",
@@ -7458,7 +8969,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-09",
@@ -7472,7 +8986,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-10",
@@ -7486,7 +9003,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-11",
@@ -7500,7 +9020,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-12",
@@ -7514,7 +9037,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-13",
@@ -7528,7 +9054,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-14",
@@ -7542,7 +9071,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-15",
@@ -7556,7 +9088,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-16",
@@ -7570,7 +9105,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-17",
@@ -7584,7 +9122,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-18",
@@ -7598,7 +9139,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-19",
@@ -7612,7 +9156,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-20",
@@ -7626,7 +9173,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-21",
@@ -7640,7 +9190,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-22",
@@ -7654,7 +9207,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-23",
@@ -7668,7 +9224,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-24",
@@ -7682,7 +9241,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-25",
@@ -7696,7 +9258,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-2-episode-26",
@@ -7710,7 +9275,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Voyager Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-01",
@@ -7724,7 +9292,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-02",
@@ -7738,7 +9309,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-03",
@@ -7752,7 +9326,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-04",
@@ -7766,7 +9343,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-05",
@@ -7780,7 +9360,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-06",
@@ -7794,7 +9377,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-07",
@@ -7808,7 +9394,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-08",
@@ -7822,7 +9411,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-09",
@@ -7836,7 +9428,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-10",
@@ -7850,7 +9445,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-11",
@@ -7864,7 +9462,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-12",
@@ -7878,7 +9479,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-13",
@@ -7892,7 +9496,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-14",
@@ -7906,7 +9513,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-15",
@@ -7920,7 +9530,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-16",
@@ -7934,7 +9547,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-17",
@@ -7948,7 +9564,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-18",
@@ -7962,7 +9581,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-19",
@@ -7976,7 +9598,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-20",
@@ -7990,7 +9615,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-21",
@@ -8004,7 +9632,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-22",
@@ -8018,7 +9649,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-23",
@@ -8032,7 +9666,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-24",
@@ -8046,7 +9683,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-25",
@@ -8060,7 +9700,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-3-episode-26",
@@ -8074,7 +9717,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Voyager Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-01",
@@ -8088,7 +9734,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-02",
@@ -8102,7 +9751,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-03",
@@ -8116,7 +9768,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-04",
@@ -8130,7 +9785,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-05",
@@ -8144,7 +9802,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-06",
@@ -8158,7 +9819,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-07",
@@ -8172,7 +9836,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-08",
@@ -8186,7 +9853,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-09",
@@ -8200,7 +9870,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-10",
@@ -8214,7 +9887,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-11",
@@ -8228,7 +9904,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-12",
@@ -8242,7 +9921,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-13",
@@ -8256,7 +9938,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-14",
@@ -8270,7 +9955,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-15",
@@ -8284,7 +9972,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-16",
@@ -8298,7 +9989,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-17",
@@ -8312,7 +10006,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-18",
@@ -8326,7 +10023,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-19",
@@ -8340,7 +10040,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-20",
@@ -8354,7 +10057,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-21",
@@ -8368,7 +10074,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-22",
@@ -8382,7 +10091,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-23",
@@ -8396,7 +10108,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-24",
@@ -8410,7 +10125,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-25",
@@ -8424,7 +10142,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-4-episode-26",
@@ -8438,7 +10159,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Voyager Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-01",
@@ -8452,7 +10176,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-02",
@@ -8466,7 +10193,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-03",
@@ -8480,7 +10210,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-04",
@@ -8494,7 +10227,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-05",
@@ -8508,7 +10244,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-06",
@@ -8522,7 +10261,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-07",
@@ -8536,7 +10278,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-08",
@@ -8550,7 +10295,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-09",
@@ -8564,7 +10312,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-10",
@@ -8578,7 +10329,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-11",
@@ -8592,7 +10346,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-12",
@@ -8606,7 +10363,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-13",
@@ -8620,7 +10380,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-14",
@@ -8634,7 +10397,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-15",
@@ -8648,7 +10414,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-16",
@@ -8662,7 +10431,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-17",
@@ -8676,7 +10448,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-18",
@@ -8690,7 +10465,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-19",
@@ -8704,7 +10482,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-20",
@@ -8718,7 +10499,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-21",
@@ -8732,7 +10516,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-22",
@@ -8746,7 +10533,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-23",
@@ -8760,7 +10550,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-24",
@@ -8774,7 +10567,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-25",
@@ -8788,7 +10584,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-5-episode-26",
@@ -8802,7 +10601,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Voyager Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-01",
@@ -8816,7 +10618,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-02",
@@ -8830,7 +10635,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-03",
@@ -8844,7 +10652,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-04",
@@ -8858,7 +10669,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-05",
@@ -8872,7 +10686,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-06",
@@ -8886,7 +10703,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-07",
@@ -8900,7 +10720,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-08",
@@ -8914,7 +10737,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-09",
@@ -8928,7 +10754,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-10",
@@ -8942,7 +10771,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-11",
@@ -8956,7 +10788,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-12",
@@ -8970,7 +10805,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-13",
@@ -8984,7 +10822,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-14",
@@ -8998,7 +10839,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-15",
@@ -9012,7 +10856,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-16",
@@ -9026,7 +10873,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-17",
@@ -9040,7 +10890,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-18",
@@ -9054,7 +10907,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-19",
@@ -9068,7 +10924,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-20",
@@ -9082,7 +10941,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-21",
@@ -9096,7 +10958,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-22",
@@ -9110,7 +10975,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-23",
@@ -9124,7 +10992,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-24",
@@ -9138,7 +11009,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-25",
@@ -9152,7 +11026,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-6-episode-26",
@@ -9166,7 +11043,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 6,
+        "SeasonTitle": "Voyager Season 6",
+        "SeasonDescription": "Season 6 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-01",
@@ -9180,7 +11060,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-02",
@@ -9194,7 +11077,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-03",
@@ -9208,7 +11094,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-04",
@@ -9222,7 +11111,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-05",
@@ -9236,7 +11128,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-06",
@@ -9250,7 +11145,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-07",
@@ -9264,7 +11162,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-08",
@@ -9278,7 +11179,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-09",
@@ -9292,7 +11196,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-10",
@@ -9306,7 +11213,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-11",
@@ -9320,7 +11230,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-12",
@@ -9334,7 +11247,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-13",
@@ -9348,7 +11264,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-14",
@@ -9362,7 +11281,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-15",
@@ -9376,7 +11298,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-16",
@@ -9390,7 +11315,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-17",
@@ -9404,7 +11332,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-18",
@@ -9418,7 +11349,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-19",
@@ -9432,7 +11366,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-20",
@@ -9446,7 +11383,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-21",
@@ -9460,7 +11400,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-22",
@@ -9474,7 +11417,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-23",
@@ -9488,7 +11434,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "4-voy-season-7-episode-24",
@@ -9502,7 +11451,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 7,
+        "SeasonTitle": "Voyager Season 7",
+        "SeasonDescription": "Season 7 of Star Trek: Voyager"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-01",
@@ -9516,7 +11468,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-02",
@@ -9530,7 +11485,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-03",
@@ -9544,7 +11502,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-04",
@@ -9558,7 +11519,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-05",
@@ -9572,7 +11536,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-06",
@@ -9586,7 +11553,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-07",
@@ -9600,7 +11570,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-08",
@@ -9614,7 +11587,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-09",
@@ -9628,7 +11604,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-10",
@@ -9642,7 +11621,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-11",
@@ -9656,7 +11638,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-12",
@@ -9670,7 +11655,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-13",
@@ -9684,7 +11672,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-14",
@@ -9698,7 +11689,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-15",
@@ -9712,7 +11706,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-16",
@@ -9726,7 +11723,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-17",
@@ -9740,7 +11740,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-18",
@@ -9754,7 +11757,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-19",
@@ -9768,7 +11774,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-20",
@@ -9782,7 +11791,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-21",
@@ -9796,7 +11808,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-22",
@@ -9810,7 +11825,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-23",
@@ -9824,7 +11842,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-24",
@@ -9838,7 +11859,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-25",
@@ -9852,7 +11876,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-1-episode-26",
@@ -9866,7 +11893,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Enterprise Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-01",
@@ -9880,7 +11910,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-02",
@@ -9894,7 +11927,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-03",
@@ -9908,7 +11944,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-04",
@@ -9922,7 +11961,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-05",
@@ -9936,7 +11978,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-06",
@@ -9950,7 +11995,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-07",
@@ -9964,7 +12012,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-08",
@@ -9978,7 +12029,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-09",
@@ -9992,7 +12046,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-10",
@@ -10006,7 +12063,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-11",
@@ -10020,7 +12080,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-12",
@@ -10034,7 +12097,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-13",
@@ -10048,7 +12114,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-14",
@@ -10062,7 +12131,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-15",
@@ -10076,7 +12148,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-16",
@@ -10090,7 +12165,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-17",
@@ -10104,7 +12182,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-18",
@@ -10118,7 +12199,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-19",
@@ -10132,7 +12216,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-20",
@@ -10146,7 +12233,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-21",
@@ -10160,7 +12250,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-22",
@@ -10174,7 +12267,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-23",
@@ -10188,7 +12284,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-24",
@@ -10202,7 +12301,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-25",
@@ -10216,7 +12318,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-2-episode-26",
@@ -10230,7 +12335,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Enterprise Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-01",
@@ -10244,7 +12352,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-02",
@@ -10258,7 +12369,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-03",
@@ -10272,7 +12386,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-04",
@@ -10286,7 +12403,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-05",
@@ -10300,7 +12420,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-06",
@@ -10314,7 +12437,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-07",
@@ -10328,7 +12454,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-08",
@@ -10342,7 +12471,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-09",
@@ -10356,7 +12488,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-10",
@@ -10370,7 +12505,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-11",
@@ -10384,7 +12522,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-12",
@@ -10398,7 +12539,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-13",
@@ -10412,7 +12556,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-14",
@@ -10426,7 +12573,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-15",
@@ -10440,7 +12590,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-16",
@@ -10454,7 +12607,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-17",
@@ -10468,7 +12624,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-18",
@@ -10482,7 +12641,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-19",
@@ -10496,7 +12658,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-20",
@@ -10510,7 +12675,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-21",
@@ -10524,7 +12692,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-22",
@@ -10538,7 +12709,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-23",
@@ -10552,7 +12726,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-3-episode-24",
@@ -10566,7 +12743,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Enterprise Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-01",
@@ -10580,7 +12760,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-02",
@@ -10594,7 +12777,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-03",
@@ -10608,7 +12794,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-04",
@@ -10622,7 +12811,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-05",
@@ -10636,7 +12828,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-06",
@@ -10650,7 +12845,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-07",
@@ -10664,7 +12862,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-08",
@@ -10678,7 +12879,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-09",
@@ -10692,7 +12896,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-10",
@@ -10706,7 +12913,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-11",
@@ -10720,7 +12930,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-12",
@@ -10734,7 +12947,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-13",
@@ -10748,7 +12964,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-14",
@@ -10762,7 +12981,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-15",
@@ -10776,7 +12998,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-16",
@@ -10790,7 +13015,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-17",
@@ -10804,7 +13032,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-18",
@@ -10818,7 +13049,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-19",
@@ -10832,7 +13066,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-20",
@@ -10846,7 +13083,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-21",
@@ -10860,7 +13100,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "5-ent-season-4-episode-22",
@@ -10874,7 +13117,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Enterprise Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Enterprise"
       },
       {
         "EpisodeId": "6-dis-season-1-episode-01",
@@ -10888,7 +13134,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Discovery Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-1-episode-02",
@@ -10902,7 +13151,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Discovery Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-1-episode-03",
@@ -10916,7 +13168,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Discovery Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-1-episode-04",
@@ -10930,7 +13185,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Discovery Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-1-episode-05",
@@ -10944,7 +13202,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Discovery Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-1-episode-06",
@@ -10958,7 +13219,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Discovery Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-1-episode-07",
@@ -10972,7 +13236,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Discovery Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-1-episode-08",
@@ -10986,7 +13253,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Discovery Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-1-episode-09",
@@ -11000,7 +13270,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Discovery Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-1-episode-10",
@@ -11014,7 +13287,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Discovery Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-1-episode-11",
@@ -11028,7 +13304,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Discovery Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-1-episode-12",
@@ -11042,7 +13321,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Discovery Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-1-episode-13",
@@ -11056,7 +13338,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Discovery Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-2-episode-01",
@@ -11070,7 +13355,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Discovery Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-2-episode-02",
@@ -11084,7 +13372,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Discovery Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-2-episode-03",
@@ -11098,7 +13389,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Discovery Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-2-episode-04",
@@ -11112,7 +13406,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Discovery Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-2-episode-05",
@@ -11126,7 +13423,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Discovery Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-2-episode-06",
@@ -11140,7 +13440,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Discovery Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-2-episode-07",
@@ -11154,7 +13457,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Discovery Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-2-episode-08",
@@ -11168,7 +13474,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Discovery Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-2-episode-09",
@@ -11182,7 +13491,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Discovery Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-2-episode-10",
@@ -11196,7 +13508,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Discovery Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-2-episode-11",
@@ -11210,7 +13525,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Discovery Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-2-episode-12",
@@ -11224,7 +13542,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Discovery Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-2-episode-13",
@@ -11238,7 +13559,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Discovery Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-2-episode-14",
@@ -11252,7 +13576,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Discovery Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-3-episode-01",
@@ -11266,7 +13593,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Discovery Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-3-episode-02",
@@ -11280,7 +13610,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Discovery Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-3-episode-03",
@@ -11294,7 +13627,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Discovery Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-3-episode-04",
@@ -11308,7 +13644,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Discovery Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-3-episode-05",
@@ -11322,7 +13661,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Discovery Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-3-episode-06",
@@ -11336,7 +13678,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Discovery Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-3-episode-07",
@@ -11350,7 +13695,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Discovery Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-3-episode-08",
@@ -11364,7 +13712,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Discovery Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-3-episode-09",
@@ -11378,7 +13729,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Discovery Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-3-episode-10",
@@ -11392,7 +13746,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Discovery Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-3-episode-11",
@@ -11406,7 +13763,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Discovery Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-3-episode-12",
@@ -11420,7 +13780,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Discovery Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-3-episode-13",
@@ -11434,7 +13797,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Discovery Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-4-episode-01",
@@ -11448,7 +13814,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Discovery Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-4-episode-02",
@@ -11462,7 +13831,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Discovery Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-4-episode-03",
@@ -11476,7 +13848,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Discovery Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-4-episode-04",
@@ -11490,7 +13865,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Discovery Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-4-episode-05",
@@ -11504,7 +13882,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Discovery Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-4-episode-06",
@@ -11518,7 +13899,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Discovery Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-4-episode-07",
@@ -11532,7 +13916,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Discovery Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-4-episode-08",
@@ -11546,7 +13933,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Discovery Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-4-episode-09",
@@ -11560,7 +13950,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Discovery Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-4-episode-10",
@@ -11574,7 +13967,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Discovery Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-4-episode-11",
@@ -11588,7 +13984,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Discovery Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-4-episode-12",
@@ -11602,7 +14001,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Discovery Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-4-episode-13",
@@ -11616,7 +14018,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Discovery Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-5-episode-01",
@@ -11630,7 +14035,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Discovery Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-5-episode-02",
@@ -11644,7 +14052,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Discovery Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-5-episode-03",
@@ -11658,7 +14069,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Discovery Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-5-episode-04",
@@ -11672,7 +14086,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Discovery Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-5-episode-05",
@@ -11686,7 +14103,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Discovery Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-5-episode-06",
@@ -11700,7 +14120,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Discovery Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-5-episode-07",
@@ -11714,7 +14137,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Discovery Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-5-episode-08",
@@ -11728,7 +14154,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Discovery Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-5-episode-09",
@@ -11742,7 +14171,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Discovery Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "6-dis-season-5-episode-10",
@@ -11756,7 +14188,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 48,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 5,
+        "SeasonTitle": "Discovery Season 5",
+        "SeasonDescription": "Season 5 of Star Trek: Discovery"
       },
       {
         "EpisodeId": "7-pic-season-1-episode-01",
@@ -11770,7 +14205,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Picard Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-1-episode-02",
@@ -11784,7 +14222,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Picard Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-1-episode-03",
@@ -11798,7 +14239,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Picard Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-1-episode-04",
@@ -11812,7 +14256,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Picard Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-1-episode-05",
@@ -11826,7 +14273,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Picard Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-1-episode-06",
@@ -11840,7 +14290,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Picard Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-1-episode-07",
@@ -11854,7 +14307,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Picard Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-1-episode-08",
@@ -11868,7 +14324,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Picard Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-1-episode-09",
@@ -11882,7 +14341,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Picard Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-1-episode-10",
@@ -11896,7 +14358,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Picard Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-2-episode-01",
@@ -11910,7 +14375,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Picard Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-2-episode-02",
@@ -11924,7 +14392,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Picard Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-2-episode-03",
@@ -11938,7 +14409,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Picard Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-2-episode-04",
@@ -11952,7 +14426,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Picard Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-2-episode-05",
@@ -11966,7 +14443,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Picard Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-2-episode-06",
@@ -11980,7 +14460,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Picard Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-2-episode-07",
@@ -11994,7 +14477,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Picard Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-2-episode-08",
@@ -12008,7 +14494,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Picard Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-2-episode-09",
@@ -12022,7 +14511,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Picard Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-2-episode-10",
@@ -12036,7 +14528,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Picard Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-3-episode-01",
@@ -12050,7 +14545,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Picard Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-3-episode-02",
@@ -12064,7 +14562,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Picard Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-3-episode-03",
@@ -12078,7 +14579,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Picard Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-3-episode-04",
@@ -12092,7 +14596,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Picard Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-3-episode-05",
@@ -12106,7 +14613,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Picard Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-3-episode-06",
@@ -12120,7 +14630,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Picard Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-3-episode-07",
@@ -12134,7 +14647,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Picard Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-3-episode-08",
@@ -12148,7 +14664,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Picard Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-3-episode-09",
@@ -12162,7 +14681,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Picard Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Picard"
       },
       {
         "EpisodeId": "7-pic-season-3-episode-10",
@@ -12176,7 +14698,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Picard Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Picard"
       },
       {
         "EpisodeId": "8-lds-season-1-episode-01",
@@ -12190,7 +14715,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Lower Decks Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-1-episode-02",
@@ -12204,7 +14732,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Lower Decks Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-1-episode-03",
@@ -12218,7 +14749,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Lower Decks Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-1-episode-04",
@@ -12232,7 +14766,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Lower Decks Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-1-episode-05",
@@ -12246,7 +14783,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Lower Decks Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-1-episode-06",
@@ -12260,7 +14800,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Lower Decks Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-1-episode-07",
@@ -12274,7 +14817,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Lower Decks Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-1-episode-08",
@@ -12288,7 +14834,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Lower Decks Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-1-episode-09",
@@ -12302,7 +14851,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Lower Decks Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-1-episode-10",
@@ -12316,7 +14868,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Lower Decks Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-2-episode-01",
@@ -12330,7 +14885,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Lower Decks Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-2-episode-02",
@@ -12344,7 +14902,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Lower Decks Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-2-episode-03",
@@ -12358,7 +14919,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Lower Decks Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-2-episode-04",
@@ -12372,7 +14936,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Lower Decks Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-2-episode-05",
@@ -12386,7 +14953,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Lower Decks Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-2-episode-06",
@@ -12400,7 +14970,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Lower Decks Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-2-episode-07",
@@ -12414,7 +14987,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Lower Decks Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-2-episode-08",
@@ -12428,7 +15004,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Lower Decks Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-2-episode-09",
@@ -12442,7 +15021,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Lower Decks Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-2-episode-10",
@@ -12456,7 +15038,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Lower Decks Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-3-episode-01",
@@ -12470,7 +15055,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Lower Decks Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-3-episode-02",
@@ -12484,7 +15072,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Lower Decks Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-3-episode-03",
@@ -12498,7 +15089,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Lower Decks Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-3-episode-04",
@@ -12512,7 +15106,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Lower Decks Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-3-episode-05",
@@ -12526,7 +15123,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Lower Decks Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-3-episode-06",
@@ -12540,7 +15140,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Lower Decks Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-3-episode-07",
@@ -12554,7 +15157,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Lower Decks Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-3-episode-08",
@@ -12568,7 +15174,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Lower Decks Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-3-episode-09",
@@ -12582,7 +15191,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Lower Decks Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-3-episode-10",
@@ -12596,7 +15208,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 3,
+        "SeasonTitle": "Lower Decks Season 3",
+        "SeasonDescription": "Season 3 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-4-episode-01",
@@ -12610,7 +15225,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Lower Decks Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-4-episode-02",
@@ -12624,7 +15242,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Lower Decks Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-4-episode-03",
@@ -12638,7 +15259,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Lower Decks Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-4-episode-04",
@@ -12652,7 +15276,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Lower Decks Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-4-episode-05",
@@ -12666,7 +15293,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Lower Decks Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-4-episode-06",
@@ -12680,7 +15310,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Lower Decks Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-4-episode-07",
@@ -12694,7 +15327,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Lower Decks Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-4-episode-08",
@@ -12708,7 +15344,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Lower Decks Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-4-episode-09",
@@ -12722,7 +15361,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Lower Decks Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-4-episode-10",
@@ -12736,7 +15378,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Lower Decks Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-4-episode-11",
@@ -12750,7 +15395,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Lower Decks Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "8-lds-season-4-episode-12",
@@ -12764,7 +15412,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 4,
+        "SeasonTitle": "Lower Decks Season 4",
+        "SeasonDescription": "Season 4 of Star Trek: Lower Decks"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-01",
@@ -12778,7 +15429,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-02",
@@ -12792,7 +15446,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-03",
@@ -12806,7 +15463,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-04",
@@ -12820,7 +15480,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-05",
@@ -12834,7 +15497,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-06",
@@ -12848,7 +15514,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-07",
@@ -12862,7 +15531,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-08",
@@ -12876,7 +15548,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-09",
@@ -12890,7 +15565,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-10",
@@ -12904,7 +15582,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-11",
@@ -12918,7 +15599,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-12",
@@ -12932,7 +15616,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-13",
@@ -12946,7 +15633,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-14",
@@ -12960,7 +15650,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-15",
@@ -12974,7 +15667,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-16",
@@ -12988,7 +15684,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-17",
@@ -13002,7 +15701,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-18",
@@ -13016,7 +15718,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-19",
@@ -13030,7 +15735,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-1-episode-20",
@@ -13044,7 +15752,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Prodigy Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-01",
@@ -13058,7 +15769,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-02",
@@ -13072,7 +15786,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-03",
@@ -13086,7 +15803,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-04",
@@ -13100,7 +15820,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-05",
@@ -13114,7 +15837,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-06",
@@ -13128,7 +15854,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-07",
@@ -13142,7 +15871,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-08",
@@ -13156,7 +15888,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-09",
@@ -13170,7 +15905,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-10",
@@ -13184,7 +15922,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-11",
@@ -13198,7 +15939,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-12",
@@ -13212,7 +15956,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-13",
@@ -13226,7 +15973,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-14",
@@ -13240,7 +15990,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-15",
@@ -13254,7 +16007,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-16",
@@ -13268,7 +16024,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-17",
@@ -13282,7 +16041,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-18",
@@ -13296,7 +16058,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-19",
@@ -13310,7 +16075,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "9-pro-season-2-episode-20",
@@ -13324,7 +16092,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Prodigy Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Prodigy"
       },
       {
         "EpisodeId": "10-snw-season-1-episode-01",
@@ -13338,7 +16109,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Strange New Worlds Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-1-episode-02",
@@ -13352,7 +16126,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Strange New Worlds Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-1-episode-03",
@@ -13366,7 +16143,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Strange New Worlds Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-1-episode-04",
@@ -13380,7 +16160,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Strange New Worlds Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-1-episode-05",
@@ -13394,7 +16177,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Strange New Worlds Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-1-episode-06",
@@ -13408,7 +16194,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Strange New Worlds Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-1-episode-07",
@@ -13422,7 +16211,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Strange New Worlds Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-1-episode-08",
@@ -13436,7 +16228,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Strange New Worlds Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-1-episode-09",
@@ -13450,7 +16245,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Strange New Worlds Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-1-episode-10",
@@ -13464,7 +16262,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 1,
+        "SeasonTitle": "Strange New Worlds Season 1",
+        "SeasonDescription": "Season 1 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-2-episode-01",
@@ -13478,7 +16279,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Strange New Worlds Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-2-episode-02",
@@ -13492,7 +16296,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Strange New Worlds Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-2-episode-03",
@@ -13506,7 +16313,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Strange New Worlds Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-2-episode-04",
@@ -13520,7 +16330,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Strange New Worlds Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-2-episode-05",
@@ -13534,7 +16347,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Strange New Worlds Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-2-episode-06",
@@ -13548,7 +16364,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Strange New Worlds Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-2-episode-07",
@@ -13562,7 +16381,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Strange New Worlds Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-2-episode-08",
@@ -13576,7 +16398,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Strange New Worlds Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-2-episode-09",
@@ -13590,7 +16415,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Strange New Worlds Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Strange New Worlds"
       },
       {
         "EpisodeId": "10-snw-season-2-episode-10",
@@ -13604,7 +16432,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuntimeMinutes": 45,
         "Ratings": "",
         "OneSentenceSummary": "An adventure on the USS Enterprise.",
-        "FavoriteColor": ""
+        "FavoriteColor": "",
+        "SeasonNumber": 2,
+        "SeasonTitle": "Strange New Worlds Season 2",
+        "SeasonDescription": "Season 2 of Star Trek: Strange New Worlds"
       }
     ]
   },
@@ -13830,7 +16661,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Budget": 40000000,
         "BoxOffice": 118159941,
         "CrewAssignments": "",
-        "CrewCount": 0
+        "CrewCount": 3
       },
       {
         "MovieId": "movie-2-first-contact",
@@ -13843,7 +16674,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Budget": 46000000,
         "BoxOffice": 92262550,
         "CrewAssignments": "",
-        "CrewCount": 0
+        "CrewCount": 1
       },
       {
         "MovieId": "movie-3-insurrection",
@@ -14093,8 +16924,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "UsersName": "Riley Shaw",
         "CreatedAt": "2026-01-12T19:46:59Z",
         "Episode": "",
-        "EpisodeName": "",
-        "EpisodeSeasonTitle": "",
+        "EpisodeName": "-Episode-0",
+        "EpisodeSeasonTitle": null,
         "Notes": ""
       },
       {
@@ -14109,8 +16940,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "UsersName": "Alex Mercer",
         "CreatedAt": "2026-01-12T19:46:59Z",
         "Episode": "",
-        "EpisodeName": "",
-        "EpisodeSeasonTitle": "",
+        "EpisodeName": "-Episode-0",
+        "EpisodeSeasonTitle": null,
         "Notes": ""
       },
       {
@@ -14125,8 +16956,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "UsersName": "Drew Patel",
         "CreatedAt": "2026-01-12T19:46:59Z",
         "Episode": "",
-        "EpisodeName": "",
-        "EpisodeSeasonTitle": "",
+        "EpisodeName": "-Episode-0",
+        "EpisodeSeasonTitle": null,
         "Notes": ""
       },
       {
@@ -14141,152 +16972,152 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "UsersName": "Avery Chen",
         "CreatedAt": "2026-01-12T19:47:21Z",
         "Episode": "",
-        "EpisodeName": "",
-        "EpisodeSeasonTitle": "",
+        "EpisodeName": "-Episode-0",
+        "EpisodeSeasonTitle": null,
         "Notes": ""
       },
       {
         "RatingId": "episode-1-tos-season-1-episode-01-alexis-cruz",
-        "Name": "Episode: 1-TOS-Season-1-Episode-01-Alexis Cruz",
+        "Name": "Episode: 1-tos-season-1-Episode-01-Alexis Cruz",
         "Rating": 3,
         "EmailAddress": "alexis.cruz@example.com",
         "PhoneNmber": "555-0117",
         "Episode": "1-tos-season-1-episode-01",
-        "EpisodeSeasonTitle": "TOS Season 1",
-        "EpisodeName": "1-TOS-Season-1-Episode-01",
-        "DisplayName": "Episode: 1-TOS-Season-1-Episode-01",
+        "EpisodeSeasonTitle": "The Original Series Season 1",
+        "EpisodeName": "1-tos-season-1-Episode-01",
+        "DisplayName": "Episode: 1-tos-season-1-Episode-01",
         "UsersName": "Alexis Cruz",
         "CreatedAt": "2026-01-13T20:23:19Z",
         "Series": "",
-        "SeriesName": "",
+        "SeriesName": "-",
         "Notes": ""
       },
       {
         "RatingId": "episode-1-tos-season-1-episode-02-morgan-lee",
-        "Name": "Episode: 1-TOS-Season-1-Episode-02-Morgan Lee",
+        "Name": "Episode: 1-tos-season-1-Episode-02-Morgan Lee",
         "Rating": 2,
         "EmailAddress": "morgan.lee@example.com",
         "PhoneNmber": "555-0111",
         "Episode": "1-tos-season-1-episode-02",
-        "EpisodeSeasonTitle": "TOS Season 1",
-        "EpisodeName": "1-TOS-Season-1-Episode-02",
-        "DisplayName": "Episode: 1-TOS-Season-1-Episode-02",
+        "EpisodeSeasonTitle": "The Original Series Season 1",
+        "EpisodeName": "1-tos-season-1-Episode-02",
+        "DisplayName": "Episode: 1-tos-season-1-Episode-02",
         "UsersName": "Morgan Lee",
         "CreatedAt": "2026-01-13T20:23:50Z",
         "Series": "",
-        "SeriesName": "",
+        "SeriesName": "-",
         "Notes": ""
       },
       {
         "RatingId": "episode-1-tos-season-1-episode-03-jamie-fox",
-        "Name": "Episode: 1-TOS-Season-1-Episode-03-Jamie Fox",
+        "Name": "Episode: 1-tos-season-1-Episode-03-Jamie Fox",
         "Rating": 4,
         "EmailAddress": "jamie.fox@example.com",
         "PhoneNmber": "555-0115",
         "Episode": "1-tos-season-1-episode-03",
-        "EpisodeSeasonTitle": "TOS Season 1",
-        "EpisodeName": "1-TOS-Season-1-Episode-03",
-        "DisplayName": "Episode: 1-TOS-Season-1-Episode-03",
+        "EpisodeSeasonTitle": "The Original Series Season 1",
+        "EpisodeName": "1-tos-season-1-Episode-03",
+        "DisplayName": "Episode: 1-tos-season-1-Episode-03",
         "UsersName": "Jamie Fox",
         "CreatedAt": "2026-01-13T20:23:50Z",
         "Series": "",
-        "SeriesName": "",
+        "SeriesName": "-",
         "Notes": ""
       },
       {
         "RatingId": "episode-1-tos-season-1-episode-07-taylor-brooks",
-        "Name": "Episode: 1-TOS-Season-1-Episode-07-Taylor Brooks",
+        "Name": "Episode: 1-tos-season-1-Episode-07-Taylor Brooks",
         "Rating": 5,
         "EmailAddress": "taylor.brooks@example.com",
         "PhoneNmber": "555-0113",
         "Episode": "1-tos-season-1-episode-07",
-        "EpisodeSeasonTitle": "TOS Season 1",
-        "EpisodeName": "1-TOS-Season-1-Episode-07",
-        "DisplayName": "Episode: 1-TOS-Season-1-Episode-07",
+        "EpisodeSeasonTitle": "The Original Series Season 1",
+        "EpisodeName": "1-tos-season-1-Episode-07",
+        "DisplayName": "Episode: 1-tos-season-1-Episode-07",
         "UsersName": "Taylor Brooks",
         "CreatedAt": "2026-01-13T20:23:50Z",
         "Series": "",
-        "SeriesName": "",
+        "SeriesName": "-",
         "Notes": ""
       },
       {
         "RatingId": "episode-1-tos-season-1-episode-08-robin-singh",
-        "Name": "Episode: 1-TOS-Season-1-Episode-08-Robin Singh",
+        "Name": "Episode: 1-tos-season-1-Episode-08-Robin Singh",
         "Rating": 5,
         "EmailAddress": "robin.singh@example.com",
         "PhoneNmber": "555-0116",
         "Episode": "1-tos-season-1-episode-08",
-        "EpisodeSeasonTitle": "TOS Season 1",
-        "EpisodeName": "1-TOS-Season-1-Episode-08",
-        "DisplayName": "Episode: 1-TOS-Season-1-Episode-08",
+        "EpisodeSeasonTitle": "The Original Series Season 1",
+        "EpisodeName": "1-tos-season-1-Episode-08",
+        "DisplayName": "Episode: 1-tos-season-1-Episode-08",
         "UsersName": "Robin Singh",
         "CreatedAt": "2026-01-13T20:23:50Z",
         "Series": "",
-        "SeriesName": "",
+        "SeriesName": "-",
         "Notes": ""
       },
       {
         "RatingId": "episode-1-tos-season-1-episode-09-jordan-kim",
-        "Name": "Episode: 1-TOS-Season-1-Episode-09-Jordan Kim",
+        "Name": "Episode: 1-tos-season-1-Episode-09-Jordan Kim",
         "Rating": 4,
         "EmailAddress": "jordan.kim@example.com",
         "PhoneNmber": "555-0112",
         "Episode": "1-tos-season-1-episode-09",
-        "EpisodeSeasonTitle": "TOS Season 1",
-        "EpisodeName": "1-TOS-Season-1-Episode-09",
-        "DisplayName": "Episode: 1-TOS-Season-1-Episode-09",
+        "EpisodeSeasonTitle": "The Original Series Season 1",
+        "EpisodeName": "1-tos-season-1-Episode-09",
+        "DisplayName": "Episode: 1-tos-season-1-Episode-09",
         "UsersName": "Jordan Kim",
         "CreatedAt": "2026-01-13T20:23:50Z",
         "Series": "",
-        "SeriesName": "",
+        "SeriesName": "-",
         "Notes": ""
       },
       {
         "RatingId": "episode-1-tos-season-1-episode-10-dylan-reed",
-        "Name": "Episode: 1-TOS-Season-1-Episode-10-Dylan Reed",
+        "Name": "Episode: 1-tos-season-1-Episode-10-Dylan Reed",
         "Rating": 5,
         "EmailAddress": "dylan.reed@example.com",
         "PhoneNmber": "555-0119",
         "Episode": "1-tos-season-1-episode-10",
-        "EpisodeSeasonTitle": "TOS Season 1",
-        "EpisodeName": "1-TOS-Season-1-Episode-10",
-        "DisplayName": "Episode: 1-TOS-Season-1-Episode-10",
+        "EpisodeSeasonTitle": "The Original Series Season 1",
+        "EpisodeName": "1-tos-season-1-Episode-10",
+        "DisplayName": "Episode: 1-tos-season-1-Episode-10",
         "UsersName": "Dylan Reed",
         "CreatedAt": "2026-01-13T20:23:50Z",
         "Series": "",
-        "SeriesName": "",
+        "SeriesName": "-",
         "Notes": ""
       },
       {
         "RatingId": "episode-1-tos-season-1-episode-11-casey-morgan",
-        "Name": "Episode: 1-TOS-Season-1-Episode-11-Casey Morgan",
+        "Name": "Episode: 1-tos-season-1-Episode-11-Casey Morgan",
         "Rating": 3,
         "EmailAddress": "casey.morgan@example.com",
         "PhoneNmber": "555-0114",
         "Episode": "1-tos-season-1-episode-11",
-        "EpisodeSeasonTitle": "TOS Season 1",
-        "EpisodeName": "1-TOS-Season-1-Episode-11",
-        "DisplayName": "Episode: 1-TOS-Season-1-Episode-11",
+        "EpisodeSeasonTitle": "The Original Series Season 1",
+        "EpisodeName": "1-tos-season-1-Episode-11",
+        "DisplayName": "Episode: 1-tos-season-1-Episode-11",
         "UsersName": "Casey Morgan",
         "CreatedAt": "2026-01-13T20:23:50Z",
         "Series": "",
-        "SeriesName": "",
+        "SeriesName": "-",
         "Notes": ""
       },
       {
         "RatingId": "episode-1-tos-season-1-episode-12-sydney-park",
-        "Name": "Episode: 1-TOS-Season-1-Episode-12-Sydney Park",
+        "Name": "Episode: 1-tos-season-1-Episode-12-Sydney Park",
         "Rating": 4,
         "EmailAddress": "sydney.park@example.com",
         "PhoneNmber": "555-0118",
         "Episode": "1-tos-season-1-episode-12",
-        "EpisodeSeasonTitle": "TOS Season 1",
-        "EpisodeName": "1-TOS-Season-1-Episode-12",
-        "DisplayName": "Episode: 1-TOS-Season-1-Episode-12",
+        "EpisodeSeasonTitle": "The Original Series Season 1",
+        "EpisodeName": "1-tos-season-1-Episode-12",
+        "DisplayName": "Episode: 1-tos-season-1-Episode-12",
         "UsersName": "Sydney Park",
         "CreatedAt": "2026-01-13T20:23:50Z",
         "Series": "",
-        "SeriesName": "",
+        "SeriesName": "-",
         "Notes": ""
       }
     ]
@@ -26057,4 +28888,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "ERBCustomizations": "ERB customization"
     }
   }
-}, stamp: "c16c8ed774aafb21" };
+}, stamp: "2c45c81491fc2234" };
