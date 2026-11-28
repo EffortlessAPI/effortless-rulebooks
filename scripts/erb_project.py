@@ -342,7 +342,15 @@ def main() -> None:
     ap.add_argument("slug")
     ap.add_argument("--build", action="store_true", help="run `effortless build` in the project directory")
     ap.add_argument("--reset-db", action="store_true", help="recreate erb_<slug> + postgres-bootstrap/reset-rulebook-db.sh")
+    ap.add_argument("--postgres-dir", action="store_true",
+                    help="print the folder the project's rulebook-to-postgres step writes to, and exit")
     args = ap.parse_args()
+    if args.postgres_dir:
+        out = postgres_output_dir(find_domain_dir(args.slug))
+        if out is None:
+            raise SystemExit(f"{args.slug} has no enabled rulebook-to-postgres step")
+        print(out)
+        return
     if not (args.build or args.reset_db):
         ap.error("nothing to do — pass --build and/or --reset-db")
 
