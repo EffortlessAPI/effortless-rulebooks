@@ -13,9 +13,6 @@
 -- ============================================================================
 
 -- Claimants
-ALTER TABLE claimants DROP CONSTRAINT IF EXISTS fk_claimants_claimant_name;
-ALTER TABLE claimants ADD CONSTRAINT fk_claimants_claimant_name
-  FOREIGN KEY (claimant_name) REFERENCES claimants (claimant_id);
 ALTER TABLE claimants DROP CONSTRAINT IF EXISTS fk_claimants_policy;
 ALTER TABLE claimants ADD CONSTRAINT fk_claimants_policy
   FOREIGN KEY (policy) REFERENCES policies (policy_id);
@@ -33,4 +30,4 @@ ALTER TABLE claims DROP CONSTRAINT IF EXISTS fk_claims_additional_claimant;
 ALTER TABLE claims ADD CONSTRAINT fk_claims_additional_claimant
   FOREIGN KEY (additional_claimant) REFERENCES claimants (claimant_id);
 
--- 5 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 4 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

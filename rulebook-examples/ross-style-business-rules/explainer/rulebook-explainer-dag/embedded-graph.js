@@ -12144,4 +12144,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Claims": "claim"
     }
   }
-} };
+}, stamp: "8994bf8fafd80a01" };

@@ -1,4 +1,4 @@
-# 📘 ross-style-business-rules — RuleSpeak®
+# 📘 ross-style-business-rules — Docs
 
 _A small, complete claims model demonstrating declarative business rules rendering themselves as RuleSpeak and tracing down to ground truth. Five rules incorporate Ronald Ross's corrections: (1) policy 'active' is ground truth, not a derived system rule; (2) high-risk uses 'must be considered ... if', not 'when'; (3) claimant of record is a priority ordering, never 'otherwise/else'; (4) valid claim is a conjunction of declarative conditions; (5) approvable is 'only if valid' (necessary, not sufficient) — not 'iff'._
 
@@ -16,6 +16,22 @@ _A small, complete claims model demonstrating declarative business rules renderi
 | Policyholder Name | A defined attribute. | _Name of the policyholder._ |
 | Is Active | True when an empty string. | _Ground truth: whether the policy is currently in force. Per R. Ross: being active is a business STATE — a fact about the policy — not a derived business rule. The system's 'Is Active' indicator merely records this fact, so it lives at the leaves, not in a rule._ |
 | Count of Covered Claimants | The number of claimants related to the policy. | _Number of claimants whose current policy is this one._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Policyholder Name | Is Active | Count of Covered Claimants ƒ |
+|---|---|---|---|
+| pol-1 | Northside Mutual | true | 3 |
+| pol-2 | Lapsed Holdings | false | 1 |
+| pol-3 | Harbor Assurance | true | 1 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Claimant** | A person linked to incidents and (optionally) to claims. Carries a current policy, a favorite color, and a derived incident count. | — |
 | Name | The same as its claimant name. | _Logical primary key — mirrors ClaimantName so every row is addressable by Name._ |
 | Claimant Name | A defined attribute. | _Display name of the claimant._ |
@@ -24,11 +40,43 @@ _A small, complete claims model demonstrating declarative business rules renderi
 | Count of Incidents | The number of incidents related to the claimant. | _The number of incidents whose claimant is this claimant._ |
 | Is High Risk | True when the count of incidents is greater than 2. | _A claimant must be considered high-risk if the claimant's incident count exceeds 2. (Ross: 'must be considered ... if'; '>2' means 3 or more.)_ |
 | Policy is Active | True when the linked policy is active. | _Whether the claimant's current policy is active (ground truth carried over from the policy). (Was wrapped in IFERROR(..., FALSE); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Claimant Name | Favorite Color | Policy | Count of Incidents ƒ | Is High Risk ƒ | Policy is Active ƒ |
+|---|---|---|---|---|---|---|
+| Alice | Alice | Blue | pol-1 | 1 | false | true |
+| Bob | Bob | Red | pol-3 | 1 | false | true |
+| Carol | Carol | Green | pol-1 | 3 | true | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Incident** | An event or loss that can give rise to a claim. Each incident involves exactly one claimant of record at the incident level. | — |
 | Name | The same as its incident ID. | _Logical primary key — mirrors IncidentId so every row is addressable by Name._ |
 | Incident Description | A defined attribute. | _Short description of the incident._ |
 | Claimant | A defined attribute. | _The claimant involved in this incident (foreign key to Claimants via ClaimantId)._ |
 | Incident Claimant Name | Taken from the linked claimant. | _Name of the incident's claimant (for readability). (Was wrapped in IFERROR(..., ""); rulebook-to-postgres mistranslates that wrapper — it emitted the field as a nonexistent base-table column and broke 03-create-views.sql. INDEX/MATCH already yields NULL when the FK does not match.)_ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Incident Description | Claimant | Incident Claimant Name ƒ |
+|---|---|---|---|
+| inc-1 | Water damage | clm-1 | Alice |
+| inc-2 | Fender bender | clm-3 | Carol |
+| inc-3 | Hail damage | clm-3 | Carol |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Claim** | A request to have an incident evaluated under a policy. Validity and approvability are computed, never entered. | — |
 | Name | The same as its claim ID. | _Logical primary key — mirrors ClaimId so every row is addressable by Name._ |
 | Incident | A defined attribute. | _The incident this claim references (exactly one; foreign key to Incidents via IncidentId)._ |
@@ -47,6 +95,19 @@ _A small, complete claims model demonstrating declarative business rules renderi
 | Validity Deciding Factor | Determined by priority: “Valid — all conditions met” if the valid flag is set; “No incident referenced” if the references incident flag is not set; “No active policy on incident claimant or additional claimant” if it is not the case that at least one of the following holds: the incident claimant policy active flag is set or the additional claimant policy active flag is set; “Additional claimant's favorite color is not red” if all of the following hold: the additional claimant flag is set and the additional claimant favorite color is not “red”; “Claimant of record is high-risk (DR-2)” if the claimant of record is high risk flag is set; in all other cases, “Undetermined”. | _Names the single deciding reason for a claim's validity verdict — the first unmet condition, or that all conditions are met._ |
 | Is Approvable | True when all of the following hold: the valid flag is set and the flagged for review flag is not set. | _A claim may be considered approvable only if it is valid and not flagged for review. Per R. Ross: 'only if', not 'if and only if' — validity is necessary but not sufficient. Stating it as 'iff' would wrongly make 'valid' and 'approvable' the same concept._ |
 | Approvability Deciding Factor | Determined by priority: “Approvable” if the approvable flag is set; “Not approvable — claim is not valid” if the valid flag is not set; “Valid, but flagged for review” if the flagged for review flag is set; in all other cases, “Undetermined”. | _Names the single deciding reason for a claim's approvability verdict._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Incident | Additional Claimant | Is Flagged for Review | References Incident ƒ | Has Additional Claimant ƒ | Incident Claimant ƒ | Claimant of Record ƒ | Incident Claimant Policy Active ƒ | Additional Claimant Policy Active ƒ | Additional Claimant Favorite Color ƒ | Claimant of Record Incident Count ƒ | Claimant of Record is High Risk ƒ | Is Valid ƒ | Validity Deciding Factor ƒ | Is Approvable ƒ | Approvability Deciding Factor ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| claim-A | inc-1 | — | false | true | false | clm-1 | clm-1 | true | — | — | 1 | false | true | Valid — all conditions met | true | Approvable |
+| claim-B | inc-2 | — | false | true | false | clm-3 | clm-3 | true | — | — | 3 | true | false | Claimant of record is high-risk (DR-2) | false | Not approvable — claim is not valid |
+| claim-C | inc-5 | clm-1 | false | true | true | clm-5 | clm-1 | true | true | Blue | 1 | false | false | Additional claimant's favorite color is not red | false | Not approvable — claim is not valid |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 3 Operative Rules
 
@@ -82,7 +143,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-8 Incident Claimant Name** | An incident's incident claimant name — taken from the linked claimant. |
 | **DR-9 Name** | A claim's name is the same as its claim ID. |
 | **DR-10 References Incident** | A claim is considered to reference an incident if the incident has a value. |
-| **DR-11 Has Additional Claimant** | A claim is considered to have an additional claimant if the additional claimant has a value. |
+| **DR-11 Has Additional Claimant** | A claim is considered to have additional claimant if the additional claimant has a value. |
 | **DR-12 Incident Claimant** | A claim's incident claimant — taken from the linked incident. |
 | **DR-13 Claimant of Record** | The claim's claimant of record is determined by the following priority:<br>1. the additional claimant, if the additional claimant flag is set;<br>2. in all other cases, the incident claimant. |
 | **DR-14 Incident Claimant Policy Active** | A claim's incident claimant policy active when the linked incident claimant is active. |
@@ -97,7 +158,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -127,8 +188,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

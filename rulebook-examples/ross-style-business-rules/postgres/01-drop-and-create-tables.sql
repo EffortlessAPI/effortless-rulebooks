@@ -82,7 +82,6 @@ COMMENT ON COLUMN claims.is_flagged_for_review IS 'Ground truth: whether the cla
 -- ============================================================================
 
 -- Claimants
-CREATE INDEX IF NOT EXISTS idx_claimants_claimant_name ON claimants (claimant_name);
 CREATE INDEX IF NOT EXISTS idx_claimants_policy ON claimants (policy);
 
 -- Incidents
@@ -92,4 +91,4 @@ CREATE INDEX IF NOT EXISTS idx_incidents_claimant ON incidents (claimant);
 CREATE INDEX IF NOT EXISTS idx_claims_incident ON claims (incident);
 CREATE INDEX IF NOT EXISTS idx_claims_additional_claimant ON claims (additional_claimant);
 
--- 5 FK index(es) declared.
+-- 4 FK index(es) declared.

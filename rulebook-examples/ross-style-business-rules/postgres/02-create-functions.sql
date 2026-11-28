@@ -14,6 +14,113 @@
 SET check_function_bodies = off;
 
 -- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+
+-- ============================================================================
 -- LOOKUP FUNCTIONS
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
@@ -94,7 +201,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claimants_is_high_risk(p_claimant_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_claimants_count_of_incidents(p_claimant_id))::NUMERIC > 2)::boolean;
+  SELECT (COALESCE((calc_claimants_count_of_incidents(p_claimant_id))::NUMERIC, 0) > 2)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_incidents_incident_claimant_name
@@ -246,7 +353,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claims_references_incident(p_claim_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(incident, '') FROM claims WHERE claim_id = p_claim_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(incident, '') FROM claims WHERE claim_id = p_claim_id)) IS NOT NULL AND ((SELECT NULLIF(incident, '') FROM claims WHERE claim_id = p_claim_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claims_has_additional_claimant
@@ -256,7 +363,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claims_has_additional_claimant(p_claim_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(additional_claimant, '') FROM claims WHERE claim_id = p_claim_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(additional_claimant, '') FROM claims WHERE claim_id = p_claim_id)) IS NOT NULL AND ((SELECT NULLIF(additional_claimant, '') FROM claims WHERE claim_id = p_claim_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claims_claimant_of_record
@@ -276,7 +383,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claims_is_valid(p_claim_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_claims_references_incident(p_claim_id) AND (calc_claims_incident_claimant_policy_active(p_claim_id) OR calc_claims_additional_claimant_policy_active(p_claim_id)) AND (NOT (calc_claims_has_additional_claimant(p_claim_id)) OR LOWER(calc_claims_additional_claimant_favorite_color(p_claim_id)) = 'red') AND NOT (calc_claims_claimant_of_record_is_high_risk(p_claim_id))))::boolean;
+  SELECT ((COALESCE(calc_claims_references_incident(p_claim_id), FALSE) AND COALESCE((COALESCE(calc_claims_incident_claimant_policy_active(p_claim_id), FALSE) OR COALESCE(calc_claims_additional_claimant_policy_active(p_claim_id), FALSE)), FALSE) AND COALESCE((COALESCE(NOT (COALESCE(calc_claims_has_additional_claimant(p_claim_id), FALSE)), FALSE) OR COALESCE(COALESCE(LOWER(calc_claims_additional_claimant_favorite_color(p_claim_id)), '') = 'red', FALSE)), FALSE) AND COALESCE(NOT (COALESCE(calc_claims_claimant_of_record_is_high_risk(p_claim_id), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claims_validity_deciding_factor
@@ -286,7 +393,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claims_validity_deciding_factor(p_claim_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_claims_is_valid(p_claim_id) THEN ('Valid — all conditions met')::text ELSE (CASE WHEN NOT (calc_claims_references_incident(p_claim_id)) THEN ('No incident referenced')::text ELSE (CASE WHEN NOT ((calc_claims_incident_claimant_policy_active(p_claim_id) OR calc_claims_additional_claimant_policy_active(p_claim_id))) THEN ('No active policy on incident claimant or additional claimant')::text ELSE (CASE WHEN (calc_claims_has_additional_claimant(p_claim_id) AND LOWER(calc_claims_additional_claimant_favorite_color(p_claim_id)) <> 'red') THEN ('Additional claimant''s favorite color is not red')::text ELSE (CASE WHEN calc_claims_claimant_of_record_is_high_risk(p_claim_id) THEN ('Claimant of record is high-risk (DR-2)')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN calc_claims_is_valid(p_claim_id) THEN ('Valid — all conditions met')::text ELSE (CASE WHEN NOT (COALESCE(calc_claims_references_incident(p_claim_id), FALSE)) THEN ('No incident referenced')::text ELSE (CASE WHEN NOT (COALESCE((COALESCE(calc_claims_incident_claimant_policy_active(p_claim_id), FALSE) OR COALESCE(calc_claims_additional_claimant_policy_active(p_claim_id), FALSE)), FALSE)) THEN ('No active policy on incident claimant or additional claimant')::text ELSE (CASE WHEN (COALESCE(calc_claims_has_additional_claimant(p_claim_id), FALSE) AND COALESCE(COALESCE(LOWER(calc_claims_additional_claimant_favorite_color(p_claim_id)), '') <> 'red', FALSE)) THEN ('Additional claimant''s favorite color is not red')::text ELSE (CASE WHEN calc_claims_claimant_of_record_is_high_risk(p_claim_id) THEN ('Claimant of record is high-risk (DR-2)')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claims_is_approvable
@@ -296,7 +403,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claims_is_approvable(p_claim_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_claims_is_valid(p_claim_id) AND NOT (COALESCE((SELECT is_flagged_for_review FROM claims WHERE claim_id = p_claim_id), FALSE))))::boolean;
+  SELECT ((COALESCE(calc_claims_is_valid(p_claim_id), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT is_flagged_for_review FROM claims WHERE claim_id = p_claim_id), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claims_approvability_deciding_factor
@@ -306,7 +413,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claims_approvability_deciding_factor(p_claim_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_claims_is_approvable(p_claim_id) THEN ('Approvable')::text ELSE (CASE WHEN NOT (calc_claims_is_valid(p_claim_id)) THEN ('Not approvable — claim is not valid')::text ELSE (CASE WHEN COALESCE((SELECT is_flagged_for_review FROM claims WHERE claim_id = p_claim_id), FALSE) THEN ('Valid, but flagged for review')::text ELSE ('Undetermined')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN calc_claims_is_approvable(p_claim_id) THEN ('Approvable')::text ELSE (CASE WHEN NOT (COALESCE(calc_claims_is_valid(p_claim_id), FALSE)) THEN ('Not approvable — claim is not valid')::text ELSE (CASE WHEN COALESCE((SELECT is_flagged_for_review FROM claims WHERE claim_id = p_claim_id), FALSE) THEN ('Valid, but flagged for review')::text ELSE ('Undetermined')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================
