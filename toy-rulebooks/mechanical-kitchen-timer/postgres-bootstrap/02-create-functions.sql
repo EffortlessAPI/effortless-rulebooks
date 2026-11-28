@@ -14,6 +14,113 @@
 SET check_function_bodies = off;
 
 -- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+
+-- ============================================================================
 -- LOOKUP FUNCTIONS
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
@@ -45,7 +152,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_users_completed_cook_count(p_user_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM cooks WHERE prepared_by = (SELECT NULLIF(user_id, '') FROM users WHERE user_id = p_user_id) AND calc_cooks_timer_has_rung(cook_id) = TRUE))::integer;
+  SELECT ((SELECT COUNT(*) FROM cooks erb_r1 WHERE prepared_by = (SELECT (SELECT NULLIF(user_id, '') FROM users WHERE user_id = p_user_id)) AND ((SELECT calc_timers_has_rung(erb_r1.on_timer)))::boolean = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_users_activity_level
@@ -55,7 +162,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_users_activity_level(p_user_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_users_wind_count(p_user_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN ('idle')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC <= 2 THEN ('casual')::text ELSE ('busy')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_users_wind_count(p_user_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN ('idle')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) <= 2 THEN ('casual')::text ELSE ('busy')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_users_total_recipe_minutes_attempted
@@ -65,7 +172,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_users_total_recipe_minutes_attempted(p_user_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_cooks_recommended_minutes(cook_id))::numeric), 0) FROM cooks WHERE prepared_by = p_user_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (SELECT recommended_minutes::numeric FROM recipes WHERE recipe_id = erb_r1.follows_recipe)))::numeric)::numeric), 0) FROM cooks erb_r1 WHERE prepared_by = p_user_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_users_avg_recipe_minutes_attempted
@@ -75,7 +182,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_users_avg_recipe_minutes_attempted(p_user_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(AVG((calc_cooks_recommended_minutes(cook_id))::numeric), 0) FROM cooks WHERE prepared_by = p_user_id))::numeric;
+  SELECT ((SELECT COALESCE(AVG((((SELECT (SELECT recommended_minutes::numeric FROM recipes WHERE recipe_id = erb_r1.follows_recipe)))::numeric)::numeric), 0) FROM cooks erb_r1 WHERE prepared_by = p_user_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_users_cooking_style
@@ -85,7 +192,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_users_cooking_style(p_user_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_users_avg_recipe_minutes_attempted(p_user_id) AS val) SELECT (CASE WHEN (calc_users_cook_count(p_user_id))::NUMERIC = 0 THEN ('not cooking')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC < 10 THEN ('snacking')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC < 30 THEN ('short-order')::text ELSE ('slow-cooking')::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_users_avg_recipe_minutes_attempted(p_user_id) AS val) SELECT (CASE WHEN COALESCE((calc_users_cook_count(p_user_id))::NUMERIC, 0) = 0 THEN ('not cooking')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) < 10 THEN ('snacking')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) < 30 THEN ('short-order')::text ELSE ('slow-cooking')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_wind_fraction
@@ -95,7 +202,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_wind_fraction(p_timer_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT wind_angle_degrees FROM timers WHERE timer_id = p_timer_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT max_wind_degrees FROM timers WHERE timer_id = p_timer_id)) AS v) __safe_numeric), 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT wind_angle_degrees FROM timers WHERE timer_id = p_timer_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT max_wind_degrees FROM timers WHERE timer_id = p_timer_id)) AS v OFFSET 0) __safe_numeric), 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_stored_torque_nm
@@ -105,7 +212,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_stored_torque_nm(p_timer_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_timers_wind_fraction(p_timer_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT max_spring_torque_nm FROM timers WHERE timer_id = p_timer_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_timers_wind_fraction(p_timer_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT max_spring_torque_nm FROM timers WHERE timer_id = p_timer_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_remaining_minutes
@@ -115,7 +222,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_remaining_minutes(p_timer_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT wind_angle_degrees FROM timers WHERE timer_id = p_timer_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE(6, 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT wind_angle_degrees FROM timers WHERE timer_id = p_timer_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(6, 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_wind_state
@@ -125,7 +232,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_wind_state(p_timer_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN ((SELECT wind_angle_degrees FROM timers WHERE timer_id = p_timer_id))::NUMERIC <= 0 THEN ('Unwound')::text ELSE (CASE WHEN (SELECT wind_angle_degrees FROM timers WHERE timer_id = p_timer_id) >= (SELECT max_wind_degrees FROM timers WHERE timer_id = p_timer_id) THEN ('Full')::text ELSE ('Partial')::text END)::text END)::text;
+  SELECT (CASE WHEN COALESCE(((SELECT wind_angle_degrees FROM timers WHERE timer_id = p_timer_id))::NUMERIC, 0) <= 0 THEN ('Unwound')::text ELSE (CASE WHEN COALESCE(((SELECT wind_angle_degrees FROM timers WHERE timer_id = p_timer_id) >= (SELECT max_wind_degrees FROM timers WHERE timer_id = p_timer_id)), (((SELECT wind_angle_degrees FROM timers WHERE timer_id = p_timer_id)) IS NULL AND ((SELECT max_wind_degrees FROM timers WHERE timer_id = p_timer_id)) IS NULL)) THEN ('Full')::text ELSE ('Partial')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_is_armed
@@ -135,7 +242,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_is_armed(p_timer_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_timers_remaining_minutes(p_timer_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_timers_remaining_minutes(p_timer_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_has_rung
@@ -145,7 +252,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_has_rung(p_timer_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (NOT (calc_timers_is_armed(p_timer_id)))::boolean;
+  SELECT (NOT (COALESCE(calc_timers_is_armed(p_timer_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_tick_count
@@ -185,7 +292,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_total_recipe_minutes_used(p_timer_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_cooks_recommended_minutes(cook_id))::numeric), 0) FROM cooks WHERE on_timer = p_timer_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (SELECT recommended_minutes::numeric FROM recipes WHERE recipe_id = erb_r1.follows_recipe)))::numeric)::numeric), 0) FROM cooks erb_r1 WHERE on_timer = p_timer_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_avg_recipe_minutes_used
@@ -195,7 +302,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_avg_recipe_minutes_used(p_timer_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(AVG((calc_cooks_recommended_minutes(cook_id))::numeric), 0) FROM cooks WHERE on_timer = p_timer_id))::numeric;
+  SELECT ((SELECT COALESCE(AVG((((SELECT (SELECT recommended_minutes::numeric FROM recipes WHERE recipe_id = erb_r1.follows_recipe)))::numeric)::numeric), 0) FROM cooks erb_r1 WHERE on_timer = p_timer_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_wind_duration_minutes
@@ -205,7 +312,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_wind_duration_minutes(p_timer_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT max_wind_degrees FROM timers WHERE timer_id = p_timer_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE(6, 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT max_wind_degrees FROM timers WHERE timer_id = p_timer_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE(6, 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_expected_ticks_per_minute
@@ -215,7 +322,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_expected_ticks_per_minute(p_timer_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT escapement_base_hz FROM timers WHERE timer_id = p_timer_id)) AS v) __safe_numeric), 0) * COALESCE(60, 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT escapement_base_hz FROM timers WHERE timer_id = p_timer_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(60, 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_expected_total_ticks
@@ -225,7 +332,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_expected_total_ticks(p_timer_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_timers_expected_ticks_per_minute(p_timer_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_timers_wind_duration_minutes(p_timer_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_timers_expected_ticks_per_minute(p_timer_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_timers_wind_duration_minutes(p_timer_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_ticks_elapsed_expected
@@ -235,7 +342,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_ticks_elapsed_expected(p_timer_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_timers_expected_ticks_per_minute(p_timer_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_timers_wind_duration_minutes(p_timer_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_timers_remaining_minutes(p_timer_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_timers_expected_ticks_per_minute(p_timer_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_timers_wind_duration_minutes(p_timer_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_timers_remaining_minutes(p_timer_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_tick_efficiency_percent
@@ -245,7 +352,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_tick_efficiency_percent(p_timer_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_timers_ticks_elapsed_expected(p_timer_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_timers_tick_count(p_timer_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0) * COALESCE(100, 0)))::text ELSE (100)::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_timers_ticks_elapsed_expected(p_timer_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0 THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_timers_tick_count(p_timer_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(100, 0)))::text ELSE (100)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_has_sparse_tick_record
@@ -255,7 +362,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_has_sparse_tick_record(p_timer_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_timers_ticks_elapsed_expected(p_timer_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC > 0 THEN (calc_timers_tick_count(p_timer_id) < (SELECT val FROM __erb_dedup_v1))::text ELSE (FALSE)::text END)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_timers_ticks_elapsed_expected(p_timer_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0 THEN (COALESCE(calc_timers_tick_count(p_timer_id), 0) < COALESCE((SELECT val FROM __erb_dedup_v1), 0))::text ELSE (FALSE)::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_timers_mechanical_phase
@@ -265,7 +372,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_timers_mechanical_phase(p_timer_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_timers_wind_fraction(p_timer_id) AS val) SELECT (CASE WHEN calc_timers_has_rung(p_timer_id) THEN ('rung')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC > 0.8 THEN ('freshly-wound')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC > 0.25 THEN ('mid-run')::text ELSE ('nearly-done')::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_timers_wind_fraction(p_timer_id) AS val) SELECT (CASE WHEN calc_timers_has_rung(p_timer_id) THEN ('rung')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0.8 THEN ('freshly-wound')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0.25 THEN ('mid-run')::text ELSE ('nearly-done')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- get_timers_label
@@ -339,7 +446,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_bells_has_ever_rung(p_bell_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_bells_times_rung(p_bell_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_bells_times_rung(p_bell_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_winding_knobs_timer_wind_angle
@@ -371,7 +478,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_winding_knobs_scale_reading(p_winding_knob_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT scale_min FROM winding_knobs WHERE winding_knob_id = p_winding_knob_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_winding_knobs_timer_wind_angle(p_winding_knob_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_winding_knobs_timer_max_wind(p_winding_knob_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT scale_max FROM winding_knobs WHERE winding_knob_id = p_winding_knob_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT scale_min FROM winding_knobs WHERE winding_knob_id = p_winding_knob_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT scale_min FROM winding_knobs WHERE winding_knob_id = p_winding_knob_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_winding_knobs_timer_wind_angle(p_winding_knob_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_winding_knobs_timer_max_wind(p_winding_knob_id)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT scale_max FROM winding_knobs WHERE winding_knob_id = p_winding_knob_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT scale_min FROM winding_knobs WHERE winding_knob_id = p_winding_knob_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- get_arbors_diameter_mm
@@ -401,7 +508,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_gear_trains_output_shaft_rpm(p_gear_train_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_gear_trains_timer_escapement_hz(p_gear_train_id)) AS v) __safe_numeric), 0) * COALESCE(60, 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT reduction_ratio FROM gear_trains WHERE gear_train_id = p_gear_train_id)) AS v) __safe_numeric), 0), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_gear_trains_timer_escapement_hz(p_gear_train_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(60, 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT reduction_ratio FROM gear_trains WHERE gear_train_id = p_gear_train_id)) AS v OFFSET 0) __safe_numeric), 0), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_gear_trains_gear_count
@@ -461,7 +568,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_gears_is_first_in_chain(p_gear_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT position_in_chain FROM gears WHERE gear_id = p_gear_id))::NUMERIC = 1)::boolean;
+  SELECT (COALESCE(((SELECT position_in_chain FROM gears WHERE gear_id = p_gear_id))::NUMERIC, 0) = 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_gears_is_last_in_chain
@@ -471,7 +578,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_gears_is_last_in_chain(p_gear_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT position_in_chain FROM gears WHERE gear_id = p_gear_id))::NUMERIC = 3)::boolean;
+  SELECT (COALESCE(((SELECT position_in_chain FROM gears WHERE gear_id = p_gear_id))::NUMERIC, 0) = 3)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_gears_size_class
@@ -481,7 +588,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_gears_size_class(p_gear_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN ((SELECT tooth_count FROM gears WHERE gear_id = p_gear_id))::NUMERIC >= 40 THEN ('large')::text ELSE (CASE WHEN ((SELECT tooth_count FROM gears WHERE gear_id = p_gear_id))::NUMERIC >= 25 THEN ('medium')::text ELSE ('small')::text END)::text END)::text;
+  SELECT (CASE WHEN COALESCE(((SELECT tooth_count FROM gears WHERE gear_id = p_gear_id))::NUMERIC, 0) >= 40 THEN ('large')::text ELSE (CASE WHEN COALESCE(((SELECT tooth_count FROM gears WHERE gear_id = p_gear_id))::NUMERIC, 0) >= 25 THEN ('medium')::text ELSE ('small')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_output_shafts_current_rpm
@@ -512,7 +619,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_escapements_has_ticked(p_escapement_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_escapements_tick_count(p_escapement_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_escapements_tick_count(p_escapement_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_pallets_prong_count
@@ -599,7 +706,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_hammer_catches_is_engaged(p_hammer_catch_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN calc_hammer_catches_hammer_release_state(p_hammer_catch_id) = 'Held' THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE(calc_hammer_catches_hammer_release_state(p_hammer_catch_id), '') = 'Held' THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_wind_actions_applied_to_timer
@@ -883,7 +990,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_cooks_timer_can_cover_recipe(p_cook_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_cooks_timer_wind_duration(p_cook_id) >= calc_cooks_recommended_minutes(p_cook_id))::boolean;
+  SELECT (COALESCE(calc_cooks_timer_wind_duration(p_cook_id), 0) >= COALESCE(calc_cooks_recommended_minutes(p_cook_id), 0))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_cooks_suitability_verdict
@@ -893,7 +1000,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_cooks_suitability_verdict(p_cook_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_cooks_timer_wind_duration(p_cook_id) AS val), __erb_dedup_v2 AS (SELECT calc_cooks_recommended_minutes(p_cook_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) < (SELECT val FROM __erb_dedup_v2) THEN ('insufficient')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) > (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v) __safe_numeric), 0) * COALESCE(3, 0)) THEN ('overkill')::text ELSE ('appropriate')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_cooks_timer_wind_duration(p_cook_id) AS val), __erb_dedup_v2 AS (SELECT calc_cooks_recommended_minutes(p_cook_id) AS val) SELECT (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) < COALESCE((SELECT val FROM __erb_dedup_v2), 0) THEN ('insufficient')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) > COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(3, 0)), 0) THEN ('overkill')::text ELSE ('appropriate')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_recipes_times_used_today
@@ -913,7 +1020,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_recipes_duration_category(p_recipe_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN ((SELECT recommended_minutes FROM recipes WHERE recipe_id = p_recipe_id))::NUMERIC < 5 THEN ('quick')::text ELSE (CASE WHEN ((SELECT recommended_minutes FROM recipes WHERE recipe_id = p_recipe_id))::NUMERIC < 15 THEN ('short')::text ELSE (CASE WHEN ((SELECT recommended_minutes FROM recipes WHERE recipe_id = p_recipe_id))::NUMERIC < 45 THEN ('medium')::text ELSE ('long')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN COALESCE(((SELECT recommended_minutes FROM recipes WHERE recipe_id = p_recipe_id))::NUMERIC, 0) < 5 THEN ('quick')::text ELSE (CASE WHEN COALESCE(((SELECT recommended_minutes FROM recipes WHERE recipe_id = p_recipe_id))::NUMERIC, 0) < 15 THEN ('short')::text ELSE (CASE WHEN COALESCE(((SELECT recommended_minutes FROM recipes WHERE recipe_id = p_recipe_id))::NUMERIC, 0) < 45 THEN ('medium')::text ELSE ('long')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_recipes_cooking_temp_profile
@@ -923,7 +1030,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_recipes_cooking_temp_profile(p_recipe_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN ((SELECT ideal_temperature_c FROM recipes WHERE recipe_id = p_recipe_id))::NUMERIC >= 200 THEN ('hot oven')::text ELSE (CASE WHEN ((SELECT ideal_temperature_c FROM recipes WHERE recipe_id = p_recipe_id))::NUMERIC >= 150 THEN ('warm oven')::text ELSE (CASE WHEN ((SELECT ideal_temperature_c FROM recipes WHERE recipe_id = p_recipe_id))::NUMERIC >= 90 THEN ('boiling')::text ELSE ('low')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN COALESCE(((SELECT ideal_temperature_c FROM recipes WHERE recipe_id = p_recipe_id))::NUMERIC, 0) >= 200 THEN ('hot oven')::text ELSE (CASE WHEN COALESCE(((SELECT ideal_temperature_c FROM recipes WHERE recipe_id = p_recipe_id))::NUMERIC, 0) >= 150 THEN ('warm oven')::text ELSE (CASE WHEN COALESCE(((SELECT ideal_temperature_c FROM recipes WHERE recipe_id = p_recipe_id))::NUMERIC, 0) >= 90 THEN ('boiling')::text ELSE ('low')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_recipes_avg_timer_capacity
@@ -933,7 +1040,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_recipes_avg_timer_capacity(p_recipe_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(AVG((calc_cooks_timer_wind_duration(cook_id))::numeric), 0) FROM cooks WHERE follows_recipe = p_recipe_id))::numeric;
+  SELECT ((SELECT COALESCE(AVG((((SELECT calc_timers_wind_duration_minutes(erb_r1.on_timer)))::numeric)::numeric), 0) FROM cooks erb_r1 WHERE follows_recipe = p_recipe_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_recipes_total_timer_capacity
@@ -943,7 +1050,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_recipes_total_timer_capacity(p_recipe_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_cooks_timer_wind_duration(cook_id))::numeric), 0) FROM cooks WHERE follows_recipe = p_recipe_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT calc_timers_wind_duration_minutes(erb_r1.on_timer)))::numeric)::numeric), 0) FROM cooks erb_r1 WHERE follows_recipe = p_recipe_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_recipes_assignment_verdict
@@ -953,7 +1060,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_recipes_assignment_verdict(p_recipe_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_recipes_avg_timer_capacity(p_recipe_id) AS val) SELECT (CASE WHEN (calc_recipes_times_used_today(p_recipe_id))::NUMERIC = 0 THEN ('unused')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) < (SELECT recommended_minutes FROM recipes WHERE recipe_id = p_recipe_id) THEN ('under-provisioned')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) > (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT recommended_minutes FROM recipes WHERE recipe_id = p_recipe_id)) AS v) __safe_numeric), 0) * COALESCE(3, 0)) THEN ('over-provisioned')::text ELSE ('well-matched')::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_recipes_avg_timer_capacity(p_recipe_id) AS val) SELECT (CASE WHEN COALESCE((calc_recipes_times_used_today(p_recipe_id))::NUMERIC, 0) = 0 THEN ('unused')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) < COALESCE((SELECT recommended_minutes FROM recipes WHERE recipe_id = p_recipe_id), 0) THEN ('under-provisioned')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) > COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT recommended_minutes FROM recipes WHERE recipe_id = p_recipe_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(3, 0)), 0) THEN ('over-provisioned')::text ELSE ('well-matched')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_kitchens_total_timers
@@ -1053,7 +1160,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_kitchens_timers_freshly_wound(p_kitchen_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM timers WHERE calc_timers_mechanical_phase(timer_id) = 'freshly-wound'))::integer;
+  SELECT ((SELECT COUNT(*) FROM timers erb_r1 WHERE ((WITH __erb_dedup_v1 AS (SELECT calc_timers_wind_fraction(erb_r1.timer_id) AS val) SELECT (CASE WHEN calc_timers_has_rung(erb_r1.timer_id) THEN ('rung')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0.8 THEN ('freshly-wound')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0.25 THEN ('mid-run')::text ELSE ('nearly-done')::text END)::text END)::text END)::text))::text = 'freshly-wound'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_kitchens_timers_mid_run
@@ -1063,7 +1170,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_kitchens_timers_mid_run(p_kitchen_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM timers WHERE calc_timers_mechanical_phase(timer_id) = 'mid-run'))::integer;
+  SELECT ((SELECT COUNT(*) FROM timers erb_r1 WHERE ((WITH __erb_dedup_v1 AS (SELECT calc_timers_wind_fraction(erb_r1.timer_id) AS val) SELECT (CASE WHEN calc_timers_has_rung(erb_r1.timer_id) THEN ('rung')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0.8 THEN ('freshly-wound')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0.25 THEN ('mid-run')::text ELSE ('nearly-done')::text END)::text END)::text END)::text))::text = 'mid-run'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_kitchens_timers_nearly_done
@@ -1073,7 +1180,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_kitchens_timers_nearly_done(p_kitchen_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM timers WHERE calc_timers_mechanical_phase(timer_id) = 'nearly-done'))::integer;
+  SELECT ((SELECT COUNT(*) FROM timers erb_r1 WHERE ((WITH __erb_dedup_v1 AS (SELECT calc_timers_wind_fraction(erb_r1.timer_id) AS val) SELECT (CASE WHEN calc_timers_has_rung(erb_r1.timer_id) THEN ('rung')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0.8 THEN ('freshly-wound')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0.25 THEN ('mid-run')::text ELSE ('nearly-done')::text END)::text END)::text END)::text))::text = 'nearly-done'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_kitchens_timers_rung
@@ -1083,7 +1190,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_kitchens_timers_rung(p_kitchen_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM timers WHERE calc_timers_mechanical_phase(timer_id) = 'rung'))::integer;
+  SELECT ((SELECT COUNT(*) FROM timers erb_r1 WHERE ((WITH __erb_dedup_v1 AS (SELECT calc_timers_wind_fraction(erb_r1.timer_id) AS val) SELECT (CASE WHEN calc_timers_has_rung(erb_r1.timer_id) THEN ('rung')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0.8 THEN ('freshly-wound')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0.25 THEN ('mid-run')::text ELSE ('nearly-done')::text END)::text END)::text END)::text))::text = 'rung'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_kitchens_cooks_done
@@ -1093,7 +1200,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_kitchens_cooks_done(p_kitchen_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM cooks WHERE calc_cooks_status(cook_id) = 'Done'))::integer;
+  SELECT ((SELECT COUNT(*) FROM cooks erb_r1 WHERE ((SELECT (CASE WHEN calc_cooks_timer_has_rung(erb_r1.cook_id) THEN ('Done')::text ELSE (CASE WHEN calc_cooks_timer_is_armed(erb_r1.cook_id) THEN ('Cooking')::text ELSE ('Pending')::text END)::text END)::text))::text = 'Done'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_kitchens_cooks_cooking
@@ -1103,7 +1210,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_kitchens_cooks_cooking(p_kitchen_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM cooks WHERE calc_cooks_status(cook_id) = 'Cooking'))::integer;
+  SELECT ((SELECT COUNT(*) FROM cooks erb_r1 WHERE ((SELECT (CASE WHEN calc_cooks_timer_has_rung(erb_r1.cook_id) THEN ('Done')::text ELSE (CASE WHEN calc_cooks_timer_is_armed(erb_r1.cook_id) THEN ('Cooking')::text ELSE ('Pending')::text END)::text END)::text))::text = 'Cooking'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_kitchens_recipes_unused
@@ -1113,7 +1220,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_kitchens_recipes_unused(p_kitchen_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM recipes WHERE calc_recipes_assignment_verdict(recipe_id) = 'unused'))::integer;
+  SELECT ((SELECT COUNT(*) FROM recipes erb_r1 WHERE ((WITH __erb_dedup_v1 AS (SELECT calc_recipes_avg_timer_capacity(erb_r1.recipe_id) AS val) SELECT (CASE WHEN COALESCE((calc_recipes_times_used_today(erb_r1.recipe_id))::NUMERIC, 0) = 0 THEN ('unused')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) < COALESCE(erb_r1.recommended_minutes, 0) THEN ('under-provisioned')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) > COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (erb_r1.recommended_minutes) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(3, 0)), 0) THEN ('over-provisioned')::text ELSE ('well-matched')::text END)::text END)::text END)::text))::text = 'unused'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_kitchens_recipes_under_provisioned
@@ -1123,7 +1230,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_kitchens_recipes_under_provisioned(p_kitchen_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM recipes WHERE calc_recipes_assignment_verdict(recipe_id) = 'under-provisioned'))::integer;
+  SELECT ((SELECT COUNT(*) FROM recipes erb_r1 WHERE ((WITH __erb_dedup_v1 AS (SELECT calc_recipes_avg_timer_capacity(erb_r1.recipe_id) AS val) SELECT (CASE WHEN COALESCE((calc_recipes_times_used_today(erb_r1.recipe_id))::NUMERIC, 0) = 0 THEN ('unused')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) < COALESCE(erb_r1.recommended_minutes, 0) THEN ('under-provisioned')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) > COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (erb_r1.recommended_minutes) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(3, 0)), 0) THEN ('over-provisioned')::text ELSE ('well-matched')::text END)::text END)::text END)::text))::text = 'under-provisioned'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_kitchens_recipes_well_matched
@@ -1133,7 +1240,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_kitchens_recipes_well_matched(p_kitchen_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM recipes WHERE calc_recipes_assignment_verdict(recipe_id) = 'well-matched'))::integer;
+  SELECT ((SELECT COUNT(*) FROM recipes erb_r1 WHERE ((WITH __erb_dedup_v1 AS (SELECT calc_recipes_avg_timer_capacity(erb_r1.recipe_id) AS val) SELECT (CASE WHEN COALESCE((calc_recipes_times_used_today(erb_r1.recipe_id))::NUMERIC, 0) = 0 THEN ('unused')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) < COALESCE(erb_r1.recommended_minutes, 0) THEN ('under-provisioned')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) > COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (erb_r1.recommended_minutes) AS v OFFSET 0) __safe_numeric), 0) * COALESCE(3, 0)), 0) THEN ('over-provisioned')::text ELSE ('well-matched')::text END)::text END)::text END)::text))::text = 'well-matched'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_kitchens_busy_users
@@ -1143,7 +1250,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_kitchens_busy_users(p_kitchen_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM users WHERE calc_users_activity_level(user_id) = 'busy'))::integer;
+  SELECT ((SELECT COUNT(*) FROM users erb_r1 WHERE ((WITH __erb_dedup_v1 AS (SELECT calc_users_wind_count(erb_r1.user_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN ('idle')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) <= 2 THEN ('casual')::text ELSE ('busy')::text END)::text END)::text))::text = 'busy'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_kitchens_idle_users
@@ -1153,7 +1260,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_kitchens_idle_users(p_kitchen_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM users WHERE calc_users_activity_level(user_id) = 'idle'))::integer;
+  SELECT ((SELECT COUNT(*) FROM users erb_r1 WHERE ((WITH __erb_dedup_v1 AS (SELECT calc_users_wind_count(erb_r1.user_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN ('idle')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) <= 2 THEN ('casual')::text ELSE ('busy')::text END)::text END)::text))::text = 'idle'))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_kitchens_total_recipe_minutes
@@ -1203,7 +1310,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_kitchens_has_any_timer_rung(p_kitchen_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_kitchens_timers_rung(p_kitchen_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_kitchens_timers_rung(p_kitchen_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_kitchens_has_misprovisioned_recipe
@@ -1213,7 +1320,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_kitchens_has_misprovisioned_recipe(p_kitchen_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_kitchens_recipes_under_provisioned(p_kitchen_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_kitchens_recipes_under_provisioned(p_kitchen_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_kitchens_operational_status
@@ -1223,7 +1330,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_kitchens_operational_status(p_kitchen_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_kitchens_cooks_cooking(p_kitchen_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN ('quiet')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 3 THEN ('busy')::text ELSE ('active')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_kitchens_cooks_cooking(p_kitchen_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN ('quiet')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 3 THEN ('busy')::text ELSE ('active')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

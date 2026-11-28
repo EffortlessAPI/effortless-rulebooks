@@ -1,4 +1,4 @@
-# 📘 Mechanical Kitchen Timer — RuleSpeak®
+# 📘 Mechanical Kitchen Timer — Docs
 
 _Five-part mechanical timer modeled with every README noun as a table — a hardware-ontology stress test._
 
@@ -20,6 +20,22 @@ _Five-part mechanical timer modeled with every README noun as a table — a hard
 | Total Recipe Minutes Attempted | The total recommended minutes across the cooks related to the user. | _Sum of recommended-minutes across recipes this user has cooked today. Zig-zags User -> Cook -> Recipe.RecommendedMinutes._ |
 | Avg Recipe Minutes Attempted | The average recommended minutes across the cooks related to the user. | _Mean recommended-minutes across this user's cooks today. Zig-zags User -> Cook -> Recipe.RecommendedMinutes._ |
 | Cooking Style | Determined by priority: “not cooking” if the cook count is 0; “snacking” if the avg recipe minutes attempted is less than 10; “short-order” if the avg recipe minutes attempted is less than 30; in all other cases, “slow-cooking”. | _Fuzzy verdict on this user's day, off the zig-zag aggregate AvgRecipeMinutesAttempted: 'snacking' under 10 min average, 'short-order' under 30, 'slow-cooking' beyond._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Display Name | Wind Count ƒ | Cook Count ƒ | Completed Cook Count ƒ | Activity Level ƒ | Total Recipe Minutes Attempted ƒ | Avg Recipe Minutes Attempted ƒ | Cooking Style ƒ |
+|---|---|---|---|---|---|---|---|
+| Chef | 4 | 7 | 2 | busy | 160.0 | 22.857142857142858 | short-order |
+| Baker | 1 | 4 | 0 | casual | 399.0 | 99.75 | slow-cooking |
+| Apprentice | 0 | 0 | 0 | idle | 0.0 | — | not cooking |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Timer** | Top-level timer assembly. Holds the raw mechanical parameters and the headline runtime DAG: stored torque, remaining minutes, wind state, and whether the bell has rung. | — |
 | Label | A defined attribute. | _User-facing label._ |
 | Wind Angle Degrees | A defined attribute. | _Current angular position of the winding knob, 0..MaxWindDegrees._ |
@@ -44,15 +60,61 @@ _Five-part mechanical timer modeled with every README noun as a table — a hard
 | Tick Efficiency Percent | Determined by priority: the tick count divided by the ticks elapsed expected times 100 if the ticks elapsed expected is greater than 0; in all other cases, 100. | _Observed ticks divided by expected ticks so far, as a percentage. A timer that has just been wound returns 100 since no ticks were expected yet._ |
 | Has Sparse Tick Record | True when the ticks elapsed expected is greater than 0 and the tick count is less than the ticks elapsed expected. | _True when the recorded tick count is well below what should have happened by now._ |
 | Mechanical Phase | Determined by priority: “rung” if the rung flag is set; “freshly-wound” if the wind fraction is greater than 0.8; “mid-run” if the wind fraction is greater than 0.25; in all other cases, “nearly-done”. | _Fuzzy lifecycle phase. A timer is freshly-wound if barely any of its wind has been spent, mid-run if it is well into its travel, nearly-done if it is almost out of energy, and rung once it has fired._ |
-| **Cas** | The outer housing of a timer. The bell is mounted on top of the case. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Label | Wind Angle Degrees | Max Wind Degrees | Max Spring Torque Nm | Escapement Base Hz | Wind Fraction ƒ | Stored Torque Nm ƒ | Remaining Minutes ƒ | Wind State ƒ | Is Armed ƒ | Has Rung ƒ | Tick Count ƒ | Ring Count ƒ | Cook Count ƒ | Total Recipe Minutes Used ƒ | Avg Recipe Minutes Used ƒ | Wind Duration Minutes ƒ | Expected Ticks Per Minute ƒ | Expected Total Ticks ƒ | Ticks Elapsed Expected ƒ | Tick Efficiency Percent ƒ | Has Sparse Tick Record ƒ | Mechanical Phase ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Egg Timer | 0 | 360 | 0.08 | 4 | 0.0 | 0.0 | 0.0 | Unwound | false | true | 8 | 1 | 3 | 19.0 | 6.333333333333333 | 60.0 | 240.0 | 14400.0 | 14400.0 | 0.05555555555555555 | true | rung |
+| Pasta Timer | 120 | 360 | 0.08 | 4 | 0.3333333333333333 | 0.026666666666666665 | 20.0 | Partial | true | false | 8 | 0 | 6 | 454.0 | 75.66666666666667 | 60.0 | 240.0 | 14400.0 | 9600.0 | 0.08333333333333334 | true | mid-run |
+| Roast Timer | 360 | 360 | 0.08 | 4 | 1.0 | 0.08 | 60.0 | Full | true | false | 4 | 0 | 7 | 252.0 | 36.0 | 60.0 | 240.0 | 14400.0 | 0.0 | 100.0 | false | freshly-wound |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
+| **Case** | The outer housing of a timer. The bell is mounted on top of the case. | — |
 | Houses Timer | A defined attribute. | _Parent timer._ |
 | Material | A defined attribute. | _Case material._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Material |
+|---|
+| chromed steel |
+| brushed aluminum |
+| chromed steel |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Bell** | The bell mounted on top of the case. Struck by the hammer striker when §5 fires. | — |
 | Mounted on Case | A defined attribute. | _Case the bell sits on._ |
 | Diameter Mm | A defined attribute. | _Bell diameter, mm._ |
 | Tone Hz | A defined attribute. | _Dominant tone, Hz._ |
 | Times Rung | The number of ring events related to the bell. | _Number of ding events for this bell._ |
 | Has Ever Rung | True when the times rung is greater than 0. | _True if at least one ding has been recorded._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Diameter Mm | Tone Hz | Times Rung ƒ | Has Ever Rung ƒ |
+|---|---|---|---|
+| 40 | 1800 | 1 | true |
+| 40 | 1800 | 0 | false |
+| 40 | 1800 | 0 | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Winding Knob** | §1 — the dial on the front. Shaft is fixed to the mainspring arbor. Rim carries a printed scale 0..60 read against a fixed pointer on the case. | — |
 | Fixed to Timer | A defined attribute. | _Parent timer._ |
 | Scale Min | A defined attribute. | _Lower bound of the printed scale._ |
@@ -63,15 +125,59 @@ _Five-part mechanical timer modeled with every README noun as a table — a hard
 | Timer Wind Angle | The wind angle degrees of the winding knob's fixed to timer. | _Parent timer's current wind angle._ |
 | Timer Max Wind | The max wind degrees of the winding knob's fixed to timer. | _Parent timer's max wind angle._ |
 | Scale Reading | Computed as the scale min plus the timer wind angle divided by the timer max wind times the scale max minus the scale min. | _Number the printed scale currently shows against the pointer._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Scale Min | Scale Max | Wind Direction | Shaft Diameter Mm | Pointer Fixed | Timer Wind Angle ƒ | Timer Max Wind ƒ | Scale Reading ƒ |
+|---|---|---|---|---|---|---|---|
+| 0 | 60 | clockwise | 4 | true | 0.0 | 360.0 | 0.0 |
+| 0 | 60 | clockwise | 4 | true | 120.0 | 360.0 | 20.0 |
+| 0 | 60 | clockwise | 4 | true | 360.0 | 360.0 | 60.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Arbor** | The shaft driven by the mainspring. Connects §1 (knob shaft) to §2 (mainspring), and carries the §5 cam. | — |
 | In Timer | A defined attribute. | _Parent timer._ |
 | Diameter Mm | A defined attribute. | _Arbor diameter._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Diameter Mm |
+|---|
+| 3 |
+| 3 |
+| 3 |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Mainspring** | §2 — flat coiled steel spring in a drum. Inner end anchors to the arbor; outer end anchors to the case. | — |
 | Wrapped on Arbor | A defined attribute. | _Arbor this mainspring drives._ |
 | Drum Diameter Mm | A defined attribute. | _Diameter of the spring drum._ |
 | Material | A defined attribute. | _Spring material._ |
 | Inner End Anchor | A defined attribute. | _Where the inner end anchors (always Arbor)._ |
 | Outer End Anchor | A defined attribute. | _Where the outer end anchors (always Case)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Drum Diameter Mm | Material | Inner End Anchor | Outer End Anchor |
+|---|---|---|---|
+| 18 | spring steel | Arbor | Case |
+| 18 | spring steel | Arbor | Case |
+| 18 | spring steel | Arbor | Case |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Gear Train** | §3 — the three-gear stack between mainspring arbor and escapement. Carries the output shaft that drives the dial pointer. | — |
 | In Timer | A defined attribute. | _Parent timer._ |
 | Reduction Ratio | A defined attribute. | _Total speed-up from arbor to escapement._ |
@@ -80,6 +186,22 @@ _Five-part mechanical timer modeled with every README noun as a table — a hard
 | Gear Count | The number of gears related to the gear train. | _Number of gears in this train. Always 3 on this design._ |
 | Total Teeth | The total tooth count across the gears related to the gear train. | _Sum of tooth counts across the three gears._ |
 | Average Tooth Count | The average tooth count across the gears related to the gear train. | _Mean tooth count across the gears in this train._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Reduction Ratio | Timer Escapement Hz ƒ | Output Shaft RPM ƒ | Gear Count ƒ | Total Teeth ƒ | Average Tooth Count ƒ |
+|---|---|---|---|---|---|
+| 240 | 4.0 | 1.0 | 3 | 108 | 36.0 |
+| 240 | 4.0 | 1.0 | 3 | 108 | 36.0 |
+| 240 | 4.0 | 1.0 | 3 | 108 | 36.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Gear** | Individual gears in a gear train. Each has a tooth count and a position in the chain (1, 2, or 3). | — |
 | In Gear Train | A defined attribute. | _Parent gear train._ |
 | Position in Chain | A defined attribute. | _1, 2, or 3 — arbor side to escapement side._ |
@@ -88,45 +210,223 @@ _Five-part mechanical timer modeled with every README noun as a table — a hard
 | Is Last in Chain | True when the position in chain is 3. | _True for the gear nearest the escapement._ |
 | Size Class | Determined by priority: “large” if the tooth count is at least 40; “medium” if the tooth count is at least 25; in all other cases, “small”. | _Fuzzy size based on tooth count: large 40+, medium 25-39, small under 25._ |
 | On Timer | The in timer of the gear's in gear train. | _Timer the gear's gear-train belongs to (chained lookup through GearTrains)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Position in Chain | Tooth Count | Is First in Chain ƒ | Is Last in Chain ƒ | Size Class ƒ | On Timer ƒ |
+|---|---|---|---|---|---|
+| 1 | 48 | true | false | large | Bessie |
+| 2 | 36 | false | false | medium | Bessie |
+| 3 | 24 | false | true | small | Bessie |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Output Shaft** | The shaft at the end of the gear train. Carries the dial pointer. | — |
 | In Gear Train | A defined attribute. | _Parent gear train._ |
 | Current RPM | The output shaft RPM of the output shaft's in gear train. | _Inherits the gear train's output RPM._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Current RPM ƒ |
+|---|
+| 1.0 |
+| 1.0 |
+| 1.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Dial Pointer** | Pointer mounted on the output shaft. Reads against the printed scale on the knob rim. | — |
 | On Output Shaft | A defined attribute. | _Shaft this pointer is mounted on._ |
 | Length Mm | A defined attribute. | _Pointer length._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Length Mm |
+|---|
+| 14 |
+| 14 |
+| 14 |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Escapement** | §4 — escapement assembly: toothed wheel plus two-pronged pallet plus hairspring. Defines the time base. | — |
 | In Timer | A defined attribute. | _Parent timer._ |
 | Tick Count | The number of tick events related to the escapement. | _Ticks recorded at this escapement._ |
 | Has Ticked | True when the tick count is greater than 0. | _True if this escapement has recorded at least one tick._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Tick Count ƒ | Has Ticked ƒ |
+|---|---|
+| 8 | true |
+| 8 | true |
+| 4 | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Escapement Wheel** | The toothed wheel of the escapement. Each pallet rock releases exactly one tooth. | — |
 | In Escapement | A defined attribute. | _Parent escapement._ |
 | Tooth Count | A defined attribute. | _Number of teeth around the wheel._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Tooth Count |
+|---|
+| 30 |
+| 30 |
+| 30 |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Pallet** | Pivoting piece sitting across the escapement-wheel teeth. Two prongs (the README's 'two-pronged pallet'). Rocking is set by pallet mass plus the hairspring. | — |
 | In Escapement | A defined attribute. | _Parent escapement._ |
 | Prong Count | A defined attribute. | _Number of prongs. Always 2 on this design._ |
 | Mass Grams | A defined attribute. | _Pallet mass. Co-determines rocking rate._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Prong Count | Mass Grams |
+|---|---|
+| 2 | 0.8 |
+| 2 | 0.8 |
+| 2 | 0.8 |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Hairspring** | Tiny coiled spring attached to the pallet. Sets the pallet's rocking rate together with pallet mass. | — |
 | Attached to Pallet | A defined attribute. | _Parent pallet._ |
 | Stiffness Nm Per Rad | A defined attribute. | _Torsional stiffness._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Stiffness Nm Per Rad |
+|---|
+| 0.0004 |
+| 0.0004 |
+| 0.0004 |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Cam** | Profile on the arbor of §2. Its notch aligns with the hammer catch at the zero position; that alignment is what trips §5. | — |
 | On Arbor | A defined attribute. | _Arbor this cam rides on._ |
 | Notch Angle Deg | A defined attribute. | _Arbor angle at which the notch aligns with the catch._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Notch Angle Deg |
+|---|
+| 0 |
+| 0 |
+| 0 |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Bell Hammer** | §5 — spring-loaded arm with a steel striker, held back by the hammer catch. When the cam notch reaches the catch, the catch releases and the arm's own spring snaps the striker against the bell. | — |
 | In Timer | A defined attribute. | _Parent timer._ |
 | Arm Torque Nm | A defined attribute. | _Spring torque stored in the hammer arm._ |
 | Timer Has Rung | True when the linked in timer has a rung. | _Whether the parent timer has rung._ |
 | Release State | Determined by priority: “Released” if the timer has rung flag is set; in all other cases, “Held”. | _Held while the cam still restrains the catch; Released once the timer has rung._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Arm Torque Nm | Timer Has Rung ƒ | Release State ƒ |
+|---|---|---|
+| 0.02 | true | Released |
+| 0.02 | false | Held |
+| 0.02 | false | Held |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Hammer Arm** | The spring-loaded arm of the bell hammer. Carries the striker at its tip. | — |
 | Of Bell Hammer | A defined attribute. | _Parent bell hammer._ |
 | Length Mm | A defined attribute. | _Arm length._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Length Mm |
+|---|
+| 22 |
+| 22 |
+| 22 |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Striker** | The small steel head at the tip of the hammer arm. Whatever actually contacts the bell. | — |
 | On Arm | A defined attribute. | _Hammer arm this striker is mounted on._ |
 | Material | A defined attribute. | _Striker material._ |
-| **Hammer Catche** | Catch that holds the hammer back until the cam notch aligns. Once released, the arm spring snaps the striker against the bell. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Material |
+|---|
+| steel |
+| steel |
+| steel |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
+| **Hammer Catch** | Catch that holds the hammer back until the cam notch aligns. Once released, the arm spring snaps the striker against the bell. | — |
 | Of Bell Hammer | A defined attribute. | _Parent bell hammer._ |
 | Engaged With Cam | A defined attribute. | _Cam this catch rides against._ |
 | Hammer Release State | Taken from the linked of bell hammer. | _Inherits parent hammer's release state._ |
 | Is Engaged | True when the hammer release state is “Held”. | _True while the catch still restrains the hammer._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Hammer Release State ƒ | Is Engaged ƒ |
+|---|---|
+| Released | false |
+| Held | true |
+| Held | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Wind Action** | Event: a user rotates the winding knob to a target angle at a point in time. The README's §1 input event. | — |
 | Performed by | A defined attribute. | _Acting user._ |
 | Turned Knob | A defined attribute. | _Knob that was turned._ |
@@ -134,6 +434,22 @@ _Five-part mechanical timer modeled with every README noun as a table — a hard
 | Occurred At | A defined attribute. | _When the wind happened._ |
 | Applied to Timer | The fixed to timer of the wind action's turned knob. | _Timer the turned knob is fixed to._ |
 | Resulted in Ring | True when the wind action's applied to timer has a rung. | _True if the timer this wind action wound has since rung._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Target Angle Deg | Occurred At | Applied to Timer ƒ | Resulted in Ring ƒ |
+|---|---|---|---|
+| 60 | 2026-05-21T07:45:00Z | Bessie | true |
+| 120 | 2026-05-21T09:30:00Z | Olive | false |
+| 360 | 2026-05-21T10:00:00Z | Rufus | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Tick Event** | Event: the escapement releases one tooth — one 'tick' from the README. | — |
 | Happened on Timer | A defined attribute. | _Parent timer._ |
 | At Escapement | A defined attribute. | _Escapement that ticked._ |
@@ -141,10 +457,38 @@ _Five-part mechanical timer modeled with every README noun as a table — a hard
 | Timer Label | Taken from the linked happened on timer. | _Parent timer's label._ |
 | On Timer That Has Rung | True when the linked happened on timer has a rung. | _Whether the parent timer has rung._ |
 | On Timer in Phase | The mechanical phase of the tick event's happened on timer. | _Parent timer's current mechanical phase._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Occurred At | Timer Label ƒ | On Timer That Has Rung ƒ | On Timer in Phase ƒ |
+|---|---|---|---|
+| 2026-05-21T07:46:15Z | Egg Timer | true | rung |
+| 2026-05-21T07:47:30Z | Egg Timer | true | rung |
+| 2026-05-21T07:48:45Z | Egg Timer | true | rung |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Ring Event** | Event: the bell hammer strikes the bell — the README's 'ding'. Recorded once per fired §5. | — |
 | Happened on Timer | A defined attribute. | _Parent timer._ |
 | Struck | A defined attribute. | _Bell that was struck._ |
 | Occurred At | A defined attribute. | _Ring timestamp._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Occurred At |
+|---|
+| 2026-05-21T07:55:00Z |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Cook** | A dish being timed on a timer. Each cook started at the moment a user wound the timer; its status mirrors the timer's lifecycle. | — |
 | On Timer | A defined attribute. | _Timer being used._ |
 | Prepared by | A defined attribute. | _User preparing the dish._ |
@@ -164,6 +508,22 @@ _Five-part mechanical timer modeled with every README noun as a table — a hard
 | Recipe Duration Category | Taken from the linked follows recipe. | _Duration-category of the recipe being followed (chained lookup through Recipes)._ |
 | Recipe Temp Profile | The cooking temp profile of the cook's follows recipe. | _Cooking-temp profile of the recipe (chained lookup through Recipes)._ |
 | Timer Mechanical Phase | Taken from the linked on timer. | _Mechanical phase of the timer this cook is on (chained lookup through Timers)._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Dish Name | Started At | Timer Has Rung ƒ | Timer is Armed ƒ | Timer Remaining Min ƒ | Status ƒ | Recommended Minutes ƒ | Timer Wind Duration ƒ | Timer Can Cover Recipe ƒ | Suitability Verdict ƒ | Prepared by Name ƒ | Prepared by Activity Level ƒ | Recipe Duration Category ƒ | Recipe Temp Profile ƒ | Timer Mechanical Phase ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| soft-boiled egg | 2026-05-21T07:45:00Z | true | false | 0.0 | Done | 10.0 | 60.0 | true | overkill | Chef | busy | short | boiling | rung |
+| spaghetti al pomodoro | 2026-05-21T09:30:00Z | false | true | 20.0 | Cooking | 12.0 | 60.0 | true | overkill | Baker | casual | short | boiling | mid-run |
+| rib roast | 2026-05-21T10:00:00Z | false | true | 60.0 | Cooking | 90.0 | 60.0 | false | insufficient | Chef | busy | long | warm oven | freshly-wound |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Recipe** | Cooking recipes a cook can follow. Each names a dish and the minutes it should run. | — |
 | Dish Name | A defined attribute. | _Name of the dish._ |
 | Recommended Minutes | A defined attribute. | _Recommended cook time, in minutes._ |
@@ -174,6 +534,22 @@ _Five-part mechanical timer modeled with every README noun as a table — a hard
 | Avg Timer Capacity | The average timer wind duration across the cooks related to the recipe. | _Average wind-duration of the timers cooks have used for this recipe. Zig-zags Recipe -> Cook -> Timer.WindDurationMinutes._ |
 | Total Timer Capacity | The total timer wind duration across the cooks related to the recipe. | _Sum of timer wind-durations allocated to this recipe today. Zig-zags Recipe -> Cook -> Timer.WindDurationMinutes._ |
 | Assignment Verdict | Determined by priority: “unused” if the times used today is 0; “under-provisioned” if the avg timer capacity is less than the recommended minutes; “over-provisioned” if the avg timer capacity is greater than the recommended minutes times 3; in all other cases, “well-matched”. | _Fuzzy verdict on how well this recipe's actual timer assignments match what it needs. Drives off the zig-zag aggregate AvgTimerCapacity vs the recipe's own RecommendedMinutes._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Dish Name | Recommended Minutes | Ideal Temperature C | Times Used Today ƒ | Duration Category ƒ | Cooking Temp Profile ƒ | Avg Timer Capacity ƒ | Total Timer Capacity ƒ | Assignment Verdict ƒ |
+|---|---|---|---|---|---|---|---|---|
+| soft-boiled egg | 10 | 100 | 1 | short | boiling | 60.0 | 60.0 | over-provisioned |
+| spaghetti al pomodoro | 12 | 100 | 1 | short | boiling | 60.0 | 60.0 | over-provisioned |
+| rib roast | 90 | 175 | 1 | long | warm oven | 60.0 | 60.0 | under-provisioned |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Kitchen** | A kitchen, top of the rollup tree. Aggregates everything below it. | — |
 | Display Name | A defined attribute. | _Human name._ |
 | Total Timers | The number of timers related to the kitchen. | _Count of timers in the world._ |
@@ -204,10 +580,21 @@ _Five-part mechanical timer modeled with every README noun as a table — a hard
 | Has Misprovisioned Recipe | True when the recipes under provisioned is greater than 0. | _True if any recipe is currently under-provisioned._ |
 | Operational Status | Determined by priority: “quiet” if the cooks cooking is 0; “busy” if the cooks cooking is at least 3; in all other cases, “active”. | _Fuzzy overall status: 'quiet' if no cooks active, 'busy' if many, 'active' otherwise._ |
 
+<details open>
+<summary>Example data</summary>
+
+| Display Name | Total Timers ƒ | Total Cases ƒ | Total Bells ƒ | Total Users ƒ | Total Cooks ƒ | Total Recipes ƒ | Total Wind Actions ƒ | Total Tick Events ƒ | Total Ring Events ƒ | Timers Freshly Wound ƒ | Timers Mid Run ƒ | Timers Nearly Done ƒ | Timers Rung ƒ | Cooks Done ƒ | Cooks Cooking ƒ | Recipes Unused ƒ | Recipes Under Provisioned ƒ | Recipes Well Matched ƒ | Busy Users ƒ | Idle Users ƒ | Total Recipe Minutes ƒ | Avg Recipe Minutes ƒ | Min Recipe Minutes ƒ | Max Recipe Minutes ƒ | Has Any Timer Rung ƒ | Has Misprovisioned Recipe ƒ | Operational Status ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Main Kitchen | 4 | 4 | 4 | 8 | 18 | 19 | 5 | 23 | 1 | 1 | 1 | 1 | 1 | 3 | 15 | 2 | 2 | 6 | 1 | 6 | 832.0 | 43.78947368421053 | 2.0 | 360.0 | true | true | busy |
+
+_ƒ marks a computed column._
+
+</details>
+
 ## 2 Fact Types
 
-- a **cas** references exactly one **timer**
-- a **bell** references exactly one **cas**
+- a **case** references exactly one **timer**
+- a **bell** references exactly one **case**
 - a **winding knob** references exactly one **timer**
 - an **arbor** references exactly one **timer**
 - a **mainspring** references exactly one **arbor**
@@ -223,8 +610,8 @@ _Five-part mechanical timer modeled with every README noun as a table — a hard
 - a **bell hammer** references exactly one **timer**
 - a **hammer arm** references exactly one **bell hammer**
 - a **striker** references exactly one **hammer arm**
-- a **hammer catche** references exactly one **bell hammer**
-- a **hammer catche** references exactly one **cam**
+- a **hammer catch** references exactly one **bell hammer**
+- a **hammer catch** references exactly one **cam**
 - a **wind action** references exactly one **user**
 - a **wind action** references exactly one **winding knob**
 - a **tick event** references exactly one **timer**
@@ -246,9 +633,9 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 
 - A user **must** have a display name.
 - A timer **must** have a label; a wind angle degrees; a max wind degrees; a max spring torque nm; and an escapement base hz.
-- A cas **must** reference exactly one timer as its houses timer.
-- A cas **must** have a material.
-- A bell **must** reference exactly one cas as its mounted on case.
+- A case **must** reference exactly one timer as its houses timer.
+- A case **must** have a material.
+- A bell **must** reference exactly one case as its mounted on case.
 - A bell **must** have a diameter mm and a tone hz.
 - A winding knob **must** reference exactly one timer as its fixed to timer.
 - A winding knob **must** have a scale min; a scale max; a wind direction; and a shaft diameter mm, and record whether it is pointer fixed.
@@ -278,8 +665,8 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A hammer arm **must** have a length mm.
 - A striker **must** reference exactly one hammer arm as its on arm.
 - A striker **must** have a material.
-- A hammer catche **must** reference exactly one bell hammer as its of bell hammer.
-- A hammer catche **must** reference exactly one cam as its engaged with cam.
+- A hammer catch **must** reference exactly one bell hammer as its of bell hammer.
+- A hammer catch **must** reference exactly one cam as its engaged with cam.
 - A wind action **must** reference exactly one user as its performed by.
 - A wind action **must** reference exactly one winding knob as its turned knob.
 - A wind action **must** have a target angle deg and an occurred at.
@@ -350,8 +737,8 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-42 Has Ticked** | An escapement is considered to have ticked if the tick count is greater than 0. |
 | **DR-43 Timer Has Rung** | A bell hammer's timer has rung when the linked in timer has a rung. |
 | **DR-44 Release State** | The bell hammer's release state is determined by the following priority:<br>1. “Released”, if the timer has rung flag is set;<br>2. in all other cases, “Held”. |
-| **DR-45 Hammer Release State** | A hammer catche's hammer release state — taken from the linked of bell hammer. |
-| **DR-46 Is Engaged** | A hammer catche is considered engaged if the hammer release state is “Held”. |
+| **DR-45 Hammer Release State** | A hammer catch's hammer release state — taken from the linked of bell hammer. |
+| **DR-46 Is Engaged** | A hammer catch is considered engaged if the hammer release state is “Held”. |
 | **DR-47 Applied to Timer** | A wind action's applied to timer is the fixed to timer of the wind action's turned knob. |
 | **DR-48 Resulted in Ring** | A wind action's resulted in ring is true when the wind action's applied to timer has a rung. |
 | **DR-49 Timer Label** | A tick event's timer label — taken from the linked happened on timer. |
@@ -406,7 +793,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -511,8 +898,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

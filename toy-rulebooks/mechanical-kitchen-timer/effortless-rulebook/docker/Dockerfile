@@ -85,11 +85,13 @@ WORKDIR /app
 # (/postgres), reset wrapper exec (/postgres), rulebook-to-node-postgres-api
 # (/api), rulebook-to-vite-admin-portal (/admin-portal),
 # rulebook-to-explainer-dag (/admin-portal/public, served at
-# /rulebook-explainer-dag/*), rulebook-to-rulespeak (/rulespeak, all 10
+# /rulebook-explainer-dag/*), rulebook-to-rulespeak (/rulespeak, the core
 # languages), rulebook-to-xlsx (/xlsx).
 COPY effortless.editor.json /app/effortless.editor.json.seed
 COPY container-entrypoint.sh /app/container-entrypoint.sh
 COPY boot-server.js /app/boot-server.js
+# The boot page's tech-support watch (boot-server.js serves it at /__boot/problem-watch.js; off without a www address).
+COPY problem-watch.js /app/problem-watch.js
 RUN chmod +x /app/container-entrypoint.sh
 
 # NOTE: /app/effortless-rulebook is intentionally NOT created/populated here.

@@ -42882,4 +42882,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "Kitchens": "kitchen"
     }
   }
-} };
+}, stamp: "cd76095906de7b24" };
