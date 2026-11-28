@@ -5,6 +5,13 @@
     "email": "morgan@example.com",
     "full_name": "Morgan Diaz",
     "trainer": "t-jamie",
+    "trainer_name": null,
+    "trainer_email": null,
+    "trainer_hourly_rate": null,
+    "session_count": null,
+    "total_invoiced": null,
+    "outstanding_balance": null,
+    "overdue_count": null,
     "status": null
   },
   {
@@ -13,6 +20,13 @@
     "email": "robin@example.com",
     "full_name": "Robin Cole",
     "trainer": "t-alex",
+    "trainer_name": null,
+    "trainer_email": null,
+    "trainer_hourly_rate": null,
+    "session_count": null,
+    "total_invoiced": null,
+    "outstanding_balance": null,
+    "overdue_count": null,
     "status": null
   },
   {
@@ -21,6 +35,13 @@
     "email": "sam@example.com",
     "full_name": "Sam Patel",
     "trainer": "t-alex",
+    "trainer_name": null,
+    "trainer_email": null,
+    "trainer_hourly_rate": null,
+    "session_count": null,
+    "total_invoiced": null,
+    "outstanding_balance": null,
+    "overdue_count": null,
     "status": null
   },
   {
@@ -29,6 +50,13 @@
     "email": "taylor@example.com",
     "full_name": "Taylor Brooks",
     "trainer": "t-jamie",
+    "trainer_name": null,
+    "trainer_email": null,
+    "trainer_hourly_rate": null,
+    "session_count": null,
+    "total_invoiced": null,
+    "outstanding_balance": null,
+    "overdue_count": null,
     "status": null
   }
 ]

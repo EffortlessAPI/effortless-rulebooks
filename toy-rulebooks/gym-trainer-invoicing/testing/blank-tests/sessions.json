@@ -8,7 +8,12 @@
     "rate_override": 0,
     "notes": "Strength A",
     "invoice": "inv-001",
+    "client_name": null,
+    "trainer": null,
+    "client_hourly_rate": null,
+    "effective_rate": null,
     "line_total": null,
+    "invoice_name": null,
     "is_billed": null
   },
   {
@@ -20,7 +25,12 @@
     "rate_override": 0,
     "notes": "Mobility",
     "invoice": "inv-001",
+    "client_name": null,
+    "trainer": null,
+    "client_hourly_rate": null,
+    "effective_rate": null,
     "line_total": null,
+    "invoice_name": null,
     "is_billed": null
   },
   {
@@ -32,7 +42,12 @@
     "rate_override": 0,
     "notes": "Strength B",
     "invoice": "inv-001",
+    "client_name": null,
+    "trainer": null,
+    "client_hourly_rate": null,
+    "effective_rate": null,
     "line_total": null,
+    "invoice_name": null,
     "is_billed": null
   },
   {
@@ -44,7 +59,12 @@
     "rate_override": 0,
     "notes": "Strength A",
     "invoice": "inv-002",
+    "client_name": null,
+    "trainer": null,
+    "client_hourly_rate": null,
+    "effective_rate": null,
     "line_total": null,
+    "invoice_name": null,
     "is_billed": null
   },
   {
@@ -56,8 +76,12 @@
     "rate_override": 100,
     "notes": "Assessment",
     "invoice": "inv-002",
+    "client_name": null,
+    "trainer": null,
+    "client_hourly_rate": null,
     "effective_rate": null,
     "line_total": null,
+    "invoice_name": null,
     "is_billed": null
   },
   {
@@ -69,7 +93,12 @@
     "rate_override": 0,
     "notes": "Intake",
     "invoice": "inv-003",
+    "client_name": null,
+    "trainer": null,
+    "client_hourly_rate": null,
+    "effective_rate": null,
     "line_total": null,
+    "invoice_name": null,
     "is_billed": null
   },
   {
@@ -81,7 +110,12 @@
     "rate_override": 0,
     "notes": "Cardio",
     "invoice": "inv-003",
+    "client_name": null,
+    "trainer": null,
+    "client_hourly_rate": null,
+    "effective_rate": null,
     "line_total": null,
+    "invoice_name": null,
     "is_billed": null
   },
   {
@@ -93,7 +127,12 @@
     "rate_override": 0,
     "notes": "Long block",
     "invoice": "inv-003",
+    "client_name": null,
+    "trainer": null,
+    "client_hourly_rate": null,
+    "effective_rate": null,
     "line_total": null,
+    "invoice_name": null,
     "is_billed": null
   },
   {
@@ -105,7 +144,12 @@
     "rate_override": 0,
     "notes": "Strength",
     "invoice": null,
+    "client_name": null,
+    "trainer": null,
+    "client_hourly_rate": null,
+    "effective_rate": null,
     "line_total": null,
+    "invoice_name": null,
     "is_billed": null
   },
   {
@@ -117,7 +161,12 @@
     "rate_override": 0,
     "notes": "Intake",
     "invoice": "inv-004",
+    "client_name": null,
+    "trainer": null,
+    "client_hourly_rate": null,
+    "effective_rate": null,
     "line_total": null,
+    "invoice_name": null,
     "is_billed": null
   },
   {
@@ -129,7 +178,12 @@
     "rate_override": 0,
     "notes": "Strength A",
     "invoice": "inv-004",
+    "client_name": null,
+    "trainer": null,
+    "client_hourly_rate": null,
+    "effective_rate": null,
     "line_total": null,
+    "invoice_name": null,
     "is_billed": null
   },
   {
@@ -141,7 +195,12 @@
     "rate_override": 0,
     "notes": "Mobility",
     "invoice": "inv-005",
+    "client_name": null,
+    "trainer": null,
+    "client_hourly_rate": null,
+    "effective_rate": null,
     "line_total": null,
+    "invoice_name": null,
     "is_billed": null
   },
   {
@@ -153,7 +212,12 @@
     "rate_override": 0,
     "notes": "Strength B",
     "invoice": "inv-005",
+    "client_name": null,
+    "trainer": null,
+    "client_hourly_rate": null,
+    "effective_rate": null,
     "line_total": null,
+    "invoice_name": null,
     "is_billed": null
   }
 ]

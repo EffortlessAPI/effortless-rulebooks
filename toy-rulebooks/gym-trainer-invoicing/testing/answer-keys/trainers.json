@@ -4,13 +4,19 @@
     "name": "alex@gym.test",
     "email": "alex@gym.test",
     "full_name": "Alex Reyes",
-    "hourly_rate": 80
+    "hourly_rate": 80,
+    "total_sessions": 9,
+    "total_billed": 1061.8,
+    "total_outstanding": 561.8
   },
   {
     "trainer_id": "t-jamie",
     "name": "jamie@gym.test",
     "email": "jamie@gym.test",
     "full_name": "Jamie Lin",
-    "hourly_rate": 95
+    "hourly_rate": 95,
+    "total_sessions": 4,
+    "total_billed": 476.5,
+    "total_outstanding": 476.5
   }
 ]

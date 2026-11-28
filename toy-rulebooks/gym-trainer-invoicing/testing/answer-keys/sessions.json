@@ -8,7 +8,12 @@
     "rate_override": 0,
     "notes": "Strength A",
     "invoice": "inv-001",
-    "line_total": 0.0,
+    "client_name": "Sam Patel",
+    "trainer": "t-alex",
+    "client_hourly_rate": 80,
+    "effective_rate": 80,
+    "line_total": 80.0,
+    "invoice_name": "INV-001",
     "is_billed": true
   },
   {
@@ -20,7 +25,12 @@
     "rate_override": 0,
     "notes": "Mobility",
     "invoice": "inv-001",
-    "line_total": 0.0,
+    "client_name": "Sam Patel",
+    "trainer": "t-alex",
+    "client_hourly_rate": 80,
+    "effective_rate": 80,
+    "line_total": 120.0,
+    "invoice_name": "INV-001",
     "is_billed": true
   },
   {
@@ -32,7 +42,12 @@
     "rate_override": 0,
     "notes": "Strength B",
     "invoice": "inv-001",
-    "line_total": 0.0,
+    "client_name": "Sam Patel",
+    "trainer": "t-alex",
+    "client_hourly_rate": 80,
+    "effective_rate": 80,
+    "line_total": 80.0,
+    "invoice_name": "INV-001",
     "is_billed": true
   },
   {
@@ -44,7 +59,12 @@
     "rate_override": 0,
     "notes": "Strength A",
     "invoice": "inv-002",
-    "line_total": 0.0,
+    "client_name": "Sam Patel",
+    "trainer": "t-alex",
+    "client_hourly_rate": 80,
+    "effective_rate": 80,
+    "line_total": 80.0,
+    "invoice_name": "INV-002",
     "is_billed": true
   },
   {
@@ -56,8 +76,12 @@
     "rate_override": 100,
     "notes": "Assessment",
     "invoice": "inv-002",
+    "client_name": "Sam Patel",
+    "trainer": "t-alex",
+    "client_hourly_rate": 80,
     "effective_rate": 100,
     "line_total": 200.0,
+    "invoice_name": "INV-002",
     "is_billed": true
   },
   {
@@ -69,7 +93,12 @@
     "rate_override": 0,
     "notes": "Intake",
     "invoice": "inv-003",
-    "line_total": 0.0,
+    "client_name": "Robin Cole",
+    "trainer": "t-alex",
+    "client_hourly_rate": 80,
+    "effective_rate": 80,
+    "line_total": 80.0,
+    "invoice_name": "INV-003",
     "is_billed": true
   },
   {
@@ -81,7 +110,12 @@
     "rate_override": 0,
     "notes": "Cardio",
     "invoice": "inv-003",
-    "line_total": 0.0,
+    "client_name": "Robin Cole",
+    "trainer": "t-alex",
+    "client_hourly_rate": 80,
+    "effective_rate": 80,
+    "line_total": 120.0,
+    "invoice_name": "INV-003",
     "is_billed": true
   },
   {
@@ -93,7 +127,12 @@
     "rate_override": 0,
     "notes": "Long block",
     "invoice": "inv-003",
-    "line_total": 0.0,
+    "client_name": "Robin Cole",
+    "trainer": "t-alex",
+    "client_hourly_rate": 80,
+    "effective_rate": 80,
+    "line_total": 200.0,
+    "invoice_name": "INV-003",
     "is_billed": true
   },
   {
@@ -105,7 +144,12 @@
     "rate_override": 0,
     "notes": "Strength",
     "invoice": null,
-    "line_total": 0.0,
+    "client_name": "Robin Cole",
+    "trainer": "t-alex",
+    "client_hourly_rate": 80,
+    "effective_rate": 80,
+    "line_total": 80.0,
+    "invoice_name": null,
     "is_billed": false
   },
   {
@@ -117,7 +161,12 @@
     "rate_override": 0,
     "notes": "Intake",
     "invoice": "inv-004",
-    "line_total": 0.0,
+    "client_name": "Morgan Diaz",
+    "trainer": "t-jamie",
+    "client_hourly_rate": 95,
+    "effective_rate": 95,
+    "line_total": 95.0,
+    "invoice_name": "INV-004",
     "is_billed": true
   },
   {
@@ -129,7 +178,12 @@
     "rate_override": 0,
     "notes": "Strength A",
     "invoice": "inv-004",
-    "line_total": 0.0,
+    "client_name": "Morgan Diaz",
+    "trainer": "t-jamie",
+    "client_hourly_rate": 95,
+    "effective_rate": 95,
+    "line_total": 95.0,
+    "invoice_name": "INV-004",
     "is_billed": true
   },
   {
@@ -141,7 +195,12 @@
     "rate_override": 0,
     "notes": "Mobility",
     "invoice": "inv-005",
-    "line_total": 0.0,
+    "client_name": "Taylor Brooks",
+    "trainer": "t-jamie",
+    "client_hourly_rate": 95,
+    "effective_rate": 95,
+    "line_total": 142.5,
+    "invoice_name": "INV-005",
     "is_billed": true
   },
   {
@@ -153,7 +212,12 @@
     "rate_override": 0,
     "notes": "Strength B",
     "invoice": "inv-005",
-    "line_total": 0.0,
+    "client_name": "Taylor Brooks",
+    "trainer": "t-jamie",
+    "client_hourly_rate": 95,
+    "effective_rate": 95,
+    "line_total": 95.0,
+    "invoice_name": "INV-005",
     "is_billed": true
   }
 ]

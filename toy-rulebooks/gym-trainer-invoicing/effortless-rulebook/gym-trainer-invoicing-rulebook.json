@@ -137,14 +137,20 @@
         "Name": "alex@gym.test",
         "Email": "alex@gym.test",
         "FullName": "Alex Reyes",
-        "HourlyRate": 80
+        "HourlyRate": 80,
+        "TotalSessions": 9,
+        "TotalBilled": 1061.8,
+        "TotalOutstanding": 561.8
       },
       {
         "TrainerId": "t-jamie",
         "Name": "jamie@gym.test",
         "Email": "jamie@gym.test",
         "FullName": "Jamie Lin",
-        "HourlyRate": 95
+        "HourlyRate": 95,
+        "TotalSessions": 4,
+        "TotalBilled": 476.5,
+        "TotalOutstanding": 476.5
       }
     ]
   },
@@ -255,28 +261,60 @@
         "Name": "sam@example.com",
         "Email": "sam@example.com",
         "FullName": "Sam Patel",
-        "Trainer": "t-alex"
+        "Trainer": "t-alex",
+        "TrainerName": "Alex Reyes",
+        "TrainerEmail": "alex@gym.test",
+        "TrainerHourlyRate": 80,
+        "SessionCount": 5,
+        "TotalInvoiced": 614.8,
+        "OutstandingBalance": 614.8,
+        "OverdueCount": 2,
+        "Status": "Overdue"
       },
       {
         "ClientId": "c-robin",
         "Name": "robin@example.com",
         "Email": "robin@example.com",
         "FullName": "Robin Cole",
-        "Trainer": "t-alex"
+        "Trainer": "t-alex",
+        "TrainerName": "Alex Reyes",
+        "TrainerEmail": "alex@gym.test",
+        "TrainerHourlyRate": 80,
+        "SessionCount": 4,
+        "TotalInvoiced": 447.0,
+        "OutstandingBalance": -53.0,
+        "OverdueCount": 0,
+        "Status": "Paid Up"
       },
       {
         "ClientId": "c-morgan",
         "Name": "morgan@example.com",
         "Email": "morgan@example.com",
         "FullName": "Morgan Diaz",
-        "Trainer": "t-jamie"
+        "Trainer": "t-jamie",
+        "TrainerName": "Jamie Lin",
+        "TrainerEmail": "jamie@gym.test",
+        "TrainerHourlyRate": 95,
+        "SessionCount": 2,
+        "TotalInvoiced": 205.0,
+        "OutstandingBalance": 205.0,
+        "OverdueCount": 1,
+        "Status": "Overdue"
       },
       {
         "ClientId": "c-taylor",
         "Name": "taylor@example.com",
         "Email": "taylor@example.com",
         "FullName": "Taylor Brooks",
-        "Trainer": "t-jamie"
+        "Trainer": "t-jamie",
+        "TrainerName": "Jamie Lin",
+        "TrainerEmail": "jamie@gym.test",
+        "TrainerHourlyRate": 95,
+        "SessionCount": 2,
+        "TotalInvoiced": 271.5,
+        "OutstandingBalance": 271.5,
+        "OverdueCount": 1,
+        "Status": "Overdue"
       }
     ]
   },
@@ -467,7 +505,22 @@
         "DueDate": "2026-04-15",
         "TaxRate": 0.08,
         "DiscountAmount": 0,
-        "PaidAmount": 0
+        "PaidAmount": 0,
+        "ClientName": "Sam Patel",
+        "ClientEmail": "sam@example.com",
+        "Trainer": "t-alex",
+        "TrainerName": "Alex Reyes",
+        "Subtotal": 280.0,
+        "TaxAmount": 22.4,
+        "GraceDays": 45,
+        "DaysSinceDueDate": 227,
+        "DaysPastDue": 182,
+        "LateFee": 15,
+        "Total": 317.4,
+        "Balance": 317.4,
+        "IsPaid": false,
+        "IsOverdue": true,
+        "Status": "Overdue"
       },
       {
         "InvoiceId": "inv-002",
@@ -477,7 +530,22 @@
         "DueDate": "2026-05-15",
         "TaxRate": 0.08,
         "DiscountAmount": 20,
-        "PaidAmount": 0
+        "PaidAmount": 0,
+        "ClientName": "Sam Patel",
+        "ClientEmail": "sam@example.com",
+        "Trainer": "t-alex",
+        "TrainerName": "Alex Reyes",
+        "Subtotal": 280.0,
+        "TaxAmount": 22.4,
+        "GraceDays": 45,
+        "DaysSinceDueDate": 197,
+        "DaysPastDue": 152,
+        "LateFee": 15,
+        "Total": 297.4,
+        "Balance": 297.4,
+        "IsPaid": false,
+        "IsOverdue": true,
+        "Status": "Overdue"
       },
       {
         "InvoiceId": "inv-003",
@@ -487,7 +555,22 @@
         "DueDate": "2026-05-25",
         "TaxRate": 0.08,
         "DiscountAmount": 0,
-        "PaidAmount": 500
+        "PaidAmount": 500,
+        "ClientName": "Robin Cole",
+        "ClientEmail": "robin@example.com",
+        "Trainer": "t-alex",
+        "TrainerName": "Alex Reyes",
+        "Subtotal": 400.0,
+        "TaxAmount": 32.0,
+        "GraceDays": 45,
+        "DaysSinceDueDate": 187,
+        "DaysPastDue": 142,
+        "LateFee": 15,
+        "Total": 447.0,
+        "Balance": -53.0,
+        "IsPaid": true,
+        "IsOverdue": false,
+        "Status": "Paid"
       },
       {
         "InvoiceId": "inv-004",
@@ -497,7 +580,22 @@
         "DueDate": "2026-04-30",
         "TaxRate": 0.0,
         "DiscountAmount": 0,
-        "PaidAmount": 0
+        "PaidAmount": 0,
+        "ClientName": "Morgan Diaz",
+        "ClientEmail": "morgan@example.com",
+        "Trainer": "t-jamie",
+        "TrainerName": "Jamie Lin",
+        "Subtotal": 190.0,
+        "TaxAmount": 0.0,
+        "GraceDays": 45,
+        "DaysSinceDueDate": 212,
+        "DaysPastDue": 167,
+        "LateFee": 15,
+        "Total": 205.0,
+        "Balance": 205.0,
+        "IsPaid": false,
+        "IsOverdue": true,
+        "Status": "Overdue"
       },
       {
         "InvoiceId": "inv-005",
@@ -507,7 +605,22 @@
         "DueDate": "2026-06-01",
         "TaxRate": 0.08,
         "DiscountAmount": 0,
-        "PaidAmount": 0
+        "PaidAmount": 0,
+        "ClientName": "Taylor Brooks",
+        "ClientEmail": "taylor@example.com",
+        "Trainer": "t-jamie",
+        "TrainerName": "Jamie Lin",
+        "Subtotal": 237.5,
+        "TaxAmount": 19.0,
+        "GraceDays": 45,
+        "DaysSinceDueDate": 180,
+        "DaysPastDue": 135,
+        "LateFee": 15,
+        "Total": 271.5,
+        "Balance": 271.5,
+        "IsPaid": false,
+        "IsOverdue": true,
+        "Status": "Overdue"
       }
     ]
   },
@@ -626,7 +739,14 @@
         "DurationHours": 1.0,
         "RateOverride": 0,
         "Notes": "Strength A",
-        "Invoice": "inv-001"
+        "Invoice": "inv-001",
+        "ClientName": "Sam Patel",
+        "Trainer": "t-alex",
+        "ClientHourlyRate": 80,
+        "EffectiveRate": 80,
+        "LineTotal": 80.0,
+        "InvoiceName": "INV-001",
+        "IsBilled": true
       },
       {
         "SessionId": "s-002",
@@ -636,7 +756,14 @@
         "DurationHours": 1.5,
         "RateOverride": 0,
         "Notes": "Mobility",
-        "Invoice": "inv-001"
+        "Invoice": "inv-001",
+        "ClientName": "Sam Patel",
+        "Trainer": "t-alex",
+        "ClientHourlyRate": 80,
+        "EffectiveRate": 80,
+        "LineTotal": 120.0,
+        "InvoiceName": "INV-001",
+        "IsBilled": true
       },
       {
         "SessionId": "s-003",
@@ -646,7 +773,14 @@
         "DurationHours": 1.0,
         "RateOverride": 0,
         "Notes": "Strength B",
-        "Invoice": "inv-001"
+        "Invoice": "inv-001",
+        "ClientName": "Sam Patel",
+        "Trainer": "t-alex",
+        "ClientHourlyRate": 80,
+        "EffectiveRate": 80,
+        "LineTotal": 80.0,
+        "InvoiceName": "INV-001",
+        "IsBilled": true
       },
       {
         "SessionId": "s-004",
@@ -656,7 +790,14 @@
         "DurationHours": 1.0,
         "RateOverride": 0,
         "Notes": "Strength A",
-        "Invoice": "inv-002"
+        "Invoice": "inv-002",
+        "ClientName": "Sam Patel",
+        "Trainer": "t-alex",
+        "ClientHourlyRate": 80,
+        "EffectiveRate": 80,
+        "LineTotal": 80.0,
+        "InvoiceName": "INV-002",
+        "IsBilled": true
       },
       {
         "SessionId": "s-005",
@@ -666,7 +807,14 @@
         "DurationHours": 2.0,
         "RateOverride": 100,
         "Notes": "Assessment",
-        "Invoice": "inv-002"
+        "Invoice": "inv-002",
+        "ClientName": "Sam Patel",
+        "Trainer": "t-alex",
+        "ClientHourlyRate": 80,
+        "EffectiveRate": 100,
+        "LineTotal": 200.0,
+        "InvoiceName": "INV-002",
+        "IsBilled": true
       },
       {
         "SessionId": "s-006",
@@ -676,7 +824,14 @@
         "DurationHours": 1.0,
         "RateOverride": 0,
         "Notes": "Intake",
-        "Invoice": "inv-003"
+        "Invoice": "inv-003",
+        "ClientName": "Robin Cole",
+        "Trainer": "t-alex",
+        "ClientHourlyRate": 80,
+        "EffectiveRate": 80,
+        "LineTotal": 80.0,
+        "InvoiceName": "INV-003",
+        "IsBilled": true
       },
       {
         "SessionId": "s-007",
@@ -686,7 +841,14 @@
         "DurationHours": 1.5,
         "RateOverride": 0,
         "Notes": "Cardio",
-        "Invoice": "inv-003"
+        "Invoice": "inv-003",
+        "ClientName": "Robin Cole",
+        "Trainer": "t-alex",
+        "ClientHourlyRate": 80,
+        "EffectiveRate": 80,
+        "LineTotal": 120.0,
+        "InvoiceName": "INV-003",
+        "IsBilled": true
       },
       {
         "SessionId": "s-008",
@@ -696,7 +858,14 @@
         "DurationHours": 2.5,
         "RateOverride": 0,
         "Notes": "Long block",
-        "Invoice": "inv-003"
+        "Invoice": "inv-003",
+        "ClientName": "Robin Cole",
+        "Trainer": "t-alex",
+        "ClientHourlyRate": 80,
+        "EffectiveRate": 80,
+        "LineTotal": 200.0,
+        "InvoiceName": "INV-003",
+        "IsBilled": true
       },
       {
         "SessionId": "s-009",
@@ -706,7 +875,14 @@
         "DurationHours": 1.0,
         "RateOverride": 0,
         "Notes": "Strength",
-        "Invoice": null
+        "Invoice": null,
+        "ClientName": "Robin Cole",
+        "Trainer": "t-alex",
+        "ClientHourlyRate": 80,
+        "EffectiveRate": 80,
+        "LineTotal": 80.0,
+        "InvoiceName": null,
+        "IsBilled": false
       },
       {
         "SessionId": "s-010",
@@ -716,7 +892,14 @@
         "DurationHours": 1.0,
         "RateOverride": 0,
         "Notes": "Intake",
-        "Invoice": "inv-004"
+        "Invoice": "inv-004",
+        "ClientName": "Morgan Diaz",
+        "Trainer": "t-jamie",
+        "ClientHourlyRate": 95,
+        "EffectiveRate": 95,
+        "LineTotal": 95.0,
+        "InvoiceName": "INV-004",
+        "IsBilled": true
       },
       {
         "SessionId": "s-011",
@@ -726,7 +909,14 @@
         "DurationHours": 1.0,
         "RateOverride": 0,
         "Notes": "Strength A",
-        "Invoice": "inv-004"
+        "Invoice": "inv-004",
+        "ClientName": "Morgan Diaz",
+        "Trainer": "t-jamie",
+        "ClientHourlyRate": 95,
+        "EffectiveRate": 95,
+        "LineTotal": 95.0,
+        "InvoiceName": "INV-004",
+        "IsBilled": true
       },
       {
         "SessionId": "s-012",
@@ -736,7 +926,14 @@
         "DurationHours": 1.5,
         "RateOverride": 0,
         "Notes": "Mobility",
-        "Invoice": "inv-005"
+        "Invoice": "inv-005",
+        "ClientName": "Taylor Brooks",
+        "Trainer": "t-jamie",
+        "ClientHourlyRate": 95,
+        "EffectiveRate": 95,
+        "LineTotal": 142.5,
+        "InvoiceName": "INV-005",
+        "IsBilled": true
       },
       {
         "SessionId": "s-013",
@@ -746,7 +943,14 @@
         "DurationHours": 1.0,
         "RateOverride": 0,
         "Notes": "Strength B",
-        "Invoice": "inv-005"
+        "Invoice": "inv-005",
+        "ClientName": "Taylor Brooks",
+        "Trainer": "t-jamie",
+        "ClientHourlyRate": 95,
+        "EffectiveRate": 95,
+        "LineTotal": 95.0,
+        "InvoiceName": "INV-005",
+        "IsBilled": true
       }
     ]
   },
