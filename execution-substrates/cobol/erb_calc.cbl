@@ -1,5 +1,5 @@
        *> ERB Calculation Module (GENERATED - DO NOT EDIT)
-       *> Generated from: effortless-rulebook/acme-llc-rulebook.json
+       *> Generated from: effortless-rulebook/effortless-banking-rulebook.json
        *> GnuCOBOL free-format: cobc -free -m erb_calc.cbl
        IDENTIFICATION DIVISION.
        PROGRAM-ID. ERBCALC.
@@ -29,28 +29,55 @@
            GOBACK.
        .
 
-       *> ========== CUSTOMERS ==========
+       *> ========== USERS ==========
        *> Level 1
        CALC-NAME.
-           MOVE RECORD-EMAIL-ADDRESS TO WS-SUBST-INPUT
-           MOVE "@" TO WS-SUBST-OLD
+           MOVE FUNCTION LOWER-CASE(RECORD-FULL-NAME) TO WS-TEMP-1
+           MOVE WS-TEMP-1 TO WS-SUBST-INPUT
+           MOVE " " TO WS-SUBST-OLD
            MOVE "-" TO WS-SUBST-NEW
            PERFORM SUBSTITUTE-ALL
            MOVE WS-SUBST-OUTPUT TO RECORD-NAME
        .
 
-       CALC-FULL-NAME.
-           MOVE SPACES TO RECORD-FULL-NAME
-           STRING
-               FUNCTION TRIM(RECORD-FIRST-NAME TRAILING) DELIMITED SIZE
-               " " DELIMITED SIZE
-               FUNCTION TRIM(RECORD-LAST-NAME TRAILING) DELIMITED SIZE
-               INTO RECORD-FULL-NAME
+       CALC-IS-RM.
+           IF (RECORD-ROLE = "RM")
+               MOVE "true" TO RECORD-IS-RM
+           ELSE
+               MOVE "false" TO RECORD-IS-RM
+           END-IF
+       .
+
+       CALC-IS-UNDERWRITER.
+           IF (RECORD-ROLE = "Underwriter")
+               MOVE "true" TO RECORD-IS-UNDERWRITER
+           ELSE
+               MOVE "false" TO RECORD-IS-UNDERWRITER
+           END-IF
+       .
+
+       CALC-IS-BRANCH-BANKER.
+           IF (RECORD-ROLE = "BranchBanker")
+               MOVE "true" TO RECORD-IS-BRANCH-BANKER
+           ELSE
+               MOVE "false" TO RECORD-IS-BRANCH-BANKER
+           END-IF
+       .
+
+       CALC-IS-ADMIN.
+           IF (RECORD-ROLE = "Admin")
+               MOVE "true" TO RECORD-IS-ADMIN
+           ELSE
+               MOVE "false" TO RECORD-IS-ADMIN
+           END-IF
        .
 
        COMPUTE-ALL-FIELDS.
            PERFORM CALC-NAME
-           PERFORM CALC-FULL-NAME
+           PERFORM CALC-IS-RM
+           PERFORM CALC-IS-UNDERWRITER
+           PERFORM CALC-IS-BRANCH-BANKER
+           PERFORM CALC-IS-ADMIN
        .
        FIND-CONTAINS.
            MOVE "false" TO WS-FIND-RESULT

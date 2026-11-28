@@ -1,14 +1,69 @@
 === XLSX (Excel) Substrate Test Run ===
 
+Workbook: /Users/eejai42/development/effortless-rulebooks/toy-rulebooks/customer-crm/xlsx/rulebook.xlsx
 
   Processing customers...
-Found 6 fields in test answers
-Primary key field: customer_id
+Found 10 fields in test answers
+Primary key field: customers_id
 Reading from worksheet: Customers
-Found 6 columns, matched 6 to JSON fields
-Loaded 3 rows from xlsx
-Filled 6 null fields across 3 records
-Updated /Users/eejai42/development/effortless-rulebooks/toy-rulebooks/acme-llc/testing/xlsx/test-answers/customers.json
+Found 10 columns, matched 10 to JSON fields
+Loaded 5 rows from xlsx
+Filled 15 null fields across 5 records
+  Warning: Could not process customers: Object of type ArrayFormula is not JSON serializable
 
-xlsx: Processed 1 entities from rulebook.xlsx
+  Processing flight_control_systems...
+Found 14 fields in test answers
+Primary key field: flight_control_systems_id
+Reading from worksheet: FlightControlSystems
+Found 14 columns, matched 14 to JSON fields
+Loaded 6 rows from xlsx
+Filled 36 null fields across 6 records
+Updated /Users/eejai42/development/effortless-rulebooks/toy-rulebooks/customer-crm/testing/xlsx/test-answers/flight_control_systems.json
+
+  Processing jet_models...
+Found 9 fields in test answers
+Primary key field: jet_models_id
+Reading from worksheet: JetModels
+Found 9 columns, matched 9 to JSON fields
+Loaded 5 rows from xlsx
+Filled 15 null fields across 5 records
+  Warning: Could not process jet_models: Object of type ArrayFormula is not JSON serializable
+
+  Processing order_lines...
+Found 13 fields in test answers
+Primary key field: order_lines_id
+Reading from worksheet: OrderLines
+Found 13 columns, matched 13 to JSON fields
+Loaded 8 rows from xlsx
+Filled 56 null fields across 8 records
+Updated /Users/eejai42/development/effortless-rulebooks/toy-rulebooks/customer-crm/testing/xlsx/test-answers/order_lines.json
+
+  Processing orders...
+Found 18 fields in test answers
+Primary key field: orders_id
+Reading from worksheet: Orders
+Found 18 columns, matched 18 to JSON fields
+Loaded 10 rows from xlsx
+Filled 70 null fields across 10 records
+Updated /Users/eejai42/development/effortless-rulebooks/toy-rulebooks/customer-crm/testing/xlsx/test-answers/orders.json
+
+  Processing payments...
+Found 16 fields in test answers
+Primary key field: payments_id
+Reading from worksheet: Payments
+Found 16 columns, matched 16 to JSON fields
+Loaded 9 rows from xlsx
+Filled 90 null fields across 9 records
+Updated /Users/eejai42/development/effortless-rulebooks/toy-rulebooks/customer-crm/testing/xlsx/test-answers/payments.json
+
+  Processing users...
+Found 7 fields in test answers
+Primary key field: users_id
+Reading from worksheet: Users
+Found 7 columns, matched 7 to JSON fields
+Loaded 2 rows from xlsx
+Filled 2 null fields across 2 records
+Updated /Users/eejai42/development/effortless-rulebooks/toy-rulebooks/customer-crm/testing/xlsx/test-answers/users.json
+
+xlsx: Processed 5 entities from rulebook.xlsx
 

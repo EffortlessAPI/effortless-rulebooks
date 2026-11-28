@@ -1,5 +1,8 @@
 === Python Substrate Test Run ===
 
+  -> ai_models: 3 records
+  -> api_endpoints: 36 records
+  -> app_users: 7 records
 Traceback (most recent call last):
   File "/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/take-test.py", line 137, in <module>
     main()
@@ -11,7 +14,13 @@ Traceback (most recent call last):
     count = process_entity(input_path, str(output_path), entity, rulebook, project_root)
   File "/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/take-test.py", line 48, in process_entity
     computed = compute_all_calculated_fields(record, entity_name)
-  File "/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py", line 1674, in compute_all_calculated_fields
-    raise KeyError(f"compute_all_calculated_fields called with unknown entity {entity_name!r}. "f"Known entities in this generated erb_calc.py: ['workflows', 'workflow_steps', 'approval_gates', 'step_precedence', 'roles', 'role_assignments', 'departments', 'human_agents', 'ai_agents', 'automated_pipelines', 'workflow_status_concepts', 'agent_capability_concepts', 'artifact_type_concepts', 'datasets', 'workflow_artifacts', 'governance_roles', 'change_log', 'vocabulary_reconciliations', 'scenarios', 'competency_questions', 'scenario_cq_effects', 'conformance_tests', '__meta__']. "f"Check that the rulebook used to generate this file matches the data being computed.")
-KeyError: "compute_all_calculated_fields called with unknown entity 'customers'. Known entities in this generated erb_calc.py: ['workflows', 'workflow_steps', 'approval_gates', 'step_precedence', 'roles', 'role_assignments', 'departments', 'human_agents', 'ai_agents', 'automated_pipelines', 'workflow_status_concepts', 'agent_capability_concepts', 'artifact_type_concepts', 'datasets', 'workflow_artifacts', 'governance_roles', 'change_log', 'vocabulary_reconciliations', 'scenarios', 'competency_questions', 'scenario_cq_effects', 'conformance_tests', '__meta__']. Check that the rulebook used to generate this file matches the data being computed."
+  File "/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py", line 2512, in compute_all_calculated_fields
+    return compute_assistant_turns_fields(record)
+  File "/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py", line 987, in compute_assistant_turns_fields
+    result['total_tokens'] = calc_assistant_turns_total_tokens(result.get('input_tokens'), result.get('output_tokens'))
+                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eejai42/development/effortless-rulebooks/execution-substrates/python/python_only_erb_simulator.py", line 944, in calc_assistant_turns_total_tokens
+    return (_erb.erb_num(input_tokens) + _erb.erb_num(output_tokens))
+            ^^^^
+NameError: name '_erb' is not defined
 

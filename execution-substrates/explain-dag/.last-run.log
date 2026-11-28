@@ -1,6 +1,54 @@
 === ExplainDAG Substrate Test Run ===
 
-  -> customers: 3 records with explanations
-ExplainDAG substrate: Processed 1 entities, 3 total records
+  -> ai_models: 3 records with explanations
+  -> api_endpoints: 36 records with explanations
+  -> app_users: 7 records with explanations
+  -> assistant_turns: 5 records with explanations
+  -> audit_log_entries: 7 records with explanations
+  -> build_phases: 5 records with explanations
+  -> business_rule_categories: 15 records with explanations
+  -> business_rules: 57 records with explanations
+  -> case_events: 12 records with explanations
+  -> citations: 12 records with explanations
+  -> contest_grounds: 14 records with explanations
+  -> deadline_rules: 9 records with explanations
+  -> driver_license_points: 3 records with explanations
+  -> drivers: 6 records with explanations
+  -> erb_feature_categories: 18 records with explanations
+  -> erb_feature_statuses: 5 records with explanations
+  -> erb_features: 75 records with explanations
+  -> erb_fields: 980 records with explanations
+  -> erb_packages: 6 records with explanations
+  -> erb_tables: 55 records with explanations
+  -> fee_schedules: 21 records with explanations
+  -> field_display_hints: 485 records with explanations
+  -> glossary_categories: 6 records with explanations
+  -> glossary_terms: 36 records with explanations
+  -> hearings: 5 records with explanations
+  -> jurisdiction_rules: 5 records with explanations
+  -> jurisdiction_source_documents: 5 records with explanations
+  -> jurisdictions: 3 records with explanations
+  -> machine_states: 25 records with explanations
+  -> model_pricing_versions: 4 records with explanations
+  -> payments: 3 records with explanations
+  -> platform_naviation: 40 records with explanations
+  -> platforms: 1 records with explanations
+  -> reference_documents: 4 records with explanations
+  -> roles: 4 records with explanations
+  -> screen_layouts: 40 records with explanations
+  -> screen_sections: 88 records with explanations
+  -> site_branding: 1 records with explanations
+  -> state_machines: 4 records with explanations
+  -> state_transition_rules: 26 records with explanations
+  -> state_transitions: 20 records with explanations
+  -> subject_state_instances: 11 records with explanations
+  -> test_case: 194 records with explanations
+  -> test_category: 7 records with explanations
+  -> test_expectation: 351 records with explanations
+  -> test_surface: 5 records with explanations
+  -> test_technology: 4 records with explanations
+  -> violation_types: 7 records with explanations
+  -> work_queue_items: 4 records with explanations
+ExplainDAG substrate: Processed 49 entities, 2739 total records
 Explanations written to: /Users/eejai42/development/effortless-rulebooks/execution-substrates/explain-dag/test-explanations
 

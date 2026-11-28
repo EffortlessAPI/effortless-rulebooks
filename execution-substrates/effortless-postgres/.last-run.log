@@ -4,25 +4,16 @@ effortless-postgres: Starting test...
 effortless-postgres: Connecting to database and querying views...
 PostgreSQL Substrate: Starting test...
 PostgreSQL Substrate: Connected to database
-PostgreSQL Substrate: Found 19 views
-  -> disjoint_checks: 42 records
-  -> engines: 3 records
-  -> firing_kinds: 6 records
-  -> firings: 465 records
-  -> graphs: 1 records
-  -> layout_slots: 8 records
-  -> node_layouts: 26 records
-  -> page_texts: 102 records
-  -> portrait_aliases: 32 records
-  -> portraits: 13 records
-  -> properties: 10 records
-  -> property_axioms: 4 records
-  -> rulebook_tools: 8 records
-  -> rules: 5 records
-  -> scenario_fact_changes: 6 records
-  -> scenario_rule_settings: 10 records
-  -> scenarios: 7 records
-  -> statements: 270 records
-  -> things: 9 records
-PostgreSQL Substrate: Processed 19 views, 1027 total records
+PostgreSQL Substrate: Found 10 views
+  -> charge_interactions: 5 records
+  -> charges: 7 records
+  -> electric_field_points: 7 records
+  -> force_vectors: 5 records
+  -> invariant_checks: 8 records
+  -> loops: 4 records
+  -> particles: 6 records
+  -> physics_constants: 6 records
+  -> system_summary: 3 records
+  -> systems: 3 records
+PostgreSQL Substrate: Processed 10 views, 54 total records
 

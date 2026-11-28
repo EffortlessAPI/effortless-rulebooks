@@ -3,29 +3,11 @@
 Effortless-XLSX Substrate Test Runner
 ==================================================
 
-Workbook: rulebook-examples/talismans-southpark-ontology/effortless-xlsx/talisman-s-south-park-ontology-explainer.xlsx
+Workbook: toy-rulebooks/acme-llc/effortless-xlsx/acme-llc.xlsx
   (LibreOffice not installed — relying on cached formula values)
-Sheets: ['Graphs', 'Rules', 'FiringKinds', 'Things', 'Portraits', 'PortraitAliases', 'Properties', 'PropertyAxioms', 'Statements', 'Firings', 'DisjointChecks', 'Scenarios', 'ScenarioFactChanges', 'ScenarioRuleSettings', 'NodeLayouts', 'LayoutSlots', 'PageTexts', 'Engines', 'RulebookTools', '_original_json']
+Sheets: ['Customers', '_original_json']
 
-  -> disjoint_checks: 42 records
-  -> engines: 3 records
-  -> firing_kinds: 6 records
-  -> firings: 465 records
-  -> graphs: 1 records
-  -> layout_slots: 8 records
-  -> node_layouts: 26 records
-  -> page_texts: 102 records
-  -> portrait_aliases: 32 records
-  -> portraits: 13 records
-  -> properties: 10 records
-  -> property_axioms: 4 records
-  -> rulebook_tools: 8 records
-  -> rules: 5 records
-  -> scenario_fact_changes: 6 records
-  -> scenario_rule_settings: 10 records
-  -> scenarios: 7 records
-  -> statements: 270 records
-  -> things: 9 records
+  -> customers: 3 records
 
-effortless-xlsx: Processed 19 entities, 1027 total records
+effortless-xlsx: Processed 1 entities, 3 total records
 

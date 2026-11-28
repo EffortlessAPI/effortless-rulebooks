@@ -1,7 +1,7 @@
 """
 ERB Calculation Library (GENERATED - DO NOT EDIT)
 =================================================
-Generated from: effortless-rulebook/talismans-special-solutions-rulebook.json
+Generated from: effortless-rulebook/traffic-ticket-contest-rulebook.json
 
 PYTHON SUBSTRATE ONLY. Importing this module from any other substrate
 is cheating. That substrate must execute the rulebook in its own native
@@ -36,459 +36,116 @@ from orchestration.shared import (
 
 
 # =============================================================================
-# WORKFLOWS CALCULATIONS
-# Table: Workflows. The NTWF Workflow class — prov:Plan + schema:CreativeWork. Each workflow has Dublin Core metadata (title, description, identifier, created, modified), a lifecycle status from the SKOS scheme, and a collection of WorkflowSteps (ntwf:hasStep).
+# BUSINESSRULES CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_workflows_relative_path(workflow_id):
+def calc_business_rules_name(rule_code):
     """
-    Stable, DAG-derived location for this Workflow row. Root segment 'workflows' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    Logical key — lowercased rule code.
     
-    Formula: ="workflows/" & {{WorkflowId}}
+    Formula: =LOWER(SUBSTITUTE({{RuleCode}}, " ", "-"))
     """
-    return ('workflows/' + str(workflow_id or ""))
-
-def calc_workflows_name(display_name):
-    """
-    Short machine-friendly name for the workflow. Used for programmatic reference and URL slug generation.
-    
-    Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")
-    """
-    return ((((display_name or "").lower()) or "").replace(' ', '-'))
+    return ((((rule_code or "").replace(' ', '-')) or "").lower())
 
 
-def calc_workflows_months_since_modified():
-    """ERROR: Could not parse formula: =DATETIME_DIFF(NOW(), {{Modified}}, "months")
-    Error: Unknown function: DATETIME_DIFF
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-# Level 2
-
-def calc_workflows_iri(relative_path):
-    """
-    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
-
-def calc_workflows_is_stale(months_since_modified, staleness_threshold_months):
-    """
-    TRUE iff the workflow's compliance documentation is past its review policy — i.e. the review age in months exceeds the policy line: MonthsSinceModified > StalenessThresholdMonths. With the default the docs go stale at 12 months. Staleness fires the instant the review comes due — there is no renewal window or deferral. This is the article's CQ5 condition ('which workflows haven't been reviewed in twelve months') stated directly against the editable policy field.
-    
-    Formula: ={{MonthsSinceModified}} > {{StalenessThresholdMonths}}
-    """
-    return (months_since_modified > staleness_threshold_months)
-
-# Level 3
-
-def calc_workflows_cq5_satisfied(is_stale):
-    """
-    CQ5 satisfied: the workflow's compliance docs are within the review policy (not stale). Reads the existing IsStale verdict; flips when the review age passes StalenessThresholdMonths.
-    
-    Formula: =NOT({{IsStale}})
-    """
-    return (is_stale is not True)
-
-# Level 4
-
-def calc_workflows_has_more_than1_step(count_of_non_proposed_steps):
-    """Formula: ={{CountOfNonProposedSteps}} > 1"""
-    return (count_of_non_proposed_steps > 1)
-
-def calc_workflows_has_consistency_violation(count_approval_consistency_violations):
-    """
-    TRUE iff at least one step breaks the human-approval consistency rule (CountApprovalConsistencyViolations > 0). The boolean witness of model integrity: a clean ABox holds it FALSE. This is what makes a broken rule a first-class input to the compliance verdict — a workflow with any consistency violation cannot be COMPLIANT.
-    
-    Formula: ={{CountApprovalConsistencyViolations}} > 0
-    """
-    return (count_approval_consistency_violations > 0)
-
-def calc_workflows_has_ai_agent_step(count_ai_steps):
-    """
-    TRUE iff at least one step in this workflow is executed by an AIAgent. The structural half of the article's business payoff query.
-    
-    Formula: ={{CountAISteps}} > 0
-    """
-    return (count_ai_steps > 0)
-
-def calc_workflows_is_stale_and_has_ai_agent(is_stale, has_ai_agent_step):
-    """
-    The article's headline business question, as one boolean: a workflow that is BOTH stale (not reviewed in 12 months) AND has an AI-executed step — the highest compliance risk. Joins the metadata layer (dct:modified) with the accountability layer (filledBy → AIAgent) the way the closing SPARQL demo does, but as a single derived column.
-    
-    Formula: =AND({{IsStale}}, {{HasAIAgentStep}})
-    """
-    return ((is_stale is True) and (has_ai_agent_step is True))
-
-def calc_workflows_involves_engineering_and_legal(count_engineering_owned_steps, count_legal_owned_steps):
-    """
-    TRUE iff this workflow has at least one Engineering-owned step AND at least one Legal-owned step. Answers CQ7 ('which workflows involve both engineering and legal') as a single boolean — the Production Deployment workflow qualifies (4 Engineering steps + 1 Legal step).
-    
-    Formula: =AND({{CountEngineeringOwnedSteps}} > 0, {{CountLegalOwnedSteps}} > 0)
-    """
-    return ((count_engineering_owned_steps > 0) and (count_legal_owned_steps > 0))
-
-
-def calc_workflows_count_of_precedence_closure_pairs():
-    """ERROR: Could not parse formula: ={{CountAssertedPrecedencePairs}} + {{CountInferredPrecedencePairs}}
-    Error: '+'
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_workflows_cq1_satisfied():
-    """ERROR: Could not parse formula: ={{CountOfPrecedenceClosurePairs}} = {{CountOfNonProposedSteps}} * ({{CountOfNonProposedSteps}} - 1) / 2
-    Error: '-'
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-def calc_workflows_cq2_satisfied(count_approval_gate_steps, count_gates_without_human_approver):
-    """
-    CQ2 satisfied: the workflow has an approval gate AND every gate resolves to a human approver. Derived from the gate->role->filler chain; no hardcoded approver name.
-    
-    Formula: =AND({{CountApprovalGateSteps}} > 0, {{CountGatesWithoutHumanApprover}} = 0)
-    """
-    return ((count_approval_gate_steps > 0) and (count_gates_without_human_approver == 0))
-
-def calc_workflows_cq3_satisfied(has_consistency_violation):
-    """
-    CQ3 satisfied: the AI-vs-human assignment is consistent — no step that requires a human decision is executed by a non-human (no ApprovalConsistencyViolation). Derived from the model's own consistency invariant.
-    
-    Formula: =NOT({{HasConsistencyViolation}})
-    """
-    return (has_consistency_violation is not True)
-
-
-def calc_workflows_cq4_satisfied():
-    """ERROR: Could not parse formula: ={{CountDerivationLinks}} = {{CountWorkflowArtifacts}} - 1
-    Error: '-'
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-def calc_workflows_cq6_satisfied(count_roles_with_escalation_violation):
-    """
-    CQ6 satisfied: no gate-owning role escalates to nobody — every approval gate has a complete escalation path. Uses the model's native EscalationViolation invariant; 'the top' is the delegation apex, derived, not a hardcoded CTO name.
-    
-    Formula: ={{CountRolesWithEscalationViolation}} = 0
-    """
-    return (count_roles_with_escalation_violation == 0)
-
-def calc_workflows_cq7_satisfied(involves_engineering_and_legal):
-    """
-    CQ7 satisfied: the workflow involves BOTH Engineering-owned and Legal-owned steps. Reads the existing InvolvesEngineeringAndLegal boolean.
-    
-    Formula: ={{InvolvesEngineeringAndLegal}}
-    """
-    return involves_engineering_and_legal
-
-def calc_workflows_cq8_satisfied(count_unconsumed_datasets):
-    """
-    CQ8 satisfied: every dataset the workflow declares is actually consumed by a step. Flips when a dataset is detached.
-    
-    Formula: ={{CountUnconsumedDatasets}} = 0
-    """
-    return (count_unconsumed_datasets == 0)
-
-
-def compute_workflows_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for Workflows.
-    
-    Table: Workflows. The NTWF Workflow class — prov:Plan + schema:CreativeWork. Each workflow has Dublin Core metadata (title, description, identifier, created, modified), a lifecycle status from the SKOS scheme, and a collection of WorkflowSteps (ntwf:hasStep).
-    """
+def compute_business_rules_fields(record: dict) -> dict:
+    """Compute all calculated fields for BusinessRules."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_workflows_relative_path(result.get('workflow_id'))
-    result['name'] = calc_workflows_name(result.get('display_name'))
-    result['months_since_modified'] = calc_workflows_months_since_modified(result.get('modified'))
-
-    # Level 2 calculations
-    result['iri'] = calc_workflows_iri(result.get('relative_path'))
-    result['is_stale'] = calc_workflows_is_stale(result.get('months_since_modified'), result.get('staleness_threshold_months'))
-
-    # Level 3 calculations
-    result['cq5_satisfied'] = calc_workflows_cq5_satisfied(result.get('is_stale'))
-
-    # Level 4 calculations
-    result['has_more_than1_step'] = calc_workflows_has_more_than1_step(result.get('count_of_non_proposed_steps'))
-    result['has_consistency_violation'] = calc_workflows_has_consistency_violation(result.get('count_approval_consistency_violations'))
-    result['has_ai_agent_step'] = calc_workflows_has_ai_agent_step(result.get('count_ai_steps'))
-    result['is_stale_and_has_ai_agent'] = calc_workflows_is_stale_and_has_ai_agent(result.get('is_stale'), result.get('has_ai_agent_step'))
-    result['involves_engineering_and_legal'] = calc_workflows_involves_engineering_and_legal(result.get('count_engineering_owned_steps'), result.get('count_legal_owned_steps'))
-    result['count_of_precedence_closure_pairs'] = calc_workflows_count_of_precedence_closure_pairs(result.get('count_asserted_precedence_pairs'), result.get('count_inferred_precedence_pairs'))
-    result['cq1_satisfied'] = calc_workflows_cq1_satisfied(result.get('count_of_precedence_closure_pairs'), result.get('count_of_non_proposed_steps'))
-    result['cq2_satisfied'] = calc_workflows_cq2_satisfied(result.get('count_approval_gate_steps'), result.get('count_gates_without_human_approver'))
-    result['cq3_satisfied'] = calc_workflows_cq3_satisfied(result.get('has_consistency_violation'))
-    result['cq4_satisfied'] = calc_workflows_cq4_satisfied(result.get('count_derivation_links'), result.get('count_workflow_artifacts'))
-    result['cq6_satisfied'] = calc_workflows_cq6_satisfied(result.get('count_roles_with_escalation_violation'))
-    result['cq7_satisfied'] = calc_workflows_cq7_satisfied(result.get('involves_engineering_and_legal'))
-    result['cq8_satisfied'] = calc_workflows_cq8_satisfied(result.get('count_unconsumed_datasets'))
+    result['name'] = calc_business_rules_name(result.get('rule_code'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'name']:
+    for key in ['name']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# WORKFLOWSTEPS CALCULATIONS
-# Table: WorkflowSteps. The NTWF WorkflowStep class — prov:Activity. Each step is first-class and individually addressable, belongs to one Workflow (ntwf:isStepOf), and is assigned to exactly one Role (ntwf:assignedRole). Step-to-step ordering is modeled in the StepPrecedence junction; the ApprovalGate subtype specializes a step via a 1:1 FK.
+# BUSINESSRULECATEGORIES CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_workflow_steps_name(display_name):
-    """Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")"""
-    return ((((display_name or "").lower()) or "").replace(' ', '-'))
-
-# Level 2
-
-def calc_workflow_steps_relative_path(parent_path, workflow_step_id):
+def calc_business_rule_categories_name(business_rule_category_id):
     """
-    Stable, DAG-derived location: this row nests under its Workflows parent. Concatenates the parent's path (ParentPath) with '/steps/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
+    Echoes BusinessRuleCategoryId.
     
-    Formula: ={{ParentPath}} & "/steps/" & {{WorkflowStepId}}
+    Formula: ={{BusinessRuleCategoryId}}
     """
-    return (str(parent_path or "") + '/steps/' + str(workflow_step_id or ""))
-
-def calc_workflow_steps_iri(relative_path):
-    """
-    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
+    return business_rule_category_id
 
 
-def calc_workflow_steps_inferred_sequence_position():
-    """ERROR: Could not parse formula: ={{PrecedingStepCount}} + 1
-    Error: '+'
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-def calc_workflow_steps_sequence_position(sequence_position_override, inferred_sequence_position):
-    """
-    The effective ordinal position used everywhere (views, UI, competency questions): the hand-asserted SequencePositionOverride when present, otherwise the edge-derived InferredSequencePosition. IF(SequencePositionOverride <> "", SequencePositionOverride, InferredSequencePosition). This is the honest resolution of the two ways order can be stated: the inference is the default computed from the SSoT (the StepPrecedence edges), and an explicit override only overrides — never a silent guess. On the Production Deployment chain all overrides are null, so this equals InferredSequencePosition = 1,2,3,4,5. Maps to ntwf:sequencePosition for consumers.
-    
-    Formula: =IF({{SequencePositionOverride}} <> "", {{SequencePositionOverride}}, {{InferredSequencePosition}})
-    """
-    return (sequence_position_override if (sequence_position_override != '') else inferred_sequence_position)
-
-
-def calc_workflow_steps_executing_agent_type():
-    """ERROR: Could not parse formula: =IF(NOT(ISBLANK({{ExecutingHumanAgent}})), "HumanAgent", IF(NOT(ISBLANK({{ExecutingAIAgent}})), "AIAgent", IF(NOT(ISBLANK({{ExecutingAutomatedPipeline}})), "AutomatedPipeline", "")))
-    Error: Unknown function: ISBLANK
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_workflow_steps_is_executed_by_ai():
-    """ERROR: Could not parse formula: =NOT(ISBLANK({{ExecutingAIAgent}}))
-    Error: Unknown function: ISBLANK
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_workflow_steps_is_executed_by_human():
-    """ERROR: Could not parse formula: =NOT(ISBLANK({{ExecutingHumanAgent}}))
-    Error: Unknown function: ISBLANK
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_workflow_steps_is_approval_gate():
-    """ERROR: Could not parse formula: =NOT(ISBLANK({{ApprovalGate}}))
-    Error: Unknown function: ISBLANK
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_workflow_steps_approval_consistency_violation():
-    """ERROR: Could not parse formula: =AND({{RequiresHumanApproval}}, ISBLANK({{ExecutingHumanAgent}}))
-    Error: Unknown function: ISBLANK
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_workflow_steps_approval_is_human_filled():
-    """ERROR: Could not parse formula: =IF({{RequiresHumanApproval}}, NOT(ISBLANK({{ExecutingHumanAgent}})), TRUE)
-    Error: Unknown function: ISBLANK
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-def calc_workflow_steps_is_legal_owned(owning_department):
-    """
-    TRUE iff this step's owning department is Legal. Rolls up to CQ7's count of Legal-owned steps (exactly one in the Production Deployment workflow).
-    
-    Formula: ={{OwningDepartment}} = "ntwf-legal-dept" 
-    """
-    return (owning_department == 'ntwf-legal-dept')
-
-def calc_workflow_steps_is_engineering_owned(owning_department):
-    """
-    TRUE iff this step's owning department is Engineering. Rolls up to CQ7's Engineering-involvement check.
-    
-    Formula: ={{OwningDepartment}} = "ntwf-engineering" 
-    """
-    return (owning_department == 'ntwf-engineering')
-
-
-def compute_workflow_steps_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for WorkflowSteps.
-    
-    Table: WorkflowSteps. The NTWF WorkflowStep class — prov:Activity. Each step is first-class and individually addressable, belongs to one Workflow (ntwf:isStepOf), and is assigned to exactly one Role (ntwf:assignedRole). Step-to-step ordering is modeled in the StepPrecedence junction; the ApprovalGate subtype specializes a step via a 1:1 FK.
-    """
+def compute_business_rule_categories_fields(record: dict) -> dict:
+    """Compute all calculated fields for BusinessRuleCategories."""
     result = dict(record)
 
     # Level 1 calculations
-    result['name'] = calc_workflow_steps_name(result.get('display_name'))
-
-    # Level 2 calculations
-    result['relative_path'] = calc_workflow_steps_relative_path(result.get('parent_path'), result.get('workflow_step_id'))
-    result['iri'] = calc_workflow_steps_iri(result.get('relative_path'))
-    result['inferred_sequence_position'] = calc_workflow_steps_inferred_sequence_position(result.get('preceding_step_count'))
-    result['sequence_position'] = calc_workflow_steps_sequence_position(result.get('sequence_position_override'), result.get('inferred_sequence_position'))
-    result['executing_agent_type'] = calc_workflow_steps_executing_agent_type(result.get('executing_human_agent'), result.get('executing_ai_agent'), result.get('executing_automated_pipeline'))
-    result['is_executed_by_ai'] = calc_workflow_steps_is_executed_by_ai(result.get('executing_ai_agent'))
-    result['is_executed_by_human'] = calc_workflow_steps_is_executed_by_human(result.get('executing_human_agent'))
-    result['is_approval_gate'] = calc_workflow_steps_is_approval_gate(result.get('approval_gate'))
-    result['approval_consistency_violation'] = calc_workflow_steps_approval_consistency_violation(result.get('requires_human_approval'), result.get('executing_human_agent'))
-    result['approval_is_human_filled'] = calc_workflow_steps_approval_is_human_filled(result.get('requires_human_approval'), result.get('executing_human_agent'))
-    result['is_legal_owned'] = calc_workflow_steps_is_legal_owned(result.get('owning_department'))
-    result['is_engineering_owned'] = calc_workflow_steps_is_engineering_owned(result.get('owning_department'))
+    result['name'] = calc_business_rule_categories_name(result.get('business_rule_category_id'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'name', 'executing_agent_type']:
+    for key in ['name']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# APPROVALGATES CALCULATIONS
-# Table: ApprovalGates. The NTWF ApprovalGate class — rdfs:subClassOf WorkflowStep. Modeled as a class-table-inheritance subtype: each gate row shares identity with exactly one WorkflowStep (via the WorkflowStep 1:1 FK) and carries only the gate-specific attribute, escalationThresholdHours. The step it specializes keeps the common attributes (requiresHumanApproval, assigned role, etc.). This preserves the article's double-typing — a gate IS a step — without collapsing two DAG nodes into one.
+# GLOSSARYCATEGORIES CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_approval_gates_name(display_name):
-    """Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")"""
-    return ((((display_name or "").lower()) or "").replace(' ', '-'))
-
-# Level 2
-
-def calc_approval_gates_relative_path(parent_path, approval_gate_id):
+def calc_glossary_categories_name(glossary_category_id):
     """
-    Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/approval-gates/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
+    Echoes GlossaryCategoryId.
     
-    Formula: ={{ParentPath}} & "/approval-gates/" & {{ApprovalGateId}}
+    Formula: ={{GlossaryCategoryId}}
     """
-    return (str(parent_path or "") + '/approval-gates/' + str(approval_gate_id or ""))
-
-def calc_approval_gates_iri(relative_path):
-    """
-    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
+    return glossary_category_id
 
 
-def calc_approval_gates_has_human_approver():
-    """ERROR: Could not parse formula: =NOT(ISBLANK({{GateApproverHuman}}))
-    Error: Unknown function: ISBLANK
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def compute_approval_gates_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for ApprovalGates.
-    
-    Table: ApprovalGates. The NTWF ApprovalGate class — rdfs:subClassOf WorkflowStep. Modeled as a class-table-inheritance subtype: each gate row shares identity with exactly one WorkflowStep (via the WorkflowStep 1:1 FK) and carries only the gate-specific attribute, escalationThresholdHours. The step it specializes keeps the common attributes (requiresHumanApproval, assigned role, etc.). This preserves the article's double-typing — a gate IS a step — without collapsing two DAG nodes into one.
-    """
+def compute_glossary_categories_fields(record: dict) -> dict:
+    """Compute all calculated fields for GlossaryCategories."""
     result = dict(record)
 
     # Level 1 calculations
-    result['name'] = calc_approval_gates_name(result.get('display_name'))
-
-    # Level 2 calculations
-    result['relative_path'] = calc_approval_gates_relative_path(result.get('parent_path'), result.get('approval_gate_id'))
-    result['iri'] = calc_approval_gates_iri(result.get('relative_path'))
-    result['has_human_approver'] = calc_approval_gates_has_human_approver(result.get('gate_approver_human'))
+    result['name'] = calc_glossary_categories_name(result.get('glossary_category_id'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'name']:
+    for key in ['name']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# STEPPRECEDENCE CALCULATIONS
-# Table: StepPrecedence. The NTWF ntwf:precedesStep ordering relationship, modeled as a first-class step-to-step junction. Each row is one directed edge: FromStep precedes ToStep. ntwf:precedesStep is an owl:TransitiveProperty — the four asserted edges (1->2, 2->3, 3->4, 4->5) imply the full closure of ten ordering pairs (including 1->5, which is never asserted). Each edge is a first-class node in the DAG, never a 'helper' integer.
+# GLOSSARYTERMS CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_step_precedence_relative_path(parent_path, step_precedence_id):
+def calc_glossary_terms_name(term):
     """
-    Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/precedence/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
+    Logical key — lowercased dash-form of the term.
     
-    Formula: ={{ParentPath}} & "/precedence/" & {{StepPrecedenceId}}
+    Formula: =LOWER(SUBSTITUTE({{Term}}, " ", "-"))
     """
-    return (str(parent_path or "") + '/precedence/' + str(step_precedence_id or ""))
-
-def calc_step_precedence_iri(relative_path):
-    """
-    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
-
-def calc_step_precedence_name(from_step, to_step):
-    """
-    Human-readable edge label derived from its endpoints. Mirrors the FromStep -> ToStep direction.
-    
-    Formula: ={{FromStep}} & " -> " & {{ToStep}}
-    """
-    return (str(from_step or "") + ' -> ' + str(to_step or ""))
+    return ((((term or "").replace(' ', '-')) or "").lower())
 
 
-def compute_step_precedence_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for StepPrecedence.
-    
-    Table: StepPrecedence. The NTWF ntwf:precedesStep ordering relationship, modeled as a first-class step-to-step junction. Each row is one directed edge: FromStep precedes ToStep. ntwf:precedesStep is an owl:TransitiveProperty — the four asserted edges (1->2, 2->3, 3->4, 4->5) imply the full closure of ten ordering pairs (including 1->5, which is never asserted). Each edge is a first-class node in the DAG, never a 'helper' integer.
-    """
+def compute_glossary_terms_fields(record: dict) -> dict:
+    """Compute all calculated fields for GlossaryTerms."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_step_precedence_relative_path(result.get('parent_path'), result.get('step_precedence_id'))
-    result['iri'] = calc_step_precedence_iri(result.get('relative_path'))
-    result['name'] = calc_step_precedence_name(result.get('from_step'), result.get('to_step'))
+    result['name'] = calc_glossary_terms_name(result.get('term'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'name']:
+    for key in ['name']:
         if result.get(key) == '':
             result[key] = None
 
@@ -496,1069 +153,1797 @@ def compute_step_precedence_fields(record: dict) -> dict:
 
 # =============================================================================
 # ROLES CALCULATIONS
-# Table: Roles. The NTWF Role class — a custom root with no adequate standard match, declared disjoint with WorkflowStep and WorkflowArtifact. Roles are the heart of Heuristic 2 (role-agent separation): WorkflowSteps point to Roles; Roles point to exactly one agent (human, AI, or pipeline) via the polymorphic filledBy relationship. When personnel or models change, one filledBy triple changes and the workflow structure is untouched.
 # =============================================================================
 
 # Level 1
 
-def calc_roles_relative_path(role_id):
+def calc_roles_name(role_id):
     """
-    Stable, DAG-derived location for this Role row. Root segment 'roles' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    Echoes RoleId.
     
-    Formula: ="roles/" & {{RoleId}}
+    Formula: ={{RoleId}}
     """
-    return ('roles/' + str(role_id or ""))
-
-def calc_roles_name(display_name):
-    """Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")"""
-    return ((((display_name or "").lower()) or "").replace(' ', '-'))
-
-# Level 2
-
-def calc_roles_iri(relative_path):
-    """
-    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
-
-# Level 3
-
-
-def calc_roles_filled_by_arm_count():
-    """ERROR: Could not parse formula: =IF(NOT(ISBLANK({{FilledByHumanAgent}})), 1, 0) + IF(NOT(ISBLANK({{FilledByAIAgent}})), 1, 0) + IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), 1, 0)
-    Error: Unknown function: ISBLANK
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-def calc_roles_has_exactly_one_filler(filled_by_arm_count):
-    """
-    Disjointness/functional witness: TRUE iff exactly one filledBy arm is set. The three agent classes are owl:disjointWith one another and ntwf:filledBy is functional, so a clean ABox has this TRUE for every role. Setting two arms (a role filled by both a human and an AI) is the Suite-4 disjointness violation — here it flips this to FALSE.
-    
-    Formula: ={{FilledByArmCount}} = 1
-    """
-    return (filled_by_arm_count == 1)
-
-
-def calc_roles_filler_type():
-    """ERROR: Could not parse formula: =IF(NOT(ISBLANK({{FilledByHumanAgent}})), "HumanAgent", IF(NOT(ISBLANK({{FilledByAIAgent}})), "AIAgent", IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), "AutomatedPipeline", "")))
-    Error: Unknown function: ISBLANK
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_roles_escalation_violation():
-    """ERROR: Could not parse formula: =AND({{FillsApprovalGate}} > 0, ISBLANK({{DelegatesTo}}))
-    Error: Unknown function: ISBLANK
-    """
-    raise NotImplementedError("Formula parsing failed")
-
+    return role_id
 
 
 def compute_roles_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for Roles.
-    
-    Table: Roles. The NTWF Role class — a custom root with no adequate standard match, declared disjoint with WorkflowStep and WorkflowArtifact. Roles are the heart of Heuristic 2 (role-agent separation): WorkflowSteps point to Roles; Roles point to exactly one agent (human, AI, or pipeline) via the polymorphic filledBy relationship. When personnel or models change, one filledBy triple changes and the workflow structure is untouched.
-    """
+    """Compute all calculated fields for Roles."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_roles_relative_path(result.get('role_id'))
-    result['name'] = calc_roles_name(result.get('display_name'))
-
-    # Level 2 calculations
-    result['iri'] = calc_roles_iri(result.get('relative_path'))
-
-    # Level 3 calculations
-    result['filled_by_arm_count'] = calc_roles_filled_by_arm_count(result.get('filled_by_human_agent'), result.get('filled_by_ai_agent'), result.get('filled_by_automated_pipeline'))
-    result['has_exactly_one_filler'] = calc_roles_has_exactly_one_filler(result.get('filled_by_arm_count'))
-    result['filler_type'] = calc_roles_filler_type(result.get('filled_by_human_agent'), result.get('filled_by_ai_agent'), result.get('filled_by_automated_pipeline'))
-    result['escalation_violation'] = calc_roles_escalation_violation(result.get('fills_approval_gate'), result.get('delegates_to'))
+    result['name'] = calc_roles_name(result.get('role_id'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'name', 'filler_type']:
+    for key in ['name']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# ROLEASSIGNMENTS CALCULATIONS
-# Table: RoleAssignments. The temporal history of ntwf:filledBy. NTWF's change-management discipline requires that when a filledBy triple is updated the old triple is NOT deleted — it is timestamped and retained, or replaced with a versioned triple carrying a validity period. Each row is one filledBy binding with a ValidFrom / ValidTo validity period and the reason for the change, so that 'which agent was executing this step on March 1, 2026?' is answerable from the graph. The current binding on Roles.FilledBy* is the row whose ValidTo is blank (IsCurrent = TRUE); closed rows preserve provenance and chain of custody. This is the relational equivalent of the ontology's named-graph / versioned-triple retention practice.
+# AUDITLOGENTRIES CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-
-def calc_role_assignments_is_current():
-    """ERROR: Could not parse formula: =ISBLANK({{ValidTo}})
-    Error: Unknown function: ISBLANK
+def calc_audit_log_entries_is_override_action(action_type):
     """
-    raise NotImplementedError("Formula parsing failed")
+    Calculated flag — TRUE when this audit log entry represents a manager override action (vs a routine action).
+    
+    Formula: =IF(LOWER({{ActionType}} & "") = "override", TRUE(), FALSE())
+    """
+    return (True if ((((str(action_type or "") + '') or "").lower()) == 'override') else False)
 
 
-
-def calc_role_assignments_was_active_as_of_audit_date():
-    """ERROR: Could not parse formula: =AND({{ValidFrom}} <= "2026-03-01", OR(ISBLANK({{ValidTo}}), {{ValidTo}} > "2026-03-01"))
-    Error: Unknown function: ISBLANK
+def calc_audit_log_entries_entry_age_hours():
+    """ERROR: Could not parse formula: =DATETIME_DIFF(NOW(), {{Timestamp}}, 'hours')
+    Error: Unknown function: DATETIME_DIFF
     """
     raise NotImplementedError("Formula parsing failed")
 
 
 # Level 2
 
-def calc_role_assignments_relative_path(parent_path, role_assignment_id):
-    """
-    Stable, DAG-derived location: this assignment nests under its Role parent. Concatenates the parent's path (ParentPath) with '/assignments/' + this row's primary key. Unique by construction.
-    
-    Formula: ={{ParentPath}} & "/assignments/" & {{RoleAssignmentId}}
-    """
-    return (str(parent_path or "") + '/assignments/' + str(role_assignment_id or ""))
 
-def calc_role_assignments_iri(relative_path):
-    """
-    Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique.
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
-
-
-def calc_role_assignments_name():
-    """ERROR: Could not parse formula: ={{Role}} & " [" & {{ValidFrom}} & " -> " & IF(ISBLANK({{ValidTo}}), "open", {{ValidTo}}) & "]"
-    Error: Unknown function: ISBLANK
+def calc_audit_log_entries_name():
+    """ERROR: Could not parse formula: =LOWER(SUBSTITUTE("audit-" & {{Citation}} & "-" & DATETIME_FORMAT({{Timestamp}}, "YYYY-MM-DDTHH-mm-ss") & "-" & {{ActionType}}, " ", "-"))
+    Error: Unknown function: DATETIME_FORMAT
     """
     raise NotImplementedError("Formula parsing failed")
 
 
 
-def calc_role_assignments_filler_type():
-    """ERROR: Could not parse formula: =IF(NOT(ISBLANK({{FilledByHumanAgent}})), "HumanAgent", IF(NOT(ISBLANK({{FilledByAIAgent}})), "AIAgent", IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), "AutomatedPipeline", "")))
-    Error: Unknown function: ISBLANK
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_role_assignments_is_agent_type_change():
-    """ERROR: Could not parse formula: =AND(NOT(ISBLANK({{PriorFillerType}})), {{PriorFillerType}} <> {{FillerType}})
-    Error: Unknown function: ISBLANK
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def calc_role_assignments_requires_compliance_audit():
-    """ERROR: Could not parse formula: =AND(NOT(ISBLANK({{PriorFillerType}})), {{PriorFillerType}} = "AIAgent", {{FillerType}} = "HumanAgent")
-    Error: Unknown function: ISBLANK
-    """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def compute_role_assignments_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for RoleAssignments.
-    
-    Table: RoleAssignments. The temporal history of ntwf:filledBy. NTWF's change-management discipline requires that when a filledBy triple is updated the old triple is NOT deleted — it is timestamped and retained, or replaced with a versioned triple carrying a validity period. Each row is one filledBy binding with a ValidFrom / ValidTo validity period and the reason for the change, so that 'which agent was executing this step on March 1, 2026?' is answerable from the graph. The current binding on Roles.FilledBy* is the row whose ValidTo is blank (IsCurrent = TRUE); closed rows preserve provenance and chain of custody. This is the relational equivalent of the ontology's named-graph / versioned-triple retention practice.
-    """
+def compute_audit_log_entries_fields(record: dict) -> dict:
+    """Compute all calculated fields for AuditLogEntries."""
     result = dict(record)
 
     # Level 1 calculations
-    result['is_current'] = calc_role_assignments_is_current(result.get('valid_to'))
-    result['was_active_as_of_audit_date'] = calc_role_assignments_was_active_as_of_audit_date(result.get('valid_from'), result.get('valid_to'))
+    result['is_override_action'] = calc_audit_log_entries_is_override_action(result.get('action_type'))
+    result['entry_age_hours'] = calc_audit_log_entries_entry_age_hours(result.get('timestamp'))
 
     # Level 2 calculations
-    result['relative_path'] = calc_role_assignments_relative_path(result.get('parent_path'), result.get('role_assignment_id'))
-    result['iri'] = calc_role_assignments_iri(result.get('relative_path'))
-    result['name'] = calc_role_assignments_name(result.get('role'), result.get('valid_from'), result.get('valid_to'))
-    result['filler_type'] = calc_role_assignments_filler_type(result.get('filled_by_human_agent'), result.get('filled_by_ai_agent'), result.get('filled_by_automated_pipeline'))
-    result['is_agent_type_change'] = calc_role_assignments_is_agent_type_change(result.get('prior_filler_type'), result.get('filler_type'))
-    result['requires_compliance_audit'] = calc_role_assignments_requires_compliance_audit(result.get('prior_filler_type'), result.get('filler_type'))
+    result['name'] = calc_audit_log_entries_name(result.get('citation'), result.get('timestamp'), result.get('action_type'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'name', 'filler_type']:
+    for key in ['name']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# DEPARTMENTS CALCULATIONS
-# Table: Departments. The NTWF Department class — schema:Organization. First-class entity that enables cross-department intersection queries (CQ7: which workflows involve both Engineering and Legal?). Roles are ownedBy a department.
+# PLATFORMNAVIATION CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_departments_relative_path(department_id):
-    """
-    Stable, DAG-derived location for this Department row. Root segment 'departments' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
-    
-    Formula: ="departments/" & {{DepartmentId}}
-    """
-    return ('departments/' + str(department_id or ""))
-
-def calc_departments_name(display_name):
-    """
-    Human-readable display name of the department. Should match organizational terminology for stakeholder communication.
-    
-    Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")
-    """
+def calc_platform_naviation_name(display_name):
+    """Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")"""
     return ((((display_name or "").lower()) or "").replace(' ', '-'))
 
-# Level 2
 
-def calc_departments_iri(relative_path):
+def calc_platform_naviation_admin_can_create():
+    """ERROR: Could not parse formula: =IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("C",{{AdminCRUD}}))))
+    Error: Unknown function: ISERROR
     """
-    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_admin_can_read():
+    """ERROR: Could not parse formula: =IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("R",{{AdminCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_admin_can_update():
+    """ERROR: Could not parse formula: =IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("U",{{AdminCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_admin_can_delete():
+    """ERROR: Could not parse formula: =IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("D",{{AdminCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_manager_can_create():
+    """ERROR: Could not parse formula: =IF({{ManagerCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("C",{{ManagerCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_manager_can_read():
+    """ERROR: Could not parse formula: =IF({{ManagerCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("R",{{ManagerCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_manager_can_update():
+    """ERROR: Could not parse formula: =IF({{ManagerCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("U",{{ManagerCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_manager_can_delete():
+    """ERROR: Could not parse formula: =IF({{ManagerCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("D",{{ManagerCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_representative_can_create():
+    """ERROR: Could not parse formula: =IF({{RepresentativeCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("C",{{RepresentativeCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_representative_can_read():
+    """ERROR: Could not parse formula: =IF({{RepresentativeCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("R",{{RepresentativeCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_representative_can_update():
+    """ERROR: Could not parse formula: =IF({{RepresentativeCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("U",{{RepresentativeCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_representative_can_delete():
+    """ERROR: Could not parse formula: =IF({{RepresentativeCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("D",{{RepresentativeCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_external_llm_can_create():
+    """ERROR: Could not parse formula: =IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("C",{{ExternalLlmCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_external_llm_can_read():
+    """ERROR: Could not parse formula: =IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("R",{{ExternalLlmCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_external_llm_can_update():
+    """ERROR: Could not parse formula: =IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("U",{{ExternalLlmCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_external_llm_can_delete():
+    """ERROR: Could not parse formula: =IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("D",{{ExternalLlmCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_platform_naviation_depth():
+    """ERROR: Could not parse formula: =IF({{ParentRouteKey}}=BLANK(), 0, LEN({{RouteKey}}) - LEN(SUBSTITUTE({{RouteKey}}, ".", "")))
+    Error: Unknown function: LEN
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+def calc_platform_naviation_full_path(route):
+    """
+    Calculated — canonical role-agnostic URL path (equals Route). The SPA renders this under each permitted role as /:role + FullPath and resolves it only when that role's *CanRead is true; the role is an implicit prefix, never stored on the row.
     
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
+    Formula: ={{Route}}
     """
-    return ((relative_path or "").replace('/', '-'))
+    return route
 
-
-def compute_departments_fields(record: dict) -> dict:
+def calc_platform_naviation_handler_base_name(route_key):
     """
-    Compute all calculated fields for Departments.
+    Calculated — space-delimited form of the dotted RouteKey (dots and hyphens become spaces), e.g. 'library rules detail'. The client PascalCases this and prefixes the viewer role to derive the handler component deterministically: {Role} + PascalCase(HandlerBaseName) -> e.g. AdminLibraryRulesDetail, RepresentativeLibraryRulesDetail. No per-role handler is stored; edge cases get their own single-role route row instead.
     
-    Table: Departments. The NTWF Department class — schema:Organization. First-class entity that enables cross-department intersection queries (CQ7: which workflows involve both Engineering and Legal?). Roles are ownedBy a department.
+    Formula: =SUBSTITUTE(SUBSTITUTE({{RouteKey}}, ".", " "), "-", " ")
     """
+    return ((((route_key or "").replace('.', ' ')) or "").replace('-', ' '))
+
+
+def compute_platform_naviation_fields(record: dict) -> dict:
+    """Compute all calculated fields for PlatformNaviation."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_departments_relative_path(result.get('department_id'))
-    result['name'] = calc_departments_name(result.get('display_name'))
-
-    # Level 2 calculations
-    result['iri'] = calc_departments_iri(result.get('relative_path'))
+    result['name'] = calc_platform_naviation_name(result.get('display_name'))
+    result['admin_can_create'] = calc_platform_naviation_admin_can_create(result.get('admin_crud'))
+    result['admin_can_read'] = calc_platform_naviation_admin_can_read(result.get('admin_crud'))
+    result['admin_can_update'] = calc_platform_naviation_admin_can_update(result.get('admin_crud'))
+    result['admin_can_delete'] = calc_platform_naviation_admin_can_delete(result.get('admin_crud'))
+    result['manager_can_create'] = calc_platform_naviation_manager_can_create(result.get('manager_crud'))
+    result['manager_can_read'] = calc_platform_naviation_manager_can_read(result.get('manager_crud'))
+    result['manager_can_update'] = calc_platform_naviation_manager_can_update(result.get('manager_crud'))
+    result['manager_can_delete'] = calc_platform_naviation_manager_can_delete(result.get('manager_crud'))
+    result['representative_can_create'] = calc_platform_naviation_representative_can_create(result.get('representative_crud'))
+    result['representative_can_read'] = calc_platform_naviation_representative_can_read(result.get('representative_crud'))
+    result['representative_can_update'] = calc_platform_naviation_representative_can_update(result.get('representative_crud'))
+    result['representative_can_delete'] = calc_platform_naviation_representative_can_delete(result.get('representative_crud'))
+    result['external_llm_can_create'] = calc_platform_naviation_external_llm_can_create(result.get('external_llm_crud'))
+    result['external_llm_can_read'] = calc_platform_naviation_external_llm_can_read(result.get('external_llm_crud'))
+    result['external_llm_can_update'] = calc_platform_naviation_external_llm_can_update(result.get('external_llm_crud'))
+    result['external_llm_can_delete'] = calc_platform_naviation_external_llm_can_delete(result.get('external_llm_crud'))
+    result['depth'] = calc_platform_naviation_depth(result.get('parent_route_key'), result.get('route_key'))
+    result['full_path'] = calc_platform_naviation_full_path(result.get('route'))
+    result['handler_base_name'] = calc_platform_naviation_handler_base_name(result.get('route_key'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'name']:
+    for key in ['name', 'full_path', 'handler_base_name']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# HUMANAGENTS CALCULATIONS
-# Table: HumanAgents. The NTWF HumanAgent class — foaf:Person + prov:Agent. The only agent type permitted to fill roles whose step has requiresHumanApproval. Disjoint with AIAgent and AutomatedPipeline.
+# JURISDICTIONS CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_human_agents_relative_path(human_agent_id):
+def calc_jurisdictions_name(state):
+    """Formula: =LOWER({{State}}) & "-us" """
+    return (str(((state or "").lower()) if ((state or "").lower()) is not None else "") + '-us')
+
+def calc_jurisdictions_relative_path(jurisdiction_id):
     """
-    Stable, DAG-derived location for this HumanAgent row. Root segment 'human-agents' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    Concrete relative URL for this jurisdiction's explorer/detail page. Self-contained (no route-table lookup) so it is always populated. Anywhere a jurisdiction is referenced, link to this path.
     
-    Formula: ="human-agents/" & {{HumanAgentId}}
+    Formula: ="/library/jurisdictions/" & {{JurisdictionId}}
     """
-    return ('human-agents/' + str(human_agent_id or ""))
+    return ('/library/jurisdictions/' + str(jurisdiction_id or ""))
 
 # Level 2
 
-def calc_human_agents_iri(relative_path):
-    """
-    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
+def calc_jurisdictions_is_root_jurisdiction(parent_jurisdiction):
+    """Formula: =IF({{ParentJurisdiction}}=BLANK(), TRUE(), FALSE())"""
+    return (True if (parent_jurisdiction == None) else False)
 
 
-def compute_human_agents_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for HumanAgents.
-    
-    Table: HumanAgents. The NTWF HumanAgent class — foaf:Person + prov:Agent. The only agent type permitted to fill roles whose step has requiresHumanApproval. Disjoint with AIAgent and AutomatedPipeline.
-    """
+def compute_jurisdictions_fields(record: dict) -> dict:
+    """Compute all calculated fields for Jurisdictions."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_human_agents_relative_path(result.get('human_agent_id'))
+    result['name'] = calc_jurisdictions_name(result.get('state'))
+    result['relative_path'] = calc_jurisdictions_relative_path(result.get('jurisdiction_id'))
 
     # Level 2 calculations
-    result['iri'] = calc_human_agents_iri(result.get('relative_path'))
+    result['is_root_jurisdiction'] = calc_jurisdictions_is_root_jurisdiction(result.get('parent_jurisdiction'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri']:
+    for key in ['name', 'relative_path']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# AIAGENTS CALCULATIONS
-# Table: AIAgents. The NTWF AIAgent class — prov:SoftwareAgent + ntwf:modelVersion. Distinguished from AutomatedPipeline by probabilistic (vs. deterministic) output semantics. Disjoint with HumanAgent and AutomatedPipeline. May never fill a role whose step has requiresHumanApproval.
+# JURISDICTIONSOURCEDOCUMENTS CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_ai_agents_relative_path(ai_agent_id):
+def calc_jurisdiction_source_documents_name(title):
+    """Formula: =SUBSTITUTE(LOWER({{Title}}), " ", "-")"""
+    return ((((title or "").lower()) or "").replace(' ', '-'))
+
+def calc_jurisdiction_source_documents_relative_path(jurisdiction_source_document_id):
     """
-    Stable, DAG-derived location for this AIAgent row. Root segment 'ai-agents' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    Concrete relative URL for this document's detail page in the portal.
     
-    Formula: ="ai-agents/" & {{AIAgentId}}
+    Formula: ="/library/jurisdiction-docs/" & {{JurisdictionSourceDocumentId}}
     """
-    return ('ai-agents/' + str(ai_agent_id or ""))
-
-# Level 2
-
-def calc_ai_agents_iri(relative_path):
-    """
-    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
+    return ('/library/jurisdiction-docs/' + str(jurisdiction_source_document_id or ""))
 
 
-def compute_ai_agents_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for AIAgents.
-    
-    Table: AIAgents. The NTWF AIAgent class — prov:SoftwareAgent + ntwf:modelVersion. Distinguished from AutomatedPipeline by probabilistic (vs. deterministic) output semantics. Disjoint with HumanAgent and AutomatedPipeline. May never fill a role whose step has requiresHumanApproval.
-    """
+def compute_jurisdiction_source_documents_fields(record: dict) -> dict:
+    """Compute all calculated fields for JurisdictionSourceDocuments."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_ai_agents_relative_path(result.get('ai_agent_id'))
-
-    # Level 2 calculations
-    result['iri'] = calc_ai_agents_iri(result.get('relative_path'))
+    result['name'] = calc_jurisdiction_source_documents_name(result.get('title'))
+    result['relative_path'] = calc_jurisdiction_source_documents_relative_path(result.get('jurisdiction_source_document_id'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri']:
+    for key in ['name', 'relative_path']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# AUTOMATEDPIPELINES CALCULATIONS
-# Table: AutomatedPipelines. The NTWF AutomatedPipeline class — prov:SoftwareAgent + schema:SoftwareApplication. Distinguished from AIAgent by deterministic (vs. probabilistic) output semantics. Disjoint with HumanAgent and AIAgent. Carries schema:name, not foaf:name.
+# JURISDICTIONRULES CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_automated_pipelines_relative_path(automated_pipeline_id):
+def calc_jurisdiction_rules_name(rule_number):
+    """Formula: =SUBSTITUTE(LOWER({{RuleNumber}}), " ", "-")"""
+    return ((((rule_number or "").lower()) or "").replace(' ', '-'))
+
+def calc_jurisdiction_rules_relative_path(jurisdiction_rule_id):
     """
-    Stable, DAG-derived location for this AutomatedPipeline row. Root segment 'automated-pipelines' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    Concrete relative URL for this rule's detail page. Self-contained (dedicated /library/jurisdiction-rules/ space) so it never collides with the business-rule library at /library/rules. Anywhere a jurisdiction rule is referenced, link to this path.
     
-    Formula: ="automated-pipelines/" & {{AutomatedPipelineId}}
+    Formula: ="/library/jurisdiction-rules/" & {{JurisdictionRuleId}}
     """
-    return ('automated-pipelines/' + str(automated_pipeline_id or ""))
+    return ('/library/jurisdiction-rules/' + str(jurisdiction_rule_id or ""))
 
 # Level 2
 
-def calc_automated_pipelines_iri(relative_path):
-    """
-    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
+def calc_jurisdiction_rules_is_federal(jurisdiction_type):
+    """Formula: =IF({{JurisdictionType}} = "Country", TRUE(), FALSE())"""
+    return (True if (jurisdiction_type == 'Country') else False)
 
 
-def compute_automated_pipelines_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for AutomatedPipelines.
-    
-    Table: AutomatedPipelines. The NTWF AutomatedPipeline class — prov:SoftwareAgent + schema:SoftwareApplication. Distinguished from AIAgent by deterministic (vs. probabilistic) output semantics. Disjoint with HumanAgent and AIAgent. Carries schema:name, not foaf:name.
-    """
+def compute_jurisdiction_rules_fields(record: dict) -> dict:
+    """Compute all calculated fields for JurisdictionRules."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_automated_pipelines_relative_path(result.get('automated_pipeline_id'))
+    result['name'] = calc_jurisdiction_rules_name(result.get('rule_number'))
+    result['relative_path'] = calc_jurisdiction_rules_relative_path(result.get('jurisdiction_rule_id'))
 
     # Level 2 calculations
-    result['iri'] = calc_automated_pipelines_iri(result.get('relative_path'))
+    result['is_federal'] = calc_jurisdiction_rules_is_federal(result.get('jurisdiction_type'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri']:
+    for key in ['name', 'relative_path']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# WORKFLOWSTATUSCONCEPTS CALCULATIONS
-# SKOS controlled vocabulary for workflow lifecycle states (ntwf:WorkflowStatusScheme). Part of the CBox. Concepts are shared across all workflows.
+# APPUSERS CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_workflow_status_concepts_relative_path(concept_id):
+def calc_app_users_name_redacted(name):
     """
-    Stable, DAG-derived location for this WorkflowStatusConcept row. Root segment 'concepts/workflow-status' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    Redacted (masked) view of Name. Redacted roles read this instead of Name.
     
-    Formula: ="concepts/workflow-status/" & {{ConceptId}}
+    Formula: ={{Name}}
     """
-    return ('concepts/workflow-status/' + str(concept_id or ""))
+    return name
 
-# Level 2
-
-def calc_workflow_status_concepts_iri(relative_path):
+def calc_app_users_email_address_redacted(email_address):
     """
-    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    Redacted (masked) view of EmailAddress. Redacted roles read this instead of EmailAddress.
     
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
+    Formula: ={{EmailAddress}}
     """
-    return ((relative_path or "").replace('/', '-'))
+    return email_address
 
 
-def compute_workflow_status_concepts_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for WorkflowStatusConcepts.
-    
-    SKOS controlled vocabulary for workflow lifecycle states (ntwf:WorkflowStatusScheme). Part of the CBox. Concepts are shared across all workflows.
-    """
+def compute_app_users_fields(record: dict) -> dict:
+    """Compute all calculated fields for AppUsers."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_workflow_status_concepts_relative_path(result.get('concept_id'))
-
-    # Level 2 calculations
-    result['iri'] = calc_workflow_status_concepts_iri(result.get('relative_path'))
+    result['name_redacted'] = calc_app_users_name_redacted(result.get('name'))
+    result['email_address_redacted'] = calc_app_users_email_address_redacted(result.get('email_address'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri']:
+    for key in ['name_redacted', 'email_address_redacted']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# AGENTCAPABILITYCONCEPTS CALCULATIONS
-# SKOS controlled vocabulary for agent capability types (ntwf:AgentCapabilityScheme). Roles declare which capability their filler must have (ntwf:hasCapability). Part of the CBox.
+# SITEBRANDING CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_agent_capability_concepts_relative_path(concept_id):
+def calc_site_branding_name(site_branding_id):
     """
-    Stable, DAG-derived location for this AgentCapabilityConcept row. Root segment 'concepts/agent-capability' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    Echoes SiteBrandingId.
     
-    Formula: ="concepts/agent-capability/" & {{ConceptId}}
+    Formula: ={{SiteBrandingId}}
     """
-    return ('concepts/agent-capability/' + str(concept_id or ""))
-
-# Level 2
-
-def calc_agent_capability_concepts_iri(relative_path):
-    """
-    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
+    return site_branding_id
 
 
-def compute_agent_capability_concepts_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for AgentCapabilityConcepts.
-    
-    SKOS controlled vocabulary for agent capability types (ntwf:AgentCapabilityScheme). Roles declare which capability their filler must have (ntwf:hasCapability). Part of the CBox.
-    """
+def compute_site_branding_fields(record: dict) -> dict:
+    """Compute all calculated fields for SiteBranding."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_agent_capability_concepts_relative_path(result.get('concept_id'))
-
-    # Level 2 calculations
-    result['iri'] = calc_agent_capability_concepts_iri(result.get('relative_path'))
+    result['name'] = calc_site_branding_name(result.get('site_branding_id'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri']:
+    for key in ['name']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# ARTIFACTTYPECONCEPTS CALCULATIONS
-# SKOS controlled vocabulary for artifact type (ntwf artifact-type scheme). Part of the CBox; NTWF names a CBox concept scheme for artifact types alongside workflow status and agent capabilities. Each artifact is classified via dct:type into one of these concepts.
+# REFERENCEDOCUMENTS CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_artifact_type_concepts_relative_path(concept_id):
+def calc_reference_documents_name(reference_document_id):
     """
-    Stable, DAG-derived location for this concept row. Root segment 'concepts/artifact-type' + the row's primary key.
+    Echoes ReferenceDocumentId.
     
-    Formula: ="concepts/artifact-type/" & {{ConceptId}}
+    Formula: ={{ReferenceDocumentId}}
     """
-    return ('concepts/artifact-type/' + str(concept_id or ""))
+    return reference_document_id
 
-# Level 2
-
-def calc_artifact_type_concepts_iri(relative_path):
+def calc_reference_documents_is_appeal_board_decision(library):
     """
-    Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value.
+    TRUE when Library = appeal-board-decisions.
     
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
+    Formula: ={{Library}}="appeal-board-decisions" 
     """
-    return ((relative_path or "").replace('/', '-'))
+    return (library == 'appeal-board-decisions')
 
 
-def compute_artifact_type_concepts_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for ArtifactTypeConcepts.
-    
-    SKOS controlled vocabulary for artifact type (ntwf artifact-type scheme). Part of the CBox; NTWF names a CBox concept scheme for artifact types alongside workflow status and agent capabilities. Each artifact is classified via dct:type into one of these concepts.
-    """
+def compute_reference_documents_fields(record: dict) -> dict:
+    """Compute all calculated fields for ReferenceDocuments."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_artifact_type_concepts_relative_path(result.get('concept_id'))
-
-    # Level 2 calculations
-    result['iri'] = calc_artifact_type_concepts_iri(result.get('relative_path'))
+    result['name'] = calc_reference_documents_name(result.get('reference_document_id'))
+    result['is_appeal_board_decision'] = calc_reference_documents_is_appeal_board_decision(result.get('library'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri']:
+    for key in ['name']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# DATASETS CALCULATIONS
-# DCAT datasets consumed by workflow steps. The NTWF mapping of dcat:Dataset. Kept separate from WorkflowArtifacts to preserve DCAT metadata semantics (dcat:Dataset vs. prov:Entity). Answers CQ8: 'What datasets does the review consume, and which AI processed them?'
+# STATEMACHINES CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_datasets_relative_path(dataset_id):
+def calc_state_machines_name(state_machine_id):
     """
-    Stable, DAG-derived location for this Dataset row. Root segment 'datasets' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.
+    Echoes StateMachineId.
     
-    Formula: ="datasets/" & {{DatasetId}}
+    Formula: ={{StateMachineId}}
     """
-    return ('datasets/' + str(dataset_id or ""))
+    return state_machine_id
+
+
+def compute_state_machines_fields(record: dict) -> dict:
+    """Compute all calculated fields for StateMachines."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_state_machines_name(result.get('state_machine_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# MACHINESTATES CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_machine_states_name(machine_state_id):
+    """
+    Echoes MachineStateId.
+    
+    Formula: ={{MachineStateId}}
+    """
+    return machine_state_id
+
+
+def compute_machine_states_fields(record: dict) -> dict:
+    """Compute all calculated fields for MachineStates."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_machine_states_name(result.get('machine_state_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# STATETRANSITIONRULES CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_state_transition_rules_name(state_transition_rule_id):
+    """
+    Echoes StateTransitionRuleId.
+    
+    Formula: ={{StateTransitionRuleId}}
+    """
+    return state_transition_rule_id
 
 # Level 2
 
-def calc_datasets_iri(relative_path):
+def calc_state_transition_rules_is_forward_edge(to_state_key):
     """
-    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    TRUE when ToState is not the machine's initial state.
     
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
+    Formula: =NOT({{ToStateKey}}="draft")
     """
-    return ((relative_path or "").replace('/', '-'))
+    return (not (to_state_key == 'draft'))
+
+
+def compute_state_transition_rules_fields(record: dict) -> dict:
+    """Compute all calculated fields for StateTransitionRules."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_state_transition_rules_name(result.get('state_transition_rule_id'))
+
+    # Level 2 calculations
+    result['is_forward_edge'] = calc_state_transition_rules_is_forward_edge(result.get('to_state_key'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# STATETRANSITIONS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_state_transitions_name(state_transition_id):
+    """
+    Echoes StateTransitionId.
+    
+    Formula: ={{StateTransitionId}}
+    """
+    return state_transition_id
+
+def calc_state_transitions_is_forward(to_state_key):
+    """
+    Generalizes the old =NOT(ToStage="DRAFT"): TRUE when ToStateKey is not the machine's initial state.
+    
+    Formula: =AND(NOT({{ToStateKey}}="draft"),NOT({{ToStateKey}}="new"),NOT({{ToStateKey}}="pending"),NOT({{ToStateKey}}="open"),NOT({{ToStateKey}}="issued"))
+    """
+    return ((not (to_state_key == 'draft')) and (not (to_state_key == 'new')) and (not (to_state_key == 'pending')) and (not (to_state_key == 'open')) and (not (to_state_key == 'issued')))
+
+
+def compute_state_transitions_fields(record: dict) -> dict:
+    """Compute all calculated fields for StateTransitions."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_state_transitions_name(result.get('state_transition_id'))
+    result['is_forward'] = calc_state_transitions_is_forward(result.get('to_state_key'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# WORKQUEUEITEMS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_work_queue_items_name(work_queue_item_id):
+    """
+    Echoes WorkQueueItemId.
+    
+    Formula: ={{WorkQueueItemId}}
+    """
+    return work_queue_item_id
+
+
+def calc_work_queue_items_due_in_days():
+    """ERROR: Could not parse formula: =DATETIME_DIFF({{DueDate}}, TODAY(), 'days')
+    Error: Unknown function: DATETIME_DIFF
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+# Level 2
+
+def calc_work_queue_items_is_overdue(due_in_days):
+    """
+    TRUE when DueInDays < 0.
+    
+    Formula: =IF({{DueInDays}}=BLANK(),FALSE(),{{DueInDays}}<0)
+    """
+    return (False if (due_in_days == None) else _erb.erb_cmp(due_in_days, '<', 0))
+
+def calc_work_queue_items_urgency_bucket(due_in_days):
+    """
+    URGENT (overdue or due today) / DUE_3_DAYS / UPCOMING / FOLLOW_UP (no due date).
+    
+    Formula: =IF({{DueInDays}}=BLANK(),"follow-up",IF({{DueInDays}}<=0,"urgent",IF({{DueInDays}}<=3,"due-3-days","upcoming")))
+    """
+    return ('follow-up' if (due_in_days == None) else ('urgent' if _erb.erb_cmp(due_in_days, '<=', 0) else ('due-3-days' if _erb.erb_cmp(due_in_days, '<=', 3) else 'upcoming')))
 
 # Level 3
 
-
-def calc_datasets_is_consumed():
-    """ERROR: Could not parse formula: =NOT(ISBLANK({{ConsumedBySteps}}))
-    Error: Unknown function: ISBLANK
+def calc_work_queue_items_is_urgent(urgency_bucket):
     """
-    raise NotImplementedError("Formula parsing failed")
-
-
-
-def compute_datasets_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for Datasets.
+    TRUE when UrgencyBucket = URGENT.
     
-    DCAT datasets consumed by workflow steps. The NTWF mapping of dcat:Dataset. Kept separate from WorkflowArtifacts to preserve DCAT metadata semantics (dcat:Dataset vs. prov:Entity). Answers CQ8: 'What datasets does the review consume, and which AI processed them?'
+    Formula: ={{UrgencyBucket}}="urgent" 
     """
+    return (urgency_bucket == 'urgent')
+
+
+def compute_work_queue_items_fields(record: dict) -> dict:
+    """Compute all calculated fields for WorkQueueItems."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_datasets_relative_path(result.get('dataset_id'))
+    result['name'] = calc_work_queue_items_name(result.get('work_queue_item_id'))
+    result['due_in_days'] = calc_work_queue_items_due_in_days(result.get('due_date'))
 
     # Level 2 calculations
-    result['iri'] = calc_datasets_iri(result.get('relative_path'))
+    result['is_overdue'] = calc_work_queue_items_is_overdue(result.get('due_in_days'))
+    result['urgency_bucket'] = calc_work_queue_items_urgency_bucket(result.get('due_in_days'))
 
     # Level 3 calculations
-    result['is_consumed'] = calc_datasets_is_consumed(result.get('consumed_by_steps'))
+    result['is_urgent'] = calc_work_queue_items_is_urgent(result.get('urgency_bucket'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri']:
+    for key in ['name', 'urgency_bucket']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# WORKFLOWARTIFACTS CALCULATIONS
-# Artifacts produced and consumed by workflow steps. The NTWF WorkflowArtifact class — prov:Entity + schema:CreativeWork. The DerivedFromArtifact self-FK encodes the prov:wasDerivedFrom provenance chain; ProducedByStep maps prov:wasGeneratedBy; the AttributedTo* arms map prov:wasAttributedTo to the responsible agent.
+# AIMODELS CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_workflow_artifacts_relative_path(parent_path, artifact_id):
+def calc_ai_models_name(ai_model_id):
     """
-    Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/artifacts/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.
+    Echoes AiModelId.
     
-    Formula: ={{ParentPath}} & "/artifacts/" & {{ArtifactId}}
+    Formula: ={{AiModelId}}
     """
-    return (str(parent_path or "") + '/artifacts/' + str(artifact_id or ""))
+    return ai_model_id
 
-def calc_workflow_artifacts_iri(relative_path):
+
+def compute_ai_models_fields(record: dict) -> dict:
+    """Compute all calculated fields for AiModels."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_ai_models_name(result.get('ai_model_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# MODELPRICINGVERSIONS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_model_pricing_versions_name(model_pricing_version_id):
     """
-    Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.
+    Echoes ModelPricingVersionId.
     
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
+    Formula: ={{ModelPricingVersionId}}
     """
-    return ((relative_path or "").replace('/', '-'))
+    return model_pricing_version_id
 
 
-def calc_workflow_artifacts_producing_agent_type():
-    """ERROR: Could not parse formula: =IF(NOT(ISBLANK({{AttributedToHumanAgent}})), "HumanAgent", IF(NOT(ISBLANK({{AttributedToAIAgent}})), "AIAgent", IF(NOT(ISBLANK({{AttributedToAutomatedPipeline}})), "AutomatedPipeline", "")))
+def compute_model_pricing_versions_fields(record: dict) -> dict:
+    """Compute all calculated fields for ModelPricingVersions."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_model_pricing_versions_name(result.get('model_pricing_version_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# ASSISTANTTURNS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_assistant_turns_name(assistant_turn_id):
+    """
+    Echoes AssistantTurnId.
+    
+    Formula: ={{AssistantTurnId}}
+    """
+    return assistant_turn_id
+
+def calc_assistant_turns_total_tokens(input_tokens, output_tokens):
+    """
+    Input + output tokens.
+    
+    Formula: ={{InputTokens}}+{{OutputTokens}}
+    """
+    return (_erb.erb_num(input_tokens) + _erb.erb_num(output_tokens))
+
+def calc_assistant_turns_billable_input_tokens(input_tokens, cached_input_tokens):
+    """
+    Non-cached input tokens = InputTokens - CachedInputTokens.
+    
+    Formula: ={{InputTokens}}-{{CachedInputTokens}}
+    """
+    return (_erb.erb_num(input_tokens) - _erb.erb_num(cached_input_tokens))
+
+# Level 2
+
+def calc_assistant_turns_input_cost(billable_input_tokens, input_price_per_m_tok, cached_input_tokens, cached_input_price_per_m_tok):
+    """
+    USD cost of input: (BillableInputTokens × InputPrice + CachedInputTokens × CachedInputPrice) / 1,000,000.
+    
+    Formula: =(({{BillableInputTokens}}*{{InputPricePerMTok}})+({{CachedInputTokens}}*{{CachedInputPricePerMTok}}))/1000000
+    """
+    return _erb.erb_div((_erb.erb_num(_erb.erb_mul(billable_input_tokens, input_price_per_m_tok)) + _erb.erb_num(_erb.erb_mul(cached_input_tokens, cached_input_price_per_m_tok))), 1000000)
+
+def calc_assistant_turns_output_cost(output_tokens, output_price_per_m_tok):
+    """
+    USD cost of output: OutputTokens × OutputPrice / 1,000,000.
+    
+    Formula: =({{OutputTokens}}*{{OutputPricePerMTok}})/1000000
+    """
+    return _erb.erb_div(_erb.erb_mul(output_tokens, output_price_per_m_tok), 1000000)
+
+def calc_assistant_turns_total_cost(input_cost, output_cost):
+    """
+    Total USD cost for this turn = InputCost + OutputCost. Rolls up to Client and Claim.
+    
+    Formula: ={{InputCost}}+{{OutputCost}}
+    """
+    return (_erb.erb_num(input_cost) + _erb.erb_num(output_cost))
+
+
+def compute_assistant_turns_fields(record: dict) -> dict:
+    """Compute all calculated fields for AssistantTurns."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_assistant_turns_name(result.get('assistant_turn_id'))
+    result['total_tokens'] = calc_assistant_turns_total_tokens(result.get('input_tokens'), result.get('output_tokens'))
+    result['billable_input_tokens'] = calc_assistant_turns_billable_input_tokens(result.get('input_tokens'), result.get('cached_input_tokens'))
+
+    # Level 2 calculations
+    result['input_cost'] = calc_assistant_turns_input_cost(result.get('billable_input_tokens'), result.get('input_price_per_m_tok'), result.get('cached_input_tokens'), result.get('cached_input_price_per_m_tok'))
+    result['output_cost'] = calc_assistant_turns_output_cost(result.get('output_tokens'), result.get('output_price_per_m_tok'))
+    result['total_cost'] = calc_assistant_turns_total_cost(result.get('input_cost'), result.get('output_cost'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# PLATFORMS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_platforms_name(platform_id):
+    """
+    Echoes PlatformId.
+    
+    Formula: ={{PlatformId}}
+    """
+    return platform_id
+
+
+def compute_platforms_fields(record: dict) -> dict:
+    """Compute all calculated fields for Platforms."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_platforms_name(result.get('platform_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# ERBPACKAGES CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_erb_packages_name(erb_package_id):
+    """
+    Echoes ERBPackageId.
+    
+    Formula: ={{ERBPackageId}}
+    """
+    return erb_package_id
+
+# Level 2
+
+
+def calc_erb_packages_feature_count():
+    """ERROR: Could not parse formula: =COUNT({{ERBFeatures}})
+    Error: Unknown function: COUNT
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_packages_shipped_feature_count():
+    """ERROR: Could not parse formula: =COUNTIF({{ERBFeatures.Status}}, "shipped")
+    Error: Unknown function: COUNTIF
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def compute_erb_packages_fields(record: dict) -> dict:
+    """Compute all calculated fields for ERBPackages."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_erb_packages_name(result.get('erb_package_id'))
+
+    # Level 2 calculations
+    result['feature_count'] = calc_erb_packages_feature_count(result.get('erb_features'))
+    result['shipped_feature_count'] = calc_erb_packages_shipped_feature_count(result.get('erb_features._status'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# ERBFEATURESTATUSES CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_erb_feature_statuses_name(erb_feature_status_id):
+    """
+    Echoes ERBFeatureStatusId.
+    
+    Formula: ={{ERBFeatureStatusId}}
+    """
+    return erb_feature_status_id
+
+
+def compute_erb_feature_statuses_fields(record: dict) -> dict:
+    """Compute all calculated fields for ERBFeatureStatuses."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_erb_feature_statuses_name(result.get('erb_feature_status_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# ERBFEATURECATEGORIES CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_erb_feature_categories_name(erb_feature_category_id):
+    """
+    Echoes ERBFeatureCategoryId.
+    
+    Formula: ={{ERBFeatureCategoryId}}
+    """
+    return erb_feature_category_id
+
+
+def compute_erb_feature_categories_fields(record: dict) -> dict:
+    """Compute all calculated fields for ERBFeatureCategories."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_erb_feature_categories_name(result.get('erb_feature_category_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# ERBFEATURES CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_erb_features_name(erb_feature_id):
+    """
+    Echoes ERBFeatureId.
+    
+    Formula: ={{ERBFeatureId}}
+    """
+    return erb_feature_id
+
+# Level 2
+
+def calc_erb_features_relative_path(route_path, erb_feature_id):
+    """
+    Concrete relative URL for this row — the route template with its :param(s) substituted by this row's own id(s).
+    
+    Formula: =SUBSTITUTE({{RoutePath}}, ":featureId", {{ERBFeatureId}})
+    """
+    return ((route_path or "").replace(':featureId', erb_feature_id))
+
+
+def compute_erb_features_fields(record: dict) -> dict:
+    """Compute all calculated fields for ERBFeatures."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_erb_features_name(result.get('erb_feature_id'))
+
+    # Level 2 calculations
+    result['relative_path'] = calc_erb_features_relative_path(result.get('route_path'), result.get('erb_feature_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name', 'relative_path']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# ERBTABLES CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_erb_tables_name(erb_table_id):
+    """
+    Echoes ERBTableId.
+    
+    Formula: ={{ERBTableId}}
+    """
+    return erb_table_id
+
+
+def calc_erb_tables_admin_can_create():
+    """ERROR: Could not parse formula: =IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("C",{{AdminCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_admin_can_read():
+    """ERROR: Could not parse formula: =IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("R",{{AdminCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_admin_can_update():
+    """ERROR: Could not parse formula: =IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("U",{{AdminCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_admin_can_delete():
+    """ERROR: Could not parse formula: =IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("D",{{AdminCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_manager_can_create():
+    """ERROR: Could not parse formula: =IF({{ManagerCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("C",{{ManagerCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_manager_can_read():
+    """ERROR: Could not parse formula: =IF({{ManagerCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("R",{{ManagerCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_manager_can_update():
+    """ERROR: Could not parse formula: =IF({{ManagerCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("U",{{ManagerCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_manager_can_delete():
+    """ERROR: Could not parse formula: =IF({{ManagerCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("D",{{ManagerCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_representative_can_create():
+    """ERROR: Could not parse formula: =IF({{RepresentativeCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("C",{{RepresentativeCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_representative_can_read():
+    """ERROR: Could not parse formula: =IF({{RepresentativeCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("R",{{RepresentativeCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_representative_can_update():
+    """ERROR: Could not parse formula: =IF({{RepresentativeCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("U",{{RepresentativeCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_representative_can_delete():
+    """ERROR: Could not parse formula: =IF({{RepresentativeCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("D",{{RepresentativeCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_external_llm_can_create():
+    """ERROR: Could not parse formula: =IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("C",{{ExternalLlmCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_external_llm_can_read():
+    """ERROR: Could not parse formula: =IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("R",{{ExternalLlmCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_external_llm_can_update():
+    """ERROR: Could not parse formula: =IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("U",{{ExternalLlmCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_tables_external_llm_can_delete():
+    """ERROR: Could not parse formula: =IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("D",{{ExternalLlmCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def compute_erb_tables_fields(record: dict) -> dict:
+    """Compute all calculated fields for ERBTables."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_erb_tables_name(result.get('erb_table_id'))
+    result['admin_can_create'] = calc_erb_tables_admin_can_create(result.get('admin_crud'))
+    result['admin_can_read'] = calc_erb_tables_admin_can_read(result.get('admin_crud'))
+    result['admin_can_update'] = calc_erb_tables_admin_can_update(result.get('admin_crud'))
+    result['admin_can_delete'] = calc_erb_tables_admin_can_delete(result.get('admin_crud'))
+    result['manager_can_create'] = calc_erb_tables_manager_can_create(result.get('manager_crud'))
+    result['manager_can_read'] = calc_erb_tables_manager_can_read(result.get('manager_crud'))
+    result['manager_can_update'] = calc_erb_tables_manager_can_update(result.get('manager_crud'))
+    result['manager_can_delete'] = calc_erb_tables_manager_can_delete(result.get('manager_crud'))
+    result['representative_can_create'] = calc_erb_tables_representative_can_create(result.get('representative_crud'))
+    result['representative_can_read'] = calc_erb_tables_representative_can_read(result.get('representative_crud'))
+    result['representative_can_update'] = calc_erb_tables_representative_can_update(result.get('representative_crud'))
+    result['representative_can_delete'] = calc_erb_tables_representative_can_delete(result.get('representative_crud'))
+    result['external_llm_can_create'] = calc_erb_tables_external_llm_can_create(result.get('external_llm_crud'))
+    result['external_llm_can_read'] = calc_erb_tables_external_llm_can_read(result.get('external_llm_crud'))
+    result['external_llm_can_update'] = calc_erb_tables_external_llm_can_update(result.get('external_llm_crud'))
+    result['external_llm_can_delete'] = calc_erb_tables_external_llm_can_delete(result.get('external_llm_crud'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# ERBFIELDS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_erb_fields_name(erb_field_id):
+    """
+    Echoes ERBFieldId.
+    
+    Formula: ={{ERBFieldId}}
+    """
+    return erb_field_id
+
+def calc_erb_fields_is_calculated(field_type):
+    """
+    TRUE for calculated/lookup/aggregation (read-only at the data layer).
+    
+    Formula: =OR({{FieldType}}="calculated",{{FieldType}}="lookup",{{FieldType}}="aggregation")
+    """
+    return ((field_type == 'calculated') or (field_type == 'lookup') or (field_type == 'aggregation'))
+
+
+def calc_erb_fields_admin_can_create():
+    """ERROR: Could not parse formula: =IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("C",{{AdminCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_admin_can_read():
+    """ERROR: Could not parse formula: =IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("R",{{AdminCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_admin_can_update():
+    """ERROR: Could not parse formula: =IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("U",{{AdminCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_admin_can_delete():
+    """ERROR: Could not parse formula: =IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("D",{{AdminCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_manager_can_create():
+    """ERROR: Could not parse formula: =IF({{ManagerCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("C",{{ManagerCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_manager_can_read():
+    """ERROR: Could not parse formula: =IF({{ManagerCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("R",{{ManagerCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_manager_can_update():
+    """ERROR: Could not parse formula: =IF({{ManagerCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("U",{{ManagerCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_manager_can_delete():
+    """ERROR: Could not parse formula: =IF({{ManagerCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("D",{{ManagerCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_representative_can_create():
+    """ERROR: Could not parse formula: =IF({{RepresentativeCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("C",{{RepresentativeCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_representative_can_read():
+    """ERROR: Could not parse formula: =IF({{RepresentativeCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("R",{{RepresentativeCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_representative_can_update():
+    """ERROR: Could not parse formula: =IF({{RepresentativeCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("U",{{RepresentativeCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_representative_can_delete():
+    """ERROR: Could not parse formula: =IF({{RepresentativeCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("D",{{RepresentativeCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_external_llm_can_create():
+    """ERROR: Could not parse formula: =IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("C",{{ExternalLlmCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_external_llm_can_read():
+    """ERROR: Could not parse formula: =IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("R",{{ExternalLlmCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_external_llm_can_update():
+    """ERROR: Could not parse formula: =IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("U",{{ExternalLlmCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_erb_fields_external_llm_can_delete():
+    """ERROR: Could not parse formula: =IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND("D",{{ExternalLlmCRUD}}))))
+    Error: Unknown function: ISERROR
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def compute_erb_fields_fields(record: dict) -> dict:
+    """Compute all calculated fields for ERBFields."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_erb_fields_name(result.get('erb_field_id'))
+    result['is_calculated'] = calc_erb_fields_is_calculated(result.get('field_type'))
+    result['admin_can_create'] = calc_erb_fields_admin_can_create(result.get('admin_crud'))
+    result['admin_can_read'] = calc_erb_fields_admin_can_read(result.get('admin_crud'))
+    result['admin_can_update'] = calc_erb_fields_admin_can_update(result.get('admin_crud'))
+    result['admin_can_delete'] = calc_erb_fields_admin_can_delete(result.get('admin_crud'))
+    result['manager_can_create'] = calc_erb_fields_manager_can_create(result.get('manager_crud'))
+    result['manager_can_read'] = calc_erb_fields_manager_can_read(result.get('manager_crud'))
+    result['manager_can_update'] = calc_erb_fields_manager_can_update(result.get('manager_crud'))
+    result['manager_can_delete'] = calc_erb_fields_manager_can_delete(result.get('manager_crud'))
+    result['representative_can_create'] = calc_erb_fields_representative_can_create(result.get('representative_crud'))
+    result['representative_can_read'] = calc_erb_fields_representative_can_read(result.get('representative_crud'))
+    result['representative_can_update'] = calc_erb_fields_representative_can_update(result.get('representative_crud'))
+    result['representative_can_delete'] = calc_erb_fields_representative_can_delete(result.get('representative_crud'))
+    result['external_llm_can_create'] = calc_erb_fields_external_llm_can_create(result.get('external_llm_crud'))
+    result['external_llm_can_read'] = calc_erb_fields_external_llm_can_read(result.get('external_llm_crud'))
+    result['external_llm_can_update'] = calc_erb_fields_external_llm_can_update(result.get('external_llm_crud'))
+    result['external_llm_can_delete'] = calc_erb_fields_external_llm_can_delete(result.get('external_llm_crud'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# APIENDPOINTS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_api_endpoints_name(api_endpoint_id):
+    """
+    Echoes APIEndpointId.
+    
+    Formula: ={{APIEndpointId}}
+    """
+    return api_endpoint_id
+
+
+def compute_api_endpoints_fields(record: dict) -> dict:
+    """Compute all calculated fields for APIEndpoints."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_api_endpoints_name(result.get('api_endpoint_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# SUBJECTSTATEINSTANCES CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_subject_state_instances_name(subject_state_instance_id):
+    """
+    Echoes SubjectStateInstanceId.
+    
+    Formula: ={{SubjectStateInstanceId}}
+    """
+    return subject_state_instance_id
+
+
+def calc_subject_state_instances_is_current():
+    """ERROR: Could not parse formula: =ISBLANK({{ExitedAt}})
+    Error: Unknown function: ISBLANK
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+def calc_subject_state_instances_has_complete_lineage(sequence_index):
+    """
+    TRUE when the PriorInstance chain walks back to SequenceIndex=1 (the initial state occupancy). Validates lineage completeness.
+    
+    Formula: ={{SequenceIndex}}>=1
+    """
+    return _erb.erb_cmp(sequence_index, '>=', 1)
+
+
+def compute_subject_state_instances_fields(record: dict) -> dict:
+    """Compute all calculated fields for SubjectStateInstances."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_subject_state_instances_name(result.get('subject_state_instance_id'))
+    result['is_current'] = calc_subject_state_instances_is_current(result.get('exited_at'))
+    result['has_complete_lineage'] = calc_subject_state_instances_has_complete_lineage(result.get('sequence_index'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# VIOLATIONTYPES CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_violation_types_name(code):
+    """
+    Kebab-cased PK derived from the violation code (e.g. 'CVC-22350' -> 'cvc-22350').
+    
+    Formula: =SUBSTITUTE(LOWER({{Code}}), " ", "-")
+    """
+    return ((((code or "").lower()) or "").replace(' ', '-'))
+
+# Level 2
+
+def calc_violation_types_is_school_eligible_by_cap(points, traffic_school_point_cap):
+    """
+    Whether this violation's points fall at or below the jurisdiction's traffic-school point cap (jurisdiction rule applied to the violation).
+    
+    Formula: =IF({{Points}} <= {{TrafficSchoolPointCap}}, TRUE, FALSE)
+    """
+    return (True if _erb.erb_cmp(points, '<=', traffic_school_point_cap) else False)
+
+
+def compute_violation_types_fields(record: dict) -> dict:
+    """Compute all calculated fields for ViolationTypes."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_violation_types_name(result.get('code'))
+
+    # Level 2 calculations
+    result['is_school_eligible_by_cap'] = calc_violation_types_is_school_eligible_by_cap(result.get('points'), result.get('traffic_school_point_cap'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# DRIVERS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_drivers_name(license_number):
+    """
+    Kebab-cased PK derived from the license number (e.g. 'D1234567' -> 'd1234567').
+    
+    Formula: =SUBSTITUTE(LOWER({{LicenseNumber}}), " ", "-")
+    """
+    return ((((license_number or "").lower()) or "").replace(' ', '-'))
+
+def calc_drivers_full_name(last_name, first_name):
+    """
+    Display name, last-comma-first.
+    
+    Formula: ={{LastName}} & ", " & {{FirstName}}
+    """
+    return (str(last_name or "") + ', ' + str(first_name or ""))
+
+# Level 2
+
+def calc_drivers_license_status(active_points, suspension_threshold, warning_threshold):
+    """
+    License-points state machine for the driver: Suspended at/above the suspension threshold, Warning at/above the warning threshold, otherwise Valid.
+    
+    Formula: =IF({{ActivePoints}} >= {{SuspensionThreshold}}, "Suspended", IF({{ActivePoints}} >= {{WarningThreshold}}, "Warning", "Valid"))
+    """
+    return ('Suspended' if _erb.erb_cmp(active_points, '>=', suspension_threshold) else ('Warning' if _erb.erb_cmp(active_points, '>=', warning_threshold) else 'Valid'))
+
+
+def compute_drivers_fields(record: dict) -> dict:
+    """Compute all calculated fields for Drivers."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_drivers_name(result.get('license_number'))
+    result['full_name'] = calc_drivers_full_name(result.get('last_name'), result.get('first_name'))
+
+    # Level 2 calculations
+    result['license_status'] = calc_drivers_license_status(result.get('active_points'), result.get('suspension_threshold'), result.get('warning_threshold'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name', 'full_name', 'license_status']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# CITATIONS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_citations_name(citation_number):
+    """
+    Kebab-cased PK derived from the citation number (e.g. 'TC-2026-0001' -> 'tc-2026-0001').
+    
+    Formula: =SUBSTITUTE(LOWER({{CitationNumber}}), " ", "-")
+    """
+    return ((((citation_number or "").lower()) or "").replace(' ', '-'))
+
+# Level 2
+
+def calc_citations_response_due_date(issued_on, days_to_respond):
+    """
+    Deadline to respond: IssuedOn + the jurisdiction's response window.
+    
+    Formula: ={{IssuedOn}} + {{DaysToRespond}}
+    """
+    return (_erb.erb_num(issued_on) + _erb.erb_num(days_to_respond))
+
+
+def calc_citations_days_until_response_due():
+    """ERROR: Could not parse formula: =DAYS({{ResponseDueDate}}, {{AsOfDate}})
+    Error: Unknown function: DAYS
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_citations_is_response_overdue():
+    """ERROR: Could not parse formula: =IF(AND(ISBLANK({{RespondedOn}}), {{AsOfDate}} > {{ResponseDueDate}}), TRUE, FALSE)
     Error: Unknown function: ISBLANK
     """
     raise NotImplementedError("Formula parsing failed")
 
 
 
-def calc_workflow_artifacts_has_derivation_parent():
-    """ERROR: Could not parse formula: =NOT(ISBLANK({{DerivedFromArtifact}}))
+def calc_citations_contest_status():
+    """ERROR: Could not parse formula: =IF(NOT({{ContestRequested}}), "NotContested", IF({{CountOfHearings}} = 0, "HearingRequested", IF(OR({{LatestHearingOutcome}} = "Pending", ISBLANK({{LatestHearingOutcome}})), "Scheduled", "Heard")))
+    Error: Unknown function: ISBLANK
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+def calc_citations_is_dismissed(latest_hearing_outcome):
+    """
+    True when the latest hearing outcome dismissed the citation.
+    
+    Formula: =IF({{LatestHearingOutcome}} = "Dismissed", TRUE, FALSE)
+    """
+    return (True if (latest_hearing_outcome == 'Dismissed') else False)
+
+def calc_citations_is_guilty(latest_hearing_outcome, is_response_overdue, contest_requested):
+    """
+    True when the driver is liable: either found guilty/upheld at hearing, or defaulted by missing the response deadline without contesting.
+    
+    Formula: =IF(OR({{LatestHearingOutcome}} = "Guilty", {{LatestHearingOutcome}} = "Upheld", AND({{IsResponseOverdue}}, NOT({{ContestRequested}}))), TRUE, FALSE)
+    """
+    return (True if ((latest_hearing_outcome == 'Guilty') or (latest_hearing_outcome == 'Upheld') or ((is_response_overdue is True) and (contest_requested is not True))) else False)
+
+def calc_citations_amount_due_usd(is_dismissed, is_payment_late, base_fine_usd, late_penalty_pct):
+    """
+    Amount currently owed: 0 if dismissed; otherwise the base fine plus the jurisdiction's late penalty if the payment is late.
+    
+    Formula: =IF({{IsDismissed}}, 0, IF({{IsPaymentLate}}, {{BaseFineUsd}} * (1 + {{LatePenaltyPct}}), {{BaseFineUsd}}))
+    """
+    return (0 if is_dismissed else (_erb.erb_mul(base_fine_usd, (_erb.erb_num(1) + _erb.erb_num(late_penalty_pct))) if is_payment_late else base_fine_usd))
+
+
+def calc_citations_payment_due_date():
+    """ERROR: Could not parse formula: =DATEVALUE({{ResponseDueDate}}) + {{DaysToPayAfterRuling}}
+    Error: Unknown function: DATEVALUE
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+
+def calc_citations_is_payment_late():
+    """ERROR: Could not parse formula: =IF(AND({{IsGuilty}}, ISBLANK({{PaidOn}}), {{AsOfDate}} > {{PaymentDueDate}}), TRUE, FALSE)
     Error: Unknown function: ISBLANK
     """
     raise NotImplementedError("Formula parsing failed")
 
 
 
-def calc_workflow_artifacts_has_producing_workflow():
-    """ERROR: Could not parse formula: =NOT(ISBLANK({{ProducedByWorkflow}}))
+def calc_citations_collections_deadline():
+    """ERROR: Could not parse formula: =DATEVALUE({{PaymentDueDate}}) + {{DaysLateToCollections}}
+    Error: Unknown function: DATEVALUE
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+def calc_citations_is_in_collections(is_payment_late, as_of_date, collections_deadline):
+    """
+    True when a late payment has remained unpaid past the jurisdiction's collections window.
+    
+    Formula: =IF(AND({{IsPaymentLate}}, {{AsOfDate}} > {{CollectionsDeadline}}), TRUE, FALSE)
+    """
+    return (True if ((is_payment_late is True) and _erb.erb_cmp(as_of_date, '>', collections_deadline)) else False)
+
+
+def calc_citations_payment_status():
+    """ERROR: Could not parse formula: =IF({{IsDismissed}}, "NotOwed", IF(NOT(ISBLANK({{PaidOn}})), "Paid", IF({{IsInCollections}}, "Collections", IF({{IsPaymentLate}}, "Late", IF({{IsGuilty}}, "Due", "Pending")))))
+    Error: Unknown function: ISBLANK
+    """
+    raise NotImplementedError("Formula parsing failed")
+
+
+def calc_citations_effective_points(is_guilty, is_dismissed, violation_points):
+    """
+    License points this citation actually contributes to the driver: the violation's points if the driver is liable and not dismissed, otherwise 0. Drives the driver's ActivePoints rollup.
+    
+    Formula: =IF(AND({{IsGuilty}}, NOT({{IsDismissed}})), {{ViolationPoints}}, 0)
+    """
+    return (violation_points if ((is_guilty is True) and (is_dismissed is not True)) else 0)
+
+
+def calc_citations_citation_status():
+    """ERROR: Could not parse formula: =IF(OR(NOT(ISBLANK({{PaidOn}})), {{IsDismissed}}), "Closed", IF(OR({{LatestHearingOutcome}} = "Guilty", {{LatestHearingOutcome}} = "Upheld", AND({{IsResponseOverdue}}, NOT({{ContestRequested}}))), "Adjudicated", IF(AND({{ContestRequested}}, {{CountOfHearings}} > 0), "InContest", IF(NOT(ISBLANK({{RespondedOn}})), "Responded", "Issued"))))
     Error: Unknown function: ISBLANK
     """
     raise NotImplementedError("Formula parsing failed")
 
 
 
-def compute_workflow_artifacts_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for WorkflowArtifacts.
-    
-    Artifacts produced and consumed by workflow steps. The NTWF WorkflowArtifact class — prov:Entity + schema:CreativeWork. The DerivedFromArtifact self-FK encodes the prov:wasDerivedFrom provenance chain; ProducedByStep maps prov:wasGeneratedBy; the AttributedTo* arms map prov:wasAttributedTo to the responsible agent.
-    """
+def compute_citations_fields(record: dict) -> dict:
+    """Compute all calculated fields for Citations."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_workflow_artifacts_relative_path(result.get('parent_path'), result.get('artifact_id'))
-    result['iri'] = calc_workflow_artifacts_iri(result.get('relative_path'))
-    result['producing_agent_type'] = calc_workflow_artifacts_producing_agent_type(result.get('attributed_to_human_agent'), result.get('attributed_to_ai_agent'), result.get('attributed_to_automated_pipeline'))
-    result['has_derivation_parent'] = calc_workflow_artifacts_has_derivation_parent(result.get('derived_from_artifact'))
-    result['has_producing_workflow'] = calc_workflow_artifacts_has_producing_workflow(result.get('produced_by_workflow'))
+    result['name'] = calc_citations_name(result.get('citation_number'))
+
+    # Level 2 calculations
+    result['response_due_date'] = calc_citations_response_due_date(result.get('issued_on'), result.get('days_to_respond'))
+    result['days_until_response_due'] = calc_citations_days_until_response_due(result.get('response_due_date'), result.get('as_of_date'))
+    result['is_response_overdue'] = calc_citations_is_response_overdue(result.get('responded_on'), result.get('as_of_date'), result.get('response_due_date'))
+    result['contest_status'] = calc_citations_contest_status(result.get('contest_requested'), result.get('count_of_hearings'), result.get('latest_hearing_outcome'))
+    result['is_dismissed'] = calc_citations_is_dismissed(result.get('latest_hearing_outcome'))
+    result['is_guilty'] = calc_citations_is_guilty(result.get('latest_hearing_outcome'), result.get('is_response_overdue'), result.get('contest_requested'))
+    result['amount_due_usd'] = calc_citations_amount_due_usd(result.get('is_dismissed'), result.get('is_payment_late'), result.get('base_fine_usd'), result.get('late_penalty_pct'))
+    result['payment_due_date'] = calc_citations_payment_due_date(result.get('response_due_date'), result.get('days_to_pay_after_ruling'))
+    result['is_payment_late'] = calc_citations_is_payment_late(result.get('is_guilty'), result.get('paid_on'), result.get('as_of_date'), result.get('payment_due_date'))
+    result['collections_deadline'] = calc_citations_collections_deadline(result.get('payment_due_date'), result.get('days_late_to_collections'))
+    result['is_in_collections'] = calc_citations_is_in_collections(result.get('is_payment_late'), result.get('as_of_date'), result.get('collections_deadline'))
+    result['payment_status'] = calc_citations_payment_status(result.get('is_dismissed'), result.get('paid_on'), result.get('is_in_collections'), result.get('is_payment_late'), result.get('is_guilty'))
+    result['effective_points'] = calc_citations_effective_points(result.get('is_guilty'), result.get('is_dismissed'), result.get('violation_points'))
+    result['citation_status'] = calc_citations_citation_status(result.get('paid_on'), result.get('is_dismissed'), result.get('latest_hearing_outcome'), result.get('is_response_overdue'), result.get('contest_requested'), result.get('count_of_hearings'), result.get('responded_on'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'producing_agent_type']:
+    for key in ['name', 'contest_status', 'payment_status', 'citation_status']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# GOVERNANCEROLES CALCULATIONS
-# Table: GovernanceRoles. NTWF governance names two distinct ontology-governance roles: a Steward (responsible for the ontology's health — monitors drift, tracks external dependency updates, fields user questions, maintains docs, keeps the validation suite current; identifies that a change is needed but has no approval power) and an Authority (the power to approve changes to the CBox, ABox, and TBox; decides how and where a change is made; sits with the function that owns the domain). 'A steward who can make TBox or ABox changes without authority review is a single point of failure.' For an organization under 500 people a single person may hold both roles. This table models the maintenance discipline itself, as data, so the change log can attribute approvals to a named authority.
+# HEARINGS CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_governance_roles_relative_path(governance_role_id):
+def calc_hearings_name(hearing_number):
     """
-    Stable, DAG-derived location for this GovernanceRole row. Root segment 'governance-roles' + the row's primary key.
+    Kebab-cased PK derived from the hearing reference number.
     
-    Formula: ="governance-roles/" & {{GovernanceRoleId}}
+    Formula: =SUBSTITUTE(LOWER({{HearingNumber}}), " ", "-")
     """
-    return ('governance-roles/' + str(governance_role_id or ""))
-
-def calc_governance_roles_name(display_name):
-    """
-    Slug form of the display name.
-    
-    Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")
-    """
-    return ((((display_name or "").lower()) or "").replace(' ', '-'))
-
-def calc_governance_roles_can_approve_changes(kind):
-    """
-    TRUE iff this governance role carries approval power (Kind = 'Authority'). A Steward returns FALSE — a steward making TBox/ABox changes without authority review is a single point of failure.
-    
-    Formula: ={{Kind}} = "Authority" 
-    """
-    return (kind == 'Authority')
-
-# Level 2
-
-def calc_governance_roles_iri(relative_path):
-    """
-    Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value.
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
+    return ((((hearing_number or "").lower()) or "").replace(' ', '-'))
 
 
-def compute_governance_roles_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for GovernanceRoles.
-    
-    Table: GovernanceRoles. NTWF governance names two distinct ontology-governance roles: a Steward (responsible for the ontology's health — monitors drift, tracks external dependency updates, fields user questions, maintains docs, keeps the validation suite current; identifies that a change is needed but has no approval power) and an Authority (the power to approve changes to the CBox, ABox, and TBox; decides how and where a change is made; sits with the function that owns the domain). 'A steward who can make TBox or ABox changes without authority review is a single point of failure.' For an organization under 500 people a single person may hold both roles. This table models the maintenance discipline itself, as data, so the change log can attribute approvals to a named authority.
-    """
+def compute_hearings_fields(record: dict) -> dict:
+    """Compute all calculated fields for Hearings."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_governance_roles_relative_path(result.get('governance_role_id'))
-    result['name'] = calc_governance_roles_name(result.get('display_name'))
-    result['can_approve_changes'] = calc_governance_roles_can_approve_changes(result.get('kind'))
-
-    # Level 2 calculations
-    result['iri'] = calc_governance_roles_iri(result.get('relative_path'))
+    result['name'] = calc_hearings_name(result.get('hearing_number'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'name']:
+    for key in ['name']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# CHANGELOG CALCULATIONS
-# Table: ChangeLog. NTWF's minimum governance artifact: 'a change log that records every TBox and ABox modification, with its rationale.' Each entry records the four facts NTWF governance enumerates — the competency question that motivated the change, the terms affected, the version number of the release, and the date — plus the rationale and the Authority who approved it. Semantic-versioning discipline (MAJOR.MINOR.PATCH) is captured per entry via ChangeKind.
+# PAYMENTS CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_change_log_relative_path(change_log_id):
+def calc_payments_name(payment_number):
     """
-    Stable, DAG-derived location for this ChangeLog row. Root segment 'change-log' + the row's primary key.
+    Kebab-cased PK derived from the payment reference number.
     
-    Formula: ="change-log/" & {{ChangeLogId}}
+    Formula: =SUBSTITUTE(LOWER({{PaymentNumber}}), " ", "-")
     """
-    return ('change-log/' + str(change_log_id or ""))
-
-def calc_change_log_name(version, change_date):
-    """
-    Human-readable label: the version and date of this change.
-    
-    Formula: ={{Version}} & " (" & {{ChangeDate}} & ")" 
-    """
-    return (str(version or "") + ' (' + str(change_date or "") + ')')
-
-def calc_change_log_is_breaking_change(change_kind):
-    """
-    TRUE iff this is a major (breaking) change (ChangeKind = 'major') — requires explicit update, re-validation, and migration planning for any system on the prior version.
-    
-    Formula: ={{ChangeKind}} = "major" 
-    """
-    return (change_kind == 'major')
-
-def calc_change_log_is_backward_compatible(change_kind):
-    """
-    TRUE iff systems on the prior version keep working against this release (ChangeKind is 'patch' or 'minor'). Patch and minor increments preserve backward compatibility; only major breaks it.
-    
-    Formula: =OR({{ChangeKind}} = "patch", {{ChangeKind}} = "minor")
-    """
-    return ((change_kind == 'patch') or (change_kind == 'minor'))
-
-# Level 2
-
-def calc_change_log_iri(relative_path):
-    """
-    Opaque stable identifier (the dash-form of RelativePath).
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
+    return ((((payment_number or "").lower()) or "").replace(' ', '-'))
 
 
-def compute_change_log_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for ChangeLog.
-    
-    Table: ChangeLog. NTWF's minimum governance artifact: 'a change log that records every TBox and ABox modification, with its rationale.' Each entry records the four facts NTWF governance enumerates — the competency question that motivated the change, the terms affected, the version number of the release, and the date — plus the rationale and the Authority who approved it. Semantic-versioning discipline (MAJOR.MINOR.PATCH) is captured per entry via ChangeKind.
-    """
+def compute_payments_fields(record: dict) -> dict:
+    """Compute all calculated fields for Payments."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_change_log_relative_path(result.get('change_log_id'))
-    result['name'] = calc_change_log_name(result.get('version'), result.get('change_date'))
-    result['is_breaking_change'] = calc_change_log_is_breaking_change(result.get('change_kind'))
-    result['is_backward_compatible'] = calc_change_log_is_backward_compatible(result.get('change_kind'))
-
-    # Level 2 calculations
-    result['iri'] = calc_change_log_iri(result.get('relative_path'))
+    result['name'] = calc_payments_name(result.get('payment_number'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'name']:
+    for key in ['name']:
         if result.get(key) == '':
             result[key] = None
 
     return result
 
 # =============================================================================
-# VOCABULARYRECONCILIATIONS CALCULATIONS
-# Table: VocabularyReconciliations. External dependency change: when a borrowed term from a living standard (PROV-O, FOAF, Dublin Core, DCAT, Schema.org) is deprecated and re-homed into the NTWF namespace, the edit triggers a version bump and an owl:sameAs reconciliation relation declaring the old and new terms equivalent. The worked example: deprecating foaf:name, prepending the ntwf prefix to get ntwf:name, and asserting foaf:name owl:sameAs ntwf:name. Each row is one reconciliation, with the standard it came from and the version in which the reconciliation shipped.
+# CASEEVENTS CALCULATIONS
 # =============================================================================
 
 # Level 1
 
-def calc_vocabulary_reconciliations_relative_path(reconciliation_id):
+def calc_case_events_name(event_number):
     """
-    Stable, DAG-derived location for this reconciliation row. Root segment 'reconciliations' + the row's primary key.
+    Kebab-cased PK derived from the event reference number.
     
-    Formula: ="reconciliations/" & {{ReconciliationId}}
+    Formula: =SUBSTITUTE(LOWER({{EventNumber}}), " ", "-")
     """
-    return ('reconciliations/' + str(reconciliation_id or ""))
-
-def calc_vocabulary_reconciliations_name(deprecated_term, replacement_term):
-    """
-    Human-readable label: the sameAs relation between the deprecated term and its NTWF replacement.
-    
-    Formula: ={{DeprecatedTerm}} & " owl:sameAs " & {{ReplacementTerm}}
-    """
-    return (str(deprecated_term or "") + ' owl:sameAs ' + str(replacement_term or ""))
-
-# Level 2
-
-def calc_vocabulary_reconciliations_iri(relative_path):
-    """
-    Opaque stable identifier (the dash-form of RelativePath).
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
+    return ((((event_number or "").lower()) or "").replace(' ', '-'))
 
 
-def compute_vocabulary_reconciliations_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for VocabularyReconciliations.
-    
-    Table: VocabularyReconciliations. External dependency change: when a borrowed term from a living standard (PROV-O, FOAF, Dublin Core, DCAT, Schema.org) is deprecated and re-homed into the NTWF namespace, the edit triggers a version bump and an owl:sameAs reconciliation relation declaring the old and new terms equivalent. The worked example: deprecating foaf:name, prepending the ntwf prefix to get ntwf:name, and asserting foaf:name owl:sameAs ntwf:name. Each row is one reconciliation, with the standard it came from and the version in which the reconciliation shipped.
-    """
+def compute_case_events_fields(record: dict) -> dict:
+    """Compute all calculated fields for CaseEvents."""
     result = dict(record)
 
     # Level 1 calculations
-    result['relative_path'] = calc_vocabulary_reconciliations_relative_path(result.get('reconciliation_id'))
-    result['name'] = calc_vocabulary_reconciliations_name(result.get('deprecated_term'), result.get('replacement_term'))
-
-    # Level 2 calculations
-    result['iri'] = calc_vocabulary_reconciliations_iri(result.get('relative_path'))
+    result['name'] = calc_case_events_name(result.get('event_number'))
 
     # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'name']:
-        if result.get(key) == '':
-            result[key] = None
-
-    return result
-
-# =============================================================================
-# SCENARIOS CALCULATIONS
-# =============================================================================
-
-# Level 1
-
-def calc_scenarios_relative_path(scenario_id):
-    """
-    DAG-derived location for this Scenario row: root segment 'scenarios' + the primary key.
-    
-    Formula: ="scenarios/" & {{ScenarioId}}
-    """
-    return ('scenarios/' + str(scenario_id or ""))
-
-def calc_scenarios_name(label):
-    """
-    Slug form of the human label.
-    
-    Formula: =SUBSTITUTE(LOWER({{Label}}), " ", "-")
-    """
-    return ((((label or "").lower()) or "").replace(' ', '-'))
-
-# Level 2
-
-def calc_scenarios_iri(relative_path):
-    """
-    Opaque stable identifier (dash-form of RelativePath).
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
-
-
-def compute_scenarios_fields(record: dict) -> dict:
-    """Compute all calculated fields for Scenarios."""
-    result = dict(record)
-
-    # Level 1 calculations
-    result['relative_path'] = calc_scenarios_relative_path(result.get('scenario_id'))
-    result['name'] = calc_scenarios_name(result.get('label'))
-
-    # Level 2 calculations
-    result['iri'] = calc_scenarios_iri(result.get('relative_path'))
-
-    # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'name']:
-        if result.get(key) == '':
-            result[key] = None
-
-    return result
-
-# =============================================================================
-# COMPETENCYQUESTIONS CALCULATIONS
-# The article's literal acceptance suite — the eight leadership/competency questions the NTWF worked example must answer (Talisman, Intentional Arrangement, CQ1-CQ8). First-class data, not hardcoded UI strings: each row names the question, the substrate-computed field that ANSWERS it (TargetTable/TargetField, for cross-substrate traceability and the explainer-DAG drilldown), the answer kind, and the asserted ExpectedAnswer used to grade pass/fail. The live answer is always READ from the named computed column — never recomputed — so the CQ scoreboard is a projection of the model like every other lens. This is the CMCC-native home for the competency questions: the article treats them as acceptance criteria traceable to the rulebook, so they live in the rulebook.
-# =============================================================================
-
-# Level 1
-
-def calc_competency_questions_relative_path(competency_question_id):
-    """
-    Stable, DAG-derived location for this CompetencyQuestion row. Root segment 'competency-questions' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution.
-    
-    Formula: ="competency-questions/" & {{CompetencyQuestionId}}
-    """
-    return ('competency-questions/' + str(competency_question_id or ""))
-
-def calc_competency_questions_name(display_name):
-    """
-    Slug form of the DisplayName, for stable cross-reference. Mirrors the Name idiom used by the controlled-vocabulary tables.
-    
-    Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")
-    """
-    return ((((display_name or "").lower()) or "").replace(' ', '-'))
-
-# Level 2
-
-def calc_competency_questions_iri(relative_path):
-    """
-    Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique.
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
-
-
-def compute_competency_questions_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for CompetencyQuestions.
-    
-    The article's literal acceptance suite — the eight leadership/competency questions the NTWF worked example must answer (Talisman, Intentional Arrangement, CQ1-CQ8). First-class data, not hardcoded UI strings: each row names the question, the substrate-computed field that ANSWERS it (TargetTable/TargetField, for cross-substrate traceability and the explainer-DAG drilldown), the answer kind, and the asserted ExpectedAnswer used to grade pass/fail. The live answer is always READ from the named computed column — never recomputed — so the CQ scoreboard is a projection of the model like every other lens. This is the CMCC-native home for the competency questions: the article treats them as acceptance criteria traceable to the rulebook, so they live in the rulebook.
-    """
-    result = dict(record)
-
-    # Level 1 calculations
-    result['relative_path'] = calc_competency_questions_relative_path(result.get('competency_question_id'))
-    result['name'] = calc_competency_questions_name(result.get('display_name'))
-
-    # Level 2 calculations
-    result['iri'] = calc_competency_questions_iri(result.get('relative_path'))
-
-    # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'name']:
-        if result.get(key) == '':
-            result[key] = None
-
-    return result
-
-# =============================================================================
-# SCENARIOCQEFFECTS CALCULATIONS
-# Table: ScenarioCQEffects. Names the many-to-many between Scenarios and CompetencyQuestions as two 1:M foreign keys (Scenario, CompetencyQuestion) plus the detail of the relationship (EffectKind, Note). Each row asserts 'applying this scenario moves this competency question's live answer'. 'trigger' rows are the intended demonstration; 'ripple' rows record answers that move as an unavoidable consequence of the same raw edit (e.g. ai-release-manager moves cq-2 AND cq-3 because the gate approver is itself a step executor). The answers themselves are never stored here — they are read live from each substrate after the scenario applies.
-# =============================================================================
-
-# Level 1
-
-def calc_scenario_cq_effects_relative_path(scenario_cq_effect_id):
-    """
-    DAG-derived location: 'scenario-cq-effects/' + the row's primary key.
-    
-    Formula: ="scenario-cq-effects/" & {{ScenarioCQEffectId}}
-    """
-    return ('scenario-cq-effects/' + str(scenario_cq_effect_id or ""))
-
-def calc_scenario_cq_effects_name(scenario_cq_effect_id):
-    """
-    Slug label, mirrors the primary key.
-    
-    Formula: =SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), " ", "-")
-    """
-    return ((((scenario_cq_effect_id or "").lower()) or "").replace(' ', '-'))
-
-# Level 2
-
-def calc_scenario_cq_effects_iri(relative_path):
-    """
-    Opaque stable identifier (dash-form of RelativePath).
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
-
-
-def compute_scenario_cq_effects_fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for ScenarioCQEffects.
-    
-    Table: ScenarioCQEffects. Names the many-to-many between Scenarios and CompetencyQuestions as two 1:M foreign keys (Scenario, CompetencyQuestion) plus the detail of the relationship (EffectKind, Note). Each row asserts 'applying this scenario moves this competency question's live answer'. 'trigger' rows are the intended demonstration; 'ripple' rows record answers that move as an unavoidable consequence of the same raw edit (e.g. ai-release-manager moves cq-2 AND cq-3 because the gate approver is itself a step executor). The answers themselves are never stored here — they are read live from each substrate after the scenario applies.
-    """
-    result = dict(record)
-
-    # Level 1 calculations
-    result['relative_path'] = calc_scenario_cq_effects_relative_path(result.get('scenario_cq_effect_id'))
-    result['name'] = calc_scenario_cq_effects_name(result.get('scenario_cq_effect_id'))
-
-    # Level 2 calculations
-    result['iri'] = calc_scenario_cq_effects_iri(result.get('relative_path'))
-
-    # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'name']:
-        if result.get(key) == '':
-            result[key] = None
-
-    return result
-
-# =============================================================================
-# CONFORMANCETESTS CALCULATIONS
-# =============================================================================
-
-# Level 1
-
-def calc_conformance_tests_relative_path(conformance_test_id):
-    """
-    DAG-derived location for this test row: root segment 'conformance-tests' + the primary key.
-    
-    Formula: ="conformance-tests/" & {{ConformanceTestId}}
-    """
-    return ('conformance-tests/' + str(conformance_test_id or ""))
-
-def calc_conformance_tests_name(display_name):
-    """
-    Machine name derived from the display name.
-    
-    Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")
-    """
-    return ((((display_name or "").lower()) or "").replace(' ', '-'))
-
-# Level 2
-
-def calc_conformance_tests_iri(relative_path):
-    """
-    Slug IRI for this row, derived from RelativePath.
-    
-    Formula: =SUBSTITUTE({{RelativePath}}, "/", "-")
-    """
-    return ((relative_path or "").replace('/', '-'))
-
-
-def compute_conformance_tests_fields(record: dict) -> dict:
-    """Compute all calculated fields for ConformanceTests."""
-    result = dict(record)
-
-    # Level 1 calculations
-    result['relative_path'] = calc_conformance_tests_relative_path(result.get('conformance_test_id'))
-    result['name'] = calc_conformance_tests_name(result.get('display_name'))
-
-    # Level 2 calculations
-    result['iri'] = calc_conformance_tests_iri(result.get('relative_path'))
-
-    # Convert empty strings to None for string fields
-    for key in ['relative_path', 'iri', 'name']:
+    for key in ['name']:
         if result.get(key) == '':
             result[key] = None
 
@@ -1566,14 +1951,13 @@ def compute_conformance_tests_fields(record: dict) -> dict:
 
 # =============================================================================
 # __META__ CALCULATIONS
-# Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.
 # =============================================================================
 
 # Level 1
 
 def calc___meta___name(meta_key):
     """
-    Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table.
+    Mirrors MetaKey as the row's Name.
     
     Formula: ={{MetaKey}}
     """
@@ -1581,15 +1965,475 @@ def calc___meta___name(meta_key):
 
 
 def compute___meta___fields(record: dict) -> dict:
-    """
-    Compute all calculated fields for __meta__.
-    
-    Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.
-    """
+    """Compute all calculated fields for __meta__."""
     result = dict(record)
 
     # Level 1 calculations
     result['name'] = calc___meta___name(result.get('meta_key'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# TESTCATEGORY CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_test_category_name(test_category_id):
+    """
+    Echoes TestCategoryId.
+    
+    Formula: ={{TestCategoryId}}
+    """
+    return test_category_id
+
+
+def compute_test_category_fields(record: dict) -> dict:
+    """Compute all calculated fields for TestCategory."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_test_category_name(result.get('test_category_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# TESTSURFACE CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_test_surface_name(test_surface_id):
+    """
+    Echoes TestSurfaceId.
+    
+    Formula: ={{TestSurfaceId}}
+    """
+    return test_surface_id
+
+
+def compute_test_surface_fields(record: dict) -> dict:
+    """Compute all calculated fields for TestSurface."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_test_surface_name(result.get('test_surface_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# TESTTECHNOLOGY CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_test_technology_name(test_technology_id):
+    """
+    Echoes TestTechnologyId.
+    
+    Formula: ={{TestTechnologyId}}
+    """
+    return test_technology_id
+
+
+def compute_test_technology_fields(record: dict) -> dict:
+    """Compute all calculated fields for TestTechnology."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_test_technology_name(result.get('test_technology_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# TESTCASE CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_test_case_name(test_case_id):
+    """
+    Echoes TestCaseId.
+    
+    Formula: ={{TestCaseId}}
+    """
+    return test_case_id
+
+
+def compute_test_case_fields(record: dict) -> dict:
+    """Compute all calculated fields for TestCase."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_test_case_name(result.get('test_case_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# TESTEXPECTATION CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_test_expectation_name(test_expectation_id):
+    """
+    Echoes TestExpectationId.
+    
+    Formula: ={{TestExpectationId}}
+    """
+    return test_expectation_id
+
+
+def compute_test_expectation_fields(record: dict) -> dict:
+    """Compute all calculated fields for TestExpectation."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_test_expectation_name(result.get('test_expectation_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# TESTRUN CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_test_run_name(test_run_id):
+    """
+    Echoes TestRunId.
+    
+    Formula: ={{TestRunId}}
+    """
+    return test_run_id
+
+
+def compute_test_run_fields(record: dict) -> dict:
+    """Compute all calculated fields for TestRun."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_test_run_name(result.get('test_run_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# TESTRESULT CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_test_result_name(test_result_id):
+    """
+    Echoes TestResultId.
+    
+    Formula: ={{TestResultId}}
+    """
+    return test_result_id
+
+
+def compute_test_result_fields(record: dict) -> dict:
+    """Compute all calculated fields for TestResult."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_test_result_name(result.get('test_result_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# TESTRESULTASSERTION CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_test_result_assertion_name(test_result_assertion_id):
+    """
+    Echoes TestResultAssertionId.
+    
+    Formula: ={{TestResultAssertionId}}
+    """
+    return test_result_assertion_id
+
+
+def compute_test_result_assertion_fields(record: dict) -> dict:
+    """Compute all calculated fields for TestResultAssertion."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_test_result_assertion_name(result.get('test_result_assertion_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# SCREENLAYOUTS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_screen_layouts_name(screen_layout_id):
+    """
+    Echoes ScreenLayoutId.
+    
+    Formula: ={{ScreenLayoutId}}
+    """
+    return screen_layout_id
+
+
+def compute_screen_layouts_fields(record: dict) -> dict:
+    """Compute all calculated fields for ScreenLayouts."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_screen_layouts_name(result.get('screen_layout_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# SCREENSECTIONS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_screen_sections_name(screen_section_id):
+    """
+    Echoes ScreenSectionId.
+    
+    Formula: ={{ScreenSectionId}}
+    """
+    return screen_section_id
+
+
+def compute_screen_sections_fields(record: dict) -> dict:
+    """Compute all calculated fields for ScreenSections."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_screen_sections_name(result.get('screen_section_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# FIELDDISPLAYHINTS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_field_display_hints_name(field_display_hint_id):
+    """
+    Echoes FieldDisplayHintId.
+    
+    Formula: ={{FieldDisplayHintId}}
+    """
+    return field_display_hint_id
+
+
+def compute_field_display_hints_fields(record: dict) -> dict:
+    """Compute all calculated fields for FieldDisplayHints."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_field_display_hints_name(result.get('field_display_hint_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# FEESCHEDULES CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_fee_schedules_name(fee_schedule_id):
+    """
+    Echoes FeeScheduleId.
+    
+    Formula: ={{FeeScheduleId}}
+    """
+    return fee_schedule_id
+
+
+def compute_fee_schedules_fields(record: dict) -> dict:
+    """Compute all calculated fields for FeeSchedules."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_fee_schedules_name(result.get('fee_schedule_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# DEADLINERULES CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_deadline_rules_name(deadline_rule_id):
+    """
+    Echoes DeadlineRuleId.
+    
+    Formula: ={{DeadlineRuleId}}
+    """
+    return deadline_rule_id
+
+
+def compute_deadline_rules_fields(record: dict) -> dict:
+    """Compute all calculated fields for DeadlineRules."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_deadline_rules_name(result.get('deadline_rule_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# CONTESTGROUNDS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_contest_grounds_name(contest_ground_id):
+    """
+    Echoes ContestGroundId.
+    
+    Formula: ={{ContestGroundId}}
+    """
+    return contest_ground_id
+
+
+def compute_contest_grounds_fields(record: dict) -> dict:
+    """Compute all calculated fields for ContestGrounds."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_contest_grounds_name(result.get('contest_ground_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# DRIVERLICENSEPOINTS CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_driver_license_points_name(driver_license_point_id):
+    """
+    Echoes DriverLicensePointId.
+    
+    Formula: ={{DriverLicensePointId}}
+    """
+    return driver_license_point_id
+
+
+def compute_driver_license_points_fields(record: dict) -> dict:
+    """Compute all calculated fields for DriverLicensePoints."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_driver_license_points_name(result.get('driver_license_point_id'))
+
+    # Convert empty strings to None for string fields
+    for key in ['name']:
+        if result.get(key) == '':
+            result[key] = None
+
+    return result
+
+# =============================================================================
+# BUILDPHASES CALCULATIONS
+# =============================================================================
+
+# Level 1
+
+def calc_build_phases_name(build_phase_id):
+    """
+    Echoes BuildPhaseId.
+    
+    Formula: ={{BuildPhaseId}}
+    """
+    return build_phase_id
+
+
+def compute_build_phases_fields(record: dict) -> dict:
+    """Compute all calculated fields for BuildPhases."""
+    result = dict(record)
+
+    # Level 1 calculations
+    result['name'] = calc_build_phases_name(result.get('build_phase_id'))
 
     # Convert empty strings to None for string fields
     for key in ['name']:
@@ -1624,54 +2468,114 @@ def compute_all_calculated_fields(record: dict, entity_name: str = None) -> dict
     # Normalize to snake_case to support "LineItem", "line_item", "line-item"
     entity_lower = entity_name.lower().replace('-', '_')
 
-    if entity_lower == 'workflows':
-        return compute_workflows_fields(record)
-    elif entity_lower == 'workflow_steps':
-        return compute_workflow_steps_fields(record)
-    elif entity_lower == 'approval_gates':
-        return compute_approval_gates_fields(record)
-    elif entity_lower == 'step_precedence':
-        return compute_step_precedence_fields(record)
+    if entity_lower == 'business_rules':
+        return compute_business_rules_fields(record)
+    elif entity_lower == 'business_rule_categories':
+        return compute_business_rule_categories_fields(record)
+    elif entity_lower == 'glossary_categories':
+        return compute_glossary_categories_fields(record)
+    elif entity_lower == 'glossary_terms':
+        return compute_glossary_terms_fields(record)
     elif entity_lower == 'roles':
         return compute_roles_fields(record)
-    elif entity_lower == 'role_assignments':
-        return compute_role_assignments_fields(record)
-    elif entity_lower == 'departments':
-        return compute_departments_fields(record)
-    elif entity_lower == 'human_agents':
-        return compute_human_agents_fields(record)
-    elif entity_lower == 'ai_agents':
-        return compute_ai_agents_fields(record)
-    elif entity_lower == 'automated_pipelines':
-        return compute_automated_pipelines_fields(record)
-    elif entity_lower == 'workflow_status_concepts':
-        return compute_workflow_status_concepts_fields(record)
-    elif entity_lower == 'agent_capability_concepts':
-        return compute_agent_capability_concepts_fields(record)
-    elif entity_lower == 'artifact_type_concepts':
-        return compute_artifact_type_concepts_fields(record)
-    elif entity_lower == 'datasets':
-        return compute_datasets_fields(record)
-    elif entity_lower == 'workflow_artifacts':
-        return compute_workflow_artifacts_fields(record)
-    elif entity_lower == 'governance_roles':
-        return compute_governance_roles_fields(record)
-    elif entity_lower == 'change_log':
-        return compute_change_log_fields(record)
-    elif entity_lower == 'vocabulary_reconciliations':
-        return compute_vocabulary_reconciliations_fields(record)
-    elif entity_lower == 'scenarios':
-        return compute_scenarios_fields(record)
-    elif entity_lower == 'competency_questions':
-        return compute_competency_questions_fields(record)
-    elif entity_lower == 'scenario_cq_effects':
-        return compute_scenario_cq_effects_fields(record)
-    elif entity_lower == 'conformance_tests':
-        return compute_conformance_tests_fields(record)
+    elif entity_lower == 'audit_log_entries':
+        return compute_audit_log_entries_fields(record)
+    elif entity_lower == 'platform_naviation':
+        return compute_platform_naviation_fields(record)
+    elif entity_lower == 'jurisdictions':
+        return compute_jurisdictions_fields(record)
+    elif entity_lower == 'jurisdiction_source_documents':
+        return compute_jurisdiction_source_documents_fields(record)
+    elif entity_lower == 'jurisdiction_rules':
+        return compute_jurisdiction_rules_fields(record)
+    elif entity_lower == 'app_users':
+        return compute_app_users_fields(record)
+    elif entity_lower == 'site_branding':
+        return compute_site_branding_fields(record)
+    elif entity_lower == 'reference_documents':
+        return compute_reference_documents_fields(record)
+    elif entity_lower == 'state_machines':
+        return compute_state_machines_fields(record)
+    elif entity_lower == 'machine_states':
+        return compute_machine_states_fields(record)
+    elif entity_lower == 'state_transition_rules':
+        return compute_state_transition_rules_fields(record)
+    elif entity_lower == 'state_transitions':
+        return compute_state_transitions_fields(record)
+    elif entity_lower == 'work_queue_items':
+        return compute_work_queue_items_fields(record)
+    elif entity_lower == 'ai_models':
+        return compute_ai_models_fields(record)
+    elif entity_lower == 'model_pricing_versions':
+        return compute_model_pricing_versions_fields(record)
+    elif entity_lower == 'assistant_turns':
+        return compute_assistant_turns_fields(record)
+    elif entity_lower == 'platforms':
+        return compute_platforms_fields(record)
+    elif entity_lower == 'erb_packages':
+        return compute_erb_packages_fields(record)
+    elif entity_lower == 'erb_feature_statuses':
+        return compute_erb_feature_statuses_fields(record)
+    elif entity_lower == 'erb_feature_categories':
+        return compute_erb_feature_categories_fields(record)
+    elif entity_lower == 'erb_features':
+        return compute_erb_features_fields(record)
+    elif entity_lower == 'erb_tables':
+        return compute_erb_tables_fields(record)
+    elif entity_lower == 'erb_fields':
+        return compute_erb_fields_fields(record)
+    elif entity_lower == 'api_endpoints':
+        return compute_api_endpoints_fields(record)
+    elif entity_lower == 'subject_state_instances':
+        return compute_subject_state_instances_fields(record)
+    elif entity_lower == 'violation_types':
+        return compute_violation_types_fields(record)
+    elif entity_lower == 'drivers':
+        return compute_drivers_fields(record)
+    elif entity_lower == 'citations':
+        return compute_citations_fields(record)
+    elif entity_lower == 'hearings':
+        return compute_hearings_fields(record)
+    elif entity_lower == 'payments':
+        return compute_payments_fields(record)
+    elif entity_lower == 'case_events':
+        return compute_case_events_fields(record)
     elif entity_lower == '__meta__':
         return compute___meta___fields(record)
+    elif entity_lower == 'test_category':
+        return compute_test_category_fields(record)
+    elif entity_lower == 'test_surface':
+        return compute_test_surface_fields(record)
+    elif entity_lower == 'test_technology':
+        return compute_test_technology_fields(record)
+    elif entity_lower == 'test_case':
+        return compute_test_case_fields(record)
+    elif entity_lower == 'test_expectation':
+        return compute_test_expectation_fields(record)
+    elif entity_lower == 'test_run':
+        return compute_test_run_fields(record)
+    elif entity_lower == 'test_result':
+        return compute_test_result_fields(record)
+    elif entity_lower == 'test_result_assertion':
+        return compute_test_result_assertion_fields(record)
+    elif entity_lower == 'screen_layouts':
+        return compute_screen_layouts_fields(record)
+    elif entity_lower == 'screen_sections':
+        return compute_screen_sections_fields(record)
+    elif entity_lower == 'field_display_hints':
+        return compute_field_display_hints_fields(record)
+    elif entity_lower == 'fee_schedules':
+        return compute_fee_schedules_fields(record)
+    elif entity_lower == 'deadline_rules':
+        return compute_deadline_rules_fields(record)
+    elif entity_lower == 'contest_grounds':
+        return compute_contest_grounds_fields(record)
+    elif entity_lower == 'driver_license_points':
+        return compute_driver_license_points_fields(record)
+    elif entity_lower == 'build_phases':
+        return compute_build_phases_fields(record)
     else:
-        raise KeyError(f"compute_all_calculated_fields called with unknown entity {entity_name!r}. "f"Known entities in this generated erb_calc.py: ['workflows', 'workflow_steps', 'approval_gates', 'step_precedence', 'roles', 'role_assignments', 'departments', 'human_agents', 'ai_agents', 'automated_pipelines', 'workflow_status_concepts', 'agent_capability_concepts', 'artifact_type_concepts', 'datasets', 'workflow_artifacts', 'governance_roles', 'change_log', 'vocabulary_reconciliations', 'scenarios', 'competency_questions', 'scenario_cq_effects', 'conformance_tests', '__meta__']. "f"Check that the rulebook used to generate this file matches the data being computed.")
+        raise KeyError(f"compute_all_calculated_fields called with unknown entity {entity_name!r}. "f"Known entities in this generated erb_calc.py: ['business_rules', 'business_rule_categories', 'glossary_categories', 'glossary_terms', 'roles', 'audit_log_entries', 'platform_naviation', 'jurisdictions', 'jurisdiction_source_documents', 'jurisdiction_rules', 'app_users', 'site_branding', 'reference_documents', 'state_machines', 'machine_states', 'state_transition_rules', 'state_transitions', 'work_queue_items', 'ai_models', 'model_pricing_versions', 'assistant_turns', 'platforms', 'erb_packages', 'erb_feature_statuses', 'erb_feature_categories', 'erb_features', 'erb_tables', 'erb_fields', 'api_endpoints', 'subject_state_instances', 'violation_types', 'drivers', 'citations', 'hearings', 'payments', 'case_events', '__meta__', 'test_category', 'test_surface', 'test_technology', 'test_case', 'test_expectation', 'test_run', 'test_result', 'test_result_assertion', 'screen_layouts', 'screen_sections', 'field_display_hints', 'fee_schedules', 'deadline_rules', 'contest_grounds', 'driver_license_points', 'build_phases']. "f"Check that the rulebook used to generate this file matches the data being computed.")
 
 # =============================================================================
 # INDEX/MATCH LOOKUP INTERPRETER (PYTHON SIMULATOR — DO NOT CALL FROM OTHER SUBSTRATES)

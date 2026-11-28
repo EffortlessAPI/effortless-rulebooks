@@ -1,4 +1,4 @@
-# 📘 Effortless Rulebooks — RuleSpeak®
+# 📘 Effortless Rulebooks — Docs
 
 _The repo-governing rulebook: every governed project including the root, witnessed canonical project slots, consistency rules and findings, the delivery programme, the Claude skill catalog and routing graph, the root explorer plan, and legacy-runner retirement._
 
@@ -57,6 +57,20 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Resolved Capability Count | The total resolved flag across the legacy runner capabilities related to the project metadata. | _Order 2. Capabilities whose successor exists and is wired._ |
 | Is Runner Inventory Complete | True when all of the following hold: the runner capability count is greater than 0 and the decided capability count is the runner capability count. | _Order 3. Every inventoried capability has a recorded decision and destination (US-051)._ |
 | Is Runner Succession Complete | True when all of the following hold: the runner inventory complete flag is set and the resolved capability count is the runner capability count. | _Order 4. Every capability's successor exists and is wired._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Purpose | Architecture | Entry Point | Portal URL | Proxy URL | Repository Root | Domain Count ƒ | Skill Count ƒ | Consistency Rule Count ƒ | Phase Count ƒ | Toy Domain Count ƒ | Deprecated Skill Count ƒ | Priced Phase Count ƒ | Story Total ƒ | Open Finding Total ƒ | Isolated Skill Count ƒ | Done Story Total ƒ | Toy Share ƒ | Clean Domain Count ƒ | Satisfied Rule Count ƒ | Cardless Domain Count ƒ | Weighted Done Total ƒ | Avg Phase Done Percent ƒ | Consistency Percent ƒ | Rule Compliance Percent ƒ | Shippable Tab Count ƒ | Healthy Skill Count ƒ | Programme Progress Percent ƒ | Is Repo Consistent ƒ | Layout Slot Count ƒ | Fully Implemented Count ƒ | Runner Capability Count ƒ | Decided Capability Count ƒ | Resolved Capability Count ƒ | Is Runner Inventory Complete ƒ | Is Runner Succession Complete ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Effortlessly Invariant Rulesbooks | One repo, one shape. Every Effortless project — showcase examples and toys alike, the legacy runner included — is laid out the same way so any effortless-rulebook-project viewer or editor can open any of them interchangeably; this rulebook records the shape, grades every project against it, and tracks the programme that makes the repo consistent. | Repo root is itself an Effortless project (effortless.json + effortless-rulebook/). rulebook-examples/<slug>/ are fully implemented projects; toy-rulebooks/<slug>/ implement a piece or two. The filesystem is authoritative; RulebookDomains mirrors it. | ./start.sh | — | — | ./ | 44.0 | 37.0 | 29.0 | 5.0 | 26.0 | 1.0 | 5.0 | 54.0 | 49.0 | 4.0 | 50.0 | 59.0 | 34.0 | 16.0 | 16.0 | 134.0 | 92.0 | 77.0 | 55.0 | 5.0 | 32.0 | 92.0 | false | 22.0 | 28.0 | 12.0 | 12.0 | 11.0 | true | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Ontology Axiom** | Positive-form invariants the project is built on. These are the load-bearing claims; if any one is dropped, the methodology no longer holds. FramingInvariants are mistakes that violate these axioms. | — |
 | Name | The same as its short name. | _Order 1. Display alias (calculated). Order 1._ |
 | Short Name | A defined attribute. | — |
@@ -76,6 +90,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Guard Ratio | Determined by priority: 0 if the invariant count is 0; in all other cases, the critical invariant count divided by the invariant count rounded to 2 decimal place(s). | _Order 3. Share of its invariants that are critical._ |
 | Guard State | Determined by priority: “guarded” if the well guarded flag is set; “exposed” if the load bearing flag is set; in all other cases, “dormant”. | _Order 4. guarded / exposed / dormant._ |
 | Is Exposed Foundation | True when the guard state is “exposed”. | _Order 5. Load-bearing but unguarded by any critical invariant._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Short Name | Statement | Why | Implication | Status | Invariant Count ƒ | Feature Count ƒ | Is Active ƒ | Critical Invariant Count ƒ | Shipped Feature Count ƒ | Is Load Bearing ƒ | Is Well Guarded ƒ | Guard Ratio ƒ | Guard State ƒ | Is Exposed Foundation ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Rulebook is the IR | Rulebook is the IR | The rulebook JSON is the portable intermediate representation. Every other artifact is mechanically derivable from it. | If any artifact is hand-edited authoritatively, conformance no longer follows from a single source. The 'all substrates compute identically' claim depends on one IR. | Generated files are disposable; the rulebook JSON is the only file that is sacred. | active | 0.0 | 1.0 | true | 0.0 | 1.0 | true | false | 0.0 | exposed | true |
+| No privileged substrate | No privileged substrate | Postgres, Airtable, Excel, Python, Go, OWL, COBOL — every substrate is a peer projection of the rulebook. None is the reference. | Privileging one substrate quietly redefines 'correct' as 'matches that substrate' instead of 'matches the rulebook', which is the actual SSoT. | Substrate properties (maturity, transpiler source, expressive completeness) are facts about implementations, not authority rankings. | active | 2.0 | 1.0 | true | 1.0 | 1.0 | true | true | 0.5 | guarded | false |
+| SSoT is locally designated | SSoT is locally designated | The 'answer key' for a conformance run is whichever substrate the user designates as SSoT for that run — Airtable export, Excel workbook, hand-edited JSON, or a Postgres dump. | If the answer key is fixed, the methodology only works in one deployment mode. Locality lets the same harness validate Airtable-driven, Excel-driven, or JSON-driven projects. | Conformance reports must name the chosen SSoT for the run; trustworthy substrates witness, they do not crown. | active | 1.0 | 1.0 | true | 1.0 | 1.0 | true | true | 1.0 | guarded | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Framing Invariant** | Mistakes-to-avoid catalog. Each row is one wrong framing that has been caught and corrected, paired with the right framing and the axiom it violates. The portal surfaces these so future agents (and humans) can be re-grounded without rediscovering them. | — |
 | Name | A defined attribute. | _Short title for grouping / display_ |
 | Category | A defined attribute. | _substrate-equality \| ssot-locality \| hub-spoke-topology \| category-error \| fail-loud \| role-confusion \| naming \| project-catalog \| build-semantics \| dialect-binding_ |
@@ -95,6 +125,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Axiom is Load Bearing | True when the linked violated axiom ID is load bearing. | _Order 3. Whether the violated axiom is load-bearing._ |
 | Enforcement State | Determined by priority: “enforced” if the enforceable flag is set; “advisory” if the axiom is load bearing (a missing value counts as false); in all other cases, “orphan”. ⚠︎ mechanical <!-- rulespeak:reword --> | _Order 4. enforced / advisory / orphan._ |
 | Needs Attention | True when the enforcement state is “orphan”. | _Order 5. Cites an axiom nothing else depends on._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Category | Wrong Framing | Correct Framing | Why | Severity | Example Context | Status | Is Critical ƒ | Critical Flag ƒ | Axiom Short Name ƒ | Axiom is Active ƒ | Is Active Critical ƒ | Is Enforceable ƒ | Axiom is Load Bearing ƒ | Enforcement State ƒ | Needs Attention ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Postgres is the reference substrate | substrate-equality | Postgres is the reference substrate with no expressive gaps; other substrates are demonstrations with gaps relative to it. | Postgres is one of N peer substrates. It happens to have few expressive gaps in practice, which makes it a convenient witness — but witnessing is not the same as crowning. | Calling Postgres 'the reference' redefines 'correct' as 'matches Postgres'. The actual SSoT is the rulebook (or the user-designated answer-key substrate for that run). Postgres being trustworthy doesn't make it privileged. | critical | Said by Claude when describing the repo on 2026-05-25. Caught by user in the same turn. | active | true | 1.0 | No privileged substrate | true | true | true | true | enforced | false |
+| The rulebook JSON is always the SSoT | ssot-locality | The rulebook JSON file is the single source of truth in every deployment. | The rulebook is the portable IR. The SSoT for a given conformance run is whichever spoke the user designates — Airtable export, Excel workbook, hand-edited JSON, etc. If Airtable is the SSoT, the rulebook JSON is downstream from it. | Treating the JSON as universally authoritative ignores that input spokes can BE the SSoT. The framework supports several deployment modes; only one of them has the JSON as primary. | critical | Implicit in any phrasing like 'the JSON is the SSoT, period' without naming the deployment mode. | active | true | 1.0 | SSoT is locally designated | true | true | true | true | enforced | false |
+| IsProduction = trustworthy | substrate-equality | Substrates with IsProduction=true (Postgres, Excel, Entity Framework) are the trustworthy ones; the others are proof-of-concept. | 'Production' here means 'backed by an officially-licensed transpiler' — a fact about who built the generator, not about whether the substrate computes correctly. Trustworthiness is measured by passing the conformance tests. | Using one column to mean both 'authorized vendor built it' AND 'we trust its output' conflates provenance with correctness. They are independent properties; conformance is what proves correctness. | important | The original ExecutionSubstrates.IsProduction column collapses these two meanings. | active | false | 0.0 | No privileged substrate | true | false | false | true | advisory | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Platform Feature** | The catalog of distinctive features the ERB platform offers. The rulebook is the formal SSoT for this list; the repo's README and per-feature README files MUST conform to these rows. Each feature has a one-line summary (the elevator pitch), a Tier (headline vs additional), a Priority (sort order within tier), and a ReadmeFilePath (where the long-form explanation lives — even if it's still a stub). IsReadmeStub is calculated so 'which READMEs are still missing' is a queryable fact, not a tribal one. Many features reference an OntologyAxiom — that's the axiom the feature operationalizes. | — |
 | Name | A defined attribute. | _Full feature name as it appears in headings_ |
 | Short Name | A defined attribute. | _Short identifier for cross-references (e.g. 'ADP', 'Hub-and-Spoke')_ |
@@ -118,6 +164,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Doc State | Determined by priority: “headline-gap” if the headline gap flag is set; “gap” if the needs readme work flag is set; “documented” if the shipped flag is set; in all other cases, “pending”. | _Order 4. headline-gap / gap / documented / pending._ |
 | Is Axiom Backed | True when all of the following hold: the axiom is load bearing (a missing value counts as false) and the shipped flag is set. ⚠︎ mechanical <!-- rulespeak:reword --> | _Order 4. Shipped and tied to a load-bearing axiom._ |
 | Is Showcase Feature | True when all of the following hold: the axiom backed flag is set and the doc state is “documented”. | _Order 5. Shipped, documented and axiom-backed._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Short Name | Tier | Priority | One Line Summary | Readme File Path | Readme Stub Content | Readme Length | Status | Is Readme Stub ƒ | Is Headline ƒ | Is Shipped ƒ | Shipped Flag ƒ | Axiom Short Name ƒ | Needs Readme Work ƒ | Axiom Invariant Count ƒ | Axiom is Load Bearing ƒ | Is Headline Gap ƒ | Doc State ƒ | Is Axiom Backed ƒ | Is Showcase Feature ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Abstract Derivative Percentage (ADP) | ADP | headline | 10 | A first-class, measurable percentage of any ERB project that is derivative (mechanically rebuildable) vs. hand-written — `effortless -clean` deletes everything derivative, build restores it, and the LOC delta is the ADP. | docs/features/README.ADP.md | ADP draws a bright red line between Derivative Code (rebuildable on demand) and Hand Code (would be permanently lost without backup). Measured as (LOC_before_cleanall - LOC_after_cleanall) / LOC_before_cleanall. A pure scaffold starts at ~100%; a typical ERB project lands at 60-80%. | — | shipped | true | true | true | 1.0 | Rulebook is the IR | true | 0.0 | true | true | headline-gap | true | false |
+| effortless -clean / implicit clean before build | Clean | headline | 20 | `effortless -clean` removes every file whose OverwriteMode is ALWAYS, plus every NEVER-mode file that still matches the original generator output — both are Derivative Code by definition. Every build runs this implicitly first, so 'following along' is the default. | docs/features/README.clean.md | Clean is the mechanism that lets ADP be measured. OverwriteMode=ALWAYS files are always derivative; OverwriteMode=NEVER files are derivative as long as their content still matches the generator output. Once a NEVER file is customized, it crosses into Hand Code and clean leaves it alone. | — | shipped | true | true | true | 1.0 | Build is convergent, not additive | true | 1.0 | true | true | headline-gap | true | false |
+| Rulebook as IR / Hub-and-Spoke Topology | Hub-and-Spoke | headline | 30 | The rulebook JSON is the hub; every input (Airtable, LLM, admin portal, hand edits) and every output (Postgres, Python, Go, Excel, OWL, …) is a spoke. Spokes never talk to each other — they all route through the rulebook, eliminating the n×n integration problem. | docs/features/README.hub-and-spoke.md | The topology IS the architecture: one durable IR, N peer spokes. Generated artifacts are projections of the rulebook, never accumulations. | — | shipped | true | true | true | 1.0 | Hub-and-spoke topology | true | 0.0 | true | true | headline-gap | true | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Rulebook Source Spoke** | Peer input spokes that can write into effortless-rulebook.json. The rulebook JSON is the durable SSoT; these are interchangeable sources. | — |
 | Name | A defined attribute. | — |
 | Kind | A defined attribute. | _airtable \| admin-portal \| llm-direct \| manual-json \| reverse-sync_ |
@@ -131,6 +193,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Spoke Kind | Determined by priority: “editing-surface” if the optional bidirectional flag is set; “required-sync” if the bidirectional flag is set; in all other cases, “one-way”. | _Order 3. editing-surface / required-sync / one-way._ |
 | Is Advertised Surface | True when all of the following hold: the spoke kind is “editing-surface” and the required flag is not set. | _Order 4. Optional editing surface the docs may advertise._ |
 | Surface Label | Determined by priority: the name, followed by “ (optional surface)” if the advertised surface flag is set; in all other cases, the name. | _Order 5. Display label noting optional editing surfaces._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Kind | Direction | Required | Purpose | Authority | Is Bidirectional ƒ | Is Optional ƒ | Is Optional Bidirectional ƒ | Spoke Kind ƒ | Is Advertised Surface ƒ | Surface Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Admin Portal (Postgres editor) | admin-portal | bidirectional | false | Local web UI; edits flow through Postgres for real-time UX, write-through to rulebook JSON on every save. Primary developer experience. | Rulebook JSON is durable SSoT; Postgres is the live editor only and can be dropped/rebuilt from JSON at any time. | true | true | true | editing-surface | true | Admin Portal (Postgres editor) (optional surface) |
+| Airtable (airtable-to-rulebook) | airtable | input | false | Official Effortless tool: pull schema + data from an Airtable base into the rulebook JSON. Optional input spoke (was the historical HEAD). | Rulebook JSON wins; reverse-sync is a separate spoke. | false | true | false | one-way | false | Airtable (airtable-to-rulebook) |
+| Reverse Sync (rulebook-to-airtable) | reverse-sync | output | false | Push rulebook JSON edits back to an Airtable base for human review | Output only; never reads from Airtable. | false | true | false | one-way | false | Reverse Sync (rulebook-to-airtable) |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Rulebook Domain** | Customer ontologies: each domain has its own rulebook + substrate generation. Domains form a TREE — ParentDomainId links a more-elaborate domain back to the simpler one it grew out of (e.g. Talisman ADVANCED ← Talisman BASIC). The UI uses this to present related rulebooks as a set rather than a flat list, and to drive 'next step in the progression' navigation. | — |
 | Area | A defined attribute. | _Witnessed physical container: root, rulebook-examples, or toy-rulebooks. Classification is derived separately._ |
 | Kind | A defined attribute. | _Declared classification: root \| toy \| example. A toy is a statement of intent (a small teaching rulebook), not a count of files; change this value to re-classify a project. The folder it lives in is witnessed separately as Area._ |
@@ -201,6 +279,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Latest Fully Green Count | The total latest fully green flag across the corpus domain runs related to the rulebook domain. | _Order 3. Built-and-graded-green attempts against this project in the latest fan-out._ |
 | Is Green in Latest Corpus Run | True when the latest green count is greater than 0. | _Order 4. This project came back green in the most recent fan-out._ |
 | Corpus Test State | Determined by priority: “not-run” if the latest attempt count is 0; “fully-green” if the latest fully green count is greater than 0; “green” if the latest green count is greater than 0; in all other cases, “red”. | _Order 4. not-run \| green \| fully-green \| red — this project's standing in the latest fan-out._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Area | Kind | Is Intentional Exception | Name ƒ | Domain Name | Relative Path | Rulebook Path | Complexity Level | Table Count | Key Features | Purpose | Progression Note | Slug ƒ | Is Toy ƒ | Toy Flag ƒ | Has Rulebook ƒ | Finding Count ƒ | Flavor Card Count ƒ | Child Domain Count ƒ | Expected Rulebook Path ƒ | Open Finding Count ƒ | Has Flavor Card ƒ | Is Progression Root ƒ | Is Standard Layout ƒ | Is Fully Consistent ƒ | Clean Flag ƒ | Consistency Grade ƒ | Needs Flavor Card ƒ | Needs Flavor Flag ƒ | Layout Flag ƒ | Conformance Score ƒ | Is Showcase Ready ƒ | Conformance Band ƒ | Showcase Flag ƒ | Slot Witness Count ƒ | Conformance Run Count ƒ | Present Slot Count ƒ | Implementation Gap Count ƒ | Universal Gap Count ƒ | Slot Coverage Percent ƒ | Required Slot Count ƒ | Required Present Count ƒ | Required Gap Count ƒ | Is Fully Implemented ƒ | Fully Implemented Flag ƒ | Required Slot Coverage Percent ƒ | Expected Area ƒ | Is Misfiled ƒ | Readiness State ƒ | Test Suite Count ƒ | Runnable Suite Count ƒ | Gradable Suite Count ƒ | Corpus Attempt Count ƒ | Latest Attempt Count ƒ | Latest Green Count ƒ | Latest Fully Green Count ƒ | Is Green in Latest Corpus Run ƒ | Corpus Test State ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| toy-rulebooks | toy | false | ACME Corporation | ACME Corporation | toy-rulebooks/acme-corporation/ | toy-rulebooks/acme-corporation/effortless-rulebook/acme-corporation-rulebook.json | advanced | 6 | Hub promotion candidate; demonstrates rulebook-first workflow | Enterprise demo: ACME Corp operations | Independent root for the ACME enterprise progression. Targets all 15+ substrates; serves as the wide-coverage demo for license-quality transpilers. | acme-corporation | true | 1.0 | true | 1.0 | 1.0 | 1.0 | toy-rulebooks/acme-corporation/effortless-rulebook/acme-corporation-rulebook.json | 0.0 | true | true | true | true | 1.0 | clean | false | 0.0 | 1.0 | 4.0 | false | exemplary | 0.0 | 22.0 | 3.0 | 18.0 | 1.0 | 0.0 | 82.0 | 13.0 | 13.0 | 0.0 | false | 0.0 | 100.0 | toy-rulebooks | false | toy | 1.0 | 1.0 | 1.0 | 5.0 | 1.0 | 1.0 | 0.0 | true | green |
+| toy-rulebooks | toy | false | ACME LLC | ACME LLC | toy-rulebooks/acme-llc/ | toy-rulebooks/acme-llc/effortless-rulebook/acme-llc-rulebook.json | advanced | 4 | Hub promotion candidate; demonstrates rulebook-first workflow | Enterprise demo: ACME LLC operations | Smaller-scope variant of ACME Corporation — same enterprise universe, narrower operational slice. Demonstrates rulebook reuse across related but distinct legal entities. | acme-llc | true | 1.0 | true | 4.0 | 1.0 | 0.0 | toy-rulebooks/acme-llc/effortless-rulebook/acme-llc-rulebook.json | 2.0 | true | false | true | false | 0.0 | minor | false | 0.0 | 1.0 | 3.0 | false | acceptable | 0.0 | 22.0 | 8.0 | 16.0 | 3.0 | 2.0 | 73.0 | 13.0 | 11.0 | 2.0 | false | 0.0 | 85.0 | toy-rulebooks | false | toy | 1.0 | 1.0 | 1.0 | 6.0 | 1.0 | 0.0 | 0.0 | false | red |
+| rulebook-examples | example | false | Causal Autoimmune Architecture | Causal Autoimmune Architecture | rulebook-examples/causal-autoimmune-architecture/ | rulebook-examples/causal-autoimmune-architecture/effortless-rulebook/effortless-rulebook.json | advanced | 39 | — | Systems-medicine ontology: causal chains in autoimmune architecture with OWL + Postgres substrates and a German rulespeak track. | — | causal-autoimmune-architecture | false | 0.0 | true | 8.0 | 0.0 | 0.0 | rulebook-examples/causal-autoimmune-architecture/effortless-rulebook/causal-autoimmune-architecture-rulebook.json | 0.0 | false | false | true | true | 1.0 | clean | true | 1.0 | 1.0 | 3.0 | true | acceptable | 1.0 | 22.0 | 3.0 | 20.0 | 0.0 | 0.0 | 91.0 | 17.0 | 17.0 | 0.0 | true | 1.0 | 100.0 | rulebook-examples | false | example-ready | 1.0 | 1.0 | 1.0 | 5.0 | 1.0 | 0.0 | 0.0 | false | red |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Project Launch Profile** | One explicit launch contract for every governed project or intentional container. | — |
 | Domain | A defined attribute. | _FK to the governed repository project._ |
 | Working Directory | A defined attribute. | _Exact repository-relative working directory._ |
@@ -217,6 +311,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Has Complete Instructions | True when all of the following hold: the working directory has a value; the start command has a value; and the experience description has a value. | _Order 1. Working directory, command, and experience are explicit._ |
 | Has Primary Service | True when the primary service count is 1. | _Order 2. Exactly one local service is primary._ |
 | Is Launch Contract Complete | True when all of the following hold: the complete instructions flag is set and at least one of the following holds: the requires local URL flag is not set or the primary service flag is set. | _Order 3. Instructions are complete and URL-bearing experiences have one primary service._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Working Directory | Start Command | Experience Description | Prerequisite Notes | Experience Kind | Is Start Required | Requires Local URL | Name ƒ | Primary Service Count ƒ | Service Count ƒ | Has Complete Instructions ƒ | Has Primary Service ƒ | Is Launch Contract Complete ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| toy-rulebooks/acme-corporation | ./start.sh | Generated RuleSpeak documentation | Python 3, lsof, and the named authoritative artifact are required. | rulespeak | true | true | domain-acme-corporation launch | 1.0 | 1.0 | true | true | true |
+| toy-rulebooks/acme-llc | ./start.sh | Generated RuleSpeak documentation | Python 3, lsof, and the named authoritative artifact are required. | rulespeak | true | true | domain-acme-llc launch | 1.0 | 1.0 | true | true | true |
+| rulebook-examples/causal-autoimmune-architecture | ./start.sh | Witnessed autoimmune inference harness and patient diagnosis console | Run from the named project directory; the launcher reports every missing command, database, or artifact. | web | true | true | domain-causal-autoimmune-architecture launch | 1.0 | 1.0 | true | true | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Project Local Service** | Explicit localhost services and health endpoints owned by project launch profiles. | — |
 | Launch Profile | A defined attribute. | _FK to the launch profile that owns this service._ |
 | Service Role | A defined attribute. | _primary \| editor-ui \| editor-api._ |
@@ -228,6 +338,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Has Health URL | True when the health URL has a value. | _Order 1. A health URL is explicitly modeled._ |
 | Is Http Service | True when at least one of the following holds: the first 7 character(s) of the local URL is “http://” or the first 8 character(s) of the local URL is “https://”. | _Order 1. The service uses local HTTP._ |
 | Is Complete | True when all of the following hold: the local URL has a value and the health URL has a value. | _Order 1. Both launch and health URLs are explicit._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Service Role | Local URL | Health URL | Sort Order | Is Primary Flag | Name ƒ | Has Health URL ƒ | Is Http Service ƒ | Is Complete ƒ |
+|---|---|---|---|---|---|---|---|---|
+| primary | http://localhost:43200/rulespeak.md | http://localhost:43200/rulespeak.md | 1 | 1 | launch-domain-acme-corporation primary | true | true | true |
+| primary | http://localhost:43201/rulespeak.html | http://localhost:43201/rulespeak.html | 1 | 1 | launch-domain-acme-llc primary | true | true | true |
+| primary | http://localhost:6348 | http://localhost:6347/api/health | 1 | 1 | launch-domain-causal-autoimmune-architecture primary | true | true | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Legacy Runner Capability** | Succession ledger for the legacy-runner promotion and its 2026-09-07 reversal. legacy-runner/ was a transitional staging area (2026-08-30 to 2026-09-07) for the root platform infrastructure (orchestrator, transpiler bus, execution substrates, conformance harness); it no longer exists as a directory, and that infrastructure is root infrastructure again. Each row records the capability, the original promote/separate/replace/retire decision, and — where the decision was reversed — an honest new decision and rationale. The admin portal capability was retired outright (deleted, not restored); every other reversed row is restored to root. | — |
 | Name | The same as its title. | _Order 1. Display alias (calculated)._ |
 | Title | A defined attribute. | _Capability name._ |
@@ -246,6 +372,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Resolved Flag | Determined by priority: 1 if the status is “done”; in all other cases, 0. | _Order 1. 1 when resolved — rollup carrier._ |
 | Capability State | Determined by priority: “undecided” if the decided flag is not set; “resolved” if the resolved flag is set; in all other cases, “decided”. | _Order 2. undecided / decided / resolved._ |
 | Capability Label | Computed as the title, followed by “ [”, followed by the decision, followed by “]”. | _Order 1. Display label with decision._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Title | Runner Path | Summary | Decision | Destination | Rationale | Status | Dependents | Is Decided ƒ | Decided Flag ƒ | Is Kept ƒ | Is Resolved ƒ | Resolved Flag ƒ | Capability State ƒ | Capability Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Admin portal | Admin portal | admin-portal/ | Two-rulebook web editor on :7777 with users, roles, navigation, screens and APIs modeled in the runner rulebook. | replace | Generated effortless-rulebook-editor (:42442, :42441) plus the root explorer (:42440). | The generated editor edits any rulebook with zero bespoke code and the explorer covers discovery and guidance; the portal's overlay contradicts one-rulebook-per-project. | done | None outside the runner. Root start.sh has no dependency on it (US-052-ac1). | true | 1.0 | false | true | 1.0 | resolved | Admin portal [replace] |
+| Cross-project build tooling | Cross-project build tooling | orchestration/build-all-domains.sh, orchestration/build-status-report.py, devops/buildall.sh | Loops over every domain running effortless build and writes a status report. | replace | scripts/scan-project-slots.py with ProjectSlotWitnesses / ConsistencyFindings views and the generated progress report. | Repository status is now derived from witnessed slots and finding rows rather than a build loop's log. | done | None. | true | 1.0 | false | true | 1.0 | resolved | Cross-project build tooling [replace] |
+| CLI orchestration menu | CLI orchestration menu | start.sh, orchestration/orchestrate.sh, run-web-portal.sh, run-in-docker.sh, docker-compose.yml, Dockerfile | Interactive menu that picks an active domain, builds it, runs substrates and launches the portal. | restore | Is the root's own ./start.sh default (no flag needed); ./start.sh --portal launches the React explorer as the secondary web view. | 2026-09-07: reversed. The CLI menu is not a legacy artifact kept alongside a newer default — it IS the new root's default entry point again. The React explorer remains real and useful as the --portal view, but the menu leads. | done | None outside the runner. | true | 1.0 | false | true | 1.0 | resolved | CLI orchestration menu [restore] |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Conformance Run** | One row per invocation of the cross-substrate conformance harness (orchestration/test-orchestrator.py) against a governed project. Imported by scripts/run-conformance.py from that project's testing/_substrate_results.json. | — |
 | Name | The same as its conformance run ID. | _Order 1. Display alias (calculated)._ |
 | Domain | A defined attribute. | _FK to the governed project this run tested._ |
@@ -259,6 +401,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Overall Score | The average score across the conformance results related to the conformance run. | _Order 1. Average per-substrate score (0-100) across this run._ |
 | Overall Status | Determined by priority: “no-results” if the total substrates is 0; “all-passing” if the failing substrate count is 0; in all other cases, “has-failures”. | _Order 4. no-results / all-passing / has-failures, derived from the substrate counts above._ |
 | Corpus Domain Runs | A defined attribute. | _Reverse relationship: the corpus-run attempt that produced this conformance run, when it came from a fan-out rather than a single-project run._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Ran on | Raw Results JSON | Domain Name ƒ | Total Substrates ƒ | Passing Substrate Count ƒ | Failing Substrate Count ƒ | Overall Score ƒ | Overall Status ƒ |
+|---|---|---|---|---|---|---|---|---|
+| run-acme-corporation-20260910-022739 | 2026-09-10T02:27:39.000Z | {"effortless-postgres": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 0.0, "status": "success", "test_results": {"total_fields_tested": 43, "fields_passed": 43, "fields_failed": 0, "score": 100.0}}}} | ACME Corporation | 1.0 | 1.0 | 0.0 | 100.0 | all-passing |
+| run-acme-llc-20260906-221125 | 2026-09-06T22:11:25.000Z | {"airtable": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 0.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "english": {"last_run": {"status": "success", "duration_seconds": 4.0, "exit_code": 0, "score": 0.0}, "last_successful_run": {"duration_seconds": 18.844956159591675, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "postgres": {"last_run": {"status": "success", "duration_seconds": 4.453888177871704, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 4.453888177871704, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "python": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 50.0}, "last_successful_run": {"duration_seconds": 0.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "golang": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 50.0}, "last_successful_run": {"duration_seconds": 0.29009103775024414, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "owl": {"last_run": {"status": "success", "duration_seconds": 7.0, "exit_code": 0, "score": 0.0}, "last_successful_run": {"duration_seconds": 0.41080188751220703, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "uml": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 50.0}, "last_successful_run": {"duration_seconds": 0.16693925857543945, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "xlsx": {"last_run": {"status": "success", "duration_seconds": 1.0, "exit_code": 0, "score": 0.0}, "last_successful_run": {"duration_seconds": 0.4839940071105957, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "binary": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 50.0}, "last_successful_run": {"duration_seconds": 0.6526732444763184, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "cobol": {"last_run": {"status": "success", "duration_seconds": 1.0, "exit_code": 0, "score": 50.0}, "last_successful_run": {"duration_seconds": 0.4430079460144043, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "csv": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 0.0}, "last_successful_run": {"duration_seconds": 0.41741204261779785, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "yaml": {"last_run": {"status": "success", "duration_seconds": 0.1338958740234375, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 0.1338958740234375, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "explain-dag": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 0.0}, "last_successful_run": {"duration_seconds": 0.16579723358154297, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "effortless-entity-framework": {"last_run": {"status": "success", "duration_seconds": 2.3390731811523438, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 2.3390731811523438, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "effortless-postgres": {"last_run": {"status": "success", "duration_seconds": 1.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 1.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "effortless-xlsx": {"last_run": {"status": "success", "duration_seconds": 1.1663360595703125, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 1.1663360595703125, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "effortless-csv": {"last_run": {"status": "success", "duration_seconds": 2.052896022796631, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 2.052896022796631, "status": "success", "test_results": {"total_fields_tested": 40, "fields_passed": 40, "fields_failed": 0, "score": 100.0}}}} | ACME LLC | 17.0 | 7.0 | 10.0 | 55.88235294117647 | has-failures |
+| run-acme-llc-20260907-014703 | 2026-09-07T01:47:03.000Z | {"airtable": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 0.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "english": {"last_run": {"status": "success", "duration_seconds": 2.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 2.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "postgres": {"last_run": {"status": "success", "duration_seconds": 4.453888177871704, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 4.453888177871704, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "python": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 0.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "golang": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 0.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "owl": {"last_run": {"status": "success", "duration_seconds": 1.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 1.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "uml": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 0.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "xlsx": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 0.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "binary": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 0.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "cobol": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 0.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "csv": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 0.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "yaml": {"last_run": {"status": "success", "duration_seconds": 0.1338958740234375, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 0.1338958740234375, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "explain-dag": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 0.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "effortless-entity-framework": {"last_run": {"status": "success", "duration_seconds": 1.0, "exit_code": 0, "score": 50.0}, "last_successful_run": {"duration_seconds": 2.3390731811523438, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "effortless-postgres": {"last_run": {"status": "success", "duration_seconds": 0.0, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 0.0, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "effortless-xlsx": {"last_run": {"status": "success", "duration_seconds": 0.939887285232544, "exit_code": 0, "score": 0.0}, "last_successful_run": {"duration_seconds": 1.1663360595703125, "status": "success", "test_results": {"total_fields_tested": 6, "fields_passed": 6, "fields_failed": 0, "score": 100.0}}}, "effortless-csv": {"last_run": {"status": "success", "duration_seconds": 2.052896022796631, "exit_code": 0, "score": 100.0}, "last_successful_run": {"duration_seconds": 2.052896022796631, "status": "success", "test_results": {"total_fields_tested": 40, "fields_passed": 40, "fields_failed": 0, "score": 100.0}}}} | ACME LLC | 17.0 | 15.0 | 2.0 | 91.17647058823529 | has-failures |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Conformance Result** | One row per substrate graded within a ConformanceRuns run. Mirrors the per-substrate entries of testing/_substrate_results.json (last_run + last_successful_run.test_results) written by orchestration/test-orchestrator.py. | — |
 | Name | The same as its conformance result ID. | _Order 1. Display alias (calculated)._ |
 | Run | A defined attribute. | _FK to the conformance run this substrate result belongs to._ |
@@ -272,6 +430,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Passing | True when all of the following hold: the status is “success” and the score is at least 100. | _Order 2. True when the harness reported success at a perfect score._ |
 | Is Passing Flag | True when all of the following hold: the status is “success” and the score is at least 100. | _Order 3. Numeric mirror of IsPassing (1/0) for SUMIFS rollups._ |
 | Run Domain Name | Taken from the linked run. | _Order 4. Display name of the project this result's run tested._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Substrate Name | Status | Score | Fields Tested | Fields Passed | Fields Failed | Duration Seconds | Is Passing ƒ | Is Passing Flag ƒ | Run Domain Name ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| run-acme-corporation-20260910-022739:effortless-postgres | effortless-postgres | success | 100.0 | 43 | 43 | 0 | 0.0 | true | 1.0 | ACME Corporation |
+| run-acme-llc-20260906-221125:airtable | airtable | success | 100.0 | 6 | 6 | 0 | 0.0 | true | 1.0 | ACME LLC |
+| run-acme-llc-20260906-221125:binary | binary | success | 50.0 | 6 | 6 | 0 | 0.0 | false | 0.0 | ACME LLC |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Test Suite** | Registered test suites. One DECLARED row per suite the corpus runner is expected to execute: the repo-root formula-parser pytest suite plus one cross-substrate conformance suite per governed project. IsRegistered is a declaration, never inferred from the filesystem; the AnswerKeyCount / HasEffortlessJson / HasPostgresBootstrap columns are witnessed by scripts/scan-test-suites.py so RegistrationState can say WHY a registered suite is not yet runnable. | — |
 | Name | The same as its test suite ID. | _Order 1. Display alias (calculated)._ |
 | Domain | A defined attribute. | _FK to the governed project this suite tests. Blank for repo-root suites that test the platform itself._ |
@@ -296,6 +470,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Corpus Domain Run Count | The number of corpus domain runs related to the test suite. | _Order 1. How many corpus runs have executed this suite._ |
 | Has Been Exercised | True when at least one of the following holds: the answer key count is greater than 0 or the postgres bootstrap flag is set. | _Order 1. Evidence on disk that this suite has been run at least once: generated answer keys or a generated postgres bootstrap. FALSE means the next run is this suite's first, not that it is broken._ |
 | Test File Count | A defined attribute. | _WITNESSED: test_*.py files in a pytest suite's directory. Zero means the suite is registered but has nothing to run — which is how a platform test suite silently disappearing becomes visible in the registry instead of only as a red run._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Suite Kind | Runner | Is Registered | Expected Substrate Count | Notes | Answer Key Count | Has Effortless JSON | Has Postgres Bootstrap | Last Scanned on | Domain Name ƒ | Domain Kind ƒ | Has Answer Keys ƒ | Is Runnable ƒ | Runnable Flag ƒ | Is Gradable ƒ | Gradable Flag ƒ | Registration State ƒ | Corpus Domain Run Count ƒ | Has Been Exercised ƒ | Test File Count |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| suite-acme-corporation | conformance | python3 scripts/run-conformance.py acme-corporation | true | 0 | Seeded by scan-test-suites.py from a project with an effortless.json. | 5 | true | true | 2026-11-26T03:07:45 | ACME Corporation | toy | true | true | 1.0 | true | 1.0 | ready | 5.0 | true | 0 |
+| suite-acme-llc | conformance | python3 scripts/run-conformance.py acme-llc | true | 17 | Seeded by scan-test-suites.py from a project with an effortless.json. | 1 | true | true | 2026-11-26T03:07:45 | ACME LLC | toy | true | true | 1.0 | true | 1.0 | ready | 6.0 | true | 0 |
+| suite-causal-autoimmune-architecture | conformance | python3 scripts/run-conformance.py causal-autoimmune-architecture | true | 0 | Seeded by scan-test-suites.py from a project with an effortless.json. | 38 | true | false | 2026-11-26T03:07:45 | Causal Autoimmune Architecture | example | true | true | 1.0 | true | 1.0 | ready | 5.0 | true | 0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Corpus Run** | One row per corpus-wide fan-out (scripts/run-corpus.py). Append-only history: how much of the corpus was green on a given day is read straight off these rows. | — |
 | Name | The same as its corpus run ID. | _Order 1. Display alias (calculated)._ |
 | Mode | A defined attribute. | _build-only (build + db reset, conformance skipped) \| full (build + db reset + conformance)._ |
@@ -319,6 +509,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Complete | True when the finished on has a value. | _Order 1. The fan-out has finished._ |
 | Is Corpus Green | True when all of the following hold: the domain run count is greater than 0 and the red domain count is 0. | _Order 4. Every attempted project came back green._ |
 | Overall Status | Determined by priority: “running” if the finished on is blank; “no-targets” if the domain run count is 0; “green” if the red domain count is 0; in all other cases, “red”. | _Order 4. running \| no-targets \| green \| red._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Mode | Started on | Finished on | Is Latest | Target Count | Status Path | Notes | Domain Run Count ƒ | Green Domain Count ƒ | Fully Green Domain Count ƒ | Build Failure Count ƒ | Db Failure Count ƒ | Conformance Failure Count ƒ | Total Duration Seconds ƒ | Red Domain Count ƒ | Green Percent ƒ | Fully Green Percent ƒ | Is Complete ƒ | Is Corpus Green ƒ | Overall Status ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| corpus-20260909-161016 | full | 2026-09-09T16:10:16.000Z | 2026-09-09T16:10:26.000Z | false | 2 | orchestration/corpus-runs/corpus-20260909-161016/status.json | verify the record + root-rebuild path | 2.0 | 1.0 | 1.0 | 0.0 | 0.0 | 1.0 | 10.1 | 1.0 | 50.0 | 50.0 | true | false | red |
+| corpus-20260909-161355 | build-only | 2026-09-09T16:13:55.000Z | 2026-09-09T16:24:14.000Z | false | 38 | orchestration/corpus-runs/corpus-20260909-161355/status.json | first corpus baseline after the 2026-09-09 registry landed | 38.0 | 7.0 | 1.0 | 27.0 | 4.0 | 0.0 | 619.4999999999999 | 31.0 | 18.4 | 2.6 | true | false | red |
+| corpus-20260909-163528 | build-only | 2026-09-09T16:35:28.000Z | 2026-09-09T16:43:30.000Z | false | 38 | orchestration/corpus-runs/corpus-20260909-163528/status.json | after unpinning all 270 pins and taking the reverse-sync spoke out of the build pipeline | 38.0 | 24.0 | 0.0 | 9.0 | 4.0 | 1.0 | 481.69999999999993 | 14.0 | 63.2 | 0.0 | true | false | red |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Corpus Domain Run** | One row per (corpus run x project). Carries the per-phase outcome — build, database reset, conformance — so a red project is red for a NAMED phase instead of a grepped log line, and links to the ConformanceRuns row it produced. | — |
 | Name | The same as its corpus domain run ID. | _Order 1. Display alias (calculated)._ |
 | Corpus Run | A defined attribute. | _FK to the fan-out this attempt belongs to._ |
@@ -349,6 +555,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Latest Fully Green Flag | Determined by priority: 1 if all of the following hold: the corpus run is latest flag is set; the build status is not “fail”; the db status is not “fail”; and the conformance status is “pass”; in all other cases, 0. | _Order 2. 1 when this attempt graded green with nothing failing AND belongs to the latest fan-out._ |
 | Latest Attempt Flag | Determined by priority: 1 if the corpus run is latest flag is set; in all other cases, 0. | _Order 2. 1 when this attempt belongs to the latest fan-out, green or not._ |
 | Conformance Outcome | A defined attribute. | _Why the conformance phase landed where it did: all-substrates-passed \| substrate-mismatch (the harness ran fine, substrates disagreed with the answer keys) \| harness-error (the harness itself failed) \| tests-passed / tests-failed (pytest suites) \| skipped. ConformanceStatus stays pass/fail/skipped so the flag formulas remain simple; this column carries the distinction._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Build Status | Db Status | Conformance Status | Substrates Tested | Substrates Passed | Duration Seconds | First Error | Log Path | Domain Name ƒ | Domain Kind ƒ | Corpus Run Mode ƒ | Corpus Run is Latest ƒ | Is Green ƒ | Green Flag ƒ | Is Fully Green ƒ | Fully Green Flag ƒ | Build Failed Flag ƒ | Db Failed Flag ƒ | Conformance Failed Flag ƒ | Failing Phase ƒ | Latest Green Flag ƒ | Latest Fully Green Flag ƒ | Latest Attempt Flag ƒ | Conformance Outcome |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| corpus-20260909-161016:customer-fullname | pass | pass | fail | 2 | 1 | 8.4 | 1 of 2 substrates did not score 100 | orchestration/corpus-runs/corpus-20260909-161016/logs/customer-fullname.log | Customer FullName | toy | full | false | false | 0.0 | false | 0.0 | 0.0 | 0.0 | 1.0 | conformance | 0.0 | 0.0 | 0.0 | substrate-mismatch |
+| corpus-20260909-161016:root | skipped | skipped | pass | — | — | 1.7 | — | orchestration/corpus-runs/corpus-20260909-161016/logs/root.log | effortless-rulebooks | root | full | false | true | 1.0 | true | 1.0 | 0.0 | 0.0 | 0.0 | — | 0.0 | 0.0 | 0.0 | tests-passed |
+| corpus-20260909-161355:acme-corporation | fail | pending | pending | — | — | 4.8 | effortless exited 255: httplocalhost4242postgrescalculatedtorulebook  (/postgres-bootstrap) | orchestration/corpus-runs/corpus-20260909-161355/logs/acme-corporation.log | ACME Corporation | toy | build-only | false | false | 0.0 | false | 0.0 | 1.0 | 0.0 | 0.0 | build | 0.0 | 0.0 | 0.0 | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Rulebook Flavor** | Classification of each demo rulebook under rulebook-examples/. Lets the UI group projects by what they're TEACHING — a tutorial ladder is a different beast from a computation-heavy ontology. Density numbers come from a static analysis of each rulebook (calculated/aggregation/lookup counts). | — |
 | Name | The same as its display name. | _Order 1. Display alias (calculated). Order 1._ |
 | Sort Order | A defined attribute. | _Ascending integer; drives default display order in the portal. Lower = shown first. Tutorial-ladder projects sort before demos; demos before meta/graph._ |
@@ -383,6 +605,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Showcase Card | True when all of the following hold: the catalog complete flag is set and the domain open finding count (a missing value counts as 1) is 0. | _Order 4. Complete card whose domain has no open findings._ |
 | Is Catalog Ready | True when all of the following hold: the showcase card flag is set and the domain is consistent (a missing value counts as false). ⚠︎ mechanical <!-- rulespeak:reword --> | _Order 5. Card and domain are both clean — safe to feature._ |
 | Domain Conformance Score | Taken from the linked domain. | _Order 5. Conformance score of the linked domain._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Sort Order | Project Slug | Display Name | Tagline | Logo Path | Flavor | Complexity | Entity Count | Calculated Count | Aggregation Count | Lookup Count | Learning Focus | Good Answer Key for | Derived Field Count ƒ | Has Domain ƒ | Tag Count ƒ | Answer Key Target Count ƒ | Domain Area ƒ | Derived Ratio ƒ | Is Tagged ƒ | Is Toy Flavor ƒ | Domain Finding Count ƒ | Domain Open Finding Count ƒ | Is Dense Derivation ƒ | Is Catalog Complete ƒ | Domain is Consistent ƒ | Domain is Standard Layout ƒ | Is Showcase Card ƒ | Is Catalog Ready ƒ | Domain Conformance Score ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| ACME Corporation | 50 | acme-corporation | ACME Corporation | CRUD starter template — clients, projects, employees, roles. The "starter-sized" demo for new authors. | rulebook-examples/acme-corporation/effortless-logo.png | crud-template | basic | 5 | 1 | 2 | 10 | Classic relational CRUD template — clients, projects, employees, roles. The 'starter sized' demo for new authors. | postgres,entity-framework | 13.0 | true | 5.0 | 2 | toy-rulebooks | 2.6 | true | true | 1.0 | 0.0 | true | true | true | true | true | true | 4.0 |
+| ACME, LLC | 20 | acme-llc | ACME, LLC | Smallest viable rulebook with a calculated field — the "Hello, formulas" tutorial. | rulebook-examples/acme-llc/effortless-logo.png | tutorial-ladder | minimal | 3 | 3 | 0 | 0 | Smallest viable rulebook with a calculated field — the 'Hello, formulas' tutorial. | — | 3.0 | true | 5.0 | 0 | toy-rulebooks | 1.0 | true | true | 4.0 | 2.0 | true | true | false | true | false | false | 3.0 |
+| Customer FullName | 10 | customer-fullname | Customer FullName | One entity, one calculated field (CONCAT(First,' ',Last)) — proves the toolchain end-to-end with no relations. | rulebook-examples/customer-fullname/effortless-logo.png | tutorial-ladder | minimal | 1 | 2 | 0 | 0 | One entity, one calculated field (CONCAT(First, ' ', Last)). The 'absolute minimum' demo — proves the toolchain end-to-end with no relationships. | — | 2.0 | true | 5.0 | 0 | toy-rulebooks | 2.0 | true | true | 4.0 | 0.0 | true | true | true | true | true | true | 4.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Field Type Taxonomy** | Names every field-type the rulebook supports, with intent and example formula shape. Lets the UI explain what makes a calculated field different from a lookup field from an aggregation, instead of just showing a type tag. | — |
 | Name | The same as its type name. | _Order 1. Display alias (calculated). Order 1._ |
 | Type Name | A defined attribute. | _The string that appears in schema[].type_ |
@@ -397,6 +635,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Tier Label | Determined by priority: “input” if the stored and editable flag is set; “derived-full” if the fully expressive tier flag is set; in all other cases, “derived-partial”. | _Order 3. input / derived-full / derived-partial._ |
 | Is Input Tier | True when the tier label is “input”. | _Order 4. User-entered field type._ |
 | Ui Hint | Determined by priority: “editable” if the input tier flag is set; in all other cases, “read-only”. | _Order 5. editable / read-only._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Type Name | Intent | Example Formula | Storage Mode | Read Only in Ui | Expressive Tier | Is Stored ƒ | Is Fully Expressive Tier ƒ | Is Stored and Editable ƒ | Tier Label ƒ | Is Input Tier ƒ | Ui Hint ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| raw | raw | Stored scalar with no derivation. The bread-and-butter of every entity. | — | stored | false | shape-only | true | false | true | input | true | editable |
+| calculated | calculated | Excel-style formula evaluated from other fields on the SAME row. | CONCAT(First, ' ', Last) | derived-at-read | true | partial-formula | false | false | false | derived-partial | false | read-only |
+| lookup | lookup | Foreign-key reference to another entity. Description should say 'FK to <Entity>'. | FK to Customers | stored | false | shape-only | true | false | true | input | true | editable |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Formula Dialect** | Catalog of formula dialects that a rulebook can declare. Per-rulebook formula dialect is headline feature #6: each demo rulebook names which dialect it speaks (in _meta.formulaDialect), and substrates honor that declaration. The platform rulebook does not enumerate which functions a dialect supports — that lives in each demo rulebook's own formula definitions. This catalog only registers the dialects themselves. | — |
 | Name | A defined attribute. | — |
 | Origin | A defined attribute. | _Where the dialect's surface syntax comes from (Excel, Airtable, etc.)._ |
@@ -413,6 +667,21 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Dialect Role | Determined by priority: “primary” if the active multi substrate flag is set; “niche” if the active flag is set; in all other cases, “retired”. | _Order 3. primary / niche / retired._ |
 | Is Primary Dialect | True when the dialect role is “primary”. | _Order 4. Active dialect spanning several substrates._ |
 | Dialect Label | Determined by priority: the name, followed by “ (primary)” if the primary dialect flag is set; in all other cases, the name. | _Order 5. Display label marking the primary dialect._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Origin | Field Ref Syntax | String Concat | Case Sensitive | Example Formula | Primary Substrates | Status | Notes | Is Active ƒ | Primary Substrate Count ƒ | Is Active Multi Substrate ƒ | Dialect Role ƒ | Is Primary Dialect ƒ | Dialect Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Airtable | Airtable formula field language | {FieldName} | & operator OR CONCATENATE() | false | IF({Status} = "Open", "yes", "no") | airtable, xlsx, postgres | active | Near-superset of Excel for the functions this project uses. Airtable-specific extensions (e.g. DATETIME_FORMAT) are honored when present. | true | 3 | true | primary | true | Airtable (primary) |
+| Excel | Microsoft Excel formula language | {FieldName} | & operator | false | SUBSTITUTE(LOWER({DisplayName}), " ", "-") | xlsx, csv, postgres, python, golang | active | Default dialect for rulebooks without an explicit declaration. Covered by IF, AND, OR, CONCAT, LOWER, UPPER, SUBSTITUTE, LEFT, RIGHT, arithmetic, comparison. | true | 5 | true | primary | true | Excel (primary) |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Demo Narrative** | Curated narratives that demonstrate ERB capabilities in motion: substrates 'follow along' as the rulebook changes. Two narrative styles coexist: (1) commit-sequence narratives (legacy) where a single demo rulebook evolves over commits; (2) cross-rulebook narratives (current) where the same demo is observed across DIFFERENT rulebooks side-by-side. Cross-rulebook supersedes commit-sequence because RulebookDomains now form a tree (ParentDomainId) — the progression is data, not git history. | — |
 | Name | Computed as the narrative name, followed by “ / ”, followed by the step name. | _Order 1. Display alias (calculated). Order 1._ |
 | Order | A defined attribute. | _Order within the narrative sequence._ |
@@ -434,6 +703,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Live Story | True when all of the following hold: the retired flag is not set and the related domain ID has a value. | _Order 3. Current narrative bound to an existing domain._ |
 | Story State | Determined by priority: “live” if the live story flag is set; “retired-toy” if the retired toy story flag is set; in all other cases, “retired”. | _Order 4. live / retired-toy / retired._ |
 | Is Current Story | True when the story state is “live”. | _Order 5. Narrative still tells a current story._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Order | Narrative Name | Step Name | What Happens | Key Lesson | Observed Cost | Narrative Style | Status | Superseded by | Is Deprecated ƒ | Is Superseded ƒ | Domain Name ƒ | Is Retired ƒ | Domain is Toy ƒ | Is Retired Toy Story ƒ | Is Live Story ƒ | Story State ƒ | Is Current Story ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Substrate Drift (cross-rulebook progression) / CustomerFullName (root) | 1 | Substrate Drift (cross-rulebook progression) | CustomerFullName (root) | Start at the simplest rulebook in the tree — one table, one CONCAT formula. Every substrate emits its analog. Conformance is 100% across the board. | The contract is observable at minimum scale. A 1-table rulebook is enough to exercise inject + execute + grade end-to-end. | All substrates < 1s; English regeneration ~30s. | cross-rulebook | active | — | false | false | Customer FullName | false | true | false | true | live | true |
+| Substrate Drift (cross-rulebook progression) / Talisman BASIC (child of root) | 2 | Substrate Drift (cross-rulebook progression) | Talisman BASIC (child of root) | Walk down the progression tree to Talisman BASIC — adds relationships, aggregations, role/agent separation. Every substrate handles the elaboration with no substrate-side edits. [Referenced demo talisman-basic has been removed from the repo.] | Walking the tree of rulebooks (ParentDomainId) IS the demo — no git rewind required. The viewer can see N rulebooks side-by-side rather than replaying commits. | Python/Go/Postgres < 1s, OWL ~10s, English ~5min. | cross-rulebook | active | — | false | false | — | false | false | false | false | retired | false |
+| Substrate Drift (cross-rulebook progression) / Talisman ADVANCED (child of BASIC) | 3 | Substrate Drift (cross-rulebook progression) | Talisman ADVANCED (child of BASIC) | Walk further down: Talisman ADVANCED elaborates BASIC with cross-entity lookups and conditional IF logic. Conformance still 100% across deterministic substrates. [Referenced demo talisman-advanced has been removed from the repo.] | Elaboration within a tree of rulebooks costs the SAME as elaboration within a commit history — proving that 'commits' was never the load-bearing thing; the progression structure was. | Cost profile unchanged from BASIC. | cross-rulebook | active | — | false | false | — | false | false | false | false | retired | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Glossary** | Authoritative glossary for the ERB platform. Every term used in orchestration code, docs, the admin portal UI, or rulebook tables appears here EXACTLY ONCE, with a definition AND an ImplementedAs pointer back into this rulebook (or to source files when the implementation is code rather than data). If a term appears in repo prose but has no row here, that's a documentation bug. If a term has a row here but no ImplementedAs target, that's an architecture bug — every concept should be data, code, or a value. | — |
 | Name | The same as its term. | _Order 1. Display alias (calculated). Order 1._ |
 | Term | A defined attribute. | _The canonical word/phrase as it appears in code and docs._ |
@@ -450,6 +735,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Term Quality | Determined by priority: “anchored” if the file backed flag is set, in all other cases “rich” if the rich term flag is set; “implemented” if the implementation flag is set; in all other cases, “definition-only”. | _Order 3. anchored / rich / implemented / definition-only._ |
 | Is Anchored | True when the term quality is “anchored”. | _Order 4. Rich term anchored to a file._ |
 | Glossary Tier | Determined by priority: “tier-1” if the anchored flag is set; “tier-2” if the term quality is “rich”; in all other cases, “tier-3”. | _Order 5. tier-1 / tier-2 / tier-3._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Term | Category | Definition | Implemented As | Aliases | Notes | Alias Count ƒ | Has Implementation ƒ | Implementation Kind ƒ | Is File Backed ƒ | Is Rich Term ƒ | Term Quality ƒ | Is Anchored ƒ | Glossary Tier ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Active Domain | Active Domain | concept | The currently-selected demo rulebook project. Recorded in orchestration/active-domain.txt; consulted by every orchestration script. | file:orchestration/active-domain.txt | active project, current rulebook | — | 2 | true | file | true | true | anchored | true | tier-1 |
+| Add Tool | Add Tool | concept | Catalog of transpilers the developer can install into the active project from the admin portal. | table:AddToolCatalog | — | — | 0 | true | table | false | false | implemented | false | tier-3 |
+| Admin Portal | Admin Portal | tool | Local web app on :7777 that edits the active project's rulebook. Categorically NOT a domain — like Word vs. a .docx (see CLAUDE.md). | table:AdminPortalRuntime; table:AppScreens; table:AppNavigation | portal, admin tool | — | 2 | true | table | false | true | rich | false | tier-2 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Rulebook Tag** | Tag catalog for RulebookFlavors. Each tag has a color and emoji so it renders as a visible chip in the portal. Tags are flexible attributes — a flavor can have many tags. Browse/filter the flavors grid by any combination of tags. | — |
 | Name | The same as its label. | _Order 1. Display alias (calculated). Order 1._ |
 | Label | A defined attribute. | _Short human-readable label shown as the chip text._ |
@@ -465,6 +766,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Tag Health | Determined by priority: “unused” if the unused flag is set; “common” if the usage count is at least 5; in all other cases, “rare”. | _Order 3. unused / common / rare._ |
 | Is Retirement Candidate | True when the tag health is “unused”. | _Order 4. No card uses the tag._ |
 | Tag Action | Determined by priority: “retire” if the retirement candidate flag is set; in all other cases, “keep”. | _Order 5. retire / keep._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Label | Category | Color | Emoji | Description | Usage Count ƒ | Is Source Tag ƒ | Is Unused ƒ | Unused Flag ƒ | Tag Health ƒ | Is Retirement Candidate ƒ | Tag Action ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Advanced | Advanced | complexity | #FF6900 | 🔶 | Many entities, deep aggregations, or complex formula logic. | 9.0 | false | false | 0.0 | common | false | keep |
+| Airtable First | Airtable First | source | #18BFFF | 🌐 | Airtable is the SSoT; effortless build pulls from Airtable and overwrites the local JSON. | 4.0 | true | false | 0.0 | rare | false | keep |
+| Basic | Basic | complexity | #7BDCB5 | 🔸 | A handful of related entities; demonstrates relationships and simple lookups. | 7.0 | false | false | 0.0 | common | false | keep |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Flavor Tag** | Junction table linking RulebookFlavors to RulebookTags (many-to-many via junction). A flavor can have any number of tags; a tag can apply to any number of flavors. The portal renders each flavor's tags as colored chip rows in the grid and uses them to drive the filter panel. | — |
 | Name | Computed as the flavor, followed by “:”, followed by the tag. | _Order 1. Display alias (calculated). Order 1._ |
 | Flavor | A defined attribute. | _FK to RulebookFlavors.FlavorId._ |
@@ -478,6 +795,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Tag Share | Determined by priority: 0 if the flavor tag count (a missing value counts as 0) is 0; in all other cases, 100 divided by the flavor tag count rounded to 0 decimal place(s). | _Order 3. Percent of the card's tag weight this tag holds._ |
 | Is Defining Tag | True when all of the following hold: the sole tag flag is set and the source tagging flag is set. | _Order 4. Sole tag on the card and it names the source spoke._ |
 | Tag Weight | Determined by priority: 2 if the defining tag flag is set; in all other cases, 1. | _Order 5. Defining tags weigh double in card summaries._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Tag Label ƒ | Tag Category ƒ | Flavor Display Name ƒ | Is Source Tagging ƒ | Flavor Tag Count ƒ | Is Sole Tag ƒ | Tag Share ƒ | Is Defining Tag ƒ | Tag Weight ƒ |
+|---|---|---|---|---|---|---|---|---|---|
+| flav-001:tag-rulebook-first | Rulebook First | source | ACME Corporation | true | 5.0 | false | 20.0 | false | 1.0 |
+| flav-001:tag-postgres | Postgres | substrate | ACME Corporation | false | 5.0 | false | 20.0 | false | 1.0 |
+| flav-001:tag-excel | Excel / XLSX | substrate | ACME Corporation | false | 5.0 | false | 20.0 | false | 1.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Claude Skill** | The catalog of Claude Code skills that make up the effortless-skills skill set (repo renamed from effortless-claude). Each skill is a loadable instruction set that pre-teaches Claude everything it needs to work in an ERB project — naming conventions, pipeline mechanics, formula semantics, etc. Skills are the answer to the LLM learning-curve problem: instead of every user teaching Claude from scratch, the learning is encoded once and loaded on demand. LocalMirrorPath is a derived artifact: clone-skills.sh pulls a live copy of each skill from the source repo so the docs/skills/ mirror stays current. | — |
 | Name | A defined attribute. | _Skill directory name, matches the slash command without the leading /_ |
 | Slash Command | Computed as a slash, followed by the name. | _Order 1. The slash command users invoke, e.g. /effortless-cmcc_ |
@@ -509,7 +842,23 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Healthy Flag | Determined by priority: 0 if at least one of the following holds: the deprecated but routed flag is set or the isolated flag is set; in all other cases, 1. | _Order 4. 1 when the catalog entry is healthy — rollup carrier._ |
 | Needs Catalog Action | True when the healthy flag is 0. | _Order 5. Isolated or deprecated-but-routed — needs a catalog decision._ |
 | Catalog Label | Computed as the name, followed by “ [”, followed by the catalog state, followed by “]”. | _Order 5. Display label with catalog state._ |
-| **Build Phas** | Delivery phases of the repo-consistency programme. Contract table for rulebook-to-progress-report. QuotedPrice values are illustrative planning weights, not invoices. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Slash Command ƒ | Category | Load Gate | Is Entry Point | Status | One Line Summary | Audience | Local Mirror Path ƒ | Clone URL | Highlight in Readme | Is Deprecated ƒ | Deprecated Flag ƒ | Outbound Route Count ƒ | Inbound Route Count ƒ | Is Customer Facing ƒ | Is Isolated ƒ | Isolated Flag ƒ | Is Hub ƒ | Route Degree ƒ | Skill Role ƒ | Is Live Hub ƒ | Is Deprecated But Routed ƒ | Catalog State ƒ | Healthy Flag ƒ | Needs Catalog Action ƒ | Catalog Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| effortless-airtable | /effortless-airtable | data | effortless-project | false | active | Use when making schema or data changes via the Airtable API in an ERB project — adding fields, creating tables, modifying existing fields, or when you need to understand Airtable API limitations (e. | customer | docs/skills/effortless-airtable/SKILL.md | https://raw.githubusercontent.com/EffortlessAPI/effortless-skills/main/skills/effortless-airtable/SKILL.md | false | false | 0.0 | 0.0 | 1.0 | true | false | 0.0 | false | 1.0 | leaf | false | false | leaf | 1.0 | false | effortless-airtable [leaf] |
+| effortless-airtable-omni | /effortless-airtable-omni | data | effortless-project | false | active | Use ONLY for Airtable schema changes that the API cannot handle — formula fields, lookup fields, rollup fields, and new table creation (which requires the Name formula). | customer | docs/skills/effortless-airtable-omni/SKILL.md | https://raw.githubusercontent.com/EffortlessAPI/effortless-skills/main/skills/effortless-airtable-omni/SKILL.md | false | false | 0.0 | 0.0 | 2.0 | true | false | 0.0 | false | 2.0 | leaf | false | false | leaf | 1.0 | false | effortless-airtable-omni [leaf] |
+| effortless-bases | /effortless-bases | setup | explicit-request | false | active | Use when the user wants to spin up a Postgres base on bases. | customer | docs/skills/effortless-bases/SKILL.md | https://raw.githubusercontent.com/EffortlessAPI/effortless-skills/main/skills/effortless-bases/SKILL.md | false | false | 0.0 | 0.0 | 1.0 | true | false | 0.0 | false | 1.0 | leaf | false | false | leaf | 1.0 | false | effortless-bases [leaf] |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
+| **Build Phase** | Delivery phases of the repo-consistency programme. Contract table for rulebook-to-progress-report. QuotedPrice values are illustrative planning weights, not invoices. | — |
 | Name | The same as its title. | _Order 1. Display alias (calculated). Order 1._ |
 | Phase Number | A defined attribute. | _Ordinal position of the phase in the programme._ |
 | Title | A defined attribute. | _Human title of the phase._ |
@@ -521,22 +870,38 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Project | A defined attribute. | _FK to ProjectMetadata — roots the phase to the platform dashboard row._ |
 | ERB Packages | A defined attribute. | _Reverse relationship: packages landing primarily in this phase._ |
 | User Stories | A defined attribute. | _Reverse relationship: stories scheduled in this phase._ |
-| Story Count | The number of user stories related to the build phas. | _Order 1. Stories scheduled in this phase._ |
-| Package Count | The number of ERB packages related to the build phas. | _Order 1. Packages landing primarily in this phase._ |
+| Story Count | The number of user stories related to the build phase. | _Order 1. Stories scheduled in this phase._ |
+| Package Count | The number of ERB packages related to the build phase. | _Order 1. Packages landing primarily in this phase._ |
 | Is Priced | True when the quoted price (a missing value counts as 0) is greater than 0. | _Order 1. Phase carries a quoted price._ |
 | Priced Flag | Determined by priority: 1 if the quoted price (a missing value counts as 0) is greater than 0; in all other cases, 0. | _Order 1. 1 when priced — rollup carrier._ |
 | Is Fixed Price | True when the phase kind is “fixed-price”. | _Order 1. Phase kind is fixed-price._ |
-| Done Story Count | The total done flag across the user stories related to the build phas. | _Order 2. Stories asserted done in this phase._ |
-| Effort Weight Sum | The total effort weight across the user stories related to the build phas. | _Order 2. Sum of effort weights of the phase's stories._ |
+| Done Story Count | The total done flag across the user stories related to the build phase. | _Order 2. Stories asserted done in this phase._ |
+| Effort Weight Sum | The total effort weight across the user stories related to the build phase. | _Order 2. Sum of effort weights of the phase's stories._ |
 | Has Stories | True when the story count is greater than 0. | _Order 2. Phase has at least one story._ |
 | Done Percent | Determined by priority: 0 if the story count is 0; in all other cases, 100 times the done story count divided by the story count rounded to 0 decimal place(s). | _Order 3. Percent of stories asserted done._ |
-| Weighted Done Sum | The total weighted done across the user stories related to the build phas. | _Order 3. Effort weight earned by done stories._ |
+| Weighted Done Sum | The total weighted done across the user stories related to the build phase. | _Order 3. Effort weight earned by done stories._ |
 | Is Priced With Stories | True when all of the following hold: the priced flag is set and the stories flag is set. | _Order 3. Priced phase that carries stories (progress-report guard)._ |
 | Weighted Done Percent | Determined by priority: 0 if the effort weight sum is 0; in all other cases, 100 times the weighted done sum divided by the effort weight sum rounded to 0 decimal place(s). | _Order 4. Effort-weighted percent of the phase asserted done._ |
-| Avg Story Progress | The average derived progress percent across the user stories related to the build phas. | _Order 4. Mean criteria-derived progress of the phase's stories._ |
+| Avg Story Progress | The average derived progress percent across the user stories related to the build phase. | _Order 4. Mean criteria-derived progress of the phase's stories._ |
 | Is Contract Safe | True when at least one of the following holds: the priced flag is not set or the priced with stories flag is set. | _Order 4. Will not trip the progress-report priced-phase refusal._ |
 | Phase State | Determined by priority: “complete” if the weighted done percent is 100; “in-progress” if the weighted done percent is greater than 0; “bid” if the current bid flag is set; in all other cases, “planned”. | _Order 5. complete / in-progress / bid / planned._ |
 | Is Report Safe | True when all of the following hold: the contract safe flag is set and the stories flag is set. | _Order 5. Passes every progress-report phase guard._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Phase Number | Title | Quoted Price | Duration Months | Phase Kind | Is Current Bid | Summary | Story Count ƒ | Package Count ƒ | Is Priced ƒ | Priced Flag ƒ | Is Fixed Price ƒ | Done Story Count ƒ | Effort Weight Sum ƒ | Has Stories ƒ | Done Percent ƒ | Weighted Done Sum ƒ | Is Priced With Stories ƒ | Weighted Done Percent ƒ | Avg Story Progress ƒ | Is Contract Safe ƒ | Phase State ƒ | Is Report Safe ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Semantic Foundation | 1 | Semantic Foundation | 12000 | 1 | fixed-price | false | Build the governing meta-rulebook: lift every repo concept into tables, materialize the FK graph, run five breadth-first inference loops to a ~50/50 raw/derived split. | 8.0 | 1.0 | true | 1.0 | true | 8.0 | 23.0 | true | 100.0 | 23.0 | true | 100.0 | 100.0 | true | complete | true |
+| Consistency Sweep | 2 | Consistency Sweep | 18000 | 2 | fixed-price | true | Work the ConsistencyFindings queue to zero: canonical rulebook paths, effortless.json baselines, READMEs with bus sections, __meta__ coverage, container hygiene. | 16.0 | 1.0 | true | 1.0 | true | 16.0 | 40.0 | true | 100.0 | 40.0 | true | 100.0 | 96.875 | true | complete | true |
+| Progress Instrumentation | 3 | Progress Instrumentation | 9000 | 1 | fixed-price | false | Wire rulebook-to-progress-report into the platform pipeline; keep the story corpus and rollups live. | 7.0 | 1.0 | true | 1.0 | true | 7.0 | 13.0 | true | 100.0 | 13.0 | true | 100.0 | 100.0 | true | complete | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Effort Class** | Effort/complexity classes for user stories (progress-report contract; the most demanding class must be literally named G3). | — |
 | Name | The same as its title. | _Order 1. Display alias (calculated). Order 1._ |
 | Title | A defined attribute. | _Human label of the class._ |
@@ -548,6 +913,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Heavy Load | True when the weighted story load is at least 20. | _Order 3. Weighted load of 20 or more._ |
 | Load Band | Determined by priority: “heavy” if the heavy load flag is set; in all other cases, “light”. | _Order 4. heavy / light._ |
 | Class Label | Computed as the title, followed by “ (”, followed by the load band, followed by “)”. | _Order 5. Display label with load band._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Title | Complexity Weight | Sort Order | Story Count ƒ | Weighted Story Load ƒ | Is Heavy Load ƒ | Load Band ƒ | Class Label ƒ |
+|---|---|---|---|---|---|---|---|---|
+| Routine | Routine | 1 | 1 | 24.0 | 24.0 | true | heavy | Routine (heavy) |
+| Substantial | Substantial | 3 | 2 | 24.0 | 72.0 | true | heavy | Substantial (heavy) |
+| Demanding | Demanding | 8 | 3 | 6.0 | 48.0 | true | heavy | Demanding (heavy) |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Delivery Discipline** | Delivery disciplines splitting programme effort. Client-visible SharePercent must sum to 100 (progress-report hard requirement). | — |
 | Name | The same as its title. | _Order 1. Display alias (calculated). Order 1._ |
 | Title | A defined attribute. | _Discipline label._ |
@@ -561,6 +942,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Discipline Tier | Determined by priority: “major” if the visible major flag is set; “minor” if the client visible flag is set; in all other cases, “internal”. | _Order 3. major / minor / internal._ |
 | Is Client Headline | True when the discipline tier is “major”. | _Order 4. Major client-visible discipline._ |
 | Discipline Label | Determined by priority: the title, followed by “ *” if the client headline flag is set; in all other cases, the title. | _Order 5. Display label starring headline disciplines._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Title | Share Percent | Description | Client Visible | Sort Order | Visible Share ƒ | Is Major Discipline ƒ | Is Visible Major ƒ | Discipline Tier ƒ | Is Client Headline ƒ | Discipline Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Application Integration | Application Integration | 15 | Portal and mobile surfaces consuming the vw_ views. | true | 3 | 15.0 | false | false | minor | false | Application Integration |
+| Conformance Verification | Conformance Verification | 15 | Balance checks, DAG validation, substrate conformance runs. | true | 4 | 15.0 | false | false | minor | false | Conformance Verification |
+| Documentation & DevX | Documentation & DevX | 15 | READMEs, rulespeak, doctrine files, skill catalog upkeep. | true | 5 | 15.0 | false | false | minor | false | Documentation & DevX |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Package** | Capability packages of the platform programme (progress-report contract). | — |
 | Name | The same as its title. | _Order 1. Display alias (calculated). Order 1._ |
 | Title | A defined attribute. | _Package title._ |
@@ -582,6 +979,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Avg Feature Done Percent | The average done percent across the ERB features related to the ERB package. | _Order 4. Mean of feature done percentages._ |
 | Is Complete | True when the done percent is 100. | _Order 5. Every story in the package is done._ |
 | Package State | Determined by priority: “complete” if the done percent is 100; “in-progress” if the avg feature done percent (a missing value counts as 0) is greater than 0; in all other cases, “planned”. | _Order 5. complete / in-progress / planned._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Title | Sort Order | Summary | Category Count ƒ | Feature Count ƒ | Phase Title ƒ | Phase Number ƒ | Story Count ƒ | Phase is Priced ƒ | Done Story Count ƒ | Is Priced Package ƒ | Done Percent ƒ | Avg Feature Done Percent ƒ | Is Complete ƒ | Package State ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Catalog & Skills Unification | Catalog & Skills Unification | 6 | Domains, flavors, tags and the Claude skill catalog reconciled and cross-linked. | 2.0 | 4.0 | Catalog, Skills & Legacy Succession | 5 | 8.0 | true | 4.0 | true | 50.0 | 50.0 | false | in-progress |
+| Repo Consistency Governance | Repo Consistency Governance | 2 | Consistency rules as data, findings as a work queue, sweep to zero open findings. | 4.0 | 9.0 | Consistency Sweep | 2 | 17.0 | true | 17.0 | true | 100.0 | 100.0 | true | complete |
+| Meta-Rulebook Foundation | Meta-Rulebook Foundation | 1 | The governing rulebook itself: full semantic inventory plus the five-loop inference fabric. | 2.0 | 4.0 | Semantic Foundation | 1 | 8.0 | true | 8.0 | true | 100.0 | 100.0 | true | complete |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Feature Category** | Feature categories (epics) of the programme (progress-report contract). | — |
 | Name | The same as its title. | _Order 1. Display alias (calculated). Order 1._ |
 | Title | A defined attribute. | _Epic title._ |
@@ -600,6 +1013,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Done Percent | Determined by priority: 0 if the story count is 0; in all other cases, 100 times the feature done story count divided by the story count rounded to 0 decimal place(s). | _Order 4. Percent of the epic's stories asserted done._ |
 | Avg Story Progress | The average derived progress percent across the user stories related to the ERB feature category. | _Order 4. Mean criteria-derived progress of the epic's stories._ |
 | Epic State | Determined by priority: “complete” if the done percent is 100; “in-progress” if the avg story progress (a missing value counts as 0) is greater than 0; in all other cases, “planned”. | _Order 5. complete / in-progress / planned._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Title | Sort Order | Summary | Feature Count ƒ | Story Count ƒ | Package Title ƒ | Has Stories ƒ | Package Feature Count ƒ | Feature Done Story Count ƒ | Share of Package Features ƒ | Done Percent ƒ | Avg Story Progress ƒ | Epic State ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Catalog Reconciliation | Catalog Reconciliation | 11 | Domains, flavor cards and tags aligned with the filesystem. | 2.0 | 4.0 | Catalog & Skills Unification | true | 4.0 | 2.0 | 50.0 | 50.0 | 50.0 | in-progress |
+| Documentation Conformance | Documentation Conformance | 5 | READMEs, bus sections, __meta__ coverage. | 2.0 | 3.0 | Repo Consistency Governance | true | 9.0 | 3.0 | 22.0 | 100.0 | 100.0 | complete |
+| Inference Fabric | Inference Fabric | 2 | FK materialization plus five breadth-first inference loops. | 2.0 | 4.0 | Meta-Rulebook Foundation | true | 4.0 | 4.0 | 50.0 | 100.0 | 100.0 | complete |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Feature** | Individual features of the programme (progress-report contract). | — |
 | Name | The same as its title. | _Order 1. Display alias (calculated). Order 1._ |
 | Title | A defined attribute. | _Feature title._ |
@@ -620,6 +1049,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Feature State | Determined by priority: “complete” if the complete flag is set; “in-progress” if the avg story progress (a missing value counts as 0) is greater than 0; in all other cases, “planned”. | _Order 5. complete / in-progress / planned._ |
 | ERB Epic | A defined attribute. | _The epic this feature belongs to._ |
 | Sort Order | A defined attribute. | _Display order within the epic._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Title | Summary | Story Count ƒ | Category Title ƒ | Package Title ƒ | Done Story Count ƒ | Has Stories ƒ | Category Story Count ƒ | Done Percent ƒ | Share of Epic Stories ƒ | Avg Story Progress ƒ | Is Complete ƒ | Feature State ƒ | Sort Order |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Concept Tables | Concept Tables | Substrates, proxy routes, tools, skills, glossary, axioms, invariants each in one table. | 2.0 | Semantic Inventory | Meta-Rulebook Foundation | 2.0 | true | 4.0 | 100.0 | 50.0 | 100.0 | true | complete | — |
+| Config Standard | Config Standard | Every project carries a real effortless.json; legacy ssotme.json retired. | 2.0 | Pipeline Conformance | Repo Consistency Governance | 2.0 | true | 4.0 | 100.0 | 50.0 | 100.0 | true | complete | — |
+| Consistency Dashboard | Consistency Dashboard | Per-domain conformance scores from derived fields, at a glance. | 1.0 | Explorer Governance Surfaces | Explorer Governance Surfaces | 1.0 | true | 2.0 | 100.0 | 50.0 | 100.0 | true | complete | — |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **User Story** | User stories of the repo-consistency programme (progress-report contract). | — |
 | Name | The same as its req ID. | _Order 1. Display alias (calculated). Order 1._ |
 | Req ID | A defined attribute. | _Requirement code shown in the report (US-001 ...)._ |
@@ -647,7 +1092,23 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Progress State | Determined by priority: “drift” if the status drift flag is set; “accepted” if the acceptance complete flag is set; “in-flight” if the derived progress percent is greater than 0; in all other cases, “not-started”. | _Order 4. drift / accepted / in-flight / not-started._ |
 | Priority Band | Determined by priority: “fix-first” if the progress state is “drift”; “continue” if the progress state is “in-flight”; in all other cases, “queue”. | _Order 5. fix-first / continue / queue._ |
 | Report Label | Computed as the req ID, followed by a space, followed by the progress state. | _Order 5. Display label with progress state._ |
-| **Acceptance Criteria** | Acceptance criteria per user story (progress-report contract). | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Req ID | Story Text | Status | Dev Progress Percent | Criterion Count ƒ | Is Done ƒ | Done Flag ƒ | Effort Weight ƒ | Phase Number ƒ | Feature Title ƒ | Met Criterion Count ƒ | Has Criteria ƒ | Weighted Done ƒ | Derived Progress Percent ƒ | Is Acceptance Complete ƒ | Has Status Drift ƒ | Weighted Progress ƒ | Progress State ƒ | Priority Band ƒ | Report Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| US-001 | US-001 | As a platform maintainer, I want every project directory under rulebook-examples/ and toy-rulebooks/ modeled as a RulebookDomains row keyed by its slug, so the catalog and the filesystem can never silently diverge. | done | 100 | 3.0 | true | 1.0 | 3.0 | 1 | Domain Registry | 3.0 | true | 3.0 | 100.0 | true | false | 300.0 | accepted | queue | US-001 accepted |
+| US-002 | US-002 | As a demo author, I want each domain row to carry its actual rulebook path and table count, so stale documentation references are queryable facts instead of folklore. | done | 100 | 2.0 | true | 1.0 | 1.0 | 1 | Domain Registry | 2.0 | true | 1.0 | 100.0 | true | false | 100.0 | accepted | queue | US-002 accepted |
+| US-003 | US-003 | As a platform maintainer, I want substrates, proxy routes, transpiler tools, skills, glossary terms, axioms and framing invariants each in a first-class table, so every semantic concept in the repo has exactly one home. | done | 100 | 2.0 | true | 1.0 | 3.0 | 1 | Concept Tables | 2.0 | true | 3.0 | 100.0 | true | false | 300.0 | accepted | queue | US-003 accepted |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
+| **Acceptance Criterion** | Acceptance criteria per user story (progress-report contract). | — |
 | Name | The same as its acceptance criterion ID. | _Order 1. Display alias (calculated). Order 1._ |
 | User Story | A defined attribute. | _FK to UserStories._ |
 | Criterion | A defined attribute. | _Testable statement that must hold for the story to be accepted._ |
@@ -655,14 +1116,30 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Met Flag | Determined by priority: 1 if the met flag is set; in all other cases, 0. | _Order 1. 1 when met — rollup carrier._ |
 | Story Req ID | Taken from the linked user story. | _Order 1. ReqId of the owning story._ |
 | Story Status | Taken from the linked user story. | _Order 1. Asserted status of the owning story._ |
-| Story is Done | True when the acceptance criteria's user story is a done. | _Order 2. Whether the owning story is asserted done._ |
+| Story is Done | True when the acceptance criterion's user story is a done. | _Order 2. Whether the owning story is asserted done._ |
 | Story Criterion Count | Taken from the linked user story. | _Order 2. Sibling criteria count._ |
 | Is Inconsistent With Story | True when all of the following hold: the story is done (a missing value counts as false) and the met flag is not set. ⚠︎ mechanical <!-- rulespeak:reword --> | _Order 3. Story says done but this criterion is not met._ |
 | Share of Story | Determined by priority: 0 if the story criterion count (a missing value counts as 0) is 0; in all other cases, 100 divided by the story criterion count rounded to 0 decimal place(s). | _Order 3. Percent of the story this criterion represents._ |
-| Story Derived Progress | The derived progress percent of the acceptance criteria's user story. | _Order 4. Criteria-derived progress of the owning story._ |
+| Story Derived Progress | The derived progress percent of the acceptance criterion's user story. | _Order 4. Criteria-derived progress of the owning story._ |
 | Criterion State | Determined by priority: “contradicts-story” if the inconsistent with story flag is set; “met” if the met flag is set; in all other cases, “pending”. | _Order 4. contradicts-story / met / pending._ |
 | Needs Review | True when the criterion state is “contradicts-story”. | _Order 5. Contradicts the story's asserted status._ |
 | Story is Ahead of Criterion | True when all of the following hold: the met flag is not set and the story derived progress (a missing value counts as 0) is at least 50. | _Order 5. Story is over half done while this criterion is still pending._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Criterion | Is Met | Met Flag ƒ | Story Req ID ƒ | Story Status ƒ | Story is Done ƒ | Story Criterion Count ƒ | Is Inconsistent With Story ƒ | Share of Story ƒ | Story Derived Progress ƒ | Criterion State ƒ | Needs Review ƒ | Story is Ahead of Criterion ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| us-001-ac1 | RulebookDomains contains the root plus every direct directory under rulebook-examples/ and toy-rulebooks/ (41 governed rows in the 2026-08-30 scan), and no missing filesystem paths. | true | 1.0 | US-001 | done | true | 3.0 | false | 33.0 | 100.0 | met | false | false |
+| us-001-ac2 | DomainId is domain-<slug>; Area records rulebook-examples vs toy-rulebooks. | true | 1.0 | US-001 | done | true | 3.0 | false | 33.0 | 100.0 | met | false | false |
+| us-001-ac3 | The two doctrine-sanctioned exception containers are flagged IsIntentionalException = TRUE. | true | 1.0 | US-001 | done | true | 3.0 | false | 33.0 | 100.0 | met | false | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Consistency Rule** | Repo-wide consistency invariants as data. Each row is a checkable rule with a fix playbook; ConsistencyFindings rows are its violations. | — |
 | Name | The same as its rule code. | _Order 1. Display alias (calculated). Order 1._ |
 | Rule Code | A defined attribute. | _Short slug code of the rule._ |
@@ -688,6 +1165,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Resolution Percent | Determined by priority: 100 if the finding count is 0; in all other cases, 100 times the accepted or fixed count divided by the finding count rounded to 0 decimal place(s). | _Order 4. Percent of findings resolved (fixed or accepted)._ |
 | Rule Label | Computed as the rule code, followed by “ [”, followed by the rule state, followed by “]”. | _Order 5. Display label with rule state._ |
 | Is Sweep Priority | True when all of the following hold: the rule state is not “satisfied” and the resolution percent is less than 50. | _Order 5. Unsatisfied and less than half resolved — sweep here first._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Rule Code | Severity | Scope | Statement | Check Mechanism | Fix Playbook | Source Doctrine | Is Scanner Derived | Finding Count ƒ | Is Critical ƒ | Is Repo Scope ƒ | Open Finding Count ƒ | Has Findings ƒ | Is Satisfied ƒ | Satisfied Flag ƒ | Accepted or Fixed Count ƒ | Open Critical Flag ƒ | Rule State ƒ | Resolution Percent ƒ | Rule Label ƒ | Is Sweep Priority ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| canonical-rulebook-path | canonical-rulebook-path | major | demo | Every project's rulebook lives directly in <project>/effortless-rulebook/, named either effortless-rulebook.json or <slug>-rulebook.json (both valid; the protocol does not dictate one). | Compare RulebookDomains.RulebookPath against RelativePath + "effortless-rulebook/" + either accepted filename (RulebookDomains.IsStandardLayout). | git mv the file into effortless-rulebook/ under either accepted name; update effortless.json -i/-o arguments; rebuild. | CLAUDE.md § Two categorically different kinds of rulebooks | false | 5.0 | false | false | 0.0 | true | true | 1.0 | 5.0 | 0.0 | satisfied | 100.0 | canonical-rulebook-path [satisfied] | false |
+| effortless-json-present | effortless-json-present | major | demo | Every project directory carries a real effortless.json build configuration. | test -f <project>/effortless.json and confirm it has a ProjectTranspilers array. | effortless -init from the project root, then register transpilers with effortless -install. | effortless-init skill | false | 4.0 | false | false | 0.0 | true | true | 1.0 | 4.0 | 0.0 | satisfied | 100.0 | effortless-json-present [satisfied] | false |
+| rulespeak-registered | rulespeak-registered | major | demo | Every demo effortless.json includes a rulebooktorulespeak ProjectTranspilers entry. | jq '.ProjectTranspilers[].Name' effortless.json \| grep rulebooktorulespeak | cd rulespeak && effortless -install rulebook-to-rulespeak -i ../effortless-rulebook/<slug>-rulebook.json | CLAUDE.md § Required transpilers for every new example project | false | 5.0 | false | false | 0.0 | true | true | 1.0 | 5.0 | 0.0 | satisfied | 100.0 | rulespeak-registered [satisfied] | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Consistency Finding** | Witnessed violations of ConsistencyRules, one row per (domain, rule) occurrence. This is the sweep work queue. | — |
 | Name | Computed as the domain (a missing value counts as “repo”), followed by “ x ”, followed by the rule. ⚠︎ mechanical <!-- rulespeak:reword --> | _Order 1. Display alias (calculated). Order 1._ |
 | Rule | A defined attribute. | _FK to ConsistencyRules._ |
@@ -714,6 +1207,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Domain Grade | The consistency grade of the consistency finding's domain. | _Order 4. Consistency grade of the domain._ |
 | Priority | Determined by priority: “P1” if the open critical flag is set; “P2” if the sole blocker flag is set; “P3” if the open flag is set; in all other cases, “closed”. | _Order 5. P1 / P2 / P3 / closed._ |
 | Is Last Mile | True when all of the following hold: the sole blocker flag is set and the domain grade (a missing value counts as an empty string) is “minor”. | _Order 5. Fixing this one finding makes its domain clean._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Detail | Status | Detected on | Is Open ƒ | Open Flag ƒ | Is Repo Scope ƒ | Rule Severity ƒ | Rule is Scanner Derived ƒ | Rule Code ƒ | Domain Name ƒ | Is Open Critical ƒ | Is Hand Closable ƒ | Domain Finding Count ƒ | Rule Finding Count ƒ | Domain Open Finding Count ƒ | Rule Open Finding Count ƒ | Is Sole Finding on Domain ƒ | Is Sole Blocker ƒ | Rule is Satisfied ƒ | Domain Grade ƒ | Priority ƒ | Is Last Mile ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| domain-effortless-rulebooks x cr-01 | Filename typo: effortless-rulesbooks-rulebook.json. | fixed | 2026-08-30T00:00:00.000Z | false | 0.0 | false | major | false | canonical-rulebook-path | Effortless Rulebooks | false | false | 5.0 | 5.0 | 0.0 | 0.0 | false | false | true | clean | closed | false |
+| domain-naive-set-theory x cr-01 | Rulebook sits at the project root as effortless-rulebook.json; no effortless-rulebook/ directory. | fixed | 2026-08-30T00:00:00.000Z | false | 0.0 | false | major | false | canonical-rulebook-path | Naive Set Theory | false | false | 18.0 | 5.0 | 0.0 | 0.0 | false | false | true | clean | closed | false |
+| domain-veritasium-power-laws-and-fractals x cr-01 | Rulebook is ssot/ERB_veritasium-power-laws-and-fractals.json. | fixed | 2026-08-30T00:00:00.000Z | false | 0.0 | false | major | false | canonical-rulebook-path | Veritasium Power Laws And Fractals | false | false | 17.0 | 5.0 | 0.0 | 0.0 | false | false | true | clean | closed | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Mobile Nav Tab** | Primary navigation groups of the root explorer (app/). Rendered as a top navigation bar at desktop width and a bottom tab bar at phone width; each group roots a MobileRoutes subtree. The table name is historical: there is no separate /m mobile shell. | — |
 | Name | The same as its label. | _Order 1. Display alias (calculated). Order 1._ |
 | Label | A defined attribute. | _Tab label._ |
@@ -731,6 +1240,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Shippable | True when the build coverage percent is 100. | _Order 4. Every route has a screen._ |
 | Shippable Flag | Determined by priority: 1 if the build coverage percent is 100; in all other cases, 0. | _Order 4. 1 when shippable — rollup carrier._ |
 | Tab State | Determined by priority: “shippable” if the shippable flag is set; “plan-only” if the plan only flag is set; in all other cases, “partial”. | _Order 5. shippable / plan-only / partial._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Label | Icon | Root Path | Sort Order | Purpose | Route Count ƒ | Unbuilt Route Count ƒ | Has Routes ƒ | Build Coverage Percent ƒ | Is Plan Only ƒ | Is Shippable ƒ | Shippable Flag ƒ | Tab State ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Health | Health | Activity | /consistency | 4 | Consistency rules, the findings work queue, and delivery progress read from the generated views. | 4.0 | 0.0 | true | 100.0 | false | true | 1.0 | shippable |
+| Home | Home | Home | / | 1 | The platform story, the shortest getting-started path, and how the root rulebook governs the repository. | 3.0 | 0.0 | true | 100.0 | false | true | 1.0 | shippable |
+| Learn | Learn | BookOpen | /concepts | 2 | Concepts (ERB, CMCC, SDLAF, the loop, views, rules, glossary) and the Claude skill catalog with its routes. | 4.0 | 0.0 | true | 100.0 | false | true | 1.0 | shippable |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Mobile Route** | Route surface of the root explorer (PLATFORM-EXPLORER-PLAN.md §3): deep-linkable routes under each navigation group. Screen names the React component (pages/<File>.jsx:<Export> under app/src/) that implements the route and stays blank until it exists, so the derived unbuilt counts are the Phase 3 build backlog. | — |
 | Name | The same as its path. | _Order 1. Display alias (calculated). Order 1._ |
 | Path | A defined attribute. | _Route path; :param segments mark detail routes._ |
@@ -760,6 +1285,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Route State | Determined by priority: “misparented” if the depth consistent flag is not set; “built” if the screen flag is set; in all other cases, “planned”. | _Order 4. misparented / built / planned._ |
 | Is on Shippable Tab | True when the tab coverage percent (a missing value counts as 0) is 100. | _Order 5. Owning tab is fully built._ |
 | Route Label | Computed as the path, followed by “ [”, followed by the route state, followed by “]”. | _Order 5. Display label with route state._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Path | Title | Screen | Route Kind | Sort Order | Reads Entities | Description | Depth ƒ | Is Detail ƒ | Has Screen ƒ | Unbuilt Flag ƒ | Child Route Count ƒ | Tab Label ƒ | Entity Count ƒ | Parent Depth ƒ | Is Leaf Route ƒ | Tab Route Count ƒ | Is Depth Consistent ƒ | Tab Unbuilt Count ƒ | Share of Tab ƒ | Tab Coverage Percent ƒ | Route State ƒ | Is on Shippable Tab ƒ | Route Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| /about-the-rulebook | /about-the-rulebook | About the Rulebook | pages/Home.jsx:AboutRulebook | detail | 3 | ProjectMetadata,OntologyAxioms,FramingInvariants,ProjectLayoutSlots,ConsistencyRules | How the root rulebook governs and explains the repository: axioms, framing invariants, the canonical project shape, and the rules derived from it. | 1 | false | true | 0.0 | 0.0 | Home | 5 | 0 | true | 3.0 | true | 0.0 | 33.0 | 100.0 | built | true | /about-the-rulebook [built] |
+| /concepts/:concept | /concepts/:concept | Concept | pages/Learn.jsx:ConceptDetail | detail | 2 | Glossary,OntologyAxioms,FramingInvariants | One concept or glossary term with its definition and related terms. | 2 | true | true | 0.0 | 0.0 | Learn | 3 | 1 | true | 4.0 | true | 0.0 | 25.0 | 100.0 | built | true | /concepts/:concept [built] |
+| /concepts | /concepts | Concepts | pages/Learn.jsx:Concepts | list | 1 | Glossary,OntologyAxioms,FramingInvariants,CMCCSummary | ERB, CMCC, SDLAF, the loop, views, rules, and the glossary. | 1 | false | true | 0.0 | 1.0 | Learn | 4 | 0 | false | 4.0 | true | 0.0 | 25.0 | 100.0 | built | true | /concepts [built] |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Skill Route** | Directed edges of the skill meta-conversation: which skill routes to which, and why (orchestrator routing table + see-also cross-references). | — |
 | Name | Computed as the from skill, followed by “ -> ”, followed by the to skill. | _Order 1. Display alias (calculated). Order 1._ |
 | From Skill | A defined attribute. | _FK to ClaudeSkills — the skill that routes._ |
@@ -776,6 +1317,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Stale | True when at least one of the following holds: the deprecated target flag is set or the from status is “deprecated”. | _Order 3. Touches a deprecated skill at either end._ |
 | Edge Class | Determined by priority: “stale” if the stale flag is set; “hub-to-leaf” if the into leaf flag is set, in all other cases “hub-fanout” if the hub edge flag is set; in all other cases, “peer”. | _Order 4. stale / hub-to-leaf / hub-fanout / peer._ |
 | Route Label | Computed as the from skill, followed by “ -> ”, followed by the to skill, followed by “ [”, followed by the edge class, followed by “]”. | _Order 5. Display label with edge class._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Route Reason | From Status ƒ | To Status ƒ | Is Orchestrator Route ƒ | Is Deprecated Target ƒ | To Inbound Count ƒ | From Outbound Count ƒ | Is Hub Edge ƒ | Is Into Leaf ƒ | Is Stale ƒ | Edge Class ƒ | Route Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| effortless-orchestrator -> effortless-cli | orchestrator routing table: CLI commands and install/update of the binary | active | active | true | false | 1.0 | 31.0 | true | true | false | hub-to-leaf | effortless-orchestrator -> effortless-cli [hub-to-leaf] |
+| effortless-orchestrator -> effortless-init | orchestrator routing table: initializing a new project | active | active | true | false | 1.0 | 31.0 | true | true | false | hub-to-leaf | effortless-orchestrator -> effortless-init [hub-to-leaf] |
+| effortless-orchestrator -> effortless-setup-postgres | orchestrator routing table: first-run Postgres setup | active | active | true | false | 1.0 | 31.0 | true | true | false | hub-to-leaf | effortless-orchestrator -> effortless-setup-postgres [hub-to-leaf] |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Project Layout Slot** | The canonical root/example/toy project shape as first-class, scan-witnessed data. | — |
 | Name | The same as its title. | _Order 1. Human display alias._ |
 | Title | A defined attribute. | _Human label of the slot._ |
@@ -794,6 +1351,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Universally Filled | True when the coverage percent is 100. | _Order 4. Every scanned project fills this slot._ |
 | Slot Health | Determined by priority: “clean” if the implementation gap count is 0; “few-gaps” if the implementation gap count is at most 3; in all other cases, “widespread”. | _Order 4. clean \| few-gaps \| widespread._ |
 | Slot Label | Computed as the title, followed by “ [”, followed by the slot health, followed by “]”. | _Order 5. Display label with current health._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Title | Kind | Pattern | Required for Root | Required for Example | Required for Toy | Description | Witness Count ƒ | Present Count ƒ | Implementation Gap Count ƒ | Coverage Percent ƒ | Is Universally Filled ƒ | Slot Health ƒ | Slot Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| effortless.json | effortless.json | manifest | effortless.json | true | true | true | A valid project build manifest with a ProjectTranspilers array. | 44.0 | 43.0 | 0.0 | 98.0 | false | clean | effortless.json [clean] |
+| effortless-rulebook/ | effortless-rulebook/ | directory | effortless-rulebook/ | true | true | true | The folder containing the project's authoritative rulebook hub. | 44.0 | 42.0 | 0.0 | 95.0 | false | clean | effortless-rulebook/ [clean] |
+| rulebook JSON | rulebook JSON | rulebook | effortless-rulebook/{effortless-rulebook.json\|<slug>-rulebook.json} | true | true | true | Exactly one accepted hub file directly inside effortless-rulebook/. | 44.0 | 42.0 | 0.0 | 95.0 | false | clean | rulebook JSON [clean] |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Project Slot Witness** | Strict filesystem/manifest witnesses for every governed project x canonical slot. Refresh with scripts/scan-project-slots.py. | — |
 | Name | The same as its project slot witness ID. | _Order 1. Display alias._ |
 | Domain | A defined attribute. | _FK to the governed project row._ |
@@ -818,6 +1391,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Required Present Flag | Determined by priority: 1 if all of the following hold: the present flag is set and the required here flag is set; in all other cases, 0. | _Order 3. 1 when a required-here slot is present._ |
 | Witness State | Determined by priority: “gap” if the gap flag is set; “filled” if the present flag is set; in all other cases, “optional-empty”. | _Order 4. gap \| filled \| optional-empty._ |
 | Is Blocking Gap | True when the witness state is “gap”. | _Order 5. A current required-here conformance blocker._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Is Present | Witnessed Path | Witnessed Detail | Witnessed on | Present Flag ƒ | Slot Required for Root ƒ | Slot Required for Example ƒ | Slot Required for Toy ƒ | Domain Area ƒ | Domain Kind ƒ | Domain is Exception ƒ | Is Required Here ƒ | Implementation Gap Flag ƒ | Universal Gap Flag ƒ | Is Gap ƒ | Gap Flag ƒ | Required Here Flag ƒ | Required Present Flag ƒ | Witness State ƒ | Is Blocking Gap ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| domain-acme-corporation:slot-effortless-json | true | toy-rulebooks/acme-corporation/effortless.json | valid manifest with ProjectTranspilers | 2026-11-26 | 1.0 | true | true | true | toy-rulebooks | toy | false | true | 0.0 | 0.0 | false | 0.0 | 1.0 | 1.0 | filled | false |
+| domain-acme-corporation:slot-rulebook-dir | true | toy-rulebooks/acme-corporation/effortless-rulebook | found effortless-rulebook/ | 2026-11-26 | 1.0 | true | true | true | toy-rulebooks | toy | false | true | 0.0 | 0.0 | false | 0.0 | 1.0 | 1.0 | filled | false |
+| domain-acme-corporation:slot-rulebook-file | true | toy-rulebooks/acme-corporation/effortless-rulebook/acme-corporation-rulebook.json | exactly one accepted hub file | 2026-11-26 | 1.0 | true | true | true | toy-rulebooks | toy | false | true | 0.0 | 0.0 | false | 0.0 | 1.0 | 1.0 | filled | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **CMCC Summary** | One-line CMCC framing for the platform rulebook itself: what it is, what it generates, and what conformance it claims. | — |
 | Name | A defined attribute. | _Identifier for this narrative entry (single-row tables use 'primary')._ |
 | Description | A defined attribute. | _The full narrative content for this concept._ |
@@ -826,6 +1415,20 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Narrative State | Determined by priority: “ready” if the substantive flag is set; in all other cases, “stub”. | _Order 3. ready / stub._ |
 | Is Ready | True when the narrative state is “ready”. | _Order 4. Narrative is ready for publication._ |
 | Section Label | Determined by priority: the name, followed by “ (ready)” if the ready flag is set; in all other cases, the name, followed by “ (stub)”. | _Order 5. Display label with readiness._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Description | Description Length ƒ | Is Substantive ƒ | Narrative State ƒ | Is Ready ƒ | Section Label ƒ |
+|---|---|---|---|---|---|---|
+| primary | Top-level rulebook describing the ERB project itself: rulebook-as-hub SSoT, the CLI-hosted local transpiler bus (11 substrate routes), admin portal (Viewer/Developer roles, navigation, screens, APIs, write-through invariant), AppUsers + permissions, build pipeline, conformance testing. | 286 | true | ready | true | primary (ready) |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Project Goal** | The primary goal of the platform: the load-bearing claim the project is built to demonstrate. | — |
 | Name | A defined attribute. | _Identifier for this narrative entry (single-row tables use 'primary')._ |
 | Description | A defined attribute. | _The full narrative content for this concept._ |
@@ -834,6 +1437,20 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Narrative State | Determined by priority: “ready” if the substantive flag is set; in all other cases, “stub”. | _Order 3. ready / stub._ |
 | Is Ready | True when the narrative state is “ready”. | _Order 4. Narrative is ready for publication._ |
 | Section Label | Determined by priority: the name, followed by “ (ready)” if the ready flag is set; in all other cases, the name, followed by “ (stub)”. | _Order 5. Display label with readiness._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Description | Description Length ƒ | Is Substantive ƒ | Narrative State ƒ | Is Ready ƒ | Section Label ƒ |
+|---|---|---|---|---|---|---|
+| primary | Demonstrate that a single declarative rulebook (effortless-rulebook.json) can generate working, conformant code in 10+ execution substrates that all produce identical results — AND that the developer experience on top of it (the admin portal) is itself driven entirely by rulebook entities (navigation, roles, screens, permissions, users). | 339 | true | ready | true | primary (ready) |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Architectural Highlight** | The architectural pattern that makes the platform work: input spokes write to the rulebook, output spokes read from it, conformance binds them. | — |
 | Name | A defined attribute. | _Identifier for this narrative entry (single-row tables use 'primary')._ |
 | Description | A defined attribute. | _The full narrative content for this concept._ |
@@ -842,6 +1459,20 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Narrative State | Determined by priority: “ready” if the substantive flag is set; in all other cases, “stub”. | _Order 3. ready / stub._ |
 | Is Ready | True when the narrative state is “ready”. | _Order 4. Narrative is ready for publication._ |
 | Section Label | Determined by priority: the name, followed by “ (ready)” if the ready flag is set; in all other cases, the name, followed by “ (stub)”. | _Order 5. Display label with readiness._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Description | Description Length ƒ | Is Substantive ƒ | Narrative State ƒ | Is Ready ƒ | Section Label ƒ |
+|---|---|---|---|---|---|---|
+| primary | effortless-rulebook.json is the DURABLE SSoT. Input spokes (admin portal, Airtable, LLM, manual JSON) all write into it. Output spokes (Python, Go, Postgres, Excel, OWL, PlantUML, Explain-DAG, English, COBOL, ARM64, Entity Framework, Airtable reverse-sync) all read from it. Every substrate passes the same conformance tests. | 325 | true | ready | true | primary (ready) |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Execution Substrate** | Runtime environments that execute business rules derived from the rulebook | — |
 | Name | A defined attribute. | _Human-readable substrate name_ |
 | Technology | A defined attribute. | _Language/platform (PostgreSQL, Python, Go, Excel, OWL, PlantUML, etc.)_ |
@@ -876,6 +1507,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Readiness Band | Determined by priority: “ready” if the readiness score is 3; “partial” if the readiness score is at least 1; in all other cases, “absent”. | _Order 4. ready / partial / absent._ |
 | Ready Flag | Determined by priority: 1 if the readiness score is 3; in all other cases, 0. | _Order 4. 1 when ready — rollup carrier._ |
 | Is Showcase Substrate | True when all of the following hold: the readiness band is “ready” and the reference quality flag is set. | _Order 5. Ready on every axis and reference-quality._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Technology | Relative Path | Injector Script | Test Script | Transpiler Source | Maturity | Expressive Completeness | Can Be Answer Key | Determinism | Runtime Kind | Status | Description | Is Fully Expressive ƒ | Fully Expressive Flag ƒ | Is Reference Quality ƒ | Tradeoff Count ƒ | Proxy Route Count ƒ | Catalog Tool Count ƒ | Is Peer Complete ƒ | Peer Complete Flag ƒ | Has Proxy Route ƒ | Is Cataloged ƒ | Is Bus Reachable Peer ƒ | Is Installable Peer ƒ | Readiness Score ƒ | Readiness Band ƒ | Ready Flag ƒ | Is Showcase Substrate ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Binary (ARM64) | ARM64 Assembly | execution-substrates/binary/ | inject-into-binary.py | take-test.py | local-injector | prototype | partial-formula | false | deterministic | binary | proof-of-concept | ARM64 assembly proof-of-concept; demonstrates lowest-level code generation | false | 0.0 | false | 8.0 | 1.0 | 1.0 | false | 0.0 | true | true | false | false | 2.0 | partial | 0.0 | false |
+| Python | Python | execution-substrates/python/ | inject-into-python.py | take-test.py | local-injector | demonstrating | full | true | deterministic | text-emit | active | Local Python implementation: dataclasses + calculated field functions | true | 1.0 | false | 8.0 | 1.0 | 1.0 | true | 1.0 | true | true | true | true | 3.0 | ready | 1.0 | false |
+| Go | Go | execution-substrates/golang/ | inject-into-golang.py | take-test.py | local-injector | demonstrating | full | true | deterministic | text-emit | active | Local Go implementation: structs + business logic | true | 1.0 | false | 8.0 | 1.0 | 1.0 | true | 1.0 | true | true | true | true | 3.0 | ready | 1.0 | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Orchestration Component** | Central orchestration logic that coordinates rulebook loading, injection, and testing | — |
 | Name | A defined attribute. | — |
 | File Path | A defined attribute. | _Relative path from repo root_ |
@@ -888,6 +1535,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Heavy Shell | True when all of the following hold: the shell script flag is set and the dependency band is “heavy”. | _Order 3. Bash script with a heavy dependency fan-in._ |
 | Review Priority | Determined by priority: “review” if the heavy shell flag is set; “watch” if the dependency band is “heavy”; in all other cases, “ok”. | _Order 4. review / watch / ok._ |
 | Needs Review | True when the review priority is “review”. | _Order 5. Flagged for dependency review._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | File Path | Language | Purpose | Dependencies | Dependency Count ƒ | Is Shell Script ƒ | Dependency Band ƒ | Is Heavy Shell ƒ | Review Priority ƒ | Needs Review ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Start Entry | start.sh | Bash | Top-level entry point: boots the admin portal (web UI) for the active rulebook project; falls back to legacy CLI menu with --cli flag | run-web-portal.sh, orchestrate.sh | 2 | true | light | false | ok | false |
+| Shared Utilities | orchestration/shared.py | Python | Common functions: load_rulebook(), parse formulas, type mapping | None | 1 | false | light | false | ok | false |
+| Formula Parser | orchestration/formula_parser.py | Python | Parse and execute Excel-style formulas (IF, AND, OR, CONCAT, LEFT, RIGHT, etc.) | shared.py | 1 | false | light | false | ok | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Local Tool Route** | The repo's local transpiler routes, hosted by the effortless CLI itself (`effortless serve -port 4242` over effortless-tools/ at the repo root). Each tool is a folder whose transpiler.py calls orchestration/local_tool_shim.py, which translates the CLI's EFFORTLESS_INPUT_DIR/EFFORTLESS_OUTPUT_DIR contract into the injectors' ERB_RULEBOOK_PATH/ERB_OUTPUT_DIR one. Replaced the hand-rolled ssotme-proxy on 2026-09-12. | — |
 | Name | The same as its route. | _Order 1. Display alias (calculated). Order 1._ |
 | Route | A defined attribute. | _POST /{route-name}_ |
@@ -904,6 +1567,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Post Spoke | True when all of the following hold: the post flag is set and the substrate flag is not set. | _Order 3. POST route that is a hub spoke rather than a substrate._ |
 | Route Class | Determined by priority: “full-substrate” if the full bus route flag is set; “partial-substrate” if the substrate flag is set; “spoke” if the post spoke flag is set; in all other cases, “other”. | _Order 4. full-substrate / partial-substrate / spoke / other._ |
 | Is Bus Headline | True when the route class is “full-substrate”. | _Order 5. A route worth listing first in the bus section._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Route | Injector Script | Description | Http Method ƒ | Route Path ƒ | Has Substrate ƒ | Is Post ƒ | Route Slug ƒ | Substrate is Fully Expressive ƒ | Is Full Bus Route ƒ | Is Post Spoke ƒ | Route Class ƒ | Is Bus Headline ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| POST /oss-rulebook-to-python | POST /oss-rulebook-to-python | execution-substrates/python/inject-into-python.py | Generate Python dataclass + calc library from rulebook | POST | /oss-rulebook-to-python | true | true | oss-rulebook-to-python | true | true | false | full-substrate | true |
+| POST /oss-rulebook-to-golang | POST /oss-rulebook-to-golang | execution-substrates/golang/inject-into-golang.py | Generate Go structs + business logic from rulebook | POST | /oss-rulebook-to-golang | true | true | oss-rulebook-to-golang | true | true | false | full-substrate | true |
+| POST /oss-rulebook-to-binary | POST /oss-rulebook-to-binary | execution-substrates/binary/inject-into-binary.py | Generate ARM64 assembly calculation stub from rulebook | POST | /oss-rulebook-to-binary | true | true | oss-rulebook-to-binary | false | false | false | partial-substrate | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Testing Framework** | Conformance testing: prove all substrates compute identically | — |
 | Name | A defined attribute. | — |
 | File Path | A defined attribute. | — |
@@ -915,6 +1594,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Scope Label | Determined by priority: “global-glob” if the global glob flag is set; “global-file” if the global flag is set; in all other cases, “domain”. | _Order 3. global-glob / global-file / domain._ |
 | Is Domain Agnostic | True when the scope label is not “domain”. | _Order 4. Not bound to a single domain._ |
 | Agnostic Label | Determined by priority: “domain-agnostic” if the domain agnostic flag is set; in all other cases, “domain-bound”. | _Order 5. domain-agnostic / domain-bound._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | File Path | Purpose | Scope | Is Global ƒ | Is Glob Pattern ƒ | Is Global Glob ƒ | Scope Label ƒ | Is Domain Agnostic ƒ | Agnostic Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|
+| Test Case Definitions | test-cases/*.yaml | YAML scenarios defining inputs and expected outputs; shared across all substrates | global | true | true | true | global-glob | true | domain-agnostic |
+| Substrate-Specific Take-Test | execution-substrates/{technology}/take-test.py | Load rulebook, execute test cases, compare results against expected | per-substrate | false | false | false | domain | false | domain-bound |
+| Test Orchestrator | orchestration/test-orchestrator.py | Run all substrate tests; aggregate pass/fail; identify conformance gaps | global | true | false | false | global-file | true | domain-agnostic |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Core Data Flow** | End-to-end flows from rulebook to execution and testing | — |
 | Name | A defined attribute. | — |
 | Steps | A defined attribute. | _Pipe-delimited sequence of steps_ |
@@ -928,6 +1623,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Flow Maturity | Determined by priority: “pipeline” if the multi step flag is set, in all other cases “atomic” if the invariant backed flag is set; in all other cases, “undocumented”. | _Order 3. pipeline / atomic / undocumented._ |
 | Is Pipeline | True when the flow maturity is “pipeline”. | _Order 4. Multi-step, invariant-backed flow._ |
 | Flow Label | Determined by priority: the name, followed by “ [pipeline]” if the pipeline flag is set; in all other cases, the name. | _Order 5. Display label marking pipelines._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Steps | Triggers | Outputs | Invariant | Step Count ƒ | Has Invariant ƒ | Is Multi Step ƒ | Is Invariant Backed ƒ | Flow Maturity ƒ | Is Pipeline ƒ | Flow Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Start → Admin Portal | User runs ./start.sh \| Detect active rulebook project \| Start the local transpiler host on :4242 if not running \| Launch the CLI orchestrator menu (./start.sh --portal instead brings up the React explorer + generated rulebook editor) | User runs `./start.sh` (default entry point) | CLI orchestrator menu (or the React explorer with --portal), local transpiler host running | — | 4 | false | true | false | undocumented | false | Start → Admin Portal |
+| Project Build (via the local transpiler host) | User triggers build in admin portal OR runs `effortless build` in active project \| effortless CLI walks ProjectTranspilers in active project's effortless.json \| For each transpiler with proxy URL, POST rulebook to localhost:4242 \| Proxy invokes injector script \| Generated files written to project's output folders | Admin portal Build button, CLI `effortless build`, or post-save hook after rulebook edit | Substrate code generated under rulebook-examples/{project}/{substrate}/ | — | 5 | false | true | false | undocumented | false | Project Build (via the local transpiler host) |
+| Pull from Airtable (optional input spoke) | User chooses 'Pull from Airtable' in admin portal \| Call airtable-to-rulebook \| Write effortless-rulebook.json \| Reload portal Postgres editor from JSON | Admin portal action OR legacy CLI menu | Updated effortless-rulebook.json, portal Postgres rehydrated | — | 4 | false | true | false | undocumented | false | Pull from Airtable (optional input spoke) |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Dependency** | External tools and their roles | — |
 | Name | A defined attribute. | — |
 | Version | A defined attribute. | — |
@@ -940,6 +1651,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Criticality | Determined by priority: “core” if the required language flag is set; “required” if the required flag is set; in all other cases, “optional”. | _Order 3. core / required / optional._ |
 | Is Core | True when the criticality is “core”. | _Order 4. Required language runtime._ |
 | Bootstrap Tier | Determined by priority: “tier-0” if the core flag is set; “tier-1” if the required flag is set; in all other cases, “tier-2”. | _Order 5. tier-0 / tier-1 / tier-2 install order._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Version | Type | Purpose | Required | Is Language ƒ | Required Flag ƒ | Is Required Language ƒ | Criticality ƒ | Is Core ƒ | Bootstrap Tier ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Python | 3.8+ | Language | Orchestration scripts, injectors, test runners | true | true | 1.0 | true | core | true | tier-0 |
+| Bash | latest | Language | Menu orchestration, subprocess management | true | true | 1.0 | true | core | true | tier-0 |
+| Go | 1.19+ | Language | Go substrate code generation and testing | false | true | 0.0 | false | optional | false | tier-2 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Add Tool Catalog** | Tools the developer can install into the active project via the Add Tool screen. Same catalog the `effortless -install` CLI consumes; the portal is just a thin UI over the CLI so behaviour stays canonical. | — |
 | Name | A defined attribute. | — |
 | Category | A defined attribute. | _substrate \| spoke-input \| spoke-output \| docs_ |
@@ -957,7 +1684,23 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Peer Complete Tool | True when all of the following hold: the substrate is fully expressive (a missing value counts as false) and the proxy backed reference flag is set. ⚠︎ mechanical <!-- rulespeak:reword --> | _Order 3. Local-proxy tool for a fully expressive reference substrate._ |
 | Tool Tier | Determined by priority: “tier-1” if the peer complete tool flag is set; “tier-2” if the substrate is peer complete (a missing value counts as false); in all other cases, “tier-3”. ⚠︎ mechanical <!-- rulespeak:reword --> | _Order 4. tier-1 / tier-2 / tier-3._ |
 | Is Recommended Install | True when all of the following hold: the tool tier is “tier-1” and the local proxy flag is set. | _Order 5. Tier-1 tool served by the local bus._ |
-| **Substrate Contract Phas** | The three-phase contract every execution substrate implements. Inject is structural (schema → SDK), Execute is functional (compute), Grade is comparison. All three are 100% domain-agnostic — they translate whatever the rulebook defines without knowing what it means. Together with EvaluationSteps (the substeps within each phase) and EvaluationArtifacts (the JSON files that flow between phases), this forms the full evaluation subgraph: Phase → Steps → Artifacts. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Category | Source | Install URL | Output Path | Description | Is Local Proxy ƒ | Substrate Name ƒ | Substrate Maturity ƒ | Is Proxy Backed Reference ƒ | Substrate is Fully Expressive ƒ | Substrate is Peer Complete ƒ | Is Peer Complete Tool ƒ | Tool Tier ƒ | Is Recommended Install ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| oss-rulebook-to-python | substrate | local-proxy | http://localhost:4242/oss-rulebook-to-python | /python | Python dataclasses + calc library | true | Python | demonstrating | false | true | true | false | tier-2 | false |
+| oss-rulebook-to-golang | substrate | local-proxy | http://localhost:4242/oss-rulebook-to-golang | /golang | Go structs + business logic | true | Go | demonstrating | false | true | true | false | tier-2 | false |
+| oss-rulebook-to-binary | substrate | local-proxy | http://localhost:4242/oss-rulebook-to-binary | /binary | ARM64 assembly calc stub | true | Binary (ARM64) | prototype | false | false | false | false | tier-3 | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
+| **Substrate Contract Phase** | The three-phase contract every execution substrate implements. Inject is structural (schema → SDK), Execute is functional (compute), Grade is comparison. All three are 100% domain-agnostic — they translate whatever the rulebook defines without knowing what it means. Together with EvaluationSteps (the substeps within each phase) and EvaluationArtifacts (the JSON files that flow between phases), this forms the full evaluation subgraph: Phase → Steps → Artifacts. | — |
 | Order | A defined attribute. | — |
 | Name | A defined attribute. | — |
 | Domain Agnostic | True when an empty string. | _Whether this phase's code is generic across all rulebooks. All three are true by design._ |
@@ -972,9 +1715,9 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Evaluation Steps | A defined attribute. | _Reverse relationship: EvaluationSteps rows whose PhaseId points here._ |
 | Produced Artifacts | A defined attribute. | _Reverse relationship: EvaluationArtifacts rows whose ProducedByPhaseId points here._ |
 | Consumed Artifacts | A defined attribute. | _Reverse relationship: EvaluationArtifacts rows whose ConsumedByPhaseId points here._ |
-| Step Count | The number of evaluation steps related to the substrate contract phas. | _Order 1. Evaluation steps in this phase._ |
-| Produced Artifact Count | The number of evaluation artifacts related to the substrate contract phas. | _Order 1. Artifacts produced by this phase._ |
-| Consumed Artifact Count | The number of evaluation artifacts related to the substrate contract phas. | _Order 1. Artifacts consumed by this phase._ |
+| Step Count | The number of evaluation steps related to the substrate contract phase. | _Order 1. Evaluation steps in this phase._ |
+| Produced Artifact Count | The number of evaluation artifacts related to the substrate contract phase. | _Order 1. Artifacts produced by this phase._ |
+| Consumed Artifact Count | The number of evaluation artifacts related to the substrate contract phase. | _Order 1. Artifacts consumed by this phase._ |
 | Is First Phase | True when the order is 1. | _Order 1. First phase of the contract._ |
 | Is Productive | True when the produced artifact count is greater than 0. | _Order 2. Produces at least one artifact._ |
 | Artifact Throughput | Computed as the produced artifact count plus the consumed artifact count. | _Order 2. Artifacts touched by the phase._ |
@@ -983,6 +1726,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Throughput Per Step | Determined by priority: 0 if the step count is 0; in all other cases, the artifact throughput divided by the step count rounded to 2 decimal place(s). | _Order 3. Artifacts touched per step._ |
 | Phase Health | Determined by priority: “dense” if the throughput per step is at least 1, in all other cases “modeled” if the fully modeled flag is set; in all other cases, “sparse”. | _Order 4. dense / modeled / sparse._ |
 | Is Dense Phase | True when the phase health is “dense”. | _Order 5. Fully modeled with at least one artifact per step._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Order | Name | Domain Agnostic | Input | Output | Script Pattern | Description | Why Domain Agnostic | Input Artifact ID | Output Artifact ID | Failure Mode | Step Count ƒ | Produced Artifact Count ƒ | Consumed Artifact Count ƒ | Is First Phase ƒ | Is Productive ƒ | Artifact Throughput ƒ | Has Steps ƒ | Is Fully Modeled ƒ | Throughput Per Step ƒ | Phase Health ƒ | Is Dense Phase ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2 | Execute | true | blank-test.json (raw fields + null computed fields) | test-answers.json (all fields, including computed) | execution-substrates/<technology>/take-test.{py,go,sh} | Reads blank-test.json, populates the generated entity structures, calls the generated Calc*() functions to fill in computed columns, emits test-answers.json. | The test runner does NOT know what fields mean. It just unmarshals JSON, calls the generated functions, and remarshal the result. Same main() pattern works for every rulebook. | artifact-blank-test | artifact-test-answers | take-test calls a hand-written helper instead of a generated Calc*() function — substrate now encodes business logic instead of just hosting it. | 4.0 | 1.0 | 2.0 | false | true | 3.0 | true | true | 0.75 | modeled | false |
+| 3 | Grade | true | test-answers.json (substrate output) + answer-key.json (from rulebook seed data) | test-results.md (per-substrate) + all-tests-results.md (aggregate) | orchestration/test-orchestrator.py | Field-by-field, row-by-row comparison of every substrate's test-answers.json against the canonical answer-key.json derived from the rulebook seed data. No substrate holds a privileged position; answer keys come from the rulebook, not from any one substrate. | The grader compares JSON structures. It has no opinion about which fields exist or what they mean — disagreement is reported field-by-field. | artifact-test-answers | artifact-test-results | Grader pre-decides which substrate is authoritative — that's a privileged-substrate bug (violates ax-002). Or it aggregates pass/fail without preserving the field-level diff. | 4.0 | 1.0 | 2.0 | false | true | 3.0 | true | true | 0.75 | modeled | false |
+| 1 | Inject | true | effortless-rulebook.json (schema + formulas) | Runnable substrate artifact (SDK / schema / workbook / ontology / DDL) | execution-substrates/<technology>/inject-into-<technology>.py | Reads the rulebook schema and generates entity structures (1:1 with entities) plus computation functions (1:1 with computed columns). When the rulebook changes, re-running the injector regenerates the substrate artifact — the injector itself never changes. | The injector script must contain ZERO domain words (no 'language', 'workflow', 'syntax', 'customer'). It only translates generic rulebook structures into target-language constructs. | artifact-rulebook | artifact-substrate | Injector mentions any domain word — that's the signature of a leak. The fix is in the injector, never in a hand-edit to the substrate output. | 4.0 | 1.0 | 1.0 | true | true | 2.0 | true | true | 0.5 | modeled | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Evaluation Step** | Substeps within each SubstrateContractPhase. Inject, Execute, and Grade each decompose into a small number of concrete substeps the orchestrator executes in order. This is the layer below SubstrateContractPhases — it answers 'what specifically happens inside phase-execute?' Used by the admin portal's Tests screen to render the actual stages a substrate run goes through. | — |
 | Phase ID | A defined attribute. | _FK to SubstrateContractPhases.PhaseId._ |
 | Order | A defined attribute. | _Order within the parent phase._ |
@@ -999,6 +1758,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Position Percent | Determined by priority: 0 if the phase step count (a missing value counts as 0) is 0; in all other cases, 100 times the order divided by the phase step count rounded to 0 decimal place(s). | _Order 3. Position within the phase as a percent._ |
 | Step Role | Determined by priority: “entry” if the first step flag is set; “exit” if the last step flag is set; in all other cases, “middle”. | _Order 4. entry / exit / middle._ |
 | Is Boundary Step | True when the step role is not “middle”. | _Order 5. Entry or exit step of its phase._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Order | Name | Description | Mechanism | Invariant | Phase Name ƒ | Phase Order ƒ | Is First Step ƒ | Phase Step Count ƒ | Is in First Phase ƒ | Is Last Step ƒ | Position Percent ƒ | Step Role ƒ | Is Boundary Step ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | Load blank-test | Read blank-test.json — rows with raw fields populated and all calculated fields nulled out. | take-test.<lang> JSON unmarshal | Blank-test is the SAME file for every substrate in a given run — substrates do not pre-process it. | Execute | 2 | true | 4.0 | false | false | 25.0 | entry | true |
+| 2 | Hydrate entities | Construct in-memory entity instances from the rows, using the substrate's generated structures. | Generated constructor / DDL insert / workbook row | Hydration uses only generated code; no manual entity construction. | Execute | 2 | false | 4.0 | false | false | 50.0 | middle | false |
+| 3 | Compute calculated fields | Invoke each generated Calc<Field>() function to fill in calculated, lookup, and aggregation fields. | Per-substrate Calc* dispatch | Substrate executes generated functions only — it does NOT recompute formulas itself or inline business logic. | Execute | 2 | false | 4.0 | false | false | 75.0 | middle | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Evaluation Artifact** | The JSON / Markdown files that flow between SubstrateContractPhases. Each artifact is a contract: a file with a known schema produced by one phase and consumed by the next. This table is the artifact registry — what each file IS, where it lives, who writes it, who reads it. Together with SubstrateContractPhases.InputArtifactId/OutputArtifactId, this gives the evaluation pipeline a fully-witnessed data-flow graph. | — |
 | Name | A defined attribute. | — |
 | Format | A defined attribute. | _json \| markdown \| html \| binary \| source-tree_ |
@@ -1017,6 +1792,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Pipeline Handoff | True when all of the following hold: the JSON source flag is not set and the producer step count (a missing value counts as 0) is greater than 0. | _Order 3. Produced by a decomposed phase and passed onward._ |
 | Artifact Role | Determined by priority: “seed” if the JSON source flag is set; “handoff” if the pipeline handoff flag is set; in all other cases, “terminal”. | _Order 4. seed / handoff / terminal._ |
 | Is Seed Artifact | True when the artifact role is “seed”. | _Order 5. JSON input that seeds the contract._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Format | Path Pattern | Derived From | Description | Is Source Artifact ƒ | Is JSON ƒ | Producer Phase Name ƒ | Consumer Phase Name ƒ | Producer Step Count ƒ | Is JSON Source ƒ | Producer is Productive ƒ | Is Pipeline Handoff ƒ | Artifact Role ƒ | Is Seed Artifact ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| answer-key.json | json | rulebook-examples/<domain>/testing/answer-key.json | Rulebook seed data — every field including computed ones, evaluated FROM THE RULEBOOK (not from any substrate). The canonical oracle. | The grader's reference. Rulebook-derived so no substrate is privileged. If you find yourself sourcing answer-key from one substrate's output, that's a bug (violates ax-002). | true | true | — | Grade | — | true | false | false | seed | true |
+| blank-test.json | json | rulebook-examples/<domain>/testing/blank-test.json | Rulebook seed data with all calculated/lookup/aggregation fields nulled out. Produced by orchestration, not by any substrate. | The exam: rows with raw fields populated and computed fields blank. Every substrate gets the SAME blank-test for a given run. | true | true | — | Execute | — | true | false | false | seed | true |
+| Rulebook JSON | json | rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json (or effortless-platform/effortless-rulebook/effortless-rulebook.json for the platform itself) | Hand-authored OR pulled from Airtable via airtable-to-rulebook (an input spoke, not a phase output). | The single durable SSoT for a project. All other artifacts in this table are mechanically derivable from this one. | true | true | — | Inject | — | true | false | false | seed | true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Substrate Tradeoff Dimension** | The fixed taxonomy of dimensions used to characterize every substrate. Pro/con statements in SubstrateTradeoffs are scoped to one of these dimensions, so substrates can be compared apples-to-apples (e.g. 'who's fastest?' = filter SubstrateTradeoffs by DimensionId=dim-speed). Adding a dimension here means committing to fill it in for every substrate. | — |
 | Name | A defined attribute. | — |
 | Description | A defined attribute. | — |
@@ -1027,6 +1818,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Fully Expressive Tradeoff Count | The total substrate full flag across the substrate tradeoffs related to the substrate tradeoff dimension. | _Order 3. Tradeoffs on this dimension from fully expressive substrates._ |
 | Full Coverage Percent | Determined by priority: 0 if the tradeoff count is 0; in all other cases, 100 times the fully expressive tradeoff count divided by the tradeoff count rounded to 0 decimal place(s). | _Order 4. Percent of tradeoffs on this dimension from fully expressive substrates._ |
 | Is Fully Covered | True when the full coverage percent is 100. | _Order 5. Only fully expressive substrates are assessed here._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Description | Order | Tradeoff Count ƒ | Has Tradeoffs ƒ | Fully Expressive Tradeoff Count ƒ | Full Coverage Percent ƒ | Is Fully Covered ƒ |
+|---|---|---|---|---|---|---|---|
+| Accuracy | Observed conformance rate on the answer-key — deterministic substrates are 100% by construction; stochastic substrates are bounded by their grading model. | 2 | 10.0 | true | 6.0 | 60.0 | false |
+| Debuggability | How easy it is to investigate a failure: stepping through generated code, inspecting intermediate state, reading the artifact in a familiar tool. | 6 | 10.0 | true | 6.0 | 60.0 | false |
+| Expressive completeness | Which formula classes the substrate can faithfully evaluate: full \| partial-aggregation \| partial-formula \| shape-only. | 3 | 10.0 | true | 6.0 | 60.0 | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Substrate Tradeoff** | Per-(Substrate × Dimension) Pro/Con/Note. The same fixed dimension set (see SubstrateTradeoffDimensions) is applied to every substrate, so 'why pick Postgres over Python?' or 'why does English cost so much?' is answerable by filtering this table. NOT a ranking — see ax-002 (no privileged substrate). Each row records a factual property along one comparable axis. | — |
 | Name | Computed as the substrate ID, followed by “:”, followed by the dimension ID. | _Order 1. Display alias (calculated). Order 1._ |
 | Substrate ID | A defined attribute. | _FK to ExecutionSubstrates.SubstrateId._ |
@@ -1044,6 +1851,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Full Substrate Noted | True when all of the following hold: the substrate is fully expressive (a missing value counts as false) and the note flag is set. ⚠︎ mechanical <!-- rulespeak:reword --> | _Order 3. Fully expressive substrate with a qualifying note._ |
 | Dimension Full Count | The fully expressive tradeoff count of the substrate tradeoff's dimension ID. | _Order 4. Fully expressive entries sharing this dimension._ |
 | Is Dominant Dimension Entry | True when all of the following hold: the substrate is fully expressive (a missing value counts as false) and the dimension full count (a missing value counts as 0) is at least 5. ⚠︎ mechanical <!-- rulespeak:reword --> | _Order 5. Fully expressive entry on a dimension dominated by fully expressive substrates._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Pro | Con | Note | Substrate Name ƒ | Dimension Name ƒ | Dimension Order ƒ | Has Note ƒ | Substrate is Fully Expressive ƒ | Substrate Full Flag ƒ | Dimension Tradeoff Count ƒ | Is Full Substrate Noted ƒ | Dimension Full Count ƒ | Is Dominant Dimension Entry ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| substrate-001:dim-accuracy | Deterministic — same input always produces same output. | Partial-formula coverage means it fails conformance on formula classes it doesn't yet handle. | — | Binary (ARM64) | Accuracy | 2 | false | false | 0.0 | 10.0 | false | 6.0 | false |
+| substrate-001:dim-runtime-cost | Effectively free per run. | — | — | Binary (ARM64) | Runtime cost | 8 | false | false | 0.0 | 10.0 | false | 6.0 | false |
+| substrate-001:dim-debuggability | — | Stepping through ARM64 assembly is impractical for business-rule debugging. | — | Binary (ARM64) | Debuggability | 6 | false | false | 0.0 | 10.0 | false | 6.0 | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Fuzzy Grading Provider** | LLM providers usable for fuzzy grading of the English substrate — the ONLY non-deterministic substrate. All other substrates execute formulas deterministically; English requires an LLM to interpret prose into computed values. Use low temperature (0.1) for repeatability. | — |
 | Name | A defined attribute. | — |
 | Model | A defined attribute. | — |
@@ -1060,6 +1883,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Provider Class | Determined by priority: “local-deterministic” if the local deterministic flag is set; “cloud-llm” if the cloud keyed flag is set; in all other cases, “other”. | _Order 3. local-deterministic / cloud-llm / other._ |
 | Is Preferred Provider | True when the provider class is “local-deterministic”. | _Order 4. Local and deterministic — the preferred grader._ |
 | Provider Label | Determined by priority: the name, followed by “ (preferred)” if the preferred provider flag is set; in all other cases, the name. | _Order 5. Display label marking the preferred grader._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Model | Env Var | Determinism | Typical Accuracy | Speed Relative to Deterministic | Local Runtime | Notes | Is Deterministic ƒ | Requires API Key ƒ | Is Local Deterministic ƒ | Is Cloud Keyed ƒ | Provider Class ƒ | Is Preferred Provider ƒ | Provider Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Anthropic | Claude Sonnet | ANTHROPIC_API_KEY | non-deterministic | ~85% on rulebook English specs | 2-3 orders of magnitude slower | false | Alternative to OpenAI. Comparable accuracy on this task. | false | true | false | true | cloud-llm | false | Anthropic |
+| Ollama (local) | Llama 3.2 | — | non-deterministic | lower than hosted models | 3-4 orders of magnitude slower on CPU; less on GPU | true | Runs against localhost:11434. Useful for offline / no-cost runs at the cost of accuracy. | false | false | false | false | other | false | Ollama (local) |
+| OpenAI | GPT-4o | OPENAI_API_KEY | non-deterministic | ~85% on rulebook English specs | 2-3 orders of magnitude slower | false | Default provider for llm-fuzzy-grader.py. | false | true | false | true | cloud-llm | false | OpenAI |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Project Configuration** | Configuration files and their purposes | — |
 | Name | The same as its file name. | _Order 1. Display alias (calculated). Order 1._ |
 | File Name | A defined attribute. | — |
@@ -1073,6 +1912,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Drift Risk | Determined by priority: “high” if the human JSON flag is set; “medium” if the human maintained flag is set; in all other cases, “low”. | _Order 3. Likelihood the file drifts from the rulebook._ |
 | Needs Guard | True when the drift risk is “high”. | _Order 4. Hand-maintained JSON that deserves a build-time validator._ |
 | Guard Label | Determined by priority: “guard: validate on build” if the needs guard flag is set; in all other cases, “no guard needed”. | _Order 5. Recommended guard for the file._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | File Name | File Path | Format | Purpose | Maintained by | Is Human Maintained ƒ | Is JSON ƒ | Is Human JSON ƒ | Drift Risk ƒ | Needs Guard ƒ | Guard Label ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| effortless.json | effortless.json | ./effortless.json | JSON | SSoTme project definition: transpilers, versions, base IDs, API keys | human | true | true | true | high | true | guard: validate on build |
+| CLAUDE.md | CLAUDE.md | ./CLAUDE.md | Markdown | Project instructions and architecture overview for Claude Code | human | true | false | false | medium | false | no guard needed |
+| bases.json | bases.json | orchestration/bases.json | JSON | Catalog of swappable Airtable bases with IDs, names, complexity levels | human | true | true | true | high | true | guard: validate on build |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Build Pipeline** | The effortless.json contract that both the admin portal and the CLI consume. There is ONE pipeline definition per project; both surfaces are thin wrappers around `effortless build` so they stay in lockstep. | — |
 | Name | The same as its aspect. | _Order 1. Display alias (calculated). Order 1._ |
 | Aspect | A defined attribute. | — |
@@ -1086,6 +1941,22 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Parity State | Determined by priority: “portal-only” if the cli parity gap flag is set; “scoped-parity” if the scoped with cli flag is set; in all other cases, “global-parity”. | _Order 3. portal-only / scoped-parity / global-parity._ |
 | Is Parity Violation | True when the parity state is “portal-only”. | _Order 4. Breaks the PortalCliParity claim._ |
 | Parity Flag | Determined by priority: 0 if the parity violation flag is set; in all other cases, 1. | _Order 5. 1 when portal and CLI agree — rollup carrier._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Aspect | Portal Location | Cli Equivalent | Authority | Has Cli Equivalent ƒ | Is Project Scoped ƒ | Is Cli Parity Gap ƒ | Is Scoped With Cli ƒ | Parity State ƒ | Is Parity Violation ƒ | Parity Flag ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| List installed transpilers | List installed transpilers | n/a (admin portal retired; see CliEquivalent) | cat effortless.json \| jq .ProjectTranspilers | {active-project}/effortless.json (ProjectTranspilers array) | true | true | false | true | scoped-parity | false | 1.0 |
+| Add a transpiler | Add a transpiler | n/a (admin portal retired; see CliEquivalent) | effortless -install <proxy-url> -i <rulebook> | Both invoke the same `effortless -install` command — portal shells out so behaviour matches CLI exactly. | true | false | false | false | global-parity | false | 1.0 |
+| Remove a transpiler | Remove a transpiler | n/a (admin portal retired; see CliEquivalent) | edit effortless.json or `effortless -uninstall <name>` | {active-project}/effortless.json | true | true | false | true | scoped-parity | false | 1.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Portal Cli Parity** | The portal and the `./start.sh --cli` interface are peer interfaces to the same effortless.json pipeline; portal behaviour cannot drift from CLI behaviour. | — |
 | Name | A defined attribute. | _Identifier for this narrative entry (single-row tables use 'primary')._ |
 | Description | A defined attribute. | _The full narrative content for this concept._ |
@@ -1094,6 +1965,20 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Narrative State | Determined by priority: “ready” if the substantive flag is set; in all other cases, “stub”. | _Order 3. ready / stub._ |
 | Is Ready | True when the narrative state is “ready”. | _Order 4. Narrative is ready for publication._ |
 | Section Label | Determined by priority: the name, followed by “ (ready)” if the ready flag is set; in all other cases, the name, followed by “ (stub)”. | _Order 5. Display label with readiness._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Description | Description Length ƒ | Is Substantive ƒ | Narrative State ƒ | Is Ready ƒ | Section Label ƒ |
+|---|---|---|---|---|---|---|
+| primary | The React explorer (`--portal`) and `./start.sh`'s CLI orchestrator menu are peer interfaces to the SAME effortless.json pipeline. Install Tool, Build, Clean, Test, and project switching all shell out to the same `effortless` CLI commands — so portal behaviour cannot drift from CLI behaviour. | 293 | true | ready | true | primary (ready) |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Write Through Invariant** | The portal-vs-rulebook write-through invariant: Postgres is the live editor, JSON is the durable SSoT, every save writes to both. | — |
 | Name | A defined attribute. | _Identifier for this narrative entry (single-row tables use 'primary')._ |
 | Description | A defined attribute. | _The full narrative content for this concept._ |
@@ -1102,6 +1987,20 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Narrative State | Determined by priority: “ready” if the substantive flag is set; in all other cases, “stub”. | _Order 3. ready / stub._ |
 | Is Ready | True when the narrative state is “ready”. | _Order 4. Narrative is ready for publication._ |
 | Section Label | Determined by priority: the name, followed by “ (ready)” if the ready flag is set; in all other cases, the name, followed by “ (stub)”. | _Order 5. Display label with readiness._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Description | Description Length ƒ | Is Substantive ƒ | Narrative State ƒ | Is Ready ƒ | Section Label ƒ |
+|---|---|---|---|---|---|---|
+| primary | The generated rulebook editor's Postgres database is the LIVE EDITOR; the rulebook JSON is the DURABLE SSOT. Every save in the editor must write to BOTH (in the same logical transaction). If Postgres is dropped, the editor rebuilds from JSON. If JSON is lost, the editor has no source of truth. | 294 | true | ready | true | primary (ready) |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Bootstrap Story** | The cold-start story: from `git clone` to a running portal with a default user landing on Home. | — |
 | Name | A defined attribute. | _Identifier for this narrative entry (single-row tables use 'primary')._ |
 | Description | A defined attribute. | _The full narrative content for this concept._ |
@@ -1110,6 +2009,20 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Narrative State | Determined by priority: “ready” if the substantive flag is set; in all other cases, “stub”. | _Order 3. ready / stub._ |
 | Is Ready | True when the narrative state is “ready”. | _Order 4. Narrative is ready for publication._ |
 | Section Label | Determined by priority: the name, followed by “ (ready)” if the ready flag is set; in all other cases, the name, followed by “ (stub)”. | _Order 5. Display label with readiness._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Description | Description Length ƒ | Is Substantive ƒ | Narrative State ƒ | Is Ready ƒ | Section Label ƒ |
+|---|---|---|---|---|---|---|
+| primary | Cold start: `git clone && ./start.sh` → launches the CLI orchestrator menu (`orchestration/orchestrate.sh`) by default. `./start.sh --portal` instead boots the local transpiler host on :4242, brings up the generated rulebook editor (Postgres + API + UI), and starts the React explorer on :42440, opening the browser there. The whole story unfolds from one command either way. | 375 | true | ready | true | primary (ready) |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Developer Journey** | The intended developer path through the portal: Home → project → Rulebook → Substrates → Builds → Tests → Input Spokes → Users. | — |
 | Name | A defined attribute. | _Identifier for this narrative entry (single-row tables use 'primary')._ |
 | Description | A defined attribute. | _The full narrative content for this concept._ |
@@ -1118,6 +2031,20 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Narrative State | Determined by priority: “ready” if the substantive flag is set; in all other cases, “stub”. | _Order 3. ready / stub._ |
 | Is Ready | True when the narrative state is “ready”. | _Order 4. Narrative is ready for publication._ |
 | Section Label | Determined by priority: the name, followed by “ (ready)” if the ready flag is set; in all other cases, the name, followed by “ (stub)”. | _Order 5. Display label with readiness._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Description | Description Length ƒ | Is Substantive ƒ | Narrative State ƒ | Is Ready ƒ | Section Label ƒ |
+|---|---|---|---|---|---|---|
+| primary | CLI: pick a project from the orchestrator menu → build it → run its substrates → grade conformance → open the report. Portal (`--portal`): Home → pick a project (or accept the active one) → Rulebook to see what the project means → Substrates to see what it generates → Builds to see how it built → Tests to verify conformance → Input Spokes to see where edits come from. Both surfaces tell the same story; the CLI is the default, the explorer is `--portal`. | 457 | true | ready | true | primary (ready) |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Resilience Claim** | The resilience claim: dropping the Postgres editor at any time is safe, because `./start.sh` rebuilds it from JSON. | — |
 | Name | A defined attribute. | _Identifier for this narrative entry (single-row tables use 'primary')._ |
 | Description | A defined attribute. | _The full narrative content for this concept._ |
@@ -1126,6 +2053,20 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Narrative State | Determined by priority: “ready” if the substantive flag is set; in all other cases, “stub”. | _Order 3. ready / stub._ |
 | Is Ready | True when the narrative state is “ready”. | _Order 4. Narrative is ready for publication._ |
 | Section Label | Determined by priority: the name, followed by “ (ready)” if the ready flag is set; in all other cases, the name, followed by “ (stub)”. | _Order 5. Display label with readiness._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Description | Description Length ƒ | Is Substantive ƒ | Narrative State ƒ | Is Ready ƒ | Section Label ƒ |
+|---|---|---|---|---|---|---|
+| primary | Drop the entire Postgres editor any time. `./start.sh --portal` rebuilds it from JSON. The rulebook JSON travels with the repo; the editor DB does not. | 151 | false | stub | false | primary (stub) |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Table** | One row per table in this rulebook, mirrored from its structure by the Sync step. Security permissions and delivery features point at these rows rather than at bare table names. | — |
 | Table Name | A defined attribute. | _The rulebook table name again, kept as a plain column so it can be displayed and filtered like any other field._ |
 | Description | A defined attribute. | _What this table holds. Copied from the rulebook on first sync and never overwritten afterwards, so edits made here stick._ |
@@ -1134,6 +2075,20 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Tenant Parent Table | A defined attribute. | _For a tenant-scoped table with no tenant column of its own: the parent table the tenant is reached through._ |
 | Tenant Parent Field | A defined attribute. | _The field on this table that points at TenantParentTable, when tenancy is inherited from a parent._ |
 | Sort Order | A defined attribute. | _Display order in lists and reports._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Table Name | Description | Is Meta Table | Is Tenant Scoped | Tenant Parent Field | Sort Order |
+|---|---|---|---|---|---|
+| AcceptanceCriteria | Acceptance criteria per user story (progress-report contract). | false | — | — | 30 |
+| AddToolCatalog | Tools the developer can install into the active project via the Add Tool screen. Same catalog the `effortless -install` CLI consumes; the portal is just a thin UI over the CLI so behaviour stays canonical. | false | — | — | 47 |
+| ArchitecturalHighlight | The architectural pattern that makes the platform work: input spokes write to the rulebook, output spokes read from it, conformance binds them. | false | — | — | 40 |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Field** | One row per field of every table in this rulebook, mirrored by the Sync step. Field-level permissions point at these rows. | — |
 | ERB Table | A defined attribute. | _The table this field belongs to._ |
 | Field Name | A defined attribute. | _The field name as it appears in the rulebook schema._ |
@@ -1141,6 +2096,20 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Datatype | A defined attribute. | _The rulebook datatype: string, integer, number, boolean, datetime._ |
 | Is Primary Key | True when an empty string. | _True for the field that identifies a row of its table._ |
 | Description | A defined attribute. | _What this field means. Copied from the rulebook on first sync and never overwritten afterwards._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Field Name | Field Type | Datatype | Is Primary Key | Description |
+|---|---|---|---|---|
+| AcceptanceCriterionId | raw | string | true | PK. |
+| Criterion | raw | string | false | Testable statement that must hold for the story to be accepted. |
+| CriterionState | calculated | string | false | Order 4. contradicts-story / met / pending. |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Role** | A named role that users hold. Its default CRUD and default row filter apply to every table unless an ERBRoleTablePermissions row overrides them. Each role becomes a database role and gets its own schema of permitted views. | — |
 | Title | A defined attribute. | _Human-readable name shown in the editor._ |
 | Description | A defined attribute. | _What this role is for and who typically holds it._ |
@@ -1149,48 +2118,107 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Is Admin Equivalent | True when an empty string. | _True for a role that bypasses every restriction and sees every table and row._ |
 | Is Tenant Exempt | True when an empty string. | _True for a role allowed to see across tenants; tenant-scoped tables then need no row filter for it._ |
 | Sort Order | A defined attribute. | _Display order._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB User** | The people and service accounts that sign in to the application, each holding one role. Identity helpers can resolve a signed-in user to a row here by email or external id. | — |
 | Email Address | A defined attribute. | _The email address the user signs in with. Unique._ |
 | Display Name | A defined attribute. | _Name shown in the application._ |
 | ERB Role | A defined attribute. | _The role this user holds._ |
 | External User ID | A defined attribute. | _The subject (sub) claim of the identity provider token, when the application resolves users by id rather than email._ |
 | Is Active | True when an empty string. | _False disables the account without deleting its history._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Role Table Permission** | A per-table override of one role default CRUD and row filter. A table with no row here inherits the role defaults. | — |
 | ERB Role | A defined attribute. | _The role this override belongs to._ |
 | ERB Table | A defined attribute. | _The table being overridden._ |
 | CRUD | A defined attribute. | _Permissions for this table as a subset of C, R, U and D. Empty means no access._ |
 | Row Filter | A defined attribute. | _Row restriction for this table as a predicate; may use {{variable}} placeholders. Empty falls back to the role default filter._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Role Field Permission** | A per-field override for one role, used to hide or protect individual columns such as cost, margin or personal data that the table-level grant would otherwise expose. | — |
 | ERB Role | A defined attribute. | _The role this override belongs to._ |
 | ERB Field | A defined attribute. | _The field being overridden._ |
 | CRUD | A defined attribute. | _Permissions for this field as a subset of C, R, U and D. Omitting R removes the column from the role view; omitting U removes it from the role update grant._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Context Variable** | The identity facts a row filter may refer to as {{name}}. Each becomes a generated helper function app.name() that reads the current transaction token or resolves from other helpers. Seeded with user_id, email and role. | — |
 | Datatype | A defined attribute. | _The value type: string, integer, number or boolean. Drives the cast applied in generated SQL._ |
 | Source | A defined attribute. | _jwt-claim to read a claim from the transaction token, or resolver to compute the value with ResolverSql._ |
 | Claim Path | A defined attribute. | _For jwt-claim: the claim to read, for example email or app_metadata.tenant._ |
 | Resolver SQL | A defined attribute. | _For resolver: a SQL expression returning one value; may call other helpers such as app.email()._ |
 | Description | A defined attribute. | _What this variable represents and where its value ultimately comes from._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Datatype | Source | Claim Path | Resolver SQL | Description |
+|---|---|---|---|---|
+| string | jwt-claim | email | — | The email address of the signed-in user. |
+| string | resolver | — | select erb_role from public.vw_erb_users where lower(email_address) = lower(app.email()) limit 1 | The role of the signed-in user, looked up in ERBUsers by email. |
+| string | jwt-claim | sub | — | The identity provider subject of the signed-in user. |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Epic** | The large themes user stories are grouped under. Each epic belongs to one package. | — |
 | Title | A defined attribute. | _Epic name shown in the report._ |
 | ERB Package | A defined attribute. | _The package this epic is sold as part of._ |
 | Sort Order | A defined attribute. | _Display order within the package._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Effort Class** | Complexity bands a story is placed in. The weight multiplies acceptance criteria into units of work, so it moves the price. The most demanding band must be named G3. | — |
 | Title | A defined attribute. | _Band name such as Routine or Demanding._ |
 | Complexity Weight | A defined attribute. | _Multiplier applied per acceptance criterion. Must be non-zero for any band a story uses._ |
 | Sort Order | A defined attribute. | _Display order from easiest to hardest._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Title | Complexity Weight | Sort Order |
+|---|---|---|
+| Routine | 1 | 1 |
+| Involved | 1.6 | 2 |
+| Demanding | 2.5 | 3 |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Delivery Discipline** | How every quoted price divides across kinds of work. The client-visible shares must sum to 100. | — |
 | Title | A defined attribute. | _Discipline name._ |
 | Share Percent | A defined attribute. | _Percentage of every price attributed to this discipline._ |
 | Description | A defined attribute. | _What this discipline covers._ |
 | Client Visible | True when an empty string. | _False hides the discipline from the client-facing report and from the sum-to-100 check._ |
 | Sort Order | A defined attribute. | _Display order._ |
-| **ERB Build Phas** | The phases work is scheduled and priced in. Exactly one phase is the current bid. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Title | Share Percent | Description | Client Visible | Sort Order |
+|---|---|---|---|---|
+| Assurance | 30 | Testing and acceptance. | true | 2 |
+| Build | 70 | Modelling and generation. | true | 1 |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
+| **ERB Build Phase** | The phases work is scheduled and priced in. Exactly one phase is the current bid. | — |
 | Phase Number | A defined attribute. | _Ordinal of this phase in the plan._ |
 | Title | A defined attribute. | _Phase name shown in the report._ |
 | Quoted Price | A defined attribute. | _The price quoted for this phase, in the currency of the proposal._ |
 | Duration Months | A defined attribute. | _Planned duration in months._ |
 | Phase Kind | A defined attribute. | _fixed-price, time-and-materials or priced-option. Drives the commercial grouping._ |
 | Is Current Bid | True when an empty string. | _True for the single phase this document is asking for._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB User Story** | The atom of scope: one selectable piece of work, placed in a phase, an epic, a feature and an effort class. | — |
 | Req ID | A defined attribute. | _The requirement identifier shown to the client, for example ACC-01._ |
 | Story Text | A defined attribute. | _The story in the form: as a role I can do something so that outcome._ |
@@ -1203,12 +2231,18 @@ _The repo-governing rulebook: every governed project including the root, witness
 | Spike Coverage Percent | A defined attribute. | _How much of this story was prototyped before the bid, as a percentage._ |
 | Rulebook Gap Note | A defined attribute. | _The note shown when the story needs new modelling._ |
 | Roadblock | A defined attribute. | _When set, the story is waiting on someone outside the build._ |
-| **ERB Acceptance Criteria** | What is being committed to for a story, one testable statement per row. The unit of pricing and the acceptance ledger. | — |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
+| **ERB Acceptance Criterion** | What is being committed to for a story, one testable statement per row. The unit of pricing and the acceptance ledger. | — |
 | ERB User Story | A defined attribute. | _The story this criterion belongs to._ |
 | Criterion | A defined attribute. | _The testable statement._ |
 | Sort Order | A defined attribute. | _The order criteria are read in._ |
 | Depends on Criterion | A defined attribute. | _A criterion that must pass before this one is meaningful._ |
 | Is Accepted | True when an empty string. | _True once the client has accepted this criterion as met._ |
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **ERB Proposal Section** | Your own prose for the Progress Report, keyed by section. A meta table that drives the document only. | — |
 | Section Key | A defined attribute. | _Which section this targets, for example what-this-is or cost-curve._ |
 | Title | A defined attribute. | _Heading override; blank keeps the shipped heading._ |
@@ -1244,18 +2278,18 @@ _The repo-governing rulebook: every governed project including the root, witness
 - a **flavor tag** references exactly one **rulebook tag**
 - a **claude skill** references exactly one **project metadata**
 - a **claude skill** may reference one **skill route**
-- a **build phas** references exactly one **project metadata**
-- an **ERB package** may reference one **build phas**
+- a **build phase** references exactly one **project metadata**
+- an **ERB package** may reference one **build phase**
 - an **ERB package** references exactly one **project metadata**
 - an **ERB feature category** references exactly one **ERB package**
 - an **ERB feature** references exactly one **ERB feature category**
 - an **ERB feature** references exactly one **ERB package**
 - an **ERB feature** may reference one **ERB epic**
-- a **user story** references exactly one **build phas**
+- a **user story** references exactly one **build phase**
 - a **user story** references exactly one **ERB feature category**
 - a **user story** references exactly one **ERB feature**
 - a **user story** references exactly one **effort class**
-- an **acceptance criteria** references exactly one **user story**
+- an **acceptance criterion** references exactly one **user story**
 - a **consistency rule** references exactly one **project metadata**
 - a **consistency finding** references exactly one **consistency rule**
 - a **consistency finding** may reference one **rulebook domain**
@@ -1272,9 +2306,9 @@ _The repo-governing rulebook: every governed project including the root, witness
 - an **execution substrate** references exactly one **project metadata**
 - a **local tool route** may reference one **execution substrate**
 - an **add tool catalog** may reference one **execution substrate**
-- a **substrate contract phas** may reference one **evaluation artifact**
-- an **evaluation step** references exactly one **substrate contract phas**
-- an **evaluation artifact** may reference one **substrate contract phas**
+- a **substrate contract phase** may reference one **evaluation artifact**
+- an **evaluation step** references exactly one **substrate contract phase**
+- an **evaluation artifact** may reference one **substrate contract phase**
 - a **substrate tradeoff dimension** may reference one **substrate tradeoff**
 - a **substrate tradeoff** references exactly one **execution substrate**
 - a **substrate tradeoff** references exactly one **substrate tradeoff dimension**
@@ -1286,13 +2320,13 @@ _The repo-governing rulebook: every governed project including the root, witness
 - an **ERB role field permission** may reference one **ERB role**
 - an **ERB role field permission** may reference one **ERB field**
 - an **ERB epic** may reference one **ERB package**
-- an **ERB user story** may reference one **ERB build phas**
+- an **ERB user story** may reference one **ERB build phase**
 - an **ERB user story** may reference one **ERB epic**
 - an **ERB user story** may reference one **ERB feature**
 - an **ERB user story** may reference one **ERB effort class**
 - an **ERB user story** may reference one **ERB user story**
-- an **ERB acceptance criteria** may reference one **ERB user story**
-- an **ERB acceptance criteria** may reference one **ERB acceptance criteria**
+- an **ERB acceptance criterion** may reference one **ERB user story**
+- an **ERB acceptance criterion** may reference one **ERB acceptance criterion**
 
 ## 3 Operative Rules
 
@@ -1335,8 +2369,8 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A flavor tag **must** reference exactly one rulebook tag as its tag.
 - A claude skill **must** reference exactly one project metadata as its project.
 - A claude skill **must** have a name; a category; a load gate; a status; a one line summary; an audience; and a clone URL, and record whether it is an entry point and whether it is highlight in readme.
-- A build phas **must** reference exactly one project metadata as its project.
-- A build phas **must** have a phase number; a title; and a phase kind, and record whether it is a current bid.
+- A build phase **must** reference exactly one project metadata as its project.
+- A build phase **must** have a phase number; a title; and a phase kind, and record whether it is a current bid.
 - An effort class **must** have a title; a complexity weight; and a sort order.
 - A delivery discipline **must** have a title; a share percent; and a sort order, and record whether it is client visible.
 - An ERB package **must** reference exactly one project metadata as its project.
@@ -1346,13 +2380,13 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - An ERB feature **must** reference exactly one ERB feature category as its category.
 - An ERB feature **must** reference exactly one ERB package.
 - An ERB feature **must** have a title.
-- A user story **must** reference exactly one build phas as its build phase.
+- A user story **must** reference exactly one build phase.
 - A user story **must** reference exactly one ERB feature category as its epic.
 - A user story **must** reference exactly one ERB feature as its feature.
 - A user story **must** reference exactly one effort class.
 - A user story **must** have a req ID; a story text; a status; and a dev progress percent.
-- An acceptance criteria **must** reference exactly one user story.
-- An acceptance criteria **must** have a criterion, and record whether it is a met.
+- An acceptance criterion **must** reference exactly one user story.
+- An acceptance criterion **must** have a criterion, and record whether it is a met.
 - A consistency rule **must** reference exactly one project metadata as its project.
 - A consistency rule **must** have a rule code; a severity; a scope; and a statement, and record whether it is scanner derived.
 - A consistency finding **must** reference exactly one consistency rule as its rule.
@@ -1379,8 +2413,8 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A core data flow **must** have a name and a steps.
 - A dependency **must** have a name; a type; and a purpose, and record whether it is required.
 - An add tool catalog **must** have a name; a category; a source; an install URL; and a description.
-- A substrate contract phas **must** have an order; a name; an input; an output; and a description, and record whether it is domain agnostic.
-- An evaluation step **must** reference exactly one substrate contract phas as its phase ID.
+- A substrate contract phase **must** have an order; a name; an input; an output; and a description, and record whether it is domain agnostic.
+- An evaluation step **must** reference exactly one substrate contract phase as its phase ID.
 - An evaluation step **must** have an order; a name; and a description.
 - An evaluation artifact **must** have a name; a format; a path pattern; and a description.
 - A substrate tradeoff dimension **must** have a name; a description; and an order.
@@ -1676,23 +2710,23 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-269 Healthy Flag** | The claude skill's healthy flag is determined by the following priority:<br>1. 0, if at least one of the following holds: the deprecated but routed flag is set or the isolated flag is set;<br>2. in all other cases, 1. |
 | **DR-270 Needs Catalog Action** | A claude skill is considered to need a catalog action if the healthy flag is 0. |
 | **DR-271 Catalog Label** | A claude skill's catalog label is computed as the name, followed by “ [”, followed by the catalog state, followed by “]”. |
-| **DR-272 Name** | A build phas's name is the same as its title. |
-| **DR-273 Story Count** | A build phas's story count is the number of user stories related to the build phas. |
-| **DR-274 Package Count** | A build phas's package count is the number of ERB packages related to the build phas. |
-| **DR-275 Is Priced** | A build phas is considered priced if the quoted price (a missing value counts as 0) is greater than 0. |
-| **DR-276 Priced Flag** | The build phas's priced flag is determined by the following priority:<br>1. 1, if the quoted price (a missing value counts as 0) is greater than 0;<br>2. in all other cases, 0. |
-| **DR-277 Is Fixed Price** | A build phas is considered a fixed price if the phase kind is “fixed-price”. |
-| **DR-278 Done Story Count** | A build phas's done story count is the total done flag across the user stories related to the build phas. |
-| **DR-279 Effort Weight Sum** | A build phas's effort weight sum is the total effort weight across the user stories related to the build phas. |
-| **DR-280 Has Stories** | A build phas is considered to have a stories if the story count is greater than 0. |
-| **DR-281 Done Percent** | The build phas's done percent is determined by the following priority:<br>1. 0, if the story count is 0;<br>2. in all other cases, 100 times the done story count divided by the story count rounded to 0 decimal place(s). |
-| **DR-282 Weighted Done Sum** | A build phas's weighted done sum is the total weighted done across the user stories related to the build phas. |
-| **DR-283 Is Priced With Stories** | A build phas is considered a priced with stories if all of the following hold: the priced flag is set and the stories flag is set. |
-| **DR-284 Weighted Done Percent** | The build phas's weighted done percent is determined by the following priority:<br>1. 0, if the effort weight sum is 0;<br>2. in all other cases, 100 times the weighted done sum divided by the effort weight sum rounded to 0 decimal place(s). |
-| **DR-285 Avg Story Progress** | A build phas's avg story progress is the average derived progress percent across the user stories related to the build phas. |
-| **DR-286 Is Contract Safe** | A build phas is considered a contract safe if at least one of the following holds: the priced flag is not set or the priced with stories flag is set. |
-| **DR-287 Phase State** | The build phas's phase state is determined by the following priority:<br>1. “complete”, if the weighted done percent is 100;<br>2. “in-progress”, if the weighted done percent is greater than 0;<br>3. “bid”, if the current bid flag is set;<br>4. in all other cases, “planned”. |
-| **DR-288 Is Report Safe** | A build phas is considered a report safe if all of the following hold: the contract safe flag is set and the stories flag is set. |
+| **DR-272 Name** | A build phase's name is the same as its title. |
+| **DR-273 Story Count** | A build phase's story count is the number of user stories related to the build phase. |
+| **DR-274 Package Count** | A build phase's package count is the number of ERB packages related to the build phase. |
+| **DR-275 Is Priced** | A build phase is considered priced if the quoted price (a missing value counts as 0) is greater than 0. |
+| **DR-276 Priced Flag** | The build phase's priced flag is determined by the following priority:<br>1. 1, if the quoted price (a missing value counts as 0) is greater than 0;<br>2. in all other cases, 0. |
+| **DR-277 Is Fixed Price** | A build phase is considered a fixed price if the phase kind is “fixed-price”. |
+| **DR-278 Done Story Count** | A build phase's done story count is the total done flag across the user stories related to the build phase. |
+| **DR-279 Effort Weight Sum** | A build phase's effort weight sum is the total effort weight across the user stories related to the build phase. |
+| **DR-280 Has Stories** | A build phase is considered to have a stories if the story count is greater than 0. |
+| **DR-281 Done Percent** | The build phase's done percent is determined by the following priority:<br>1. 0, if the story count is 0;<br>2. in all other cases, 100 times the done story count divided by the story count rounded to 0 decimal place(s). |
+| **DR-282 Weighted Done Sum** | A build phase's weighted done sum is the total weighted done across the user stories related to the build phase. |
+| **DR-283 Is Priced With Stories** | A build phase is considered a priced with stories if all of the following hold: the priced flag is set and the stories flag is set. |
+| **DR-284 Weighted Done Percent** | The build phase's weighted done percent is determined by the following priority:<br>1. 0, if the effort weight sum is 0;<br>2. in all other cases, 100 times the weighted done sum divided by the effort weight sum rounded to 0 decimal place(s). |
+| **DR-285 Avg Story Progress** | A build phase's avg story progress is the average derived progress percent across the user stories related to the build phase. |
+| **DR-286 Is Contract Safe** | A build phase is considered a contract safe if at least one of the following holds: the priced flag is not set or the priced with stories flag is set. |
+| **DR-287 Phase State** | The build phase's phase state is determined by the following priority:<br>1. “complete”, if the weighted done percent is 100;<br>2. “in-progress”, if the weighted done percent is greater than 0;<br>3. “bid”, if the current bid flag is set;<br>4. in all other cases, “planned”. |
+| **DR-288 Is Report Safe** | A build phase is considered a report safe if all of the following hold: the contract safe flag is set and the stories flag is set. |
 | **DR-289 Name** | An effort class's name is the same as its title. |
 | **DR-290 Story Count** | An effort class's story count is the number of user stories related to the effort class. |
 | **DR-291 Weighted Story Load** | An effort class's weighted story load is computed as the story count times the complexity weight. |
@@ -1759,18 +2793,18 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-352 Progress State** | The user story's progress state is determined by the following priority:<br>1. “drift”, if the status drift flag is set;<br>2. “accepted”, if the acceptance complete flag is set;<br>3. “in-flight”, if the derived progress percent is greater than 0;<br>4. in all other cases, “not-started”. |
 | **DR-353 Priority Band** | The user story's priority band is determined by the following priority:<br>1. “fix-first”, if the progress state is “drift”;<br>2. “continue”, if the progress state is “in-flight”;<br>3. in all other cases, “queue”. |
 | **DR-354 Report Label** | A user story's report label is computed as the req ID, followed by a space, followed by the progress state. |
-| **DR-355 Name** | An acceptance criteria's name is the same as its acceptance criterion ID. |
-| **DR-356 Met Flag** | The acceptance criteria's met flag is determined by the following priority:<br>1. 1, if the met flag is set;<br>2. in all other cases, 0. |
-| **DR-357 Story Req ID** | An acceptance criteria's story req ID — taken from the linked user story. |
-| **DR-358 Story Status** | An acceptance criteria's story status — taken from the linked user story. |
-| **DR-359 Story is Done** | An acceptance criteria's story is done is true when the acceptance criteria's user story is a done. |
-| **DR-360 Story Criterion Count** | An acceptance criteria's story criterion count — taken from the linked user story. |
-| **DR-361 Is Inconsistent With Story** | An acceptance criteria is considered an inconsistent with story if all of the following hold: the story is done (a missing value counts as false) and the met flag is not set. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-362 Share of Story** | The acceptance criteria's share of story is determined by the following priority:<br>1. 0, if the story criterion count (a missing value counts as 0) is 0;<br>2. in all other cases, 100 divided by the story criterion count rounded to 0 decimal place(s). |
-| **DR-363 Story Derived Progress** | An acceptance criteria's story derived progress is the derived progress percent of the acceptance criteria's user story. |
-| **DR-364 Criterion State** | The acceptance criteria's criterion state is determined by the following priority:<br>1. “contradicts-story”, if the inconsistent with story flag is set;<br>2. “met”, if the met flag is set;<br>3. in all other cases, “pending”. |
-| **DR-365 Needs Review** | An acceptance criteria is considered to need a review if the criterion state is “contradicts-story”. |
-| **DR-366 Story is Ahead of Criterion** | An acceptance criteria is flagged story is ahead of criterion if all of the following hold: the met flag is not set and the story derived progress (a missing value counts as 0) is at least 50. |
+| **DR-355 Name** | An acceptance criterion's name is the same as its acceptance criterion ID. |
+| **DR-356 Met Flag** | The acceptance criterion's met flag is determined by the following priority:<br>1. 1, if the met flag is set;<br>2. in all other cases, 0. |
+| **DR-357 Story Req ID** | An acceptance criterion's story req ID — taken from the linked user story. |
+| **DR-358 Story Status** | An acceptance criterion's story status — taken from the linked user story. |
+| **DR-359 Story is Done** | An acceptance criterion's story is done is true when the acceptance criterion's user story is a done. |
+| **DR-360 Story Criterion Count** | An acceptance criterion's story criterion count — taken from the linked user story. |
+| **DR-361 Is Inconsistent With Story** | An acceptance criterion is considered an inconsistent with story if all of the following hold: the story is done (a missing value counts as false) and the met flag is not set. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-362 Share of Story** | The acceptance criterion's share of story is determined by the following priority:<br>1. 0, if the story criterion count (a missing value counts as 0) is 0;<br>2. in all other cases, 100 divided by the story criterion count rounded to 0 decimal place(s). |
+| **DR-363 Story Derived Progress** | An acceptance criterion's story derived progress is the derived progress percent of the acceptance criterion's user story. |
+| **DR-364 Criterion State** | The acceptance criterion's criterion state is determined by the following priority:<br>1. “contradicts-story”, if the inconsistent with story flag is set;<br>2. “met”, if the met flag is set;<br>3. in all other cases, “pending”. |
+| **DR-365 Needs Review** | An acceptance criterion is considered to need a review if the criterion state is “contradicts-story”. |
+| **DR-366 Story is Ahead of Criterion** | An acceptance criterion is flagged story is ahead of criterion if all of the following hold: the met flag is not set and the story derived progress (a missing value counts as 0) is at least 50. |
 | **DR-367 Name** | A consistency rule's name is the same as its rule code. |
 | **DR-368 Finding Count** | A consistency rule's finding count is the number of consistency findings related to the consistency rule. |
 | **DR-369 Is Critical** | A consistency rule is considered critical if the severity is “critical”. |
@@ -1945,17 +2979,17 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-538 Is Peer Complete Tool** | An add tool catalog is considered a peer complete tool if all of the following hold: the substrate is fully expressive (a missing value counts as false) and the proxy backed reference flag is set. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-539 Tool Tier** | The add tool catalog's tool tier is determined by the following priority:<br>1. “tier-1”, if the peer complete tool flag is set;<br>2. “tier-2”, if the substrate is peer complete (a missing value counts as false);<br>3. in all other cases, “tier-3”. ⚠︎ mechanical <!-- rulespeak:reword --> |
 | **DR-540 Is Recommended Install** | An add tool catalog is considered a recommended install if all of the following hold: the tool tier is “tier-1” and the local proxy flag is set. |
-| **DR-541 Step Count** | A substrate contract phas's step count is the number of evaluation steps related to the substrate contract phas. |
-| **DR-542 Produced Artifact Count** | A substrate contract phas's produced artifact count is the number of evaluation artifacts related to the substrate contract phas. |
-| **DR-543 Consumed Artifact Count** | A substrate contract phas's consumed artifact count is the number of evaluation artifacts related to the substrate contract phas. |
-| **DR-544 Is First Phase** | A substrate contract phas is considered a first phase if the order is 1. |
-| **DR-545 Is Productive** | A substrate contract phas is considered productive if the produced artifact count is greater than 0. |
-| **DR-546 Artifact Throughput** | A substrate contract phas's artifact throughput is computed as the produced artifact count plus the consumed artifact count. |
-| **DR-547 Has Steps** | A substrate contract phas is considered to have a steps if the step count is greater than 0. |
-| **DR-548 Is Fully Modeled** | A substrate contract phas is considered fully-modeled if all of the following hold: the productive flag is set and the steps flag is set. |
-| **DR-549 Throughput Per Step** | The substrate contract phas's throughput per step is determined by the following priority:<br>1. 0, if the step count is 0;<br>2. in all other cases, the artifact throughput divided by the step count rounded to 2 decimal place(s). |
-| **DR-550 Phase Health** | The substrate contract phas's phase health is determined by the following priority:<br>1. “dense” if the throughput per step is at least 1, in all other cases “modeled”, if the fully modeled flag is set;<br>2. in all other cases, “sparse”. |
-| **DR-551 Is Dense Phase** | A substrate contract phas is considered a dense phase if the phase health is “dense”. |
+| **DR-541 Step Count** | A substrate contract phase's step count is the number of evaluation steps related to the substrate contract phase. |
+| **DR-542 Produced Artifact Count** | A substrate contract phase's produced artifact count is the number of evaluation artifacts related to the substrate contract phase. |
+| **DR-543 Consumed Artifact Count** | A substrate contract phase's consumed artifact count is the number of evaluation artifacts related to the substrate contract phase. |
+| **DR-544 Is First Phase** | A substrate contract phase is considered a first phase if the order is 1. |
+| **DR-545 Is Productive** | A substrate contract phase is considered productive if the produced artifact count is greater than 0. |
+| **DR-546 Artifact Throughput** | A substrate contract phase's artifact throughput is computed as the produced artifact count plus the consumed artifact count. |
+| **DR-547 Has Steps** | A substrate contract phase is considered to have a steps if the step count is greater than 0. |
+| **DR-548 Is Fully Modeled** | A substrate contract phase is considered fully-modeled if all of the following hold: the productive flag is set and the steps flag is set. |
+| **DR-549 Throughput Per Step** | The substrate contract phase's throughput per step is determined by the following priority:<br>1. 0, if the step count is 0;<br>2. in all other cases, the artifact throughput divided by the step count rounded to 2 decimal place(s). |
+| **DR-550 Phase Health** | The substrate contract phase's phase health is determined by the following priority:<br>1. “dense” if the throughput per step is at least 1, in all other cases “modeled”, if the fully modeled flag is set;<br>2. in all other cases, “sparse”. |
+| **DR-551 Is Dense Phase** | A substrate contract phase is considered a dense phase if the phase health is “dense”. |
 | **DR-552 Phase Name** | An evaluation step's phase name — taken from the linked phase ID. |
 | **DR-553 Phase Order** | An evaluation step's phase order — taken from the linked phase ID. |
 | **DR-554 Is First Step** | An evaluation step is considered a first step if the order is 1. |
@@ -2041,7 +3075,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -2682,8 +3716,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)

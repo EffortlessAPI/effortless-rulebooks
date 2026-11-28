@@ -844,7 +844,7 @@ ALTER TABLE project_slot_witnesses ADD COLUMN IF NOT EXISTS slot TEXT;          
 ALTER TABLE project_slot_witnesses ADD COLUMN IF NOT EXISTS is_present BOOLEAN;                     -- The strict scan currently passes this slot.
 ALTER TABLE project_slot_witnesses ADD COLUMN IF NOT EXISTS witnessed_path TEXT;                    -- The matched repository-relative path or transpiler Name.
 ALTER TABLE project_slot_witnesses ADD COLUMN IF NOT EXISTS witnessed_detail TEXT;                  -- Exact observed success or failure.
-ALTER TABLE project_slot_witnesses ADD COLUMN IF NOT EXISTS witnessed_on TIMESTAMPTZ;               -- ISO date of the scan.
+ALTER TABLE project_slot_witnesses ADD COLUMN IF NOT EXISTS witnessed_on DATE;                      -- ISO date of the scan.
 COMMENT ON TABLE project_slot_witnesses IS 'Strict filesystem/manifest witnesses for every governed project x canonical slot. Refresh with scripts/scan-project-slots.py.';
 COMMENT ON COLUMN project_slot_witnesses.project_slot_witness_id IS 'PK: <domain>:<slot>.';
 COMMENT ON COLUMN project_slot_witnesses.domain IS 'FK to the governed project row.';

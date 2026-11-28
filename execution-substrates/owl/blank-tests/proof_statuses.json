@@ -1,0 +1,92 @@
+[
+  {
+    "proof_status_id": "DECOMPOSED",
+    "sort_order": 30,
+    "is_imported": true,
+    "is_derived": false,
+    "allows_imported_children": true,
+    "is_terminal": false,
+    "description": "A theorem-sized import has been split into typed child obligations.",
+    "name": null
+  },
+  {
+    "proof_status_id": "DERIVED_WITH_IMPORTED_CHILDREN",
+    "sort_order": 40,
+    "is_imported": false,
+    "is_derived": true,
+    "allows_imported_children": true,
+    "is_terminal": false,
+    "description": "The parent fact is derived, but at least one load-bearing child remains imported.",
+    "name": null
+  },
+  {
+    "proof_status_id": "DERIVED_WITH_SHARED_KERNEL",
+    "sort_order": 50,
+    "is_imported": false,
+    "is_derived": true,
+    "allows_imported_children": true,
+    "is_terminal": false,
+    "description": "The parent is derived from a reusable provider theorem or foundation kernel.",
+    "name": null
+  },
+  {
+    "proof_status_id": "FALSIFIED",
+    "sort_order": 70,
+    "is_imported": false,
+    "is_derived": false,
+    "allows_imported_children": false,
+    "is_terminal": true,
+    "description": "The claimed inference failed or a counterexample was witnessed.",
+    "name": null
+  },
+  {
+    "proof_status_id": "FULLY_INTERNALIZED_FOR_SCOPE",
+    "sort_order": 60,
+    "is_imported": false,
+    "is_derived": true,
+    "allows_imported_children": false,
+    "is_terminal": true,
+    "description": "All load-bearing inference content is represented above the declared trust boundary for the stated scope.",
+    "name": null
+  },
+  {
+    "proof_status_id": "IMPORTED",
+    "sort_order": 20,
+    "is_imported": true,
+    "is_derived": false,
+    "allows_imported_children": true,
+    "is_terminal": false,
+    "description": "The conclusion is accepted from an external theorem or trusted adapter.",
+    "name": null
+  },
+  {
+    "proof_status_id": "NOT_EVALUABLE",
+    "sort_order": 90,
+    "is_imported": false,
+    "is_derived": false,
+    "allows_imported_children": true,
+    "is_terminal": false,
+    "description": "The rule lacks the data, adapter, or scope information required to evaluate it.",
+    "name": null
+  },
+  {
+    "proof_status_id": "PLANNED",
+    "sort_order": 10,
+    "is_imported": false,
+    "is_derived": false,
+    "allows_imported_children": true,
+    "is_terminal": false,
+    "description": "The theorem or edge has a declared contract but no active proof object yet.",
+    "name": null
+  },
+  {
+    "proof_status_id": "SUPERSEDED",
+    "sort_order": 80,
+    "is_imported": false,
+    "is_derived": false,
+    "allows_imported_children": false,
+    "is_terminal": true,
+    "description": "A historical theorem edge or schema is retained for provenance but is no longer live.",
+    "name": null
+  }
+]

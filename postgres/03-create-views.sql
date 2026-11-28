@@ -1119,13 +1119,13 @@ CREATE VIEW vw_mobile_routes WITH (security_invoker = ON) AS
 WITH RECURSIVE acc AS (
   SELECT 1 AS step,
     COALESCE((SELECT jsonb_object_agg(t.mobile_route_id, jsonb_build_object(
-      'depth', CASE WHEN (SELECT NULLIF(t.path::text,'')) = '/' THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(t.path::text,'')))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(t.path::text,'')), '/', ''))) AS v) __safe_numeric), 0)))::text END
+      'depth', CASE WHEN COALESCE((SELECT NULLIF(t.path::text,'')), '') = '/' THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(t.path::text,'')))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(t.path::text,'')), '/', ''))) AS v OFFSET 0) __safe_numeric), 0)))::text END
     ))
     FROM mobile_routes t WHERE NULLIF(t.parent_route,'') IS NULL), '{}'::jsonb) AS settled
   UNION ALL
   SELECT a.step + 1, a.settled || COALESCE((
     SELECT jsonb_object_agg(t.mobile_route_id, jsonb_build_object(
-      'depth', CASE WHEN (SELECT NULLIF(t.path::text,'')) = '/' THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(t.path::text,'')))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(t.path::text,'')), '/', ''))) AS v) __safe_numeric), 0)))::text END
+      'depth', CASE WHEN COALESCE((SELECT NULLIF(t.path::text,'')), '') = '/' THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(t.path::text,'')))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(t.path::text,'')), '/', ''))) AS v OFFSET 0) __safe_numeric), 0)))::text END
     ))
     FROM mobile_routes t
     WHERE NOT (a.settled ? t.mobile_route_id) AND NOT (NULLIF(t.parent_route,'') IS NULL) AND (NULLIF(t.parent_route,'') IS NULL OR a.settled ? t.parent_route)

@@ -2,30 +2,26 @@
 
 ## Configuration
 
-- **Rulebook:** `/Users/eejai42/development/effortless-rulebooks/rulebook-examples/talismans-southpark-ontology/effortless-rulebook/talismans-southpark-ontology-rulebook.json`
-- **Substrates Tested:** 5
-- **Computed Columns Tested:** 120
+- **Rulebook:** `/Users/eejai42/development/effortless-rulebooks/toy-rulebooks/lazr-coulombs-law/effortless-rulebook/effortless-rulebook.json`
+- **Substrates Tested:** 1
+- **Computed Columns Tested:** 45
 
 ## Summary by Substrate
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
-| effortless-xlsx | 31456 | 0 | 31456 | 100.0% | < 1s | PASS |
-| effortless-python | 31456 | 0 | 31456 | 100.0% | < 1s | PASS |
-| effortless-typescript | 31456 | 0 | 31456 | 100.0% | 2s | PASS |
-| effortless-postgres | 31456 | 0 | 31456 | 100.0% | 4s | PASS |
-| effortless-owl | 31456 | 0 | 31456 | 100.0% | 10s | PASS |
+| effortless-postgres | 300 | 0 | 300 | 100.0% | 5s | PASS |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
-| Total Substrates | 5 |
-| Total Fields Tested | 157280 |
-| Total Passed | 157280 |
+| Total Substrates | 1 |
+| Total Fields Tested | 300 |
+| Total Passed | 300 |
 | Total Failed | 0 |
 | Overall Score | 100.0% |
-| Total Duration | 17s |
+| Total Duration | 5s |
 
 ---
 

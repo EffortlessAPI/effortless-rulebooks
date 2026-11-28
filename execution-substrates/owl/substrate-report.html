@@ -67,8 +67,8 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
             <h1>OWL/SHACL Execution Substrate</h1>
         </div>
         <div class="header-stats">
-            <div class="stat"><span>Score:</span><span class="stat-value score-danger">0.0%</span></div>
-            <div class="stat"><span>0/6 passed</span></div>
+            <div class="stat"><span>Score:</span><span class="stat-value score-perfect">100.0%</span></div>
+            <div class="stat"><span>1210/1210 passed</span></div>
         </div>
         <button id="theme-toggle" title="Toggle theme"><span class="sun">☀️</span><span class="moon">🌙</span></button>
     </header>
@@ -113,35 +113,46 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
                 <pre>=== OWL/SHACL Substrate Test Run ===
 
 ======================================================================
-OWL Execution Substrate - SHACL Reasoning Test
+OWL Execution Substrate (owl) - SHACL Reasoning Test
 ======================================================================
 
 Loading rulebook...
-Tables with computed columns: Customers
+Tables with computed columns: Domains, ProofStatuses, Theorems, TheoremDependencies, FoundationKernels, ProofFacts, Loops, InvariantChecks, Sources, TrustBoundaries, ArtifactRegistry, MigrationMappings, ProjectRoadmap, Conclusions, LegacyParentAudits
 
 Loading ontology and data...
    Loaded: /Users/eejai42/development/effortless-rulebooks/execution-substrates/owl/src/ontology.owl
    Loaded: /Users/eejai42/development/effortless-rulebooks/execution-substrates/owl/src/individuals.ttl
-   Total triples: 2575
+   Total triples: 14388
 
 Loading SHACL rules...
-   Loaded: /Users/eejai42/development/effortless-rulebooks/execution-substrates/owl/src/rules.shacl.ttl
-   Rule triples: 831
+   Loaded: /Users/eejai42/development/effortless-rulebooks/execution-substrates/owl/src/rules.shacl.ttl (15 rules)
 
-Running SHACL-SPARQL reasoning...
-   (Multiple passes to resolve dependencies between computed fields)
-   Pass 1: 2575 -&gt; 3193 triples (618 added)
-   Pass 2: 3193 -&gt; 3229 triples (36 added)
-   Pass 3: 3229 -&gt; 3259 triples (30 added)
-   Pass 4: 3259 -&gt; 3259 triples (0 added)
-   Completed in 4 passes
-   Final triple count: 3259
+Executing SHACL-AF rules in sh:order...
+   Completed 15 rules across 1 sh:order levels
+   Final triple count: 15598
 
 Extracting computed values...
-   Customers: 3 records (2 computed fields)
+   Domains: 10 records (1 computed fields)
+   ProofStatuses: 9 records (1 computed fields)
+   Theorems: 13 records (1 computed fields)
+   TheoremDependencies: 11 records (1 computed fields)
+   FoundationKernels: 9 records (1 computed fields)
+   ProofFacts: 135 records (1 computed fields)
+   Loops: 575 records (1 computed fields)
+   InvariantChecks: 313 records (1 computed fields)
+   Sources: 84 records (1 computed fields)
+   TrustBoundaries: 10 records (1 computed fields)
+   ArtifactRegistry: 11 records (1 computed fields)
+   MigrationMappings: 7 records (1 computed fields)
+   ProjectRoadmap: 6 records (1 computed fields)
+   Conclusions: 8 records (1 computed fields)
+   LegacyParentAudits: 9 records (1 computed fields)
 
-Total: 3 records extracted
-Output: /Users/eejai42/development/effortless-rulebooks/toy-rulebooks/acme-llc/testing/owl/test-answers/
+Total: 1210 records extracted
+Output: /Users/eejai42/development/effortless-rulebooks/rulebook-examples/effortless-math/testing/owl/test-answers/
+
+Description-logic check (ROBOT + HermiT)...
+   NOT RUN: this build wrote no ontology-with-individuals.ttl (only the commercial rulebook-to-owl does)
 
 ======================================================================
 SHACL reasoning complete!
@@ -154,10 +165,10 @@ SHACL reasoning complete!
             <div class="card">
                 <h2>Test Summary</h2>
                 <div class="results-summary">
-                    <div class="result-item"><div class="result-value score-danger">0.0%</div><div class="result-label">Score</div></div>
-                    <div class="result-item"><div class="result-value score-perfect">0</div><div class="result-label">Passed</div></div>
-                    <div class="result-item"><div class="result-value">6</div><div class="result-label">Failed</div></div>
-                    <div class="result-item"><div class="result-value">6</div><div class="result-label">Total</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">1210</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
+                    <div class="result-item"><div class="result-value">1210</div><div class="result-label">Total</div></div>
                 </div>
             </div>
         </div>

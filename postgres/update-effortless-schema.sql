@@ -868,7 +868,7 @@ ALTER TABLE project_slot_witnesses ADD COLUMN IF NOT EXISTS slot TEXT;          
 ALTER TABLE project_slot_witnesses ADD COLUMN IF NOT EXISTS is_present BOOLEAN;                     -- The strict scan currently passes this slot.
 ALTER TABLE project_slot_witnesses ADD COLUMN IF NOT EXISTS witnessed_path TEXT;                    -- The matched repository-relative path or transpiler Name.
 ALTER TABLE project_slot_witnesses ADD COLUMN IF NOT EXISTS witnessed_detail TEXT;                  -- Exact observed success or failure.
-ALTER TABLE project_slot_witnesses ADD COLUMN IF NOT EXISTS witnessed_on TIMESTAMPTZ;               -- ISO date of the scan.
+ALTER TABLE project_slot_witnesses ADD COLUMN IF NOT EXISTS witnessed_on DATE;                      -- ISO date of the scan.
 COMMENT ON TABLE project_slot_witnesses IS 'Strict filesystem/manifest witnesses for every governed project x canonical slot. Refresh with scripts/scan-project-slots.py.';
 COMMENT ON COLUMN project_slot_witnesses.project_slot_witness_id IS 'PK: <domain>:<slot>.';
 COMMENT ON COLUMN project_slot_witnesses.domain IS 'FK to the governed project row.';
@@ -1696,7 +1696,7 @@ BEGIN
     -- 2. Views (depend on functions, so they go first).
     FOR r IN (
         SELECT table_name FROM information_schema.views
-         WHERE table_schema = 'public' AND table_name LIKE 'vw\_%'
+         WHERE table_schema = 'public' AND (table_name LIKE 'vw\_%' OR table_name LIKE 'fk\_labels\_%')
            AND obj_description(
                  (quote_ident(table_schema) || '.' || quote_ident(table_name))::regclass, 'pg_class')
                IS DISTINCT FROM 'effortless:hand-maintained'
@@ -1754,6 +1754,113 @@ $drop_derived$;
 -- on the first forward call site; plpgsql didn't, which is how this file
 -- ever worked. Dependency order is still enforced at EXECUTION time.
 SET check_function_bodies = off;
+
+-- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
 
 -- ============================================================================
 -- LOOKUP FUNCTIONS
@@ -2317,7 +2424,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_toy_domain_count(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_rulebook_domains_toy_flag(domain_id))::numeric), 0) FROM rulebook_domains WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_rulebook_domains_is_toy(erb_r1.domain_id) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM rulebook_domains erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_deprecated_skill_count
@@ -2327,7 +2434,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_deprecated_skill_count(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_claude_skills_deprecated_flag(skill_id))::numeric), 0) FROM claude_skills WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.status, ''), '') = 'deprecated' THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM claude_skills erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_priced_phase_count
@@ -2337,7 +2444,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_priced_phase_count(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_build_phases_priced_flag(build_phase_id))::numeric), 0) FROM build_phases WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE((COALESCE(erb_r1.quoted_price, 0))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM build_phases erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_story_total
@@ -2347,7 +2454,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_story_total(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_build_phases_story_count(build_phase_id))::numeric), 0) FROM build_phases WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COUNT(*) FROM user_stories WHERE build_phase = NULLIF(erb_r1.build_phase_id, '')))::numeric))::numeric)::numeric), 0) FROM build_phases erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_open_finding_total
@@ -2357,7 +2464,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_open_finding_total(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_consistency_rules_open_finding_count(consistency_rule_id))::numeric), 0) FROM consistency_rules WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COALESCE(SUM((calc_consistency_findings_open_flag(consistency_finding_id))::numeric), 0) FROM consistency_findings WHERE rule = erb_r1.consistency_rule_id))::numeric))::numeric)::numeric), 0) FROM consistency_rules erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_isolated_skill_count
@@ -2367,7 +2474,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_isolated_skill_count(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_claude_skills_isolated_flag(skill_id))::numeric), 0) FROM claude_skills WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(COALESCE((calc_claude_skills_outbound_route_count(erb_r1.skill_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_claude_skills_inbound_route_count(erb_r1.skill_id))::NUMERIC, 0) = 0, FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM claude_skills erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_done_story_total
@@ -2377,7 +2484,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_done_story_total(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_build_phases_done_story_count(build_phase_id))::numeric), 0) FROM build_phases WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COALESCE(SUM((calc_user_stories_done_flag(user_story_id))::numeric), 0) FROM user_stories WHERE build_phase = erb_r1.build_phase_id))::numeric))::numeric)::numeric), 0) FROM build_phases erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_toy_share
@@ -2387,7 +2494,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_toy_share(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_project_metadata_domain_count(p_project_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_project_metadata_toy_domain_count(p_project_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_project_metadata_domain_count(p_project_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_project_metadata_toy_domain_count(p_project_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_clean_domain_count
@@ -2397,7 +2504,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_clean_domain_count(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_rulebook_domains_clean_flag(domain_id))::numeric), 0) FROM rulebook_domains WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE((calc_rulebook_domains_open_finding_count(erb_r1.domain_id))::NUMERIC, 0) = 0 THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM rulebook_domains erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_satisfied_rule_count
@@ -2407,7 +2514,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_satisfied_rule_count(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_consistency_rules_satisfied_flag(consistency_rule_id))::numeric), 0) FROM consistency_rules WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE((calc_consistency_rules_open_finding_count(erb_r1.consistency_rule_id))::NUMERIC, 0) = 0 THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM consistency_rules erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_cardless_domain_count
@@ -2417,7 +2524,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_cardless_domain_count(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_rulebook_domains_needs_flavor_flag(domain_id))::numeric), 0) FROM rulebook_domains WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(COALESCE(NULLIF(erb_r1.area, ''), '') <> 'root', FALSE) AND COALESCE(NOT (COALESCE(COALESCE(erb_r1.is_intentional_exception, FALSE), FALSE)), FALSE) AND COALESCE(NOT (COALESCE(calc_rulebook_domains_has_flavor_card(erb_r1.domain_id), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM rulebook_domains erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_weighted_done_total
@@ -2427,7 +2534,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_weighted_done_total(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_build_phases_weighted_done_sum(build_phase_id))::numeric), 0) FROM build_phases WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COALESCE(SUM((calc_user_stories_weighted_done(user_story_id))::numeric), 0) FROM user_stories WHERE build_phase = erb_r1.build_phase_id))::numeric))::numeric)::numeric), 0) FROM build_phases erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_avg_phase_done_percent
@@ -2437,7 +2544,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_avg_phase_done_percent(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(AVG((calc_build_phases_done_percent(build_phase_id))::numeric), 0) FROM build_phases WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(AVG((((WITH __erb_dedup_v1 AS (SELECT calc_build_phases_story_count(erb_r1.build_phase_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_build_phases_done_story_count(erb_r1.build_phase_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric))::numeric)::numeric), 0) FROM build_phases erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_consistency_percent
@@ -2447,7 +2554,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_consistency_percent(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_project_metadata_domain_count(p_project_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_project_metadata_clean_domain_count(p_project_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_project_metadata_domain_count(p_project_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_project_metadata_clean_domain_count(p_project_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_rule_compliance_percent
@@ -2457,7 +2564,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_rule_compliance_percent(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_project_metadata_consistency_rule_count(p_project_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_project_metadata_satisfied_rule_count(p_project_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_project_metadata_consistency_rule_count(p_project_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_project_metadata_satisfied_rule_count(p_project_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_shippable_tab_count
@@ -2467,7 +2574,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_shippable_tab_count(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_mobile_nav_tabs_shippable_flag(mobile_nav_tab_id))::numeric), 0) FROM mobile_nav_tabs WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE((calc_mobile_nav_tabs_build_coverage_percent(erb_r1.mobile_nav_tab_id))::NUMERIC, 0) = 100 THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM mobile_nav_tabs erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_healthy_skill_count
@@ -2477,7 +2584,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_healthy_skill_count(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_claude_skills_healthy_flag(skill_id))::numeric), 0) FROM claude_skills WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(calc_claude_skills_is_deprecated_but_routed(erb_r1.skill_id), FALSE) OR COALESCE(calc_claude_skills_is_isolated(erb_r1.skill_id), FALSE)) THEN (0)::text ELSE (1)::text END)::numeric))::numeric)::numeric), 0) FROM claude_skills erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_programme_progress_percent
@@ -2487,7 +2594,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_programme_progress_percent(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(AVG((calc_build_phases_weighted_done_percent(build_phase_id))::numeric), 0) FROM build_phases WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(AVG((((WITH __erb_dedup_v1 AS (SELECT calc_build_phases_effort_weight_sum(erb_r1.build_phase_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_build_phases_weighted_done_sum(erb_r1.build_phase_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric))::numeric)::numeric), 0) FROM build_phases erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_is_repo_consistent
@@ -2497,7 +2604,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_is_repo_consistent(p_project_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_project_metadata_clean_domain_count(p_project_id) = calc_project_metadata_domain_count(p_project_id))::boolean;
+  SELECT (COALESCE(calc_project_metadata_clean_domain_count(p_project_id), 0) = COALESCE(calc_project_metadata_domain_count(p_project_id), 0))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_layout_slot_count
@@ -2517,7 +2624,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_fully_implemented_count(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_rulebook_domains_fully_implemented_flag(domain_id))::numeric), 0) FROM rulebook_domains WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(COALESCE((calc_rulebook_domains_implementation_gap_count(erb_r1.domain_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(NOT (COALESCE(COALESCE(erb_r1.is_intentional_exception, FALSE), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM rulebook_domains erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_runner_capability_count
@@ -2537,7 +2644,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_decided_capability_count(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_legacy_runner_capabilities_decided_flag(legacy_runner_capability_id))::numeric), 0) FROM legacy_runner_capabilities WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(((NULLIF(erb_r1.decision, '')) IS NOT NULL AND (NULLIF(erb_r1.decision, ''))::text <> ''), FALSE) AND COALESCE(((NULLIF(erb_r1.destination, '')) IS NOT NULL AND (NULLIF(erb_r1.destination, ''))::text <> ''), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM legacy_runner_capabilities erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_resolved_capability_count
@@ -2547,7 +2654,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_resolved_capability_count(p_project_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_legacy_runner_capabilities_resolved_flag(legacy_runner_capability_id))::numeric), 0) FROM legacy_runner_capabilities WHERE project = p_project_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.status, ''), '') = 'done' THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM legacy_runner_capabilities erb_r1 WHERE project = p_project_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_is_runner_inventory_complete
@@ -2557,7 +2664,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_is_runner_inventory_complete(p_project_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_project_metadata_runner_capability_count(p_project_id) AS val) SELECT ((((SELECT val FROM __erb_dedup_v1))::NUMERIC > 0 AND calc_project_metadata_decided_capability_count(p_project_id) = (SELECT val FROM __erb_dedup_v1)));
+  WITH __erb_dedup_v1 AS (SELECT calc_project_metadata_runner_capability_count(p_project_id) AS val) SELECT ((COALESCE(COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE(calc_project_metadata_decided_capability_count(p_project_id), 0) = COALESCE((SELECT val FROM __erb_dedup_v1), 0), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_metadata_is_runner_succession_complete
@@ -2567,7 +2674,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_metadata_is_runner_succession_complete(p_project_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_project_metadata_is_runner_inventory_complete(p_project_id) AND calc_project_metadata_resolved_capability_count(p_project_id) = calc_project_metadata_runner_capability_count(p_project_id)))::boolean;
+  SELECT ((COALESCE(calc_project_metadata_is_runner_inventory_complete(p_project_id), FALSE) AND COALESCE(COALESCE(calc_project_metadata_resolved_capability_count(p_project_id), 0) = COALESCE(calc_project_metadata_runner_capability_count(p_project_id), 0), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_framing_invariants_name
@@ -2760,7 +2867,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_axioms_is_active(p_axiom_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(status, '') FROM ontology_axioms WHERE axiom_id = p_axiom_id) = 'active')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(status, '') FROM ontology_axioms WHERE axiom_id = p_axiom_id), '') = 'active')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_axioms_critical_invariant_count
@@ -2770,7 +2877,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_axioms_critical_invariant_count(p_axiom_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_framing_invariants_critical_flag(invariant_id))::numeric), 0) FROM framing_invariants WHERE violated_axiom_id = p_axiom_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.severity, ''), '') = 'critical' THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM framing_invariants erb_r1 WHERE violated_axiom_id = p_axiom_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_axioms_shipped_feature_count
@@ -2780,7 +2887,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_axioms_shipped_feature_count(p_axiom_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_platform_features_shipped_flag(feature_id))::numeric), 0) FROM platform_features WHERE related_axiom_id = p_axiom_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.status, ''), '') = 'shipped' THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM platform_features erb_r1 WHERE related_axiom_id = p_axiom_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_axioms_is_load_bearing
@@ -2790,7 +2897,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_axioms_is_load_bearing(p_axiom_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_ontology_axioms_invariant_count(p_axiom_id))::NUMERIC > 0 OR (calc_ontology_axioms_feature_count(p_axiom_id))::NUMERIC > 0));
+  SELECT ((COALESCE(COALESCE((calc_ontology_axioms_invariant_count(p_axiom_id))::NUMERIC, 0) > 0, FALSE) OR COALESCE(COALESCE((calc_ontology_axioms_feature_count(p_axiom_id))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_axioms_is_well_guarded
@@ -2800,7 +2907,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_axioms_is_well_guarded(p_axiom_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_ontology_axioms_is_load_bearing(p_axiom_id) AND (calc_ontology_axioms_critical_invariant_count(p_axiom_id))::NUMERIC > 0));
+  SELECT ((COALESCE(calc_ontology_axioms_is_load_bearing(p_axiom_id), FALSE) AND COALESCE(COALESCE((calc_ontology_axioms_critical_invariant_count(p_axiom_id))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_axioms_guard_ratio
@@ -2810,7 +2917,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_axioms_guard_ratio(p_axiom_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_ontology_axioms_invariant_count(p_axiom_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_ontology_axioms_critical_invariant_count(p_axiom_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_ontology_axioms_invariant_count(p_axiom_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_ontology_axioms_critical_invariant_count(p_axiom_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_ontology_axioms_guard_state
@@ -2830,7 +2937,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_ontology_axioms_is_exposed_foundation(p_axiom_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_ontology_axioms_guard_state(p_axiom_id) = 'exposed')::boolean;
+  SELECT (COALESCE(calc_ontology_axioms_guard_state(p_axiom_id), '') = 'exposed')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_framing_invariants_axiom_short_name
@@ -2917,7 +3024,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_framing_invariants_is_critical(p_invariant_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(severity, '') FROM framing_invariants WHERE invariant_id = p_invariant_id) = 'critical')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(severity, '') FROM framing_invariants WHERE invariant_id = p_invariant_id), '') = 'critical')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_framing_invariants_critical_flag
@@ -2927,7 +3034,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_framing_invariants_critical_flag(p_invariant_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(severity, '') FROM framing_invariants WHERE invariant_id = p_invariant_id) = 'critical' THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(severity, '') FROM framing_invariants WHERE invariant_id = p_invariant_id), '') = 'critical' THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_framing_invariants_is_active_critical
@@ -2937,7 +3044,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_framing_invariants_is_active_critical(p_invariant_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_framing_invariants_is_critical(p_invariant_id) AND (SELECT NULLIF(status, '') FROM framing_invariants WHERE invariant_id = p_invariant_id) = 'active'))::boolean;
+  SELECT ((COALESCE(calc_framing_invariants_is_critical(p_invariant_id), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(status, '') FROM framing_invariants WHERE invariant_id = p_invariant_id), '') = 'active', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_framing_invariants_is_enforceable
@@ -2947,7 +3054,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_framing_invariants_is_enforceable(p_invariant_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_framing_invariants_is_active_critical(p_invariant_id) AND (COALESCE(calc_framing_invariants_axiom_is_active(p_invariant_id), FALSE) = 'true')))::boolean;
+  SELECT ((COALESCE(calc_framing_invariants_is_active_critical(p_invariant_id), FALSE) AND COALESCE((COALESCE(calc_framing_invariants_axiom_is_active(p_invariant_id), FALSE) = 'true'), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_framing_invariants_enforcement_state
@@ -2967,7 +3074,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_framing_invariants_needs_attention(p_invariant_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_framing_invariants_enforcement_state(p_invariant_id) = 'orphan')::boolean;
+  SELECT (COALESCE(calc_framing_invariants_enforcement_state(p_invariant_id), '') = 'orphan')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_features_axiom_short_name
@@ -3010,7 +3117,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_features_is_readme_stub(p_feature_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT readme_length FROM platform_features WHERE feature_id = p_feature_id), 0))::NUMERIC < 400)::boolean;
+  SELECT (COALESCE((COALESCE((SELECT readme_length FROM platform_features WHERE feature_id = p_feature_id), 0))::NUMERIC, 0) < 400)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_features_is_headline
@@ -3020,7 +3127,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_features_is_headline(p_feature_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(tier, '') FROM platform_features WHERE feature_id = p_feature_id) = 'headline')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(tier, '') FROM platform_features WHERE feature_id = p_feature_id), '') = 'headline')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_features_is_shipped
@@ -3030,7 +3137,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_features_is_shipped(p_feature_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(status, '') FROM platform_features WHERE feature_id = p_feature_id) = 'shipped')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(status, '') FROM platform_features WHERE feature_id = p_feature_id), '') = 'shipped')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_features_shipped_flag
@@ -3040,7 +3147,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_features_shipped_flag(p_feature_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(status, '') FROM platform_features WHERE feature_id = p_feature_id) = 'shipped' THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(status, '') FROM platform_features WHERE feature_id = p_feature_id), '') = 'shipped' THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_features_needs_readme_work
@@ -3050,7 +3157,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_features_needs_readme_work(p_feature_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_platform_features_is_shipped(p_feature_id) AND calc_platform_features_is_readme_stub(p_feature_id)))::boolean;
+  SELECT ((COALESCE(calc_platform_features_is_shipped(p_feature_id), FALSE) AND COALESCE(calc_platform_features_is_readme_stub(p_feature_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_features_is_headline_gap
@@ -3060,7 +3167,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_features_is_headline_gap(p_feature_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_platform_features_is_headline(p_feature_id) AND calc_platform_features_needs_readme_work(p_feature_id)))::boolean;
+  SELECT ((COALESCE(calc_platform_features_is_headline(p_feature_id), FALSE) AND COALESCE(calc_platform_features_needs_readme_work(p_feature_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_features_doc_state
@@ -3080,7 +3187,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_features_is_axiom_backed(p_feature_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((COALESCE(calc_platform_features_axiom_is_load_bearing(p_feature_id), FALSE) = 'true') AND calc_platform_features_is_shipped(p_feature_id)))::boolean;
+  SELECT ((COALESCE((COALESCE(calc_platform_features_axiom_is_load_bearing(p_feature_id), FALSE) = 'true'), FALSE) AND COALESCE(calc_platform_features_is_shipped(p_feature_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_platform_features_is_showcase_feature
@@ -3090,7 +3197,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_platform_features_is_showcase_feature(p_feature_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_platform_features_is_axiom_backed(p_feature_id) AND calc_platform_features_doc_state(p_feature_id) = 'documented'))::boolean;
+  SELECT ((COALESCE(calc_platform_features_is_axiom_backed(p_feature_id), FALSE) AND COALESCE(COALESCE(calc_platform_features_doc_state(p_feature_id), '') = 'documented', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_source_spokes_is_bidirectional
@@ -3100,7 +3207,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_source_spokes_is_bidirectional(p_spoke_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(direction, '') FROM rulebook_source_spokes WHERE spoke_id = p_spoke_id) = 'bidirectional')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(direction, '') FROM rulebook_source_spokes WHERE spoke_id = p_spoke_id), '') = 'bidirectional')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_source_spokes_is_optional
@@ -3110,7 +3217,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_source_spokes_is_optional(p_spoke_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (NOT (COALESCE((SELECT required FROM rulebook_source_spokes WHERE spoke_id = p_spoke_id), FALSE)))::boolean;
+  SELECT (NOT (COALESCE(COALESCE((SELECT required FROM rulebook_source_spokes WHERE spoke_id = p_spoke_id), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_source_spokes_is_optional_bidirectional
@@ -3120,7 +3227,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_source_spokes_is_optional_bidirectional(p_spoke_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_rulebook_source_spokes_is_optional(p_spoke_id) AND calc_rulebook_source_spokes_is_bidirectional(p_spoke_id)))::boolean;
+  SELECT ((COALESCE(calc_rulebook_source_spokes_is_optional(p_spoke_id), FALSE) AND COALESCE(calc_rulebook_source_spokes_is_bidirectional(p_spoke_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_source_spokes_spoke_kind
@@ -3140,7 +3247,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_source_spokes_is_advertised_surface(p_spoke_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_rulebook_source_spokes_spoke_kind(p_spoke_id) = 'editing-surface' AND NOT (COALESCE((SELECT required FROM rulebook_source_spokes WHERE spoke_id = p_spoke_id), FALSE))))::boolean;
+  SELECT ((COALESCE(COALESCE(calc_rulebook_source_spokes_spoke_kind(p_spoke_id), '') = 'editing-surface', FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT required FROM rulebook_source_spokes WHERE spoke_id = p_spoke_id), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_source_spokes_surface_label
@@ -3464,7 +3571,7 @@ $$ LANGUAGE sql STABLE;
 -- Used for join-free cross-table references in aggregations
 
 CREATE OR REPLACE FUNCTION get_project_slot_witnesses_witnessed_on(p_project_slot_witness_id TEXT)
-RETURNS TIMESTAMPTZ AS $$
+RETURNS DATE AS $$
   SELECT (SELECT witnessed_on FROM project_slot_witnesses WHERE project_slot_witness_id = p_project_slot_witness_id);
 $$ LANGUAGE sql STABLE;
 
@@ -3747,7 +3854,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_is_toy(p_domain_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(kind, '') FROM rulebook_domains WHERE domain_id = p_domain_id) = 'toy')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(kind, '') FROM rulebook_domains WHERE domain_id = p_domain_id), '') = 'toy')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_toy_flag
@@ -3767,7 +3874,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_has_rulebook(p_domain_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(rulebook_path, '') FROM rulebook_domains WHERE domain_id = p_domain_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(rulebook_path, '') FROM rulebook_domains WHERE domain_id = p_domain_id)) IS NOT NULL AND ((SELECT NULLIF(rulebook_path, '') FROM rulebook_domains WHERE domain_id = p_domain_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_finding_count
@@ -3817,7 +3924,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_open_finding_count(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_consistency_findings_open_flag(consistency_finding_id))::numeric), 0) FROM consistency_findings WHERE domain = p_domain_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.status, ''), '') = 'open' THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM consistency_findings erb_r1 WHERE domain = p_domain_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_has_flavor_card
@@ -3827,7 +3934,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_has_flavor_card(p_domain_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_rulebook_domains_flavor_card_count(p_domain_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_rulebook_domains_flavor_card_count(p_domain_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_is_progression_root
@@ -3837,7 +3944,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_is_progression_root(p_domain_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(parent_domain_id, '') FROM rulebook_domains WHERE domain_id = p_domain_id) IS NULL AND (calc_rulebook_domains_child_domain_count(p_domain_id))::NUMERIC > 0));
+  SELECT ((COALESCE((((SELECT NULLIF(parent_domain_id, '') FROM rulebook_domains WHERE domain_id = p_domain_id)) IS NULL OR ((SELECT NULLIF(parent_domain_id, '') FROM rulebook_domains WHERE domain_id = p_domain_id))::text = ''), FALSE) AND COALESCE(COALESCE((calc_rulebook_domains_child_domain_count(p_domain_id))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_is_standard_layout
@@ -3847,7 +3954,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_is_standard_layout(p_domain_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT NULLIF(rulebook_path, '') FROM rulebook_domains WHERE domain_id = p_domain_id), '') = calc_rulebook_domains_expected_rulebook_path(p_domain_id) OR COALESCE((SELECT NULLIF(rulebook_path, '') FROM rulebook_domains WHERE domain_id = p_domain_id), '') = CONCAT((SELECT NULLIF(relative_path, '') FROM rulebook_domains WHERE domain_id = p_domain_id), 'effortless-rulebook/effortless-rulebook.json')))::boolean;
+  SELECT ((COALESCE(COALESCE(COALESCE((SELECT NULLIF(rulebook_path, '') FROM rulebook_domains WHERE domain_id = p_domain_id), ''), '') = COALESCE(calc_rulebook_domains_expected_rulebook_path(p_domain_id), ''), FALSE) OR COALESCE(COALESCE(COALESCE((SELECT NULLIF(rulebook_path, '') FROM rulebook_domains WHERE domain_id = p_domain_id), ''), '') = COALESCE(CONCAT((SELECT NULLIF(relative_path, '') FROM rulebook_domains WHERE domain_id = p_domain_id), 'effortless-rulebook/effortless-rulebook.json'), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_is_fully_consistent
@@ -3857,7 +3964,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_is_fully_consistent(p_domain_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_rulebook_domains_open_finding_count(p_domain_id))::NUMERIC = 0)::boolean;
+  SELECT (COALESCE((calc_rulebook_domains_open_finding_count(p_domain_id))::NUMERIC, 0) = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_clean_flag
@@ -3867,7 +3974,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_clean_flag(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_rulebook_domains_open_finding_count(p_domain_id))::NUMERIC = 0 THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((calc_rulebook_domains_open_finding_count(p_domain_id))::NUMERIC, 0) = 0 THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_consistency_grade
@@ -3877,7 +3984,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_consistency_grade(p_domain_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_domains_open_finding_count(p_domain_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN ('clean')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC <= 2 THEN ('minor')::text ELSE ('major')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_domains_open_finding_count(p_domain_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN ('clean')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) <= 2 THEN ('minor')::text ELSE ('major')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_needs_flavor_card
@@ -3887,7 +3994,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_needs_flavor_card(p_domain_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(area, '') FROM rulebook_domains WHERE domain_id = p_domain_id) <> 'root' AND NOT (COALESCE((SELECT is_intentional_exception FROM rulebook_domains WHERE domain_id = p_domain_id), FALSE)) AND NOT (calc_rulebook_domains_has_flavor_card(p_domain_id))))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(area, '') FROM rulebook_domains WHERE domain_id = p_domain_id), '') <> 'root', FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT is_intentional_exception FROM rulebook_domains WHERE domain_id = p_domain_id), FALSE), FALSE)), FALSE) AND COALESCE(NOT (COALESCE(calc_rulebook_domains_has_flavor_card(p_domain_id), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_needs_flavor_flag
@@ -3897,7 +4004,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_needs_flavor_flag(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT NULLIF(area, '') FROM rulebook_domains WHERE domain_id = p_domain_id) <> 'root' AND NOT (COALESCE((SELECT is_intentional_exception FROM rulebook_domains WHERE domain_id = p_domain_id), FALSE)) AND NOT (calc_rulebook_domains_has_flavor_card(p_domain_id))) THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(COALESCE((SELECT NULLIF(area, '') FROM rulebook_domains WHERE domain_id = p_domain_id), '') <> 'root', FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT is_intentional_exception FROM rulebook_domains WHERE domain_id = p_domain_id), FALSE), FALSE)), FALSE) AND COALESCE(NOT (COALESCE(calc_rulebook_domains_has_flavor_card(p_domain_id), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_layout_flag
@@ -3917,7 +4024,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_conformance_score(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_rulebook_domains_is_fully_consistent(p_domain_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_rulebook_domains_is_standard_layout(p_domain_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_rulebook_domains_has_flavor_card(p_domain_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_rulebook_domains_has_rulebook(p_domain_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_rulebook_domains_is_fully_consistent(p_domain_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_rulebook_domains_is_standard_layout(p_domain_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_rulebook_domains_has_flavor_card(p_domain_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_rulebook_domains_has_rulebook(p_domain_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_is_showcase_ready
@@ -3927,7 +4034,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_is_showcase_ready(p_domain_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_rulebook_domains_is_fully_consistent(p_domain_id) AND calc_rulebook_domains_is_standard_layout(p_domain_id) AND NOT (calc_rulebook_domains_is_toy(p_domain_id))))::boolean;
+  SELECT ((COALESCE(calc_rulebook_domains_is_fully_consistent(p_domain_id), FALSE) AND COALESCE(calc_rulebook_domains_is_standard_layout(p_domain_id), FALSE) AND COALESCE(NOT (COALESCE(calc_rulebook_domains_is_toy(p_domain_id), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_conformance_band
@@ -3937,7 +4044,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_conformance_band(p_domain_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_domains_conformance_score(p_domain_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 4 THEN ('exemplary')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 2 THEN ('acceptable')::text ELSE ('needs-work')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_domains_conformance_score(p_domain_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 4 THEN ('exemplary')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 2 THEN ('acceptable')::text ELSE ('needs-work')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_showcase_flag
@@ -3977,7 +4084,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_present_slot_count(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_project_slot_witnesses_present_flag(project_slot_witness_id))::numeric), 0) FROM project_slot_witnesses WHERE domain = p_domain_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(erb_r1.is_present, FALSE) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM project_slot_witnesses erb_r1 WHERE domain = p_domain_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_implementation_gap_count
@@ -3987,7 +4094,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_implementation_gap_count(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_project_slot_witnesses_implementation_gap_flag(project_slot_witness_id))::numeric), 0) FROM project_slot_witnesses WHERE domain = p_domain_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((WITH __erb_dedup_v1 AS (SELECT calc_project_slot_witnesses_domain_kind(erb_r1.project_slot_witness_id) AS val) SELECT (CASE WHEN (COALESCE(NOT (COALESCE(COALESCE(erb_r1.is_present, FALSE), FALSE)), FALSE) AND COALESCE(NOT (COALESCE((COALESCE(calc_project_slot_witnesses_domain_is_exception(erb_r1.project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE) AND COALESCE((COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'root', FALSE) AND COALESCE((COALESCE(calc_project_slot_witnesses_slot_required_for_root(erb_r1.project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'root', FALSE) AND COALESCE((COALESCE(calc_project_slot_witnesses_slot_required_for_example(erb_r1.project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM project_slot_witnesses erb_r1 WHERE domain = p_domain_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_universal_gap_count
@@ -3997,7 +4104,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_universal_gap_count(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_project_slot_witnesses_universal_gap_flag(project_slot_witness_id))::numeric), 0) FROM project_slot_witnesses WHERE domain = p_domain_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(NOT (COALESCE(COALESCE(erb_r1.is_present, FALSE), FALSE)), FALSE) AND COALESCE(NOT (COALESCE((COALESCE(calc_project_slot_witnesses_domain_is_exception(erb_r1.project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE) AND COALESCE((COALESCE(calc_project_slot_witnesses_slot_required_for_toy(erb_r1.project_slot_witness_id), FALSE) = 'true'), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM project_slot_witnesses erb_r1 WHERE domain = p_domain_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_slot_coverage_percent
@@ -4007,7 +4114,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_slot_coverage_percent(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_domains_slot_witness_count(p_domain_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_domains_present_slot_count(p_domain_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_domains_slot_witness_count(p_domain_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_domains_present_slot_count(p_domain_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_required_slot_count
@@ -4017,7 +4124,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_required_slot_count(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_project_slot_witnesses_required_here_flag(project_slot_witness_id))::numeric), 0) FROM project_slot_witnesses WHERE domain = p_domain_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_project_slot_witnesses_is_required_here(erb_r1.project_slot_witness_id) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM project_slot_witnesses erb_r1 WHERE domain = p_domain_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_required_present_count
@@ -4027,7 +4134,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_required_present_count(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_project_slot_witnesses_required_present_flag(project_slot_witness_id))::numeric), 0) FROM project_slot_witnesses WHERE domain = p_domain_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(COALESCE(erb_r1.is_present, FALSE), FALSE) AND COALESCE(calc_project_slot_witnesses_is_required_here(erb_r1.project_slot_witness_id), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM project_slot_witnesses erb_r1 WHERE domain = p_domain_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_required_gap_count
@@ -4037,7 +4144,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_required_gap_count(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_project_slot_witnesses_gap_flag(project_slot_witness_id))::numeric), 0) FROM project_slot_witnesses WHERE domain = p_domain_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(NOT (COALESCE(COALESCE(erb_r1.is_present, FALSE), FALSE)), FALSE) AND COALESCE(calc_project_slot_witnesses_is_required_here(erb_r1.project_slot_witness_id), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM project_slot_witnesses erb_r1 WHERE domain = p_domain_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_is_fully_implemented
@@ -4047,7 +4154,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_is_fully_implemented(p_domain_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_rulebook_domains_implementation_gap_count(p_domain_id))::NUMERIC = 0 AND NOT (COALESCE((SELECT is_intentional_exception FROM rulebook_domains WHERE domain_id = p_domain_id), FALSE))));
+  SELECT ((COALESCE(COALESCE((calc_rulebook_domains_implementation_gap_count(p_domain_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT is_intentional_exception FROM rulebook_domains WHERE domain_id = p_domain_id), FALSE), FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_fully_implemented_flag
@@ -4057,7 +4164,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_fully_implemented_flag(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((calc_rulebook_domains_implementation_gap_count(p_domain_id))::NUMERIC = 0 AND NOT (COALESCE((SELECT is_intentional_exception FROM rulebook_domains WHERE domain_id = p_domain_id), FALSE))) THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(COALESCE((calc_rulebook_domains_implementation_gap_count(p_domain_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT is_intentional_exception FROM rulebook_domains WHERE domain_id = p_domain_id), FALSE), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_required_slot_coverage_percent
@@ -4067,7 +4174,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_required_slot_coverage_percent(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_domains_required_slot_count(p_domain_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (100)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_domains_required_present_count(p_domain_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_domains_required_slot_count(p_domain_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (100)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_domains_required_present_count(p_domain_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_expected_area
@@ -4077,7 +4184,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_expected_area(p_domain_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(kind, '') FROM rulebook_domains WHERE domain_id = p_domain_id) = 'root' THEN ('root')::text ELSE (CASE WHEN calc_rulebook_domains_is_toy(p_domain_id) THEN ('toy-rulebooks')::text ELSE ('rulebook-examples')::text END)::text END)::text;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(kind, '') FROM rulebook_domains WHERE domain_id = p_domain_id), '') = 'root' THEN ('root')::text ELSE (CASE WHEN calc_rulebook_domains_is_toy(p_domain_id) THEN ('toy-rulebooks')::text ELSE ('rulebook-examples')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_is_misfiled
@@ -4087,7 +4194,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_is_misfiled(p_domain_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((NOT (COALESCE((SELECT is_intentional_exception FROM rulebook_domains WHERE domain_id = p_domain_id), FALSE)) AND (SELECT NULLIF(area, '') FROM rulebook_domains WHERE domain_id = p_domain_id) <> calc_rulebook_domains_expected_area(p_domain_id)))::boolean;
+  SELECT ((COALESCE(NOT (COALESCE(COALESCE((SELECT is_intentional_exception FROM rulebook_domains WHERE domain_id = p_domain_id), FALSE), FALSE)), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(area, '') FROM rulebook_domains WHERE domain_id = p_domain_id), '') <> COALESCE(calc_rulebook_domains_expected_area(p_domain_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_readiness_state
@@ -4097,7 +4204,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_readiness_state(p_domain_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_domains_is_fully_implemented(p_domain_id) AS val) SELECT (CASE WHEN COALESCE((SELECT is_intentional_exception FROM rulebook_domains WHERE domain_id = p_domain_id), FALSE) THEN ('intentional-exception')::text ELSE (CASE WHEN (SELECT NULLIF(kind, '') FROM rulebook_domains WHERE domain_id = p_domain_id) = 'root' THEN (CASE WHEN (SELECT val FROM __erb_dedup_v1) THEN ('root-ready')::text ELSE ('root-incomplete')::text END)::text ELSE (CASE WHEN calc_rulebook_domains_is_toy(p_domain_id) THEN ('toy')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) THEN ('example-ready')::text ELSE ('example-incomplete')::text END)::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_rulebook_domains_is_fully_implemented(p_domain_id) AS val) SELECT (CASE WHEN COALESCE((SELECT is_intentional_exception FROM rulebook_domains WHERE domain_id = p_domain_id), FALSE) THEN ('intentional-exception')::text ELSE (CASE WHEN COALESCE((SELECT NULLIF(kind, '') FROM rulebook_domains WHERE domain_id = p_domain_id), '') = 'root' THEN (CASE WHEN (SELECT val FROM __erb_dedup_v1) THEN ('root-ready')::text ELSE ('root-incomplete')::text END)::text ELSE (CASE WHEN calc_rulebook_domains_is_toy(p_domain_id) THEN ('toy')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) THEN ('example-ready')::text ELSE ('example-incomplete')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_test_suite_count
@@ -4117,7 +4224,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_runnable_suite_count(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_test_suites_runnable_flag(test_suite_id))::numeric), 0) FROM test_suites WHERE domain = p_domain_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(COALESCE(erb_r1.is_registered, FALSE), FALSE) AND COALESCE((COALESCE((COALESCE(COALESCE(NULLIF(erb_r1.suite_kind, ''), '') = 'pytest', FALSE) AND COALESCE(COALESCE((erb_r1.test_file_count)::NUMERIC, 0) > 0, FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE(NULLIF(erb_r1.suite_kind, ''), '') <> 'pytest', FALSE) AND COALESCE(COALESCE(erb_r1.has_effortless_json, FALSE), FALSE)), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM test_suites erb_r1 WHERE domain = p_domain_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_gradable_suite_count
@@ -4127,7 +4234,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_gradable_suite_count(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_test_suites_gradable_flag(test_suite_id))::numeric), 0) FROM test_suites WHERE domain = p_domain_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(COALESCE(erb_r1.is_registered, FALSE), FALSE) AND COALESCE((COALESCE(COALESCE(NULLIF(erb_r1.suite_kind, ''), '') = 'pytest', FALSE) OR COALESCE((COALESCE(COALESCE(erb_r1.has_effortless_json, FALSE), FALSE) AND COALESCE(COALESCE((erb_r1.answer_key_count)::NUMERIC, 0) > 0, FALSE)), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM test_suites erb_r1 WHERE domain = p_domain_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_corpus_attempt_count
@@ -4147,7 +4254,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_latest_attempt_count(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_latest_attempt_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE domain = p_domain_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (calc_corpus_domain_runs_corpus_run_is_latest(erb_r1.corpus_domain_run_id) = 'true') THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM corpus_domain_runs erb_r1 WHERE domain = p_domain_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_latest_green_count
@@ -4157,7 +4264,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_latest_green_count(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_latest_green_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE domain = p_domain_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE((calc_corpus_domain_runs_corpus_run_is_latest(erb_r1.corpus_domain_run_id) = 'true'), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.build_status, ''), '') <> 'fail', FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.db_status, ''), '') <> 'fail', FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.conformance_status, ''), '') <> 'fail', FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM corpus_domain_runs erb_r1 WHERE domain = p_domain_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_latest_fully_green_count
@@ -4167,7 +4274,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_latest_fully_green_count(p_domain_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_latest_fully_green_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE domain = p_domain_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE((calc_corpus_domain_runs_corpus_run_is_latest(erb_r1.corpus_domain_run_id) = 'true'), FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.build_status, ''), '') <> 'fail', FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.db_status, ''), '') <> 'fail', FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.conformance_status, ''), '') = 'pass', FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM corpus_domain_runs erb_r1 WHERE domain = p_domain_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_is_green_in_latest_corpus_run
@@ -4177,7 +4284,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_is_green_in_latest_corpus_run(p_domain_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_rulebook_domains_latest_green_count(p_domain_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_rulebook_domains_latest_green_count(p_domain_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_domains_corpus_test_state
@@ -4187,7 +4294,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_domains_corpus_test_state(p_domain_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (calc_rulebook_domains_latest_attempt_count(p_domain_id))::NUMERIC = 0 THEN ('not-run')::text ELSE (CASE WHEN (calc_rulebook_domains_latest_fully_green_count(p_domain_id))::NUMERIC > 0 THEN ('fully-green')::text ELSE (CASE WHEN (calc_rulebook_domains_latest_green_count(p_domain_id))::NUMERIC > 0 THEN ('green')::text ELSE ('red')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN COALESCE((calc_rulebook_domains_latest_attempt_count(p_domain_id))::NUMERIC, 0) = 0 THEN ('not-run')::text ELSE (CASE WHEN COALESCE((calc_rulebook_domains_latest_fully_green_count(p_domain_id))::NUMERIC, 0) > 0 THEN ('fully-green')::text ELSE (CASE WHEN COALESCE((calc_rulebook_domains_latest_green_count(p_domain_id))::NUMERIC, 0) > 0 THEN ('green')::text ELSE ('red')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- get_project_local_services_service_role
@@ -4272,7 +4379,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_launch_profiles_has_complete_instructions(p_project_launch_profile_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(working_directory, '') FROM project_launch_profiles WHERE project_launch_profile_id = p_project_launch_profile_id) IS NOT NULL AND (SELECT NULLIF(start_command, '') FROM project_launch_profiles WHERE project_launch_profile_id = p_project_launch_profile_id) IS NOT NULL AND (SELECT NULLIF(experience_description, '') FROM project_launch_profiles WHERE project_launch_profile_id = p_project_launch_profile_id) IS NOT NULL))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(working_directory, '') FROM project_launch_profiles WHERE project_launch_profile_id = p_project_launch_profile_id)) IS NOT NULL AND ((SELECT NULLIF(working_directory, '') FROM project_launch_profiles WHERE project_launch_profile_id = p_project_launch_profile_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(start_command, '') FROM project_launch_profiles WHERE project_launch_profile_id = p_project_launch_profile_id)) IS NOT NULL AND ((SELECT NULLIF(start_command, '') FROM project_launch_profiles WHERE project_launch_profile_id = p_project_launch_profile_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(experience_description, '') FROM project_launch_profiles WHERE project_launch_profile_id = p_project_launch_profile_id)) IS NOT NULL AND ((SELECT NULLIF(experience_description, '') FROM project_launch_profiles WHERE project_launch_profile_id = p_project_launch_profile_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_launch_profiles_has_primary_service
@@ -4282,7 +4389,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_launch_profiles_has_primary_service(p_project_launch_profile_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_project_launch_profiles_primary_service_count(p_project_launch_profile_id))::NUMERIC = 1)::boolean;
+  SELECT (COALESCE((calc_project_launch_profiles_primary_service_count(p_project_launch_profile_id))::NUMERIC, 0) = 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_launch_profiles_is_launch_contract_complete
@@ -4292,7 +4399,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_launch_profiles_is_launch_contract_complete(p_project_launch_profile_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_project_launch_profiles_has_complete_instructions(p_project_launch_profile_id) AND (NOT (COALESCE((SELECT requires_local_url FROM project_launch_profiles WHERE project_launch_profile_id = p_project_launch_profile_id), FALSE)) OR calc_project_launch_profiles_has_primary_service(p_project_launch_profile_id))))::boolean;
+  SELECT ((COALESCE(calc_project_launch_profiles_has_complete_instructions(p_project_launch_profile_id), FALSE) AND COALESCE((COALESCE(NOT (COALESCE(COALESCE((SELECT requires_local_url FROM project_launch_profiles WHERE project_launch_profile_id = p_project_launch_profile_id), FALSE), FALSE)), FALSE) OR COALESCE(calc_project_launch_profiles_has_primary_service(p_project_launch_profile_id), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_local_services_name
@@ -4312,7 +4419,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_local_services_has_health_url(p_project_local_service_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(health_url, '') FROM project_local_services WHERE project_local_service_id = p_project_local_service_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(health_url, '') FROM project_local_services WHERE project_local_service_id = p_project_local_service_id)) IS NOT NULL AND ((SELECT NULLIF(health_url, '') FROM project_local_services WHERE project_local_service_id = p_project_local_service_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_local_services_is_http_service
@@ -4322,7 +4429,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_local_services_is_http_service(p_project_local_service_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((LEFT(((SELECT NULLIF(local_url, '') FROM project_local_services WHERE project_local_service_id = p_project_local_service_id))::text, (7)::integer) = 'http://' OR LEFT(((SELECT NULLIF(local_url, '') FROM project_local_services WHERE project_local_service_id = p_project_local_service_id))::text, (8)::integer) = 'https://'))::boolean;
+  SELECT ((COALESCE(COALESCE(LEFT(((SELECT NULLIF(local_url, '') FROM project_local_services WHERE project_local_service_id = p_project_local_service_id))::text, (7)::integer), '') = 'http://', FALSE) OR COALESCE(COALESCE(LEFT(((SELECT NULLIF(local_url, '') FROM project_local_services WHERE project_local_service_id = p_project_local_service_id))::text, (8)::integer), '') = 'https://', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_local_services_is_complete
@@ -4332,7 +4439,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_local_services_is_complete(p_project_local_service_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(local_url, '') FROM project_local_services WHERE project_local_service_id = p_project_local_service_id) IS NOT NULL AND (SELECT NULLIF(health_url, '') FROM project_local_services WHERE project_local_service_id = p_project_local_service_id) IS NOT NULL))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(local_url, '') FROM project_local_services WHERE project_local_service_id = p_project_local_service_id)) IS NOT NULL AND ((SELECT NULLIF(local_url, '') FROM project_local_services WHERE project_local_service_id = p_project_local_service_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(health_url, '') FROM project_local_services WHERE project_local_service_id = p_project_local_service_id)) IS NOT NULL AND ((SELECT NULLIF(health_url, '') FROM project_local_services WHERE project_local_service_id = p_project_local_service_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_legacy_runner_capabilities_name
@@ -4352,7 +4459,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_legacy_runner_capabilities_is_decided(p_legacy_runner_capability_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(decision, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id) IS NOT NULL AND (SELECT NULLIF(destination, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id) IS NOT NULL))::boolean;
+  SELECT ((COALESCE((((SELECT NULLIF(decision, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id)) IS NOT NULL AND ((SELECT NULLIF(decision, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(destination, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id)) IS NOT NULL AND ((SELECT NULLIF(destination, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_legacy_runner_capabilities_decided_flag
@@ -4362,7 +4469,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_legacy_runner_capabilities_decided_flag(p_legacy_runner_capability_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT NULLIF(decision, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id) IS NOT NULL AND (SELECT NULLIF(destination, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id) IS NOT NULL) THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE((((SELECT NULLIF(decision, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id)) IS NOT NULL AND ((SELECT NULLIF(decision, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id))::text <> ''), FALSE) AND COALESCE((((SELECT NULLIF(destination, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id)) IS NOT NULL AND ((SELECT NULLIF(destination, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id))::text <> ''), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_legacy_runner_capabilities_is_kept
@@ -4372,7 +4479,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_legacy_runner_capabilities_is_kept(p_legacy_runner_capability_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(decision, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id) = 'promote' OR (SELECT NULLIF(decision, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id) = 'separate'))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(decision, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id), '') = 'promote', FALSE) OR COALESCE(COALESCE((SELECT NULLIF(decision, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id), '') = 'separate', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_legacy_runner_capabilities_is_resolved
@@ -4382,7 +4489,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_legacy_runner_capabilities_is_resolved(p_legacy_runner_capability_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(status, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id) = 'done')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(status, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id), '') = 'done')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_legacy_runner_capabilities_resolved_flag
@@ -4392,7 +4499,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_legacy_runner_capabilities_resolved_flag(p_legacy_runner_capability_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(status, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id) = 'done' THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(status, '') FROM legacy_runner_capabilities WHERE legacy_runner_capability_id = p_legacy_runner_capability_id), '') = 'done' THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_legacy_runner_capabilities_capability_state
@@ -4402,7 +4509,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_legacy_runner_capabilities_capability_state(p_legacy_runner_capability_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN NOT (calc_legacy_runner_capabilities_is_decided(p_legacy_runner_capability_id)) THEN ('undecided')::text ELSE (CASE WHEN calc_legacy_runner_capabilities_is_resolved(p_legacy_runner_capability_id) THEN ('resolved')::text ELSE ('decided')::text END)::text END)::text;
+  SELECT (CASE WHEN NOT (COALESCE(calc_legacy_runner_capabilities_is_decided(p_legacy_runner_capability_id), FALSE)) THEN ('undecided')::text ELSE (CASE WHEN calc_legacy_runner_capabilities_is_resolved(p_legacy_runner_capability_id) THEN ('resolved')::text ELSE ('decided')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_legacy_runner_capabilities_capability_label
@@ -4516,7 +4623,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_runs_passing_substrate_count(p_conformance_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_conformance_results_is_passing_flag(conformance_result_id))::numeric), 0) FROM conformance_results WHERE run = p_conformance_run_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(COALESCE(NULLIF(erb_r1.status, ''), '') = 'success', FALSE) AND COALESCE(COALESCE((erb_r1.score)::NUMERIC, 0) >= 100, FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM conformance_results erb_r1 WHERE run = p_conformance_run_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_runs_failing_substrate_count
@@ -4526,7 +4633,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_runs_failing_substrate_count(p_conformance_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_total_substrates(p_conformance_run_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_passing_substrate_count(p_conformance_run_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_total_substrates(p_conformance_run_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_conformance_runs_passing_substrate_count(p_conformance_run_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_runs_overall_score
@@ -4546,7 +4653,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_runs_overall_status(p_conformance_run_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (calc_conformance_runs_total_substrates(p_conformance_run_id))::NUMERIC = 0 THEN ('no-results')::text ELSE (CASE WHEN (calc_conformance_runs_failing_substrate_count(p_conformance_run_id))::NUMERIC = 0 THEN ('all-passing')::text ELSE ('has-failures')::text END)::text END)::text;
+  SELECT (CASE WHEN COALESCE((calc_conformance_runs_total_substrates(p_conformance_run_id))::NUMERIC, 0) = 0 THEN ('no-results')::text ELSE (CASE WHEN COALESCE((calc_conformance_runs_failing_substrate_count(p_conformance_run_id))::NUMERIC, 0) = 0 THEN ('all-passing')::text ELSE ('has-failures')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_results_run_domain_name
@@ -4577,7 +4684,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_results_is_passing(p_conformance_result_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(status, '') FROM conformance_results WHERE conformance_result_id = p_conformance_result_id) = 'success' AND ((SELECT score FROM conformance_results WHERE conformance_result_id = p_conformance_result_id))::NUMERIC >= 100));
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(status, '') FROM conformance_results WHERE conformance_result_id = p_conformance_result_id), '') = 'success', FALSE) AND COALESCE(COALESCE(((SELECT score FROM conformance_results WHERE conformance_result_id = p_conformance_result_id))::NUMERIC, 0) >= 100, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_results_is_passing_flag
@@ -4587,7 +4694,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_conformance_results_is_passing_flag(p_conformance_result_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT NULLIF(status, '') FROM conformance_results WHERE conformance_result_id = p_conformance_result_id) = 'success' AND ((SELECT score FROM conformance_results WHERE conformance_result_id = p_conformance_result_id))::NUMERIC >= 100) THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(COALESCE((SELECT NULLIF(status, '') FROM conformance_results WHERE conformance_result_id = p_conformance_result_id), '') = 'success', FALSE) AND COALESCE(COALESCE(((SELECT score FROM conformance_results WHERE conformance_result_id = p_conformance_result_id))::NUMERIC, 0) >= 100, FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_test_suites_domain_name
@@ -4629,7 +4736,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_test_suites_has_answer_keys(p_test_suite_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE(((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_test_suites_is_runnable
@@ -4639,7 +4746,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_test_suites_is_runnable(p_test_suite_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND (((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' AND ((SELECT test_file_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC > 0) OR ((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) <> 'pytest' AND COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE)))));
+  SELECT ((COALESCE(COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE), FALSE) AND COALESCE((COALESCE((COALESCE(COALESCE((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id), '') = 'pytest', FALSE) AND COALESCE(COALESCE(((SELECT test_file_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC, 0) > 0, FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id), '') <> 'pytest', FALSE) AND COALESCE(COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE), FALSE)), FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_test_suites_runnable_flag
@@ -4649,7 +4756,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_test_suites_runnable_flag(p_test_suite_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND (((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' AND ((SELECT test_file_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC > 0) OR ((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) <> 'pytest' AND COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE)))) THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE), FALSE) AND COALESCE((COALESCE((COALESCE(COALESCE((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id), '') = 'pytest', FALSE) AND COALESCE(COALESCE(((SELECT test_file_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC, 0) > 0, FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id), '') <> 'pytest', FALSE) AND COALESCE(COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE), FALSE)), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_test_suites_is_gradable
@@ -4659,7 +4766,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_test_suites_is_gradable(p_test_suite_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND ((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' OR (COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND ((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC > 0))));
+  SELECT ((COALESCE(COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE), FALSE) AND COALESCE((COALESCE(COALESCE((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id), '') = 'pytest', FALSE) OR COALESCE((COALESCE(COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE), FALSE) AND COALESCE(COALESCE(((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC, 0) > 0, FALSE)), FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_test_suites_gradable_flag
@@ -4669,7 +4776,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_test_suites_gradable_flag(p_test_suite_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND ((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' OR (COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE) AND ((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC > 0))) THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE), FALSE) AND COALESCE((COALESCE(COALESCE((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id), '') = 'pytest', FALSE) OR COALESCE((COALESCE(COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE), FALSE) AND COALESCE(COALESCE(((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC, 0) > 0, FALSE)), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_test_suites_registration_state
@@ -4679,7 +4786,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_test_suites_registration_state(p_test_suite_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN NOT (COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE)) THEN ('unregistered')::text ELSE (CASE WHEN (SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id) = 'pytest' THEN (CASE WHEN ((SELECT test_file_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC = 0 THEN ('no-test-files')::text ELSE ('ready')::text END)::text ELSE (CASE WHEN NOT (COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE)) THEN ('no-effortless-json')::text ELSE (CASE WHEN ((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC = 0 THEN ('never-exercised')::text ELSE ('ready')::text END)::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN NOT (COALESCE(COALESCE((SELECT is_registered FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE), FALSE)) THEN ('unregistered')::text ELSE (CASE WHEN COALESCE((SELECT NULLIF(suite_kind, '') FROM test_suites WHERE test_suite_id = p_test_suite_id), '') = 'pytest' THEN (CASE WHEN COALESCE(((SELECT test_file_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC, 0) = 0 THEN ('no-test-files')::text ELSE ('ready')::text END)::text ELSE (CASE WHEN NOT (COALESCE(COALESCE((SELECT has_effortless_json FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE), FALSE)) THEN ('no-effortless-json')::text ELSE (CASE WHEN COALESCE(((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC, 0) = 0 THEN ('never-exercised')::text ELSE ('ready')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_test_suites_corpus_domain_run_count
@@ -4699,7 +4806,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_test_suites_has_been_exercised(p_test_suite_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC > 0 OR COALESCE((SELECT has_postgres_bootstrap FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE)));
+  SELECT ((COALESCE(COALESCE(((SELECT answer_key_count FROM test_suites WHERE test_suite_id = p_test_suite_id))::NUMERIC, 0) > 0, FALSE) OR COALESCE(COALESCE((SELECT has_postgres_bootstrap FROM test_suites WHERE test_suite_id = p_test_suite_id), FALSE), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_runs_name
@@ -4729,7 +4836,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_green_domain_count(p_corpus_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_green_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE corpus_run = p_corpus_run_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(COALESCE(NULLIF(erb_r1.build_status, ''), '') <> 'fail', FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.db_status, ''), '') <> 'fail', FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.conformance_status, ''), '') <> 'fail', FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM corpus_domain_runs erb_r1 WHERE corpus_run = p_corpus_run_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_runs_fully_green_domain_count
@@ -4739,7 +4846,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_fully_green_domain_count(p_corpus_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_fully_green_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE corpus_run = p_corpus_run_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN (COALESCE(COALESCE(NULLIF(erb_r1.build_status, ''), '') <> 'fail', FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.db_status, ''), '') <> 'fail', FALSE) AND COALESCE(COALESCE(NULLIF(erb_r1.conformance_status, ''), '') = 'pass', FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM corpus_domain_runs erb_r1 WHERE corpus_run = p_corpus_run_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_runs_build_failure_count
@@ -4749,7 +4856,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_build_failure_count(p_corpus_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_build_failed_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE corpus_run = p_corpus_run_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.build_status, ''), '') = 'fail' THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM corpus_domain_runs erb_r1 WHERE corpus_run = p_corpus_run_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_runs_db_failure_count
@@ -4759,7 +4866,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_db_failure_count(p_corpus_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_db_failed_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE corpus_run = p_corpus_run_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.db_status, ''), '') = 'fail' THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM corpus_domain_runs erb_r1 WHERE corpus_run = p_corpus_run_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_runs_conformance_failure_count
@@ -4769,7 +4876,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_conformance_failure_count(p_corpus_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_corpus_domain_runs_conformance_failed_flag(corpus_domain_run_id))::numeric), 0) FROM corpus_domain_runs WHERE corpus_run = p_corpus_run_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.conformance_status, ''), '') = 'fail' THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM corpus_domain_runs erb_r1 WHERE corpus_run = p_corpus_run_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_runs_total_duration_seconds
@@ -4789,7 +4896,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_red_domain_count(p_corpus_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_corpus_runs_domain_run_count(p_corpus_run_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_corpus_runs_green_domain_count(p_corpus_run_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_corpus_runs_domain_run_count(p_corpus_run_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_corpus_runs_green_domain_count(p_corpus_run_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_runs_green_percent
@@ -4799,7 +4906,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_green_percent(p_corpus_run_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_corpus_runs_domain_run_count(p_corpus_run_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_corpus_runs_green_domain_count(p_corpus_run_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_corpus_runs_domain_run_count(p_corpus_run_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_corpus_runs_green_domain_count(p_corpus_run_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_runs_fully_green_percent
@@ -4809,7 +4916,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_fully_green_percent(p_corpus_run_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_corpus_runs_domain_run_count(p_corpus_run_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_corpus_runs_fully_green_domain_count(p_corpus_run_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_corpus_runs_domain_run_count(p_corpus_run_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_corpus_runs_fully_green_domain_count(p_corpus_run_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (1)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_runs_is_complete
@@ -4819,7 +4926,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_is_complete(p_corpus_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT finished_on::timestamptz FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT finished_on::timestamptz FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id)) IS NOT NULL AND ((SELECT finished_on::timestamptz FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_runs_is_corpus_green
@@ -4829,7 +4936,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_is_corpus_green(p_corpus_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_corpus_runs_domain_run_count(p_corpus_run_id))::NUMERIC > 0 AND (calc_corpus_runs_red_domain_count(p_corpus_run_id))::NUMERIC = 0));
+  SELECT ((COALESCE(COALESCE((calc_corpus_runs_domain_run_count(p_corpus_run_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(COALESCE((calc_corpus_runs_red_domain_count(p_corpus_run_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_runs_overall_status
@@ -4839,7 +4946,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_runs_overall_status(p_corpus_run_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (SELECT finished_on::timestamptz FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id) IS NULL THEN ('running')::text ELSE (CASE WHEN (calc_corpus_runs_domain_run_count(p_corpus_run_id))::NUMERIC = 0 THEN ('no-targets')::text ELSE (CASE WHEN (calc_corpus_runs_red_domain_count(p_corpus_run_id))::NUMERIC = 0 THEN ('green')::text ELSE ('red')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN (((SELECT finished_on::timestamptz FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id)) IS NULL OR ((SELECT finished_on::timestamptz FROM corpus_runs WHERE corpus_run_id = p_corpus_run_id))::text = '') THEN ('running')::text ELSE (CASE WHEN COALESCE((calc_corpus_runs_domain_run_count(p_corpus_run_id))::NUMERIC, 0) = 0 THEN ('no-targets')::text ELSE (CASE WHEN COALESCE((calc_corpus_runs_red_domain_count(p_corpus_run_id))::NUMERIC, 0) = 0 THEN ('green')::text ELSE ('red')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_domain_name
@@ -4966,7 +5073,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_is_green(p_corpus_domain_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail'))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_green_flag
@@ -4976,7 +5083,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_green_flag(p_corpus_domain_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail') THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(COALESCE((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_is_fully_green
@@ -4986,7 +5093,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_is_fully_green(p_corpus_domain_run_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass'))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') = 'pass', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_fully_green_flag
@@ -4996,7 +5103,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_fully_green_flag(p_corpus_domain_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass') THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(COALESCE((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') = 'pass', FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_build_failed_flag
@@ -5006,7 +5113,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_build_failed_flag(p_corpus_domain_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'fail' THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') = 'fail' THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_db_failed_flag
@@ -5016,7 +5123,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_db_failed_flag(p_corpus_domain_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'fail' THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') = 'fail' THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_conformance_failed_flag
@@ -5026,7 +5133,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_conformance_failed_flag(p_corpus_domain_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'fail' THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') = 'fail' THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_failing_phase
@@ -5036,7 +5143,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_failing_phase(p_corpus_domain_run_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'fail' THEN ('build')::text ELSE (CASE WHEN (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'fail' THEN ('db')::text ELSE (CASE WHEN (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'fail' THEN ('conformance')::text ELSE ('')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') = 'fail' THEN ('build')::text ELSE (CASE WHEN COALESCE((SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') = 'fail' THEN ('db')::text ELSE (CASE WHEN COALESCE((SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') = 'fail' THEN ('conformance')::text ELSE ('')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_latest_green_flag
@@ -5046,7 +5153,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_latest_green_flag(p_corpus_domain_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((calc_corpus_domain_runs_corpus_run_is_latest(p_corpus_domain_run_id) = 'true') AND (SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail') THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE((calc_corpus_domain_runs_corpus_run_is_latest(p_corpus_domain_run_id) = 'true'), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_latest_fully_green_flag
@@ -5056,7 +5163,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_corpus_domain_runs_latest_fully_green_flag(p_corpus_domain_run_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((calc_corpus_domain_runs_corpus_run_is_latest(p_corpus_domain_run_id) = 'true') AND (SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) <> 'fail' AND (SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id) = 'pass') THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE((calc_corpus_domain_runs_corpus_run_is_latest(p_corpus_domain_run_id) = 'true'), FALSE) AND COALESCE(COALESCE((SELECT NULLIF(build_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(db_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') <> 'fail', FALSE) AND COALESCE(COALESCE((SELECT NULLIF(conformance_status, '') FROM corpus_domain_runs WHERE corpus_domain_run_id = p_corpus_domain_run_id), '') = 'pass', FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_corpus_domain_runs_latest_attempt_flag
@@ -5152,7 +5259,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_flavors_derived_field_count(p_flavor_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT calculated_count FROM rulebook_flavors WHERE flavor_id = p_flavor_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT aggregation_count FROM rulebook_flavors WHERE flavor_id = p_flavor_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT lookup_count FROM rulebook_flavors WHERE flavor_id = p_flavor_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT calculated_count FROM rulebook_flavors WHERE flavor_id = p_flavor_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT aggregation_count FROM rulebook_flavors WHERE flavor_id = p_flavor_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT lookup_count FROM rulebook_flavors WHERE flavor_id = p_flavor_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_flavors_has_domain
@@ -5162,7 +5269,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_flavors_has_domain(p_flavor_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(domain, '') FROM rulebook_flavors WHERE flavor_id = p_flavor_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(domain, '') FROM rulebook_flavors WHERE flavor_id = p_flavor_id)) IS NOT NULL AND ((SELECT NULLIF(domain, '') FROM rulebook_flavors WHERE flavor_id = p_flavor_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_flavors_tag_count
@@ -5182,7 +5289,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_flavors_answer_key_target_count(p_flavor_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(good_answer_key_for, '') FROM rulebook_flavors WHERE flavor_id = p_flavor_id) IS NULL THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(good_answer_key_for, '') FROM rulebook_flavors WHERE flavor_id = p_flavor_id))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(good_answer_key_for, '') FROM rulebook_flavors WHERE flavor_id = p_flavor_id), ',', ''))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT NULLIF(good_answer_key_for, '') FROM rulebook_flavors WHERE flavor_id = p_flavor_id)) IS NULL OR ((SELECT NULLIF(good_answer_key_for, '') FROM rulebook_flavors WHERE flavor_id = p_flavor_id))::text = '') THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(good_answer_key_for, '') FROM rulebook_flavors WHERE flavor_id = p_flavor_id))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(good_answer_key_for, '') FROM rulebook_flavors WHERE flavor_id = p_flavor_id), ',', ''))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_flavors_derived_ratio
@@ -5192,7 +5299,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_flavors_derived_ratio(p_flavor_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((SELECT entity_count FROM rulebook_flavors WHERE flavor_id = p_flavor_id))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_flavors_derived_field_count(p_flavor_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT entity_count FROM rulebook_flavors WHERE flavor_id = p_flavor_id)) AS v) __safe_numeric), 0), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+  SELECT (CASE WHEN COALESCE(((SELECT entity_count FROM rulebook_flavors WHERE flavor_id = p_flavor_id))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_rulebook_flavors_derived_field_count(p_flavor_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT entity_count FROM rulebook_flavors WHERE flavor_id = p_flavor_id)) AS v OFFSET 0) __safe_numeric), 0), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_flavors_is_tagged
@@ -5202,7 +5309,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_flavors_is_tagged(p_flavor_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_rulebook_flavors_tag_count(p_flavor_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_rulebook_flavors_tag_count(p_flavor_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_flavors_is_toy_flavor
@@ -5212,7 +5319,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_flavors_is_toy_flavor(p_flavor_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_rulebook_flavors_domain_area(p_flavor_id) = 'toy-rulebooks')::boolean;
+  SELECT (COALESCE(calc_rulebook_flavors_domain_area(p_flavor_id), '') = 'toy-rulebooks')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_flavors_is_dense_derivation
@@ -5222,7 +5329,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_flavors_is_dense_derivation(p_flavor_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_rulebook_flavors_derived_ratio(p_flavor_id))::NUMERIC >= 1)::boolean;
+  SELECT (COALESCE((calc_rulebook_flavors_derived_ratio(p_flavor_id))::NUMERIC, 0) >= 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_flavors_is_catalog_complete
@@ -5232,7 +5339,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_flavors_is_catalog_complete(p_flavor_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_rulebook_flavors_has_domain(p_flavor_id) AND calc_rulebook_flavors_is_tagged(p_flavor_id)))::boolean;
+  SELECT ((COALESCE(calc_rulebook_flavors_has_domain(p_flavor_id), FALSE) AND COALESCE(calc_rulebook_flavors_is_tagged(p_flavor_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_flavors_is_showcase_card
@@ -5242,7 +5349,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_flavors_is_showcase_card(p_flavor_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_rulebook_flavors_is_catalog_complete(p_flavor_id) AND (COALESCE(calc_rulebook_flavors_domain_open_finding_count(p_flavor_id), 1))::NUMERIC = 0));
+  SELECT ((COALESCE(calc_rulebook_flavors_is_catalog_complete(p_flavor_id), FALSE) AND COALESCE(COALESCE((COALESCE(calc_rulebook_flavors_domain_open_finding_count(p_flavor_id), 1))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_flavors_is_catalog_ready
@@ -5252,7 +5359,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_flavors_is_catalog_ready(p_flavor_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_rulebook_flavors_is_showcase_card(p_flavor_id) AND (COALESCE(calc_rulebook_flavors_domain_is_consistent(p_flavor_id), FALSE) = 'true')))::boolean;
+  SELECT ((COALESCE(calc_rulebook_flavors_is_showcase_card(p_flavor_id), FALSE) AND COALESCE((COALESCE(calc_rulebook_flavors_domain_is_consistent(p_flavor_id), FALSE) = 'true'), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_field_type_taxonomy_name
@@ -5272,7 +5379,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_field_type_taxonomy_is_stored(p_type_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(storage_mode, '') FROM field_type_taxonomy WHERE type_id = p_type_id) = 'stored')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(storage_mode, '') FROM field_type_taxonomy WHERE type_id = p_type_id), '') = 'stored')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_field_type_taxonomy_is_fully_expressive_tier
@@ -5282,7 +5389,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_field_type_taxonomy_is_fully_expressive_tier(p_type_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(expressive_tier, '') FROM field_type_taxonomy WHERE type_id = p_type_id) = 'full')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(expressive_tier, '') FROM field_type_taxonomy WHERE type_id = p_type_id), '') = 'full')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_field_type_taxonomy_is_stored_and_editable
@@ -5292,7 +5399,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_field_type_taxonomy_is_stored_and_editable(p_type_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_field_type_taxonomy_is_stored(p_type_id) AND NOT (COALESCE((SELECT read_only_in_ui FROM field_type_taxonomy WHERE type_id = p_type_id), FALSE))))::boolean;
+  SELECT ((COALESCE(calc_field_type_taxonomy_is_stored(p_type_id), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT read_only_in_ui FROM field_type_taxonomy WHERE type_id = p_type_id), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_field_type_taxonomy_tier_label
@@ -5312,7 +5419,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_field_type_taxonomy_is_input_tier(p_type_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_field_type_taxonomy_tier_label(p_type_id) = 'input')::boolean;
+  SELECT (COALESCE(calc_field_type_taxonomy_tier_label(p_type_id), '') = 'input')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_field_type_taxonomy_ui_hint
@@ -5332,7 +5439,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_formula_dialects_is_active(p_dialect_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(status, '') FROM formula_dialects WHERE dialect_id = p_dialect_id) = 'active')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(status, '') FROM formula_dialects WHERE dialect_id = p_dialect_id), '') = 'active')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_formula_dialects_primary_substrate_count
@@ -5342,7 +5449,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_formula_dialects_primary_substrate_count(p_dialect_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(primary_substrates, '') FROM formula_dialects WHERE dialect_id = p_dialect_id) IS NULL THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(primary_substrates, '') FROM formula_dialects WHERE dialect_id = p_dialect_id))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(primary_substrates, '') FROM formula_dialects WHERE dialect_id = p_dialect_id), ',', ''))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT NULLIF(primary_substrates, '') FROM formula_dialects WHERE dialect_id = p_dialect_id)) IS NULL OR ((SELECT NULLIF(primary_substrates, '') FROM formula_dialects WHERE dialect_id = p_dialect_id))::text = '') THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(primary_substrates, '') FROM formula_dialects WHERE dialect_id = p_dialect_id))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(primary_substrates, '') FROM formula_dialects WHERE dialect_id = p_dialect_id), ',', ''))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_formula_dialects_is_active_multi_substrate
@@ -5352,7 +5459,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_formula_dialects_is_active_multi_substrate(p_dialect_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_formula_dialects_is_active(p_dialect_id) AND (calc_formula_dialects_primary_substrate_count(p_dialect_id))::NUMERIC > 1));
+  SELECT ((COALESCE(calc_formula_dialects_is_active(p_dialect_id), FALSE) AND COALESCE(COALESCE((calc_formula_dialects_primary_substrate_count(p_dialect_id))::NUMERIC, 0) > 1, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_formula_dialects_dialect_role
@@ -5372,7 +5479,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_formula_dialects_is_primary_dialect(p_dialect_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_formula_dialects_dialect_role(p_dialect_id) = 'primary')::boolean;
+  SELECT (COALESCE(calc_formula_dialects_dialect_role(p_dialect_id), '') = 'primary')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_formula_dialects_dialect_label
@@ -5424,7 +5531,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_demo_narratives_is_deprecated(p_narrative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(status, '') FROM demo_narratives WHERE narrative_id = p_narrative_id) = 'deprecated')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(status, '') FROM demo_narratives WHERE narrative_id = p_narrative_id), '') = 'deprecated')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_demo_narratives_is_superseded
@@ -5434,7 +5541,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_demo_narratives_is_superseded(p_narrative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(superseded_by, '') FROM demo_narratives WHERE narrative_id = p_narrative_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(superseded_by, '') FROM demo_narratives WHERE narrative_id = p_narrative_id)) IS NOT NULL AND ((SELECT NULLIF(superseded_by, '') FROM demo_narratives WHERE narrative_id = p_narrative_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_demo_narratives_is_retired
@@ -5444,7 +5551,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_demo_narratives_is_retired(p_narrative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_demo_narratives_is_deprecated(p_narrative_id) OR calc_demo_narratives_is_superseded(p_narrative_id)))::boolean;
+  SELECT ((COALESCE(calc_demo_narratives_is_deprecated(p_narrative_id), FALSE) OR COALESCE(calc_demo_narratives_is_superseded(p_narrative_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_demo_narratives_is_retired_toy_story
@@ -5454,7 +5561,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_demo_narratives_is_retired_toy_story(p_narrative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_demo_narratives_is_retired(p_narrative_id) AND (COALESCE(calc_demo_narratives_domain_is_toy(p_narrative_id), FALSE) = 'true')))::boolean;
+  SELECT ((COALESCE(calc_demo_narratives_is_retired(p_narrative_id), FALSE) AND COALESCE((COALESCE(calc_demo_narratives_domain_is_toy(p_narrative_id), FALSE) = 'true'), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_demo_narratives_is_live_story
@@ -5464,7 +5571,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_demo_narratives_is_live_story(p_narrative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((NOT (calc_demo_narratives_is_retired(p_narrative_id)) AND (SELECT NULLIF(related_domain_id, '') FROM demo_narratives WHERE narrative_id = p_narrative_id) IS NOT NULL))::boolean;
+  SELECT ((COALESCE(NOT (COALESCE(calc_demo_narratives_is_retired(p_narrative_id), FALSE)), FALSE) AND COALESCE((((SELECT NULLIF(related_domain_id, '') FROM demo_narratives WHERE narrative_id = p_narrative_id)) IS NOT NULL AND ((SELECT NULLIF(related_domain_id, '') FROM demo_narratives WHERE narrative_id = p_narrative_id))::text <> ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_demo_narratives_story_state
@@ -5484,7 +5591,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_demo_narratives_is_current_story(p_narrative_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_demo_narratives_story_state(p_narrative_id) = 'live')::boolean;
+  SELECT (COALESCE(calc_demo_narratives_story_state(p_narrative_id), '') = 'live')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_glossary_name
@@ -5504,7 +5611,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_glossary_alias_count(p_term_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(aliases, '') FROM glossary WHERE term_id = p_term_id) IS NULL THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(aliases, '') FROM glossary WHERE term_id = p_term_id))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(aliases, '') FROM glossary WHERE term_id = p_term_id), ',', ''))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT NULLIF(aliases, '') FROM glossary WHERE term_id = p_term_id)) IS NULL OR ((SELECT NULLIF(aliases, '') FROM glossary WHERE term_id = p_term_id))::text = '') THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(aliases, '') FROM glossary WHERE term_id = p_term_id))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(aliases, '') FROM glossary WHERE term_id = p_term_id), ',', ''))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_glossary_has_implementation
@@ -5514,7 +5621,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_glossary_has_implementation(p_term_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(implemented_as, '') FROM glossary WHERE term_id = p_term_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(implemented_as, '') FROM glossary WHERE term_id = p_term_id)) IS NOT NULL AND ((SELECT NULLIF(implemented_as, '') FROM glossary WHERE term_id = p_term_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_glossary_implementation_kind
@@ -5524,7 +5631,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_glossary_implementation_kind(p_term_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN LENGTH(COALESCE((SELECT NULLIF(implemented_as, '') FROM glossary WHERE term_id = p_term_id), '')) = LENGTH(REPLACE(COALESCE((SELECT NULLIF(implemented_as, '') FROM glossary WHERE term_id = p_term_id), ''), ':', '')) THEN ('')::text ELSE (LEFT(((SELECT NULLIF(implemented_as, '') FROM glossary WHERE term_id = p_term_id))::text, ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (POSITION(':' IN (SELECT NULLIF(implemented_as, '') FROM glossary WHERE term_id = p_term_id))) AS v) __safe_numeric), 0) - COALESCE(1, 0)))::integer))::text END)::text;
+  SELECT (CASE WHEN COALESCE((LENGTH(COALESCE((SELECT NULLIF(implemented_as, '') FROM glossary WHERE term_id = p_term_id), '')) = LENGTH(REPLACE(COALESCE((SELECT NULLIF(implemented_as, '') FROM glossary WHERE term_id = p_term_id), ''), ':', ''))), ((LENGTH(COALESCE((SELECT NULLIF(implemented_as, '') FROM glossary WHERE term_id = p_term_id), ''))) IS NULL AND (LENGTH(REPLACE(COALESCE((SELECT NULLIF(implemented_as, '') FROM glossary WHERE term_id = p_term_id), ''), ':', ''))) IS NULL)) THEN ('')::text ELSE (LEFT(((SELECT NULLIF(implemented_as, '') FROM glossary WHERE term_id = p_term_id))::text, ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (POSITION(':' IN (SELECT NULLIF(implemented_as, '') FROM glossary WHERE term_id = p_term_id))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE(1, 0)))::integer))::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_glossary_is_file_backed
@@ -5534,7 +5641,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_glossary_is_file_backed(p_term_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_glossary_implementation_kind(p_term_id) = 'file')::boolean;
+  SELECT (COALESCE(calc_glossary_implementation_kind(p_term_id), '') = 'file')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_glossary_is_rich_term
@@ -5544,7 +5651,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_glossary_is_rich_term(p_term_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_glossary_alias_count(p_term_id))::NUMERIC > 0 AND calc_glossary_has_implementation(p_term_id)));
+  SELECT ((COALESCE(COALESCE((calc_glossary_alias_count(p_term_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE(calc_glossary_has_implementation(p_term_id), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_glossary_term_quality
@@ -5564,7 +5671,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_glossary_is_anchored(p_term_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_glossary_term_quality(p_term_id) = 'anchored')::boolean;
+  SELECT (COALESCE(calc_glossary_term_quality(p_term_id), '') = 'anchored')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_glossary_glossary_tier
@@ -5574,7 +5681,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_glossary_glossary_tier(p_term_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_glossary_is_anchored(p_term_id) THEN ('tier-1')::text ELSE (CASE WHEN calc_glossary_term_quality(p_term_id) = 'rich' THEN ('tier-2')::text ELSE ('tier-3')::text END)::text END)::text;
+  SELECT (CASE WHEN calc_glossary_is_anchored(p_term_id) THEN ('tier-1')::text ELSE (CASE WHEN COALESCE(calc_glossary_term_quality(p_term_id), '') = 'rich' THEN ('tier-2')::text ELSE ('tier-3')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_tags_name
@@ -5604,7 +5711,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_tags_is_source_tag(p_tag_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(category, '') FROM rulebook_tags WHERE tag_id = p_tag_id) = 'source')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(category, '') FROM rulebook_tags WHERE tag_id = p_tag_id), '') = 'source')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_tags_is_unused
@@ -5614,7 +5721,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_tags_is_unused(p_tag_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_rulebook_tags_usage_count(p_tag_id))::NUMERIC = 0)::boolean;
+  SELECT (COALESCE((calc_rulebook_tags_usage_count(p_tag_id))::NUMERIC, 0) = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_tags_unused_flag
@@ -5624,7 +5731,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_tags_unused_flag(p_tag_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_rulebook_tags_usage_count(p_tag_id))::NUMERIC = 0 THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((calc_rulebook_tags_usage_count(p_tag_id))::NUMERIC, 0) = 0 THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_tags_tag_health
@@ -5634,7 +5741,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_tags_tag_health(p_tag_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_rulebook_tags_is_unused(p_tag_id) THEN ('unused')::text ELSE (CASE WHEN (calc_rulebook_tags_usage_count(p_tag_id))::NUMERIC >= 5 THEN ('common')::text ELSE ('rare')::text END)::text END)::text;
+  SELECT (CASE WHEN calc_rulebook_tags_is_unused(p_tag_id) THEN ('unused')::text ELSE (CASE WHEN COALESCE((calc_rulebook_tags_usage_count(p_tag_id))::NUMERIC, 0) >= 5 THEN ('common')::text ELSE ('rare')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_tags_is_retirement_candidate
@@ -5644,7 +5751,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_rulebook_tags_is_retirement_candidate(p_tag_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_rulebook_tags_tag_health(p_tag_id) = 'unused')::boolean;
+  SELECT (COALESCE(calc_rulebook_tags_tag_health(p_tag_id), '') = 'unused')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_rulebook_tags_tag_action
@@ -5763,7 +5870,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_flavor_tags_is_source_tagging(p_flavor_tag_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_flavor_tags_tag_category(p_flavor_tag_id) = 'source')::boolean;
+  SELECT (COALESCE(calc_flavor_tags_tag_category(p_flavor_tag_id), '') = 'source')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_flavor_tags_is_sole_tag
@@ -5773,7 +5880,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_flavor_tags_is_sole_tag(p_flavor_tag_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_flavor_tags_flavor_tag_count(p_flavor_tag_id), 0))::NUMERIC = 1)::boolean;
+  SELECT (COALESCE((COALESCE(calc_flavor_tags_flavor_tag_count(p_flavor_tag_id), 0))::NUMERIC, 0) = 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_flavor_tags_tag_share
@@ -5783,7 +5890,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_flavor_tags_tag_share(p_flavor_tag_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_flavor_tags_flavor_tag_count(p_flavor_tag_id) AS val) SELECT (CASE WHEN (COALESCE((SELECT val FROM __erb_dedup_v1), 0))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_flavor_tags_flavor_tag_count(p_flavor_tag_id) AS val) SELECT (CASE WHEN COALESCE((COALESCE((SELECT val FROM __erb_dedup_v1), 0))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_flavor_tags_is_defining_tag
@@ -5793,7 +5900,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_flavor_tags_is_defining_tag(p_flavor_tag_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_flavor_tags_is_sole_tag(p_flavor_tag_id) AND calc_flavor_tags_is_source_tagging(p_flavor_tag_id)))::boolean;
+  SELECT ((COALESCE(calc_flavor_tags_is_sole_tag(p_flavor_tag_id), FALSE) AND COALESCE(calc_flavor_tags_is_source_tagging(p_flavor_tag_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_flavor_tags_tag_weight
@@ -5842,7 +5949,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claude_skills_is_deprecated(p_skill_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(status, '') FROM claude_skills WHERE skill_id = p_skill_id) = 'deprecated')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(status, '') FROM claude_skills WHERE skill_id = p_skill_id), '') = 'deprecated')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claude_skills_deprecated_flag
@@ -5852,7 +5959,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claude_skills_deprecated_flag(p_skill_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(status, '') FROM claude_skills WHERE skill_id = p_skill_id) = 'deprecated' THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(status, '') FROM claude_skills WHERE skill_id = p_skill_id), '') = 'deprecated' THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claude_skills_outbound_route_count
@@ -5882,7 +5989,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claude_skills_is_customer_facing(p_skill_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(audience, '') FROM claude_skills WHERE skill_id = p_skill_id) = 'customer')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(audience, '') FROM claude_skills WHERE skill_id = p_skill_id), '') = 'customer')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claude_skills_is_isolated
@@ -5892,7 +5999,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claude_skills_is_isolated(p_skill_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_claude_skills_outbound_route_count(p_skill_id))::NUMERIC = 0 AND (calc_claude_skills_inbound_route_count(p_skill_id))::NUMERIC = 0));
+  SELECT ((COALESCE(COALESCE((calc_claude_skills_outbound_route_count(p_skill_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_claude_skills_inbound_route_count(p_skill_id))::NUMERIC, 0) = 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_claude_skills_isolated_flag
@@ -5902,7 +6009,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claude_skills_isolated_flag(p_skill_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN ((calc_claude_skills_outbound_route_count(p_skill_id))::NUMERIC = 0 AND (calc_claude_skills_inbound_route_count(p_skill_id))::NUMERIC = 0) THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(COALESCE((calc_claude_skills_outbound_route_count(p_skill_id))::NUMERIC, 0) = 0, FALSE) AND COALESCE(COALESCE((calc_claude_skills_inbound_route_count(p_skill_id))::NUMERIC, 0) = 0, FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claude_skills_is_hub
@@ -5912,7 +6019,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claude_skills_is_hub(p_skill_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_claude_skills_outbound_route_count(p_skill_id))::NUMERIC >= 5)::boolean;
+  SELECT (COALESCE((calc_claude_skills_outbound_route_count(p_skill_id))::NUMERIC, 0) >= 5)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claude_skills_route_degree
@@ -5922,7 +6029,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claude_skills_route_degree(p_skill_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_claude_skills_outbound_route_count(p_skill_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_claude_skills_inbound_route_count(p_skill_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_claude_skills_outbound_route_count(p_skill_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_claude_skills_inbound_route_count(p_skill_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claude_skills_skill_role
@@ -5932,7 +6039,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claude_skills_skill_role(p_skill_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_claude_skills_is_isolated(p_skill_id) THEN ('isolated')::text ELSE (CASE WHEN calc_claude_skills_is_hub(p_skill_id) THEN ('hub')::text ELSE (CASE WHEN (calc_claude_skills_inbound_route_count(p_skill_id))::NUMERIC > 0 THEN ('leaf')::text ELSE ('source')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN calc_claude_skills_is_isolated(p_skill_id) THEN ('isolated')::text ELSE (CASE WHEN calc_claude_skills_is_hub(p_skill_id) THEN ('hub')::text ELSE (CASE WHEN COALESCE((calc_claude_skills_inbound_route_count(p_skill_id))::NUMERIC, 0) > 0 THEN ('leaf')::text ELSE ('source')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claude_skills_is_live_hub
@@ -5942,7 +6049,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claude_skills_is_live_hub(p_skill_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_claude_skills_is_hub(p_skill_id) AND NOT (calc_claude_skills_is_deprecated(p_skill_id))))::boolean;
+  SELECT ((COALESCE(calc_claude_skills_is_hub(p_skill_id), FALSE) AND COALESCE(NOT (COALESCE(calc_claude_skills_is_deprecated(p_skill_id), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claude_skills_is_deprecated_but_routed
@@ -5952,7 +6059,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claude_skills_is_deprecated_but_routed(p_skill_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_claude_skills_is_deprecated(p_skill_id) AND (calc_claude_skills_route_degree(p_skill_id))::NUMERIC > 0));
+  SELECT ((COALESCE(calc_claude_skills_is_deprecated(p_skill_id), FALSE) AND COALESCE(COALESCE((calc_claude_skills_route_degree(p_skill_id))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_claude_skills_catalog_state
@@ -5972,7 +6079,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claude_skills_healthy_flag(p_skill_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_claude_skills_is_deprecated_but_routed(p_skill_id) OR calc_claude_skills_is_isolated(p_skill_id)) THEN (0)::text ELSE (1)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(calc_claude_skills_is_deprecated_but_routed(p_skill_id), FALSE) OR COALESCE(calc_claude_skills_is_isolated(p_skill_id), FALSE)) THEN (0)::text ELSE (1)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claude_skills_needs_catalog_action
@@ -5982,7 +6089,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_claude_skills_needs_catalog_action(p_skill_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_claude_skills_healthy_flag(p_skill_id))::NUMERIC = 0)::boolean;
+  SELECT (COALESCE((calc_claude_skills_healthy_flag(p_skill_id))::NUMERIC, 0) = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_claude_skills_catalog_label
@@ -6059,7 +6166,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_phases_is_priced(p_build_phase_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT quoted_price FROM build_phases WHERE build_phase_id = p_build_phase_id), 0))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((COALESCE((SELECT quoted_price FROM build_phases WHERE build_phase_id = p_build_phase_id), 0))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_phases_priced_flag
@@ -6069,7 +6176,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_phases_priced_flag(p_build_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (COALESCE((SELECT quoted_price FROM build_phases WHERE build_phase_id = p_build_phase_id), 0))::NUMERIC > 0 THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((COALESCE((SELECT quoted_price FROM build_phases WHERE build_phase_id = p_build_phase_id), 0))::NUMERIC, 0) > 0 THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_phases_is_fixed_price
@@ -6079,7 +6186,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_phases_is_fixed_price(p_build_phase_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(phase_kind, '') FROM build_phases WHERE build_phase_id = p_build_phase_id) = 'fixed-price')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(phase_kind, '') FROM build_phases WHERE build_phase_id = p_build_phase_id), '') = 'fixed-price')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_phases_done_story_count
@@ -6089,7 +6196,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_phases_done_story_count(p_build_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_user_stories_done_flag(user_story_id))::numeric), 0) FROM user_stories WHERE build_phase = p_build_phase_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.status, ''), '') = 'done' THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM user_stories erb_r1 WHERE build_phase = p_build_phase_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_phases_effort_weight_sum
@@ -6099,7 +6206,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_phases_effort_weight_sum(p_build_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_user_stories_effort_weight(user_story_id))::numeric), 0) FROM user_stories WHERE build_phase = p_build_phase_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (SELECT complexity_weight::numeric FROM effort_classes WHERE effort_class_id = erb_r1.effort_class)))::numeric)::numeric), 0) FROM user_stories erb_r1 WHERE build_phase = p_build_phase_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_phases_has_stories
@@ -6109,7 +6216,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_phases_has_stories(p_build_phase_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_build_phases_story_count(p_build_phase_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_build_phases_story_count(p_build_phase_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_phases_done_percent
@@ -6119,7 +6226,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_phases_done_percent(p_build_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_build_phases_story_count(p_build_phase_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_build_phases_done_story_count(p_build_phase_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_build_phases_story_count(p_build_phase_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_build_phases_done_story_count(p_build_phase_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_phases_weighted_done_sum
@@ -6129,7 +6236,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_phases_weighted_done_sum(p_build_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_user_stories_weighted_done(user_story_id))::numeric), 0) FROM user_stories WHERE build_phase = p_build_phase_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_done_flag(erb_r1.user_story_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_effort_weight(erb_r1.user_story_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric))::numeric)::numeric), 0) FROM user_stories erb_r1 WHERE build_phase = p_build_phase_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_phases_is_priced_with_stories
@@ -6139,7 +6246,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_phases_is_priced_with_stories(p_build_phase_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_build_phases_is_priced(p_build_phase_id) AND calc_build_phases_has_stories(p_build_phase_id)))::boolean;
+  SELECT ((COALESCE(calc_build_phases_is_priced(p_build_phase_id), FALSE) AND COALESCE(calc_build_phases_has_stories(p_build_phase_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_phases_weighted_done_percent
@@ -6149,7 +6256,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_phases_weighted_done_percent(p_build_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_build_phases_effort_weight_sum(p_build_phase_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_build_phases_weighted_done_sum(p_build_phase_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_build_phases_effort_weight_sum(p_build_phase_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_build_phases_weighted_done_sum(p_build_phase_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_phases_avg_story_progress
@@ -6159,7 +6266,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_phases_avg_story_progress(p_build_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(AVG((calc_user_stories_derived_progress_percent(user_story_id))::numeric), 0) FROM user_stories WHERE build_phase = p_build_phase_id))::numeric;
+  SELECT ((SELECT COALESCE(AVG((((SELECT (CASE WHEN calc_user_stories_has_criteria(erb_r1.user_story_id) THEN (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_met_criterion_count(erb_r1.user_story_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_criterion_count(erb_r1.user_story_id)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text ELSE (erb_r1.dev_progress_percent)::text END)::numeric))::numeric)::numeric), 0) FROM user_stories erb_r1 WHERE build_phase = p_build_phase_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_phases_is_contract_safe
@@ -6169,7 +6276,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_phases_is_contract_safe(p_build_phase_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((NOT (calc_build_phases_is_priced(p_build_phase_id)) OR calc_build_phases_is_priced_with_stories(p_build_phase_id)))::boolean;
+  SELECT ((COALESCE(NOT (COALESCE(calc_build_phases_is_priced(p_build_phase_id), FALSE)), FALSE) OR COALESCE(calc_build_phases_is_priced_with_stories(p_build_phase_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_phases_phase_state
@@ -6179,7 +6286,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_phases_phase_state(p_build_phase_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_build_phases_weighted_done_percent(p_build_phase_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 100 THEN ('complete')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC > 0 THEN ('in-progress')::text ELSE (CASE WHEN COALESCE((SELECT is_current_bid FROM build_phases WHERE build_phase_id = p_build_phase_id), FALSE) THEN ('bid')::text ELSE ('planned')::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_build_phases_weighted_done_percent(p_build_phase_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 100 THEN ('complete')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) > 0 THEN ('in-progress')::text ELSE (CASE WHEN COALESCE((SELECT is_current_bid FROM build_phases WHERE build_phase_id = p_build_phase_id), FALSE) THEN ('bid')::text ELSE ('planned')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_phases_is_report_safe
@@ -6189,7 +6296,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_phases_is_report_safe(p_build_phase_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_build_phases_is_contract_safe(p_build_phase_id) AND calc_build_phases_has_stories(p_build_phase_id)))::boolean;
+  SELECT ((COALESCE(calc_build_phases_is_contract_safe(p_build_phase_id), FALSE) AND COALESCE(calc_build_phases_has_stories(p_build_phase_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_effort_classes_name
@@ -6219,7 +6326,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_effort_classes_weighted_story_load(p_effort_class_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_effort_classes_story_count(p_effort_class_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT complexity_weight FROM effort_classes WHERE effort_class_id = p_effort_class_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_effort_classes_story_count(p_effort_class_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT complexity_weight FROM effort_classes WHERE effort_class_id = p_effort_class_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_effort_classes_is_heavy_load
@@ -6229,7 +6336,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_effort_classes_is_heavy_load(p_effort_class_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_effort_classes_weighted_story_load(p_effort_class_id))::NUMERIC >= 20)::boolean;
+  SELECT (COALESCE((calc_effort_classes_weighted_story_load(p_effort_class_id))::NUMERIC, 0) >= 20)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_effort_classes_load_band
@@ -6279,7 +6386,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_delivery_disciplines_is_major_discipline(p_delivery_discipline_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT share_percent FROM delivery_disciplines WHERE delivery_discipline_id = p_delivery_discipline_id))::NUMERIC >= 20)::boolean;
+  SELECT (COALESCE(((SELECT share_percent FROM delivery_disciplines WHERE delivery_discipline_id = p_delivery_discipline_id))::NUMERIC, 0) >= 20)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_delivery_disciplines_is_visible_major
@@ -6289,7 +6396,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_delivery_disciplines_is_visible_major(p_delivery_discipline_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT client_visible FROM delivery_disciplines WHERE delivery_discipline_id = p_delivery_discipline_id), FALSE) AND calc_delivery_disciplines_is_major_discipline(p_delivery_discipline_id)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT client_visible FROM delivery_disciplines WHERE delivery_discipline_id = p_delivery_discipline_id), FALSE), FALSE) AND COALESCE(calc_delivery_disciplines_is_major_discipline(p_delivery_discipline_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_delivery_disciplines_discipline_tier
@@ -6309,7 +6416,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_delivery_disciplines_is_client_headline(p_delivery_discipline_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_delivery_disciplines_discipline_tier(p_delivery_discipline_id) = 'major')::boolean;
+  SELECT (COALESCE(calc_delivery_disciplines_discipline_tier(p_delivery_discipline_id), '') = 'major')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_delivery_disciplines_discipline_label
@@ -6446,7 +6553,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_packages_story_count(p_erb_package_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_erb_features_story_count(erb_feature_id))::numeric), 0) FROM erb_features WHERE erb_package = p_erb_package_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COUNT(*) FROM user_stories WHERE feature = NULLIF(erb_r1.erb_feature_id, '')))::numeric))::numeric)::numeric), 0) FROM erb_features erb_r1 WHERE erb_package = p_erb_package_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_packages_done_story_count
@@ -6456,7 +6563,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_packages_done_story_count(p_erb_package_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_erb_features_done_story_count(erb_feature_id))::numeric), 0) FROM erb_features WHERE erb_package = p_erb_package_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COALESCE(SUM((calc_user_stories_done_flag(user_story_id))::numeric), 0) FROM user_stories WHERE feature = erb_r1.erb_feature_id))::numeric))::numeric)::numeric), 0) FROM erb_features erb_r1 WHERE erb_package = p_erb_package_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_packages_is_priced_package
@@ -6466,7 +6573,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_packages_is_priced_package(p_erb_package_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((COALESCE(calc_erb_packages_phase_is_priced(p_erb_package_id), FALSE) = 'true') AND (calc_erb_packages_story_count(p_erb_package_id))::NUMERIC > 0));
+  SELECT ((COALESCE((COALESCE(calc_erb_packages_phase_is_priced(p_erb_package_id), FALSE) = 'true'), FALSE) AND COALESCE(COALESCE((calc_erb_packages_story_count(p_erb_package_id))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_packages_done_percent
@@ -6476,7 +6583,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_packages_done_percent(p_erb_package_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_erb_packages_story_count(p_erb_package_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_erb_packages_done_story_count(p_erb_package_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_erb_packages_story_count(p_erb_package_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_erb_packages_done_story_count(p_erb_package_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_packages_avg_feature_done_percent
@@ -6486,7 +6593,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_packages_avg_feature_done_percent(p_erb_package_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(AVG((calc_erb_features_done_percent(erb_feature_id))::numeric), 0) FROM erb_features WHERE erb_package = p_erb_package_id))::numeric;
+  SELECT ((SELECT COALESCE(AVG((((WITH __erb_dedup_v1 AS (SELECT calc_erb_features_story_count(erb_r1.erb_feature_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_erb_features_done_story_count(erb_r1.erb_feature_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric))::numeric)::numeric), 0) FROM erb_features erb_r1 WHERE erb_package = p_erb_package_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_packages_is_complete
@@ -6496,7 +6603,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_packages_is_complete(p_erb_package_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_erb_packages_done_percent(p_erb_package_id))::NUMERIC = 100)::boolean;
+  SELECT (COALESCE((calc_erb_packages_done_percent(p_erb_package_id))::NUMERIC, 0) = 100)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_packages_package_state
@@ -6506,7 +6613,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_packages_package_state(p_erb_package_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (calc_erb_packages_done_percent(p_erb_package_id))::NUMERIC = 100 THEN ('complete')::text ELSE (CASE WHEN (COALESCE(calc_erb_packages_avg_feature_done_percent(p_erb_package_id), 0))::NUMERIC > 0 THEN ('in-progress')::text ELSE ('planned')::text END)::text END)::text;
+  SELECT (CASE WHEN COALESCE((calc_erb_packages_done_percent(p_erb_package_id))::NUMERIC, 0) = 100 THEN ('complete')::text ELSE (CASE WHEN COALESCE((COALESCE(calc_erb_packages_avg_feature_done_percent(p_erb_package_id), 0))::NUMERIC, 0) > 0 THEN ('in-progress')::text ELSE ('planned')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_feature_categories_package_title
@@ -6568,7 +6675,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_feature_categories_has_stories(p_erb_feature_category_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_erb_feature_categories_story_count(p_erb_feature_category_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_erb_feature_categories_story_count(p_erb_feature_category_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_feature_categories_feature_done_story_count
@@ -6578,7 +6685,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_feature_categories_feature_done_story_count(p_erb_feature_category_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_erb_features_done_story_count(erb_feature_id))::numeric), 0) FROM erb_features WHERE category = p_erb_feature_category_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT ((SELECT COALESCE(SUM((calc_user_stories_done_flag(user_story_id))::numeric), 0) FROM user_stories WHERE feature = erb_r1.erb_feature_id))::numeric))::numeric)::numeric), 0) FROM erb_features erb_r1 WHERE category = p_erb_feature_category_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_feature_categories_share_of_package_features
@@ -6588,7 +6695,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_feature_categories_share_of_package_features(p_erb_feature_category_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_erb_feature_categories_package_feature_count(p_erb_feature_category_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_erb_feature_categories_feature_count(p_erb_feature_category_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_erb_feature_categories_package_feature_count(p_erb_feature_category_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_erb_feature_categories_feature_count(p_erb_feature_category_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_feature_categories_done_percent
@@ -6598,7 +6705,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_feature_categories_done_percent(p_erb_feature_category_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_erb_feature_categories_story_count(p_erb_feature_category_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_erb_feature_categories_feature_done_story_count(p_erb_feature_category_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_erb_feature_categories_story_count(p_erb_feature_category_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_erb_feature_categories_feature_done_story_count(p_erb_feature_category_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_feature_categories_avg_story_progress
@@ -6608,7 +6715,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_feature_categories_avg_story_progress(p_erb_feature_category_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(AVG((calc_user_stories_derived_progress_percent(user_story_id))::numeric), 0) FROM user_stories WHERE epic = p_erb_feature_category_id))::numeric;
+  SELECT ((SELECT COALESCE(AVG((((SELECT (CASE WHEN calc_user_stories_has_criteria(erb_r1.user_story_id) THEN (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_met_criterion_count(erb_r1.user_story_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_criterion_count(erb_r1.user_story_id)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text ELSE (erb_r1.dev_progress_percent)::text END)::numeric))::numeric)::numeric), 0) FROM user_stories erb_r1 WHERE epic = p_erb_feature_category_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_feature_categories_epic_state
@@ -6618,7 +6725,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_feature_categories_epic_state(p_erb_feature_category_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN (calc_erb_feature_categories_done_percent(p_erb_feature_category_id))::NUMERIC = 100 THEN ('complete')::text ELSE (CASE WHEN (COALESCE(calc_erb_feature_categories_avg_story_progress(p_erb_feature_category_id), 0))::NUMERIC > 0 THEN ('in-progress')::text ELSE ('planned')::text END)::text END)::text;
+  SELECT (CASE WHEN COALESCE((calc_erb_feature_categories_done_percent(p_erb_feature_category_id))::NUMERIC, 0) = 100 THEN ('complete')::text ELSE (CASE WHEN COALESCE((COALESCE(calc_erb_feature_categories_avg_story_progress(p_erb_feature_category_id), 0))::NUMERIC, 0) > 0 THEN ('in-progress')::text ELSE ('planned')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_features_category_title
@@ -6699,7 +6806,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_features_done_story_count(p_erb_feature_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_user_stories_done_flag(user_story_id))::numeric), 0) FROM user_stories WHERE feature = p_erb_feature_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.status, ''), '') = 'done' THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM user_stories erb_r1 WHERE feature = p_erb_feature_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_features_has_stories
@@ -6709,7 +6816,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_features_has_stories(p_erb_feature_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_erb_features_story_count(p_erb_feature_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_erb_features_story_count(p_erb_feature_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_features_done_percent
@@ -6719,7 +6826,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_features_done_percent(p_erb_feature_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_erb_features_story_count(p_erb_feature_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_erb_features_done_story_count(p_erb_feature_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_erb_features_story_count(p_erb_feature_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_erb_features_done_story_count(p_erb_feature_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_features_share_of_epic_stories
@@ -6729,7 +6836,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_features_share_of_epic_stories(p_erb_feature_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_erb_features_category_story_count(p_erb_feature_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_erb_features_story_count(p_erb_feature_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_erb_features_category_story_count(p_erb_feature_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_erb_features_story_count(p_erb_feature_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_features_avg_story_progress
@@ -6739,7 +6846,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_features_avg_story_progress(p_erb_feature_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(AVG((calc_user_stories_derived_progress_percent(user_story_id))::numeric), 0) FROM user_stories WHERE feature = p_erb_feature_id))::numeric;
+  SELECT ((SELECT COALESCE(AVG((((SELECT (CASE WHEN calc_user_stories_has_criteria(erb_r1.user_story_id) THEN (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_met_criterion_count(erb_r1.user_story_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_criterion_count(erb_r1.user_story_id)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text ELSE (erb_r1.dev_progress_percent)::text END)::numeric))::numeric)::numeric), 0) FROM user_stories erb_r1 WHERE feature = p_erb_feature_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_features_is_complete
@@ -6749,7 +6856,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_features_is_complete(p_erb_feature_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_erb_features_done_percent(p_erb_feature_id))::NUMERIC = 100)::boolean;
+  SELECT (COALESCE((calc_erb_features_done_percent(p_erb_feature_id))::NUMERIC, 0) = 100)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_erb_features_feature_state
@@ -6759,7 +6866,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_erb_features_feature_state(p_erb_feature_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_erb_features_is_complete(p_erb_feature_id) THEN ('complete')::text ELSE (CASE WHEN (COALESCE(calc_erb_features_avg_story_progress(p_erb_feature_id), 0))::NUMERIC > 0 THEN ('in-progress')::text ELSE ('planned')::text END)::text END)::text;
+  SELECT (CASE WHEN calc_erb_features_is_complete(p_erb_feature_id) THEN ('complete')::text ELSE (CASE WHEN COALESCE((COALESCE(calc_erb_features_avg_story_progress(p_erb_feature_id), 0))::NUMERIC, 0) > 0 THEN ('in-progress')::text ELSE ('planned')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_user_stories_effort_weight
@@ -6867,7 +6974,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_user_stories_is_done(p_user_story_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(status, '') FROM user_stories WHERE user_story_id = p_user_story_id) = 'done')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(status, '') FROM user_stories WHERE user_story_id = p_user_story_id), '') = 'done')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_user_stories_done_flag
@@ -6877,7 +6984,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_user_stories_done_flag(p_user_story_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(status, '') FROM user_stories WHERE user_story_id = p_user_story_id) = 'done' THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(status, '') FROM user_stories WHERE user_story_id = p_user_story_id), '') = 'done' THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_user_stories_met_criterion_count
@@ -6887,7 +6994,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_user_stories_met_criterion_count(p_user_story_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_acceptance_criteria_met_flag(acceptance_criterion_id))::numeric), 0) FROM acceptance_criteria WHERE user_story = p_user_story_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(erb_r1.is_met, FALSE) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM acceptance_criteria erb_r1 WHERE user_story = p_user_story_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_user_stories_has_criteria
@@ -6897,7 +7004,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_user_stories_has_criteria(p_user_story_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_user_stories_criterion_count(p_user_story_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_user_stories_criterion_count(p_user_story_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_user_stories_weighted_done
@@ -6907,7 +7014,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_user_stories_weighted_done(p_user_story_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_done_flag(p_user_story_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_effort_weight(p_user_story_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_done_flag(p_user_story_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_effort_weight(p_user_story_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_user_stories_derived_progress_percent
@@ -6917,7 +7024,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_user_stories_derived_progress_percent(p_user_story_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_user_stories_has_criteria(p_user_story_id) THEN (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_met_criterion_count(p_user_story_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_criterion_count(p_user_story_id)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text ELSE ((SELECT dev_progress_percent FROM user_stories WHERE user_story_id = p_user_story_id))::text END)::numeric;
+  SELECT (CASE WHEN calc_user_stories_has_criteria(p_user_story_id) THEN (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_met_criterion_count(p_user_story_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_criterion_count(p_user_story_id)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text ELSE ((SELECT dev_progress_percent FROM user_stories WHERE user_story_id = p_user_story_id))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_user_stories_is_acceptance_complete
@@ -6927,7 +7034,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_user_stories_is_acceptance_complete(p_user_story_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_user_stories_has_criteria(p_user_story_id) AND calc_user_stories_met_criterion_count(p_user_story_id) = calc_user_stories_criterion_count(p_user_story_id)))::boolean;
+  SELECT ((COALESCE(calc_user_stories_has_criteria(p_user_story_id), FALSE) AND COALESCE(COALESCE(calc_user_stories_met_criterion_count(p_user_story_id), 0) = COALESCE(calc_user_stories_criterion_count(p_user_story_id), 0), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_user_stories_has_status_drift
@@ -6937,7 +7044,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_user_stories_has_status_drift(p_user_story_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_user_stories_is_done(p_user_story_id) AND calc_user_stories_met_criterion_count(p_user_story_id) <> calc_user_stories_criterion_count(p_user_story_id)))::boolean;
+  SELECT ((COALESCE(calc_user_stories_is_done(p_user_story_id), FALSE) AND COALESCE(COALESCE(calc_user_stories_met_criterion_count(p_user_story_id), 0) <> COALESCE(calc_user_stories_criterion_count(p_user_story_id), 0), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_user_stories_weighted_progress
@@ -6947,7 +7054,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_user_stories_weighted_progress(p_user_story_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_derived_progress_percent(p_user_story_id)) AS v) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (COALESCE(calc_user_stories_effort_weight(p_user_story_id), 0)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_user_stories_derived_progress_percent(p_user_story_id)) AS v OFFSET 0) __safe_numeric), 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (COALESCE(calc_user_stories_effort_weight(p_user_story_id), 0)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_user_stories_progress_state
@@ -6957,7 +7064,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_user_stories_progress_state(p_user_story_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_user_stories_has_status_drift(p_user_story_id) THEN ('drift')::text ELSE (CASE WHEN calc_user_stories_is_acceptance_complete(p_user_story_id) THEN ('accepted')::text ELSE (CASE WHEN (calc_user_stories_derived_progress_percent(p_user_story_id))::NUMERIC > 0 THEN ('in-flight')::text ELSE ('not-started')::text END)::text END)::text END)::text;
+  SELECT (CASE WHEN calc_user_stories_has_status_drift(p_user_story_id) THEN ('drift')::text ELSE (CASE WHEN calc_user_stories_is_acceptance_complete(p_user_story_id) THEN ('accepted')::text ELSE (CASE WHEN COALESCE((calc_user_stories_derived_progress_percent(p_user_story_id))::NUMERIC, 0) > 0 THEN ('in-flight')::text ELSE ('not-started')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_user_stories_priority_band
@@ -6967,7 +7074,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_user_stories_priority_band(p_user_story_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_user_stories_progress_state(p_user_story_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) = 'drift' THEN ('fix-first')::text ELSE (CASE WHEN (SELECT val FROM __erb_dedup_v1) = 'in-flight' THEN ('continue')::text ELSE ('queue')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_user_stories_progress_state(p_user_story_id) AS val) SELECT (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'drift' THEN ('fix-first')::text ELSE (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'in-flight' THEN ('continue')::text ELSE ('queue')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_user_stories_report_label
@@ -7062,7 +7169,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_acceptance_criteria_is_inconsistent_with_story(p_acceptance_criterion_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((COALESCE(calc_acceptance_criteria_story_is_done(p_acceptance_criterion_id), FALSE) = 'true') AND NOT (COALESCE((SELECT is_met FROM acceptance_criteria WHERE acceptance_criterion_id = p_acceptance_criterion_id), FALSE))))::boolean;
+  SELECT ((COALESCE((COALESCE(calc_acceptance_criteria_story_is_done(p_acceptance_criterion_id), FALSE) = 'true'), FALSE) AND COALESCE(NOT (COALESCE(COALESCE((SELECT is_met FROM acceptance_criteria WHERE acceptance_criterion_id = p_acceptance_criterion_id), FALSE), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_acceptance_criteria_share_of_story
@@ -7072,7 +7179,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_acceptance_criteria_share_of_story(p_acceptance_criterion_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_acceptance_criteria_story_criterion_count(p_acceptance_criterion_id) AS val) SELECT (CASE WHEN (COALESCE((SELECT val FROM __erb_dedup_v1), 0))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_acceptance_criteria_story_criterion_count(p_acceptance_criterion_id) AS val) SELECT (CASE WHEN COALESCE((COALESCE((SELECT val FROM __erb_dedup_v1), 0))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_acceptance_criteria_criterion_state
@@ -7092,7 +7199,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_acceptance_criteria_needs_review(p_acceptance_criterion_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_acceptance_criteria_criterion_state(p_acceptance_criterion_id) = 'contradicts-story')::boolean;
+  SELECT (COALESCE(calc_acceptance_criteria_criterion_state(p_acceptance_criterion_id), '') = 'contradicts-story')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_acceptance_criteria_story_is_ahead_of_criterion
@@ -7102,7 +7209,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_acceptance_criteria_story_is_ahead_of_criterion(p_acceptance_criterion_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((NOT (COALESCE((SELECT is_met FROM acceptance_criteria WHERE acceptance_criterion_id = p_acceptance_criterion_id), FALSE)) AND (COALESCE(calc_acceptance_criteria_story_derived_progress(p_acceptance_criterion_id), 0))::NUMERIC >= 50));
+  SELECT ((COALESCE(NOT (COALESCE(COALESCE((SELECT is_met FROM acceptance_criteria WHERE acceptance_criterion_id = p_acceptance_criterion_id), FALSE), FALSE)), FALSE) AND COALESCE(COALESCE((COALESCE(calc_acceptance_criteria_story_derived_progress(p_acceptance_criterion_id), 0))::NUMERIC, 0) >= 50, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_rules_name
@@ -7132,7 +7239,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_rules_is_critical(p_consistency_rule_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(severity, '') FROM consistency_rules WHERE consistency_rule_id = p_consistency_rule_id) = 'critical')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(severity, '') FROM consistency_rules WHERE consistency_rule_id = p_consistency_rule_id), '') = 'critical')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_rules_is_repo_scope
@@ -7142,7 +7249,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_rules_is_repo_scope(p_consistency_rule_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(scope, '') FROM consistency_rules WHERE consistency_rule_id = p_consistency_rule_id) <> 'demo')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(scope, '') FROM consistency_rules WHERE consistency_rule_id = p_consistency_rule_id), '') <> 'demo')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_rules_open_finding_count
@@ -7152,7 +7259,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_rules_open_finding_count(p_consistency_rule_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_consistency_findings_open_flag(consistency_finding_id))::numeric), 0) FROM consistency_findings WHERE rule = p_consistency_rule_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.status, ''), '') = 'open' THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM consistency_findings erb_r1 WHERE rule = p_consistency_rule_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_rules_has_findings
@@ -7162,7 +7269,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_rules_has_findings(p_consistency_rule_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_consistency_rules_finding_count(p_consistency_rule_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_consistency_rules_finding_count(p_consistency_rule_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_rules_is_satisfied
@@ -7172,7 +7279,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_rules_is_satisfied(p_consistency_rule_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_consistency_rules_open_finding_count(p_consistency_rule_id))::NUMERIC = 0)::boolean;
+  SELECT (COALESCE((calc_consistency_rules_open_finding_count(p_consistency_rule_id))::NUMERIC, 0) = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_rules_satisfied_flag
@@ -7182,7 +7289,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_rules_satisfied_flag(p_consistency_rule_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_consistency_rules_open_finding_count(p_consistency_rule_id))::NUMERIC = 0 THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((calc_consistency_rules_open_finding_count(p_consistency_rule_id))::NUMERIC, 0) = 0 THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_rules_accepted_or_fixed_count
@@ -7192,7 +7299,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_rules_accepted_or_fixed_count(p_consistency_rule_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_consistency_rules_finding_count(p_consistency_rule_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_consistency_rules_open_finding_count(p_consistency_rule_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_consistency_rules_finding_count(p_consistency_rule_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_consistency_rules_open_finding_count(p_consistency_rule_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_rules_open_critical_flag
@@ -7202,7 +7309,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_rules_open_critical_flag(p_consistency_rule_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_consistency_rules_is_critical(p_consistency_rule_id) AND (calc_consistency_rules_open_finding_count(p_consistency_rule_id))::NUMERIC > 0) THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(calc_consistency_rules_is_critical(p_consistency_rule_id), FALSE) AND COALESCE(COALESCE((calc_consistency_rules_open_finding_count(p_consistency_rule_id))::NUMERIC, 0) > 0, FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_rules_rule_state
@@ -7212,7 +7319,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_rules_rule_state(p_consistency_rule_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_consistency_rules_is_satisfied(p_consistency_rule_id) THEN ('satisfied')::text ELSE (CASE WHEN (calc_consistency_rules_open_critical_flag(p_consistency_rule_id))::NUMERIC = 1 THEN ('critical-open')::text ELSE ('open')::text END)::text END)::text;
+  SELECT (CASE WHEN calc_consistency_rules_is_satisfied(p_consistency_rule_id) THEN ('satisfied')::text ELSE (CASE WHEN COALESCE((calc_consistency_rules_open_critical_flag(p_consistency_rule_id))::NUMERIC, 0) = 1 THEN ('critical-open')::text ELSE ('open')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_rules_resolution_percent
@@ -7222,7 +7329,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_rules_resolution_percent(p_consistency_rule_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_consistency_rules_finding_count(p_consistency_rule_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (100)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_consistency_rules_accepted_or_fixed_count(p_consistency_rule_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_consistency_rules_finding_count(p_consistency_rule_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (100)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_consistency_rules_accepted_or_fixed_count(p_consistency_rule_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_rules_rule_label
@@ -7242,7 +7349,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_rules_is_sweep_priority(p_consistency_rule_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_consistency_rules_rule_state(p_consistency_rule_id) <> 'satisfied' AND (calc_consistency_rules_resolution_percent(p_consistency_rule_id))::NUMERIC < 50));
+  SELECT ((COALESCE(COALESCE(calc_consistency_rules_rule_state(p_consistency_rule_id), '') <> 'satisfied', FALSE) AND COALESCE(COALESCE((calc_consistency_rules_resolution_percent(p_consistency_rule_id))::NUMERIC, 0) < 50, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_findings_rule_severity
@@ -7372,7 +7479,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_findings_is_open(p_consistency_finding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(status, '') FROM consistency_findings WHERE consistency_finding_id = p_consistency_finding_id) = 'open')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(status, '') FROM consistency_findings WHERE consistency_finding_id = p_consistency_finding_id), '') = 'open')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_findings_open_flag
@@ -7382,7 +7489,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_findings_open_flag(p_consistency_finding_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(status, '') FROM consistency_findings WHERE consistency_finding_id = p_consistency_finding_id) = 'open' THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(status, '') FROM consistency_findings WHERE consistency_finding_id = p_consistency_finding_id), '') = 'open' THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_findings_is_repo_scope
@@ -7392,7 +7499,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_findings_is_repo_scope(p_consistency_finding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(domain, '') FROM consistency_findings WHERE consistency_finding_id = p_consistency_finding_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(domain, '') FROM consistency_findings WHERE consistency_finding_id = p_consistency_finding_id)) IS NULL OR ((SELECT NULLIF(domain, '') FROM consistency_findings WHERE consistency_finding_id = p_consistency_finding_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_findings_is_open_critical
@@ -7402,7 +7509,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_findings_is_open_critical(p_consistency_finding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_consistency_findings_is_open(p_consistency_finding_id) AND calc_consistency_findings_rule_severity(p_consistency_finding_id) = 'critical'))::boolean;
+  SELECT ((COALESCE(calc_consistency_findings_is_open(p_consistency_finding_id), FALSE) AND COALESCE(COALESCE(calc_consistency_findings_rule_severity(p_consistency_finding_id), '') = 'critical', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_findings_is_hand_closable
@@ -7412,7 +7519,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_findings_is_hand_closable(p_consistency_finding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_consistency_findings_is_open(p_consistency_finding_id) AND NOT (calc_consistency_findings_rule_is_scanner_derived(p_consistency_finding_id))))::boolean;
+  SELECT ((COALESCE(calc_consistency_findings_is_open(p_consistency_finding_id), FALSE) AND COALESCE(NOT (COALESCE(calc_consistency_findings_rule_is_scanner_derived(p_consistency_finding_id), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_findings_is_sole_finding_on_domain
@@ -7422,7 +7529,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_findings_is_sole_finding_on_domain(p_consistency_finding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_consistency_findings_domain_finding_count(p_consistency_finding_id), 0))::NUMERIC = 1)::boolean;
+  SELECT (COALESCE((COALESCE(calc_consistency_findings_domain_finding_count(p_consistency_finding_id), 0))::NUMERIC, 0) = 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_findings_is_sole_blocker
@@ -7432,7 +7539,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_findings_is_sole_blocker(p_consistency_finding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_consistency_findings_is_open(p_consistency_finding_id) AND (COALESCE(calc_consistency_findings_domain_open_finding_count(p_consistency_finding_id), 0))::NUMERIC = 1));
+  SELECT ((COALESCE(calc_consistency_findings_is_open(p_consistency_finding_id), FALSE) AND COALESCE(COALESCE((COALESCE(calc_consistency_findings_domain_open_finding_count(p_consistency_finding_id), 0))::NUMERIC, 0) = 1, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_consistency_findings_priority
@@ -7452,7 +7559,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_consistency_findings_is_last_mile(p_consistency_finding_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_consistency_findings_is_sole_blocker(p_consistency_finding_id) AND COALESCE(calc_consistency_findings_domain_grade(p_consistency_finding_id), '') = 'minor'))::boolean;
+  SELECT ((COALESCE(calc_consistency_findings_is_sole_blocker(p_consistency_finding_id), FALSE) AND COALESCE(COALESCE(COALESCE(calc_consistency_findings_domain_grade(p_consistency_finding_id), ''), '') = 'minor', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_mobile_routes_path
@@ -7555,7 +7662,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_nav_tabs_has_routes(p_mobile_nav_tab_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_mobile_nav_tabs_route_count(p_mobile_nav_tab_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_mobile_nav_tabs_route_count(p_mobile_nav_tab_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_nav_tabs_build_coverage_percent
@@ -7565,7 +7672,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_nav_tabs_build_coverage_percent(p_mobile_nav_tab_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_mobile_nav_tabs_route_count(p_mobile_nav_tab_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_mobile_nav_tabs_unbuilt_route_count(p_mobile_nav_tab_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_mobile_nav_tabs_route_count(p_mobile_nav_tab_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_mobile_nav_tabs_unbuilt_route_count(p_mobile_nav_tab_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_nav_tabs_is_plan_only
@@ -7575,7 +7682,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_nav_tabs_is_plan_only(p_mobile_nav_tab_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_mobile_nav_tabs_has_routes(p_mobile_nav_tab_id) AND calc_mobile_nav_tabs_unbuilt_route_count(p_mobile_nav_tab_id) = calc_mobile_nav_tabs_route_count(p_mobile_nav_tab_id)))::boolean;
+  SELECT ((COALESCE(calc_mobile_nav_tabs_has_routes(p_mobile_nav_tab_id), FALSE) AND COALESCE(COALESCE(calc_mobile_nav_tabs_unbuilt_route_count(p_mobile_nav_tab_id), 0) = COALESCE(calc_mobile_nav_tabs_route_count(p_mobile_nav_tab_id), 0), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_nav_tabs_is_shippable
@@ -7585,7 +7692,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_nav_tabs_is_shippable(p_mobile_nav_tab_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_mobile_nav_tabs_build_coverage_percent(p_mobile_nav_tab_id))::NUMERIC = 100)::boolean;
+  SELECT (COALESCE((calc_mobile_nav_tabs_build_coverage_percent(p_mobile_nav_tab_id))::NUMERIC, 0) = 100)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_nav_tabs_shippable_flag
@@ -7595,7 +7702,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_nav_tabs_shippable_flag(p_mobile_nav_tab_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_mobile_nav_tabs_build_coverage_percent(p_mobile_nav_tab_id))::NUMERIC = 100 THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((calc_mobile_nav_tabs_build_coverage_percent(p_mobile_nav_tab_id))::NUMERIC, 0) = 100 THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_nav_tabs_tab_state
@@ -7680,7 +7787,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_routes_depth(p_mobile_route_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(path, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id) = '/' THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(path, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(path, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id), '/', ''))) AS v) __safe_numeric), 0)))::text END)::integer;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(path, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id), '') = '/' THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(path, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(path, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id), '/', ''))) AS v OFFSET 0) __safe_numeric), 0)))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_routes_is_detail
@@ -7690,7 +7797,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_routes_is_detail(p_mobile_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (LENGTH((SELECT NULLIF(path, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id)) <> LENGTH(REPLACE((SELECT NULLIF(path, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id), ':', '')))::boolean;
+  SELECT (COALESCE((LENGTH((SELECT NULLIF(path, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id)) <> LENGTH(REPLACE((SELECT NULLIF(path, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id), ':', ''))), NOT ((LENGTH((SELECT NULLIF(path, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id))) IS NULL AND (LENGTH(REPLACE((SELECT NULLIF(path, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id), ':', ''))) IS NULL)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_routes_has_screen
@@ -7700,7 +7807,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_routes_has_screen(p_mobile_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(screen, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(screen, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id)) IS NOT NULL AND ((SELECT NULLIF(screen, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_routes_unbuilt_flag
@@ -7710,7 +7817,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_routes_unbuilt_flag(p_mobile_route_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(screen, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id) IS NULL THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (((SELECT NULLIF(screen, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id)) IS NULL OR ((SELECT NULLIF(screen, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id))::text = '') THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_routes_child_route_count
@@ -7730,7 +7837,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_routes_entity_count(p_mobile_route_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(reads_entities, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id) IS NULL THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(reads_entities, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(reads_entities, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id), ',', ''))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT NULLIF(reads_entities, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id)) IS NULL OR ((SELECT NULLIF(reads_entities, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id))::text = '') THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(reads_entities, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(reads_entities, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id), ',', ''))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_routes_is_leaf_route
@@ -7740,7 +7847,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_routes_is_leaf_route(p_mobile_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_mobile_routes_child_route_count(p_mobile_route_id))::NUMERIC = 0)::boolean;
+  SELECT (COALESCE((calc_mobile_routes_child_route_count(p_mobile_route_id))::NUMERIC, 0) = 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_routes_is_depth_consistent
@@ -7750,7 +7857,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_routes_is_depth_consistent(p_mobile_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_mobile_routes_depth(p_mobile_route_id) AS val) SELECT (CASE WHEN (SELECT NULLIF(parent_route, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id) IS NULL THEN (((SELECT val FROM __erb_dedup_v1))::NUMERIC <= 1)::text ELSE ((SELECT val FROM __erb_dedup_v1) = (COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_mobile_routes_parent_depth(p_mobile_route_id)) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::text END)::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_mobile_routes_depth(p_mobile_route_id) AS val) SELECT (CASE WHEN (((SELECT NULLIF(parent_route, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id)) IS NULL OR ((SELECT NULLIF(parent_route, '') FROM mobile_routes WHERE mobile_route_id = p_mobile_route_id))::text = '') THEN (COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) <= 1)::text ELSE (COALESCE((SELECT val FROM __erb_dedup_v1), 0) = COALESCE((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_mobile_routes_parent_depth(p_mobile_route_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)), 0))::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_routes_share_of_tab
@@ -7760,7 +7867,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_routes_share_of_tab(p_mobile_route_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_mobile_routes_tab_route_count(p_mobile_route_id) AS val) SELECT (CASE WHEN (COALESCE((SELECT val FROM __erb_dedup_v1), 0))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_mobile_routes_tab_route_count(p_mobile_route_id) AS val) SELECT (CASE WHEN COALESCE((COALESCE((SELECT val FROM __erb_dedup_v1), 0))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_routes_route_state
@@ -7770,7 +7877,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_routes_route_state(p_mobile_route_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN NOT (calc_mobile_routes_is_depth_consistent(p_mobile_route_id)) THEN ('misparented')::text ELSE (CASE WHEN calc_mobile_routes_has_screen(p_mobile_route_id) THEN ('built')::text ELSE ('planned')::text END)::text END)::text;
+  SELECT (CASE WHEN NOT (COALESCE(calc_mobile_routes_is_depth_consistent(p_mobile_route_id), FALSE)) THEN ('misparented')::text ELSE (CASE WHEN calc_mobile_routes_has_screen(p_mobile_route_id) THEN ('built')::text ELSE ('planned')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_routes_is_on_shippable_tab
@@ -7780,7 +7887,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_mobile_routes_is_on_shippable_tab(p_mobile_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_mobile_routes_tab_coverage_percent(p_mobile_route_id), 0))::NUMERIC = 100)::boolean;
+  SELECT (COALESCE((COALESCE(calc_mobile_routes_tab_coverage_percent(p_mobile_route_id), 0))::NUMERIC, 0) = 100)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_mobile_routes_route_label
@@ -7854,7 +7961,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_skill_routes_is_orchestrator_route(p_skill_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(from_skill, '') FROM skill_routes WHERE skill_route_id = p_skill_route_id) = 'effortless-orchestrator')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(from_skill, '') FROM skill_routes WHERE skill_route_id = p_skill_route_id), '') = 'effortless-orchestrator')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_skill_routes_is_deprecated_target
@@ -7864,7 +7971,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_skill_routes_is_deprecated_target(p_skill_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_skill_routes_to_status(p_skill_route_id) = 'deprecated')::boolean;
+  SELECT (COALESCE(calc_skill_routes_to_status(p_skill_route_id), '') = 'deprecated')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_skill_routes_is_hub_edge
@@ -7874,7 +7981,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_skill_routes_is_hub_edge(p_skill_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_skill_routes_from_outbound_count(p_skill_route_id), 0))::NUMERIC >= 5)::boolean;
+  SELECT (COALESCE((COALESCE(calc_skill_routes_from_outbound_count(p_skill_route_id), 0))::NUMERIC, 0) >= 5)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_skill_routes_is_into_leaf
@@ -7884,7 +7991,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_skill_routes_is_into_leaf(p_skill_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE(calc_skill_routes_to_inbound_count(p_skill_route_id), 0))::NUMERIC = 1)::boolean;
+  SELECT (COALESCE((COALESCE(calc_skill_routes_to_inbound_count(p_skill_route_id), 0))::NUMERIC, 0) = 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_skill_routes_is_stale
@@ -7894,7 +8001,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_skill_routes_is_stale(p_skill_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_skill_routes_is_deprecated_target(p_skill_route_id) OR calc_skill_routes_from_status(p_skill_route_id) = 'deprecated'))::boolean;
+  SELECT ((COALESCE(calc_skill_routes_is_deprecated_target(p_skill_route_id), FALSE) OR COALESCE(COALESCE(calc_skill_routes_from_status(p_skill_route_id), '') = 'deprecated', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_skill_routes_edge_class
@@ -7944,7 +8051,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_layout_slots_present_count(p_project_layout_slot_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_project_slot_witnesses_present_flag(project_slot_witness_id))::numeric), 0) FROM project_slot_witnesses WHERE slot = p_project_layout_slot_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(erb_r1.is_present, FALSE) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM project_slot_witnesses erb_r1 WHERE slot = p_project_layout_slot_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_layout_slots_implementation_gap_count
@@ -7954,7 +8061,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_layout_slots_implementation_gap_count(p_project_layout_slot_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_project_slot_witnesses_implementation_gap_flag(project_slot_witness_id))::numeric), 0) FROM project_slot_witnesses WHERE slot = p_project_layout_slot_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((WITH __erb_dedup_v1 AS (SELECT calc_project_slot_witnesses_domain_kind(erb_r1.project_slot_witness_id) AS val) SELECT (CASE WHEN (COALESCE(NOT (COALESCE(COALESCE(erb_r1.is_present, FALSE), FALSE)), FALSE) AND COALESCE(NOT (COALESCE((COALESCE(calc_project_slot_witnesses_domain_is_exception(erb_r1.project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE) AND COALESCE((COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'root', FALSE) AND COALESCE((COALESCE(calc_project_slot_witnesses_slot_required_for_root(erb_r1.project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'root', FALSE) AND COALESCE((COALESCE(calc_project_slot_witnesses_slot_required_for_example(erb_r1.project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM project_slot_witnesses erb_r1 WHERE slot = p_project_layout_slot_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_layout_slots_coverage_percent
@@ -7964,7 +8071,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_layout_slots_coverage_percent(p_project_layout_slot_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_project_layout_slots_witness_count(p_project_layout_slot_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_project_layout_slots_present_count(p_project_layout_slot_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_project_layout_slots_witness_count(p_project_layout_slot_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_project_layout_slots_present_count(p_project_layout_slot_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_layout_slots_is_universally_filled
@@ -7974,7 +8081,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_layout_slots_is_universally_filled(p_project_layout_slot_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_project_layout_slots_coverage_percent(p_project_layout_slot_id))::NUMERIC = 100)::boolean;
+  SELECT (COALESCE((calc_project_layout_slots_coverage_percent(p_project_layout_slot_id))::NUMERIC, 0) = 100)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_layout_slots_slot_health
@@ -7984,7 +8091,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_layout_slots_slot_health(p_project_layout_slot_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_project_layout_slots_implementation_gap_count(p_project_layout_slot_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN ('clean')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC <= 3 THEN ('few-gaps')::text ELSE ('widespread')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_project_layout_slots_implementation_gap_count(p_project_layout_slot_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN ('clean')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) <= 3 THEN ('few-gaps')::text ELSE ('widespread')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_layout_slots_slot_label
@@ -8090,7 +8197,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_slot_witnesses_is_required_here(p_project_slot_witness_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_project_slot_witnesses_domain_kind(p_project_slot_witness_id) AS val) SELECT ((NOT ((COALESCE(calc_project_slot_witnesses_domain_is_exception(p_project_slot_witness_id), FALSE) = 'true')) AND (((SELECT val FROM __erb_dedup_v1) = 'root' AND (COALESCE(calc_project_slot_witnesses_slot_required_for_root(p_project_slot_witness_id), FALSE) = 'true')) OR ((SELECT val FROM __erb_dedup_v1) = 'example' AND (COALESCE(calc_project_slot_witnesses_slot_required_for_example(p_project_slot_witness_id), FALSE) = 'true')) OR ((SELECT val FROM __erb_dedup_v1) = 'toy' AND (COALESCE(calc_project_slot_witnesses_slot_required_for_toy(p_project_slot_witness_id), FALSE) = 'true')))))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_project_slot_witnesses_domain_kind(p_project_slot_witness_id) AS val) SELECT ((COALESCE(NOT (COALESCE((COALESCE(calc_project_slot_witnesses_domain_is_exception(p_project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE) AND COALESCE((COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'root', FALSE) AND COALESCE((COALESCE(calc_project_slot_witnesses_slot_required_for_root(p_project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'example', FALSE) AND COALESCE((COALESCE(calc_project_slot_witnesses_slot_required_for_example(p_project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'toy', FALSE) AND COALESCE((COALESCE(calc_project_slot_witnesses_slot_required_for_toy(p_project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_slot_witnesses_implementation_gap_flag
@@ -8100,7 +8207,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_slot_witnesses_implementation_gap_flag(p_project_slot_witness_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_project_slot_witnesses_domain_kind(p_project_slot_witness_id) AS val) SELECT (CASE WHEN (NOT (COALESCE((SELECT is_present FROM project_slot_witnesses WHERE project_slot_witness_id = p_project_slot_witness_id), FALSE)) AND NOT ((COALESCE(calc_project_slot_witnesses_domain_is_exception(p_project_slot_witness_id), FALSE) = 'true')) AND (((SELECT val FROM __erb_dedup_v1) = 'root' AND (COALESCE(calc_project_slot_witnesses_slot_required_for_root(p_project_slot_witness_id), FALSE) = 'true')) OR ((SELECT val FROM __erb_dedup_v1) <> 'root' AND (COALESCE(calc_project_slot_witnesses_slot_required_for_example(p_project_slot_witness_id), FALSE) = 'true')))) THEN (1)::text ELSE (0)::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_project_slot_witnesses_domain_kind(p_project_slot_witness_id) AS val) SELECT (CASE WHEN (COALESCE(NOT (COALESCE(COALESCE((SELECT is_present FROM project_slot_witnesses WHERE project_slot_witness_id = p_project_slot_witness_id), FALSE), FALSE)), FALSE) AND COALESCE(NOT (COALESCE((COALESCE(calc_project_slot_witnesses_domain_is_exception(p_project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE) AND COALESCE((COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = 'root', FALSE) AND COALESCE((COALESCE(calc_project_slot_witnesses_slot_required_for_root(p_project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') <> 'root', FALSE) AND COALESCE((COALESCE(calc_project_slot_witnesses_slot_required_for_example(p_project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE)), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_slot_witnesses_universal_gap_flag
@@ -8110,7 +8217,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_slot_witnesses_universal_gap_flag(p_project_slot_witness_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (NOT (COALESCE((SELECT is_present FROM project_slot_witnesses WHERE project_slot_witness_id = p_project_slot_witness_id), FALSE)) AND NOT ((COALESCE(calc_project_slot_witnesses_domain_is_exception(p_project_slot_witness_id), FALSE) = 'true')) AND (COALESCE(calc_project_slot_witnesses_slot_required_for_toy(p_project_slot_witness_id), FALSE) = 'true')) THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(NOT (COALESCE(COALESCE((SELECT is_present FROM project_slot_witnesses WHERE project_slot_witness_id = p_project_slot_witness_id), FALSE), FALSE)), FALSE) AND COALESCE(NOT (COALESCE((COALESCE(calc_project_slot_witnesses_domain_is_exception(p_project_slot_witness_id), FALSE) = 'true'), FALSE)), FALSE) AND COALESCE((COALESCE(calc_project_slot_witnesses_slot_required_for_toy(p_project_slot_witness_id), FALSE) = 'true'), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_slot_witnesses_is_gap
@@ -8120,7 +8227,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_slot_witnesses_is_gap(p_project_slot_witness_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((NOT (COALESCE((SELECT is_present FROM project_slot_witnesses WHERE project_slot_witness_id = p_project_slot_witness_id), FALSE)) AND calc_project_slot_witnesses_is_required_here(p_project_slot_witness_id)))::boolean;
+  SELECT ((COALESCE(NOT (COALESCE(COALESCE((SELECT is_present FROM project_slot_witnesses WHERE project_slot_witness_id = p_project_slot_witness_id), FALSE), FALSE)), FALSE) AND COALESCE(calc_project_slot_witnesses_is_required_here(p_project_slot_witness_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_slot_witnesses_gap_flag
@@ -8130,7 +8237,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_slot_witnesses_gap_flag(p_project_slot_witness_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (NOT (COALESCE((SELECT is_present FROM project_slot_witnesses WHERE project_slot_witness_id = p_project_slot_witness_id), FALSE)) AND calc_project_slot_witnesses_is_required_here(p_project_slot_witness_id)) THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(NOT (COALESCE(COALESCE((SELECT is_present FROM project_slot_witnesses WHERE project_slot_witness_id = p_project_slot_witness_id), FALSE), FALSE)), FALSE) AND COALESCE(calc_project_slot_witnesses_is_required_here(p_project_slot_witness_id), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_slot_witnesses_required_here_flag
@@ -8150,7 +8257,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_slot_witnesses_required_present_flag(p_project_slot_witness_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (COALESCE((SELECT is_present FROM project_slot_witnesses WHERE project_slot_witness_id = p_project_slot_witness_id), FALSE) AND calc_project_slot_witnesses_is_required_here(p_project_slot_witness_id)) THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(COALESCE((SELECT is_present FROM project_slot_witnesses WHERE project_slot_witness_id = p_project_slot_witness_id), FALSE), FALSE) AND COALESCE(calc_project_slot_witnesses_is_required_here(p_project_slot_witness_id), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_slot_witnesses_witness_state
@@ -8170,7 +8277,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_slot_witnesses_is_blocking_gap(p_project_slot_witness_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_project_slot_witnesses_witness_state(p_project_slot_witness_id) = 'gap')::boolean;
+  SELECT (COALESCE(calc_project_slot_witnesses_witness_state(p_project_slot_witness_id), '') = 'gap')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_cmcc_summary_description_length
@@ -8190,7 +8297,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_cmcc_summary_is_substantive(p_cmcc_summary_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_cmcc_summary_description_length(p_cmcc_summary_id))::NUMERIC >= 200)::boolean;
+  SELECT (COALESCE((calc_cmcc_summary_description_length(p_cmcc_summary_id))::NUMERIC, 0) >= 200)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_cmcc_summary_narrative_state
@@ -8210,7 +8317,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_cmcc_summary_is_ready(p_cmcc_summary_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_cmcc_summary_narrative_state(p_cmcc_summary_id) = 'ready')::boolean;
+  SELECT (COALESCE(calc_cmcc_summary_narrative_state(p_cmcc_summary_id), '') = 'ready')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_cmcc_summary_section_label
@@ -8240,7 +8347,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_goal_is_substantive(p_project_goal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_project_goal_description_length(p_project_goal_id))::NUMERIC >= 200)::boolean;
+  SELECT (COALESCE((calc_project_goal_description_length(p_project_goal_id))::NUMERIC, 0) >= 200)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_goal_narrative_state
@@ -8260,7 +8367,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_goal_is_ready(p_project_goal_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_project_goal_narrative_state(p_project_goal_id) = 'ready')::boolean;
+  SELECT (COALESCE(calc_project_goal_narrative_state(p_project_goal_id), '') = 'ready')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_goal_section_label
@@ -8290,7 +8397,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_architectural_highlight_is_substantive(p_architectural_highlight_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_architectural_highlight_description_length(p_architectural_highlight_id))::NUMERIC >= 200)::boolean;
+  SELECT (COALESCE((calc_architectural_highlight_description_length(p_architectural_highlight_id))::NUMERIC, 0) >= 200)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_architectural_highlight_narrative_state
@@ -8310,7 +8417,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_architectural_highlight_is_ready(p_architectural_highlight_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_architectural_highlight_narrative_state(p_architectural_highlight_id) = 'ready')::boolean;
+  SELECT (COALESCE(calc_architectural_highlight_narrative_state(p_architectural_highlight_id), '') = 'ready')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_architectural_highlight_section_label
@@ -8435,7 +8542,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_substrates_is_fully_expressive(p_substrate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(expressive_completeness, '') FROM execution_substrates WHERE substrate_id = p_substrate_id) = 'full')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(expressive_completeness, '') FROM execution_substrates WHERE substrate_id = p_substrate_id), '') = 'full')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_substrates_fully_expressive_flag
@@ -8445,7 +8552,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_substrates_fully_expressive_flag(p_substrate_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(expressive_completeness, '') FROM execution_substrates WHERE substrate_id = p_substrate_id) = 'full' THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(expressive_completeness, '') FROM execution_substrates WHERE substrate_id = p_substrate_id), '') = 'full' THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_substrates_is_reference_quality
@@ -8455,7 +8562,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_substrates_is_reference_quality(p_substrate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(maturity, '') FROM execution_substrates WHERE substrate_id = p_substrate_id) = 'reference-quality')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(maturity, '') FROM execution_substrates WHERE substrate_id = p_substrate_id), '') = 'reference-quality')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_substrates_tradeoff_count
@@ -8495,7 +8602,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_substrates_is_peer_complete(p_substrate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_execution_substrates_is_fully_expressive(p_substrate_id) AND COALESCE((SELECT can_be_answer_key FROM execution_substrates WHERE substrate_id = p_substrate_id), FALSE)))::boolean;
+  SELECT ((COALESCE(calc_execution_substrates_is_fully_expressive(p_substrate_id), FALSE) AND COALESCE(COALESCE((SELECT can_be_answer_key FROM execution_substrates WHERE substrate_id = p_substrate_id), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_substrates_peer_complete_flag
@@ -8505,7 +8612,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_substrates_peer_complete_flag(p_substrate_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_execution_substrates_is_fully_expressive(p_substrate_id) AND COALESCE((SELECT can_be_answer_key FROM execution_substrates WHERE substrate_id = p_substrate_id), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN (COALESCE(calc_execution_substrates_is_fully_expressive(p_substrate_id), FALSE) AND COALESCE(COALESCE((SELECT can_be_answer_key FROM execution_substrates WHERE substrate_id = p_substrate_id), FALSE), FALSE)) THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_substrates_has_proxy_route
@@ -8515,7 +8622,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_substrates_has_proxy_route(p_substrate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_execution_substrates_proxy_route_count(p_substrate_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_execution_substrates_proxy_route_count(p_substrate_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_substrates_is_cataloged
@@ -8525,7 +8632,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_substrates_is_cataloged(p_substrate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_execution_substrates_catalog_tool_count(p_substrate_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_execution_substrates_catalog_tool_count(p_substrate_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_substrates_is_bus_reachable_peer
@@ -8535,7 +8642,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_substrates_is_bus_reachable_peer(p_substrate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_execution_substrates_is_peer_complete(p_substrate_id) AND calc_execution_substrates_has_proxy_route(p_substrate_id)))::boolean;
+  SELECT ((COALESCE(calc_execution_substrates_is_peer_complete(p_substrate_id), FALSE) AND COALESCE(calc_execution_substrates_has_proxy_route(p_substrate_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_substrates_is_installable_peer
@@ -8545,7 +8652,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_substrates_is_installable_peer(p_substrate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_execution_substrates_is_peer_complete(p_substrate_id) AND calc_execution_substrates_is_cataloged(p_substrate_id)))::boolean;
+  SELECT ((COALESCE(calc_execution_substrates_is_peer_complete(p_substrate_id), FALSE) AND COALESCE(calc_execution_substrates_is_cataloged(p_substrate_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_substrates_readiness_score
@@ -8555,7 +8662,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_substrates_readiness_score(p_substrate_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_execution_substrates_is_peer_complete(p_substrate_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_execution_substrates_has_proxy_route(p_substrate_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_execution_substrates_is_cataloged(p_substrate_id) THEN (1)::text ELSE (0)::text END) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_execution_substrates_is_peer_complete(p_substrate_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_execution_substrates_has_proxy_route(p_substrate_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_execution_substrates_is_cataloged(p_substrate_id) THEN (1)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_substrates_readiness_band
@@ -8565,7 +8672,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_substrates_readiness_band(p_substrate_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_execution_substrates_readiness_score(p_substrate_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 3 THEN ('ready')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 1 THEN ('partial')::text ELSE ('absent')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_execution_substrates_readiness_score(p_substrate_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 3 THEN ('ready')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 1 THEN ('partial')::text ELSE ('absent')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_substrates_ready_flag
@@ -8575,7 +8682,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_substrates_ready_flag(p_substrate_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (calc_execution_substrates_readiness_score(p_substrate_id))::NUMERIC = 3 THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((calc_execution_substrates_readiness_score(p_substrate_id))::NUMERIC, 0) = 3 THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_execution_substrates_is_showcase_substrate
@@ -8585,7 +8692,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_execution_substrates_is_showcase_substrate(p_substrate_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_execution_substrates_readiness_band(p_substrate_id) = 'ready' AND calc_execution_substrates_is_reference_quality(p_substrate_id)))::boolean;
+  SELECT ((COALESCE(COALESCE(calc_execution_substrates_readiness_band(p_substrate_id), '') = 'ready', FALSE) AND COALESCE(calc_execution_substrates_is_reference_quality(p_substrate_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orchestration_components_dependency_count
@@ -8595,7 +8702,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orchestration_components_dependency_count(p_component_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(dependencies, '') FROM orchestration_components WHERE component_id = p_component_id) IS NULL THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(dependencies, '') FROM orchestration_components WHERE component_id = p_component_id))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(dependencies, '') FROM orchestration_components WHERE component_id = p_component_id), ',', ''))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT NULLIF(dependencies, '') FROM orchestration_components WHERE component_id = p_component_id)) IS NULL OR ((SELECT NULLIF(dependencies, '') FROM orchestration_components WHERE component_id = p_component_id))::text = '') THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(dependencies, '') FROM orchestration_components WHERE component_id = p_component_id))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(dependencies, '') FROM orchestration_components WHERE component_id = p_component_id), ',', ''))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orchestration_components_is_shell_script
@@ -8605,7 +8712,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orchestration_components_is_shell_script(p_component_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(language, '') FROM orchestration_components WHERE component_id = p_component_id) = 'Bash')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(language, '') FROM orchestration_components WHERE component_id = p_component_id), '') = 'Bash')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orchestration_components_dependency_band
@@ -8615,7 +8722,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orchestration_components_dependency_band(p_component_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_orchestration_components_dependency_count(p_component_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN ('leaf')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC <= 2 THEN ('light')::text ELSE ('heavy')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_orchestration_components_dependency_count(p_component_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN ('leaf')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) <= 2 THEN ('light')::text ELSE ('heavy')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orchestration_components_is_heavy_shell
@@ -8625,7 +8732,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orchestration_components_is_heavy_shell(p_component_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_orchestration_components_is_shell_script(p_component_id) AND calc_orchestration_components_dependency_band(p_component_id) = 'heavy'))::boolean;
+  SELECT ((COALESCE(calc_orchestration_components_is_shell_script(p_component_id), FALSE) AND COALESCE(COALESCE(calc_orchestration_components_dependency_band(p_component_id), '') = 'heavy', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orchestration_components_review_priority
@@ -8635,7 +8742,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orchestration_components_review_priority(p_component_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_orchestration_components_is_heavy_shell(p_component_id) THEN ('review')::text ELSE (CASE WHEN calc_orchestration_components_dependency_band(p_component_id) = 'heavy' THEN ('watch')::text ELSE ('ok')::text END)::text END)::text;
+  SELECT (CASE WHEN calc_orchestration_components_is_heavy_shell(p_component_id) THEN ('review')::text ELSE (CASE WHEN COALESCE(calc_orchestration_components_dependency_band(p_component_id), '') = 'heavy' THEN ('watch')::text ELSE ('ok')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_orchestration_components_needs_review
@@ -8645,7 +8752,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_orchestration_components_needs_review(p_component_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_orchestration_components_review_priority(p_component_id) = 'review')::boolean;
+  SELECT (COALESCE(calc_orchestration_components_review_priority(p_component_id), '') = 'review')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_local_tool_routes_substrate_is_fully_expressive
@@ -8793,7 +8900,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_local_tool_routes_http_method(p_route_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (LEFT(((SELECT NULLIF(route, '') FROM local_tool_routes WHERE route_id = p_route_id))::text, ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (POSITION(' ' IN (SELECT NULLIF(route, '') FROM local_tool_routes WHERE route_id = p_route_id))) AS v) __safe_numeric), 0) - COALESCE(1, 0)))::integer))::text;
+  SELECT (LEFT(((SELECT NULLIF(route, '') FROM local_tool_routes WHERE route_id = p_route_id))::text, ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (POSITION(' ' IN (SELECT NULLIF(route, '') FROM local_tool_routes WHERE route_id = p_route_id))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE(1, 0)))::integer))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_local_tool_routes_route_path
@@ -8803,7 +8910,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_local_tool_routes_route_path(p_route_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (SUBSTRING((SELECT NULLIF(route, '') FROM local_tool_routes WHERE route_id = p_route_id), ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (POSITION(' ' IN (SELECT NULLIF(route, '') FROM local_tool_routes WHERE route_id = p_route_id))) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::integer, (200)::integer))::text;
+  SELECT (SUBSTRING((SELECT NULLIF(route, '') FROM local_tool_routes WHERE route_id = p_route_id), ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (POSITION(' ' IN (SELECT NULLIF(route, '') FROM local_tool_routes WHERE route_id = p_route_id))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::integer, (200)::integer))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_local_tool_routes_has_substrate
@@ -8813,7 +8920,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_local_tool_routes_has_substrate(p_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(substrate_id, '') FROM local_tool_routes WHERE route_id = p_route_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(substrate_id, '') FROM local_tool_routes WHERE route_id = p_route_id)) IS NOT NULL AND ((SELECT NULLIF(substrate_id, '') FROM local_tool_routes WHERE route_id = p_route_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_local_tool_routes_is_post
@@ -8823,7 +8930,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_local_tool_routes_is_post(p_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_local_tool_routes_http_method(p_route_id) = 'POST')::boolean;
+  SELECT (COALESCE(calc_local_tool_routes_http_method(p_route_id), '') = 'POST')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_local_tool_routes_route_slug
@@ -8843,7 +8950,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_local_tool_routes_is_full_bus_route(p_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_local_tool_routes_has_substrate(p_route_id) AND (COALESCE(calc_local_tool_routes_substrate_is_fully_expressive(p_route_id), FALSE) = 'true')))::boolean;
+  SELECT ((COALESCE(calc_local_tool_routes_has_substrate(p_route_id), FALSE) AND COALESCE((COALESCE(calc_local_tool_routes_substrate_is_fully_expressive(p_route_id), FALSE) = 'true'), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_local_tool_routes_is_post_spoke
@@ -8853,7 +8960,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_local_tool_routes_is_post_spoke(p_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_local_tool_routes_is_post(p_route_id) AND NOT (calc_local_tool_routes_has_substrate(p_route_id))))::boolean;
+  SELECT ((COALESCE(calc_local_tool_routes_is_post(p_route_id), FALSE) AND COALESCE(NOT (COALESCE(calc_local_tool_routes_has_substrate(p_route_id), FALSE)), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_local_tool_routes_route_class
@@ -8873,7 +8980,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_local_tool_routes_is_bus_headline(p_route_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_local_tool_routes_route_class(p_route_id) = 'full-substrate')::boolean;
+  SELECT (COALESCE(calc_local_tool_routes_route_class(p_route_id), '') = 'full-substrate')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_testing_framework_is_global
@@ -8883,7 +8990,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_testing_framework_is_global(p_test_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(scope, '') FROM testing_framework WHERE test_id = p_test_id) = 'global')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(scope, '') FROM testing_framework WHERE test_id = p_test_id), '') = 'global')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_testing_framework_is_glob_pattern
@@ -8893,7 +9000,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_testing_framework_is_glob_pattern(p_test_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (LENGTH(COALESCE((SELECT NULLIF(file_path, '') FROM testing_framework WHERE test_id = p_test_id), '')) <> LENGTH(REPLACE(COALESCE((SELECT NULLIF(file_path, '') FROM testing_framework WHERE test_id = p_test_id), ''), '*', '')))::boolean;
+  SELECT (COALESCE((LENGTH(COALESCE((SELECT NULLIF(file_path, '') FROM testing_framework WHERE test_id = p_test_id), '')) <> LENGTH(REPLACE(COALESCE((SELECT NULLIF(file_path, '') FROM testing_framework WHERE test_id = p_test_id), ''), '*', ''))), NOT ((LENGTH(COALESCE((SELECT NULLIF(file_path, '') FROM testing_framework WHERE test_id = p_test_id), ''))) IS NULL AND (LENGTH(REPLACE(COALESCE((SELECT NULLIF(file_path, '') FROM testing_framework WHERE test_id = p_test_id), ''), '*', ''))) IS NULL)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_testing_framework_is_global_glob
@@ -8903,7 +9010,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_testing_framework_is_global_glob(p_test_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_testing_framework_is_global(p_test_id) AND calc_testing_framework_is_glob_pattern(p_test_id)))::boolean;
+  SELECT ((COALESCE(calc_testing_framework_is_global(p_test_id), FALSE) AND COALESCE(calc_testing_framework_is_glob_pattern(p_test_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_testing_framework_scope_label
@@ -8923,7 +9030,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_testing_framework_is_domain_agnostic(p_test_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_testing_framework_scope_label(p_test_id) <> 'domain')::boolean;
+  SELECT (COALESCE(calc_testing_framework_scope_label(p_test_id), '') <> 'domain')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_testing_framework_agnostic_label
@@ -8943,7 +9050,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_core_data_flows_step_count(p_flow_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(steps, '') FROM core_data_flows WHERE flow_id = p_flow_id) IS NULL THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(steps, '') FROM core_data_flows WHERE flow_id = p_flow_id))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(steps, '') FROM core_data_flows WHERE flow_id = p_flow_id), '|', ''))) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0) + COALESCE(1, 0)))::text END)::integer;
+  SELECT (CASE WHEN (((SELECT NULLIF(steps, '') FROM core_data_flows WHERE flow_id = p_flow_id)) IS NULL OR ((SELECT NULLIF(steps, '') FROM core_data_flows WHERE flow_id = p_flow_id))::text = '') THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(steps, '') FROM core_data_flows WHERE flow_id = p_flow_id))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(steps, '') FROM core_data_flows WHERE flow_id = p_flow_id), '|', ''))) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0) + COALESCE(1, 0)))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_core_data_flows_has_invariant
@@ -8953,7 +9060,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_core_data_flows_has_invariant(p_flow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(invariant, '') FROM core_data_flows WHERE flow_id = p_flow_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(invariant, '') FROM core_data_flows WHERE flow_id = p_flow_id)) IS NOT NULL AND ((SELECT NULLIF(invariant, '') FROM core_data_flows WHERE flow_id = p_flow_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_core_data_flows_is_multi_step
@@ -8963,7 +9070,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_core_data_flows_is_multi_step(p_flow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_core_data_flows_step_count(p_flow_id))::NUMERIC > 1)::boolean;
+  SELECT (COALESCE((calc_core_data_flows_step_count(p_flow_id))::NUMERIC, 0) > 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_core_data_flows_is_invariant_backed
@@ -8973,7 +9080,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_core_data_flows_is_invariant_backed(p_flow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_core_data_flows_has_invariant(p_flow_id) AND (calc_core_data_flows_step_count(p_flow_id))::NUMERIC > 0));
+  SELECT ((COALESCE(calc_core_data_flows_has_invariant(p_flow_id), FALSE) AND COALESCE(COALESCE((calc_core_data_flows_step_count(p_flow_id))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_core_data_flows_flow_maturity
@@ -8993,7 +9100,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_core_data_flows_is_pipeline(p_flow_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_core_data_flows_flow_maturity(p_flow_id) = 'pipeline')::boolean;
+  SELECT (COALESCE(calc_core_data_flows_flow_maturity(p_flow_id), '') = 'pipeline')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_core_data_flows_flow_label
@@ -9013,7 +9120,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_dependencies_is_language(p_dependency_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(type, '') FROM dependencies WHERE dependency_id = p_dependency_id) = 'Language')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(type, '') FROM dependencies WHERE dependency_id = p_dependency_id), '') = 'Language')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_dependencies_required_flag
@@ -9033,7 +9140,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_dependencies_is_required_language(p_dependency_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_dependencies_is_language(p_dependency_id) AND COALESCE((SELECT required FROM dependencies WHERE dependency_id = p_dependency_id), FALSE)))::boolean;
+  SELECT ((COALESCE(calc_dependencies_is_language(p_dependency_id), FALSE) AND COALESCE(COALESCE((SELECT required FROM dependencies WHERE dependency_id = p_dependency_id), FALSE), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_dependencies_criticality
@@ -9053,7 +9160,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_dependencies_is_core(p_dependency_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_dependencies_criticality(p_dependency_id) = 'core')::boolean;
+  SELECT (COALESCE(calc_dependencies_criticality(p_dependency_id), '') = 'core')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_dependencies_bootstrap_tier
@@ -9117,7 +9224,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_add_tool_catalog_is_local_proxy(p_tool_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(source, '') FROM add_tool_catalog WHERE tool_id = p_tool_id) = 'local-proxy')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(source, '') FROM add_tool_catalog WHERE tool_id = p_tool_id), '') = 'local-proxy')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_add_tool_catalog_is_proxy_backed_reference
@@ -9127,7 +9234,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_add_tool_catalog_is_proxy_backed_reference(p_tool_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_add_tool_catalog_is_local_proxy(p_tool_id) AND calc_add_tool_catalog_substrate_maturity(p_tool_id) = 'reference-quality'))::boolean;
+  SELECT ((COALESCE(calc_add_tool_catalog_is_local_proxy(p_tool_id), FALSE) AND COALESCE(COALESCE(calc_add_tool_catalog_substrate_maturity(p_tool_id), '') = 'reference-quality', FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_add_tool_catalog_is_peer_complete_tool
@@ -9137,7 +9244,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_add_tool_catalog_is_peer_complete_tool(p_tool_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((COALESCE(calc_add_tool_catalog_substrate_is_fully_expressive(p_tool_id), FALSE) = 'true') AND calc_add_tool_catalog_is_proxy_backed_reference(p_tool_id)))::boolean;
+  SELECT ((COALESCE((COALESCE(calc_add_tool_catalog_substrate_is_fully_expressive(p_tool_id), FALSE) = 'true'), FALSE) AND COALESCE(calc_add_tool_catalog_is_proxy_backed_reference(p_tool_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_add_tool_catalog_tool_tier
@@ -9157,7 +9264,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_add_tool_catalog_is_recommended_install(p_tool_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_add_tool_catalog_tool_tier(p_tool_id) = 'tier-1' AND calc_add_tool_catalog_is_local_proxy(p_tool_id)))::boolean;
+  SELECT ((COALESCE(COALESCE(calc_add_tool_catalog_tool_tier(p_tool_id), '') = 'tier-1', FALSE) AND COALESCE(calc_add_tool_catalog_is_local_proxy(p_tool_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- get_evaluation_steps_order
@@ -9283,7 +9390,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_contract_phases_is_first_phase(p_phase_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT "order" FROM substrate_contract_phases WHERE phase_id = p_phase_id))::NUMERIC = 1)::boolean;
+  SELECT (COALESCE(((SELECT "order" FROM substrate_contract_phases WHERE phase_id = p_phase_id))::NUMERIC, 0) = 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_contract_phases_is_productive
@@ -9293,7 +9400,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_contract_phases_is_productive(p_phase_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_substrate_contract_phases_produced_artifact_count(p_phase_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_substrate_contract_phases_produced_artifact_count(p_phase_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_contract_phases_artifact_throughput
@@ -9303,7 +9410,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_contract_phases_artifact_throughput(p_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_substrate_contract_phases_produced_artifact_count(p_phase_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_substrate_contract_phases_consumed_artifact_count(p_phase_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_substrate_contract_phases_produced_artifact_count(p_phase_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_substrate_contract_phases_consumed_artifact_count(p_phase_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_contract_phases_has_steps
@@ -9313,7 +9420,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_contract_phases_has_steps(p_phase_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_substrate_contract_phases_step_count(p_phase_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_substrate_contract_phases_step_count(p_phase_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_contract_phases_is_fully_modeled
@@ -9323,7 +9430,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_contract_phases_is_fully_modeled(p_phase_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_substrate_contract_phases_is_productive(p_phase_id) AND calc_substrate_contract_phases_has_steps(p_phase_id)))::boolean;
+  SELECT ((COALESCE(calc_substrate_contract_phases_is_productive(p_phase_id), FALSE) AND COALESCE(calc_substrate_contract_phases_has_steps(p_phase_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_contract_phases_throughput_per_step
@@ -9333,7 +9440,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_contract_phases_throughput_per_step(p_phase_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_substrate_contract_phases_step_count(p_phase_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_substrate_contract_phases_artifact_throughput(p_phase_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_substrate_contract_phases_step_count(p_phase_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_substrate_contract_phases_artifact_throughput(p_phase_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0)))::NUMERIC, (2)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_contract_phases_phase_health
@@ -9343,7 +9450,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_contract_phases_phase_health(p_phase_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CASE WHEN calc_substrate_contract_phases_is_fully_modeled(p_phase_id) THEN (CASE WHEN (calc_substrate_contract_phases_throughput_per_step(p_phase_id))::NUMERIC >= 1 THEN ('dense')::text ELSE ('modeled')::text END)::text ELSE ('sparse')::text END)::text;
+  SELECT (CASE WHEN calc_substrate_contract_phases_is_fully_modeled(p_phase_id) THEN (CASE WHEN COALESCE((calc_substrate_contract_phases_throughput_per_step(p_phase_id))::NUMERIC, 0) >= 1 THEN ('dense')::text ELSE ('modeled')::text END)::text ELSE ('sparse')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_contract_phases_is_dense_phase
@@ -9353,7 +9460,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_contract_phases_is_dense_phase(p_phase_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_substrate_contract_phases_phase_health(p_phase_id) = 'dense')::boolean;
+  SELECT (COALESCE(calc_substrate_contract_phases_phase_health(p_phase_id), '') = 'dense')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_steps_phase_name
@@ -9472,7 +9579,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_steps_is_first_step(p_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT "order" FROM evaluation_steps WHERE step_id = p_step_id))::NUMERIC = 1)::boolean;
+  SELECT (COALESCE(((SELECT "order" FROM evaluation_steps WHERE step_id = p_step_id))::NUMERIC, 0) = 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_steps_is_in_first_phase
@@ -9482,7 +9589,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_steps_is_in_first_phase(p_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_evaluation_steps_phase_order(p_step_id))::NUMERIC = 1)::boolean;
+  SELECT (COALESCE((calc_evaluation_steps_phase_order(p_step_id))::NUMERIC, 0) = 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_steps_is_last_step
@@ -9492,7 +9599,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_steps_is_last_step(p_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT "order" FROM evaluation_steps WHERE step_id = p_step_id) = COALESCE(calc_evaluation_steps_phase_step_count(p_step_id), 0))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_evaluation_steps_phase_step_count(p_step_id) AS val) SELECT (COALESCE(((SELECT "order" FROM evaluation_steps WHERE step_id = p_step_id) = COALESCE((SELECT val FROM __erb_dedup_v1), 0)), (((SELECT "order" FROM evaluation_steps WHERE step_id = p_step_id)) IS NULL AND (COALESCE((SELECT val FROM __erb_dedup_v1), 0)) IS NULL)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_steps_position_percent
@@ -9502,7 +9609,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_steps_position_percent(p_step_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_evaluation_steps_phase_step_count(p_step_id) AS val) SELECT (CASE WHEN (COALESCE((SELECT val FROM __erb_dedup_v1), 0))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT "order" FROM evaluation_steps WHERE step_id = p_step_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_evaluation_steps_phase_step_count(p_step_id) AS val) SELECT (CASE WHEN COALESCE((COALESCE((SELECT val FROM __erb_dedup_v1), 0))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT "order" FROM evaluation_steps WHERE step_id = p_step_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_steps_step_role
@@ -9522,7 +9629,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_steps_is_boundary_step(p_step_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_evaluation_steps_step_role(p_step_id) <> 'middle')::boolean;
+  SELECT (COALESCE(calc_evaluation_steps_step_role(p_step_id), '') <> 'middle')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_artifacts_producer_phase_name
@@ -9576,7 +9683,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_artifacts_is_source_artifact(p_artifact_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(produced_by_phase_id, '') FROM evaluation_artifacts WHERE artifact_id = p_artifact_id) IS NULL)::boolean;
+  SELECT ((((SELECT NULLIF(produced_by_phase_id, '') FROM evaluation_artifacts WHERE artifact_id = p_artifact_id)) IS NULL OR ((SELECT NULLIF(produced_by_phase_id, '') FROM evaluation_artifacts WHERE artifact_id = p_artifact_id))::text = ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_artifacts_is_json
@@ -9586,7 +9693,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_artifacts_is_json(p_artifact_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(format, '') FROM evaluation_artifacts WHERE artifact_id = p_artifact_id) = 'json')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(format, '') FROM evaluation_artifacts WHERE artifact_id = p_artifact_id), '') = 'json')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_artifacts_is_json_source
@@ -9596,7 +9703,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_artifacts_is_json_source(p_artifact_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_evaluation_artifacts_is_source_artifact(p_artifact_id) AND calc_evaluation_artifacts_is_json(p_artifact_id)))::boolean;
+  SELECT ((COALESCE(calc_evaluation_artifacts_is_source_artifact(p_artifact_id), FALSE) AND COALESCE(calc_evaluation_artifacts_is_json(p_artifact_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_artifacts_is_pipeline_handoff
@@ -9606,7 +9713,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_artifacts_is_pipeline_handoff(p_artifact_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((NOT (calc_evaluation_artifacts_is_json_source(p_artifact_id)) AND (COALESCE(calc_evaluation_artifacts_producer_step_count(p_artifact_id), 0))::NUMERIC > 0));
+  SELECT ((COALESCE(NOT (COALESCE(calc_evaluation_artifacts_is_json_source(p_artifact_id), FALSE)), FALSE) AND COALESCE(COALESCE((COALESCE(calc_evaluation_artifacts_producer_step_count(p_artifact_id), 0))::NUMERIC, 0) > 0, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_evaluation_artifacts_artifact_role
@@ -9626,7 +9733,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_evaluation_artifacts_is_seed_artifact(p_artifact_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_evaluation_artifacts_artifact_role(p_artifact_id) = 'seed')::boolean;
+  SELECT (COALESCE(calc_evaluation_artifacts_artifact_role(p_artifact_id), '') = 'seed')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_tradeoff_dimensions_tradeoff_count
@@ -9646,7 +9753,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_tradeoff_dimensions_has_tradeoffs(p_dimension_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_substrate_tradeoff_dimensions_tradeoff_count(p_dimension_id))::NUMERIC > 0)::boolean;
+  SELECT (COALESCE((calc_substrate_tradeoff_dimensions_tradeoff_count(p_dimension_id))::NUMERIC, 0) > 0)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_tradeoff_dimensions_fully_expressive_tradeoff_co
@@ -9656,7 +9763,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_tradeoff_dimensions_fully_expressive_tradeoff_co(p_dimension_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_substrate_tradeoffs_substrate_full_flag(tradeoff_id))::numeric), 0) FROM substrate_tradeoffs WHERE dimension_id = p_dimension_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT calc_execution_substrates_fully_expressive_flag(erb_r1.substrate_id)))::numeric)::numeric), 0) FROM substrate_tradeoffs erb_r1 WHERE dimension_id = p_dimension_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_tradeoff_dimensions_full_coverage_percent
@@ -9666,7 +9773,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_tradeoff_dimensions_full_coverage_percent(p_dimension_id TEXT)
 RETURNS NUMERIC AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_substrate_tradeoff_dimensions_tradeoff_count(p_dimension_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_substrate_tradeoff_dimensions_fully_expressive_tradeoff_co(p_dimension_id)) AS v) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0), 0))) AS v) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
+  WITH __erb_dedup_v1 AS (SELECT calc_substrate_tradeoff_dimensions_tradeoff_count(p_dimension_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) = 0 THEN (0)::text ELSE (ROUND(((COALESCE(100, 0) * COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_substrate_tradeoff_dimensions_fully_expressive_tradeoff_co(p_dimension_id)) AS v OFFSET 0) __safe_numeric), 0) / NULLIF(COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0), 0))) AS v OFFSET 0) __safe_numeric), 0)))::NUMERIC, (0)::INTEGER))::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_tradeoff_dimensions_is_fully_covered
@@ -9676,7 +9783,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_tradeoff_dimensions_is_fully_covered(p_dimension_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_substrate_tradeoff_dimensions_full_coverage_percent(p_dimension_id))::NUMERIC = 100)::boolean;
+  SELECT (COALESCE((calc_substrate_tradeoff_dimensions_full_coverage_percent(p_dimension_id))::NUMERIC, 0) = 100)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_tradeoffs_substrate_name
@@ -9798,7 +9905,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_tradeoffs_has_note(p_tradeoff_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(note, '') FROM substrate_tradeoffs WHERE tradeoff_id = p_tradeoff_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(note, '') FROM substrate_tradeoffs WHERE tradeoff_id = p_tradeoff_id)) IS NOT NULL AND ((SELECT NULLIF(note, '') FROM substrate_tradeoffs WHERE tradeoff_id = p_tradeoff_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_tradeoffs_is_full_substrate_noted
@@ -9808,7 +9915,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_tradeoffs_is_full_substrate_noted(p_tradeoff_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((COALESCE(calc_substrate_tradeoffs_substrate_is_fully_expressive(p_tradeoff_id), FALSE) = 'true') AND calc_substrate_tradeoffs_has_note(p_tradeoff_id)))::boolean;
+  SELECT ((COALESCE((COALESCE(calc_substrate_tradeoffs_substrate_is_fully_expressive(p_tradeoff_id), FALSE) = 'true'), FALSE) AND COALESCE(calc_substrate_tradeoffs_has_note(p_tradeoff_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_substrate_tradeoffs_is_dominant_dimension_entry
@@ -9818,7 +9925,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_substrate_tradeoffs_is_dominant_dimension_entry(p_tradeoff_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((COALESCE(calc_substrate_tradeoffs_substrate_is_fully_expressive(p_tradeoff_id), FALSE) = 'true') AND (COALESCE(calc_substrate_tradeoffs_dimension_full_count(p_tradeoff_id), 0))::NUMERIC >= 5));
+  SELECT ((COALESCE((COALESCE(calc_substrate_tradeoffs_substrate_is_fully_expressive(p_tradeoff_id), FALSE) = 'true'), FALSE) AND COALESCE(COALESCE((COALESCE(calc_substrate_tradeoffs_dimension_full_count(p_tradeoff_id), 0))::NUMERIC, 0) >= 5, FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_fuzzy_grading_providers_is_deterministic
@@ -9828,7 +9935,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_fuzzy_grading_providers_is_deterministic(p_provider_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(determinism, '') FROM fuzzy_grading_providers WHERE provider_id = p_provider_id) = 'deterministic')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(determinism, '') FROM fuzzy_grading_providers WHERE provider_id = p_provider_id), '') = 'deterministic')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_fuzzy_grading_providers_requires_api_key
@@ -9838,7 +9945,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_fuzzy_grading_providers_requires_api_key(p_provider_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(env_var, '') FROM fuzzy_grading_providers WHERE provider_id = p_provider_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(env_var, '') FROM fuzzy_grading_providers WHERE provider_id = p_provider_id)) IS NOT NULL AND ((SELECT NULLIF(env_var, '') FROM fuzzy_grading_providers WHERE provider_id = p_provider_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_fuzzy_grading_providers_is_local_deterministic
@@ -9848,7 +9955,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_fuzzy_grading_providers_is_local_deterministic(p_provider_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((COALESCE((SELECT local_runtime FROM fuzzy_grading_providers WHERE provider_id = p_provider_id), FALSE) AND calc_fuzzy_grading_providers_is_deterministic(p_provider_id)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT local_runtime FROM fuzzy_grading_providers WHERE provider_id = p_provider_id), FALSE), FALSE) AND COALESCE(calc_fuzzy_grading_providers_is_deterministic(p_provider_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_fuzzy_grading_providers_is_cloud_keyed
@@ -9858,7 +9965,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_fuzzy_grading_providers_is_cloud_keyed(p_provider_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((NOT (COALESCE((SELECT local_runtime FROM fuzzy_grading_providers WHERE provider_id = p_provider_id), FALSE)) AND calc_fuzzy_grading_providers_requires_api_key(p_provider_id)))::boolean;
+  SELECT ((COALESCE(NOT (COALESCE(COALESCE((SELECT local_runtime FROM fuzzy_grading_providers WHERE provider_id = p_provider_id), FALSE), FALSE)), FALSE) AND COALESCE(calc_fuzzy_grading_providers_requires_api_key(p_provider_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_fuzzy_grading_providers_provider_class
@@ -9878,7 +9985,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_fuzzy_grading_providers_is_preferred_provider(p_provider_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_fuzzy_grading_providers_provider_class(p_provider_id) = 'local-deterministic')::boolean;
+  SELECT (COALESCE(calc_fuzzy_grading_providers_provider_class(p_provider_id), '') = 'local-deterministic')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_fuzzy_grading_providers_provider_label
@@ -9908,7 +10015,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_configuration_is_human_maintained(p_config_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(maintained_by, '') FROM project_configuration WHERE config_id = p_config_id) = 'human')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(maintained_by, '') FROM project_configuration WHERE config_id = p_config_id), '') = 'human')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_configuration_is_json
@@ -9918,7 +10025,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_configuration_is_json(p_config_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(format, '') FROM project_configuration WHERE config_id = p_config_id) = 'JSON')::boolean;
+  SELECT (COALESCE((SELECT NULLIF(format, '') FROM project_configuration WHERE config_id = p_config_id), '') = 'JSON')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_configuration_is_human_json
@@ -9928,7 +10035,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_configuration_is_human_json(p_config_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_project_configuration_is_human_maintained(p_config_id) AND calc_project_configuration_is_json(p_config_id)))::boolean;
+  SELECT ((COALESCE(calc_project_configuration_is_human_maintained(p_config_id), FALSE) AND COALESCE(calc_project_configuration_is_json(p_config_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_configuration_drift_risk
@@ -9948,7 +10055,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_project_configuration_needs_guard(p_config_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_project_configuration_drift_risk(p_config_id) = 'high')::boolean;
+  SELECT (COALESCE(calc_project_configuration_drift_risk(p_config_id), '') = 'high')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_project_configuration_guard_label
@@ -9978,7 +10085,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_pipeline_has_cli_equivalent(p_aspect_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((SELECT NULLIF(cli_equivalent, '') FROM build_pipeline WHERE aspect_id = p_aspect_id) IS NOT NULL)::boolean;
+  SELECT ((((SELECT NULLIF(cli_equivalent, '') FROM build_pipeline WHERE aspect_id = p_aspect_id)) IS NOT NULL AND ((SELECT NULLIF(cli_equivalent, '') FROM build_pipeline WHERE aspect_id = p_aspect_id))::text <> ''))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_pipeline_is_project_scoped
@@ -9988,7 +10095,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_pipeline_is_project_scoped(p_aspect_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (LENGTH(COALESCE((SELECT NULLIF(authority, '') FROM build_pipeline WHERE aspect_id = p_aspect_id), '')) <> LENGTH(REPLACE(COALESCE((SELECT NULLIF(authority, '') FROM build_pipeline WHERE aspect_id = p_aspect_id), ''), '{active-project}', '')))::boolean;
+  SELECT (COALESCE((LENGTH(COALESCE((SELECT NULLIF(authority, '') FROM build_pipeline WHERE aspect_id = p_aspect_id), '')) <> LENGTH(REPLACE(COALESCE((SELECT NULLIF(authority, '') FROM build_pipeline WHERE aspect_id = p_aspect_id), ''), '{active-project}', ''))), NOT ((LENGTH(COALESCE((SELECT NULLIF(authority, '') FROM build_pipeline WHERE aspect_id = p_aspect_id), ''))) IS NULL AND (LENGTH(REPLACE(COALESCE((SELECT NULLIF(authority, '') FROM build_pipeline WHERE aspect_id = p_aspect_id), ''), '{active-project}', ''))) IS NULL)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_pipeline_is_cli_parity_gap
@@ -9998,7 +10105,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_pipeline_is_cli_parity_gap(p_aspect_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (NOT (calc_build_pipeline_has_cli_equivalent(p_aspect_id)))::boolean;
+  SELECT (NOT (COALESCE(calc_build_pipeline_has_cli_equivalent(p_aspect_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_pipeline_is_scoped_with_cli
@@ -10008,7 +10115,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_pipeline_is_scoped_with_cli(p_aspect_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_build_pipeline_is_project_scoped(p_aspect_id) AND calc_build_pipeline_has_cli_equivalent(p_aspect_id)))::boolean;
+  SELECT ((COALESCE(calc_build_pipeline_is_project_scoped(p_aspect_id), FALSE) AND COALESCE(calc_build_pipeline_has_cli_equivalent(p_aspect_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_pipeline_parity_state
@@ -10028,7 +10135,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_build_pipeline_is_parity_violation(p_aspect_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_build_pipeline_parity_state(p_aspect_id) = 'portal-only')::boolean;
+  SELECT (COALESCE(calc_build_pipeline_parity_state(p_aspect_id), '') = 'portal-only')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_build_pipeline_parity_flag
@@ -10058,7 +10165,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_portal_cli_parity_is_substantive(p_portal_cli_parity_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_portal_cli_parity_description_length(p_portal_cli_parity_id))::NUMERIC >= 200)::boolean;
+  SELECT (COALESCE((calc_portal_cli_parity_description_length(p_portal_cli_parity_id))::NUMERIC, 0) >= 200)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_portal_cli_parity_narrative_state
@@ -10078,7 +10185,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_portal_cli_parity_is_ready(p_portal_cli_parity_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_portal_cli_parity_narrative_state(p_portal_cli_parity_id) = 'ready')::boolean;
+  SELECT (COALESCE(calc_portal_cli_parity_narrative_state(p_portal_cli_parity_id), '') = 'ready')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_portal_cli_parity_section_label
@@ -10108,7 +10215,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_write_through_invariant_is_substantive(p_write_through_invariant_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_write_through_invariant_description_length(p_write_through_invariant_id))::NUMERIC >= 200)::boolean;
+  SELECT (COALESCE((calc_write_through_invariant_description_length(p_write_through_invariant_id))::NUMERIC, 0) >= 200)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_write_through_invariant_narrative_state
@@ -10128,7 +10235,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_write_through_invariant_is_ready(p_write_through_invariant_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_write_through_invariant_narrative_state(p_write_through_invariant_id) = 'ready')::boolean;
+  SELECT (COALESCE(calc_write_through_invariant_narrative_state(p_write_through_invariant_id), '') = 'ready')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_write_through_invariant_section_label
@@ -10158,7 +10265,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_bootstrap_story_is_substantive(p_bootstrap_story_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_bootstrap_story_description_length(p_bootstrap_story_id))::NUMERIC >= 200)::boolean;
+  SELECT (COALESCE((calc_bootstrap_story_description_length(p_bootstrap_story_id))::NUMERIC, 0) >= 200)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_bootstrap_story_narrative_state
@@ -10178,7 +10285,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_bootstrap_story_is_ready(p_bootstrap_story_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_bootstrap_story_narrative_state(p_bootstrap_story_id) = 'ready')::boolean;
+  SELECT (COALESCE(calc_bootstrap_story_narrative_state(p_bootstrap_story_id), '') = 'ready')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_bootstrap_story_section_label
@@ -10208,7 +10315,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_developer_journey_is_substantive(p_developer_journey_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_developer_journey_description_length(p_developer_journey_id))::NUMERIC >= 200)::boolean;
+  SELECT (COALESCE((calc_developer_journey_description_length(p_developer_journey_id))::NUMERIC, 0) >= 200)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_developer_journey_narrative_state
@@ -10228,7 +10335,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_developer_journey_is_ready(p_developer_journey_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_developer_journey_narrative_state(p_developer_journey_id) = 'ready')::boolean;
+  SELECT (COALESCE(calc_developer_journey_narrative_state(p_developer_journey_id), '') = 'ready')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_developer_journey_section_label
@@ -10258,7 +10365,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_resilience_claim_is_substantive(p_resilience_claim_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT ((calc_resilience_claim_description_length(p_resilience_claim_id))::NUMERIC >= 200)::boolean;
+  SELECT (COALESCE((calc_resilience_claim_description_length(p_resilience_claim_id))::NUMERIC, 0) >= 200)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_resilience_claim_narrative_state
@@ -10278,7 +10385,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_resilience_claim_is_ready(p_resilience_claim_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_resilience_claim_narrative_state(p_resilience_claim_id) = 'ready')::boolean;
+  SELECT (COALESCE(calc_resilience_claim_narrative_state(p_resilience_claim_id), '') = 'ready')::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_resilience_claim_section_label
@@ -11092,20 +11199,6 @@ RETURNS TEXT AS $$
   );
 $$ LANGUAGE sql STABLE;
 
--- calc_project_layout_slots_witnesses
--- Field: ProjectLayoutSlots.Witnesses
--- Type: Many-side relationship (backref) to ProjectSlotWitnesses
--- Aggregates: ProjectSlotWitnesses.ProjectSlotWitnessId where Slot = parent
-
-CREATE OR REPLACE FUNCTION calc_project_layout_slots_witnesses(p_project_layout_slot_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (
-    SELECT STRING_AGG(project_slot_witness_id::TEXT, ', ' ORDER BY project_slot_witness_id)
-    FROM project_slot_witnesses
-    WHERE slot = p_project_layout_slot_id
-  );
-$$ LANGUAGE sql STABLE;
-
 -- calc_execution_substrates_catalog_tools
 -- Field: ExecutionSubstrates.CatalogTools
 -- Type: Many-side relationship (backref) to AddToolCatalog
@@ -11243,6 +11336,19 @@ RETURNS TEXT AS $$
     SELECT STRING_AGG(corpus_domain_run_id::TEXT, ', ' ORDER BY corpus_domain_run_id)
     FROM corpus_domain_runs
     WHERE conformance_run = p_conformance_run_id
+  );
+$$ LANGUAGE sql STABLE;
+
+-- calc_project_layout_slots_witnesses
+-- Field: ProjectLayoutSlots.Witnesses
+-- Type: Inverse relationship (reverse FK lookup from ProjectSlotWitnesses.Slot)
+
+CREATE OR REPLACE FUNCTION calc_project_layout_slots_witnesses(p_project_layout_slot_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(project_slot_witness_id::TEXT, ', ' ORDER BY project_slot_witness_id)
+    FROM project_slot_witnesses
+    WHERE slot = p_project_layout_slot_id
   );
 $$ LANGUAGE sql STABLE;
 
@@ -12399,13 +12505,13 @@ CREATE VIEW vw_mobile_routes WITH (security_invoker = ON) AS
 WITH RECURSIVE acc AS (
   SELECT 1 AS step,
     COALESCE((SELECT jsonb_object_agg(t.mobile_route_id, jsonb_build_object(
-      'depth', CASE WHEN (SELECT NULLIF(t.path::text,'')) = '/' THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(t.path::text,'')))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(t.path::text,'')), '/', ''))) AS v) __safe_numeric), 0)))::text END
+      'depth', CASE WHEN COALESCE((SELECT NULLIF(t.path::text,'')), '') = '/' THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(t.path::text,'')))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(t.path::text,'')), '/', ''))) AS v OFFSET 0) __safe_numeric), 0)))::text END
     ))
     FROM mobile_routes t WHERE NULLIF(t.parent_route,'') IS NULL), '{}'::jsonb) AS settled
   UNION ALL
   SELECT a.step + 1, a.settled || COALESCE((
     SELECT jsonb_object_agg(t.mobile_route_id, jsonb_build_object(
-      'depth', CASE WHEN (SELECT NULLIF(t.path::text,'')) = '/' THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(t.path::text,'')))) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(t.path::text,'')), '/', ''))) AS v) __safe_numeric), 0)))::text END
+      'depth', CASE WHEN COALESCE((SELECT NULLIF(t.path::text,'')), '') = '/' THEN (0)::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH((SELECT NULLIF(t.path::text,'')))) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (LENGTH(REPLACE((SELECT NULLIF(t.path::text,'')), '/', ''))) AS v OFFSET 0) __safe_numeric), 0)))::text END
     ))
     FROM mobile_routes t
     WHERE NOT (a.settled ? t.mobile_route_id) AND NOT (NULLIF(t.parent_route,'') IS NULL) AND (NULLIF(t.parent_route,'') IS NULL OR a.settled ? t.parent_route)
@@ -13267,6 +13373,9 @@ FROM erb_proposal_sections t;
 
 -- === 8. Custom views (ERBCustomizations) ===
 -- (no ERBCustomizations row for this section)
+
+-- === 8b. Function and view overrides (ERBCustomizations FunctionOverride / SchemaOverride) ===
+-- (no FunctionOverride / SchemaOverride row for a function or a view)
 
 -- === 9. Custom RLS (ERBCustomizations) ===
 -- (no ERBCustomizations row for this section)

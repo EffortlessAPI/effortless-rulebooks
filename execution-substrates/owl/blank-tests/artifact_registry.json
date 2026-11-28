@@ -1,0 +1,123 @@
+[
+  {
+    "artifact_id": "v21-active-import-surface-v21-csv",
+    "domain_id": "domain-fermats-last-theorem",
+    "artifact_kind": "csv",
+    "relative_path": "domains/fermats-last-theorem/source-artifacts/active_import_surface_v21.csv",
+    "version": "21.0.0",
+    "sha256": "5b0eb5ea5d4668178110f02a0ac3f3e60cd8a0a3ff149a838c53aaff0e195b2f",
+    "is_canonical_migration_source": false,
+    "notes": "Preserved from the v21 witness lab. Do not silently rewrite or delete during migration.",
+    "name": null
+  },
+  {
+    "artifact_id": "v21-build-fermat-witness-v21-py",
+    "domain_id": "domain-fermats-last-theorem",
+    "artifact_kind": "py",
+    "relative_path": "domains/fermats-last-theorem/source-artifacts/build_fermat_witness_v21.py",
+    "version": "21.0.0",
+    "sha256": "b781453451f87df8c8533ce168287482d9b27e3e9bfeece8f8f158f7fb201bd2",
+    "is_canonical_migration_source": false,
+    "notes": "Preserved from the v21 witness lab. Do not silently rewrite or delete during migration.",
+    "name": null
+  },
+  {
+    "artifact_id": "v21-fermat-witness-v21-sqlite",
+    "domain_id": "domain-fermats-last-theorem",
+    "artifact_kind": "sqlite",
+    "relative_path": "domains/fermats-last-theorem/source-artifacts/fermat_witness_v21.sqlite",
+    "version": "21.0.0",
+    "sha256": "4ed043d32d50b5a7258bb17c1b20ccba938bb16f8046cc403429b5ea59c52b64",
+    "is_canonical_migration_source": true,
+    "notes": "Preserved from the v21 witness lab. Do not silently rewrite or delete during migration.",
+    "name": null
+  },
+  {
+    "artifact_id": "v21-final-nine-attempt-v21-md",
+    "domain_id": "domain-fermats-last-theorem",
+    "artifact_kind": "md",
+    "relative_path": "domains/fermats-last-theorem/source-artifacts/FINAL_NINE_ATTEMPT_V21.md",
+    "version": "21.0.0",
+    "sha256": "d5a246b8b44d25216f351de59e445e5f46629814ac6c7b9c0ef230ace2596534",
+    "is_canonical_migration_source": false,
+    "notes": "Preserved from the v21 witness lab. Do not silently rewrite or delete during migration.",
+    "name": null
+  },
+  {
+    "artifact_id": "v21-foundation-frontier-v21-csv",
+    "domain_id": "domain-fermats-last-theorem",
+    "artifact_kind": "csv",
+    "relative_path": "domains/fermats-last-theorem/source-artifacts/foundation_frontier_v21.csv",
+    "version": "21.0.0",
+    "sha256": "cb98118c4211afe45728d78e290d350da06d64215d881963fcf7316354dda01f",
+    "is_canonical_migration_source": false,
+    "notes": "Preserved from the v21 witness lab. Do not silently rewrite or delete during migration.",
+    "name": null
+  },
+  {
+    "artifact_id": "v21-full-archive",
+    "domain_id": "domain-fermats-last-theorem",
+    "artifact_kind": "zip",
+    "relative_path": "source-artifacts/fermat_witness_lab_v21.zip",
+    "version": "21.0.0",
+    "sha256": "284ce38b6e616fddaa6efea311781ca061db84ca007aa0444b72eec68c122bf6",
+    "is_canonical_migration_source": true,
+    "notes": "Complete frozen source archive from the previous conversation.",
+    "name": null
+  },
+  {
+    "artifact_id": "v21-invariant-checks-v21-csv",
+    "domain_id": "domain-fermats-last-theorem",
+    "artifact_kind": "csv",
+    "relative_path": "domains/fermats-last-theorem/source-artifacts/invariant_checks_v21.csv",
+    "version": "21.0.0",
+    "sha256": "cfd9a582446f48304327a2da73ce73ced919277703cbb57411003b7a71a23584",
+    "is_canonical_migration_source": false,
+    "notes": "Preserved from the v21 witness lab. Do not silently rewrite or delete during migration.",
+    "name": null
+  },
+  {
+    "artifact_id": "v21-nine-parent-audit-v21-csv",
+    "domain_id": "domain-fermats-last-theorem",
+    "artifact_kind": "csv",
+    "relative_path": "domains/fermats-last-theorem/source-artifacts/nine_parent_audit_v21.csv",
+    "version": "21.0.0",
+    "sha256": "5a1fd3f1ada6918b432afa5ed8a31fe8332c5222e7a5419698f0df4281985160",
+    "is_canonical_migration_source": false,
+    "notes": "Preserved from the v21 witness lab. Do not silently rewrite or delete during migration.",
+    "name": null
+  },
+  {
+    "artifact_id": "v21-proof-trace-v21-csv",
+    "domain_id": "domain-fermats-last-theorem",
+    "artifact_kind": "csv",
+    "relative_path": "domains/fermats-last-theorem/source-artifacts/proof_trace_v21.csv",
+    "version": "21.0.0",
+    "sha256": "f5f95a86c440c3f67e7a2f9f71022b52dcb73dd30b7f8cebbe33399947b42239",
+    "is_canonical_migration_source": false,
+    "notes": "Preserved from the v21 witness lab. Do not silently rewrite or delete during migration.",
+    "name": null
+  },
+  {
+    "artifact_id": "v21-verify-final-nine-v21-py",
+    "domain_id": "domain-fermats-last-theorem",
+    "artifact_kind": "py",
+    "relative_path": "domains/fermats-last-theorem/source-artifacts/verify_final_nine_v21.py",
+    "version": "21.0.0",
+    "sha256": "75776522c86b4b13e73ccb5e76b4ebd797e269814a9bfbd3833a48a887821f08",
+    "is_canonical_migration_source": false,
+    "notes": "Preserved from the v21 witness lab. Do not silently rewrite or delete during migration.",
+    "name": null
+  },
+  {
+    "artifact_id": "v21-witness-report-v21-md",
+    "domain_id": "domain-fermats-last-theorem",
+    "artifact_kind": "md",
+    "relative_path": "domains/fermats-last-theorem/source-artifacts/WITNESS_REPORT_V21.md",
+    "version": "21.0.0",
+    "sha256": "a69503387b772aa4eee47f5e4c624764968343f1fc05367cadabff671a443f6a",
+    "is_canonical_migration_source": true,
+    "notes": "Preserved from the v21 witness lab. Do not silently rewrite or delete during migration.",
+    "name": null
+  }
+]
