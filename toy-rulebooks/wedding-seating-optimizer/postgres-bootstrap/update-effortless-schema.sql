@@ -164,7 +164,7 @@ BEGIN
     -- 2. Views (depend on functions, so they go first).
     FOR r IN (
         SELECT table_name FROM information_schema.views
-         WHERE table_schema = 'public' AND table_name LIKE 'vw\_%'
+         WHERE table_schema = 'public' AND (table_name LIKE 'vw\_%' OR table_name LIKE 'fk\_labels\_%')
            AND obj_description(
                  (quote_ident(table_schema) || '.' || quote_ident(table_name))::regclass, 'pg_class')
                IS DISTINCT FROM 'effortless:hand-maintained'
@@ -224,6 +224,113 @@ $drop_derived$;
 SET check_function_bodies = off;
 
 -- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+
+-- ============================================================================
 -- LOOKUP FUNCTIONS
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
@@ -243,7 +350,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tables_open_seats(p_table_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT seats FROM tables WHERE table_id = p_table_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_tables_head_count(p_table_id)) AS v) __safe_numeric), 0)))::integer;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT seats FROM tables WHERE table_id = p_table_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_tables_head_count(p_table_id)) AS v OFFSET 0) __safe_numeric), 0)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tables_over_capacity
@@ -252,7 +359,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tables_over_capacity(p_table_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (calc_tables_head_count(p_table_id) > (SELECT seats FROM tables WHERE table_id = p_table_id))::boolean;
+  SELECT (COALESCE(calc_tables_head_count(p_table_id), 0) > COALESCE((SELECT seats FROM tables WHERE table_id = p_table_id), 0))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tables_raw_happiness
@@ -262,7 +369,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tables_raw_happiness(p_table_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_relationships_effective_score(rel_id))::numeric), 0) FROM relationships WHERE calc_relationships_seated_table(rel_id) = p_table_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_relationships_same_table(erb_r1.rel_id) THEN (CASE WHEN COALESCE(NULLIF(erb_r1.kind, ''), '') = 'must-not' THEN (-50)::text ELSE (erb_r1.weight)::text END)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM relationships erb_r1 WHERE ((SELECT (CASE WHEN calc_relationships_same_table(erb_r1.rel_id) THEN (calc_relationships_guest_a_table(erb_r1.rel_id))::text ELSE ('')::text END)::text))::text = p_table_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tables_violation_count
@@ -272,7 +379,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tables_violation_count(p_table_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_relationships_violation_flag(rel_id))::numeric), 0) FROM relationships WHERE calc_relationships_seated_table(rel_id) = p_table_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_relationships_is_must_not_violation(erb_r1.rel_id) THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM relationships erb_r1 WHERE ((SELECT (CASE WHEN calc_relationships_same_table(erb_r1.rel_id) THEN (calc_relationships_guest_a_table(erb_r1.rel_id))::text ELSE ('')::text END)::text))::text = p_table_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tables_happiness
@@ -282,7 +389,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tables_happiness(p_table_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_tables_raw_happiness(p_table_id)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_tables_over_capacity(p_table_id) THEN (25)::text ELSE (0)::text END) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_tables_side_skew(p_table_id)) AS v) __safe_numeric), 0))) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_tables_raw_happiness(p_table_id)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (CASE WHEN calc_tables_over_capacity(p_table_id) THEN (25)::text ELSE (0)::text END) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_tables_side_skew(p_table_id)) AS v OFFSET 0) __safe_numeric), 0))) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tables_grade
@@ -291,7 +398,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tables_grade(p_table_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_tables_happiness(p_table_id) AS val) SELECT (CASE WHEN (calc_tables_violation_count(p_table_id))::NUMERIC > 0 THEN ('Conflict')::text ELSE (CASE WHEN calc_tables_over_capacity(p_table_id) THEN ('Over Capacity')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 15 THEN ('Great')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 5 THEN ('OK')::text ELSE ('Cold')::text END)::text END)::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_tables_happiness(p_table_id) AS val) SELECT (CASE WHEN COALESCE((calc_tables_violation_count(p_table_id))::NUMERIC, 0) > 0 THEN ('Conflict')::text ELSE (CASE WHEN calc_tables_over_capacity(p_table_id) THEN ('Over Capacity')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 15 THEN ('Great')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 5 THEN ('OK')::text ELSE ('Cold')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tables_bride_side_count
@@ -301,7 +408,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tables_bride_side_count(p_table_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_guests_bride_flag(guest_id))::numeric), 0) FROM guests WHERE assigned_table = p_table_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.side, ''), '') = 'bride' THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM guests erb_r1 WHERE assigned_table = p_table_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tables_groom_side_count
@@ -311,7 +418,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tables_groom_side_count(p_table_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_guests_groom_flag(guest_id))::numeric), 0) FROM guests WHERE assigned_table = p_table_id))::integer;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN COALESCE(NULLIF(erb_r1.side, ''), '') = 'groom' THEN (1)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM guests erb_r1 WHERE assigned_table = p_table_id))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_tables_side_skew
@@ -321,7 +428,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_tables_side_skew(p_table_id TEXT)
 RETURNS INTEGER AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_tables_bride_side_count(p_table_id) AS val), __erb_dedup_v2 AS (SELECT calc_tables_groom_side_count(p_table_id) AS val) SELECT (CASE WHEN (SELECT val FROM __erb_dedup_v1) > (SELECT val FROM __erb_dedup_v2) THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v) __safe_numeric), 0)))::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v) __safe_numeric), 0)))::text END)::integer;
+  WITH __erb_dedup_v1 AS (SELECT calc_tables_bride_side_count(p_table_id) AS val), __erb_dedup_v2 AS (SELECT calc_tables_groom_side_count(p_table_id) AS val) SELECT (CASE WHEN COALESCE((SELECT val FROM __erb_dedup_v1), 0) > COALESCE((SELECT val FROM __erb_dedup_v2), 0) THEN ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v OFFSET 0) __safe_numeric), 0)))::text ELSE ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v2)) AS v OFFSET 0) __safe_numeric), 0) - COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT ((SELECT val FROM __erb_dedup_v1)) AS v OFFSET 0) __safe_numeric), 0)))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_guests_table_label
@@ -405,7 +512,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_guests_satisfaction_a(p_guest_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_relationships_effective_score(rel_id))::numeric), 0) FROM relationships WHERE guest_a = p_guest_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_relationships_same_table(erb_r1.rel_id) THEN (CASE WHEN COALESCE(NULLIF(erb_r1.kind, ''), '') = 'must-not' THEN (-50)::text ELSE (erb_r1.weight)::text END)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM relationships erb_r1 WHERE guest_a = p_guest_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_guests_satisfaction_b
@@ -414,7 +521,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_guests_satisfaction_b(p_guest_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((SELECT COALESCE(SUM((calc_relationships_effective_score(rel_id))::numeric), 0) FROM relationships WHERE guest_b = p_guest_id))::numeric;
+  SELECT ((SELECT COALESCE(SUM((((SELECT (CASE WHEN calc_relationships_same_table(erb_r1.rel_id) THEN (CASE WHEN COALESCE(NULLIF(erb_r1.kind, ''), '') = 'must-not' THEN (-50)::text ELSE (erb_r1.weight)::text END)::text ELSE (0)::text END)::numeric))::numeric)::numeric), 0) FROM relationships erb_r1 WHERE guest_b = p_guest_id))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_guests_satisfaction
@@ -424,7 +531,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_guests_satisfaction(p_guest_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_guests_satisfaction_a(p_guest_id)) AS v) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_guests_satisfaction_b(p_guest_id)) AS v) __safe_numeric), 0)))::numeric;
+  SELECT ((COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_guests_satisfaction_a(p_guest_id)) AS v OFFSET 0) __safe_numeric), 0) + COALESCE((SELECT CASE WHEN v::text ~ '^-?[0-9]*\.?[0-9]+$' THEN v::numeric ELSE NULL END FROM (SELECT (calc_guests_satisfaction_b(p_guest_id)) AS v OFFSET 0) __safe_numeric), 0)))::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_guests_mood
@@ -433,7 +540,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_guests_mood(p_guest_id TEXT)
 RETURNS TEXT AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_guests_satisfaction(p_guest_id) AS val) SELECT (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 10 THEN ('Happy')::text ELSE (CASE WHEN ((SELECT val FROM __erb_dedup_v1))::NUMERIC >= 0 THEN ('Neutral')::text ELSE ('Unhappy')::text END)::text END)::text;
+  WITH __erb_dedup_v1 AS (SELECT calc_guests_satisfaction(p_guest_id) AS val) SELECT (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 10 THEN ('Happy')::text ELSE (CASE WHEN COALESCE(((SELECT val FROM __erb_dedup_v1))::NUMERIC, 0) >= 0 THEN ('Neutral')::text ELSE ('Unhappy')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_guests_bride_flag
@@ -443,7 +550,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_guests_bride_flag(p_guest_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(side, '') FROM guests WHERE guest_id = p_guest_id) = 'bride' THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(side, '') FROM guests WHERE guest_id = p_guest_id), '') = 'bride' THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_guests_groom_flag
@@ -453,7 +560,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_guests_groom_flag(p_guest_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(side, '') FROM guests WHERE guest_id = p_guest_id) = 'groom' THEN (1)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(side, '') FROM guests WHERE guest_id = p_guest_id), '') = 'groom' THEN (1)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_relationships_guest_a_name
@@ -555,7 +662,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_relationships_same_table(p_rel_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_relationships_guest_a_table(p_rel_id) AS val) SELECT (((SELECT val FROM __erb_dedup_v1) IS NOT NULL AND (SELECT val FROM __erb_dedup_v1) = calc_relationships_guest_b_table(p_rel_id)))::boolean;
+  WITH __erb_dedup_v1 AS (SELECT calc_relationships_guest_a_table(p_rel_id) AS val) SELECT ((COALESCE((((SELECT val FROM __erb_dedup_v1)) IS NOT NULL AND ((SELECT val FROM __erb_dedup_v1))::text <> ''), FALSE) AND COALESCE(COALESCE((SELECT val FROM __erb_dedup_v1), '') = COALESCE(calc_relationships_guest_b_table(p_rel_id), ''), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_relationships_seated_table
@@ -575,7 +682,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_relationships_effective_score(p_rel_id TEXT)
 RETURNS NUMERIC AS $$
-  SELECT (CASE WHEN calc_relationships_same_table(p_rel_id) THEN (CASE WHEN (SELECT NULLIF(kind, '') FROM relationships WHERE rel_id = p_rel_id) = 'must-not' THEN (-50)::text ELSE ((SELECT weight FROM relationships WHERE rel_id = p_rel_id))::text END)::text ELSE (0)::text END)::numeric;
+  SELECT (CASE WHEN calc_relationships_same_table(p_rel_id) THEN (CASE WHEN COALESCE((SELECT NULLIF(kind, '') FROM relationships WHERE rel_id = p_rel_id), '') = 'must-not' THEN (-50)::text ELSE ((SELECT weight FROM relationships WHERE rel_id = p_rel_id))::text END)::text ELSE (0)::text END)::numeric;
 $$ LANGUAGE sql STABLE;
 
 -- calc_relationships_is_must_not_violation
@@ -584,7 +691,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_relationships_is_must_not_violation(p_rel_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((SELECT NULLIF(kind, '') FROM relationships WHERE rel_id = p_rel_id) = 'must-not' AND calc_relationships_same_table(p_rel_id)))::boolean;
+  SELECT ((COALESCE(COALESCE((SELECT NULLIF(kind, '') FROM relationships WHERE rel_id = p_rel_id), '') = 'must-not', FALSE) AND COALESCE(calc_relationships_same_table(p_rel_id), FALSE)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_relationships_is_satisfied
@@ -594,7 +701,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_relationships_is_satisfied(p_rel_id TEXT)
 RETURNS BOOLEAN AS $$
-  WITH __erb_dedup_v1 AS (SELECT calc_relationships_same_table(p_rel_id) AS val) SELECT (((((SELECT weight FROM relationships WHERE rel_id = p_rel_id))::NUMERIC > 0 AND (SELECT val FROM __erb_dedup_v1)) OR (((SELECT weight FROM relationships WHERE rel_id = p_rel_id))::NUMERIC < 0 AND NOT ((SELECT val FROM __erb_dedup_v1)))));
+  WITH __erb_dedup_v1 AS (SELECT calc_relationships_same_table(p_rel_id) AS val) SELECT ((COALESCE((COALESCE(COALESCE(((SELECT weight FROM relationships WHERE rel_id = p_rel_id))::NUMERIC, 0) > 0, FALSE) AND COALESCE((SELECT val FROM __erb_dedup_v1), FALSE)), FALSE) OR COALESCE((COALESCE(COALESCE(((SELECT weight FROM relationships WHERE rel_id = p_rel_id))::NUMERIC, 0) < 0, FALSE) AND COALESCE(NOT (COALESCE((SELECT val FROM __erb_dedup_v1), FALSE)), FALSE)), FALSE)));
 $$ LANGUAGE sql STABLE;
 
 -- calc_relationships_violation_table
@@ -745,6 +852,9 @@ FROM relationships t;
 
 -- === 8. Custom views (ERBCustomizations) ===
 -- (no ERBCustomizations row for this section)
+
+-- === 8b. Function and view overrides (ERBCustomizations FunctionOverride / SchemaOverride) ===
+-- (no FunctionOverride / SchemaOverride row for a function or a view)
 
 -- === 9. Custom RLS (ERBCustomizations) ===
 -- (no ERBCustomizations row for this section)

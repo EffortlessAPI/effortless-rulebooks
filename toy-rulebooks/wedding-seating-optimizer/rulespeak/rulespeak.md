@@ -1,4 +1,4 @@
-# 📘 Wedding Seating Optimizer — RuleSpeak®
+# 📘 Wedding Seating Optimizer — Docs
 
 _Seating plan as a DAG — per-table happiness, capacity flags, per-guest satisfaction recompute on every move._
 
@@ -16,6 +16,20 @@ _Seating plan as a DAG — per-table happiness, capacity flags, per-guest satisf
 | Email | A defined attribute. | — |
 | Role | A defined attribute. | _coordinator \| bride \| groom_ |
 | Display Name | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Email | Role | Display Name |
+|---|---|---|---|
+| coord@wed.test | coord@wed.test | coordinator | Casey (Coordinator) |
+| bride@wed.test | bride@wed.test | bride | Alex (Bride) |
+| groom@wed.test | groom@wed.test | groom | Sam (Groom) |
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Table** | Physical reception tables. Guests are assigned to one Table each. | — |
 | Name | A defined attribute. | — |
 | Label | A defined attribute. | _Friendly label e.g. 'Head Table', 'Cousins'._ |
@@ -30,6 +44,22 @@ _Seating plan as a DAG — per-table happiness, capacity flags, per-guest satisf
 | Bride Side Count | The total bride flag across the guests related to the table. | _Number of bride-side guests at this table._ |
 | Groom Side Count | The total groom flag across the guests related to the table. | _Number of groom-side guests at this table._ |
 | Side Skew | Determined by priority: the bride side count minus the groom side count if the bride side count is greater than the groom side count; in all other cases, the groom side count minus the bride side count. | _Absolute difference between bride and groom side counts._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Label | Seats | Head Count ƒ | Open Seats ƒ | Over Capacity ƒ | Raw Happiness ƒ | Violation Count ƒ | Happiness ƒ | Grade ƒ | Bride Side Count ƒ | Groom Side Count ƒ | Side Skew ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| t-head | Head Table | 6 | 6 | 0 | false | 110.0 | 0 | 110.0 | Great | 3 | 3 | 0 |
+| t-family-b | Bride Family | 8 | 4 | 4 | false | 23.0 | 0 | 19.0 | Great | 4 | 0 | 4 |
+| t-family-g | Groom Family | 8 | 4 | 4 | false | 30.0 | 0 | 26.0 | Great | 0 | 4 | 4 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Guest** | Wedding guests. Each is assigned to one Table. | — |
 | Name | A defined attribute. | — |
 | Full Name | A defined attribute. | — |
@@ -49,6 +79,22 @@ _Seating plan as a DAG — per-table happiness, capacity flags, per-guest satisf
 | Mood | Determined by priority: “Happy” if the satisfaction is at least 10; “Neutral” if the satisfaction is at least 0; in all other cases, “Unhappy”. | — |
 | Bride Flag | Determined by priority: 1 if the side is “bride”; in all other cases, 0. | _1 if bride-side guest; else 0. Feeds Tables.BrideSideCount._ |
 | Groom Flag | Determined by priority: 1 if the side is “groom”; in all other cases, 0. | _1 if groom-side guest; else 0. Feeds Tables.GroomSideCount._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Full Name | Side | Dietary | Language | Age Band | Table Label ƒ | Table Seats ƒ | Table Head Count ƒ | Relationships As a ƒ | Relationships As B ƒ | Satisfaction a ƒ | Satisfaction B ƒ | Satisfaction ƒ | Mood ƒ | Bride Flag ƒ | Groom Flag ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| g-alex | Alex Stone | bride | none | en | adult | Head Table | 6 | 6 | 1 | 3 | 30.0 | 20.0 | 50.0 | Happy | 1.0 | 0.0 |
+| g-sam | Sam Rivera | groom | none | en | adult | Head Table | 6 | 6 | 0 | 4 | 0.0 | 50.0 | 50.0 | Happy | 0.0 | 1.0 |
+| g-mom-b | Marie Stone | bride | veg | en | senior | Head Table | 6 | 6 | 2 | 0 | 30.0 | 0.0 | 30.0 | Happy | 1.0 | 0.0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Relationship** | Directed-but-symmetric guest-pair affinities. Kind is loves \| prefers \| avoid \| must-not, with a Weight (positive = affinity, negative = friction). | — |
 | Name | A defined attribute. | — |
 | Guest a | A defined attribute. | — |
@@ -66,6 +112,19 @@ _Seating plan as a DAG — per-table happiness, capacity flags, per-guest satisf
 | Is Satisfied | True when at least one of the following holds: all of the following hold: the weight is greater than 0 and the same table flag is set or all of the following hold: the weight is less than 0 and the same table flag is not set. | _Positive-affinity pair sitting together, or negative-affinity pair sitting apart._ |
 | Violation Table | Determined by priority: the guest a table if the must not violation flag is set; in all other cases, an empty string. | _TableId if this is a must-not violation; else blank._ |
 | Violation Flag | Determined by priority: 1 if the must not violation flag is set; in all other cases, 0. | _1 if must-not pair co-seated; else 0. Feeds the per-table ViolationCount aggregation._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Kind | Weight | Guest a Name ƒ | Guest B Name ƒ | Guest a Table ƒ | Guest B Table ƒ | Same Table ƒ | Seated Table ƒ | Effective Score ƒ | Is Must Not Violation ƒ | Is Satisfied ƒ | Violation Table ƒ | Violation Flag ƒ |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| r-couple | loves | 30 | Alex Stone | Sam Rivera | t-head | t-head | true | t-head | 30.0 | false | true | — | 0.0 |
+| r-mom-b-alex | prefers | 10 | Marie Stone | Alex Stone | t-head | t-head | true | t-head | 10.0 | false | true | — | 0.0 |
+| r-dad-b-alex | prefers | 10 | Tom Stone | Alex Stone | t-head | t-head | true | t-head | 10.0 | false | true | — | 0.0 |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -123,7 +182,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -163,8 +222,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)
