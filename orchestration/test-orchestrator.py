@@ -837,12 +837,23 @@ def prepare_substrate_for_test(substrate_name: str) -> int:
 
 
 def run_substrate_test(substrate_name: str) -> tuple:
-    """Run a substrate's take-test.sh and return (success, error, elapsed, skipped)"""
+    """Run a substrate's inject-substrate.sh (or, with no injector, its take-test.sh)
+    and return (success, error, elapsed, skipped).
+
+    A shared substrate keeps ONE generated copy (python_only_erb_simulator.py,
+    erb_sdk.go, the OWL files...) that belongs to whichever project's injector ran
+    there last. inject-substrate.sh regenerates it for the active project and then
+    runs take-test.sh: what orchestrate.sh runs for every substrate. Running
+    take-test.sh alone graded another project's code: on 2026-11-27 acme-llc's
+    python, golang and owl scored 0/6 against a module that had no 'customers'
+    (scripts/tests/test_substrate_graded_on_this_project.py)."""
     substrate_dir = os.path.join(SUBSTRATES_DIR, substrate_name)
-    script_path = os.path.join(substrate_dir, "take-test.sh")
+    script_path = os.path.join(substrate_dir, "inject-substrate.sh")
+    if not os.path.exists(script_path):
+        script_path = os.path.join(substrate_dir, "take-test.sh")
 
     if not os.path.exists(script_path):
-        return False, "No take-test.sh found", 0.0, False
+        return False, "No inject-substrate.sh or take-test.sh found", 0.0, False
 
     start_time = time.time()
     try:
@@ -880,7 +891,9 @@ def run_substrate_test(substrate_name: str) -> tuple:
             cwd=substrate_dir,
             capture_output=True,
             text=True,
-            timeout=600,  # 10 minutes for LLM substrates like english
+            # 30 minutes: the injector regenerates the substrate first, which for the
+            # largest project (procedural-knowledge-ontology, 27 MB) calls the tools.
+            timeout=1800,
             env=env,
         )
         elapsed = time.time() - start_time

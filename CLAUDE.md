@@ -218,6 +218,15 @@ crashed and never exited, and the runner waited three hours. Run builds with the
 published CLI (`npm install -g @effortlessapi/cli`), the one that has `serve -port`.
 Test: `scripts/tests/test_build_runs_every_step.py`.
 
+**Grading regenerates each substrate for the project first (2026-11-27).** A shared
+substrate (`execution-substrates/<name>/`) keeps one generated copy, which belongs to
+whichever project was injected there last. `test-orchestrator.run_substrate_test` (so
+`run-conformance.py` and the corpus runner) now runs the substrate's `inject-substrate.sh`
+(regenerate, then `take-test.sh`), as `orchestrate.sh` always did; it ran `take-test.sh`
+alone, and acme-llc's python, golang and owl scored 0/6 against another project's code.
+Two sessions grading at once still share those copies: grade one project at a time.
+Test: `scripts/tests/test_substrate_graded_on_this_project.py`.
+
 **Builds are sequential and must stay that way.** Every `effortless build` goes
 through the local transpiler host on `:4242`; concurrent builds corrupt each other. The
 explorer refuses to launch a second fan-out while one is live for the same reason.
