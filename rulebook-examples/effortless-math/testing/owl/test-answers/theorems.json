@@ -13,7 +13,8 @@
     "contract_path": "domains/fermats-last-theorem/theorem-contract.json",
     "current_version": "21.0.0-migration",
     "is_flagship": true,
-    "next_target": "Replace provider imports one theorem repository at a time while rebuilding the complete theorem graph."
+    "next_target": "Replace provider imports one theorem repository at a time while rebuilding the complete theorem graph.",
+    "name": "fermats-last-theorem"
   },
   {
     "theorem_id": "analytic-prime-distribution",
@@ -29,7 +30,8 @@
     "contract_path": "domains/analytic-prime-distribution/theorem-contract.json",
     "current_version": "0.1.0",
     "is_flagship": false,
-    "next_target": "Internalize the analytic prime-ideal theorem and Artin-L-function argument."
+    "next_target": "Internalize the analytic prime-ideal theorem and Artin-L-function argument.",
+    "name": "analytic-prime-distribution"
   },
   {
     "theorem_id": "hilbert-specialization",
@@ -45,7 +47,8 @@
     "contract_path": "domains/hilbert-specialization/theorem-contract.json",
     "current_version": "0.1.0",
     "is_flagship": false,
-    "next_target": "Internalize universal thin-set avoidance."
+    "next_target": "Internalize universal thin-set avoidance.",
+    "name": "hilbert-specialization"
   },
   {
     "theorem_id": "mazur-modular-curve-arithmetic",
@@ -61,7 +64,8 @@
     "contract_path": "domains/mazur-modular-curve-arithmetic/theorem-contract.json",
     "current_version": "0.1.0",
     "is_flagship": false,
-    "next_target": "Internalize the Eisenstein quotient and formal-immersion theorem."
+    "next_target": "Internalize the Eisenstein quotient and formal-immersion theorem.",
+    "name": "mazur-modular-curve-arithmetic"
   },
   {
     "theorem_id": "global-deformation-duality",
@@ -77,7 +81,8 @@
     "contract_path": "domains/global-deformation-duality/theorem-contract.json",
     "current_version": "0.1.0",
     "is_flagship": false,
-    "next_target": "Internalize actual Galois cochain realization, representability, and duality."
+    "next_target": "Internalize actual Galois cochain realization, representability, and duality.",
+    "name": "global-deformation-duality"
   },
   {
     "theorem_id": "modular-curve-cohomological-comparison",
@@ -93,7 +98,8 @@
     "contract_path": "domains/modular-curve-cohomological-comparison/theorem-contract.json",
     "current_version": "0.1.0",
     "is_flagship": false,
-    "next_target": "Internalize functorial comparison for the actual modular curve and Jacobian."
+    "next_target": "Internalize functorial comparison for the actual modular curve and Jacobian.",
+    "name": "modular-curve-cohomological-comparison"
   },
   {
     "theorem_id": "universal-level-lowering",
@@ -109,7 +115,8 @@
     "contract_path": "domains/universal-level-lowering/theorem-contract.json",
     "current_version": "0.1.0",
     "is_flagship": false,
-    "next_target": "Internalize the universal quantifier over all admissible levels."
+    "next_target": "Internalize the universal quantifier over all admissible levels.",
+    "name": "universal-level-lowering"
   },
   {
     "theorem_id": "solvable-artin-automorphy",
@@ -125,7 +132,8 @@
     "contract_path": "domains/solvable-artin-automorphy/theorem-contract.json",
     "current_version": "0.1.0",
     "is_flagship": false,
-    "next_target": "Internalize the analytic Langlands-Tunnell kernel."
+    "next_target": "Internalize the analytic Langlands-Tunnell kernel.",
+    "name": "solvable-artin-automorphy"
   },
   {
     "theorem_id": "natural-number-addition-2-plus-2-equals-4",
@@ -141,7 +149,8 @@
     "contract_path": "domains/natural-number-arithmetic/theorem-contract.json",
     "current_version": "1.0.0",
     "is_flagship": false,
-    "next_target": "Generalize to associativity and commutativity of addition."
+    "next_target": "Generalize to associativity and commutativity of addition.",
+    "name": "natural-number-addition-2-plus-2-equals-4"
   },
   {
     "theorem_id": "natural-number-subtraction-4-minus-2-equals-2",
@@ -157,7 +166,8 @@
     "contract_path": "domains/natural-number-arithmetic/theorem-contract.json",
     "current_version": "1.0.0",
     "is_flagship": false,
-    "next_target": "Characterize truncated subtraction as the left adjoint of addition on the naturals."
+    "next_target": "Characterize truncated subtraction as the left adjoint of addition on the naturals.",
+    "name": "natural-number-subtraction-4-minus-2-equals-2"
   },
   {
     "theorem_id": "natural-number-multiplication-2-times-2-equals-4",
@@ -173,7 +183,8 @@
     "contract_path": "domains/natural-number-arithmetic/theorem-contract.json",
     "current_version": "1.0.0",
     "is_flagship": false,
-    "next_target": "Generalize to distributivity of multiplication over addition."
+    "next_target": "Generalize to distributivity of multiplication over addition.",
+    "name": "natural-number-multiplication-2-times-2-equals-4"
   },
   {
     "theorem_id": "natural-number-division-4-div-2-equals-2",
@@ -189,7 +200,8 @@
     "contract_path": "domains/natural-number-arithmetic/theorem-contract.json",
     "current_version": "1.0.0",
     "is_flagship": false,
-    "next_target": "Model the remainder and prove the division algorithm 4 = 2*q + r with 0<=r<2."
+    "next_target": "Model the remainder and prove the division algorithm 4 = 2*q + r with 0<=r<2.",
+    "name": "natural-number-division-4-div-2-equals-2"
   },
   {
     "theorem_id": "bit-calculator-4bit-arithmetic",
@@ -205,6 +217,7 @@
     "contract_path": "domains/natural-number-arithmetic/bit-calculator/provider-certificate.json",
     "current_version": "1.0.0",
     "is_flagship": false,
-    "next_target": "8-bit width; signed arithmetic; a small calculator UI over vw_computation_answer; python/xlsx witness substrates."
+    "next_target": "8-bit width; signed arithmetic; a small calculator UI over vw_computation_answer; python/xlsx witness substrates.",
+    "name": "bit-calculator-4bit-arithmetic"
   }
 ]

@@ -6,7 +6,8 @@
     "is_derived": false,
     "allows_imported_children": true,
     "is_terminal": false,
-    "description": "The theorem or edge has a declared contract but no active proof object yet."
+    "description": "The theorem or edge has a declared contract but no active proof object yet.",
+    "name": "PLANNED"
   },
   {
     "proof_status_id": "IMPORTED",
@@ -15,7 +16,8 @@
     "is_derived": false,
     "allows_imported_children": true,
     "is_terminal": false,
-    "description": "The conclusion is accepted from an external theorem or trusted adapter."
+    "description": "The conclusion is accepted from an external theorem or trusted adapter.",
+    "name": "IMPORTED"
   },
   {
     "proof_status_id": "DECOMPOSED",
@@ -24,7 +26,8 @@
     "is_derived": false,
     "allows_imported_children": true,
     "is_terminal": false,
-    "description": "A theorem-sized import has been split into typed child obligations."
+    "description": "A theorem-sized import has been split into typed child obligations.",
+    "name": "DECOMPOSED"
   },
   {
     "proof_status_id": "DERIVED_WITH_IMPORTED_CHILDREN",
@@ -33,7 +36,8 @@
     "is_derived": true,
     "allows_imported_children": true,
     "is_terminal": false,
-    "description": "The parent fact is derived, but at least one load-bearing child remains imported."
+    "description": "The parent fact is derived, but at least one load-bearing child remains imported.",
+    "name": "DERIVED_WITH_IMPORTED_CHILDREN"
   },
   {
     "proof_status_id": "DERIVED_WITH_SHARED_KERNEL",
@@ -42,7 +46,8 @@
     "is_derived": true,
     "allows_imported_children": true,
     "is_terminal": false,
-    "description": "The parent is derived from a reusable provider theorem or foundation kernel."
+    "description": "The parent is derived from a reusable provider theorem or foundation kernel.",
+    "name": "DERIVED_WITH_SHARED_KERNEL"
   },
   {
     "proof_status_id": "FULLY_INTERNALIZED_FOR_SCOPE",
@@ -51,7 +56,8 @@
     "is_derived": true,
     "allows_imported_children": false,
     "is_terminal": true,
-    "description": "All load-bearing inference content is represented above the declared trust boundary for the stated scope."
+    "description": "All load-bearing inference content is represented above the declared trust boundary for the stated scope.",
+    "name": "FULLY_INTERNALIZED_FOR_SCOPE"
   },
   {
     "proof_status_id": "FALSIFIED",
@@ -60,7 +66,8 @@
     "is_derived": false,
     "allows_imported_children": false,
     "is_terminal": true,
-    "description": "The claimed inference failed or a counterexample was witnessed."
+    "description": "The claimed inference failed or a counterexample was witnessed.",
+    "name": "FALSIFIED"
   },
   {
     "proof_status_id": "SUPERSEDED",
@@ -69,7 +76,8 @@
     "is_derived": false,
     "allows_imported_children": false,
     "is_terminal": true,
-    "description": "A historical theorem edge or schema is retained for provenance but is no longer live."
+    "description": "A historical theorem edge or schema is retained for provenance but is no longer live.",
+    "name": "SUPERSEDED"
   },
   {
     "proof_status_id": "NOT_EVALUABLE",
@@ -78,6 +86,7 @@
     "is_derived": false,
     "allows_imported_children": true,
     "is_terminal": false,
-    "description": "The rule lacks the data, adapter, or scope information required to evaluate it."
+    "description": "The rule lacks the data, adapter, or scope information required to evaluate it.",
+    "name": "NOT_EVALUABLE"
   }
 ]

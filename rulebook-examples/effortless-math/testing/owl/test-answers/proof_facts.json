@@ -8,7 +8,8 @@
     "derivation_kind": "elementary",
     "contradiction": false,
     "notes": "Normalization.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-001"
   },
   {
     "fact_id": "proof-step-002",
@@ -19,7 +20,8 @@
     "derivation_kind": "definition",
     "contradiction": false,
     "notes": "Frey construction.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-002"
   },
   {
     "fact_id": "proof-step-003",
@@ -30,7 +32,8 @@
     "derivation_kind": "algebraic",
     "contradiction": false,
     "notes": "Integral minimal model.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-003"
   },
   {
     "fact_id": "proof-step-004",
@@ -41,7 +44,8 @@
     "derivation_kind": "local-arithmetic",
     "contradiction": false,
     "notes": "Semistability.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-004"
   },
   {
     "fact_id": "proof-step-005",
@@ -52,7 +56,8 @@
     "derivation_kind": "algebraic",
     "contradiction": false,
     "notes": "Valuation profile.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-005"
   },
   {
     "fact_id": "proof-step-006",
@@ -63,7 +68,8 @@
     "derivation_kind": "algebraic",
     "contradiction": false,
     "notes": "Visible rational two-torsion.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-006"
   },
   {
     "fact_id": "proof-step-007",
@@ -74,7 +80,8 @@
     "derivation_kind": "tate-kummer-derived",
     "contradiction": false,
     "notes": "Away-from-p criterion.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-007"
   },
   {
     "fact_id": "proof-step-008",
@@ -85,7 +92,8 @@
     "derivation_kind": "finite-flat-algebra",
     "contradiction": false,
     "notes": "Finite-flat boundary.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-008"
   },
   {
     "fact_id": "proof-step-009",
@@ -96,7 +104,8 @@
     "derivation_kind": "computed",
     "contradiction": false,
     "notes": "Level-2 space is zero.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-009"
   },
   {
     "fact_id": "proof-step-010",
@@ -107,7 +116,8 @@
     "derivation_kind": "logical-partition",
     "contradiction": false,
     "notes": "E[3] is irreducible or reducible, exclusively.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-010"
   },
   {
     "fact_id": "proof-step-011",
@@ -118,7 +128,8 @@
     "derivation_kind": "finite-group-proof",
     "contradiction": false,
     "notes": "Universal finite projective-image fact.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-011"
   },
   {
     "fact_id": "proof-step-012",
@@ -129,7 +140,8 @@
     "derivation_kind": "finite-representation-profile",
     "contradiction": false,
     "notes": "Oddness profile.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-012"
   },
   {
     "fact_id": "proof-step-013",
@@ -140,7 +152,8 @@
     "derivation_kind": "structural-oddness",
     "contradiction": false,
     "notes": "Complex conjugation has +1 and -1 eigenlines.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-013"
   },
   {
     "fact_id": "proof-step-014",
@@ -151,7 +164,8 @@
     "derivation_kind": "internal-finite-flat-schema",
     "contradiction": false,
     "notes": "Endpoint and Kummer contract.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-014"
   },
   {
     "fact_id": "proof-step-015",
@@ -162,7 +176,8 @@
     "derivation_kind": "internal-finite-image-compiler",
     "contradiction": false,
     "notes": "Finite image, Brauer traces, determinant, and oddness.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-015"
   },
   {
     "fact_id": "proof-step-016",
@@ -173,7 +188,8 @@
     "derivation_kind": "logical-partition",
     "contradiction": false,
     "notes": "p is 5/7, 11, or greater than 11.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-016"
   },
   {
     "fact_id": "proof-step-017",
@@ -184,7 +200,8 @@
     "derivation_kind": "internal-2-isogeny-descent",
     "contradiction": false,
     "notes": "X0(15)(Q) consists of eight explicitly enumerated points.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-017"
   },
   {
     "fact_id": "proof-step-018",
@@ -195,7 +212,8 @@
     "derivation_kind": "finite-point-semistability-filter",
     "contradiction": false,
     "notes": "The four noncuspidal points have conductor 50 and are not semistable.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-018"
   },
   {
     "fact_id": "proof-step-019",
@@ -206,7 +224,8 @@
     "derivation_kind": "derived-x015-rational-point-classification",
     "contradiction": false,
     "notes": "A semistable curve cannot correspond to a noncuspidal X0(15) point.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-019"
   },
   {
     "fact_id": "proof-step-020",
@@ -217,7 +236,8 @@
     "derivation_kind": "internal-isogeny-degree-ledger",
     "contradiction": false,
     "notes": "Allowed and excluded cyclic degrees.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-020"
   },
   {
     "fact_id": "proof-step-021",
@@ -228,7 +248,8 @@
     "derivation_kind": "internal-explicit-kummer-group-scheme",
     "contradiction": false,
     "notes": "The disjoint p-component rank-p scheme gives the middle extension.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-021"
   },
   {
     "fact_id": "proof-step-022",
@@ -239,7 +260,8 @@
     "derivation_kind": "derived-explicit-kummer-classification",
     "contradiction": false,
     "notes": "The valuation criterion is proved from K*/K*^p.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-022"
   },
   {
     "fact_id": "proof-step-023",
@@ -250,7 +272,8 @@
     "derivation_kind": "internal-explicit-g12-lift",
     "contradiction": false,
     "notes": "G12 over Z[sqrt(-2)] reduces bijectively to GL2(F3).",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-023"
   },
   {
     "fact_id": "proof-step-024",
@@ -261,7 +284,8 @@
     "derivation_kind": "derived-explicit-g12-lift",
     "contradiction": false,
     "notes": "Restrict the full G12 lift to the actual residual image subgroup.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-024"
   },
   {
     "fact_id": "proof-step-025",
@@ -272,7 +296,8 @@
     "derivation_kind": "imported-foundation-kernel",
     "contradiction": false,
     "notes": "Mazur formal immersion kernel.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-025"
   },
   {
     "fact_id": "proof-step-026",
@@ -283,7 +308,8 @@
     "derivation_kind": "derived-from-mazur-formal-kernel",
     "contradiction": false,
     "notes": "Formal immersion parent derived.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-026"
   },
   {
     "fact_id": "proof-step-027",
@@ -294,7 +320,8 @@
     "derivation_kind": "mixed-geometry",
     "contradiction": false,
     "notes": "Twisted X(5) geometry.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-027"
   },
   {
     "fact_id": "proof-step-028",
@@ -305,7 +332,8 @@
     "derivation_kind": "derived-finite-flat-at-p",
     "contradiction": false,
     "notes": "Finite-flat parent assembled.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-028"
   },
   {
     "fact_id": "proof-step-029",
@@ -316,7 +344,8 @@
     "derivation_kind": "derived-finite-image-lift",
     "contradiction": false,
     "notes": "The characteristic-zero finite-image representation is assembled.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-029"
   },
   {
     "fact_id": "proof-step-030",
@@ -327,7 +356,8 @@
     "derivation_kind": "internal-frey-cusp-specialization",
     "contradiction": false,
     "notes": "The p=5,7 Frey point specializes to the distinguished cusp.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-030"
   },
   {
     "fact_id": "proof-step-031",
@@ -338,7 +368,8 @@
     "derivation_kind": "derived-frey-local-obstruction",
     "contradiction": false,
     "notes": "Formal immersion forces the noncuspidal Frey point to be a cusp, contradiction.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-031"
   },
   {
     "fact_id": "proof-step-032",
@@ -349,7 +380,8 @@
     "derivation_kind": "internal-thin-set-crt-compiler",
     "contradiction": false,
     "notes": "Finite thin loci and local residue constraints.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-032"
   },
   {
     "fact_id": "proof-step-033",
@@ -360,7 +392,8 @@
     "derivation_kind": "derived-isogeny-classification",
     "contradiction": false,
     "notes": "The rational-isogeny parent is assembled.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-033"
   },
   {
     "fact_id": "proof-step-034",
@@ -371,7 +404,8 @@
     "derivation_kind": "internal-artin-type-router",
     "contradiction": false,
     "notes": "Dihedral, tetrahedral, and octahedral routes.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-034"
   },
   {
     "fact_id": "proof-step-035",
@@ -382,7 +416,8 @@
     "derivation_kind": "imported-foundation-kernel",
     "contradiction": false,
     "notes": "Hilbert specialization kernel.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-035"
   },
   {
     "fact_id": "proof-step-036",
@@ -393,7 +428,8 @@
     "derivation_kind": "derived-from-hilbert-specialization-kernel",
     "contradiction": false,
     "notes": "Parent theorem derived from finite compiler plus kernel.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-036"
   },
   {
     "fact_id": "proof-step-037",
@@ -404,7 +440,8 @@
     "derivation_kind": "imported-foundation-kernel",
     "contradiction": false,
     "notes": "Solvable automorphy kernel.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-037"
   },
   {
     "fact_id": "proof-step-038",
@@ -415,7 +452,8 @@
     "derivation_kind": "derived-from-solvable-automorphy-kernel",
     "contradiction": false,
     "notes": "Automorphy parent derived.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-038"
   },
   {
     "fact_id": "proof-step-039",
@@ -426,7 +464,8 @@
     "derivation_kind": "case-completion",
     "contradiction": false,
     "notes": "Local profile.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-039"
   },
   {
     "fact_id": "proof-step-040",
@@ -437,7 +476,8 @@
     "derivation_kind": "internal-small-prime-isogeny-compiler",
     "contradiction": false,
     "notes": "A rational p-isogeny gives a cyclic 2p-isogeny; all small cases are excluded.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-040"
   },
   {
     "fact_id": "proof-step-041",
@@ -448,7 +488,8 @@
     "derivation_kind": "internal-large-prime-isogeny-compiler",
     "contradiction": false,
     "notes": "For p>11, 2p is not an allowed rational cyclic-isogeny degree.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-041"
   },
   {
     "fact_id": "proof-step-042",
@@ -459,7 +500,8 @@
     "derivation_kind": "proof-by-prime-cases",
     "contradiction": false,
     "notes": "The Frey irreducibility parent is derived.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-042"
   },
   {
     "fact_id": "proof-step-043",
@@ -470,7 +512,8 @@
     "derivation_kind": "derived-hilbert-selection",
     "contradiction": false,
     "notes": "The auxiliary curve satisfies the required local and generic properties.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-043"
   },
   {
     "fact_id": "proof-step-044",
@@ -481,7 +524,8 @@
     "derivation_kind": "derived-langlands-tunnell",
     "contradiction": false,
     "notes": "The weight-one automorphic representation is assembled.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-044"
   },
   {
     "fact_id": "proof-step-045",
@@ -492,7 +536,8 @@
     "derivation_kind": "internal-a2-theta-modularity",
     "contradiction": false,
     "notes": "The A2 theta series is a weight-one form of character chi_-3.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-045"
   },
   {
     "fact_id": "proof-step-046",
@@ -503,7 +548,8 @@
     "derivation_kind": "derived-explicit-theta-congruence",
     "contradiction": false,
     "notes": "All nonconstant coefficients are multiples of 6.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-046"
   },
   {
     "fact_id": "proof-step-047",
@@ -514,7 +560,8 @@
     "derivation_kind": "structural",
     "contradiction": false,
     "notes": "The residual trace comes from the already irreducible residual representation.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-047"
   },
   {
     "fact_id": "proof-step-048",
@@ -525,7 +572,8 @@
     "derivation_kind": "logical-partition",
     "contradiction": false,
     "notes": "Theorem 4.26 applicability is split into good and residual-prime cases.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-048"
   },
   {
     "fact_id": "proof-step-049",
@@ -536,7 +584,8 @@
     "derivation_kind": "structural",
     "contradiction": false,
     "notes": "Residual image is finite.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-049"
   },
   {
     "fact_id": "proof-step-050",
@@ -547,7 +596,8 @@
     "derivation_kind": "internal-character-compiler",
     "contradiction": false,
     "notes": "Complete class traces determine semisimplification.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-050"
   },
   {
     "fact_id": "proof-step-051",
@@ -558,7 +608,8 @@
     "derivation_kind": "internal-local-image-profile",
     "contradiction": false,
     "notes": "Semistable local inertia supplies the required elementary-unipotent profile.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-051"
   },
   {
     "fact_id": "proof-step-052",
@@ -569,7 +620,8 @@
     "derivation_kind": "internal-transvection-generation",
     "contradiction": false,
     "notes": "Upper and lower transvections generate SL2.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-052"
   },
   {
     "fact_id": "proof-step-053",
@@ -580,7 +632,8 @@
     "derivation_kind": "derived-large-image",
     "contradiction": false,
     "notes": "Cyclotomic determinant upgrades SL2 to GL2.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-053"
   },
   {
     "fact_id": "proof-step-054",
@@ -591,7 +644,8 @@
     "derivation_kind": "internal-qexp-and-eigenpacket-compiler",
     "contradiction": false,
     "notes": "Multiplication and packet projection preserve the residual Hecke system.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-054"
   },
   {
     "fact_id": "proof-step-055",
@@ -602,7 +656,8 @@
     "derivation_kind": "derived-weight-change",
     "contradiction": false,
     "notes": "The irreducible mod-3 branch is modular of weight two.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-055"
   },
   {
     "fact_id": "proof-step-056",
@@ -613,7 +668,8 @@
     "derivation_kind": "internal-finite-chebotarev-compiler",
     "contradiction": false,
     "notes": "Complete class table and Frobenius factorization classifier.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-056"
   },
   {
     "fact_id": "proof-step-057",
@@ -624,7 +680,8 @@
     "derivation_kind": "imported-foundation-kernel",
     "contradiction": false,
     "notes": "Analytic prime distribution kernel.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-057"
   },
   {
     "fact_id": "proof-step-058",
@@ -635,7 +692,8 @@
     "derivation_kind": "derived-from-prime-distribution-kernel",
     "contradiction": false,
     "notes": "Parent theorem derived from finite compiler plus kernel.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-058"
   },
   {
     "fact_id": "proof-step-059",
@@ -646,7 +704,8 @@
     "derivation_kind": "derived-transfer",
     "contradiction": false,
     "notes": "Certifies reducible(E[3]) \u21d2 residual modularity.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-059"
   },
   {
     "fact_id": "proof-step-060",
@@ -657,7 +716,8 @@
     "derivation_kind": "proof-by-cases",
     "contradiction": false,
     "notes": "No realized branch facts are asserted.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-060"
   },
   {
     "fact_id": "proof-step-061",
@@ -668,7 +728,8 @@
     "derivation_kind": "internal-local-model-compiler",
     "contradiction": false,
     "notes": "Good, ordinary, finite-flat schema, and Steinberg models.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-061"
   },
   {
     "fact_id": "proof-step-062",
@@ -679,7 +740,8 @@
     "derivation_kind": "internal-monodromy-compiler",
     "contradiction": false,
     "notes": "Monodromy and local U model.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-062"
   },
   {
     "fact_id": "proof-step-063",
@@ -690,7 +752,8 @@
     "derivation_kind": "internal-cohomology-finite-compiler",
     "contradiction": false,
     "notes": "Finite towers and Hecke squares.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-063"
   },
   {
     "fact_id": "proof-step-064",
@@ -701,7 +764,8 @@
     "derivation_kind": "derived-chebotarev-class-coverage",
     "contradiction": false,
     "notes": "Every finite class has unramified Frobenius representatives.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-064"
   },
   {
     "fact_id": "proof-step-065",
@@ -712,7 +776,8 @@
     "derivation_kind": "imported-foundation-kernel",
     "contradiction": false,
     "notes": "Shared deformation/duality kernel.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-065"
   },
   {
     "fact_id": "proof-step-066",
@@ -723,7 +788,8 @@
     "derivation_kind": "derived-from-deformation-duality-kernel",
     "contradiction": false,
     "notes": "Representability parent derived.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-066"
   },
   {
     "fact_id": "proof-step-067",
@@ -734,7 +800,8 @@
     "derivation_kind": "imported-foundation-kernel",
     "contradiction": false,
     "notes": "Shared good/bad comparison kernel.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-067"
   },
   {
     "fact_id": "proof-step-068",
@@ -745,7 +812,8 @@
     "derivation_kind": "derived-from-modular-curve-comparison-kernel",
     "contradiction": false,
     "notes": "Good-prime comparison parent derived.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-068"
   },
   {
     "fact_id": "proof-step-069",
@@ -756,7 +824,8 @@
     "derivation_kind": "derived-from-modular-curve-comparison-kernel",
     "contradiction": false,
     "notes": "Nearby-cycles parent derived.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-069"
   },
   {
     "fact_id": "proof-step-070",
@@ -767,7 +836,8 @@
     "derivation_kind": "local-deformation-schema",
     "contradiction": false,
     "notes": "Local condition contracts.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-070"
   },
   {
     "fact_id": "proof-step-071",
@@ -778,7 +848,8 @@
     "derivation_kind": "cohomological-interface",
     "contradiction": false,
     "notes": "Selmer interface.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-071"
   },
   {
     "fact_id": "proof-step-072",
@@ -789,7 +860,8 @@
     "derivation_kind": "derived-bad-prime-comparison",
     "contradiction": false,
     "notes": "Bad-prime parent assembled.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-072"
   },
   {
     "fact_id": "proof-step-073",
@@ -800,7 +872,8 @@
     "derivation_kind": "derived-integral-cohomology-package",
     "contradiction": false,
     "notes": "Cohomology parent assembled.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-073"
   },
   {
     "fact_id": "proof-step-074",
@@ -811,7 +884,8 @@
     "derivation_kind": "derived-from-deformation-duality-kernel",
     "contradiction": false,
     "notes": "Poitou-Tate parent derived.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-074"
   },
   {
     "fact_id": "proof-step-075",
@@ -822,7 +896,8 @@
     "derivation_kind": "derived-local-global-compatibility",
     "contradiction": false,
     "notes": "The old compatibility parent is derived.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-075"
   },
   {
     "fact_id": "proof-step-076",
@@ -833,7 +908,8 @@
     "derivation_kind": "internal-qexp-duality-compiler",
     "contradiction": false,
     "notes": "Perfect q-expansion duality gives a one-dimensional m-torsion line.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-076"
   },
   {
     "fact_id": "proof-step-077",
@@ -844,7 +920,8 @@
     "derivation_kind": "derived-constituent-control",
     "contradiction": false,
     "notes": "Constituent parent assembled.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-077"
   },
   {
     "fact_id": "proof-step-078",
@@ -855,7 +932,8 @@
     "derivation_kind": "internal-residual-dimension-compiler",
     "contradiction": false,
     "notes": "Connected/\u00e9tale dimension and component obstruction.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-078"
   },
   {
     "fact_id": "proof-step-079",
@@ -866,7 +944,8 @@
     "derivation_kind": "derived-residual-prime-multiplicity",
     "contradiction": false,
     "notes": "Residual-prime parent assembled.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-079"
   },
   {
     "fact_id": "proof-step-080",
@@ -877,7 +956,8 @@
     "derivation_kind": "internal-dual-selmer-selection-compiler",
     "contradiction": false,
     "notes": "Independent evaluation vectors and desired finite quotient classes are constructed.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-080"
   },
   {
     "fact_id": "proof-step-081",
@@ -888,7 +968,8 @@
     "derivation_kind": "derived-using-existing-chebotarev",
     "contradiction": false,
     "notes": "Analytic Chebotarev supplies primes in the selected classes.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-081"
   },
   {
     "fact_id": "proof-step-082",
@@ -899,7 +980,8 @@
     "derivation_kind": "finite-algebra",
     "contradiction": false,
     "notes": "Cached finite patching system.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-082"
   },
   {
     "fact_id": "proof-step-083",
@@ -910,7 +992,8 @@
     "derivation_kind": "internal-theorem2-geometry",
     "contradiction": false,
     "notes": "Free cover, Shapiro, and involution contract.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-083"
   },
   {
     "fact_id": "proof-step-084",
@@ -921,7 +1004,8 @@
     "derivation_kind": "internal-theorem2-compiler",
     "contradiction": false,
     "notes": "H1-minus is free over O[Delta].",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-084"
   },
   {
     "fact_id": "proof-step-085",
@@ -932,7 +1016,8 @@
     "derivation_kind": "internal-good-reduction-dimension-compiler",
     "contradiction": false,
     "notes": "D(V)^0 has dimension one and D(V) has twice that dimension.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-085"
   },
   {
     "fact_id": "proof-step-086",
@@ -943,7 +1028,8 @@
     "derivation_kind": "proof-by-cases",
     "contradiction": false,
     "notes": "The parent theorem is derived without asserting either branch as realized.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-086"
   },
   {
     "fact_id": "proof-step-087",
@@ -954,7 +1040,8 @@
     "derivation_kind": "internal-nakayama-rank-two-compiler",
     "contradiction": false,
     "notes": "Rational rank plus residue dimension gives freeness.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-087"
   },
   {
     "fact_id": "proof-step-088",
@@ -965,7 +1052,8 @@
     "derivation_kind": "derived-localized-etale-parent",
     "contradiction": false,
     "notes": "Old parent fact derived.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-088"
   },
   {
     "fact_id": "proof-step-089",
@@ -976,7 +1064,8 @@
     "derivation_kind": "internal-nakayama-rank-two-compiler",
     "contradiction": false,
     "notes": "Same rank-two compiler at auxiliary level.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-089"
   },
   {
     "fact_id": "proof-step-090",
@@ -987,7 +1076,8 @@
     "derivation_kind": "internal-sign-projector-rank-one-compiler",
     "contradiction": false,
     "notes": "Complementary projectors and one-dimensional residue signs.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-090"
   },
   {
     "fact_id": "proof-step-091",
@@ -998,7 +1088,8 @@
     "derivation_kind": "derived-rank-transfer",
     "contradiction": false,
     "notes": "T_Q is free over O[Delta_Q].",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-091"
   },
   {
     "fact_id": "proof-step-092",
@@ -1009,7 +1100,8 @@
     "derivation_kind": "internal-module-pseudocharacter-compiler",
     "contradiction": false,
     "notes": "Trace/determinant and compatible finite quotients.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-092"
   },
   {
     "fact_id": "proof-step-093",
@@ -1020,7 +1112,8 @@
     "derivation_kind": "derived-modular-pseudocharacter",
     "contradiction": false,
     "notes": "The old parent is derived.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-093"
   },
   {
     "fact_id": "proof-step-094",
@@ -1031,7 +1124,8 @@
     "derivation_kind": "internal-pseudocharacter-compiler",
     "contradiction": false,
     "notes": "Unit trace bases, Cayley\u2013Hamilton quotients, and matrix units.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-094"
   },
   {
     "fact_id": "proof-step-095",
@@ -1042,7 +1136,8 @@
     "derivation_kind": "internal-adic-representation-compiler",
     "contradiction": false,
     "notes": "Compatible finite-stage representations form the completed representation.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-095"
   },
   {
     "fact_id": "proof-step-096",
@@ -1053,7 +1148,8 @@
     "derivation_kind": "derived-hecke-galois-assembly",
     "contradiction": false,
     "notes": "The omnibus parent is assembled from two child theorem inputs and an internal compiler.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-096"
   },
   {
     "fact_id": "proof-step-097",
@@ -1064,7 +1160,8 @@
     "derivation_kind": "universal-property-compiler",
     "contradiction": false,
     "notes": "Unique map R\u2192T.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-097"
   },
   {
     "fact_id": "proof-step-098",
@@ -1075,7 +1172,8 @@
     "derivation_kind": "generator-coverage",
     "contradiction": false,
     "notes": "Traces, determinants, and local U operators generate T.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-098"
   },
   {
     "fact_id": "proof-step-099",
@@ -1086,7 +1184,8 @@
     "derivation_kind": "derived-surjection",
     "contradiction": false,
     "notes": "Surjectivity from topological generator coverage.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-099"
   },
   {
     "fact_id": "proof-step-100",
@@ -1097,7 +1196,8 @@
     "derivation_kind": "n-structure-input-contract",
     "contradiction": false,
     "notes": "All typed inputs present.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-100"
   },
   {
     "fact_id": "proof-step-101",
@@ -1108,7 +1208,8 @@
     "derivation_kind": "internal-n-structure-assembler",
     "contradiction": false,
     "notes": "Emit compatible R_Q,T_Q,H_Q diagrams.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-101"
   },
   {
     "fact_id": "proof-step-102",
@@ -1119,7 +1220,8 @@
     "derivation_kind": "contract-validation",
     "contradiction": false,
     "notes": "Every Proposition 3 hypothesis is represented.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-102"
   },
   {
     "fact_id": "proof-step-103",
@@ -1130,7 +1232,8 @@
     "derivation_kind": "internal-patching-compiler",
     "contradiction": false,
     "notes": "Finite bounds, diagonal selection, and inverse limit.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-103"
   },
   {
     "fact_id": "proof-step-104",
@@ -1141,7 +1244,8 @@
     "derivation_kind": "derived-from-internal-patching-compiler",
     "contradiction": false,
     "notes": "The algebraic patching theorem is no longer imported.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-104"
   },
   {
     "fact_id": "proof-step-105",
@@ -1152,7 +1256,8 @@
     "derivation_kind": "internal-faithful-free-module-lemma",
     "contradiction": false,
     "notes": "A positive-rank free R-module has zero annihilator.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-105"
   },
   {
     "fact_id": "proof-step-106",
@@ -1163,7 +1268,8 @@
     "derivation_kind": "derived-faithful-module-isomorphism",
     "contradiction": false,
     "notes": "The kernel annihilates a faithful module, so it is zero.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-106"
   },
   {
     "fact_id": "proof-step-107",
@@ -1174,7 +1280,8 @@
     "derivation_kind": "derived-from-rt-child-dag",
     "contradiction": false,
     "notes": "No omnibus R=T import remains.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-107"
   },
   {
     "fact_id": "proof-step-108",
@@ -1185,7 +1292,8 @@
     "derivation_kind": "derived",
     "contradiction": false,
     "notes": "Lift residual modularity.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-108"
   },
   {
     "fact_id": "proof-step-109",
@@ -1196,7 +1304,8 @@
     "derivation_kind": "structural",
     "contradiction": false,
     "notes": "Residual representation modular.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-109"
   },
   {
     "fact_id": "proof-step-110",
@@ -1207,7 +1316,8 @@
     "derivation_kind": "internal-universal-contract",
     "contradiction": false,
     "notes": "All finite certificate-generator interfaces are present.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-110"
   },
   {
     "fact_id": "proof-step-111",
@@ -1218,7 +1328,8 @@
     "derivation_kind": "imported-foundation-kernel",
     "contradiction": false,
     "notes": "Universal level-lowering kernel.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-111"
   },
   {
     "fact_id": "proof-step-112",
@@ -1229,7 +1340,8 @@
     "derivation_kind": "derived-from-universal-level-lowering-kernel",
     "contradiction": false,
     "notes": "Level-two newform conclusion derived.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-112"
   },
   {
     "fact_id": "proof-step-113",
@@ -1240,7 +1352,8 @@
     "derivation_kind": "logic",
     "contradiction": true,
     "notes": "Contradiction.",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "proof-step-113"
   },
   {
     "fact_id": "proof-nna-add-01",
@@ -1251,7 +1364,8 @@
     "derivation_kind": "definition",
     "contradiction": false,
     "notes": "Expand both numerals: NaturalAdd(S(S(Z)),S(S(Z))).",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-add-01"
   },
   {
     "fact_id": "proof-nna-add-02",
@@ -1262,7 +1376,8 @@
     "derivation_kind": "reduction",
     "contradiction": false,
     "notes": "S(m)+n = S(m+n): pull one successor out.",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-add-02"
   },
   {
     "fact_id": "proof-nna-add-03",
@@ -1273,7 +1388,8 @@
     "derivation_kind": "reduction",
     "contradiction": false,
     "notes": "Pull the second successor out: S(S(0+S(S(Z)))).",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-add-03"
   },
   {
     "fact_id": "proof-nna-add-04",
@@ -1284,7 +1400,8 @@
     "derivation_kind": "reduction",
     "contradiction": false,
     "notes": "0+n = n: inner term becomes S(S(Z)), giving S(S(S(S(Z)))).",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-add-04"
   },
   {
     "fact_id": "proof-nna-add-05",
@@ -1295,7 +1412,8 @@
     "derivation_kind": "definition",
     "contradiction": false,
     "notes": "S(S(S(S(Z)))) is the normal form of numeral 4. QED.",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-add-05"
   },
   {
     "fact_id": "proof-nna-sub-01",
@@ -1306,7 +1424,8 @@
     "derivation_kind": "definition",
     "contradiction": false,
     "notes": "Expand: NaturalSub(S(S(S(S(Z)))),S(S(Z))).",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-sub-01"
   },
   {
     "fact_id": "proof-nna-sub-02",
@@ -1317,7 +1436,8 @@
     "derivation_kind": "reduction",
     "contradiction": false,
     "notes": "S(m)-S(n) = m-n: cancel one successor each side.",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-sub-02"
   },
   {
     "fact_id": "proof-nna-sub-03",
@@ -1328,7 +1448,8 @@
     "derivation_kind": "reduction",
     "contradiction": false,
     "notes": "Cancel the second successor: S(S(Z)) - Z.",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-sub-03"
   },
   {
     "fact_id": "proof-nna-sub-04",
@@ -1339,7 +1460,8 @@
     "derivation_kind": "reduction",
     "contradiction": false,
     "notes": "n-0 = n: normal form S(S(Z)).",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-sub-04"
   },
   {
     "fact_id": "proof-nna-sub-05",
@@ -1350,7 +1472,8 @@
     "derivation_kind": "definition",
     "contradiction": false,
     "notes": "S(S(Z)) is the normal form of numeral 2. QED.",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-sub-05"
   },
   {
     "fact_id": "proof-nna-mul-01",
@@ -1361,7 +1484,8 @@
     "derivation_kind": "definition",
     "contradiction": false,
     "notes": "Expand: NaturalMul(S(S(Z)),S(S(Z))).",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-mul-01"
   },
   {
     "fact_id": "proof-nna-mul-02",
@@ -1372,7 +1496,8 @@
     "derivation_kind": "reduction",
     "contradiction": false,
     "notes": "S(m)*n = n + (m*n): 2 + (1*2).",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-mul-02"
   },
   {
     "fact_id": "proof-nna-mul-03",
@@ -1383,7 +1508,8 @@
     "derivation_kind": "reduction",
     "contradiction": false,
     "notes": "Reduce (1*2): 2 + (2 + (0*2)).",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-mul-03"
   },
   {
     "fact_id": "proof-nna-mul-04",
@@ -1394,7 +1520,8 @@
     "derivation_kind": "reduction",
     "contradiction": false,
     "notes": "0*n = 0: 2 + (2 + 0).",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-mul-04"
   },
   {
     "fact_id": "proof-nna-mul-05",
@@ -1405,7 +1532,8 @@
     "derivation_kind": "reduction",
     "contradiction": false,
     "notes": "Reduce the additions via internalized addition: 2 + 2 = 4.",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-mul-05"
   },
   {
     "fact_id": "proof-nna-mul-06",
@@ -1416,7 +1544,8 @@
     "derivation_kind": "definition",
     "contradiction": false,
     "notes": "Normal form S(S(S(S(Z)))) is numeral 4. QED.",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-mul-06"
   },
   {
     "fact_id": "proof-nna-div-01",
@@ -1427,7 +1556,8 @@
     "derivation_kind": "definition",
     "contradiction": false,
     "notes": "Expand: NaturalDiv(S(S(S(S(Z)))),S(S(Z))).",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-div-01"
   },
   {
     "fact_id": "proof-nna-div-02",
@@ -1438,7 +1568,8 @@
     "derivation_kind": "reduction",
     "contradiction": false,
     "notes": "4>=2 so 4/2 = 1 + ((4-2)/2) = 1 + (2/2), using internalized 4-2=2.",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-div-02"
   },
   {
     "fact_id": "proof-nna-div-03",
@@ -1449,7 +1580,8 @@
     "derivation_kind": "reduction",
     "contradiction": false,
     "notes": "2>=2 so 2/2 = 1 + ((2-2)/2) = 1 + (0/2).",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-div-03"
   },
   {
     "fact_id": "proof-nna-div-04",
@@ -1460,7 +1592,8 @@
     "derivation_kind": "reduction",
     "contradiction": false,
     "notes": "0<2 so 0/2 = 0 (base case: dividend below divisor).",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-div-04"
   },
   {
     "fact_id": "proof-nna-div-05",
@@ -1471,7 +1604,8 @@
     "derivation_kind": "reduction",
     "contradiction": false,
     "notes": "Sum the quotient increments: 1 + 1 + 0 = S(S(Z)).",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-div-05"
   },
   {
     "fact_id": "proof-nna-div-06",
@@ -1482,6 +1616,7 @@
     "derivation_kind": "definition",
     "contradiction": false,
     "notes": "S(S(Z)) is the normal form of numeral 2. QED.",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "proof-nna-div-06"
   }
 ]

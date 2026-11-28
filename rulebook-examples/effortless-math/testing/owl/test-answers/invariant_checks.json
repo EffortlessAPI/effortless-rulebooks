@@ -9,7 +9,8 @@
     "status": "PASS",
     "evidence": "Live rows from hecke_pseudocharacter_compatibility_v13.",
     "protects_loop": "loop-223",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v13-hecke-compatibility"
   },
   {
     "invariant_check_id": "inv-v13-stage-compatibility",
@@ -21,7 +22,8 @@
     "status": "PASS",
     "evidence": "Live rows from representation_stage_compatibility_v13.",
     "protects_loop": "loop-220",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v13-stage-compatibility"
   },
   {
     "invariant_check_id": "inv-v14-module-compat",
@@ -33,7 +35,8 @@
     "status": "PASS",
     "evidence": "Live rows from module_stage_compatibility_v14.",
     "protects_loop": "loop-237",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v14-module-compat"
   },
   {
     "invariant_check_id": "inv-v14-ordinary-roots",
@@ -45,7 +48,8 @@
     "status": "PASS",
     "evidence": "Live rows from ordinary_unit_root_stages_v14.",
     "protects_loop": "loop-244",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v14-ordinary-roots"
   },
   {
     "invariant_check_id": "inv-v15-compat",
@@ -57,7 +61,8 @@
     "status": "PASS",
     "evidence": "Rows from tate_module_compatibility_v15.",
     "protects_loop": "loop-268",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v15-compat"
   },
   {
     "invariant_check_id": "inv-v15-stages",
@@ -69,7 +74,8 @@
     "status": "PASS",
     "evidence": "Rows from tate_module_stages_v15.",
     "protects_loop": "loop-267",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v15-stages"
   },
   {
     "invariant_check_id": "inv-v17-cohomology",
@@ -81,7 +87,8 @@
     "status": "PASS",
     "evidence": "Live rows from betti_etale_stage_certificates_v17.",
     "protects_loop": "loop-313",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v17-cohomology"
   },
   {
     "invariant_check_id": "inv-v9-adic-stages",
@@ -93,7 +100,8 @@
     "status": "PASS",
     "evidence": "Live rows from adic_eigencharacter_stages_v9.",
     "protects_loop": "loop-137",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v9-adic-stages"
   },
   {
     "invariant_check_id": "inv-v14-filtrations",
@@ -105,7 +113,8 @@
     "status": "PASS",
     "evidence": "Live rows from ordinary_filtration_certificates_v14.",
     "protects_loop": "loop-246",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v14-filtrations"
   },
   {
     "invariant_check_id": "inv-v11-counterfactuals",
@@ -117,7 +126,8 @@
     "status": "PASS",
     "evidence": "Live rows from tw_patching_counterfactuals_v11.",
     "protects_loop": "loop-178",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v11-counterfactuals"
   },
   {
     "invariant_check_id": "inv-v12-rt-counterfactuals",
@@ -129,7 +139,8 @@
     "status": "PASS",
     "evidence": "Live rows from rt_surjection_counterfactuals_v12.",
     "protects_loop": "loop-208",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-rt-counterfactuals"
   },
   {
     "invariant_check_id": "inv-v13-counterfactuals",
@@ -141,7 +152,8 @@
     "status": "PASS",
     "evidence": "Live rows from pseudocharacter_counterfactuals_v13.",
     "protects_loop": "loop-221",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v13-counterfactuals"
   },
   {
     "invariant_check_id": "inv-v14-local-counter",
@@ -153,7 +165,8 @@
     "status": "PASS",
     "evidence": "Live rows from local_global_counterfactuals_v14.",
     "protects_loop": "loop-251",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v14-local-counter"
   },
   {
     "invariant_check_id": "inv-v14-module-counter",
@@ -165,7 +178,8 @@
     "status": "PASS",
     "evidence": "Live rows from module_pseudocharacter_counterfactuals_v14.",
     "protects_loop": "loop-239",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v14-module-counter"
   },
   {
     "invariant_check_id": "inv-v15-counterfactuals",
@@ -177,7 +191,8 @@
     "status": "PASS",
     "evidence": "Rows from etale_rank_counterfactuals_v15.",
     "protects_loop": "loop-278",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v15-counterfactuals"
   },
   {
     "invariant_check_id": "inv-v16-counterfactuals",
@@ -189,7 +204,8 @@
     "status": "PASS",
     "evidence": "Live rows from multiplicity_two_counterfactuals_v16.",
     "protects_loop": "loop-299",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v16-counterfactuals"
   },
   {
     "invariant_check_id": "inv-v17-counterfactuals",
@@ -201,7 +217,8 @@
     "status": "PASS",
     "evidence": "Live rows from five_edge_counterfactuals_v17.",
     "protects_loop": "loop-349",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v17-counterfactuals"
   },
   {
     "invariant_check_id": "inv-v18-counterfactuals",
@@ -213,7 +230,8 @@
     "status": "PASS",
     "evidence": "Live rows from second_five_edge_counterfactuals_v18.",
     "protects_loop": "loop-400",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v18-counterfactuals"
   },
   {
     "invariant_check_id": "inv-v19-counterfactuals",
@@ -225,7 +243,8 @@
     "status": "PASS",
     "evidence": "Live rows from five_edge_counterfactuals_v19.",
     "protects_loop": "loop-451",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v19-counterfactuals"
   },
   {
     "invariant_check_id": "inv-v20-counterfactuals",
@@ -237,7 +256,8 @@
     "status": "PASS",
     "evidence": "Live rows from five_import_counterfactuals_v20.",
     "protects_loop": "loop-499",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-counterfactuals"
   },
   {
     "invariant_check_id": "inv-v21-counterfactuals",
@@ -249,7 +269,8 @@
     "status": "PASS",
     "evidence": "Live rows from final_nine_counterfactuals_v21.",
     "protects_loop": "loop-570",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v21-counterfactuals"
   },
   {
     "invariant_check_id": "inv-v6-counterfactuals",
@@ -261,7 +282,8 @@
     "status": "PASS",
     "evidence": "Live rows from counterfactual_component_tests_v6.",
     "protects_loop": "loop-109",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v6-counterfactuals"
   },
   {
     "invariant_check_id": "inv-v8-counterfactuals",
@@ -273,7 +295,8 @@
     "status": "PASS",
     "evidence": "Live rows from multiplicity_counterfactuals_v8.",
     "protects_loop": "loop-130",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v8-counterfactuals"
   },
   {
     "invariant_check_id": "inv-v9-counterfactuals",
@@ -285,7 +308,8 @@
     "status": "PASS",
     "evidence": "Live rows from lifting_counterfactuals_v9.",
     "protects_loop": "loop-140",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v9-counterfactuals"
   },
   {
     "invariant_check_id": "inv-v7-eisenstein-defect-p5",
@@ -297,7 +321,8 @@
     "status": "PASS",
     "evidence": "Cokernel dimension 1; non-Eisenstein gate 0.",
     "protects_loop": "loop-118",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v7-eisenstein-defect-p5"
   },
   {
     "invariant_check_id": "inv-c4-c6-delta",
@@ -309,7 +334,8 @@
     "status": "PASS",
     "evidence": "One symbolic witness plus all numerical samples pass.",
     "protects_loop": "loop-08",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-c4-c6-delta"
   },
   {
     "invariant_check_id": "inv-symbolic-discriminant",
@@ -321,7 +347,8 @@
     "status": "PASS",
     "evidence": "SymPy residual is exactly zero.",
     "protects_loop": "loop-08",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-symbolic-discriminant"
   },
   {
     "invariant_check_id": "inv-visible-2-torsion",
@@ -333,7 +360,8 @@
     "status": "PASS",
     "evidence": "15 point substitutions checked.",
     "protects_loop": "loop-09",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-visible-2-torsion"
   },
   {
     "invariant_check_id": "inv-2adic-delta-scaling",
@@ -345,7 +373,8 @@
     "status": "PASS",
     "evidence": "Exact invariant recomputation on every normalized sample.",
     "protects_loop": "loop-23",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-2adic-delta-scaling"
   },
   {
     "invariant_check_id": "inv-2adic-integral-change",
@@ -357,7 +386,8 @@
     "status": "PASS",
     "evidence": "Checked on every normalized sample and symbolically.",
     "protects_loop": "loop-23",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-2adic-integral-change"
   },
   {
     "invariant_check_id": "inv-v12-rt-surjection",
@@ -369,7 +399,8 @@
     "status": "PASS",
     "evidence": "Live rows from rt_surjection_certificates_v12.",
     "protects_loop": "loop-206",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-rt-surjection"
   },
   {
     "invariant_check_id": "inv-v12-universal-property",
@@ -381,7 +412,8 @@
     "status": "PASS",
     "evidence": "Live rows from deformation_universal_property_certificates_v12.",
     "protects_loop": "loop-203",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-universal-property"
   },
   {
     "invariant_check_id": "inv-v14-module-pseudo",
@@ -393,7 +425,8 @@
     "status": "PASS",
     "evidence": "Live rows from module_pseudocharacter_certificates_v14.",
     "protects_loop": "loop-236",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v14-module-pseudo"
   },
   {
     "invariant_check_id": "inv-v15-nakayama",
@@ -405,7 +438,8 @@
     "status": "PASS",
     "evidence": "Rows from nakayama_freeness_certificates_v15.",
     "protects_loop": "loop-266",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v15-nakayama"
   },
   {
     "invariant_check_id": "inv-v15-sign",
@@ -417,7 +451,8 @@
     "status": "PASS",
     "evidence": "Rows from sign_rank_one_certificates_v15.",
     "protects_loop": "loop-274",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v15-sign"
   },
   {
     "invariant_check_id": "inv-v16-dimension-models",
@@ -429,7 +464,8 @@
     "status": "PASS",
     "evidence": "Live rows from connected_etale_dimension_models_v16.",
     "protects_loop": "loop-291",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v16-dimension-models"
   },
   {
     "invariant_check_id": "inv-v9-rank-one-lift",
@@ -441,7 +477,8 @@
     "status": "PASS",
     "evidence": "Live rows from rank_one_lift_certificates_v9.",
     "protects_loop": "loop-138",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v9-rank-one-lift"
   },
   {
     "invariant_check_id": "inv-residual-modularity-branches",
@@ -453,7 +490,8 @@
     "status": "PASS",
     "evidence": "Imported and witnessed steps remain individually typed.",
     "protects_loop": "loop-53",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-residual-modularity-branches"
   },
   {
     "invariant_check_id": "inv-v21-automorphy",
@@ -465,7 +503,8 @@
     "status": "PASS",
     "evidence": "Live rows from automorphy_kernel_contracts_v21.",
     "protects_loop": "loop-571",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v21-automorphy"
   },
   {
     "invariant_check_id": "inv-v6-certificate-revision",
@@ -477,7 +516,8 @@
     "status": "PASS",
     "evidence": "lowering_certificate_revisions_v6 preserves both prior and revised states.",
     "protects_loop": "loop-110",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v6-certificate-revision"
   },
   {
     "invariant_check_id": "inv-v7-certificate-revision",
@@ -489,7 +529,8 @@
     "status": "PASS",
     "evidence": "lowering_certificate_revisions_v7 retains the previous and current import lists.",
     "protects_loop": "loop-120",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v7-certificate-revision"
   },
   {
     "invariant_check_id": "inv-v8-certificate-revision",
@@ -501,7 +542,8 @@
     "status": "PASS",
     "evidence": "lowering_certificate_revisions_v8 preserves both import lists.",
     "protects_loop": "loop-131",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v8-certificate-revision"
   },
   {
     "invariant_check_id": "inv-v9-certificate-revision",
@@ -513,7 +555,8 @@
     "status": "PASS",
     "evidence": "lowering_certificate_revisions_v9 preserves the prior conditional state and the closed current state.",
     "protects_loop": "loop-141",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v9-certificate-revision"
   },
   {
     "invariant_check_id": "inv-bounded-search-gt2",
@@ -525,7 +568,8 @@
     "status": "PASS",
     "evidence": "This is finite evidence only, not a proof.",
     "protects_loop": "loop-05",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-bounded-search-gt2"
   },
   {
     "invariant_check_id": "inv-bounded-search-positive-control",
@@ -537,7 +581,8 @@
     "status": "PASS",
     "evidence": "Found 165 triples in the search box.",
     "protects_loop": "loop-05",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-bounded-search-positive-control"
   },
   {
     "invariant_check_id": "inv-v11-limits",
@@ -549,7 +594,8 @@
     "status": "PASS",
     "evidence": "Live rows from tw_limit_certificates_v11.",
     "protects_loop": "loop-176",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v11-limits"
   },
   {
     "invariant_check_id": "inv-v20-faithful-module",
@@ -561,7 +607,8 @@
     "status": "PASS",
     "evidence": "Live rows from faithful_module_isomorphism_certificates_v20.",
     "protects_loop": "loop-495",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-faithful-module"
   },
   {
     "invariant_check_id": "inv-v9-local-algebra",
@@ -573,7 +620,8 @@
     "status": "PASS",
     "evidence": "Live rows from localized_hecke_algebras_v9.",
     "protects_loop": "loop-136",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v9-local-algebra"
   },
   {
     "invariant_check_id": "inv-v21-comparison",
@@ -585,7 +633,8 @@
     "status": "PASS",
     "evidence": "Live rows from comparison_kernel_certificates_v21.",
     "protects_loop": "loop-554",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v21-comparison"
   },
   {
     "invariant_check_id": "inv-level2-space-zero",
@@ -597,7 +646,8 @@
     "status": "PASS",
     "evidence": "mu=3, cusps=2, e2=1, e3=0, genus=0.",
     "protects_loop": "loop-19",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-level2-space-zero"
   },
   {
     "invariant_check_id": "inv-ab-delta-valuations-mod-p",
@@ -609,7 +659,8 @@
     "status": "PASS",
     "evidence": "Observed directly on numerical samples.",
     "protects_loop": "loop-13",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-ab-delta-valuations-mod-p"
   },
   {
     "invariant_check_id": "inv-v16-residual-profiles",
@@ -621,7 +672,8 @@
     "status": "PASS",
     "evidence": "Live rows from residual_prime_multiplicity_profiles_v16.",
     "protects_loop": "loop-297",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v16-residual-profiles"
   },
   {
     "invariant_check_id": "inv-v17-constituents",
@@ -633,7 +685,8 @@
     "status": "PASS",
     "evidence": "Live rows from constituent_control_certificates_v17.",
     "protects_loop": "loop-307",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v17-constituents"
   },
   {
     "invariant_check_id": "inv-v18-small-primes",
@@ -645,7 +698,8 @@
     "status": "PASS",
     "evidence": "Live rows from frey_small_prime_profiles_v18.",
     "protects_loop": "loop-367",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v18-small-primes"
   },
   {
     "invariant_check_id": "inv-v19-frey-local",
@@ -657,7 +711,8 @@
     "status": "PASS",
     "evidence": "Live rows from frey_local_specialization_profiles_v19.",
     "protects_loop": "loop-419",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v19-frey-local"
   },
   {
     "invariant_check_id": "inv-v5-lowering-certificates",
@@ -669,7 +724,8 @@
     "status": "PASS",
     "evidence": "Mod-5 false positive rejected; mod-7/mod-13 calibration routes certified conditionally.",
     "protects_loop": "loop-101",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v5-lowering-certificates"
   },
   {
     "invariant_check_id": "inv-v12-branch-certificates",
@@ -681,7 +737,8 @@
     "status": "PASS",
     "evidence": "Live rows from conditional_branch_certificates_v12.",
     "protects_loop": "loop-183",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-branch-certificates"
   },
   {
     "invariant_check_id": "inv-v16-branches",
@@ -693,7 +750,8 @@
     "status": "PASS",
     "evidence": "Live rows from multiplicity_branch_certificates_v16.",
     "protects_loop": "loop-298",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v16-branches"
   },
   {
     "invariant_check_id": "inv-v17-finite-flat",
@@ -705,7 +763,8 @@
     "status": "PASS",
     "evidence": "Live rows from finite_flat_compiler_runs_v17.",
     "protects_loop": "loop-326",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v17-finite-flat"
   },
   {
     "invariant_check_id": "inv-v4-one-step",
@@ -717,7 +776,8 @@
     "status": "PASS",
     "evidence": "Positive and blocked counterfactual runs.",
     "protects_loop": "loop-90",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v4-one-step"
   },
   {
     "invariant_check_id": "inv-eta-criterion-arithmetic",
@@ -729,7 +789,8 @@
     "status": "PASS",
     "evidence": "The criterion arithmetic is internalized; the theorem is sourced.",
     "protects_loop": "loop-34",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-eta-criterion-arithmetic"
   },
   {
     "invariant_check_id": "inv-level-lowering-terminal-two",
@@ -741,7 +802,8 @@
     "status": "PASS",
     "evidence": "Prime-removal mechanics are executed; Ribet's theorem is imported.",
     "protects_loop": "loop-38",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-level-lowering-terminal-two"
   },
   {
     "invariant_check_id": "inv-sturm-bound-level11",
@@ -753,7 +815,8 @@
     "status": "PASS",
     "evidence": "Computed from floor(k*[SL2:Gamma0(N)]/12).",
     "protects_loop": "loop-37",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-sturm-bound-level11"
   },
   {
     "invariant_check_id": "inv-v19-automorphic-machines",
@@ -765,7 +828,8 @@
     "status": "PASS",
     "evidence": "Live rows from automorphic_induction_state_machines_v19.",
     "protects_loop": "loop-439",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v19-automorphic-machines"
   },
   {
     "invariant_check_id": "v3-minlevel",
@@ -777,7 +841,8 @@
     "status": "PASS",
     "evidence": "State machine.",
     "protects_loop": "loop-73",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "v3-minlevel"
   },
   {
     "invariant_check_id": "inv-formal-odd-finite",
@@ -789,7 +854,8 @@
     "status": "PASS",
     "evidence": "Valuations are derived; finiteness uses the Tate-curve criterion.",
     "protects_loop": "loop-27",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-formal-odd-finite"
   },
   {
     "invariant_check_id": "inv-formal-two-nonfinite",
@@ -801,7 +867,8 @@
     "status": "PASS",
     "evidence": "The nonfinite anchor required for repeated level lowering.",
     "protects_loop": "loop-27",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-formal-two-nonfinite"
   },
   {
     "invariant_check_id": "inv-v21-schlessinger",
@@ -813,7 +880,8 @@
     "status": "PASS",
     "evidence": "Live rows from schlessinger_compiler_cases_v21.",
     "protects_loop": "loop-530",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v21-schlessinger"
   },
   {
     "invariant_check_id": "inv-v12-anti-cohomology",
@@ -825,7 +893,8 @@
     "status": "PASS",
     "evidence": "Live rows from anti_invariant_cohomology_certificates_v12.",
     "protects_loop": "loop-191",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-anti-cohomology"
   },
   {
     "invariant_check_id": "inv-v15-rank2",
@@ -837,7 +906,8 @@
     "status": "PASS",
     "evidence": "Rows from rank_two_etale_module_certificates_v15.",
     "protects_loop": "loop-271",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v15-rank2"
   },
   {
     "invariant_check_id": "inv-away-from-p-unramified",
@@ -849,7 +919,8 @@
     "status": "PASS",
     "evidence": "Direct Kummer ramification calculation.",
     "protects_loop": "loop-45",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-away-from-p-unramified"
   },
   {
     "invariant_check_id": "inv-v21-duality",
@@ -861,7 +932,8 @@
     "status": "PASS",
     "evidence": "Live rows from global_duality_compiler_cases_v21.",
     "protects_loop": "loop-538",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v21-duality"
   },
   {
     "invariant_check_id": "inv-first-second-route",
@@ -873,7 +945,8 @@
     "status": "PASS",
     "evidence": "Only the second case crosses the finite-flat import.",
     "protects_loop": "loop-46",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-first-second-route"
   },
   {
     "invariant_check_id": "inv-rational-5-torsion-control",
@@ -885,7 +958,8 @@
     "status": "PASS",
     "evidence": "Multiples are computed with the general Weierstrass group law.",
     "protects_loop": "loop-48",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-rational-5-torsion-control"
   },
   {
     "invariant_check_id": "inv-tate-torsion-kummer",
@@ -897,7 +971,8 @@
     "status": "PASS",
     "evidence": "All generated torsion-coordinate profiles.",
     "protects_loop": "loop-43",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-tate-torsion-kummer"
   },
   {
     "invariant_check_id": "inv-x5-genus-zero",
@@ -909,7 +984,8 @@
     "status": "PASS",
     "evidence": "Index/cusp genus formula.",
     "protects_loop": "loop-55",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-x5-genus-zero"
   },
   {
     "invariant_check_id": "inv-tate-series-leading",
@@ -921,7 +997,8 @@
     "status": "PASS",
     "evidence": "Product/Eisenstein-series generation, not seeded coefficient lists.",
     "protects_loop": "loop-42",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-tate-series-leading"
   },
   {
     "invariant_check_id": "inv-v7-rational-reduction",
@@ -933,7 +1010,8 @@
     "status": "PASS",
     "evidence": "Live rows from rational_symbol_reduction_checks_v7.",
     "protects_loop": "loop-116",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v7-rational-reduction"
   },
   {
     "invariant_check_id": "inv-v8-hecke-operators",
@@ -945,7 +1023,8 @@
     "status": "PASS",
     "evidence": "Live rows from hecke_operator_certificates_v8.",
     "protects_loop": "loop-123",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v8-hecke-operators"
   },
   {
     "invariant_check_id": "inv-v20-g12-generators",
@@ -957,7 +1036,8 @@
     "status": "PASS",
     "evidence": "Live rows from g12_lift_generators_v20.",
     "protects_loop": "loop-454",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-g12-generators"
   },
   {
     "invariant_check_id": "inv-deformation-ring-toys",
@@ -969,7 +1049,8 @@
     "status": "PASS",
     "evidence": "Finite local algebras and one positive-dimensional control.",
     "protects_loop": "loop-58",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-deformation-ring-toys"
   },
   {
     "invariant_check_id": "inv-rt-map-diagnostics",
@@ -981,7 +1062,8 @@
     "status": "PASS",
     "evidence": "The strict quotient with matching tangent dimension is caught by length.",
     "protects_loop": "loop-59",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-rt-map-diagnostics"
   },
   {
     "invariant_check_id": "inv-v10-patching-systems",
@@ -993,7 +1075,8 @@
     "status": "PASS",
     "evidence": "Existing patching-transition certificates.",
     "protects_loop": "loop-158",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v10-patching-systems"
   },
   {
     "invariant_check_id": "inv-v11-stages",
@@ -1005,7 +1088,8 @@
     "status": "PASS",
     "evidence": "Live rows from tw_stage_algebras_v11.",
     "protects_loop": "loop-164",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v11-stages"
   },
   {
     "invariant_check_id": "inv-v11-truncations",
@@ -1017,7 +1101,8 @@
     "status": "PASS",
     "evidence": "Live rows from tw_truncation_certificates_v11.",
     "protects_loop": "loop-168",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v11-truncations"
   },
   {
     "invariant_check_id": "inv-v12-diamond",
@@ -1029,7 +1114,8 @@
     "status": "PASS",
     "evidence": "Live rows from diamond_augmentation_certificates_v12.",
     "protects_loop": "loop-196",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-diamond"
   },
   {
     "invariant_check_id": "inv-v12-n-compatibility",
@@ -1041,7 +1127,8 @@
     "status": "PASS",
     "evidence": "Live rows from n_structure_compatibility_v12.",
     "protects_loop": "loop-200",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-n-compatibility"
   },
   {
     "invariant_check_id": "inv-v13-ch-algebras",
@@ -1053,7 +1140,8 @@
     "status": "PASS",
     "evidence": "Live rows from cayley_hamilton_algebras_v13.",
     "protects_loop": "loop-217",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v13-ch-algebras"
   },
   {
     "invariant_check_id": "inv-v13-matrix-units",
@@ -1065,7 +1153,8 @@
     "status": "PASS",
     "evidence": "Live rows from matrix_unit_certificates_v13.",
     "protects_loop": "loop-218",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v13-matrix-units"
   },
   {
     "invariant_check_id": "inv-v8-stabilization",
@@ -1077,7 +1166,8 @@
     "status": "PASS",
     "evidence": "Live rows from stabilization_polynomial_certificates_v8.",
     "protects_loop": "loop-127",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v8-stabilization"
   },
   {
     "invariant_check_id": "v3-patch",
@@ -1089,7 +1179,8 @@
     "status": "PASS",
     "evidence": "patching_transition_checks",
     "protects_loop": "loop-79",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "v3-patch"
   },
   {
     "invariant_check_id": "v3-rt",
@@ -1101,7 +1192,8 @@
     "status": "PASS",
     "evidence": "Adversarial controls.",
     "protects_loop": "loop-80",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "v3-rt"
   },
   {
     "invariant_check_id": "inv-v19-artin-types",
@@ -1113,7 +1205,8 @@
     "status": "PASS",
     "evidence": "Live rows from artin_projective_type_profiles_v19.",
     "protects_loop": "loop-434",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v19-artin-types"
   },
   {
     "invariant_check_id": "inv-v18-brauer-cases",
@@ -1125,7 +1218,8 @@
     "status": "PASS",
     "evidence": "Live rows from brauer_lift_calibration_cases_v18.",
     "protects_loop": "loop-355",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v18-brauer-cases"
   },
   {
     "invariant_check_id": "inv-v8-sturm",
@@ -1137,7 +1231,8 @@
     "status": "PASS",
     "evidence": "Live rows from sturm_eigenpacket_checks_v8.",
     "protects_loop": "loop-129",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v8-sturm"
   },
   {
     "invariant_check_id": "inv-v9-reduction",
@@ -1149,7 +1244,8 @@
     "status": "PASS",
     "evidence": "Live rows from target_packet_reduction_checks_v9.",
     "protects_loop": "loop-139",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v9-reduction"
   },
   {
     "invariant_check_id": "inv-v12-local-group-rings",
@@ -1161,7 +1257,8 @@
     "status": "PASS",
     "evidence": "Live rows from group_ring_locality_certificates_v12.",
     "protects_loop": "loop-186",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-local-group-rings"
   },
   {
     "invariant_check_id": "inv-v16-qexp-models",
@@ -1173,7 +1270,8 @@
     "status": "PASS",
     "evidence": "Live rows from qexp_duality_models_v16.",
     "protects_loop": "loop-287",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v16-qexp-models"
   },
   {
     "invariant_check_id": "inv-v4-flat-controls",
@@ -1185,7 +1283,8 @@
     "status": "PASS",
     "evidence": "Live rows from chain_ring_flatness_controls.",
     "protects_loop": "loop-84",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v4-flat-controls"
   },
   {
     "invariant_check_id": "inv-v15-comparison",
@@ -1197,7 +1296,8 @@
     "status": "PASS",
     "evidence": "Rows from betti_etale_comparison_certificates_v15.",
     "protects_loop": "loop-270",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v15-comparison"
   },
   {
     "invariant_check_id": "inv-curve-form-trace-match",
@@ -1209,7 +1309,8 @@
     "status": "PASS",
     "evidence": "Independent point counting and product expansion for q<200.",
     "protects_loop": "loop-35",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-curve-form-trace-match"
   },
   {
     "invariant_check_id": "inv-frobenius-hasse",
@@ -1221,7 +1322,8 @@
     "status": "PASS",
     "evidence": "Direct point counts over finite fields.",
     "protects_loop": "loop-30",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-frobenius-hasse"
   },
   {
     "invariant_check_id": "inv-frobenius-irred-normalized",
@@ -1233,7 +1335,8 @@
     "status": "PASS",
     "evidence": "Concrete curves only; the general Frey theorem remains sourced.",
     "protects_loop": "loop-48",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-frobenius-irred-normalized"
   },
   {
     "invariant_check_id": "inv-frobenius-reducible-control",
@@ -1245,7 +1348,8 @@
     "status": "PASS",
     "evidence": "Positive reducibility control.",
     "protects_loop": "loop-48",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-frobenius-reducible-control"
   },
   {
     "invariant_check_id": "inv-hecke-relations-level11",
@@ -1257,7 +1361,8 @@
     "status": "PASS",
     "evidence": "Prime-square, coprime multiplicativity, and bad-prime powers.",
     "protects_loop": "loop-31",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-hecke-relations-level11"
   },
   {
     "invariant_check_id": "inv-residual-congruence",
@@ -1269,7 +1374,8 @@
     "status": "PASS",
     "evidence": "Concrete residual-representation coefficient witness.",
     "protects_loop": "loop-36",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-residual-congruence"
   },
   {
     "invariant_check_id": "inv-small-level-phase-boundary",
@@ -1281,7 +1387,8 @@
     "status": "PASS",
     "evidence": "Genus formula evaluated for levels 1 through 100.",
     "protects_loop": "loop-39",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-small-level-phase-boundary"
   },
   {
     "invariant_check_id": "inv-taylor-wiles-primes",
@@ -1293,7 +1400,8 @@
     "status": "PASS",
     "evidence": "Actual prime search and elliptic-curve point counts.",
     "protects_loop": "loop-60",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-taylor-wiles-primes"
   },
   {
     "invariant_check_id": "inv-v5-maximal-ideal-gate",
@@ -1305,7 +1413,8 @@
     "status": "PASS",
     "evidence": "Live rows from maximal_ideal_profiles.",
     "protects_loop": "loop-99",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v5-maximal-ideal-gate"
   },
   {
     "invariant_check_id": "v3-hecke",
@@ -1317,7 +1426,8 @@
     "status": "PASS",
     "evidence": "hecke_level_conditions",
     "protects_loop": "loop-70",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "v3-hecke"
   },
   {
     "invariant_check_id": "inv-v15-es",
@@ -1329,7 +1439,8 @@
     "status": "PASS",
     "evidence": "Rows from eichler_shimura_stage_certificates_v15.",
     "protects_loop": "loop-275",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v15-es"
   },
   {
     "invariant_check_id": "inv-v19-cheb-counts",
@@ -1341,7 +1452,8 @@
     "status": "PASS",
     "evidence": "Live rows from prime_count_density_stages_v19.",
     "protects_loop": "loop-409",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v19-cheb-counts"
   },
   {
     "invariant_check_id": "inv-v7-cusp-eisenstein",
@@ -1353,7 +1465,8 @@
     "status": "PASS",
     "evidence": "Live rows from cusp_eisenstein_checks_v7.",
     "protects_loop": "loop-119",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v7-cusp-eisenstein"
   },
   {
     "invariant_check_id": "inv-normalization-mod32",
@@ -1365,7 +1478,8 @@
     "status": "PASS",
     "evidence": "Exhaustive modulo-32 enumeration for p=5,7,11,13.",
     "protects_loop": "loop-22",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-normalization-mod32"
   },
   {
     "invariant_check_id": "inv-v11-ring-laws",
@@ -1377,7 +1491,8 @@
     "status": "PASS",
     "evidence": "Live rows from tw_stage_ring_checks_v11.",
     "protects_loop": "loop-165",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v11-ring-laws"
   },
   {
     "invariant_check_id": "inv-v4-cocycles",
@@ -1389,7 +1504,8 @@
     "status": "PASS",
     "evidence": "Live rows from cyclic_extension_cocycles.",
     "protects_loop": "loop-82",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v4-cocycles"
   },
   {
     "invariant_check_id": "v3-hopf",
@@ -1401,7 +1517,8 @@
     "status": "PASS",
     "evidence": "hopf_structure_checks",
     "protects_loop": "loop-68",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "v3-hopf"
   },
   {
     "invariant_check_id": "inv-v6-base-supersingular",
@@ -1413,7 +1530,8 @@
     "status": "PASS",
     "evidence": "Direct point count #6; trace=0; supersingular class-count formula gives 1.",
     "protects_loop": "loop-102",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v6-base-supersingular"
   },
   {
     "invariant_check_id": "inv-v17-s3",
@@ -1425,7 +1543,8 @@
     "status": "PASS",
     "evidence": "Live rows from s3_splitting_prime_certificates_v17.",
     "protects_loop": "loop-303",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v17-s3"
   },
   {
     "invariant_check_id": "inv-v20-kummer-schemes",
@@ -1437,7 +1556,8 @@
     "status": "PASS",
     "evidence": "Live rows from kummer_group_scheme_certificates_v20.",
     "protects_loop": "loop-475",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-kummer-schemes"
   },
   {
     "invariant_check_id": "inv-v19-cheb-classes",
@@ -1449,7 +1569,8 @@
     "status": "PASS",
     "evidence": "Live rows from finite_galois_class_profiles_v19.",
     "protects_loop": "loop-404",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v19-cheb-classes"
   },
   {
     "invariant_check_id": "inv-v4-exactness",
@@ -1461,7 +1582,8 @@
     "status": "PASS",
     "evidence": "Live rows from extension_exactness_checks.",
     "protects_loop": "loop-83",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v4-exactness"
   },
   {
     "invariant_check_id": "inv-v12-free-cocycles",
@@ -1473,7 +1595,8 @@
     "status": "PASS",
     "evidence": "Live rows from free_group_cocycle_certificates_v12.",
     "protects_loop": "loop-187",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-free-cocycles"
   },
   {
     "invariant_check_id": "inv-v12-shapiro",
@@ -1485,7 +1608,8 @@
     "status": "PASS",
     "evidence": "Live rows from shapiro_degree1_certificates_v12.",
     "protects_loop": "loop-190",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-shapiro"
   },
   {
     "invariant_check_id": "inv-pgl2-f3-solvable",
@@ -1497,7 +1621,8 @@
     "status": "PASS",
     "evidence": "Computed from the projective action, not stored as an assumption.",
     "protects_loop": "loop-51",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-pgl2-f3-solvable"
   },
   {
     "invariant_check_id": "inv-v10-gl2-count",
@@ -1509,7 +1634,8 @@
     "status": "PASS",
     "evidence": "Complete matrix enumeration.",
     "protects_loop": "loop-144",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v10-gl2-count"
   },
   {
     "invariant_check_id": "inv-v13-groups",
@@ -1521,7 +1647,8 @@
     "status": "PASS",
     "evidence": "Live rows from finite_group_models_v13.",
     "protects_loop": "loop-214",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v13-groups"
   },
   {
     "invariant_check_id": "inv-v18-transvections",
@@ -1533,7 +1660,8 @@
     "status": "PASS",
     "evidence": "Live rows from transvection_generation_certificates_v18.",
     "protects_loop": "loop-373",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v18-transvections"
   },
   {
     "invariant_check_id": "inv-v20-g12-group",
@@ -1545,7 +1673,8 @@
     "status": "PASS",
     "evidence": "Live rows from g12_lift_group_certificates_v20.",
     "protects_loop": "loop-456",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-g12-group"
   },
   {
     "invariant_check_id": "inv-v10-subgroup-solvability",
@@ -1557,7 +1686,8 @@
     "status": "PASS",
     "evidence": "All 30 subgroups and their derived series.",
     "protects_loop": "loop-145",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v10-subgroup-solvability"
   },
   {
     "invariant_check_id": "inv-v18-large-images",
@@ -1569,7 +1699,8 @@
     "status": "PASS",
     "evidence": "Live rows from large_image_certificates_v18.",
     "protects_loop": "loop-376",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v18-large-images"
   },
   {
     "invariant_check_id": "inv-v20-kummer-laws",
@@ -1581,7 +1712,8 @@
     "status": "PASS",
     "evidence": "Live rows from kummer_component_law_checks_v20.",
     "protects_loop": "loop-476",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-kummer-laws"
   },
   {
     "invariant_check_id": "inv-v16-qexp-packets",
@@ -1593,7 +1725,8 @@
     "status": "PASS",
     "evidence": "Live rows from qexp_eigenline_certificates_v16.",
     "protects_loop": "loop-288",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v16-qexp-packets"
   },
   {
     "invariant_check_id": "inv-v15-fibers",
@@ -1605,7 +1738,8 @@
     "status": "PASS",
     "evidence": "Rows from multiplicity_fiber_certificates_v15.",
     "protects_loop": "loop-265",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v15-fibers"
   },
   {
     "invariant_check_id": "inv-v7-map-compatibility",
@@ -1617,7 +1751,8 @@
     "status": "PASS",
     "evidence": "Live rows from degeneracy_map_certificates_v7.",
     "protects_loop": "loop-116",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v7-map-compatibility"
   },
   {
     "invariant_check_id": "inv-v7-module-dimensions",
@@ -1629,7 +1764,8 @@
     "status": "PASS",
     "evidence": "Live rows from manin_module_certificates_v7.",
     "protects_loop": "loop-115",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v7-module-dimensions"
   },
   {
     "invariant_check_id": "inv-v18-isogeny-degrees",
@@ -1641,7 +1777,8 @@
     "status": "PASS",
     "evidence": "Live rows from isogeny_degree_certificates_v18.",
     "protects_loop": "loop-363",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v18-isogeny-degrees"
   },
   {
     "invariant_check_id": "inv-v19-isogeny-ledger",
@@ -1653,7 +1790,8 @@
     "status": "PASS",
     "evidence": "Live rows from cyclic_isogeny_degree_ledger_v19.",
     "protects_loop": "loop-444",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v19-isogeny-ledger"
   },
   {
     "invariant_check_id": "inv-v12-involution",
@@ -1665,7 +1803,8 @@
     "status": "PASS",
     "evidence": "Live rows from involution_split_certificates_v12.",
     "protects_loop": "loop-188",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-involution"
   },
   {
     "invariant_check_id": "inv-v13-trace-bases",
@@ -1677,7 +1816,8 @@
     "status": "PASS",
     "evidence": "Live rows from trace_basis_certificates_v13.",
     "protects_loop": "loop-216",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v13-trace-bases"
   },
   {
     "invariant_check_id": "inv-v14-basis",
@@ -1689,7 +1829,8 @@
     "status": "PASS",
     "evidence": "Live rows from basis_change_invariance_v14.",
     "protects_loop": "loop-235",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v14-basis"
   },
   {
     "invariant_check_id": "inv-v14-projectors",
@@ -1701,7 +1842,8 @@
     "status": "PASS",
     "evidence": "Live rows from ordinary_projector_certificates_v14.",
     "protects_loop": "loop-245",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v14-projectors"
   },
   {
     "invariant_check_id": "inv-v15-pairing",
@@ -1713,7 +1855,8 @@
     "status": "PASS",
     "evidence": "Rows from perfect_pairing_certificates_v15.",
     "protects_loop": "loop-269",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v15-pairing"
   },
   {
     "invariant_check_id": "inv-v15-projectors",
@@ -1725,7 +1868,8 @@
     "status": "PASS",
     "evidence": "Rows from sign_projector_certificates_v15.",
     "protects_loop": "loop-273",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v15-projectors"
   },
   {
     "invariant_check_id": "inv-v18-weight-packets",
@@ -1737,7 +1881,8 @@
     "status": "PASS",
     "evidence": "Live rows from weight2_eigenpacket_projection_v18.",
     "protects_loop": "loop-385",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v18-weight-packets"
   },
   {
     "invariant_check_id": "inv-v4-eigenlift",
@@ -1749,7 +1894,8 @@
     "status": "PASS",
     "evidence": "Live rows from eigenclass_lift_controls.",
     "protects_loop": "loop-89",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v4-eigenlift"
   },
   {
     "invariant_check_id": "inv-v4-old-new",
@@ -1761,7 +1907,8 @@
     "status": "PASS",
     "evidence": "Live rows from old_new_intersection_checks.",
     "protects_loop": "loop-88",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v4-old-new"
   },
   {
     "invariant_check_id": "inv-v4-specialization",
@@ -1773,7 +1920,8 @@
     "status": "PASS",
     "evidence": "Live rows from degeneracy_specialization_checks.",
     "protects_loop": "loop-87",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v4-specialization"
   },
   {
     "invariant_check_id": "inv-v5-specialization-adapter",
@@ -1785,7 +1933,8 @@
     "status": "PASS",
     "evidence": "Live rows from degeneracy_specialization_adapters.",
     "protects_loop": "loop-98",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v5-specialization-adapter"
   },
   {
     "invariant_check_id": "inv-v7-relations",
@@ -1797,7 +1946,8 @@
     "status": "PASS",
     "evidence": "Live rows from manin_relation_certificates_v7.",
     "protects_loop": "loop-114",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v7-relations"
   },
   {
     "invariant_check_id": "inv-v8-packets",
@@ -1809,7 +1959,8 @@
     "status": "PASS",
     "evidence": "Live rows from hecke_packet_certificates_v8.",
     "protects_loop": "loop-128",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v8-packets"
   },
   {
     "invariant_check_id": "inv-v8-sign-split",
@@ -1821,7 +1972,8 @@
     "status": "PASS",
     "evidence": "Live rows from conjugation_split_certificates_v8.",
     "protects_loop": "loop-125",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v8-sign-split"
   },
   {
     "invariant_check_id": "v3-deg",
@@ -1833,7 +1985,8 @@
     "status": "PASS",
     "evidence": "degeneracy_operator_cases",
     "protects_loop": "loop-69",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "v3-deg"
   },
   {
     "invariant_check_id": "v3-dims",
@@ -1845,7 +1998,8 @@
     "status": "PASS",
     "evidence": "selmer_dimension_checks",
     "protects_loop": "loop-76",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "v3-dims"
   },
   {
     "invariant_check_id": "v3-kill",
@@ -1857,7 +2011,8 @@
     "status": "PASS",
     "evidence": "dual_selmer_kill_runs",
     "protects_loop": "loop-77",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "v3-kill"
   },
   {
     "invariant_check_id": "v3-selmer",
@@ -1869,7 +2024,8 @@
     "status": "PASS",
     "evidence": "selmer_complexes",
     "protects_loop": "loop-75",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "v3-selmer"
   },
   {
     "invariant_check_id": "inv-v14-steinberg",
@@ -1881,7 +2037,8 @@
     "status": "PASS",
     "evidence": "Live rows from steinberg_weil_deligne_certificates_v14.",
     "protects_loop": "loop-249",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v14-steinberg"
   },
   {
     "invariant_check_id": "inv-v5-hensel-lifts",
@@ -1893,7 +2050,8 @@
     "status": "PASS",
     "evidence": "Live rows from eigenpacket_hensel_lifts.",
     "protects_loop": "loop-101",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v5-hensel-lifts"
   },
   {
     "invariant_check_id": "inv-v10-artin-factors",
@@ -1905,7 +2063,8 @@
     "status": "PASS",
     "evidence": "curve_form_matches over the stored Frobenius universe.",
     "protects_loop": "loop-147",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v10-artin-factors"
   },
   {
     "invariant_check_id": "inv-v14-good-local",
@@ -1917,7 +2076,8 @@
     "status": "PASS",
     "evidence": "Live rows from good_prime_local_certificates_v14.",
     "protects_loop": "loop-243",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v14-good-local"
   },
   {
     "invariant_check_id": "inv-v19-local-factors",
@@ -1929,7 +2089,8 @@
     "status": "PASS",
     "evidence": "Live rows from artin_local_factor_certificates_v19.",
     "protects_loop": "loop-438",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v19-local-factors"
   },
   {
     "invariant_check_id": "inv-v14-cohom-stages",
@@ -1941,7 +2102,8 @@
     "status": "PASS",
     "evidence": "Live rows from cohomology_action_stages_v14.",
     "protects_loop": "loop-234",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v14-cohom-stages"
   },
   {
     "invariant_check_id": "inv-v6-ss-orbits",
@@ -1953,7 +2115,8 @@
     "status": "PASS",
     "evidence": "Live rows from supersingular_level_actions_v6.",
     "protects_loop": "loop-102",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v6-ss-orbits"
   },
   {
     "invariant_check_id": "inv-v17-monodromy",
@@ -1965,7 +2128,8 @@
     "status": "PASS",
     "evidence": "Live rows from monodromy_comparison_certificates_v17.",
     "protects_loop": "loop-336",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v17-monodromy"
   },
   {
     "invariant_check_id": "inv-v10-tw-summary",
@@ -1977,7 +2141,8 @@
     "status": "PASS",
     "evidence": "Aggregated Taylor\u2013Wiles-prime rows.",
     "protects_loop": "loop-157",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v10-tw-summary"
   },
   {
     "invariant_check_id": "inv-v20-tw-runs",
@@ -1989,7 +2154,8 @@
     "status": "PASS",
     "evidence": "Live rows from tw_selection_runs_v20.",
     "protects_loop": "loop-490",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-tw-runs"
   },
   {
     "invariant_check_id": "inv-v16-good-certificates",
@@ -2001,7 +2167,8 @@
     "status": "PASS",
     "evidence": "Live rows from good_reduction_multiplicity_certificates_v16.",
     "protects_loop": "loop-294",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v16-good-certificates"
   },
   {
     "invariant_check_id": "inv-v7-ihara-55to11-p7",
@@ -2013,7 +2180,8 @@
     "status": "PASS",
     "evidence": "Rank 4 against target dimension 4; matrix hash 0f6b3980190e9658828c32403c17bf1447dcb53e754487ae7aca93564b9d8e3a.",
     "protects_loop": "loop-117",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v7-ihara-55to11-p7"
   },
   {
     "invariant_check_id": "inv-v8-homological-multiplicity-one",
@@ -2025,7 +2193,8 @@
     "status": "PASS",
     "evidence": "homological_multiplicity_certificates_v8 and the independent verifier.",
     "protects_loop": "loop-128",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v8-homological-multiplicity-one"
   },
   {
     "invariant_check_id": "inv-v8-level11-validation",
@@ -2037,7 +2206,8 @@
     "status": "PASS",
     "evidence": "Live rows from hecke_validation_checks_v8.",
     "protects_loop": "loop-124",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v8-level11-validation"
   },
   {
     "invariant_check_id": "inv-v9-explicit-lift",
@@ -2049,7 +2219,8 @@
     "status": "PASS",
     "evidence": "Live rows from explicit_lift_certificates_v9.",
     "protects_loop": "loop-141",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v9-explicit-lift"
   },
   {
     "invariant_check_id": "inv-v10-finite-rt",
@@ -2061,7 +2232,8 @@
     "status": "PASS",
     "evidence": "p=3 and p=5, five precisions each.",
     "protects_loop": "loop-159",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v10-finite-rt"
   },
   {
     "invariant_check_id": "inv-v13-hecke-frobenius",
@@ -2073,7 +2245,8 @@
     "status": "PASS",
     "evidence": "Live rows from hecke_frobenius_pseudocharacter_stages_v13.",
     "protects_loop": "loop-222",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v13-hecke-frobenius"
   },
   {
     "invariant_check_id": "inv-v13-pseudocharacters",
@@ -2085,7 +2258,8 @@
     "status": "PASS",
     "evidence": "Live rows from pseudocharacter_stages_v13.",
     "protects_loop": "loop-215",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v13-pseudocharacters"
   },
   {
     "invariant_check_id": "inv-v20-tw-contracts",
@@ -2097,7 +2271,8 @@
     "status": "PASS",
     "evidence": "Live rows from tw_selection_contracts_v20.",
     "protects_loop": "loop-486",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-tw-contracts"
   },
   {
     "invariant_check_id": "inv-v18-x015-points",
@@ -2109,7 +2284,8 @@
     "status": "PASS",
     "evidence": "Live rows from x015_rational_points_v18.",
     "protects_loop": "loop-397",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v18-x015-points"
   },
   {
     "invariant_check_id": "inv-v18-image-profiles",
@@ -2121,7 +2297,8 @@
     "status": "PASS",
     "evidence": "Live rows from mod3_image_brauer_profiles_v18.",
     "protects_loop": "loop-354",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v18-image-profiles"
   },
   {
     "invariant_check_id": "inv-v16-character-models",
@@ -2133,7 +2310,8 @@
     "status": "PASS",
     "evidence": "Live rows from finite_character_models_v16.",
     "protects_loop": "loop-285",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v16-character-models"
   },
   {
     "invariant_check_id": "inv-v16-constituents",
@@ -2145,7 +2323,8 @@
     "status": "PASS",
     "evidence": "Live rows from constituent_decomposition_certificates_v16.",
     "protects_loop": "loop-286",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v16-constituents"
   },
   {
     "invariant_check_id": "inv-v17-bn",
@@ -2157,7 +2336,8 @@
     "status": "PASS",
     "evidence": "Live rows from brauer_nesbitt_compiler_cases_v17.",
     "protects_loop": "loop-305",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v17-bn"
   },
   {
     "invariant_check_id": "inv-v18-x015-semistability",
@@ -2169,7 +2349,8 @@
     "status": "PASS",
     "evidence": "Live rows from x015_semistability_profiles_v18.",
     "protects_loop": "loop-399",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v18-x015-semistability"
   },
   {
     "invariant_check_id": "inv-v19-crt",
@@ -2181,7 +2362,8 @@
     "status": "PASS",
     "evidence": "Live rows from crt_specialization_certificates_v19.",
     "protects_loop": "loop-428",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v19-crt"
   },
   {
     "invariant_check_id": "inv-hilbert-selection-toy",
@@ -2193,7 +2375,8 @@
     "status": "PASS",
     "evidence": "Models the shape, not the theorem\u2019s infinite existence statement.",
     "protects_loop": "loop-56",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-hilbert-selection-toy"
   },
   {
     "invariant_check_id": "inv-v19-formal-tangent",
@@ -2205,7 +2388,8 @@
     "status": "PASS",
     "evidence": "Live rows from formal_immersion_tangent_certificates_v19.",
     "protects_loop": "loop-447",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v19-formal-tangent"
   },
   {
     "invariant_check_id": "inv-v21-formal-contract",
@@ -2217,7 +2401,8 @@
     "status": "PASS",
     "evidence": "Live rows from formal_immersion_contracts_v21.",
     "protects_loop": "loop-522",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v21-formal-contract"
   },
   {
     "invariant_check_id": "inv-v21-prime-contract",
@@ -2229,7 +2414,8 @@
     "status": "PASS",
     "evidence": "Live rows from prime_distribution_contracts_v21.",
     "protects_loop": "loop-508",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v21-prime-contract"
   },
   {
     "invariant_check_id": "inv-v21-specialization-contract",
@@ -2241,7 +2427,8 @@
     "status": "PASS",
     "evidence": "Live rows from specialization_contracts_v21.",
     "protects_loop": "loop-515",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v21-specialization-contract"
   },
   {
     "invariant_check_id": "inv-v21-proof-trace",
@@ -2253,7 +2440,8 @@
     "status": "PASS",
     "evidence": "{\"active_after\": 7, \"active_before\": 9, \"trace\": {\"analytic_chebotarev_density_available\": \"derived-from-prime-distribution-kernel\", \"deformation_problem_represented\": \"derived-from-deformation-duality-kernel\", \"hilbert_irreducibility_weak_approximation_available\": \"derived-from-hilbert-specialization-kernel\", \"level_2_weight_2_newform_exists\": \"derived-from-universal-level-lowering-kernel\", \"mazur_formal_immersion_eisenstein_kernel_available\": \"derived-from-mazur-formal-kernel\", \"modular_curve_geometric_comparison_available\": \"derived-from-modular-curve-comparison-kernel\", \"poitou_tate_balance_available\": \"derived-from-deformation-duality-kernel\", \"semistable_nearby_cycles_comparison_available\": \"derived-from-modular-curve-comparison-kernel\", \"solvable_base_change_converse_available\": \"derived-from-solvable-automorphy-kernel\"}}",
     "protects_loop": "loop-571",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v21-proof-trace"
   },
   {
     "invariant_check_id": "status-v21-kernel-1",
@@ -2265,7 +2453,8 @@
     "status": "IMPORTED",
     "evidence": "Chebotarev density for finite Galois quotients. Internalize the analytic prime-ideal theorem and Artin-L-function argument.",
     "protects_loop": "loop-571",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v21-kernel-1"
   },
   {
     "invariant_check_id": "status-v21-kernel-2",
@@ -2277,7 +2466,8 @@
     "status": "IMPORTED",
     "evidence": "Hilbert irreducibility with simultaneous weak approximation. Internalize universal thin-set avoidance.",
     "protects_loop": "loop-571",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v21-kernel-2"
   },
   {
     "invariant_check_id": "status-v21-kernel-3",
@@ -2289,7 +2479,8 @@
     "status": "IMPORTED",
     "evidence": "Formal immersion at the cusp plus finiteness of the Eisenstein quotient. Internalize the Eisenstein quotient and formal-immersion theorem.",
     "protects_loop": "loop-571",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v21-kernel-3"
   },
   {
     "invariant_check_id": "status-v21-kernel-4",
@@ -2301,7 +2492,8 @@
     "status": "IMPORTED",
     "evidence": "Schlessinger/Mazur representability and Poitou-Tate global-local duality. Internalize actual Galois cochain realization, representability, and duality.",
     "protects_loop": "loop-571",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v21-kernel-4"
   },
   {
     "invariant_check_id": "status-v21-kernel-5",
@@ -2313,7 +2505,8 @@
     "status": "IMPORTED",
     "evidence": "Betti-etale, de Rham/Dieudonne, Eichler-Shimura, and nearby-cycles comparison. Internalize functorial comparison for the actual modular curve and Jacobian.",
     "protects_loop": "loop-571",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v21-kernel-5"
   },
   {
     "invariant_check_id": "status-v21-kernel-6",
@@ -2325,7 +2518,8 @@
     "status": "IMPORTED",
     "evidence": "Uniform one-prime descent for every admissible hypothetical FLT level. Internalize the universal quantifier over all admissible levels.",
     "protects_loop": "loop-571",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v21-kernel-6"
   },
   {
     "invariant_check_id": "status-v21-kernel-7",
@@ -2337,7 +2531,8 @@
     "status": "IMPORTED",
     "evidence": "Solvable base change, automorphic induction, and converse theorem. Internalize the analytic Langlands-Tunnell kernel.",
     "protects_loop": "loop-571",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v21-kernel-7"
   },
   {
     "invariant_check_id": "inv-v12-generator-coverage",
@@ -2349,7 +2544,8 @@
     "status": "PASS",
     "evidence": "Live rows from hecke_generator_coverage_v12.",
     "protects_loop": "loop-204",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-generator-coverage"
   },
   {
     "invariant_check_id": "inv-contradiction-derived",
@@ -2361,7 +2557,8 @@
     "status": "PASS",
     "evidence": "The final fact is derived by rule-09, not seeded.",
     "protects_loop": "loop-20",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-contradiction-derived"
   },
   {
     "invariant_check_id": "inv-v1-contradiction-derived",
@@ -2373,7 +2570,8 @@
     "status": "PASS",
     "evidence": "The contradiction is derived, not seeded.",
     "protects_loop": "loop-40",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v1-contradiction-derived"
   },
   {
     "invariant_check_id": "inv-v10-contradiction",
@@ -2385,7 +2583,8 @@
     "status": "PASS",
     "evidence": "The revised trace has 38 steps.",
     "protects_loop": "loop-161",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v10-contradiction"
   },
   {
     "invariant_check_id": "inv-v2-contradiction-derived",
@@ -2397,7 +2596,8 @@
     "status": "PASS",
     "evidence": "Final contradiction is forward-chained, not seeded.",
     "protects_loop": "loop-61",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v2-contradiction-derived"
   },
   {
     "invariant_check_id": "inv-v5-contradiction",
@@ -2409,7 +2609,8 @@
     "status": "PASS",
     "evidence": "Contradiction is derived, not seeded.",
     "protects_loop": "loop-101",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v5-contradiction"
   },
   {
     "invariant_check_id": "v3-contr",
@@ -2421,7 +2622,8 @@
     "status": "PASS",
     "evidence": "Not seeded.",
     "protects_loop": "loop-81",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "v3-contr"
   },
   {
     "invariant_check_id": "inv-v12-proof-trace",
@@ -2433,7 +2635,8 @@
     "status": "PASS",
     "evidence": "{\"semistable_residual_modularity_all_cases\": \"proof-by-cases\", \"tw_arithmetic_n_structures_compatible\": \"internal-n-structure-assembler\", \"tw_auxiliary_level_stage_freeness\": \"derived-rank-transfer\", \"universal_R_to_T_surjection\": \"derived-surjection\"}",
     "protects_loop": "loop-210",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-proof-trace"
   },
   {
     "invariant_check_id": "inv-v17-proof-trace",
@@ -2445,7 +2648,8 @@
     "status": "PASS",
     "evidence": "{\"bad_prime_cohomology_comparison_available\": \"derived-bad-prime-comparison\", \"integral_modular_curve_cohomology_package_available\": \"derived-integral-cohomology-package\", \"multiplicity_constituent_control_available\": \"derived-constituent-control\", \"multiplicity_residual_case_implication_certified\": \"derived-residual-prime-multiplicity\", \"rho_finite_at_residual_p_if_bad\": \"derived-finite-flat-at-p\"}",
     "protects_loop": "loop-350",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v17-proof-trace"
   },
   {
     "invariant_check_id": "inv-v18-proof-trace",
@@ -2457,7 +2661,8 @@
     "status": "PASS",
     "evidence": "{\"complex_artin_lift_exists\": \"derived-finite-image-lift\", \"irreducible_mod3_branch_implication_certified\": \"derived-weight-change\", \"mod5_irreducible_if_mod3_reducible\": \"derived-x015-rational-point-classification\", \"rho_p_irreducible\": \"proof-by-prime-cases\", \"semistable_large_prime_gl2_image\": \"derived-large-image\"}",
     "protects_loop": "loop-400",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v18-proof-trace"
   },
   {
     "invariant_check_id": "inv-v19-proof-trace",
@@ -2469,7 +2674,8 @@
     "status": "PASS",
     "evidence": "{\"auxiliary_curve_selected\": \"derived-hilbert-selection\", \"finite_quotient_chebotarev_class_coverage\": \"derived-chebotarev-class-coverage\", \"frey_x010_x014_local_obstruction_available\": \"derived-frey-local-obstruction\", \"mazur_kenku_isogeny_classification_available\": \"derived-isogeny-classification\", \"weight1_automorphic_representation_exists\": \"derived-langlands-tunnell\"}",
     "protects_loop": "loop-451",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v19-proof-trace"
   },
   {
     "invariant_check_id": "inv-v20-proof-trace",
@@ -2481,7 +2687,8 @@
     "status": "PASS",
     "evidence": "{\"active_after\": 9, \"active_before\": 14, \"trace\": {\"R_equals_T\": \"derived-faithful-module-isomorphism\", \"mod3_weight_one_eisenstein_congruence_available\": \"derived-explicit-theta-congruence\", \"oort_tate_raynaud_extension_classification_available\": \"derived-explicit-kummer-classification\", \"solvable_brauer_character_lift_available\": \"derived-explicit-g12-lift\", \"taylor_wiles_auxiliary_primes_exist\": \"derived-using-existing-chebotarev\"}}",
     "protects_loop": "loop-501",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-proof-trace"
   },
   {
     "invariant_check_id": "inv-v11-compiler",
@@ -2493,7 +2700,8 @@
     "status": "PASS",
     "evidence": "Live rows from tw_patching_compiler_runs_v11.",
     "protects_loop": "loop-177",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v11-compiler"
   },
   {
     "invariant_check_id": "inv-v12-n-structures",
@@ -2505,7 +2713,8 @@
     "status": "PASS",
     "evidence": "Live rows from arithmetic_n_structure_runs_v12.",
     "protects_loop": "loop-199",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-n-structures"
   },
   {
     "invariant_check_id": "inv-v13-assemblies",
@@ -2517,7 +2726,8 @@
     "status": "PASS",
     "evidence": "Live rows from hecke_galois_assembly_v13.",
     "protects_loop": "loop-228",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v13-assemblies"
   },
   {
     "invariant_check_id": "inv-v13-representations",
@@ -2529,7 +2739,8 @@
     "status": "PASS",
     "evidence": "Live rows from reconstructed_representation_stages_v13.",
     "protects_loop": "loop-219",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v13-representations"
   },
   {
     "invariant_check_id": "inv-v14-local-glue",
@@ -2541,7 +2752,8 @@
     "status": "PASS",
     "evidence": "Live rows from local_model_gluing_certificates_v14.",
     "protects_loop": "loop-250",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v14-local-glue"
   },
   {
     "invariant_check_id": "inv-v17-residual-multiplicity",
@@ -2553,7 +2765,8 @@
     "status": "PASS",
     "evidence": "Live rows from residual_prime_multiplicity_compiler_v17.",
     "protects_loop": "loop-344",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v17-residual-multiplicity"
   },
   {
     "invariant_check_id": "inv-v6-obstruction-certificates",
@@ -2565,7 +2778,8 @@
     "status": "PASS",
     "evidence": "Live rows from specialization_obstruction_certificates_v6.",
     "protects_loop": "loop-108",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v6-obstruction-certificates"
   },
   {
     "invariant_check_id": "inv-v6-raynaud-complex",
@@ -2577,7 +2791,8 @@
     "status": "PASS",
     "evidence": "Live rows from raynaud_complexes_v6.",
     "protects_loop": "loop-104",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v6-raynaud-complex"
   },
   {
     "invariant_check_id": "inv-v6-raynaud-quotient",
@@ -2589,7 +2804,8 @@
     "status": "PASS",
     "evidence": "Live rows from raynaud_component_certificates_v6.",
     "protects_loop": "loop-105",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v6-raynaud-quotient"
   },
   {
     "invariant_check_id": "status-v5-neron-identification",
@@ -2601,7 +2817,8 @@
     "status": "PASS",
     "evidence": "Executable exact complexes and Smith-normal-form certificates in raynaud_component_certificates_v6.",
     "protects_loop": "loop-105",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v5-neron-identification"
   },
   {
     "invariant_check_id": "inv-v5-character-lattice",
@@ -2613,7 +2830,8 @@
     "status": "PASS",
     "evidence": "Live rows from character_lattice_witnesses.",
     "protects_loop": "loop-95",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v5-character-lattice"
   },
   {
     "invariant_check_id": "inv-v5-monodromy",
@@ -2625,7 +2843,8 @@
     "status": "PASS",
     "evidence": "Live rows from monodromy_pairing_witnesses_v5.",
     "protects_loop": "loop-96",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v5-monodromy"
   },
   {
     "invariant_check_id": "inv-v4-component-order",
@@ -2637,7 +2856,8 @@
     "status": "PASS",
     "evidence": "Live rows from graph_component_groups.",
     "protects_loop": "loop-86",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v4-component-order"
   },
   {
     "invariant_check_id": "inv-v5-component-group",
@@ -2649,7 +2869,8 @@
     "status": "PASS",
     "evidence": "Live rows from neron_component_group_witnesses.",
     "protects_loop": "loop-97",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v5-component-group"
   },
   {
     "invariant_check_id": "inv-v5-dual-graph",
@@ -2661,7 +2882,8 @@
     "status": "PASS",
     "evidence": "Live rows from dual_graph_witnesses_v5.",
     "protects_loop": "loop-94",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v5-dual-graph"
   },
   {
     "invariant_check_id": "inv-v17-hecke-squares",
@@ -2673,7 +2895,8 @@
     "status": "PASS",
     "evidence": "Live rows from hecke_comparison_squares_v17.",
     "protects_loop": "loop-314",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v17-hecke-squares"
   },
   {
     "invariant_check_id": "inv-v9-hecke-actions",
@@ -2685,7 +2908,8 @@
     "status": "PASS",
     "evidence": "Live rows from integral_hecke_actions_v9.",
     "protects_loop": "loop-135",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v9-hecke-actions"
   },
   {
     "invariant_check_id": "inv-v9-integral-lattice",
@@ -2697,7 +2921,8 @@
     "status": "PASS",
     "evidence": "Live rows from integral_form_lattices_v9.",
     "protects_loop": "loop-134",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v9-integral-lattice"
   },
   {
     "invariant_check_id": "inv-v20-g12-reduction",
@@ -2709,7 +2934,8 @@
     "status": "PASS",
     "evidence": "Live rows from g12_reduction_certificates_v20.",
     "protects_loop": "loop-458",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-g12-reduction"
   },
   {
     "invariant_check_id": "inv-v21-level-lowering",
@@ -2721,7 +2947,8 @@
     "status": "PASS",
     "evidence": "Live rows from level_lowering_contracts_v21.",
     "protects_loop": "loop-563",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v21-level-lowering"
   },
   {
     "invariant_check_id": "inv-2adic-minimal-multiplicative",
@@ -2733,7 +2960,8 @@
     "status": "PASS",
     "evidence": "Minimal multiplicative reduction at 2.",
     "protects_loop": "loop-24",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-2adic-minimal-multiplicative"
   },
   {
     "invariant_check_id": "inv-conductor-radical-v1",
@@ -2745,7 +2973,8 @@
     "status": "PASS",
     "evidence": "All bad primes are multiplicative.",
     "protects_loop": "loop-26",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-conductor-radical-v1"
   },
   {
     "invariant_check_id": "inv-global-bad-primes-multiplicative",
@@ -2757,7 +2986,8 @@
     "status": "PASS",
     "evidence": "Prime-by-prime global minimal-model witness.",
     "protects_loop": "loop-25",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-global-bad-primes-multiplicative"
   },
   {
     "invariant_check_id": "inv-odd-c4-unit",
@@ -2769,7 +2999,8 @@
     "status": "PASS",
     "evidence": "Direct integer valuations on all sampled bad primes.",
     "protects_loop": "loop-11",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-odd-c4-unit"
   },
   {
     "invariant_check_id": "inv-odd-conductor-exponent-one",
@@ -2781,7 +3012,8 @@
     "status": "PASS",
     "evidence": "Local conductor rule applied away from 2.",
     "protects_loop": "loop-12",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-odd-conductor-exponent-one"
   },
   {
     "invariant_check_id": "inv-odd-multiplicative",
@@ -2793,7 +3025,8 @@
     "status": "PASS",
     "evidence": "v_q(Delta)>0 and v_q(c4)=0.",
     "protects_loop": "loop-11",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-odd-multiplicative"
   },
   {
     "invariant_check_id": "inv-two-adic-machine-proof",
@@ -2805,7 +3038,8 @@
     "status": "PASS",
     "evidence": "Loops 22\u201326: x=4X, y=4X+8Y; all normalized samples have v2(c4)=0 and v2(Delta)>0.",
     "protects_loop": "loop-24",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-two-adic-machine-proof"
   },
   {
     "invariant_check_id": "inv-v20-tate-criterion",
@@ -2817,7 +3051,8 @@
     "status": "PASS",
     "evidence": "Live rows from tate_finite_flat_certificates_v20.",
     "protects_loop": "loop-480",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-tate-criterion"
   },
   {
     "invariant_check_id": "inv-v13-local-models",
@@ -2829,7 +3064,8 @@
     "status": "PASS",
     "evidence": "Live rows from local_representation_models_v13.",
     "protects_loop": "loop-226",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v13-local-models"
   },
   {
     "invariant_check_id": "inv-v12-proof-by-cases",
@@ -2841,7 +3077,8 @@
     "status": "PASS",
     "evidence": "Live rows from proof_by_cases_certificates_v12.",
     "protects_loop": "loop-184",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-proof-by-cases"
   },
   {
     "invariant_check_id": "inv-v12-case-partition",
@@ -2853,7 +3090,8 @@
     "status": "PASS",
     "evidence": "Live rows from case_partitions_v12.",
     "protects_loop": "loop-182",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-case-partition"
   },
   {
     "invariant_check_id": "inv-imported-edges-load-bearing",
@@ -2865,7 +3103,8 @@
     "status": "PASS",
     "evidence": "Counterfactual graph builds disable each imported edge in turn.",
     "protects_loop": "loop-40",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-imported-edges-load-bearing"
   },
   {
     "invariant_check_id": "inv-v12-rank-transfer",
@@ -2877,7 +3116,8 @@
     "status": "PASS",
     "evidence": "Live rows from hecke_rank_transfer_certificates_v12.",
     "protects_loop": "loop-192",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v12-rank-transfer"
   },
   {
     "invariant_check_id": "inv-v10-parent-replacement",
@@ -2889,7 +3129,8 @@
     "status": "PASS",
     "evidence": "omnibus_parent_replacements_v10 and the revised proof trace.",
     "protects_loop": "loop-161",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v10-parent-replacement"
   },
   {
     "invariant_check_id": "inv-v11-proof-trace",
@@ -2901,7 +3142,8 @@
     "status": "PASS",
     "evidence": "proof_trace_revisions_v11 and implication_rules.",
     "protects_loop": "loop-180",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v11-proof-trace"
   },
   {
     "invariant_check_id": "inv-v13-proof-trace",
@@ -2913,7 +3155,8 @@
     "status": "PASS",
     "evidence": "[{\"derivation_kind\": \"derived-hecke-galois-assembly\"}]",
     "protects_loop": "loop-230",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v13-proof-trace"
   },
   {
     "invariant_check_id": "inv-v14-trace",
@@ -2925,7 +3168,8 @@
     "status": "PASS",
     "evidence": "{\"hecke_galois_representations_exist\": \"derived-hecke-galois-assembly\", \"hecke_local_global_compatibility_available\": \"derived-local-global-compatibility\", \"hecke_modular_pseudocharacter_system_exists\": \"derived-modular-pseudocharacter\"}",
     "protects_loop": "loop-253",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v14-trace"
   },
   {
     "invariant_check_id": "inv-v15-proof-trace",
@@ -2937,7 +3181,8 @@
     "status": "PASS",
     "evidence": "{\"localized_etale_hecke_module_exists\": \"derived-localized-etale-parent\", \"tw_auxiliary_cohomology_rank_one\": \"internal-sign-projector-rank-one-compiler\"}",
     "protects_loop": "loop-281",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v15-proof-trace"
   },
   {
     "invariant_check_id": "inv-v16-proof-trace",
@@ -2949,7 +3194,8 @@
     "status": "PASS",
     "evidence": "{\"localized_etale_hecke_module_free_rank_two\": \"internal-nakayama-rank-two-compiler\", \"multiplicity_good_case_implication_certified\": \"internal-good-reduction-dimension-compiler\", \"multiplicity_residual_case_implication_certified\": \"imported-mazur-ribet-residual-prime-comparison\", \"tw_auxiliary_cohomology_rank_one\": \"internal-sign-projector-rank-one-compiler\", \"universal_non_eisenstein_multiplicity_two_available\": \"proof-by-cases\"}",
     "protects_loop": "loop-300",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v16-proof-trace"
   },
   {
     "invariant_check_id": "inv-v20-rt-direct",
@@ -2961,7 +3207,8 @@
     "status": "PASS",
     "evidence": "Live rows from rt_direct_descent_certificates_v20.",
     "protects_loop": "loop-497",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-rt-direct"
   },
   {
     "invariant_check_id": "inv-v16-parent",
@@ -2973,7 +3220,8 @@
     "status": "PASS",
     "evidence": "Live rows from multiplicity_two_parent_certificates_v16.",
     "protects_loop": "loop-298",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v16-parent"
   },
   {
     "invariant_check_id": "inv-v15-rational-rank",
@@ -2985,7 +3233,8 @@
     "status": "PASS",
     "evidence": "Rows from rational_hecke_rank_certificates_v15.",
     "protects_loop": "loop-264",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v15-rational-rank"
   },
   {
     "invariant_check_id": "inv-x015-obstruction-shape",
@@ -2997,7 +3246,8 @@
     "status": "PASS",
     "evidence": "A provenance check on the imported classification, not a recomputation.",
     "protects_loop": "loop-54",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-x015-obstruction-shape"
   },
   {
     "invariant_check_id": "edge-status-import-RT-patching",
@@ -3009,7 +3259,8 @@
     "status": "IMPORTED",
     "evidence": "Source=src-taylor-wiles-1995; load-bearing=1; proof_internalized=0.",
     "protects_loop": "loop-61",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "edge-status-import-RT-patching"
   },
   {
     "invariant_check_id": "edge-status-import-finite-flat-at-p",
@@ -3021,7 +3272,8 @@
     "status": "IMPORTED",
     "evidence": "Source=src-tate-curve-via-ribet; load-bearing=1; proof_internalized=0.",
     "protects_loop": "loop-61",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "edge-status-import-finite-flat-at-p"
   },
   {
     "invariant_check_id": "edge-status-import-frey-small-prime-irreducibility",
@@ -3033,7 +3285,8 @@
     "status": "IMPORTED",
     "evidence": "Source=src-ribet-toulouse-1990; load-bearing=1; proof_internalized=0.",
     "protects_loop": "loop-61",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "edge-status-import-frey-small-prime-irreducibility"
   },
   {
     "invariant_check_id": "edge-status-import-hilbert-chebotarev-3-5",
@@ -3045,7 +3298,8 @@
     "status": "IMPORTED",
     "evidence": "Source=src-wiles-3-5-1995; load-bearing=1; proof_internalized=0.",
     "protects_loop": "loop-61",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "edge-status-import-hilbert-chebotarev-3-5"
   },
   {
     "invariant_check_id": "edge-status-import-langlands-tunnell",
@@ -3057,7 +3311,8 @@
     "status": "IMPORTED",
     "evidence": "Source=src-tunnell-1981; load-bearing=1; proof_internalized=0.",
     "protects_loop": "loop-61",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "edge-status-import-langlands-tunnell"
   },
   {
     "invariant_check_id": "edge-status-import-mazur-semistable-surjectivity",
@@ -3069,7 +3324,8 @@
     "status": "IMPORTED",
     "evidence": "Source=src-mazur-1978; load-bearing=1; proof_internalized=0.",
     "protects_loop": "loop-61",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "edge-status-import-mazur-semistable-surjectivity"
   },
   {
     "invariant_check_id": "edge-status-import-ribet-level-lowering",
@@ -3081,7 +3337,8 @@
     "status": "IMPORTED",
     "evidence": "Source=src-ribet-toulouse-1990; load-bearing=1; proof_internalized=0.",
     "protects_loop": "loop-61",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "edge-status-import-ribet-level-lowering"
   },
   {
     "invariant_check_id": "edge-status-import-weight-raising-mod3",
@@ -3093,7 +3350,8 @@
     "status": "IMPORTED",
     "evidence": "Source=src-wiles-1995; load-bearing=1; proof_internalized=0.",
     "protects_loop": "loop-61",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "edge-status-import-weight-raising-mod3"
   },
   {
     "invariant_check_id": "edge-status-import-x0-15-rational-points",
@@ -3105,7 +3363,8 @@
     "status": "IMPORTED",
     "evidence": "Source=src-wiles-3-5-1995; load-bearing=1; proof_internalized=0.",
     "protects_loop": "loop-61",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "edge-status-import-x0-15-rational-points"
   },
   {
     "invariant_check_id": "status-ff-converse",
@@ -3117,7 +3376,8 @@
     "status": "IMPORTED",
     "evidence": "Finite-flat extension theorem.",
     "protects_loop": "loop-67",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-ff-converse"
   },
   {
     "invariant_check_id": "status-ff-extend",
@@ -3129,7 +3389,8 @@
     "status": "IMPORTED",
     "evidence": "Finite-flat extension theorem.",
     "protects_loop": "loop-67",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-ff-extend"
   },
   {
     "invariant_check_id": "status-ff-generic",
@@ -3141,7 +3402,8 @@
     "status": "IMPORTED",
     "evidence": "Finite-flat extension theorem.",
     "protects_loop": "loop-67",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-ff-generic"
   },
   {
     "invariant_check_id": "status-v10-residual-content",
@@ -3153,7 +3415,8 @@
     "status": "IMPORTED",
     "evidence": "[\"Characteristic-zero finite-image lift\", \"Langlands\\u2013Tunnell automorphy\", \"Weight change\", \"X0(15) gate\", \"Hilbert/Chebotarev selection\"]",
     "protects_loop": "loop-151",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v10-residual-content"
   },
   {
     "invariant_check_id": "status-v10-rt-content",
@@ -3165,7 +3428,8 @@
     "status": "IMPORTED",
     "evidence": "[\"Representability\", \"Local deformation conditions\", \"Tangent and obstruction spaces\", \"Poitou\\u2013Tate balance\", \"Taylor\\u2013Wiles prime existence\", \"Taylor\\u2013Wiles patching theorem\", \"R to T map\", \"Numerical criterion\"]",
     "protects_loop": "loop-160",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v10-rt-content"
   },
   {
     "invariant_check_id": "status-v11-arithmetic-system",
@@ -3177,7 +3441,8 @@
     "status": "IMPORTED",
     "evidence": "Arithmetic construction remains source-backed.",
     "protects_loop": "loop-179",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v11-arithmetic-system"
   },
   {
     "invariant_check_id": "status-v11-stage-freeness",
@@ -3189,7 +3454,8 @@
     "status": "IMPORTED",
     "evidence": "Taylor\u2013Wiles Theorem 2 remains the next arithmetic edge.",
     "protects_loop": "loop-179",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v11-stage-freeness"
   },
   {
     "invariant_check_id": "status-v12-hecke-representations",
@@ -3201,7 +3467,8 @@
     "status": "IMPORTED",
     "evidence": "The parent compilers are internal; this arithmetic theorem remains load-bearing.",
     "protects_loop": "loop-211",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v12-hecke-representations"
   },
   {
     "invariant_check_id": "status-v12-rank-one-cohomology",
@@ -3213,7 +3480,8 @@
     "status": "IMPORTED",
     "evidence": "The parent compilers are internal; this arithmetic theorem remains load-bearing.",
     "protects_loop": "loop-211",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v12-rank-one-cohomology"
   },
   {
     "invariant_check_id": "status-v13-global-pseudocharacter",
@@ -3225,7 +3493,8 @@
     "status": "IMPORTED",
     "evidence": "The parent assembler is internal; this child theorem remains load-bearing.",
     "protects_loop": "loop-231",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v13-global-pseudocharacter"
   },
   {
     "invariant_check_id": "status-v13-local-global",
@@ -3237,7 +3506,8 @@
     "status": "IMPORTED",
     "evidence": "The parent assembler is internal; this child theorem remains load-bearing.",
     "protects_loop": "loop-231",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v13-local-global"
   },
   {
     "invariant_check_id": "status-v14-bad-prime-comparison",
@@ -3249,7 +3519,8 @@
     "status": "IMPORTED",
     "evidence": "Parent compilers internalized; theorem input remains load-bearing.",
     "protects_loop": "loop-261",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v14-bad-prime-comparison"
   },
   {
     "invariant_check_id": "status-v14-etale-module",
@@ -3261,7 +3532,8 @@
     "status": "IMPORTED",
     "evidence": "Parent compilers internalized; theorem input remains load-bearing.",
     "protects_loop": "loop-261",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v14-etale-module"
   },
   {
     "invariant_check_id": "status-v15-integral-comparison",
@@ -3273,7 +3545,8 @@
     "status": "IMPORTED",
     "evidence": "Parent compilers internal; child theorem remains.",
     "protects_loop": "loop-281",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v15-integral-comparison"
   },
   {
     "invariant_check_id": "status-v15-multiplicity-two",
@@ -3285,7 +3558,8 @@
     "status": "IMPORTED",
     "evidence": "Parent compilers internal; child theorem remains.",
     "protects_loop": "loop-281",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v15-multiplicity-two"
   },
   {
     "invariant_check_id": "status-v16-constituent-theorem",
@@ -3297,7 +3571,8 @@
     "status": "IMPORTED",
     "evidence": "The parent theorem is internalized as proof by cases; this child remains load-bearing.",
     "protects_loop": "loop-301",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v16-constituent-theorem"
   },
   {
     "invariant_check_id": "status-v16-residual-prime-comparison",
@@ -3309,7 +3584,8 @@
     "status": "IMPORTED",
     "evidence": "The parent theorem is internalized as proof by cases; this child remains load-bearing.",
     "protects_loop": "loop-301",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v16-residual-prime-comparison"
   },
   {
     "invariant_check_id": "status-v17-chebotarev",
@@ -3321,7 +3597,8 @@
     "status": "IMPORTED",
     "evidence": "The parent compiler is internal; this child theorem remains load-bearing.",
     "protects_loop": "loop-351",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v17-chebotarev"
   },
   {
     "invariant_check_id": "status-v17-finite-flat-classification",
@@ -3333,7 +3610,8 @@
     "status": "IMPORTED",
     "evidence": "The parent compiler is internal; this child theorem remains load-bearing.",
     "protects_loop": "loop-351",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v17-finite-flat-classification"
   },
   {
     "invariant_check_id": "status-v17-geometry",
@@ -3345,7 +3623,8 @@
     "status": "IMPORTED",
     "evidence": "The parent compiler is internal; this child theorem remains load-bearing.",
     "protects_loop": "loop-351",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v17-geometry"
   },
   {
     "invariant_check_id": "status-v17-nearby-cycles",
@@ -3357,7 +3636,8 @@
     "status": "IMPORTED",
     "evidence": "The parent compiler is internal; this child theorem remains load-bearing.",
     "protects_loop": "loop-351",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v17-nearby-cycles"
   },
   {
     "invariant_check_id": "status-v18-fong-swan-child",
@@ -3369,7 +3649,8 @@
     "status": "IMPORTED",
     "evidence": "The parent assembler is internal; this narrower theorem remains load-bearing.",
     "protects_loop": "loop-401",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v18-fong-swan-child"
   },
   {
     "invariant_check_id": "status-v18-frey-local-child",
@@ -3381,7 +3662,8 @@
     "status": "IMPORTED",
     "evidence": "The parent assembler is internal; this narrower theorem remains load-bearing.",
     "protects_loop": "loop-401",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v18-frey-local-child"
   },
   {
     "invariant_check_id": "status-v18-mazur-kenku-child",
@@ -3393,7 +3675,8 @@
     "status": "IMPORTED",
     "evidence": "The parent assembler is internal; this narrower theorem remains load-bearing.",
     "protects_loop": "loop-401",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v18-mazur-kenku-child"
   },
   {
     "invariant_check_id": "status-v18-weight-change-child",
@@ -3405,7 +3688,8 @@
     "status": "IMPORTED",
     "evidence": "The parent assembler is internal; this narrower theorem remains load-bearing.",
     "protects_loop": "loop-401",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v18-weight-change-child"
   },
   {
     "invariant_check_id": "status-v19-chebotarev",
@@ -3417,7 +3701,8 @@
     "status": "IMPORTED",
     "evidence": "The parent compiler is internal; this child theorem remains load-bearing.",
     "protects_loop": "loop-451",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v19-chebotarev"
   },
   {
     "invariant_check_id": "status-v19-formal-immersion",
@@ -3429,7 +3714,8 @@
     "status": "IMPORTED",
     "evidence": "The parent compiler is internal; this child theorem remains load-bearing.",
     "protects_loop": "loop-451",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v19-formal-immersion"
   },
   {
     "invariant_check_id": "status-v19-hilbert",
@@ -3441,7 +3727,8 @@
     "status": "IMPORTED",
     "evidence": "The parent compiler is internal; this child theorem remains load-bearing.",
     "protects_loop": "loop-451",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v19-hilbert"
   },
   {
     "invariant_check_id": "status-v19-lt",
@@ -3453,7 +3740,8 @@
     "status": "IMPORTED",
     "evidence": "The parent compiler is internal; this child theorem remains load-bearing.",
     "protects_loop": "loop-451",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v19-lt"
   },
   {
     "invariant_check_id": "status-v4-finite-flat-middle",
@@ -3465,7 +3753,8 @@
     "status": "IMPORTED",
     "evidence": "Endpoint schemes, cocycle, exact generic sequence, and split cases are witnessed; middle model theorem remains external.",
     "protects_loop": "loop-85",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v4-finite-flat-middle"
   },
   {
     "invariant_check_id": "status-v4-ihara-lift",
@@ -3477,7 +3766,8 @@
     "status": "IMPORTED",
     "evidence": "Old/new and eigenvector controls are internalized; Ihara, multiplicity one, and lifting remain external.",
     "protects_loop": "loop-90",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v4-ihara-lift"
   },
   {
     "invariant_check_id": "status-v4-specialization-bridge",
@@ -3489,7 +3779,8 @@
     "status": "IMPORTED",
     "evidence": "Finite linear controls and graph component groups are internalized; N\u00e9ron/Jacobian specialization remains external.",
     "protects_loop": "loop-90",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v4-specialization-bridge"
   },
   {
     "invariant_check_id": "status-v5-deligne-serre",
@@ -3501,7 +3792,8 @@
     "status": "IMPORTED",
     "evidence": "Finite antecedent geometry is populated; the universal theorem remains source-backed.",
     "protects_loop": "loop-101",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v5-deligne-serre"
   },
   {
     "invariant_check_id": "status-v5-ihara",
@@ -3513,7 +3805,8 @@
     "status": "IMPORTED",
     "evidence": "Finite antecedent geometry is populated; the universal theorem remains source-backed.",
     "protects_loop": "loop-99",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v5-ihara"
   },
   {
     "invariant_check_id": "status-v5-multiplicity-one",
@@ -3525,7 +3818,8 @@
     "status": "IMPORTED",
     "evidence": "Finite antecedent geometry is populated; the universal theorem remains source-backed.",
     "protects_loop": "loop-100",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v5-multiplicity-one"
   },
   {
     "invariant_check_id": "status-v7-universal-ihara",
@@ -3537,7 +3831,8 @@
     "status": "IMPORTED",
     "evidence": "The finite certificate generator closes instantiated levels; a universal rank theorem remains source-backed.",
     "protects_loop": "loop-121",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v7-universal-ihara"
   },
   {
     "invariant_check_id": "status-v8-universal-multiplicity-one",
@@ -3549,7 +3844,8 @@
     "status": "IMPORTED",
     "evidence": "The finite Hecke certificate generator closes instantiated packets; the universal theorem remains source-backed.",
     "protects_loop": "loop-131",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v8-universal-multiplicity-one"
   },
   {
     "invariant_check_id": "status-v9-universal-deligne-serre",
@@ -3561,7 +3857,8 @@
     "status": "IMPORTED",
     "evidence": "The concrete rank-one case is closed; the general Deligne\u2013Serre lemma remains source-backed.",
     "protects_loop": "loop-141",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "status-v9-universal-deligne-serre"
   },
   {
     "invariant_check_id": "v3-dual",
@@ -3573,7 +3870,8 @@
     "status": "PASS",
     "evidence": "Character matrices.",
     "protects_loop": "loop-65",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "v3-dual"
   },
   {
     "invariant_check_id": "inv-v18-weight-congruence",
@@ -3585,7 +3883,8 @@
     "status": "PASS",
     "evidence": "Live rows from eisenstein_congruence_stages_v18.",
     "protects_loop": "loop-383",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v18-weight-congruence"
   },
   {
     "invariant_check_id": "inv-v20-weight-product",
@@ -3597,7 +3896,8 @@
     "status": "PASS",
     "evidence": "Live rows from weight_change_product_certificates_v20.",
     "protects_loop": "loop-469",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-weight-product"
   },
   {
     "invariant_check_id": "inv-v20-theta-modularity",
@@ -3609,7 +3909,8 @@
     "status": "PASS",
     "evidence": "Live rows from a2_theta_modularity_certificates_v20.",
     "protects_loop": "loop-466",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-theta-modularity"
   },
   {
     "invariant_check_id": "inv-v20-theta",
@@ -3621,7 +3922,8 @@
     "status": "PASS",
     "evidence": "Live rows from a2_theta_coefficients_v20.",
     "protects_loop": "loop-464",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v20-theta"
   },
   {
     "invariant_check_id": "inv-v19-thin-sets",
@@ -3633,7 +3935,8 @@
     "status": "PASS",
     "evidence": "Live rows from thin_set_profiles_v19.",
     "protects_loop": "loop-424",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v19-thin-sets"
   },
   {
     "invariant_check_id": "inv-patching-coordinate-balance",
@@ -3645,7 +3948,8 @@
     "status": "PASS",
     "evidence": "A coordinate witness only; module freeness and patching remain imported.",
     "protects_loop": "loop-60",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-patching-coordinate-balance"
   },
   {
     "invariant_check_id": "inv-v18-x015-descent",
@@ -3657,7 +3961,8 @@
     "status": "PASS",
     "evidence": "Live rows from x015_rank_certificates_v18.",
     "protects_loop": "loop-395",
-    "domain_id": "domain-fermats-last-theorem"
+    "domain_id": "domain-fermats-last-theorem",
+    "name": "inv-v18-x015-descent"
   },
   {
     "invariant_check_id": "inv-nna-deterministic",
@@ -3669,7 +3974,8 @@
     "status": "PASS",
     "evidence": "Reduction rules for the four operations have mutually exclusive left-hand patterns across all four derivations.",
     "protects_loop": "loop-576",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "inv-nna-deterministic"
   },
   {
     "invariant_check_id": "inv-nna-terminates",
@@ -3681,7 +3987,8 @@
     "status": "PASS",
     "evidence": "The 22 reduction steps across the four operations each decrease their operand measure.",
     "protects_loop": "loop-576",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "inv-nna-terminates"
   },
   {
     "invariant_check_id": "inv-nna-no-self-import",
@@ -3693,7 +4000,8 @@
     "status": "PASS",
     "evidence": "AntecedentsJson for the four root facts references only prior derivation steps and internalized sibling results, never the goal fact itself.",
     "protects_loop": "loop-576",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "inv-nna-no-self-import"
   },
   {
     "invariant_check_id": "inv-nna-zero-imports-above-kernel",
@@ -3705,7 +4013,8 @@
     "status": "PASS",
     "evidence": "All four Theorems rows carry ActiveImportCount=0 and there are no TheoremDependencies with these consumers.",
     "protects_loop": "loop-576",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "inv-nna-zero-imports-above-kernel"
   },
   {
     "invariant_check_id": "inv-nna-add-normal-form-four",
@@ -3717,7 +4026,8 @@
     "status": "PASS",
     "evidence": "add_normal_form_SSSSO = S(S(S(S(Z)))) = Numeral(4).",
     "protects_loop": "loop-572",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "inv-nna-add-normal-form-four"
   },
   {
     "invariant_check_id": "inv-nna-sub-normal-form-two",
@@ -3729,7 +4039,8 @@
     "status": "PASS",
     "evidence": "sub_normal_form_SSO = S(S(Z)) = Numeral(2).",
     "protects_loop": "loop-573",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "inv-nna-sub-normal-form-two"
   },
   {
     "invariant_check_id": "inv-nna-mul-normal-form-four",
@@ -3741,7 +4052,8 @@
     "status": "PASS",
     "evidence": "mul_add_reduces_to_SSSSO = S(S(S(S(Z)))) = Numeral(4).",
     "protects_loop": "loop-574",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "inv-nna-mul-normal-form-four"
   },
   {
     "invariant_check_id": "inv-nna-div-normal-form-two",
@@ -3753,6 +4065,7 @@
     "status": "PASS",
     "evidence": "div_normal_form_SSO = S(S(Z)) = Numeral(2).",
     "protects_loop": "loop-575",
-    "domain_id": "domain-natural-number-arithmetic"
+    "domain_id": "domain-natural-number-arithmetic",
+    "name": "inv-nna-div-normal-form-two"
   }
 ]

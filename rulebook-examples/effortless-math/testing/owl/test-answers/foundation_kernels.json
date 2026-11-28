@@ -10,7 +10,8 @@
     "source_id": "src-prime-distribution-kernel-v21",
     "theorem_content_internalized": 0,
     "status": "ACTIVE-FOUNDATION-KERNEL",
-    "next_target": "Internalize the analytic prime-ideal theorem and Artin-L-function argument."
+    "next_target": "Internalize the analytic prime-ideal theorem and Artin-L-function argument.",
+    "name": "kernel-prime-distribution-v21"
   },
   {
     "kernel_order": 2,
@@ -23,7 +24,8 @@
     "source_id": "src-hilbert-specialization-kernel-v21",
     "theorem_content_internalized": 0,
     "status": "ACTIVE-FOUNDATION-KERNEL",
-    "next_target": "Internalize universal thin-set avoidance."
+    "next_target": "Internalize universal thin-set avoidance.",
+    "name": "kernel-hilbert-specialization-v21"
   },
   {
     "kernel_order": 3,
@@ -36,7 +38,8 @@
     "source_id": "src-mazur-modular-curve-kernel-v21",
     "theorem_content_internalized": 0,
     "status": "ACTIVE-FOUNDATION-KERNEL",
-    "next_target": "Internalize the Eisenstein quotient and formal-immersion theorem."
+    "next_target": "Internalize the Eisenstein quotient and formal-immersion theorem.",
+    "name": "kernel-mazur-formal-immersion-v21"
   },
   {
     "kernel_order": 4,
@@ -49,7 +52,8 @@
     "source_id": "src-global-deformation-duality-kernel-v21",
     "theorem_content_internalized": 0,
     "status": "ACTIVE-FOUNDATION-KERNEL",
-    "next_target": "Internalize actual Galois cochain realization, representability, and duality."
+    "next_target": "Internalize actual Galois cochain realization, representability, and duality.",
+    "name": "kernel-global-deformation-duality-v21"
   },
   {
     "kernel_order": 5,
@@ -62,7 +66,8 @@
     "source_id": "src-modular-curve-comparison-kernel-v21",
     "theorem_content_internalized": 0,
     "status": "ACTIVE-FOUNDATION-KERNEL",
-    "next_target": "Internalize functorial comparison for the actual modular curve and Jacobian."
+    "next_target": "Internalize functorial comparison for the actual modular curve and Jacobian.",
+    "name": "kernel-modular-curve-comparison-v21"
   },
   {
     "kernel_order": 6,
@@ -75,7 +80,8 @@
     "source_id": "src-universal-level-lowering-kernel-v21",
     "theorem_content_internalized": 0,
     "status": "ACTIVE-FOUNDATION-KERNEL",
-    "next_target": "Internalize the universal quantifier over all admissible levels."
+    "next_target": "Internalize the universal quantifier over all admissible levels.",
+    "name": "kernel-universal-level-lowering-v21"
   },
   {
     "kernel_order": 7,
@@ -88,7 +94,8 @@
     "source_id": "src-solvable-automorphy-kernel-v21",
     "theorem_content_internalized": 0,
     "status": "ACTIVE-FOUNDATION-KERNEL",
-    "next_target": "Internalize the analytic Langlands-Tunnell kernel."
+    "next_target": "Internalize the analytic Langlands-Tunnell kernel.",
+    "name": "kernel-solvable-automorphy-v21"
   },
   {
     "kernel_order": 8,
@@ -101,7 +108,8 @@
     "source_id": "src-peano-naturals-kernel-v1",
     "theorem_content_internalized": 1,
     "status": "INTERNALIZED-FOUNDATION-KERNEL",
-    "next_target": "Extend to associativity, commutativity, distributivity, and the ordering relation."
+    "next_target": "Extend to associativity, commutativity, distributivity, and the ordering relation.",
+    "name": "kernel-peano-naturals-v1"
   },
   {
     "kernel_order": 9,
@@ -114,6 +122,7 @@
     "source_id": "src-logic-gates-kernel-v1",
     "theorem_content_internalized": 1,
     "status": "ACTIVE-FOUNDATION-KERNEL",
-    "next_target": "Widen to 8-bit (and beyond) by adding netlist rows only; add signed/overflow flags as data."
+    "next_target": "Widen to 8-bit (and beyond) by adding netlist rows only; add signed/overflow flags as data.",
+    "name": "kernel-logic-gates-v1"
   }
 ]

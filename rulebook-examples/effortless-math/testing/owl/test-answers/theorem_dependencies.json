@@ -9,7 +9,8 @@
     "is_imported": true,
     "is_shared_kernel": false,
     "provider_contract_path": "domains/analytic-prime-distribution/theorem-contract.json",
-    "notes": "Chebotarev density for finite Galois quotients."
+    "notes": "Chebotarev density for finite Galois quotients.",
+    "name": "dep-flt-analytic-prime-distribution"
   },
   {
     "dependency_id": "dep-flt-hilbert-specialization",
@@ -21,7 +22,8 @@
     "is_imported": true,
     "is_shared_kernel": false,
     "provider_contract_path": "domains/hilbert-specialization/theorem-contract.json",
-    "notes": "Hilbert irreducibility with simultaneous weak approximation."
+    "notes": "Hilbert irreducibility with simultaneous weak approximation.",
+    "name": "dep-flt-hilbert-specialization"
   },
   {
     "dependency_id": "dep-flt-mazur-modular-curve-arithmetic",
@@ -33,7 +35,8 @@
     "is_imported": true,
     "is_shared_kernel": false,
     "provider_contract_path": "domains/mazur-modular-curve-arithmetic/theorem-contract.json",
-    "notes": "Formal immersion at the cusp plus finiteness of the Eisenstein quotient."
+    "notes": "Formal immersion at the cusp plus finiteness of the Eisenstein quotient.",
+    "name": "dep-flt-mazur-modular-curve-arithmetic"
   },
   {
     "dependency_id": "dep-flt-global-deformation-duality",
@@ -45,7 +48,8 @@
     "is_imported": true,
     "is_shared_kernel": true,
     "provider_contract_path": "domains/global-deformation-duality/theorem-contract.json",
-    "notes": "Schlessinger/Mazur representability and Poitou-Tate global-local duality."
+    "notes": "Schlessinger/Mazur representability and Poitou-Tate global-local duality.",
+    "name": "dep-flt-global-deformation-duality"
   },
   {
     "dependency_id": "dep-flt-modular-curve-cohomological-comparison",
@@ -57,7 +61,8 @@
     "is_imported": true,
     "is_shared_kernel": true,
     "provider_contract_path": "domains/modular-curve-cohomological-comparison/theorem-contract.json",
-    "notes": "Betti-etale, de Rham/Dieudonne, Eichler-Shimura, and nearby-cycles comparison."
+    "notes": "Betti-etale, de Rham/Dieudonne, Eichler-Shimura, and nearby-cycles comparison.",
+    "name": "dep-flt-modular-curve-cohomological-comparison"
   },
   {
     "dependency_id": "dep-flt-universal-level-lowering",
@@ -69,7 +74,8 @@
     "is_imported": true,
     "is_shared_kernel": false,
     "provider_contract_path": "domains/universal-level-lowering/theorem-contract.json",
-    "notes": "Uniform one-prime descent for every admissible hypothetical FLT level."
+    "notes": "Uniform one-prime descent for every admissible hypothetical FLT level.",
+    "name": "dep-flt-universal-level-lowering"
   },
   {
     "dependency_id": "dep-flt-solvable-artin-automorphy",
@@ -81,7 +87,8 @@
     "is_imported": true,
     "is_shared_kernel": false,
     "provider_contract_path": "domains/solvable-artin-automorphy/theorem-contract.json",
-    "notes": "Solvable base change, automorphic induction, and converse theorem."
+    "notes": "Solvable base change, automorphic induction, and converse theorem.",
+    "name": "dep-flt-solvable-artin-automorphy"
   },
   {
     "dependency_id": "dep-natural-number-addition-2-plus-2-equals-4-bitcalc-witness",
@@ -93,7 +100,8 @@
     "is_imported": false,
     "is_shared_kernel": false,
     "provider_contract_path": "domains/natural-number-arithmetic/bit-calculator/provider-certificate.json",
-    "notes": "Corroborating cross-substrate witness, not an import. The Peano Successor derivation independently establishes this fact; the gate netlist re-establishes the identical fact on a disjoint substrate. Does not change the consumer's zero-import status or ActiveImportCount."
+    "notes": "Corroborating cross-substrate witness, not an import. The Peano Successor derivation independently establishes this fact; the gate netlist re-establishes the identical fact on a disjoint substrate. Does not change the consumer's zero-import status or ActiveImportCount.",
+    "name": "dep-natural-number-addition-2-plus-2-equals-4-bitcalc-witness"
   },
   {
     "dependency_id": "dep-natural-number-subtraction-4-minus-2-equals-2-bitcalc-witness",
@@ -105,7 +113,8 @@
     "is_imported": false,
     "is_shared_kernel": false,
     "provider_contract_path": "domains/natural-number-arithmetic/bit-calculator/provider-certificate.json",
-    "notes": "Corroborating cross-substrate witness, not an import. The Peano Successor derivation independently establishes this fact; the gate netlist re-establishes the identical fact on a disjoint substrate. Does not change the consumer's zero-import status or ActiveImportCount."
+    "notes": "Corroborating cross-substrate witness, not an import. The Peano Successor derivation independently establishes this fact; the gate netlist re-establishes the identical fact on a disjoint substrate. Does not change the consumer's zero-import status or ActiveImportCount.",
+    "name": "dep-natural-number-subtraction-4-minus-2-equals-2-bitcalc-witness"
   },
   {
     "dependency_id": "dep-natural-number-multiplication-2-times-2-equals-4-bitcalc-witness",
@@ -117,7 +126,8 @@
     "is_imported": false,
     "is_shared_kernel": false,
     "provider_contract_path": "domains/natural-number-arithmetic/bit-calculator/provider-certificate.json",
-    "notes": "Corroborating cross-substrate witness, not an import. The Peano Successor derivation independently establishes this fact; the gate netlist re-establishes the identical fact on a disjoint substrate. Does not change the consumer's zero-import status or ActiveImportCount."
+    "notes": "Corroborating cross-substrate witness, not an import. The Peano Successor derivation independently establishes this fact; the gate netlist re-establishes the identical fact on a disjoint substrate. Does not change the consumer's zero-import status or ActiveImportCount.",
+    "name": "dep-natural-number-multiplication-2-times-2-equals-4-bitcalc-witness"
   },
   {
     "dependency_id": "dep-natural-number-division-4-div-2-equals-2-bitcalc-witness",
@@ -129,6 +139,7 @@
     "is_imported": false,
     "is_shared_kernel": false,
     "provider_contract_path": "domains/natural-number-arithmetic/bit-calculator/provider-certificate.json",
-    "notes": "Corroborating cross-substrate witness, not an import. The Peano Successor derivation independently establishes this fact; the gate netlist re-establishes the identical fact on a disjoint substrate. Does not change the consumer's zero-import status or ActiveImportCount."
+    "notes": "Corroborating cross-substrate witness, not an import. The Peano Successor derivation independently establishes this fact; the gate netlist re-establishes the identical fact on a disjoint substrate. Does not change the consumer's zero-import status or ActiveImportCount.",
+    "name": "dep-natural-number-division-4-div-2-equals-2-bitcalc-witness"
   }
 ]
