@@ -108,7 +108,7 @@ BEGIN
     -- 2. Views (depend on functions, so they go first).
     FOR r IN (
         SELECT table_name FROM information_schema.views
-         WHERE table_schema = 'public' AND table_name LIKE 'vw\_%'
+         WHERE table_schema = 'public' AND (table_name LIKE 'vw\_%' OR table_name LIKE 'fk\_labels\_%')
            AND obj_description(
                  (quote_ident(table_schema) || '.' || quote_ident(table_name))::regclass, 'pg_class')
                IS DISTINCT FROM 'effortless:hand-maintained'
@@ -168,6 +168,113 @@ $drop_derived$;
 SET check_function_bodies = off;
 
 -- ============================================================================
+-- ERB BUILD PARAMETERS (docs/ERB-BUILD-PARAMETERS.md)
+-- erbBlankLogic=coerce, erbDateDiff=calendar, erbDateTimeText=iso8601, erbTimezone=UTC, erbWholeNumber=by-field-type
+-- ============================================================================
+
+CREATE OR REPLACE FUNCTION erb_build_parameters()
+RETURNS JSONB AS $$
+  SELECT '{"erbBlankLogic":"coerce","erbDateDiff":"calendar","erbDateTimeText":"iso8601","erbTimezone":"UTC","erbWholeNumber":"by-field-type"}'::jsonb;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A timestamp inside text, per erbDateTimeText, in erbTimezone. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_datetime_text(ts TIMESTAMPTZ)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN '' ELSE
+    to_char(ts AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS')
+    || CASE WHEN (EXTRACT(MICROSECONDS FROM ts)::bigint % 1000000) <> 0 THEN rtrim(to_char(ts AT TIME ZONE 'UTC', '.US'), '0') ELSE '' END
+    || CASE WHEN o.off < 0 THEN '-' ELSE '+' END || lpad((abs(o.off) / 3600)::text, 2, '0') || ':' || lpad(((abs(o.off) % 3600) / 60)::text, 2, '0')
+  END
+  FROM (SELECT EXTRACT(EPOCH FROM ((ts AT TIME ZONE 'UTC') - (ts AT TIME ZONE 'UTC')))::integer AS off) o;
+$$ LANGUAGE sql STABLE;
+
+-- A date inside text: YYYY-MM-DD. Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_date_text(d DATE)
+RETURNS TEXT AS $$
+  SELECT COALESCE(to_char(d, 'YYYY-MM-DD'), '');
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number inside text: the shortest exact form, no trailing .0 (2, 2.5). Blank renders ''.
+CREATE OR REPLACE FUNCTION erb_number_text(n NUMERIC)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN ''
+              WHEN n::text LIKE '%.%' THEN rtrim(rtrim(n::text, '0'), '.')
+              ELSE n::text END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- TEXT(value, date format): docs/ERB-TEXT-FUNCTION.md. fmt is a TO_CHAR pattern the
+-- translator built from the checked format. Dates format in erbTimezone.
+CREATE OR REPLACE FUNCTION erb_text_date(ts TIMESTAMPTZ, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(ts AT TIME ZONE 'UTC', fmt);
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(d DATE, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT to_char(d::timestamp, fmt);
+$$ LANGUAGE sql IMMUTABLE;
+
+-- A number with a date format: no serial-date arithmetic, the number as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_date(n NUMERIC, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE erb_number_text(n) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_date(b BOOLEAN, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Text: an ISO date or datetime is formatted; any other text comes back unchanged.
+CREATE OR REPLACE FUNCTION erb_text_date(t TEXT, fmt TEXT)
+RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN t IS NULL THEN NULL
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}$' THEN to_char(btrim(t)::date::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?$' THEN to_char(btrim(t)::timestamp, fmt)
+    WHEN btrim(t) ~ '^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?\s*(Z|z|[+-]\d{2}(:?\d{2})?)$' THEN to_char(btrim(t)::timestamptz AT TIME ZONE 'UTC', fmt)
+    ELSE t END;
+$$ LANGUAGE sql STABLE;
+
+-- TEXT(value, number format): round half away from zero to `decimals`, optional
+-- thousands separators, optional percent. A rounded zero has no sign.
+CREATE OR REPLACE FUNCTION erb_text_number(n NUMERIC, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN n IS NULL THEN NULL ELSE
+    CASE WHEN r.v < 0 THEN '-' ELSE '' END
+    || CASE WHEN grouped THEN regexp_replace(split_part(abs(r.v)::text, '.', 1), '(\d)(?=(\d{3})+$)', '\1,', 'g')
+            ELSE split_part(abs(r.v)::text, '.', 1) END
+    || CASE WHEN decimals > 0 THEN '.' || split_part(abs(r.v)::text, '.', 2) ELSE '' END
+    || CASE WHEN percent THEN '%' ELSE '' END
+  END
+  FROM (SELECT round(n * CASE WHEN percent THEN 100 ELSE 1 END, decimals) AS v) r;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(t TEXT, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN t IS NULL THEN NULL
+              WHEN t ~ '^\s*[+-]?(\d+(\.\d*)?|\.\d+)\s*$' THEN erb_text_number(btrim(t)::numeric, decimals, grouped, percent)
+              ELSE t END;
+$$ LANGUAGE sql IMMUTABLE;
+
+-- Not a number: returned as & renders it.
+CREATE OR REPLACE FUNCTION erb_text_number(b BOOLEAN, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT b::text;
+$$ LANGUAGE sql IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(ts TIMESTAMPTZ, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN ts IS NULL THEN NULL ELSE erb_datetime_text(ts) END;
+$$ LANGUAGE sql STABLE;
+
+CREATE OR REPLACE FUNCTION erb_text_number(d DATE, decimals INTEGER, grouped BOOLEAN, percent BOOLEAN)
+RETURNS TEXT AS $$
+  SELECT CASE WHEN d IS NULL THEN NULL ELSE erb_date_text(d) END;
+$$ LANGUAGE sql IMMUTABLE;
+
+
+-- ============================================================================
 -- LOOKUP FUNCTIONS
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
@@ -178,7 +285,7 @@ SET check_function_bodies = off;
 
 CREATE OR REPLACE FUNCTION calc_customers_is_approved(p_customer_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (SELECT NULLIF(current_color, '') FROM customers WHERE customer_id = p_customer_id) = 'Green' THEN TRUE ELSE FALSE END)::boolean;
+  SELECT (CASE WHEN COALESCE((SELECT NULLIF(current_color, '') FROM customers WHERE customer_id = p_customer_id), '') = 'Green' THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================
@@ -229,6 +336,9 @@ FROM customers t;
 
 -- === 8. Custom views (ERBCustomizations) ===
 -- (no ERBCustomizations row for this section)
+
+-- === 8b. Function and view overrides (ERBCustomizations FunctionOverride / SchemaOverride) ===
+-- (no FunctionOverride / SchemaOverride row for a function or a view)
 
 -- === 9. Custom RLS (ERBCustomizations) ===
 -- (no ERBCustomizations row for this section)

@@ -1,4 +1,4 @@
-# 📘 v1: NakedClaude Demo — RuleSpeak®
+# 📘 v1: NakedClaude Demo — Docs
 
 _Rulebook generated from Airtable base 'v1: NakedClaude Demo'._
 
@@ -16,6 +16,19 @@ _Rulebook generated from Airtable base 'v1: NakedClaude Demo'._
 | Current Color | A defined attribute. | _The current color assigned to this customer (e.g. red, green, yellow, blue)_ |
 | Is Approved | True when the current color is “Green”. | — |
 | Notes | A defined attribute. | — |
+
+<details open>
+<summary>Example data</summary>
+
+| Name | Current Color | Is Approved ƒ | Notes |
+|---|---|---|---|
+| Bob | Green | true | A customer currently in launch. |
+| Alice Johnson | Red | false | Initial mock entry for Alice. |
+| Brian Lee | Blue | false | Initial mock entry for Brian. |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 3 Operative Rules
 
@@ -37,7 +50,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -46,8 +59,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)
