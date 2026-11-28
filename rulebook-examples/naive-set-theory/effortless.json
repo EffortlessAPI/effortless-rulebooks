@@ -15,8 +15,8 @@
       "RelativePath": "/postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json -p drop_all=true -p database=erb_naive_set_theory",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.17.1626",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-09-07-0336-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.11.26.1400",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-11-26-1400-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -32,7 +32,7 @@
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.11.22.1524",
-      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-08-30-1537-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-11-22-1524-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -40,7 +40,8 @@
       "RelativePath": "/explainer",
       "CommandLine": "rulebook-to-explainer-dag -i ../effortless-rulebook/effortless-rulebook.json -p languages=all",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.1838"
+      "LastVersionUsed": "v2026.11.27.1439",
+      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-11-27-1439-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -48,8 +49,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "effortless-rulebook-editor -i effortless-rulebook.json -p rulebookPath=effortless-rulebook.json -p dockerfilePath=docker/Dockerfile",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.11.22.0226",
-      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-09-07-0138-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.11.27.1442",
+      "LastUrl": "https://effortless-effortless-rulebook-e-v2026-11-27-1442-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ],
   "ShowHidden": false,

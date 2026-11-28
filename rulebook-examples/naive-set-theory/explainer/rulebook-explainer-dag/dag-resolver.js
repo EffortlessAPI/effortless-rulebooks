@@ -13,10 +13,12 @@
     return getBundle().rulebook || {};
   }
 
+  // A table is a top-level entry that holds a schema, whatever letter its name starts with
+  // (an ontology's concept rulebook names a property's table for the property: isParentOf).
+  // "$schema" and the entries that start with "_" (_meta, __meta__) are the platform's own.
   function tablesOf(rb) {
     return Object.keys(rb).filter((k) => {
       if (k.startsWith("$") || k.startsWith("_")) return false;
-      if (!/^[A-Z]/.test(k)) return false;
       const v = rb[k];
       return v && typeof v === "object" && "schema" in v;
     });

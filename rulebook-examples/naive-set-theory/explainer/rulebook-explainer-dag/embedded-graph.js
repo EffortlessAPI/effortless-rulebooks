@@ -1005,7 +1005,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "A truth value is considered classical if all of the following:",
+          "headline": "A truth value is considered classical if any of the following:",
           "cases": [],
           "children": [
             {
@@ -1687,7 +1687,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "يُصنّف سجل «truth value» على أنه «classical» إذا تحقق جميع ما يلي:",
+          "headline": "يُصنّف سجل «truth value» على أنه «classical» إذا تحقق واحد على الأقل مما يلي:",
           "cases": [],
           "children": [
             {
@@ -2393,7 +2393,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Eine Truth Value gilt als ein Classical, wenn alles Folgende gilt:",
+          "headline": "Eine Truth Value gilt als ein Classical, wenn mindestens eines des Folgenden gilt:",
           "cases": [],
           "children": [
             {
@@ -3099,7 +3099,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un truth value se considera classical si se cumple todo lo siguiente:",
+          "headline": "Un truth value se considera classical si se cumple al menos una de las siguientes:",
           "cases": [],
           "children": [
             {
@@ -3805,7 +3805,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un truth value est considéré comme classical si tout ce qui suit est vrai :",
+          "headline": "Un truth value est considéré comme classical si au moins une des conditions suivantes est vraie :",
           "cases": [],
           "children": [
             {
@@ -4511,7 +4511,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "truth value “classical” माना जाता है, यदि निम्नलिखित सभी सही हों:",
+          "headline": "truth value “classical” माना जाता है, यदि निम्नलिखित में से कम से कम एक सही हो:",
           "cases": [],
           "children": [
             {
@@ -5217,7 +5217,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Setiap truth value dianggap “classical” jika semua kondisi berikut terpenuhi:",
+          "headline": "Setiap truth value dianggap “classical” jika paling sedikit satu kondisi berikut terpenuhi:",
           "cases": [],
           "children": [
             {
@@ -5923,7 +5923,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Un truth value è considerato classical se vale tutto quanto segue:",
+          "headline": "Un truth value è considerato classical se vale almeno una delle seguenti:",
           "cases": [],
           "children": [
             {
@@ -6629,7 +6629,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "次のすべてが成り立つ場合、truth valueは「Classical」と見なされます:",
+          "headline": "次のいずれかが成り立つ場合、truth valueは「Classical」と見なされます:",
           "cases": [],
           "children": [
             {
@@ -7335,7 +7335,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "다음 모두에 해당하는 경우, ‘truth value’ 레코드는 ‘classical’에 해당하는 것으로 간주됩니다:",
+          "headline": "다음 중 하나 이상에 해당하는 경우, ‘truth value’ 레코드는 ‘classical’에 해당하는 것으로 간주됩니다:",
           "cases": [],
           "children": [
             {
@@ -8041,7 +8041,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Een truth value geldt als classical als al het volgende geldt:",
+          "headline": "Een truth value geldt als classical als ten minste één van het volgende geldt:",
           "cases": [],
           "children": [
             {
@@ -8747,7 +8747,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Um truth value é considerado classical se tudo o que segue for verdadeiro:",
+          "headline": "Um truth value é considerado classical se pelo menos um dos seguintes for verdadeiro:",
           "cases": [],
           "children": [
             {
@@ -9453,7 +9453,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Truth value считается «classical», если выполняется всё следующее:",
+          "headline": "Truth value считается «classical», если выполняется хотя бы одно из следующего:",
           "cases": [],
           "children": [
             {
@@ -10159,7 +10159,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "“truth value” kaydı, aşağıdaki koşulların tümü sağlanıyor ise “classical” sayılır:",
+          "headline": "“truth value” kaydı, aşağıdakilerden en az biri sağlanıyor ise “classical” sayılır:",
           "cases": [],
           "children": [
             {
@@ -10865,7 +10865,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "Mỗi truth value được coi là “classical” nếu tất cả các điều kiện sau đều đúng:",
+          "headline": "Mỗi truth value được coi là “classical” nếu ít nhất một trong các điều kiện sau đúng:",
           "cases": [],
           "children": [
             {
@@ -11571,7 +11571,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         ],
         "structure": {
           "kind": "priority",
-          "headline": "当以下全部成立时,truth value被视为“Classical”:",
+          "headline": "当以下任一成立时,truth value被视为“Classical”:",
           "cases": [],
           "children": [
             {
@@ -12244,4 +12244,4 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "EvaluationSteps": "evaluation step"
     }
   }
-} };
+}, stamp: "9b8300175f30de25" };

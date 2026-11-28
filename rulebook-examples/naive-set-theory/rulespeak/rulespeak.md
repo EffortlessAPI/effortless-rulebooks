@@ -1,4 +1,4 @@
-# 📘 Three-Valued Naive Set Theory — RuleSpeak®
+# 📘 Three-Valued Naive Set Theory — Docs
 
 _Rulebook formalizing naive set theory with three-valued (Strong Kleene) membership and Rule 12 (NULL membership), which dissolves Russell's paradox into a single ungrounded membership fact._
 
@@ -20,6 +20,22 @@ _Rulebook formalizing naive set theory with three-valued (Strong Kleene) members
 | Is Undefined | True when the truth value ID is “null”. | _True only for NULL, the undefined value meaning 'does not converge'._ |
 | Count of Facts | The number of membership facts related to the truth value. | _How many membership facts resolve to this value._ |
 | Facts With Value | A defined attribute. | _Membership facts that resolve to this truth value._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Symbol | Glyph | Rank | Is Classical ƒ | Is Undefined ƒ | Count of Facts ƒ |
+|---|---|---|---|---|---|---|
+| true | T | ⊤ | 1 | true | false | 7 |
+| false | F | ⊥ | -1 | true | false | 2 |
+| null | N | ∗ | 0 | false | true | 1 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Connective** | Logical connectives whose Strong Kleene (K3) truth tables define how NULL propagates. This is the 'gap' route (NULL where evaluation fails to converge), the sibling of paraconsistent 'glut' logics, and it follows Kripke's fixed-point grounding. | — |
 | Name | The same as its connective ID. | _Display alias._ |
 | Symbol | A defined attribute. | _Operator glyph (not / and / or)._ |
@@ -27,6 +43,22 @@ _Rulebook formalizing naive set theory with three-valued (Strong Kleene) members
 | Kleene Rule | A defined attribute. | _How the K3 output is computed (negate / min / max over ranks)._ |
 | Count of Truth Table Rows | The number of truth table rows related to the connective. | _Rows in this connective's truth table._ |
 | Truth Table Rows | A defined attribute. | _The truth-table rows belonging to this connective._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Symbol | Arity | Kleene Rule | Count of Truth Table Rows ƒ |
+|---|---|---|---|---|
+| negation | ¬ | 1 | negate rank | 3 |
+| conjunction | ∧ | 2 | min of ranks | 9 |
+| disjunction | ∨ | 2 | max of ranks | 9 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Truth Table Row** | One row per input combination per connective: the Strong Kleene semantics, stored as data. | — |
 | Connective | A defined attribute. | _The connective this row defines._ |
 | Left Input | A defined attribute. | _Left/sole input truth value._ |
@@ -34,6 +66,22 @@ _Rulebook formalizing naive set theory with three-valued (Strong Kleene) members
 | Output | A defined attribute. | _Resulting truth value for this input combination._ |
 | Output Symbol | Taken from the linked output. | _Symbol of the output value._ |
 | Name | Computed as the connective, followed by “: ”, followed by the left input, followed by “ , ”, followed by the right input, followed by “ -> ”, followed by the output. | _Readable row, e.g. 'negation: null -> null'._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Output Symbol ƒ | Name ƒ |
+|---|---|
+| F | negation: true -> false |
+| N | negation: null -> null |
+| T | negation: false -> true |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Set Rule** | The twelve structural rules of the theory: the eleven classical naive rules plus the missing Rule 12. | — |
 | Rule Number | A defined attribute. | _Ordinal 1-12._ |
 | Title | A defined attribute. | _Short rule title._ |
@@ -41,6 +89,22 @@ _Rulebook formalizing naive set theory with three-valued (Strong Kleene) members
 | Name | Computed as “R”, followed by the rule number. | _Display alias 'R<n>'._ |
 | Is Classical | True when the rule number is at most 11. | _True for the eleven classical rules (R1-R11)._ |
 | Is the Missing Rule | True when the rule number is 12. | _True only for Rule 12, the rule naive set theory never wrote down._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Rule Number | Title | Statement | Name ƒ | Is Classical ƒ | Is the Missing Rule ƒ |
+|---|---|---|---|---|---|
+| 1 | Membership | A set is a collection of distinct objects; x in S asserts x is a member of S. | R1 | true | false |
+| 2 | Extensionality | A set is fully determined by its members; sets with the same membership profile are identical. | R2 | true | false |
+| 3 | Order-independence | The order in which members are listed carries no information. | R3 | true | false |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Set** | The universe of sets under discussion. Each set is identified by a slug and defined by a membership condition. | — |
 | Label | A defined attribute. | _Human notation for the set, e.g. '{a}', 'R', '∅'._ |
 | Condition Expression | A defined attribute. | _The membership condition (the predicate / definition) phi defining the set._ |
@@ -50,6 +114,22 @@ _Rulebook formalizing naive set theory with three-valued (Strong Kleene) members
 | Count of Memberships | The number of membership facts related to the set. | _Number of recorded membership facts where this set is the container._ |
 | Count of Null Memberships | The number of the set's membership facts that have a membership value of “null”. | _Membership facts on this set that are ungrounded (NULL)._ |
 | Memberships | A defined attribute. | _Membership facts for which this set is the container._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Label | Condition Expression | Is Self Referential | Name ƒ | Is Russell Set ƒ | Count of Memberships ƒ | Count of Null Memberships ƒ |
+|---|---|---|---|---|---|---|
+| ∅ | false (nothing satisfies) | false | empty-set | false | 1 | 0 |
+| a | atom (primitive element) | false | a | false | 0 | 0 |
+| b | atom (primitive element) | false | b | false | 0 | 0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Membership Fact** | The core relation: each fact is a question 'Element in Container' carrying its three-valued answer. | — |
 | Element | A defined attribute. | _The candidate member (itself a set)._ |
 | Container | A defined attribute. | _The set being asked about._ |
@@ -57,11 +137,27 @@ _Rulebook formalizing naive set theory with three-valued (Strong Kleene) members
 | Name | Computed as the element, followed by “ ∈ ”, followed by the container. | _Readable fact, e.g. 'russell-set ∈ russell-set'._ |
 | Container Label | Taken from the linked container. | _Notation of the container set._ |
 | Membership Value Symbol | Taken from the linked membership value. | _Symbol (T/F/N) of the answer._ |
-| Is Bivalent | True when the membership fact's membership value is a classical. | _Whether the answer is one of the classical values (not NULL)._ |
+| Is Bivalent | True when the membership fact's membership value is classical. | _Whether the answer is one of the classical values (not NULL)._ |
 | Is Null | True when the membership value is “null”. | _True when the fact is ungrounded (NULL)._ |
 | Is Grounded | True when it is not the case that the membership value is “null”. | _True when the fact settles to True or False._ |
 | Count of Evaluation Steps | The number of evaluation steps related to the membership fact. | _Number of evaluation trials recorded for this fact._ |
 | Evaluation Steps | A defined attribute. | _The fixed-point evaluation trials for this fact._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Name ƒ | Container Label ƒ | Membership Value Symbol ƒ | Is Bivalent ƒ | Is Null ƒ | Is Grounded ƒ | Count of Evaluation Steps ƒ |
+|---|---|---|---|---|---|---|
+| a ∈ empty-set | ∅ | F | true | false | true | 0 |
+| a ∈ singleton-a | {a} | T | true | false | true | 0 |
+| a ∈ pair-ab | {a, b} | T | true | false | true | 0 |
+
+_ƒ marks a computed column._
+
+</details>
+
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
 | **Evaluation Step** | Strong Kleene fixed-point evaluation of the Russell fact: each trial value fed through phi = not(R in R). Only NULL is stable, dissolving the Russell paradox into a single ungrounded fixed point. | — |
 | Membership Fact | A defined attribute. | _The fact being evaluated._ |
 | Step Order | A defined attribute. | _Trial order (1,2,3)._ |
@@ -70,6 +166,19 @@ _Rulebook formalizing naive set theory with three-valued (Strong Kleene) members
 | Name | Computed as “try ”, followed by the trial value. | _Readable trial._ |
 | Is Stable | True when the trial value is the resulting value. | _True when the trial reproduces itself (a fixed point)._ |
 | Outcome | Determined by priority: “stable fixed point” if the trial value is the resulting value; in all other cases, “contradiction”. | _'stable fixed point' or 'contradiction'._ |
+
+<details open>
+<summary>Example data</summary>
+
+| Step Order | Name ƒ | Is Stable ƒ | Outcome ƒ |
+|---|---|---|---|
+| 1 | try true | false | contradiction |
+| 2 | try false | false | contradiction |
+| 3 | try null | true | stable fixed point |
+
+_ƒ marks a computed column._
+
+</details>
 
 ## 2 Fact Types
 
@@ -91,13 +200,13 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 
 ### Structural Constraints (from the schema)
 
-- A truth value **must** have a symbol, a glyph, and a rank.
-- A connective **must** have a symbol, an arity, and a kleene rule.
+- A truth value **must** have a symbol; a glyph; and a rank.
+- A connective **must** have a symbol; an arity; and a kleene rule.
 - A truth table row **must** reference exactly one connective.
 - A truth table row **must** reference exactly one truth value as its left input.
 - A truth table row **must** reference exactly one truth value as its output.
-- A set rule **must** have a rule number, a title, and a statement.
-- A set **must** have a label and a condition expression, and record whether it is a self referential.
+- A set rule **must** have a rule number; a title; and a statement.
+- A set **must** have a label and a condition expression, and record whether it is self referential.
 - A membership fact **must** reference exactly one set as its element.
 - A membership fact **must** reference exactly one set as its container.
 - A membership fact **must** reference exactly one truth value as its membership value.
@@ -117,7 +226,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | ID | Declarative rule |
 |----|------------------|
 | **DR-1 Name** | A truth value's name is the same as its truth value ID. |
-| **DR-2 Is Classical** | A truth value is considered a classical if at least one of the following holds: the truth value ID is “true” or the truth value ID is “false”. |
+| **DR-2 Is Classical** | A truth value is considered classical if at least one of the following holds: the truth value ID is “true” or the truth value ID is “false”. |
 | **DR-3 Is Undefined** | A truth value is considered undefined if the truth value ID is “null”. |
 | **DR-4 Count of Facts** | A truth value's count of facts is the number of membership facts related to the truth value. |
 | **DR-5 Name** | A connective's name is the same as its connective ID. |
@@ -125,7 +234,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-7 Output Symbol** | A truth table row's output symbol — taken from the linked output. |
 | **DR-8 Name** | A truth table row's name is computed as the connective, followed by “: ”, followed by the left input, followed by “ , ”, followed by the right input, followed by “ -> ”, followed by the output. |
 | **DR-9 Name** | A set rule's name is computed as “R”, followed by the rule number. |
-| **DR-10 Is Classical** | A set rule is considered a classical if the rule number is at most 11. |
+| **DR-10 Is Classical** | A set rule is considered classical if the rule number is at most 11. |
 | **DR-11 Is the Missing Rule** | A set rule is considered the-missing-rule if the rule number is 12. |
 | **DR-12 Name** | A set's name is the same as its set ID. |
 | **DR-13 Is Russell Set** | A set is considered a russell set if the set ID is “russell-set”. |
@@ -134,7 +243,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-16 Name** | A membership fact's name is computed as the element, followed by “ ∈ ”, followed by the container. |
 | **DR-17 Container Label** | A membership fact's container label — taken from the linked container. |
 | **DR-18 Membership Value Symbol** | A membership fact's membership value symbol — taken from the linked membership value. |
-| **DR-19 Is Bivalent** | A membership fact's is bivalent is true when the membership fact's membership value is a classical. |
+| **DR-19 Is Bivalent** | A membership fact's is bivalent is true when the membership fact's membership value is classical. |
 | **DR-20 Is Null** | A membership fact is considered a null if the membership value is “null”. |
 | **DR-21 Is Grounded** | A membership fact is considered grounded if it is not the case that the membership value is “null”. |
 | **DR-22 Count of Evaluation Steps** | A membership fact's count of evaluation steps is the number of evaluation steps related to the membership fact. |
@@ -144,7 +253,7 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 ## 5 Traceability to Schema
 
-_The expression column is the rule's definition in RuleSpeak® notation —
+_The expression column is the rule's definition in Docs notation —
 the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
@@ -177,8 +286,4 @@ the same logic the rulebook stores, written for a business reader._
 
 ---
 
-_This document is rendered in **RuleSpeak®**, the declarative business-rule
-notation created by **Ronald G. Ross**, and follows the conventions of
-**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
-Ronald G. Ross for RuleSpeak® and his foundational work on business rules —
-[www.RonRoss.info](https://www.RonRoss.info)._
+> **RuleSpeak®** — the declarative business-rule notation created by **Ronald G. Ross**, following the conventions of **SBVR** — is coming soon. Until then this page shows the regular documentation. [www.RonRoss.info](https://www.RonRoss.info)
